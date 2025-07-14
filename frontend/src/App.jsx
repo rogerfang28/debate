@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import './App.css'
+import './App.css';
+import { socket } from './socket';
+import GraphView from './components/GraphView';
+import ToolBar from './components/ToolBar';
 
 export default function App() {
   const fgRef = useRef();
@@ -11,6 +14,11 @@ export default function App() {
   });
 
   useEffect(() => {
+    socket.on('graph-updated', newGraph => setData(newGraph));
+    return () => socket.off('graph-updated');
+  }, []);
+
+  useEffect(() => {
     const onResize = () => setDimensions({
       width: window.innerWidth,
       height: window.innerHeight
@@ -19,7 +27,7 @@ export default function App() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const [data] = useState({
+  const [data, setData] = useState({
     nodes: [
       { id: '1', text: 'A' },
       { id: '2', text: 'B' }
@@ -30,16 +38,7 @@ export default function App() {
   return (
     <>
       <h1>Graph</h1>
-      <div style={{ width: dimensions.width, height: dimensions.height, position: 'fixed', top: 0, left: 0 }}>
-        <ForceGraph2D
-          ref={fgRef}
-          graphData={data}
-          nodeLabel="text"
-          nodeAutoColorBy="id"
-          width={dimensions.width}
-          height={dimensions.height}
-        />
-      </div>
+      <GraphView graphData={data} dimensions={dimensions} />
     </>
   );
 }
