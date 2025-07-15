@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
+//import ForceGraph2D from 'react-force-graph-2d';
 import './App.css';
-import { socket } from './socket';
+import { socket } from './lib/socket';
 import GraphView from './components/GraphView';
 import ToolBar from './components/ToolBar';
 
