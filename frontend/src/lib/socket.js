@@ -1,3 +1,4 @@
+// Status: working I guess socket is just that for now
 import { io } from 'socket.io-client';
 const URL = process.env.NODE_ENV === 'production'
   ? undefined

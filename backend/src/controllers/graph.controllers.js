@@ -1,22 +1,20 @@
-const graph = require('../graph.store');
+import graph from '../graph.store.js';
 
-function addNode({ id, label, metadata = {} }) {
+export function addNode({ id, label, metadata = {} }) {
   graph.nodes[id] = { label, metadata };
 }
 
-function deleteNode(id) {
+export function deleteNode(id) {
   delete graph.nodes[id];
   graph.edges = graph.edges.filter(e => e.source !== id && e.target !== id);
 }
 
-function addEdge({ source, target, relation, metadata = {} }) {
+export function addEdge({ source, target, relation, metadata = {} }) {
   graph.edges.push({ source, target, relation, metadata });
 }
 
-function deleteEdge(criteria) {
+export function deleteEdge(criteria) {
   graph.edges = graph.edges.filter(e =>
     !(e.source === criteria.source && e.target === criteria.target && e.relation === criteria.relation)
   );
 }
-
-module.exports = { addNode, deleteNode, addEdge, deleteEdge };

@@ -1,4 +1,7 @@
-module.exports = {
-  nodes: {},  // { id: { label, metadata } }
-  edges: []   // [ { source, target, relation, metadata } ]
+// graph.store.js (ESM)
+const graph = {
+  nodes: {},
+  edges: []
 };
+
+export default graph;

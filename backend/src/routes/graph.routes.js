@@ -1,5 +1,6 @@
-const express = require('express');
-const { addNode, deleteNode, addEdge, deleteEdge } = require('../controllers/graph.controllers');
+import express from 'express';
+import { addNode, deleteNode, addEdge, deleteEdge } from '../controllers/graph.controllers.js';
+
 const router = express.Router();
 
 router.post('/node', (req, res) => {
@@ -22,4 +23,4 @@ router.delete('/edge', (req, res) => {
   res.json({ success: true });
 });
 
-module.exports = router;
+export default router;

@@ -1,3 +1,4 @@
+// Status: Good I think, not much can go wrong here, it's kind of tool 1 and 2 I guess, decides where stuff is and renders
 // src/App.jsx
 import React from 'react';
 import GraphPage from './pages/GraphPage';
@@ -9,7 +10,7 @@ export default function App() {
         My Graph App
       </h1>
 
-      <main style={{ flex: 1, backgroundColor: '#2e2e2eff', position: 'relative' }}>
+      <main>
         <GraphPage />
       </main>
     </div>
