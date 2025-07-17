@@ -35,13 +35,13 @@ export default function GraphView({ graphData, dimensions, selection, setSelecti
         enableNodeDrag={true}
         onNodeClick={node => setSelection({ type: 'node', item: node })}
         onLinkClick={link => setSelection({ type: 'edge', item: link })}
-        // onNodeDragEnd={node => {
-        //   socket.emit('update-node-position', {
-        //     id: node.id,
-        //     x: node.x,
-        //     y: node.y
-        //   });
-        // }}
+        onNodeDragEnd={node => {
+          socket.emit('update-node-position', {
+            id: node.id,
+            x: node.x,
+            y: node.y
+          });
+        }}
         onNodeHover={node => {
           if (node) console.log('Hovered node:', node);
         }} // debugging
