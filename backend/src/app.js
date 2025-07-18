@@ -4,11 +4,12 @@ import mongoose from 'mongoose';
 import http from 'http';
 import { Server } from 'socket.io';
 import { connectDB } from './lib/db.js';
-import graphRoutes from './unused/graph.routes.js';
 import cors from 'cors';
 import { NodeModel } from './models/Node.js';
 import { EdgeModel } from './models/Edge.js';
 import { registerSocketHandlers } from './lib/socketHandler.js';
+import authRoutes from "./routes/auth.routes.js";
+import { authenticateToken } from './middleware/auth.middleware.js';
 
 dotenv.config();
 await connectDB();
@@ -17,11 +18,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(express.json());
-app.use('/api/graph', graphRoutes);
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
-app.get('/api/graph', async (req, res) => {
+app.use(express.json());
+app.use("/api/auth", authRoutes);
+
+app.get('/api/graph', authenticateToken, async (req, res) => {
   const nodes = await NodeModel.find();
   const edges = await EdgeModel.find();
   const nodeMap = {};
