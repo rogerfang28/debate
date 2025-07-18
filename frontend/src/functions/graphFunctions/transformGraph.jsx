@@ -2,7 +2,7 @@
 export function transformGraph(json) {
   const nodes = Object.entries(json.nodes || {}).map(([id, node]) => ({
     id,
-    text: node.label,
+    label: node.label,
     metadata: node.metadata || {},
     x: node.x,
     y: node.y

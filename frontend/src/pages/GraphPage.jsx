@@ -93,10 +93,11 @@ export default function GraphPage() {
         });
       }
     } else if (form.type === 'challenge-node') {
-      socket.emit('challenge-node', { id: form.item.id, reason: formData.reason });
+      graphFunctions.challengeNode(id, challenger, responder,formData.reason)
     } else if (form.type === 'challenge-edge') {
       const src = form.item.source.id || form.item.source;
       const tgt = form.item.target.id || form.item.target;
+      graphFunctions.addChallenge("edge", id, challenger, responder,formData.reason)
       socket.emit('challenge-edge', {
         source: src,
         target: tgt,

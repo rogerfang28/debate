@@ -25,7 +25,7 @@ export default function GraphView({ graphData, dimensions, selection, setSelecti
       <ForceGraph2D
         ref={fgRef}
         graphData={safeGraph}
-        nodeLabel="text"
+        nodeLabel="label"
         nodeAutoColorBy="id"
         width={dimensions.width}
         height={dimensions.height}
