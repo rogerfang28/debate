@@ -10,7 +10,8 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/graph" element={<GraphPage />} />
+        <Route path="/graph/:roomId" element={<GraphPage />} />
+        <Route path="/graph" element={<GraphPage />} /> {/* Legacy route - will redirect to home */}
       </Routes>
     </Router>
   );
