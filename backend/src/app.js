@@ -22,10 +22,23 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://debate-frontend.onrender.com'
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  })
+);
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
