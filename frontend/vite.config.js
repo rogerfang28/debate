@@ -7,6 +7,15 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': 'http://localhost:3000'  // Proxy all /api requests to backend
+    },
+    historyApiFallback: true  // Enable SPA fallback for development
+  },
+  build: {
+    rollupOptions: {
+      // Ensure proper SPA routing in production build
+      output: {
+        manualChunks: undefined
+      }
     }
   }
 })
