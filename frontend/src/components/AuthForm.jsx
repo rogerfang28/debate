@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { reconnectSocket } from '../lib/socket';
+import { API_BASE } from '../lib/config';
 
 export default function AuthForm({ onAuthSuccess }) {
   const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ export default function AuthForm({ onAuthSuccess }) {
     setError('');
 
     try {
-      const res = await fetch(`http://localhost:3000/api/auth/${mode}`, {
+      const res = await fetch(`${API_BASE}/auth/${mode}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

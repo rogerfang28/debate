@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { roomAPI } from '../lib/roomAPI';
 import { friendsAPI } from '../lib/friendsAPI';
+import { API_BASE } from '../lib/config';
 
 export function ManageRoomModal({ isOpen, onClose, room, onRoomDeleted }) {
   const [inviteCode, setInviteCode] = useState('');
@@ -52,7 +53,7 @@ export function ManageRoomModal({ isOpen, onClose, room, onRoomDeleted }) {
   const handleGenerateInviteCode = async () => {
     setIsGeneratingCode(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/rooms/${room._id}/invite-code`, {
+      const response = await fetch(`${API_BASE}/rooms/${room._id}/invite-code`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -76,7 +77,7 @@ export function ManageRoomModal({ isOpen, onClose, room, onRoomDeleted }) {
   const handlePrivacyToggle = async (newIsPublic) => {
     setIsUpdatingPrivacy(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/rooms/${room._id}`, {
+      const response = await fetch(`${API_BASE}/rooms/${room._id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,

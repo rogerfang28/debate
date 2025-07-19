@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../../lib/auth';
+import { API_BASE } from '../../lib/config';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function ProfilePage() {
       console.log('🔐 Making profile update request with token:', token ? 'present' : 'missing');
       console.log('📝 Username to update:', username.trim());
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/auth/profile`, {
+      const response = await fetch(`${API_BASE}/api/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

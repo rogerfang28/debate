@@ -1,9 +1,10 @@
 // Status: working I guess socket is just that for now
 import { io } from 'socket.io-client';
+import { SOCKET_URL } from './config';
 
 const URL = process.env.NODE_ENV === 'production'
   ? undefined
-  : 'http://localhost:3000'; // backend URL during dev
+  : SOCKET_URL; // backend URL from environment
 
 // Create socket connection with authentication
 function createSocket() {

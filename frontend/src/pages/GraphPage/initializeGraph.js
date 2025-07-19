@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { socket } from '../../lib/socket';
 import * as graph from '../../functions/graphFunctions';
+import { API_BASE } from '../../lib/config';
 
 export function useInitializeGraph(setData, roomId, draggedNodeId) {
   useEffect(() => {
@@ -21,7 +22,7 @@ export function useInitializeGraph(setData, roomId, draggedNodeId) {
         }
 
         // Fetch room-specific graph data
-        const res = await fetch(`http://localhost:3000/api/rooms/${roomId}/graph`, {
+        const res = await fetch(`${API_BASE}/rooms/${roomId}/graph`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
