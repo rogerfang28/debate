@@ -1,19 +1,18 @@
 // Status: working I guess socket is just that for now
 import { io } from 'socket.io-client';
-import { SOCKET_URL } from './config';
 
-const URL = process.env.NODE_ENV === 'production'
-  ? undefined
-  : SOCKET_URL; // backend URL from environment
+const URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 // Create socket connection with authentication
 function createSocket() {
   const token = localStorage.getItem('token');
   console.log('🔌 Creating socket connection with token:', token ? 'Present' : 'Missing');
+  console.log('🌐 Socket URL:', URL);
   return io(URL, {
     auth: {
       token: token
     },
+    withCredentials: true,
     autoConnect: true,
     forceNew: true // Force new connection
   });
