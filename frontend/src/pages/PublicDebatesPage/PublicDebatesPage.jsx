@@ -1,6 +1,7 @@
 // src/pages/PublicDebatesPage/PublicDebatesPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../lib/config';
 import './PublicDebatesPage.css';
 
 export default function PublicDebatesPage() {
@@ -25,7 +26,7 @@ export default function PublicDebatesPage() {
         search: searchQuery
       });
 
-      const response = await fetch(`/api/rooms/public?${queryParams}`);
+      const response = await fetch(`${API_BASE}/api/rooms/public?${queryParams}`);
       if (response.ok) {
         const data = await response.json();
         setRooms(data.rooms);

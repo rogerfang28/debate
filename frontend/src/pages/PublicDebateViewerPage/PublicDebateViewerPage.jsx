@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ForceGraph2D from 'react-force-graph-2d';
 import { transformGraph } from '../../functions/graphFunctions/transformGraph.js';
+import { API_BASE } from '../../lib/config';
 import './PublicDebateViewerPage.css';
 
 export default function PublicDebateViewerPage() {
@@ -22,7 +23,7 @@ export default function PublicDebateViewerPage() {
   const fetchPublicRoomData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/rooms/public/${roomId}/graph`);
+      const response = await fetch(`${API_BASE}/api/rooms/public/${roomId}/graph`);
       if (response.ok) {
         const data = await response.json();
         console.log('🔍 Raw data from API:', data);
