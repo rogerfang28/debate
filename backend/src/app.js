@@ -13,7 +13,9 @@ import roomRoutes from "./routes/room.routes.js";
 import friendRoutes from "./routes/friend.routes.js";
 import { authenticateToken } from './middleware/auth.middleware.js';
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config(); // ✅ Only use .env in development
+}
 await connectDB();
 
 const app = express();
