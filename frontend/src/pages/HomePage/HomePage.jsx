@@ -5,7 +5,11 @@ import { RoomCard } from '../../components/RoomCard';
 import { CreateRoomModal } from '../../components/CreateRoomModal';
 import { JoinRoomForm } from '../../components/JoinRoomForm';
 import { ManageRoomModal } from '../../components/ManageRoomModal';
+import { FriendsModal } from '../../components/FriendsModal';
+import { ChatFloat } from '../../components/ChatFloat';
 import { roomAPI } from '../../lib/roomAPI';
+import { friendsAPI } from '../../lib/friendsAPI';
+import { socket, reconnectSocket } from '../../lib/socket';
 
 export default function HomePage() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -13,15 +17,51 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showManageModal, setShowManageModal] = useState(false);
+  const [showFriendsModal, setShowFriendsModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [error, setError] = useState('');
+  const [friendNotificationCount, setFriendNotificationCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
+      // Reconnect socket with new token
+      reconnectSocket();
       loadRooms();
+      loadFriendNotifications();
+      setupSocketListeners();
     }
   }, [token]);
+
+  const setupSocketListeners = () => {
+    // Clean up existing listeners first
+    socket.off('friend-request-received-homepage');
+    socket.off('friend-request-accepted-homepage');
+
+    socket.on('friend-request-received-homepage', () => {
+      console.log('🏠 Friend request received in HomePage');
+      setFriendNotificationCount(prev => prev + 1);
+    });
+
+    socket.on('friend-request-accepted-homepage', () => {
+      console.log('🏠 Friend request accepted in HomePage');
+      loadFriendNotifications(); // Refresh count
+    });
+
+    return () => {
+      socket.off('friend-request-received-homepage');
+      socket.off('friend-request-accepted-homepage');
+    };
+  };
+
+  const loadFriendNotifications = async () => {
+    try {
+      const data = await friendsAPI.getFriends();
+      setFriendNotificationCount(data.pending.received.length);
+    } catch (error) {
+      console.error('Failed to load friend notifications:', error);
+    }
+  };
 
   const loadRooms = async () => {
     setIsLoading(true);
@@ -131,6 +171,36 @@ export default function HomePage() {
               style={{ marginRight: '12px' }}
             >
               🌍 Public Debates
+            </button>
+            <button 
+              onClick={() => {
+                setShowFriendsModal(true);
+                setFriendNotificationCount(0); // Clear notification when opened
+              }}
+              className="nav-button btn-primary"
+              style={{ marginRight: '12px', position: 'relative' }}
+            >
+              👥 Friends
+              {friendNotificationCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-5px',
+                  right: '-5px',
+                  background: '#ef4444',
+                  color: 'white',
+                  borderRadius: '50%',
+                  minWidth: '18px',
+                  height: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '11px',
+                  fontWeight: 'bold',
+                  border: '2px solid white'
+                }}>
+                  {friendNotificationCount > 99 ? '99+' : friendNotificationCount}
+                </span>
+              )}
             </button>
             <button 
               onClick={() => navigate('/profile')}
@@ -259,6 +329,15 @@ export default function HomePage() {
         room={selectedRoom}
         onRoomDeleted={handleDeleteRoom}
       />
+
+      {/* Friends Modal */}
+      <FriendsModal
+        isOpen={showFriendsModal}
+        onClose={() => setShowFriendsModal(false)}
+      />
+
+      {/* Floating Chat */}
+      {token && <ChatFloat />}
     </div>
   );
 }
