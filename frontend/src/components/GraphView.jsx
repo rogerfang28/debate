@@ -5,7 +5,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import * as d3 from 'd3';
 import { socket } from '../lib/socket';
 
-export default function GraphView({ graphData, dimensions, selection, setSelection, roomId, draggedNodeId, setDraggedNodeId }) {
+export default function GraphView({ graphData, dimensions, selection, setSelection, roomId, draggedNodeId, setDraggedNodeId, onChallengeClick, currentUserId }) {
   const fgRef = useRef();
   const [isSpreadOut, setIsSpreadOut] = useState(false);
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -47,26 +47,76 @@ export default function GraphView({ graphData, dimensions, selection, setSelecti
     const isSelected = selection?.type === 'node' && selection?.item?.id === node.id;
     const isHovered = hoveredNode?.id === node.id;
     
-    // Debug logging for first node to check data structure
-    if (safeGraph.nodes.length > 0 && node === safeGraph.nodes[0]) {
-      console.log('Node data structure:', node);
+    // Determine challenge status for current user
+    const pendingChallenges = (node.challenges || []).filter(c => c.status === 'pending');
+    const isChallenger = pendingChallenges.some(c => c.challenger?._id === currentUserId);
+    const isResponder = pendingChallenges.some(c => c.responder?._id === currentUserId);
+    const hasPendingChallenge = pendingChallenges.length > 0;
+    
+    // Debug logging for first node to check data structure (commented out to reduce spam)
+    // if (safeGraph.nodes.length > 0 && node === safeGraph.nodes[0]) {
+    //   console.log('Node data structure:', node);
+    //   console.log('Current user ID:', currentUserId);
+    //   console.log('Pending challenges:', pendingChallenges);
+    // }
+    
+    // Draw node shadow for selection/hover/challenge
+    if (isSelected || isHovered || hasPendingChallenge) {
+      ctx.shadowBlur = 15;
+      if (isSelected) {
+        ctx.shadowColor = '#6366f1';
+      } else if (isHovered) {
+        ctx.shadowColor = '#f59e0b';
+      } else if (isChallenger) {
+        ctx.shadowColor = '#eab308'; // Yellow for challenger
+      } else if (isResponder) {
+        ctx.shadowColor = '#ef4444'; // Red for responder
+      }
     }
     
-    // Draw node shadow for selection/hover
-    if (isSelected || isHovered) {
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = isSelected ? '#6366f1' : '#f59e0b';
+    // Determine node color - different colors for challenger vs responder
+    let nodeColor = '#8b5cf6'; // Default purple
+    if (hasPendingChallenge) {
+      if (isChallenger) {
+        nodeColor = '#eab308'; // Yellow for challenger (you created this challenge)
+      } else if (isResponder) {
+        nodeColor = '#ef4444'; // Red for responder (you need to respond)
+      }
+    } else if (isSelected) {
+      nodeColor = '#6366f1'; // Blue for selected  
+    } else if (isHovered) {
+      nodeColor = '#f59e0b'; // Orange for hovered
+    } else if (node.color) {
+      nodeColor = node.color; // Custom color if set
     }
     
     // Draw main node
     ctx.beginPath();
-    ctx.arc(node.x, node.y, size + (isSelected ? 2 : 0) + (isHovered ? 1 : 0), 0, 2 * Math.PI);
-    ctx.fillStyle = isSelected ? '#6366f1' : (isHovered ? '#f59e0b' : node.color || '#8b5cf6');
+    ctx.arc(node.x, node.y, size + (isSelected ? 2 : 0) + (isHovered ? 1 : 0) + (hasPendingChallenge ? 1 : 0), 0, 2 * Math.PI);
+    ctx.fillStyle = nodeColor;
     ctx.fill();
     
-    // Draw border
-    ctx.strokeStyle = isSelected ? '#a5b4fc' : (isHovered ? '#fbbf24' : 'rgba(255,255,255,0.3)');
-    ctx.lineWidth = isSelected ? 2 : (isHovered ? 1.5 : 1);
+    // Draw border with challenge indication
+    let borderColor = 'rgba(255,255,255,0.3)';
+    let borderWidth = 1;
+    
+    if (isSelected) {
+      borderColor = '#a5b4fc';
+      borderWidth = 2;
+    } else if (isHovered) {
+      borderColor = '#fbbf24';
+      borderWidth = 1.5;
+    } else if (hasPendingChallenge) {
+      if (isChallenger) {
+        borderColor = '#fde047'; // Yellow border for challenger
+      } else if (isResponder) {
+        borderColor = '#fca5a5'; // Red border for responder
+      }
+      borderWidth = 2;
+    }
+    
+    ctx.strokeStyle = borderColor;
+    ctx.lineWidth = borderWidth;
     ctx.stroke();
     
     // Reset shadow
@@ -111,9 +161,30 @@ export default function GraphView({ graphData, dimensions, selection, setSelecti
     const isSelected = selection?.type === 'edge' && selection?.item?.id === link.id;
     const isHovered = hoveredLink?.id === link.id;
     
-    // Set line style - more conservative than before
-    ctx.lineWidth = Math.max(1, (isSelected ? 2 : (isHovered ? 1.5 : 1)) / globalScale);
-    ctx.strokeStyle = isSelected ? '#6366f1' : (isHovered ? '#f59e0b' : 'rgba(139, 92, 246, 0.4)');
+    // Determine challenge status for current user
+    const pendingChallenges = (link.challenges || []).filter(c => c.status === 'pending');
+    const isChallenger = pendingChallenges.some(c => c.challenger?._id === currentUserId);
+    const isResponder = pendingChallenges.some(c => c.responder?._id === currentUserId);
+    const hasPendingChallenge = pendingChallenges.length > 0;
+    
+    // Determine line color - same colors as nodes, default purple like nodes
+    let lineColor = '#8b5cf6'; // Default purple (same as nodes)
+    if (hasPendingChallenge) {
+      if (isChallenger) {
+        lineColor = '#eab308'; // Yellow for challenger
+      } else if (isResponder) {
+        lineColor = '#ef4444'; // Red for responder
+      }
+    } else if (isSelected) {
+      lineColor = '#6366f1'; // Blue for selected
+    } else if (isHovered) {
+      lineColor = '#f59e0b'; // Orange for hovered
+    }
+    
+    // Set line style - thicker for challenged edges
+    const baseWidth = hasPendingChallenge ? 2 : 1;
+    ctx.lineWidth = Math.max(1, (isSelected ? 2 : (isHovered ? 1.5 : baseWidth)) / globalScale);
+    ctx.strokeStyle = lineColor;
     
     // Skip shadows to avoid performance issues
     
@@ -300,8 +371,28 @@ export default function GraphView({ graphData, dimensions, selection, setSelecti
         d3AlphaDecay={0.05}
         d3VelocityDecay={0.4}
         enableNodeDrag={true}
-        onNodeClick={node => setSelection({ type: 'node', item: node })}
-        onLinkClick={link => setSelection({ type: 'edge', item: link })}
+        onNodeClick={node => {
+          // Check if node has pending challenges and if current user can respond
+          const pendingChallenges = (node.challenges || []).filter(c => c.status === 'pending');
+          const isResponder = pendingChallenges.some(c => c.responder?._id === currentUserId);
+          
+          if (pendingChallenges.length > 0 && isResponder && onChallengeClick) {
+            onChallengeClick(pendingChallenges, 'node', node.id);
+          } else {
+            setSelection({ type: 'node', item: node });
+          }
+        }}
+        onLinkClick={link => {
+          // Check if edge has pending challenges and if current user can respond
+          const pendingChallenges = (link.challenges || []).filter(c => c.status === 'pending');
+          const isResponder = pendingChallenges.some(c => c.responder?._id === currentUserId);
+          
+          if (pendingChallenges.length > 0 && isResponder && onChallengeClick) {
+            onChallengeClick(pendingChallenges, 'edge', link.id);
+          } else {
+            setSelection({ type: 'edge', item: link });
+          }
+        }}
         onNodeHover={node => setHoveredNode(node)}
         onLinkHover={link => setHoveredLink(link)}
         onNodeDragStart={node => {

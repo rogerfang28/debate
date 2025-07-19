@@ -36,7 +36,7 @@ export default function ToolBar({
                 🔗 Add Connected Node
               </button>
               <button 
-                onClick={() => onChallenge(selection.item)} 
+                onClick={() => onChallenge()} 
                 className="toolbar-button btn-warning"
               >
                 ⚡ Challenge Node
@@ -58,7 +58,7 @@ export default function ToolBar({
             </h3>
             <div className="toolbar-buttons">
               <button 
-                onClick={() => onChallenge(selection.item)} 
+                onClick={() => onChallenge()} 
                 className="toolbar-button btn-warning"
               >
                 ⚡ Challenge Edge
