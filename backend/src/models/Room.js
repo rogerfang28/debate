@@ -69,7 +69,7 @@ roomSchema.index({ owner: 1 }); // Find rooms by owner
 roomSchema.index({ isPublic: 1, createdAt: -1 }); // Find public rooms, newest first
 roomSchema.index({ 'members.user': 1 }); // Find rooms by member
 roomSchema.index({ createdAt: -1 }); // Sort by creation date
-roomSchema.index({ inviteCode: 1 }, { sparse: true }); // Invite code lookup
+// Note: inviteCode index is automatically created by the unique: true option in schema
 
 // Update the updatedAt field before saving
 roomSchema.pre('save', function(next) {
