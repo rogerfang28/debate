@@ -20,12 +20,18 @@ await connectDB();
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
 
 const allowedOrigins = [
   'http://localhost:5173',
   'https://debate-frontend.onrender.com'
 ];
+
+const io = new Server(server, { 
+  cors: { 
+    origin: allowedOrigins,
+    credentials: true
+  } 
+});
 
 app.use(
   cors({

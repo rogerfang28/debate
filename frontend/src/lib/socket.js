@@ -1,20 +1,16 @@
 // Status: working I guess socket is just that for now
 import { io } from 'socket.io-client';
 
-const URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
 // Create socket connection with authentication
 function createSocket() {
   const token = localStorage.getItem('token');
   console.log('🔌 Creating socket connection with token:', token ? 'Present' : 'Missing');
-  console.log('🌐 Socket URL:', URL);
-  return io(URL, {
+  console.log('🌐 Socket URL:', import.meta.env.VITE_API_URL);
+  return io(import.meta.env.VITE_API_URL, {
     auth: {
       token: token
     },
-    withCredentials: true,
-    autoConnect: true,
-    forceNew: true // Force new connection
+    withCredentials: true
   });
 }
 
@@ -47,10 +43,9 @@ export function reconnectSocket() {
   console.log('🔄 Reconnecting with token:', token ? 'Present' : 'Missing');
   
   // Create completely new socket instance
-  const newSocket = io(URL, {
+  const newSocket = io(import.meta.env.VITE_API_URL, {
     auth: { token },
-    autoConnect: true,
-    forceNew: true
+    withCredentials: true
   });
   
   // Copy the reference to maintain the same socket object

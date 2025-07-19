@@ -46,7 +46,7 @@ export default function ProfilePage() {
       console.log('🔐 Making profile update request with token:', token ? 'present' : 'missing');
       console.log('📝 Username to update:', username.trim());
       
-      const response = await fetch(`${API_BASE}/api/auth/profile`, {
+      const response = await fetch(`${API_BASE}/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

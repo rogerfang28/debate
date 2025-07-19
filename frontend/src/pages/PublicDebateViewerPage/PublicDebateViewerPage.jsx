@@ -23,7 +23,7 @@ export default function PublicDebateViewerPage() {
   const fetchPublicRoomData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE}/api/rooms/public/${roomId}/graph`);
+      const response = await fetch(`${API_BASE}/rooms/public/${roomId}/graph`);
       if (response.ok) {
         const data = await response.json();
         console.log('🔍 Raw data from API:', data);

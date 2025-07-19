@@ -26,7 +26,7 @@ export default function PublicDebatesPage() {
         search: searchQuery
       });
 
-      const response = await fetch(`${API_BASE}/api/rooms/public?${queryParams}`);
+      const response = await fetch(`${API_BASE}/rooms/public?${queryParams}`);
       if (response.ok) {
         const data = await response.json();
         setRooms(data.rooms);
