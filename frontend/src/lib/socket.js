@@ -1,4 +1,3 @@
-// Status: working I guess socket is just that for now
 import { io } from 'socket.io-client';
 
 // Create socket connection with authentication
@@ -6,6 +5,7 @@ function createSocket() {
   const token = localStorage.getItem('token');
   console.log('🔌 Creating socket connection with token:', token ? 'Present' : 'Missing');
   console.log('🌐 Socket URL:', import.meta.env.VITE_API_URL);
+  
   return io(import.meta.env.VITE_API_URL, {
     auth: {
       token: token
@@ -19,7 +19,6 @@ export const socket = createSocket();
 // Add connection event listeners for debugging
 socket.on('connect', () => {
   console.log('✅ Socket connected:', socket.id);
-  console.log('🔐 Socket auth:', socket.auth);
 });
 
 socket.on('disconnect', (reason) => {
@@ -28,12 +27,6 @@ socket.on('disconnect', (reason) => {
 
 socket.on('connect_error', (error) => {
   console.error('🚫 Socket connection error:', error.message);
-  
-  // Handle authentication errors
-  if (error.message && (error.message.includes('Authentication') || error.message.includes('token'))) {
-    console.log('🔒 Socket authentication failed, clearing token...');
-    localStorage.removeItem('token');
-  }
 });
 
 // Debug all incoming events
@@ -46,42 +39,45 @@ export function reconnectSocket() {
   console.log('🔄 Reconnecting socket...');
   socket.disconnect();
   const token = localStorage.getItem('token');
-  console.log('🔄 Reconnecting with token:', token ? 'Present' : 'Missing');
   
-  // Create completely new socket instance
   const newSocket = io(import.meta.env.VITE_API_URL, {
     auth: { token },
     withCredentials: true
   });
   
-  // Copy the reference to maintain the same socket object
   Object.setPrototypeOf(socket, Object.getPrototypeOf(newSocket));
   Object.assign(socket, newSocket);
-  
-  // Re-add debug listeners
-  socket.on('connect', () => {
-    console.log('✅ Socket reconnected:', socket.id);
-  });
-  
-  socket.on('connect_error', (error) => {
-    console.error('🚫 Socket reconnection error:', error.message);
-  });
-  
-  socket.onAny((eventName, ...args) => {
-    console.log('📥 Socket received event:', eventName, args);
-  });
 }
 
 // Room management functions
 export function joinRoom(roomId) {
+  console.log('🚪 Attempting to join room:', roomId);
+  console.log('🔌 Socket connected:', socket.connected);
+  console.log('🔌 Socket ID:', socket.id);
+  
+  // Always try to emit
   socket.emit('join-room', roomId);
+  
+  // If not connected, try to connect and emit again
+  if (!socket.connected) {
+    console.log('🔄 Not connected, trying to connect and emit again...');
+    socket.connect();
+    
+    setTimeout(() => {
+      if (socket.connected) {
+        console.log('✅ Now connected, emitting join-room again');
+        socket.emit('join-room', roomId);
+      }
+    }, 1000);
+  }
+  
+  return true;
 }
 
 export function leaveRoom() {
   socket.emit('leave-room');
 }
 
-// Enhanced graph operations with room context
 export function addNodeToRoom(nodeData) {
   socket.emit('add-node', nodeData);
 }

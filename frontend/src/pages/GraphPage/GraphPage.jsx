@@ -109,8 +109,33 @@ export default function GraphPage() {
       const response = await roomAPI.getRoom(roomId);
       setRoom(response.room);
       
-      // Join the room via socket
-      joinRoom(roomId);
+      // Simple approach: If socket not connected, force reconnect and try again
+      console.log('🔍 Checking socket connection before joining room...');
+      console.log('🔌 Socket connected:', socket.connected);
+      
+      if (!socket.connected) {
+        console.log('⚠️ Socket not connected, forcing reconnection...');
+        
+        // Disconnect and reconnect
+        socket.disconnect();
+        socket.connect();
+        
+        // Wait a short time for connection
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Check again
+        if (!socket.connected) {
+          console.log('❌ Socket still not connected after reconnect attempt');
+          // Try to join anyway - sometimes it works
+          joinRoom(roomId);
+        } else {
+          console.log('✅ Socket reconnected successfully');
+          joinRoom(roomId);
+        }
+      } else {
+        console.log('✅ Socket already connected');
+        joinRoom(roomId);
+      }
       
       console.log(`Joined room: ${response.room.name}`);
     } catch (err) {

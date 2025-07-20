@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCurrentUser } from '../../lib/auth';
+import { getCurrentUser, logout, setAuthToken } from '../../lib/auth';
 import { API_BASE } from '../../lib/config';
 
 export default function ProfilePage() {
@@ -69,8 +69,8 @@ export default function ProfilePage() {
         });
         setIsEditing(false);
         
-        // Update the token with new user data
-        localStorage.setItem('token', updatedUser.token);
+        // Update the token with new user data and reconnect socket
+        setAuthToken(updatedUser.token);
       } else {
         const errorData = await response.json();
         console.error('❌ Profile update failed:', errorData);

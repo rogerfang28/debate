@@ -79,18 +79,28 @@ export function registerSocketHandlers(io) {
 
     // Room management
     socket.on('join-room', async (roomId) => {
+      console.log(`🚪 User ${socket.userEmail} attempting to join room: ${roomId}`);
+      console.log(`🔐 Socket authenticated: userId=${socket.userId}, email=${socket.userEmail}`);
+      
       try {
         // Verify user is member of the room
         const room = await RoomModel.findById(roomId);
         if (!room) {
+          console.log(`❌ Room not found: ${roomId}`);
           socket.emit('error', { message: 'Room not found' });
           return;
         }
 
+        console.log(`🏠 Room found: ${room.name}, checking membership for user ${socket.userId}`);
+        console.log(`👥 Room members:`, room.members.map(m => ({ userId: m.user, role: m.role })));
+
         if (!room.hasMember(socket.userId)) {
+          console.log(`❌ Access denied - user ${socket.userId} is not a member of room ${roomId}`);
           socket.emit('error', { message: 'Access denied - not a room member' });
           return;
         }
+
+        console.log(`✅ User ${socket.userId} is a member, joining room`);
 
         // Join the room
         socket.join(roomId);
@@ -101,11 +111,15 @@ export function registerSocketHandlers(io) {
         
         // Get current online users in this room
         const roomSockets = await io.in(roomId).fetchSockets();
+        console.log(`📊 Found ${roomSockets.length} sockets in room ${roomId}`);
+        
         const onlineUsers = roomSockets.map(s => ({
           userId: s.userId,
           userEmail: s.userEmail,
           socketId: s.id
         }));
+        
+        console.log(`👤 Online users in room:`, onlineUsers);
 
         // Load recent chat messages for this room (last 50 messages)
         const recentMessages = await RoomMessageModel.find({ room: roomId })
@@ -113,6 +127,8 @@ export function registerSocketHandlers(io) {
           .sort({ createdAt: -1 })
           .limit(50)
           .lean();
+
+        console.log(`💬 Found ${recentMessages.length} recent messages for room ${roomId}`);
 
         // Reverse to show oldest first
         const messagesForClient = recentMessages.reverse().map(msg => ({
@@ -125,6 +141,7 @@ export function registerSocketHandlers(io) {
         }));
         
         // Notify others in the room about new user
+        console.log(`📢 Notifying other users in room about new member: ${socket.userEmail}`);
         socket.to(roomId).emit('user-joined-room', {
           userId: socket.userId,
           userEmail: socket.userEmail,
@@ -132,12 +149,19 @@ export function registerSocketHandlers(io) {
         });
         
         // Send current online users and chat history to the joining user
-        socket.emit('joined-room', { 
+        const joinedRoomData = { 
           roomId, 
           roomName: room.name,
           onlineUsers: onlineUsers,
           messages: messagesForClient
+        };
+        
+        console.log(`📤 Sending joined-room event to ${socket.userEmail}:`, {
+          ...joinedRoomData,
+          messages: `${messagesForClient.length} messages`
         });
+        
+        socket.emit('joined-room', joinedRoomData);
       } catch (error) {
         console.error('❌ Join room error:', error);
         socket.emit('error', { message: 'Failed to join room' });
