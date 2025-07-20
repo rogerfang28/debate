@@ -26,6 +26,16 @@ export function getCurrentUser() {
   }
 }
 
+// Set token and reconnect socket
+export function setAuthToken(token) {
+  localStorage.setItem('token', token);
+  
+  // Reconnect socket with new token
+  import('./socket.js').then(({ reconnectSocket }) => {
+    reconnectSocket();
+  });
+}
+
 // Check if token is expired
 export function isTokenExpired() {
   const user = getCurrentUser();
