@@ -9,6 +9,7 @@ import { handleChallenge } from '../functions/socketFunctions/addChallenge.js';
 import { handleChallengeResponse } from '../functions/socketFunctions/respondChallenge.js';
 import jwt from 'jsonwebtoken';
 import { RoomModel } from '../models/Room.js';
+import { RoomMessageModel } from '../models/RoomMessage.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -98,14 +99,45 @@ export function registerSocketHandlers(io) {
         
         console.log(`👥 User ${socket.userEmail} joined room: ${room.name} (${roomId})`);
         
-        // Notify others in the room
+        // Get current online users in this room
+        const roomSockets = await io.in(roomId).fetchSockets();
+        const onlineUsers = roomSockets.map(s => ({
+          userId: s.userId,
+          userEmail: s.userEmail,
+          socketId: s.id
+        }));
+
+        // Load recent chat messages for this room (last 50 messages)
+        const recentMessages = await RoomMessageModel.find({ room: roomId })
+          .populate('sender', 'username email')
+          .sort({ createdAt: -1 })
+          .limit(50)
+          .lean();
+
+        // Reverse to show oldest first
+        const messagesForClient = recentMessages.reverse().map(msg => ({
+          roomId: roomId,
+          userId: msg.sender._id,
+          username: msg.sender.username || msg.sender.email?.split('@')[0] || 'Anonymous',
+          message: msg.content,
+          timestamp: msg.createdAt.toISOString(),
+          messageId: msg._id
+        }));
+        
+        // Notify others in the room about new user
         socket.to(roomId).emit('user-joined-room', {
           userId: socket.userId,
           userEmail: socket.userEmail,
           roomId
         });
         
-        socket.emit('joined-room', { roomId, roomName: room.name });
+        // Send current online users and chat history to the joining user
+        socket.emit('joined-room', { 
+          roomId, 
+          roomName: room.name,
+          onlineUsers: onlineUsers,
+          messages: messagesForClient
+        });
       } catch (error) {
         console.error('❌ Join room error:', error);
         socket.emit('error', { message: 'Failed to join room' });
@@ -186,6 +218,47 @@ export function registerSocketHandlers(io) {
         return;
       }
       handleChallengeResponse(io, socket, { ...payload, room: socket.currentRoom });
+    });
+
+    // Room chat messages
+    socket.on('room-message', async payload => {
+      if (!socket.currentRoom) {
+        socket.emit('error', { message: 'Must join a room first' });
+        return;
+      }
+      
+      console.log('💬 Room message from:', socket.userEmail, 'message:', payload.message);
+      
+      try {
+        // Save message to database
+        const newMessage = new RoomMessageModel({
+          room: socket.currentRoom,
+          sender: socket.userId,
+          content: payload.message,
+          messageType: 'text'
+        });
+
+        const savedMessage = await newMessage.save();
+        
+        // Populate sender info
+        await savedMessage.populate('sender', 'username email');
+        
+        const messageData = {
+          roomId: socket.currentRoom,
+          userId: socket.userId,
+          username: savedMessage.sender.username || savedMessage.sender.email?.split('@')[0] || 'Anonymous',
+          message: payload.message,
+          timestamp: savedMessage.createdAt.toISOString(),
+          messageId: savedMessage._id
+        };
+
+        // Broadcast message to all users in the room (including sender)
+        io.to(socket.currentRoom).emit('room-message', messageData);
+        
+      } catch (error) {
+        console.error('❌ Error saving room message:', error);
+        socket.emit('error', { message: 'Failed to send message' });
+      }
     });
 
     socket.on('disconnect', (reason) => {

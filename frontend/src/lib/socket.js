@@ -28,6 +28,12 @@ socket.on('disconnect', (reason) => {
 
 socket.on('connect_error', (error) => {
   console.error('🚫 Socket connection error:', error.message);
+  
+  // Handle authentication errors
+  if (error.message && (error.message.includes('Authentication') || error.message.includes('token'))) {
+    console.log('🔒 Socket authentication failed, clearing token...');
+    localStorage.removeItem('token');
+  }
 });
 
 // Debug all incoming events

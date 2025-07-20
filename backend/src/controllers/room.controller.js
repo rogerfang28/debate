@@ -59,8 +59,8 @@ export async function getRooms(req, res) {
     const rooms = await RoomModel.find({
       'members.user': userId
     })
-    .populate('owner', 'email')
-    .populate('members.user', 'email')
+    .populate('owner', 'email username')
+    .populate('members.user', 'email username')
     .sort({ updatedAt: -1 });
 
     // Add user's role and member count to each room
@@ -93,8 +93,8 @@ export async function getRoom(req, res) {
     }
 
     const room = await RoomModel.findById(roomId)
-      .populate('owner', 'email')
-      .populate('members.user', 'email');
+      .populate('owner', 'email username')
+      .populate('members.user', 'email username');
 
     if (!room) {
       return res.status(404).json({ message: 'Room not found' });

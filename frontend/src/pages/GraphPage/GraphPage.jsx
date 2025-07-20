@@ -8,6 +8,7 @@ import GraphView from '../../components/GraphView';
 import ToolBar from '../../components/ToolBar';
 import EntityForm from '../../components/EntityForm';
 import ChallengeResponseModal from '../../components/ChallengeResponseModal';
+import RoomSidebar from '../../components/RoomSidebar';
 
 import {
   handleAddNode,
@@ -28,6 +29,7 @@ export default function GraphPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [draggedNodeId, setDraggedNodeId] = useState(null);
+  const [isMembersPanelOpen, setIsMembersPanelOpen] = useState(false);
   const [challengeModal, setChallengeModal] = useState({
     isOpen: false,
     challenges: [],
@@ -293,6 +295,13 @@ export default function GraphPage() {
           roomId={roomId}
         />
       )}
+
+      {/* Room Sidebar */}
+      <RoomSidebar
+        room={room}
+        isOpen={isMembersPanelOpen}
+        onToggle={() => setIsMembersPanelOpen(!isMembersPanelOpen)}
+      />
     </>
   );
 }

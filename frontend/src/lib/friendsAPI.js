@@ -19,6 +19,12 @@ const handleResponse = async (response) => {
   const data = await response.json();
   
   if (!response.ok) {
+    // If token is invalid/expired, clear it and let the app handle the state change
+    if (response.status === 403 || response.status === 401) {
+      console.log('Authentication failed, clearing token...');
+      localStorage.removeItem('token');
+      throw new Error('Authentication failed');
+    }
     throw new Error(data.message || `HTTP error! status: ${response.status}`);
   }
   

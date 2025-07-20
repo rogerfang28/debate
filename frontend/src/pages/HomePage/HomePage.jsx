@@ -10,6 +10,7 @@ import { ChatFloat } from '../../components/ChatFloat';
 import { roomAPI } from '../../lib/roomAPI';
 import { friendsAPI } from '../../lib/friendsAPI';
 import { socket, reconnectSocket } from '../../lib/socket';
+import { checkAuthAndLogout } from '../../lib/auth';
 
 export default function HomePage() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -31,6 +32,27 @@ export default function HomePage() {
       loadFriendNotifications();
       setupSocketListeners();
     }
+  }, [token]);
+
+  // Listen for token changes (logout from other parts of the app)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newToken = localStorage.getItem('token');
+      if (newToken !== token) {
+        setToken(newToken);
+      }
+    };
+
+    // Listen for storage events (from other tabs) and manual checks
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically in case localStorage was changed in same tab
+    const interval = setInterval(handleStorageChange, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
   }, [token]);
 
   const setupSocketListeners = () => {

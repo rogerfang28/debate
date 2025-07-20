@@ -34,3 +34,19 @@ export function isTokenExpired() {
   // exp is in seconds, Date.now() is in milliseconds
   return Date.now() >= user.exp * 1000;
 }
+
+// Logout function to clear token
+export function logout() {
+  localStorage.removeItem('token');
+  // Don't force redirect - let React handle the state change
+}
+
+// Check authentication status and logout if expired
+export function checkAuthAndLogout() {
+  if (isTokenExpired()) {
+    console.log('Token expired, logging out...');
+    logout();
+    return false;
+  }
+  return true;
+}
