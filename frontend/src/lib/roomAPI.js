@@ -1,25 +1,3 @@
-/*
- * Summary of file usage:
- * HTTP API client for room-related operations providing CRUD functionality for debate rooms.
- * Handles authentication headers, request formatting, and response processing for room management.
- * 
- * Inputs of this file:
- * - Room creation and modification data from UI components
- * - Authentication tokens from localStorage
- * - Room filtering and search parameters
- * 
- * Outputs of this file:
- * - HTTP requests to backend room endpoints
- * - Formatted room data responses for UI consumption
- * - Error handling and status code management
- * - Authentication headers for secured requests
- * 
- * 3 things that can be improved:
- * 1. Add request/response interceptors for consistent error handling
- * 2. Implement request caching and optimistic updates for better UX
- * 3. Add retry logic with exponential backoff for failed requests
- */
-
 import { API_BASE } from './config';
 
 // Get auth token from localStorage
@@ -158,58 +136,6 @@ export const roomAPI = {
   // Get room's graph data
   async getRoomGraph(roomId) {
     const response = await fetch(`${API_BASE}/rooms/${roomId}/graph`, {
-      headers: createHeaders()
-    });
-    return handleResponse(response);
-  },
-
-  // Export room data as JSON
-  async exportRoomToJson(roomId) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/export`, {
-      headers: createHeaders()
-    });
-    return handleResponse(response);
-  },
-
-  // Import debate structure from JSON
-  async importRoomFromJson(roomId, debateData, clearExisting = true) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/import`, {
-      method: 'POST',
-      headers: createHeaders(),
-      body: JSON.stringify(debateData)
-    });
-    return handleResponse(response);
-  },
-
-  // Undo last JSON import
-  async undoLastImport(roomId) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/undo-import`, {
-      method: 'POST',
-      headers: createHeaders()
-    });
-    return handleResponse(response);
-  },
-
-  // Turn-based mode operations
-  async startTurnBasedMode(roomId) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/turn/start`, {
-      method: 'POST',
-      headers: createHeaders()
-    });
-    return handleResponse(response);
-  },
-
-  async stopTurnBasedMode(roomId) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/turn/stop`, {
-      method: 'POST',
-      headers: createHeaders()
-    });
-    return handleResponse(response);
-  },
-
-  async endTurn(roomId) {
-    const response = await fetch(`${API_BASE}/rooms/${roomId}/turn/end`, {
-      method: 'POST',
       headers: createHeaders()
     });
     return handleResponse(response);

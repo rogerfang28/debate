@@ -1,9 +1,9 @@
 import express from 'express';
-import {
-  createRoom,
-  getRooms,
-  getRoom,
-  updateRoom,
+import { 
+  createRoom, 
+  getRooms, 
+  getRoom, 
+  updateRoom, 
   deleteRoom,
   joinRoomByCode,
   inviteToRoom,
@@ -14,13 +14,7 @@ import {
   getRoomGraph,
   getRoomMembers,
   getPublicRooms,
-  getPublicRoomGraph,
-  exportRoomToJson,
-  importRoomFromJson,
-  undoLastImport,
-  startTurnBasedMode,
-  stopTurnBasedMode,
-  endTurn
+  getPublicRoomGraph
 } from '../controllers/room.controller.js';
 import { authenticateToken } from '../middleware/auth.middleware.js';
 
@@ -51,16 +45,6 @@ router.post('/:roomId/leave', leaveRoom);         // Leave room
 router.post('/:roomId/invite-code', generateInviteCode); // Generate new invite code
 router.get('/:roomId/graph', getRoomGraph);      // Get room's graph data
 router.get('/:roomId/members', getRoomMembers);  // Get room members for challenges
-
-// JSON Import/Export operations (admin/owner only)
-router.get('/:roomId/export', exportRoomToJson);  // Export room data as JSON
-router.post('/:roomId/import', importRoomFromJson); // Import debate structure from JSON
-router.post('/:roomId/undo-import', undoLastImport); // Undo last import operation
-
-// Turn-based mode operations (admin/owner only)
-router.post('/:roomId/turn/start', startTurnBasedMode); // Start turn-based mode
-router.post('/:roomId/turn/stop', stopTurnBasedMode);   // Stop turn-based mode
-router.post('/:roomId/turn/end', endTurn);              // End current turn
 
 // Test endpoint to verify routes are working
 router.get('/:roomId/test', (req, res) => {
