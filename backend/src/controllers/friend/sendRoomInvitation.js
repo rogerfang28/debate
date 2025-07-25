@@ -1,3 +1,9 @@
+// * -------------------------------------------------------------
+// * Friend Controller: sendRoomInvitation.js
+// ? Handles sending a debate room invitation to a friend via chat message.
+// ! Only allows inviting friends to rooms where user is owner/admin.
+// TODO: Add expiration for invite codes and notification to invitee.
+// * -------------------------------------------------------------
 import { FriendModel } from '../../models/Friend.js';
 import { RoomModel } from '../../models/Room.js';
 import { MessageModel } from '../../models/Message.js';
@@ -11,10 +17,11 @@ import { MessageModel } from '../../models/Message.js';
  */
 export async function sendRoomInvitation(req, res) {
   try {
+    // ? Get friendId, roomId, and current user
     const { friendId, roomId } = req.params;
     const currentUserId = req.user.userId;
 
-    // Verify friendship
+    // * Verify friendship
     const friendship = await FriendModel.findOne({
       $or: [
         { requester: currentUserId, recipient: friendId },
@@ -27,7 +34,7 @@ export async function sendRoomInvitation(req, res) {
       return res.status(403).json({ message: 'You can only invite friends' });
     }
 
-    // Verify room access and get room details
+    // * Verify room access and get room details
     const room = await RoomModel.findOne({
       _id: roomId,
       'members.user': currentUserId,
@@ -38,14 +45,14 @@ export async function sendRoomInvitation(req, res) {
       return res.status(403).json({ message: 'You can only invite to rooms you own or admin' });
     }
 
-    // Generate invite code if needed
+    // * Generate invite code if needed
     if (!room.inviteCode) {
       room.inviteCode = Math.random().toString(36).substring(2, 15) + 
                        Math.random().toString(36).substring(2, 15);
       await room.save();
     }
 
-    // Create invitation message
+    // * Create invitation message
     const message = new MessageModel({
       sender: currentUserId,
       recipient: friendId,
@@ -61,8 +68,10 @@ export async function sendRoomInvitation(req, res) {
     await message.save();
     await message.populate('sender', 'username email');
 
+    // * Respond with invitation message
     res.status(201).json(message);
   } catch (error) {
+    // ! Log and handle unexpected errors
     console.error('Send room invitation error:', error);
     res.status(500).json({ message: 'Failed to send room invitation' });
   }

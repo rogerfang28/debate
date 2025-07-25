@@ -1,3 +1,9 @@
+// * -------------------------------------------------------------
+// * Friend Controller: getFriends.js
+// ? Retrieves the user's friends and pending requests (sent/received).
+// ! Populates user info for each friend/request.
+// TODO: Add pagination for large friend lists.
+// * -------------------------------------------------------------
 import { FriendModel } from '../../models/Friend.js';
 
 /**
@@ -9,9 +15,10 @@ import { FriendModel } from '../../models/Friend.js';
  */
 export async function getFriends(req, res) {
   try {
+    // ? Get current user
     const currentUserId = req.user.userId;
 
-    // Get accepted friends
+    // * Get accepted friends
     const acceptedFriends = await FriendModel.find({
       $or: [
         { requester: currentUserId, status: 'accepted' },
@@ -19,15 +26,16 @@ export async function getFriends(req, res) {
       ]
     }).populate('requester recipient', 'username email');
 
-    // Get pending requests (both sent and received)
+    // * Get pending requests (both sent and received)
     const pendingRequests = await FriendModel.find({
       $or: [
         { requester: currentUserId, status: 'pending' },
         { recipient: currentUserId, status: 'pending' }
       ]
     }).populate('requester recipient', 'username email');
+    // ! Only include requests with status 'pending', exclude declined/accepted
 
-    // Format friends list
+    // * Format friends list
     const friends = acceptedFriends.map(friendship => {
       const friend = friendship.requester._id.toString() === currentUserId ? 
         friendship.recipient : friendship.requester;
@@ -39,7 +47,7 @@ export async function getFriends(req, res) {
       };
     });
 
-    // Format pending requests
+    // * Format pending requests
     const sent = pendingRequests
       .filter(req => req.requester._id.toString() === currentUserId)
       .map(req => ({
@@ -62,11 +70,13 @@ export async function getFriends(req, res) {
         }
       }));
 
+    // * Respond with friends and pending requests
     res.json({
       friends,
       pending: { sent, received }
     });
   } catch (error) {
+    // ! Log and handle unexpected errors
     console.error('Get friends error:', error);
     res.status(500).json({ message: 'Failed to get friends list' });
   }

@@ -1,3 +1,9 @@
+// * -------------------------------------------------------------
+// * Friend Controller: searchUsers.js
+// ? Handles searching for users to add as friends, showing their friendship status.
+// ! Excludes current user and limits results for performance.
+// TODO: Add pagination or fuzzy search for large user bases.
+// * -------------------------------------------------------------
 import { FriendModel } from '../../models/Friend.js';
 import { UserModel } from '../../models/User.js';
 
@@ -10,16 +16,18 @@ import { UserModel } from '../../models/User.js';
  */
 export async function searchUsers(req, res) {
   try {
+    // ? Get search query and current user
     const { query } = req.query;
     const currentUserId = req.user.userId;
 
+    // ! Require at least 2 characters for search
     if (!query || query.length < 2) {
       return res.status(400).json({ 
         message: 'Search query must be at least 2 characters' 
       });
     }
 
-    // Find users by username or email (case-insensitive)
+    // * Find users by username or email (case-insensitive)
     const users = await UserModel.find({
       _id: { $ne: currentUserId }, // Exclude current user
       $or: [
@@ -28,7 +36,7 @@ export async function searchUsers(req, res) {
       ]
     }).select('username email').limit(10);
 
-    // Get existing friend relationships to show status
+    // * Get existing friend relationships to show status
     const userIds = users.map(user => user._id);
     const friendships = await FriendModel.find({
       $or: [
@@ -37,7 +45,7 @@ export async function searchUsers(req, res) {
       ]
     });
 
-    // Add friendship status to each user
+    // * Add friendship status to each user
     const usersWithStatus = users.map(user => {
       const friendship = friendships.find(f => 
         (f.requester.toString() === currentUserId && f.recipient.toString() === user._id.toString()) ||
@@ -63,8 +71,10 @@ export async function searchUsers(req, res) {
       };
     });
 
+    // * Respond with user list and status
     res.json({ users: usersWithStatus });
   } catch (error) {
+    // ! Log and handle unexpected errors
     console.error('Search users error:', error);
     res.status(500).json({ message: 'Failed to search users' });
   }
