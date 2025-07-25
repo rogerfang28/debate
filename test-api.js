@@ -8,7 +8,7 @@ console.log('Testing API endpoints...');
 try {
   // Test the test endpoint first
   console.log('\n1. Testing test endpoint...');
-  const testResponse = await fetch(`http://localhost:5000/api/rooms/${roomId}/test`, {
+  const testResponse = await fetch(`http://localhost:3000/api/rooms/${roomId}/test`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
   console.log('Test endpoint status:', testResponse.status);
@@ -17,7 +17,7 @@ try {
 
   // Test the members endpoint
   console.log('\n2. Testing members endpoint...');
-  const membersResponse = await fetch(`http://localhost:5000/api/rooms/${roomId}/members`, {
+  const membersResponse = await fetch(`http://localhost:3000/api/rooms/${roomId}/members`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
   console.log('Members endpoint status:', membersResponse.status);
