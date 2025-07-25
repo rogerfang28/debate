@@ -1,3 +1,7 @@
+// ! Room Controller: Create Room
+// * Creates a new room with initial owner and settings.
+// ? Generates invite code for private rooms.
+// TODO: Add validation for duplicate room names if needed.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

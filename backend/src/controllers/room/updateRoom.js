@@ -1,3 +1,7 @@
+// ! Room Controller: Update Room
+// * Updates room details (name, description, settings).
+// ? Only owner/admin can update room.
+// TODO: Add validation for settings changes.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

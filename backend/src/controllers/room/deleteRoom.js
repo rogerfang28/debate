@@ -1,3 +1,7 @@
+// ! Room Controller: Delete Room
+// * Deletes a room and all associated nodes/edges.
+// ? Only the room owner can perform this action.
+// TODO: Add audit logging for deletions if needed.
 import { RoomModel } from '../../models/Room.js';
 import { NodeModel } from '../../models/Node.js';
 import { EdgeModel } from '../../models/Edge.js';

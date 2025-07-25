@@ -1,3 +1,7 @@
+// ! Room Controller: Get Rooms
+// * Fetches all rooms for the authenticated user.
+// ? Includes user role and member count metadata.
+// TODO: Add pagination if room count is large.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

@@ -1,3 +1,7 @@
+// ! Room Controller: Get Room Graph
+// * Fetches nodes, edges, and challenges for a room.
+// ? Only members can access room graph data.
+// TODO: Add caching for large graphs.
 import { RoomModel } from '../../models/Room.js';
 import { NodeModel } from '../../models/Node.js';
 import { EdgeModel } from '../../models/Edge.js';

@@ -1,3 +1,7 @@
+// ! Room Controller: Get Public Room Graph
+// * Fetches graph data for a public room (no auth required).
+// ? Only accessible for public rooms.
+// TODO: Add rate limiting for public graph access.
 import { RoomModel } from '../../models/Room.js';
 import { NodeModel } from '../../models/Node.js';
 import { EdgeModel } from '../../models/Edge.js';

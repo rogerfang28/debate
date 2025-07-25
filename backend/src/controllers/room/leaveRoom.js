@@ -1,3 +1,7 @@
+// ! Room Controller: Leave Room
+// * Allows a member to leave a room.
+// ? Owner cannot leave without transferring ownership.
+// TODO: Add notification to other members on leave.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

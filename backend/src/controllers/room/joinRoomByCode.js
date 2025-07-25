@@ -1,3 +1,7 @@
+// ! Room Controller: Join Room By Code
+// * Allows user to join a room using an invite code.
+// ? Checks membership and room capacity.
+// TODO: Add rate limiting for join attempts.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

@@ -1,3 +1,7 @@
+// ! Room Controller: Get Public Rooms
+// * Fetches public rooms for browsing (no auth required).
+// ? Supports search and pagination.
+// TODO: Add sorting/filtering options for public rooms.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 

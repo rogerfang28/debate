@@ -1,3 +1,7 @@
+// ! Room Controller: Get Room
+// * Fetches details for a specific room.
+// ? Checks membership and returns user role.
+// TODO: Add audit logging for room access if needed.
 import { RoomModel } from '../../models/Room.js';
 import mongoose from 'mongoose';
 
