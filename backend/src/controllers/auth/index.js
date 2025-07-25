@@ -1,4 +1,4 @@
-// Status: Complete
+// * Status: Complete
 // Exports all of the functions from files in the same folder
 
 export { signup } from './signup.js';
