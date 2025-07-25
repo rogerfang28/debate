@@ -15,7 +15,7 @@ import {
   getRoomMembers,
   getPublicRooms,
   getPublicRoomGraph
-} from '../controllers/room.controller.js';
+} from '../controllers/room/index.js';
 import { authenticateToken } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
