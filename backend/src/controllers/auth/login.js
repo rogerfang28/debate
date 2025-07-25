@@ -1,8 +1,8 @@
-//* Status: Complete
+// * Status: Complete
 // Logs in the user given their email and password
 
 /*
-//* Token structure
+*Token structure
 const token = jwt.sign({
       userId,
       email,
