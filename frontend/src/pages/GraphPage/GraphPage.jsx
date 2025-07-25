@@ -5,10 +5,10 @@ import { getCurrentUser } from '../../lib/auth';
 import { roomAPI } from '../../lib/roomAPI';
 
 import GraphView from '../../components/GraphView';
+import RoomSidebar from '../../components/RoomSidebar';
 import ToolBar from '../../components/ToolBar';
 import EntityForm from '../../components/EntityForm';
 import ChallengeResponseModal from '../../components/ChallengeResponseModal';
-import RoomSidebar from '../../components/RoomSidebar';
 
 import {
   handleAddNode,
@@ -29,13 +29,13 @@ export default function GraphPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [draggedNodeId, setDraggedNodeId] = useState(null);
-  const [isMembersPanelOpen, setIsMembersPanelOpen] = useState(false);
   const [challengeModal, setChallengeModal] = useState({
     isOpen: false,
     challenges: [],
     targetType: null,
     targetId: null
   });
+  const [showSidebar, setShowSidebar] = useState(false);
   
   // Check authentication and room access on component mount
   useEffect(() => {
@@ -66,20 +66,49 @@ export default function GraphPage() {
   useEffect(() => {
     const handleChallengeNotification = (notification) => {
       console.log('📢 Challenge response received:', notification);
-      
+
       // Show notification to user
-      const message = notification.action === 'accepted' 
+      const message = notification.action === 'accepted'
         ? `🗑️ Challenge ACCEPTED: ${notification.targetType} was removed by ${notification.responder}\nReason: ${notification.reason}`
         : `✋ Challenge DENIED by ${notification.responder}\nReason: ${notification.reason}`;
-      
+
       // Show alert for now (could be replaced with a better notification system)
       alert(message);
     };
 
+    const handleDebateImportNotification = (importData) => {
+      console.log('📥 Debate structure imported:', importData);
+
+      // Show notification about the import
+      const message = `🚀 Debate Updated!\n\n` +
+        `"${importData.summary.title}" was imported by ${importData.importedBy}\n\n` +
+        `Changes:\n` +
+        `• ${importData.summary.nodes} nodes ${importData.clearExisting ? 'replaced' : 'added'}\n` +
+        `• ${importData.summary.edges} connections ${importData.clearExisting ? 'replaced' : 'added'}\n` +
+        `• Room settings ${importData.summary.roomUpdated ? 'updated' : 'unchanged'}\n\n` +
+        `The debate view has been automatically refreshed.`;
+
+      alert(message);
+    };
+
+    const handleUndoNotification = (undoData) => {
+      console.log('↶ Import undone:', undoData);
+
+      const message = `↶ Import Undone!\n\n` +
+        `${undoData.undoneBy} has restored the debate to its previous state.\n\n` +
+        `The view has been automatically refreshed.`;
+
+      alert(message);
+    };
+
     socket.on('challenge-response-notification', handleChallengeNotification);
+    socket.on('debate-structure-imported', handleDebateImportNotification);
+    socket.on('import-undone', handleUndoNotification);
 
     return () => {
       socket.off('challenge-response-notification', handleChallengeNotification);
+      socket.off('debate-structure-imported', handleDebateImportNotification);
+      socket.off('import-undone', handleUndoNotification);
     };
   }, []);
   
@@ -109,33 +138,8 @@ export default function GraphPage() {
       const response = await roomAPI.getRoom(roomId);
       setRoom(response.room);
       
-      // Simple approach: If socket not connected, force reconnect and try again
-      console.log('🔍 Checking socket connection before joining room...');
-      console.log('🔌 Socket connected:', socket.connected);
-      
-      if (!socket.connected) {
-        console.log('⚠️ Socket not connected, forcing reconnection...');
-        
-        // Disconnect and reconnect
-        socket.disconnect();
-        socket.connect();
-        
-        // Wait a short time for connection
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Check again
-        if (!socket.connected) {
-          console.log('❌ Socket still not connected after reconnect attempt');
-          // Try to join anyway - sometimes it works
-          joinRoom(roomId);
-        } else {
-          console.log('✅ Socket reconnected successfully');
-          joinRoom(roomId);
-        }
-      } else {
-        console.log('✅ Socket already connected');
-        joinRoom(roomId);
-      }
+      // Join the room via socket
+      joinRoom(roomId);
       
       console.log(`Joined room: ${response.room.name}`);
     } catch (err) {
@@ -260,13 +264,20 @@ export default function GraphPage() {
           )}
           
           <div className="nav-actions">
-            <button 
+            <button
+              onClick={() => setShowSidebar(!showSidebar)}
+              className="nav-button btn-secondary"
+              title="Toggle room sidebar"
+            >
+              📋 {showSidebar ? 'Hide' : 'Show'} Info
+            </button>
+            <button
               onClick={() => navigate('/')}
               className="nav-button btn-secondary"
             >
               🏠 Home
             </button>
-            <button 
+            <button
               onClick={handleLogout}
               className="nav-button btn-secondary"
             >
@@ -276,17 +287,37 @@ export default function GraphPage() {
         </div>
       </div>
 
-      <GraphView
-        graphData={data}
-        dimensions={dimensions}
-        selection={selection}
-        setSelection={setSelection}
-        roomId={roomId}
-        draggedNodeId={draggedNodeId}
-        setDraggedNodeId={setDraggedNodeId}
-        onChallengeClick={handleChallengeClick}
-        currentUserId={currentUser}
-      />
+      {/* Main Content Area */}
+      <div className="app-main-content" style={{ display: 'flex', height: 'calc(100vh - 60px)' }}>
+        <GraphView
+          graphData={data}
+          dimensions={dimensions}
+          selection={selection}
+          setSelection={setSelection}
+          roomId={roomId}
+          draggedNodeId={draggedNodeId}
+          setDraggedNodeId={setDraggedNodeId}
+          onChallengeClick={handleChallengeClick}
+          currentUserId={currentUser}
+          style={{ flex: showSidebar ? '1 1 70%' : '1 1 100%' }}
+        />
+
+        {/* Room Sidebar */}
+        {showSidebar && room && (
+          <div className="room-sidebar-container" style={{
+            width: '30%',
+            minWidth: '300px',
+            borderLeft: '1px solid var(--color-gray-600)',
+            backgroundColor: 'var(--color-gray-900)'
+          }}>
+            <RoomSidebar
+              room={room}
+              graphData={data}
+              onClose={() => setShowSidebar(false)}
+            />
+          </div>
+        )}
+      </div>
       
       <ToolBar
         selection={selection}
@@ -320,13 +351,6 @@ export default function GraphPage() {
           roomId={roomId}
         />
       )}
-
-      {/* Room Sidebar */}
-      <RoomSidebar
-        room={room}
-        isOpen={isMembersPanelOpen}
-        onToggle={() => setIsMembersPanelOpen(!isMembersPanelOpen)}
-      />
     </>
   );
 }

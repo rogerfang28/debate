@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt'; // this is the encryption one, hashing and comparing
+import jwt from 'jsonwebtoken'; // jwt is 
 import { UserModel } from '../models/User.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret123';
