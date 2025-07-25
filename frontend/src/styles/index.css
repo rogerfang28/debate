@@ -2,6 +2,8 @@
    DEBATE PLATFORM DESIGN SYSTEM
    ======================================== */
 
+@import './room-management.css';
+
 /* ========================================
    1. CSS CUSTOM PROPERTIES (VARIABLES)
    ======================================== */
@@ -399,6 +401,21 @@ input::placeholder, textarea::placeholder {
   font-weight: 500;
 }
 
+.connection-reason {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+  font-size: 0.85rem;
+  color: var(--color-gray-200);
+  text-align: center;
+}
+
+.connection-reason strong {
+  color: var(--color-primary-light);
+}
+
 .toolbar-buttons {
   display: flex;
   gap: var(--spacing-sm);
@@ -744,22 +761,25 @@ input::placeholder, textarea::placeholder {
   backdrop-filter: blur(20px);
   border: 1px solid var(--color-gray-600);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-2xl);
+  padding: var(--spacing-xl);
   box-shadow: var(--shadow-xl);
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
+  max-height: 85vh;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .room-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .room-modal-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--color-gray-50);
   margin: 0;
@@ -787,15 +807,15 @@ input::placeholder, textarea::placeholder {
 }
 
 .room-form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .room-form-label {
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   font-weight: 600;
   color: var(--color-gray-200);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
 }
 
 .room-form-input {
@@ -932,6 +952,58 @@ input::placeholder, textarea::placeholder {
 @keyframes loading {
   0% { left: -100%; }
   100% { left: 100%; }
+}
+
+/* Turn-based mode styles */
+@keyframes glow {
+  0% {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px var(--color-primary), 0 0 30px var(--color-primary-light);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+}
+
+@keyframes turnPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.turn-indicator {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.turn-indicator.my-turn {
+  animation: turnPulse 1.5s ease-in-out infinite;
+}
+
+.turn-element {
+  filter: drop-shadow(0 0 8px var(--color-primary-light));
+  animation: turnPulse 2s ease-in-out infinite;
+}
+
+.end-turn-button {
+  background: linear-gradient(135deg, var(--color-danger) 0%, #dc2626 100%);
+  transition: all 0.2s ease;
+}
+
+.end-turn-button:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
 
