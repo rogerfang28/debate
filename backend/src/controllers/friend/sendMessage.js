@@ -6,7 +6,7 @@
 // * -------------------------------------------------------------
 import { FriendModel } from '../../models/Friend.js';
 import { MessageModel } from '../../models/Message.js';
-import { emitToUser } from '../../lib/socketHandler.js';
+import { emitToUser } from '../../socket/socketHandler.js';
 
 /**
  * Send message to friend

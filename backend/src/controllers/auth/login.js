@@ -23,7 +23,7 @@ export const login = async (req, res) => {
 
   try {
     // * Find user by email, explicitly include password field (default is select: false)
-    const user = await UserModel.findOne({ email }).select('+password');
+    const user = await UserModel.findOne({ email }).select('+password'); // database function
 
     // ! If no user found, return unauthorized
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });

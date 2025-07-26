@@ -1,3 +1,5 @@
+// * Turns on/connects to the database, allows functions to work
+
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 

@@ -60,7 +60,7 @@ export default function GraphControls({
         gap: 8,
       }}
     >
-      <ControlButton
+      {/* <ControlButton
         onClick={centerGraph}
         style={{
           background:
@@ -80,7 +80,7 @@ export default function GraphControls({
         }}
       >
         🧲 Gravitate
-      </ControlButton>
+      </ControlButton> */}
 
       <ControlButton
         onClick={toggleSpread}

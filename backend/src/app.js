@@ -7,11 +7,12 @@ import { connectDB } from './lib/db.js';
 import cors from 'cors';
 import { NodeModel } from './models/Node.js';
 import { EdgeModel } from './models/Edge.js';
-import { registerSocketHandlers } from './lib/socketHandler.js';
+import { registerSocketHandlers } from './socket/socketHandler.js';
 import authRoutes from "./routes/auth.routes.js";
 import roomRoutes from "./routes/room.routes.js";
 import friendRoutes from "./routes/friend.routes.js";
 import { authenticateToken } from './middleware/auth.middleware.js';
+import registerSockets from './socket/index.js';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config(); // ✅ Only use .env in development
@@ -70,7 +71,8 @@ app.get('/api/graph', authenticateToken, async (req, res) => {
   res.json({ nodes: nodeMap, edges });
 });
 
-registerSocketHandlers(io);
+// // registerSocketHandlers(io);
+registerSockets(io);
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
