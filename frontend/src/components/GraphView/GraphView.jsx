@@ -20,6 +20,7 @@ export default function GraphView({
   setDraggedNodeId,
   onChallengeClick,
   currentUserId,
+  linkDistance = 150,
 }) {
   const fgRef = useRef();
   const [isSpreadOut, setIsSpreadOut] = useState(false);
@@ -31,7 +32,7 @@ export default function GraphView({
     links: Array.isArray(graphData?.links) ? graphData.links : [],
   };
 
-  useGraphForces(fgRef, draggedNodeId, safeGraph);
+  useGraphForces(fgRef, draggedNodeId, safeGraph, linkDistance);
 
   // Persist drag‑end position to server --------------------------------------
   const handleNodeDragEnd = (node) => {

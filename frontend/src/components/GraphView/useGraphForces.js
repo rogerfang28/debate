@@ -6,10 +6,11 @@ import * as d3 from "d3";
  * React hook that (re)configures the d3‑forces each render. Isolated so the
  * physics logic lives outside of React component bodies.
  */
-export default function useGraphForces(fgRef, draggedNodeId, safeGraph) {
+export default function useGraphForces(fgRef, draggedNodeId, safeGraph, linkDistance = 150) {
   useEffect(() => {
     if (!fgRef.current) return;
 
+    fgRef.current.d3Force('link').distance(linkDistance);
     // Neutral charge unless we toggle "Spread" mode elsewhere.
     fgRef.current.d3Force("charge", d3.forceManyBody().strength(0));
 

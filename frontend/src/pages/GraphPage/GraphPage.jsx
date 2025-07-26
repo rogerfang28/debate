@@ -30,6 +30,7 @@ export default function GraphPage() {
   const [error, setError] = useState('');
   const [draggedNodeId, setDraggedNodeId] = useState(null);
   const [isMembersPanelOpen, setIsMembersPanelOpen] = useState(false);
+  const [distance, setDistance] = useState(250); 
   const [challengeModal, setChallengeModal] = useState({
     isOpen: false,
     challenges: [],
@@ -279,6 +280,7 @@ export default function GraphPage() {
       <GraphView
         graphData={data}
         dimensions={dimensions}
+        linkDistance={distance}
         selection={selection}
         setSelection={setSelection}
         roomId={roomId}
@@ -287,7 +289,20 @@ export default function GraphPage() {
         onChallengeClick={handleChallengeClick}
         currentUserId={currentUser}
       />
-      
+      {/* edge‑length slider, doesn't reload graph when used, have to click on a node to reload */}
+      <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 20 }}>
+        <label className="text-xs text-white block mb-1">
+          Edge length: {distance}px
+        </label>
+        <input
+          type="range"
+          min="50"
+          max="400"
+          value={distance}
+          onChange={e => setDistance(+e.target.value)}
+        />
+      </div>
+
       <ToolBar
         selection={selection}
         onAddNode={() => handleAddNode(setForm)}
