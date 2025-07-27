@@ -3,8 +3,9 @@ import { reconnectSocket } from '../lib/socket';
 import { API_BASE } from '../lib/config';
 
 export default function AuthForm({ onAuthSuccess }) {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [mode, setMode] = useState('login'); // or 'signup'
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -15,10 +16,15 @@ export default function AuthForm({ onAuthSuccess }) {
     setError('');
 
     try {
+      const payload =
+        mode === 'login'
+          ? { identifier, password }
+          : { email: identifier, username, password };
+
       const res = await fetch(`${API_BASE}/auth/${mode}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify(payload)
       });
 
       const json = await res.json();
@@ -43,10 +49,9 @@ export default function AuthForm({ onAuthSuccess }) {
           {mode === 'login' ? 'Welcome Back' : 'Join DebateGraph'}
         </h2>
         <p className="text-gray-400">
-          {mode === 'login' 
-            ? 'Sign in to continue your debates' 
-            : 'Create your account to start debating'
-          }
+          {mode === 'login'
+            ? 'Sign in to continue your debates'
+            : 'Create your account to start debating'}
         </p>
       </div>
 
@@ -58,20 +63,38 @@ export default function AuthForm({ onAuthSuccess }) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-            Email Address
+          <label htmlFor="identifier" className="block text-sm font-medium text-gray-300 mb-2">
+            {mode === 'login' ? 'Email or Username' : 'Email Address'}
           </label>
           <input
-            id="email"
-            type="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
+            id="identifier"
+            type="text"
+            value={identifier}
+            placeholder={mode === 'login' ? 'Enter email or username' : 'Enter your email'}
+            onChange={(e) => setIdentifier(e.target.value)}
             required
             disabled={isLoading}
             className={`w-full transition-all ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           />
         </div>
+
+        {mode === 'signup' && (
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              placeholder="Choose a username"
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              disabled={isLoading}
+              className={`w-full transition-all ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            />
+          </div>
+        )}
 
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
@@ -89,8 +112,8 @@ export default function AuthForm({ onAuthSuccess }) {
           />
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoading}
           className={`w-full ${isLoading ? 'loading' : ''}`}
         >
@@ -99,8 +122,10 @@ export default function AuthForm({ onAuthSuccess }) {
               <span className="loading-spinner"></span>
               {mode === 'login' ? 'Signing In...' : 'Creating Account...'}
             </span>
+          ) : mode === 'login' ? (
+            '🔐 Sign In'
           ) : (
-            mode === 'login' ? '🔐 Sign In' : '🚀 Create Account'
+            '🚀 Create Account'
           )}
         </button>
       </form>
@@ -109,7 +134,7 @@ export default function AuthForm({ onAuthSuccess }) {
         <p className="text-sm text-gray-400 mb-3">
           {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
         </p>
-        <button 
+        <button
           onClick={() => {
             setMode(mode === 'login' ? 'signup' : 'login');
             setError('');

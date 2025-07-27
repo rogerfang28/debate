@@ -19,14 +19,21 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // * Login Controller
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
   try {
     // * Find user by email, explicitly include password field (default is select: false)
-    const user = await UserModel.findOne({ email }).select('+password'); // database function
+    console.log('🟡 Received identifier:', identifier);
+    const user = await UserModel.findOne({
+      $or: [
+        { email: identifier },
+        { username: new RegExp('^' + identifier + '$', 'i') }
+      ]
+    }).select('+password');
+
 
     // ! If no user found, return unauthorized
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(401).json({ message: 'Invalid credentials (debug no user found)' });
 
     // * Compare plaintext password with hashed password from DB
     const match = await bcrypt.compare(password, user.password);
@@ -57,6 +64,7 @@ export const login = async (req, res) => {
 
   } catch (err) {
     // ! Handle unexpected server error
+    console.error('🔥 Login error:', err);
     res.status(500).json({ message: 'Login failed', error: err.message });
   }
 };

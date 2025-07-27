@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  username: { type: String }, // Optional, will be case-insensitive unique via explicit index
+  username: { type: String, required: true },// changed so req and unique (might break)
   password: { type: String, required: true }, // hashed password
   createdAt: { type: Date, default: Date.now }
 });
