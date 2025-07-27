@@ -4,7 +4,7 @@ import { socket, joinRoom, leaveRoom } from '../../lib/socket';
 import { getCurrentUser } from '../../lib/auth';
 import { roomAPI } from '../../lib/roomAPI';
 
-import GraphView from '../../components/GraphView/GraphView.jsx';
+import GraphView from '../../components/Graph/GraphView.jsx';
 import ToolBar from '../../components/ToolBar';
 import EntityForm from '../../components/EntityForm';
 import ChallengeResponseModal from '../../components/ChallengeResponseModal';

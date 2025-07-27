@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthForm from '../../components/AuthForm';
+import AuthForm from '../../components/Auth/AuthForm';
 import { RoomCard } from '../../components/RoomCard';
 import { CreateRoomModal } from '../../components/CreateRoomModal';
 import { JoinRoomForm } from '../../components/JoinRoomForm';
