@@ -1,5 +1,5 @@
-// Status: Good I think, not much can go wrong here, it's kind of tool 1 and 2 I guess, decides where stuff is and renders
-// src/App.jsx
+// * Status: Good
+// * Directs path to the correct page
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
