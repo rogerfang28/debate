@@ -1038,7 +1038,7 @@ input::placeholder, textarea::placeholder {
 /* ========================================
    10. THEME VARIANTS (LIGHT MODE)
    ======================================== */
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: var(--color-gray-900);
     background-color: var(--color-gray-50);
@@ -1083,4 +1083,4 @@ input::placeholder, textarea::placeholder {
     background: var(--color-gray-50);
     border-color: var(--color-gray-400);
   }
-}
+} */
