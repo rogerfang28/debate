@@ -1,30 +1,27 @@
 import cors from 'cors';
-import { Server } from 'socket.io'
 
-export default function setupCorsAndSocket(app,server){
-    const allowedOrigins = [
-        'http://localhost:5173',
-        'https://debate-frontend.onrender.com'
-    ];
+/**
+ * List of allowed origins for CORS.
+ * @type {string[]}
+ */
+export const allowedOrigins = [
+  'http://localhost:5173',
+  'https://debate-frontend.onrender.com'
+];
 
-    const io = new Server(server, { 
-        cors: { 
-            origin: allowedOrigins,
-            methods: ["GET", "POST"],
-            credentials: true
-        } 
-    });
-
-    app.use(
-        cors({
-            origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
-            },
-            credentials: true
-        })
-    );
+/**
+ * Returns the configured CORS middleware.
+ * @returns {import('express').RequestHandler}
+ */
+export default function configureCors() {
+  return cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  });
 }
