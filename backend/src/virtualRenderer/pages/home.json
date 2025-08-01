@@ -1,53 +1,58 @@
 {
   "status": "success",
   "payload": {
-    "elements": [
-      {
-        "type": "nav",
-        "props": {
-          "brand": "DebateGraph",
-          "links": [
-            { "label": "🌍 Public Debates", "action": "goPublicDebates" },
-            { "label": "👥 Friends", "action": "openFriendsModal", "badge": 3 },
-            { "label": "👤 Profile", "action": "goProfile" },
-            { "label": "🚪 Logout", "action": "logout" }
+    "layout": {
+      "type": "div",
+      "className": "app-container",
+      "children": [
+        {
+          "type": "nav",
+          "className": "app-navigation",
+          "children": [
+            {
+              "type": "div",
+              "className": "nav-brand",
+              "children": [
+                { "type": "span", "className": "brand-icon", "text": "🗣️" },
+                { "type": "span", "className": "brand-text", "text": "DebateGraph" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "nav-actions",
+              "children": [
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "🌍 Public Debates", "action": "goPublicDebates" },
+                { "type": "button", "className": "nav-button btn-primary", "text": "👥 Friends", "action": "openFriendsModal" },
+                { "type": "button", "className": "nav-button btn-primary", "text": "👤 Profile", "action": "goProfile" },
+                { "type": "button", "className": "nav-button btn-secondary", "text": "🚪 Logout", "action": "logout" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "main",
+          "className": "app-main",
+          "children": [
+            {
+              "type": "div",
+              "className": "container py-8",
+              "children": [
+                { "type": "h1", "text": "Your Debate Rooms" },
+                { "type": "p", "className": "text-gray-300 text-lg", "text": "Create, join, and manage collaborative debate spaces" },
+                { "type": "component", "name": "JoinRoomForm" },
+                {
+                  "type": "list",
+                  "className": "room-grid",
+                  "items": [
+                    { "label": "Room A" },
+                    { "label": "Room B" }
+                  ]
+                }
+              ]
+            }
           ]
         }
-      },
-      {
-        "type": "title",
-        "props": { "text": "Your Debate Rooms" }
-      },
-      {
-        "type": "paragraph",
-        "props": { "text": "Create, join, and manage collaborative debate spaces" }
-      },
-      {
-        "type": "form",
-        "props": {
-          "action": "joinRoom",
-          "fields": [
-            { "type": "text", "name": "inviteCode", "placeholder": "Enter invite code" }
-          ],
-          "submitText": "Join Room"
-        }
-      },
-      {
-        "type": "button",
-        "props": {
-          "text": "➕ Create Room",
-          "action": "openCreateModal"
-        }
-      },
-      {
-        "type": "list",
-        "props": {
-          "items": [
-            { "label": "Room A", "action": "enterRoom", "id": "room1" },
-            { "label": "Room B", "action": "enterRoom", "id": "room2" }
-          ]
-        }
-      }
-    ]
+      ]
+    }
   }
 }
