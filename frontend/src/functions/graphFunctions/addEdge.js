@@ -1,7 +1,7 @@
 import { socket } from '../../lib/socket';
 
 /*
- Adds a new edge between two nodes.
+Adds a new edge between two nodes.
  
  @param {string} node_from - ID of the source node.
  @param {string} node_to - ID of the target node.
