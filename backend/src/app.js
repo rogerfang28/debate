@@ -14,6 +14,7 @@ import friendRoutes from "./routes/friend.routes.js";
 import { authenticateToken } from './middleware/auth.middleware.js';
 import configureCors from './configs/cors.js';
 import createSocketServer from './configs/socket.js';
+import dataRoutes from './routes/data.routes.js';
 // import importExportRouter from './routes/importExport.routes.js';
 
 // app.use('/api/rooms', importExportRouter);   // http://…/api/rooms/:roomId/export/nodes
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/friends", friendRoutes);
+app.use("/api/data", dataRoutes);
 
 // // registerSocketHandlers(io);
 registerSockets(io);
