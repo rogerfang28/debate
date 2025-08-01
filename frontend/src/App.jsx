@@ -24,14 +24,13 @@
 // }
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import GenericRenderer from "./components/GenericRenderer.jsx";
+import Renderer from "./renderers/Renderer.jsx";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Catch-all route: ANY path goes to GenericRenderer */}
-        <Route path="*" element={<GenericRenderer />} />
+        <Route path="/" element={<Renderer />} />
       </Routes>
     </BrowserRouter>
   );

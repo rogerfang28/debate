@@ -1,0 +1,1 @@
+Ok so what I need to do is make pages in a specific format, then add a decoder in the frontend to take this format and render it on the screen. The virtual renderer decides what to send back to the frontend
