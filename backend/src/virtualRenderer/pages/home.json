@@ -1,0 +1,53 @@
+{
+  "status": "success",
+  "payload": {
+    "elements": [
+      {
+        "type": "nav",
+        "props": {
+          "brand": "DebateGraph",
+          "links": [
+            { "label": "🌍 Public Debates", "action": "goPublicDebates" },
+            { "label": "👥 Friends", "action": "openFriendsModal", "badge": 3 },
+            { "label": "👤 Profile", "action": "goProfile" },
+            { "label": "🚪 Logout", "action": "logout" }
+          ]
+        }
+      },
+      {
+        "type": "title",
+        "props": { "text": "Your Debate Rooms" }
+      },
+      {
+        "type": "paragraph",
+        "props": { "text": "Create, join, and manage collaborative debate spaces" }
+      },
+      {
+        "type": "form",
+        "props": {
+          "action": "joinRoom",
+          "fields": [
+            { "type": "text", "name": "inviteCode", "placeholder": "Enter invite code" }
+          ],
+          "submitText": "Join Room"
+        }
+      },
+      {
+        "type": "button",
+        "props": {
+          "text": "➕ Create Room",
+          "action": "openCreateModal"
+        }
+      },
+      {
+        "type": "list",
+        "props": {
+          "items": [
+            { "label": "Room A", "action": "enterRoom", "id": "room1" },
+            { "label": "Room B", "action": "enterRoom", "id": "room2" }
+          ]
+        }
+      }
+    ]
+  }
+}
