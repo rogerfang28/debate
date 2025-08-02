@@ -31,6 +31,14 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Renderer />} />
+        <Route path="/home" element={<Renderer />} />
+        <Route path="/profile" element={<Renderer />} />
+        <Route path="/graph/:roomId" element={<Renderer />} />
+        <Route path="/graph" element={<Renderer />} />
+        <Route path="/public-debates" element={<Renderer />} />
+        <Route path="/public-debate/:roomId" element={<Renderer />} />
+        {/* Catch all other routes and let Renderer handle them */}
+        <Route path="*" element={<Renderer />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,220 @@
+{
+  "status": "success",
+  "payload": {
+    "layout": {
+      "type": "div",
+      "className": "public-debates-page min-h-screen bg-gray-900 text-white",
+      "children": [
+        {
+          "type": "nav",
+          "className": "app-navigation",
+          "children": [
+            {
+              "type": "div",
+              "className": "nav-brand",
+              "children": [
+                { "type": "span", "className": "brand-icon", "text": "🗣️" },
+                { "type": "span", "className": "brand-text", "text": "DebateGraph" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "nav-actions",
+              "children": [
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "🏠 Home", "action": "goHome" },
+                { 
+                  "type": "button", 
+                  "className": "nav-button btn-primary", 
+                  "text": "👤 Profile", 
+                  "action": "goProfile",
+                  "condition": "user"
+                },
+                { 
+                  "type": "button", 
+                  "className": "nav-button btn-secondary", 
+                  "text": "🚪 Logout", 
+                  "action": "logout",
+                  "condition": "user"
+                },
+                { 
+                  "type": "button", 
+                  "className": "nav-button btn-primary", 
+                  "text": "🔑 Login", 
+                  "action": "goLogin",
+                  "condition": "!user"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "main",
+          "className": "container mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "div",
+              "className": "page-header mb-8",
+              "children": [
+                {
+                  "type": "div",
+                  "className": "flex items-center mb-4",
+                  "children": [
+                    { "type": "span", "className": "text-4xl mr-3", "text": "🌍" },
+                    { "type": "h1", "className": "text-3xl font-bold", "text": "Public Debates" }
+                  ]
+                },
+                { "type": "p", "className": "text-gray-300 text-lg", "text": "Explore public debates and see how different perspectives connect" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "search-section mb-8",
+              "children": [
+                {
+                  "type": "form",
+                  "className": "flex gap-4 max-w-md",
+                  "action": "searchDebates",
+                  "children": [
+                    {
+                      "type": "input",
+                      "className": "flex-1 px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+                      "name": "search",
+                      "placeholder": "Search debates by name or topic...",
+                      "dataField": "searchQuery"
+                    },
+                    {
+                      "type": "button",
+                      "className": "btn-primary",
+                      "text": "🔍 Search",
+                      "actionType": "submit"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "debates-content",
+              "children": [
+                {
+                  "type": "conditional",
+                  "condition": "rooms.length > 0",
+                  "children": [
+                    {
+                      "type": "div",
+                      "className": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8",
+                      "children": [
+                        {
+                          "type": "repeat",
+                          "dataSource": "rooms",
+                          "template": {
+                            "type": "div",
+                            "className": "debate-card bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors cursor-pointer border border-gray-700",
+                            "action": "viewDebate",
+                            "actionData": "_id",
+                            "children": [
+                              {
+                                "type": "div",
+                                "className": "flex items-start justify-between mb-3",
+                                "children": [
+                                  { "type": "h3", "className": "text-lg font-semibold text-white", "dataField": "name" },
+                                  { "type": "span", "className": "text-xs text-gray-400", "dataField": "createdAt", "format": "dateShort" }
+                                ]
+                              },
+                              { "type": "p", "className": "text-gray-300 text-sm mb-4 line-clamp-2", "dataField": "description" },
+                              {
+                                "type": "div",
+                                "className": "flex items-center justify-between text-xs text-gray-400",
+                                "children": [
+                                  {
+                                    "type": "div",
+                                    "className": "flex items-center space-x-3",
+                                    "children": [
+                                      { "type": "span", "text": "👤 ", "dataAppend": "owner" },
+                                      { "type": "span", "text": "👥 ", "dataAppend": "memberCount" }
+                                    ]
+                                  },
+                                  { "type": "span", "className": "bg-green-600 text-white px-2 py-1 rounded", "text": "PUBLIC" }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "className": "pagination flex justify-center space-x-2",
+                      "condition": "pagination.totalPages > 1",
+                      "children": [
+                        {
+                          "type": "button",
+                          "className": "btn-secondary",
+                          "text": "← Previous",
+                          "action": "previousPage",
+                          "condition": "pagination.hasPrev"
+                        },
+                        {
+                          "type": "span",
+                          "className": "px-4 py-2 bg-gray-800 rounded",
+                          "text": "Page ",
+                          "dataAppend": "pagination.currentPage",
+                          "dataAppend2": " of ",
+                          "dataAppend3": "pagination.totalPages"
+                        },
+                        {
+                          "type": "button",
+                          "className": "btn-secondary",
+                          "text": "Next →",
+                          "action": "nextPage",
+                          "condition": "pagination.hasNext"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "conditional",
+                  "condition": "rooms.length === 0",
+                  "children": [
+                    {
+                      "type": "div",
+                      "className": "text-center py-16",
+                      "children": [
+                        { "type": "div", "className": "text-6xl mb-4", "text": "🔍" },
+                        { "type": "h3", "className": "text-xl font-semibold text-gray-300 mb-2", "text": "No public debates found" },
+                        {
+                          "type": "p",
+                          "className": "text-gray-400 mb-6",
+                          "text": "Try adjusting your search terms or check back later for new debates"
+                        },
+                        {
+                          "type": "button",
+                          "className": "btn-primary",
+                          "text": "🏠 Go Home",
+                          "action": "goHome"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "user": null,
+      "rooms": [],
+      "pagination": {
+        "currentPage": 1,
+        "totalPages": 1,
+        "totalCount": 0,
+        "hasNext": false,
+        "hasPrev": false
+      },
+      "searchQuery": ""
+    }
+  }
+}

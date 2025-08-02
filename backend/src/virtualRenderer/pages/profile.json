@@ -1,0 +1,160 @@
+{
+  "status": "success",
+  "payload": {
+    "layout": {
+      "type": "div",
+      "className": "profile-page min-h-screen bg-gray-900 text-white",
+      "children": [
+        {
+          "type": "nav",
+          "className": "app-navigation",
+          "children": [
+            {
+              "type": "div",
+              "className": "nav-brand",
+              "children": [
+                { "type": "span", "className": "brand-icon", "text": "🗣️" },
+                { "type": "span", "className": "brand-text", "text": "DebateGraph" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "nav-actions",
+              "children": [
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "🏠 Home", "action": "goHome" },
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "🌍 Public Debates", "action": "goPublicDebates" },
+                { "type": "button", "className": "nav-button btn-secondary", "text": "🚪 Logout", "action": "logout" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "main",
+          "className": "container mx-auto px-4 py-8",
+          "children": [
+            {
+              "type": "div",
+              "className": "max-w-2xl mx-auto",
+              "children": [
+                {
+                  "type": "div",
+                  "className": "bg-gray-800 rounded-lg p-8 shadow-lg",
+                  "children": [
+                    {
+                      "type": "div",
+                      "className": "flex items-center mb-6",
+                      "children": [
+                        { "type": "span", "className": "text-4xl mr-4", "text": "👤" },
+                        { "type": "h1", "className": "text-3xl font-bold", "text": "Profile Settings" }
+                      ]
+                    },
+                    {
+                      "type": "form",
+                      "className": "space-y-6",
+                      "action": "updateProfile",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "space-y-4",
+                          "children": [
+                            {
+                              "type": "div",
+                              "children": [
+                                { "type": "label", "className": "block text-sm font-medium text-gray-300 mb-2", "text": "Email", "for": "email" },
+                                { 
+                                  "type": "input",
+                                  "className": "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white",
+                                  "name": "email",
+                                  "id": "email",
+                                  "inputType": "email",
+                                  "disabled": true,
+                                  "dataField": "user.email"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "div",
+                              "children": [
+                                { "type": "label", "className": "block text-sm font-medium text-gray-300 mb-2", "text": "Username", "for": "username" },
+                                { 
+                                  "type": "input",
+                                  "className": "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+                                  "name": "username",
+                                  "id": "username",
+                                  "inputType": "text",
+                                  "placeholder": "Enter your username",
+                                  "dataField": "user.username",
+                                  "required": true
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "bg-gray-700 rounded-lg p-4",
+                          "children": [
+                            { "type": "h3", "className": "text-lg font-semibold mb-2", "text": "Account Information" },
+                            {
+                              "type": "div",
+                              "className": "text-sm text-gray-300 space-y-1",
+                              "children": [
+                                { "type": "p", "text": "User ID: ", "dataAppend": "user.id" },
+                                { "type": "p", "text": "Member since: ", "dataAppend": "user.createdAt", "format": "date" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "flex gap-4",
+                          "children": [
+                            { 
+                              "type": "button",
+                              "className": "btn-primary flex-1",
+                              "text": "💾 Save Changes",
+                              "action": "saveProfile",
+                              "actionType": "submit"
+                            },
+                            { 
+                              "type": "button",
+                              "className": "btn-secondary",
+                              "text": "❌ Cancel",
+                              "action": "cancelEdit"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "className": "mt-8 pt-6 border-t border-gray-600",
+                      "children": [
+                        { "type": "h3", "className": "text-lg font-semibold mb-4 text-red-400", "text": "⚠️ Danger Zone" },
+                        { 
+                          "type": "button",
+                          "className": "btn-danger",
+                          "text": "🗑️ Delete Account",
+                          "action": "deleteAccount",
+                          "confirm": "Are you sure you want to delete your account? This action cannot be undone."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "user": {
+        "id": "",
+        "username": "",
+        "email": "",
+        "createdAt": ""
+      }
+    }
+  }
+}

@@ -3,49 +3,209 @@
   "payload": {
     "layout": {
       "type": "div",
-      "className": "app-container",
+      "className": "home-page min-h-screen bg-gray-900 text-white",
       "children": [
         {
           "type": "nav",
-          "className": "app-navigation",
+          "className": "app-navigation bg-gray-800 border-b border-gray-700 px-6 py-4",
           "children": [
             {
               "type": "div",
-              "className": "nav-brand",
+              "className": "flex items-center justify-between max-w-6xl mx-auto",
               "children": [
-                { "type": "span", "className": "brand-icon", "text": "🗣️" },
-                { "type": "span", "className": "brand-text", "text": "DebateGraph" }
-              ]
-            },
-            {
-              "type": "div",
-              "className": "nav-actions",
-              "children": [
-                { "type": "button", "className": "nav-button btn-tertiary", "text": "🌍 Public Debates", "action": "goPublicDebates" },
-                { "type": "button", "className": "nav-button btn-primary", "text": "👥 Friends", "action": "openFriendsModal" },
-                { "type": "button", "className": "nav-button btn-primary", "text": "👤 Profile", "action": "goProfile" },
-                { "type": "button", "className": "nav-button btn-secondary", "text": "🚪 Logout", "action": "logout" }
+                {
+                  "type": "div",
+                  "className": "nav-brand flex items-center space-x-3",
+                  "children": [
+                    { "type": "span", "className": "text-3xl", "text": "🗣️" },
+                    { "type": "span", "className": "text-xl font-bold", "text": "DebateGraph" }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "className": "nav-actions flex items-center space-x-4",
+                  "children": [
+                    { 
+                      "type": "button", 
+                      "className": "btn-tertiary", 
+                      "text": "🌍 Public Debates", 
+                      "action": "goPublicDebates" 
+                    },
+                    { 
+                      "type": "button", 
+                      "className": "btn-primary relative", 
+                      "text": "👥 Friends", 
+                      "action": "openFriendsModal" 
+                    },
+                    { 
+                      "type": "button", 
+                      "className": "btn-primary", 
+                      "text": "👤 Profile", 
+                      "action": "goProfile" 
+                    },
+                    { 
+                      "type": "button", 
+                      "className": "btn-secondary", 
+                      "text": "🚪 Logout", 
+                      "action": "logout" 
+                    }
+                  ]
+                }
               ]
             }
           ]
         },
         {
           "type": "main",
-          "className": "app-main",
+          "className": "container mx-auto px-6 py-8",
           "children": [
             {
               "type": "div",
-              "className": "container py-8",
+              "className": "max-w-6xl mx-auto",
               "children": [
-                { "type": "h1", "text": "Your Debate Rooms" },
-                { "type": "p", "className": "text-gray-300 text-lg", "text": "Create, join, and manage collaborative debate spaces" },
-                { "type": "component", "name": "JoinRoomForm" },
                 {
-                  "type": "list",
-                  "className": "room-grid",
-                  "items": [
-                    { "label": "Room A" },
-                    { "label": "Room B" }
+                  "type": "div",
+                  "className": "text-center mb-8",
+                  "children": [
+                    { "type": "h1", "className": "text-4xl font-bold mb-3", "text": "Your Debate Rooms" },
+                    { "type": "p", "className": "text-gray-300 text-xl", "text": "Create, join, and manage collaborative debate spaces" }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "className": "mb-8",
+                  "children": [
+                    {
+                      "type": "component",
+                      "name": "JoinRoomForm"
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "className": "rooms-section",
+                  "children": [
+                    {
+                      "type": "conditional",
+                      "condition": "rooms.length > 0",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+                          "children": [
+                            {
+                              "type": "div",
+                              "className": "create-room-card bg-gray-800 border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-500 transition-colors cursor-pointer",
+                              "action": "openCreateModal",
+                              "children": [
+                                { "type": "div", "className": "text-4xl mb-4", "text": "➕" },
+                                { "type": "div", "className": "text-lg font-semibold mb-2", "text": "Create New Room" },
+                                { "type": "div", "className": "text-gray-400", "text": "Start a new collaborative debate space" }
+                              ]
+                            },
+                            {
+                              "type": "repeat",
+                              "dataSource": "rooms",
+                              "template": {
+                                "type": "div",
+                                "className": "room-card bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors border border-gray-700",
+                                "children": [
+                                  {
+                                    "type": "div",
+                                    "className": "flex items-start justify-between mb-4",
+                                    "children": [
+                                      {
+                                        "type": "div",
+                                        "className": "flex-1",
+                                        "children": [
+                                          { "type": "h3", "className": "text-xl font-semibold text-white mb-2", "dataField": "name" },
+                                          { "type": "p", "className": "text-gray-300 text-sm", "dataField": "description" }
+                                        ]
+                                      },
+                                      {
+                                        "type": "div",
+                                        "className": "flex items-center space-x-2",
+                                        "children": [
+                                          {
+                                            "type": "span",
+                                            "className": "bg-blue-600 text-white text-xs px-2 py-1 rounded",
+                                            "text": "OWNER",
+                                            "condition": "isOwner"
+                                          },
+                                          {
+                                            "type": "span",
+                                            "className": "bg-green-600 text-white text-xs px-2 py-1 rounded",
+                                            "text": "PUBLIC",
+                                            "condition": "isPublic"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "div",
+                                    "className": "flex items-center justify-between",
+                                    "children": [
+                                      {
+                                        "type": "div",
+                                        "className": "text-xs text-gray-400",
+                                        "children": [
+                                          { "type": "span", "text": "👥 ", "dataAppend": "memberCount" },
+                                          { "type": "span", "text": " • " },
+                                          { "type": "span", "dataField": "createdAt", "format": "dateShort" }
+                                        ]
+                                      },
+                                      {
+                                        "type": "div",
+                                        "className": "flex space-x-2",
+                                        "children": [
+                                          {
+                                            "type": "button",
+                                            "className": "btn-primary text-sm",
+                                            "text": "🚀 Enter",
+                                            "action": "enterRoom",
+                                            "actionData": "_id"
+                                          },
+                                          {
+                                            "type": "button",
+                                            "className": "btn-secondary text-sm",
+                                            "text": "⚙️",
+                                            "action": "manageRoom",
+                                            "actionData": "_id",
+                                            "condition": "isOwner"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "conditional",
+                      "condition": "rooms.length === 0",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "text-center py-16",
+                          "children": [
+                            { "type": "div", "className": "text-6xl mb-4", "text": "🏠" },
+                            { "type": "h3", "className": "text-xl font-semibold text-gray-300 mb-2", "text": "No rooms yet" },
+                            { "type": "p", "className": "text-gray-400 mb-6", "text": "Create your first debate room or join one using an invite code" },
+                            {
+                              "type": "button",
+                              "className": "btn-primary",
+                              "text": "Create Your First Room",
+                              "action": "openCreateModal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
                   ]
                 }
               ]
@@ -53,6 +213,26 @@
           ]
         }
       ]
+    },
+    "data": {
+      "user": {
+        "id": "",
+        "username": "",
+        "email": ""
+      },
+      "rooms": []
+    },
+    "modals": {
+      "createRoom": {
+        "isOpen": false
+      },
+      "manageRoom": {
+        "isOpen": false,
+        "selectedRoom": null
+      },
+      "friends": {
+        "isOpen": false
+      }
     }
   }
 }

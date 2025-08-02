@@ -1,0 +1,268 @@
+{
+  "status": "success",
+  "payload": {
+    "layout": {
+      "type": "div",
+      "className": "public-debate-viewer min-h-screen bg-gray-900 text-white",
+      "children": [
+        {
+          "type": "nav",
+          "className": "app-navigation",
+          "children": [
+            {
+              "type": "div",
+              "className": "nav-brand",
+              "children": [
+                { "type": "span", "className": "brand-icon", "text": "🗣️" },
+                { "type": "span", "className": "brand-text", "text": "DebateGraph" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "nav-actions",
+              "children": [
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "← Back to Public Debates", "action": "goPublicDebates" },
+                { "type": "button", "className": "nav-button btn-tertiary", "text": "🏠 Home", "action": "goHome" },
+                { 
+                  "type": "button", 
+                  "className": "nav-button btn-primary", 
+                  "text": "👤 Profile", 
+                  "action": "goProfile",
+                  "condition": "user"
+                },
+                { 
+                  "type": "button", 
+                  "className": "nav-button btn-secondary", 
+                  "text": "🚪 Logout", 
+                  "action": "logout",
+                  "condition": "user"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "main",
+          "className": "flex-1 flex flex-col",
+          "children": [
+            {
+              "type": "header",
+              "className": "debate-header bg-gray-800 border-b border-gray-700 px-6 py-4",
+              "children": [
+                {
+                  "type": "div",
+                  "className": "max-w-6xl mx-auto",
+                  "children": [
+                    {
+                      "type": "div",
+                      "className": "flex items-center justify-between",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "flex items-center space-x-4",
+                          "children": [
+                            { "type": "span", "className": "text-3xl", "text": "🌍" },
+                            {
+                              "type": "div",
+                              "children": [
+                                { "type": "h1", "className": "text-2xl font-bold", "dataField": "room.name" },
+                                { "type": "p", "className": "text-gray-400", "dataField": "room.description" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "text-right",
+                          "children": [
+                            { "type": "p", "className": "text-sm text-gray-400", "text": "Created by ", "dataAppend": "room.owner" },
+                            { "type": "p", "className": "text-xs text-gray-500", "dataField": "room.createdAt", "format": "date" },
+                            {
+                              "type": "div",
+                              "className": "flex items-center space-x-2 mt-2",
+                              "children": [
+                                { "type": "span", "className": "bg-green-600 text-white text-xs px-2 py-1 rounded", "text": "PUBLIC" },
+                                { "type": "span", "className": "text-xs text-gray-400", "text": "👥 ", "dataAppend": "room.memberCount" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "flex-1 flex",
+              "children": [
+                {
+                  "type": "aside",
+                  "className": "viewer-sidebar w-80 bg-gray-800 border-r border-gray-700 flex flex-col",
+                  "children": [
+                    {
+                      "type": "div",
+                      "className": "sidebar-header p-4 border-b border-gray-700",
+                      "children": [
+                        { "type": "h2", "className": "font-semibold", "text": "Debate Overview" }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "className": "p-4 space-y-4",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "bg-gray-700 rounded-lg p-3",
+                          "children": [
+                            { "type": "h3", "className": "text-sm font-medium mb-2", "text": "Graph Statistics" },
+                            {
+                              "type": "div",
+                              "className": "text-xs text-gray-300 space-y-1",
+                              "children": [
+                                { "type": "p", "text": "📊 Nodes: ", "dataAppend": "graph.nodeCount" },
+                                { "type": "p", "text": "🔗 Connections: ", "dataAppend": "graph.edgeCount" },
+                                { "type": "p", "text": "👥 Members: ", "dataAppend": "room.memberCount" }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "bg-blue-900 rounded-lg p-3",
+                          "children": [
+                            { "type": "h3", "className": "text-sm font-medium mb-2", "text": "💡 About Public Viewing" },
+                            { "type": "p", "className": "text-xs text-gray-300", "text": "You're viewing a read-only version of this debate. To participate, join the room or create your own debate." }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "space-y-2",
+                          "condition": "user",
+                          "children": [
+                            { 
+                              "type": "button",
+                              "className": "btn-primary w-full",
+                              "text": "🚀 Join This Debate",
+                              "action": "joinDebate",
+                              "actionData": "room._id"
+                            },
+                            { 
+                              "type": "button",
+                              "className": "btn-secondary w-full",
+                              "text": "📋 Copy to My Room",
+                              "action": "copyDebate",
+                              "actionData": "room._id"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "className": "space-y-2",
+                          "condition": "!user",
+                          "children": [
+                            { 
+                              "type": "button",
+                              "className": "btn-primary w-full",
+                              "text": "🔑 Login to Participate",
+                              "action": "goLogin"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "className": "flex-1 p-4",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "bg-gray-700 rounded-lg p-3",
+                          "children": [
+                            { "type": "h3", "className": "text-sm font-medium mb-2", "text": "🎯 Navigation Tips" },
+                            {
+                              "type": "div",
+                              "className": "text-xs text-gray-300 space-y-1",
+                              "children": [
+                                { "type": "p", "text": "• Click nodes to see details" },
+                                { "type": "p", "text": "• Drag to pan around" },
+                                { "type": "p", "text": "• Scroll to zoom in/out" },
+                                { "type": "p", "text": "• Follow connections between ideas" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "main",
+                  "className": "viewer-canvas flex-1 relative",
+                  "children": [
+                    {
+                      "type": "component",
+                      "name": "GraphViewer",
+                      "props": {
+                        "nodes": "graph.nodes",
+                        "edges": "graph.edges",
+                        "roomId": "room._id",
+                        "readOnly": true
+                      }
+                    },
+                    {
+                      "type": "div",
+                      "className": "absolute top-4 left-4",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "bg-gray-800 bg-opacity-90 rounded-lg px-3 py-2 text-sm",
+                          "children": [
+                            { "type": "span", "className": "text-green-400", "text": "👁️ " },
+                            { "type": "span", "text": "Read-only view" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "className": "absolute bottom-4 right-4",
+                      "children": [
+                        {
+                          "type": "div",
+                          "className": "bg-gray-800 bg-opacity-90 rounded-lg p-2 text-xs",
+                          "children": [
+                            { "type": "span", "text": "Room: " },
+                            { "type": "span", "className": "font-mono", "dataField": "room._id" }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "user": null,
+      "room": {
+        "_id": "",
+        "name": "",
+        "description": "",
+        "owner": "",
+        "memberCount": 0,
+        "createdAt": ""
+      },
+      "graph": {
+        "nodes": [],
+        "edges": [],
+        "nodeCount": 0,
+        "edgeCount": 0
+      }
+    }
+  }
+}

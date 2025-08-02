@@ -1,0 +1,61 @@
+{
+  "status": "success",
+  "payload": {
+    "layout": {
+      "type": "div",
+      "className": "login-page min-h-screen bg-gray-900 text-white flex items-center justify-center",
+      "children": [
+        {
+          "type": "div",
+          "className": "max-w-md w-full mx-4",
+          "children": [
+            {
+              "type": "div",
+              "className": "text-center mb-8",
+              "children": [
+                { "type": "div", "className": "text-6xl mb-4", "text": "🗣️" },
+                { "type": "h1", "className": "text-3xl font-bold mb-2", "text": "DebateGraph" },
+                { "type": "p", "className": "text-gray-400", "text": "Collaborative debate mapping platform" }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "bg-gray-800 rounded-lg p-8 shadow-lg",
+              "children": [
+                {
+                  "type": "div",
+                  "className": "mb-6",
+                  "children": [
+                    { "type": "h2", "className": "text-2xl font-semibold mb-2", "text": "Welcome" },
+                    { "type": "p", "className": "text-gray-400", "text": "Sign in to your account or create a new one" }
+                  ]
+                },
+                {
+                  "type": "component",
+                  "name": "AuthForm",
+                  "props": {
+                    "onLogin": "handleLogin",
+                    "onSignup": "handleSignup"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "div",
+              "className": "text-center mt-6",
+              "children": [
+                { 
+                  "type": "button",
+                  "className": "text-blue-400 hover:text-blue-300 text-sm",
+                  "text": "🌍 Browse Public Debates",
+                  "action": "goPublicDebates"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "data": {}
+  }
+}
