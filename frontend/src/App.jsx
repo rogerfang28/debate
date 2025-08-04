@@ -13,13 +13,13 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Renderer />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/graph/:roomId" element={<GraphPage />} />
         <Route path="/graph" element={<GraphPage />} /> {/* Legacy route - will redirect to home */}
         <Route path="/public-debates" element={<PublicDebatesPage />} />
         <Route path="/public-debate/:roomId" element={<PublicDebateViewerPage />} />
-        <Route path="/test" element={<Renderer />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
   );

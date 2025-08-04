@@ -2,6 +2,9 @@ import express from "express";
 import { PageSchema } from "../../../protos/page_pb.js";
 import { toBinary, fromBinary } from "@bufbuild/protobuf";
 import homePage from "../virtualRenderer/pages/homePage.js";
+import roomPage from "../virtualRenderer/pages/roomPage.js";
+import profilePage from "../virtualRenderer/pages/profilePage.js";
+import publicDebatesPage from "../virtualRenderer/pages/publicDebatesPage.js";
 
 const router = express.Router();
 
