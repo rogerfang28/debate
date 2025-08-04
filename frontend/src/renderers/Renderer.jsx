@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import getInfo from "./functions/getInfo.js";
-import renderPage from "./functions/renderPage.jsx";
+import { PageRenderer } from "./functions/renderPage.jsx";
 
 export default function Renderer() {
   const [data, setData] = useState(null); // changed from "page"
@@ -21,6 +21,6 @@ export default function Renderer() {
     fetchData();
   }, []);
 
-  // Pass the MyData protobuf object to renderPage
-  return data ? renderPage(data) : <div>Loading...</div>;
+  // Use PageRenderer component instead of calling renderPage as a function
+  return data ? <PageRenderer page={data} /> : <div>Loading...</div>;
 }
