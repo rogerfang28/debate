@@ -1,3 +1,4 @@
+// app.js
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -15,9 +16,7 @@ import { authenticateToken } from './middleware/auth.middleware.js';
 import configureCors from './configs/cors.js';
 import createSocketServer from './configs/socket.js';
 import dataRoutes from './routes/data.routes.js';
-// import importExportRouter from './routes/importExport.routes.js';
-
-// app.use('/api/rooms', importExportRouter);   // http://…/api/rooms/:roomId/export/nodes
+import eventRoutes from './routes/events.routes.js';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config(); // ✅ Only use .env in development
@@ -31,12 +30,15 @@ const io = createSocketServer(server);
 app.use(configureCors());
 
 app.use(express.json());
+
+// Your routes
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/friends", friendRoutes);
 app.use("/api/data", dataRoutes);
+app.use("/api/events", eventRoutes);
 
-// // registerSocketHandlers(io);
+// WebSockets
 registerSockets(io);
 
 const PORT = process.env.PORT;

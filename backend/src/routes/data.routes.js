@@ -1,20 +1,43 @@
 import express from "express";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import { PageSchema } from "../../../protos/page_pb.js";
+import { toBinary, fromBinary } from "@bufbuild/protobuf";
+import homePage from "../virtualRenderer/pages/homePage.js";
 
 const router = express.Router();
 
-// Resolve __dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Load JSON file synchronously
-const homeDataPath = path.join(__dirname, "../virtualRenderer/pages/home.json");
-const homeData = JSON.parse(fs.readFileSync(homeDataPath, "utf8"));
-
+/**
+ * GET: Send Home Page protobuf
+ */
 router.get("/", (req, res) => {
-  res.json(homeData);
+  try {
+    // Get page object from separate file
+    const page = homePage();
+
+    // Encode to protobuf
+    const bytes = toBinary(PageSchema, page);
+
+    // Send with correct protobuf Content-Type
+    res.setHeader("Content-Type", "application/x-protobuf");
+    res.send(Buffer.from(bytes));
+
+  } catch (err) {
+    console.error("❌ Failed to encode Page protobuf:", err);
+    res.status(500).send("Failed to encode protobuf");
+  }
+});
+
+/**
+ * POST: Receive Page protobuf
+ */
+router.post("/", express.raw({ type: "application/x-protobuf" }), (req, res) => {
+  try {
+    const receivedPage = fromBinary(PageSchema, new Uint8Array(req.body));
+    console.log("📩 Received Page:", JSON.stringify(receivedPage, null, 2));
+    res.send("✅ Page received and decoded!");
+  } catch (err) {
+    console.error("❌ Failed to decode Page protobuf:", err);
+    res.status(400).send("Invalid Protobuf payload");
+  }
 });
 
 export default router;

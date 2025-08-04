@@ -1,17 +1,29 @@
-import { API_BASE } from '../../lib/config.js'
+// frontend/src/functions/getInfo.js
+import { PageSchema } from "../../../../protos/page_pb.js";
+import { fromBinary } from "@bufbuild/protobuf";
 
 export default async function getInfo() {
   try {
-    const res = await fetch(`${API_BASE}/data`, {
+    const res = await fetch("/api/data", {
       method: "GET",
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Accept": "application/x-protobuf"
+      }
     });
+
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    const data = await res.json();
-    console.log("Data from server:", data);
-    return data;
+
+    // Get binary data
+    const buffer = new Uint8Array(await res.arrayBuffer());
+
+    // Decode Protobuf using BufBuild helpers
+    const page = fromBinary(PageSchema, buffer);
+
+    console.log("Decoded Page from server:", page);
+
+    return page;
   } catch (err) {
-    console.error("Error fetching data:", err);
+    console.error("Error fetching page:", err);
     return null;
   }
 }

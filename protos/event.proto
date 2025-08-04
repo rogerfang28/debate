@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package debate;
+
+// A single UI event from frontend to backend
+message UIEvent {
+  string event_id = 1;           // Unique ID for this event
+  string component_id = 2;       // Which UI component triggered it
+  EventType type = 3;            // Click, change, submit, etc.
+  int64 timestamp = 4;           // Epoch ms
+  map<string, string> data = 5;  // Extra event data (flexible)
+}
+
+// List of possible event types
+enum EventType {
+  UNKNOWN = 0;
+  CLICK = 1;
+  INPUT_CHANGE = 2;
+  FORM_SUBMIT = 3;
+  NODE_ADDED = 4;
+  NODE_REMOVED = 5;
+  EDGE_ADDED = 6;
+  EDGE_REMOVED = 7;
+}
