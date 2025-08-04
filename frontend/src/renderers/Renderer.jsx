@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import getInfo from "./functions/getInfo.js";
-import { PageRenderer } from "./functions/renderPage.jsx";
+import { PageRenderer } from "./functions/rendering/PageRenderer.jsx";
 
 export default function Renderer() {
   const [data, setData] = useState(null);

@@ -1,6 +1,12 @@
 import sendDataToBackend from "./sendData.js";
 import { EventType } from "../../../../protos/event_pb.js"; // adjust path
-import { eventTypeMap } from "./renderPage.jsx"; // import your existing mapping
+
+// Local event mapping (no longer imported from renderPage)
+const eventTypeMap = {
+  onClick: EventType.CLICK,
+  onChange: EventType.INPUT_CHANGE,
+  onSubmit: EventType.FORM_SUBMIT,
+};
 
 export default function handleEvent(e, component, eventName, actionId, onReload) {
   try {
