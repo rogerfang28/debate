@@ -1,21 +1,28 @@
 import sendDataToBackend from "./sendData.js";
-import { EventType } from "../../../../protos/event_pb.js"; // adjust path
+import { EventType } from "../../../../protos/event_pb.js";
 
-// Local event mapping (no longer imported from renderPage)
 const eventTypeMap = {
   onClick: EventType.CLICK,
   onChange: EventType.INPUT_CHANGE,
   onSubmit: EventType.FORM_SUBMIT,
 };
 
-export default function handleEvent(e, component, eventName, actionId, onReload) {
+export default async function handleEvent(e, component, eventName, actionId) {
   try {
-    // Prevent form submissions from reloading the page
+    console.log(
+      "📤 handleEvent got actionId:",
+      actionId,
+      "for event:",
+      eventName,
+      "on component:",
+      component.id
+    );
+
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();
     }
 
-    sendDataToBackend({
+    await sendDataToBackend({
       componentId: component.id || "unknown",
       eventType: eventTypeMap[eventName] || EventType.UNKNOWN,
       actionId,
@@ -31,8 +38,9 @@ export default function handleEvent(e, component, eventName, actionId, onReload)
       timestamp: Date.now(),
     });
 
-    // Slight delay before reloading
-    setTimeout(() => onReload?.(), 100);
+    // 🔹 Instantly refresh the page after sending event
+    window.reloadPage?.();
+
   } catch (error) {
     console.error(`Error handling event ${eventName}:`, error);
   }

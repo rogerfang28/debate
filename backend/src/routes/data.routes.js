@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   try {
     // Get page object from separate file
-    const page = homePage();
+    const page = req.session.currentPage || homePage();
 
     // Encode to protobuf
     const bytes = toBinary(PageSchema, page);

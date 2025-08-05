@@ -1,4 +1,3 @@
-// frontend/src/functions/getInfo.js
 import { PageSchema } from "../../../../protos/page_pb.js";
 import { fromBinary } from "@bufbuild/protobuf";
 
@@ -8,7 +7,8 @@ export default async function getInfo() {
       method: "GET",
       headers: {
         "Accept": "application/x-protobuf"
-      }
+      },
+      credentials: "include" // 🔹 send cookies/session ID
     });
 
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);

@@ -5,6 +5,20 @@ import { PageRenderer } from "./functions/rendering/PageRenderer.jsx";
 export default function Renderer() {
   const [data, setData] = useState(null);
 
+  // 🔹 Global function for handleEvent.js to trigger a reload
+  window.reloadPage = async () => {
+    try {
+      const info = await getInfo("/api/data");
+      if (info) {
+        setData(info);
+      } else {
+        console.warn("reloadPage: No data returned from getInfo");
+      }
+    } catch (err) {
+      console.error("reloadPage: Failed to load data", err);
+    }
+  };
+
   useEffect(() => {
     let intervalId;
 
@@ -13,7 +27,7 @@ export default function Renderer() {
         const info = await getInfo("/api/data");
         if (info) {
           setData(info);
-          if (intervalId) clearInterval(intervalId); // stop retrying once connected
+          if (intervalId) clearInterval(intervalId); // stop retry loop
         } else {
           console.warn("Renderer: No data returned from getInfo");
         }
@@ -22,10 +36,10 @@ export default function Renderer() {
       }
     }
 
-    fetchData(); // initial try
-    intervalId = setInterval(fetchData, 3000); // retry every 3 sec
+    fetchData(); // first try
+    intervalId = setInterval(fetchData, 3000); // retry every 3s until successful
 
-    return () => clearInterval(intervalId); // cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return data ? <PageRenderer page={data} /> : <div>Loading...</div>;

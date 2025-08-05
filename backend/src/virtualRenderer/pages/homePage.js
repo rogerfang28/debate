@@ -11,7 +11,9 @@ export default function homePage() {
       {
         id: "navbar",
         type: ComponentType.CONTAINER,
-        style: { customClass: "flex justify-between bg-gray-800 p-4 text-white items-center" },
+        style: {
+          customClass: "flex justify-between bg-gray-800 p-4 text-white items-center"
+        },
         children: [
           {
             id: "brand",
@@ -29,7 +31,7 @@ export default function homePage() {
                 type: ComponentType.BUTTON,
                 text: "🌍 Public Debates",
                 style: { customClass: "btn btn-tertiary" },
-                events: { onClick: "goPublicDebates" }
+                events: { onClick: "goPublicDebates" } // backend actionId
               },
               {
                 id: "btnFriends",
@@ -83,13 +85,13 @@ export default function homePage() {
             ]
           },
 
-          // Join Room Form
+          // Join Room Form/Input
           {
             id: "joinRoomForm",
             type: ComponentType.INPUT,
             text: "Enter invite code",
             style: { customClass: "mb-4" },
-            events: { onEnter: "joinRoom" }
+            events: { onEnter: "joinRoom" } // handled by frontend as keydown + backend action
           },
 
           // Create Room Button
@@ -101,7 +103,7 @@ export default function homePage() {
             events: { onClick: "openCreateRoomModal" }
           },
 
-          // Rooms List (will be filled dynamically later)
+          // Rooms List (sample clickable items)
           {
             id: "roomList",
             type: ComponentType.LIST,

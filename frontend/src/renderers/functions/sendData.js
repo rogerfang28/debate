@@ -1,31 +1,33 @@
 import { API_BASE } from '../../lib/config.js';
-import { UIEventSchema, EventType } from '../../../../protos/event_pb.js'; // adjust path
+import { UIEventSchema, EventType } from '../../../../protos/event_pb.js';
 import { create, toBinary } from '@bufbuild/protobuf';
 
-export default async function sendDataToBackend() {
+export default async function sendDataToBackend(eventData) {
   try {
-    // 1️⃣ Create a UIEvent message
+    // 1️⃣ Create a UIEvent message with real event data
     const event = create(UIEventSchema, {
-      eventId: crypto.randomUUID(), // camelCase property names
-      componentId: "btn1",
-      type: EventType.CLICK,
-      timestamp: Date.now(),
-      data: { message: "Hello from frontend!" }
+      eventId: crypto.randomUUID(),
+      componentId: eventData.componentId || "unknown",
+      type: eventData.eventType || EventType.UNKNOWN,
+      timestamp: eventData.timestamp || Date.now(),
+      data: {
+        ...eventData.data,
+        actionId: eventData.actionId || "" // inside `data` since proto has no actionId field
+      }
     });
 
     // 2️⃣ Encode to protobuf binary
     const binary = toBinary(UIEventSchema, event);
 
-    // 3️⃣ Send to backend
-    const res = await fetch(`${API_BASE}/events`, { // changed to match /api/events
+    // 3️⃣ Send to backend WITH credentials (cookies)
+    const res = await fetch(`${API_BASE}/events`, {
       method: "POST",
-      headers: { "Content-Type": "application/octet-stream" }, // correct for binary
-      body: binary
+      headers: { "Content-Type": "application/octet-stream" },
+      body: binary,
+      credentials: "include" // 🔹 send cookies/session ID
     });
 
-    // 4️⃣ Read server response
-    const text = await res.text();
-    console.log("Server says:", text);
+    console.log("Server says:", await res.text());
   } catch (err) {
     console.error("❌ Error sending data:", err);
   }
