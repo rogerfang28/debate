@@ -1,5 +1,5 @@
 // backend/src/virtualRenderer/pages/profilePage.js
-import { PageSchema, ComponentType } from "../../../../protos/wrappers/page-esm-wrapper.mjs";
+import { PageSchema, ComponentType } from "../../../../src/gen/page_pb.ts";
 import { create } from "@bufbuild/protobuf";
 
 export default function profilePage() {

@@ -1,2 +1,2 @@
-generation line
-npx protoc -I . --es_out=. *.proto
+generation line in root dir
+npx buf generate

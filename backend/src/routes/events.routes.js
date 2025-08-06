@@ -1,5 +1,5 @@
 import express from "express";
-import { UIEvent, EventType } from "../../../protos/wrappers/event-esm-wrapper.mjs"; // Generated with protoc3.15.8
+import { UIEvent, EventType } from "../../../src/gen/event_pb.ts"; // Generated with protoc3.15.8
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";

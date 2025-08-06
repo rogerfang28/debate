@@ -43,14 +43,14 @@ export default function GraphPage() {
     const token = localStorage.getItem('token');
     if (!token) {
       console.log('No token found, redirecting to home');
-      navigate('/');
+      navigate('/home');
       return;
     }
 
     // If no roomId, redirect to home (legacy route)
     if (!roomId) {
       console.log('No room ID provided, redirecting to home');
-      navigate('/');
+      navigate('/home');
       return;
     }
 

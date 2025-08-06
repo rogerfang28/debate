@@ -1,5 +1,5 @@
 import express from "express";
-import { PageSchema as Page, ComponentType } from "../../../protos/wrappers/page-esm-wrapper.mjs";
+import { PageSchema as Page, ComponentType } from "../../../src/gen/page_pb.ts";
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
