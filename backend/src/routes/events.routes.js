@@ -1,8 +1,5 @@
-// routes/events.routes.js
 import express from "express";
-import { UIEventSchema } from "../../../protos/event_pb.js";
-import { fromBinary, toJson } from "@bufbuild/protobuf";
-
+import { UIEvent } from "../../../protos/event_pb.js"; // Generated with protoc3.15.8
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
@@ -38,17 +35,18 @@ router.post(
   (req, res) => {
     try {
       // 1️⃣ Decode Protobuf binary into a UIEvent message
-      const message = fromBinary(UIEventSchema, req.body);
+      const message = UIEvent.deserializeBinary(new Uint8Array(req.body));
 
-      // 2️⃣ Convert to plain JSON for logging
-      const eventObject = toJson(UIEventSchema, message, {
-        emitDefaultValues: true,
-      });
+      // 2️⃣ Convert to plain JS object for logging
+      // `toObject` is the google-protobuf equivalent of Buf's toJson()
+      const eventObject = message.toObject();
 
       console.log("📩 Received UI Event:", eventObject);
 
       // 3️⃣ Extract the actionId from the event
-      const actionId = eventObject.data?.actionId;
+      const actionId = eventObject.data?.actionid; 
+      // NOTE: google-protobuf lowercases field names in toObject()
+
       console.log("🔍 Parsed actionId:", actionId);
 
       // 4️⃣ Switch page based on actionId
