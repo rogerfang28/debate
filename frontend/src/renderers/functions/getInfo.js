@@ -1,4 +1,4 @@
-import { PageSchema } from "../../../../protos/page_pb.js";
+import { PageSchema } from "../../../../protos/unused/page_pb.js";
 import { fromBinary } from "@bufbuild/protobuf";
 
 export default async function getInfo() {

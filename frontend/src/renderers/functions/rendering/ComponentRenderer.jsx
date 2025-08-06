@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentType } from "../../../../../protos/page_pb.js";
+import { ComponentType } from "../../../../../protos/unused/page_pb.js";
 import buildClassName from "./buildClassName.js";
 import bindEvents from "./bindEvents.js";
 

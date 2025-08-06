@@ -11,6 +11,10 @@
 /* eslint-disable */
 // @ts-nocheck
 
+var jspb = require('google-protobuf');
+var goog = jspb;
+var global = Function('return this')();
+
 goog.exportSymbol('proto.ui.Component', null, global);
 goog.exportSymbol('proto.ui.ComponentType', null, global);
 goog.exportSymbol('proto.ui.LayoutType', null, global);
@@ -2308,3 +2312,4 @@ proto.ui.LayoutType = {
   INLINE: 4
 };
 
+goog.object.extend(exports, proto.ui);
