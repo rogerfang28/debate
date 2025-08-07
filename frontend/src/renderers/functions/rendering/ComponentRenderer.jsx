@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentType } from "../../../../../src/gen/page_pb.ts";
+import { ComponentType } from "../../../../../src/gen/page_pb.js";
 import buildClassName from "./buildClassName.js";
 import bindEvents from "./bindEvents.js";
 

@@ -1,5 +1,6 @@
 import express from "express";
-import { PageSchema as Page, ComponentType } from "../../../src/gen/page_pb.js";
+import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
+import { PageSchema } from "../../../src/gen/page_pb.js";
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
@@ -12,23 +13,16 @@ const router = express.Router();
  */
 router.get("/", (req, res) => {
   try {
-    // Get JS object from separate file
     const pageData = req.session.currentPage || homePage();
 
-    // Create protobuf message instance
-    const pageMessage = new Page();
-
-    // TODO: Set fields on the message (this is where you map JS object → protobuf fields)
-    // Example: pageMessage.setTitle(pageData.title);
-    // You must do this for all relevant fields in your Page proto
+    // Create protobuf message from plain JS object
+    const pageMessage = create(PageSchema, pageData);
 
     // Serialize to binary
-    const bytes = pageMessage.serializeBinary();
+    const bytes = toBinary(PageSchema, pageMessage);
 
-    // Send with correct protobuf Content-Type
     res.setHeader("Content-Type", "application/x-protobuf");
     res.send(Buffer.from(bytes));
-
   } catch (err) {
     console.error("❌ Failed to encode Page protobuf:", err);
     res.status(500).send("Failed to encode protobuf");
@@ -40,11 +34,9 @@ router.get("/", (req, res) => {
  */
 router.post("/", express.raw({ type: "application/x-protobuf" }), (req, res) => {
   try {
-    // Deserialize from binary
-    const receivedPage = Page.deserializeBinary(new Uint8Array(req.body));
+    const receivedPage = fromBinary(PageSchema, new Uint8Array(req.body));
 
-    // Now receivedPage is a protobuf message instance
-    console.log("📩 Received Page:", receivedPage.toObject()); // Convert to plain JS object
+    console.log("📩 Received Page:", receivedPage);
 
     res.send("✅ Page received and decoded!");
   } catch (err) {

@@ -1,5 +1,6 @@
 import express from "express";
-import { UIEvent, EventType } from "../../../src/gen/event_pb.ts"; // Generated with protoc3.15.8
+import { fromBinary } from "@bufbuild/protobuf";
+import { UIEventSchema } from "../../../src/gen/event_pb.js";
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
@@ -7,9 +8,6 @@ import publicDebatesPage from "../virtualRenderer/pages/publicDebatesPage.js";
 
 const router = express.Router();
 
-/**
- * Safely set the current page in the session.
- */
 function setCurrentPage(req, pageFn) {
   if (!req.session) {
     console.error("❌ Session is undefined! Cannot set page.");
@@ -29,54 +27,41 @@ function setCurrentPage(req, pageFn) {
   }
 }
 
-router.post(
-  "/",
-  express.raw({ type: "application/octet-stream" }),
-  (req, res) => {
-    try {
-      // 1️⃣ Decode Protobuf binary into a UIEvent message
-      const message = UIEvent.deserializeBinary(new Uint8Array(req.body));
+router.post("/", express.raw({ type: "application/octet-stream" }), (req, res) => {
+  try {
+    // 1️⃣ Decode Protobuf binary into a UIEvent message
+    const message = fromBinary(UIEventSchema, new Uint8Array(req.body));
 
-      // 2️⃣ Convert to plain JS object for logging
-      // `toObject` is the google-protobuf equivalent of Buf's toJson()
-      const eventObject = message.toObject();
+    console.log("📩 Received UI Event:", message);
 
-      console.log("📩 Received UI Event:", eventObject);
+    // 2️⃣ Extract the actionId from the event
+    const actionId = message.data?.actionId;
 
-      // 3️⃣ Extract the actionId from the event
-      const actionId = eventObject.data?.actionid; 
-      // NOTE: google-protobuf lowercases field names in toObject()
+    console.log("🔍 Parsed actionId:", actionId);
 
-      console.log("🔍 Parsed actionId:", actionId);
-
-      // 4️⃣ Switch page based on actionId
-      switch (actionId) {
-        case "goHome":
-          console.log("➡ Switching to homePage");
-          setCurrentPage(req, homePage);
-          break;
-        case "goProfile":
-          console.log("➡ Switching to profilePage");
-          setCurrentPage(req, profilePage);
-          break;
-        case "goRoom":
-          console.log("➡ Switching to roomPage");
-          setCurrentPage(req, roomPage);
-          break;
-        case "goPublicDebates":
-          console.log("➡ Switching to publicDebatesPage");
-          setCurrentPage(req, publicDebatesPage);
-          break;
-        default:
-          console.warn("ℹ No page switch for actionId:", actionId);
-      }
-
-      res.status(200).send("Event processed");
-    } catch (error) {
-      console.error("❌ Failed to decode event:", error);
-      res.status(400).send("Invalid event");
+    // 3️⃣ Switch page based on actionId
+    switch (actionId) {
+      case "goHome":
+        setCurrentPage(req, homePage);
+        break;
+      case "goProfile":
+        setCurrentPage(req, profilePage);
+        break;
+      case "goRoom":
+        setCurrentPage(req, roomPage);
+        break;
+      case "goPublicDebates":
+        setCurrentPage(req, publicDebatesPage);
+        break;
+      default:
+        console.warn("ℹ No page switch for actionId:", actionId);
     }
+
+    res.status(200).send("Event processed");
+  } catch (error) {
+    console.error("❌ Failed to decode event:", error);
+    res.status(400).send("Invalid event");
   }
-);
+});
 
 export default router;
