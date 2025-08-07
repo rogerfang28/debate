@@ -1,5 +1,5 @@
 import { API_BASE } from '../../lib/config.js';
-import { UIEventSchema, EventType } from '../../../../protos/unused/event_pb.js';
+import { UIEventSchema, EventType } from '../../../../src/gen/event_pb.js';
 import { create, toBinary } from '@bufbuild/protobuf';
 
 export default async function sendDataToBackend(eventData) {

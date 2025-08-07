@@ -1,5 +1,5 @@
 import sendDataToBackend from "./sendData.js";
-import { EventType } from "../../../../protos/unused/event_pb.js";
+import { EventType } from "../../../../src/gen/event_pb.js";
 
 const eventTypeMap = {
   onClick: EventType.CLICK,
