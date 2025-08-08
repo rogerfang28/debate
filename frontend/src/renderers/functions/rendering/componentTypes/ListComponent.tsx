@@ -15,10 +15,7 @@ const ListComponent: React.FC<BaseComponentProps> = ({ component, className, sty
   return (
     <ul className={className} style={style} {...events}>
       {component.items?.map((item: ListItem, idx: number) => {
-<<<<<<< HEAD
         // Build className and events for each individual item
-=======
->>>>>>> 6d99075 (tailwind works for now, trying to fix some hover)
         const itemClassName = buildClassName(item.style);
         const itemEvents = bindEvents(item);
         

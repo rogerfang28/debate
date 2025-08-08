@@ -111,35 +111,6 @@ export default function homePage() {
 
           // Rooms List
           {
-<<<<<<< HEAD
-            id: "btnCreateRoom",
-            type: ComponentType.BUTTON,
-            text: "➕ Create Room",
-            style: { customClass: "btn btn-primary mb-6" },
-            events: { onClick: "openCreateRoomModal" }
-          },
-
-          // Rooms List (sample clickable items)
-          {
-            id: "roomList",
-            type: ComponentType.LIST,
-            style: { customClass: "grid grid-cols-1 md:grid-cols-2 gap-4" },
-            items: [
-              { 
-                label: "🎯 Strategy Debate Room", 
-                events: { onClick: "enterRoom" },
-                style: { customClass: "p-4 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition-all" }
-              },
-              { 
-                label: "🌍 Climate Change Discussion", 
-                events: { onClick: "enterRoom" },
-                style: { customClass: "p-4 border border-gray-300 rounded hover:bg-green-50 hover:border-green-400 cursor-pointer transition-all" }
-              },
-              { 
-                label: "💡 Innovation Lab", 
-                events: { onClick: "enterRoom" },
-                style: { customClass: "p-4 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-400 cursor-pointer transition-all" }
-=======
             id: "roomsSection",
             type: ComponentType.CONTAINER,
             children: [
@@ -170,7 +141,6 @@ export default function homePage() {
                     style: { customClass: "p-4 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-400 cursor-pointer transition-all" }
                   }
                 ]
->>>>>>> 6d99075 (tailwind works for now, trying to fix some hover)
               }
             ]
           }
