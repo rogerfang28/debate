@@ -1,5 +1,5 @@
 import setPage from "./setPage.ts";
-import homePage from "../../pages/homePage.js";
+import homePage from "../../pages/schemas/homePage.js";
 
 export default function getCurrentPage(req: any) {
     try {
