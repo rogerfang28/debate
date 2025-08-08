@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import getInfo from "./functions/getInfo";
 // @ts-ignore - PageRenderer not fully converted yet
-import { PageRenderer } from "./functions/rendering/PageRenderer.jsx";
+import { PageRenderer } from "./functions/rendering/PageRenderer.js";
 
 // TypeScript interfaces
 interface PageData {

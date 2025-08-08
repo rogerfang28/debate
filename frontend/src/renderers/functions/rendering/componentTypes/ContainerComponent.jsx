@@ -1,5 +1,5 @@
 import React from "react";
-import ComponentRenderer from "../ComponentRenderer.jsx";
+import ComponentRenderer from "../ComponentRenderer.tsx";
 
 export default function ContainerComponent({ component, className, style, events }) {
   return (

@@ -1,17 +1,31 @@
-import handleEvent from "../handleEvent.ts";
+import handleEvent from "../handleEvent";
+
+// TypeScript interfaces
+export interface ComponentEvent {
+  [eventName: string]: string | number;
+}
+
+interface ComponentProps {
+  events?: ComponentEvent;
+  [key: string]: any;
+}
+
+interface BoundEvents {
+  [reactEventName: string]: (e: React.SyntheticEvent) => void;
+}
 
 /**
  * Binds backend-defined events to React event handlers
  * so that they call handleEvent() with the correct actionId.
  */
-export default function bindEvents(component) {
-  const boundEvents = {};
+export default function bindEvents(component: ComponentProps): BoundEvents {
+  const boundEvents: BoundEvents = {};
 
   if (!component?.events) return boundEvents; // no events to bind
 
   for (const [eventName, actionId] of Object.entries(component.events)) {
     // Convert backend event names to valid React event prop names
-    let reactEventName;
+    let reactEventName: string;
 
     if (eventName === "onEnter") {
       // Special case: map "onEnter" to React's onKeyDown
@@ -21,9 +35,9 @@ export default function bindEvents(component) {
       reactEventName = eventName.charAt(0).toLowerCase() + eventName.slice(1);
     }
 
-    boundEvents[reactEventName] = (e) => {
+    boundEvents[reactEventName] = (e: React.SyntheticEvent) => {
       // Special handling for "onEnter"
-      if (eventName === "onEnter" && e.key !== "Enter") return;
+      if (eventName === "onEnter" && (e as React.KeyboardEvent).key !== "Enter") return;
 
       // Pass full event info to handleEvent
       handleEvent(
@@ -31,7 +45,6 @@ export default function bindEvents(component) {
         component,
         eventName,   // backend event name ("onClick", "onEnter")
         actionId,    // this comes directly from component.events map ("goProfile", etc.)
-        window.reloadPage
       );
     };
   }
