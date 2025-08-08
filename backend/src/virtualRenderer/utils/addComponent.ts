@@ -1,7 +1,7 @@
 import getPage from "./getPage.ts";
 import setPage from "./setPage.ts";
 import { create } from "@bufbuild/protobuf";
-import { PageSchema } from "../../../../../src/gen/page_pb.js";
+import { PageSchema } from "../../../../src/gen/page_pb.js";
 
 export default function addComponent(req: any, component: any) {
     try {

@@ -3,10 +3,10 @@ import homePage from "../pages/schemas/homePage.js";
 import roomPage from "../pages/schemas/roomPage.js";
 import profilePage from "../pages/schemas/profilePage.js";
 import publicDebatesPage from "../pages/schemas/publicDebatesPage.js";
-import setCurrentPage from "./utils/setPage.ts";
-import getCurrentPage from "./utils/getPage.ts";
+import setCurrentPage from "../utils/setPage.ts";
+import getCurrentPage from "../utils/getPage.ts";
 import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
-import closeCreateRoomModal from "./utils/closeCreateRoomModal.ts";
+import closeCreateRoomModal from "../utils/closeCreateRoomModal.ts";
 
 export default function handleEvent(req: any, actionId: string) {
     if (!req.session) {

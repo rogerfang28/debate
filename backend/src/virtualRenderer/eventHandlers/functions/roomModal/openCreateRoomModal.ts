@@ -1,4 +1,4 @@
-import addComponent from "../../utils/addComponent.ts";
+import addComponent from "../../../utils/addComponent.ts";
 import { ComponentType } from "../../../../../../src/gen/page_pb.js";
 
 export default function openCreateRoomModal(req: any) {
