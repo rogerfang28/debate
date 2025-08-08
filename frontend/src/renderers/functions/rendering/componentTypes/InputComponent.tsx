@@ -19,6 +19,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       type={component.attributes?.type || "text"}
       name={component.name}
       defaultValue={component.value as string || ""}
+      placeholder={component.text || ""}
       className={className}
       style={style}
       {...events}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ========================================
    DEBATE PLATFORM DESIGN SYSTEM
    ======================================== */
@@ -1084,3 +1085,6 @@ input::placeholder, textarea::placeholder {
     border-color: var(--color-gray-400);
   }
 } */
+=======
+@import "tailwindcss";
+>>>>>>> 6d99075 (tailwind works for now, trying to fix some hover)

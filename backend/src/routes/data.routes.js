@@ -1,6 +1,7 @@
 import express from "express";
 import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/page_pb.js";
+import testPage from "../virtualRenderer/pages/testPage.js";
 import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
