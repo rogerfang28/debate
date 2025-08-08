@@ -1,5 +1,5 @@
 import React from "react";
-import ComponentRenderer from "../ComponentRenderer.tsx";
+import ComponentRenderer from "../ComponentRenderer.js";
 
 export default function ModalComponent({ component, className, style, events }) {
   return (

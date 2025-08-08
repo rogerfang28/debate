@@ -3,18 +3,12 @@ import { ComponentType } from "../../../../../src/gen/page_pb.js";
 import buildClassName, { ComponentStyle } from "./buildClassName";
 import bindEvents, { ComponentEvent } from "./bindEvents";
 
-// @ts-ignore - Component types not converted yet
-import TextComponent from "./componentTypes/TextComponent.jsx";
-// @ts-ignore - Component types not converted yet
-import ButtonComponent from "./componentTypes/ButtonComponent.jsx";
-// @ts-ignore - Component types not converted yet
-import ImageComponent from "./componentTypes/ImageComponent.jsx";
-// @ts-ignore - Component types not converted yet
-import ListComponent from "./componentTypes/ListComponent.jsx";
-// @ts-ignore - Component types not converted yet
-import ContainerComponent from "./componentTypes/ContainerComponent.jsx";
-// @ts-ignore - Component types not converted yet
-import CardComponent from "./componentTypes/CardComponent.jsx";
+import TextComponent from "./componentTypes/TextComponent";
+import ButtonComponent from "./componentTypes/ButtonComponent";
+import ImageComponent from "./componentTypes/ImageComponent";
+import ListComponent from "./componentTypes/ListComponent";
+import ContainerComponent from "./componentTypes/ContainerComponent";
+import CardComponent from "./componentTypes/CardComponent";
 
 // TypeScript interfaces
 interface ComponentProps {
