@@ -1,7 +1,7 @@
 import express from "express";
 import { fromBinary } from "@bufbuild/protobuf";
 import { UIEventSchema } from "../../../src/gen/event_pb.js";
-import handleEvent from "../eventHandlers/eventHandler.ts";
+import handleEvent from "../virtualRenderer/eventHandlers/eventHandler.ts"
 
 const router = express.Router();
 
