@@ -65,4 +65,4 @@ app.use("/api/events", eventRoutes);
 registerSockets(io);
 
 const PORT = process.env.PORT;
-server.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`Backend running on port ${PORT}`));
