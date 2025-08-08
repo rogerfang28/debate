@@ -9,12 +9,18 @@ interface PageData {
 export default async function getInfo(endpoint?: string): Promise<PageData | null> {
   try {
     const url = endpoint || "/api/data";
+    
+    // Get JWT token from localStorage (same pattern as roomAPI.js)
+    const token = localStorage.getItem('token');
+    
     const res = await fetch(url, {
       method: "GET",
       headers: {
-        "Accept": "application/x-protobuf"
+        "Accept": "application/x-protobuf",
+        // Include JWT token in Authorization header if available
+        ...(token && { "Authorization": `Bearer ${token}` })
       },
-      credentials: "include" // 🔹 send cookies/session ID
+      credentials: "include" // 🔹 send cookies/session ID (keeping for compatibility)
     });
 
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);

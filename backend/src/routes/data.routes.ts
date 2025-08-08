@@ -1,13 +1,17 @@
 import express from "express";
 import { create, toBinary } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/page_pb.js";
-import getPage from "../virtualRenderer/pages/getPage.ts";
+import getCurrentPage from "../virtualRenderer/pages/getCurrentPage.ts";
+import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
+// Add authentication middleware to protect the data route
+router.use(authenticateToken);
+
 router.get("/", (req, res) => {
   try {
-    const pageData = getPage(req); // <— all selection logic lives here
+    const pageData = getCurrentPage(req); // <— all selection logic lives here
     const pageMessage = create(PageSchema, pageData);
     const bytes = toBinary(PageSchema, pageMessage);
 

@@ -4,7 +4,7 @@ import roomPage from "../pages/schemas/roomPage.js";
 import profilePage from "../pages/schemas/profilePage.js";
 import publicDebatesPage from "../pages/schemas/publicDebatesPage.js";
 import setCurrentPage from "../utils/setPage.ts";
-import getCurrentPage from "../utils/getPage.ts";
+import getCurrentPage from "../utils/getCurrentPage.ts";
 import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
 import closeCreateRoomModal from "../utils/closeCreateRoomModal.ts";
 
