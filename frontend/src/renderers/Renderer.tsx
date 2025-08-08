@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-// @ts-ignore - getInfo not fully converted yet
-import getInfo from "./functions/getInfo.js";
+import getInfo from "./functions/getInfo";
 // @ts-ignore - PageRenderer not fully converted yet
 import { PageRenderer } from "./functions/rendering/PageRenderer.jsx";
 
@@ -20,7 +19,7 @@ const Renderer: React.FC = () => {
   const [data, setData] = useState<PageData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // 🔹 Global reload function for handleEvent.js
+  // 🔹 Global reload function for handleEvent.ts
   window.reloadPage = async (): Promise<void> => {
     try {
       setLoading(true); // show spinner

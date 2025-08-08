@@ -1,13 +1,42 @@
-import sendDataToBackend from "./sendData.js";
+import sendDataToBackend, { EventData } from "./sendData";
 import { EventType } from "../../../../src/gen/event_pb.js";
 
-const eventTypeMap = {
+// TypeScript interfaces
+interface ComponentProps {
+  id?: string;
+  name?: string;
+  text?: string;
+  value?: string | number | boolean;
+  [key: string]: any;
+}
+
+interface EventTarget {
+  value?: string;
+  checked?: boolean;
+  type?: string;
+  name?: string;
+}
+
+interface CustomEvent {
+  preventDefault?: () => void;
+  type?: string;
+  target?: EventTarget;
+}
+
+type EventName = 'onClick' | 'onChange' | 'onSubmit';
+
+const eventTypeMap: Record<EventName, EventType> = {
   onClick: EventType.CLICK,
   onChange: EventType.INPUT_CHANGE,
   onSubmit: EventType.FORM_SUBMIT,
 };
 
-export default async function handleEvent(e, component, eventName, actionId) {
+export default async function handleEvent(
+  e: CustomEvent | null,
+  component: ComponentProps,
+  eventName: EventName | string,
+  actionId: string | number
+): Promise<void> {
   try {
     console.log(
       "📤 handleEvent got actionId:",
@@ -24,7 +53,7 @@ export default async function handleEvent(e, component, eventName, actionId) {
 
     await sendDataToBackend({
       componentId: component.id || "unknown",
-      eventType: eventTypeMap[eventName] || EventType.UNKNOWN,
+      eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
       actionId,
       eventName,
       data: {
@@ -41,7 +70,7 @@ export default async function handleEvent(e, component, eventName, actionId) {
     // 🔹 Instantly refresh the page after sending event
     window.reloadPage?.();
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(`Error handling event ${eventName}:`, error);
   }
 }

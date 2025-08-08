@@ -1,4 +1,4 @@
-import handleEvent from "../handleEvent.js";
+import handleEvent from "../handleEvent.ts";
 
 /**
  * Binds backend-defined events to React event handlers

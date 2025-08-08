@@ -2,7 +2,25 @@ import { API_BASE } from '../../lib/config.js';
 import { UIEventSchema, EventType } from '../../../../src/gen/event_pb.js';
 import { create, toBinary } from '@bufbuild/protobuf';
 
-export default async function sendDataToBackend(eventData) {
+// TypeScript interface for event data
+export interface EventData {
+  componentId?: string;
+  eventType?: EventType;
+  actionId?: string | number;
+  eventName?: string;
+  data?: {
+    value?: string;
+    checked?: boolean;
+    type?: string;
+    name?: string;
+    text?: string;
+    componentValue?: string | number | boolean;
+    [key: string]: any;
+  };
+  timestamp?: number;
+}
+
+export default async function sendDataToBackend(eventData: EventData): Promise<void> {
   try {
     // 1️⃣ Create a UIEvent message with real event data
     const event = create(UIEventSchema, {
@@ -28,7 +46,7 @@ export default async function sendDataToBackend(eventData) {
     });
 
     console.log("Server says:", await res.text());
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("❌ Error sending data:", err);
   }
 }
