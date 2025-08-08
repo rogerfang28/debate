@@ -10,6 +10,7 @@ import ListComponent from "./componentTypes/ListComponent";
 import ContainerComponent from "./componentTypes/ContainerComponent";
 import CardComponent from "./componentTypes/CardComponent";
 import InputComponent from "./componentTypes/InputComponent";
+import GraphComponent from "./componentTypes/GraphComponent";
 
 // TypeScript interfaces
 interface ComponentProps {
@@ -33,6 +34,7 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CONTAINER]: ContainerComponent,
   [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
+  [ComponentType.GRAPH]: GraphComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {

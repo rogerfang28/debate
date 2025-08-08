@@ -125,21 +125,21 @@ export default function homePage() {
                 type: ComponentType.LIST,
                 style: { customClass: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" },
                 items: [
-                  { 
-                    label: "🎯 Strategy Debate Room", 
-                    events: { onClick: "enterRoom" },
-                    style: { customClass: "p-4 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition-all" }
-                  },
-                  { 
-                    label: "🌍 Climate Change Discussion", 
-                    events: { onClick: "enterRoom" },
-                    style: { customClass: "p-4 border border-gray-300 rounded hover:bg-green-50 hover:border-green-400 cursor-pointer transition-all" }
-                  },
-                  { 
-                    label: "💡 Innovation Lab", 
-                    events: { onClick: "enterRoom" },
-                    style: { customClass: "p-4 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-400 cursor-pointer transition-all" }
-                  }
+                  // { 
+                  //   label: "🎯 Strategy Debate Room", 
+                  //   events: { onClick: "enterRoom" },
+                  //   style: { customClass: "p-4 border border-gray-300 rounded hover:bg-blue-50 hover:border-blue-400 cursor-pointer transition-all" }
+                  // },
+                  // { 
+                  //   label: "🌍 Climate Change Discussion", 
+                  //   events: { onClick: "enterRoom" },
+                  //   style: { customClass: "p-4 border border-gray-300 rounded hover:bg-green-50 hover:border-green-400 cursor-pointer transition-all" }
+                  // },
+                  // { 
+                  //   label: "💡 Innovation Lab", 
+                  //   events: { onClick: "enterRoom" },
+                  //   style: { customClass: "p-4 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-400 cursor-pointer transition-all" }
+                  // }
                 ]
               }
             ]

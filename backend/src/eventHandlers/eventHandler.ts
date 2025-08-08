@@ -3,27 +3,16 @@ import homePage from "../virtualRenderer/pages/homePage.js";
 import roomPage from "../virtualRenderer/pages/roomPage.js";
 import profilePage from "../virtualRenderer/pages/profilePage.js";
 import publicDebatesPage from "../virtualRenderer/pages/publicDebatesPage.js";
+import setCurrentPage from "./utils/setPage.ts";
+import getCurrentPage from "./utils/getPage.ts";
+import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
+import closeCreateRoomModal from "./utils/closeCreateRoomModal.ts";
 
-function setCurrentPage(req: any, pageFn: () => any) {
+export default function handleEvent(req: any, actionId: string) {
     if (!req.session) {
         console.error("❌ Session is undefined! Cannot set page.");
         return;
     }
-    if (typeof pageFn !== "function") {
-        console.error("❌ Page function is invalid:", pageFn);
-        return;
-    }
-
-    try {
-        const page = pageFn();
-        req.session.currentPage = page;
-        console.log(`✅ Current page set to: ${page.pageId || "[unknown ID]"}`);
-    } catch (err) {
-        console.error("❌ Error creating page object:", err);
-    }
-}
-
-export default function handleEvent(req: any, actionId: string) {
     switch (actionId) {
         case "goHome":
             console.log("Going to home page");
@@ -43,6 +32,16 @@ export default function handleEvent(req: any, actionId: string) {
         case "goPublicDebates":
             console.log("Going to public debates page");
             setCurrentPage(req, publicDebatesPage);
+            break;
+        
+        case "openCreateRoomModal":
+            console.log("Opening create room modal");
+            openCreateRoomModal(req);
+            break;
+        
+        case "closeCreateRoomModal":
+            console.log("Closing create room modal");
+            closeCreateRoomModal(req);
             break;
         
         default:

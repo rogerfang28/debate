@@ -92,32 +92,23 @@ export default function roomPage() {
               customClass: "flex-1 relative bg-gray-900"
             },
             children: [
-              // Graph Canvas (placeholder)
+              // Graph Canvas
               {
                 id: "graphCanvas",
-                type: ComponentType.CONTAINER,
+                type: ComponentType.GRAPH,
                 style: { 
-                  customClass: "w-full h-full bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
+                  customClass: "w-full h-full bg-gradient-to-br from-gray-900 to-gray-800"
                 },
-                children: [
-                  {
-                    id: "graphPlaceholder",
-                    type: ComponentType.CONTAINER,
-                    style: { 
-                      customClass: "absolute inset-0 flex items-center justify-center text-gray-400"
-                    },
-                    children: [
-                      {
-                        id: "graphMessage",
-                        type: ComponentType.TEXT,
-                        text: "🎯 Graph visualization will load here",
-                        style: { 
-                          customClass: "text-lg font-medium"
-                        }
-                      }
-                    ]
-                  }
-                ]
+                nodes: [
+                  { id: "node1", text: "Main Argument", x: 200, y: 150 },
+                  { id: "node2", text: "Supporting Evidence", x: 400, y: 250 },
+                  { id: "node3", text: "Counter Argument", x: 300, y: 350 }
+                ],
+                edges: [
+                  { id: "edge1", source: "node1", target: "node2" },
+                  { id: "edge2", source: "node2", target: "node3" }
+                ],
+                events: { onClick: "selectGraphElement" }
               },
 
               // Floating Toolbar
