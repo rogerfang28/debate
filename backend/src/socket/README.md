@@ -4,7 +4,7 @@ This folder contains **all WebSocket / Socket.IO code** for the project. It play
 
 | Transport     | Entry file            | Feature routers          | Purpose        |
 | ------------- | --------------------- | ------------------------ | -------------- |
-| **HTTP**      | `src/app.js`          | `src/routes/…`           | REST endpoints |
+| **HTTP**      | `src/app.ts`          | `src/routes/…`           | REST endpoints |
 | **WebSocket** | `src/socket/index.js` | `src/socket/<feature>/…` | Real‑time API  |
 
 ---

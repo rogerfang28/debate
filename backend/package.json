@@ -2,9 +2,10 @@
   "name": "backend",
   "type": "module",
   "version": "1.0.0",
-  "main": "src/app.js",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "tsx watch src/app.ts",
+    "start": "tsx src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -30,9 +31,20 @@
     "mongoose": "^8.16.4",
     "multer": "^2.0.2",
     "protobufjs": "^7.5.3",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.2.0",
     "nodemon": "^3.1.10",
     "protobufjs-cli": "^1.1.3"
   }
