@@ -7,11 +7,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    console.log("🔍 Data route: Session ID:", req.sessionID);
-    console.log("🔍 Data route: Session keys:", Object.keys(req.session || {}));
-    console.log("🔍 Data route called - fetching page data");
     const pageData = await getPage(req); // <— all selection logic lives here
-    console.log("🔍 Data route: Page data retrieved:", pageData?.pageId, "with", pageData?.components?.length, "components");
     
     const pageMessage = create(PageSchema, pageData);
     const bytes = toBinary(PageSchema, pageMessage);

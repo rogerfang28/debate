@@ -7,6 +7,8 @@ import setCurrentPage from "../utils/setPage.ts";
 import getPage from "../pages/getPage.ts";
 import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
 import closeCreateRoomModal from "./functions/roomModal/closeCreateRoomModal.ts";
+import openFriendModal from "./functions/friendModal/openFriendModal.ts";
+import closeFriendModal from "./functions/friendModal/closeFriendModal.ts";
 
 export default async function handleEvent(req: any, actionId: string) {
     if (!req.session) {
@@ -43,7 +45,14 @@ export default async function handleEvent(req: any, actionId: string) {
             console.log("Closing create room modal");
             await closeCreateRoomModal(req);
             break;
-        
+        case "openFriendsModal":
+            console.log("Opening friend modal");
+            await openFriendModal(req);
+            break;
+        case "closeFriendModal":
+            console.log("Closing friend modal");
+            await closeFriendModal(req);
+            break;
         default:
             console.warn("Unknown actionId:", actionId);
     }

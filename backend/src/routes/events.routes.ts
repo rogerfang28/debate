@@ -7,18 +7,13 @@ const router = express.Router();
 
 router.post("/", express.raw({ type: "application/octet-stream" }), (req, res) => {
   try {
-    console.log("📩 Event route: Session ID:", req.sessionID);
-    console.log("📩 Event route: Session keys:", Object.keys(req.session || {}));
-    
     // 1️⃣ Decode Protobuf binary into a UIEvent message
     const message = fromBinary(UIEventSchema, new Uint8Array(req.body));
-
-    console.log("📩 Received UI Event:", message);
 
     // 2️⃣ Extract the actionId from the event
     const actionId = message.data?.actionId;
 
-    console.log("🔍 Parsed actionId:", actionId);
+    console.log("🔍 Handling event:", actionId);
 
     // 3️⃣ Handle the event using the event handler
     if (actionId) {
