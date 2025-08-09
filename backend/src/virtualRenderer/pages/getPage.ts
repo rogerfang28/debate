@@ -6,8 +6,9 @@ export default async function getPage(req: Request) {
   
   // 1) If you've been storing a full page object in the session:
   if (req.session?.currentPage) {
-    console.log("✅ Found page in session:", req.session.currentPage.pageId);
-    return req.session.currentPage;
+    const page = (req.session as any).currentPage;
+    console.log("✅ Found page in session:", page.pageId, "with", page.components?.length, "components");
+    return page;
   }
 
   // 2) Optional: choose by query (?page=room,profile,public,test)

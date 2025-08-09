@@ -1,9 +1,11 @@
 import deleteComponent from "../../../utils/deleteComponent.ts";
 
-export default function closeCreateRoomModal(req: any) {
+export default async function closeCreateRoomModal(req: any) {
     try {
+        console.log("🔄 closeCreateRoomModal: Starting to close modal");
+        
         // Delete the create room modal component
-        const success = deleteComponent(req, "createRoomModal");
+        const success = await deleteComponent(req, "createRoomModal");
         
         if (success) {
             console.log("✅ Create room modal closed successfully");

@@ -3,9 +3,12 @@ import setPage from "./setPage.ts";
 import { create } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../../src/gen/page_pb.js";
 
-export default function deleteComponent(req: any, componentId: string) {
+export default async function deleteComponent(req: any, componentId: string) {
     try {
-        let currentPage = getPage(req);
+        console.log("🔄 deleteComponent: Starting to remove component:", componentId);
+        
+        let currentPage = await getPage(req);
+        console.log("🔄 deleteComponent: Current page retrieved:", currentPage?.pageId, "with", currentPage?.components?.length, "components");
         
         if (!currentPage) {
             console.error("❌ No current page found");
@@ -23,6 +26,8 @@ export default function deleteComponent(req: any, componentId: string) {
             return false;
         }
 
+        console.log("🔄 deleteComponent: Component found, creating updated page with", updatedComponents.length, "components");
+
         // Create a new page object without the deleted component
         const updatedPage = create(PageSchema, {
             pageId: currentPage.pageId,
@@ -33,6 +38,7 @@ export default function deleteComponent(req: any, componentId: string) {
         // Set the updated page as a function (as expected by setPage)
         setPage(req, () => updatedPage);
         
+        console.log("🔄 deleteComponent: Updated page set to session");
         console.log(`✅ Component '${componentId}' deleted successfully. Remaining components: ${updatedPage.components.length}`);
         return true;
         

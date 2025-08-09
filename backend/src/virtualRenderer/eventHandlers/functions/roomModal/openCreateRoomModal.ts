@@ -3,6 +3,8 @@ import { ComponentType } from "../../../../../../src/gen/page_pb.js";
 
 export default async function openCreateRoomModal(req: any) {
     try {
+        console.log("🔄 openCreateRoomModal: Starting to create modal component");
+        
         // Create the modal component
         const createRoomModal = {
             id: "createRoomModal",
@@ -110,6 +112,8 @@ export default async function openCreateRoomModal(req: any) {
             ]
         };
 
+        console.log("🔄 openCreateRoomModal: Modal component created, about to add to page");
+        
         // Add the modal to the current page
         const success = await addComponent(req, createRoomModal);
         

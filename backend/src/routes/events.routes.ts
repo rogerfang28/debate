@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.post("/", express.raw({ type: "application/octet-stream" }), (req, res) => {
   try {
+    console.log("📩 Event route: Session ID:", req.sessionID);
+    console.log("📩 Event route: Session keys:", Object.keys(req.session || {}));
+    
     // 1️⃣ Decode Protobuf binary into a UIEvent message
     const message = fromBinary(UIEventSchema, new Uint8Array(req.body));
 
