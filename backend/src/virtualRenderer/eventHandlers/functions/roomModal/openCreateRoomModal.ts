@@ -1,7 +1,7 @@
 import addComponent from "../../../utils/addComponent.ts";
 import { ComponentType } from "../../../../../../src/gen/page_pb.js";
 
-export default function openCreateRoomModal(req: any) {
+export default async function openCreateRoomModal(req: any) {
     try {
         // Create the modal component
         const createRoomModal = {
@@ -111,7 +111,7 @@ export default function openCreateRoomModal(req: any) {
         };
 
         // Add the modal to the current page
-        const success = addComponent(req, createRoomModal);
+        const success = await addComponent(req, createRoomModal);
         
         if (success) {
             console.log("✅ Create room modal opened successfully");

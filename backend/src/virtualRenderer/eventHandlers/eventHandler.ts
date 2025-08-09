@@ -4,11 +4,11 @@ import roomPage from "../pages/schemas/roomPage.js";
 import profilePage from "../pages/schemas/profilePage.js";
 import publicDebatesPage from "../pages/schemas/publicDebatesPage.js";
 import setCurrentPage from "../utils/setPage.ts";
-import getCurrentPage from "../utils/getPage.ts";
+import getPage from "../pages/getPage.ts";
 import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
 import closeCreateRoomModal from "./functions/roomModal/closeCreateRoomModal.ts";
 
-export default function handleEvent(req: any, actionId: string) {
+export default async function handleEvent(req: any, actionId: string) {
     if (!req.session) {
         console.error("❌ Session is undefined! Cannot set page.");
         return;
@@ -36,12 +36,12 @@ export default function handleEvent(req: any, actionId: string) {
         
         case "openCreateRoomModal":
             console.log("Opening create room modal");
-            openCreateRoomModal(req);
+            await openCreateRoomModal(req);
             break;
         
         case "closeCreateRoomModal":
             console.log("Closing create room modal");
-            closeCreateRoomModal(req);
+            await closeCreateRoomModal(req);
             break;
         
         default:

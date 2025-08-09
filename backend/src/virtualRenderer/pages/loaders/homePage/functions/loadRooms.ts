@@ -1,4 +1,5 @@
 import { RoomModel } from '../../../../../models/Room.js';
+import mongoose from 'mongoose';
 
 /**
  * Get all rooms where the user is either owner or member
@@ -10,10 +11,12 @@ import { RoomModel } from '../../../../../models/Room.js';
 export default async function getRooms(userId: string) {
   try {
     // Find rooms where user is either owner or member
+    const testId = new mongoose.Types.ObjectId("687ac6a3b292e5fa181ed2f1");
+    console.log("🔍 Fetching rooms for user ID:", testId.toString());
     const rooms = await RoomModel.find({
       $or: [
-        { owner: userId }, // User is the owner
-        { 'members.user': userId } // User is a member
+        { owner: testId }, // User is the owner
+        { 'members.user': testId } // User is a member
       ]
     })
     .populate('owner', 'username email') // Populate owner details
