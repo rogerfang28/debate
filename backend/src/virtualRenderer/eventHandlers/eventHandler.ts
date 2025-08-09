@@ -6,7 +6,7 @@ import publicDebatesPage from "../pages/schemas/publicDebatesPage.js";
 import setCurrentPage from "../utils/setPage.ts";
 import getCurrentPage from "../utils/getPage.ts";
 import openCreateRoomModal from "./functions/roomModal/openCreateRoomModal.ts";
-import closeCreateRoomModal from "../utils/closeCreateRoomModal.ts";
+import closeCreateRoomModal from "./functions/roomModal/closeCreateRoomModal.ts";
 
 export default function handleEvent(req: any, actionId: string) {
     if (!req.session) {

@@ -1,4 +1,4 @@
-import deleteComponent from "./deleteComponent.ts";
+import deleteComponent from "../../../utils/deleteComponent.ts";
 
 export default function closeCreateRoomModal(req: any) {
     try {

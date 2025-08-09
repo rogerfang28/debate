@@ -5,9 +5,9 @@ import getPage from "../virtualRenderer/pages/getPage.ts";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const pageData = getPage(req); // <— all selection logic lives here
+    const pageData = await getPage(req); // <— all selection logic lives here
     const pageMessage = create(PageSchema, pageData);
     const bytes = toBinary(PageSchema, pageMessage);
 
