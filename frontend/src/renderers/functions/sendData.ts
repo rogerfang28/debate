@@ -22,15 +22,26 @@ export interface EventData {
 
 export default async function sendDataToBackend(eventData: EventData): Promise<void> {
   try {
-    // 1️⃣ Create a UIEvent message with real event data
+    // 1️⃣ Create a UIEvent message with the new flexible structure
     const event = create(UIEventSchema, {
       eventId: crypto.randomUUID(),
       componentId: eventData.componentId || "unknown",
-      type: eventData.eventType || EventType.UNKNOWN,
-      timestamp: eventData.timestamp || Date.now(),
+      type: eventData.eventType || EventType.ACTION, // Use ACTION type for new events
+      timestamp: BigInt(eventData.timestamp || Date.now()),
+      
+      // ✅ Use the new action_id field
+      actionId: String(eventData.actionId || ""),
+      
+      // ✅ Convert data to the new flexible event_data array
+      eventData: Object.entries(eventData.data || {}).map(([key, value]) => ({
+        key,
+        value: convertToEventValue(value)
+      })),
+      
+      // Keep legacy data for backward compatibility if needed
       data: {
         ...eventData.data,
-        actionId: eventData.actionId || "" // inside `data` since proto has no actionId field
+        actionId: eventData.actionId || ""
       }
     });
 
@@ -48,5 +59,25 @@ export default async function sendDataToBackend(eventData: EventData): Promise<v
     console.log("Server says:", await res.text());
   } catch (err: unknown) {
     console.error("❌ Error sending data:", err);
+  }
+}
+
+// Helper function to convert JavaScript values to EventValue protobuf format
+function convertToEventValue(value: any) {
+  if (typeof value === 'string') {
+    return { textValue: value };
+  } else if (typeof value === 'number') {
+    if (Number.isInteger(value)) {
+      return { numberValue: BigInt(value) };
+    } else {
+      return { decimalValue: value };
+    }
+  } else if (typeof value === 'boolean') {
+    return { booleanValue: value };
+  } else if (Array.isArray(value) && value.every(v => typeof v === 'string')) {
+    return { listValue: { values: value } };
+  } else {
+    // Fallback to string representation
+    return { textValue: String(value) };
   }
 }

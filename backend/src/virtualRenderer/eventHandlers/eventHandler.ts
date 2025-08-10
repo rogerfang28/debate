@@ -7,11 +7,14 @@ import openFriendModal from "./functions/friendModal/openFriendModal.ts";
 import closeFriendModal from "./functions/friendModal/closeFriendModal.ts";
 import { loadHomePage, loadProfilePage, loadPublicDebatesPage, loadRoomPage, loadTestPage } from "../pages/loaders/index.ts";
 
-export default async function handleEvent(req: any, actionId: string) {
+export default async function handleEvent(req: any, actionId: string, eventData?: Record<string, any>) {
     if (!req.session) {
         console.error("❌ Session is undefined! Cannot set page.");
         return;
     }
+    
+    console.log(`🎯 Handling action: ${actionId}`, eventData ? `with data: ${JSON.stringify(eventData)}` : '');
+    
     switch (actionId) {
         case "goHome":
             console.log("Going to home page");
@@ -34,6 +37,26 @@ export default async function handleEvent(req: any, actionId: string) {
             setCurrentPage(req, loadPublicDebatesPage);
             break;
         
+        case "submitCreateRoom":
+            console.log("Submitting create room form");
+            if (eventData) {
+                console.log("Room data:", eventData);
+                // Here you can access eventData.roomName, eventData.roomDescription, etc.
+                // TODO: Implement actual room creation logic
+            }
+            await closeCreateRoomModal(req);
+            break;
+            
+        case "submitAddFriend":
+            console.log("Submitting add friend form");
+            if (eventData) {
+                console.log("Friend data:", eventData);
+                // Here you can access eventData.friendEmail, etc.
+                // TODO: Implement actual friend adding logic
+            }
+            await closeFriendModal(req);
+            break;
+            
         case "openCreateRoomModal":
             console.log("Opening create room modal");
             await openCreateRoomModal(req);
