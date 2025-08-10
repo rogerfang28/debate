@@ -1,5 +1,5 @@
-import sendDataToBackend, { EventData } from "./sendData";
-import { EventType } from "../../../../src/gen/event_pb.js";
+import sendDataToBackend, { EventData } from "../events/sendData.js";
+import { EventType } from "../../../../../src/gen/event_pb.js";
 
 // TypeScript interfaces
 interface ComponentProps {

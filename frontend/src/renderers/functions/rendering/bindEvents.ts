@@ -1,4 +1,4 @@
-import handleEvent from "../handleEvent";
+import handleEvent from "../events/handleEvent";
 
 // TypeScript interfaces
 export interface ComponentEvent {

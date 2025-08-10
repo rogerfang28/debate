@@ -1,5 +1,5 @@
-import { API_BASE } from '../../lib/config.js';
-import { UIEventSchema, EventType } from '../../../../src/gen/event_pb.js';
+import { API_BASE } from '../../../unused/lib/config.js';
+import { UIEventSchema, EventType } from '../../../../../src/gen/event_pb.js';
 import { create, toBinary } from '@bufbuild/protobuf';
 
 // TypeScript interface for event data

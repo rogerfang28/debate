@@ -1,7 +1,7 @@
 import express from "express";
 import { create, toBinary } from "@bufbuild/protobuf";
-import { PageSchema } from "../../../src/gen/page_pb.js";
-import getPage from "../virtualRenderer/pages/getPage.ts";
+import { PageSchema } from "../../../../src/gen/page_pb.js";
+import getPage from "../../virtualRenderer/pages/getPage.ts";
 
 const router = express.Router();
 

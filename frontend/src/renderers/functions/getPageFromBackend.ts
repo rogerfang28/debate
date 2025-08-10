@@ -6,7 +6,7 @@ interface PageData {
   [key: string]: any; // Generic page structure from protobuf
 }
 
-export default async function getInfo(endpoint?: string): Promise<PageData | null> {
+export default async function getPageFromBackend(endpoint?: string): Promise<PageData | null> {
   try {
     const url = endpoint || "/api/data";
     const res = await fetch(url, {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import getInfo from "./functions/getInfo";
+import getPageFromBackend from "./functions/getPageFromBackend.ts";
 // @ts-ignore - PageRenderer not fully converted yet
 import { PageRenderer } from "./functions/rendering/PageRenderer.js";
 
@@ -23,11 +23,11 @@ const Renderer: React.FC = () => {
   window.reloadPage = async (): Promise<void> => {
     try {
       setLoading(true); // show spinner
-      const info: PageData | null = await getInfo("/api/data");
+      const info: PageData | null = await getPageFromBackend("/api/data");
       if (info) {
         setData(info);
       } else {
-        console.warn("reloadPage: No data returned from getInfo");
+        console.warn("reloadPage: No data returned from getPageFromBackend");
       }
     } catch (err: unknown) {
       console.error("reloadPage: Failed to load data", err);
@@ -42,12 +42,12 @@ const Renderer: React.FC = () => {
     async function fetchData(): Promise<void> {
       try {
         setLoading(true);
-        const info: PageData | null = await getInfo("/api/data");
+        const info: PageData | null = await getPageFromBackend("/api/data");
         if (info) {
           setData(info);
           if (intervalId) clearInterval(intervalId); // stop retry loop
         } else {
-          console.warn("Renderer: No data returned from getInfo");
+          console.warn("Renderer: No data returned from getPageFromBackend");
         }
       } catch (err: unknown) {
         console.warn("Renderer: Failed to load data, retrying...", err);

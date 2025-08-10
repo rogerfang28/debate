@@ -1,4 +1,4 @@
-import { RoomModel } from '../../../../../models/Room.js';
+import { RoomModel } from '../../../../../server/models/Room.js';
 import mongoose from 'mongoose';
 
 /**
