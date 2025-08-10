@@ -1,10 +1,23 @@
-export default function setCurrentPage(req: any, pageFn: () => any) {
-    if (typeof pageFn !== "function") {
-        console.error("❌ Page function is invalid:", pageFn);
+export default function setCurrentPage(req: any, pageOrFn: any) {
+    let page;
+    
+    if (typeof pageOrFn === "function") {
+        // It's a function - call it to get the page
+        try {
+            page = pageOrFn();
+        } catch (err) {
+            console.error("❌ Error creating page object:", err);
+            return;
+        }
+    } else if (pageOrFn && typeof pageOrFn === "object") {
+        // It's already a page object - use it directly
+        page = pageOrFn;
+    } else {
+        console.error("❌ Page function or object is invalid:", pageOrFn);
         return;
     }
+    
     try {
-        const page = pageFn();
         req.session.currentPage = page;
         
         // Force session save to ensure persistence
@@ -15,6 +28,6 @@ export default function setCurrentPage(req: any, pageFn: () => any) {
         });
         
     } catch (err) {
-        console.error("❌ Error creating page object:", err);
+        console.error("❌ Error setting page in session:", err);
     }
 }

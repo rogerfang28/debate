@@ -4,7 +4,7 @@ import roomCard from "../../components/roomDisplay.ts"; // adjust path
 import { create } from "@bufbuild/protobuf";
 import { PageSchema, ListItemSchema } from "../../../../../../src/gen/page_pb.js";
 
-export default async function loadHomePage(req: any) {
+export default async function loadHomePage() {
   // Load base page structure
   let page = homePage(); // the problem here is that it is just loading the homePage schema, which overrides the component added
 
