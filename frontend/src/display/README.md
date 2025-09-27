@@ -1,0 +1,1 @@
+does all display stuff, renders a page when given

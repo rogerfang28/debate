@@ -18,7 +18,6 @@ export default async function getPage(req: Request) {
     case "test": return loadTestPage();
     default: 
       const homePage = await loadHomePage();
-      console.log("✅ Home page loaded:", homePage?.pageId);
       return homePage;
   }
 }

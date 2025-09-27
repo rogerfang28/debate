@@ -1,4 +1,4 @@
-import { RoomModel } from '../../../../../server/models/Room.js';
+import { RoomModel } from '../../../../../old_server/models/Room.js';
 import mongoose from 'mongoose';
 
 /**
@@ -12,7 +12,6 @@ export default async function getRooms(userId: string) {
   try {
     // Find rooms where user is either owner or member
     const testId = new mongoose.Types.ObjectId("687ac6a3b292e5fa181ed2f1");
-    console.log("🔍 Fetching rooms for user ID:", testId.toString());
     const rooms = await RoomModel.find({
       $or: [
         { owner: testId }, // User is the owner

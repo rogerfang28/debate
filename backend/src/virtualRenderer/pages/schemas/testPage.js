@@ -1,5 +1,6 @@
-import { PageSchema, ComponentType } from "../../../../../src/gen/page_pb.js";
+import { PageSchema, ComponentType } from "../../../../../src/gen/js/page_pb.js";
 import { create } from "@bufbuild/protobuf";
+import roomCard from "../components/roomDisplay.js"
 
 export default function testPage() {
   return create(PageSchema, {
@@ -34,7 +35,14 @@ export default function testPage() {
                 "px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg transition"
             },
             events: { onClick: "testClick" }
-          }
+          },
+          // Insert a room card directly (roomCard returns a ComponentSchema)
+          roomCard({
+            _id: "room1",
+            title: "Room 1",
+            description: "This is the first room.",
+            membersCount: 3
+          })
         ]
       }
     ]

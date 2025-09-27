@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package debate;
+
+// Simple message to send between client and server
+message debate {
+  string topic = 1; // debate topic
+}

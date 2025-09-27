@@ -1,8 +1,25 @@
 # Learn more: https://buf.build/docs/configuration/v2/buf-gen-yaml
 version: v2
+
 inputs:
   - directory: protos
+
 plugins:
+  # 1) JavaScript via protoc-gen-es
   - local: protoc-gen-es
-    opt: target=ts,import_extension=js
-    out: src/gen
+    opt:
+      - target=js
+      - import_extension=js
+    out: src/gen/js
+
+  # 2) TypeScript via protoc-gen-es
+  - local: protoc-gen-es
+    opt:
+      - target=ts
+      # TS files import .js at runtime (ESM-friendly)
+      - import_extension=js
+    out: src/gen/ts
+
+  # 3) C++ via remote plugin
+  # - remote: buf.build/protocolbuffers/cpp:v29.5   # if v29.5 tag isn't available, try v29.3 or v29.0
+  #   out: src/gen/cpp

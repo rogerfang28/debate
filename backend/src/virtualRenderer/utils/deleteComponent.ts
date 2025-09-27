@@ -1,14 +1,16 @@
 import getPage from "../pages/getPage.ts";
 import setPage from "./setPage.ts";
 import { create } from "@bufbuild/protobuf";
-import { PageSchema } from "../../../../src/gen/page_pb.js";
+import express from "express";
+import { Page } from "../../../../src/gen/js/page_pb.js";
+import fs from "fs";
+import { PageSchema } from "../../../../src/gen/js/page_pb.js";
 
 export default async function deleteComponent(req: any, componentId: string) {
     try {
         let currentPage = await getPage(req);
         
         if (!currentPage) {
-            console.error("❌ No current page found");
             return false;
         }
 
@@ -19,7 +21,6 @@ export default async function deleteComponent(req: any, componentId: string) {
 
         // Check if component was actually found and removed
         if (updatedComponents.length === currentPage.components.length) {
-            console.warn(`⚠️ Component with ID '${componentId}' not found`);
             return false;
         }
 
@@ -36,7 +37,6 @@ export default async function deleteComponent(req: any, componentId: string) {
         return true;
         
     } catch (err) {
-        console.error("❌ Error deleting component from page:", err);
         return false;
     }
 }

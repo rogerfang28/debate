@@ -4,20 +4,22 @@ import express, { Express } from "express";
 import mongoose from "mongoose";
 import http from "http";
 import { Server } from "socket.io";
-import { connectDB } from "./server/lib/db.js";
+import { connectDB } from "./old_server/lib/db.js";
 import cors from "cors";
-import { NodeModel } from "./server/models/Node.js";
-import { EdgeModel } from "./server/models/Edge.js";
-import registerSockets from "./server/socket/index.js";
-import authRoutes from "./server/routes/auth.routes.js";
-import roomRoutes from "./server/routes/room.routes.js";
-import friendRoutes from "./server/routes/friend.routes.js";
-import { authenticateToken } from "./server/middleware/auth.middleware.js";
-import configureCors from "./server/configs/cors.js";
-import createSocketServer from "./server/configs/socket.js";
-import dataRoutes from "./server/routes/data.routes.js";
-import eventRoutes from "./server/routes/events.routes.js";
+import { NodeModel } from "./old_server/models/Node.js";
+import { EdgeModel } from "./old_server/models/Edge.js";
+import registerSockets from "./old_server/socket/index.js";
+import authRoutes from "./routes/auth.routes.ts";
+import roomRoutes from "./routes/room.routes.js";
+import friendRoutes from "./routes/friend.routes.js";
+import { authenticateToken } from "./old_server/middleware/auth.middleware.js";
+import configureCors from "./old_server/configs/cors.js";
+import createSocketServer from "./old_server/configs/socket.js";
+import dataRoutes from "./routes/data.routes.js";
+import eventRoutes from "./routes/events.routes.js";
 import session from "express-session";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth.ts";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config(); // ✅ Only use .env in development
@@ -52,14 +54,21 @@ app.use(
   })
 );
 
+app.use("/api/auth", toNodeHandler(auth)); // before express.json
+
 app.use(express.json());
 
 // Your routes (AFTER session middleware)
-app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/friends", friendRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/api/events", eventRoutes);
+
+// Example protected route
+import { requireSession } from "./sessionGuard";
+app.get("/api/private", requireSession, (req, res) => {
+  res.json({ ok: true, user: (req as any).session.user });
+});
 
 // WebSockets
 registerSockets(io);

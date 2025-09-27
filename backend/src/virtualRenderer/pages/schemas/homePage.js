@@ -1,5 +1,5 @@
 // backend/src/virtualRenderer/pages/homePage.js
-import { PageSchema, ComponentType } from "../../../../../src/gen/page_pb.js";
+import { PageSchema, ComponentType } from "../../../../../src/gen/js/page_pb.js";
 import { create } from "@bufbuild/protobuf";
 
 export default function homePage() {
@@ -89,15 +89,34 @@ export default function homePage() {
             type: ComponentType.CONTAINER,
             style: { customClass: "mb-12 max-w-md mx-auto" },
             children: [
-              // Join Room Form/Input
+              // Join Room Input
               {
                 id: "joinRoomForm",
                 type: ComponentType.INPUT,
                 text: "Enter invite code",
                 style: { customClass: "w-full p-3 border border-gray-300 rounded mb-4" },
-                events: { onEnter: "joinRoom" }
+                events: {
+                  onEnter: JSON.stringify({
+                    actionId: "joinRoom",
+                    collectFrom: ["joinRoomForm"]
+                  })
+                }
               },
-
+              // Join Button
+              {
+                id: "btnJoinRoom",
+                type: ComponentType.BUTTON,
+                text: "Join",
+                style: {
+                  customClass: "w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded font-medium transition-colors mb-4"
+                },
+                events: {
+                  onClick: JSON.stringify({
+                    actionId: "joinRoom",
+                    collectFrom: ["joinRoomForm"]
+                  })
+                }
+              },
               // Create Room Button
               {
                 id: "btnCreateRoom",
@@ -105,6 +124,24 @@ export default function homePage() {
                 text: "Create New Room",
                 style: { customClass: "w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors" },
                 events: { onClick: "openCreateRoomModal" }
+              }
+            ]
+          },
+
+          // Test Section (for debugging room page)
+          {
+            id: "testSection",
+            type: ComponentType.CONTAINER,
+            style: { customClass: "mb-8 text-center" },
+            children: [
+              {
+                id: "testRoomButton",
+                type: ComponentType.BUTTON,
+                text: "🧪 Test Enter Room (Room 1)",
+                style: { customClass: "px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors" },
+                events: { 
+                  onClick: "{\"actionId\":\"enterRoom\",\"roomId\":\"room1\"}"
+                }
               }
             ]
           },
@@ -138,6 +175,16 @@ export default function homePage() {
                 ]
               }
             ]
+          },
+          // test button
+          {
+            id: "testButton",
+            type: ComponentType.BUTTON,
+            text: "Test Button",
+            style: {
+              customClass: "px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition"
+            },
+            events: { onClick: "goTest" }
           }
         ]
       }

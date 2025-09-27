@@ -1,7 +1,10 @@
 import getPage from "../pages/getPage.ts";
 import setCurrentPage from "./setPage.ts";
 import { create } from "@bufbuild/protobuf";
-import { PageSchema } from "../../../../src/gen/page_pb.js";
+import express from "express";
+import { Page } from "../../../../src/gen/js/page_pb.js";
+import fs from "fs";
+import { PageSchema } from "../../../../src/gen/js/page_pb.js";
 
 export default async function addComponent(req: any, component: any) {
     try {
@@ -9,7 +12,6 @@ export default async function addComponent(req: any, component: any) {
         let currentPage = await getPage(req);
         
         if (!currentPage) {
-            console.error("❌ No current page found");
             return false;
         }
 
@@ -29,7 +31,6 @@ export default async function addComponent(req: any, component: any) {
         return true;
         
     } catch (err) {
-        console.error("❌ Error adding component to page:", err);
         return false;
     }
 }

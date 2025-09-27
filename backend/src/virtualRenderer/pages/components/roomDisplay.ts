@@ -1,4 +1,4 @@
-import { ComponentType, ComponentSchema } from "../../../../../src/gen/page_pb.ts";
+import { ComponentType, ComponentSchema } from "../../../../../src/gen/ts/page_pb.ts";
 import { create } from "@bufbuild/protobuf";
 
 interface RoomCardProps {
@@ -38,8 +38,12 @@ export default function roomCard({ _id, title, description, membersCount }: Room
         id: `enter-btn-${_id}`,
         type: ComponentType.BUTTON,
         text: "Enter Room",
-        events: { onClick: "enterRoom" },
-        attributes: { roomId: _id.toString() }, // Store MongoDB ObjectId here
+        events: { 
+          onClick: JSON.stringify({
+            actionId: "enterRoom",
+            roomId: _id.toString()
+          })
+        },
         style: { customClass: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all self-start" }
       })
     ]

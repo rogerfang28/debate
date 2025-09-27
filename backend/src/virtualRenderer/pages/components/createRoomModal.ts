@@ -1,4 +1,4 @@
-import { ComponentType } from "../../../../../src/gen/page_pb.ts";
+import { ComponentType } from "../../../../../src/gen/ts/page_pb.ts";
 
 export default function createRoomModal(){
     return {
@@ -59,7 +59,7 @@ export default function createRoomModal(){
                                         style: { 
                                             customClass: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         },
-                                        events: { onChange: "updateRoomName" }
+                                        // events: { onChange: "updateRoomName" }
                                     },
                                     {
                                         id: "roomDescInput",
@@ -69,7 +69,7 @@ export default function createRoomModal(){
                                         style: { 
                                             customClass: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         },
-                                        events: { onChange: "updateRoomDescription" }
+                                        // events: { onChange: "updateRoomDescription" }
                                     },
                                     
                                     // Form Actions
@@ -87,7 +87,12 @@ export default function createRoomModal(){
                                                 style: { 
                                                     customClass: "flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors"
                                                 },
-                                                events: { onClick: "submitCreateRoom" }
+                                                events: {
+                                                  onClick: JSON.stringify({
+                                                    actionId: "submitCreateRoom",
+                                                    collectFrom: ["roomNameInput", "roomDescInput"]
+                                                  })
+                                                }
                                             },
                                             {
                                                 id: "btnCancelCreate",
