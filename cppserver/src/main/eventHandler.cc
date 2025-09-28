@@ -37,6 +37,8 @@ void EventHandler::Log(std::ostream& os) const {
     }
 }
 
+
+
 void EventHandler::PrintEventValue(std::ostream& os, const debate::EventValue& v) {
     using V = debate::EventValue;
     switch (v.value_case()) {

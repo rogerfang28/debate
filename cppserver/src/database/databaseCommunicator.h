@@ -1,6 +1,4 @@
-#ifndef DATABASE_COMMUNICATOR_H
-#define DATABASE_COMMUNICATOR_H
-
+#pragma once
 #include <string>
 #include <vector>
 
@@ -9,12 +7,13 @@ struct Debate {
     std::string topic;
 };
 
-// Functions
+// Open/close DB
 void openDB(const std::string& filename);
-void createDebateTable();
-int insertDebate(const std::string& topic);
-std::vector<Debate> readDebates();
-std::vector<Debate> searchDebates(const std::string& keyword);
 void closeDB();
 
-#endif
+// Create table (only needs to be called once)
+void createDebateTable();
+
+// Main API
+int addDebate(const std::string& user, const std::string& topic);
+std::vector<Debate> readDebates(const std::string& user);

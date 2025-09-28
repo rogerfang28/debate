@@ -1,4 +1,3 @@
-#include "databaseCommunicator.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,100 +5,60 @@
 
 sqlite3* db = nullptr;
 
-// RAII wrapper for statement cleanup
-struct Statement {
-    sqlite3_stmt* stmt = nullptr;
-    ~Statement() {
-        if (stmt) sqlite3_finalize(stmt);
-    }
+struct Debate {
+    int id;
+    std::string topic;
 };
 
-// Open database
+// Open DB
 void openDB(const std::string& filename) {
     if (sqlite3_open(filename.c_str(), &db) != SQLITE_OK) {
         std::cerr << "Database could not be opened: " << sqlite3_errmsg(db) << "\n";
-        exit(1);
     }
 }
 
-// Create DEBATE table
+// Create table
 void createDebateTable() {
-    const char* sql = R"(
-        CREATE TABLE IF NOT EXISTS DEBATE(
-            ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            TOPIC TEXT NOT NULL
-        );
-    )";
-
-    char* errMsg = nullptr;
-    if (sqlite3_exec(db, sql, nullptr, nullptr, &errMsg) != SQLITE_OK) {
-        std::cerr << "Error creating DEBATE table: " << errMsg << "\n";
-        sqlite3_free(errMsg);
-    }
+    const char* sql =
+        "CREATE TABLE IF NOT EXISTS DEBATE("
+        "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "USER TEXT NOT NULL,"
+        "TOPIC TEXT NOT NULL);";
+    sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
 }
 
-// Insert a debate topic, return inserted ID
-int insertDebate(const std::string& topic) {
-    const char* sql = "INSERT INTO DEBATE (TOPIC) VALUES (?);";
-    Statement s;
+// Add a debate for a user
+int addDebate(const std::string& user, const std::string& topic) {
+    const char* sql = "INSERT INTO DEBATE (USER, TOPIC) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) return -1;
 
-    if (sqlite3_prepare_v2(db, sql, -1, &s.stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Prepare failed: " << sqlite3_errmsg(db) << "\n";
-        return -1;
-    }
+    sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, topic.c_str(), -1, SQLITE_TRANSIENT);
 
-    sqlite3_bind_text(s.stmt, 1, topic.c_str(), -1, SQLITE_TRANSIENT);
-
-    if (sqlite3_step(s.stmt) != SQLITE_DONE) {
-        std::cerr << "Insert failed: " << sqlite3_errmsg(db) << "\n";
-        return -1;
-    }
-
-    return (int)sqlite3_last_insert_rowid(db);
+    int result = (sqlite3_step(stmt) == SQLITE_DONE)
+                   ? (int)sqlite3_last_insert_rowid(db)
+                   : -1;
+    sqlite3_finalize(stmt);
+    return result;
 }
 
-// Read all debates
-std::vector<Debate> readDebates() {
+// Read all debates for a user
+std::vector<Debate> readDebates(const std::string& user) {
     std::vector<Debate> results;
-    const char* sql = "SELECT ID, TOPIC FROM DEBATE;";
-    Statement s;
+    const char* sql = "SELECT ID, TOPIC FROM DEBATE WHERE USER = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) return results;
 
-    if (sqlite3_prepare_v2(db, sql, -1, &s.stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Prepare failed: " << sqlite3_errmsg(db) << "\n";
-        return results;
-    }
+    sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
 
-    while (sqlite3_step(s.stmt) == SQLITE_ROW) {
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
         Debate d;
-        d.id = sqlite3_column_int(s.stmt, 0);
-        d.topic = reinterpret_cast<const char*>(sqlite3_column_text(s.stmt, 1));
+        d.id = sqlite3_column_int(stmt, 0);
+        d.topic = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
         results.push_back(d);
     }
-
-    return results;
-}
-
-// Search debates by keyword
-std::vector<Debate> searchDebates(const std::string& keyword) {
-    std::vector<Debate> results;
-    const char* sql = "SELECT ID, TOPIC FROM DEBATE WHERE TOPIC LIKE ?;";
-    Statement s;
-
-    if (sqlite3_prepare_v2(db, sql, -1, &s.stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Prepare failed: " << sqlite3_errmsg(db) << "\n";
-        return results;
-    }
-
-    std::string pattern = "%" + keyword + "%";
-    sqlite3_bind_text(s.stmt, 1, pattern.c_str(), -1, SQLITE_TRANSIENT);
-
-    while (sqlite3_step(s.stmt) == SQLITE_ROW) {
-        Debate d;
-        d.id = sqlite3_column_int(s.stmt, 0);
-        d.topic = reinterpret_cast<const char*>(sqlite3_column_text(s.stmt, 1));
-        results.push_back(d);
-    }
-
+    sqlite3_finalize(stmt);
     return results;
 }
 
@@ -107,32 +66,3 @@ void closeDB() {
     if (db) sqlite3_close(db);
     db = nullptr;
 }
-
-// int main() {
-//     openDB("debates.sqlite3");
-//     createDebateTable();
-
-//     // Insert debates
-//     int id1 = insertDebate("Should artificial intelligence be regulated?");
-//     int id2 = insertDebate("Is universal basic income a good idea?");
-//     int id3 = insertDebate("Should governments ban fossil fuels?");
-
-//     std::cout << "Inserted IDs: " << id1 << ", " << id2 << ", " << id3 << "\n\n";
-
-//     // Read all debates
-//     auto debates = readDebates();
-//     std::cout << "All debates:\n";
-//     for (const auto& d : debates) {
-//         std::cout << "[" << d.id << "] " << d.topic << "\n";
-//     }
-
-//     // Search debates
-//     auto found = searchDebates("income");
-//     std::cout << "\nSearch results for 'income':\n";
-//     for (const auto& d : found) {
-//         std::cout << "[" << d.id << "] " << d.topic << "\n";
-//     }
-
-//     sqlite3_close(db);
-//     return 0;
-// }

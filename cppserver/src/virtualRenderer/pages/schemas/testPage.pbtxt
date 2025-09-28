@@ -67,8 +67,8 @@ components {
       attributes { key: "data-source" value: "GET /topics" }
 
       # placeholders; replace at runtime
-      items { label: "🌎 Climate Change" value: "topic:climate-change" }
-      items { label: "🤖 AI in Education" value: "topic:ai-education" }
+      # items { label: "🌎 Climate Change" value: "topic:climate-change" }
+      # items { label: "🤖 AI in Education" value: "topic:ai-education" }
     }
   }
 }

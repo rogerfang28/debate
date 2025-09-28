@@ -31,19 +31,25 @@
         "${file}",
         "C:/Users/yunch/Important/Project/debate/src/gen/cpp/*.pb.cc",
         "C:/Users/yunch/Important/Project/debate/cppserver/src/main/eventHandler.cc",
+        "C:/Users/yunch/Important/Project/debate/cppserver/src/virtualRenderer/pageGenerator.cpp",
+        "C:/Users/yunch/Important/Project/debate/cppserver/src/database/databaseCommunicator.cc",
+        "C:/Users/yunch/Important/Project/debate/cppserver/src/database/sqlite3.o",
        
         "-IC:/Users/yunch/Important/Project/debate/cppserver/src/server",
+        "-IC:/Users/yunch/Important/Project/debate/cppserver/src/virtualRenderer",
         "-IC:/Users/yunch/Important/Project/debate/cppserver/src/main",
         "-IC:/Users/yunch/Important/Project/debate/src/gen/cpp",
         "-IC:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include",
 
 
         "-LC:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/lib",
+        "-LC:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-static/lib",
         "-Wl,--start-group",
         "-lprotobuf",
         "@C:/Users/yunch/Important/Project/debate/.vscode/absl.rsp",
         "-lzlib",
         "-lws2_32",
+        "-lsqlite3",
         "-Wl,--end-group",
 
 
