@@ -1,17 +1,19 @@
 #include "eventHandler.h"
 #include "../database/databaseCommunicator.h"
 #include "./events/addDebateTopic.h"
+#include "./events/clearDebateTopics.h"
 #include <iostream>
+using namespace std;
 
 EventHandler::EventHandler(const debate::UIEvent& evt) : evt_(evt) {}
-EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(std::move(evt)) {}
+EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(move(evt)) {}
 
-void EventHandler::handleEvent(const std::string& user) {
-    const std::string actionId = evt_.action_id();
+void EventHandler::handleEvent(const string& user) {
+    const string actionId = evt_.action_id();
 
     if (actionId == "submitTopic") {
         // check evt_.data() (map<string,string>)
-        std::string topic;
+        string topic;
         auto it = evt_.data().find("topicInput");
         if (it != evt_.data().end()) {
             topic = it->second;
@@ -30,22 +32,25 @@ void EventHandler::handleEvent(const std::string& user) {
         if (!topic.empty()) {
             addDebateTopic(user, topic);
             // if (id == -1) {
-            //     std::cerr << "Failed to insert topic: " << topic << "\n";
+            //     cerr << "Failed to insert topic: " << topic << "\n";
             // } else {
-            //     std::cout << "Inserted topic '" << topic
+            //     cout << "Inserted topic '" << topic
             //               << "' for user '" << user
             //               << "' with ID=" << id << "\n";
             // }
         } else {
-            std::cerr << "submitTopic event missing topicInput value\n";
+            cerr << "submitTopic event missing topicInput value\n";
         }
+    } else if (actionId == "clearTopics") {
+        clearDebateTopics(user); // not implemented yet
+        cout << "clearTopics action received (not implemented)\n";
     } else {
-        std::cerr << "Unhandled actionId: " << actionId << "\n";
+        cerr << "Unhandled actionId: " << actionId << "\n";
     }
 }
 
 // ---------------- Logging helpers ----------------
-void EventHandler::Log(std::ostream& os) const {
+void EventHandler::Log(ostream& os) const {
     os << "[UIEvent]"
        << " id="      << evt_.event_id()
        << " comp="    << evt_.component_id()
@@ -78,7 +83,7 @@ void EventHandler::Log(std::ostream& os) const {
     }
 }
 
-void EventHandler::PrintEventValue(std::ostream& os, const debate::EventValue& v) const {
+void EventHandler::PrintEventValue(ostream& os, const debate::EventValue& v) const {
     using V = debate::EventValue;
     switch (v.value_case()) {
         case V::kTextValue:    os << "text:\"" << v.text_value() << "\""; break;

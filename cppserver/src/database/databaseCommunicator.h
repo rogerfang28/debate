@@ -16,4 +16,5 @@ void createDebateTable();
 
 // Main API
 int addDebate(const std::string& user, const std::string& topic);
+void deleteDebateTopic(const std::string& topic, const std::string& user); // added declaration for deleteDebateTopic
 std::vector<Debate> readDebates(const std::string& user);

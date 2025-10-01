@@ -90,18 +90,48 @@ std::vector<Debate> readDebates(const std::string& user) {
     return results;
 }
 
-void clearDebateTopics(){
+void deleteDebateTopic(const std::string& topic, const std::string& user) {
     openDB("debates.sqlite3");      // open or create DB file
     createDebateTable();            // make sure table exists
-    const char* sql = "DELETE FROM DEBATE;";
-    char* errMsg = nullptr;
-    int rc = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Error clearing debates: " << errMsg << "\n";
-        sqlite3_free(errMsg);
+    const char* sql = "DELETE FROM DEBATE WHERE TOPIC = ? AND USER = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        return;
     }
+
+    sqlite3_bind_text(stmt, 1, topic.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, user.c_str(), -1, SQLITE_TRANSIENT);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Delete failed: " << sqlite3_errmsg(db) << "\n";
+    }
+
+    sqlite3_finalize(stmt);
     closeDB();  // clean up
 }
+
+// void clearDebateTopics(const std::string& user) { // ! do not know if this works, might replace with just deleteDebateTopic(topic, user) and just loop through readDebates
+//     openDB("debates.sqlite3");      // open or create DB file
+//     createDebateTable();            // make sure table exists
+//     const char* sql = "DELETE FROM DEBATE WHERE USER = ?;";
+//     sqlite3_stmt* stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+//         std::cerr << "Prepare failed: " << sqlite3_errmsg(db) << "\n";
+//         return;
+//     }
+
+//     sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
+
+//     int rc = sqlite3_step(stmt);
+//     if (rc != SQLITE_DONE) {
+//         std::cerr << "Delete failed: " << sqlite3_errmsg(db) << "\n";
+//     }
+
+//     sqlite3_finalize(stmt);
+//     closeDB();  // clean up
+// }
 
 // int main() {
 //     openDB("debates.sqlite3");
