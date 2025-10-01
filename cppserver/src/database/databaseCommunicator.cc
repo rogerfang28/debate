@@ -17,6 +17,11 @@ void openDB(const std::string& filename) {
     }
 }
 
+void closeDB() {
+    if (db) sqlite3_close(db);
+    db = nullptr;
+}
+
 // Create table
 void createDebateTable() {
     const char* sql =
@@ -85,9 +90,17 @@ std::vector<Debate> readDebates(const std::string& user) {
     return results;
 }
 
-void closeDB() {
-    if (db) sqlite3_close(db);
-    db = nullptr;
+void clearDebateTopics(){
+    openDB("debates.sqlite3");      // open or create DB file
+    createDebateTable();            // make sure table exists
+    const char* sql = "DELETE FROM DEBATE;";
+    char* errMsg = nullptr;
+    int rc = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Error clearing debates: " << errMsg << "\n";
+        sqlite3_free(errMsg);
+    }
+    closeDB();  // clean up
 }
 
 // int main() {

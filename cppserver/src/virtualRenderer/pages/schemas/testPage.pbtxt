@@ -20,6 +20,18 @@ components {
     style { custom_class: "text-gray-300 text-center" }
   }
 
+  children {
+    id: "clearButton"
+    type: BUTTON
+    text: "Clear All Topics"
+    name: "clear"
+    style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition" }
+    events {
+      key: "onClick"
+      value: "{\"actionId\":\"clearTopics\"}"
+    }
+  }
+
   # Input field (sends event on Enter)
   children {
     id: "topicInput"
