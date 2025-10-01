@@ -1,9 +1,50 @@
 #include "eventHandler.h"
+#include "../database/databaseCommunicator.h"
+#include "./events/addDebateTopic.h"
 #include <iostream>
 
 EventHandler::EventHandler(const debate::UIEvent& evt) : evt_(evt) {}
 EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(std::move(evt)) {}
 
+void EventHandler::handleEvent(const std::string& user) {
+    const std::string actionId = evt_.action_id();
+
+    if (actionId == "submitTopic") {
+        // check evt_.data() (map<string,string>)
+        std::string topic;
+        auto it = evt_.data().find("topicInput");
+        if (it != evt_.data().end()) {
+            topic = it->second;
+        }
+
+        // if not found, check evt_.event_data()
+        if (topic.empty() && evt_.event_data_size() > 0) {
+            for (const auto& ed : evt_.event_data()) {
+                if (ed.key() == "topicInput" && ed.value().has_text_value()) {
+                    topic = ed.value().text_value();
+                    break;
+                }
+            }
+        }
+
+        if (!topic.empty()) {
+            addDebateTopic(user, topic);
+            // if (id == -1) {
+            //     std::cerr << "Failed to insert topic: " << topic << "\n";
+            // } else {
+            //     std::cout << "Inserted topic '" << topic
+            //               << "' for user '" << user
+            //               << "' with ID=" << id << "\n";
+            // }
+        } else {
+            std::cerr << "submitTopic event missing topicInput value\n";
+        }
+    } else {
+        std::cerr << "Unhandled actionId: " << actionId << "\n";
+    }
+}
+
+// ---------------- Logging helpers ----------------
 void EventHandler::Log(std::ostream& os) const {
     os << "[UIEvent]"
        << " id="      << evt_.event_id()
@@ -37,9 +78,7 @@ void EventHandler::Log(std::ostream& os) const {
     }
 }
 
-
-
-void EventHandler::PrintEventValue(std::ostream& os, const debate::EventValue& v) {
+void EventHandler::PrintEventValue(std::ostream& os, const debate::EventValue& v) const {
     using V = debate::EventValue;
     switch (v.value_case()) {
         case V::kTextValue:    os << "text:\"" << v.text_value() << "\""; break;
@@ -62,7 +101,7 @@ void EventHandler::PrintEventValue(std::ostream& os, const debate::EventValue& v
     }
 }
 
-const char* EventHandler::EventTypeName(debate::EventType t) {
+const char* EventHandler::EventTypeName(debate::EventType t) const {
     switch (t) {
         case debate::UNKNOWN:      return "UNKNOWN";
         case debate::CLICK:        return "CLICK";

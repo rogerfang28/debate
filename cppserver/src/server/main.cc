@@ -69,7 +69,7 @@ int main() {
 
     // Handle with EventHandler
     EventHandler handler(std::move(evt));
-    handler.Log(std::cout);
+    handler.handleEvent("defaultUser");
 
     res.status = 204; // No Content
     std::cout << "POST / handled debate.UIEvent\n";

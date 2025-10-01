@@ -1,32 +1,28 @@
 #include "../../database/databaseCommunicator.h"
-
-// debateTopicHandler.cc
 #include <string>
 #include <iostream>
 
-// Function declaration
-void addDebateTopic(const std::string& debateTopic);
+// Add a debate topic for a specific user
+void addDebateTopic(const std::string& user, const std::string& debateTopic) {
 
-// Function definition
-void addDebateTopic(const std::string& debateTopic) {
-    // TODO: implement logic here
-    std::cout << "Received debate topic: " << debateTopic << std::endl;
-    openDB("debates.db");                // open or create DB file
-    createDebateTable();                 // make sure table exists
-
-    int newId = insertDebate(debateTopic);  // insert a new debate
-    std::cout << "Inserted debate with ID: " << newId << std::endl;
-
-    auto debates = readDebates();        // get all debates
-    for (const auto& d : debates) {
-        std::cout << d.id << " - " << d.topic << std::endl;
+    int newId = addDebate(user, debateTopic);  
+    if (newId == -1) {
+        std::cerr << "[AddDebates] Failed to insert debate topic.\n";
+    } else {
+        std::cout << "[AddDebates] Inserted debate with ID: " << newId << std::endl;
     }
 
-    closeDB();                           // clean up
+    // std::cout << "[AddDebates] did i get here";
+    auto debates = readDebates(user);  
+    std::cout << "[AddDebates] Current debates for user '" << user << "':\n";
+    for (const auto& d : debates) {
+        std::cout << "[AddDebates] " << d.id << " - " << d.topic << std::endl;
+    }
+
 }
 
-int main(){
-    addDebateTopic("Cliamte Change");
-    readDebates();
-    // return 0;
-}   
+// quick test
+// int main() {
+//     addDebateTopic("defaultUser", "Climate Change");
+//     return 0;
+// }

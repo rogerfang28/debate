@@ -1,28 +1,24 @@
 #pragma once
-#include <iosfwd>
-#include "../../../src/gen/cpp/event.pb.h"  // debate::UIEvent, EventValue, EventType
+#include "../../../src/gen/cpp/event.pb.h"
+#include <string>
+#include <ostream>
 
-// Per-request handler that owns a copy of the event.
 class EventHandler {
 public:
-    explicit EventHandler(const debate::UIEvent& evt);   // copy constructor
-    explicit EventHandler(debate::UIEvent&& evt);        // move constructor
-    EventHandler(const EventHandler&) = default;
-    EventHandler(EventHandler&&) = default;
-    EventHandler& operator=(const EventHandler&) = default;
-    EventHandler& operator=(EventHandler&&) = default;
-    ~EventHandler() = default;
+    // constructors
+    explicit EventHandler(const debate::UIEvent& evt);
+    EventHandler(debate::UIEvent&& evt);
 
-    // Log the event to a stream (default stdout)
-    void Log(std::ostream& os = std::cout) const;
-    void HandleEvent();
+    // logging for debugging
+    void Log(std::ostream& os) const;
 
-    // Optionally expose the event (read-only)
-    const debate::UIEvent& event() const { return evt_; }
+    // main logic dispatcher
+    void handleEvent(const std::string& user);
 
 private:
-    static void PrintEventValue(std::ostream& os, const debate::EventValue& v);
-    static const char* EventTypeName(debate::EventType t);
+    debate::UIEvent evt_;   // <-- underscore, consistent everywhere
 
-    debate::UIEvent evt_;  // owned copy (thread-safe per instance)
+    // helpers
+    void PrintEventValue(std::ostream& os, const debate::EventValue& v) const;
+    const char* EventTypeName(debate::EventType t) const;
 };

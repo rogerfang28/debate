@@ -33,6 +33,7 @@
         "C:/Users/yunch/Important/Project/debate/cppserver/src/main/eventHandler.cc",
         "C:/Users/yunch/Important/Project/debate/cppserver/src/virtualRenderer/pageGenerator.cpp",
         "C:/Users/yunch/Important/Project/debate/cppserver/src/database/databaseCommunicator.cc",
+        "C:/Users/yunch/Important/Project/debate/cppserver/src/main/events/addDebateTopic.cc",
         "C:/Users/yunch/Important/Project/debate/cppserver/src/database/sqlite3.o",
        
         "-IC:/Users/yunch/Important/Project/debate/cppserver/src/server",
