@@ -5,6 +5,7 @@
 #include "../../../src/gen/cpp/page.pb.h"   // ui::Page
 #include "../../../src/gen/cpp/event.pb.h"  // debate::UIEvent
 #include "../virtualRenderer/pageGenerator.h"
+#include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../main/eventHandler.h"
 
 #include "httplib.h"
@@ -22,6 +23,7 @@ static std::filesystem::path exe_dir() {
 
 int main() {
   httplib::Server svr;
+  VirtualRenderer renderer;  // Create the renderer instance
 
   // ---------- CORS middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
@@ -37,42 +39,13 @@ int main() {
   });
 
   // ---------- GET / ----------
-  svr.Get("/", [&](const httplib::Request& req, httplib::Response& res) {
-    std::string user = "defaultUser"; // later: parse from req.query_string
-    std::string page_bin = generatePage(user);
-
-    if (page_bin.empty()) {
-      res.status = 500;
-      res.set_content("Failed to generate page\n", "text/plain");
-      return;
-    }
-
-    res.set_content(page_bin, "application/x-protobuf");
-    std::cout << "GET / served generated page for user=" << user
-              << " (" << page_bin.size() << " bytes)\n";
+  svr.Get("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
+    renderer.handleGetRequest(req, res);
   });
 
   // ---------- POST / ----------
-  svr.Post("/", [&](const httplib::Request& req, httplib::Response& res) {
-    if (req.get_header_value("Content-Type") != "application/x-protobuf") {
-      res.status = 415;
-      res.set_content("Unsupported Media Type: expected application/x-protobuf\n", "text/plain");
-      return;
-    }
-
-    debate::UIEvent evt;
-    if (!evt.ParseFromArray(req.body.data(), (int)req.body.size())) {
-      res.status = 400;
-      res.set_content("Bad Request: failed to parse debate.UIEvent\n", "text/plain");
-      return;
-    }
-
-    // Handle with EventHandler
-    EventHandler handler(std::move(evt));
-    handler.handleEvent("defaultUser");
-
-    res.status = 204; // No Content
-    std::cout << "POST / handled debate.UIEvent\n";
+  svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
+    renderer.handlePostRequest(req, res);
   });
 
   // ---------- Start server ----------
