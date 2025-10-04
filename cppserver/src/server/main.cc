@@ -39,7 +39,7 @@ int main() {
   // ---------- GET / ----------
   svr.Get("/", [&](const httplib::Request& req, httplib::Response& res) {
     std::string user = "defaultUser"; // later: parse from req.query_string
-    std::string page_bin = generatePage(user, exe_dir());
+    std::string page_bin = generatePage(user);
 
     if (page_bin.empty()) {
       res.status = 500;

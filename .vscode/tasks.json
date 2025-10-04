@@ -23,7 +23,7 @@
       "command": "g++",
       "args": [
         "-std=c++17",
-        "-g",
+        // "-g", // debug
         "-D_WIN32_WINNT=0x0A00",
         "-DPROTOBUF_USE_DLLS",
 

@@ -2,10 +2,8 @@
 #define PAGEGENERATOR_H
 
 #include <string>
-#include <filesystem>
 
 // Generate a serialized binary protobuf page for a user
-std::string generatePage(const std::string& user,
-                         const std::filesystem::path& exeDir);
+std::string generatePage(const std::string& user);
 
 #endif // PAGEGENERATOR_H

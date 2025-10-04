@@ -6,12 +6,15 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <filesystem>
 
-std::string generatePage(const std::string& user,
-                         const std::filesystem::path& exeDir) {
-    // -------- load pbtxt --------
-    auto pbtxtPath = exeDir / ".." / "virtualRenderer" / "pages" / "schemas" / "testPage.pbtxt";
-    pbtxtPath = std::filesystem::weakly_canonical(pbtxtPath);
+std::string generatePage(const std::string& user) {
+    // -------- load pbtxt with relative path from this file's location --------
+    // Current file is in: cppserver/src/virtualRenderer/
+    // Target file is in: virtualRenderer/pages/schemas/
+    // So we go: ../../../virtualRenderer/pages/schemas/testPage.pbtxt
+    std::filesystem::path pbtxtPath = "../virtualRenderer/pages/schemas/testPage.pbtxt";
+    pbtxtPath = std::filesystem::absolute(pbtxtPath);
 
     std::cerr << "[PageGen] looking for pbtxt at " << pbtxtPath.u8string() << "\n";
 
