@@ -1,4 +1,4 @@
-import sendDataToBackend, { EventData } from "../../backendCommunicator/sendDataToBackend.js";
+import sendDataToCPP from "../../backendCommunicator/postEventToCPP.ts";
 import { EventType } from "../../../../src/gen/js/event_pb.js";
 import getInfoFromPage from "../../utils/getInfoFromPage.js";
 
@@ -65,7 +65,7 @@ export default async function handleEvent(
       }
     }
 
-    await sendDataToBackend({
+    await sendDataToCPP({
       componentId: component.id || "unknown",
       eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
       actionId,

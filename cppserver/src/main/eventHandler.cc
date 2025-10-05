@@ -1,5 +1,6 @@
 #include "eventHandler.h"
 #include "../database/databaseCommunicator.h"
+#include "../debate/DebateModerator.h"
 #include "./events/addDebateTopic.h"
 #include "./events/clearDebateTopics.h"
 #include <iostream>
@@ -10,6 +11,7 @@ EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(move(evt)) {}
 
 void EventHandler::handleEvent(const string& user) {
     const string actionId = evt_.action_id();
+    DebateModerator moderator;
 
     if (actionId == "submitTopic") {
         // check evt_.data() (map<string,string>)
@@ -30,7 +32,7 @@ void EventHandler::handleEvent(const string& user) {
         }
 
         if (!topic.empty()) {
-            addDebateTopic(user, topic);
+            moderator.handleAddDebate(user, topic);
             // if (id == -1) {
             //     cerr << "Failed to insert topic: " << topic << "\n";
             // } else {
@@ -42,7 +44,7 @@ void EventHandler::handleEvent(const string& user) {
             cerr << "submitTopic event missing topicInput value\n";
         }
     } else if (actionId == "clearTopics") {
-        clearDebateTopics(user); // not implemented yet
+        moderator.handleClearDebates(user);
         cout << "clearTopics action received (not implemented)\n";
     } else {
         cerr << "Unhandled actionId: " << actionId << "\n";
