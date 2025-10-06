@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package layout;
+
+// ok so i need nested components and i guess each component as a class, minimap, room component, etc
+// but that would mean those are like hard coded on how they look in the layout.proto right? wait no not really but it ungeneralizes the component renderer, which actually wasn't really generalized anyways
+
+message Component {
+  string id = 1;                       // Unique component ID
+  repeated Component children = 2;     // Nested components
+  Style style = 3;                     // Tailwind / structured style info
+  map<string, string> events = 4;      // Event name → action ID
+}
+
+// ======================
+// Component types
+// ======================
+enum ComponentType {
+  UNKNOWN = 0;
+  TEXT = 1;
+  BUTTON = 2;
+  INPUT = 3;
+  TEXTAREA = 4;
+  NODE_GRAPH = 5;
+  CHAT = 6;
+  IMAGE = 7;
+  CARD = 8;
+  LIST = 9;
+  TABLE = 10;
+  MODAL = 11;
+  CONTAINER = 12;
+  FORM = 13;
+  ICON = 14;
+}
+
+// ======================
+// Styling information
+// ======================
+message Style {
+  LayoutType layout = 1;              // flex/grid/absolute/etc.
+  Position position = 2;              // For absolute/fixed layout
+  Size size = 3;                       // Width & height
+  string padding = 4;                  // Tailwind padding utility (e.g., "p-4")
+  string margin = 5;                   // Tailwind margin utility (e.g., "m-2")
+  string bg_color = 6;                 // Tailwind background color class
+  string text_color = 7;               // Tailwind text color class
+  string border = 8;                   // Tailwind border utility
+  string rounded = 9;                  // Tailwind rounded corners
+  string shadow = 10;                  // Tailwind shadow class
+  string gap = 11;                     // Tailwind gap utility
+  bool scrollable = 12;                // Allow scroll if content overflows
+  string custom_class = 13;            // Any extra Tailwind classes
+}
+
+// ======================
+// Layout, position, size
+// ======================
+enum LayoutType {
+  ABSOLUTE = 0;
+  FLEX_ROW = 1;
+  FLEX_COL = 2;
+  GRID = 3;
+  INLINE = 4;
+}
+
+message Position {
+  float x = 1; // px or % depending on renderer
+  float y = 2;
+  string unit = 3; // "px", "%", "rem"
+}
+
+message Size {
+  string width = 1;  // Tailwind width class or explicit value
+  string height = 2; // Tailwind height class or explicit value
+}
+
+// ======================
+// Theme (optional)
+// ======================
+message Theme {
+  string primary_color = 1;    // Tailwind-compatible color class
+  string secondary_color = 2;
+  string font_family = 3;      // e.g., "font-sans"
+  string accent_color = 4;     // Additional accent color
+}
+
+// ======================
+// List items
+// ======================
+message ListItem {
+  string label = 1;
+  string value = 2;
+  string icon = 3; // Optional icon class for UI frameworks
+}

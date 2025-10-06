@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package debate;
+
+// A single claim node in the debate graph
+message Claim {
+  // The main sentence or statement of the claim
+  string sentence = 1;
+
+  // Optional description or elaboration
+  string description = 2;
+
+  // Reference to the parent claim (by ID or sentence)
+  string parent = 3;
+
+  // References to child claims (by ID or sentence)
+  repeated string children = 4;
+}
+
+// Represents a single debate, which contains a topic and a claim graph
+message Debate {
+  // The debate topic
+  string topic = 1;
+
+  // A list of all claims belonging to this debate (the graph)
+  repeated Claim claims = 2;
+}

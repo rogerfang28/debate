@@ -1,0 +1,3 @@
+common --keep_going
+build --enable_runfiles=no
+test  --test_output=errors

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package test;
+
+// Simple message to send between client and server
+message MyData {
+  string username = 1; // Name of the user
+  int32 score = 2;     // Game score or points
+}
+
+// Simple gRPC service for testing
+service DataService {
+  rpc SendData (MyData) returns (MyData);
+}

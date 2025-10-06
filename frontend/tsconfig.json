@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2020",                                  /* Modern target for better performance */
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],           /* Include modern ES features and DOM types */
+    "jsx": "react-jsx",                                  /* Use the new JSX transform */
+    "useDefineForClassFields": true,                     /* Use modern class field behavior */
+
+    /* Modules */
+    "module": "ESNext",                                  /* Use modern ES modules */
+    "moduleResolution": "bundler",                       /* Use Vite's bundler resolution */
+    "allowImportingTsExtensions": true,                  /* Allow .ts/.tsx imports */
+    "resolveJsonModule": true,                           /* Allow importing JSON files */
+
+    /* Emit */
+    "noEmit": true,                                      /* Vite handles compilation, not tsc */
+    "isolatedModules": true,                             /* Ensure each file can be transpiled alone */
+
+    /* Interop Constraints */
+    "allowSyntheticDefaultImports": true,                /* Allow default imports from CommonJS */
+    "esModuleInterop": true,                             /* Better CommonJS interop */
+    "forceConsistentCasingInFileNames": true,            /* Enforce consistent casing */
+
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict checks */
+    "noUnusedLocals": true,                             /* Report unused local variables */
+    "noUnusedParameters": true,                         /* Report unused parameters */
+    "noFallthroughCasesInSwitch": true,                 /* Report fallthrough in switch */
+
+    /* Completeness */
+    "skipLibCheck": true                                 /* Skip checking declaration files */
+  },
+  "include": [
+    "src/**/*"                                          /* Include all files in src directory */
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

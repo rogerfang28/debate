@@ -1,0 +1,1 @@
+this handles entry point, and using all other functions to run the page.

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",               // ⬅️ Output JS files go into ./dist
+    "rootDir": "src",               // ⬅️ Treat ./src as the source root
+    "module": "es2022",             // ⬅️ Support for ES modules
+    "target": "es2022",             // ⬅️ Support for top-level await
+    "moduleResolution": "node",     // ⬅️ Node.js module resolution
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,        // ⬅️ Allows `import fs from 'fs'` instead of `import * as fs`
+    "allowImportingTsExtensions": true,
+    "noEmit": true,                 // ⬅️ Don't emit files (tsx handles compilation)
+    "strict": true,                 // ⬅️ Enables all strict type checking (best practice)
+    "skipLibCheck": true,           // ⬅️ Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]                // ⬅️ Only compile files inside ./src
+}
