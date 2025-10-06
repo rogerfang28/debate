@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-#include "../main/eventHandler.h"
+#include "../debate/main/EventHandler.h"
 
 int main() {
     cout<<"kello"<<endl;

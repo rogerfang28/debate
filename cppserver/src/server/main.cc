@@ -6,7 +6,6 @@
 #include "../../../src/gen/cpp/event.pb.h"  // debate::UIEvent
 #include "../virtualRenderer/pageGenerator.h"
 #include "../virtualRenderer/virtualRenderer.h"  // Add this include
-#include "../main/eventHandler.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>

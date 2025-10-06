@@ -1,9 +1,11 @@
 #include "DebateModerator.h"
-#include "../database/databaseCommunicator.h"  // for addDebate, readDebates, deleteDebateTopic
+#include "./DebateDatabaseHandler.h"   // now use the new handler
 #include <iostream>
 #include <vector>
 
-DebateModerator::DebateModerator() {
+DebateModerator::DebateModerator()
+    : dbHandler("debates.sqlite3") // initialize handler with database
+{
     std::cout << "[DebateModerator] Initialized.\n";
 }
 
@@ -13,10 +15,10 @@ DebateModerator::~DebateModerator() {
 
 // Add a debate topic for a specific user
 void DebateModerator::handleAddDebate(const std::string& user, const std::string& debateTopic) {
-    std::cout << "[DebateModerator] handleAddDebate called for user: " 
+    std::cout << "[DebateModerator] handleAddDebate called for user: "
               << user << ", topic: " << debateTopic << std::endl;
 
-    int newId = addDebate(user, debateTopic);
+    int newId = dbHandler.addDebate(user, debateTopic);
     if (newId == -1) {
         std::cerr << "[DebateModerator] Failed to insert debate topic.\n";
     } else {
@@ -29,21 +31,24 @@ void DebateModerator::handleAddDebate(const std::string& user, const std::string
 // Clear all debate topics for a user
 void DebateModerator::handleClearDebates(const std::string& user) {
     std::cout << "[DebateModerator] handleClearDebates called for user: " << user << std::endl;
+    bool ok = dbHandler.clearUserDebates(user);
 
-    auto debates = readDebates(user);
-    for (const auto& d : debates) {
-        std::cout << "[DebateModerator] Deleting debate topic: " << d.topic << std::endl;
-        deleteDebateTopic(d.topic, user);
-    }
-
-    std::cout << "[DebateModerator] All debates cleared for user: " << user << std::endl;
+    if (ok)
+        std::cout << "[DebateModerator] All debates cleared for user: " << user << std::endl;
+    else
+        std::cerr << "[DebateModerator] Failed to clear debates for user: " << user << std::endl;
 }
 
 // Print all current debates for a user
 void DebateModerator::printCurrentDebates(const std::string& user) {
-    auto debates = readDebates(user);
+    auto debates = dbHandler.getDebates(user);
     std::cout << "[DebateModerator] Current debates for user '" << user << "':\n";
-    for (const auto& d : debates) {
-        std::cout << " - " << d.id << " : " << d.topic << std::endl;
+    if (debates.empty()) {
+        std::cout << " (none)\n";
+        return;
+    }
+
+    for (const auto& row : debates) {
+        std::cout << " - " << row.at("ID") << " : " << row.at("TOPIC") << std::endl;
     }
 }

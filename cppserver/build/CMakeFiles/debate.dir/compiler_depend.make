@@ -4,7 +4,7 @@
 CMakeFiles/debate.dir/src/server/test.cpp.obj: C:/Users/yunch/Important/Project/debate/cppserver/src/server/test.cpp \
   C:/Users/yunch/Important/Project/debate/cppserver/src/gen/cpp/event.pb.h \
   C:/Users/yunch/Important/Project/debate/cppserver/src/gen/cpp/page.pb.h \
-  C:/Users/yunch/Important/Project/debate/cppserver/src/main/eventHandler.h \
+  C:/Users/yunch/Important/Project/debate/cppserver/src/debate/main/EventHandler.h \
   C:/Users/yunch/Important/Project/debate/src/gen/cpp/event.pb.h \
   C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include/absl/algorithm/algorithm.h \
   C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include/absl/algorithm/container.h \
@@ -1273,7 +1273,7 @@ C:/mingw-w64/mingw64/include/c++/15.1.0/version:
 
 C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/avx512bwintrin.h:
 
-C:/Users/yunch/Important/Project/debate/cppserver/src/main/eventHandler.h:
+C:/Users/yunch/Important/Project/debate/cppserver/src/debate/main/EventHandler.h:
 
 C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include/absl/strings/internal/cord_data_edge.h:
 

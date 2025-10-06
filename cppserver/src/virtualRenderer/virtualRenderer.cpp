@@ -2,7 +2,7 @@
 #include "../../../src/gen/cpp/page.pb.h"
 #include "../../../src/gen/cpp/event.pb.h"
 #include "./pageGenerator.h"
-#include "../main/eventHandler.h"
+#include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
 

@@ -463,7 +463,7 @@ CMakeFiles/debate.dir/src/server/test.cpp.obj: \
  C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include/google/protobuf/map_field.h \
  C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include/google/protobuf/map_field_lite.h \
  C:/Users/yunch/Important/Project/debate/cppserver/src/gen/cpp/event.pb.h \
- C:/Users/yunch/Important/Project/debate/cppserver/src/main/eventHandler.h \
+ C:/Users/yunch/Important/Project/debate/cppserver/src/debate/main/EventHandler.h \
  C:/Users/yunch/Important/Project/debate/src/gen/cpp/event.pb.h \
  C:\Users\yunch\Important\Project\debate\cppserver\src\server\httplib.h \
  C:/mingw-w64/mingw64/x86_64-w64-mingw32/include/io.h \

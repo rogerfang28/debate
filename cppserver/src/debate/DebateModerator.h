@@ -2,8 +2,7 @@
 #define DEBATEMODERATOR_H
 
 #include <string>
-#include <iostream>
-#include "../database/databaseCommunicator.h"  // for addDebate, readDebates, deleteDebateTopic
+#include "./DebateDatabaseHandler.h"
 
 class DebateModerator {
 public:
@@ -15,6 +14,8 @@ public:
     void handleClearDebates(const std::string& user);
 
 private:
+    DebateDatabaseHandler dbHandler;  // internal handler instance
+
     // Helper to print current debates for a user
     void printCurrentDebates(const std::string& user);
 };
