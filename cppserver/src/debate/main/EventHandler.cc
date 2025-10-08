@@ -1,5 +1,5 @@
 #include "EventHandler.h"
-#include "../debate/DebateModerator.h"   // uses DebateDatabaseHandler internally
+#include "../DebateModerator.h"   // uses DebateDatabaseHandler internally
 #include <iostream>
 using namespace std;
 

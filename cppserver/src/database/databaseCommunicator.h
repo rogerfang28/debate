@@ -1,64 +1,55 @@
-#ifndef DATABASECOMMUNICATOR_H
-#define DATABASECOMMUNICATOR_H
+#ifndef DATABASE_COMMUNICATOR_H
+#define DATABASE_COMMUNICATOR_H
 
 #include <string>
 #include <vector>
 #include <map>
+#include <cstdint>  // for std::vector<uint8_t>
 
-// SQLite forward declaration
+// Forward declare sqlite3 so we don't need to include <sqlite3.h> in every file
 struct sqlite3;
+extern sqlite3* db;
 
 // ---------------------------
-// Core Database Management
+// Generic Database Functions
 // ---------------------------
-
-// Open and close a database
 bool openDB(const std::string& filename);
 void closeDB();
-
-// Execute a raw SQL command (no return)
 bool execSQL(const std::string& sql);
 
 // ---------------------------
 // Table Management
 // ---------------------------
-
-// Create a table with dynamic columns: {columnName -> typeString}
 bool createTable(const std::string& tableName,
                  const std::map<std::string, std::string>& columns);
 
 // ---------------------------
-// Generic CRUD Operations
+// Insert Rows
 // ---------------------------
+int insertRowWithText(const std::string& tableName,
+                      const std::vector<std::string>& columns,
+                      const std::vector<std::string>& values);
 
-// Insert a row into a table; returns new row ID or -1 on error
-int insertRow(const std::string& tableName,
-              const std::vector<std::string>& columns,
-              const std::vector<std::string>& values);
+int insertRowWithBlob(const std::string& tableName,
+                      const std::vector<std::string>& columns,
+                      const std::vector<std::string>& textValues,
+                      const std::vector<std::pair<const void*, int>>& blobValues);
 
-// Read rows; returns vector of {columnName -> value} maps
+// ---------------------------
+// Read Rows
+// ---------------------------
 std::vector<std::map<std::string, std::string>> readRows(
     const std::string& tableName,
     const std::string& whereClause = "");
 
-// Delete rows matching a condition
+std::vector<uint8_t> readBlob(const std::string& tableName,
+                              const std::string& blobColumn,
+                              const std::string& whereClause);
+
+// ---------------------------
+// Delete Rows
+// ---------------------------
 bool deleteRows(const std::string& tableName,
                 const std::string& whereClause = "");
 
-// ---------------------------
-// Example Wrappers (Debate-specific)
-// ---------------------------
-
-// Initialize debate database and create table if missing
-void initDebateDB(const std::string& filename);
-
-// Add a new debate for a user
-int addDebate(const std::string& user, const std::string& topic);
-
-// Retrieve all debates for a user
-std::vector<std::map<std::string, std::string>> getDebates(const std::string& user);
-
-// Remove a debate by topic and user
-bool removeDebate(const std::string& topic, const std::string& user);
-
-#endif // DATABASECOMMUNICATOR_H
+#endif // DATABASE_COMMUNICATOR_H

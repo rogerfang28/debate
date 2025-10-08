@@ -48,6 +48,6 @@ int main() {
   });
 
   // ---------- Start server ----------
-  std::cout << "Serving on http://127.0.0.1:8080\n";
+  std::cout << "Serving server on http://127.0.0.1:8080\n";
   svr.listen("0.0.0.0", 8080);
 }

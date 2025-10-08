@@ -9,14 +9,15 @@ void DebateDatabaseHandler::ensureTable() {
     if (!openDB(dbFilename)) return;
     createTable("DEBATE", {
         {"USER", "TEXT NOT NULL"},
-        {"TOPIC", "TEXT NOT NULL"}
+        {"TOPIC", "TEXT NOT NULL"},
+        {"PAGE_DATA","BLOB"} // binary protobuf
     });
     closeDB();
 }
 
 int DebateDatabaseHandler::addDebate(const std::string& user, const std::string& topic) {
     if (!openDB(dbFilename)) return -1;
-    int id = insertRow("DEBATE", {"USER", "TOPIC"}, {user, topic});
+    int id = insertRowWithText("DEBATE", {"USER", "TOPIC"}, {user, topic});
     closeDB();
     if (id != -1)
         std::cout << "[DebateDB] Added debate: " << topic << " for user " << user << "\n";

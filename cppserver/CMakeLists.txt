@@ -1,126 +1,124 @@
-cmake_minimum_required(VERSION 3.20)
-project(debate LANGUAGES CXX)
+# build commands:
+# cd C:\Users\yunch\Important\Project\debate\cppserver
+# cmake -S . -B build
+# cmake --build build -j
 
-# ---- C++ standard ----
+
+cmake_minimum_required(VERSION 3.20)
+project(DebateServer LANGUAGES CXX)
+
+
+# ---------------------------------
+# Compiler and definitions
+# ---------------------------------
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ---- Paths that mirror your tasks.json layout ----
-# CMakeLists.txt is in debate/cppserver/
-set(PROTO_DIR "${CMAKE_SOURCE_DIR}/../src/proto")
-set(GEN_CPP_DIR "${CMAKE_SOURCE_DIR}/../src/gen/cpp")
 
-# ---- Find Protobuf (and protoc) via vcpkg toolchain ----
-find_package(Protobuf REQUIRED) # provides protobuf::libprotobuf and Protobuf_PROTOC_EXECUTABLE
+# These replicate your -D flags
+add_definitions(-D_WIN32_WINNT=0x0A00)
+add_definitions(-DPROTOBUF_USE_DLLS)
+add_definitions(-DWIN32_LEAN_AND_MEAN)
+add_definitions(-DNOMINMAX)
 
-# ---- Generate *.pb.cc / *.pb.h like your 'Generate Protobuf C++' task ----
-file(GLOB PROTO_FILES "${PROTO_DIR}/*.proto")
 
-# Make sure the output directory exists (matches your tasks.json)
-file(MAKE_DIRECTORY "${GEN_CPP_DIR}")
-
-set(PB_SRCS "")
-set(PB_HDRS "")
-foreach(proto ${PROTO_FILES})
-  get_filename_component(fname "${proto}" NAME_WE)
-  set(out_cc "${GEN_CPP_DIR}/${fname}.pb.cc")
-  set(out_h  "${GEN_CPP_DIR}/${fname}.pb.h")
-  add_custom_command(
-    OUTPUT "${out_cc}" "${out_h}"
-    COMMAND "${Protobuf_PROTOC_EXECUTABLE}"
-            -I "${PROTO_DIR}"
-            --cpp_out="${GEN_CPP_DIR}"
-            "${proto}"
-    DEPENDS "${proto}"
-    COMMENT "protoc: ${fname}.proto -> ${fname}.pb.cc/.pb.h"
-    VERBATIM
-  )
-  list(APPEND PB_SRCS "${out_cc}")
-  list(APPEND PB_HDRS "${out_h}")
-endforeach()
-
-# ---- Your sources ----
-add_executable(debate
-  src/server/test.cpp
-  ${PB_SRCS}
+# ---------------------------------
+# Include directories (same as -I flags)
+# ---------------------------------
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/server
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer
+    ${CMAKE_SOURCE_DIR}/src/main
+    ${CMAKE_SOURCE_DIR}/../src/gen/cpp
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/include
 )
 
-# ---- Includes (so #include "page.pb.h" works cleanly) ----
-target_include_directories(debate PRIVATE
-  "${GEN_CPP_DIR}"
-  "${CMAKE_SOURCE_DIR}/src/server"
-  "${CMAKE_SOURCE_DIR}/src/server/main"
+
+# ---------------------------------
+# Source files (same as task args)
+# ---------------------------------
+set(SRC_FILES
+    ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debate/DebateModerator.cpp
+    ${CMAKE_SOURCE_DIR}/src/debate/DebateDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pageGenerator.cpp
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/database/databaseCommunicator.cc
+    ${CMAKE_SOURCE_DIR}/src/database/sqlite3.o
 )
 
-# ---- Compile-time defines (match your tasks.json) ----
-target_compile_definitions(debate PRIVATE
-  WIN32_LEAN_AND_MEAN
-  NOMINMAX
-  _WIN32_WINNT=0x0A00
-  PROTOBUF_USE_DLLS        # because you're using the *dynamic* vcpkg triplet
+
+# Add all generated protobuf files (*.pb.cc)
+file(GLOB PB_SRC "${CMAKE_SOURCE_DIR}/../src/gen/cpp/*.pb.cc")
+
+
+# Combine sources
+list(APPEND SRC_FILES ${PB_SRC})
+
+
+# ---------------------------------
+# Library search paths (-L flags)
+# ---------------------------------
+link_directories(
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/lib
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib
 )
 
-# ---- Link libraries (protobuf + ws2_32; zlib optional) ----
-target_link_libraries(debate PRIVATE protobuf::libprotobuf ws2_32)
 
-# Your tasks.json passed "@absl.rsp" (all absl_*.dll.a). Do the equivalent:
-# Prefer proper CMake package; fall back to globbing like your RSP if needed.
-find_package(absl CONFIG QUIET)
-if (absl_FOUND)
-  # Link a broad set that covers typical protobuf deps.
-  target_link_libraries(debate PRIVATE
-    absl::strings
-    absl::time
-    absl::base
-    absl::hash
-    absl::cord
-  )
+# ---------------------------------
+# Abseil RSP equivalent (load all Abseil libs dynamically)
+# ---------------------------------
+file(GLOB ABSL_LIBS
+    "${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/lib/libabsl_*.dll.a"
+)
+
+
+if(ABSL_LIBS)
+    message(STATUS "✅ Found Abseil libs:")
+    foreach(LIB ${ABSL_LIBS})
+        message(STATUS "   ${LIB}")
+    endforeach()
 else()
-  # Fallback: replicate your "absl.rsp" behavior by globbing every Abseil lib
-  # under vcpkg's installed lib folder.
-  if (DEFINED VCPKG_TARGET_TRIPLET)
-    set(VCPKG_LIB_DIR "${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/${VCPKG_TARGET_TRIPLET}/lib")
-    file(GLOB ABSL_LIBS "${VCPKG_LIB_DIR}/libabsl_*.dll.a")
-    if (ABSL_LIBS)
-      target_link_libraries(debate PRIVATE ${ABSL_LIBS})
-    endif()
-  endif()
+    message(WARNING "⚠️  No Abseil libs found under x64-mingw-dynamic/lib")
 endif()
 
-# Optional: zlib (your tasks.json used -lzlib; the portable way is via find_package)
-find_package(ZLIB QUIET)
-if (ZLIB_FOUND)
-  target_link_libraries(debate PRIVATE ZLIB::ZLIB)
-endif()
 
-# ---- Put the exe in a tidy place ----
-set_target_properties(debate PROPERTIES
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+# ---------------------------------
+# Create executable
+# ---------------------------------
+add_executable(debate_server
+    ${CMAKE_SOURCE_DIR}/src/server/main.cc
+    ${SRC_FILES}   # all the other code files you already listed
 )
 
-# ---- Post-build: copy DLLs next to the exe so it runs without PATH tweaks ----
-if (WIN32)
-  # 1) protobuf DLL from vcpkg
-  add_custom_command(TARGET debate POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            $<TARGET_FILE:protobuf::libprotobuf>
-            $<TARGET_FILE_DIR:debate>
-  )
 
-  # 2) MinGW runtime DLLs (adjust if your MinGW path differs)
-  set(MINGW_BIN "C:/mingw-w64/mingw64/bin")
-  foreach(dll IN ITEMS libstdc++-6.dll libgcc_s_seh-1.dll libwinpthread-1.dll)
-    if (EXISTS "${MINGW_BIN}/${dll}")
-      add_custom_command(TARGET debate POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                "${MINGW_BIN}/${dll}"
-                $<TARGET_FILE_DIR:debate>
-      )
-    endif()
-  endforeach()
-endif()
 
-# ---- Make the generated files part of the build graph ----
-# (So building 'debate' first triggers protoc if needed)
-add_custom_target(generate_protos DEPENDS ${PB_SRCS} ${PB_HDRS})
-add_dependencies(debate generate_protos)
+# ---------------------------------
+# Link libraries (in same order as your .rsp build)
+# ---------------------------------
+target_link_libraries(debate_server
+    protobuf
+    ${ABSL_LIBS}
+    zlib
+    ws2_32
+    sqlite3
+)
+
+
+# ---------------------------------
+# Output directory
+# ---------------------------------
+set_target_properties(debate_server PROPERTIES
+    LINK_FLAGS "-mconsole"
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+
+# ---------------------------------
+# Ensure MinGW runtime and vcpkg DLLs are found
+# ---------------------------------
+set(ENV{PATH} "C:\\mingw-w64\\mingw64\\bin;${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/bin;$ENV{PATH}")
+message(STATUS "PATH = $ENV{PATH}")
+
+
+

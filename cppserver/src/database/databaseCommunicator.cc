@@ -4,6 +4,8 @@
 #include <map>
 #include <sstream>
 #include "sqlite3.h"
+#include <cstdint>  // for std::vector<uint8_t>
+
 
 sqlite3* db = nullptr;
 
@@ -54,7 +56,7 @@ bool createTable(const std::string& tableName, const std::map<std::string, std::
 // Insert Rows
 // ---------------------------
 
-int insertRow(const std::string& tableName, const std::vector<std::string>& columns, const std::vector<std::string>& values) {
+int insertRowWithText(const std::string& tableName, const std::vector<std::string>& columns, const std::vector<std::string>& values) {
     if (columns.size() != values.size()) {
         std::cerr << "[DB] Insert failed: mismatched columns and values.\n";
         return -1;
@@ -94,6 +96,59 @@ int insertRow(const std::string& tableName, const std::vector<std::string>& colu
     return rowid;
 }
 
+int insertRowWithBlob(
+    const std::string& tableName,
+    const std::vector<std::string>& columns,
+    const std::vector<std::string>& textValues,
+    const std::vector<std::pair<const void*, int>>& blobValues)
+{
+    if (columns.size() != textValues.size() + blobValues.size()) {
+        std::cerr << "[DB] Insert failed: mismatched column count.\n";
+        return -1;
+    }
+
+    std::ostringstream sql;
+    sql << "INSERT INTO " << tableName << " (";
+    for (size_t i = 0; i < columns.size(); ++i) {
+        sql << columns[i];
+        if (i < columns.size() - 1) sql << ", ";
+    }
+    sql << ") VALUES (";
+    for (size_t i = 0; i < columns.size(); ++i) {
+        sql << "?";
+        if (i < columns.size() - 1) sql << ", ";
+    }
+    sql << ");";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        return -1;
+    }
+
+    int paramIndex = 1;
+
+    // Bind text values first
+    for (const auto& v : textValues)
+        sqlite3_bind_text(stmt, paramIndex++, v.c_str(), -1, SQLITE_TRANSIENT);
+
+    // Then bind blob values
+    for (const auto& [ptr, size] : blobValues)
+        sqlite3_bind_blob(stmt, paramIndex++, ptr, size, SQLITE_TRANSIENT);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "[DB] Insert failed: " << sqlite3_errmsg(db) << "\n";
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    int rowid = (int)sqlite3_last_insert_rowid(db);
+    sqlite3_finalize(stmt);
+    return rowid;
+}
+
+
 // ---------------------------
 // Read Rows
 // ---------------------------
@@ -128,6 +183,35 @@ std::vector<std::map<std::string, std::string>> readRows(
     return results;
 }
 
+std::vector<uint8_t> readBlob(
+    const std::string& tableName,
+    const std::string& blobColumn,
+    const std::string& whereClause)
+{
+    std::vector<uint8_t> data;
+    std::ostringstream sql;
+    sql << "SELECT " << blobColumn << " FROM " << tableName;
+    if (!whereClause.empty()) sql << " WHERE " << whereClause;
+    sql << " LIMIT 1;";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        return data;
+    }
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        const void* blob = sqlite3_column_blob(stmt, 0);
+        int bytes = sqlite3_column_bytes(stmt, 0);
+        if (blob && bytes > 0)
+            data.assign((const uint8_t*)blob, (const uint8_t*)blob + bytes);
+    }
+
+    sqlite3_finalize(stmt);
+    return data;
+}
+
+
 // ---------------------------
 // Delete Rows
 // ---------------------------
@@ -139,37 +223,3 @@ bool deleteRows(const std::string& tableName, const std::string& whereClause = "
     sql << ";";
     return execSQL(sql.str());
 }
-
-// ---------------------------
-// Example Wrappers (Debate)
-// ---------------------------
-
-// void initDebateDB(const std::string& filename) {
-//     openDB(filename);
-//     createTable("DEBATE", {
-//         {"USER", "TEXT NOT NULL"},
-//         {"TOPIC", "TEXT NOT NULL"}
-//     });
-//     closeDB();
-// }
-
-// int addDebate(const std::string& user, const std::string& topic) {
-//     openDB("debates.sqlite3");
-//     int id = insertRow("DEBATE", {"USER", "TOPIC"}, {user, topic});
-//     closeDB();
-//     return id;
-// }
-
-// std::vector<std::map<std::string, std::string>> getDebates(const std::string& user) {
-//     openDB("debates.sqlite3");
-//     auto results = readRows("DEBATE", "USER = '" + user + "'");
-//     closeDB();
-//     return results;
-// }
-
-// bool removeDebate(const std::string& topic, const std::string& user) {
-//     openDB("debates.sqlite3");
-//     bool ok = deleteRows("DEBATE", "TOPIC = '" + topic + "' AND USER = '" + user + "'");
-//     closeDB();
-//     return ok;
-// }
