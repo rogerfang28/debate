@@ -46,6 +46,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite3.o
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
+    ${CMAKE_SOURCE_DIR}/src/debate/UserDatabaseHandler.cc
 )
 
 

@@ -3,6 +3,7 @@
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../debate/DebateDatabaseHandler.h"
 #include "../utils/pathUtils.h"
+#include "../debate/UserDatabaseHandler.h"
 
 #include <google/protobuf/text_format.h>
 #include <fstream>
@@ -35,6 +36,27 @@ void updateComponentText(ui::Component* root, const std::string& id, const std::
         std::cerr << "[PageGen] Updated component '" << id << "' with text: " << newText.substr(0, 50) << "..." << std::endl;
     } else {
         std::cerr << "[PageGen][WARN] Component '" << id << "' not found" << std::endl;
+    }
+}
+
+std::string generatePage(const std::string& user) {
+    // This should get the location of the user from the database, then use generateTestPage or generateDebateClaimPage
+    UserDatabaseHandler userDbHandler(utils::getDatabasePath());
+    auto rows = userDbHandler.getUser(user);
+    std::string location = "home"; // default
+    if (!rows.empty()) {
+        location = rows[0]["LOCATION"];
+    }
+    else{
+        userDbHandler.addUser(user, "Default Name", "2024-01-01", "home");
+    }
+    if (location == "home") {
+        return generateTestPage(user);
+    } else {
+        // for now assume that if not home, then debate page and location = topic
+        std::string topic = location; // This would be dynamic in a real scenario
+        std::string curClaim = topic; // This would also be dynamic
+        return generateDebateClaimPage(user, topic, curClaim);
     }
 }
 
@@ -97,12 +119,40 @@ std::string generateTestPage(const std::string& user) {
         std::cerr << "[PageGen] Injecting " << debates.size()
                   << " debate topics into topicsList\n";
 
+        // Change the component type to CONTAINER so we can add children
+        topicsList->set_type(ui::ComponentType::CONTAINER);
         topicsList->clear_items();
+        topicsList->clear_children();
+        
         for (const auto& row : debates) {
-            auto* item = topicsList->add_items();
-            item->set_label(row.at("TOPIC"));
-            item->set_value("topic:" + row.at("ID"));
+            std::cerr << "[PageGen] Adding topic: " << row.at("TOPIC") << " with ID: " << row.at("ID") << std::endl;
+            
+            // Create a container for each topic row (topic text + enter button)
+            auto* topicRow = topicsList->add_children();
+            topicRow->set_id("topicRow_" + row.at("ID"));
+            topicRow->set_type(ui::ComponentType::CONTAINER);
+            topicRow->mutable_style()->set_custom_class("flex items-center justify-between p-3 border-b border-gray-200 hover:bg-gray-50");
+            
+            // Topic text
+            auto* topicText = topicRow->add_children();
+            topicText->set_id("topicText_" + row.at("ID"));
+            topicText->set_type(ui::ComponentType::TEXT);
+            topicText->set_text(row.at("TOPIC"));
+            topicText->mutable_style()->set_custom_class("flex-1 text-gray-800");
+            
+            // Enter button
+            auto* enterButton = topicRow->add_children();
+            enterButton->set_id("enterButton_" + row.at("ID"));
+            enterButton->set_type(ui::ComponentType::BUTTON);
+            enterButton->set_text("Enter");
+            enterButton->mutable_style()->set_custom_class("px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm");
+            
+            // Set event for the button with topic ID as collectFrom
+            std::string eventValue = "{\"actionId\":\"enterTopic\",\"collectFrom\":[\"" + row.at("ID") + "\"]}";
+            (*enterButton->mutable_events())["onClick"] = eventValue;
         }
+        
+        std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;
     }
 
     // -------- Serialize final page --------

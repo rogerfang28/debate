@@ -34,5 +34,6 @@ void updateComponentText(ui::Component* root, const std::string& id, const std::
 // ---------------------------------------------------------
 std::string generateTestPage(const std::string& user);
 std::string generateDebateClaimPage(const std::string& user, const std::string& topic, const std::string& curClaim);
+std::string generatePage(const std::string& user);
 
 #endif // PAGEGENERATOR_H

@@ -19,8 +19,8 @@ VirtualRenderer::~VirtualRenderer() {
 // Handle GET requests
 void VirtualRenderer::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
     std::string user = "defaultUser"; // later: parse from req.query_string
-    std::string page_bin = generateDebateClaimPage(user,"A","A");
-    // std::string page_bin = generateTestPage(user);
+    // std::string page_bin = generateDebateClaimPage(user,"A","A");
+    std::string page_bin = generatePage(user);
 
     if (page_bin.empty()) {
         res.status = 500;
