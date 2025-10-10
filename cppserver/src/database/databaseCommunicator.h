@@ -52,4 +52,10 @@ std::vector<uint8_t> readBlob(const std::string& tableName,
 bool deleteRows(const std::string& tableName,
                 const std::string& whereClause = "");
 
+// ---------------------------
+// Update Rows
+// ---------------------------
+bool updateRowWithBlob(const std::string& tableName, const std::string& blobColumn,
+                       const std::vector<uint8_t>& blobData, const std::string& whereClause);
+
 #endif // DATABASE_COMMUNICATOR_H

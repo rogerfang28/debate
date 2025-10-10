@@ -223,3 +223,40 @@ bool deleteRows(const std::string& tableName, const std::string& whereClause = "
     sql << ";";
     return execSQL(sql.str());
 }
+
+// ---------------------------
+// Update Rows
+// ---------------------------
+
+bool updateRowWithBlob(const std::string& tableName, const std::string& blobColumn,
+                       const std::vector<uint8_t>& blobData, const std::string& whereClause) {
+    if (whereClause.empty()) {
+        std::cerr << "[DB] Update failed: WHERE clause is required for safety.\n";
+        return false;
+    }
+
+    std::ostringstream sql;
+    sql << "UPDATE " << tableName << " SET " << blobColumn << " = ? WHERE " << whereClause << ";";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        return false;
+    }
+
+    if (!blobData.empty()) {
+        sqlite3_bind_blob(stmt, 1, blobData.data(), static_cast<int>(blobData.size()), SQLITE_TRANSIENT);
+    } else {
+        sqlite3_bind_null(stmt, 1);
+    }
+
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    if (rc != SQLITE_DONE) {
+        std::cerr << "[DB] Update failed: " << sqlite3_errmsg(db) << "\n";
+        return false;
+    }
+
+    return true;
+}

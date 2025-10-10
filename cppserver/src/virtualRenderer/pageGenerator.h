@@ -2,6 +2,16 @@
 #define PAGEGENERATOR_H
 
 #include <string>
+#include "../../../src/gen/cpp/page.pb.h"
+
+// Forward declarations for UI component manipulation
+namespace ui {
+    class Component;
+}
+
+// Helper functions for component manipulation
+ui::Component* findComponent(ui::Component* root, const std::string& id);
+void updateComponentText(ui::Component* root, const std::string& id, const std::string& newText);
 
 // ---------------------------------------------------------
 // Function: generatePage
@@ -22,6 +32,7 @@
 //   std::string page = generatePage("roger");
 //   // send 'page' as HTTP response
 // ---------------------------------------------------------
-std::string generatePage(const std::string& user);
+std::string generateTestPage(const std::string& user);
+std::string generateDebateClaimPage(const std::string& user, const std::string& topic, const std::string& curClaim);
 
 #endif // PAGEGENERATOR_H

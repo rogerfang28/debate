@@ -21,8 +21,19 @@ public:
     // Add a debate for a given user
     int addDebate(const std::string& user, const std::string& topic);
 
+    // Add a debate with protobuf binary data for a given user
+    int addDebateWithProtobuf(const std::string& user, const std::string& topic, 
+                              const std::vector<uint8_t>& protobufData);
+
     // Retrieve all debates for a specific user
     std::vector<std::map<std::string, std::string>> getDebates(const std::string& user);
+
+    // Retrieve protobuf binary data for a specific debate
+    std::vector<uint8_t> getDebateProtobuf(const std::string& user, const std::string& topic);
+
+    // Update protobuf data for an existing debate
+    bool updateDebateProtobuf(const std::string& user, const std::string& topic, 
+                              const std::vector<uint8_t>& protobufData);
 
     // Remove a specific debate for a user
     bool removeDebate(const std::string& topic, const std::string& user);
