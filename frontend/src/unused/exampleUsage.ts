@@ -1,5 +1,5 @@
 import { getComponentInfo, getTextBoxInfo } from "./getInfoFromPage.old.js";
-import getPageFromBackend from "../backendCommunicator/getPageFromBackend.js";
+import getPageFromBackend from "./getPageFromBackend.js";
 
 /**
  * Example usage of the component info extraction functions

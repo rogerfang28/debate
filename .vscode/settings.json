@@ -113,6 +113,7 @@
         "netfwd": "cpp",
         "string_view": "cpp",
         "rope": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "*.old": "cpp"
     }
 }

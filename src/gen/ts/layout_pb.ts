@@ -10,9 +10,50 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file layout.proto.
  */
 export const file_layout: GenFile = /*@__PURE__*/
-  fileDesc("CgxsYXlvdXQucHJvdG8SBmxheW91dCK4AQoJQ29tcG9uZW50EgoKAmlkGAEgASgJEiMKCGNoaWxkcmVuGAIgAygLMhEubGF5b3V0LkNvbXBvbmVudBIcCgVzdHlsZRgDIAEoCzINLmxheW91dC5TdHlsZRItCgZldmVudHMYBCADKAsyHS5sYXlvdXQuQ29tcG9uZW50LkV2ZW50c0VudHJ5Gi0KC0V2ZW50c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEimgIKBVN0eWxlEiIKBmxheW91dBgBIAEoDjISLmxheW91dC5MYXlvdXRUeXBlEiIKCHBvc2l0aW9uGAIgASgLMhAubGF5b3V0LlBvc2l0aW9uEhoKBHNpemUYAyABKAsyDC5sYXlvdXQuU2l6ZRIPCgdwYWRkaW5nGAQgASgJEg4KBm1hcmdpbhgFIAEoCRIQCghiZ19jb2xvchgGIAEoCRISCgp0ZXh0X2NvbG9yGAcgASgJEg4KBmJvcmRlchgIIAEoCRIPCgdyb3VuZGVkGAkgASgJEg4KBnNoYWRvdxgKIAEoCRILCgNnYXAYCyABKAkSEgoKc2Nyb2xsYWJsZRgMIAEoCBIUCgxjdXN0b21fY2xhc3MYDSABKAkiLgoIUG9zaXRpb24SCQoBeBgBIAEoAhIJCgF5GAIgASgCEgwKBHVuaXQYAyABKAkiJQoEU2l6ZRINCgV3aWR0aBgBIAEoCRIOCgZoZWlnaHQYAiABKAkiYgoFVGhlbWUSFQoNcHJpbWFyeV9jb2xvchgBIAEoCRIXCg9zZWNvbmRhcnlfY29sb3IYAiABKAkSEwoLZm9udF9mYW1pbHkYAyABKAkSFAoMYWNjZW50X2NvbG9yGAQgASgJIjYKCExpc3RJdGVtEg0KBWxhYmVsGAEgASgJEg0KBXZhbHVlGAIgASgJEgwKBGljb24YAyABKAkqvQEKDUNvbXBvbmVudFR5cGUSCwoHVU5LTk9XThAAEggKBFRFWFQQARIKCgZCVVRUT04QAhIJCgVJTlBVVBADEgwKCFRFWFRBUkVBEAQSDgoKTk9ERV9HUkFQSBAFEggKBENIQVQQBhIJCgVJTUFHRRAHEggKBENBUkQQCBIICgRMSVNUEAkSCQoFVEFCTEUQChIJCgVNT0RBTBALEg0KCUNPTlRBSU5FUhAMEggKBEZPUk0QDRIICgRJQ09OEA4qTAoKTGF5b3V0VHlwZRIMCghBQlNPTFVURRAAEgwKCEZMRVhfUk9XEAESDAoIRkxFWF9DT0wQAhIICgRHUklEEAMSCgoGSU5MSU5FEARiBnByb3RvMw");
+  fileDesc("CgxsYXlvdXQucHJvdG8SBmxheW91dCJNCgRQYWdlEg8KB3BhZ2VfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSJQoKY29tcG9uZW50cxgDIAMoCzIRLmxheW91dC5Db21wb25lbnQi6wEKCUNvbXBvbmVudBIKCgJpZBgBIAEoCRIjCgR0eXBlGAIgASgOMhUubGF5b3V0LkNvbXBvbmVudFR5cGUSDAoEdGV4dBgDIAEoCRINCgV2YWx1ZRgEIAEoCRIjCghjaGlsZHJlbhgFIAMoCzIRLmxheW91dC5Db21wb25lbnQSDQoFc3R5bGUYBiABKAkSLQoGZXZlbnRzGAcgAygLMh0ubGF5b3V0LkNvbXBvbmVudC5FdmVudHNFbnRyeRotCgtFdmVudHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBImAKB1VJRXZlbnQSHgoWdHJpZ2dlcmVkX2NvbXBvbmVudF9pZBgBIAEoCRIRCglldmVudF9rZXkYAiABKAkSIgoMY3VycmVudF9wYWdlGAMgASgLMgwubGF5b3V0LlBhZ2UqYQoNQ29tcG9uZW50VHlwZRILCgdVTktOT1dOEAASDQoJQ09OVEFJTkVSEAESCAoEVEVYVBACEgoKBkJVVFRPThADEgkKBUlOUFVUEAQSCQoFSU1BR0UQBRIICgRMSVNUEAZiBnByb3RvMw");
 
 /**
+ * ====================
+ * Root Page Definition
+ * ====================
+ *
+ * @generated from message layout.Page
+ */
+export type Page = Message<"layout.Page"> & {
+  /**
+   * Unique ID of the page
+   *
+   * @generated from field: string page_id = 1;
+   */
+  pageId: string;
+
+  /**
+   * Optional title or header text
+   *
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * Top-level components in this page
+   *
+   * @generated from field: repeated layout.Component components = 3;
+   */
+  components: Component[];
+};
+
+/**
+ * Describes the message layout.Page.
+ * Use `create(PageSchema)` to create a new message.
+ */
+export const PageSchema: GenMessage<Page> = /*@__PURE__*/
+  messageDesc(file_layout, 0);
+
+/**
+ * ====================
+ * Core Component Model
+ * ====================
+ *
  * @generated from message layout.Component
  */
 export type Component = Message<"layout.Component"> & {
@@ -24,23 +65,44 @@ export type Component = Message<"layout.Component"> & {
   id: string;
 
   /**
-   * Nested components
+   * Determines how to render
    *
-   * @generated from field: repeated layout.Component children = 2;
+   * @generated from field: layout.ComponentType type = 2;
+   */
+  type: ComponentType;
+
+  /**
+   * Display text (optional)
+   *
+   * @generated from field: string text = 3;
+   */
+  text: string;
+
+  /**
+   * Current user-entered value (e.g. input text)
+   *
+   * @generated from field: string value = 4;
+   */
+  value: string;
+
+  /**
+   * Nested components for layout
+   *
+   * @generated from field: repeated layout.Component children = 5;
    */
   children: Component[];
 
   /**
-   * Tailwind / structured style info
+   * Tailwind or CSS class
    *
-   * @generated from field: layout.Style style = 3;
+   * @generated from field: string style = 6;
    */
-  style?: Style;
+  style: string;
 
   /**
-   * Event name → action ID
+   * Event bindings (e.g. "onClick" -> "{\"actionId\":\"submitTopic\"}")
    *
-   * @generated from field: map<string, string> events = 4;
+   * @generated from field: map<string, string> events = 7;
    */
   events: { [key: string]: string };
 };
@@ -50,251 +112,49 @@ export type Component = Message<"layout.Component"> & {
  * Use `create(ComponentSchema)` to create a new message.
  */
 export const ComponentSchema: GenMessage<Component> = /*@__PURE__*/
-  messageDesc(file_layout, 0);
-
-/**
- * ======================
- * Styling information
- * ======================
- *
- * @generated from message layout.Style
- */
-export type Style = Message<"layout.Style"> & {
-  /**
-   * flex/grid/absolute/etc.
-   *
-   * @generated from field: layout.LayoutType layout = 1;
-   */
-  layout: LayoutType;
-
-  /**
-   * For absolute/fixed layout
-   *
-   * @generated from field: layout.Position position = 2;
-   */
-  position?: Position;
-
-  /**
-   * Width & height
-   *
-   * @generated from field: layout.Size size = 3;
-   */
-  size?: Size;
-
-  /**
-   * Tailwind padding utility (e.g., "p-4")
-   *
-   * @generated from field: string padding = 4;
-   */
-  padding: string;
-
-  /**
-   * Tailwind margin utility (e.g., "m-2")
-   *
-   * @generated from field: string margin = 5;
-   */
-  margin: string;
-
-  /**
-   * Tailwind background color class
-   *
-   * @generated from field: string bg_color = 6;
-   */
-  bgColor: string;
-
-  /**
-   * Tailwind text color class
-   *
-   * @generated from field: string text_color = 7;
-   */
-  textColor: string;
-
-  /**
-   * Tailwind border utility
-   *
-   * @generated from field: string border = 8;
-   */
-  border: string;
-
-  /**
-   * Tailwind rounded corners
-   *
-   * @generated from field: string rounded = 9;
-   */
-  rounded: string;
-
-  /**
-   * Tailwind shadow class
-   *
-   * @generated from field: string shadow = 10;
-   */
-  shadow: string;
-
-  /**
-   * Tailwind gap utility
-   *
-   * @generated from field: string gap = 11;
-   */
-  gap: string;
-
-  /**
-   * Allow scroll if content overflows
-   *
-   * @generated from field: bool scrollable = 12;
-   */
-  scrollable: boolean;
-
-  /**
-   * Any extra Tailwind classes
-   *
-   * @generated from field: string custom_class = 13;
-   */
-  customClass: string;
-};
-
-/**
- * Describes the message layout.Style.
- * Use `create(StyleSchema)` to create a new message.
- */
-export const StyleSchema: GenMessage<Style> = /*@__PURE__*/
   messageDesc(file_layout, 1);
 
 /**
- * @generated from message layout.Position
+ * ====================
+ * Event Payload (Frontend → Backend)
+ * ====================
+ *
+ * @generated from message layout.UIEvent
  */
-export type Position = Message<"layout.Position"> & {
+export type UIEvent = Message<"layout.UIEvent"> & {
   /**
-   * px or % depending on renderer
+   * The component that triggered the event
    *
-   * @generated from field: float x = 1;
+   * @generated from field: string triggered_component_id = 1;
    */
-  x: number;
+  triggeredComponentId: string;
 
   /**
-   * @generated from field: float y = 2;
+   * e.g. "onClick", "onEnter"
+   *
+   * @generated from field: string event_key = 2;
    */
-  y: number;
+  eventKey: string;
 
   /**
-   * "px", "%", "rem"
+   * The full current page snapshot (includes user inputs)
    *
-   * @generated from field: string unit = 3;
+   * @generated from field: layout.Page current_page = 3;
    */
-  unit: string;
+  currentPage?: Page;
 };
 
 /**
- * Describes the message layout.Position.
- * Use `create(PositionSchema)` to create a new message.
+ * Describes the message layout.UIEvent.
+ * Use `create(UIEventSchema)` to create a new message.
  */
-export const PositionSchema: GenMessage<Position> = /*@__PURE__*/
+export const UIEventSchema: GenMessage<UIEvent> = /*@__PURE__*/
   messageDesc(file_layout, 2);
 
 /**
- * @generated from message layout.Size
- */
-export type Size = Message<"layout.Size"> & {
-  /**
-   * Tailwind width class or explicit value
-   *
-   * @generated from field: string width = 1;
-   */
-  width: string;
-
-  /**
-   * Tailwind height class or explicit value
-   *
-   * @generated from field: string height = 2;
-   */
-  height: string;
-};
-
-/**
- * Describes the message layout.Size.
- * Use `create(SizeSchema)` to create a new message.
- */
-export const SizeSchema: GenMessage<Size> = /*@__PURE__*/
-  messageDesc(file_layout, 3);
-
-/**
- * ======================
- * Theme (optional)
- * ======================
- *
- * @generated from message layout.Theme
- */
-export type Theme = Message<"layout.Theme"> & {
-  /**
-   * Tailwind-compatible color class
-   *
-   * @generated from field: string primary_color = 1;
-   */
-  primaryColor: string;
-
-  /**
-   * @generated from field: string secondary_color = 2;
-   */
-  secondaryColor: string;
-
-  /**
-   * e.g., "font-sans"
-   *
-   * @generated from field: string font_family = 3;
-   */
-  fontFamily: string;
-
-  /**
-   * Additional accent color
-   *
-   * @generated from field: string accent_color = 4;
-   */
-  accentColor: string;
-};
-
-/**
- * Describes the message layout.Theme.
- * Use `create(ThemeSchema)` to create a new message.
- */
-export const ThemeSchema: GenMessage<Theme> = /*@__PURE__*/
-  messageDesc(file_layout, 4);
-
-/**
- * ======================
- * List items
- * ======================
- *
- * @generated from message layout.ListItem
- */
-export type ListItem = Message<"layout.ListItem"> & {
-  /**
-   * @generated from field: string label = 1;
-   */
-  label: string;
-
-  /**
-   * @generated from field: string value = 2;
-   */
-  value: string;
-
-  /**
-   * Optional icon class for UI frameworks
-   *
-   * @generated from field: string icon = 3;
-   */
-  icon: string;
-};
-
-/**
- * Describes the message layout.ListItem.
- * Use `create(ListItemSchema)` to create a new message.
- */
-export const ListItemSchema: GenMessage<ListItem> = /*@__PURE__*/
-  messageDesc(file_layout, 5);
-
-/**
- * ======================
- * Component types
- * ======================
+ * ====================
+ * Enums
+ * ====================
  *
  * @generated from enum layout.ComponentType
  */
@@ -305,74 +165,34 @@ export enum ComponentType {
   UNKNOWN = 0,
 
   /**
-   * @generated from enum value: TEXT = 1;
+   * @generated from enum value: CONTAINER = 1;
    */
-  TEXT = 1,
+  CONTAINER = 1,
 
   /**
-   * @generated from enum value: BUTTON = 2;
+   * @generated from enum value: TEXT = 2;
    */
-  BUTTON = 2,
+  TEXT = 2,
 
   /**
-   * @generated from enum value: INPUT = 3;
+   * @generated from enum value: BUTTON = 3;
    */
-  INPUT = 3,
+  BUTTON = 3,
 
   /**
-   * @generated from enum value: TEXTAREA = 4;
+   * @generated from enum value: INPUT = 4;
    */
-  TEXTAREA = 4,
+  INPUT = 4,
 
   /**
-   * @generated from enum value: NODE_GRAPH = 5;
+   * @generated from enum value: IMAGE = 5;
    */
-  NODE_GRAPH = 5,
+  IMAGE = 5,
 
   /**
-   * @generated from enum value: CHAT = 6;
+   * @generated from enum value: LIST = 6;
    */
-  CHAT = 6,
-
-  /**
-   * @generated from enum value: IMAGE = 7;
-   */
-  IMAGE = 7,
-
-  /**
-   * @generated from enum value: CARD = 8;
-   */
-  CARD = 8,
-
-  /**
-   * @generated from enum value: LIST = 9;
-   */
-  LIST = 9,
-
-  /**
-   * @generated from enum value: TABLE = 10;
-   */
-  TABLE = 10,
-
-  /**
-   * @generated from enum value: MODAL = 11;
-   */
-  MODAL = 11,
-
-  /**
-   * @generated from enum value: CONTAINER = 12;
-   */
-  CONTAINER = 12,
-
-  /**
-   * @generated from enum value: FORM = 13;
-   */
-  FORM = 13,
-
-  /**
-   * @generated from enum value: ICON = 14;
-   */
-  ICON = 14,
+  LIST = 6,
 }
 
 /**
@@ -380,44 +200,4 @@ export enum ComponentType {
  */
 export const ComponentTypeSchema: GenEnum<ComponentType> = /*@__PURE__*/
   enumDesc(file_layout, 0);
-
-/**
- * ======================
- * Layout, position, size
- * ======================
- *
- * @generated from enum layout.LayoutType
- */
-export enum LayoutType {
-  /**
-   * @generated from enum value: ABSOLUTE = 0;
-   */
-  ABSOLUTE = 0,
-
-  /**
-   * @generated from enum value: FLEX_ROW = 1;
-   */
-  FLEX_ROW = 1,
-
-  /**
-   * @generated from enum value: FLEX_COL = 2;
-   */
-  FLEX_COL = 2,
-
-  /**
-   * @generated from enum value: GRID = 3;
-   */
-  GRID = 3,
-
-  /**
-   * @generated from enum value: INLINE = 4;
-   */
-  INLINE = 4,
-}
-
-/**
- * Describes the enum layout.LayoutType.
- */
-export const LayoutTypeSchema: GenEnum<LayoutType> = /*@__PURE__*/
-  enumDesc(file_layout, 1);
 

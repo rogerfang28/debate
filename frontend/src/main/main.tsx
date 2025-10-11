@@ -7,7 +7,7 @@ import '../styles/index.css';
 // import '../dist/output.css';
 
 // Import test file to make functions available globally
-import '../utils/test1';
+// import '../utils/test1';
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Root element not found');

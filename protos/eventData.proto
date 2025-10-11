@@ -1,0 +1,10 @@
+syntax = "proto3";
+package eventData;
+
+// ====================
+// Event Data Model
+// ====================
+message EventData {
+  string actionId = 1;               // action identifier
+  map<string, string> data = 2;  // Additional metadata related to the event
+}

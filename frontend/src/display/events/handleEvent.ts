@@ -1,8 +1,8 @@
 import sendDataToCPP from "../../backendCommunicator/postEventToCPP.ts";
+import sendEventDataToBackend from "../../backendCommunicator/sendEventDataToBackend.ts";
 import { EventType } from "../../../../src/gen/js/event_pb.js";
 import getInfoFromPage from "../../utils/getInfoFromPage.js";
 
-// TypeScript interfaces
 interface ComponentProps {
   id?: string;
   name?: string;
@@ -24,7 +24,7 @@ interface CustomEvent {
   target?: EventTarget;
 }
 
-type EventName = 'onClick' | 'onChange' | 'onSubmit';
+type EventName = "onClick" | "onChange" | "onSubmit";
 
 const eventTypeMap: Record<EventName, EventType> = {
   onClick: EventType.CLICK,
@@ -40,52 +40,47 @@ export default async function handleEvent(
   collectFrom?: string[]
 ): Promise<void> {
   try {
-    console.log(
-      "📤 handleEvent got actionId:",
-      actionId,
-      "for event:",
-      eventName,
-      "on component:",
-      component.id,
-      "collectFrom:",
-      collectFrom
-    );
+    console.log("📤 handleEvent got actionId:", actionId);
 
+    // Prevent default form submission if needed
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();
     }
 
-    // Collect additional data from specified components if collectFrom is provided
-    let additionalData: { [key: string]: string | null } = {};
+    // 1️⃣ Build data payload (optional)
+    const data: Record<string, string> = {};
+
     if (collectFrom && collectFrom.length > 0) {
       for (const componentId of collectFrom) {
         const value = getInfoFromPage(componentId);
-        additionalData[componentId] = value;
+        data[componentId] = String(value ?? "");
         console.log(`📋 Collected from ${componentId}:`, value);
       }
     }
 
-    await sendDataToCPP({
-      componentId: component.id || "unknown",
-      eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
-      actionId,
-      eventName,
-      data: {
-        value: e?.target?.value,
-        checked: e?.target?.checked,
-        type: e?.target?.type,
-        name: e?.target?.name || component.name,
-        text: component.text,
-        componentValue: component.value,
-        ...additionalData, // Include collected data
-      },
-      timestamp: Date.now(),
-    });
+    // 2️⃣ Send simplified EventData message to backend
+    await sendEventDataToBackend(String(actionId), data);
 
-    // 🔹 Instantly refresh the page after sending event
+    // 3️⃣ Send full UIEvent (legacy) if you still want to support it
+    // await sendDataToCPP({
+    //   componentId: component.id || "unknown",
+    //   eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
+    //   actionId,
+    //   eventName,
+    //   data: {
+    //     value: e?.target?.value,
+    //     checked: e?.target?.checked,
+    //     type: e?.target?.type,
+    //     name: e?.target?.name || component.name,
+    //     text: component.text,
+    //     componentValue: component.value,
+    //   },
+    //   timestamp: Date.now(),
+    // });
+
+    // 4️⃣ Optionally reload page after event
     window.reloadPage?.();
-
   } catch (error: unknown) {
-    console.error(`Error handling event ${eventName}:`, error);
+    console.error(`❌ Error handling event ${eventName}:`, error);
   }
 }

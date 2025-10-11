@@ -1,0 +1,10 @@
+syntax = "proto3";
+package clientMessage;
+
+import "eventData.proto";
+import "page.proto";
+
+message ClientMessage {
+  eventData.EventData event = 1;
+  ui.Page page = 2;
+}

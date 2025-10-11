@@ -25,134 +25,6 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace layout {
-
-inline constexpr Theme::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : primary_color_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        secondary_color_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        font_family_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        accent_color_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR Theme::Theme(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ThemeDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ThemeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ThemeDefaultTypeInternal() {}
-  union {
-    Theme _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ThemeDefaultTypeInternal _Theme_default_instance_;
-
-inline constexpr Size::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : width_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        height_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR Size::Size(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct SizeDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SizeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SizeDefaultTypeInternal() {}
-  union {
-    Size _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SizeDefaultTypeInternal _Size_default_instance_;
-
-inline constexpr Position::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : unit_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        x_{0},
-        y_{0},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR Position::Position(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct PositionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PositionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PositionDefaultTypeInternal() {}
-  union {
-    Position _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
-
-inline constexpr ListItem::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : label_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        value_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        icon_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR ListItem::ListItem(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ListItemDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ListItemDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ListItemDefaultTypeInternal() {}
-  union {
-    ListItem _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListItemDefaultTypeInternal _ListItem_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR Component_EventsEntry_DoNotUse::Component_EventsEntry_DoNotUse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -172,70 +44,24 @@ struct Component_EventsEntry_DoNotUseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Component_EventsEntry_DoNotUseDefaultTypeInternal _Component_EventsEntry_DoNotUse_default_instance_;
 
-inline constexpr Style::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        padding_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        margin_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        bg_color_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        text_color_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        border_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        rounded_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        shadow_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        gap_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        custom_class_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        position_{nullptr},
-        size_{nullptr},
-        layout_{static_cast< ::layout::LayoutType >(0)},
-        scrollable_{false} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR Style::Style(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct StyleDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StyleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~StyleDefaultTypeInternal() {}
-  union {
-    Style _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StyleDefaultTypeInternal _Style_default_instance_;
-
 inline constexpr Component::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        children_{},
+      : children_{},
         events_{},
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        style_{nullptr} {}
+        text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        value_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        style_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        type_{static_cast< ::layout::ComponentType >(0)},
+        _cached_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR Component::Component(::_pbi::ConstantInitialized)
@@ -256,13 +82,86 @@ struct ComponentDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ComponentDefaultTypeInternal _Component_default_instance_;
+
+inline constexpr Page::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : components_{},
+        page_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        title_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Page::Page(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PageDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PageDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PageDefaultTypeInternal() {}
+  union {
+    Page _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PageDefaultTypeInternal _Page_default_instance_;
+
+inline constexpr UIEvent::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        triggered_component_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        event_key_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        current_page_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UIEvent::UIEvent(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UIEventDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UIEventDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UIEventDefaultTypeInternal() {}
+  union {
+    UIEvent _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UIEventDefaultTypeInternal _UIEvent_default_instance_;
 }  // namespace layout
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_layout_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_layout_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_layout_2eproto = nullptr;
 const ::uint32_t
     TableStruct_layout_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::layout::Page, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::layout::Page, _impl_.page_id_),
+        PROTOBUF_FIELD_OFFSET(::layout::Page, _impl_.title_),
+        PROTOBUF_FIELD_OFFSET(::layout::Page, _impl_.components_),
         PROTOBUF_FIELD_OFFSET(::layout::Component_EventsEntry_DoNotUse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::layout::Component_EventsEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -275,7 +174,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::layout::Component_EventsEntry_DoNotUse, _impl_.value_),
         0,
         1,
-        PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_._has_bits_),
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::layout::Component, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -284,158 +183,72 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.text_),
+        PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.value_),
         PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.children_),
         PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.style_),
         PROTOBUF_FIELD_OFFSET(::layout::Component, _impl_.events_),
+        PROTOBUF_FIELD_OFFSET(::layout::UIEvent, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::layout::UIEvent, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::layout::UIEvent, _impl_.triggered_component_id_),
+        PROTOBUF_FIELD_OFFSET(::layout::UIEvent, _impl_.event_key_),
+        PROTOBUF_FIELD_OFFSET(::layout::UIEvent, _impl_.current_page_),
         ~0u,
         ~0u,
         0,
-        ~0u,
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.layout_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.position_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.size_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.padding_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.margin_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.bg_color_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.text_color_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.border_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.rounded_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.shadow_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.gap_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.scrollable_),
-        PROTOBUF_FIELD_OFFSET(::layout::Style, _impl_.custom_class_),
-        ~0u,
-        0,
-        1,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::layout::Position, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::layout::Position, _impl_.x_),
-        PROTOBUF_FIELD_OFFSET(::layout::Position, _impl_.y_),
-        PROTOBUF_FIELD_OFFSET(::layout::Position, _impl_.unit_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::layout::Size, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::layout::Size, _impl_.width_),
-        PROTOBUF_FIELD_OFFSET(::layout::Size, _impl_.height_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::layout::Theme, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::layout::Theme, _impl_.primary_color_),
-        PROTOBUF_FIELD_OFFSET(::layout::Theme, _impl_.secondary_color_),
-        PROTOBUF_FIELD_OFFSET(::layout::Theme, _impl_.font_family_),
-        PROTOBUF_FIELD_OFFSET(::layout::Theme, _impl_.accent_color_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::layout::ListItem, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::layout::ListItem, _impl_.label_),
-        PROTOBUF_FIELD_OFFSET(::layout::ListItem, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::layout::ListItem, _impl_.icon_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 10, -1, sizeof(::layout::Component_EventsEntry_DoNotUse)},
-        {12, 24, -1, sizeof(::layout::Component)},
-        {28, 49, -1, sizeof(::layout::Style)},
-        {62, -1, -1, sizeof(::layout::Position)},
-        {73, -1, -1, sizeof(::layout::Size)},
-        {83, -1, -1, sizeof(::layout::Theme)},
-        {95, -1, -1, sizeof(::layout::ListItem)},
+        {0, -1, -1, sizeof(::layout::Page)},
+        {11, 21, -1, sizeof(::layout::Component_EventsEntry_DoNotUse)},
+        {23, -1, -1, sizeof(::layout::Component)},
+        {38, 49, -1, sizeof(::layout::UIEvent)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
+    &::layout::_Page_default_instance_._instance,
     &::layout::_Component_EventsEntry_DoNotUse_default_instance_._instance,
     &::layout::_Component_default_instance_._instance,
-    &::layout::_Style_default_instance_._instance,
-    &::layout::_Position_default_instance_._instance,
-    &::layout::_Size_default_instance_._instance,
-    &::layout::_Theme_default_instance_._instance,
-    &::layout::_ListItem_default_instance_._instance,
+    &::layout::_UIEvent_default_instance_._instance,
 };
 const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\014layout.proto\022\006layout\"\341\001\n\tComponent\022\016\n\002"
-    "id\030\001 \001(\tR\002id\022-\n\010children\030\002 \003(\0132\021.layout."
-    "ComponentR\010children\022#\n\005style\030\003 \001(\0132\r.lay"
-    "out.StyleR\005style\0225\n\006events\030\004 \003(\0132\035.layou"
-    "t.Component.EventsEntryR\006events\0329\n\013Event"
-    "sEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR"
-    "\005value:\0028\001\"\216\003\n\005Style\022*\n\006layout\030\001 \001(\0162\022.l"
-    "ayout.LayoutTypeR\006layout\022,\n\010position\030\002 \001"
-    "(\0132\020.layout.PositionR\010position\022 \n\004size\030\003"
-    " \001(\0132\014.layout.SizeR\004size\022\030\n\007padding\030\004 \001("
-    "\tR\007padding\022\026\n\006margin\030\005 \001(\tR\006margin\022\031\n\010bg"
-    "_color\030\006 \001(\tR\007bgColor\022\035\n\ntext_color\030\007 \001("
-    "\tR\ttextColor\022\026\n\006border\030\010 \001(\tR\006border\022\030\n\007"
-    "rounded\030\t \001(\tR\007rounded\022\026\n\006shadow\030\n \001(\tR\006"
-    "shadow\022\020\n\003gap\030\013 \001(\tR\003gap\022\036\n\nscrollable\030\014"
-    " \001(\010R\nscrollable\022!\n\014custom_class\030\r \001(\tR\013"
-    "customClass\":\n\010Position\022\014\n\001x\030\001 \001(\002R\001x\022\014\n"
-    "\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001(\tR\004unit\"4\n\004Size\022"
-    "\024\n\005width\030\001 \001(\tR\005width\022\026\n\006height\030\002 \001(\tR\006h"
-    "eight\"\231\001\n\005Theme\022#\n\rprimary_color\030\001 \001(\tR\014"
-    "primaryColor\022\'\n\017secondary_color\030\002 \001(\tR\016s"
-    "econdaryColor\022\037\n\013font_family\030\003 \001(\tR\nfont"
-    "Family\022!\n\014accent_color\030\004 \001(\tR\013accentColo"
-    "r\"J\n\010ListItem\022\024\n\005label\030\001 \001(\tR\005label\022\024\n\005v"
-    "alue\030\002 \001(\tR\005value\022\022\n\004icon\030\003 \001(\tR\004icon*\275\001"
-    "\n\rComponentType\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n"
-    "\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\014\n\010TEXTAREA\020\004\022\016\n\nN"
-    "ODE_GRAPH\020\005\022\010\n\004CHAT\020\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD"
-    "\020\010\022\010\n\004LIST\020\t\022\t\n\005TABLE\020\n\022\t\n\005MODAL\020\013\022\r\n\tCO"
-    "NTAINER\020\014\022\010\n\004FORM\020\r\022\010\n\004ICON\020\016*L\n\nLayoutT"
-    "ype\022\014\n\010ABSOLUTE\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_"
-    "COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\n\014layout.proto\022\006layout\"h\n\004Page\022\027\n\007page_i"
+    "d\030\001 \001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\0221\n"
+    "\ncomponents\030\003 \003(\0132\021.layout.ComponentR\nco"
+    "mponents\"\247\002\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022)"
+    "\n\004type\030\002 \001(\0162\025.layout.ComponentTypeR\004typ"
+    "e\022\022\n\004text\030\003 \001(\tR\004text\022\024\n\005value\030\004 \001(\tR\005va"
+    "lue\022-\n\010children\030\005 \003(\0132\021.layout.Component"
+    "R\010children\022\024\n\005style\030\006 \001(\tR\005style\0225\n\006even"
+    "ts\030\007 \003(\0132\035.layout.Component.EventsEntryR"
+    "\006events\0329\n\013EventsEntry\022\020\n\003key\030\001 \001(\tR\003key"
+    "\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\215\001\n\007UIEvent\0224"
+    "\n\026triggered_component_id\030\001 \001(\tR\024triggere"
+    "dComponentId\022\033\n\tevent_key\030\002 \001(\tR\010eventKe"
+    "y\022/\n\014current_page\030\003 \001(\0132\014.layout.PageR\013c"
+    "urrentPage*a\n\rComponentType\022\013\n\007UNKNOWN\020\000"
+    "\022\r\n\tCONTAINER\020\001\022\010\n\004TEXT\020\002\022\n\n\006BUTTON\020\003\022\t\n"
+    "\005INPUT\020\004\022\t\n\005IMAGE\020\005\022\010\n\004LIST\020\006b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1275,
+    677,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
     nullptr,
     0,
-    7,
+    4,
     schemas,
     file_default_instances,
     TableStruct_layout_2eproto::offsets,
@@ -448,18 +261,314 @@ const ::google::protobuf::EnumDescriptor* ComponentType_descriptor() {
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    983040u, 0u, };
+    458752u, 0u, };
 bool ComponentType_IsValid(int value) {
-  return 0 <= value && value <= 14;
+  return 0 <= value && value <= 6;
 }
-const ::google::protobuf::EnumDescriptor* LayoutType_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);
-  return file_level_enum_descriptors_layout_2eproto[1];
+// ===================================================================
+
+class Page::_Internal {
+ public:
+};
+
+Page::Page(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:layout.Page)
 }
-PROTOBUF_CONSTINIT const uint32_t LayoutType_internal_data_[] = {
-    327680u, 0u, };
-bool LayoutType_IsValid(int value) {
-  return 0 <= value && value <= 4;
+inline PROTOBUF_NDEBUG_INLINE Page::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::layout::Page& from_msg)
+      : components_{visibility, arena, from.components_},
+        page_id_(arena, from.page_id_),
+        title_(arena, from.title_),
+        _cached_size_{0} {}
+
+Page::Page(
+    ::google::protobuf::Arena* arena,
+    const Page& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  Page* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:layout.Page)
+}
+inline PROTOBUF_NDEBUG_INLINE Page::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : components_{visibility, arena},
+        page_id_(arena),
+        title_(arena),
+        _cached_size_{0} {}
+
+inline void Page::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+Page::~Page() {
+  // @@protoc_insertion_point(destructor:layout.Page)
+  SharedDtor(*this);
+}
+inline void Page::SharedDtor(MessageLite& self) {
+  Page& this_ = static_cast<Page&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.page_id_.Destroy();
+  this_._impl_.title_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* Page::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) Page(arena);
+}
+constexpr auto Page::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(Page, _impl_.components_) +
+          decltype(Page::_impl_.components_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(Page), alignof(Page), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&Page::PlacementNew_,
+                                 sizeof(Page),
+                                 alignof(Page));
+  }
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull Page::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_Page_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &Page::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<Page>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &Page::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<Page>(), &Page::ByteSizeLong,
+            &Page::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(Page, _impl_._cached_size_),
+        false,
+    },
+    &Page::kDescriptorMethods,
+    &descriptor_table_layout_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* Page::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 1, 32, 2> Page::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::layout::Page>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string page_id = 1 [json_name = "pageId"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_)}},
+    // string title = 2 [json_name = "title"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.title_)}},
+    // repeated .layout.Component components = 3 [json_name = "components"];
+    {::_pbi::TcParser::FastMtR1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.components_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string page_id = 1 [json_name = "pageId"];
+    {PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string title = 2 [json_name = "title"];
+    {PROTOBUF_FIELD_OFFSET(Page, _impl_.title_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .layout.Component components = 3 [json_name = "components"];
+    {PROTOBUF_FIELD_OFFSET(Page, _impl_.components_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::layout::Component>()},
+  }}, {{
+    "\13\7\5\0\0\0\0\0"
+    "layout.Page"
+    "page_id"
+    "title"
+  }},
+};
+
+PROTOBUF_NOINLINE void Page::Clear() {
+// @@protoc_insertion_point(message_clear_start:layout.Page)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.components_.Clear();
+  _impl_.page_id_.ClearToEmpty();
+  _impl_.title_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* Page::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const Page& this_ = static_cast<const Page&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* Page::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const Page& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:layout.Page)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string page_id = 1 [json_name = "pageId"];
+          if (!this_._internal_page_id().empty()) {
+            const std::string& _s = this_._internal_page_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Page.page_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // string title = 2 [json_name = "title"];
+          if (!this_._internal_title().empty()) {
+            const std::string& _s = this_._internal_title();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Page.title");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // repeated .layout.Component components = 3 [json_name = "components"];
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_components_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_components().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    3, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:layout.Page)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t Page::ByteSizeLong(const MessageLite& base) {
+          const Page& this_ = static_cast<const Page&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t Page::ByteSizeLong() const {
+          const Page& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:layout.Page)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .layout.Component components = 3 [json_name = "components"];
+            {
+              total_size += 1UL * this_._internal_components_size();
+              for (const auto& msg : this_._internal_components()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+          }
+           {
+            // string page_id = 1 [json_name = "pageId"];
+            if (!this_._internal_page_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_page_id());
+            }
+            // string title = 2 [json_name = "title"];
+            if (!this_._internal_title().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_title());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void Page::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Page*>(&to_msg);
+  auto& from = static_cast<const Page&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:layout.Page)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_components()->MergeFrom(
+      from._internal_components());
+  if (!from._internal_page_id().empty()) {
+    _this->_internal_set_page_id(from._internal_page_id());
+  }
+  if (!from._internal_title().empty()) {
+    _this->_internal_set_title(from._internal_title());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Page::CopyFrom(const Page& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:layout.Page)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void Page::InternalSwap(Page* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.components_.InternalSwap(&other->_impl_.components_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.page_id_, &other->_impl_.page_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
+}
+
+::google::protobuf::Metadata Page::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -556,10 +665,6 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_EventsEntry_DoNotUse::_tabl
 
 class Component::_Internal {
  public:
-  using HasBits =
-      decltype(std::declval<Component>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_);
 };
 
 Component::Component(::google::protobuf::Arena* arena)
@@ -574,11 +679,13 @@ Component::Component(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::layout::Component& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        children_{visibility, arena, from.children_},
+      : children_{visibility, arena, from.children_},
         events_{visibility, arena, from.events_},
-        id_(arena, from.id_) {}
+        id_(arena, from.id_),
+        text_(arena, from.text_),
+        value_(arena, from.value_),
+        style_(arena, from.style_),
+        _cached_size_{0} {}
 
 Component::Component(
     ::google::protobuf::Arena* arena,
@@ -593,24 +700,24 @@ Component::Component(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.style_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::layout::Style>(
-                              arena, *from._impl_.style_)
-                        : nullptr;
+  _impl_.type_ = from._impl_.type_;
 
   // @@protoc_insertion_point(copy_constructor:layout.Component)
 }
 inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : _cached_size_{0},
-        children_{visibility, arena},
+      : children_{visibility, arena},
         events_{visibility, arena},
-        id_(arena) {}
+        id_(arena),
+        text_(arena),
+        value_(arena),
+        style_(arena),
+        _cached_size_{0} {}
 
 inline void Component::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.style_ = {};
+  _impl_.type_ = {};
 }
 Component::~Component() {
   // @@protoc_insertion_point(destructor:layout.Component)
@@ -621,7 +728,9 @@ inline void Component::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.id_.Destroy();
-  delete this_._impl_.style_;
+  this_._impl_.text_.Destroy();
+  this_._impl_.value_.Destroy();
+  this_._impl_.style_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -681,16 +790,16 @@ const ::google::protobuf::internal::ClassData* Component::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 3, 33, 2> Component::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 2, 47, 2> Component::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
-    3,  // num_aux_entries
+    7,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -703,38 +812,59 @@ const ::_pbi::TcParseTable<2, 4, 3, 33, 2> Component::_table_ = {
     // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
-    // repeated .layout.Component children = 2 [json_name = "children"];
+    // .layout.ComponentType type = 2 [json_name = "type"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
+    // string text = 3 [json_name = "text"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
+    // string value = 4 [json_name = "value"];
+    {::_pbi::TcParser::FastUS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.value_)}},
+    // repeated .layout.Component children = 5 [json_name = "children"];
     {::_pbi::TcParser::FastMtR1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
-    // .layout.Style style = 3 [json_name = "style"];
-    {::_pbi::TcParser::FastMtS1,
-     {26, 0, 1, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
+    // string style = 6 [json_name = "style"];
+    {::_pbi::TcParser::FastUS1,
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // string id = 1 [json_name = "id"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), -1, 0,
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .layout.Component children = 2 [json_name = "children"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), -1, 0,
+    // .layout.ComponentType type = 2 [json_name = "type"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string text = 3 [json_name = "text"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string value = 4 [json_name = "value"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.value_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .layout.Component children = 5 [json_name = "children"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .layout.Style style = 3 [json_name = "style"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 0, 1,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> events = 4 [json_name = "events"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.events_), -1, 2,
+    // string style = 6 [json_name = "style"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // map<string, string> events = 7 [json_name = "events"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.events_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
     {::_pbi::TcParser::GetTable<::layout::Component>()},
-    {::_pbi::TcParser::GetTable<::layout::Style>()},
     {::_pbi::TcParser::GetMapAuxInfo<
         decltype(Component()._impl_.events_)>(
         1, 0, 0, 9,
         9)},
   }}, {{
-    "\20\2\0\0\6\0\0\0"
+    "\20\2\0\4\5\0\5\6"
     "layout.Component"
     "id"
+    "text"
+    "value"
+    "style"
     "events"
   }},
 };
@@ -749,12 +879,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
   _impl_.children_.Clear();
   _impl_.events_.Clear();
   _impl_.id_.ClearToEmpty();
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.style_ != nullptr);
-    _impl_.style_->Clear();
-  }
-  _impl_._has_bits_.Clear();
+  _impl_.text_.ClearToEmpty();
+  _impl_.value_.ClearToEmpty();
+  _impl_.style_.ClearToEmpty();
+  _impl_.type_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -781,26 +909,49 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // repeated .layout.Component children = 2 [json_name = "children"];
+          // .layout.ComponentType type = 2 [json_name = "type"];
+          if (this_._internal_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_type(), target);
+          }
+
+          // string text = 3 [json_name = "text"];
+          if (!this_._internal_text().empty()) {
+            const std::string& _s = this_._internal_text();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Component.text");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
+          }
+
+          // string value = 4 [json_name = "value"];
+          if (!this_._internal_value().empty()) {
+            const std::string& _s = this_._internal_value();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Component.value");
+            target = stream->WriteStringMaybeAliased(4, _s, target);
+          }
+
+          // repeated .layout.Component children = 5 [json_name = "children"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_children_size());
                i < n; i++) {
             const auto& repfield = this_._internal_children().Get(i);
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    2, repfield, repfield.GetCachedSize(),
+                    5, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
-          cached_has_bits = this_._impl_._has_bits_[0];
-          // .layout.Style style = 3 [json_name = "style"];
-          if (cached_has_bits & 0x00000001u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                3, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
-                stream);
+          // string style = 6 [json_name = "style"];
+          if (!this_._internal_style().empty()) {
+            const std::string& _s = this_._internal_style();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Component.style");
+            target = stream->WriteStringMaybeAliased(6, _s, target);
           }
 
-          // map<string, string> events = 4 [json_name = "events"];
+          // map<string, string> events = 7 [json_name = "events"];
           if (!this_._internal_events().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -811,7 +962,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             if (stream->IsSerializationDeterministic() && field.size() > 1) {
               for (const auto& entry : ::google::protobuf::internal::MapSorterPtr<MapType>(field)) {
                 target = WireHelper::InternalSerialize(
-                    4, entry.first, entry.second, target, stream);
+                    7, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
  ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Component.events");
@@ -822,7 +973,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             } else {
               for (const auto& entry : field) {
                 target = WireHelper::InternalSerialize(
-                    4, entry.first, entry.second, target, stream);
+                    7, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
  ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Component.events");
@@ -858,14 +1009,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .layout.Component children = 2 [json_name = "children"];
+            // repeated .layout.Component children = 5 [json_name = "children"];
             {
               total_size += 1UL * this_._internal_children_size();
               for (const auto& msg : this_._internal_children()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // map<string, string> events = 4 [json_name = "events"];
+            // map<string, string> events = 7 [json_name = "events"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_events_size());
@@ -882,13 +1033,25 @@ PROTOBUF_NOINLINE void Component::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-          }
-           {
-            // .layout.Style style = 3 [json_name = "style"];
-            cached_has_bits = this_._impl_._has_bits_[0];
-            if (cached_has_bits & 0x00000001u) {
+            // string text = 3 [json_name = "text"];
+            if (!this_._internal_text().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_text());
+            }
+            // string value = 4 [json_name = "value"];
+            if (!this_._internal_value().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_value());
+            }
+            // string style = 6 [json_name = "style"];
+            if (!this_._internal_style().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_style());
+            }
+            // .layout.ComponentType type = 2 [json_name = "type"];
+            if (this_._internal_type() != 0) {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.style_);
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -898,7 +1061,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
 void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<Component*>(&to_msg);
   auto& from = static_cast<const Component&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:layout.Component)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -910,17 +1072,18 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.style_ != nullptr);
-    if (_this->_impl_.style_ == nullptr) {
-      _this->_impl_.style_ =
-          ::google::protobuf::Message::CopyConstruct<::layout::Style>(arena, *from._impl_.style_);
-    } else {
-      _this->_impl_.style_->MergeFrom(*from._impl_.style_);
-    }
+  if (!from._internal_text().empty()) {
+    _this->_internal_set_text(from._internal_text());
   }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  if (!from._internal_value().empty()) {
+    _this->_internal_set_value(from._internal_value());
+  }
+  if (!from._internal_style().empty()) {
+    _this->_internal_set_style(from._internal_style());
+  }
+  if (from._internal_type() != 0) {
+    _this->_impl_.type_ = from._impl_.type_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -937,11 +1100,13 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.children_.InternalSwap(&other->_impl_.children_);
   _impl_.events_.InternalSwap(&other->_impl_.events_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
-  swap(_impl_.style_, other->_impl_.style_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, &other->_impl_.value_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.style_, &other->_impl_.style_, arena);
+  swap(_impl_.type_, other->_impl_.type_);
 }
 
 ::google::protobuf::Metadata Component::GetMetadata() const {
@@ -949,417 +1114,217 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class Style::_Internal {
+class UIEvent::_Internal {
  public:
   using HasBits =
-      decltype(std::declval<Style>()._impl_._has_bits_);
+      decltype(std::declval<UIEvent>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(Style, _impl_._has_bits_);
+      8 * PROTOBUF_FIELD_OFFSET(UIEvent, _impl_._has_bits_);
 };
 
-Style::Style(::google::protobuf::Arena* arena)
+UIEvent::UIEvent(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:layout.Style)
+  // @@protoc_insertion_point(arena_constructor:layout.UIEvent)
 }
-inline PROTOBUF_NDEBUG_INLINE Style::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE UIEvent::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::layout::Style& from_msg)
+    const Impl_& from, const ::layout::UIEvent& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        padding_(arena, from.padding_),
-        margin_(arena, from.margin_),
-        bg_color_(arena, from.bg_color_),
-        text_color_(arena, from.text_color_),
-        border_(arena, from.border_),
-        rounded_(arena, from.rounded_),
-        shadow_(arena, from.shadow_),
-        gap_(arena, from.gap_),
-        custom_class_(arena, from.custom_class_) {}
+        triggered_component_id_(arena, from.triggered_component_id_),
+        event_key_(arena, from.event_key_) {}
 
-Style::Style(
+UIEvent::UIEvent(
     ::google::protobuf::Arena* arena,
-    const Style& from)
+    const UIEvent& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  Style* const _this = this;
+  UIEvent* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.position_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::layout::Position>(
-                              arena, *from._impl_.position_)
+  _impl_.current_page_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::layout::Page>(
+                              arena, *from._impl_.current_page_)
                         : nullptr;
-  _impl_.size_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::layout::Size>(
-                              arena, *from._impl_.size_)
-                        : nullptr;
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, layout_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, layout_),
-           offsetof(Impl_, scrollable_) -
-               offsetof(Impl_, layout_) +
-               sizeof(Impl_::scrollable_));
 
-  // @@protoc_insertion_point(copy_constructor:layout.Style)
+  // @@protoc_insertion_point(copy_constructor:layout.UIEvent)
 }
-inline PROTOBUF_NDEBUG_INLINE Style::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE UIEvent::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0},
-        padding_(arena),
-        margin_(arena),
-        bg_color_(arena),
-        text_color_(arena),
-        border_(arena),
-        rounded_(arena),
-        shadow_(arena),
-        gap_(arena),
-        custom_class_(arena) {}
+        triggered_component_id_(arena),
+        event_key_(arena) {}
 
-inline void Style::SharedCtor(::_pb::Arena* arena) {
+inline void UIEvent::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, position_),
-           0,
-           offsetof(Impl_, scrollable_) -
-               offsetof(Impl_, position_) +
-               sizeof(Impl_::scrollable_));
+  _impl_.current_page_ = {};
 }
-Style::~Style() {
-  // @@protoc_insertion_point(destructor:layout.Style)
+UIEvent::~UIEvent() {
+  // @@protoc_insertion_point(destructor:layout.UIEvent)
   SharedDtor(*this);
 }
-inline void Style::SharedDtor(MessageLite& self) {
-  Style& this_ = static_cast<Style&>(self);
+inline void UIEvent::SharedDtor(MessageLite& self) {
+  UIEvent& this_ = static_cast<UIEvent&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.padding_.Destroy();
-  this_._impl_.margin_.Destroy();
-  this_._impl_.bg_color_.Destroy();
-  this_._impl_.text_color_.Destroy();
-  this_._impl_.border_.Destroy();
-  this_._impl_.rounded_.Destroy();
-  this_._impl_.shadow_.Destroy();
-  this_._impl_.gap_.Destroy();
-  this_._impl_.custom_class_.Destroy();
-  delete this_._impl_.position_;
-  delete this_._impl_.size_;
+  this_._impl_.triggered_component_id_.Destroy();
+  this_._impl_.event_key_.Destroy();
+  delete this_._impl_.current_page_;
   this_._impl_.~Impl_();
 }
 
-inline void* Style::PlacementNew_(const void*, void* mem,
+inline void* UIEvent::PlacementNew_(const void*, void* mem,
                                         ::google::protobuf::Arena* arena) {
-  return ::new (mem) Style(arena);
+  return ::new (mem) UIEvent(arena);
 }
-constexpr auto Style::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Style),
-                                            alignof(Style));
+constexpr auto UIEvent::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(UIEvent),
+                                            alignof(UIEvent));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull Style::_class_data_ = {
+const ::google::protobuf::internal::ClassDataFull UIEvent::_class_data_ = {
     ::google::protobuf::internal::ClassData{
-        &_Style_default_instance_._instance,
+        &_UIEvent_default_instance_._instance,
         &_table_.header,
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
-        &Style::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<Style>(),
+        &UIEvent::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<UIEvent>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        &Style::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Style>(), &Style::ByteSizeLong,
-            &Style::_InternalSerialize,
+        &UIEvent::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<UIEvent>(), &UIEvent::ByteSizeLong,
+            &UIEvent::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(Style, _impl_._cached_size_),
+        PROTOBUF_FIELD_OFFSET(UIEvent, _impl_._cached_size_),
         false,
     },
-    &Style::kDescriptorMethods,
+    &UIEvent::kDescriptorMethods,
     &descriptor_table_layout_2eproto,
     nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* Style::GetClassData() const {
+const ::google::protobuf::internal::ClassData* UIEvent::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 13, 2, 94, 2> Style::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 1, 54, 2> UIEvent::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(Style, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(UIEvent, _impl_._has_bits_),
     0, // no _extensions_
-    13, 120,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294959104,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    13,  // num_field_entries
-    2,  // num_aux_entries
+    3,  // num_field_entries
+    1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::layout::Style>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::layout::UIEvent>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .layout.LayoutType layout = 1 [json_name = "layout"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Style, _impl_.layout_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_)}},
-    // .layout.Position position = 2 [json_name = "position"];
+    // string triggered_component_id = 1 [json_name = "triggeredComponentId"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.triggered_component_id_)}},
+    // string event_key = 2 [json_name = "eventKey"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_key_)}},
+    // .layout.Page current_page = 3 [json_name = "currentPage"];
     {::_pbi::TcParser::FastMtS1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.position_)}},
-    // .layout.Size size = 3 [json_name = "size"];
-    {::_pbi::TcParser::FastMtS1,
-     {26, 1, 1, PROTOBUF_FIELD_OFFSET(Style, _impl_.size_)}},
-    // string padding = 4 [json_name = "padding"];
-    {::_pbi::TcParser::FastUS1,
-     {34, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.padding_)}},
-    // string margin = 5 [json_name = "margin"];
-    {::_pbi::TcParser::FastUS1,
-     {42, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.margin_)}},
-    // string bg_color = 6 [json_name = "bgColor"];
-    {::_pbi::TcParser::FastUS1,
-     {50, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.bg_color_)}},
-    // string text_color = 7 [json_name = "textColor"];
-    {::_pbi::TcParser::FastUS1,
-     {58, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.text_color_)}},
-    // string border = 8 [json_name = "border"];
-    {::_pbi::TcParser::FastUS1,
-     {66, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.border_)}},
-    // string rounded = 9 [json_name = "rounded"];
-    {::_pbi::TcParser::FastUS1,
-     {74, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.rounded_)}},
-    // string shadow = 10 [json_name = "shadow"];
-    {::_pbi::TcParser::FastUS1,
-     {82, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.shadow_)}},
-    // string gap = 11 [json_name = "gap"];
-    {::_pbi::TcParser::FastUS1,
-     {90, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.gap_)}},
-    // bool scrollable = 12 [json_name = "scrollable"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Style, _impl_.scrollable_), 63>(),
-     {96, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.scrollable_)}},
-    // string custom_class = 13 [json_name = "customClass"];
-    {::_pbi::TcParser::FastUS1,
-     {106, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {26, 0, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.current_page_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .layout.LayoutType layout = 1 [json_name = "layout"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // .layout.Position position = 2 [json_name = "position"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.position_), _Internal::kHasBitsOffset + 0, 0,
+    // string triggered_component_id = 1 [json_name = "triggeredComponentId"];
+    {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.triggered_component_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string event_key = 2 [json_name = "eventKey"];
+    {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_key_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .layout.Page current_page = 3 [json_name = "currentPage"];
+    {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.current_page_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .layout.Size size = 3 [json_name = "size"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.size_), _Internal::kHasBitsOffset + 1, 1,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // string padding = 4 [json_name = "padding"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.padding_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string margin = 5 [json_name = "margin"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.margin_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string bg_color = 6 [json_name = "bgColor"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.bg_color_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string text_color = 7 [json_name = "textColor"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.text_color_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string border = 8 [json_name = "border"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.border_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string rounded = 9 [json_name = "rounded"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.rounded_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string shadow = 10 [json_name = "shadow"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.shadow_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string gap = 11 [json_name = "gap"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.gap_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool scrollable = 12 [json_name = "scrollable"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.scrollable_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // string custom_class = 13 [json_name = "customClass"];
-    {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::layout::Position>()},
-    {::_pbi::TcParser::GetTable<::layout::Size>()},
+    {::_pbi::TcParser::GetTable<::layout::Page>()},
   }}, {{
-    "\14\0\0\0\7\6\10\12\6\7\6\3\0\14\0\0"
-    "layout.Style"
-    "padding"
-    "margin"
-    "bg_color"
-    "text_color"
-    "border"
-    "rounded"
-    "shadow"
-    "gap"
-    "custom_class"
+    "\16\26\11\0\0\0\0\0"
+    "layout.UIEvent"
+    "triggered_component_id"
+    "event_key"
   }},
 };
 
-PROTOBUF_NOINLINE void Style::Clear() {
-// @@protoc_insertion_point(message_clear_start:layout.Style)
+PROTOBUF_NOINLINE void UIEvent::Clear() {
+// @@protoc_insertion_point(message_clear_start:layout.UIEvent)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.padding_.ClearToEmpty();
-  _impl_.margin_.ClearToEmpty();
-  _impl_.bg_color_.ClearToEmpty();
-  _impl_.text_color_.ClearToEmpty();
-  _impl_.border_.ClearToEmpty();
-  _impl_.rounded_.ClearToEmpty();
-  _impl_.shadow_.ClearToEmpty();
-  _impl_.gap_.ClearToEmpty();
-  _impl_.custom_class_.ClearToEmpty();
+  _impl_.triggered_component_id_.ClearToEmpty();
+  _impl_.event_key_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      ABSL_DCHECK(_impl_.position_ != nullptr);
-      _impl_.position_->Clear();
-    }
-    if (cached_has_bits & 0x00000002u) {
-      ABSL_DCHECK(_impl_.size_ != nullptr);
-      _impl_.size_->Clear();
-    }
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.current_page_ != nullptr);
+    _impl_.current_page_->Clear();
   }
-  ::memset(&_impl_.layout_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.scrollable_) -
-      reinterpret_cast<char*>(&_impl_.layout_)) + sizeof(_impl_.scrollable_));
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* Style::_InternalSerialize(
+        ::uint8_t* UIEvent::_InternalSerialize(
             const MessageLite& base, ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const Style& this_ = static_cast<const Style&>(base);
+          const UIEvent& this_ = static_cast<const UIEvent&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* Style::_InternalSerialize(
+        ::uint8_t* UIEvent::_InternalSerialize(
             ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const Style& this_ = *this;
+          const UIEvent& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:layout.Style)
+          // @@protoc_insertion_point(serialize_to_array_start:layout.UIEvent)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // .layout.LayoutType layout = 1 [json_name = "layout"];
-          if (this_._internal_layout() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                1, this_._internal_layout(), target);
+          // string triggered_component_id = 1 [json_name = "triggeredComponentId"];
+          if (!this_._internal_triggered_component_id().empty()) {
+            const std::string& _s = this_._internal_triggered_component_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.UIEvent.triggered_component_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // string event_key = 2 [json_name = "eventKey"];
+          if (!this_._internal_event_key().empty()) {
+            const std::string& _s = this_._internal_event_key();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.UIEvent.event_key");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .layout.Position position = 2 [json_name = "position"];
+          // .layout.Page current_page = 3 [json_name = "currentPage"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
+                3, *this_._impl_.current_page_, this_._impl_.current_page_->GetCachedSize(), target,
                 stream);
-          }
-
-          // .layout.Size size = 3 [json_name = "size"];
-          if (cached_has_bits & 0x00000002u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                3, *this_._impl_.size_, this_._impl_.size_->GetCachedSize(), target,
-                stream);
-          }
-
-          // string padding = 4 [json_name = "padding"];
-          if (!this_._internal_padding().empty()) {
-            const std::string& _s = this_._internal_padding();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.padding");
-            target = stream->WriteStringMaybeAliased(4, _s, target);
-          }
-
-          // string margin = 5 [json_name = "margin"];
-          if (!this_._internal_margin().empty()) {
-            const std::string& _s = this_._internal_margin();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.margin");
-            target = stream->WriteStringMaybeAliased(5, _s, target);
-          }
-
-          // string bg_color = 6 [json_name = "bgColor"];
-          if (!this_._internal_bg_color().empty()) {
-            const std::string& _s = this_._internal_bg_color();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.bg_color");
-            target = stream->WriteStringMaybeAliased(6, _s, target);
-          }
-
-          // string text_color = 7 [json_name = "textColor"];
-          if (!this_._internal_text_color().empty()) {
-            const std::string& _s = this_._internal_text_color();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.text_color");
-            target = stream->WriteStringMaybeAliased(7, _s, target);
-          }
-
-          // string border = 8 [json_name = "border"];
-          if (!this_._internal_border().empty()) {
-            const std::string& _s = this_._internal_border();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.border");
-            target = stream->WriteStringMaybeAliased(8, _s, target);
-          }
-
-          // string rounded = 9 [json_name = "rounded"];
-          if (!this_._internal_rounded().empty()) {
-            const std::string& _s = this_._internal_rounded();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.rounded");
-            target = stream->WriteStringMaybeAliased(9, _s, target);
-          }
-
-          // string shadow = 10 [json_name = "shadow"];
-          if (!this_._internal_shadow().empty()) {
-            const std::string& _s = this_._internal_shadow();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.shadow");
-            target = stream->WriteStringMaybeAliased(10, _s, target);
-          }
-
-          // string gap = 11 [json_name = "gap"];
-          if (!this_._internal_gap().empty()) {
-            const std::string& _s = this_._internal_gap();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.gap");
-            target = stream->WriteStringMaybeAliased(11, _s, target);
-          }
-
-          // bool scrollable = 12 [json_name = "scrollable"];
-          if (this_._internal_scrollable() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                12, this_._internal_scrollable(), target);
-          }
-
-          // string custom_class = 13 [json_name = "customClass"];
-          if (!this_._internal_custom_class().empty()) {
-            const std::string& _s = this_._internal_custom_class();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Style.custom_class");
-            target = stream->WriteStringMaybeAliased(13, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1367,18 +1332,18 @@ PROTOBUF_NOINLINE void Style::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:layout.Style)
+          // @@protoc_insertion_point(serialize_to_array_end:layout.UIEvent)
           return target;
         }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t Style::ByteSizeLong(const MessageLite& base) {
-          const Style& this_ = static_cast<const Style&>(base);
+        ::size_t UIEvent::ByteSizeLong(const MessageLite& base) {
+          const UIEvent& this_ = static_cast<const UIEvent&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t Style::ByteSizeLong() const {
-          const Style& this_ = *this;
+        ::size_t UIEvent::ByteSizeLong() const {
+          const UIEvent& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:layout.Style)
+          // @@protoc_insertion_point(message_byte_size_start:layout.UIEvent)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1387,1339 +1352,78 @@ PROTOBUF_NOINLINE void Style::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string padding = 4 [json_name = "padding"];
-            if (!this_._internal_padding().empty()) {
+            // string triggered_component_id = 1 [json_name = "triggeredComponentId"];
+            if (!this_._internal_triggered_component_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_padding());
+                                              this_._internal_triggered_component_id());
             }
-            // string margin = 5 [json_name = "margin"];
-            if (!this_._internal_margin().empty()) {
+            // string event_key = 2 [json_name = "eventKey"];
+            if (!this_._internal_event_key().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_margin());
-            }
-            // string bg_color = 6 [json_name = "bgColor"];
-            if (!this_._internal_bg_color().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_bg_color());
-            }
-            // string text_color = 7 [json_name = "textColor"];
-            if (!this_._internal_text_color().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_text_color());
-            }
-            // string border = 8 [json_name = "border"];
-            if (!this_._internal_border().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_border());
-            }
-            // string rounded = 9 [json_name = "rounded"];
-            if (!this_._internal_rounded().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_rounded());
-            }
-            // string shadow = 10 [json_name = "shadow"];
-            if (!this_._internal_shadow().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_shadow());
-            }
-            // string gap = 11 [json_name = "gap"];
-            if (!this_._internal_gap().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_gap());
-            }
-            // string custom_class = 13 [json_name = "customClass"];
-            if (!this_._internal_custom_class().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_custom_class());
-            }
-          }
-          cached_has_bits = this_._impl_._has_bits_[0];
-          if (cached_has_bits & 0x00000003u) {
-            // .layout.Position position = 2 [json_name = "position"];
-            if (cached_has_bits & 0x00000001u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
-            }
-            // .layout.Size size = 3 [json_name = "size"];
-            if (cached_has_bits & 0x00000002u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.size_);
+                                              this_._internal_event_key());
             }
           }
            {
-            // .layout.LayoutType layout = 1 [json_name = "layout"];
-            if (this_._internal_layout() != 0) {
+            // .layout.Page current_page = 3 [json_name = "currentPage"];
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
-                            ::_pbi::WireFormatLite::EnumSize(this_._internal_layout());
-            }
-            // bool scrollable = 12 [json_name = "scrollable"];
-            if (this_._internal_scrollable() != 0) {
-              total_size += 2;
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.current_page_);
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
         }
 
-void Style::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Style*>(&to_msg);
-  auto& from = static_cast<const Style&>(from_msg);
+void UIEvent::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UIEvent*>(&to_msg);
+  auto& from = static_cast<const UIEvent&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:layout.Style)
+  // @@protoc_insertion_point(class_specific_merge_from_start:layout.UIEvent)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_padding().empty()) {
-    _this->_internal_set_padding(from._internal_padding());
+  if (!from._internal_triggered_component_id().empty()) {
+    _this->_internal_set_triggered_component_id(from._internal_triggered_component_id());
   }
-  if (!from._internal_margin().empty()) {
-    _this->_internal_set_margin(from._internal_margin());
-  }
-  if (!from._internal_bg_color().empty()) {
-    _this->_internal_set_bg_color(from._internal_bg_color());
-  }
-  if (!from._internal_text_color().empty()) {
-    _this->_internal_set_text_color(from._internal_text_color());
-  }
-  if (!from._internal_border().empty()) {
-    _this->_internal_set_border(from._internal_border());
-  }
-  if (!from._internal_rounded().empty()) {
-    _this->_internal_set_rounded(from._internal_rounded());
-  }
-  if (!from._internal_shadow().empty()) {
-    _this->_internal_set_shadow(from._internal_shadow());
-  }
-  if (!from._internal_gap().empty()) {
-    _this->_internal_set_gap(from._internal_gap());
-  }
-  if (!from._internal_custom_class().empty()) {
-    _this->_internal_set_custom_class(from._internal_custom_class());
+  if (!from._internal_event_key().empty()) {
+    _this->_internal_set_event_key(from._internal_event_key());
   }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      ABSL_DCHECK(from._impl_.position_ != nullptr);
-      if (_this->_impl_.position_ == nullptr) {
-        _this->_impl_.position_ =
-            ::google::protobuf::Message::CopyConstruct<::layout::Position>(arena, *from._impl_.position_);
-      } else {
-        _this->_impl_.position_->MergeFrom(*from._impl_.position_);
-      }
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.current_page_ != nullptr);
+    if (_this->_impl_.current_page_ == nullptr) {
+      _this->_impl_.current_page_ =
+          ::google::protobuf::Message::CopyConstruct<::layout::Page>(arena, *from._impl_.current_page_);
+    } else {
+      _this->_impl_.current_page_->MergeFrom(*from._impl_.current_page_);
     }
-    if (cached_has_bits & 0x00000002u) {
-      ABSL_DCHECK(from._impl_.size_ != nullptr);
-      if (_this->_impl_.size_ == nullptr) {
-        _this->_impl_.size_ =
-            ::google::protobuf::Message::CopyConstruct<::layout::Size>(arena, *from._impl_.size_);
-      } else {
-        _this->_impl_.size_->MergeFrom(*from._impl_.size_);
-      }
-    }
-  }
-  if (from._internal_layout() != 0) {
-    _this->_impl_.layout_ = from._impl_.layout_;
-  }
-  if (from._internal_scrollable() != 0) {
-    _this->_impl_.scrollable_ = from._impl_.scrollable_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void Style::CopyFrom(const Style& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:layout.Style)
+void UIEvent::CopyFrom(const UIEvent& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:layout.UIEvent)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void Style::InternalSwap(Style* PROTOBUF_RESTRICT other) {
+void UIEvent::InternalSwap(UIEvent* PROTOBUF_RESTRICT other) {
   using std::swap;
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.padding_, &other->_impl_.padding_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.margin_, &other->_impl_.margin_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.bg_color_, &other->_impl_.bg_color_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_color_, &other->_impl_.text_color_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.border_, &other->_impl_.border_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.rounded_, &other->_impl_.rounded_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.shadow_, &other->_impl_.shadow_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.gap_, &other->_impl_.gap_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.custom_class_, &other->_impl_.custom_class_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Style, _impl_.scrollable_)
-      + sizeof(Style::_impl_.scrollable_)
-      - PROTOBUF_FIELD_OFFSET(Style, _impl_.position_)>(
-          reinterpret_cast<char*>(&_impl_.position_),
-          reinterpret_cast<char*>(&other->_impl_.position_));
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.triggered_component_id_, &other->_impl_.triggered_component_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.event_key_, &other->_impl_.event_key_, arena);
+  swap(_impl_.current_page_, other->_impl_.current_page_);
 }
 
-::google::protobuf::Metadata Style::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class Position::_Internal {
- public:
-};
-
-Position::Position(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:layout.Position)
-}
-inline PROTOBUF_NDEBUG_INLINE Position::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::layout::Position& from_msg)
-      : unit_(arena, from.unit_),
-        _cached_size_{0} {}
-
-Position::Position(
-    ::google::protobuf::Arena* arena,
-    const Position& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  Position* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, x_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, x_),
-           offsetof(Impl_, y_) -
-               offsetof(Impl_, x_) +
-               sizeof(Impl_::y_));
-
-  // @@protoc_insertion_point(copy_constructor:layout.Position)
-}
-inline PROTOBUF_NDEBUG_INLINE Position::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : unit_(arena),
-        _cached_size_{0} {}
-
-inline void Position::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, x_),
-           0,
-           offsetof(Impl_, y_) -
-               offsetof(Impl_, x_) +
-               sizeof(Impl_::y_));
-}
-Position::~Position() {
-  // @@protoc_insertion_point(destructor:layout.Position)
-  SharedDtor(*this);
-}
-inline void Position::SharedDtor(MessageLite& self) {
-  Position& this_ = static_cast<Position&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.unit_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* Position::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) Position(arena);
-}
-constexpr auto Position::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Position),
-                                            alignof(Position));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull Position::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_Position_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &Position::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<Position>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &Position::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Position>(), &Position::ByteSizeLong,
-            &Position::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(Position, _impl_._cached_size_),
-        false,
-    },
-    &Position::kDescriptorMethods,
-    &descriptor_table_layout_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* Position::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 28, 2> Position::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::layout::Position>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // float x = 1 [json_name = "x"];
-    {::_pbi::TcParser::FastF32S1,
-     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.x_)}},
-    // float y = 2 [json_name = "y"];
-    {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.y_)}},
-    // string unit = 3 [json_name = "unit"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // float x = 1 [json_name = "x"];
-    {PROTOBUF_FIELD_OFFSET(Position, _impl_.x_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float y = 2 [json_name = "y"];
-    {PROTOBUF_FIELD_OFFSET(Position, _impl_.y_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // string unit = 3 [json_name = "unit"];
-    {PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\17\0\0\4\0\0\0\0"
-    "layout.Position"
-    "unit"
-  }},
-};
-
-PROTOBUF_NOINLINE void Position::Clear() {
-// @@protoc_insertion_point(message_clear_start:layout.Position)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.unit_.ClearToEmpty();
-  ::memset(&_impl_.x_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.y_) -
-      reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.y_));
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* Position::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const Position& this_ = static_cast<const Position&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* Position::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const Position& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:layout.Position)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // float x = 1 [json_name = "x"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                1, this_._internal_x(), target);
-          }
-
-          // float y = 2 [json_name = "y"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                2, this_._internal_y(), target);
-          }
-
-          // string unit = 3 [json_name = "unit"];
-          if (!this_._internal_unit().empty()) {
-            const std::string& _s = this_._internal_unit();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Position.unit");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:layout.Position)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t Position::ByteSizeLong(const MessageLite& base) {
-          const Position& this_ = static_cast<const Position&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t Position::ByteSizeLong() const {
-          const Position& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:layout.Position)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string unit = 3 [json_name = "unit"];
-            if (!this_._internal_unit().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_unit());
-            }
-            // float x = 1 [json_name = "x"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
-              total_size += 5;
-            }
-            // float y = 2 [json_name = "y"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
-              total_size += 5;
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void Position::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Position*>(&to_msg);
-  auto& from = static_cast<const Position&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:layout.Position)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_unit().empty()) {
-    _this->_internal_set_unit(from._internal_unit());
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_x()) != 0) {
-    _this->_impl_.x_ = from._impl_.x_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_y()) != 0) {
-    _this->_impl_.y_ = from._impl_.y_;
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void Position::CopyFrom(const Position& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:layout.Position)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, &other->_impl_.unit_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Position, _impl_.y_)
-      + sizeof(Position::_impl_.y_)
-      - PROTOBUF_FIELD_OFFSET(Position, _impl_.x_)>(
-          reinterpret_cast<char*>(&_impl_.x_),
-          reinterpret_cast<char*>(&other->_impl_.x_));
-}
-
-::google::protobuf::Metadata Position::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class Size::_Internal {
- public:
-};
-
-Size::Size(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:layout.Size)
-}
-inline PROTOBUF_NDEBUG_INLINE Size::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::layout::Size& from_msg)
-      : width_(arena, from.width_),
-        height_(arena, from.height_),
-        _cached_size_{0} {}
-
-Size::Size(
-    ::google::protobuf::Arena* arena,
-    const Size& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  Size* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:layout.Size)
-}
-inline PROTOBUF_NDEBUG_INLINE Size::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : width_(arena),
-        height_(arena),
-        _cached_size_{0} {}
-
-inline void Size::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-Size::~Size() {
-  // @@protoc_insertion_point(destructor:layout.Size)
-  SharedDtor(*this);
-}
-inline void Size::SharedDtor(MessageLite& self) {
-  Size& this_ = static_cast<Size&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.width_.Destroy();
-  this_._impl_.height_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* Size::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) Size(arena);
-}
-constexpr auto Size::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Size),
-                                            alignof(Size));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull Size::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_Size_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &Size::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<Size>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &Size::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Size>(), &Size::ByteSizeLong,
-            &Size::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(Size, _impl_._cached_size_),
-        false,
-    },
-    &Size::kDescriptorMethods,
-    &descriptor_table_layout_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* Size::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 31, 2> Size::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::layout::Size>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // string height = 2 [json_name = "height"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.height_)}},
-    // string width = 1 [json_name = "width"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.width_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string width = 1 [json_name = "width"];
-    {PROTOBUF_FIELD_OFFSET(Size, _impl_.width_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string height = 2 [json_name = "height"];
-    {PROTOBUF_FIELD_OFFSET(Size, _impl_.height_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\13\5\6\0\0\0\0\0"
-    "layout.Size"
-    "width"
-    "height"
-  }},
-};
-
-PROTOBUF_NOINLINE void Size::Clear() {
-// @@protoc_insertion_point(message_clear_start:layout.Size)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.width_.ClearToEmpty();
-  _impl_.height_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* Size::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const Size& this_ = static_cast<const Size&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* Size::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const Size& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:layout.Size)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string width = 1 [json_name = "width"];
-          if (!this_._internal_width().empty()) {
-            const std::string& _s = this_._internal_width();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Size.width");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string height = 2 [json_name = "height"];
-          if (!this_._internal_height().empty()) {
-            const std::string& _s = this_._internal_height();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Size.height");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:layout.Size)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t Size::ByteSizeLong(const MessageLite& base) {
-          const Size& this_ = static_cast<const Size&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t Size::ByteSizeLong() const {
-          const Size& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:layout.Size)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string width = 1 [json_name = "width"];
-            if (!this_._internal_width().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_width());
-            }
-            // string height = 2 [json_name = "height"];
-            if (!this_._internal_height().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_height());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void Size::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Size*>(&to_msg);
-  auto& from = static_cast<const Size&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:layout.Size)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_width().empty()) {
-    _this->_internal_set_width(from._internal_width());
-  }
-  if (!from._internal_height().empty()) {
-    _this->_internal_set_height(from._internal_height());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void Size::CopyFrom(const Size& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:layout.Size)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void Size::InternalSwap(Size* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.width_, &other->_impl_.width_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.height_, &other->_impl_.height_, arena);
-}
-
-::google::protobuf::Metadata Size::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class Theme::_Internal {
- public:
-};
-
-Theme::Theme(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:layout.Theme)
-}
-inline PROTOBUF_NDEBUG_INLINE Theme::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::layout::Theme& from_msg)
-      : primary_color_(arena, from.primary_color_),
-        secondary_color_(arena, from.secondary_color_),
-        font_family_(arena, from.font_family_),
-        accent_color_(arena, from.accent_color_),
-        _cached_size_{0} {}
-
-Theme::Theme(
-    ::google::protobuf::Arena* arena,
-    const Theme& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  Theme* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:layout.Theme)
-}
-inline PROTOBUF_NDEBUG_INLINE Theme::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : primary_color_(arena),
-        secondary_color_(arena),
-        font_family_(arena),
-        accent_color_(arena),
-        _cached_size_{0} {}
-
-inline void Theme::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-Theme::~Theme() {
-  // @@protoc_insertion_point(destructor:layout.Theme)
-  SharedDtor(*this);
-}
-inline void Theme::SharedDtor(MessageLite& self) {
-  Theme& this_ = static_cast<Theme&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.primary_color_.Destroy();
-  this_._impl_.secondary_color_.Destroy();
-  this_._impl_.font_family_.Destroy();
-  this_._impl_.accent_color_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* Theme::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) Theme(arena);
-}
-constexpr auto Theme::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Theme),
-                                            alignof(Theme));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull Theme::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_Theme_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &Theme::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<Theme>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &Theme::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Theme>(), &Theme::ByteSizeLong,
-            &Theme::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(Theme, _impl_._cached_size_),
-        false,
-    },
-    &Theme::kDescriptorMethods,
-    &descriptor_table_layout_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* Theme::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 72, 2> Theme::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::layout::Theme>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // string accent_color = 4 [json_name = "accentColor"];
-    {::_pbi::TcParser::FastUS1,
-     {34, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.accent_color_)}},
-    // string primary_color = 1 [json_name = "primaryColor"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.primary_color_)}},
-    // string secondary_color = 2 [json_name = "secondaryColor"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.secondary_color_)}},
-    // string font_family = 3 [json_name = "fontFamily"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.font_family_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string primary_color = 1 [json_name = "primaryColor"];
-    {PROTOBUF_FIELD_OFFSET(Theme, _impl_.primary_color_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string secondary_color = 2 [json_name = "secondaryColor"];
-    {PROTOBUF_FIELD_OFFSET(Theme, _impl_.secondary_color_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string font_family = 3 [json_name = "fontFamily"];
-    {PROTOBUF_FIELD_OFFSET(Theme, _impl_.font_family_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string accent_color = 4 [json_name = "accentColor"];
-    {PROTOBUF_FIELD_OFFSET(Theme, _impl_.accent_color_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\14\15\17\13\14\0\0\0"
-    "layout.Theme"
-    "primary_color"
-    "secondary_color"
-    "font_family"
-    "accent_color"
-  }},
-};
-
-PROTOBUF_NOINLINE void Theme::Clear() {
-// @@protoc_insertion_point(message_clear_start:layout.Theme)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.primary_color_.ClearToEmpty();
-  _impl_.secondary_color_.ClearToEmpty();
-  _impl_.font_family_.ClearToEmpty();
-  _impl_.accent_color_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* Theme::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const Theme& this_ = static_cast<const Theme&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* Theme::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const Theme& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:layout.Theme)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string primary_color = 1 [json_name = "primaryColor"];
-          if (!this_._internal_primary_color().empty()) {
-            const std::string& _s = this_._internal_primary_color();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Theme.primary_color");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string secondary_color = 2 [json_name = "secondaryColor"];
-          if (!this_._internal_secondary_color().empty()) {
-            const std::string& _s = this_._internal_secondary_color();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Theme.secondary_color");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          // string font_family = 3 [json_name = "fontFamily"];
-          if (!this_._internal_font_family().empty()) {
-            const std::string& _s = this_._internal_font_family();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Theme.font_family");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
-          }
-
-          // string accent_color = 4 [json_name = "accentColor"];
-          if (!this_._internal_accent_color().empty()) {
-            const std::string& _s = this_._internal_accent_color();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.Theme.accent_color");
-            target = stream->WriteStringMaybeAliased(4, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:layout.Theme)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t Theme::ByteSizeLong(const MessageLite& base) {
-          const Theme& this_ = static_cast<const Theme&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t Theme::ByteSizeLong() const {
-          const Theme& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:layout.Theme)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string primary_color = 1 [json_name = "primaryColor"];
-            if (!this_._internal_primary_color().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_primary_color());
-            }
-            // string secondary_color = 2 [json_name = "secondaryColor"];
-            if (!this_._internal_secondary_color().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_secondary_color());
-            }
-            // string font_family = 3 [json_name = "fontFamily"];
-            if (!this_._internal_font_family().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_font_family());
-            }
-            // string accent_color = 4 [json_name = "accentColor"];
-            if (!this_._internal_accent_color().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_accent_color());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void Theme::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<Theme*>(&to_msg);
-  auto& from = static_cast<const Theme&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:layout.Theme)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_primary_color().empty()) {
-    _this->_internal_set_primary_color(from._internal_primary_color());
-  }
-  if (!from._internal_secondary_color().empty()) {
-    _this->_internal_set_secondary_color(from._internal_secondary_color());
-  }
-  if (!from._internal_font_family().empty()) {
-    _this->_internal_set_font_family(from._internal_font_family());
-  }
-  if (!from._internal_accent_color().empty()) {
-    _this->_internal_set_accent_color(from._internal_accent_color());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void Theme::CopyFrom(const Theme& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:layout.Theme)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void Theme::InternalSwap(Theme* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.primary_color_, &other->_impl_.primary_color_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.secondary_color_, &other->_impl_.secondary_color_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.font_family_, &other->_impl_.font_family_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.accent_color_, &other->_impl_.accent_color_, arena);
-}
-
-::google::protobuf::Metadata Theme::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class ListItem::_Internal {
- public:
-};
-
-ListItem::ListItem(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:layout.ListItem)
-}
-inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::layout::ListItem& from_msg)
-      : label_(arena, from.label_),
-        value_(arena, from.value_),
-        icon_(arena, from.icon_),
-        _cached_size_{0} {}
-
-ListItem::ListItem(
-    ::google::protobuf::Arena* arena,
-    const ListItem& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  ListItem* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:layout.ListItem)
-}
-inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : label_(arena),
-        value_(arena),
-        icon_(arena),
-        _cached_size_{0} {}
-
-inline void ListItem::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-ListItem::~ListItem() {
-  // @@protoc_insertion_point(destructor:layout.ListItem)
-  SharedDtor(*this);
-}
-inline void ListItem::SharedDtor(MessageLite& self) {
-  ListItem& this_ = static_cast<ListItem&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.label_.Destroy();
-  this_._impl_.value_.Destroy();
-  this_._impl_.icon_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* ListItem::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) ListItem(arena);
-}
-constexpr auto ListItem::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ListItem),
-                                            alignof(ListItem));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull ListItem::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_ListItem_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &ListItem::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<ListItem>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &ListItem::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ListItem>(), &ListItem::ByteSizeLong,
-            &ListItem::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(ListItem, _impl_._cached_size_),
-        false,
-    },
-    &ListItem::kDescriptorMethods,
-    &descriptor_table_layout_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* ListItem::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 38, 2> ListItem::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::layout::ListItem>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string label = 1 [json_name = "label"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_)}},
-    // string value = 2 [json_name = "value"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_)}},
-    // string icon = 3 [json_name = "icon"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string label = 1 [json_name = "label"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2 [json_name = "value"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string icon = 3 [json_name = "icon"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\17\5\5\4\0\0\0\0"
-    "layout.ListItem"
-    "label"
-    "value"
-    "icon"
-  }},
-};
-
-PROTOBUF_NOINLINE void ListItem::Clear() {
-// @@protoc_insertion_point(message_clear_start:layout.ListItem)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.label_.ClearToEmpty();
-  _impl_.value_.ClearToEmpty();
-  _impl_.icon_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* ListItem::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const ListItem& this_ = static_cast<const ListItem&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* ListItem::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const ListItem& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:layout.ListItem)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string label = 1 [json_name = "label"];
-          if (!this_._internal_label().empty()) {
-            const std::string& _s = this_._internal_label();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.ListItem.label");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string value = 2 [json_name = "value"];
-          if (!this_._internal_value().empty()) {
-            const std::string& _s = this_._internal_value();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.ListItem.value");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          // string icon = 3 [json_name = "icon"];
-          if (!this_._internal_icon().empty()) {
-            const std::string& _s = this_._internal_icon();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "layout.ListItem.icon");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:layout.ListItem)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t ListItem::ByteSizeLong(const MessageLite& base) {
-          const ListItem& this_ = static_cast<const ListItem&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t ListItem::ByteSizeLong() const {
-          const ListItem& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:layout.ListItem)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string label = 1 [json_name = "label"];
-            if (!this_._internal_label().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_label());
-            }
-            // string value = 2 [json_name = "value"];
-            if (!this_._internal_value().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_value());
-            }
-            // string icon = 3 [json_name = "icon"];
-            if (!this_._internal_icon().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_icon());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void ListItem::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<ListItem*>(&to_msg);
-  auto& from = static_cast<const ListItem&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:layout.ListItem)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_label().empty()) {
-    _this->_internal_set_label(from._internal_label());
-  }
-  if (!from._internal_value().empty()) {
-    _this->_internal_set_value(from._internal_value());
-  }
-  if (!from._internal_icon().empty()) {
-    _this->_internal_set_icon(from._internal_icon());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void ListItem::CopyFrom(const ListItem& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:layout.ListItem)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void ListItem::InternalSwap(ListItem* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.label_, &other->_impl_.label_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, &other->_impl_.value_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.icon_, &other->_impl_.icon_, arena);
-}
-
-::google::protobuf::Metadata ListItem::GetMetadata() const {
+::google::protobuf::Metadata UIEvent::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

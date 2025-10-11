@@ -39,6 +39,7 @@ include_directories(
 # ---------------------------------
 set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debate/main/OldEventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/DebateModerator.cpp
     ${CMAKE_SOURCE_DIR}/src/debate/DebateDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pageGenerator.cpp

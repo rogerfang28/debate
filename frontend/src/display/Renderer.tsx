@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import getPageFromBackend from "../backendCommunicator/getPageFromBackend.ts";
+import getPageFromBackend from "../unused/getPageFromBackend.ts";
 // @ts-ignore - PageRenderer not fully converted yet
 import { PageRenderer } from "./rendering/PageRenderer.js";
 import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
-import test from "../backendCommunicator/test.ts";
 
 // TypeScript interfaces
 interface PageData {

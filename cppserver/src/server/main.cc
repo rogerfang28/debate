@@ -47,6 +47,14 @@ int main() {
     renderer.handlePostRequest(req, res);
   });
 
+  svr.Post("/eventData", [&renderer](const httplib::Request& req, httplib::Response& res) {
+    renderer.handlePostEvent(req, res);
+  });
+
+  svr.Post("/clientMessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
+    renderer.handlePostClientMessage(req, res);
+  });
+
   // ---------- Start server ----------
   std::cout << "Serving server on http://127.0.0.1:8080\n";
   svr.listen("0.0.0.0", 8080);

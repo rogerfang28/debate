@@ -8,49 +8,28 @@ import { enumDesc, fileDesc, messageDesc, tsEnum } from "@bufbuild/protobuf/code
  * Describes the file layout.proto.
  */
 export const file_layout = /*@__PURE__*/
-  fileDesc("CgxsYXlvdXQucHJvdG8SBmxheW91dCK4AQoJQ29tcG9uZW50EgoKAmlkGAEgASgJEiMKCGNoaWxkcmVuGAIgAygLMhEubGF5b3V0LkNvbXBvbmVudBIcCgVzdHlsZRgDIAEoCzINLmxheW91dC5TdHlsZRItCgZldmVudHMYBCADKAsyHS5sYXlvdXQuQ29tcG9uZW50LkV2ZW50c0VudHJ5Gi0KC0V2ZW50c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEimgIKBVN0eWxlEiIKBmxheW91dBgBIAEoDjISLmxheW91dC5MYXlvdXRUeXBlEiIKCHBvc2l0aW9uGAIgASgLMhAubGF5b3V0LlBvc2l0aW9uEhoKBHNpemUYAyABKAsyDC5sYXlvdXQuU2l6ZRIPCgdwYWRkaW5nGAQgASgJEg4KBm1hcmdpbhgFIAEoCRIQCghiZ19jb2xvchgGIAEoCRISCgp0ZXh0X2NvbG9yGAcgASgJEg4KBmJvcmRlchgIIAEoCRIPCgdyb3VuZGVkGAkgASgJEg4KBnNoYWRvdxgKIAEoCRILCgNnYXAYCyABKAkSEgoKc2Nyb2xsYWJsZRgMIAEoCBIUCgxjdXN0b21fY2xhc3MYDSABKAkiLgoIUG9zaXRpb24SCQoBeBgBIAEoAhIJCgF5GAIgASgCEgwKBHVuaXQYAyABKAkiJQoEU2l6ZRINCgV3aWR0aBgBIAEoCRIOCgZoZWlnaHQYAiABKAkiYgoFVGhlbWUSFQoNcHJpbWFyeV9jb2xvchgBIAEoCRIXCg9zZWNvbmRhcnlfY29sb3IYAiABKAkSEwoLZm9udF9mYW1pbHkYAyABKAkSFAoMYWNjZW50X2NvbG9yGAQgASgJIjYKCExpc3RJdGVtEg0KBWxhYmVsGAEgASgJEg0KBXZhbHVlGAIgASgJEgwKBGljb24YAyABKAkqvQEKDUNvbXBvbmVudFR5cGUSCwoHVU5LTk9XThAAEggKBFRFWFQQARIKCgZCVVRUT04QAhIJCgVJTlBVVBADEgwKCFRFWFRBUkVBEAQSDgoKTk9ERV9HUkFQSBAFEggKBENIQVQQBhIJCgVJTUFHRRAHEggKBENBUkQQCBIICgRMSVNUEAkSCQoFVEFCTEUQChIJCgVNT0RBTBALEg0KCUNPTlRBSU5FUhAMEggKBEZPUk0QDRIICgRJQ09OEA4qTAoKTGF5b3V0VHlwZRIMCghBQlNPTFVURRAAEgwKCEZMRVhfUk9XEAESDAoIRkxFWF9DT0wQAhIICgRHUklEEAMSCgoGSU5MSU5FEARiBnByb3RvMw");
+  fileDesc("CgxsYXlvdXQucHJvdG8SBmxheW91dCJNCgRQYWdlEg8KB3BhZ2VfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSJQoKY29tcG9uZW50cxgDIAMoCzIRLmxheW91dC5Db21wb25lbnQi6wEKCUNvbXBvbmVudBIKCgJpZBgBIAEoCRIjCgR0eXBlGAIgASgOMhUubGF5b3V0LkNvbXBvbmVudFR5cGUSDAoEdGV4dBgDIAEoCRINCgV2YWx1ZRgEIAEoCRIjCghjaGlsZHJlbhgFIAMoCzIRLmxheW91dC5Db21wb25lbnQSDQoFc3R5bGUYBiABKAkSLQoGZXZlbnRzGAcgAygLMh0ubGF5b3V0LkNvbXBvbmVudC5FdmVudHNFbnRyeRotCgtFdmVudHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBImAKB1VJRXZlbnQSHgoWdHJpZ2dlcmVkX2NvbXBvbmVudF9pZBgBIAEoCRIRCglldmVudF9rZXkYAiABKAkSIgoMY3VycmVudF9wYWdlGAMgASgLMgwubGF5b3V0LlBhZ2UqYQoNQ29tcG9uZW50VHlwZRILCgdVTktOT1dOEAASDQoJQ09OVEFJTkVSEAESCAoEVEVYVBACEgoKBkJVVFRPThADEgkKBUlOUFVUEAQSCQoFSU1BR0UQBRIICgRMSVNUEAZiBnByb3RvMw");
+
+/**
+ * Describes the message layout.Page.
+ * Use `create(PageSchema)` to create a new message.
+ */
+export const PageSchema = /*@__PURE__*/
+  messageDesc(file_layout, 0);
 
 /**
  * Describes the message layout.Component.
  * Use `create(ComponentSchema)` to create a new message.
  */
 export const ComponentSchema = /*@__PURE__*/
-  messageDesc(file_layout, 0);
-
-/**
- * Describes the message layout.Style.
- * Use `create(StyleSchema)` to create a new message.
- */
-export const StyleSchema = /*@__PURE__*/
   messageDesc(file_layout, 1);
 
 /**
- * Describes the message layout.Position.
- * Use `create(PositionSchema)` to create a new message.
+ * Describes the message layout.UIEvent.
+ * Use `create(UIEventSchema)` to create a new message.
  */
-export const PositionSchema = /*@__PURE__*/
+export const UIEventSchema = /*@__PURE__*/
   messageDesc(file_layout, 2);
-
-/**
- * Describes the message layout.Size.
- * Use `create(SizeSchema)` to create a new message.
- */
-export const SizeSchema = /*@__PURE__*/
-  messageDesc(file_layout, 3);
-
-/**
- * Describes the message layout.Theme.
- * Use `create(ThemeSchema)` to create a new message.
- */
-export const ThemeSchema = /*@__PURE__*/
-  messageDesc(file_layout, 4);
-
-/**
- * Describes the message layout.ListItem.
- * Use `create(ListItemSchema)` to create a new message.
- */
-export const ListItemSchema = /*@__PURE__*/
-  messageDesc(file_layout, 5);
 
 /**
  * Describes the enum layout.ComponentType.
@@ -59,28 +38,12 @@ export const ComponentTypeSchema = /*@__PURE__*/
   enumDesc(file_layout, 0);
 
 /**
- * ======================
- * Component types
- * ======================
+ * ====================
+ * Enums
+ * ====================
  *
  * @generated from enum layout.ComponentType
  */
 export const ComponentType = /*@__PURE__*/
   tsEnum(ComponentTypeSchema);
-
-/**
- * Describes the enum layout.LayoutType.
- */
-export const LayoutTypeSchema = /*@__PURE__*/
-  enumDesc(file_layout, 1);
-
-/**
- * ======================
- * Layout, position, size
- * ======================
- *
- * @generated from enum layout.LayoutType
- */
-export const LayoutType = /*@__PURE__*/
-  tsEnum(LayoutTypeSchema);
 
