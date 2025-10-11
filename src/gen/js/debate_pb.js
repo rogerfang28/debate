@@ -8,12 +8,19 @@ import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
  * Describes the file debate.proto.
  */
 export const file_debate = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSIXCgZkZWJhdGUSDQoFdG9waWMYASABKAliBnByb3RvMw");
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJQCgVDbGFpbRIQCghzZW50ZW5jZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZwYXJlbnQYAyABKAkSEAoIY2hpbGRyZW4YBCADKAkiNgoGRGViYXRlEg0KBXRvcGljGAEgASgJEh0KBmNsYWltcxgCIAMoCzINLmRlYmF0ZS5DbGFpbWIGcHJvdG8z");
 
 /**
- * Describes the message debate.debate.
- * Use `create(debateSchema)` to create a new message.
+ * Describes the message debate.Claim.
+ * Use `create(ClaimSchema)` to create a new message.
  */
-export const debateSchema = /*@__PURE__*/
+export const ClaimSchema = /*@__PURE__*/
   messageDesc(file_debate, 0);
+
+/**
+ * Describes the message debate.Debate.
+ * Use `create(DebateSchema)` to create a new message.
+ */
+export const DebateSchema = /*@__PURE__*/
+  messageDesc(file_debate, 1);
 

@@ -10,26 +10,75 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSIXCgZkZWJhdGUSDQoFdG9waWMYASABKAliBnByb3RvMw");
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJQCgVDbGFpbRIQCghzZW50ZW5jZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZwYXJlbnQYAyABKAkSEAoIY2hpbGRyZW4YBCADKAkiNgoGRGViYXRlEg0KBXRvcGljGAEgASgJEh0KBmNsYWltcxgCIAMoCzINLmRlYmF0ZS5DbGFpbWIGcHJvdG8z");
 
 /**
- * Simple message to send between client and server
+ * A single claim node in the debate graph
  *
- * @generated from message debate.debate
+ * @generated from message debate.Claim
  */
-export type debate = Message<"debate.debate"> & {
+export type Claim = Message<"debate.Claim"> & {
   /**
-   * debate topic
+   * The main sentence or statement of the claim
+   *
+   * @generated from field: string sentence = 1;
+   */
+  sentence: string;
+
+  /**
+   * Optional description or elaboration
+   *
+   * @generated from field: string description = 2;
+   */
+  description: string;
+
+  /**
+   * Reference to the parent claim (by ID or sentence)
+   *
+   * @generated from field: string parent = 3;
+   */
+  parent: string;
+
+  /**
+   * References to child claims (by ID or sentence)
+   *
+   * @generated from field: repeated string children = 4;
+   */
+  children: string[];
+};
+
+/**
+ * Describes the message debate.Claim.
+ * Use `create(ClaimSchema)` to create a new message.
+ */
+export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
+  messageDesc(file_debate, 0);
+
+/**
+ * Represents a single debate, which contains a topic and a claim graph
+ *
+ * @generated from message debate.Debate
+ */
+export type Debate = Message<"debate.Debate"> & {
+  /**
+   * The debate topic
    *
    * @generated from field: string topic = 1;
    */
   topic: string;
+
+  /**
+   * A list of all claims belonging to this debate (the graph)
+   *
+   * @generated from field: repeated debate.Claim claims = 2;
+   */
+  claims: Claim[];
 };
 
 /**
- * Describes the message debate.debate.
- * Use `create(debateSchema)` to create a new message.
+ * Describes the message debate.Debate.
+ * Use `create(DebateSchema)` to create a new message.
  */
-export const debateSchema: GenMessage<debate> = /*@__PURE__*/
-  messageDesc(file_debate, 0);
+export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
+  messageDesc(file_debate, 1);
 

@@ -52,9 +52,12 @@ struct TableStruct_debate_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_debate_2eproto;
 namespace debate {
-class debate;
-struct debateDefaultTypeInternal;
-extern debateDefaultTypeInternal _debate_default_instance_;
+class Claim;
+struct ClaimDefaultTypeInternal;
+extern ClaimDefaultTypeInternal _Claim_default_instance_;
+class Debate;
+struct DebateDefaultTypeInternal;
+extern DebateDefaultTypeInternal _Debate_default_instance_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -68,31 +71,31 @@ namespace debate {
 
 // -------------------------------------------------------------------
 
-class debate final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.debate) */ {
+class Claim final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Claim) */ {
  public:
-  inline debate() : debate(nullptr) {}
-  ~debate() PROTOBUF_FINAL;
+  inline Claim() : Claim(nullptr) {}
+  ~Claim() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(debate* msg, std::destroying_delete_t) {
+  void operator delete(Claim* msg, std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(debate));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Claim));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR debate(
+  explicit PROTOBUF_CONSTEXPR Claim(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline debate(const debate& from) : debate(nullptr, from) {}
-  inline debate(debate&& from) noexcept
-      : debate(nullptr, std::move(from)) {}
-  inline debate& operator=(const debate& from) {
+  inline Claim(const Claim& from) : Claim(nullptr, from) {}
+  inline Claim(Claim&& from) noexcept
+      : Claim(nullptr, std::move(from)) {}
+  inline Claim& operator=(const Claim& from) {
     CopyFrom(from);
     return *this;
   }
-  inline debate& operator=(debate&& from) noexcept {
+  inline Claim& operator=(Claim&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -120,16 +123,16 @@ class debate final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const debate& default_instance() {
+  static const Claim& default_instance() {
     return *internal_default_instance();
   }
-  static inline const debate* internal_default_instance() {
-    return reinterpret_cast<const debate*>(
-        &_debate_default_instance_);
+  static inline const Claim* internal_default_instance() {
+    return reinterpret_cast<const Claim*>(
+        &_Claim_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 0;
-  friend void swap(debate& a, debate& b) { a.Swap(&b); }
-  inline void Swap(debate* other) {
+  friend void swap(Claim& a, Claim& b) { a.Swap(&b); }
+  inline void Swap(Claim* other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -137,7 +140,7 @@ class debate final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(debate* other) {
+  void UnsafeArenaSwap(Claim* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -145,13 +148,13 @@ class debate final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  debate* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<debate>(arena);
+  Claim* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Claim>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const debate& from);
+  void CopyFrom(const Claim& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const debate& from) { debate::MergeImpl(*this, from); }
+  void MergeFrom(const Claim& from) { Claim::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -188,18 +191,18 @@ class debate final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(debate* other);
+  void InternalSwap(Claim* other);
  private:
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.debate"; }
+  static ::absl::string_view FullMessageName() { return "debate.Claim"; }
 
  protected:
-  explicit debate(::google::protobuf::Arena* arena);
-  debate(::google::protobuf::Arena* arena, const debate& from);
-  debate(::google::protobuf::Arena* arena, debate&& from) noexcept
-      : debate(arena) {
+  explicit Claim(::google::protobuf::Arena* arena);
+  Claim(::google::protobuf::Arena* arena, const Claim& from);
+  Claim(::google::protobuf::Arena* arena, Claim&& from) noexcept
+      : Claim(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -214,9 +217,283 @@ class debate final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kChildrenFieldNumber = 4,
+    kSentenceFieldNumber = 1,
+    kDescriptionFieldNumber = 2,
+    kParentFieldNumber = 3,
+  };
+  // repeated string children = 4 [json_name = "children"];
+  int children_size() const;
+  private:
+  int _internal_children_size() const;
+
+  public:
+  void clear_children() ;
+  const std::string& children(int index) const;
+  std::string* mutable_children(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_children(int index, Arg_&& value, Args_... args);
+  std::string* add_children();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_children(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& children() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_children();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_children() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_children();
+
+  public:
+  // string sentence = 1 [json_name = "sentence"];
+  void clear_sentence() ;
+  const std::string& sentence() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_sentence(Arg_&& arg, Args_... args);
+  std::string* mutable_sentence();
+  PROTOBUF_NODISCARD std::string* release_sentence();
+  void set_allocated_sentence(std::string* value);
+
+  private:
+  const std::string& _internal_sentence() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_sentence(
+      const std::string& value);
+  std::string* _internal_mutable_sentence();
+
+  public:
+  // string description = 2 [json_name = "description"];
+  void clear_description() ;
+  const std::string& description() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_description(Arg_&& arg, Args_... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* value);
+
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(
+      const std::string& value);
+  std::string* _internal_mutable_description();
+
+  public:
+  // string parent = 3 [json_name = "parent"];
+  void clear_parent() ;
+  const std::string& parent() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_parent(Arg_&& arg, Args_... args);
+  std::string* mutable_parent();
+  PROTOBUF_NODISCARD std::string* release_parent();
+  void set_allocated_parent(std::string* value);
+
+  private:
+  const std::string& _internal_parent() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_parent(
+      const std::string& value);
+  std::string* _internal_mutable_parent();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate.Claim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      54, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const Claim& from_msg);
+    ::google::protobuf::RepeatedPtrField<std::string> children_;
+    ::google::protobuf::internal::ArenaStringPtr sentence_;
+    ::google::protobuf::internal::ArenaStringPtr description_;
+    ::google::protobuf::internal::ArenaStringPtr parent_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Debate final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Debate) */ {
+ public:
+  inline Debate() : Debate(nullptr) {}
+  ~Debate() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(Debate* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Debate));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Debate(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline Debate(const Debate& from) : Debate(nullptr, from) {}
+  inline Debate(Debate&& from) noexcept
+      : Debate(nullptr, std::move(from)) {}
+  inline Debate& operator=(const Debate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Debate& operator=(Debate&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Debate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Debate* internal_default_instance() {
+    return reinterpret_cast<const Debate*>(
+        &_Debate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
+  inline void Swap(Debate* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Debate* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Debate* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Debate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Debate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Debate& from) { Debate::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(Debate* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate.Debate"; }
+
+ protected:
+  explicit Debate(::google::protobuf::Arena* arena);
+  Debate(::google::protobuf::Arena* arena, const Debate& from);
+  Debate(::google::protobuf::Arena* arena, Debate&& from) noexcept
+      : Debate(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kClaimsFieldNumber = 2,
     kTopicFieldNumber = 1,
   };
-  // string topic = 1;
+  // repeated .debate.Claim claims = 2 [json_name = "claims"];
+  int claims_size() const;
+  private:
+  int _internal_claims_size() const;
+
+  public:
+  void clear_claims() ;
+  ::debate::Claim* mutable_claims(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::Claim>* mutable_claims();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::debate::Claim>& _internal_claims() const;
+  ::google::protobuf::RepeatedPtrField<::debate::Claim>* _internal_mutable_claims();
+  public:
+  const ::debate::Claim& claims(int index) const;
+  ::debate::Claim* add_claims();
+  const ::google::protobuf::RepeatedPtrField<::debate::Claim>& claims() const;
+  // string topic = 1 [json_name = "topic"];
   void clear_topic() ;
   const std::string& topic() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -232,12 +509,12 @@ class debate final : public ::google::protobuf::Message
   std::string* _internal_mutable_topic();
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.debate)
+  // @@protoc_insertion_point(class_scope:debate.Debate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 1,
       27, 2>
       _table_;
 
@@ -254,7 +531,8 @@ class debate final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const debate& from_msg);
+                          const Debate& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::debate::Claim > claims_;
     ::google::protobuf::internal::ArenaStringPtr topic_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -277,54 +555,315 @@ class debate final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// debate
+// Claim
 
-// string topic = 1;
-inline void debate::clear_topic() {
+// string sentence = 1 [json_name = "sentence"];
+inline void Claim::clear_sentence() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sentence_.ClearToEmpty();
+}
+inline const std::string& Claim::sentence() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.sentence)
+  return _internal_sentence();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Claim::set_sentence(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sentence_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Claim.sentence)
+}
+inline std::string* Claim::mutable_sentence() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_sentence();
+  // @@protoc_insertion_point(field_mutable:debate.Claim.sentence)
+  return _s;
+}
+inline const std::string& Claim::_internal_sentence() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.sentence_.Get();
+}
+inline void Claim::_internal_set_sentence(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sentence_.Set(value, GetArena());
+}
+inline std::string* Claim::_internal_mutable_sentence() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.sentence_.Mutable( GetArena());
+}
+inline std::string* Claim::release_sentence() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Claim.sentence)
+  return _impl_.sentence_.Release();
+}
+inline void Claim::set_allocated_sentence(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sentence_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.sentence_.IsDefault()) {
+    _impl_.sentence_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Claim.sentence)
+}
+
+// string description = 2 [json_name = "description"];
+inline void Claim::clear_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& Claim::description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.description)
+  return _internal_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Claim::set_description(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Claim.description)
+}
+inline std::string* Claim::mutable_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:debate.Claim.description)
+  return _s;
+}
+inline const std::string& Claim::_internal_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.description_.Get();
+}
+inline void Claim::_internal_set_description(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.Set(value, GetArena());
+}
+inline std::string* Claim::_internal_mutable_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.description_.Mutable( GetArena());
+}
+inline std::string* Claim::release_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Claim.description)
+  return _impl_.description_.Release();
+}
+inline void Claim::set_allocated_description(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.description_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Claim.description)
+}
+
+// string parent = 3 [json_name = "parent"];
+inline void Claim::clear_parent() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parent_.ClearToEmpty();
+}
+inline const std::string& Claim::parent() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.parent)
+  return _internal_parent();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Claim::set_parent(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parent_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Claim.parent)
+}
+inline std::string* Claim::mutable_parent() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_parent();
+  // @@protoc_insertion_point(field_mutable:debate.Claim.parent)
+  return _s;
+}
+inline const std::string& Claim::_internal_parent() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.parent_.Get();
+}
+inline void Claim::_internal_set_parent(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parent_.Set(value, GetArena());
+}
+inline std::string* Claim::_internal_mutable_parent() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.parent_.Mutable( GetArena());
+}
+inline std::string* Claim::release_parent() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Claim.parent)
+  return _impl_.parent_.Release();
+}
+inline void Claim::set_allocated_parent(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.parent_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.parent_.IsDefault()) {
+    _impl_.parent_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Claim.parent)
+}
+
+// repeated string children = 4 [json_name = "children"];
+inline int Claim::_internal_children_size() const {
+  return _internal_children().size();
+}
+inline int Claim::children_size() const {
+  return _internal_children_size();
+}
+inline void Claim::clear_children() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.children_.Clear();
+}
+inline std::string* Claim::add_children() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_children()->Add();
+  // @@protoc_insertion_point(field_add_mutable:debate.Claim.children)
+  return _s;
+}
+inline const std::string& Claim::children(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.children)
+  return _internal_children().Get(index);
+}
+inline std::string* Claim::mutable_children(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Claim.children)
+  return _internal_mutable_children()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void Claim::set_children(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_children()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:debate.Claim.children)
+}
+template <typename Arg_, typename... Args_>
+inline void Claim::add_children(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_children(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:debate.Claim.children)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+Claim::children() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Claim.children)
+  return _internal_children();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+Claim::mutable_children() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Claim.children)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_children();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+Claim::_internal_children() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.children_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+Claim::_internal_mutable_children() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.children_;
+}
+
+// -------------------------------------------------------------------
+
+// Debate
+
+// string topic = 1 [json_name = "topic"];
+inline void Debate::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
 }
-inline const std::string& debate::topic() const
+inline const std::string& Debate::topic() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.debate.topic)
+  // @@protoc_insertion_point(field_get:debate.Debate.topic)
   return _internal_topic();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void debate::set_topic(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Debate::set_topic(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.debate.topic)
+  // @@protoc_insertion_point(field_set:debate.Debate.topic)
 }
-inline std::string* debate::mutable_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* Debate::mutable_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_topic();
-  // @@protoc_insertion_point(field_mutable:debate.debate.topic)
+  // @@protoc_insertion_point(field_mutable:debate.Debate.topic)
   return _s;
 }
-inline const std::string& debate::_internal_topic() const {
+inline const std::string& Debate::_internal_topic() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.topic_.Get();
 }
-inline void debate::_internal_set_topic(const std::string& value) {
+inline void Debate::_internal_set_topic(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.Set(value, GetArena());
 }
-inline std::string* debate::_internal_mutable_topic() {
+inline std::string* Debate::_internal_mutable_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.topic_.Mutable( GetArena());
 }
-inline std::string* debate::release_topic() {
+inline std::string* Debate::release_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.debate.topic)
+  // @@protoc_insertion_point(field_release:debate.Debate.topic)
   return _impl_.topic_.Release();
 }
-inline void debate::set_allocated_topic(std::string* value) {
+inline void Debate::set_allocated_topic(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.topic_.IsDefault()) {
     _impl_.topic_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.debate.topic)
+  // @@protoc_insertion_point(field_set_allocated:debate.Debate.topic)
+}
+
+// repeated .debate.Claim claims = 2 [json_name = "claims"];
+inline int Debate::_internal_claims_size() const {
+  return _internal_claims().size();
+}
+inline int Debate::claims_size() const {
+  return _internal_claims_size();
+}
+inline void Debate::clear_claims() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claims_.Clear();
+}
+inline ::debate::Claim* Debate::mutable_claims(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Debate.claims)
+  return _internal_mutable_claims()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Claim>* Debate::mutable_claims()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Debate.claims)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_claims();
+}
+inline const ::debate::Claim& Debate::claims(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Debate.claims)
+  return _internal_claims().Get(index);
+}
+inline ::debate::Claim* Debate::add_claims() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::debate::Claim* _add = _internal_mutable_claims()->Add();
+  // @@protoc_insertion_point(field_add:debate.Debate.claims)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Claim>& Debate::claims() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Debate.claims)
+  return _internal_claims();
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Claim>&
+Debate::_internal_claims() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claims_;
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Claim>*
+Debate::_internal_mutable_claims() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.claims_;
 }
 
 #ifdef __GNUC__

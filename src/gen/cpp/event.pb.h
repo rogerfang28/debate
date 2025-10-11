@@ -353,7 +353,7 @@ class StringList final : public ::google::protobuf::Message
   enum : int {
     kValuesFieldNumber = 1,
   };
-  // repeated string values = 1;
+  // repeated string values = 1 [json_name = "values"];
   int values_size() const;
   private:
   int _internal_values_size() const;
@@ -569,7 +569,7 @@ class EventValue final : public ::google::protobuf::Message
     kBinaryValueFieldNumber = 5,
     kListValueFieldNumber = 6,
   };
-  // string text_value = 1;
+  // string text_value = 1 [json_name = "textValue"];
   bool has_text_value() const;
   void clear_text_value() ;
   const std::string& text_value() const;
@@ -586,7 +586,7 @@ class EventValue final : public ::google::protobuf::Message
   std::string* _internal_mutable_text_value();
 
   public:
-  // int64 number_value = 2;
+  // int64 number_value = 2 [json_name = "numberValue"];
   bool has_number_value() const;
   void clear_number_value() ;
   ::int64_t number_value() const;
@@ -597,7 +597,7 @@ class EventValue final : public ::google::protobuf::Message
   void _internal_set_number_value(::int64_t value);
 
   public:
-  // bool boolean_value = 3;
+  // bool boolean_value = 3 [json_name = "booleanValue"];
   bool has_boolean_value() const;
   void clear_boolean_value() ;
   bool boolean_value() const;
@@ -608,7 +608,7 @@ class EventValue final : public ::google::protobuf::Message
   void _internal_set_boolean_value(bool value);
 
   public:
-  // double decimal_value = 4;
+  // double decimal_value = 4 [json_name = "decimalValue"];
   bool has_decimal_value() const;
   void clear_decimal_value() ;
   double decimal_value() const;
@@ -619,7 +619,7 @@ class EventValue final : public ::google::protobuf::Message
   void _internal_set_decimal_value(double value);
 
   public:
-  // bytes binary_value = 5;
+  // bytes binary_value = 5 [json_name = "binaryValue"];
   bool has_binary_value() const;
   void clear_binary_value() ;
   const std::string& binary_value() const;
@@ -636,7 +636,7 @@ class EventValue final : public ::google::protobuf::Message
   std::string* _internal_mutable_binary_value();
 
   public:
-  // .debate.StringList list_value = 6;
+  // .debate.StringList list_value = 6 [json_name = "listValue"];
   bool has_list_value() const;
   private:
   bool _internal_has_list_value() const;
@@ -856,7 +856,7 @@ class EventData final : public ::google::protobuf::Message
     kKeyFieldNumber = 1,
     kValueFieldNumber = 2,
   };
-  // string key = 1;
+  // string key = 1 [json_name = "key"];
   void clear_key() ;
   const std::string& key() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -872,7 +872,7 @@ class EventData final : public ::google::protobuf::Message
   std::string* _internal_mutable_key();
 
   public:
-  // .debate.EventValue value = 2;
+  // .debate.EventValue value = 2 [json_name = "value"];
   bool has_value() const;
   void clear_value() ;
   const ::debate::EventValue& value() const;
@@ -1076,7 +1076,7 @@ class UIEvent final : public ::google::protobuf::Message
     kTimestampFieldNumber = 4,
     kTypeFieldNumber = 3,
   };
-  // map<string, string> data = 5;
+  // map<string, string> data = 5 [json_name = "data"];
   int data_size() const;
   private:
   int _internal_data_size() const;
@@ -1091,7 +1091,7 @@ class UIEvent final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_data();
 
   public:
-  // repeated .debate.EventData event_data = 7;
+  // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
   int event_data_size() const;
   private:
   int _internal_event_data_size() const;
@@ -1108,7 +1108,7 @@ class UIEvent final : public ::google::protobuf::Message
   const ::debate::EventData& event_data(int index) const;
   ::debate::EventData* add_event_data();
   const ::google::protobuf::RepeatedPtrField<::debate::EventData>& event_data() const;
-  // map<string, string> metadata = 8;
+  // map<string, string> metadata = 8 [json_name = "metadata"];
   int metadata_size() const;
   private:
   int _internal_metadata_size() const;
@@ -1123,7 +1123,7 @@ class UIEvent final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_metadata();
 
   public:
-  // string event_id = 1;
+  // string event_id = 1 [json_name = "eventId"];
   void clear_event_id() ;
   const std::string& event_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1139,7 +1139,7 @@ class UIEvent final : public ::google::protobuf::Message
   std::string* _internal_mutable_event_id();
 
   public:
-  // string component_id = 2;
+  // string component_id = 2 [json_name = "componentId"];
   void clear_component_id() ;
   const std::string& component_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1155,7 +1155,7 @@ class UIEvent final : public ::google::protobuf::Message
   std::string* _internal_mutable_component_id();
 
   public:
-  // string action_id = 6;
+  // string action_id = 6 [json_name = "actionId"];
   void clear_action_id() ;
   const std::string& action_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1171,7 +1171,7 @@ class UIEvent final : public ::google::protobuf::Message
   std::string* _internal_mutable_action_id();
 
   public:
-  // int64 timestamp = 4;
+  // int64 timestamp = 4 [json_name = "timestamp"];
   void clear_timestamp() ;
   ::int64_t timestamp() const;
   void set_timestamp(::int64_t value);
@@ -1181,7 +1181,7 @@ class UIEvent final : public ::google::protobuf::Message
   void _internal_set_timestamp(::int64_t value);
 
   public:
-  // .debate.EventType type = 3;
+  // .debate.EventType type = 3 [json_name = "type"];
   void clear_type() ;
   ::debate::EventType type() const;
   void set_type(::debate::EventType value);
@@ -1255,7 +1255,7 @@ class UIEvent final : public ::google::protobuf::Message
 
 // UIEvent
 
-// string event_id = 1;
+// string event_id = 1 [json_name = "eventId"];
 inline void UIEvent::clear_event_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.event_id_.ClearToEmpty();
@@ -1303,7 +1303,7 @@ inline void UIEvent::set_allocated_event_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.event_id)
 }
 
-// string component_id = 2;
+// string component_id = 2 [json_name = "componentId"];
 inline void UIEvent::clear_component_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.component_id_.ClearToEmpty();
@@ -1351,7 +1351,7 @@ inline void UIEvent::set_allocated_component_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.component_id)
 }
 
-// .debate.EventType type = 3;
+// .debate.EventType type = 3 [json_name = "type"];
 inline void UIEvent::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
@@ -1373,7 +1373,7 @@ inline void UIEvent::_internal_set_type(::debate::EventType value) {
   _impl_.type_ = value;
 }
 
-// int64 timestamp = 4;
+// int64 timestamp = 4 [json_name = "timestamp"];
 inline void UIEvent::clear_timestamp() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.timestamp_ = ::int64_t{0};
@@ -1395,7 +1395,7 @@ inline void UIEvent::_internal_set_timestamp(::int64_t value) {
   _impl_.timestamp_ = value;
 }
 
-// map<string, string> data = 5;
+// map<string, string> data = 5 [json_name = "data"];
 inline int UIEvent::_internal_data_size() const {
   return _internal_data().size();
 }
@@ -1423,7 +1423,7 @@ inline ::google::protobuf::Map<std::string, std::string>* UIEvent::mutable_data(
   return _internal_mutable_data();
 }
 
-// string action_id = 6;
+// string action_id = 6 [json_name = "actionId"];
 inline void UIEvent::clear_action_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_id_.ClearToEmpty();
@@ -1471,7 +1471,7 @@ inline void UIEvent::set_allocated_action_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.action_id)
 }
 
-// repeated .debate.EventData event_data = 7;
+// repeated .debate.EventData event_data = 7 [json_name = "eventData"];
 inline int UIEvent::_internal_event_data_size() const {
   return _internal_event_data().size();
 }
@@ -1520,7 +1520,7 @@ UIEvent::_internal_mutable_event_data() {
   return &_impl_.event_data_;
 }
 
-// map<string, string> metadata = 8;
+// map<string, string> metadata = 8 [json_name = "metadata"];
 inline int UIEvent::_internal_metadata_size() const {
   return _internal_metadata().size();
 }
@@ -1552,7 +1552,7 @@ inline ::google::protobuf::Map<std::string, std::string>* UIEvent::mutable_metad
 
 // EventData
 
-// string key = 1;
+// string key = 1 [json_name = "key"];
 inline void EventData::clear_key() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.key_.ClearToEmpty();
@@ -1600,7 +1600,7 @@ inline void EventData::set_allocated_key(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.EventData.key)
 }
 
-// .debate.EventValue value = 2;
+// .debate.EventValue value = 2 [json_name = "value"];
 inline bool EventData::has_value() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.value_ != nullptr);
@@ -1700,7 +1700,7 @@ inline void EventData::set_allocated_value(::debate::EventValue* value) {
 
 // EventValue
 
-// string text_value = 1;
+// string text_value = 1 [json_name = "textValue"];
 inline bool EventValue::has_text_value() const {
   return value_case() == kTextValue;
 }
@@ -1785,7 +1785,7 @@ inline void EventValue::set_allocated_text_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.EventValue.text_value)
 }
 
-// int64 number_value = 2;
+// int64 number_value = 2 [json_name = "numberValue"];
 inline bool EventValue::has_number_value() const {
   return value_case() == kNumberValue;
 }
@@ -1818,7 +1818,7 @@ inline ::int64_t EventValue::_internal_number_value() const {
   return ::int64_t{0};
 }
 
-// bool boolean_value = 3;
+// bool boolean_value = 3 [json_name = "booleanValue"];
 inline bool EventValue::has_boolean_value() const {
   return value_case() == kBooleanValue;
 }
@@ -1851,7 +1851,7 @@ inline bool EventValue::_internal_boolean_value() const {
   return false;
 }
 
-// double decimal_value = 4;
+// double decimal_value = 4 [json_name = "decimalValue"];
 inline bool EventValue::has_decimal_value() const {
   return value_case() == kDecimalValue;
 }
@@ -1884,7 +1884,7 @@ inline double EventValue::_internal_decimal_value() const {
   return 0;
 }
 
-// bytes binary_value = 5;
+// bytes binary_value = 5 [json_name = "binaryValue"];
 inline bool EventValue::has_binary_value() const {
   return value_case() == kBinaryValue;
 }
@@ -1969,7 +1969,7 @@ inline void EventValue::set_allocated_binary_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.EventValue.binary_value)
 }
 
-// .debate.StringList list_value = 6;
+// .debate.StringList list_value = 6 [json_name = "listValue"];
 inline bool EventValue::has_list_value() const {
   return value_case() == kListValue;
 }
@@ -2061,7 +2061,7 @@ inline EventValue::ValueCase EventValue::value_case() const {
 
 // StringList
 
-// repeated string values = 1;
+// repeated string values = 1 [json_name = "values"];
 inline int StringList::_internal_values_size() const {
   return _internal_values().size();
 }

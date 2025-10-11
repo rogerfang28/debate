@@ -335,7 +335,7 @@ class Theme final : public ::google::protobuf::Message
     kFontFamilyFieldNumber = 3,
     kAccentColorFieldNumber = 4,
   };
-  // string primary_color = 1;
+  // string primary_color = 1 [json_name = "primaryColor"];
   void clear_primary_color() ;
   const std::string& primary_color() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -351,7 +351,7 @@ class Theme final : public ::google::protobuf::Message
   std::string* _internal_mutable_primary_color();
 
   public:
-  // string secondary_color = 2;
+  // string secondary_color = 2 [json_name = "secondaryColor"];
   void clear_secondary_color() ;
   const std::string& secondary_color() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -367,7 +367,7 @@ class Theme final : public ::google::protobuf::Message
   std::string* _internal_mutable_secondary_color();
 
   public:
-  // string font_family = 3;
+  // string font_family = 3 [json_name = "fontFamily"];
   void clear_font_family() ;
   const std::string& font_family() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -383,7 +383,7 @@ class Theme final : public ::google::protobuf::Message
   std::string* _internal_mutable_font_family();
 
   public:
-  // string accent_color = 4;
+  // string accent_color = 4 [json_name = "accentColor"];
   void clear_accent_color() ;
   const std::string& accent_color() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -583,7 +583,7 @@ class Size final : public ::google::protobuf::Message
     kWidthFieldNumber = 1,
     kHeightFieldNumber = 2,
   };
-  // string width = 1;
+  // string width = 1 [json_name = "width"];
   void clear_width() ;
   const std::string& width() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -599,7 +599,7 @@ class Size final : public ::google::protobuf::Message
   std::string* _internal_mutable_width();
 
   public:
-  // string height = 2;
+  // string height = 2 [json_name = "height"];
   void clear_height() ;
   const std::string& height() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -798,7 +798,7 @@ class Position final : public ::google::protobuf::Message
     kXFieldNumber = 1,
     kYFieldNumber = 2,
   };
-  // string unit = 3;
+  // string unit = 3 [json_name = "unit"];
   void clear_unit() ;
   const std::string& unit() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -814,7 +814,7 @@ class Position final : public ::google::protobuf::Message
   std::string* _internal_mutable_unit();
 
   public:
-  // float x = 1;
+  // float x = 1 [json_name = "x"];
   void clear_x() ;
   float x() const;
   void set_x(float value);
@@ -824,7 +824,7 @@ class Position final : public ::google::protobuf::Message
   void _internal_set_x(float value);
 
   public:
-  // float y = 2;
+  // float y = 2 [json_name = "y"];
   void clear_y() ;
   float y() const;
   void set_y(float value);
@@ -1057,7 +1057,7 @@ class ListItem final : public ::google::protobuf::Message
     kValueFieldNumber = 2,
     kIconFieldNumber = 3,
   };
-  // string label = 1;
+  // string label = 1 [json_name = "label"];
   void clear_label() ;
   const std::string& label() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1073,7 +1073,7 @@ class ListItem final : public ::google::protobuf::Message
   std::string* _internal_mutable_label();
 
   public:
-  // string value = 2;
+  // string value = 2 [json_name = "value"];
   void clear_value() ;
   const std::string& value() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1089,7 +1089,7 @@ class ListItem final : public ::google::protobuf::Message
   std::string* _internal_mutable_value();
 
   public:
-  // string icon = 3;
+  // string icon = 3 [json_name = "icon"];
   void clear_icon() ;
   const std::string& icon() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1416,7 +1416,7 @@ class Style final : public ::google::protobuf::Message
     kLayoutFieldNumber = 1,
     kScrollableFieldNumber = 12,
   };
-  // string padding = 4;
+  // string padding = 4 [json_name = "padding"];
   void clear_padding() ;
   const std::string& padding() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1432,7 +1432,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_padding();
 
   public:
-  // string margin = 5;
+  // string margin = 5 [json_name = "margin"];
   void clear_margin() ;
   const std::string& margin() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1448,7 +1448,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_margin();
 
   public:
-  // string bg_color = 6;
+  // string bg_color = 6 [json_name = "bgColor"];
   void clear_bg_color() ;
   const std::string& bg_color() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1464,7 +1464,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_bg_color();
 
   public:
-  // string text_color = 7;
+  // string text_color = 7 [json_name = "textColor"];
   void clear_text_color() ;
   const std::string& text_color() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1480,7 +1480,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_text_color();
 
   public:
-  // string border = 8;
+  // string border = 8 [json_name = "border"];
   void clear_border() ;
   const std::string& border() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1496,7 +1496,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_border();
 
   public:
-  // string rounded = 9;
+  // string rounded = 9 [json_name = "rounded"];
   void clear_rounded() ;
   const std::string& rounded() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1512,7 +1512,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_rounded();
 
   public:
-  // string shadow = 10;
+  // string shadow = 10 [json_name = "shadow"];
   void clear_shadow() ;
   const std::string& shadow() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1528,7 +1528,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_shadow();
 
   public:
-  // string gap = 11;
+  // string gap = 11 [json_name = "gap"];
   void clear_gap() ;
   const std::string& gap() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1544,7 +1544,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_gap();
 
   public:
-  // string custom_class = 13;
+  // string custom_class = 13 [json_name = "customClass"];
   void clear_custom_class() ;
   const std::string& custom_class() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1560,7 +1560,7 @@ class Style final : public ::google::protobuf::Message
   std::string* _internal_mutable_custom_class();
 
   public:
-  // .ui.Position position = 2;
+  // .ui.Position position = 2 [json_name = "position"];
   bool has_position() const;
   void clear_position() ;
   const ::ui::Position& position() const;
@@ -1575,7 +1575,7 @@ class Style final : public ::google::protobuf::Message
   ::ui::Position* _internal_mutable_position();
 
   public:
-  // .ui.Size size = 3;
+  // .ui.Size size = 3 [json_name = "size"];
   bool has_size() const;
   void clear_size() ;
   const ::ui::Size& size() const;
@@ -1590,7 +1590,7 @@ class Style final : public ::google::protobuf::Message
   ::ui::Size* _internal_mutable_size();
 
   public:
-  // .ui.LayoutType layout = 1;
+  // .ui.LayoutType layout = 1 [json_name = "layout"];
   void clear_layout() ;
   ::ui::LayoutType layout() const;
   void set_layout(::ui::LayoutType value);
@@ -1600,7 +1600,7 @@ class Style final : public ::google::protobuf::Message
   void _internal_set_layout(::ui::LayoutType value);
 
   public:
-  // bool scrollable = 12;
+  // bool scrollable = 12 [json_name = "scrollable"];
   void clear_scrollable() ;
   bool scrollable() const;
   void set_scrollable(bool value);
@@ -1813,7 +1813,7 @@ class Component final : public ::google::protobuf::Message
     kStyleFieldNumber = 5,
     kTypeFieldNumber = 2,
   };
-  // repeated .ui.Component children = 4;
+  // repeated .ui.Component children = 4 [json_name = "children"];
   int children_size() const;
   private:
   int _internal_children_size() const;
@@ -1830,7 +1830,7 @@ class Component final : public ::google::protobuf::Message
   const ::ui::Component& children(int index) const;
   ::ui::Component* add_children();
   const ::google::protobuf::RepeatedPtrField<::ui::Component>& children() const;
-  // map<string, string> css = 6;
+  // map<string, string> css = 6 [json_name = "css"];
   int css_size() const;
   private:
   int _internal_css_size() const;
@@ -1845,7 +1845,7 @@ class Component final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_css();
 
   public:
-  // map<string, string> events = 7;
+  // map<string, string> events = 7 [json_name = "events"];
   int events_size() const;
   private:
   int _internal_events_size() const;
@@ -1860,7 +1860,7 @@ class Component final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_events();
 
   public:
-  // map<string, string> attributes = 8;
+  // map<string, string> attributes = 8 [json_name = "attributes"];
   int attributes_size() const;
   private:
   int _internal_attributes_size() const;
@@ -1875,7 +1875,7 @@ class Component final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_attributes();
 
   public:
-  // repeated .ui.ListItem items = 11;
+  // repeated .ui.ListItem items = 11 [json_name = "items"];
   int items_size() const;
   private:
   int _internal_items_size() const;
@@ -1892,7 +1892,7 @@ class Component final : public ::google::protobuf::Message
   const ::ui::ListItem& items(int index) const;
   ::ui::ListItem* add_items();
   const ::google::protobuf::RepeatedPtrField<::ui::ListItem>& items() const;
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const std::string& id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1908,7 +1908,7 @@ class Component final : public ::google::protobuf::Message
   std::string* _internal_mutable_id();
 
   public:
-  // string text = 3;
+  // string text = 3 [json_name = "text"];
   void clear_text() ;
   const std::string& text() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1924,7 +1924,7 @@ class Component final : public ::google::protobuf::Message
   std::string* _internal_mutable_text();
 
   public:
-  // string name = 9;
+  // string name = 9 [json_name = "name"];
   void clear_name() ;
   const std::string& name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1940,7 +1940,7 @@ class Component final : public ::google::protobuf::Message
   std::string* _internal_mutable_name();
 
   public:
-  // string value = 10;
+  // string value = 10 [json_name = "value"];
   void clear_value() ;
   const std::string& value() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1956,7 +1956,7 @@ class Component final : public ::google::protobuf::Message
   std::string* _internal_mutable_value();
 
   public:
-  // .ui.Style style = 5;
+  // .ui.Style style = 5 [json_name = "style"];
   bool has_style() const;
   void clear_style() ;
   const ::ui::Style& style() const;
@@ -1971,7 +1971,7 @@ class Component final : public ::google::protobuf::Message
   ::ui::Style* _internal_mutable_style();
 
   public:
-  // .ui.ComponentType type = 2;
+  // .ui.ComponentType type = 2 [json_name = "type"];
   void clear_type() ;
   ::ui::ComponentType type() const;
   void set_type(::ui::ComponentType value);
@@ -2185,7 +2185,7 @@ class Page final : public ::google::protobuf::Message
     kTitleFieldNumber = 2,
     kThemeFieldNumber = 4,
   };
-  // repeated .ui.Component components = 3;
+  // repeated .ui.Component components = 3 [json_name = "components"];
   int components_size() const;
   private:
   int _internal_components_size() const;
@@ -2202,7 +2202,7 @@ class Page final : public ::google::protobuf::Message
   const ::ui::Component& components(int index) const;
   ::ui::Component* add_components();
   const ::google::protobuf::RepeatedPtrField<::ui::Component>& components() const;
-  // map<string, string> metadata = 5;
+  // map<string, string> metadata = 5 [json_name = "metadata"];
   int metadata_size() const;
   private:
   int _internal_metadata_size() const;
@@ -2217,7 +2217,7 @@ class Page final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_metadata();
 
   public:
-  // string page_id = 1;
+  // string page_id = 1 [json_name = "pageId"];
   void clear_page_id() ;
   const std::string& page_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2233,7 +2233,7 @@ class Page final : public ::google::protobuf::Message
   std::string* _internal_mutable_page_id();
 
   public:
-  // string title = 2;
+  // string title = 2 [json_name = "title"];
   void clear_title() ;
   const std::string& title() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2249,7 +2249,7 @@ class Page final : public ::google::protobuf::Message
   std::string* _internal_mutable_title();
 
   public:
-  // .ui.Theme theme = 4;
+  // .ui.Theme theme = 4 [json_name = "theme"];
   bool has_theme() const;
   void clear_theme() ;
   const ::ui::Theme& theme() const;
@@ -2321,7 +2321,7 @@ class Page final : public ::google::protobuf::Message
 
 // Page
 
-// string page_id = 1;
+// string page_id = 1 [json_name = "pageId"];
 inline void Page::clear_page_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_id_.ClearToEmpty();
@@ -2369,7 +2369,7 @@ inline void Page::set_allocated_page_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Page.page_id)
 }
 
-// string title = 2;
+// string title = 2 [json_name = "title"];
 inline void Page::clear_title() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.title_.ClearToEmpty();
@@ -2417,7 +2417,7 @@ inline void Page::set_allocated_title(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Page.title)
 }
 
-// repeated .ui.Component components = 3;
+// repeated .ui.Component components = 3 [json_name = "components"];
 inline int Page::_internal_components_size() const {
   return _internal_components().size();
 }
@@ -2466,7 +2466,7 @@ Page::_internal_mutable_components() {
   return &_impl_.components_;
 }
 
-// .ui.Theme theme = 4;
+// .ui.Theme theme = 4 [json_name = "theme"];
 inline bool Page::has_theme() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.theme_ != nullptr);
@@ -2562,7 +2562,7 @@ inline void Page::set_allocated_theme(::ui::Theme* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Page.theme)
 }
 
-// map<string, string> metadata = 5;
+// map<string, string> metadata = 5 [json_name = "metadata"];
 inline int Page::_internal_metadata_size() const {
   return _internal_metadata().size();
 }
@@ -2600,7 +2600,7 @@ inline ::google::protobuf::Map<std::string, std::string>* Page::mutable_metadata
 
 // Component
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void Component::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -2648,7 +2648,7 @@ inline void Component::set_allocated_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.id)
 }
 
-// .ui.ComponentType type = 2;
+// .ui.ComponentType type = 2 [json_name = "type"];
 inline void Component::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
@@ -2670,7 +2670,7 @@ inline void Component::_internal_set_type(::ui::ComponentType value) {
   _impl_.type_ = value;
 }
 
-// string text = 3;
+// string text = 3 [json_name = "text"];
 inline void Component::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
@@ -2718,7 +2718,7 @@ inline void Component::set_allocated_text(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.text)
 }
 
-// repeated .ui.Component children = 4;
+// repeated .ui.Component children = 4 [json_name = "children"];
 inline int Component::_internal_children_size() const {
   return _internal_children().size();
 }
@@ -2767,7 +2767,7 @@ Component::_internal_mutable_children() {
   return &_impl_.children_;
 }
 
-// .ui.Style style = 5;
+// .ui.Style style = 5 [json_name = "style"];
 inline bool Component::has_style() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.style_ != nullptr);
@@ -2863,7 +2863,7 @@ inline void Component::set_allocated_style(::ui::Style* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.style)
 }
 
-// map<string, string> css = 6;
+// map<string, string> css = 6 [json_name = "css"];
 inline int Component::_internal_css_size() const {
   return _internal_css().size();
 }
@@ -2891,7 +2891,7 @@ inline ::google::protobuf::Map<std::string, std::string>* Component::mutable_css
   return _internal_mutable_css();
 }
 
-// map<string, string> events = 7;
+// map<string, string> events = 7 [json_name = "events"];
 inline int Component::_internal_events_size() const {
   return _internal_events().size();
 }
@@ -2919,7 +2919,7 @@ inline ::google::protobuf::Map<std::string, std::string>* Component::mutable_eve
   return _internal_mutable_events();
 }
 
-// map<string, string> attributes = 8;
+// map<string, string> attributes = 8 [json_name = "attributes"];
 inline int Component::_internal_attributes_size() const {
   return _internal_attributes().size();
 }
@@ -2947,7 +2947,7 @@ inline ::google::protobuf::Map<std::string, std::string>* Component::mutable_att
   return _internal_mutable_attributes();
 }
 
-// string name = 9;
+// string name = 9 [json_name = "name"];
 inline void Component::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
@@ -2995,7 +2995,7 @@ inline void Component::set_allocated_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.name)
 }
 
-// string value = 10;
+// string value = 10 [json_name = "value"];
 inline void Component::clear_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.value_.ClearToEmpty();
@@ -3043,7 +3043,7 @@ inline void Component::set_allocated_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.value)
 }
 
-// repeated .ui.ListItem items = 11;
+// repeated .ui.ListItem items = 11 [json_name = "items"];
 inline int Component::_internal_items_size() const {
   return _internal_items().size();
 }
@@ -3096,7 +3096,7 @@ Component::_internal_mutable_items() {
 
 // Style
 
-// .ui.LayoutType layout = 1;
+// .ui.LayoutType layout = 1 [json_name = "layout"];
 inline void Style::clear_layout() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.layout_ = 0;
@@ -3118,7 +3118,7 @@ inline void Style::_internal_set_layout(::ui::LayoutType value) {
   _impl_.layout_ = value;
 }
 
-// .ui.Position position = 2;
+// .ui.Position position = 2 [json_name = "position"];
 inline bool Style::has_position() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.position_ != nullptr);
@@ -3214,7 +3214,7 @@ inline void Style::set_allocated_position(::ui::Position* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.position)
 }
 
-// .ui.Size size = 3;
+// .ui.Size size = 3 [json_name = "size"];
 inline bool Style::has_size() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.size_ != nullptr);
@@ -3310,7 +3310,7 @@ inline void Style::set_allocated_size(::ui::Size* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.size)
 }
 
-// string padding = 4;
+// string padding = 4 [json_name = "padding"];
 inline void Style::clear_padding() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.padding_.ClearToEmpty();
@@ -3358,7 +3358,7 @@ inline void Style::set_allocated_padding(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.padding)
 }
 
-// string margin = 5;
+// string margin = 5 [json_name = "margin"];
 inline void Style::clear_margin() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.margin_.ClearToEmpty();
@@ -3406,7 +3406,7 @@ inline void Style::set_allocated_margin(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.margin)
 }
 
-// string bg_color = 6;
+// string bg_color = 6 [json_name = "bgColor"];
 inline void Style::clear_bg_color() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.bg_color_.ClearToEmpty();
@@ -3454,7 +3454,7 @@ inline void Style::set_allocated_bg_color(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.bg_color)
 }
 
-// string text_color = 7;
+// string text_color = 7 [json_name = "textColor"];
 inline void Style::clear_text_color() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_color_.ClearToEmpty();
@@ -3502,7 +3502,7 @@ inline void Style::set_allocated_text_color(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.text_color)
 }
 
-// string border = 8;
+// string border = 8 [json_name = "border"];
 inline void Style::clear_border() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.border_.ClearToEmpty();
@@ -3550,7 +3550,7 @@ inline void Style::set_allocated_border(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.border)
 }
 
-// string rounded = 9;
+// string rounded = 9 [json_name = "rounded"];
 inline void Style::clear_rounded() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.rounded_.ClearToEmpty();
@@ -3598,7 +3598,7 @@ inline void Style::set_allocated_rounded(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.rounded)
 }
 
-// string shadow = 10;
+// string shadow = 10 [json_name = "shadow"];
 inline void Style::clear_shadow() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.shadow_.ClearToEmpty();
@@ -3646,7 +3646,7 @@ inline void Style::set_allocated_shadow(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.shadow)
 }
 
-// string gap = 11;
+// string gap = 11 [json_name = "gap"];
 inline void Style::clear_gap() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.gap_.ClearToEmpty();
@@ -3694,7 +3694,7 @@ inline void Style::set_allocated_gap(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Style.gap)
 }
 
-// bool scrollable = 12;
+// bool scrollable = 12 [json_name = "scrollable"];
 inline void Style::clear_scrollable() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.scrollable_ = false;
@@ -3716,7 +3716,7 @@ inline void Style::_internal_set_scrollable(bool value) {
   _impl_.scrollable_ = value;
 }
 
-// string custom_class = 13;
+// string custom_class = 13 [json_name = "customClass"];
 inline void Style::clear_custom_class() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.custom_class_.ClearToEmpty();
@@ -3768,7 +3768,7 @@ inline void Style::set_allocated_custom_class(std::string* value) {
 
 // Position
 
-// float x = 1;
+// float x = 1 [json_name = "x"];
 inline void Position::clear_x() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.x_ = 0;
@@ -3790,7 +3790,7 @@ inline void Position::_internal_set_x(float value) {
   _impl_.x_ = value;
 }
 
-// float y = 2;
+// float y = 2 [json_name = "y"];
 inline void Position::clear_y() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.y_ = 0;
@@ -3812,7 +3812,7 @@ inline void Position::_internal_set_y(float value) {
   _impl_.y_ = value;
 }
 
-// string unit = 3;
+// string unit = 3 [json_name = "unit"];
 inline void Position::clear_unit() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.unit_.ClearToEmpty();
@@ -3864,7 +3864,7 @@ inline void Position::set_allocated_unit(std::string* value) {
 
 // Size
 
-// string width = 1;
+// string width = 1 [json_name = "width"];
 inline void Size::clear_width() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.width_.ClearToEmpty();
@@ -3912,7 +3912,7 @@ inline void Size::set_allocated_width(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Size.width)
 }
 
-// string height = 2;
+// string height = 2 [json_name = "height"];
 inline void Size::clear_height() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.height_.ClearToEmpty();
@@ -3964,7 +3964,7 @@ inline void Size::set_allocated_height(std::string* value) {
 
 // Theme
 
-// string primary_color = 1;
+// string primary_color = 1 [json_name = "primaryColor"];
 inline void Theme::clear_primary_color() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.primary_color_.ClearToEmpty();
@@ -4012,7 +4012,7 @@ inline void Theme::set_allocated_primary_color(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Theme.primary_color)
 }
 
-// string secondary_color = 2;
+// string secondary_color = 2 [json_name = "secondaryColor"];
 inline void Theme::clear_secondary_color() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.secondary_color_.ClearToEmpty();
@@ -4060,7 +4060,7 @@ inline void Theme::set_allocated_secondary_color(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Theme.secondary_color)
 }
 
-// string font_family = 3;
+// string font_family = 3 [json_name = "fontFamily"];
 inline void Theme::clear_font_family() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.font_family_.ClearToEmpty();
@@ -4108,7 +4108,7 @@ inline void Theme::set_allocated_font_family(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Theme.font_family)
 }
 
-// string accent_color = 4;
+// string accent_color = 4 [json_name = "accentColor"];
 inline void Theme::clear_accent_color() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.accent_color_.ClearToEmpty();
@@ -4160,7 +4160,7 @@ inline void Theme::set_allocated_accent_color(std::string* value) {
 
 // ListItem
 
-// string label = 1;
+// string label = 1 [json_name = "label"];
 inline void ListItem::clear_label() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.label_.ClearToEmpty();
@@ -4208,7 +4208,7 @@ inline void ListItem::set_allocated_label(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.ListItem.label)
 }
 
-// string value = 2;
+// string value = 2 [json_name = "value"];
 inline void ListItem::clear_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.value_.ClearToEmpty();
@@ -4256,7 +4256,7 @@ inline void ListItem::set_allocated_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.ListItem.value)
 }
 
-// string icon = 3;
+// string icon = 3 [json_name = "icon"];
 inline void ListItem::clear_icon() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.icon_.ClearToEmpty();

@@ -86,14 +86,15 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_test_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\ntest.proto\022\007example\"-\n\004User\022\n\n\002id\030\001 \001("
-    "\t\022\014\n\004name\030\002 \001(\t\022\013\n\003age\030\003 \001(\005b\006proto3"
+    "\n\ntest.proto\022\007example\"<\n\004User\022\016\n\002id\030\001 \001("
+    "\tR\002id\022\022\n\004name\030\002 \001(\tR\004name\022\020\n\003age\030\003 \001(\005R\003"
+    "ageb\006proto3"
 };
 static ::absl::once_flag descriptor_table_test_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_test_2eproto = {
     false,
     false,
-    76,
+    91,
     descriptor_table_protodef_test_2eproto,
     "test.proto",
     &descriptor_table_test_2eproto_once,
@@ -225,25 +226,25 @@ const ::_pbi::TcParseTable<2, 3, 0, 27, 2> User::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.id_)}},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.name_)}},
-    // int32 age = 3;
+    // int32 age = 3 [json_name = "age"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.age_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.age_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 age = 3;
+    // int32 age = 3 [json_name = "age"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.age_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
@@ -284,7 +285,7 @@ PROTOBUF_NOINLINE void User::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string id = 1;
+          // string id = 1 [json_name = "id"];
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -292,7 +293,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string name = 2;
+          // string name = 2 [json_name = "name"];
           if (!this_._internal_name().empty()) {
             const std::string& _s = this_._internal_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -300,7 +301,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // int32 age = 3;
+          // int32 age = 3 [json_name = "age"];
           if (this_._internal_age() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<3>(
@@ -332,17 +333,17 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string id = 1;
+            // string id = 1 [json_name = "id"];
             if (!this_._internal_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-            // string name = 2;
+            // string name = 2 [json_name = "name"];
             if (!this_._internal_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
             }
-            // int32 age = 3;
+            // int32 age = 3 [json_name = "age"];
             if (this_._internal_age() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_age());
