@@ -122,6 +122,32 @@ UserDatabaseHandler::getUserProtobuf(const std::string& username) {
 // Update / Delete
 // ---------------------------
 
+bool UserDatabaseHandler::updateUserLocation(const std::string& username, const std::string& newLocation) {
+    std::cout << "[UserDB] Updating location for user " << username << " to: " << newLocation << std::endl;
+
+    if (!openDB(dbFilename)) return false;
+
+    try {
+        // Build the SQL UPDATE statement
+        std::string sql = "UPDATE users SET LOCATION = '" + newLocation + "' WHERE USER = '" + username + "';";
+        
+        std::cout << "[UserDB] Executing SQL: " << sql << std::endl;
+        
+        bool success = execSQL(sql);
+        
+        if (success) {
+            std::cout << "[UserDB] Successfully updated location for user " << username << std::endl;
+        } else {
+            std::cerr << "[UserDB][ERR] Failed to update location for user " << username << std::endl;
+        }
+        
+        return success;
+    } catch (const std::exception& e) {
+        std::cerr << "[UserDB][ERR] Exception updating user location: " << e.what() << std::endl;
+        return false;
+    }
+}
+
 bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
                                              const std::vector<uint8_t>& protobufData) {
     std::cout << "[UserDB] Updating protobuf data for user " << username

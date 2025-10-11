@@ -16,7 +16,7 @@ components {
     children {
       id: "leftTopSection"
       type: CONTAINER
-      style { custom_class: "flex flex-col" }
+      style { custom_class: "flex flex-col gap-2" }
 
       children {
         id: "goToParentButton"
@@ -24,6 +24,14 @@ components {
         text: "← Go to Parent"
         style { custom_class: "px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-sm" }
         events { key: "onClick" value: "goToParent" }
+      }
+
+      children {
+        id: "goHomeButton"
+        type: BUTTON
+        text: "🏠 Home"
+        style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
+        events { key: "onClick" value: "goHome" }
       }
     }
 

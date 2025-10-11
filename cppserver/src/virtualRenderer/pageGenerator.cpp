@@ -54,9 +54,10 @@ std::string generatePage(const std::string& user) {
         return generateTestPage(user);
     } else {
         // for now assume that if not home, then debate page and location = topic
-        std::string topic = location; // This would be dynamic in a real scenario
-        std::string curClaim = topic; // This would also be dynamic
-        return generateDebateClaimPage(user, topic, curClaim);
+        std::string topicID = location; // This would be dynamic in a real scenario
+        // now I need to get the topic from the topicID
+        std::string curClaim = topicID; // This would also be dynamic
+        return generateDebateClaimPage(user, topicID, curClaim);
     }
 }
 
@@ -147,9 +148,12 @@ std::string generateTestPage(const std::string& user) {
             enterButton->set_text("Enter");
             enterButton->mutable_style()->set_custom_class("px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm");
             
-            // Set event for the button with topic ID as collectFrom
-            std::string eventValue = "{\"actionId\":\"enterTopic\",\"collectFrom\":[\"" + row.at("ID") + "\"]}";
+            // Set event for the button with topic ID in event data
+            std::string eventValue = "{\"actionId\":\"enterTopic\"}";
             (*enterButton->mutable_events())["onClick"] = eventValue;
+            
+            // Add the topic ID as event data
+            (*enterButton->mutable_events())["data-topicID"] = row.at("ID");
         }
         
         std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;

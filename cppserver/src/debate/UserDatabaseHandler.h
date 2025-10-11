@@ -45,6 +45,8 @@ public:
     // ---------------------------
     // Update / Delete
     // ---------------------------
+    bool updateUserLocation(const std::string& username, const std::string& newLocation);
+    
     bool updateUserProtobuf(const std::string& username,
                             const std::vector<uint8_t>& protobufData);
 

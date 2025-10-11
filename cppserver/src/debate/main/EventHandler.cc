@@ -1,5 +1,7 @@
 #include "EventHandler.h"
 #include "../DebateModerator.h"   // uses DebateDatabaseHandler internally
+#include "./events/enterDebate.h"
+#include "./events/goHome.h"
 #include <iostream>
 using namespace std;
 
@@ -9,10 +11,18 @@ EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(move(evt)) {}
 void EventHandler::handleEvent(const string& user) {
     const string actionId = evt_.action_id();
     DebateModerator moderator; // internally uses DebateDatabaseHandler
-
+    EventHandler::Log(cout);
     if (actionId == "submitTopic") {
         string topic;
 
+        // cout << "[EventHandler] event data size: " << evt_.event_data_size() << "\n";
+        // for (const auto& ed : evt_.event_data()) {
+        //     cout << "[EventHandler] event data key: " << ed.key() << "\n";
+        //     if (ed.value().has_text_value()) {
+        //         cout << "[EventHandler] event data text value: " << ed.value().text_value() << "\n";
+        //     }
+        // }
+        // // LOGGING ABOVE IS FOR DEBUGGING PURPOSES
         // 1️⃣ Try to find topic in evt_.data() (map<string, string>)
         auto it = evt_.data().find("topicInput");
         if (it != evt_.data().end()) {
@@ -39,6 +49,41 @@ void EventHandler::handleEvent(const string& user) {
     } else if (actionId == "clearTopics") {
         moderator.handleClearDebates(user);
         cout << "[EventHandler] clearTopics action processed.\n";
+
+    } else if (actionId == "goHome") {
+        // Handle "goHome" action
+        goHome(user);
+        cout << "[EventHandler] goHome action processed for user: " << user << "\n";
+
+    } else if (actionId == "enterTopic") {
+        // Handle "enterTopic" action
+        string topicID;
+        
+        // // 1️⃣ Try to find topicID in evt_.data() (map<string, string>)
+        // auto it = evt_.data().find("data-topicID");
+        // if (it != evt_.data().end()) {
+        //     topicID = it->second;
+        //     cout << "[EventHandler] Found topicID in data: " << topicID << "\n";
+        // }
+
+        // // 2️⃣ If not found, check evt_.event_data()
+        // if (topicID.empty() && evt_.event_data_size() > 0) {
+        //     for (const auto& ed : evt_.event_data()) {
+        //         if (ed.key() == "data-topicID" && ed.value().has_text_value()) {
+        //             topicID = ed.value().text_value();
+        //             cout << "[EventHandler] Found topicID in event_data: " << topicID << "\n";
+        //             break;
+        //         }
+        //     }
+        // }
+
+        if (!topicID.empty()) {
+            cout << "[EventHandler] Entering debate with ID: " << topicID << "\n";
+            enterDebate(user, topicID);
+            cout << "[EventHandler] enterTopic action processed for user: " << user << "\n";
+        } else {
+            cerr << "[EventHandler] enterTopic event missing topicID\n";
+        }
 
     } else {
         cerr << "[EventHandler] Unhandled actionId: " << actionId << "\n";
