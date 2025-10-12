@@ -128,18 +128,20 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\nuser.proto\"\300\001\n\004User\022\022\n\nfirst_name\030\001 \001("
-    "\t\022\021\n\tlast_name\030\002 \001(\t\022\016\n\006active\030\003 \001(\010\022\026\n\007"
-    "manager\030\004 \001(\0132\005.User\022\021\n\tlocations\030\005 \003(\t\022"
-    "%\n\010projects\030\006 \003(\0132\023.User.ProjectsEntry\032/"
-    "\n\rProjectsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
-    "\001(\t:\0028\001b\006proto3"
+    "\n\nuser.proto\"\207\002\n\004User\022\035\n\nfirst_name\030\001 \001("
+    "\tR\tfirstName\022\033\n\tlast_name\030\002 \001(\tR\010lastNam"
+    "e\022\026\n\006active\030\003 \001(\010R\006active\022\037\n\007manager\030\004 \001"
+    "(\0132\005.UserR\007manager\022\034\n\tlocations\030\005 \003(\tR\tl"
+    "ocations\022/\n\010projects\030\006 \003(\0132\023.User.Projec"
+    "tsEntryR\010projects\032;\n\rProjectsEntry\022\020\n\003ke"
+    "y\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001b\006"
+    "proto3"
 };
 static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    215,
+    286,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -218,19 +220,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 35, 2> User_ProjectsEntry_DoNotUse::_table_ 
     ::_pbi::TcParser::GetTable<::User_ProjectsEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -400,19 +402,19 @@ const ::_pbi::TcParseTable<3, 6, 2, 49, 2> User::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string first_name = 1;
+    // string first_name = 1 [json_name = "firstName"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.first_name_)}},
-    // string last_name = 2;
+    // string last_name = 2 [json_name = "lastName"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.last_name_)}},
-    // bool active = 3;
+    // bool active = 3 [json_name = "active"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(User, _impl_.active_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.active_)}},
-    // .User manager = 4;
+    // .User manager = 4 [json_name = "manager"];
     {::_pbi::TcParser::FastMtS1,
      {34, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.manager_)}},
-    // repeated string locations = 5;
+    // repeated string locations = 5 [json_name = "locations"];
     {::_pbi::TcParser::FastUR1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.locations_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -420,22 +422,22 @@ const ::_pbi::TcParseTable<3, 6, 2, 49, 2> User::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string first_name = 1;
+    // string first_name = 1 [json_name = "firstName"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.first_name_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string last_name = 2;
+    // string last_name = 2 [json_name = "lastName"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.last_name_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool active = 3;
+    // bool active = 3 [json_name = "active"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.active_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .User manager = 4;
+    // .User manager = 4 [json_name = "manager"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.manager_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated string locations = 5;
+    // repeated string locations = 5 [json_name = "locations"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.locations_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-    // map<string, string> projects = 6;
+    // map<string, string> projects = 6 [json_name = "projects"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.projects_), -1, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
@@ -490,7 +492,7 @@ PROTOBUF_NOINLINE void User::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string first_name = 1;
+          // string first_name = 1 [json_name = "firstName"];
           if (!this_._internal_first_name().empty()) {
             const std::string& _s = this_._internal_first_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -498,7 +500,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string last_name = 2;
+          // string last_name = 2 [json_name = "lastName"];
           if (!this_._internal_last_name().empty()) {
             const std::string& _s = this_._internal_last_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -506,7 +508,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // bool active = 3;
+          // bool active = 3 [json_name = "active"];
           if (this_._internal_active() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -514,14 +516,14 @@ PROTOBUF_NOINLINE void User::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .User manager = 4;
+          // .User manager = 4 [json_name = "manager"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 4, *this_._impl_.manager_, this_._impl_.manager_->GetCachedSize(), target,
                 stream);
           }
 
-          // repeated string locations = 5;
+          // repeated string locations = 5 [json_name = "locations"];
           for (int i = 0, n = this_._internal_locations_size(); i < n; ++i) {
             const auto& s = this_._internal_locations().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -529,7 +531,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteString(5, s, target);
           }
 
-          // map<string, string> projects = 6;
+          // map<string, string> projects = 6 [json_name = "projects"];
           if (!this_._internal_projects().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -587,7 +589,7 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string locations = 5;
+            // repeated string locations = 5 [json_name = "locations"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_locations().size());
@@ -596,7 +598,7 @@ PROTOBUF_NOINLINE void User::Clear() {
                     this_._internal_locations().Get(i));
               }
             }
-            // map<string, string> projects = 6;
+            // map<string, string> projects = 6 [json_name = "projects"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_projects_size());
@@ -608,19 +610,19 @@ PROTOBUF_NOINLINE void User::Clear() {
             }
           }
            {
-            // string first_name = 1;
+            // string first_name = 1 [json_name = "firstName"];
             if (!this_._internal_first_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_first_name());
             }
-            // string last_name = 2;
+            // string last_name = 2 [json_name = "lastName"];
             if (!this_._internal_last_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_last_name());
             }
           }
            {
-            // .User manager = 4;
+            // .User manager = 4 [json_name = "manager"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -628,7 +630,7 @@ PROTOBUF_NOINLINE void User::Clear() {
             }
           }
            {
-            // bool active = 3;
+            // bool active = 3 [json_name = "active"];
             if (this_._internal_active() != 0) {
               total_size += 2;
             }

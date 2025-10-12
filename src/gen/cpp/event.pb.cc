@@ -282,33 +282,38 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_event_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\013event.proto\022\006debate\"\327\002\n\007UIEvent\022\020\n\010eve"
-    "nt_id\030\001 \001(\t\022\024\n\014component_id\030\002 \001(\t\022\037\n\004typ"
-    "e\030\003 \001(\0162\021.debate.EventType\022\021\n\ttimestamp\030"
-    "\004 \001(\003\022\'\n\004data\030\005 \003(\0132\031.debate.UIEvent.Dat"
-    "aEntry\022\021\n\taction_id\030\006 \001(\t\022%\n\nevent_data\030"
-    "\007 \003(\0132\021.debate.EventData\022/\n\010metadata\030\010 \003"
-    "(\0132\035.debate.UIEvent.MetadataEntry\032+\n\tDat"
-    "aEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032/"
-    "\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
-    "\001(\t:\0028\001\";\n\tEventData\022\013\n\003key\030\001 \001(\t\022!\n\005val"
-    "ue\030\002 \001(\0132\022.debate.EventValue\"\267\001\n\nEventVa"
-    "lue\022\024\n\ntext_value\030\001 \001(\tH\000\022\026\n\014number_valu"
-    "e\030\002 \001(\003H\000\022\027\n\rboolean_value\030\003 \001(\010H\000\022\027\n\rde"
-    "cimal_value\030\004 \001(\001H\000\022\026\n\014binary_value\030\005 \001("
-    "\014H\000\022(\n\nlist_value\030\006 \001(\0132\022.debate.StringL"
-    "istH\000B\007\n\005value\"\034\n\nStringList\022\016\n\006values\030\001"
-    " \003(\t*\226\001\n\tEventType\022\013\n\007UNKNOWN\020\000\022\t\n\005CLICK"
-    "\020\001\022\020\n\014INPUT_CHANGE\020\002\022\017\n\013FORM_SUBMIT\020\003\022\016\n"
-    "\nNODE_ADDED\020\004\022\020\n\014NODE_REMOVED\020\005\022\016\n\nEDGE_"
-    "ADDED\020\006\022\020\n\014EDGE_REMOVED\020\007\022\n\n\006ACTION\020\010b\006p"
-    "roto3"
+    "\n\013event.proto\022\006debate\"\273\003\n\007UIEvent\022\031\n\010eve"
+    "nt_id\030\001 \001(\tR\007eventId\022!\n\014component_id\030\002 \001"
+    "(\tR\013componentId\022%\n\004type\030\003 \001(\0162\021.debate.E"
+    "ventTypeR\004type\022\034\n\ttimestamp\030\004 \001(\003R\ttimes"
+    "tamp\022-\n\004data\030\005 \003(\0132\031.debate.UIEvent.Data"
+    "EntryR\004data\022\033\n\taction_id\030\006 \001(\tR\010actionId"
+    "\0220\n\nevent_data\030\007 \003(\0132\021.debate.EventDataR"
+    "\teventData\0229\n\010metadata\030\010 \003(\0132\035.debate.UI"
+    "Event.MetadataEntryR\010metadata\0327\n\tDataEnt"
+    "ry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005val"
+    "ue:\0028\001\032;\n\rMetadataEntry\022\020\n\003key\030\001 \001(\tR\003ke"
+    "y\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"G\n\tEventData"
+    "\022\020\n\003key\030\001 \001(\tR\003key\022(\n\005value\030\002 \001(\0132\022.deba"
+    "te.EventValueR\005value\"\203\002\n\nEventValue\022\037\n\nt"
+    "ext_value\030\001 \001(\tH\000R\ttextValue\022#\n\014number_v"
+    "alue\030\002 \001(\003H\000R\013numberValue\022%\n\rboolean_val"
+    "ue\030\003 \001(\010H\000R\014booleanValue\022%\n\rdecimal_valu"
+    "e\030\004 \001(\001H\000R\014decimalValue\022#\n\014binary_value\030"
+    "\005 \001(\014H\000R\013binaryValue\0223\n\nlist_value\030\006 \001(\013"
+    "2\022.debate.StringListH\000R\tlistValueB\007\n\005val"
+    "ue\"$\n\nStringList\022\026\n\006values\030\001 \003(\tR\006values"
+    "*\226\001\n\tEventType\022\013\n\007UNKNOWN\020\000\022\t\n\005CLICK\020\001\022\020"
+    "\n\014INPUT_CHANGE\020\002\022\017\n\013FORM_SUBMIT\020\003\022\016\n\nNOD"
+    "E_ADDED\020\004\022\020\n\014NODE_REMOVED\020\005\022\016\n\nEDGE_ADDE"
+    "D\020\006\022\020\n\014EDGE_REMOVED\020\007\022\n\n\006ACTION\020\010b\006proto"
+    "3"
 };
 static ::absl::once_flag descriptor_table_event_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_event_2eproto = {
     false,
     false,
-    805,
+    1001,
     descriptor_table_protodef_event_2eproto,
     "event.proto",
     &descriptor_table_event_2eproto_once,
@@ -397,19 +402,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 41, 2> UIEvent_DataEntry_DoNotUse::_table_ =
     ::_pbi::TcParser::GetTable<::debate::UIEvent_DataEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent_DataEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent_DataEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(UIEvent_DataEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(UIEvent_DataEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -488,19 +493,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> UIEvent_MetadataEntry_DoNotUse::_tabl
     ::_pbi::TcParser::GetTable<::debate::UIEvent_MetadataEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent_MetadataEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent_MetadataEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(UIEvent_MetadataEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(UIEvent_MetadataEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -679,50 +684,50 @@ const ::_pbi::TcParseTable<3, 8, 3, 72, 2> UIEvent::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string event_id = 1;
+    // string event_id = 1 [json_name = "eventId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_id_)}},
-    // string component_id = 2;
+    // string component_id = 2 [json_name = "componentId"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.component_id_)}},
-    // .debate.EventType type = 3;
+    // .debate.EventType type = 3 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UIEvent, _impl_.type_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.type_)}},
-    // int64 timestamp = 4;
+    // int64 timestamp = 4 [json_name = "timestamp"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(UIEvent, _impl_.timestamp_), 63>(),
      {32, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.timestamp_)}},
     {::_pbi::TcParser::MiniParse, {}},
-    // string action_id = 6;
+    // string action_id = 6 [json_name = "actionId"];
     {::_pbi::TcParser::FastUS1,
      {50, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.action_id_)}},
-    // repeated .debate.EventData event_data = 7;
+    // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
     {::_pbi::TcParser::FastMtR1,
      {58, 63, 0, PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_data_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string event_id = 1;
+    // string event_id = 1 [json_name = "eventId"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string component_id = 2;
+    // string component_id = 2 [json_name = "componentId"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.component_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .debate.EventType type = 3;
+    // .debate.EventType type = 3 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.type_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // int64 timestamp = 4;
+    // int64 timestamp = 4 [json_name = "timestamp"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.timestamp_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt64)},
-    // map<string, string> data = 5;
+    // map<string, string> data = 5 [json_name = "data"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.data_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // string action_id = 6;
+    // string action_id = 6 [json_name = "actionId"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.action_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .debate.EventData event_data = 7;
+    // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.event_data_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> metadata = 8;
+    // map<string, string> metadata = 8 [json_name = "metadata"];
     {PROTOBUF_FIELD_OFFSET(UIEvent, _impl_.metadata_), 0, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
@@ -780,7 +785,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string event_id = 1;
+          // string event_id = 1 [json_name = "eventId"];
           if (!this_._internal_event_id().empty()) {
             const std::string& _s = this_._internal_event_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -788,7 +793,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string component_id = 2;
+          // string component_id = 2 [json_name = "componentId"];
           if (!this_._internal_component_id().empty()) {
             const std::string& _s = this_._internal_component_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -796,21 +801,21 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // .debate.EventType type = 3;
+          // .debate.EventType type = 3 [json_name = "type"];
           if (this_._internal_type() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
                 3, this_._internal_type(), target);
           }
 
-          // int64 timestamp = 4;
+          // int64 timestamp = 4 [json_name = "timestamp"];
           if (this_._internal_timestamp() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt64ToArrayWithField<4>(
                     stream, this_._internal_timestamp(), target);
           }
 
-          // map<string, string> data = 5;
+          // map<string, string> data = 5 [json_name = "data"];
           if (!this_._internal_data().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -843,7 +848,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
             }
           }
 
-          // string action_id = 6;
+          // string action_id = 6 [json_name = "actionId"];
           if (!this_._internal_action_id().empty()) {
             const std::string& _s = this_._internal_action_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -851,7 +856,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
             target = stream->WriteStringMaybeAliased(6, _s, target);
           }
 
-          // repeated .debate.EventData event_data = 7;
+          // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_event_data_size());
                i < n; i++) {
@@ -862,7 +867,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
                     target, stream);
           }
 
-          // map<string, string> metadata = 8;
+          // map<string, string> metadata = 8 [json_name = "metadata"];
           if (!this_._internal_metadata().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -920,7 +925,7 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // map<string, string> data = 5;
+            // map<string, string> data = 5 [json_name = "data"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_data_size());
@@ -930,14 +935,14 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // repeated .debate.EventData event_data = 7;
+            // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
             {
               total_size += 1UL * this_._internal_event_data_size();
               for (const auto& msg : this_._internal_event_data()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // map<string, string> metadata = 8;
+            // map<string, string> metadata = 8 [json_name = "metadata"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_metadata_size());
@@ -949,27 +954,27 @@ PROTOBUF_NOINLINE void UIEvent::Clear() {
             }
           }
            {
-            // string event_id = 1;
+            // string event_id = 1 [json_name = "eventId"];
             if (!this_._internal_event_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_event_id());
             }
-            // string component_id = 2;
+            // string component_id = 2 [json_name = "componentId"];
             if (!this_._internal_component_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_component_id());
             }
-            // string action_id = 6;
+            // string action_id = 6 [json_name = "actionId"];
             if (!this_._internal_action_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_action_id());
             }
-            // int64 timestamp = 4;
+            // int64 timestamp = 4 [json_name = "timestamp"];
             if (this_._internal_timestamp() != 0) {
               total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
                   this_._internal_timestamp());
             }
-            // .debate.EventType type = 3;
+            // .debate.EventType type = 3 [json_name = "type"];
             if (this_._internal_type() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
@@ -1162,19 +1167,19 @@ const ::_pbi::TcParseTable<1, 2, 1, 28, 2> EventData::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::EventData>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .debate.EventValue value = 2;
+    // .debate.EventValue value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0, PROTOBUF_FIELD_OFFSET(EventData, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(EventData, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(EventData, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .debate.EventValue value = 2;
+    // .debate.EventValue value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(EventData, _impl_.value_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -1218,7 +1223,7 @@ PROTOBUF_NOINLINE void EventData::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string key = 1;
+          // string key = 1 [json_name = "key"];
           if (!this_._internal_key().empty()) {
             const std::string& _s = this_._internal_key();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1227,7 +1232,7 @@ PROTOBUF_NOINLINE void EventData::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .debate.EventValue value = 2;
+          // .debate.EventValue value = 2 [json_name = "value"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 2, *this_._impl_.value_, this_._impl_.value_->GetCachedSize(), target,
@@ -1259,14 +1264,14 @@ PROTOBUF_NOINLINE void EventData::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string key = 1;
+            // string key = 1 [json_name = "key"];
             if (!this_._internal_key().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_key());
             }
           }
            {
-            // .debate.EventValue value = 2;
+            // .debate.EventValue value = 2 [json_name = "value"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -1521,22 +1526,22 @@ const ::_pbi::TcParseTable<0, 6, 1, 36, 2> EventValue::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string text_value = 1;
+    // string text_value = 1 [json_name = "textValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.text_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int64 number_value = 2;
+    // int64 number_value = 2 [json_name = "numberValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.number_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
-    // bool boolean_value = 3;
+    // bool boolean_value = 3 [json_name = "booleanValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.boolean_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kBool)},
-    // double decimal_value = 4;
+    // double decimal_value = 4 [json_name = "decimalValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.decimal_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
-    // bytes binary_value = 5;
+    // bytes binary_value = 5 [json_name = "binaryValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.binary_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kBytes | ::_fl::kRepAString)},
-    // .debate.StringList list_value = 6;
+    // .debate.StringList list_value = 6 [json_name = "listValue"];
     {PROTOBUF_FIELD_OFFSET(EventValue, _impl_.value_.list_value_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -1638,35 +1643,35 @@ PROTOBUF_NOINLINE void EventValue::Clear() {
           (void)cached_has_bits;
 
           switch (this_.value_case()) {
-            // string text_value = 1;
+            // string text_value = 1 [json_name = "textValue"];
             case kTextValue: {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_text_value());
               break;
             }
-            // int64 number_value = 2;
+            // int64 number_value = 2 [json_name = "numberValue"];
             case kNumberValue: {
               total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
                   this_._internal_number_value());
               break;
             }
-            // bool boolean_value = 3;
+            // bool boolean_value = 3 [json_name = "booleanValue"];
             case kBooleanValue: {
               total_size += 2;
               break;
             }
-            // double decimal_value = 4;
+            // double decimal_value = 4 [json_name = "decimalValue"];
             case kDecimalValue: {
               total_size += 9;
               break;
             }
-            // bytes binary_value = 5;
+            // bytes binary_value = 5 [json_name = "binaryValue"];
             case kBinaryValue: {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
                                               this_._internal_binary_value());
               break;
             }
-            // .debate.StringList list_value = 6;
+            // .debate.StringList list_value = 6 [json_name = "listValue"];
             case kListValue: {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.value_.list_value_);
@@ -1883,13 +1888,13 @@ const ::_pbi::TcParseTable<0, 1, 0, 32, 2> StringList::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::StringList>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated string values = 1;
+    // repeated string values = 1 [json_name = "values"];
     {::_pbi::TcParser::FastUR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(StringList, _impl_.values_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated string values = 1;
+    // repeated string values = 1 [json_name = "values"];
     {PROTOBUF_FIELD_OFFSET(StringList, _impl_.values_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
   }},
@@ -1927,7 +1932,7 @@ PROTOBUF_NOINLINE void StringList::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated string values = 1;
+          // repeated string values = 1 [json_name = "values"];
           for (int i = 0, n = this_._internal_values_size(); i < n; ++i) {
             const auto& s = this_._internal_values().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1960,7 +1965,7 @@ PROTOBUF_NOINLINE void StringList::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string values = 1;
+            // repeated string values = 1 [json_name = "values"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_values().size());

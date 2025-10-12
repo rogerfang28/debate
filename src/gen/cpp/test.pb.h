@@ -218,7 +218,7 @@ class User final : public ::google::protobuf::Message
     kNameFieldNumber = 2,
     kAgeFieldNumber = 3,
   };
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const std::string& id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -234,7 +234,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_id();
 
   public:
-  // string name = 2;
+  // string name = 2 [json_name = "name"];
   void clear_name() ;
   const std::string& name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -250,7 +250,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_name();
 
   public:
-  // int32 age = 3;
+  // int32 age = 3 [json_name = "age"];
   void clear_age() ;
   ::int32_t age() const;
   void set_age(::int32_t value);
@@ -309,7 +309,7 @@ class User final : public ::google::protobuf::Message
 
 // User
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void User::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -357,7 +357,7 @@ inline void User::set_allocated_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:example.User.id)
 }
 
-// string name = 2;
+// string name = 2 [json_name = "name"];
 inline void User::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
@@ -405,7 +405,7 @@ inline void User::set_allocated_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:example.User.name)
 }
 
-// int32 age = 3;
+// int32 age = 3 [json_name = "age"];
 inline void User::clear_age() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.age_ = 0;

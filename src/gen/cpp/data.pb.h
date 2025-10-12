@@ -217,7 +217,7 @@ class MyData final : public ::google::protobuf::Message
     kUsernameFieldNumber = 1,
     kScoreFieldNumber = 2,
   };
-  // string username = 1;
+  // string username = 1 [json_name = "username"];
   void clear_username() ;
   const std::string& username() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -233,7 +233,7 @@ class MyData final : public ::google::protobuf::Message
   std::string* _internal_mutable_username();
 
   public:
-  // int32 score = 2;
+  // int32 score = 2 [json_name = "score"];
   void clear_score() ;
   ::int32_t score() const;
   void set_score(::int32_t value);
@@ -291,7 +291,7 @@ class MyData final : public ::google::protobuf::Message
 
 // MyData
 
-// string username = 1;
+// string username = 1 [json_name = "username"];
 inline void MyData::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -339,7 +339,7 @@ inline void MyData::set_allocated_username(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:test.MyData.username)
 }
 
-// int32 score = 2;
+// int32 score = 2 [json_name = "score"];
 inline void MyData::clear_score() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.score_ = 0;

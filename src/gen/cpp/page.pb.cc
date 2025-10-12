@@ -568,49 +568,59 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_page_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\npage.proto\022\002ui\"\276\001\n\004Page\022\017\n\007page_id\030\001 \001"
-    "(\t\022\r\n\005title\030\002 \001(\t\022!\n\ncomponents\030\003 \003(\0132\r."
-    "ui.Component\022\030\n\005theme\030\004 \001(\0132\t.ui.Theme\022("
-    "\n\010metadata\030\005 \003(\0132\026.ui.Page.MetadataEntry"
-    "\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030"
-    "\002 \001(\t:\0028\001\"\314\003\n\tComponent\022\n\n\002id\030\001 \001(\t\022\037\n\004t"
-    "ype\030\002 \001(\0162\021.ui.ComponentType\022\014\n\004text\030\003 \001"
-    "(\t\022\037\n\010children\030\004 \003(\0132\r.ui.Component\022\030\n\005s"
-    "tyle\030\005 \001(\0132\t.ui.Style\022#\n\003css\030\006 \003(\0132\026.ui."
-    "Component.CssEntry\022)\n\006events\030\007 \003(\0132\031.ui."
-    "Component.EventsEntry\0221\n\nattributes\030\010 \003("
-    "\0132\035.ui.Component.AttributesEntry\022\014\n\004name"
-    "\030\t \001(\t\022\r\n\005value\030\n \001(\t\022\033\n\005items\030\013 \003(\0132\014.u"
-    "i.ListItem\032*\n\010CssEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
-    "alue\030\002 \001(\t:\0028\001\032-\n\013EventsEntry\022\013\n\003key\030\001 \001"
-    "(\t\022\r\n\005value\030\002 \001(\t:\0028\001\0321\n\017AttributesEntry"
-    "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\216\002\n\005Sty"
-    "le\022\036\n\006layout\030\001 \001(\0162\016.ui.LayoutType\022\036\n\010po"
-    "sition\030\002 \001(\0132\014.ui.Position\022\026\n\004size\030\003 \001(\013"
-    "2\010.ui.Size\022\017\n\007padding\030\004 \001(\t\022\016\n\006margin\030\005 "
-    "\001(\t\022\020\n\010bg_color\030\006 \001(\t\022\022\n\ntext_color\030\007 \001("
-    "\t\022\016\n\006border\030\010 \001(\t\022\017\n\007rounded\030\t \001(\t\022\016\n\006sh"
-    "adow\030\n \001(\t\022\013\n\003gap\030\013 \001(\t\022\022\n\nscrollable\030\014 "
-    "\001(\010\022\024\n\014custom_class\030\r \001(\t\".\n\010Position\022\t\n"
-    "\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\014\n\004unit\030\003 \001(\t\"%\n\004Siz"
-    "e\022\r\n\005width\030\001 \001(\t\022\016\n\006height\030\002 \001(\t\"b\n\005Them"
-    "e\022\025\n\rprimary_color\030\001 \001(\t\022\027\n\017secondary_co"
-    "lor\030\002 \001(\t\022\023\n\013font_family\030\003 \001(\t\022\024\n\014accent"
-    "_color\030\004 \001(\t\"6\n\010ListItem\022\r\n\005label\030\001 \001(\t\022"
-    "\r\n\005value\030\002 \001(\t\022\014\n\004icon\030\003 \001(\t*\275\001\n\rCompone"
-    "ntType\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020"
-    "\002\022\t\n\005INPUT\020\003\022\014\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH"
-    "\020\005\022\010\n\004CHAT\020\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIS"
-    "T\020\t\022\t\n\005TABLE\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014"
-    "\022\010\n\004FORM\020\r\022\010\n\004ICON\020\016*L\n\nLayoutType\022\014\n\010AB"
-    "SOLUTE\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004"
-    "GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\n\npage.proto\022\002ui\"\366\001\n\004Page\022\027\n\007page_id\030\001 \001"
+    "(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncomp"
+    "onents\030\003 \003(\0132\r.ui.ComponentR\ncomponents\022"
+    "\037\n\005theme\030\004 \001(\0132\t.ui.ThemeR\005theme\0222\n\010meta"
+    "data\030\005 \003(\0132\026.ui.Page.MetadataEntryR\010meta"
+    "data\032;\n\rMetadataEntry\022\020\n\003key\030\001 \001(\tR\003key\022"
+    "\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\276\004\n\tComponent\022"
+    "\016\n\002id\030\001 \001(\tR\002id\022%\n\004type\030\002 \001(\0162\021.ui.Compo"
+    "nentTypeR\004type\022\022\n\004text\030\003 \001(\tR\004text\022)\n\010ch"
+    "ildren\030\004 \003(\0132\r.ui.ComponentR\010children\022\037\n"
+    "\005style\030\005 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\006 "
+    "\003(\0132\026.ui.Component.CssEntryR\003css\0221\n\006even"
+    "ts\030\007 \003(\0132\031.ui.Component.EventsEntryR\006eve"
+    "nts\022=\n\nattributes\030\010 \003(\0132\035.ui.Component.A"
+    "ttributesEntryR\nattributes\022\022\n\004name\030\t \001(\t"
+    "R\004name\022\024\n\005value\030\n \001(\tR\005value\022\"\n\005items\030\013 "
+    "\003(\0132\014.ui.ListItemR\005items\0326\n\010CssEntry\022\020\n\003"
+    "key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001"
+    "\0329\n\013EventsEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005val"
+    "ue\030\002 \001(\tR\005value:\0028\001\032=\n\017AttributesEntry\022\020"
+    "\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\002"
+    "8\001\"\202\003\n\005Style\022&\n\006layout\030\001 \001(\0162\016.ui.Layout"
+    "TypeR\006layout\022(\n\010position\030\002 \001(\0132\014.ui.Posi"
+    "tionR\010position\022\034\n\004size\030\003 \001(\0132\010.ui.SizeR\004"
+    "size\022\030\n\007padding\030\004 \001(\tR\007padding\022\026\n\006margin"
+    "\030\005 \001(\tR\006margin\022\031\n\010bg_color\030\006 \001(\tR\007bgColo"
+    "r\022\035\n\ntext_color\030\007 \001(\tR\ttextColor\022\026\n\006bord"
+    "er\030\010 \001(\tR\006border\022\030\n\007rounded\030\t \001(\tR\007round"
+    "ed\022\026\n\006shadow\030\n \001(\tR\006shadow\022\020\n\003gap\030\013 \001(\tR"
+    "\003gap\022\036\n\nscrollable\030\014 \001(\010R\nscrollable\022!\n\014"
+    "custom_class\030\r \001(\tR\013customClass\":\n\010Posit"
+    "ion\022\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030"
+    "\003 \001(\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005widt"
+    "h\022\026\n\006height\030\002 \001(\tR\006height\"\231\001\n\005Theme\022#\n\rp"
+    "rimary_color\030\001 \001(\tR\014primaryColor\022\'\n\017seco"
+    "ndary_color\030\002 \001(\tR\016secondaryColor\022\037\n\013fon"
+    "t_family\030\003 \001(\tR\nfontFamily\022!\n\014accent_col"
+    "or\030\004 \001(\tR\013accentColor\"J\n\010ListItem\022\024\n\005lab"
+    "el\030\001 \001(\tR\005label\022\024\n\005value\030\002 \001(\tR\005value\022\022\n"
+    "\004icon\030\003 \001(\tR\004icon*\275\001\n\rComponentType\022\013\n\007U"
+    "NKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020"
+    "\003\022\014\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH\020\005\022\010\n\004CHAT\020"
+    "\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIST\020\t\022\t\n\005TABL"
+    "E\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014\022\010\n\004FORM\020\r\022"
+    "\010\n\004ICON\020\016*L\n\nLayoutType\022\014\n\010ABSOLUTE\020\000\022\014\n"
+    "\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006I"
+    "NLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_page_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_page_2eproto = {
     false,
     false,
-    1466,
+    1855,
     descriptor_table_protodef_page_2eproto,
     "page.proto",
     &descriptor_table_page_2eproto_once,
@@ -708,19 +718,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Page_MetadataEntry_DoNotUse::_table_ 
     ::_pbi::TcParser::GetTable<::ui::Page_MetadataEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Page_MetadataEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Page_MetadataEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Page_MetadataEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Page_MetadataEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -883,34 +893,34 @@ const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Page>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .ui.Theme theme = 4;
+    // .ui.Theme theme = 4 [json_name = "theme"];
     {::_pbi::TcParser::FastMtS1,
      {34, 0, 1, PROTOBUF_FIELD_OFFSET(Page, _impl_.theme_)}},
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_)}},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.title_)}},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.components_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.title_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.components_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Theme theme = 4;
+    // .ui.Theme theme = 4 [json_name = "theme"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.theme_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> metadata = 5;
+    // map<string, string> metadata = 5 [json_name = "metadata"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.metadata_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
@@ -964,7 +974,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string page_id = 1;
+          // string page_id = 1 [json_name = "pageId"];
           if (!this_._internal_page_id().empty()) {
             const std::string& _s = this_._internal_page_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -972,7 +982,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string title = 2;
+          // string title = 2 [json_name = "title"];
           if (!this_._internal_title().empty()) {
             const std::string& _s = this_._internal_title();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -980,7 +990,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // repeated .ui.Component components = 3;
+          // repeated .ui.Component components = 3 [json_name = "components"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_components_size());
                i < n; i++) {
@@ -992,14 +1002,14 @@ PROTOBUF_NOINLINE void Page::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Theme theme = 4;
+          // .ui.Theme theme = 4 [json_name = "theme"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 4, *this_._impl_.theme_, this_._impl_.theme_->GetCachedSize(), target,
                 stream);
           }
 
-          // map<string, string> metadata = 5;
+          // map<string, string> metadata = 5 [json_name = "metadata"];
           if (!this_._internal_metadata().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1057,14 +1067,14 @@ PROTOBUF_NOINLINE void Page::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component components = 3;
+            // repeated .ui.Component components = 3 [json_name = "components"];
             {
               total_size += 1UL * this_._internal_components_size();
               for (const auto& msg : this_._internal_components()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // map<string, string> metadata = 5;
+            // map<string, string> metadata = 5 [json_name = "metadata"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_metadata_size());
@@ -1076,19 +1086,19 @@ PROTOBUF_NOINLINE void Page::Clear() {
             }
           }
            {
-            // string page_id = 1;
+            // string page_id = 1 [json_name = "pageId"];
             if (!this_._internal_page_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_page_id());
             }
-            // string title = 2;
+            // string title = 2 [json_name = "title"];
             if (!this_._internal_title().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_title());
             }
           }
            {
-            // .ui.Theme theme = 4;
+            // .ui.Theme theme = 4 [json_name = "theme"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -1221,19 +1231,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ 
     ::_pbi::TcParser::GetTable<::ui::Component_CssEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1312,19 +1322,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 41, 2> Component_EventsEntry_DoNotUse::_tabl
     ::_pbi::TcParser::GetTable<::ui::Component_EventsEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_EventsEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_EventsEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_EventsEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_EventsEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1403,19 +1413,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_AttributesEntry_DoNotUse::_
     ::_pbi::TcParser::GetTable<::ui::Component_AttributesEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1617,31 +1627,31 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
-    // .ui.ComponentType type = 2;
+    // .ui.ComponentType type = 2 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
-    // string text = 3;
+    // string text = 3 [json_name = "text"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
-    // repeated .ui.Component children = 4;
+    // repeated .ui.Component children = 4 [json_name = "children"];
     {::_pbi::TcParser::FastMtR1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
-    // .ui.Style style = 5;
+    // .ui.Style style = 5 [json_name = "style"];
     {::_pbi::TcParser::FastMtS1,
      {42, 0, 1, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
-    // string name = 9;
+    // string name = 9 [json_name = "name"];
     {::_pbi::TcParser::FastUS1,
      {74, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.name_)}},
-    // string value = 10;
+    // string value = 10 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {82, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.value_)}},
-    // repeated .ui.ListItem items = 11;
+    // repeated .ui.ListItem items = 11 [json_name = "items"];
     {::_pbi::TcParser::FastMtR1,
      {90, 63, 2, PROTOBUF_FIELD_OFFSET(Component, _impl_.items_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1651,37 +1661,37 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .ui.ComponentType type = 2;
+    // .ui.ComponentType type = 2 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // string text = 3;
+    // string text = 3 [json_name = "text"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component children = 4;
+    // repeated .ui.Component children = 4 [json_name = "children"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Style style = 5;
+    // .ui.Style style = 5 [json_name = "style"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> css = 6;
+    // map<string, string> css = 6 [json_name = "css"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), -1, 3,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<string, string> events = 7;
+    // map<string, string> events = 7 [json_name = "events"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.events_), -1, 4,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<string, string> attributes = 8;
+    // map<string, string> attributes = 8 [json_name = "attributes"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), -1, 5,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // string name = 9;
+    // string name = 9 [json_name = "name"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.name_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 10;
+    // string value = 10 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.ListItem items = 11;
+    // repeated .ui.ListItem items = 11 [json_name = "items"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.items_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -1754,7 +1764,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string id = 1;
+          // string id = 1 [json_name = "id"];
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1762,14 +1772,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // .ui.ComponentType type = 2;
+          // .ui.ComponentType type = 2 [json_name = "type"];
           if (this_._internal_type() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
                 2, this_._internal_type(), target);
           }
 
-          // string text = 3;
+          // string text = 3 [json_name = "text"];
           if (!this_._internal_text().empty()) {
             const std::string& _s = this_._internal_text();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1777,7 +1787,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
-          // repeated .ui.Component children = 4;
+          // repeated .ui.Component children = 4 [json_name = "children"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_children_size());
                i < n; i++) {
@@ -1789,14 +1799,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Style style = 5;
+          // .ui.Style style = 5 [json_name = "style"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 5, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
                 stream);
           }
 
-          // map<string, string> css = 6;
+          // map<string, string> css = 6 [json_name = "css"];
           if (!this_._internal_css().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1829,7 +1839,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
 
-          // map<string, string> events = 7;
+          // map<string, string> events = 7 [json_name = "events"];
           if (!this_._internal_events().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1862,7 +1872,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
 
-          // map<string, string> attributes = 8;
+          // map<string, string> attributes = 8 [json_name = "attributes"];
           if (!this_._internal_attributes().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1895,7 +1905,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
 
-          // string name = 9;
+          // string name = 9 [json_name = "name"];
           if (!this_._internal_name().empty()) {
             const std::string& _s = this_._internal_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1903,7 +1913,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(9, _s, target);
           }
 
-          // string value = 10;
+          // string value = 10 [json_name = "value"];
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1911,7 +1921,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(10, _s, target);
           }
 
-          // repeated .ui.ListItem items = 11;
+          // repeated .ui.ListItem items = 11 [json_name = "items"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_items_size());
                i < n; i++) {
@@ -1947,14 +1957,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component children = 4;
+            // repeated .ui.Component children = 4 [json_name = "children"];
             {
               total_size += 1UL * this_._internal_children_size();
               for (const auto& msg : this_._internal_children()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // map<string, string> css = 6;
+            // map<string, string> css = 6 [json_name = "css"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_css_size());
@@ -1964,7 +1974,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // map<string, string> events = 7;
+            // map<string, string> events = 7 [json_name = "events"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_events_size());
@@ -1974,7 +1984,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // map<string, string> attributes = 8;
+            // map<string, string> attributes = 8 [json_name = "attributes"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_attributes_size());
@@ -1984,7 +1994,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // repeated .ui.ListItem items = 11;
+            // repeated .ui.ListItem items = 11 [json_name = "items"];
             {
               total_size += 1UL * this_._internal_items_size();
               for (const auto& msg : this_._internal_items()) {
@@ -1993,29 +2003,29 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // string id = 1;
+            // string id = 1 [json_name = "id"];
             if (!this_._internal_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-            // string text = 3;
+            // string text = 3 [json_name = "text"];
             if (!this_._internal_text().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_text());
             }
-            // string name = 9;
+            // string name = 9 [json_name = "name"];
             if (!this_._internal_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
             }
-            // string value = 10;
+            // string value = 10 [json_name = "value"];
             if (!this_._internal_value().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_value());
             }
           }
            {
-            // .ui.Style style = 5;
+            // .ui.Style style = 5 [json_name = "style"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -2023,7 +2033,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // .ui.ComponentType type = 2;
+            // .ui.ComponentType type = 2 [json_name = "type"];
             if (this_._internal_type() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
@@ -2276,43 +2286,43 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .ui.LayoutType layout = 1;
+    // .ui.LayoutType layout = 1 [json_name = "layout"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Style, _impl_.layout_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_)}},
-    // .ui.Position position = 2;
+    // .ui.Position position = 2 [json_name = "position"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.position_)}},
-    // .ui.Size size = 3;
+    // .ui.Size size = 3 [json_name = "size"];
     {::_pbi::TcParser::FastMtS1,
      {26, 1, 1, PROTOBUF_FIELD_OFFSET(Style, _impl_.size_)}},
-    // string padding = 4;
+    // string padding = 4 [json_name = "padding"];
     {::_pbi::TcParser::FastUS1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.padding_)}},
-    // string margin = 5;
+    // string margin = 5 [json_name = "margin"];
     {::_pbi::TcParser::FastUS1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.margin_)}},
-    // string bg_color = 6;
+    // string bg_color = 6 [json_name = "bgColor"];
     {::_pbi::TcParser::FastUS1,
      {50, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.bg_color_)}},
-    // string text_color = 7;
+    // string text_color = 7 [json_name = "textColor"];
     {::_pbi::TcParser::FastUS1,
      {58, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.text_color_)}},
-    // string border = 8;
+    // string border = 8 [json_name = "border"];
     {::_pbi::TcParser::FastUS1,
      {66, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.border_)}},
-    // string rounded = 9;
+    // string rounded = 9 [json_name = "rounded"];
     {::_pbi::TcParser::FastUS1,
      {74, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.rounded_)}},
-    // string shadow = 10;
+    // string shadow = 10 [json_name = "shadow"];
     {::_pbi::TcParser::FastUS1,
      {82, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.shadow_)}},
-    // string gap = 11;
+    // string gap = 11 [json_name = "gap"];
     {::_pbi::TcParser::FastUS1,
      {90, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.gap_)}},
-    // bool scrollable = 12;
+    // bool scrollable = 12 [json_name = "scrollable"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Style, _impl_.scrollable_), 63>(),
      {96, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.scrollable_)}},
-    // string custom_class = 13;
+    // string custom_class = 13 [json_name = "customClass"];
     {::_pbi::TcParser::FastUS1,
      {106, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -2320,43 +2330,43 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .ui.LayoutType layout = 1;
+    // .ui.LayoutType layout = 1 [json_name = "layout"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // .ui.Position position = 2;
+    // .ui.Position position = 2 [json_name = "position"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.position_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Size size = 3;
+    // .ui.Size size = 3 [json_name = "size"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.size_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // string padding = 4;
+    // string padding = 4 [json_name = "padding"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.padding_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string margin = 5;
+    // string margin = 5 [json_name = "margin"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.margin_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string bg_color = 6;
+    // string bg_color = 6 [json_name = "bgColor"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.bg_color_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string text_color = 7;
+    // string text_color = 7 [json_name = "textColor"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.text_color_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string border = 8;
+    // string border = 8 [json_name = "border"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.border_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string rounded = 9;
+    // string rounded = 9 [json_name = "rounded"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.rounded_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string shadow = 10;
+    // string shadow = 10 [json_name = "shadow"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.shadow_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string gap = 11;
+    // string gap = 11 [json_name = "gap"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.gap_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool scrollable = 12;
+    // bool scrollable = 12 [json_name = "scrollable"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.scrollable_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // string custom_class = 13;
+    // string custom_class = 13 [json_name = "customClass"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }}, {{
@@ -2426,7 +2436,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // .ui.LayoutType layout = 1;
+          // .ui.LayoutType layout = 1 [json_name = "layout"];
           if (this_._internal_layout() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -2434,21 +2444,21 @@ PROTOBUF_NOINLINE void Style::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Position position = 2;
+          // .ui.Position position = 2 [json_name = "position"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
                 stream);
           }
 
-          // .ui.Size size = 3;
+          // .ui.Size size = 3 [json_name = "size"];
           if (cached_has_bits & 0x00000002u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.size_, this_._impl_.size_->GetCachedSize(), target,
                 stream);
           }
 
-          // string padding = 4;
+          // string padding = 4 [json_name = "padding"];
           if (!this_._internal_padding().empty()) {
             const std::string& _s = this_._internal_padding();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2456,7 +2466,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(4, _s, target);
           }
 
-          // string margin = 5;
+          // string margin = 5 [json_name = "margin"];
           if (!this_._internal_margin().empty()) {
             const std::string& _s = this_._internal_margin();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2464,7 +2474,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(5, _s, target);
           }
 
-          // string bg_color = 6;
+          // string bg_color = 6 [json_name = "bgColor"];
           if (!this_._internal_bg_color().empty()) {
             const std::string& _s = this_._internal_bg_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2472,7 +2482,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(6, _s, target);
           }
 
-          // string text_color = 7;
+          // string text_color = 7 [json_name = "textColor"];
           if (!this_._internal_text_color().empty()) {
             const std::string& _s = this_._internal_text_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2480,7 +2490,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(7, _s, target);
           }
 
-          // string border = 8;
+          // string border = 8 [json_name = "border"];
           if (!this_._internal_border().empty()) {
             const std::string& _s = this_._internal_border();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2488,7 +2498,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(8, _s, target);
           }
 
-          // string rounded = 9;
+          // string rounded = 9 [json_name = "rounded"];
           if (!this_._internal_rounded().empty()) {
             const std::string& _s = this_._internal_rounded();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2496,7 +2506,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(9, _s, target);
           }
 
-          // string shadow = 10;
+          // string shadow = 10 [json_name = "shadow"];
           if (!this_._internal_shadow().empty()) {
             const std::string& _s = this_._internal_shadow();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2504,7 +2514,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(10, _s, target);
           }
 
-          // string gap = 11;
+          // string gap = 11 [json_name = "gap"];
           if (!this_._internal_gap().empty()) {
             const std::string& _s = this_._internal_gap();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2512,14 +2522,14 @@ PROTOBUF_NOINLINE void Style::Clear() {
             target = stream->WriteStringMaybeAliased(11, _s, target);
           }
 
-          // bool scrollable = 12;
+          // bool scrollable = 12 [json_name = "scrollable"];
           if (this_._internal_scrollable() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 12, this_._internal_scrollable(), target);
           }
 
-          // string custom_class = 13;
+          // string custom_class = 13 [json_name = "customClass"];
           if (!this_._internal_custom_class().empty()) {
             const std::string& _s = this_._internal_custom_class();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2552,47 +2562,47 @@ PROTOBUF_NOINLINE void Style::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string padding = 4;
+            // string padding = 4 [json_name = "padding"];
             if (!this_._internal_padding().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_padding());
             }
-            // string margin = 5;
+            // string margin = 5 [json_name = "margin"];
             if (!this_._internal_margin().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_margin());
             }
-            // string bg_color = 6;
+            // string bg_color = 6 [json_name = "bgColor"];
             if (!this_._internal_bg_color().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_bg_color());
             }
-            // string text_color = 7;
+            // string text_color = 7 [json_name = "textColor"];
             if (!this_._internal_text_color().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_text_color());
             }
-            // string border = 8;
+            // string border = 8 [json_name = "border"];
             if (!this_._internal_border().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_border());
             }
-            // string rounded = 9;
+            // string rounded = 9 [json_name = "rounded"];
             if (!this_._internal_rounded().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_rounded());
             }
-            // string shadow = 10;
+            // string shadow = 10 [json_name = "shadow"];
             if (!this_._internal_shadow().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_shadow());
             }
-            // string gap = 11;
+            // string gap = 11 [json_name = "gap"];
             if (!this_._internal_gap().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_gap());
             }
-            // string custom_class = 13;
+            // string custom_class = 13 [json_name = "customClass"];
             if (!this_._internal_custom_class().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_custom_class());
@@ -2600,24 +2610,24 @@ PROTOBUF_NOINLINE void Style::Clear() {
           }
           cached_has_bits = this_._impl_._has_bits_[0];
           if (cached_has_bits & 0x00000003u) {
-            // .ui.Position position = 2;
+            // .ui.Position position = 2 [json_name = "position"];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
             }
-            // .ui.Size size = 3;
+            // .ui.Size size = 3 [json_name = "size"];
             if (cached_has_bits & 0x00000002u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.size_);
             }
           }
            {
-            // .ui.LayoutType layout = 1;
+            // .ui.LayoutType layout = 1 [json_name = "layout"];
             if (this_._internal_layout() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_layout());
             }
-            // bool scrollable = 12;
+            // bool scrollable = 12 [json_name = "scrollable"];
             if (this_._internal_scrollable() != 0) {
               total_size += 2;
             }
@@ -2853,25 +2863,25 @@ const ::_pbi::TcParseTable<2, 3, 0, 24, 2> Position::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {::_pbi::TcParser::FastF32S1,
      {13, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.x_)}},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {::_pbi::TcParser::FastF32S1,
      {21, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.y_)}},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.x_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.y_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2912,21 +2922,21 @@ PROTOBUF_NOINLINE void Position::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // float x = 1;
+          // float x = 1 [json_name = "x"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
                 1, this_._internal_x(), target);
           }
 
-          // float y = 2;
+          // float y = 2 [json_name = "y"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
                 2, this_._internal_y(), target);
           }
 
-          // string unit = 3;
+          // string unit = 3 [json_name = "unit"];
           if (!this_._internal_unit().empty()) {
             const std::string& _s = this_._internal_unit();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2959,16 +2969,16 @@ PROTOBUF_NOINLINE void Position::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string unit = 3;
+            // string unit = 3 [json_name = "unit"];
             if (!this_._internal_unit().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_unit());
             }
-            // float x = 1;
+            // float x = 1 [json_name = "x"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
               total_size += 5;
             }
-            // float y = 2;
+            // float y = 2 [json_name = "y"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
               total_size += 5;
             }
@@ -3137,19 +3147,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 27, 2> Size::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Size>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.height_)}},
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.width_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.width_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.height_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -3189,7 +3199,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string width = 1;
+          // string width = 1 [json_name = "width"];
           if (!this_._internal_width().empty()) {
             const std::string& _s = this_._internal_width();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3197,7 +3207,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string height = 2;
+          // string height = 2 [json_name = "height"];
           if (!this_._internal_height().empty()) {
             const std::string& _s = this_._internal_height();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3230,12 +3240,12 @@ PROTOBUF_NOINLINE void Size::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string width = 1;
+            // string width = 1 [json_name = "width"];
             if (!this_._internal_width().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_width());
             }
-            // string height = 2;
+            // string height = 2 [json_name = "height"];
             if (!this_._internal_height().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_height());
@@ -3403,31 +3413,31 @@ const ::_pbi::TcParseTable<2, 4, 0, 68, 2> Theme::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Theme>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string accent_color = 4;
+    // string accent_color = 4 [json_name = "accentColor"];
     {::_pbi::TcParser::FastUS1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.accent_color_)}},
-    // string primary_color = 1;
+    // string primary_color = 1 [json_name = "primaryColor"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.primary_color_)}},
-    // string secondary_color = 2;
+    // string secondary_color = 2 [json_name = "secondaryColor"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.secondary_color_)}},
-    // string font_family = 3;
+    // string font_family = 3 [json_name = "fontFamily"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Theme, _impl_.font_family_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string primary_color = 1;
+    // string primary_color = 1 [json_name = "primaryColor"];
     {PROTOBUF_FIELD_OFFSET(Theme, _impl_.primary_color_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string secondary_color = 2;
+    // string secondary_color = 2 [json_name = "secondaryColor"];
     {PROTOBUF_FIELD_OFFSET(Theme, _impl_.secondary_color_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string font_family = 3;
+    // string font_family = 3 [json_name = "fontFamily"];
     {PROTOBUF_FIELD_OFFSET(Theme, _impl_.font_family_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string accent_color = 4;
+    // string accent_color = 4 [json_name = "accentColor"];
     {PROTOBUF_FIELD_OFFSET(Theme, _impl_.accent_color_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -3471,7 +3481,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string primary_color = 1;
+          // string primary_color = 1 [json_name = "primaryColor"];
           if (!this_._internal_primary_color().empty()) {
             const std::string& _s = this_._internal_primary_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3479,7 +3489,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string secondary_color = 2;
+          // string secondary_color = 2 [json_name = "secondaryColor"];
           if (!this_._internal_secondary_color().empty()) {
             const std::string& _s = this_._internal_secondary_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3487,7 +3497,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // string font_family = 3;
+          // string font_family = 3 [json_name = "fontFamily"];
           if (!this_._internal_font_family().empty()) {
             const std::string& _s = this_._internal_font_family();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3495,7 +3505,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
-          // string accent_color = 4;
+          // string accent_color = 4 [json_name = "accentColor"];
           if (!this_._internal_accent_color().empty()) {
             const std::string& _s = this_._internal_accent_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3528,22 +3538,22 @@ PROTOBUF_NOINLINE void Theme::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string primary_color = 1;
+            // string primary_color = 1 [json_name = "primaryColor"];
             if (!this_._internal_primary_color().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_primary_color());
             }
-            // string secondary_color = 2;
+            // string secondary_color = 2 [json_name = "secondaryColor"];
             if (!this_._internal_secondary_color().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_secondary_color());
             }
-            // string font_family = 3;
+            // string font_family = 3 [json_name = "fontFamily"];
             if (!this_._internal_font_family().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_font_family());
             }
-            // string accent_color = 4;
+            // string accent_color = 4 [json_name = "accentColor"];
             if (!this_._internal_accent_color().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_accent_color());
@@ -3717,25 +3727,25 @@ const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string label = 1;
+    // string label = 1 [json_name = "label"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_)}},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_)}},
-    // string icon = 3;
+    // string icon = 3 [json_name = "icon"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string label = 1;
+    // string label = 1 [json_name = "label"];
     {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string icon = 3;
+    // string icon = 3 [json_name = "icon"];
     {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -3777,7 +3787,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string label = 1;
+          // string label = 1 [json_name = "label"];
           if (!this_._internal_label().empty()) {
             const std::string& _s = this_._internal_label();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3785,7 +3795,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string value = 2;
+          // string value = 2 [json_name = "value"];
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3793,7 +3803,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // string icon = 3;
+          // string icon = 3 [json_name = "icon"];
           if (!this_._internal_icon().empty()) {
             const std::string& _s = this_._internal_icon();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -3826,17 +3836,17 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string label = 1;
+            // string label = 1 [json_name = "label"];
             if (!this_._internal_label().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_label());
             }
-            // string value = 2;
+            // string value = 2 [json_name = "value"];
             if (!this_._internal_value().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_value());
             }
-            // string icon = 3;
+            // string icon = 3 [json_name = "icon"];
             if (!this_._internal_icon().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_icon());

@@ -82,16 +82,16 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_data_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\ndata.proto\022\004test\")\n\006MyData\022\020\n\010username"
-    "\030\001 \001(\t\022\r\n\005score\030\002 \001(\00525\n\013DataService\022&\n\010"
-    "SendData\022\014.test.MyData\032\014.test.MyDatab\006pr"
-    "oto3"
+    "\n\ndata.proto\022\004test\":\n\006MyData\022\032\n\010username"
+    "\030\001 \001(\tR\010username\022\024\n\005score\030\002 \001(\005R\005score25"
+    "\n\013DataService\022&\n\010SendData\022\014.test.MyData\032"
+    "\014.test.MyDatab\006proto3"
 };
 static ::absl::once_flag descriptor_table_data_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_data_2eproto = {
     false,
     false,
-    124,
+    141,
     descriptor_table_protodef_data_2eproto,
     "data.proto",
     &descriptor_table_data_2eproto_once,
@@ -219,19 +219,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 28, 2> MyData::_table_ = {
     ::_pbi::TcParser::GetTable<::test::MyData>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 score = 2;
+    // int32 score = 2 [json_name = "score"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MyData, _impl_.score_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(MyData, _impl_.score_)}},
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(MyData, _impl_.username_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(MyData, _impl_.username_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 score = 2;
+    // int32 score = 2 [json_name = "score"];
     {PROTOBUF_FIELD_OFFSET(MyData, _impl_.score_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
@@ -270,7 +270,7 @@ PROTOBUF_NOINLINE void MyData::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string username = 1;
+          // string username = 1 [json_name = "username"];
           if (!this_._internal_username().empty()) {
             const std::string& _s = this_._internal_username();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -278,7 +278,7 @@ PROTOBUF_NOINLINE void MyData::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // int32 score = 2;
+          // int32 score = 2 [json_name = "score"];
           if (this_._internal_score() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<2>(
@@ -310,12 +310,12 @@ PROTOBUF_NOINLINE void MyData::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string username = 1;
+            // string username = 1 [json_name = "username"];
             if (!this_._internal_username().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
             }
-            // int32 score = 2;
+            // int32 score = 2 [json_name = "score"];
             if (this_._internal_score() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_score());

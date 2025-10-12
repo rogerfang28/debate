@@ -263,7 +263,7 @@ class User final : public ::google::protobuf::Message
     kManagerFieldNumber = 4,
     kActiveFieldNumber = 3,
   };
-  // repeated string locations = 5;
+  // repeated string locations = 5 [json_name = "locations"];
   int locations_size() const;
   private:
   int _internal_locations_size() const;
@@ -285,7 +285,7 @@ class User final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_locations();
 
   public:
-  // map<string, string> projects = 6;
+  // map<string, string> projects = 6 [json_name = "projects"];
   int projects_size() const;
   private:
   int _internal_projects_size() const;
@@ -300,7 +300,7 @@ class User final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_projects();
 
   public:
-  // string first_name = 1;
+  // string first_name = 1 [json_name = "firstName"];
   void clear_first_name() ;
   const std::string& first_name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -316,7 +316,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_first_name();
 
   public:
-  // string last_name = 2;
+  // string last_name = 2 [json_name = "lastName"];
   void clear_last_name() ;
   const std::string& last_name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -332,7 +332,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_last_name();
 
   public:
-  // .User manager = 4;
+  // .User manager = 4 [json_name = "manager"];
   bool has_manager() const;
   void clear_manager() ;
   const ::User& manager() const;
@@ -347,7 +347,7 @@ class User final : public ::google::protobuf::Message
   ::User* _internal_mutable_manager();
 
   public:
-  // bool active = 3;
+  // bool active = 3 [json_name = "active"];
   void clear_active() ;
   bool active() const;
   void set_active(bool value);
@@ -415,7 +415,7 @@ class User final : public ::google::protobuf::Message
 
 // User
 
-// string first_name = 1;
+// string first_name = 1 [json_name = "firstName"];
 inline void User::clear_first_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.first_name_.ClearToEmpty();
@@ -463,7 +463,7 @@ inline void User::set_allocated_first_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:User.first_name)
 }
 
-// string last_name = 2;
+// string last_name = 2 [json_name = "lastName"];
 inline void User::clear_last_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.last_name_.ClearToEmpty();
@@ -511,7 +511,7 @@ inline void User::set_allocated_last_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:User.last_name)
 }
 
-// bool active = 3;
+// bool active = 3 [json_name = "active"];
 inline void User::clear_active() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.active_ = false;
@@ -533,7 +533,7 @@ inline void User::_internal_set_active(bool value) {
   _impl_.active_ = value;
 }
 
-// .User manager = 4;
+// .User manager = 4 [json_name = "manager"];
 inline bool User::has_manager() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.manager_ != nullptr);
@@ -629,7 +629,7 @@ inline void User::set_allocated_manager(::User* value) {
   // @@protoc_insertion_point(field_set_allocated:User.manager)
 }
 
-// repeated string locations = 5;
+// repeated string locations = 5 [json_name = "locations"];
 inline int User::_internal_locations_size() const {
   return _internal_locations().size();
 }
@@ -693,7 +693,7 @@ User::_internal_mutable_locations() {
   return &_impl_.locations_;
 }
 
-// map<string, string> projects = 6;
+// map<string, string> projects = 6 [json_name = "projects"];
 inline int User::_internal_projects_size() const {
   return _internal_projects().size();
 }
