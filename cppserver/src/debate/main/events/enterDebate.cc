@@ -4,17 +4,18 @@
 #include <iostream>
 
 bool enterDebate(const std::string& user, const std::string& topicID) {
-    std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << topicID << std::endl;
+    std::string newtopicID = "16"; // Temporary override for testing
+    std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << newtopicID << std::endl;
 
     try {
         // Create database handler
         UserDatabaseHandler userDbHandler(utils::getDatabasePath());
         
         // Update user's location to the topic
-        bool success = userDbHandler.updateUserLocation(user, topicID);
+        bool success = userDbHandler.updateUserLocation(user, newtopicID);
         
         if (success) {
-            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << topicID << std::endl;
+            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << newtopicID << std::endl;
         } else {
             std::cerr << "[EnterDebate][ERR] Failed to update user location for " << user << std::endl;
         }

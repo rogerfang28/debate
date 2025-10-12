@@ -1,1 +1,0 @@
-these models were copied frmo the old_server folder, the rest of old server still uses the ones inside of it because im not changing all the imports
