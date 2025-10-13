@@ -26,10 +26,6 @@ components {
     text: "Clear All Topics"
     name: "clear"
     style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition" }
-    events {
-      key: "onClick"
-      value: "{\"actionId\":\"clearTopics\"}"
-    }
   }
 
   # Input field (sends event on Enter)
@@ -40,10 +36,6 @@ components {
     value: ""
     style { custom_class: "w-full max-w-md p-3 rounded bg-gray-800 text-white border border-gray-600" }
     attributes { key: "placeholder" value: "Enter a debate topic..." }
-    events {
-      key: "onEnter"
-      value: "{\"actionId\":\"submitTopic\",\"collectFrom\":[\"topicInput\"]}"
-    }
   }
 
   # Submit button (sends event on click)
@@ -53,10 +45,6 @@ components {
     text: "Submit Topic"
     name: "submit"
     style { custom_class: "px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" }
-    events {
-      key: "onClick"
-      value: "{\"actionId\":\"submitTopic\",\"collectFrom\":[\"topicInput\"]}"
-    }
   }
 
   # Topics display (frontend hydrates after backend response)
@@ -76,7 +64,6 @@ components {
       id: "topicsList"
       type: LIST
       style { custom_class: "flex flex-col gap-2" }
-      attributes { key: "data-source" value: "GET /topics" }
 
       # placeholders; replace at runtime
       # items { label: "🌎 Climate Change" value: "topic:climate-change" }

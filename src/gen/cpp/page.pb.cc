@@ -24,7 +24,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
-namespace ui {
+namespace ui2 {
 
 inline constexpr Theme::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -172,6 +172,24 @@ struct ListItemDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListItemDefaultTypeInternal _ListItem_default_instance_;
               template <typename>
+PROTOBUF_CONSTEXPR Component_InfoEntry_DoNotUse::Component_InfoEntry_DoNotUse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : Component_InfoEntry_DoNotUse::MapEntry(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : Component_InfoEntry_DoNotUse::MapEntry() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct Component_InfoEntry_DoNotUseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR Component_InfoEntry_DoNotUseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~Component_InfoEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    Component_InfoEntry_DoNotUse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Component_InfoEntry_DoNotUseDefaultTypeInternal _Component_InfoEntry_DoNotUse_default_instance_;
+              template <typename>
 PROTOBUF_CONSTEXPR Component_EventsEntry_DoNotUse::Component_EventsEntry_DoNotUse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : Component_EventsEntry_DoNotUse::MapEntry(_class_data_.base()){}
@@ -258,7 +276,7 @@ inline constexpr Style::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         position_{nullptr},
         size_{nullptr},
-        layout_{static_cast< ::ui::LayoutType >(0)},
+        layout_{static_cast< ::ui2::LayoutType >(0)},
         scrollable_{false} {}
 
 template <typename>
@@ -289,6 +307,7 @@ inline constexpr Component::Impl_::Impl_(
         events_{},
         attributes_{},
         items_{},
+        info_{},
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -302,7 +321,7 @@ inline constexpr Component::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         style_{nullptr},
-        type_{static_cast< ::ui::ComponentType >(0)} {}
+        type_{static_cast< ::ui2::ComponentType >(0)} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR Component::Component(::_pbi::ConstantInitialized)
@@ -356,98 +375,111 @@ struct PageDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PageDefaultTypeInternal _Page_default_instance_;
-}  // namespace ui
+}  // namespace ui2
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_page_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_page_2eproto = nullptr;
 const ::uint32_t
     TableStruct_page_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        PROTOBUF_FIELD_OFFSET(::ui::Page_MetadataEntry_DoNotUse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page_MetadataEntry_DoNotUse, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page_MetadataEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page_MetadataEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Page_MetadataEntry_DoNotUse, _impl_.key_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page_MetadataEntry_DoNotUse, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page_MetadataEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page_MetadataEntry_DoNotUse, _impl_.value_),
         0,
         1,
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.page_id_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.title_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.components_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.theme_),
-        PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_.page_id_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_.title_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_.components_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_.theme_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Page, _impl_.metadata_),
         ~0u,
         ~0u,
         ~0u,
         0,
         ~0u,
-        PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_CssEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_CssEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _impl_.key_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _impl_.value_),
-        0,
-        1,
-        PROTOBUF_FIELD_OFFSET(::ui::Component_EventsEntry_DoNotUse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_EventsEntry_DoNotUse, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Component_EventsEntry_DoNotUse, _impl_.key_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_EventsEntry_DoNotUse, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_CssEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_CssEntry_DoNotUse, _impl_.value_),
         0,
         1,
-        PROTOBUF_FIELD_OFFSET(::ui::Component_AttributesEntry_DoNotUse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_AttributesEntry_DoNotUse, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_EventsEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_EventsEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Component_AttributesEntry_DoNotUse, _impl_.key_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component_AttributesEntry_DoNotUse, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_EventsEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_EventsEntry_DoNotUse, _impl_.value_),
         0,
         1,
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_AttributesEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_AttributesEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.id_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.type_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.text_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.children_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.style_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.css_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.events_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.attributes_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.items_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_AttributesEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_AttributesEntry_DoNotUse, _impl_.value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_InfoEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_InfoEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_InfoEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component_InfoEntry_DoNotUse, _impl_.value_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.text_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.children_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.style_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.css_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.events_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.attributes_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.name_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.items_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Component, _impl_.info_),
         ~0u,
         ~0u,
         ~0u,
@@ -459,27 +491,28 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _internal_metadata_),
+        ~0u,
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.layout_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.position_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.size_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.padding_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.margin_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.bg_color_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.text_color_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.border_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.rounded_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.shadow_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.gap_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.scrollable_),
-        PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_.custom_class_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.layout_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.position_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.size_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.padding_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.margin_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.bg_color_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.text_color_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.border_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.rounded_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.shadow_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.gap_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.scrollable_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Style, _impl_.custom_class_),
         ~0u,
         0,
         1,
@@ -494,146 +527,151 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::ui::Position, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Position, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Position, _impl_.x_),
-        PROTOBUF_FIELD_OFFSET(::ui::Position, _impl_.y_),
-        PROTOBUF_FIELD_OFFSET(::ui::Position, _impl_.unit_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Position, _impl_.x_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Position, _impl_.y_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Position, _impl_.unit_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::ui::Size, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Size, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Size, _impl_.width_),
-        PROTOBUF_FIELD_OFFSET(::ui::Size, _impl_.height_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Size, _impl_.width_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Size, _impl_.height_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::ui::Theme, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Theme, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::Theme, _impl_.primary_color_),
-        PROTOBUF_FIELD_OFFSET(::ui::Theme, _impl_.secondary_color_),
-        PROTOBUF_FIELD_OFFSET(::ui::Theme, _impl_.font_family_),
-        PROTOBUF_FIELD_OFFSET(::ui::Theme, _impl_.accent_color_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Theme, _impl_.primary_color_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Theme, _impl_.secondary_color_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Theme, _impl_.font_family_),
+        PROTOBUF_FIELD_OFFSET(::ui2::Theme, _impl_.accent_color_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::ui2::ListItem, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.label_),
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.icon_),
+        PROTOBUF_FIELD_OFFSET(::ui2::ListItem, _impl_.label_),
+        PROTOBUF_FIELD_OFFSET(::ui2::ListItem, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::ui2::ListItem, _impl_.icon_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 10, -1, sizeof(::ui::Page_MetadataEntry_DoNotUse)},
-        {12, 25, -1, sizeof(::ui::Page)},
-        {30, 40, -1, sizeof(::ui::Component_CssEntry_DoNotUse)},
-        {42, 52, -1, sizeof(::ui::Component_EventsEntry_DoNotUse)},
-        {54, 64, -1, sizeof(::ui::Component_AttributesEntry_DoNotUse)},
-        {66, 85, -1, sizeof(::ui::Component)},
-        {96, 117, -1, sizeof(::ui::Style)},
-        {130, -1, -1, sizeof(::ui::Position)},
-        {141, -1, -1, sizeof(::ui::Size)},
-        {151, -1, -1, sizeof(::ui::Theme)},
-        {163, -1, -1, sizeof(::ui::ListItem)},
+        {0, 10, -1, sizeof(::ui2::Page_MetadataEntry_DoNotUse)},
+        {12, 25, -1, sizeof(::ui2::Page)},
+        {30, 40, -1, sizeof(::ui2::Component_CssEntry_DoNotUse)},
+        {42, 52, -1, sizeof(::ui2::Component_EventsEntry_DoNotUse)},
+        {54, 64, -1, sizeof(::ui2::Component_AttributesEntry_DoNotUse)},
+        {66, 76, -1, sizeof(::ui2::Component_InfoEntry_DoNotUse)},
+        {78, 98, -1, sizeof(::ui2::Component)},
+        {110, 131, -1, sizeof(::ui2::Style)},
+        {144, -1, -1, sizeof(::ui2::Position)},
+        {155, -1, -1, sizeof(::ui2::Size)},
+        {165, -1, -1, sizeof(::ui2::Theme)},
+        {177, -1, -1, sizeof(::ui2::ListItem)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::ui::_Page_MetadataEntry_DoNotUse_default_instance_._instance,
-    &::ui::_Page_default_instance_._instance,
-    &::ui::_Component_CssEntry_DoNotUse_default_instance_._instance,
-    &::ui::_Component_EventsEntry_DoNotUse_default_instance_._instance,
-    &::ui::_Component_AttributesEntry_DoNotUse_default_instance_._instance,
-    &::ui::_Component_default_instance_._instance,
-    &::ui::_Style_default_instance_._instance,
-    &::ui::_Position_default_instance_._instance,
-    &::ui::_Size_default_instance_._instance,
-    &::ui::_Theme_default_instance_._instance,
-    &::ui::_ListItem_default_instance_._instance,
+    &::ui2::_Page_MetadataEntry_DoNotUse_default_instance_._instance,
+    &::ui2::_Page_default_instance_._instance,
+    &::ui2::_Component_CssEntry_DoNotUse_default_instance_._instance,
+    &::ui2::_Component_EventsEntry_DoNotUse_default_instance_._instance,
+    &::ui2::_Component_AttributesEntry_DoNotUse_default_instance_._instance,
+    &::ui2::_Component_InfoEntry_DoNotUse_default_instance_._instance,
+    &::ui2::_Component_default_instance_._instance,
+    &::ui2::_Style_default_instance_._instance,
+    &::ui2::_Position_default_instance_._instance,
+    &::ui2::_Size_default_instance_._instance,
+    &::ui2::_Theme_default_instance_._instance,
+    &::ui2::_ListItem_default_instance_._instance,
 };
 const char descriptor_table_protodef_page_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\npage.proto\022\002ui\"\366\001\n\004Page\022\027\n\007page_id\030\001 \001"
-    "(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncomp"
-    "onents\030\003 \003(\0132\r.ui.ComponentR\ncomponents\022"
-    "\037\n\005theme\030\004 \001(\0132\t.ui.ThemeR\005theme\0222\n\010meta"
-    "data\030\005 \003(\0132\026.ui.Page.MetadataEntryR\010meta"
-    "data\032;\n\rMetadataEntry\022\020\n\003key\030\001 \001(\tR\003key\022"
-    "\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\276\004\n\tComponent\022"
-    "\016\n\002id\030\001 \001(\tR\002id\022%\n\004type\030\002 \001(\0162\021.ui.Compo"
-    "nentTypeR\004type\022\022\n\004text\030\003 \001(\tR\004text\022)\n\010ch"
-    "ildren\030\004 \003(\0132\r.ui.ComponentR\010children\022\037\n"
-    "\005style\030\005 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\006 "
-    "\003(\0132\026.ui.Component.CssEntryR\003css\0221\n\006even"
-    "ts\030\007 \003(\0132\031.ui.Component.EventsEntryR\006eve"
-    "nts\022=\n\nattributes\030\010 \003(\0132\035.ui.Component.A"
-    "ttributesEntryR\nattributes\022\022\n\004name\030\t \001(\t"
-    "R\004name\022\024\n\005value\030\n \001(\tR\005value\022\"\n\005items\030\013 "
-    "\003(\0132\014.ui.ListItemR\005items\0326\n\010CssEntry\022\020\n\003"
-    "key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001"
-    "\0329\n\013EventsEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005val"
-    "ue\030\002 \001(\tR\005value:\0028\001\032=\n\017AttributesEntry\022\020"
-    "\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\002"
-    "8\001\"\202\003\n\005Style\022&\n\006layout\030\001 \001(\0162\016.ui.Layout"
-    "TypeR\006layout\022(\n\010position\030\002 \001(\0132\014.ui.Posi"
-    "tionR\010position\022\034\n\004size\030\003 \001(\0132\010.ui.SizeR\004"
-    "size\022\030\n\007padding\030\004 \001(\tR\007padding\022\026\n\006margin"
-    "\030\005 \001(\tR\006margin\022\031\n\010bg_color\030\006 \001(\tR\007bgColo"
-    "r\022\035\n\ntext_color\030\007 \001(\tR\ttextColor\022\026\n\006bord"
-    "er\030\010 \001(\tR\006border\022\030\n\007rounded\030\t \001(\tR\007round"
-    "ed\022\026\n\006shadow\030\n \001(\tR\006shadow\022\020\n\003gap\030\013 \001(\tR"
-    "\003gap\022\036\n\nscrollable\030\014 \001(\010R\nscrollable\022!\n\014"
-    "custom_class\030\r \001(\tR\013customClass\":\n\010Posit"
-    "ion\022\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030"
-    "\003 \001(\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005widt"
-    "h\022\026\n\006height\030\002 \001(\tR\006height\"\231\001\n\005Theme\022#\n\rp"
-    "rimary_color\030\001 \001(\tR\014primaryColor\022\'\n\017seco"
-    "ndary_color\030\002 \001(\tR\016secondaryColor\022\037\n\013fon"
-    "t_family\030\003 \001(\tR\nfontFamily\022!\n\014accent_col"
-    "or\030\004 \001(\tR\013accentColor\"J\n\010ListItem\022\024\n\005lab"
-    "el\030\001 \001(\tR\005label\022\024\n\005value\030\002 \001(\tR\005value\022\022\n"
-    "\004icon\030\003 \001(\tR\004icon*\275\001\n\rComponentType\022\013\n\007U"
-    "NKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020"
-    "\003\022\014\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH\020\005\022\010\n\004CHAT\020"
-    "\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIST\020\t\022\t\n\005TABL"
-    "E\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014\022\010\n\004FORM\020\r\022"
-    "\010\n\004ICON\020\016*L\n\nLayoutType\022\014\n\010ABSOLUTE\020\000\022\014\n"
-    "\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006I"
-    "NLINE\020\004b\006proto3"
+    "\n\npage.proto\022\003ui2\"\371\001\n\004Page\022\027\n\007page_id\030\001 "
+    "\001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022.\n\ncom"
+    "ponents\030\003 \003(\0132\016.ui2.ComponentR\ncomponent"
+    "s\022 \n\005theme\030\004 \001(\0132\n.ui2.ThemeR\005theme\0223\n\010m"
+    "etadata\030\005 \003(\0132\027.ui2.Page.MetadataEntryR\010"
+    "metadata\032;\n\rMetadataEntry\022\020\n\003key\030\001 \001(\tR\003"
+    "key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\254\005\n\tCompon"
+    "ent\022\016\n\002id\030\001 \001(\tR\002id\022&\n\004type\030\002 \001(\0162\022.ui2."
+    "ComponentTypeR\004type\022\022\n\004text\030\003 \001(\tR\004text\022"
+    "*\n\010children\030\004 \003(\0132\016.ui2.ComponentR\010child"
+    "ren\022 \n\005style\030\005 \001(\0132\n.ui2.StyleR\005style\022)\n"
+    "\003css\030\006 \003(\0132\027.ui2.Component.CssEntryR\003css"
+    "\0222\n\006events\030\007 \003(\0132\032.ui2.Component.EventsE"
+    "ntryR\006events\022>\n\nattributes\030\010 \003(\0132\036.ui2.C"
+    "omponent.AttributesEntryR\nattributes\022\022\n\004"
+    "name\030\t \001(\tR\004name\022\024\n\005value\030\n \001(\tR\005value\022#"
+    "\n\005items\030\013 \003(\0132\r.ui2.ListItemR\005items\022,\n\004i"
+    "nfo\030\014 \003(\0132\030.ui2.Component.InfoEntryR\004inf"
+    "o\0326\n\010CssEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value"
+    "\030\002 \001(\tR\005value:\0028\001\0329\n\013EventsEntry\022\020\n\003key\030"
+    "\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\032=\n\017"
+    "AttributesEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005val"
+    "ue\030\002 \001(\tR\005value:\0028\001\0327\n\tInfoEntry\022\020\n\003key\030"
+    "\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"\205\003\n"
+    "\005Style\022\'\n\006layout\030\001 \001(\0162\017.ui2.LayoutTypeR"
+    "\006layout\022)\n\010position\030\002 \001(\0132\r.ui2.Position"
+    "R\010position\022\035\n\004size\030\003 \001(\0132\t.ui2.SizeR\004siz"
+    "e\022\030\n\007padding\030\004 \001(\tR\007padding\022\026\n\006margin\030\005 "
+    "\001(\tR\006margin\022\031\n\010bg_color\030\006 \001(\tR\007bgColor\022\035"
+    "\n\ntext_color\030\007 \001(\tR\ttextColor\022\026\n\006border\030"
+    "\010 \001(\tR\006border\022\030\n\007rounded\030\t \001(\tR\007rounded\022"
+    "\026\n\006shadow\030\n \001(\tR\006shadow\022\020\n\003gap\030\013 \001(\tR\003ga"
+    "p\022\036\n\nscrollable\030\014 \001(\010R\nscrollable\022!\n\014cus"
+    "tom_class\030\r \001(\tR\013customClass\":\n\010Position"
+    "\022\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001"
+    "(\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005width\022\026"
+    "\n\006height\030\002 \001(\tR\006height\"\231\001\n\005Theme\022#\n\rprim"
+    "ary_color\030\001 \001(\tR\014primaryColor\022\'\n\017seconda"
+    "ry_color\030\002 \001(\tR\016secondaryColor\022\037\n\013font_f"
+    "amily\030\003 \001(\tR\nfontFamily\022!\n\014accent_color\030"
+    "\004 \001(\tR\013accentColor\"J\n\010ListItem\022\024\n\005label\030"
+    "\001 \001(\tR\005label\022\024\n\005value\030\002 \001(\tR\005value\022\022\n\004ic"
+    "on\030\003 \001(\tR\004icon*\275\001\n\rComponentType\022\013\n\007UNKN"
+    "OWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\014"
+    "\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH\020\005\022\010\n\004CHAT\020\006\022\t"
+    "\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIST\020\t\022\t\n\005TABLE\020\n"
+    "\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014\022\010\n\004FORM\020\r\022\010\n\004"
+    "ICON\020\016*L\n\nLayoutType\022\014\n\010ABSOLUTE\020\000\022\014\n\010FL"
+    "EX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLI"
+    "NE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_page_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_page_2eproto = {
     false,
     false,
-    1855,
+    1972,
     descriptor_table_protodef_page_2eproto,
     "page.proto",
     &descriptor_table_page_2eproto_once,
     nullptr,
     0,
-    11,
+    12,
     schemas,
     file_default_instances,
     TableStruct_page_2eproto::offsets,
     file_level_enum_descriptors_page_2eproto,
     file_level_service_descriptors_page_2eproto,
 };
-namespace ui {
+namespace ui2 {
 const ::google::protobuf::EnumDescriptor* ComponentType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_page_2eproto);
   return file_level_enum_descriptors_page_2eproto[0];
@@ -700,7 +738,7 @@ bool LayoutType_IsValid(int value) {
                 return _class_data_.base();
               }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Page_MetadataEntry_DoNotUse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 39, 2> Page_MetadataEntry_DoNotUse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Page_MetadataEntry_DoNotUse, _impl_._has_bits_),
     0, // no _extensions_
@@ -715,7 +753,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Page_MetadataEntry_DoNotUse::_table_ 
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Page_MetadataEntry_DoNotUse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Page_MetadataEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string value = 2 [json_name = "value"];
@@ -736,8 +774,8 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Page_MetadataEntry_DoNotUse::_table_ 
   }},
   // no aux_entries
   {{
-    "\25\3\5\0\0\0\0\0"
-    "ui.Page.MetadataEntry"
+    "\26\3\5\0\0\0\0\0"
+    "ui2.Page.MetadataEntry"
     "key"
     "value"
   }},
@@ -760,11 +798,11 @@ Page::Page(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Page)
+  // @@protoc_insertion_point(arena_constructor:ui2.Page)
 }
 inline PROTOBUF_NDEBUG_INLINE Page::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Page& from_msg)
+    const Impl_& from, const ::ui2::Page& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         components_{visibility, arena, from.components_},
@@ -786,11 +824,11 @@ Page::Page(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.theme_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui::Theme>(
+  _impl_.theme_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui2::Theme>(
                               arena, *from._impl_.theme_)
                         : nullptr;
 
-  // @@protoc_insertion_point(copy_constructor:ui.Page)
+  // @@protoc_insertion_point(copy_constructor:ui2.Page)
 }
 inline PROTOBUF_NDEBUG_INLINE Page::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -806,7 +844,7 @@ inline void Page::SharedCtor(::_pb::Arena* arena) {
   _impl_.theme_ = {};
 }
 Page::~Page() {
-  // @@protoc_insertion_point(destructor:ui.Page)
+  // @@protoc_insertion_point(destructor:ui2.Page)
   SharedDtor(*this);
 }
 inline void Page::SharedDtor(MessageLite& self) {
@@ -875,7 +913,7 @@ const ::google::protobuf::internal::ClassData* Page::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
+const ::_pbi::TcParseTable<2, 5, 3, 37, 2> Page::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Page, _impl_._has_bits_),
     0, // no _extensions_
@@ -890,10 +928,10 @@ const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Page>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Page>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .ui.Theme theme = 4 [json_name = "theme"];
+    // .ui2.Theme theme = 4 [json_name = "theme"];
     {::_pbi::TcParser::FastMtS1,
      {34, 0, 1, PROTOBUF_FIELD_OFFSET(Page, _impl_.theme_)}},
     // string page_id = 1 [json_name = "pageId"];
@@ -902,7 +940,7 @@ const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
     // string title = 2 [json_name = "title"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.title_)}},
-    // repeated .ui.Component components = 3 [json_name = "components"];
+    // repeated .ui2.Component components = 3 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.components_)}},
   }}, {{
@@ -914,25 +952,25 @@ const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
     // string title = 2 [json_name = "title"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.title_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component components = 3 [json_name = "components"];
+    // repeated .ui2.Component components = 3 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.components_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Theme theme = 4 [json_name = "theme"];
+    // .ui2.Theme theme = 4 [json_name = "theme"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.theme_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // map<string, string> metadata = 5 [json_name = "metadata"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.metadata_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::ui::Component>()},
-    {::_pbi::TcParser::GetTable<::ui::Theme>()},
+    {::_pbi::TcParser::GetTable<::ui2::Component>()},
+    {::_pbi::TcParser::GetTable<::ui2::Theme>()},
     {::_pbi::TcParser::GetMapAuxInfo<
         decltype(Page()._impl_.metadata_)>(
         1, 0, 0, 9,
         9)},
   }}, {{
-    "\7\7\5\0\0\10\0\0"
-    "ui.Page"
+    "\10\7\5\0\0\10\0\0"
+    "ui2.Page"
     "page_id"
     "title"
     "metadata"
@@ -940,7 +978,7 @@ const ::_pbi::TcParseTable<2, 5, 3, 36, 2> Page::_table_ = {
 };
 
 PROTOBUF_NOINLINE void Page::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Page)
+// @@protoc_insertion_point(message_clear_start:ui2.Page)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -970,7 +1008,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Page& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Page)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Page)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -978,7 +1016,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
           if (!this_._internal_page_id().empty()) {
             const std::string& _s = this_._internal_page_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.page_id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.page_id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -986,11 +1024,11 @@ PROTOBUF_NOINLINE void Page::Clear() {
           if (!this_._internal_title().empty()) {
             const std::string& _s = this_._internal_title();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.title");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.title");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // repeated .ui.Component components = 3 [json_name = "components"];
+          // repeated .ui2.Component components = 3 [json_name = "components"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_components_size());
                i < n; i++) {
@@ -1002,7 +1040,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Theme theme = 4 [json_name = "theme"];
+          // .ui2.Theme theme = 4 [json_name = "theme"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 4, *this_._impl_.theme_, this_._impl_.theme_->GetCachedSize(), target,
@@ -1023,10 +1061,10 @@ PROTOBUF_NOINLINE void Page::Clear() {
                     5, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.metadata");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.metadata");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.metadata");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.metadata");
               }
             } else {
               for (const auto& entry : field) {
@@ -1034,10 +1072,10 @@ PROTOBUF_NOINLINE void Page::Clear() {
                     5, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.metadata");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.metadata");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Page.metadata");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Page.metadata");
               }
             }
           }
@@ -1047,7 +1085,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Page)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Page)
           return target;
         }
 
@@ -1058,7 +1096,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
         ::size_t Page::ByteSizeLong() const {
           const Page& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Page)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Page)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1067,7 +1105,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component components = 3 [json_name = "components"];
+            // repeated .ui2.Component components = 3 [json_name = "components"];
             {
               total_size += 1UL * this_._internal_components_size();
               for (const auto& msg : this_._internal_components()) {
@@ -1098,7 +1136,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             }
           }
            {
-            // .ui.Theme theme = 4 [json_name = "theme"];
+            // .ui2.Theme theme = 4 [json_name = "theme"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -1113,7 +1151,7 @@ void Page::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   auto* const _this = static_cast<Page*>(&to_msg);
   auto& from = static_cast<const Page&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Page)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Page)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1132,7 +1170,7 @@ void Page::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
     ABSL_DCHECK(from._impl_.theme_ != nullptr);
     if (_this->_impl_.theme_ == nullptr) {
       _this->_impl_.theme_ =
-          ::google::protobuf::Message::CopyConstruct<::ui::Theme>(arena, *from._impl_.theme_);
+          ::google::protobuf::Message::CopyConstruct<::ui2::Theme>(arena, *from._impl_.theme_);
     } else {
       _this->_impl_.theme_->MergeFrom(*from._impl_.theme_);
     }
@@ -1142,7 +1180,7 @@ void Page::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
 }
 
 void Page::CopyFrom(const Page& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Page)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Page)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1213,7 +1251,7 @@ void Page::InternalSwap(Page* PROTOBUF_RESTRICT other) {
                 return _class_data_.base();
               }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 39, 2> Component_CssEntry_DoNotUse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_._has_bits_),
     0, // no _extensions_
@@ -1228,7 +1266,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ 
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Component_CssEntry_DoNotUse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Component_CssEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string value = 2 [json_name = "value"];
@@ -1249,8 +1287,8 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ 
   }},
   // no aux_entries
   {{
-    "\25\3\5\0\0\0\0\0"
-    "ui.Component.CssEntry"
+    "\26\3\5\0\0\0\0\0"
+    "ui2.Component.CssEntry"
     "key"
     "value"
   }},
@@ -1304,7 +1342,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ 
                 return _class_data_.base();
               }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 41, 2> Component_EventsEntry_DoNotUse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 42, 2> Component_EventsEntry_DoNotUse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component_EventsEntry_DoNotUse, _impl_._has_bits_),
     0, // no _extensions_
@@ -1319,7 +1357,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 41, 2> Component_EventsEntry_DoNotUse::_tabl
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Component_EventsEntry_DoNotUse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Component_EventsEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string value = 2 [json_name = "value"];
@@ -1340,8 +1378,8 @@ const ::_pbi::TcParseTable<1, 2, 0, 41, 2> Component_EventsEntry_DoNotUse::_tabl
   }},
   // no aux_entries
   {{
-    "\30\3\5\0\0\0\0\0"
-    "ui.Component.EventsEntry"
+    "\31\3\5\0\0\0\0\0"
+    "ui2.Component.EventsEntry"
     "key"
     "value"
   }},
@@ -1395,7 +1433,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 41, 2> Component_EventsEntry_DoNotUse::_tabl
                 return _class_data_.base();
               }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_AttributesEntry_DoNotUse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 46, 2> Component_AttributesEntry_DoNotUse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_._has_bits_),
     0, // no _extensions_
@@ -1410,7 +1448,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_AttributesEntry_DoNotUse::_
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Component_AttributesEntry_DoNotUse>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Component_AttributesEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string value = 2 [json_name = "value"];
@@ -1431,8 +1469,99 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_AttributesEntry_DoNotUse::_
   }},
   // no aux_entries
   {{
-    "\34\3\5\0\0\0\0\0"
-    "ui.Component.AttributesEntry"
+    "\35\3\5\0\0\0\0\0"
+    "ui2.Component.AttributesEntry"
+    "key"
+    "value"
+  }},
+};
+
+// ===================================================================
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+              Component_InfoEntry_DoNotUse::Component_InfoEntry_DoNotUse() : SuperType(_class_data_.base()) {}
+              Component_InfoEntry_DoNotUse::Component_InfoEntry_DoNotUse(::google::protobuf::Arena* arena)
+                  : SuperType(arena, _class_data_.base()) {}
+#else   // PROTOBUF_CUSTOM_VTABLE
+              Component_InfoEntry_DoNotUse::Component_InfoEntry_DoNotUse() : SuperType() {}
+              Component_InfoEntry_DoNotUse::Component_InfoEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+              inline void* Component_InfoEntry_DoNotUse::PlacementNew_(const void*, void* mem,
+                                                      ::google::protobuf::Arena* arena) {
+                return ::new (mem) Component_InfoEntry_DoNotUse(arena);
+              }
+              constexpr auto Component_InfoEntry_DoNotUse::InternalNewImpl_() {
+                return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Component_InfoEntry_DoNotUse),
+                                                          alignof(Component_InfoEntry_DoNotUse));
+              }
+              PROTOBUF_CONSTINIT
+              PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+              const ::google::protobuf::internal::ClassDataFull Component_InfoEntry_DoNotUse::_class_data_ = {
+                  ::google::protobuf::internal::ClassData{
+                      &_Component_InfoEntry_DoNotUse_default_instance_._instance,
+                      &_table_.header,
+                      nullptr,  // OnDemandRegisterArenaDtor
+                      nullptr,  // IsInitialized
+                      &Component_InfoEntry_DoNotUse::MergeImpl,
+                      ::google::protobuf::Message::GetNewImpl<Component_InfoEntry_DoNotUse>(),
+              #if defined(PROTOBUF_CUSTOM_VTABLE)
+                      &Component_InfoEntry_DoNotUse::SharedDtor,
+                      static_cast<void (::google::protobuf::MessageLite::*)()>(
+                          &Component_InfoEntry_DoNotUse::ClearImpl),
+                          ::google::protobuf::Message::ByteSizeLongImpl, ::google::protobuf::Message::_InternalSerializeImpl
+                          ,
+              #endif  // PROTOBUF_CUSTOM_VTABLE
+                      PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_._cached_size_),
+                      false,
+                  },
+                  &Component_InfoEntry_DoNotUse::kDescriptorMethods,
+                  &descriptor_table_page_2eproto,
+                  nullptr,  // tracker
+              };
+              const ::google::protobuf::internal::ClassData* Component_InfoEntry_DoNotUse::GetClassData() const {
+                ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+                ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+                return _class_data_.base();
+              }
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 40, 2> Component_InfoEntry_DoNotUse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ui2::Component_InfoEntry_DoNotUse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string value = 2 [json_name = "value"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_.value_)}},
+    // string key = 1 [json_name = "key"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_.key_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string key = 1 [json_name = "key"];
+    {PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_.key_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string value = 2 [json_name = "value"];
+    {PROTOBUF_FIELD_OFFSET(Component_InfoEntry_DoNotUse, _impl_.value_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\27\3\5\0\0\0\0\0"
+    "ui2.Component.InfoEntry"
     "key"
     "value"
   }},
@@ -1455,11 +1584,11 @@ Component::Component(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Component)
+  // @@protoc_insertion_point(arena_constructor:ui2.Component)
 }
 inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Component& from_msg)
+    const Impl_& from, const ::ui2::Component& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         children_{visibility, arena, from.children_},
@@ -1467,6 +1596,7 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         events_{visibility, arena, from.events_},
         attributes_{visibility, arena, from.attributes_},
         items_{visibility, arena, from.items_},
+        info_{visibility, arena, from.info_},
         id_(arena, from.id_),
         text_(arena, from.text_),
         name_(arena, from.name_),
@@ -1486,12 +1616,12 @@ Component::Component(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.style_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui::Style>(
+  _impl_.style_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui2::Style>(
                               arena, *from._impl_.style_)
                         : nullptr;
   _impl_.type_ = from._impl_.type_;
 
-  // @@protoc_insertion_point(copy_constructor:ui.Component)
+  // @@protoc_insertion_point(copy_constructor:ui2.Component)
 }
 inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -1502,6 +1632,7 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         events_{visibility, arena},
         attributes_{visibility, arena},
         items_{visibility, arena},
+        info_{visibility, arena},
         id_(arena),
         text_(arena),
         name_(arena),
@@ -1517,7 +1648,7 @@ inline void Component::SharedCtor(::_pb::Arena* arena) {
                sizeof(Impl_::type_));
 }
 Component::~Component() {
-  // @@protoc_insertion_point(destructor:ui.Component)
+  // @@protoc_insertion_point(destructor:ui2.Component)
   SharedDtor(*this);
 }
 inline void Component::SharedDtor(MessageLite& self) {
@@ -1570,6 +1701,14 @@ constexpr auto Component::InternalNewImpl_() {
           decltype(Component::_impl_.items_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.info_) +
+          decltype(Component::_impl_.info_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.info_) +
+          decltype(Component::_impl_.info_)::
+              InternalGetArenaOffsetAlt(
+                  ::google::protobuf::Message::internal_visibility()),
   });
   if (arena_bits.has_value()) {
     return ::google::protobuf::internal::MessageCreator::CopyInit(
@@ -1608,38 +1747,38 @@ const ::google::protobuf::internal::ClassData* Component::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
+const ::_pbi::TcParseTable<4, 12, 7, 68, 2> Component::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_),
     0, // no _extensions_
-    11, 120,  // max_field_number, fast_idx_mask
+    12, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294965248,  // skipmap
+    4294963200,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    11,  // num_field_entries
-    6,  // num_aux_entries
+    12,  // num_field_entries
+    7,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Component>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Component>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
     // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
-    // .ui.ComponentType type = 2 [json_name = "type"];
+    // .ui2.ComponentType type = 2 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
     // string text = 3 [json_name = "text"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
-    // repeated .ui.Component children = 4 [json_name = "children"];
+    // repeated .ui2.Component children = 4 [json_name = "children"];
     {::_pbi::TcParser::FastMtR1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
-    // .ui.Style style = 5 [json_name = "style"];
+    // .ui2.Style style = 5 [json_name = "style"];
     {::_pbi::TcParser::FastMtS1,
      {42, 0, 1, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1651,7 +1790,7 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
     // string value = 10 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {82, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.value_)}},
-    // repeated .ui.ListItem items = 11 [json_name = "items"];
+    // repeated .ui2.ListItem items = 11 [json_name = "items"];
     {::_pbi::TcParser::FastMtR1,
      {90, 63, 2, PROTOBUF_FIELD_OFFSET(Component, _impl_.items_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1664,16 +1803,16 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
     // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .ui.ComponentType type = 2 [json_name = "type"];
+    // .ui2.ComponentType type = 2 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
     // string text = 3 [json_name = "text"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component children = 4 [json_name = "children"];
+    // repeated .ui2.Component children = 4 [json_name = "children"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Style style = 5 [json_name = "style"];
+    // .ui2.Style style = 5 [json_name = "style"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // map<string, string> css = 6 [json_name = "css"];
@@ -1691,13 +1830,16 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
     // string value = 10 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.ListItem items = 11 [json_name = "items"];
+    // repeated .ui2.ListItem items = 11 [json_name = "items"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.items_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // map<string, string> info = 12 [json_name = "info"];
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.info_), -1, 6,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::ui::Component>()},
-    {::_pbi::TcParser::GetTable<::ui::Style>()},
-    {::_pbi::TcParser::GetTable<::ui::ListItem>()},
+    {::_pbi::TcParser::GetTable<::ui2::Component>()},
+    {::_pbi::TcParser::GetTable<::ui2::Style>()},
+    {::_pbi::TcParser::GetTable<::ui2::ListItem>()},
     {::_pbi::TcParser::GetMapAuxInfo<
         decltype(Component()._impl_.css_)>(
         1, 0, 0, 9,
@@ -1710,9 +1852,13 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
         decltype(Component()._impl_.attributes_)>(
         1, 0, 0, 9,
         9)},
+    {::_pbi::TcParser::GetMapAuxInfo<
+        decltype(Component()._impl_.info_)>(
+        1, 0, 0, 9,
+        9)},
   }}, {{
-    "\14\2\0\4\0\0\3\6\12\4\5\0\0\0\0\0"
-    "ui.Component"
+    "\15\2\0\4\0\0\3\6\12\4\5\0\4\0\0\0"
+    "ui2.Component"
     "id"
     "text"
     "css"
@@ -1720,11 +1866,12 @@ const ::_pbi::TcParseTable<4, 11, 6, 63, 2> Component::_table_ = {
     "attributes"
     "name"
     "value"
+    "info"
   }},
 };
 
 PROTOBUF_NOINLINE void Component::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Component)
+// @@protoc_insertion_point(message_clear_start:ui2.Component)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -1735,6 +1882,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   _impl_.events_.Clear();
   _impl_.attributes_.Clear();
   _impl_.items_.Clear();
+  _impl_.info_.Clear();
   _impl_.id_.ClearToEmpty();
   _impl_.text_.ClearToEmpty();
   _impl_.name_.ClearToEmpty();
@@ -1760,7 +1908,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Component& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Component)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Component)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -1768,11 +1916,11 @@ PROTOBUF_NOINLINE void Component::Clear() {
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // .ui.ComponentType type = 2 [json_name = "type"];
+          // .ui2.ComponentType type = 2 [json_name = "type"];
           if (this_._internal_type() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -1783,11 +1931,11 @@ PROTOBUF_NOINLINE void Component::Clear() {
           if (!this_._internal_text().empty()) {
             const std::string& _s = this_._internal_text();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.text");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.text");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
-          // repeated .ui.Component children = 4 [json_name = "children"];
+          // repeated .ui2.Component children = 4 [json_name = "children"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_children_size());
                i < n; i++) {
@@ -1799,7 +1947,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Style style = 5 [json_name = "style"];
+          // .ui2.Style style = 5 [json_name = "style"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 5, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
@@ -1820,10 +1968,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     6, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.css");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.css");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.css");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.css");
               }
             } else {
               for (const auto& entry : field) {
@@ -1831,10 +1979,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     6, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.css");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.css");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.css");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.css");
               }
             }
           }
@@ -1853,10 +2001,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     7, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.events");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.events");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.events");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.events");
               }
             } else {
               for (const auto& entry : field) {
@@ -1864,10 +2012,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     7, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.events");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.events");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.events");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.events");
               }
             }
           }
@@ -1886,10 +2034,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     8, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.attributes");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.attributes");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.attributes");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.attributes");
               }
             } else {
               for (const auto& entry : field) {
@@ -1897,10 +2045,10 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     8, entry.first, entry.second, target, stream);
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.attributes");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.attributes");
                 ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                     entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.attributes");
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.attributes");
               }
             }
           }
@@ -1909,7 +2057,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
           if (!this_._internal_name().empty()) {
             const std::string& _s = this_._internal_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.name");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.name");
             target = stream->WriteStringMaybeAliased(9, _s, target);
           }
 
@@ -1917,11 +2065,11 @@ PROTOBUF_NOINLINE void Component::Clear() {
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.value");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.value");
             target = stream->WriteStringMaybeAliased(10, _s, target);
           }
 
-          // repeated .ui.ListItem items = 11 [json_name = "items"];
+          // repeated .ui2.ListItem items = 11 [json_name = "items"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_items_size());
                i < n; i++) {
@@ -1932,12 +2080,45 @@ PROTOBUF_NOINLINE void Component::Clear() {
                     target, stream);
           }
 
+          // map<string, string> info = 12 [json_name = "info"];
+          if (!this_._internal_info().empty()) {
+            using MapType = ::google::protobuf::Map<std::string, std::string>;
+            using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
+                                           _pbi::WireFormatLite::TYPE_STRING,
+                                           _pbi::WireFormatLite::TYPE_STRING>;
+            const auto& field = this_._internal_info();
+
+            if (stream->IsSerializationDeterministic() && field.size() > 1) {
+              for (const auto& entry : ::google::protobuf::internal::MapSorterPtr<MapType>(field)) {
+                target = WireHelper::InternalSerialize(
+                    12, entry.first, entry.second, target, stream);
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.first.data(), static_cast<int>(entry.first.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.info");
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.second.data(), static_cast<int>(entry.second.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.info");
+              }
+            } else {
+              for (const auto& entry : field) {
+                target = WireHelper::InternalSerialize(
+                    12, entry.first, entry.second, target, stream);
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.first.data(), static_cast<int>(entry.first.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.info");
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.second.data(), static_cast<int>(entry.second.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Component.info");
+              }
+            }
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Component)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Component)
           return target;
         }
 
@@ -1948,7 +2129,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
         ::size_t Component::ByteSizeLong() const {
           const Component& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Component)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Component)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1957,7 +2138,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component children = 4 [json_name = "children"];
+            // repeated .ui2.Component children = 4 [json_name = "children"];
             {
               total_size += 1UL * this_._internal_children_size();
               for (const auto& msg : this_._internal_children()) {
@@ -1994,11 +2175,21 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // repeated .ui.ListItem items = 11 [json_name = "items"];
+            // repeated .ui2.ListItem items = 11 [json_name = "items"];
             {
               total_size += 1UL * this_._internal_items_size();
               for (const auto& msg : this_._internal_items()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+            // map<string, string> info = 12 [json_name = "info"];
+            {
+              total_size +=
+                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_info_size());
+              for (const auto& entry : this_._internal_info()) {
+                total_size += _pbi::MapEntryFuncs<std::string, std::string,
+                                               _pbi::WireFormatLite::TYPE_STRING,
+                                               _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
           }
@@ -2025,7 +2216,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // .ui.Style style = 5 [json_name = "style"];
+            // .ui2.Style style = 5 [json_name = "style"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -2033,7 +2224,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // .ui.ComponentType type = 2 [json_name = "type"];
+            // .ui2.ComponentType type = 2 [json_name = "type"];
             if (this_._internal_type() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
@@ -2047,7 +2238,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   auto* const _this = static_cast<Component*>(&to_msg);
   auto& from = static_cast<const Component&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Component)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Component)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2059,6 +2250,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   _this->_impl_.attributes_.MergeFrom(from._impl_.attributes_);
   _this->_internal_mutable_items()->MergeFrom(
       from._internal_items());
+  _this->_impl_.info_.MergeFrom(from._impl_.info_);
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
@@ -2076,7 +2268,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
     ABSL_DCHECK(from._impl_.style_ != nullptr);
     if (_this->_impl_.style_ == nullptr) {
       _this->_impl_.style_ =
-          ::google::protobuf::Message::CopyConstruct<::ui::Style>(arena, *from._impl_.style_);
+          ::google::protobuf::Message::CopyConstruct<::ui2::Style>(arena, *from._impl_.style_);
     } else {
       _this->_impl_.style_->MergeFrom(*from._impl_.style_);
     }
@@ -2089,7 +2281,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
 }
 
 void Component::CopyFrom(const Component& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Component)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Component)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2107,6 +2299,7 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT other) {
   _impl_.events_.InternalSwap(&other->_impl_.events_);
   _impl_.attributes_.InternalSwap(&other->_impl_.attributes_);
   _impl_.items_.InternalSwap(&other->_impl_.items_);
+  _impl_.info_.InternalSwap(&other->_impl_.info_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
@@ -2139,11 +2332,11 @@ Style::Style(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Style)
+  // @@protoc_insertion_point(arena_constructor:ui2.Style)
 }
 inline PROTOBUF_NDEBUG_INLINE Style::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Style& from_msg)
+    const Impl_& from, const ::ui2::Style& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         padding_(arena, from.padding_),
@@ -2170,10 +2363,10 @@ Style::Style(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.position_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui::Position>(
+  _impl_.position_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::ui2::Position>(
                               arena, *from._impl_.position_)
                         : nullptr;
-  _impl_.size_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::ui::Size>(
+  _impl_.size_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::ui2::Size>(
                               arena, *from._impl_.size_)
                         : nullptr;
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
@@ -2184,7 +2377,7 @@ Style::Style(
                offsetof(Impl_, layout_) +
                sizeof(Impl_::scrollable_));
 
-  // @@protoc_insertion_point(copy_constructor:ui.Style)
+  // @@protoc_insertion_point(copy_constructor:ui2.Style)
 }
 inline PROTOBUF_NDEBUG_INLINE Style::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -2210,7 +2403,7 @@ inline void Style::SharedCtor(::_pb::Arena* arena) {
                sizeof(Impl_::scrollable_));
 }
 Style::~Style() {
-  // @@protoc_insertion_point(destructor:ui.Style)
+  // @@protoc_insertion_point(destructor:ui2.Style)
   SharedDtor(*this);
 }
 inline void Style::SharedDtor(MessageLite& self) {
@@ -2267,7 +2460,7 @@ const ::google::protobuf::internal::ClassData* Style::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
+const ::_pbi::TcParseTable<4, 13, 2, 91, 2> Style::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Style, _impl_._has_bits_),
     0, // no _extensions_
@@ -2282,17 +2475,17 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Style>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Style>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .ui.LayoutType layout = 1 [json_name = "layout"];
+    // .ui2.LayoutType layout = 1 [json_name = "layout"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Style, _impl_.layout_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_)}},
-    // .ui.Position position = 2 [json_name = "position"];
+    // .ui2.Position position = 2 [json_name = "position"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.position_)}},
-    // .ui.Size size = 3 [json_name = "size"];
+    // .ui2.Size size = 3 [json_name = "size"];
     {::_pbi::TcParser::FastMtS1,
      {26, 1, 1, PROTOBUF_FIELD_OFFSET(Style, _impl_.size_)}},
     // string padding = 4 [json_name = "padding"];
@@ -2330,13 +2523,13 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // .ui.LayoutType layout = 1 [json_name = "layout"];
+    // .ui2.LayoutType layout = 1 [json_name = "layout"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.layout_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // .ui.Position position = 2 [json_name = "position"];
+    // .ui2.Position position = 2 [json_name = "position"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.position_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Size size = 3 [json_name = "size"];
+    // .ui2.Size size = 3 [json_name = "size"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.size_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // string padding = 4 [json_name = "padding"];
@@ -2370,11 +2563,11 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::ui::Position>()},
-    {::_pbi::TcParser::GetTable<::ui::Size>()},
+    {::_pbi::TcParser::GetTable<::ui2::Position>()},
+    {::_pbi::TcParser::GetTable<::ui2::Size>()},
   }}, {{
-    "\10\0\0\0\7\6\10\12\6\7\6\3\0\14\0\0"
-    "ui.Style"
+    "\11\0\0\0\7\6\10\12\6\7\6\3\0\14\0\0"
+    "ui2.Style"
     "padding"
     "margin"
     "bg_color"
@@ -2388,7 +2581,7 @@ const ::_pbi::TcParseTable<4, 13, 2, 90, 2> Style::_table_ = {
 };
 
 PROTOBUF_NOINLINE void Style::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Style)
+// @@protoc_insertion_point(message_clear_start:ui2.Style)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -2432,11 +2625,11 @@ PROTOBUF_NOINLINE void Style::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Style& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Style)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Style)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // .ui.LayoutType layout = 1 [json_name = "layout"];
+          // .ui2.LayoutType layout = 1 [json_name = "layout"];
           if (this_._internal_layout() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -2444,14 +2637,14 @@ PROTOBUF_NOINLINE void Style::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Position position = 2 [json_name = "position"];
+          // .ui2.Position position = 2 [json_name = "position"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 2, *this_._impl_.position_, this_._impl_.position_->GetCachedSize(), target,
                 stream);
           }
 
-          // .ui.Size size = 3 [json_name = "size"];
+          // .ui2.Size size = 3 [json_name = "size"];
           if (cached_has_bits & 0x00000002u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.size_, this_._impl_.size_->GetCachedSize(), target,
@@ -2462,7 +2655,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_padding().empty()) {
             const std::string& _s = this_._internal_padding();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.padding");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.padding");
             target = stream->WriteStringMaybeAliased(4, _s, target);
           }
 
@@ -2470,7 +2663,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_margin().empty()) {
             const std::string& _s = this_._internal_margin();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.margin");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.margin");
             target = stream->WriteStringMaybeAliased(5, _s, target);
           }
 
@@ -2478,7 +2671,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_bg_color().empty()) {
             const std::string& _s = this_._internal_bg_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.bg_color");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.bg_color");
             target = stream->WriteStringMaybeAliased(6, _s, target);
           }
 
@@ -2486,7 +2679,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_text_color().empty()) {
             const std::string& _s = this_._internal_text_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.text_color");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.text_color");
             target = stream->WriteStringMaybeAliased(7, _s, target);
           }
 
@@ -2494,7 +2687,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_border().empty()) {
             const std::string& _s = this_._internal_border();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.border");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.border");
             target = stream->WriteStringMaybeAliased(8, _s, target);
           }
 
@@ -2502,7 +2695,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_rounded().empty()) {
             const std::string& _s = this_._internal_rounded();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.rounded");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.rounded");
             target = stream->WriteStringMaybeAliased(9, _s, target);
           }
 
@@ -2510,7 +2703,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_shadow().empty()) {
             const std::string& _s = this_._internal_shadow();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.shadow");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.shadow");
             target = stream->WriteStringMaybeAliased(10, _s, target);
           }
 
@@ -2518,7 +2711,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_gap().empty()) {
             const std::string& _s = this_._internal_gap();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.gap");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.gap");
             target = stream->WriteStringMaybeAliased(11, _s, target);
           }
 
@@ -2533,7 +2726,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           if (!this_._internal_custom_class().empty()) {
             const std::string& _s = this_._internal_custom_class();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.custom_class");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Style.custom_class");
             target = stream->WriteStringMaybeAliased(13, _s, target);
           }
 
@@ -2542,7 +2735,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Style)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Style)
           return target;
         }
 
@@ -2553,7 +2746,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
         ::size_t Style::ByteSizeLong() const {
           const Style& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Style)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Style)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -2610,19 +2803,19 @@ PROTOBUF_NOINLINE void Style::Clear() {
           }
           cached_has_bits = this_._impl_._has_bits_[0];
           if (cached_has_bits & 0x00000003u) {
-            // .ui.Position position = 2 [json_name = "position"];
+            // .ui2.Position position = 2 [json_name = "position"];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.position_);
             }
-            // .ui.Size size = 3 [json_name = "size"];
+            // .ui2.Size size = 3 [json_name = "size"];
             if (cached_has_bits & 0x00000002u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.size_);
             }
           }
            {
-            // .ui.LayoutType layout = 1 [json_name = "layout"];
+            // .ui2.LayoutType layout = 1 [json_name = "layout"];
             if (this_._internal_layout() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_layout());
@@ -2640,7 +2833,7 @@ void Style::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
   auto* const _this = static_cast<Style*>(&to_msg);
   auto& from = static_cast<const Style&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Style)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Style)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2678,7 +2871,7 @@ void Style::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
       ABSL_DCHECK(from._impl_.position_ != nullptr);
       if (_this->_impl_.position_ == nullptr) {
         _this->_impl_.position_ =
-            ::google::protobuf::Message::CopyConstruct<::ui::Position>(arena, *from._impl_.position_);
+            ::google::protobuf::Message::CopyConstruct<::ui2::Position>(arena, *from._impl_.position_);
       } else {
         _this->_impl_.position_->MergeFrom(*from._impl_.position_);
       }
@@ -2687,7 +2880,7 @@ void Style::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
       ABSL_DCHECK(from._impl_.size_ != nullptr);
       if (_this->_impl_.size_ == nullptr) {
         _this->_impl_.size_ =
-            ::google::protobuf::Message::CopyConstruct<::ui::Size>(arena, *from._impl_.size_);
+            ::google::protobuf::Message::CopyConstruct<::ui2::Size>(arena, *from._impl_.size_);
       } else {
         _this->_impl_.size_->MergeFrom(*from._impl_.size_);
       }
@@ -2704,7 +2897,7 @@ void Style::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
 }
 
 void Style::CopyFrom(const Style& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Style)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Style)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -2750,11 +2943,11 @@ Position::Position(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Position)
+  // @@protoc_insertion_point(arena_constructor:ui2.Position)
 }
 inline PROTOBUF_NDEBUG_INLINE Position::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Position& from_msg)
+    const Impl_& from, const ::ui2::Position& from_msg)
       : unit_(arena, from.unit_),
         _cached_size_{0} {}
 
@@ -2779,7 +2972,7 @@ Position::Position(
                offsetof(Impl_, x_) +
                sizeof(Impl_::y_));
 
-  // @@protoc_insertion_point(copy_constructor:ui.Position)
+  // @@protoc_insertion_point(copy_constructor:ui2.Position)
 }
 inline PROTOBUF_NDEBUG_INLINE Position::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -2797,7 +2990,7 @@ inline void Position::SharedCtor(::_pb::Arena* arena) {
                sizeof(Impl_::y_));
 }
 Position::~Position() {
-  // @@protoc_insertion_point(destructor:ui.Position)
+  // @@protoc_insertion_point(destructor:ui2.Position)
   SharedDtor(*this);
 }
 inline void Position::SharedDtor(MessageLite& self) {
@@ -2844,7 +3037,7 @@ const ::google::protobuf::internal::ClassData* Position::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 24, 2> Position::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 25, 2> Position::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -2859,7 +3052,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 24, 2> Position::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Position>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Position>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -2887,14 +3080,14 @@ const ::_pbi::TcParseTable<2, 3, 0, 24, 2> Position::_table_ = {
   }},
   // no aux_entries
   {{
-    "\13\0\0\4\0\0\0\0"
-    "ui.Position"
+    "\14\0\0\4\0\0\0\0"
+    "ui2.Position"
     "unit"
   }},
 };
 
 PROTOBUF_NOINLINE void Position::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Position)
+// @@protoc_insertion_point(message_clear_start:ui2.Position)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -2918,7 +3111,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Position& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Position)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Position)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -2940,7 +3133,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
           if (!this_._internal_unit().empty()) {
             const std::string& _s = this_._internal_unit();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Position.unit");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Position.unit");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
@@ -2949,7 +3142,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Position)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Position)
           return target;
         }
 
@@ -2960,7 +3153,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
         ::size_t Position::ByteSizeLong() const {
           const Position& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Position)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Position)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -2990,7 +3183,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
 void Position::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<Position*>(&to_msg);
   auto& from = static_cast<const Position&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Position)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Position)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3008,7 +3201,7 @@ void Position::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
 }
 
 void Position::CopyFrom(const Position& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Position)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Position)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -3045,11 +3238,11 @@ Size::Size(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Size)
+  // @@protoc_insertion_point(arena_constructor:ui2.Size)
 }
 inline PROTOBUF_NDEBUG_INLINE Size::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Size& from_msg)
+    const Impl_& from, const ::ui2::Size& from_msg)
       : width_(arena, from.width_),
         height_(arena, from.height_),
         _cached_size_{0} {}
@@ -3068,7 +3261,7 @@ Size::Size(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:ui.Size)
+  // @@protoc_insertion_point(copy_constructor:ui2.Size)
 }
 inline PROTOBUF_NDEBUG_INLINE Size::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -3081,7 +3274,7 @@ inline void Size::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 Size::~Size() {
-  // @@protoc_insertion_point(destructor:ui.Size)
+  // @@protoc_insertion_point(destructor:ui2.Size)
   SharedDtor(*this);
 }
 inline void Size::SharedDtor(MessageLite& self) {
@@ -3129,7 +3322,7 @@ const ::google::protobuf::internal::ClassData* Size::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 27, 2> Size::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 28, 2> Size::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3144,7 +3337,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 27, 2> Size::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Size>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Size>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string height = 2 [json_name = "height"];
@@ -3165,15 +3358,15 @@ const ::_pbi::TcParseTable<1, 2, 0, 27, 2> Size::_table_ = {
   }},
   // no aux_entries
   {{
-    "\7\5\6\0\0\0\0\0"
-    "ui.Size"
+    "\10\5\6\0\0\0\0\0"
+    "ui2.Size"
     "width"
     "height"
   }},
 };
 
 PROTOBUF_NOINLINE void Size::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Size)
+// @@protoc_insertion_point(message_clear_start:ui2.Size)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -3195,7 +3388,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Size& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Size)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Size)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -3203,7 +3396,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
           if (!this_._internal_width().empty()) {
             const std::string& _s = this_._internal_width();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Size.width");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Size.width");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -3211,7 +3404,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
           if (!this_._internal_height().empty()) {
             const std::string& _s = this_._internal_height();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Size.height");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Size.height");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -3220,7 +3413,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Size)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Size)
           return target;
         }
 
@@ -3231,7 +3424,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
         ::size_t Size::ByteSizeLong() const {
           const Size& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Size)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Size)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -3258,7 +3451,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
 void Size::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<Size*>(&to_msg);
   auto& from = static_cast<const Size&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Size)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Size)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3273,7 +3466,7 @@ void Size::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
 }
 
 void Size::CopyFrom(const Size& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Size)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Size)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -3305,11 +3498,11 @@ Theme::Theme(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.Theme)
+  // @@protoc_insertion_point(arena_constructor:ui2.Theme)
 }
 inline PROTOBUF_NDEBUG_INLINE Theme::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::Theme& from_msg)
+    const Impl_& from, const ::ui2::Theme& from_msg)
       : primary_color_(arena, from.primary_color_),
         secondary_color_(arena, from.secondary_color_),
         font_family_(arena, from.font_family_),
@@ -3330,7 +3523,7 @@ Theme::Theme(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:ui.Theme)
+  // @@protoc_insertion_point(copy_constructor:ui2.Theme)
 }
 inline PROTOBUF_NDEBUG_INLINE Theme::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -3345,7 +3538,7 @@ inline void Theme::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 Theme::~Theme() {
-  // @@protoc_insertion_point(destructor:ui.Theme)
+  // @@protoc_insertion_point(destructor:ui2.Theme)
   SharedDtor(*this);
 }
 inline void Theme::SharedDtor(MessageLite& self) {
@@ -3395,7 +3588,7 @@ const ::google::protobuf::internal::ClassData* Theme::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 68, 2> Theme::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 69, 2> Theme::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3410,7 +3603,7 @@ const ::_pbi::TcParseTable<2, 4, 0, 68, 2> Theme::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::Theme>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::Theme>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string accent_color = 4 [json_name = "accentColor"];
@@ -3443,8 +3636,8 @@ const ::_pbi::TcParseTable<2, 4, 0, 68, 2> Theme::_table_ = {
   }},
   // no aux_entries
   {{
-    "\10\15\17\13\14\0\0\0"
-    "ui.Theme"
+    "\11\15\17\13\14\0\0\0"
+    "ui2.Theme"
     "primary_color"
     "secondary_color"
     "font_family"
@@ -3453,7 +3646,7 @@ const ::_pbi::TcParseTable<2, 4, 0, 68, 2> Theme::_table_ = {
 };
 
 PROTOBUF_NOINLINE void Theme::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.Theme)
+// @@protoc_insertion_point(message_clear_start:ui2.Theme)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -3477,7 +3670,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const Theme& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.Theme)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.Theme)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -3485,7 +3678,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
           if (!this_._internal_primary_color().empty()) {
             const std::string& _s = this_._internal_primary_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Theme.primary_color");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Theme.primary_color");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -3493,7 +3686,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
           if (!this_._internal_secondary_color().empty()) {
             const std::string& _s = this_._internal_secondary_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Theme.secondary_color");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Theme.secondary_color");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -3501,7 +3694,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
           if (!this_._internal_font_family().empty()) {
             const std::string& _s = this_._internal_font_family();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Theme.font_family");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Theme.font_family");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
@@ -3509,7 +3702,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
           if (!this_._internal_accent_color().empty()) {
             const std::string& _s = this_._internal_accent_color();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Theme.accent_color");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.Theme.accent_color");
             target = stream->WriteStringMaybeAliased(4, _s, target);
           }
 
@@ -3518,7 +3711,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.Theme)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.Theme)
           return target;
         }
 
@@ -3529,7 +3722,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
         ::size_t Theme::ByteSizeLong() const {
           const Theme& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.Theme)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.Theme)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -3566,7 +3759,7 @@ PROTOBUF_NOINLINE void Theme::Clear() {
 void Theme::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<Theme*>(&to_msg);
   auto& from = static_cast<const Theme&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.Theme)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.Theme)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3587,7 +3780,7 @@ void Theme::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
 }
 
 void Theme::CopyFrom(const Theme& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.Theme)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.Theme)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -3621,11 +3814,11 @@ ListItem::ListItem(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.ListItem)
+  // @@protoc_insertion_point(arena_constructor:ui2.ListItem)
 }
 inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::ListItem& from_msg)
+    const Impl_& from, const ::ui2::ListItem& from_msg)
       : label_(arena, from.label_),
         value_(arena, from.value_),
         icon_(arena, from.icon_),
@@ -3645,7 +3838,7 @@ ListItem::ListItem(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:ui.ListItem)
+  // @@protoc_insertion_point(copy_constructor:ui2.ListItem)
 }
 inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -3659,7 +3852,7 @@ inline void ListItem::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 ListItem::~ListItem() {
-  // @@protoc_insertion_point(destructor:ui.ListItem)
+  // @@protoc_insertion_point(destructor:ui2.ListItem)
   SharedDtor(*this);
 }
 inline void ListItem::SharedDtor(MessageLite& self) {
@@ -3708,7 +3901,7 @@ const ::google::protobuf::internal::ClassData* ListItem::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 35, 2> ListItem::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3723,7 +3916,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::ListItem>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::ui2::ListItem>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -3751,8 +3944,8 @@ const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
   }},
   // no aux_entries
   {{
-    "\13\5\5\4\0\0\0\0"
-    "ui.ListItem"
+    "\14\5\5\4\0\0\0\0"
+    "ui2.ListItem"
     "label"
     "value"
     "icon"
@@ -3760,7 +3953,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
 };
 
 PROTOBUF_NOINLINE void ListItem::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.ListItem)
+// @@protoc_insertion_point(message_clear_start:ui2.ListItem)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -3783,7 +3976,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const ListItem& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.ListItem)
+          // @@protoc_insertion_point(serialize_to_array_start:ui2.ListItem)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -3791,7 +3984,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
           if (!this_._internal_label().empty()) {
             const std::string& _s = this_._internal_label();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.label");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.ListItem.label");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -3799,7 +3992,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.value");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.ListItem.value");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -3807,7 +4000,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
           if (!this_._internal_icon().empty()) {
             const std::string& _s = this_._internal_icon();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.icon");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui2.ListItem.icon");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
@@ -3816,7 +4009,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.ListItem)
+          // @@protoc_insertion_point(serialize_to_array_end:ui2.ListItem)
           return target;
         }
 
@@ -3827,7 +4020,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
         ::size_t ListItem::ByteSizeLong() const {
           const ListItem& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.ListItem)
+          // @@protoc_insertion_point(message_byte_size_start:ui2.ListItem)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -3859,7 +4052,7 @@ PROTOBUF_NOINLINE void ListItem::Clear() {
 void ListItem::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<ListItem*>(&to_msg);
   auto& from = static_cast<const ListItem&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.ListItem)
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui2.ListItem)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3877,7 +4070,7 @@ void ListItem::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
 }
 
 void ListItem::CopyFrom(const ListItem& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.ListItem)
+// @@protoc_insertion_point(class_specific_copy_from_start:ui2.ListItem)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -3898,7 +4091,7 @@ void ListItem::InternalSwap(ListItem* PROTOBUF_RESTRICT other) {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace ui
+}  // namespace ui2
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

@@ -37,7 +37,7 @@ export default async function handleEvent(
   component: ComponentProps,
   eventName: EventName | string,
   actionId: string | number,
-  collectFrom?: string[]
+  // collectFrom?: string[]
 ): Promise<void> {
   try {
     console.log(
@@ -46,24 +46,24 @@ export default async function handleEvent(
       "for event:",
       eventName,
       "on component:",
-      component.id,
-      "collectFrom:",
-      collectFrom
+      component.id
+      // "collectFrom:",
+      // collectFrom
     );
 
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();
     }
 
-    // Collect additional data from specified components if collectFrom is provided
-    let additionalData: { [key: string]: string | null } = {};
-    if (collectFrom && collectFrom.length > 0) {
-      for (const componentId of collectFrom) {
-        const value = getInfoFromPage(componentId);
-        additionalData[componentId] = value;
-        console.log(`📋 Collected from ${componentId}:`, value);
-      }
-    }
+    // // Collect additional data from specified components if collectFrom is provided
+    // let additionalData: { [key: string]: string | null } = {};
+    // if (collectFrom && collectFrom.length > 0) {
+    //   for (const componentId of collectFrom) {
+    //     const value = getInfoFromPage(componentId);
+    //     additionalData[componentId] = value;
+    //     console.log(`📋 Collected from ${componentId}:`, value);
+    //   }
+    // }
 
     await sendDataToCPP({
       componentId: component.id || "unknown",
@@ -77,7 +77,7 @@ export default async function handleEvent(
         name: e?.target?.name || component.name,
         text: component.text,
         componentValue: component.value,
-        ...additionalData, // Include collected data
+        // ...additionalData, // Include collected data
       },
       timestamp: Date.now(),
     });

@@ -1,5 +1,5 @@
 #include "pageGenerator.h"
-#include "../../../src/gen/cpp/page.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../debate/DebateDatabaseHandler.h"
 #include "../utils/pathUtils.h"
@@ -122,13 +122,12 @@ std::string generateTestPage(const std::string& user) {
 
         // Change the component type to CONTAINER so we can add children
         topicsList->set_type(ui::ComponentType::CONTAINER);
-        topicsList->clear_items();
         topicsList->clear_children();
         
         for (const auto& row : debates) {
             std::cerr << "[PageGen] Adding topic: " << row.at("TOPIC") << " with ID: " << row.at("ID") << std::endl;
             
-            // Create a container for each topic row (topic text + enter button)
+            // Create a container for each topic row (topic text + status)
             auto* topicRow = topicsList->add_children();
             topicRow->set_id("topicRow_" + row.at("ID"));
             topicRow->set_type(ui::ComponentType::CONTAINER);
@@ -141,19 +140,12 @@ std::string generateTestPage(const std::string& user) {
             topicText->set_text(row.at("TOPIC"));
             topicText->mutable_style()->set_custom_class("flex-1 text-gray-800");
             
-            // Enter button
-            auto* enterButton = topicRow->add_children();
-            enterButton->set_id("enterButton_" + row.at("ID"));
-            enterButton->set_type(ui::ComponentType::BUTTON);
-            enterButton->set_text("Enter");
-            enterButton->mutable_style()->set_custom_class("px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm");
-            
-            // Set event for the button with topic ID in event data
-            std::string eventValue = "{\"actionId\":\"enterTopic\"}";
-            (*enterButton->mutable_events())["onClick"] = eventValue;
-            
-            // Add the topic ID as event data
-            (*enterButton->mutable_events())["data-topicID"] = row.at("ID");
+            // Status indicator (instead of interactive button)
+            auto* statusIndicator = topicRow->add_children();
+            statusIndicator->set_id("statusIndicator_" + row.at("ID"));
+            statusIndicator->set_type(ui::ComponentType::TEXT);
+            statusIndicator->set_text("Available");
+            statusIndicator->mutable_style()->set_custom_class("px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium");
         }
         
         std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;
@@ -275,16 +267,12 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
                     childDesc->mutable_style()->set_custom_class("text-gray-600 mb-3 text-xs");
                 }
                 
-                // Navigation button
-                auto* childButton = childContainer->add_children();
-                childButton->set_id("childNode" + std::to_string(i + 1) + "Button");
-                childButton->set_type(ui::ComponentType::BUTTON);
-                childButton->set_text("Go to this claim");
-                childButton->mutable_style()->set_custom_class("w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm");
-                
-                // Set event for navigation
-                std::string eventValue = "{\"actionId\":\"navigateToClaim\",\"claimSentence\":\"" + childClaim->sentence() + "\"}";
-                (*childButton->mutable_events())["onClick"] = eventValue;
+                // View indicator (instead of navigation button)
+                auto* viewIndicator = childContainer->add_children();
+                viewIndicator->set_id("childNode" + std::to_string(i + 1) + "Indicator");
+                viewIndicator->set_type(ui::ComponentType::TEXT);
+                viewIndicator->set_text("Child Argument #" + std::to_string(i + 1));
+                viewIndicator->mutable_style()->set_custom_class("w-full px-3 py-2 bg-blue-100 text-blue-800 rounded text-center text-sm font-medium");
             }
             
             // If no child claims, show a message
@@ -297,21 +285,21 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
             }
         }
         
-        // Update parent button if there's a parent
+        // Update parent display (instead of interactive button)
         if (!currentClaim->parent().empty()) {
-            auto* parentButton = findComponent(mainLayout, "goToParentButton");
-            if (parentButton) {
-                parentButton->set_text("← " + currentClaim->parent().substr(0, 30) + "...");
-                std::string parentEventValue = "{\"actionId\":\"navigateToClaim\",\"claimSentence\":\"" + currentClaim->parent() + "\"}";
-                (*parentButton->mutable_events())["onClick"] = parentEventValue;
+            auto* parentInfo = findComponent(mainLayout, "goToParentButton");
+            if (parentInfo) {
+                parentInfo->set_type(ui::ComponentType::TEXT);
+                parentInfo->set_text("Parent: " + currentClaim->parent().substr(0, 50) + "...");
+                parentInfo->mutable_style()->set_custom_class("px-4 py-2 bg-gray-100 text-gray-700 rounded text-sm border");
             }
         } else {
-            // Hide or disable parent button for root claims
-            auto* parentButton = findComponent(mainLayout, "goToParentButton");
-            if (parentButton) {
-                parentButton->set_text("← Root Claim");
-                parentButton->mutable_style()->set_custom_class("px-4 py-2 bg-gray-400 text-white rounded transition-colors text-sm cursor-not-allowed");
-                parentButton->mutable_events()->clear();
+            // Show root status
+            auto* parentInfo = findComponent(mainLayout, "goToParentButton");
+            if (parentInfo) {
+                parentInfo->set_type(ui::ComponentType::TEXT);
+                parentInfo->set_text("Root Claim (No Parent)");
+                parentInfo->mutable_style()->set_custom_class("px-4 py-2 bg-gray-100 text-gray-500 rounded text-sm border");
             }
         }
     }

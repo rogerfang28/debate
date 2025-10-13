@@ -2,7 +2,7 @@
 #define PAGEGENERATOR_H
 
 #include <string>
-#include "../../../src/gen/cpp/page.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
 
 // Forward declarations for UI component manipulation
 namespace ui {

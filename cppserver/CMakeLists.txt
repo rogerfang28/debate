@@ -14,6 +14,7 @@ project(DebateServer LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
 
 # These replicate your -D flags
 add_definitions(-D_WIN32_WINNT=0x0A00)

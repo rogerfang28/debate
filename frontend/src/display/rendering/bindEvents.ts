@@ -41,7 +41,7 @@ export default function bindEvents(component: ComponentProps): BoundEvents {
 
       // Parse event configuration - it could be just actionId (string/number) or an object with actionId and collectFrom
       let actionId: string | number;
-      let collectFrom: string[] | undefined;
+      // let collectFrom: string[] | undefined;
 
       console.log("🔍 bindEvents raw eventConfig:", eventConfig, typeof eventConfig);
       console.log("🔍 eventConfig stringified:", JSON.stringify(eventConfig));
@@ -52,8 +52,8 @@ export default function bindEvents(component: ComponentProps): BoundEvents {
           const parsed = JSON.parse(eventConfig);
           if (typeof parsed === 'object' && parsed.actionId) {
             actionId = parsed.actionId;
-            collectFrom = parsed.collectFrom;
-            console.log("🔍 Parsed JSON string - actionId:", actionId, "collectFrom:", collectFrom);
+            // collectFrom = parsed.collectFrom;
+            console.log("🔍 Parsed JSON string - actionId:", actionId);
           } else {
             // It's just a regular string actionId
             actionId = eventConfig;
@@ -67,23 +67,21 @@ export default function bindEvents(component: ComponentProps): BoundEvents {
       } else if (typeof eventConfig === 'object' && eventConfig !== null) {
         // New format: { actionId: "joinRoom", collectFrom: ["joinRoomForm"] }
         actionId = (eventConfig as any).actionId;
-        collectFrom = (eventConfig as any).collectFrom;
-        console.log("🔍 Parsed object format - actionId:", actionId, "collectFrom:", collectFrom);
+        // collectFrom = (eventConfig as any).collectFrom;
+        console.log("🔍 Parsed object format - actionId:", actionId);
       } else {
         // Legacy format: just the actionId
         actionId = eventConfig;
         console.log("🔍 Parsed legacy format - actionId:", actionId);
       }
 
-      console.log("🔧 bindEvents parsed:", { eventName, actionId, collectFrom });
-
+      console.log("🔧 bindEvents parsed:", { eventName, actionId });
       // Pass full event info to handleEvent
       handleEvent(
         e as any,    // Cast to avoid TypeScript type conflicts
         component,
         eventName,   // backend event name ("onClick", "onEnter")
-        actionId,    // actionId from the config
-        collectFrom  // optional array of component IDs to collect data from
+        actionId    // actionId from the config
       );
     };
   }

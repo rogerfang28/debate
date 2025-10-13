@@ -1,5 +1,5 @@
 #include "virtualRenderer.h"
-#include "../../../src/gen/cpp/page.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/event.pb.h"
 #include "./pageGenerator.h"
 #include "../debate/main/EventHandler.h"
@@ -19,14 +19,7 @@ VirtualRenderer::~VirtualRenderer() {
 // Handle GET requests
 void VirtualRenderer::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
     std::string user = "defaultUser"; // later: parse from req.query_string
-    // std::string page_bin = generateDebateClaimPage(user,"A","A");
     std::string page_bin = generatePage(user);
-
-    if (page_bin.empty()) {
-        res.status = 500;
-        res.set_content("Failed to generate page\n", "text/plain");
-        return;
-    }
 
     res.set_content(page_bin, "application/x-protobuf");
     std::cout << "GET / served generated page for user=" << user

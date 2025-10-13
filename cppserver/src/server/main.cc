@@ -2,9 +2,6 @@
 #define NOMINMAX
 #define _WIN32_WINNT 0x0A00
 
-#include "../../../src/gen/cpp/page.pb.h"   // ui::Page
-#include "../../../src/gen/cpp/event.pb.h"  // debate::UIEvent
-#include "../virtualRenderer/pageGenerator.h"
 #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 
 #include "httplib.h"

@@ -1,5 +1,5 @@
 import { fromBinary } from "@bufbuild/protobuf";
-import { PageSchema } from "../../../src/gen/ts/page_pb";
+import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
 export interface PageData {
   [key: string]: any;
@@ -32,9 +32,6 @@ export default async function getPageFromCPP(opts?: {
       cache: "no-store",
       credentials: opts?.withCredentials ? "include" : "same-origin",
     });
-
-    console.log(res);
-    console.log("TESTSTSTETSTS");
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");

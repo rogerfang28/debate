@@ -22,7 +22,7 @@
       "args": [
         "--build", "${workspaceFolder}/cppserver/build",
         "--config", "Debug",
-        "-j"
+        "-j8"
       ],
       "options": {
         "cwd": "${workspaceFolder}/cppserver"

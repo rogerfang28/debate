@@ -1,4 +1,4 @@
-#include "../../../src/gen/cpp/page.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/event.pb.h"
 #include <iostream>
 using namespace std;

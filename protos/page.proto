@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ui;
+package ui2;
 
 // ======================
 // Root Page definition
@@ -28,6 +28,7 @@ message Component {
   string name = 9;                     // For form inputs/buttons
   string value = 10;                   // Default or bound value
   repeated ListItem items = 11;        // For lists, dropdowns, menus
+  map<string,string> info = 12;        // What info is in the component?
 }
 
 // ======================
