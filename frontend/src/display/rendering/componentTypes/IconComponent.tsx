@@ -4,6 +4,7 @@ import { BaseComponentProps } from "./TextComponent";
 const IconComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
     <span
+      id={component.id}
       className={`${component.value || ""} ${className}`}
       style={style}
       {...component.attributes}

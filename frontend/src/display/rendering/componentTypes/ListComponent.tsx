@@ -11,12 +11,12 @@ interface ListItem {
 
 const ListComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const handleItemClick = (item: ListItem, idx: number) => {
-    console.log(`📝 List item ${idx} clicked:`, item.label);
+    console.log(`📝 List "${component.id}" item ${idx} clicked:`, item.label);
     // List item click behavior
   };
 
   return (
-    <ul className={className} style={style}>
+    <ul id={component.id} className={className} style={style}>
       {component.items?.map((item: ListItem, idx: number) => {
         // Build className for each individual item
         const itemClassName = buildClassName(item.style);

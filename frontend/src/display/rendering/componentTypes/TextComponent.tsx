@@ -24,7 +24,7 @@ export interface BaseComponentProps {
 
 const TextComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <p className={className} style={style}>
+    <p id={component.id} className={className} style={style}>
       {component.text}
     </p>
   );

@@ -4,7 +4,7 @@ import { BaseComponentProps } from "./TextComponent";
 
 const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <div className={className} style={style}>
+    <div id={component.id} className={className} style={style}>
       {component.children?.map((child, idx: number) => (
         <ComponentRenderer key={child.id || idx} component={child} />
       ))}

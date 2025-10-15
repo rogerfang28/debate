@@ -3,7 +3,7 @@ import { BaseComponentProps } from "./TextComponent";
 
 const TableComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <table className={className} style={style}>
+    <table id={component.id} className={className} style={style}>
       <tbody>
         {component.items?.map((row: any, rowIndex: number) => (
           <tr key={rowIndex}>

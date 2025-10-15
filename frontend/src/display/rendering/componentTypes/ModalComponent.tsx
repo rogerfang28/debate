@@ -4,7 +4,7 @@ import { BaseComponentProps } from "./TextComponent";
 
 const ModalComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <div className={`modal-overlay ${className}`} style={style}>
+    <div id={component.id} className={`modal-overlay ${className}`} style={style}>
       <div className="modal-content">
         {component.children?.map((child, idx: number) => (
           <ComponentRenderer key={child.id || idx} component={child} />
