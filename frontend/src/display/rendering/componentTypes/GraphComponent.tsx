@@ -25,11 +25,11 @@ interface GraphComponentProps extends BaseComponentProps {
   };
 }
 
-const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, style, events }) => {
+const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, style }) => {
   const { nodes = [], edges = [] } = component;
 
   return (
-    <div className={className} style={style} {...events}>
+    <div className={className} style={style}>
       <svg width="100%" height="100%" viewBox="0 0 800 600">
         {/* Render edges */}
         {edges.map((edge) => {

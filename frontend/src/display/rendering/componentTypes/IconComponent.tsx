@@ -1,14 +1,16 @@
 import React from "react";
+import { BaseComponentProps } from "./TextComponent";
 
-export default function IconComponent({ component, className, style, events }) {
+const IconComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
     <span
       className={`${component.value || ""} ${className}`}
       style={style}
-      {...events}
       {...component.attributes}
     >
       {component.text}
     </span>
   );
-}
+};
+
+export default IconComponent;

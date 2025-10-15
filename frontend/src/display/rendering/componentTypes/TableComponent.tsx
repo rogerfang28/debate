@@ -1,12 +1,13 @@
 import React from "react";
+import { BaseComponentProps } from "./TextComponent";
 
-export default function TableComponent({ component, className, style, events }) {
+const TableComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <table className={className} style={style} {...events}>
+    <table className={className} style={style}>
       <tbody>
-        {component.items?.map((row, rowIndex) => (
+        {component.items?.map((row: any, rowIndex: number) => (
           <tr key={rowIndex}>
-            {Object.values(row).map((cell, cellIndex) => (
+            {Object.values(row).map((cell: any, cellIndex: number) => (
               <td key={cellIndex}>{cell}</td>
             ))}
           </tr>
@@ -14,4 +15,6 @@ export default function TableComponent({ component, className, style, events }) 
       </tbody>
     </table>
   );
-}
+};
+
+export default TableComponent;

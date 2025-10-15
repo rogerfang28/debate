@@ -1,26 +1,32 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
 import buildClassName from "../buildClassName";
-import bindEvents from "../bindEvents";
 
 interface ListItem {
   icon?: string;
   label?: string;
   style?: any;
-  events?: any;
   [key: string]: any;
 }
 
-const ListComponent: React.FC<BaseComponentProps> = ({ component, className, style, events }) => {
+const ListComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
+  const handleItemClick = (item: ListItem, idx: number) => {
+    console.log(`📝 List item ${idx} clicked:`, item.label);
+    // List item click behavior
+  };
+
   return (
-    <ul className={className} style={style} {...events}>
+    <ul className={className} style={style}>
       {component.items?.map((item: ListItem, idx: number) => {
-        // Build className and events for each individual item
+        // Build className for each individual item
         const itemClassName = buildClassName(item.style);
-        const itemEvents = bindEvents(item);
         
         return (
-          <li key={idx} className={itemClassName} {...itemEvents}>
+          <li 
+            key={idx} 
+            className={itemClassName}
+            onClick={() => handleItemClick(item, idx)}
+          >
             {item.icon && <span className={`icon ${item.icon}`} />} {item.label}
           </li>
         );

@@ -8,9 +8,14 @@ interface FormComponentProps extends BaseComponentProps {
   };
 }
 
-const FormComponent: React.FC<FormComponentProps> = ({ component, className, style, events }) => {
+const FormComponent: React.FC<FormComponentProps> = ({ component, className, style }) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted');
+  };
+
   return (
-    <form className={className} style={style} {...events} {...component.attributes}>
+    <form className={className} style={style} onSubmit={handleSubmit} {...component.attributes}>
       {component.children?.map((child, idx: number) => (
         <ComponentRenderer key={child.id || idx} component={child} />
       ))}

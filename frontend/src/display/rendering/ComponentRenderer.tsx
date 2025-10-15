@@ -1,7 +1,7 @@
 import React from "react";
+// @ts-ignore - Generated protobuf file
 import { ComponentType } from "../../../../src/gen/js/layout_pb.js";
 import buildClassName, { ComponentStyle } from "./buildClassName.js";
-import bindEvents, { ComponentEvent } from "./bindEvents.ts";
 
 import TextComponent from "./componentTypes/TextComponent.js";
 import ButtonComponent from "./componentTypes/ButtonComponent.js";
@@ -18,7 +18,6 @@ interface ComponentProps {
   type: ComponentType;
   style?: ComponentStyle;
   css?: React.CSSProperties;
-  events?: ComponentEvent;
   [key: string]: any;
 }
 
@@ -42,7 +41,6 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
 
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
-  const boundEvents = bindEvents(component);
 
   const Component = componentMap[component.type] || ContainerComponent;
 
@@ -51,7 +49,6 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
       component={component}
       className={className}
       style={inlineStyle}
-      events={boundEvents}
     />
   );
 };

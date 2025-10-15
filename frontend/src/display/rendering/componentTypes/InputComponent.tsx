@@ -13,7 +13,19 @@ interface InputComponentProps extends BaseComponentProps {
   };
 }
 
-const InputComponent: React.FC<InputComponentProps> = ({ component, className, style, events }) => {
+const InputComponent: React.FC<InputComponentProps> = ({ component, className, style }) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log(`⏎ Input "${component.id}" submitted with value:`, e.currentTarget.value);
+      // Input-specific Enter key behavior
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(`✏️ Input "${component.id}" changed to:`, e.target.value);
+    // Input change behavior
+  };
+
   return (
     <input
       id={component.id}
@@ -23,7 +35,8 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       placeholder={component.text || ""}
       className={className}
       style={style}
-      {...events}
+      onKeyDown={handleKeyDown}
+      onChange={handleChange}
       {...component.attributes}
     />
   );

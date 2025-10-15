@@ -1,14 +1,17 @@
 import React from "react";
 import ComponentRenderer from "../ComponentRenderer.js";
+import { BaseComponentProps } from "./TextComponent";
 
-export default function ModalComponent({ component, className, style, events }) {
+const ModalComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <div className={`modal-overlay ${className}`} style={style} {...events}>
+    <div className={`modal-overlay ${className}`} style={style}>
       <div className="modal-content">
-        {component.children?.map((child, idx) => (
+        {component.children?.map((child, idx: number) => (
           <ComponentRenderer key={child.id || idx} component={child} />
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default ModalComponent;

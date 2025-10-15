@@ -8,14 +8,20 @@ interface TextareaComponentProps extends BaseComponentProps {
   };
 }
 
-const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, className, style, events }) => {
+const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, className, style }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(`✏️ Textarea "${component.name}" changed to:`, e.target.value);
+    // Textarea change behavior
+  };
+
   return (
     <textarea
+      id={component.id}
       name={component.name}
       defaultValue={component.value as string || ""}
       className={className}
       style={style}
-      {...events}
+      onChange={handleChange}
       {...component.attributes}
     />
   );
