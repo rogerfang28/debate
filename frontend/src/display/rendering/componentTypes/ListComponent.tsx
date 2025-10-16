@@ -1,6 +1,9 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
 import buildClassName from "../buildClassName";
+// @ts-ignore - Generated protobuf file
+import { EventType } from "../../../../../src/gen/js/event_pb.js";
+import { getEntirePage } from "../../getEntirePage";
 
 interface ListItem {
   icon?: string;
@@ -12,7 +15,12 @@ interface ListItem {
 const ListComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const handleItemClick = (item: ListItem, idx: number) => {
     console.log(`📝 List "${component.id}" item ${idx} clicked:`, item.label);
-    // List item click behavior
+    
+    // Collect all page data and create event
+    const eventData = getEntirePage(component.id || 'unknown-list', EventType.CLICK);
+    
+    // TODO: Send to backend with item info
+    console.log(`📦 Collected ${eventData.getEventDataList().length} fields from page`);
   };
 
   return (
