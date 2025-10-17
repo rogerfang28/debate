@@ -1,8 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
-// @ts-ignore - Generated protobuf file
-import { EventType } from "../../../../../src/gen/js/event_pb.js";
-import { getEntirePage } from "../../getEntirePage";
+import handleEvent from "../../events/handleEvent";
 
 interface InputAttributes {
   type?: string;
@@ -21,17 +19,26 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
     if (e.key === 'Enter') {
       console.log(`⏎ Input "${component.id}" submitted with value:`, e.currentTarget.value);
       
-      // Collect all page data and create event
-      const eventData = getEntirePage(component.id || 'unknown-input', EventType.FORM_SUBMIT);
-      
-      // TODO: Send to backend
-      console.log(`📦 Collected ${eventData.getEventDataList().length} fields from page`);
+      // Send event to backend on Enter key
+      handleEvent(
+        e as any,
+        component,
+        'onSubmit',
+        component.id || 'unknown-input'
+      );
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(`✏️ Input "${component.id}" changed to:`, e.target.value);
-    // Note: We don't collect full page data on every keystroke, only on Enter
+    
+    // Send event to backend on change
+    handleEvent(
+      e as any,
+      component,
+      'onChange',
+      component.id || 'unknown-input'
+    );
   };
 
   return (

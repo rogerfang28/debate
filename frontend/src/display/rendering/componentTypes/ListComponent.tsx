@@ -1,9 +1,7 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
 import buildClassName from "../buildClassName";
-// @ts-ignore - Generated protobuf file
-import { EventType } from "../../../../../src/gen/js/event_pb.js";
-import { getEntirePage } from "../../getEntirePage";
+import handleEvent from "../../events/handleEvent";
 
 interface ListItem {
   icon?: string;
@@ -13,14 +11,16 @@ interface ListItem {
 }
 
 const ListComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
-  const handleItemClick = (item: ListItem, idx: number) => {
+  const handleItemClick = (e: React.MouseEvent, item: ListItem, idx: number) => {
     console.log(`📝 List "${component.id}" item ${idx} clicked:`, item.label);
     
-    // Collect all page data and create event
-    const eventData = getEntirePage(component.id || 'unknown-list', EventType.CLICK);
-    
-    // TODO: Send to backend with item info
-    console.log(`📦 Collected ${eventData.getEventDataList().length} fields from page`);
+    // Send event to backend on list item click
+    handleEvent(
+      e as any,
+      { ...component, value: item.label, text: item.label },
+      'onClick',
+      `${component.id}-item-${idx}` || 'unknown-list-item'
+    );
   };
 
   return (
@@ -33,7 +33,7 @@ const ListComponent: React.FC<BaseComponentProps> = ({ component, className, sty
           <li 
             key={idx} 
             className={itemClassName}
-            onClick={() => handleItemClick(item, idx)}
+            onClick={(e) => handleItemClick(e, item, idx)}
           >
             {item.icon && <span className={`icon ${item.icon}`} />} {item.label}
           </li>

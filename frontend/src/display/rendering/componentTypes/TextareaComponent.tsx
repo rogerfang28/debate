@@ -1,5 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
+import handleEvent from "../../events/handleEvent";
 
 interface TextareaComponentProps extends BaseComponentProps {
   component: BaseComponentProps['component'] & {
@@ -11,7 +12,14 @@ interface TextareaComponentProps extends BaseComponentProps {
 const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, className, style }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     console.log(`✏️ Textarea "${component.id}" changed to:`, e.target.value);
-    // Textarea change behavior
+    
+    // Send event to backend on change
+    handleEvent(
+      e as any,
+      component,
+      'onChange',
+      component.id || 'unknown-textarea'
+    );
   };
 
   return (
