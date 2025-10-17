@@ -1,6 +1,6 @@
 import sendDataToCPP from "../../backendCommunicator/postEventToCPP.ts";
 import { EventType } from "../../../../src/gen/js/event_pb.js";
-import getInfoFromPage from "../../utils/getInfoFromPage.js";
+import getEntirePage from "../getEntirePage.js";
 
 // TypeScript interfaces
 interface ComponentProps {
@@ -55,15 +55,9 @@ export default async function handleEvent(
       e.preventDefault();
     }
 
-    // // Collect additional data from specified components if collectFrom is provided
-    // let additionalData: { [key: string]: string | null } = {};
-    // if (collectFrom && collectFrom.length > 0) {
-    //   for (const componentId of collectFrom) {
-    //     const value = getInfoFromPage(componentId);
-    //     additionalData[componentId] = value;
-    //     console.log(`📋 Collected from ${componentId}:`, value);
-    //   }
-    // }
+    // Collect ALL input data from the entire page
+    const entirePageData = getEntirePage();
+    console.log(`📦 Collected ${Object.keys(entirePageData).length} fields from entire page`);
 
     await sendDataToCPP({
       componentId: component.id || "unknown",
@@ -71,13 +65,15 @@ export default async function handleEvent(
       actionId,
       eventName,
       data: {
+        // Include the specific event target data
         value: e?.target?.value,
         checked: e?.target?.checked,
         type: e?.target?.type,
         name: e?.target?.name || component.name,
         text: component.text,
         componentValue: component.value,
-        // ...additionalData, // Include collected data
+        // Include ALL page input data
+        ...entirePageData,
       },
       timestamp: Date.now(),
     });
