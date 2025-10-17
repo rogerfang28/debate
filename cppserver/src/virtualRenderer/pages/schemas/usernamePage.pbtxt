@@ -27,10 +27,6 @@ components {
     value: ""
     style { custom_class: "w-full max-w-sm p-3 rounded bg-gray-800 text-white border border-gray-600" }
     attributes { key: "placeholder" value: "Enter your username..." }
-    events {
-      key: "onEnter"
-      value: "{\"actionId\":\"submitUsername\",\"collectFrom\":[\"usernameInput\"]}"
-    }
   }
 
   children {
@@ -39,9 +35,5 @@ components {
     text: "Submit"
     name: "submit"
     style { custom_class: "px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" }
-    events {
-      key: "onClick"
-      value: "{\"actionId\":\"submitUsername\",\"collectFrom\":[\"usernameInput\"]}"
-    }
   }
 }

@@ -25,7 +25,6 @@ components {
         type: BUTTON
         text: "←"
         style { custom_class: "text-2xl text-blue-400 hover:bg-blue-400/10 p-2 rounded-lg transition-colors cursor-pointer border-none bg-transparent" }
-        events { key: "onClick" value: "goHome" }
       }
 
       children {
@@ -41,7 +40,6 @@ components {
       type: BUTTON
       text: "Logout"
       style { custom_class: "px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-lg hover:transform hover:-translate-y-0.5 transition-all" }
-      events { key: "onClick" value: "logout" }
     }
   }
 
@@ -116,7 +114,6 @@ components {
               type: BUTTON
               text: "✏️ Edit"
               style { custom_class: "px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm font-semibold rounded-md hover:transform hover:-translate-y-0.5 transition-all" }
-              events { key: "onClick" value: "toggleEditMode" }
             }
           }
 
@@ -130,7 +127,6 @@ components {
               text: "Enter username"
               name: "username"
               style { custom_class: "w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
-              events { key: "onChange" value: "updateUsername" }
             }
 
             children {
@@ -143,7 +139,6 @@ components {
                 type: BUTTON
                 text: "💾 Save Changes"
                 style { custom_class: "px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:transform hover:-translate-y-0.5 transition-all disabled:opacity-50" }
-                events { key: "onClick" value: "saveProfile" }
               }
 
               children {
@@ -151,7 +146,6 @@ components {
                 type: BUTTON
                 text: "Cancel"
                 style { custom_class: "px-4 py-2 bg-slate-600 text-white font-semibold rounded-lg hover:bg-slate-500 transition-colors" }
-                events { key: "onClick" value: "cancelEdit" }
               }
             }
           }
@@ -231,7 +225,6 @@ components {
               type: BUTTON
               text: "🏠 Home"
               style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
-              events { key: "onClick" value: "goHome" }
             }
 
             children {
@@ -239,7 +232,6 @@ components {
               type: BUTTON
               text: "🏠 My Rooms"
               style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
-              events { key: "onClick" value: "goHome" }
             }
           }
         }

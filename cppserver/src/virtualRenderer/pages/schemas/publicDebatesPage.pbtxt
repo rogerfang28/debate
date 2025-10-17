@@ -16,7 +16,6 @@ components {
       type: BUTTON
       text: "← Home"
       style { custom_class: "text-blue-400 hover:bg-blue-400/10 px-3 py-2 rounded-lg transition-colors border-none bg-transparent" }
-      events { key: "onClick" value: "goHome" }
     }
 
     children {
@@ -37,7 +36,6 @@ components {
       type: BUTTON
       text: "👤 Profile"
       style { custom_class: "px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm" }
-      events { key: "onClick" value: "goProfile" }
     }
 
     children {
@@ -45,7 +43,6 @@ components {
       type: BUTTON
       text: "🚪 Logout"
       style { custom_class: "px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg transition-colors text-sm" }
-      events { key: "onClick" value: "logout" }
     }
   }
 }
@@ -94,7 +91,6 @@ components {
         text: "Search debates..."
         name: "search"
         style { custom_class: "flex-1 p-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
-        events { key: "onChange" value: "updateSearchQuery" }
       }
 
       children {
@@ -102,7 +98,6 @@ components {
         type: BUTTON
         text: "🔍 Search"
         style { custom_class: "px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors" }
-        events { key: "onClick" value: "searchDebates" }
       }
     }
   }
@@ -145,7 +140,6 @@ components {
       id: "debateCard1"
       type: CARD
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
-      events { key: "onClick" value: "joinDebate" }
 
       children {
         id: "cardHeader1"
@@ -192,7 +186,6 @@ components {
       id: "debateCard2"
       type: CARD
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
-      events { key: "onClick" value: "joinDebate" }
 
       children {
         id: "cardHeader2"
@@ -239,7 +232,6 @@ components {
       id: "debateCard3"
       type: CARD
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
-      events { key: "onClick" value: "joinDebate" }
 
       children {
         id: "cardHeader3"
@@ -294,7 +286,6 @@ components {
       type: BUTTON
       text: "← Previous"
       style { custom_class: "px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors disabled:opacity-50" }
-      events { key: "onClick" value: "previousPage" }
     }
 
     children {
@@ -309,7 +300,6 @@ components {
       type: BUTTON
       text: "Next →"
       style { custom_class: "px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors" }
-      events { key: "onClick" value: "nextPage" }
     }
   }
 
