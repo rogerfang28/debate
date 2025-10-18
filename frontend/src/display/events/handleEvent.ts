@@ -49,8 +49,8 @@ export default async function handleEvent(
     }
 
     // Collect ALL input data from the entire page
-    const entirePageData = getEntirePage();
-    console.log(`📦 Collected ${Object.keys(entirePageData).length} fields from entire page`);
+    const entirePageData = getEntirePage(component.id);
+    console.log(`📦 Collected ${Object.keys(entirePageData).length} components from entire page`);
     console.log('📋 Full page data:', entirePageData);
 
     await postClientMessageToCPP({

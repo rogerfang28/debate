@@ -14,12 +14,13 @@ export interface PageData {
 }
 
 /**
- * Scans the entire DOM and collects all input field values.
- * Collects from: input, textarea, and select elements with IDs.
+ * Scans the entire DOM and collects all components (not just inputs).
+ * Collects from: input, textarea, select, button, and any element with an ID.
  * 
- * @returns Object mapping element IDs to their current values
+ * @param clickedComponentId - Optional ID of the component that was clicked
+ * @returns Object mapping element IDs to their current values/states
  */
-export function getEntirePage(): PageData {
+export function getEntirePage(clickedComponentId?: string): PageData {
   const pageData: PageData = {};
   let fieldCount = 0;
 
@@ -63,10 +64,37 @@ export function getEntirePage(): PageData {
     }
   });
 
-  console.log(`📦 getEntirePage collected ${fieldCount} fields:`, {
+  // Collect all buttons with clicked state
+  const buttons = document.querySelectorAll<HTMLButtonElement>('button[id]');
+  buttons.forEach((button) => {
+    if (!button.id) return;
+    
+    fieldCount++;
+    // Mark if this button was clicked
+    pageData[button.id] = button.id === clickedComponentId ? 'clicked' : 'not-clicked';
+  });
+
+  // Collect all other elements with IDs (divs, spans, etc.)
+  const allElements = document.querySelectorAll<HTMLElement>('[id]');
+  allElements.forEach((element) => {
+    if (!element.id) return;
+    
+    // Skip if already collected (input, textarea, select, button)
+    if (pageData.hasOwnProperty(element.id)) return;
+    
+    fieldCount++;
+    
+    // Get text content or empty string
+    const textContent = element.textContent?.trim() || '';
+    pageData[element.id] = textContent;
+  });
+
+  console.log(`📦 getEntirePage collected ${fieldCount} components:`, {
     inputCount: inputs.length,
     textareaCount: textareas.length,
     selectCount: selects.length,
+    buttonCount: buttons.length,
+    otherElements: allElements.length - inputs.length - textareas.length - selects.length - buttons.length,
     totalFields: Object.keys(pageData).length,
   });
 
