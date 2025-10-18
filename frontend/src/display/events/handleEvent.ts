@@ -1,5 +1,4 @@
-import sendDataToCPP from "../../backendCommunicator/postEventToCPP.ts";
-import { EventType } from "../../../../src/gen/js/event_pb.js";
+import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
 import getEntirePage from "../getEntirePage.js";
 
 // TypeScript interfaces
@@ -25,12 +24,6 @@ interface CustomEvent {
 }
 
 type EventName = 'onClick' | 'onChange' | 'onSubmit';
-
-const eventTypeMap: Record<EventName, EventType> = {
-  onClick: EventType.CLICK,
-  onChange: EventType.INPUT_CHANGE,
-  onSubmit: EventType.FORM_SUBMIT,
-};
 
 export default async function handleEvent(
   e: CustomEvent | null,
@@ -60,22 +53,12 @@ export default async function handleEvent(
     console.log(`📦 Collected ${Object.keys(entirePageData).length} fields from entire page`);
     console.log('📋 Full page data:', entirePageData);
 
-    await sendDataToCPP({
+    await postClientMessageToCPP({
       componentId: component.id || "unknown",
-      eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
+      eventType: eventName,
       actionId,
       eventName,
-      data: {
-        // Include the specific event target data
-        value: e?.target?.value,
-        checked: e?.target?.checked,
-        type: e?.target?.type,
-        name: e?.target?.name || component.name,
-        text: component.text,
-        componentValue: component.value,
-        // Include ALL page input data
-        ...entirePageData,
-      },
+      data: entirePageData, // Send complete page data
       timestamp: Date.now(),
     });
 

@@ -3,6 +3,7 @@
 #define _WIN32_WINNT 0x0A00
 
 #include "../virtualRenderer/virtualRenderer.h"  // Add this include
+#include "../../../src/gen/cpp/client_message.pb.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>
@@ -41,7 +42,51 @@ int main() {
 
   // ---------- POST / ----------
   svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handlePostRequest(req, res);
+    // renderer.handlePostRequest(req, res);
+    std::cout << "testAAAAAAAAAAAAAAAAA";
+  });
+
+  svr.Post("/clientmessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
+    std::cout << "CLIENT MESSAGE RECIEVED";
+    // renderer.handlePostRequest(req, res);
+    std::cout << "\n========================================\n";
+    std::cout << "📬 POST / received\n";
+    
+    // Parse ClientMessage protobuf
+    debate::ClientMessage client_message;
+    if (!client_message.ParseFromString(req.body)) {
+      std::cerr << "❌ Failed to parse ClientMessage\n";
+      res.status = 400;
+      res.set_content("Failed to parse ClientMessage", "text/plain");
+      return;
+    }
+
+    // Log the event info
+    std::cout << "✅ ClientMessage parsed successfully!\n";
+    std::cout << "\n--- Event Info ---\n";
+    std::cout << "Component ID: " << client_message.component_id() << "\n";
+    std::cout << "Event Type: " << client_message.event_type() << "\n";
+
+    // Log page data
+    if (client_message.has_page_data()) {
+      const auto& page_data = client_message.page_data();
+      std::cout << "\n--- Page Data ---\n";
+      std::cout << "Page ID: " << page_data.page_id() << "\n";
+      std::cout << "Components count: " << page_data.components_size() << "\n";
+      
+      std::cout << "\n--- All Components ---\n";
+      for (int i = 0; i < page_data.components_size(); i++) {
+        const auto& comp = page_data.components(i);
+        std::cout << "  [" << i << "] id: \"" << comp.id() 
+                  << "\" = \"" << comp.value() << "\"\n";
+      }
+    } else {
+      std::cout << "⚠️ No page data included\n";
+    }
+    
+    std::cout << "========================================\n\n";
+
+    res.status = 204;  // No Content
   });
 
   // ---------- Start server ----------
