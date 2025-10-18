@@ -1,0 +1,33 @@
+// syntax = "proto3";
+
+// package debate;
+
+// // Represents the complete state of a page's input fields
+// // Mirrors the data structure returned by getEntirePage() in TypeScript
+// message PageState {
+//   string page_id = 1; // Identifier for which page this state belongs to
+//   repeated FieldValue fields = 2; // All input field values
+//   int64 timestamp = 3; // When this state snapshot was taken
+// }
+
+// // Represents a single field's value from the page
+// message FieldValue {
+//   string field_id = 1; // The element's ID attribute
+//   FieldValueType value = 2; // The actual value
+// }
+
+// // Union type to support different field value types
+// message FieldValueType {
+//   oneof value {
+//     string text_value = 1; // For text inputs, textareas, single selects
+//     int64 number_value = 2; // For number inputs
+//     bool boolean_value = 3; // For checkboxes, radio buttons
+//     double decimal_value = 4; // For decimal numbers
+//     StringList multi_select_value = 5; // For multi-select dropdowns
+//   }
+// }
+
+// // Helper message for multi-select values
+// message StringList {
+//   repeated string values = 1;
+// }

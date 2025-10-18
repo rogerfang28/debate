@@ -22,8 +22,10 @@ bool openDB(const std::string& filename) {
 }
 
 void closeDB() {
-    if (db) sqlite3_close(db);
-    db = nullptr;
+    if (db) {
+        sqlite3_close(db);
+        db = nullptr;
+    }
 }
 
 // Execute a raw SQL command (no return)
