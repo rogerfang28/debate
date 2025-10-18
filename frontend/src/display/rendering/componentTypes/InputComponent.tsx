@@ -29,18 +29,6 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`✏️ Input "${component.id}" changed to:`, e.target.value);
-    
-    // Send event to backend on change
-    handleEvent(
-      e as any,
-      component,
-      'onChange',
-      component.id || 'unknown-input'
-    );
-  };
-
   return (
     <input
       id={component.id}
@@ -51,7 +39,6 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       className={className}
       style={style}
       onKeyDown={handleKeyDown}
-      onChange={handleChange}
       {...component.attributes}
     />
   );
