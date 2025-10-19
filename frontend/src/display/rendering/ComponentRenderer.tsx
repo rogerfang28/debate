@@ -42,6 +42,15 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
 
+  // Debug logging for button components
+  if (component.type === ComponentType.BUTTON) {
+    console.log("Button component:", {
+      id: component.id,
+      style: component.style,
+      className: className
+    });
+  }
+
   const Component = componentMap[component.type] || ContainerComponent;
 
   return (

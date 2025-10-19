@@ -1,146 +1,73 @@
 page_id: "home"
-title: "DebateGraph Home"
-
-components {
-  id: "navbar"
-  type: CONTAINER
-  style { custom_class: "flex justify-between items-center p-4 bg-gray-800 text-white" }
-
-  children {
-    id: "brand"
-    type: TEXT
-    text: "🗣️ DebatdadsdeGraph"
-    style { custom_class: "text-xl font-bold" }
-  }
-
-  children {
-    id: "navActions"
-    type: CONTAINER
-    style { custom_class: "flex gap-4" }
-
-    children {
-      id: "btnPublicDebates"
-      type: BUTTON
-      text: "🌍 Public Debates"
-      style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors" }
-    }
-
-    children {
-      id: "btnFriends"
-      type: BUTTON
-      text: "👥 Friends"
-      style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors" }
-    }
-
-    children {
-      id: "btnProfile"
-      type: BUTTON
-      text: "👤 Profile"
-      style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors" }
-    }
-
-    children {
-      id: "btnLogout"
-      type: BUTTON
-      text: "🚪 Logout"
-      style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition-colors" }
-    }
-  }
-}
+title: "Debate Topic Entry"
 
 components {
   id: "main"
   type: CONTAINER
-  style { custom_class: "p-8 max-w-4xl mx-auto" }
+  style { custom_class: "min-h-screen bg-gray-900 text-white p-8 flex flex-col items-center gap-6" }
 
   children {
-    id: "welcomeSection"
-    type: CONTAINER
-    style { custom_class: "text-center mb-12" }
-
-    children {
-      id: "welcomeTitle"
-      type: TEXT
-      text: "Your Debate Rooms"
-      style { custom_class: "text-4xl font-bold mb-4" }
-    }
-
-    children {
-      id: "welcomeDesc"
-      type: TEXT
-      text: "Create, join, and manage collaborative debate spaces"
-      style { custom_class: "text-gray-600 text-lg" }
-    }
+    id: "title"
+    type: TEXT
+    text: "Debate Topics"
+    style { custom_class: "text-3xl font-bold text-blue-400" }
   }
 
   children {
-    id: "actionSection"
-    type: CONTAINER
-    style { custom_class: "mb-12 max-w-md mx-auto" }
-
-    children {
-      id: "joinRoomForm"
-      type: INPUT
-      text: "Enter invite code"
-      name: "inviteCode"
-      style { custom_class: "w-full p-3 border border-gray-300 rounded mb-4" }
-    }
-
-    children {
-      id: "btnJoinRoom"
-      type: BUTTON
-      text: "Join"
-      style { custom_class: "w-full px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded font-medium transition-colors mb-4" }
-    }
-
-    children {
-      id: "btnCreateRoom"
-      type: BUTTON
-      text: "Create New Room"
-      style { custom_class: "w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors" }
-    }
+    id: "description"
+    type: TEXT
+    text: "Type a topic and submit. Existing topics appear below."
+    style { custom_class: "text-gray-300 text-center" }
   }
 
   children {
-    id: "testSection"
-    type: CONTAINER
-    style { custom_class: "mb-8 text-center" }
-
-    children {
-      id: "testRoomButton"
-      type: BUTTON
-      text: "🧪 Test Enter Room (Room 1)"
-      style { custom_class: "px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors" }
-    }
-  }
-
-  children {
-    id: "roomsSection"
-    type: CONTAINER
-
-    children {
-      id: "roomsTitle"
-      type: TEXT
-      text: "Your Rooms"
-      style { custom_class: "text-2xl font-bold mb-6" }
-    }
-
-    # NOTE: Your .proto doesn't support per-item style/events on ListItem.
-    # We'll store the label in items.label and (optionally) the intended action in items.value.
-    children {
-      id: "roomList"
-      type: LIST
-      style { custom_class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" }
-
-      items { label: "🌍 Climate Change Discussion" value: "enterRoom" }
-      items { label: "💡 Innovation Lab" value: "enterRoom" }
-    }
-  }
-
-  children {
-    id: "testButton"
+    id: "clearButton"
     type: BUTTON
-    text: "Test Button"
-    style { custom_class: "px-6 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg transition" }
+    text: "Clear All Topics"
+    name: "clear"
+    style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition" }
+  }
+
+  # Input field (sends event on Enter)
+  children {
+    id: "topicInput"
+    type: INPUT
+    name: "topic"
+    value: ""
+    style { custom_class: "w-full max-w-md p-3 rounded bg-gray-800 text-white border border-gray-600" }
+    attributes { key: "placeholder" value: "Enter a debate topic..." }
+  }
+
+  # Submit button (sends event on click)
+  children {
+    id: "submitButton"
+    type: BUTTON
+    text: "Submit Topic"
+    name: "submit"
+    style { custom_class: "px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" }
+  }
+
+  # Topics display (frontend hydrates after backend response)
+  children {
+    id: "topicsCard"
+    type: CARD
+    style { custom_class: "w-full max-w-md bg-gray-800 rounded-lg shadow p-4" }
+
+    children {
+      id: "topicsHeader"
+      type: TEXT
+      text: "Submitted Topics"
+      style { custom_class: "text-xl font-semibold text-white mb-3" }
+    }
+
+    children {
+      id: "topicsList"
+      type: LIST
+      style { custom_class: "flex flex-col gap-2" }
+
+      # placeholders; replace at runtime
+      # items { label: "🌎 Climate Change" value: "topic:climate-change" }
+      # items { label: "🤖 AI in Education" value: "topic:ai-education" }
+    }
   }
 }

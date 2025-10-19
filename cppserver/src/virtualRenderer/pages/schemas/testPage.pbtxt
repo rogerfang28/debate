@@ -21,14 +21,14 @@ components {
       children {
         id: "goToParentButton"
         type: BUTTON
-        text: "← Go to Parent"
+        text: "Go to Parent"
         style { custom_class: "px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-sm" }
       }
 
       children {
         id: "goHomeButton"
         type: BUTTON
-        text: "🏠 Home"
+        text: "Home"
         style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
       }
     }
@@ -48,7 +48,7 @@ components {
           id: "focusLabel"
           type: TEXT
           text: "Focusing on claim:"
-          style { custom_class: "text-sm text-gray-600 mb-2" }
+          style { custom_class: "text-sm text-white-600 mb-2" }
         }
 
         children {
