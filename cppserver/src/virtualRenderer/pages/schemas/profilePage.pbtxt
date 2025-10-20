@@ -9,11 +9,7 @@ components {
   children {
     id: "navbar"
     type: CONTAINER
-    style {
-      custom_class: "flex justify-between items-center p-6"
-      bg_color: "bg-gray-900"
-      text_color: "text-white"
-    }
+    style { custom_class: "flex justify-between items-center p-6 bg-gray-900 text-white" }
 
     children {
       id: "navLeft"
@@ -23,7 +19,7 @@ components {
       children {
         id: "btnBack"
         type: BUTTON
-        text: "←"
+        text: "Back"
         style { custom_class: "text-2xl text-blue-400 hover:bg-blue-400/10 p-2 rounded-lg transition-colors cursor-pointer border-none bg-transparent" }
       }
 
@@ -112,7 +108,7 @@ components {
             children {
               id: "btnEdit"
               type: BUTTON
-              text: "✏️ Edit"
+              text: "Edit"
               style { custom_class: "px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm font-semibold rounded-md hover:transform hover:-translate-y-0.5 transition-all" }
             }
           }
@@ -223,14 +219,14 @@ components {
             children {
               id: "btnGoHome"
               type: BUTTON
-              text: "🏠 Home"
+              text: "Home"
               style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
             }
 
             children {
               id: "btnViewRooms"
               type: BUTTON
-              text: "🏠 My Rooms"
+              text: "My Rooms"
               style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
             }
           }
