@@ -8,6 +8,37 @@ using namespace std;
 EventHandler::EventHandler(const debate::UIEvent& evt) : evt_(evt) {}
 EventHandler::EventHandler(debate::UIEvent&& evt) : evt_(move(evt)) {}
 
+void EventHandler::handleClientMessage(const debate::ClientMessage& msg, const string& user) {
+    cout << "\n========================================\n";
+    cout << "📬 ClientMessage received\n";
+    cout << "✅ ClientMessage parsed successfully!\n";
+    
+    // Log the event info
+    cout << "\n--- Event Info ---\n";
+    cout << "Component ID: " << msg.component_id() << "\n";
+    cout << "Event Type: " << msg.event_type() << "\n";
+    cout << "User: " << user << "\n";
+
+    // Log page data
+    if (msg.has_page_data()) {
+      const auto& page_data = msg.page_data();
+      cout << "\n--- Page Data ---\n";
+      cout << "Page ID: " << page_data.page_id() << "\n";
+      cout << "Components count: " << page_data.components_size() << "\n";
+      
+      cout << "\n--- All Components ---\n";
+      for (int i = 0; i < page_data.components_size(); i++) {
+        const auto& comp = page_data.components(i);
+        cout << "  [" << i << "] id: \"" << comp.id() 
+                  << "\" = \"" << comp.value() << "\"\n";
+      }
+    } else {
+      cout << "⚠️ No page data included\n";
+    }
+    
+    cout << "========================================\n\n";
+}
+
 void EventHandler::handleEvent(const string& user) {
     const string actionId = evt_.action_id();
     DebateModerator moderator; // internally uses DebateDatabaseHandler

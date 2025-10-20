@@ -65,19 +65,19 @@ components {
     type: CONTAINER
     style { custom_class: "flex-1 relative bg-gray-900" }
 
-    # Graph Canvas
-    children {
-      id: "graphCanvas"
-      type: GRAPH
-      style { custom_class: "w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" }
-
-      nodes { id: "node1" text: "Main Argument" x: 200 y: 150 }
-      nodes { id: "node2" text: "Supporting Evidence" x: 400 y: 250 }
-      nodes { id: "node3" text: "Counter Argument" x: 300 y: 350 }
-
-      edges { id: "edge1" source: "node1" target: "node2" }
-      edges { id: "edge2" source: "node2" target: "node3" }
-    }
+    # Graph Canvas (COMMENTED OUT - Not implemented yet)
+    # children {
+    #   id: "graphCanvas"
+    #   type: GRAPH
+    #   style { custom_class: "w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" }
+    #
+    #   nodes { id: "node1" text: "Main Argument" x: 200 y: 150 }
+    #   nodes { id: "node2" text: "Supporting Evidence" x: 400 y: 250 }
+    #   nodes { id: "node3" text: "Counter Argument" x: 300 y: 350 }
+    #
+    #   edges { id: "edge1" source: "node1" target: "node2" }
+    #   edges { id: "edge2" source: "node2" target: "node3" }
+    # }
 
     # Floating Toolbar
     children {
@@ -242,7 +242,7 @@ components {
 
     children {
       id: "formFields"
-      type: FORM
+      type: CONTAINER
       name: "entityForm"
       style { custom_class: "space-y-4" }
 

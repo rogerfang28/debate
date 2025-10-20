@@ -28,4 +28,5 @@ public:
     // HTTP request handlers
     void handleGetRequest(const httplib::Request& req, httplib::Response& res);
     void handlePostRequest(const httplib::Request& req, httplib::Response& res);
+    void handleClientMessage(const httplib::Request& req, httplib::Response& res);
 };

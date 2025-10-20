@@ -1,6 +1,7 @@
 #include "virtualRenderer.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/event.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 #include "./pageGenerator.h"
 #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
@@ -47,4 +48,21 @@ void VirtualRenderer::handlePostRequest(const httplib::Request& req, httplib::Re
 
     res.status = 204; // No Content
     std::cout << "POST / handled debate.UIEvent\n";
+}
+
+void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::Response& res) {
+    // Parse ClientMessage protobuf
+    debate::ClientMessage client_message;
+    if (!client_message.ParseFromString(req.body)) {
+      std::cerr << "❌ Failed to parse ClientMessage\n";
+      res.status = 400;
+      res.set_content("Failed to parse ClientMessage", "text/plain");
+      return;
+    }
+
+    // Pass to EventHandler for processing
+    EventHandler handler;
+    handler.handleClientMessage(client_message, "defaultUser");
+
+    res.status = 204;  // No Content
 }

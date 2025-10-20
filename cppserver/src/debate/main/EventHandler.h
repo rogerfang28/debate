@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "../../../src/gen/cpp/event.pb.h"  // for debate::UIEvent, EventType, EventValue
+#include "../../../src/gen/cpp/client_message.pb.h"  // for debate::ClientMessage
 
 // ---------------------------------------------------------
 // Class: EventHandler
@@ -17,9 +18,11 @@ public:
     // Constructors for lvalue and rvalue references
     explicit EventHandler(const debate::UIEvent& evt);
     explicit EventHandler(debate::UIEvent&& evt);
+    EventHandler() = default;  // Default constructor
 
     // Main event dispatcher (called by backend)
     void handleEvent(const std::string& user);
+    void handleClientMessage(const debate::ClientMessage& msg, const std::string& user);
 
     // Logging and debug helpers
     void Log(std::ostream& os) const;

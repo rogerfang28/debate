@@ -1,237 +1,73 @@
-page_id: "profile"
-title: "DebateGraph - Profile"
+page_id: "home"
+title: "Debate Topic Entry"
 
 components {
-  id: "pageWrapper"
+  id: "main"
   type: CONTAINER
-  style { custom_class: "px-4 sm:px-6 lg:px-8" }
+  style { custom_class: "min-h-screen bg-gray-900 text-white p-8 flex flex-col items-center gap-6" }
 
   children {
-    id: "navbar"
-    type: CONTAINER
-    style { custom_class: "flex justify-between items-center p-6 bg-gray-900 text-white" }
-
-    children {
-      id: "navLeft"
-      type: CONTAINER
-      style { custom_class: "flex items-center gap-4" }
-
-      children {
-        id: "btnBack"
-        type: BUTTON
-        text: "Back"
-        style { custom_class: "text-2xl text-blue-400 hover:bg-blue-400/10 p-2 rounded-lg transition-colors cursor-pointer border-none bg-transparent" }
-      }
-
-      children {
-        id: "pageTitle"
-        type: TEXT
-        text: "🗣️ DebateGraph - Profile"
-        style { custom_class: "text-2xl font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" }
-      }
-    }
-
-    children {
-      id: "btnLogout"
-      type: BUTTON
-      text: "Logout"
-      style { custom_class: "px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-lg hover:transform hover:-translate-y-0.5 transition-all" }
-    }
+    id: "title"
+    type: TEXT
+    text: "Debate Topics"
+    style { custom_class: "text-3xl font-bold text-blue-400" }
   }
 
   children {
-    id: "profileContainer"
-    type: CONTAINER
-    style { custom_class: "max-w-4xl mx-auto mt-8" }
+    id: "description"
+    type: TEXT
+    text: "Type a topic and submit. Existing topics appear below."
+    style { custom_class: "text-gray-300 text-center" }
+  }
+
+  children {
+    id: "clearButton"
+    type: BUTTON
+    text: "Clear All Topics"
+    name: "clear"
+    style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition" }
+  }
+
+  # Input field (sends event on Enter)
+  children {
+    id: "topicInput"
+    type: INPUT
+    name: "topic"
+    value: ""
+    style { custom_class: "w-full max-w-md p-3 rounded bg-gray-800 text-white border border-gray-600" }
+    attributes { key: "placeholder" value: "Enter a debate topic..." }
+  }
+
+  # Submit button (sends event on click)
+  children {
+    id: "submitButton"
+    type: BUTTON
+    text: "Submit Topic"
+    name: "submit"
+    style { custom_class: "px-6 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" }
+  }
+
+  # Topics display (frontend hydrates after backend response)
+  children {
+    id: "topicsCard"
+    type: CARD
+    style { custom_class: "w-full max-w-md bg-gray-800 rounded-lg shadow p-4" }
 
     children {
-      id: "profileCard"
-      type: CARD
-      style { custom_class: "bg-gradient-to-br from-slate-800 to-slate-700 border border-white/10 shadow-2xl rounded-2xl overflow-hidden" }
+      id: "topicsHeader"
+      type: TEXT
+      text: "Submitted Topics"
+      style { custom_class: "text-xl font-semibold text-white mb-3" }
+    }
 
-      children {
-        id: "profileHeader"
-        type: CONTAINER
-        style { custom_class: "bg-gradient-to-r from-blue-400 to-purple-400 p-8 text-center text-white" }
+    children {
+      id: "topicsList"
+      type: LIST
+      style { custom_class: "flex flex-col gap-2" }
 
-        children {
-          id: "avatarIcon"
-          type: CONTAINER
-          style { custom_class: "w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl" }
-          children { id: "avatarEmoji" type: TEXT text: "👤" }
-        }
-
-        children {
-          id: "userName"
-          type: TEXT
-          text: "Loading..."
-          style { custom_class: "text-3xl font-bold mb-2" }
-        }
-
-        children {
-          id: "userRole"
-          type: TEXT
-          text: "Debate Participant"
-          style { custom_class: "text-lg text-white/80" }
-        }
-      }
-
-      children {
-        id: "profileContent"
-        type: CONTAINER
-        style { custom_class: "p-8" }
-
-        children {
-          id: "errorMessage"
-          type: CONTAINER
-          style { custom_class: "hidden bg-red-500/10 border border-red-500/30 rounded-lg p-3 mb-6 text-red-300 text-sm" }
-          children { id: "errorText" type: TEXT text: "" }
-        }
-
-        children {
-          id: "usernameSection"
-          type: CONTAINER
-          style { custom_class: "mb-8" }
-
-          children {
-            id: "usernameHeader"
-            type: CONTAINER
-            style { custom_class: "flex justify-between items-center mb-4" }
-
-            children {
-              id: "usernameLabel"
-              type: TEXT
-              text: "Username"
-              style { custom_class: "text-lg font-semibold text-slate-200" }
-            }
-
-            children {
-              id: "btnEdit"
-              type: BUTTON
-              text: "Edit"
-              style { custom_class: "px-3 py-1.5 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm font-semibold rounded-md hover:transform hover:-translate-y-0.5 transition-all" }
-            }
-          }
-
-          children {
-            id: "usernameForm"
-            type: CONTAINER
-
-            children {
-              id: "usernameInput"
-              type: INPUT
-              text: "Enter username"
-              name: "username"
-              style { custom_class: "w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
-            }
-
-            children {
-              id: "saveButtonContainer"
-              type: CONTAINER
-              style { custom_class: "flex gap-3 mt-4" }
-
-              children {
-                id: "btnSaveProfile"
-                type: BUTTON
-                text: "💾 Save Changes"
-                style { custom_class: "px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:transform hover:-translate-y-0.5 transition-all disabled:opacity-50" }
-              }
-
-              children {
-                id: "btnCancel"
-                type: BUTTON
-                text: "Cancel"
-                style { custom_class: "px-4 py-2 bg-slate-600 text-white font-semibold rounded-lg hover:bg-slate-500 transition-colors" }
-              }
-            }
-          }
-        }
-
-        children {
-          id: "accountInfo"
-          type: CONTAINER
-          style { custom_class: "mb-8" }
-
-          children {
-            id: "accountInfoTitle"
-            type: TEXT
-            text: "Account Information"
-            style { custom_class: "text-lg font-semibold text-slate-200 mb-4" }
-          }
-
-          children {
-            id: "emailInfo"
-            type: CONTAINER
-            style { custom_class: "flex justify-between items-center py-3 border-b border-slate-600" }
-
-            children {
-              id: "emailLabel"
-              type: TEXT
-              text: "Email"
-              style { custom_class: "text-slate-300 font-medium" }
-            }
-
-            children {
-              id: "emailValue"
-              type: TEXT
-              text: "Loading..."
-              style { custom_class: "text-slate-200" }
-            }
-          }
-
-          children {
-            id: "joinDateInfo"
-            type: CONTAINER
-            style { custom_class: "flex justify-between items-center py-3" }
-
-            children {
-              id: "joinDateLabel"
-              type: TEXT
-              text: "Member Since"
-              style { custom_class: "text-slate-300 font-medium" }
-            }
-
-            children {
-              id: "joinDateValue"
-              type: TEXT
-              text: "Loading..."
-              style { custom_class: "text-slate-200" }
-            }
-          }
-        }
-
-        children {
-          id: "quickActions"
-          type: CONTAINER
-
-          children {
-            id: "quickActionsTitle"
-            type: TEXT
-            text: "Quick Actions"
-            style { custom_class: "text-lg font-semibold text-slate-200 mb-4" }
-          }
-
-          children {
-            id: "actionsGrid"
-            type: CONTAINER
-            style { custom_class: "grid grid-cols-2 gap-4" }
-
-            children {
-              id: "btnGoHome"
-              type: BUTTON
-              text: "Home"
-              style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
-            }
-
-            children {
-              id: "btnViewRooms"
-              type: BUTTON
-              text: "My Rooms"
-              style { custom_class: "p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors text-center font-medium" }
-            }
-          }
-        }
-      }
+      # placeholders; replace at runtime
+      # items { label: "🌎 Climate Change" value: "topic:climate-change" }
+      # items { label: "🤖 AI in Education" value: "topic:ai-education" }
     }
   }
 }

@@ -81,7 +81,7 @@ components {
 
     children {
       id: "searchForm"
-      type: FORM
+      type: CONTAINER
       name: "searchForm"
       style { custom_class: "flex gap-4 max-w-2xl mx-auto" }
 
