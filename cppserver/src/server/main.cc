@@ -41,10 +41,10 @@ int main() {
   });
 
   // ---------- POST / ----------
-  svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    // renderer.handlePostRequest(req, res);
-    std::cout << "testAAAAAAAAAAAAAAAAA";
-  });
+  // svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
+  //   // renderer.handlePostRequest(req, res);
+  //   std::cout << "testAAAAAAAAAAAAAAAAA";
+  // });
 
   svr.Post("/clientmessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
     renderer.handleClientMessage(req,res);
