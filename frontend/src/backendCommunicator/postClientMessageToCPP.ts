@@ -93,6 +93,13 @@ export default async function postClientMessageToCPP(
       // Reload to get the authenticated page
       window.location.reload();
     }
+    
+    // Check if this was a logout action
+    if (eventData.componentId === "logoutButton" && res.status === 200) {
+      console.log("🚪 Logout successful, reloading page...");
+      // Reload to show sign-in page
+      window.location.reload();
+    }
   } catch (err) {
     console.error("❌ Error sending ClientMessage to C++ server:", err);
   }

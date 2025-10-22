@@ -127,25 +127,12 @@ std::string generateHomePage(const std::string& user) {
         for (const auto& row : debates) {
             std::cerr << "[PageGen] Adding topic: " << row.at("TOPIC") << " with ID: " << row.at("ID") << std::endl;
             
-            // Create a container for each topic row (topic text + status)
-            auto* topicRow = topicsList->add_children();
-            topicRow->set_id("topicRow_" + row.at("ID"));
-            topicRow->set_type(ui::ComponentType::CONTAINER);
-            topicRow->mutable_style()->set_custom_class("flex items-center justify-between p-3 border-b border-gray-200 hover:bg-gray-50");
-            
-            // Topic text
-            auto* topicText = topicRow->add_children();
-            topicText->set_id("topicText_" + row.at("ID"));
-            topicText->set_type(ui::ComponentType::TEXT);
-            topicText->set_text(row.at("TOPIC"));
-            topicText->mutable_style()->set_custom_class("flex-1 text-gray-800");
-            
-            // Status indicator (instead of interactive button)
-            auto* statusIndicator = topicRow->add_children();
-            statusIndicator->set_id("statusIndicator_" + row.at("ID"));
-            statusIndicator->set_type(ui::ComponentType::TEXT);
-            statusIndicator->set_text("Available");
-            statusIndicator->mutable_style()->set_custom_class("px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium");
+            // Create a button for each topic (clickable to enter debate)
+            auto* topicButton = topicsList->add_children();
+            topicButton->set_id("topicButton_" + row.at("ID"));
+            topicButton->set_type(ui::ComponentType::BUTTON);
+            topicButton->set_text(row.at("TOPIC"));
+            topicButton->mutable_style()->set_custom_class("w-full p-3 text-left bg-gray-700 hover:bg-gray-600 text-white rounded-lg border border-gray-600 transition");
         }
         
         std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;

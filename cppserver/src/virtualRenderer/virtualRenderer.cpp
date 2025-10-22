@@ -180,6 +180,13 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
             }
         } else if (componentId == "clearButton" && eventType == "onClick") {
             evt.set_action_id("clearTopics");
+        } else if (componentId == "logoutButton" && eventType == "onClick") {
+            // Logout - clear cookie and return success
+            std::cout << "[Auth] Logging out user: " << user << "\n";
+            res.set_header("Set-Cookie", "user=; Path=/; Max-Age=0");
+            res.status = 200;
+            res.set_content("Logged out", "text/plain");
+            return;
         } else if (componentId.find("topicButton_") == 0 && eventType == "onClick") {
             evt.set_action_id("enterTopic");
             std::string topicID = componentId.substr(12); // Extract ID after "topicButton_"

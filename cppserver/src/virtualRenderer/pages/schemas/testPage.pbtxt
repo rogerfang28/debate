@@ -6,6 +6,15 @@ components {
   type: CONTAINER
   style { custom_class: "min-h-screen bg-gray-900 text-white p-8 flex flex-col items-center gap-6" }
 
+  # Logout button in top right
+  children {
+    id: "logoutButton"
+    type: BUTTON
+    text: "Logout"
+    name: "logout"
+    style { custom_class: "absolute top-4 right-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition border border-gray-600" }
+  }
+
   children {
     id: "title"
     type: TEXT
