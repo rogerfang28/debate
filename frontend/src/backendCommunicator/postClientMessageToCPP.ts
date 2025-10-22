@@ -32,18 +32,23 @@ export default async function postClientMessageToCPP(
     console.log("🚀 postClientMessageToCPP received:", eventData);
     console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
 
-    // Build list of ComponentData from the page data
-    const components = Object.entries(eventData.data || {}).map(([id, value]) =>
-      create(ComponentDataSchema, {
-        id,
-        value: String(value),
-        type: "", // Can enhance this later if needed
-      })
-    );
+    // Extract page ID (stored with special _pageId key)
+    const pageId = eventData.data?._pageId as string || "unknown-page";
+    
+    // Build list of ComponentData from the page data (excluding _pageId)
+    const components = Object.entries(eventData.data || {})
+      .filter(([id]) => id !== '_pageId') // Exclude the special _pageId field
+      .map(([id, value]) =>
+        create(ComponentDataSchema, {
+          id,
+          value: String(value),
+          type: "", // Can enhance this later if needed
+        })
+      );
 
     // Build PageData
     const pageData = create(PageDataSchema, {
-      pageId: "current-page", // TODO: Get actual page ID
+      pageId: pageId,
       components,
     });
 
@@ -72,7 +77,7 @@ export default async function postClientMessageToCPP(
       headers: { "Content-Type": "application/x-protobuf" },
       body: bytes as BodyInit,
       cache: "no-store",
-      credentials: opts?.withCredentials ? "include" : "same-origin",
+      credentials: "include", // Always include cookies
     });
 
     if (!res.ok) {
@@ -81,6 +86,13 @@ export default async function postClientMessageToCPP(
     }
 
     console.log("✅ ClientMessage posted to C++ server.");
+    
+    // Check if this was a sign-in action that set a cookie
+    if (clientMessage.pageData?.pageId === "enter_username" && res.status === 200) {
+      console.log("🔐 Sign-in successful, reloading page...");
+      // Reload to get the authenticated page
+      window.location.reload();
+    }
   } catch (err) {
     console.error("❌ Error sending ClientMessage to C++ server:", err);
   }

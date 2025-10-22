@@ -51,7 +51,7 @@ std::string generatePage(const std::string& user) {
         userDbHandler.addUser(user, "Default Name", "2024-01-01", "home");
     }
     if (location == "home") {
-        return generateTestPage(user);
+        return generateHomePage(user);
     } else {
         // for now assume that if not home, then debate page and location = topic
         std::string topicID = location; // This would be dynamic in a real scenario
@@ -61,7 +61,7 @@ std::string generatePage(const std::string& user) {
     }
 }
 
-std::string generateTestPage(const std::string& user) {
+std::string generateHomePage(const std::string& user) {
     // -------- Get absolute path to pbtxt --------
     std::filesystem::path exeDir = utils::getExeDir();
 
@@ -312,5 +312,43 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
     }
 
     std::cerr << "[PageGen] Generated page with size=" << page_bin.size() << " bytes\n";
+    return page_bin;
+}
+
+std::string generateSignInPage() {
+    // -------- Get absolute path to pbtxt --------
+    std::filesystem::path exeDir = utils::getExeDir();
+
+    // Navigate relative to exe location (usually cppserver/build/bin/)
+    std::filesystem::path pbtxtPath =
+        exeDir / ".." / ".." / "src" / "virtualRenderer" / "pages" / "schemas" / "usernamePage.pbtxt";
+
+    pbtxtPath = std::filesystem::weakly_canonical(pbtxtPath);
+
+    std::cerr << "[PageGen] Loading sign-in page from " << pbtxtPath.u8string() << "\n";
+
+    std::ifstream input(pbtxtPath, std::ios::binary);
+    if (!input) {
+        std::cerr << "[PageGen][ERR] Couldn't open " << pbtxtPath.u8string() << "\n";
+        return {};
+    }
+
+    std::ostringstream buffer;
+    buffer << input.rdbuf();
+
+    ui::Page page;
+    if (!google::protobuf::TextFormat::ParseFromString(buffer.str(), &page)) {
+        std::cerr << "[PageGen][ERR] TextFormat parse failed for sign-in page\n";
+        return {};
+    }
+
+    // -------- Serialize page --------
+    std::string page_bin;
+    if (!page.SerializeToString(&page_bin)) {
+        std::cerr << "[PageGen][ERR] Failed to serialize sign-in page\n";
+        return {};
+    }
+
+    std::cerr << "[PageGen] Generated sign-in page with size=" << page_bin.size() << " bytes\n";
     return page_bin;
 }

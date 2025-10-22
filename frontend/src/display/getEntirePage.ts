@@ -10,12 +10,14 @@
  */
 
 export interface PageData {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
+  _pageId?: string; // Special field for page ID
 }
 
 /**
  * Scans the entire DOM and collects all components (not just inputs).
  * Collects from: input, textarea, select, button, and any element with an ID.
+ * Also extracts the page ID from data-page-id attribute.
  * 
  * @param clickedComponentId - Optional ID of the component that was clicked
  * @returns Object mapping element IDs to their current values/states
@@ -23,6 +25,16 @@ export interface PageData {
 export function getEntirePage(clickedComponentId?: string): PageData {
   const pageData: PageData = {};
   let fieldCount = 0;
+
+  // Extract page ID from the page-root element
+  const pageRoot = document.querySelector('.page-root');
+  if (pageRoot) {
+    const pageId = pageRoot.getAttribute('data-page-id');
+    if (pageId) {
+      pageData._pageId = pageId;
+      console.log(`📄 Page ID: ${pageId}`);
+    }
+  }
 
   // Collect all input fields
   const inputs = document.querySelectorAll<HTMLInputElement>('input[id]');

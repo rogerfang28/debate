@@ -29,4 +29,8 @@ public:
     void handleGetRequest(const httplib::Request& req, httplib::Response& res);
     // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
     void handleClientMessage(const httplib::Request& req, httplib::Response& res);
+
+private:
+    // Helper to extract user from cookies (returns "guest" if not found)
+    std::string extractUserFromCookies(const httplib::Request& req);
 };

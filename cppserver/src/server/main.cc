@@ -24,9 +24,15 @@ int main() {
 
   // ---------- CORS middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
-    res.set_header("Access-Control-Allow-Origin", "*");
+    // Allow credentials (cookies) - must specify exact origin, not "*"
+    std::string origin = req.get_header_value("Origin");
+    if (origin.empty()) {
+      origin = "http://localhost:5173"; // Default for Vite dev server
+    }
+    res.set_header("Access-Control-Allow-Origin", origin);
     res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.set_header("Access-Control-Allow-Headers", "content-type");
+    res.set_header("Access-Control-Allow-Credentials", "true"); // Enable cookies
     res.set_header("Access-Control-Max-Age", "86400");
     if (req.method == "OPTIONS") {
       res.status = 204;

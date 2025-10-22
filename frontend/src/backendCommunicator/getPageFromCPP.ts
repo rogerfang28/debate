@@ -30,7 +30,7 @@ export default async function getPageFromCPP(opts?: {
       method: "GET",
       headers: { Accept: "application/x-protobuf" },
       cache: "no-store",
-      credentials: opts?.withCredentials ? "include" : "same-origin",
+      credentials: "include", // Always include cookies for authentication
     });
 
     if (!res.ok) {

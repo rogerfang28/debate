@@ -51,7 +51,7 @@ struct TableStruct_client_5fmessage_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_client_5fmessage_2eproto;
-namespace debate {
+namespace clientmessage {
 class ClientMessage;
 struct ClientMessageDefaultTypeInternal;
 extern ClientMessageDefaultTypeInternal _ClientMessage_default_instance_;
@@ -61,13 +61,13 @@ extern ComponentDataDefaultTypeInternal _ComponentData_default_instance_;
 class PageData;
 struct PageDataDefaultTypeInternal;
 extern PageDataDefaultTypeInternal _PageData_default_instance_;
-}  // namespace debate
+}  // namespace clientmessage
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
-namespace debate {
+namespace clientmessage {
 
 // ===================================================================
 
@@ -75,7 +75,7 @@ namespace debate {
 // -------------------------------------------------------------------
 
 class ComponentData final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.ComponentData) */ {
+/* @@protoc_insertion_point(class_definition:clientmessage.ComponentData) */ {
  public:
   inline ComponentData() : ComponentData(nullptr) {}
   ~ComponentData() PROTOBUF_FINAL;
@@ -199,7 +199,7 @@ class ComponentData final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.ComponentData"; }
+  static ::absl::string_view FullMessageName() { return "clientmessage.ComponentData"; }
 
  protected:
   explicit ComponentData(::google::protobuf::Arena* arena);
@@ -272,13 +272,13 @@ class ComponentData final : public ::google::protobuf::Message
   std::string* _internal_mutable_type();
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.ComponentData)
+  // @@protoc_insertion_point(class_scope:clientmessage.ComponentData)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 3, 0,
-      40, 2>
+      47, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -307,7 +307,7 @@ class ComponentData final : public ::google::protobuf::Message
 // -------------------------------------------------------------------
 
 class PageData final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.PageData) */ {
+/* @@protoc_insertion_point(class_definition:clientmessage.PageData) */ {
  public:
   inline PageData() : PageData(nullptr) {}
   ~PageData() PROTOBUF_FINAL;
@@ -431,7 +431,7 @@ class PageData final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.PageData"; }
+  static ::absl::string_view FullMessageName() { return "clientmessage.PageData"; }
 
  protected:
   explicit PageData(::google::protobuf::Arena* arena);
@@ -455,23 +455,23 @@ class PageData final : public ::google::protobuf::Message
     kComponentsFieldNumber = 2,
     kPageIdFieldNumber = 1,
   };
-  // repeated .debate.ComponentData components = 2 [json_name = "components"];
+  // repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
   int components_size() const;
   private:
   int _internal_components_size() const;
 
   public:
   void clear_components() ;
-  ::debate::ComponentData* mutable_components(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::ComponentData>* mutable_components();
+  ::clientmessage::ComponentData* mutable_components(int index);
+  ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>* mutable_components();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::debate::ComponentData>& _internal_components() const;
-  ::google::protobuf::RepeatedPtrField<::debate::ComponentData>* _internal_mutable_components();
+  const ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>& _internal_components() const;
+  ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>* _internal_mutable_components();
   public:
-  const ::debate::ComponentData& components(int index) const;
-  ::debate::ComponentData* add_components();
-  const ::google::protobuf::RepeatedPtrField<::debate::ComponentData>& components() const;
+  const ::clientmessage::ComponentData& components(int index) const;
+  ::clientmessage::ComponentData* add_components();
+  const ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>& components() const;
   // string page_id = 1 [json_name = "pageId"];
   void clear_page_id() ;
   const std::string& page_id() const;
@@ -488,13 +488,13 @@ class PageData final : public ::google::protobuf::Message
   std::string* _internal_mutable_page_id();
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.PageData)
+  // @@protoc_insertion_point(class_scope:clientmessage.PageData)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       1, 2, 1,
-      31, 2>
+      38, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -511,7 +511,7 @@ class PageData final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const PageData& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::debate::ComponentData > components_;
+    ::google::protobuf::RepeatedPtrField< ::clientmessage::ComponentData > components_;
     ::google::protobuf::internal::ArenaStringPtr page_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -522,7 +522,7 @@ class PageData final : public ::google::protobuf::Message
 // -------------------------------------------------------------------
 
 class ClientMessage final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.ClientMessage) */ {
+/* @@protoc_insertion_point(class_definition:clientmessage.ClientMessage) */ {
  public:
   inline ClientMessage() : ClientMessage(nullptr) {}
   ~ClientMessage() PROTOBUF_FINAL;
@@ -646,7 +646,7 @@ class ClientMessage final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.ClientMessage"; }
+  static ::absl::string_view FullMessageName() { return "clientmessage.ClientMessage"; }
 
  protected:
   explicit ClientMessage(::google::protobuf::Arena* arena);
@@ -703,28 +703,28 @@ class ClientMessage final : public ::google::protobuf::Message
   std::string* _internal_mutable_event_type();
 
   public:
-  // .debate.PageData page_data = 3 [json_name = "pageData"];
+  // .clientmessage.PageData page_data = 3 [json_name = "pageData"];
   bool has_page_data() const;
   void clear_page_data() ;
-  const ::debate::PageData& page_data() const;
-  PROTOBUF_NODISCARD ::debate::PageData* release_page_data();
-  ::debate::PageData* mutable_page_data();
-  void set_allocated_page_data(::debate::PageData* value);
-  void unsafe_arena_set_allocated_page_data(::debate::PageData* value);
-  ::debate::PageData* unsafe_arena_release_page_data();
+  const ::clientmessage::PageData& page_data() const;
+  PROTOBUF_NODISCARD ::clientmessage::PageData* release_page_data();
+  ::clientmessage::PageData* mutable_page_data();
+  void set_allocated_page_data(::clientmessage::PageData* value);
+  void unsafe_arena_set_allocated_page_data(::clientmessage::PageData* value);
+  ::clientmessage::PageData* unsafe_arena_release_page_data();
 
   private:
-  const ::debate::PageData& _internal_page_data() const;
-  ::debate::PageData* _internal_mutable_page_data();
+  const ::clientmessage::PageData& _internal_page_data() const;
+  ::clientmessage::PageData* _internal_mutable_page_data();
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.ClientMessage)
+  // @@protoc_insertion_point(class_scope:clientmessage.ClientMessage)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 3, 1,
-      51, 2>
+      58, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -745,7 +745,7 @@ class ClientMessage final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr component_id_;
     ::google::protobuf::internal::ArenaStringPtr event_type_;
-    ::debate::PageData* page_data_;
+    ::clientmessage::PageData* page_data_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -775,7 +775,7 @@ inline void ClientMessage::clear_component_id() {
 }
 inline const std::string& ClientMessage::component_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ClientMessage.component_id)
+  // @@protoc_insertion_point(field_get:clientmessage.ClientMessage.component_id)
   return _internal_component_id();
 }
 template <typename Arg_, typename... Args_>
@@ -783,11 +783,11 @@ inline PROTOBUF_ALWAYS_INLINE void ClientMessage::set_component_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.component_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.ClientMessage.component_id)
+  // @@protoc_insertion_point(field_set:clientmessage.ClientMessage.component_id)
 }
 inline std::string* ClientMessage::mutable_component_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_component_id();
-  // @@protoc_insertion_point(field_mutable:debate.ClientMessage.component_id)
+  // @@protoc_insertion_point(field_mutable:clientmessage.ClientMessage.component_id)
   return _s;
 }
 inline const std::string& ClientMessage::_internal_component_id() const {
@@ -804,7 +804,7 @@ inline std::string* ClientMessage::_internal_mutable_component_id() {
 }
 inline std::string* ClientMessage::release_component_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ClientMessage.component_id)
+  // @@protoc_insertion_point(field_release:clientmessage.ClientMessage.component_id)
   return _impl_.component_id_.Release();
 }
 inline void ClientMessage::set_allocated_component_id(std::string* value) {
@@ -813,7 +813,7 @@ inline void ClientMessage::set_allocated_component_id(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.component_id_.IsDefault()) {
     _impl_.component_id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.ClientMessage.component_id)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ClientMessage.component_id)
 }
 
 // string event_type = 2 [json_name = "eventType"];
@@ -823,7 +823,7 @@ inline void ClientMessage::clear_event_type() {
 }
 inline const std::string& ClientMessage::event_type() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ClientMessage.event_type)
+  // @@protoc_insertion_point(field_get:clientmessage.ClientMessage.event_type)
   return _internal_event_type();
 }
 template <typename Arg_, typename... Args_>
@@ -831,11 +831,11 @@ inline PROTOBUF_ALWAYS_INLINE void ClientMessage::set_event_type(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.event_type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.ClientMessage.event_type)
+  // @@protoc_insertion_point(field_set:clientmessage.ClientMessage.event_type)
 }
 inline std::string* ClientMessage::mutable_event_type() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_event_type();
-  // @@protoc_insertion_point(field_mutable:debate.ClientMessage.event_type)
+  // @@protoc_insertion_point(field_mutable:clientmessage.ClientMessage.event_type)
   return _s;
 }
 inline const std::string& ClientMessage::_internal_event_type() const {
@@ -852,7 +852,7 @@ inline std::string* ClientMessage::_internal_mutable_event_type() {
 }
 inline std::string* ClientMessage::release_event_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ClientMessage.event_type)
+  // @@protoc_insertion_point(field_release:clientmessage.ClientMessage.event_type)
   return _impl_.event_type_.Release();
 }
 inline void ClientMessage::set_allocated_event_type(std::string* value) {
@@ -861,10 +861,10 @@ inline void ClientMessage::set_allocated_event_type(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.event_type_.IsDefault()) {
     _impl_.event_type_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.ClientMessage.event_type)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ClientMessage.event_type)
 }
 
-// .debate.PageData page_data = 3 [json_name = "pageData"];
+// .clientmessage.PageData page_data = 3 [json_name = "pageData"];
 inline bool ClientMessage::has_page_data() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.page_data_ != nullptr);
@@ -875,33 +875,33 @@ inline void ClientMessage::clear_page_data() {
   if (_impl_.page_data_ != nullptr) _impl_.page_data_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::debate::PageData& ClientMessage::_internal_page_data() const {
+inline const ::clientmessage::PageData& ClientMessage::_internal_page_data() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::PageData* p = _impl_.page_data_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::PageData&>(::debate::_PageData_default_instance_);
+  const ::clientmessage::PageData* p = _impl_.page_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::clientmessage::PageData&>(::clientmessage::_PageData_default_instance_);
 }
-inline const ::debate::PageData& ClientMessage::page_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ClientMessage.page_data)
+inline const ::clientmessage::PageData& ClientMessage::page_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:clientmessage.ClientMessage.page_data)
   return _internal_page_data();
 }
-inline void ClientMessage::unsafe_arena_set_allocated_page_data(::debate::PageData* value) {
+inline void ClientMessage::unsafe_arena_set_allocated_page_data(::clientmessage::PageData* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.page_data_);
   }
-  _impl_.page_data_ = reinterpret_cast<::debate::PageData*>(value);
+  _impl_.page_data_ = reinterpret_cast<::clientmessage::PageData*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.ClientMessage.page_data)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:clientmessage.ClientMessage.page_data)
 }
-inline ::debate::PageData* ClientMessage::release_page_data() {
+inline ::clientmessage::PageData* ClientMessage::release_page_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::PageData* released = _impl_.page_data_;
+  ::clientmessage::PageData* released = _impl_.page_data_;
   _impl_.page_data_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
     auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
@@ -916,30 +916,30 @@ inline ::debate::PageData* ClientMessage::release_page_data() {
   }
   return released;
 }
-inline ::debate::PageData* ClientMessage::unsafe_arena_release_page_data() {
+inline ::clientmessage::PageData* ClientMessage::unsafe_arena_release_page_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ClientMessage.page_data)
+  // @@protoc_insertion_point(field_release:clientmessage.ClientMessage.page_data)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::PageData* temp = _impl_.page_data_;
+  ::clientmessage::PageData* temp = _impl_.page_data_;
   _impl_.page_data_ = nullptr;
   return temp;
 }
-inline ::debate::PageData* ClientMessage::_internal_mutable_page_data() {
+inline ::clientmessage::PageData* ClientMessage::_internal_mutable_page_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.page_data_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::PageData>(GetArena());
-    _impl_.page_data_ = reinterpret_cast<::debate::PageData*>(p);
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::clientmessage::PageData>(GetArena());
+    _impl_.page_data_ = reinterpret_cast<::clientmessage::PageData*>(p);
   }
   return _impl_.page_data_;
 }
-inline ::debate::PageData* ClientMessage::mutable_page_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::clientmessage::PageData* ClientMessage::mutable_page_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   _impl_._has_bits_[0] |= 0x00000001u;
-  ::debate::PageData* _msg = _internal_mutable_page_data();
-  // @@protoc_insertion_point(field_mutable:debate.ClientMessage.page_data)
+  ::clientmessage::PageData* _msg = _internal_mutable_page_data();
+  // @@protoc_insertion_point(field_mutable:clientmessage.ClientMessage.page_data)
   return _msg;
 }
-inline void ClientMessage::set_allocated_page_data(::debate::PageData* value) {
+inline void ClientMessage::set_allocated_page_data(::clientmessage::PageData* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (message_arena == nullptr) {
@@ -956,8 +956,8 @@ inline void ClientMessage::set_allocated_page_data(::debate::PageData* value) {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.page_data_ = reinterpret_cast<::debate::PageData*>(value);
-  // @@protoc_insertion_point(field_set_allocated:debate.ClientMessage.page_data)
+  _impl_.page_data_ = reinterpret_cast<::clientmessage::PageData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ClientMessage.page_data)
 }
 
 // -------------------------------------------------------------------
@@ -971,7 +971,7 @@ inline void PageData::clear_page_id() {
 }
 inline const std::string& PageData::page_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.PageData.page_id)
+  // @@protoc_insertion_point(field_get:clientmessage.PageData.page_id)
   return _internal_page_id();
 }
 template <typename Arg_, typename... Args_>
@@ -979,11 +979,11 @@ inline PROTOBUF_ALWAYS_INLINE void PageData::set_page_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.PageData.page_id)
+  // @@protoc_insertion_point(field_set:clientmessage.PageData.page_id)
 }
 inline std::string* PageData::mutable_page_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_page_id();
-  // @@protoc_insertion_point(field_mutable:debate.PageData.page_id)
+  // @@protoc_insertion_point(field_mutable:clientmessage.PageData.page_id)
   return _s;
 }
 inline const std::string& PageData::_internal_page_id() const {
@@ -1000,7 +1000,7 @@ inline std::string* PageData::_internal_mutable_page_id() {
 }
 inline std::string* PageData::release_page_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.PageData.page_id)
+  // @@protoc_insertion_point(field_release:clientmessage.PageData.page_id)
   return _impl_.page_id_.Release();
 }
 inline void PageData::set_allocated_page_id(std::string* value) {
@@ -1009,10 +1009,10 @@ inline void PageData::set_allocated_page_id(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.page_id_.IsDefault()) {
     _impl_.page_id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.PageData.page_id)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.PageData.page_id)
 }
 
-// repeated .debate.ComponentData components = 2 [json_name = "components"];
+// repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
 inline int PageData::_internal_components_size() const {
   return _internal_components().size();
 }
@@ -1023,39 +1023,39 @@ inline void PageData::clear_components() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.components_.Clear();
 }
-inline ::debate::ComponentData* PageData::mutable_components(int index)
+inline ::clientmessage::ComponentData* PageData::mutable_components(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.PageData.components)
+  // @@protoc_insertion_point(field_mutable:clientmessage.PageData.components)
   return _internal_mutable_components()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField<::debate::ComponentData>* PageData::mutable_components()
+inline ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>* PageData::mutable_components()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.PageData.components)
+  // @@protoc_insertion_point(field_mutable_list:clientmessage.PageData.components)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_components();
 }
-inline const ::debate::ComponentData& PageData::components(int index) const
+inline const ::clientmessage::ComponentData& PageData::components(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.PageData.components)
+  // @@protoc_insertion_point(field_get:clientmessage.PageData.components)
   return _internal_components().Get(index);
 }
-inline ::debate::ComponentData* PageData::add_components() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::clientmessage::ComponentData* PageData::add_components() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::ComponentData* _add = _internal_mutable_components()->Add();
-  // @@protoc_insertion_point(field_add:debate.PageData.components)
+  ::clientmessage::ComponentData* _add = _internal_mutable_components()->Add();
+  // @@protoc_insertion_point(field_add:clientmessage.PageData.components)
   return _add;
 }
-inline const ::google::protobuf::RepeatedPtrField<::debate::ComponentData>& PageData::components() const
+inline const ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>& PageData::components() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.PageData.components)
+  // @@protoc_insertion_point(field_list:clientmessage.PageData.components)
   return _internal_components();
 }
-inline const ::google::protobuf::RepeatedPtrField<::debate::ComponentData>&
+inline const ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>&
 PageData::_internal_components() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.components_;
 }
-inline ::google::protobuf::RepeatedPtrField<::debate::ComponentData>*
+inline ::google::protobuf::RepeatedPtrField<::clientmessage::ComponentData>*
 PageData::_internal_mutable_components() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.components_;
@@ -1072,7 +1072,7 @@ inline void ComponentData::clear_id() {
 }
 inline const std::string& ComponentData::id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ComponentData.id)
+  // @@protoc_insertion_point(field_get:clientmessage.ComponentData.id)
   return _internal_id();
 }
 template <typename Arg_, typename... Args_>
@@ -1080,11 +1080,11 @@ inline PROTOBUF_ALWAYS_INLINE void ComponentData::set_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.ComponentData.id)
+  // @@protoc_insertion_point(field_set:clientmessage.ComponentData.id)
 }
 inline std::string* ComponentData::mutable_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:debate.ComponentData.id)
+  // @@protoc_insertion_point(field_mutable:clientmessage.ComponentData.id)
   return _s;
 }
 inline const std::string& ComponentData::_internal_id() const {
@@ -1101,7 +1101,7 @@ inline std::string* ComponentData::_internal_mutable_id() {
 }
 inline std::string* ComponentData::release_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ComponentData.id)
+  // @@protoc_insertion_point(field_release:clientmessage.ComponentData.id)
   return _impl_.id_.Release();
 }
 inline void ComponentData::set_allocated_id(std::string* value) {
@@ -1110,7 +1110,7 @@ inline void ComponentData::set_allocated_id(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
     _impl_.id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.ComponentData.id)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ComponentData.id)
 }
 
 // string value = 2 [json_name = "value"];
@@ -1120,7 +1120,7 @@ inline void ComponentData::clear_value() {
 }
 inline const std::string& ComponentData::value() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ComponentData.value)
+  // @@protoc_insertion_point(field_get:clientmessage.ComponentData.value)
   return _internal_value();
 }
 template <typename Arg_, typename... Args_>
@@ -1128,11 +1128,11 @@ inline PROTOBUF_ALWAYS_INLINE void ComponentData::set_value(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.ComponentData.value)
+  // @@protoc_insertion_point(field_set:clientmessage.ComponentData.value)
 }
 inline std::string* ComponentData::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:debate.ComponentData.value)
+  // @@protoc_insertion_point(field_mutable:clientmessage.ComponentData.value)
   return _s;
 }
 inline const std::string& ComponentData::_internal_value() const {
@@ -1149,7 +1149,7 @@ inline std::string* ComponentData::_internal_mutable_value() {
 }
 inline std::string* ComponentData::release_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ComponentData.value)
+  // @@protoc_insertion_point(field_release:clientmessage.ComponentData.value)
   return _impl_.value_.Release();
 }
 inline void ComponentData::set_allocated_value(std::string* value) {
@@ -1158,7 +1158,7 @@ inline void ComponentData::set_allocated_value(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.value_.IsDefault()) {
     _impl_.value_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.ComponentData.value)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ComponentData.value)
 }
 
 // string type = 3 [json_name = "type"];
@@ -1168,7 +1168,7 @@ inline void ComponentData::clear_type() {
 }
 inline const std::string& ComponentData::type() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.ComponentData.type)
+  // @@protoc_insertion_point(field_get:clientmessage.ComponentData.type)
   return _internal_type();
 }
 template <typename Arg_, typename... Args_>
@@ -1176,11 +1176,11 @@ inline PROTOBUF_ALWAYS_INLINE void ComponentData::set_type(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.ComponentData.type)
+  // @@protoc_insertion_point(field_set:clientmessage.ComponentData.type)
 }
 inline std::string* ComponentData::mutable_type() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_type();
-  // @@protoc_insertion_point(field_mutable:debate.ComponentData.type)
+  // @@protoc_insertion_point(field_mutable:clientmessage.ComponentData.type)
   return _s;
 }
 inline const std::string& ComponentData::_internal_type() const {
@@ -1197,7 +1197,7 @@ inline std::string* ComponentData::_internal_mutable_type() {
 }
 inline std::string* ComponentData::release_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.ComponentData.type)
+  // @@protoc_insertion_point(field_release:clientmessage.ComponentData.type)
   return _impl_.type_.Release();
 }
 inline void ComponentData::set_allocated_type(std::string* value) {
@@ -1206,7 +1206,7 @@ inline void ComponentData::set_allocated_type(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.type_.IsDefault()) {
     _impl_.type_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.ComponentData.type)
+  // @@protoc_insertion_point(field_set_allocated:clientmessage.ComponentData.type)
 }
 
 #ifdef __GNUC__
@@ -1214,7 +1214,7 @@ inline void ComponentData::set_allocated_type(std::string* value) {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace debate
+}  // namespace clientmessage
 
 
 // @@protoc_insertion_point(global_scope)

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package debate;
+package clientmessage;
 
 // Simple message sent from client to server
 // Contains what was clicked + all component values on the page

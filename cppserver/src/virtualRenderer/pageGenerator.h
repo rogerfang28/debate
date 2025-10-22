@@ -29,11 +29,12 @@ void updateComponentText(ui::Component* root, const std::string& id, const std::
 // Returns: Serialized page data (application/x-protobuf)
 //
 // Example usage:
-//   std::string page = generatePage("roger");
+//   std::string page = generatePage("adam23");
 //   // send 'page' as HTTP response
 // ---------------------------------------------------------
-std::string generateTestPage(const std::string& user);
+std::string generateHomePage(const std::string& user);
 std::string generateDebateClaimPage(const std::string& user, const std::string& topic, const std::string& curClaim);
 std::string generatePage(const std::string& user);
+std::string generateSignInPage();
 
 #endif // PAGEGENERATOR_H

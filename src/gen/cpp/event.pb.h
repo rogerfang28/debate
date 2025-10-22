@@ -31,7 +31,6 @@
 #include "google/protobuf/map.h"  // IWYU pragma: export
 #include "google/protobuf/map_entry.h"
 #include "google/protobuf/map_field_inl.h"
-#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
 
@@ -55,79 +54,27 @@ struct TableStruct_event_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_event_2eproto;
-namespace debate {
-class EventData;
-struct EventDataDefaultTypeInternal;
-extern EventDataDefaultTypeInternal _EventData_default_instance_;
-class EventValue;
-struct EventValueDefaultTypeInternal;
-extern EventValueDefaultTypeInternal _EventValue_default_instance_;
-class StringList;
-struct StringListDefaultTypeInternal;
-extern StringListDefaultTypeInternal _StringList_default_instance_;
-class UIEvent;
-struct UIEventDefaultTypeInternal;
-extern UIEventDefaultTypeInternal _UIEvent_default_instance_;
-class UIEvent_DataEntry_DoNotUse;
-struct UIEvent_DataEntry_DoNotUseDefaultTypeInternal;
-extern UIEvent_DataEntry_DoNotUseDefaultTypeInternal _UIEvent_DataEntry_DoNotUse_default_instance_;
-class UIEvent_MetadataEntry_DoNotUse;
-struct UIEvent_MetadataEntry_DoNotUseDefaultTypeInternal;
-extern UIEvent_MetadataEntry_DoNotUseDefaultTypeInternal _UIEvent_MetadataEntry_DoNotUse_default_instance_;
-}  // namespace debate
+namespace event {
+class Event;
+struct EventDefaultTypeInternal;
+extern EventDefaultTypeInternal _Event_default_instance_;
+class Event_DataEntry_DoNotUse;
+struct Event_DataEntry_DoNotUseDefaultTypeInternal;
+extern Event_DataEntry_DoNotUseDefaultTypeInternal _Event_DataEntry_DoNotUse_default_instance_;
+}  // namespace event
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
-namespace debate {
-enum EventType : int {
-  UNKNOWN = 0,
-  CLICK = 1,
-  INPUT_CHANGE = 2,
-  FORM_SUBMIT = 3,
-  NODE_ADDED = 4,
-  NODE_REMOVED = 5,
-  EDGE_ADDED = 6,
-  EDGE_REMOVED = 7,
-  ACTION = 8,
-  EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::min(),
-  EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::max(),
-};
-
-bool EventType_IsValid(int value);
-extern const uint32_t EventType_internal_data_[];
-constexpr EventType EventType_MIN = static_cast<EventType>(0);
-constexpr EventType EventType_MAX = static_cast<EventType>(8);
-constexpr int EventType_ARRAYSIZE = 8 + 1;
-const ::google::protobuf::EnumDescriptor*
-EventType_descriptor();
-template <typename T>
-const std::string& EventType_Name(T value) {
-  static_assert(std::is_same<T, EventType>::value ||
-                    std::is_integral<T>::value,
-                "Incorrect type passed to EventType_Name().");
-  return EventType_Name(static_cast<EventType>(value));
-}
-template <>
-inline const std::string& EventType_Name(EventType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
-                                                 0, 8>(
-      static_cast<int>(value));
-}
-inline bool EventType_Parse(absl::string_view name, EventType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EventType>(
-      EventType_descriptor(), name, value);
-}
+namespace event {
 
 // ===================================================================
 
 
 // -------------------------------------------------------------------
 
-class UIEvent_MetadataEntry_DoNotUse final
+class Event_DataEntry_DoNotUse final
     : public ::google::protobuf::internal::MapEntry<
           std::string, std::string,
           ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -137,14 +84,14 @@ class UIEvent_MetadataEntry_DoNotUse final
       std::string, std::string,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
       ::google::protobuf::internal::WireFormatLite::TYPE_STRING>;
-  UIEvent_MetadataEntry_DoNotUse();
+  Event_DataEntry_DoNotUse();
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UIEvent_MetadataEntry_DoNotUse(
+  explicit PROTOBUF_CONSTEXPR Event_DataEntry_DoNotUse(
       ::google::protobuf::internal::ConstantInitialized);
-  explicit UIEvent_MetadataEntry_DoNotUse(::google::protobuf::Arena* arena);
-  static const UIEvent_MetadataEntry_DoNotUse* internal_default_instance() {
-    return reinterpret_cast<const UIEvent_MetadataEntry_DoNotUse*>(
-        &_UIEvent_MetadataEntry_DoNotUse_default_instance_);
+  explicit Event_DataEntry_DoNotUse(::google::protobuf::Arena* arena);
+  static const Event_DataEntry_DoNotUse* internal_default_instance() {
+    return reinterpret_cast<const Event_DataEntry_DoNotUse*>(
+        &_Event_DataEntry_DoNotUse_default_instance_);
   }
 
 
@@ -155,7 +102,7 @@ class UIEvent_MetadataEntry_DoNotUse final
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       1, 2, 0,
-      45, 2>
+      38, 2>
       _table_;
 
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -166,70 +113,31 @@ class UIEvent_MetadataEntry_DoNotUse final
 };
 // -------------------------------------------------------------------
 
-class UIEvent_DataEntry_DoNotUse final
-    : public ::google::protobuf::internal::MapEntry<
-          std::string, std::string,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING> {
+class Event final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:event.Event) */ {
  public:
-  using SuperType = ::google::protobuf::internal::MapEntry<
-      std::string, std::string,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>;
-  UIEvent_DataEntry_DoNotUse();
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UIEvent_DataEntry_DoNotUse(
-      ::google::protobuf::internal::ConstantInitialized);
-  explicit UIEvent_DataEntry_DoNotUse(::google::protobuf::Arena* arena);
-  static const UIEvent_DataEntry_DoNotUse* internal_default_instance() {
-    return reinterpret_cast<const UIEvent_DataEntry_DoNotUse*>(
-        &_UIEvent_DataEntry_DoNotUse_default_instance_);
-  }
-
-
- private:
-  friend class ::google::protobuf::MessageLite;
-  friend struct ::TableStruct_event_2eproto;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      41, 2>
-      _table_;
-
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-};
-// -------------------------------------------------------------------
-
-class StringList final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.StringList) */ {
- public:
-  inline StringList() : StringList(nullptr) {}
-  ~StringList() PROTOBUF_FINAL;
+  inline Event() : Event(nullptr) {}
+  ~Event() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(StringList* msg, std::destroying_delete_t) {
+  void operator delete(Event* msg, std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(StringList));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Event));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR StringList(
+  explicit PROTOBUF_CONSTEXPR Event(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline StringList(const StringList& from) : StringList(nullptr, from) {}
-  inline StringList(StringList&& from) noexcept
-      : StringList(nullptr, std::move(from)) {}
-  inline StringList& operator=(const StringList& from) {
+  inline Event(const Event& from) : Event(nullptr, from) {}
+  inline Event(Event&& from) noexcept
+      : Event(nullptr, std::move(from)) {}
+  inline Event& operator=(const Event& from) {
     CopyFrom(from);
     return *this;
   }
-  inline StringList& operator=(StringList&& from) noexcept {
+  inline Event& operator=(Event&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -257,16 +165,16 @@ class StringList final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const StringList& default_instance() {
+  static const Event& default_instance() {
     return *internal_default_instance();
   }
-  static inline const StringList* internal_default_instance() {
-    return reinterpret_cast<const StringList*>(
-        &_StringList_default_instance_);
+  static inline const Event* internal_default_instance() {
+    return reinterpret_cast<const Event*>(
+        &_Event_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
-  friend void swap(StringList& a, StringList& b) { a.Swap(&b); }
-  inline void Swap(StringList* other) {
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(Event& a, Event& b) { a.Swap(&b); }
+  inline void Swap(Event* other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -274,7 +182,7 @@ class StringList final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(StringList* other) {
+  void UnsafeArenaSwap(Event* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -282,13 +190,13 @@ class StringList final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  StringList* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<StringList>(arena);
+  Event* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Event>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const StringList& from);
+  void CopyFrom(const Event& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const StringList& from) { StringList::MergeImpl(*this, from); }
+  void MergeFrom(const Event& from) { Event::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -325,18 +233,18 @@ class StringList final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(StringList* other);
+  void InternalSwap(Event* other);
  private:
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.StringList"; }
+  static ::absl::string_view FullMessageName() { return "event.Event"; }
 
  protected:
-  explicit StringList(::google::protobuf::Arena* arena);
-  StringList(::google::protobuf::Arena* arena, const StringList& from);
-  StringList(::google::protobuf::Arena* arena, StringList&& from) noexcept
-      : StringList(arena) {
+  explicit Event(::google::protobuf::Arena* arena);
+  Event(::google::protobuf::Arena* arena, const Event& from);
+  Event(::google::protobuf::Arena* arena, Event&& from) noexcept
+      : Event(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -351,732 +259,10 @@ class StringList final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kValuesFieldNumber = 1,
+    kDataFieldNumber = 2,
+    kActionIdFieldNumber = 1,
   };
-  // repeated string values = 1 [json_name = "values"];
-  int values_size() const;
-  private:
-  int _internal_values_size() const;
-
-  public:
-  void clear_values() ;
-  const std::string& values(int index) const;
-  std::string* mutable_values(int index);
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_values(int index, Arg_&& value, Args_... args);
-  std::string* add_values();
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void add_values(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<std::string>& values() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* mutable_values();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_values() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_values();
-
-  public:
-  // @@protoc_insertion_point(class_scope:debate.StringList)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      32, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const StringList& from_msg);
-    ::google::protobuf::RepeatedPtrField<std::string> values_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_event_2eproto;
-};
-// -------------------------------------------------------------------
-
-class EventValue final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.EventValue) */ {
- public:
-  inline EventValue() : EventValue(nullptr) {}
-  ~EventValue() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(EventValue* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(EventValue));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR EventValue(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline EventValue(const EventValue& from) : EventValue(nullptr, from) {}
-  inline EventValue(EventValue&& from) noexcept
-      : EventValue(nullptr, std::move(from)) {}
-  inline EventValue& operator=(const EventValue& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline EventValue& operator=(EventValue&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const EventValue& default_instance() {
-    return *internal_default_instance();
-  }
-  enum ValueCase {
-    kTextValue = 1,
-    kNumberValue = 2,
-    kBooleanValue = 3,
-    kDecimalValue = 4,
-    kBinaryValue = 5,
-    kListValue = 6,
-    VALUE_NOT_SET = 0,
-  };
-  static inline const EventValue* internal_default_instance() {
-    return reinterpret_cast<const EventValue*>(
-        &_EventValue_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 4;
-  friend void swap(EventValue& a, EventValue& b) { a.Swap(&b); }
-  inline void Swap(EventValue* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(EventValue* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  EventValue* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<EventValue>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const EventValue& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const EventValue& from) { EventValue::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(EventValue* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.EventValue"; }
-
- protected:
-  explicit EventValue(::google::protobuf::Arena* arena);
-  EventValue(::google::protobuf::Arena* arena, const EventValue& from);
-  EventValue(::google::protobuf::Arena* arena, EventValue&& from) noexcept
-      : EventValue(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kTextValueFieldNumber = 1,
-    kNumberValueFieldNumber = 2,
-    kBooleanValueFieldNumber = 3,
-    kDecimalValueFieldNumber = 4,
-    kBinaryValueFieldNumber = 5,
-    kListValueFieldNumber = 6,
-  };
-  // string text_value = 1 [json_name = "textValue"];
-  bool has_text_value() const;
-  void clear_text_value() ;
-  const std::string& text_value() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_text_value(Arg_&& arg, Args_... args);
-  std::string* mutable_text_value();
-  PROTOBUF_NODISCARD std::string* release_text_value();
-  void set_allocated_text_value(std::string* value);
-
-  private:
-  const std::string& _internal_text_value() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_text_value(
-      const std::string& value);
-  std::string* _internal_mutable_text_value();
-
-  public:
-  // int64 number_value = 2 [json_name = "numberValue"];
-  bool has_number_value() const;
-  void clear_number_value() ;
-  ::int64_t number_value() const;
-  void set_number_value(::int64_t value);
-
-  private:
-  ::int64_t _internal_number_value() const;
-  void _internal_set_number_value(::int64_t value);
-
-  public:
-  // bool boolean_value = 3 [json_name = "booleanValue"];
-  bool has_boolean_value() const;
-  void clear_boolean_value() ;
-  bool boolean_value() const;
-  void set_boolean_value(bool value);
-
-  private:
-  bool _internal_boolean_value() const;
-  void _internal_set_boolean_value(bool value);
-
-  public:
-  // double decimal_value = 4 [json_name = "decimalValue"];
-  bool has_decimal_value() const;
-  void clear_decimal_value() ;
-  double decimal_value() const;
-  void set_decimal_value(double value);
-
-  private:
-  double _internal_decimal_value() const;
-  void _internal_set_decimal_value(double value);
-
-  public:
-  // bytes binary_value = 5 [json_name = "binaryValue"];
-  bool has_binary_value() const;
-  void clear_binary_value() ;
-  const std::string& binary_value() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_binary_value(Arg_&& arg, Args_... args);
-  std::string* mutable_binary_value();
-  PROTOBUF_NODISCARD std::string* release_binary_value();
-  void set_allocated_binary_value(std::string* value);
-
-  private:
-  const std::string& _internal_binary_value() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_binary_value(
-      const std::string& value);
-  std::string* _internal_mutable_binary_value();
-
-  public:
-  // .debate.StringList list_value = 6 [json_name = "listValue"];
-  bool has_list_value() const;
-  private:
-  bool _internal_has_list_value() const;
-
-  public:
-  void clear_list_value() ;
-  const ::debate::StringList& list_value() const;
-  PROTOBUF_NODISCARD ::debate::StringList* release_list_value();
-  ::debate::StringList* mutable_list_value();
-  void set_allocated_list_value(::debate::StringList* value);
-  void unsafe_arena_set_allocated_list_value(::debate::StringList* value);
-  ::debate::StringList* unsafe_arena_release_list_value();
-
-  private:
-  const ::debate::StringList& _internal_list_value() const;
-  ::debate::StringList* _internal_mutable_list_value();
-
-  public:
-  void clear_value();
-  ValueCase value_case() const;
-  // @@protoc_insertion_point(class_scope:debate.EventValue)
- private:
-  class _Internal;
-  void set_has_text_value();
-  void set_has_number_value();
-  void set_has_boolean_value();
-  void set_has_decimal_value();
-  void set_has_binary_value();
-  void set_has_list_value();
-  inline bool has_value() const;
-  inline void clear_has_value();
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 6, 1,
-      36, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const EventValue& from_msg);
-    union ValueUnion {
-      constexpr ValueUnion() : _constinit_{} {}
-      ::google::protobuf::internal::ConstantInitialized _constinit_;
-      ::google::protobuf::internal::ArenaStringPtr text_value_;
-      ::int64_t number_value_;
-      bool boolean_value_;
-      double decimal_value_;
-      ::google::protobuf::internal::ArenaStringPtr binary_value_;
-      ::debate::StringList* list_value_;
-    } value_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::uint32_t _oneof_case_[1];
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_event_2eproto;
-};
-// -------------------------------------------------------------------
-
-class EventData final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.EventData) */ {
- public:
-  inline EventData() : EventData(nullptr) {}
-  ~EventData() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(EventData* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(EventData));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR EventData(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline EventData(const EventData& from) : EventData(nullptr, from) {}
-  inline EventData(EventData&& from) noexcept
-      : EventData(nullptr, std::move(from)) {}
-  inline EventData& operator=(const EventData& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline EventData& operator=(EventData&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const EventData& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const EventData* internal_default_instance() {
-    return reinterpret_cast<const EventData*>(
-        &_EventData_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 3;
-  friend void swap(EventData& a, EventData& b) { a.Swap(&b); }
-  inline void Swap(EventData* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(EventData* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  EventData* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<EventData>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const EventData& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const EventData& from) { EventData::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(EventData* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.EventData"; }
-
- protected:
-  explicit EventData(::google::protobuf::Arena* arena);
-  EventData(::google::protobuf::Arena* arena, const EventData& from);
-  EventData(::google::protobuf::Arena* arena, EventData&& from) noexcept
-      : EventData(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kKeyFieldNumber = 1,
-    kValueFieldNumber = 2,
-  };
-  // string key = 1 [json_name = "key"];
-  void clear_key() ;
-  const std::string& key() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_key(Arg_&& arg, Args_... args);
-  std::string* mutable_key();
-  PROTOBUF_NODISCARD std::string* release_key();
-  void set_allocated_key(std::string* value);
-
-  private:
-  const std::string& _internal_key() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_key(
-      const std::string& value);
-  std::string* _internal_mutable_key();
-
-  public:
-  // .debate.EventValue value = 2 [json_name = "value"];
-  bool has_value() const;
-  void clear_value() ;
-  const ::debate::EventValue& value() const;
-  PROTOBUF_NODISCARD ::debate::EventValue* release_value();
-  ::debate::EventValue* mutable_value();
-  void set_allocated_value(::debate::EventValue* value);
-  void unsafe_arena_set_allocated_value(::debate::EventValue* value);
-  ::debate::EventValue* unsafe_arena_release_value();
-
-  private:
-  const ::debate::EventValue& _internal_value() const;
-  ::debate::EventValue* _internal_mutable_value();
-
-  public:
-  // @@protoc_insertion_point(class_scope:debate.EventData)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 1,
-      28, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const EventData& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr key_;
-    ::debate::EventValue* value_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_event_2eproto;
-};
-// -------------------------------------------------------------------
-
-class UIEvent final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.UIEvent) */ {
- public:
-  inline UIEvent() : UIEvent(nullptr) {}
-  ~UIEvent() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(UIEvent* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(UIEvent));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UIEvent(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline UIEvent(const UIEvent& from) : UIEvent(nullptr, from) {}
-  inline UIEvent(UIEvent&& from) noexcept
-      : UIEvent(nullptr, std::move(from)) {}
-  inline UIEvent& operator=(const UIEvent& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline UIEvent& operator=(UIEvent&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const UIEvent& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const UIEvent* internal_default_instance() {
-    return reinterpret_cast<const UIEvent*>(
-        &_UIEvent_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 2;
-  friend void swap(UIEvent& a, UIEvent& b) { a.Swap(&b); }
-  inline void Swap(UIEvent* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(UIEvent* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  UIEvent* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<UIEvent>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const UIEvent& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const UIEvent& from) { UIEvent::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(UIEvent* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.UIEvent"; }
-
- protected:
-  explicit UIEvent(::google::protobuf::Arena* arena);
-  UIEvent(::google::protobuf::Arena* arena, const UIEvent& from);
-  UIEvent(::google::protobuf::Arena* arena, UIEvent&& from) noexcept
-      : UIEvent(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kDataFieldNumber = 5,
-    kEventDataFieldNumber = 7,
-    kMetadataFieldNumber = 8,
-    kEventIdFieldNumber = 1,
-    kComponentIdFieldNumber = 2,
-    kActionIdFieldNumber = 6,
-    kTimestampFieldNumber = 4,
-    kTypeFieldNumber = 3,
-  };
-  // map<string, string> data = 5 [json_name = "data"];
+  // map<string, string> data = 2 [json_name = "data"];
   int data_size() const;
   private:
   int _internal_data_size() const;
@@ -1091,71 +277,7 @@ class UIEvent final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_data();
 
   public:
-  // repeated .debate.EventData event_data = 7 [json_name = "eventData"];
-  int event_data_size() const;
-  private:
-  int _internal_event_data_size() const;
-
-  public:
-  void clear_event_data() ;
-  ::debate::EventData* mutable_event_data(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::EventData>* mutable_event_data();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::debate::EventData>& _internal_event_data() const;
-  ::google::protobuf::RepeatedPtrField<::debate::EventData>* _internal_mutable_event_data();
-  public:
-  const ::debate::EventData& event_data(int index) const;
-  ::debate::EventData* add_event_data();
-  const ::google::protobuf::RepeatedPtrField<::debate::EventData>& event_data() const;
-  // map<string, string> metadata = 8 [json_name = "metadata"];
-  int metadata_size() const;
-  private:
-  int _internal_metadata_size() const;
-
-  public:
-  void clear_metadata() ;
-  const ::google::protobuf::Map<std::string, std::string>& metadata() const;
-  ::google::protobuf::Map<std::string, std::string>* mutable_metadata();
-
-  private:
-  const ::google::protobuf::Map<std::string, std::string>& _internal_metadata() const;
-  ::google::protobuf::Map<std::string, std::string>* _internal_mutable_metadata();
-
-  public:
-  // string event_id = 1 [json_name = "eventId"];
-  void clear_event_id() ;
-  const std::string& event_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_event_id(Arg_&& arg, Args_... args);
-  std::string* mutable_event_id();
-  PROTOBUF_NODISCARD std::string* release_event_id();
-  void set_allocated_event_id(std::string* value);
-
-  private:
-  const std::string& _internal_event_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_event_id(
-      const std::string& value);
-  std::string* _internal_mutable_event_id();
-
-  public:
-  // string component_id = 2 [json_name = "componentId"];
-  void clear_component_id() ;
-  const std::string& component_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_component_id(Arg_&& arg, Args_... args);
-  std::string* mutable_component_id();
-  PROTOBUF_NODISCARD std::string* release_component_id();
-  void set_allocated_component_id(std::string* value);
-
-  private:
-  const std::string& _internal_component_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_component_id(
-      const std::string& value);
-  std::string* _internal_mutable_component_id();
-
-  public:
-  // string action_id = 6 [json_name = "actionId"];
+  // string action_id = 1 [json_name = "actionId"];
   void clear_action_id() ;
   const std::string& action_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1171,33 +293,13 @@ class UIEvent final : public ::google::protobuf::Message
   std::string* _internal_mutable_action_id();
 
   public:
-  // int64 timestamp = 4 [json_name = "timestamp"];
-  void clear_timestamp() ;
-  ::int64_t timestamp() const;
-  void set_timestamp(::int64_t value);
-
-  private:
-  ::int64_t _internal_timestamp() const;
-  void _internal_set_timestamp(::int64_t value);
-
-  public:
-  // .debate.EventType type = 3 [json_name = "type"];
-  void clear_type() ;
-  ::debate::EventType type() const;
-  void set_type(::debate::EventType value);
-
-  private:
-  ::debate::EventType _internal_type() const;
-  void _internal_set_type(::debate::EventType value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:debate.UIEvent)
+  // @@protoc_insertion_point(class_scope:event.Event)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 8, 3,
-      72, 2>
+      0, 2, 1,
+      33, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1213,21 +315,12 @@ class UIEvent final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const UIEvent& from_msg);
-    ::google::protobuf::internal::MapField<UIEvent_DataEntry_DoNotUse, std::string, std::string,
+                          const Event& from_msg);
+    ::google::protobuf::internal::MapField<Event_DataEntry_DoNotUse, std::string, std::string,
                       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
                       ::google::protobuf::internal::WireFormatLite::TYPE_STRING>
         data_;
-    ::google::protobuf::RepeatedPtrField< ::debate::EventData > event_data_;
-    ::google::protobuf::internal::MapField<UIEvent_MetadataEntry_DoNotUse, std::string, std::string,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>
-        metadata_;
-    ::google::protobuf::internal::ArenaStringPtr event_id_;
-    ::google::protobuf::internal::ArenaStringPtr component_id_;
     ::google::protobuf::internal::ArenaStringPtr action_id_;
-    ::int64_t timestamp_;
-    int type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1251,878 +344,82 @@ class UIEvent final : public ::google::protobuf::Message
 
 // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
+// Event
 
-// UIEvent
-
-// string event_id = 1 [json_name = "eventId"];
-inline void UIEvent::clear_event_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.event_id_.ClearToEmpty();
-}
-inline const std::string& UIEvent::event_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.event_id)
-  return _internal_event_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void UIEvent::set_event_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.event_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.UIEvent.event_id)
-}
-inline std::string* UIEvent::mutable_event_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_event_id();
-  // @@protoc_insertion_point(field_mutable:debate.UIEvent.event_id)
-  return _s;
-}
-inline const std::string& UIEvent::_internal_event_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.event_id_.Get();
-}
-inline void UIEvent::_internal_set_event_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.event_id_.Set(value, GetArena());
-}
-inline std::string* UIEvent::_internal_mutable_event_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.event_id_.Mutable( GetArena());
-}
-inline std::string* UIEvent::release_event_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.UIEvent.event_id)
-  return _impl_.event_id_.Release();
-}
-inline void UIEvent::set_allocated_event_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.event_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.event_id_.IsDefault()) {
-    _impl_.event_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.event_id)
-}
-
-// string component_id = 2 [json_name = "componentId"];
-inline void UIEvent::clear_component_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.component_id_.ClearToEmpty();
-}
-inline const std::string& UIEvent::component_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.component_id)
-  return _internal_component_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void UIEvent::set_component_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.component_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.UIEvent.component_id)
-}
-inline std::string* UIEvent::mutable_component_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_component_id();
-  // @@protoc_insertion_point(field_mutable:debate.UIEvent.component_id)
-  return _s;
-}
-inline const std::string& UIEvent::_internal_component_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.component_id_.Get();
-}
-inline void UIEvent::_internal_set_component_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.component_id_.Set(value, GetArena());
-}
-inline std::string* UIEvent::_internal_mutable_component_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.component_id_.Mutable( GetArena());
-}
-inline std::string* UIEvent::release_component_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.UIEvent.component_id)
-  return _impl_.component_id_.Release();
-}
-inline void UIEvent::set_allocated_component_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.component_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.component_id_.IsDefault()) {
-    _impl_.component_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.component_id)
-}
-
-// .debate.EventType type = 3 [json_name = "type"];
-inline void UIEvent::clear_type() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.type_ = 0;
-}
-inline ::debate::EventType UIEvent::type() const {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.type)
-  return _internal_type();
-}
-inline void UIEvent::set_type(::debate::EventType value) {
-  _internal_set_type(value);
-  // @@protoc_insertion_point(field_set:debate.UIEvent.type)
-}
-inline ::debate::EventType UIEvent::_internal_type() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::debate::EventType>(_impl_.type_);
-}
-inline void UIEvent::_internal_set_type(::debate::EventType value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.type_ = value;
-}
-
-// int64 timestamp = 4 [json_name = "timestamp"];
-inline void UIEvent::clear_timestamp() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.timestamp_ = ::int64_t{0};
-}
-inline ::int64_t UIEvent::timestamp() const {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.timestamp)
-  return _internal_timestamp();
-}
-inline void UIEvent::set_timestamp(::int64_t value) {
-  _internal_set_timestamp(value);
-  // @@protoc_insertion_point(field_set:debate.UIEvent.timestamp)
-}
-inline ::int64_t UIEvent::_internal_timestamp() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.timestamp_;
-}
-inline void UIEvent::_internal_set_timestamp(::int64_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.timestamp_ = value;
-}
-
-// map<string, string> data = 5 [json_name = "data"];
-inline int UIEvent::_internal_data_size() const {
-  return _internal_data().size();
-}
-inline int UIEvent::data_size() const {
-  return _internal_data_size();
-}
-inline void UIEvent::clear_data() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.data_.Clear();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& UIEvent::_internal_data() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.data_.GetMap();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& UIEvent::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_map:debate.UIEvent.data)
-  return _internal_data();
-}
-inline ::google::protobuf::Map<std::string, std::string>* UIEvent::_internal_mutable_data() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.data_.MutableMap();
-}
-inline ::google::protobuf::Map<std::string, std::string>* UIEvent::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_map:debate.UIEvent.data)
-  return _internal_mutable_data();
-}
-
-// string action_id = 6 [json_name = "actionId"];
-inline void UIEvent::clear_action_id() {
+// string action_id = 1 [json_name = "actionId"];
+inline void Event::clear_action_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_id_.ClearToEmpty();
 }
-inline const std::string& UIEvent::action_id() const
+inline const std::string& Event::action_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.action_id)
+  // @@protoc_insertion_point(field_get:event.Event.action_id)
   return _internal_action_id();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void UIEvent::set_action_id(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Event::set_action_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.UIEvent.action_id)
+  // @@protoc_insertion_point(field_set:event.Event.action_id)
 }
-inline std::string* UIEvent::mutable_action_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* Event::mutable_action_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_action_id();
-  // @@protoc_insertion_point(field_mutable:debate.UIEvent.action_id)
+  // @@protoc_insertion_point(field_mutable:event.Event.action_id)
   return _s;
 }
-inline const std::string& UIEvent::_internal_action_id() const {
+inline const std::string& Event::_internal_action_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.action_id_.Get();
 }
-inline void UIEvent::_internal_set_action_id(const std::string& value) {
+inline void Event::_internal_set_action_id(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_id_.Set(value, GetArena());
 }
-inline std::string* UIEvent::_internal_mutable_action_id() {
+inline std::string* Event::_internal_mutable_action_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.action_id_.Mutable( GetArena());
 }
-inline std::string* UIEvent::release_action_id() {
+inline std::string* Event::release_action_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.UIEvent.action_id)
+  // @@protoc_insertion_point(field_release:event.Event.action_id)
   return _impl_.action_id_.Release();
 }
-inline void UIEvent::set_allocated_action_id(std::string* value) {
+inline void Event::set_allocated_action_id(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_id_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.action_id_.IsDefault()) {
     _impl_.action_id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.UIEvent.action_id)
+  // @@protoc_insertion_point(field_set_allocated:event.Event.action_id)
 }
 
-// repeated .debate.EventData event_data = 7 [json_name = "eventData"];
-inline int UIEvent::_internal_event_data_size() const {
-  return _internal_event_data().size();
+// map<string, string> data = 2 [json_name = "data"];
+inline int Event::_internal_data_size() const {
+  return _internal_data().size();
 }
-inline int UIEvent::event_data_size() const {
-  return _internal_event_data_size();
+inline int Event::data_size() const {
+  return _internal_data_size();
 }
-inline void UIEvent::clear_event_data() {
+inline void Event::clear_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.event_data_.Clear();
+  _impl_.data_.Clear();
 }
-inline ::debate::EventData* UIEvent::mutable_event_data(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.UIEvent.event_data)
-  return _internal_mutable_event_data()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::EventData>* UIEvent::mutable_event_data()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.UIEvent.event_data)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_event_data();
-}
-inline const ::debate::EventData& UIEvent::event_data(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.UIEvent.event_data)
-  return _internal_event_data().Get(index);
-}
-inline ::debate::EventData* UIEvent::add_event_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::EventData* _add = _internal_mutable_event_data()->Add();
-  // @@protoc_insertion_point(field_add:debate.UIEvent.event_data)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::EventData>& UIEvent::event_data() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.UIEvent.event_data)
-  return _internal_event_data();
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::EventData>&
-UIEvent::_internal_event_data() const {
+inline const ::google::protobuf::Map<std::string, std::string>& Event::_internal_data() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.event_data_;
+  return _impl_.data_.GetMap();
 }
-inline ::google::protobuf::RepeatedPtrField<::debate::EventData>*
-UIEvent::_internal_mutable_event_data() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.event_data_;
+inline const ::google::protobuf::Map<std::string, std::string>& Event::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_map:event.Event.data)
+  return _internal_data();
 }
-
-// map<string, string> metadata = 8 [json_name = "metadata"];
-inline int UIEvent::_internal_metadata_size() const {
-  return _internal_metadata().size();
-}
-inline int UIEvent::metadata_size() const {
-  return _internal_metadata_size();
-}
-inline void UIEvent::clear_metadata() {
+inline ::google::protobuf::Map<std::string, std::string>* Event::_internal_mutable_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.metadata_.Clear();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& UIEvent::_internal_metadata() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.metadata_.GetMap();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& UIEvent::metadata() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_map:debate.UIEvent.metadata)
-  return _internal_metadata();
-}
-inline ::google::protobuf::Map<std::string, std::string>* UIEvent::_internal_mutable_metadata() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.metadata_.MutableMap();
-}
-inline ::google::protobuf::Map<std::string, std::string>* UIEvent::mutable_metadata() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_map:debate.UIEvent.metadata)
-  return _internal_mutable_metadata();
-}
-
-// -------------------------------------------------------------------
-
-// EventData
-
-// string key = 1 [json_name = "key"];
-inline void EventData::clear_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.key_.ClearToEmpty();
-}
-inline const std::string& EventData::key() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.EventData.key)
-  return _internal_key();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EventData::set_key(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.key_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.EventData.key)
-}
-inline std::string* EventData::mutable_key() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_key();
-  // @@protoc_insertion_point(field_mutable:debate.EventData.key)
-  return _s;
-}
-inline const std::string& EventData::_internal_key() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.key_.Get();
-}
-inline void EventData::_internal_set_key(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.key_.Set(value, GetArena());
-}
-inline std::string* EventData::_internal_mutable_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.key_.Mutable( GetArena());
-}
-inline std::string* EventData::release_key() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.EventData.key)
-  return _impl_.key_.Release();
-}
-inline void EventData::set_allocated_key(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.key_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.key_.IsDefault()) {
-    _impl_.key_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.EventData.key)
-}
-
-// .debate.EventValue value = 2 [json_name = "value"];
-inline bool EventData::has_value() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.value_ != nullptr);
-  return value;
-}
-inline void EventData::clear_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.value_ != nullptr) _impl_.value_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::debate::EventValue& EventData::_internal_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::EventValue* p = _impl_.value_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::EventValue&>(::debate::_EventValue_default_instance_);
-}
-inline const ::debate::EventValue& EventData::value() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.EventData.value)
-  return _internal_value();
-}
-inline void EventData::unsafe_arena_set_allocated_value(::debate::EventValue* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.value_);
-  }
-  _impl_.value_ = reinterpret_cast<::debate::EventValue*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.EventData.value)
-}
-inline ::debate::EventValue* EventData::release_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::EventValue* released = _impl_.value_;
-  _impl_.value_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::debate::EventValue* EventData::unsafe_arena_release_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.EventData.value)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::EventValue* temp = _impl_.value_;
-  _impl_.value_ = nullptr;
-  return temp;
-}
-inline ::debate::EventValue* EventData::_internal_mutable_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.value_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::EventValue>(GetArena());
-    _impl_.value_ = reinterpret_cast<::debate::EventValue*>(p);
-  }
-  return _impl_.value_;
-}
-inline ::debate::EventValue* EventData::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::debate::EventValue* _msg = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:debate.EventData.value)
-  return _msg;
-}
-inline void EventData::set_allocated_value(::debate::EventValue* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete (_impl_.value_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.value_ = reinterpret_cast<::debate::EventValue*>(value);
-  // @@protoc_insertion_point(field_set_allocated:debate.EventData.value)
-}
-
-// -------------------------------------------------------------------
-
-// EventValue
-
-// string text_value = 1 [json_name = "textValue"];
-inline bool EventValue::has_text_value() const {
-  return value_case() == kTextValue;
-}
-inline void EventValue::set_has_text_value() {
-  _impl_._oneof_case_[0] = kTextValue;
-}
-inline void EventValue::clear_text_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kTextValue) {
-    _impl_.value_.text_value_.Destroy();
-    clear_has_value();
-  }
-}
-inline const std::string& EventValue::text_value() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.EventValue.text_value)
-  return _internal_text_value();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EventValue::set_text_value(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kTextValue) {
-    clear_value();
-
-    set_has_text_value();
-    _impl_.value_.text_value_.InitDefault();
-  }
-  _impl_.value_.text_value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.EventValue.text_value)
-}
-inline std::string* EventValue::mutable_text_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_text_value();
-  // @@protoc_insertion_point(field_mutable:debate.EventValue.text_value)
-  return _s;
-}
-inline const std::string& EventValue::_internal_text_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  if (value_case() != kTextValue) {
-    return ::google::protobuf::internal::GetEmptyStringAlreadyInited();
-  }
-  return _impl_.value_.text_value_.Get();
-}
-inline void EventValue::_internal_set_text_value(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kTextValue) {
-    clear_value();
-
-    set_has_text_value();
-    _impl_.value_.text_value_.InitDefault();
-  }
-  _impl_.value_.text_value_.Set(value, GetArena());
-}
-inline std::string* EventValue::_internal_mutable_text_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kTextValue) {
-    clear_value();
-
-    set_has_text_value();
-    _impl_.value_.text_value_.InitDefault();
-  }
-  return _impl_.value_.text_value_.Mutable( GetArena());
-}
-inline std::string* EventValue::release_text_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.EventValue.text_value)
-  if (value_case() != kTextValue) {
-    return nullptr;
-  }
-  clear_has_value();
-  return _impl_.value_.text_value_.Release();
-}
-inline void EventValue::set_allocated_text_value(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (has_value()) {
-    clear_value();
-  }
-  if (value != nullptr) {
-    set_has_text_value();
-    _impl_.value_.text_value_.InitAllocated(value, GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.EventValue.text_value)
-}
-
-// int64 number_value = 2 [json_name = "numberValue"];
-inline bool EventValue::has_number_value() const {
-  return value_case() == kNumberValue;
-}
-inline void EventValue::set_has_number_value() {
-  _impl_._oneof_case_[0] = kNumberValue;
-}
-inline void EventValue::clear_number_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kNumberValue) {
-    _impl_.value_.number_value_ = ::int64_t{0};
-    clear_has_value();
-  }
-}
-inline ::int64_t EventValue::number_value() const {
-  // @@protoc_insertion_point(field_get:debate.EventValue.number_value)
-  return _internal_number_value();
-}
-inline void EventValue::set_number_value(::int64_t value) {
-  if (value_case() != kNumberValue) {
-    clear_value();
-    set_has_number_value();
-  }
-  _impl_.value_.number_value_ = value;
-  // @@protoc_insertion_point(field_set:debate.EventValue.number_value)
-}
-inline ::int64_t EventValue::_internal_number_value() const {
-  if (value_case() == kNumberValue) {
-    return _impl_.value_.number_value_;
-  }
-  return ::int64_t{0};
-}
-
-// bool boolean_value = 3 [json_name = "booleanValue"];
-inline bool EventValue::has_boolean_value() const {
-  return value_case() == kBooleanValue;
-}
-inline void EventValue::set_has_boolean_value() {
-  _impl_._oneof_case_[0] = kBooleanValue;
-}
-inline void EventValue::clear_boolean_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kBooleanValue) {
-    _impl_.value_.boolean_value_ = false;
-    clear_has_value();
-  }
-}
-inline bool EventValue::boolean_value() const {
-  // @@protoc_insertion_point(field_get:debate.EventValue.boolean_value)
-  return _internal_boolean_value();
-}
-inline void EventValue::set_boolean_value(bool value) {
-  if (value_case() != kBooleanValue) {
-    clear_value();
-    set_has_boolean_value();
-  }
-  _impl_.value_.boolean_value_ = value;
-  // @@protoc_insertion_point(field_set:debate.EventValue.boolean_value)
-}
-inline bool EventValue::_internal_boolean_value() const {
-  if (value_case() == kBooleanValue) {
-    return _impl_.value_.boolean_value_;
-  }
-  return false;
-}
-
-// double decimal_value = 4 [json_name = "decimalValue"];
-inline bool EventValue::has_decimal_value() const {
-  return value_case() == kDecimalValue;
-}
-inline void EventValue::set_has_decimal_value() {
-  _impl_._oneof_case_[0] = kDecimalValue;
-}
-inline void EventValue::clear_decimal_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kDecimalValue) {
-    _impl_.value_.decimal_value_ = 0;
-    clear_has_value();
-  }
-}
-inline double EventValue::decimal_value() const {
-  // @@protoc_insertion_point(field_get:debate.EventValue.decimal_value)
-  return _internal_decimal_value();
-}
-inline void EventValue::set_decimal_value(double value) {
-  if (value_case() != kDecimalValue) {
-    clear_value();
-    set_has_decimal_value();
-  }
-  _impl_.value_.decimal_value_ = value;
-  // @@protoc_insertion_point(field_set:debate.EventValue.decimal_value)
-}
-inline double EventValue::_internal_decimal_value() const {
-  if (value_case() == kDecimalValue) {
-    return _impl_.value_.decimal_value_;
-  }
-  return 0;
-}
-
-// bytes binary_value = 5 [json_name = "binaryValue"];
-inline bool EventValue::has_binary_value() const {
-  return value_case() == kBinaryValue;
-}
-inline void EventValue::set_has_binary_value() {
-  _impl_._oneof_case_[0] = kBinaryValue;
-}
-inline void EventValue::clear_binary_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kBinaryValue) {
-    _impl_.value_.binary_value_.Destroy();
-    clear_has_value();
-  }
-}
-inline const std::string& EventValue::binary_value() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.EventValue.binary_value)
-  return _internal_binary_value();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EventValue::set_binary_value(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kBinaryValue) {
-    clear_value();
-
-    set_has_binary_value();
-    _impl_.value_.binary_value_.InitDefault();
-  }
-  _impl_.value_.binary_value_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.EventValue.binary_value)
-}
-inline std::string* EventValue::mutable_binary_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_binary_value();
-  // @@protoc_insertion_point(field_mutable:debate.EventValue.binary_value)
-  return _s;
-}
-inline const std::string& EventValue::_internal_binary_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  if (value_case() != kBinaryValue) {
-    return ::google::protobuf::internal::GetEmptyStringAlreadyInited();
-  }
-  return _impl_.value_.binary_value_.Get();
-}
-inline void EventValue::_internal_set_binary_value(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kBinaryValue) {
-    clear_value();
-
-    set_has_binary_value();
-    _impl_.value_.binary_value_.InitDefault();
-  }
-  _impl_.value_.binary_value_.Set(value, GetArena());
-}
-inline std::string* EventValue::_internal_mutable_binary_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() != kBinaryValue) {
-    clear_value();
-
-    set_has_binary_value();
-    _impl_.value_.binary_value_.InitDefault();
-  }
-  return _impl_.value_.binary_value_.Mutable( GetArena());
-}
-inline std::string* EventValue::release_binary_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.EventValue.binary_value)
-  if (value_case() != kBinaryValue) {
-    return nullptr;
-  }
-  clear_has_value();
-  return _impl_.value_.binary_value_.Release();
-}
-inline void EventValue::set_allocated_binary_value(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (has_value()) {
-    clear_value();
-  }
-  if (value != nullptr) {
-    set_has_binary_value();
-    _impl_.value_.binary_value_.InitAllocated(value, GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.EventValue.binary_value)
-}
-
-// .debate.StringList list_value = 6 [json_name = "listValue"];
-inline bool EventValue::has_list_value() const {
-  return value_case() == kListValue;
-}
-inline bool EventValue::_internal_has_list_value() const {
-  return value_case() == kListValue;
-}
-inline void EventValue::set_has_list_value() {
-  _impl_._oneof_case_[0] = kListValue;
-}
-inline void EventValue::clear_list_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (value_case() == kListValue) {
-    if (GetArena() == nullptr) {
-      delete _impl_.value_.list_value_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.value_.list_value_);
-    }
-    clear_has_value();
-  }
-}
-inline ::debate::StringList* EventValue::release_list_value() {
-  // @@protoc_insertion_point(field_release:debate.EventValue.list_value)
-  if (value_case() == kListValue) {
-    clear_has_value();
-    auto* temp = _impl_.value_.list_value_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.value_.list_value_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate::StringList& EventValue::_internal_list_value() const {
-  return value_case() == kListValue ? *_impl_.value_.list_value_ : reinterpret_cast<::debate::StringList&>(::debate::_StringList_default_instance_);
-}
-inline const ::debate::StringList& EventValue::list_value() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.EventValue.list_value)
-  return _internal_list_value();
-}
-inline ::debate::StringList* EventValue::unsafe_arena_release_list_value() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate.EventValue.list_value)
-  if (value_case() == kListValue) {
-    clear_has_value();
-    auto* temp = _impl_.value_.list_value_;
-    _impl_.value_.list_value_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void EventValue::unsafe_arena_set_allocated_list_value(::debate::StringList* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_value();
-  if (value) {
-    set_has_list_value();
-    _impl_.value_.list_value_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.EventValue.list_value)
-}
-inline ::debate::StringList* EventValue::_internal_mutable_list_value() {
-  if (value_case() != kListValue) {
-    clear_value();
-    set_has_list_value();
-    _impl_.value_.list_value_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate::StringList>(GetArena());
-  }
-  return _impl_.value_.list_value_;
-}
-inline ::debate::StringList* EventValue::mutable_list_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate::StringList* _msg = _internal_mutable_list_value();
-  // @@protoc_insertion_point(field_mutable:debate.EventValue.list_value)
-  return _msg;
-}
-
-inline bool EventValue::has_value() const {
-  return value_case() != VALUE_NOT_SET;
-}
-inline void EventValue::clear_has_value() {
-  _impl_._oneof_case_[0] = VALUE_NOT_SET;
-}
-inline EventValue::ValueCase EventValue::value_case() const {
-  return EventValue::ValueCase(_impl_._oneof_case_[0]);
-}
-// -------------------------------------------------------------------
-
-// StringList
-
-// repeated string values = 1 [json_name = "values"];
-inline int StringList::_internal_values_size() const {
-  return _internal_values().size();
-}
-inline int StringList::values_size() const {
-  return _internal_values_size();
-}
-inline void StringList::clear_values() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.values_.Clear();
-}
-inline std::string* StringList::add_values() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  std::string* _s = _internal_mutable_values()->Add();
-  // @@protoc_insertion_point(field_add_mutable:debate.StringList.values)
-  return _s;
-}
-inline const std::string& StringList::values(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.StringList.values)
-  return _internal_values().Get(index);
-}
-inline std::string* StringList::mutable_values(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.StringList.values)
-  return _internal_mutable_values()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void StringList::set_values(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(
-      *_internal_mutable_values()->Mutable(index),
-      std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:debate.StringList.values)
-}
-template <typename Arg_, typename... Args_>
-inline void StringList::add_values(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_values(),
-                               std::forward<Arg_>(value),
-                               args... );
-  // @@protoc_insertion_point(field_add:debate.StringList.values)
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-StringList::values() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.StringList.values)
-  return _internal_values();
-}
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-StringList::mutable_values() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.StringList.values)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_values();
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-StringList::_internal_values() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.values_;
-}
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-StringList::_internal_mutable_values() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.values_;
+  return _impl_.data_.MutableMap();
+}
+inline ::google::protobuf::Map<std::string, std::string>* Event::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_map:event.Event.data)
+  return _internal_mutable_data();
 }
 
 #ifdef __GNUC__
@@ -2130,21 +427,8 @@ StringList::_internal_mutable_values() {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace debate
+}  // namespace event
 
-
-namespace google {
-namespace protobuf {
-
-template <>
-struct is_proto_enum<::debate::EventType> : std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor<::debate::EventType>() {
-  return ::debate::EventType_descriptor();
-}
-
-}  // namespace protobuf
-}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

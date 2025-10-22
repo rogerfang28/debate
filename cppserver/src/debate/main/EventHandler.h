@@ -3,38 +3,25 @@
 
 #include <string>
 #include <iostream>
-#include "../../../src/gen/cpp/event.pb.h"  // for debate::UIEvent, EventType, EventValue
-#include "../../../src/gen/cpp/client_message.pb.h"  // for debate::ClientMessage
+#include "../../../src/gen/cpp/event.pb.h"  // for debate::Event
 
 // ---------------------------------------------------------
 // Class: EventHandler
 // ---------------------------------------------------------
-// Handles incoming UI events (like button clicks or form
-// submissions) from the frontend and dispatches actions
-// like adding or clearing debate topics.
+// Handles incoming Events (translated from ClientMessage by 
+// VirtualRenderer) and dispatches actions like adding or 
+// clearing debate topics.
 // ---------------------------------------------------------
 class EventHandler {
 public:
-    // Constructors for lvalue and rvalue references
-    explicit EventHandler(const debate::UIEvent& evt);
-    explicit EventHandler(debate::UIEvent&& evt);
-    EventHandler() = default;  // Default constructor
+    EventHandler() = default;
 
-    // Main event dispatcher (called by backend)
-    void handleEvent(const std::string& user);
-    void handleClientMessage(const debate::ClientMessage& msg, const std::string& user);
-
-    // Logging and debug helpers
-    void Log(std::ostream& os) const;
+    // Main event dispatcher (called by VirtualRenderer with translated Event)
+    void handleEvent(const event::Event& evt, const std::string& user);
 
 private:
-    debate::UIEvent evt_;  // The event payload
-
-    // Helper to print a single EventValue (for debugging/logs)
-    void PrintEventValue(std::ostream& os, const debate::EventValue& v) const;
-
-    // Converts EventType enum to readable string
-    const char* EventTypeName(debate::EventType t) const;
+    // Helper to extract data from event by key
+    std::string getEventData(const event::Event& evt, const std::string& key) const;
 };
 
 #endif // EVENTHANDLER_H
