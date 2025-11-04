@@ -3,18 +3,30 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <mutex>
 #include "sqlite3.h"
 #include <cstdint>  // for std::vector<uint8_t>
 
 
 sqlite3* db = nullptr;
+std::mutex db_mutex;  // Protect all database operations
 
 // ---------------------------
 // Generic Database Functions
 // ---------------------------
 
 bool openDB(const std::string& filename) {
-    if (sqlite3_open(filename.c_str(), &db) != SQLITE_OK) {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
+    // Close existing connection if any
+    if (db != nullptr) {
+        sqlite3_close(db);
+        db = nullptr;
+    }
+    
+    // Use thread-safe mode
+    int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX;
+    if (sqlite3_open_v2(filename.c_str(), &db, flags, nullptr) != SQLITE_OK) {
         std::cerr << "[DB] Could not open: " << sqlite3_errmsg(db) << "\n";
         return false;
     }
@@ -22,7 +34,8 @@ bool openDB(const std::string& filename) {
 }
 
 void closeDB() {
-    if (db) {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    if (db != nullptr) {
         sqlite3_close(db);
         db = nullptr;
     }
@@ -30,6 +43,13 @@ void closeDB() {
 
 // Execute a raw SQL command (no return)
 bool execSQL(const std::string& sql) {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return false;
+    }
+    
     char* errMsg = nullptr;
     int rc = sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg);
     if (rc != SQLITE_OK) {
@@ -59,6 +79,13 @@ bool createTable(const std::string& tableName, const std::map<std::string, std::
 // ---------------------------
 
 int insertRowWithText(const std::string& tableName, const std::vector<std::string>& columns, const std::vector<std::string>& values) {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return -1;
+    }
+    
     if (columns.size() != values.size()) {
         std::cerr << "[DB] Insert failed: mismatched columns and values.\n";
         return -1;
@@ -104,6 +131,13 @@ int insertRowWithBlob(
     const std::vector<std::string>& textValues,
     const std::vector<std::pair<const void*, int>>& blobValues)
 {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return -1;
+    }
+    
     if (columns.size() != textValues.size() + blobValues.size()) {
         std::cerr << "[DB] Insert failed: mismatched column count.\n";
         return -1;
@@ -159,7 +193,15 @@ std::vector<std::map<std::string, std::string>> readRows(
     const std::string& tableName,
     const std::string& whereClause = "")
 {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
     std::vector<std::map<std::string, std::string>> results;
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return results;
+    }
+    
     std::ostringstream sql;
     sql << "SELECT * FROM " << tableName;
     if (!whereClause.empty()) sql << " WHERE " << whereClause;
@@ -190,7 +232,15 @@ std::vector<uint8_t> readBlob(
     const std::string& blobColumn,
     const std::string& whereClause)
 {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
     std::vector<uint8_t> data;
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return data;
+    }
+    
     std::ostringstream sql;
     sql << "SELECT " << blobColumn << " FROM " << tableName;
     if (!whereClause.empty()) sql << " WHERE " << whereClause;
@@ -232,6 +282,13 @@ bool deleteRows(const std::string& tableName, const std::string& whereClause = "
 
 bool updateRowWithBlob(const std::string& tableName, const std::string& blobColumn,
                        const std::vector<uint8_t>& blobData, const std::string& whereClause) {
+    std::lock_guard<std::mutex> lock(db_mutex);
+    
+    if (db == nullptr) {
+        std::cerr << "[DB] Error: Database not open!\n";
+        return false;
+    }
+    
     if (whereClause.empty()) {
         std::cerr << "[DB] Update failed: WHERE clause is required for safety.\n";
         return false;
