@@ -1,5 +1,4 @@
-#ifndef DEBATEDATABASEHANDLER_H
-#define DEBATEDATABASEHANDLER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -45,5 +44,3 @@ private:
     std::string dbFilename;
     void ensureTable();  // create table if not exists
 };
-
-#endif // DEBATEDATABASEHANDLER_H

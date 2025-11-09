@@ -1,5 +1,4 @@
-#ifndef USERDATABASEHANDLER_H
-#define USERDATABASEHANDLER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -56,5 +55,3 @@ public:
 private:
     std::string dbFilename;
 };
-
-#endif // USERDATABASEHANDLER_H

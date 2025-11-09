@@ -1,5 +1,4 @@
-#ifndef PAGEGENERATOR_H
-#define PAGEGENERATOR_H
+#pragma once
 
 #include <string>
 #include "../../../src/gen/cpp/layout.pb.h"
@@ -36,5 +35,3 @@ std::string generateHomePage(const std::string& user);
 std::string generateDebateClaimPage(const std::string& user, const std::string& topic, const std::string& curClaim);
 std::string generatePage(const std::string& user);
 std::string generateSignInPage();
-
-#endif // PAGEGENERATOR_H

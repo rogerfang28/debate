@@ -1,5 +1,4 @@
-#ifndef EVENTHANDLER_H
-#define EVENTHANDLER_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -23,5 +22,3 @@ private:
     // Helper to extract data from event by key
     std::string getEventData(const event::Event& evt, const std::string& key) const;
 };
-
-#endif // EVENTHANDLER_H

@@ -1,5 +1,4 @@
-#ifndef DEBATEMODERATOR_H
-#define DEBATEMODERATOR_H
+#pragma once
 
 #include <string>
 #include "./DebateDatabaseHandler.h"
@@ -19,5 +18,3 @@ private:
     // Helper to print current debates for a user
     void printCurrentDebates(const std::string& user);
 };
-
-#endif // DEBATEMODERATOR_H

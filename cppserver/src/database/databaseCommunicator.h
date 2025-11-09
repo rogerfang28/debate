@@ -1,5 +1,4 @@
-#ifndef DATABASE_COMMUNICATOR_H
-#define DATABASE_COMMUNICATOR_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -57,5 +56,3 @@ bool deleteRows(const std::string& tableName,
 // ---------------------------
 bool updateRowWithBlob(const std::string& tableName, const std::string& blobColumn,
                        const std::vector<uint8_t>& blobData, const std::string& whereClause);
-
-#endif // DATABASE_COMMUNICATOR_H
