@@ -34,7 +34,7 @@ export default async function handleEvent(
 ): Promise<void> {
   try {
     console.log(
-      "📤 handleEvent got actionId:",
+      "handleEvent got actionId:",
       actionId,
       "for event:",
       eventName,
@@ -50,8 +50,8 @@ export default async function handleEvent(
 
     // Collect ALL input data from the entire page
     const entirePageData = getEntirePage(component.id);
-    console.log(`📦 Collected ${Object.keys(entirePageData).length} components from entire page`);
-    console.log('📋 Full page data:', entirePageData);
+    console.log(`Collected ${Object.keys(entirePageData).length} components from entire page`);
+    console.log('Full page data:', entirePageData);
 
     await postClientMessageToCPP({
       componentId: component.id || "unknown",

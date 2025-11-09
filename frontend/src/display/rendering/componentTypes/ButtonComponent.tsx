@@ -4,7 +4,7 @@ import handleEvent from "../../events/handleEvent";
 
 const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const handleClick = (e: React.MouseEvent) => {
-    console.log(`🖱️ Button "${component.id}" clicked`);
+    console.log(`Button "${component.id}" clicked`);
     
     // Send event to backend using the existing event handler
     handleEvent(
