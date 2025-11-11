@@ -24,38 +24,18 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
-              template <typename>
-PROTOBUF_CONSTEXPR User_ProjectsEntry_DoNotUse::User_ProjectsEntry_DoNotUse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : User_ProjectsEntry_DoNotUse::MapEntry(_class_data_.base()){}
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : User_ProjectsEntry_DoNotUse::MapEntry() {
-}
-#endif  // PROTOBUF_CUSTOM_VTABLE
-struct User_ProjectsEntry_DoNotUseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR User_ProjectsEntry_DoNotUseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~User_ProjectsEntry_DoNotUseDefaultTypeInternal() {}
-  union {
-    User_ProjectsEntry_DoNotUse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 User_ProjectsEntry_DoNotUseDefaultTypeInternal _User_ProjectsEntry_DoNotUse_default_instance_;
+namespace user {
 
 inline constexpr User::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        locations_{},
-        projects_{},
-        first_name_(
+      : username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        last_name_(
+        debate_topic_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        manager_{nullptr},
-        active_{false} {}
+        state_{static_cast< ::user::UserState >(0)},
+        _cached_size_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR User::User(::_pbi::ConstantInitialized)
@@ -76,183 +56,73 @@ struct UserDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UserDefaultTypeInternal _User_default_instance_;
-static constexpr const ::_pb::EnumDescriptor**
-    file_level_enum_descriptors_user_2eproto = nullptr;
+}  // namespace user
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_user_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_user_2eproto = nullptr;
 const ::uint32_t
     TableStruct_user_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        PROTOBUF_FIELD_OFFSET(::User_ProjectsEntry_DoNotUse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::User_ProjectsEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::user::User, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::User_ProjectsEntry_DoNotUse, _impl_.key_),
-        PROTOBUF_FIELD_OFFSET(::User_ProjectsEntry_DoNotUse, _impl_.value_),
-        0,
-        1,
-        PROTOBUF_FIELD_OFFSET(::User, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::User, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.first_name_),
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.last_name_),
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.active_),
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.manager_),
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.locations_),
-        PROTOBUF_FIELD_OFFSET(::User, _impl_.projects_),
-        ~0u,
-        ~0u,
-        ~0u,
-        0,
-        ~0u,
-        ~0u,
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.state_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.debate_topic_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 10, -1, sizeof(::User_ProjectsEntry_DoNotUse)},
-        {12, 26, -1, sizeof(::User)},
+        {0, -1, -1, sizeof(::user::User)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::_User_ProjectsEntry_DoNotUse_default_instance_._instance,
-    &::_User_default_instance_._instance,
+    &::user::_User_default_instance_._instance,
 };
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\nuser.proto\"\207\002\n\004User\022\035\n\nfirst_name\030\001 \001("
-    "\tR\tfirstName\022\033\n\tlast_name\030\002 \001(\tR\010lastNam"
-    "e\022\026\n\006active\030\003 \001(\010R\006active\022\037\n\007manager\030\004 \001"
-    "(\0132\005.UserR\007manager\022\034\n\tlocations\030\005 \003(\tR\tl"
-    "ocations\022/\n\010projects\030\006 \003(\0132\023.User.Projec"
-    "tsEntryR\010projects\032;\n\rProjectsEntry\022\020\n\003ke"
-    "y\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001b\006"
-    "proto3"
+    "\n\nuser.proto\022\004user\"l\n\004User\022\032\n\010username\030\001"
+    " \001(\tR\010username\022%\n\005state\030\002 \001(\0162\017.user.Use"
+    "rStateR\005state\022!\n\014debate_topic\030\003 \001(\tR\013deb"
+    "ateTopic*\?\n\tUserState\022\032\n\026USER_STATE_UNSP"
+    "ECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEBATING\020\002b\006proto"
+    "3"
 };
 static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    286,
+    201,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
     nullptr,
     0,
-    2,
+    1,
     schemas,
     file_default_instances,
     TableStruct_user_2eproto::offsets,
     file_level_enum_descriptors_user_2eproto,
     file_level_service_descriptors_user_2eproto,
 };
-// ===================================================================
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-              User_ProjectsEntry_DoNotUse::User_ProjectsEntry_DoNotUse() : SuperType(_class_data_.base()) {}
-              User_ProjectsEntry_DoNotUse::User_ProjectsEntry_DoNotUse(::google::protobuf::Arena* arena)
-                  : SuperType(arena, _class_data_.base()) {}
-#else   // PROTOBUF_CUSTOM_VTABLE
-              User_ProjectsEntry_DoNotUse::User_ProjectsEntry_DoNotUse() : SuperType() {}
-              User_ProjectsEntry_DoNotUse::User_ProjectsEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
-#endif  // PROTOBUF_CUSTOM_VTABLE
-              inline void* User_ProjectsEntry_DoNotUse::PlacementNew_(const void*, void* mem,
-                                                      ::google::protobuf::Arena* arena) {
-                return ::new (mem) User_ProjectsEntry_DoNotUse(arena);
-              }
-              constexpr auto User_ProjectsEntry_DoNotUse::InternalNewImpl_() {
-                return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(User_ProjectsEntry_DoNotUse),
-                                                          alignof(User_ProjectsEntry_DoNotUse));
-              }
-              PROTOBUF_CONSTINIT
-              PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-              const ::google::protobuf::internal::ClassDataFull User_ProjectsEntry_DoNotUse::_class_data_ = {
-                  ::google::protobuf::internal::ClassData{
-                      &_User_ProjectsEntry_DoNotUse_default_instance_._instance,
-                      &_table_.header,
-                      nullptr,  // OnDemandRegisterArenaDtor
-                      nullptr,  // IsInitialized
-                      &User_ProjectsEntry_DoNotUse::MergeImpl,
-                      ::google::protobuf::Message::GetNewImpl<User_ProjectsEntry_DoNotUse>(),
-              #if defined(PROTOBUF_CUSTOM_VTABLE)
-                      &User_ProjectsEntry_DoNotUse::SharedDtor,
-                      static_cast<void (::google::protobuf::MessageLite::*)()>(
-                          &User_ProjectsEntry_DoNotUse::ClearImpl),
-                          ::google::protobuf::Message::ByteSizeLongImpl, ::google::protobuf::Message::_InternalSerializeImpl
-                          ,
-              #endif  // PROTOBUF_CUSTOM_VTABLE
-                      PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_._cached_size_),
-                      false,
-                  },
-                  &User_ProjectsEntry_DoNotUse::kDescriptorMethods,
-                  &descriptor_table_user_2eproto,
-                  nullptr,  // tracker
-              };
-              const ::google::protobuf::internal::ClassData* User_ProjectsEntry_DoNotUse::GetClassData() const {
-                ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-                ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-                return _class_data_.base();
-              }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 35, 2> User_ProjectsEntry_DoNotUse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_._has_bits_),
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::User_ProjectsEntry_DoNotUse>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // string value = 2 [json_name = "value"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1 [json_name = "key"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.key_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string key = 1 [json_name = "key"];
-    {PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.key_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2 [json_name = "value"];
-    {PROTOBUF_FIELD_OFFSET(User_ProjectsEntry_DoNotUse, _impl_.value_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\22\3\5\0\0\0\0\0"
-    "User.ProjectsEntry"
-    "key"
-    "value"
-  }},
-};
-
+namespace user {
+const ::google::protobuf::EnumDescriptor* UserState_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_user_2eproto);
+  return file_level_enum_descriptors_user_2eproto[0];
+}
+PROTOBUF_CONSTINIT const uint32_t UserState_internal_data_[] = {
+    196608u, 0u, };
+bool UserState_IsValid(int value) {
+  return 0 <= value && value <= 2;
+}
 // ===================================================================
 
 class User::_Internal {
  public:
-  using HasBits =
-      decltype(std::declval<User>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_);
 };
 
 User::User(::google::protobuf::Arena* arena)
@@ -262,17 +132,14 @@ User::User(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:User)
+  // @@protoc_insertion_point(arena_constructor:user.User)
 }
 inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::User& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        locations_{visibility, arena, from.locations_},
-        projects_{visibility, arena, from.projects_},
-        first_name_(arena, from.first_name_),
-        last_name_(arena, from.last_name_) {}
+    const Impl_& from, const ::user::User& from_msg)
+      : username_(arena, from.username_),
+        debate_topic_(arena, from.debate_topic_),
+        _cached_size_{0} {}
 
 User::User(
     ::google::protobuf::Arena* arena,
@@ -287,43 +154,31 @@ User::User(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.manager_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::User>(
-                              arena, *from._impl_.manager_)
-                        : nullptr;
-  _impl_.active_ = from._impl_.active_;
+  _impl_.state_ = from._impl_.state_;
 
-  // @@protoc_insertion_point(copy_constructor:User)
+  // @@protoc_insertion_point(copy_constructor:user.User)
 }
 inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : _cached_size_{0},
-        locations_{visibility, arena},
-        projects_{visibility, arena},
-        first_name_(arena),
-        last_name_(arena) {}
+      : username_(arena),
+        debate_topic_(arena),
+        _cached_size_{0} {}
 
 inline void User::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, manager_),
-           0,
-           offsetof(Impl_, active_) -
-               offsetof(Impl_, manager_) +
-               sizeof(Impl_::active_));
+  _impl_.state_ = {};
 }
 User::~User() {
-  // @@protoc_insertion_point(destructor:User)
+  // @@protoc_insertion_point(destructor:user.User)
   SharedDtor(*this);
 }
 inline void User::SharedDtor(MessageLite& self) {
   User& this_ = static_cast<User&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.first_name_.Destroy();
-  this_._impl_.last_name_.Destroy();
-  delete this_._impl_.manager_;
+  this_._impl_.username_.Destroy();
+  this_._impl_.debate_topic_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -332,28 +187,8 @@ inline void* User::PlacementNew_(const void*, void* mem,
   return ::new (mem) User(arena);
 }
 constexpr auto User::InternalNewImpl_() {
-  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(User, _impl_.locations_) +
-          decltype(User::_impl_.locations_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(User, _impl_.projects_) +
-          decltype(User::_impl_.projects_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(User, _impl_.projects_) +
-          decltype(User::_impl_.projects_)::
-              InternalGetArenaOffsetAlt(
-                  ::google::protobuf::Message::internal_visibility()),
-  });
-  if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(User), alignof(User), *arena_bits);
-  } else {
-    return ::google::protobuf::internal::MessageCreator(&User::PlacementNew_,
-                                 sizeof(User),
-                                 alignof(User));
-  }
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(User),
+                                            alignof(User));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -383,97 +218,66 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 2, 49, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 38, 2> User::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
-    2,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::User>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::user::User>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string first_name = 1 [json_name = "firstName"];
+    // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.first_name_)}},
-    // string last_name = 2 [json_name = "lastName"];
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
+    // .user.UserState state = 2 [json_name = "state"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.state_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.state_)}},
+    // string debate_topic = 3 [json_name = "debateTopic"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.last_name_)}},
-    // bool active = 3 [json_name = "active"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(User, _impl_.active_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.active_)}},
-    // .User manager = 4 [json_name = "manager"];
-    {::_pbi::TcParser::FastMtS1,
-     {34, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.manager_)}},
-    // repeated string locations = 5 [json_name = "locations"];
-    {::_pbi::TcParser::FastUR1,
-     {42, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.locations_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string first_name = 1 [json_name = "firstName"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.first_name_), -1, 0,
+    // string username = 1 [json_name = "username"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string last_name = 2 [json_name = "lastName"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.last_name_), -1, 0,
+    // .user.UserState state = 2 [json_name = "state"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.state_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string debate_topic = 3 [json_name = "debateTopic"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool active = 3 [json_name = "active"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.active_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .User manager = 4 [json_name = "manager"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.manager_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated string locations = 5 [json_name = "locations"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.locations_), -1, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
-    // map<string, string> projects = 6 [json_name = "projects"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.projects_), -1, 1,
-    (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::User>()},
-    {::_pbi::TcParser::GetMapAuxInfo<
-        decltype(User()._impl_.projects_)>(
-        1, 0, 0, 9,
-        9)},
-  }}, {{
-    "\4\12\11\0\0\11\10\0"
-    "User"
-    "first_name"
-    "last_name"
-    "locations"
-    "projects"
+  }},
+  // no aux_entries
+  {{
+    "\11\10\0\14\0\0\0\0"
+    "user.User"
+    "username"
+    "debate_topic"
   }},
 };
 
 PROTOBUF_NOINLINE void User::Clear() {
-// @@protoc_insertion_point(message_clear_start:User)
+// @@protoc_insertion_point(message_clear_start:user.User)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.locations_.Clear();
-  _impl_.projects_.Clear();
-  _impl_.first_name_.ClearToEmpty();
-  _impl_.last_name_.ClearToEmpty();
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.manager_ != nullptr);
-    _impl_.manager_->Clear();
-  }
-  _impl_.active_ = false;
-  _impl_._has_bits_.Clear();
+  _impl_.username_.ClearToEmpty();
+  _impl_.debate_topic_.ClearToEmpty();
+  _impl_.state_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -488,80 +292,31 @@ PROTOBUF_NOINLINE void User::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const User& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:User)
+          // @@protoc_insertion_point(serialize_to_array_start:user.User)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string first_name = 1 [json_name = "firstName"];
-          if (!this_._internal_first_name().empty()) {
-            const std::string& _s = this_._internal_first_name();
+          // string username = 1 [json_name = "username"];
+          if (!this_._internal_username().empty()) {
+            const std::string& _s = this_._internal_username();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.first_name");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.username");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string last_name = 2 [json_name = "lastName"];
-          if (!this_._internal_last_name().empty()) {
-            const std::string& _s = this_._internal_last_name();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.last_name");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          // bool active = 3 [json_name = "active"];
-          if (this_._internal_active() != 0) {
+          // .user.UserState state = 2 [json_name = "state"];
+          if (this_._internal_state() != 0) {
             target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                3, this_._internal_active(), target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_state(), target);
           }
 
-          cached_has_bits = this_._impl_._has_bits_[0];
-          // .User manager = 4 [json_name = "manager"];
-          if (cached_has_bits & 0x00000001u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                4, *this_._impl_.manager_, this_._impl_.manager_->GetCachedSize(), target,
-                stream);
-          }
-
-          // repeated string locations = 5 [json_name = "locations"];
-          for (int i = 0, n = this_._internal_locations_size(); i < n; ++i) {
-            const auto& s = this_._internal_locations().Get(i);
+          // string debate_topic = 3 [json_name = "debateTopic"];
+          if (!this_._internal_debate_topic().empty()) {
+            const std::string& _s = this_._internal_debate_topic();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.locations");
-            target = stream->WriteString(5, s, target);
-          }
-
-          // map<string, string> projects = 6 [json_name = "projects"];
-          if (!this_._internal_projects().empty()) {
-            using MapType = ::google::protobuf::Map<std::string, std::string>;
-            using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
-                                           _pbi::WireFormatLite::TYPE_STRING,
-                                           _pbi::WireFormatLite::TYPE_STRING>;
-            const auto& field = this_._internal_projects();
-
-            if (stream->IsSerializationDeterministic() && field.size() > 1) {
-              for (const auto& entry : ::google::protobuf::internal::MapSorterPtr<MapType>(field)) {
-                target = WireHelper::InternalSerialize(
-                    6, entry.first, entry.second, target, stream);
-                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                    entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.projects");
-                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                    entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.projects");
-              }
-            } else {
-              for (const auto& entry : field) {
-                target = WireHelper::InternalSerialize(
-                    6, entry.first, entry.second, target, stream);
-                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                    entry.first.data(), static_cast<int>(entry.first.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.projects");
-                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                    entry.second.data(), static_cast<int>(entry.second.length()),
- ::google::protobuf::internal::WireFormatLite::SERIALIZE, "User.projects");
-              }
-            }
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.debate_topic");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -569,7 +324,7 @@ PROTOBUF_NOINLINE void User::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:User)
+          // @@protoc_insertion_point(serialize_to_array_end:user.User)
           return target;
         }
 
@@ -580,7 +335,7 @@ PROTOBUF_NOINLINE void User::Clear() {
         ::size_t User::ByteSizeLong() const {
           const User& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:User)
+          // @@protoc_insertion_point(message_byte_size_start:user.User)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -589,50 +344,20 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string locations = 5 [json_name = "locations"];
-            {
-              total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_locations().size());
-              for (int i = 0, n = this_._internal_locations().size(); i < n; ++i) {
-                total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-                    this_._internal_locations().Get(i));
-              }
-            }
-            // map<string, string> projects = 6 [json_name = "projects"];
-            {
-              total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_projects_size());
-              for (const auto& entry : this_._internal_projects()) {
-                total_size += _pbi::MapEntryFuncs<std::string, std::string,
-                                               _pbi::WireFormatLite::TYPE_STRING,
-                                               _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
-              }
-            }
-          }
-           {
-            // string first_name = 1 [json_name = "firstName"];
-            if (!this_._internal_first_name().empty()) {
+            // string username = 1 [json_name = "username"];
+            if (!this_._internal_username().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_first_name());
+                                              this_._internal_username());
             }
-            // string last_name = 2 [json_name = "lastName"];
-            if (!this_._internal_last_name().empty()) {
+            // string debate_topic = 3 [json_name = "debateTopic"];
+            if (!this_._internal_debate_topic().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_last_name());
+                                              this_._internal_debate_topic());
             }
-          }
-           {
-            // .User manager = 4 [json_name = "manager"];
-            cached_has_bits = this_._impl_._has_bits_[0];
-            if (cached_has_bits & 0x00000001u) {
+            // .user.UserState state = 2 [json_name = "state"];
+            if (this_._internal_state() != 0) {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.manager_);
-            }
-          }
-           {
-            // bool active = 3 [json_name = "active"];
-            if (this_._internal_active() != 0) {
-              total_size += 2;
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_state());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -642,39 +367,25 @@ PROTOBUF_NOINLINE void User::Clear() {
 void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<User*>(&to_msg);
   auto& from = static_cast<const User&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:User)
+  // @@protoc_insertion_point(class_specific_merge_from_start:user.User)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_locations()->MergeFrom(from._internal_locations());
-  _this->_impl_.projects_.MergeFrom(from._impl_.projects_);
-  if (!from._internal_first_name().empty()) {
-    _this->_internal_set_first_name(from._internal_first_name());
+  if (!from._internal_username().empty()) {
+    _this->_internal_set_username(from._internal_username());
   }
-  if (!from._internal_last_name().empty()) {
-    _this->_internal_set_last_name(from._internal_last_name());
+  if (!from._internal_debate_topic().empty()) {
+    _this->_internal_set_debate_topic(from._internal_debate_topic());
   }
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.manager_ != nullptr);
-    if (_this->_impl_.manager_ == nullptr) {
-      _this->_impl_.manager_ =
-          ::google::protobuf::Message::CopyConstruct<::User>(arena, *from._impl_.manager_);
-    } else {
-      _this->_impl_.manager_->MergeFrom(*from._impl_.manager_);
-    }
+  if (from._internal_state() != 0) {
+    _this->_impl_.state_ = from._impl_.state_;
   }
-  if (from._internal_active() != 0) {
-    _this->_impl_.active_ = from._impl_.active_;
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void User::CopyFrom(const User& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:User)
+// @@protoc_insertion_point(class_specific_copy_from_start:user.User)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -686,23 +397,16 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.locations_.InternalSwap(&other->_impl_.locations_);
-  _impl_.projects_.InternalSwap(&other->_impl_.projects_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.first_name_, &other->_impl_.first_name_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.last_name_, &other->_impl_.last_name_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(User, _impl_.active_)
-      + sizeof(User::_impl_.active_)
-      - PROTOBUF_FIELD_OFFSET(User, _impl_.manager_)>(
-          reinterpret_cast<char*>(&_impl_.manager_),
-          reinterpret_cast<char*>(&other->_impl_.manager_));
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_, &other->_impl_.debate_topic_, arena);
+  swap(_impl_.state_, other->_impl_.state_);
 }
 
 ::google::protobuf::Metadata User::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace user
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

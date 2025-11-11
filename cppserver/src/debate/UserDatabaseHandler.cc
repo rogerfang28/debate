@@ -16,12 +16,12 @@ UserDatabaseHandler::UserDatabaseHandler(const std::string& dbFile)
 void UserDatabaseHandler::ensureTable() {
     if (!openDB(dbFilename)) return;
 
+    // Drop old table if it exists with old schema
+    // execSQL("DROP TABLE IF EXISTS USERS;");
+
     createTable("USERS", {
-        {"USER", "TEXT NOT NULL UNIQUE"},
-        {"NAME", "TEXT"},
-        {"JOINDATE", "TEXT"},
-        {"LOCATION", "TEXT"},
-        {"PROFILE_DATA", "BLOB"}  // optional serialized protobuf or binary user data
+        {"USERNAME", "TEXT NOT NULL UNIQUE"},
+        {"USER_DATA", "BLOB"}  // serialized user.proto protobuf
     });
 
     closeDB();
@@ -32,31 +32,7 @@ void UserDatabaseHandler::ensureTable() {
 // ---------------------------
 
 int UserDatabaseHandler::addUser(const std::string& username,
-                                 const std::string& name,
-                                 const std::string& joinDate,
-                                 const std::string& location) {
-    if (!openDB(dbFilename)) return -1;
-
-    int id = insertRowWithText(
-        "USERS",
-        {"USER", "NAME", "JOINDATE", "LOCATION"},
-        {username, name, joinDate, location}
-    );
-
-    closeDB();
-
-    if (id != -1)
-        std::cout << "[UserDB] Added user: " << username
-                  << " (" << name << ", " << location << ")\n";
-
-    return id;
-}
-
-int UserDatabaseHandler::addUserWithProtobuf(const std::string& username,
-                                             const std::string& name,
-                                             const std::string& joinDate,
-                                             const std::string& location,
-                                             const std::vector<uint8_t>& protobufData) {
+                                 const std::vector<uint8_t>& protobufData) {
     if (!openDB(dbFilename)) return -1;
 
     std::vector<std::pair<const void*, int>> blobValues;
@@ -67,17 +43,16 @@ int UserDatabaseHandler::addUserWithProtobuf(const std::string& username,
 
     int id = insertRowWithBlob(
         "USERS",
-        {"USER", "NAME", "JOINDATE", "LOCATION", "PROFILE_DATA"},
-        {username, name, joinDate, location},
+        {"USERNAME", "USER_DATA"},
+        {username},
         blobValues
     );
 
     closeDB();
 
     if (id != -1)
-        std::cout << "[UserDB] Added user with protobuf: " << username
-                  << " (" << name << ", " << location
-                  << ") [data size: " << protobufData.size() << " bytes]\n";
+        std::cout << "[UserDB] Added user: " << username
+                  << " [data size: " << protobufData.size() << " bytes]\n";
 
     return id;
 }
@@ -96,21 +71,10 @@ UserDatabaseHandler::getAllUsers() {
     return rows;
 }
 
-std::vector<std::map<std::string, std::string>>
-UserDatabaseHandler::getUser(const std::string& username) {
-    if (!openDB(dbFilename)) return {};
-    auto rows = readRows("USERS", "USER = '" + username + "'");
-    closeDB();
-
-    std::cout << "[UserDB] Retrieved " << rows.size()
-              << " record(s) for user " << username << "\n";
-    return rows;
-}
-
 std::vector<uint8_t>
 UserDatabaseHandler::getUserProtobuf(const std::string& username) {
     if (!openDB(dbFilename)) return {};
-    auto blob = readBlob("USERS", "PROFILE_DATA", "USER = '" + username + "'");
+    auto blob = readBlob("USERS", "USER_DATA", "USERNAME = '" + username + "'");
     closeDB();
 
     std::cout << "[UserDB] Retrieved protobuf data for user " << username
@@ -118,35 +82,17 @@ UserDatabaseHandler::getUserProtobuf(const std::string& username) {
     return blob;
 }
 
+bool UserDatabaseHandler::userExists(const std::string& username) {
+    if (!openDB(dbFilename)) return false;
+    auto rows = readRows("USERS", "USERNAME = '" + username + "'");
+    closeDB();
+
+    return !rows.empty();
+}
+
 // ---------------------------
 // Update / Delete
 // ---------------------------
-
-bool UserDatabaseHandler::updateUserLocation(const std::string& username, const std::string& newLocation) {
-    std::cout << "[UserDB] Updating location for user " << username << " to: " << newLocation << std::endl;
-
-    if (!openDB(dbFilename)) return false;
-
-    try {
-        // Build the SQL UPDATE statement
-        std::string sql = "UPDATE users SET LOCATION = '" + newLocation + "' WHERE USER = '" + username + "';";
-        
-        std::cout << "[UserDB] Executing SQL: " << sql << std::endl;
-        
-        bool success = execSQL(sql);
-        
-        if (success) {
-            std::cout << "[UserDB] Successfully updated location for user " << username << std::endl;
-        } else {
-            std::cerr << "[UserDB][ERR] Failed to update location for user " << username << std::endl;
-        }
-        
-        return success;
-    } catch (const std::exception& e) {
-        std::cerr << "[UserDB][ERR] Exception updating user location: " << e.what() << std::endl;
-        return false;
-    }
-}
 
 bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
                                              const std::vector<uint8_t>& protobufData) {
@@ -154,8 +100,8 @@ bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
               << " (size: " << protobufData.size() << " bytes)\n";
 
     if (!openDB(dbFilename)) return false;
-    bool ok = updateRowWithBlob("USERS", "PROFILE_DATA", protobufData,
-                                "USER = '" + username + "'");
+    bool ok = updateRowWithBlob("USERS", "USER_DATA", protobufData,
+                                "USERNAME = '" + username + "'");
     closeDB();
 
     if (ok)
@@ -165,7 +111,7 @@ bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
 
 bool UserDatabaseHandler::removeUser(const std::string& username) {
     if (!openDB(dbFilename)) return false;
-    bool ok = deleteRows("USERS", "USER = '" + username + "'");
+    bool ok = deleteRows("USERS", "USERNAME = '" + username + "'");
     closeDB();
 
     if (ok)

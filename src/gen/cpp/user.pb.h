@@ -28,9 +28,7 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
-#include "google/protobuf/map.h"  // IWYU pragma: export
-#include "google/protobuf/map_entry.h"
-#include "google/protobuf/map_field_inl.h"
+#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
 
@@ -54,64 +52,59 @@ struct TableStruct_user_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_user_2eproto;
+namespace user {
 class User;
 struct UserDefaultTypeInternal;
 extern UserDefaultTypeInternal _User_default_instance_;
-class User_ProjectsEntry_DoNotUse;
-struct User_ProjectsEntry_DoNotUseDefaultTypeInternal;
-extern User_ProjectsEntry_DoNotUseDefaultTypeInternal _User_ProjectsEntry_DoNotUse_default_instance_;
+}  // namespace user
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
+namespace user {
+enum UserState : int {
+  USER_STATE_UNSPECIFIED = 0,
+  NONE = 1,
+  DEBATING = 2,
+  UserState_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  UserState_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool UserState_IsValid(int value);
+extern const uint32_t UserState_internal_data_[];
+constexpr UserState UserState_MIN = static_cast<UserState>(0);
+constexpr UserState UserState_MAX = static_cast<UserState>(2);
+constexpr int UserState_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+UserState_descriptor();
+template <typename T>
+const std::string& UserState_Name(T value) {
+  static_assert(std::is_same<T, UserState>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to UserState_Name().");
+  return UserState_Name(static_cast<UserState>(value));
+}
+template <>
+inline const std::string& UserState_Name(UserState value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<UserState_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool UserState_Parse(absl::string_view name, UserState* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<UserState>(
+      UserState_descriptor(), name, value);
+}
 
 // ===================================================================
 
 
 // -------------------------------------------------------------------
 
-class User_ProjectsEntry_DoNotUse final
-    : public ::google::protobuf::internal::MapEntry<
-          std::string, std::string,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING> {
- public:
-  using SuperType = ::google::protobuf::internal::MapEntry<
-      std::string, std::string,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>;
-  User_ProjectsEntry_DoNotUse();
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR User_ProjectsEntry_DoNotUse(
-      ::google::protobuf::internal::ConstantInitialized);
-  explicit User_ProjectsEntry_DoNotUse(::google::protobuf::Arena* arena);
-  static const User_ProjectsEntry_DoNotUse* internal_default_instance() {
-    return reinterpret_cast<const User_ProjectsEntry_DoNotUse*>(
-        &_User_ProjectsEntry_DoNotUse_default_instance_);
-  }
-
-
- private:
-  friend class ::google::protobuf::MessageLite;
-  friend struct ::TableStruct_user_2eproto;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      35, 2>
-      _table_;
-
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-};
-// -------------------------------------------------------------------
-
 class User final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:User) */ {
+/* @@protoc_insertion_point(class_definition:user.User) */ {
  public:
   inline User() : User(nullptr) {}
   ~User() PROTOBUF_FINAL;
@@ -169,7 +162,7 @@ class User final : public ::google::protobuf::Message
     return reinterpret_cast<const User*>(
         &_User_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 0;
   friend void swap(User& a, User& b) { a.Swap(&b); }
   inline void Swap(User* other) {
     if (other == this) return;
@@ -235,7 +228,7 @@ class User final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "User"; }
+  static ::absl::string_view FullMessageName() { return "user.User"; }
 
  protected:
   explicit User(::google::protobuf::Arena* arena);
@@ -256,114 +249,59 @@ class User final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kLocationsFieldNumber = 5,
-    kProjectsFieldNumber = 6,
-    kFirstNameFieldNumber = 1,
-    kLastNameFieldNumber = 2,
-    kManagerFieldNumber = 4,
-    kActiveFieldNumber = 3,
+    kUsernameFieldNumber = 1,
+    kDebateTopicFieldNumber = 3,
+    kStateFieldNumber = 2,
   };
-  // repeated string locations = 5 [json_name = "locations"];
-  int locations_size() const;
-  private:
-  int _internal_locations_size() const;
-
-  public:
-  void clear_locations() ;
-  const std::string& locations(int index) const;
-  std::string* mutable_locations(int index);
+  // string username = 1 [json_name = "username"];
+  void clear_username() ;
+  const std::string& username() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_locations(int index, Arg_&& value, Args_... args);
-  std::string* add_locations();
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void add_locations(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<std::string>& locations() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* mutable_locations();
+  void set_username(Arg_&& arg, Args_... args);
+  std::string* mutable_username();
+  PROTOBUF_NODISCARD std::string* release_username();
+  void set_allocated_username(std::string* value);
 
   private:
-  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_locations() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_locations();
-
-  public:
-  // map<string, string> projects = 6 [json_name = "projects"];
-  int projects_size() const;
-  private:
-  int _internal_projects_size() const;
-
-  public:
-  void clear_projects() ;
-  const ::google::protobuf::Map<std::string, std::string>& projects() const;
-  ::google::protobuf::Map<std::string, std::string>* mutable_projects();
-
-  private:
-  const ::google::protobuf::Map<std::string, std::string>& _internal_projects() const;
-  ::google::protobuf::Map<std::string, std::string>* _internal_mutable_projects();
-
-  public:
-  // string first_name = 1 [json_name = "firstName"];
-  void clear_first_name() ;
-  const std::string& first_name() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_first_name(Arg_&& arg, Args_... args);
-  std::string* mutable_first_name();
-  PROTOBUF_NODISCARD std::string* release_first_name();
-  void set_allocated_first_name(std::string* value);
-
-  private:
-  const std::string& _internal_first_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_first_name(
+  const std::string& _internal_username() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_username(
       const std::string& value);
-  std::string* _internal_mutable_first_name();
+  std::string* _internal_mutable_username();
 
   public:
-  // string last_name = 2 [json_name = "lastName"];
-  void clear_last_name() ;
-  const std::string& last_name() const;
+  // string debate_topic = 3 [json_name = "debateTopic"];
+  void clear_debate_topic() ;
+  const std::string& debate_topic() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_last_name(Arg_&& arg, Args_... args);
-  std::string* mutable_last_name();
-  PROTOBUF_NODISCARD std::string* release_last_name();
-  void set_allocated_last_name(std::string* value);
+  void set_debate_topic(Arg_&& arg, Args_... args);
+  std::string* mutable_debate_topic();
+  PROTOBUF_NODISCARD std::string* release_debate_topic();
+  void set_allocated_debate_topic(std::string* value);
 
   private:
-  const std::string& _internal_last_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_last_name(
+  const std::string& _internal_debate_topic() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_topic(
       const std::string& value);
-  std::string* _internal_mutable_last_name();
+  std::string* _internal_mutable_debate_topic();
 
   public:
-  // .User manager = 4 [json_name = "manager"];
-  bool has_manager() const;
-  void clear_manager() ;
-  const ::User& manager() const;
-  PROTOBUF_NODISCARD ::User* release_manager();
-  ::User* mutable_manager();
-  void set_allocated_manager(::User* value);
-  void unsafe_arena_set_allocated_manager(::User* value);
-  ::User* unsafe_arena_release_manager();
+  // .user.UserState state = 2 [json_name = "state"];
+  void clear_state() ;
+  ::user::UserState state() const;
+  void set_state(::user::UserState value);
 
   private:
-  const ::User& _internal_manager() const;
-  ::User* _internal_mutable_manager();
+  ::user::UserState _internal_state() const;
+  void _internal_set_state(::user::UserState value);
 
   public:
-  // bool active = 3 [json_name = "active"];
-  void clear_active() ;
-  bool active() const;
-  void set_active(bool value);
-
-  private:
-  bool _internal_active() const;
-  void _internal_set_active(bool value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:User)
+  // @@protoc_insertion_point(class_scope:user.User)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 2,
-      49, 2>
+      2, 3, 0,
+      38, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -380,17 +318,10 @@ class User final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const User& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::ArenaStringPtr username_;
+    ::google::protobuf::internal::ArenaStringPtr debate_topic_;
+    int state_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<std::string> locations_;
-    ::google::protobuf::internal::MapField<User_ProjectsEntry_DoNotUse, std::string, std::string,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>
-        projects_;
-    ::google::protobuf::internal::ArenaStringPtr first_name_;
-    ::google::protobuf::internal::ArenaStringPtr last_name_;
-    ::User* manager_;
-    bool active_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -411,314 +342,124 @@ class User final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// -------------------------------------------------------------------
-
 // User
 
-// string first_name = 1 [json_name = "firstName"];
-inline void User::clear_first_name() {
+// string username = 1 [json_name = "username"];
+inline void User::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.first_name_.ClearToEmpty();
+  _impl_.username_.ClearToEmpty();
 }
-inline const std::string& User::first_name() const
+inline const std::string& User::username() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:User.first_name)
-  return _internal_first_name();
+  // @@protoc_insertion_point(field_get:user.User.username)
+  return _internal_username();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void User::set_first_name(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void User::set_username(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.first_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:User.first_name)
+  _impl_.username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.username)
 }
-inline std::string* User::mutable_first_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_first_name();
-  // @@protoc_insertion_point(field_mutable:User.first_name)
+inline std::string* User::mutable_username() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_username();
+  // @@protoc_insertion_point(field_mutable:user.User.username)
   return _s;
 }
-inline const std::string& User::_internal_first_name() const {
+inline const std::string& User::_internal_username() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.first_name_.Get();
+  return _impl_.username_.Get();
 }
-inline void User::_internal_set_first_name(const std::string& value) {
+inline void User::_internal_set_username(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.first_name_.Set(value, GetArena());
+  _impl_.username_.Set(value, GetArena());
 }
-inline std::string* User::_internal_mutable_first_name() {
+inline std::string* User::_internal_mutable_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.first_name_.Mutable( GetArena());
+  return _impl_.username_.Mutable( GetArena());
 }
-inline std::string* User::release_first_name() {
+inline std::string* User::release_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:User.first_name)
-  return _impl_.first_name_.Release();
+  // @@protoc_insertion_point(field_release:user.User.username)
+  return _impl_.username_.Release();
 }
-inline void User::set_allocated_first_name(std::string* value) {
+inline void User::set_allocated_username(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.first_name_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.first_name_.IsDefault()) {
-    _impl_.first_name_.Set("", GetArena());
+  _impl_.username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.username_.IsDefault()) {
+    _impl_.username_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:User.first_name)
+  // @@protoc_insertion_point(field_set_allocated:user.User.username)
 }
 
-// string last_name = 2 [json_name = "lastName"];
-inline void User::clear_last_name() {
+// .user.UserState state = 2 [json_name = "state"];
+inline void User::clear_state() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.last_name_.ClearToEmpty();
+  _impl_.state_ = 0;
 }
-inline const std::string& User::last_name() const
+inline ::user::UserState User::state() const {
+  // @@protoc_insertion_point(field_get:user.User.state)
+  return _internal_state();
+}
+inline void User::set_state(::user::UserState value) {
+  _internal_set_state(value);
+  // @@protoc_insertion_point(field_set:user.User.state)
+}
+inline ::user::UserState User::_internal_state() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::user::UserState>(_impl_.state_);
+}
+inline void User::_internal_set_state(::user::UserState value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.state_ = value;
+}
+
+// string debate_topic = 3 [json_name = "debateTopic"];
+inline void User::clear_debate_topic() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_topic_.ClearToEmpty();
+}
+inline const std::string& User::debate_topic() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:User.last_name)
-  return _internal_last_name();
+  // @@protoc_insertion_point(field_get:user.User.debate_topic)
+  return _internal_debate_topic();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void User::set_last_name(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void User::set_debate_topic(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.last_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:User.last_name)
+  _impl_.debate_topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.debate_topic)
 }
-inline std::string* User::mutable_last_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_last_name();
-  // @@protoc_insertion_point(field_mutable:User.last_name)
+inline std::string* User::mutable_debate_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_debate_topic();
+  // @@protoc_insertion_point(field_mutable:user.User.debate_topic)
   return _s;
 }
-inline const std::string& User::_internal_last_name() const {
+inline const std::string& User::_internal_debate_topic() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.last_name_.Get();
+  return _impl_.debate_topic_.Get();
 }
-inline void User::_internal_set_last_name(const std::string& value) {
+inline void User::_internal_set_debate_topic(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.last_name_.Set(value, GetArena());
+  _impl_.debate_topic_.Set(value, GetArena());
 }
-inline std::string* User::_internal_mutable_last_name() {
+inline std::string* User::_internal_mutable_debate_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.last_name_.Mutable( GetArena());
+  return _impl_.debate_topic_.Mutable( GetArena());
 }
-inline std::string* User::release_last_name() {
+inline std::string* User::release_debate_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:User.last_name)
-  return _impl_.last_name_.Release();
+  // @@protoc_insertion_point(field_release:user.User.debate_topic)
+  return _impl_.debate_topic_.Release();
 }
-inline void User::set_allocated_last_name(std::string* value) {
+inline void User::set_allocated_debate_topic(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.last_name_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.last_name_.IsDefault()) {
-    _impl_.last_name_.Set("", GetArena());
+  _impl_.debate_topic_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_.IsDefault()) {
+    _impl_.debate_topic_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:User.last_name)
-}
-
-// bool active = 3 [json_name = "active"];
-inline void User::clear_active() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.active_ = false;
-}
-inline bool User::active() const {
-  // @@protoc_insertion_point(field_get:User.active)
-  return _internal_active();
-}
-inline void User::set_active(bool value) {
-  _internal_set_active(value);
-  // @@protoc_insertion_point(field_set:User.active)
-}
-inline bool User::_internal_active() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.active_;
-}
-inline void User::_internal_set_active(bool value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.active_ = value;
-}
-
-// .User manager = 4 [json_name = "manager"];
-inline bool User::has_manager() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.manager_ != nullptr);
-  return value;
-}
-inline void User::clear_manager() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.manager_ != nullptr) _impl_.manager_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::User& User::_internal_manager() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::User* p = _impl_.manager_;
-  return p != nullptr ? *p : reinterpret_cast<const ::User&>(::_User_default_instance_);
-}
-inline const ::User& User::manager() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:User.manager)
-  return _internal_manager();
-}
-inline void User::unsafe_arena_set_allocated_manager(::User* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.manager_);
-  }
-  _impl_.manager_ = reinterpret_cast<::User*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:User.manager)
-}
-inline ::User* User::release_manager() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::User* released = _impl_.manager_;
-  _impl_.manager_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::User* User::unsafe_arena_release_manager() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:User.manager)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::User* temp = _impl_.manager_;
-  _impl_.manager_ = nullptr;
-  return temp;
-}
-inline ::User* User::_internal_mutable_manager() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.manager_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::User>(GetArena());
-    _impl_.manager_ = reinterpret_cast<::User*>(p);
-  }
-  return _impl_.manager_;
-}
-inline ::User* User::mutable_manager() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::User* _msg = _internal_mutable_manager();
-  // @@protoc_insertion_point(field_mutable:User.manager)
-  return _msg;
-}
-inline void User::set_allocated_manager(::User* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete (_impl_.manager_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.manager_ = reinterpret_cast<::User*>(value);
-  // @@protoc_insertion_point(field_set_allocated:User.manager)
-}
-
-// repeated string locations = 5 [json_name = "locations"];
-inline int User::_internal_locations_size() const {
-  return _internal_locations().size();
-}
-inline int User::locations_size() const {
-  return _internal_locations_size();
-}
-inline void User::clear_locations() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.locations_.Clear();
-}
-inline std::string* User::add_locations() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  std::string* _s = _internal_mutable_locations()->Add();
-  // @@protoc_insertion_point(field_add_mutable:User.locations)
-  return _s;
-}
-inline const std::string& User::locations(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:User.locations)
-  return _internal_locations().Get(index);
-}
-inline std::string* User::mutable_locations(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:User.locations)
-  return _internal_mutable_locations()->Mutable(index);
-}
-template <typename Arg_, typename... Args_>
-inline void User::set_locations(int index, Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::AssignToString(
-      *_internal_mutable_locations()->Mutable(index),
-      std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:User.locations)
-}
-template <typename Arg_, typename... Args_>
-inline void User::add_locations(Arg_&& value, Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_locations(),
-                               std::forward<Arg_>(value),
-                               args... );
-  // @@protoc_insertion_point(field_add:User.locations)
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-User::locations() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:User.locations)
-  return _internal_locations();
-}
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-User::mutable_locations() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:User.locations)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_locations();
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-User::_internal_locations() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.locations_;
-}
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-User::_internal_mutable_locations() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.locations_;
-}
-
-// map<string, string> projects = 6 [json_name = "projects"];
-inline int User::_internal_projects_size() const {
-  return _internal_projects().size();
-}
-inline int User::projects_size() const {
-  return _internal_projects_size();
-}
-inline void User::clear_projects() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.projects_.Clear();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& User::_internal_projects() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.projects_.GetMap();
-}
-inline const ::google::protobuf::Map<std::string, std::string>& User::projects() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_map:User.projects)
-  return _internal_projects();
-}
-inline ::google::protobuf::Map<std::string, std::string>* User::_internal_mutable_projects() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.projects_.MutableMap();
-}
-inline ::google::protobuf::Map<std::string, std::string>* User::mutable_projects() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_map:User.projects)
-  return _internal_mutable_projects();
+  // @@protoc_insertion_point(field_set_allocated:user.User.debate_topic)
 }
 
 #ifdef __GNUC__
@@ -726,7 +467,21 @@ inline ::google::protobuf::Map<std::string, std::string>* User::mutable_projects
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
+}  // namespace user
 
+
+namespace google {
+namespace protobuf {
+
+template <>
+struct is_proto_enum<::user::UserState> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::user::UserState>() {
+  return ::user::UserState_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

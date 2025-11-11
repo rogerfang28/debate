@@ -1,6 +1,7 @@
 #include "pageGenerator.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/debate.pb.h"
+#include "../../../src/gen/cpp/user.pb.h"
 #include "../debate/DebateDatabaseHandler.h"
 #include "../utils/pathUtils.h"
 #include "../debate/UserDatabaseHandler.h"
@@ -40,24 +41,59 @@ void updateComponentText(ui::Component* root, const std::string& id, const std::
 }
 
 std::string generatePage(const std::string& user) {
-    // ! right now this is based off getting the location from the user database, I want it to be based off the debate database
     UserDatabaseHandler userDbHandler(utils::getDatabasePath());
-    auto rows = userDbHandler.getUser(user);
-    std::string location = "home"; // default
-    if (!rows.empty()) {
-        location = rows[0]["LOCATION"];
-    }
-    else{
-        userDbHandler.addUser(user, "Default Name", "2024-01-01", "home");
-    }
-    if (location == "home") {
+    
+    // Check if user exists
+    if (!userDbHandler.userExists(user)) {
+        // Create a new user with default state
+        user::User newUser;
+        newUser.set_username(user);
+        newUser.set_state(user::UserState::NONE);
+        newUser.set_debate_topic("");
+        
+        std::vector<uint8_t> userData(newUser.ByteSizeLong());
+        newUser.SerializeToArray(userData.data(), userData.size());
+        userDbHandler.addUser(user, userData);
+        
+        std::cerr << "[PageGen] Created new user: " << user << std::endl;
         return generateHomePage(user);
-    } else {
-        // for now assume that if not home, then debate page and location = topic
-        std::string topicID = location; // This would be dynamic in a real scenario
-        // now I need to get the topic from the topicID
-        std::string curClaim = topicID; // This would also be dynamic
-        return generateDebateClaimPage(user, topicID, curClaim);
+    }
+    
+    // Get user protobuf data
+    std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
+    if (userData.empty()) {
+        std::cerr << "[PageGen][WARN] User exists but no protobuf data found for: " << user << std::endl;
+        return generateHomePage(user);
+    }
+    
+    // Parse user protobuf
+    user::User userProto;
+    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
+        std::cerr << "[PageGen][ERR] Failed to parse user protobuf for: " << user << std::endl;
+        return generateHomePage(user);
+    }
+    
+    std::cerr << "[PageGen] User " << user << " state: " << userProto.state() 
+              << " (NONE=" << user::UserState::NONE << ", DEBATING=" << user::UserState::DEBATING << ")" << std::endl;
+    
+    // Generate page based on user state
+    switch (userProto.state()) {
+        case user::UserState::NONE:
+            std::cout << "[DEBUGGING RIGHT NOW] Generating home page for user with state NONE" << std::endl;
+            return generateHomePage(user);
+            
+        case user::UserState::DEBATING:
+            std::cout << "[DEBUGGING RIGHT NOW] Generating debate page for user with state DEBATING" << std::endl;
+            if (userProto.debate_topic().empty()) {
+                std::cerr << "[PageGen][WARN] User is DEBATING but has no debate_topic set" << std::endl;
+                return generateHomePage(user);
+            }
+            std::cerr << "[PageGen] Generating debate page for topic: " << userProto.debate_topic() << std::endl;
+            return generateDebateClaimPage(user, userProto.debate_topic(), userProto.debate_topic());
+            
+        default:
+            std::cerr << "[PageGen][WARN] Unknown user state: " << userProto.state() << std::endl;
+            return generateHomePage(user);
     }
 }
 
