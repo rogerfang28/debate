@@ -40,7 +40,7 @@ void updateComponentText(ui::Component* root, const std::string& id, const std::
 }
 
 std::string generatePage(const std::string& user) {
-    // This should get the location of the user from the database, then use generateTestPage or generateDebateClaimPage
+    // ! right now this is based off getting the location from the user database, I want it to be based off the debate database
     UserDatabaseHandler userDbHandler(utils::getDatabasePath());
     auto rows = userDbHandler.getUser(user);
     std::string location = "home"; // default

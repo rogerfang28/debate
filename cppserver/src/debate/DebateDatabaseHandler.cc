@@ -1,3 +1,5 @@
+// ! need to fully understand
+
 #include "DebateDatabaseHandler.h"
 
 DebateDatabaseHandler::DebateDatabaseHandler(const std::string& dbFile)

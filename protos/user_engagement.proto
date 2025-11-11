@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package userengagement;
+
+enum EngagementAction {
+  ENGAGEMENT_ACTION_UNSPECIFIED = 0;
+  ACTION_NONE       = 1;  // basically home page I guess
+  ACTION_DEBATING   = 2;  // currently in a debate, include additional data
+}
+
+
+// enum DebateRole {
+//   DEBATE_ROLE_UNSPECIFIED = 0;
+//   DEBATE_ROLE_PROPONENT   = 1;  // "pro"
+//   DEBATE_ROLE_OPPONENT    = 2;  // "con"
+//   DEBATE_ROLE_AUDIENCE    = 3;  // spectator
+// }
+
+// enum DebateAction {
+//   DEBATE_ACTIVITY_UNSPECIFIED = 0;
+//   DEBATE_ACTIVITY_VIEWING_STATEMENT = 1;
+//   DEBATE_ACTIVITY_CREATING_STATEMENT = 2;
+// }
+
+// shows what the user is currently doing
+message UserEngagement {
+  string user_id = 1; // I mean we probably won't need this but it may be useful for debugging
+  EngagementAction current_action = 2;
+  map<string, string> data = 3;
+  // int64 action_start_timestamp = 4; // when the current action started, may be helpful?
+}

@@ -1,6 +1,7 @@
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-#define _WIN32_WINNT 0x0A00
+// #define WIN32_LEAN_AND_MEAN
+// #define NOMINMAX
+// #define _WIN32_WINNT 0x0A00
+// these are not needed because they are in cmakelists
 
 #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../../../src/gen/cpp/client_message.pb.h"

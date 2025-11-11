@@ -1,5 +1,4 @@
-#ifndef GOHOME_H
-#define GOHOME_H
+#pragma once
 
 #include <string>
 
@@ -11,5 +10,3 @@
  * @return true if successful, false otherwise
  */
 bool goHome(const std::string& user);
-
-#endif // GOHOME_H

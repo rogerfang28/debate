@@ -78,14 +78,14 @@ file(GLOB ABSL_LIBS
 )
 
 
-if(ABSL_LIBS)
-    message(STATUS "✅ Found Abseil libs:")
-    foreach(LIB ${ABSL_LIBS})
-        message(STATUS "   ${LIB}")
-    endforeach()
-else()
-    message(WARNING "⚠️  No Abseil libs found under x64-mingw-dynamic/lib")
-endif()
+# if(ABSL_LIBS)
+#     message(STATUS "✅ Found Abseil libs:")
+#     foreach(LIB ${ABSL_LIBS})
+#         message(STATUS "   ${LIB}")
+#     endforeach()
+# else()
+#     message(WARNING "⚠️  No Abseil libs found under x64-mingw-dynamic/lib")
+# endif()
 
 
 # ---------------------------------
@@ -99,7 +99,7 @@ add_executable(debate_server
 
 
 # ---------------------------------
-# Link libraries (in same order as your .rsp build)
+# Link libraries
 # ---------------------------------
 target_link_libraries(debate_server
     protobuf
@@ -122,8 +122,8 @@ set_target_properties(debate_server PROPERTIES
 # ---------------------------------
 # Ensure MinGW runtime and vcpkg DLLs are found
 # ---------------------------------
-set(ENV{PATH} "C:\\mingw-w64\\mingw64\\bin;${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/bin;$ENV{PATH}")
-message(STATUS "PATH = $ENV{PATH}")
-
+# set(ENV{PATH} "C:\\mingw-w64\\mingw64\\bin;${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/bin;$ENV{PATH}")
+# message(STATUS "PATH = $ENV{PATH}")
+# not sure if this is needed
 
 

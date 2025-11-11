@@ -1,5 +1,4 @@
-#ifndef ENTERDEBATE_H
-#define ENTERDEBATE_H
+#pragma once
 
 #include <string>
 
@@ -12,5 +11,3 @@
  * @return true if successful, false otherwise
  */
 bool enterDebate(const std::string& user, const std::string& topic);
-
-#endif // ENTERDEBATE_H
