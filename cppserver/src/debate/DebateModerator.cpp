@@ -52,9 +52,9 @@ void DebateModerator::handleAddDebate(const std::string& user, const std::string
     if (newId == -1) {
         std::cerr << "[DEBUG DebateModerator] Failed to insert debate topic.\n";
     } else {
-        std::cout << "[DEBUG DebateModerator] Inserted debate with ID: " << newId << std::endl;
+        // std::cout << "[DEBUG DebateModerator] Inserted debate with ID: " << newId << std::endl;
     }
-    std::cout << "[DEBUG DebateModerator] Adding protobuf data for debate topic...\n";
+    // std::cout << "[DEBUG DebateModerator] Adding protobuf data for debate topic...\n";
     bool ok = false;
     std::string serialized = debateProto.SerializeAsString();
     std::vector<uint8_t> debateBytes(serialized.begin(), serialized.end());
@@ -62,6 +62,7 @@ void DebateModerator::handleAddDebate(const std::string& user, const std::string
     ok = dbHandler.updateDebateProtobuf(user, debateTopic, debateBytes);
     if (ok) {
         std::cout << "[DEBUG DebateModerator] Added protobuf data for debate topic.\n";
+        // std::cout << "[DEBUG DebateModerator] Debate protobuf size: " << debateBytes.size() << " bytes\n" << "Debate Topic: " << debateProto.topic() << std::endl;
     } else {
         std::cerr << "[DEBUG DebateModerator] Failed to add protobuf data for debate topic.\n";
     }

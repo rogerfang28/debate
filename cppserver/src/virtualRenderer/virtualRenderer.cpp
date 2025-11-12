@@ -88,7 +88,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
     std::cout << "User: " << user << "\n";
 
     // Log page data
-    if (client_message.has_page_data()) {
+    if (client_message.has_page_data() && false) { // set to true to enable detailed logging
       const auto& page_data = client_message.page_data();
       std::cout << "\n--- Page Data ---\n";
       std::cout << "Page ID: " << page_data.page_id() << "\n";
@@ -101,7 +101,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
                   << "\" = \"" << comp.value() << "\"\n";
       }
     } else {
-      std::cout << "!!! No page data included\n";
+    //   std::cout << "!!! No page data included\n";
     }
 
     // Translate ClientMessage to Event protobuf
@@ -169,7 +169,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
             (*evt.mutable_data())["topicID"] = topicID;
             std::cout << "  Added data: topicID = " << topicID << "\n";
         } else {
-            std::cerr << "❌ Unknown component/event combination on home page: " 
+            std::cerr << "Unknown component/event combination on home page: " 
                       << componentId << "/" << eventType << "\n";
             res.status = 400;
             res.set_content("Unknown event", "text/plain");
@@ -180,7 +180,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
         if (componentId == "goHomeButton" && eventType == "onClick") {
             evt.set_action_id("goHome");
         } else {
-            std::cerr << "❌ Unknown page or event: page=" << pageId 
+            std::cerr << "Unknown page or event: page=" << pageId 
                       << " component=" << componentId << "/" << eventType << "\n";
             res.status = 400;
             res.set_content("Unknown event", "text/plain");

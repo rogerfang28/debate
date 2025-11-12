@@ -5,8 +5,8 @@
 #include <iostream>
 
 bool enterDebate(const std::string& user, const std::string& topicID) {
-    std::string newtopicID = "16"; // Temporary override for testing
-    std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << newtopicID << std::endl;
+    // std::string newtopicID = "16"; // Temporary override for testing
+    std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << topicID << std::endl;
 
     try {
         // Create database handler
@@ -28,7 +28,7 @@ bool enterDebate(const std::string& user, const std::string& topicID) {
         
         // Update user state to DEBATING and set debate topic
         userProto.set_state(user::DEBATING);
-        userProto.set_debate_topic(newtopicID);
+        userProto.set_debate_topic(topicID);
         
         // Serialize and save back to database
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
@@ -37,7 +37,7 @@ bool enterDebate(const std::string& user, const std::string& topicID) {
         bool success = userDbHandler.updateUserProtobuf(user, updatedData);
         
         if (success) {
-            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << newtopicID 
+            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << topicID 
                       << " (state=DEBATING)" << std::endl;
         } else {
             std::cerr << "[EnterDebate][ERR] Failed to update user protobuf for " << user << std::endl;

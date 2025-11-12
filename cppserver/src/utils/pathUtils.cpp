@@ -29,7 +29,7 @@ namespace utils {
         // Navigate from exe location (usually cppserver/build/bin/) to cppserver/debates.sqlite3
         std::filesystem::path dbPath = exeDir / ".." / ".." / "debates.sqlite3";
         dbPath = std::filesystem::weakly_canonical(dbPath);
-        std::cerr << "[PathUtils] Database path resolved to: " << dbPath.string() << std::endl;
+        // std::cerr << "[PathUtils] Database path resolved to: " << dbPath.string() << std::endl;
         return dbPath.string();
     }
 

@@ -55,7 +55,7 @@ std::string generatePage(const std::string& user) {
         newUser.SerializeToArray(userData.data(), userData.size());
         userDbHandler.addUser(user, userData);
         
-        std::cerr << "[PageGen] Created new user: " << user << std::endl;
+        // std::cerr << "[PageGen] Created new user: " << user << std::endl;
         return generateHomePage(user);
     }
     
@@ -79,11 +79,11 @@ std::string generatePage(const std::string& user) {
     // Generate page based on user state
     switch (userProto.state()) {
         case user::UserState::NONE:
-            std::cout << "[DEBUGGING RIGHT NOW] Generating home page for user with state NONE" << std::endl;
+            // std::cout << "[DEBUGGING RIGHT NOW] Generating home page for user with state NONE" << std::endl;
             return generateHomePage(user);
             
         case user::UserState::DEBATING:
-            std::cout << "[DEBUGGING RIGHT NOW] Generating debate page for user with state DEBATING" << std::endl;
+            // std::cout << "[DEBUGGING RIGHT NOW] Generating debate page for user with state DEBATING" << std::endl;
             if (userProto.debate_topic().empty()) {
                 std::cerr << "[PageGen][WARN] User is DEBATING but has no debate_topic set" << std::endl;
                 return generateHomePage(user);
@@ -185,7 +185,7 @@ std::string generateHomePage(const std::string& user) {
     return page_bin;
 }
 
-std::string generateDebateClaimPage(const std::string& user, const std::string& topic, const std::string& curClaim) {
+std::string generateDebateClaimPage(const std::string& user, const std::string& topicId, const std::string& curClaim) {
     // -------- Get absolute path to pbtxt --------
     std::filesystem::path exeDir = utils::getExeDir();
 
@@ -215,8 +215,8 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
     // change it based on user/topic/curClaim
     // -------- Fetch debate claims for user & topic --------
     DebateDatabaseHandler dbHandler(utils::getDatabasePath());
-    
-    std::vector<uint8_t> bytes = dbHandler.getDebateProtobuf(user, topic); // so right here it's not returning correctly
+
+    std::vector<uint8_t> bytes = dbHandler.getDebateProtobuf(user, topicId); // so right here it's not returning correctly
     debate::Debate debateProto;
     if (debateProto.ParseFromArray(bytes.data(), static_cast<int>(bytes.size()))) {
         std::cout << "[PageGen] Successfully parsed protobuf data from database. Topic: "
@@ -334,7 +334,7 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
         return {};
     }
 
-    std::cerr << "[PageGen] Generated page with size=" << page_bin.size() << " bytes\n";
+    // std::cerr << "[PageGen] Generated page with size=" << page_bin.size() << " bytes\n";
     return page_bin;
 }
 
