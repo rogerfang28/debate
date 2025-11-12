@@ -86,12 +86,12 @@ bool DebateDatabaseHandler::updateDebateProtobuf(const std::string& user, const 
     return success;
 }
 
-bool DebateDatabaseHandler::removeDebate(const std::string& topic, const std::string& user) {
+bool DebateDatabaseHandler::removeDebate(const std::string& id, const std::string& user) {
     if (!openDB(dbFilename)) return false;
-    bool ok = deleteRows("DEBATE", "TOPIC = '" + topic + "' AND USER = '" + user + "'");
+    bool ok = deleteRows("DEBATE", "ID = '" + id + "' AND USER = '" + user + "'");
     closeDB();
     if (ok)
-        std::cout << "[DebateDB] Removed debate: " << topic << " for user " << user << "\n";
+        std::cout << "[DebateDB] Removed debate with id: " << id << " for user " << user << "\n";
     return ok;
 }
 

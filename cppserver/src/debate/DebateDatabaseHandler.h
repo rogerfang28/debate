@@ -34,8 +34,8 @@ public:
     bool updateDebateProtobuf(const std::string& user, const std::string& id, 
                               const std::vector<uint8_t>& protobufData);
 
-    // Remove a specific debate for a user
-    bool removeDebate(const std::string& topic, const std::string& user);
+    // Remove a specific debate for a user by ID
+    bool removeDebate(const std::string& id, const std::string& user);
 
     // Clear all debates for a given user
     bool clearUserDebates(const std::string& user);
