@@ -27,11 +27,11 @@ public:
     // Retrieve all debates for a specific user
     std::vector<std::map<std::string, std::string>> getDebates(const std::string& user);
 
-    // Retrieve protobuf binary data for a specific debate
-    std::vector<uint8_t> getDebateProtobuf(const std::string& user, const std::string& topic);
+    // Retrieve protobuf binary data for a specific debate by ID
+    std::vector<uint8_t> getDebateProtobuf(const std::string& user, const std::string& id);
 
-    // Update protobuf data for an existing debate
-    bool updateDebateProtobuf(const std::string& user, const std::string& topic, 
+    // Update protobuf data for an existing debate by ID
+    bool updateDebateProtobuf(const std::string& user, const std::string& id, 
                               const std::vector<uint8_t>& protobufData);
 
     // Remove a specific debate for a user

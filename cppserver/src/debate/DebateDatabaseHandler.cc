@@ -57,30 +57,30 @@ DebateDatabaseHandler::getDebates(const std::string& user) {
 }
 
 std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(const std::string& user, 
-                                                              const std::string& topic) {
+                                                              const std::string& id) {
     if (!openDB(dbFilename)) return {};
     
-    std::string whereClause = "USER = '" + user + "' AND TOPIC = '" + topic + "'";
+    std::string whereClause = "USER = '" + user + "' AND ID = '" + id + "'";
     auto protobufData = readBlob("DEBATE", "PAGE_DATA", whereClause);
     closeDB();
     
-    std::cout << "[DebateDB] Retrieved protobuf data for topic: " << topic 
+    std::cout << "[DebateDB] Retrieved protobuf data for id: " << id 
               << " for user " << user << " (size: " << protobufData.size() << " bytes)\n";
     return protobufData;
 }
 
-bool DebateDatabaseHandler::updateDebateProtobuf(const std::string& user, const std::string& topic, 
+bool DebateDatabaseHandler::updateDebateProtobuf(const std::string& user, const std::string& id, 
                                                   const std::vector<uint8_t>& protobufData) {
-    std::cout << "[DebateDB] Updating protobuf data for topic: " << topic 
+    std::cout << "[DebateDB] Updating protobuf data for id: " << id 
               << " for user " << user << " (size: " << protobufData.size() << " bytes)\n";
     if (!openDB(dbFilename)) return false;
     
-    std::string whereClause = "USER = '" + user + "' AND TOPIC = '" + topic + "'";
+    std::string whereClause = "USER = '" + user + "' AND ID = '" + id + "'";
     bool success = updateRowWithBlob("DEBATE", "PAGE_DATA", protobufData, whereClause);
     closeDB();
     
     if (success) {
-        std::cout << "[DebateDB] Updated protobuf data for topic: " << topic 
+        std::cout << "[DebateDB] Updated protobuf data for id: " << id 
                   << " for user " << user << " (size: " << protobufData.size() << " bytes)\n";
     }
     return success;
