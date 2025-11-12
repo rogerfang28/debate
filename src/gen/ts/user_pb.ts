@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIk4KBFVzZXISEAoIdXNlcm5hbWUYASABKAkSHgoFc3RhdGUYAiABKA4yDy51c2VyLlVzZXJTdGF0ZRIUCgxkZWJhdGVfdG9waWMYAyABKAkqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z");
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIlEKBFVzZXISEAoIdXNlcm5hbWUYASABKAkSHgoFc3RhdGUYAiABKA4yDy51c2VyLlVzZXJTdGF0ZRIXCg9kZWJhdGVfdG9waWNfaWQYAyABKAkqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * @generated from message user.User
@@ -33,9 +33,9 @@ export type User = Message<"user.User"> & {
   /**
    * topic of current debate (if state == DEBATING)
    *
-   * @generated from field: string debate_topic = 3;
+   * @generated from field: string debate_topic_id = 3;
    */
-  debateTopic: string;
+  debateTopicId: string;
 };
 
 /**

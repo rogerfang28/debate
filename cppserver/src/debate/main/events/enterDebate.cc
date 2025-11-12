@@ -26,9 +26,9 @@ bool enterDebate(const std::string& user, const std::string& topicID) {
             return false;
         }
         
-        // Update user state to DEBATING and set debate topic
+        // Update user state to DEBATING and set debate topic id
         userProto.set_state(user::DEBATING);
-        userProto.set_debate_topic(topicID);
+        userProto.set_debate_topic_id(topicID);
         
         // Serialize and save back to database
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());

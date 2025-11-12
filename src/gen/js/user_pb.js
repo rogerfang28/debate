@@ -8,7 +8,7 @@ import { enumDesc, fileDesc, messageDesc, tsEnum } from "@bufbuild/protobuf/code
  * Describes the file user.proto.
  */
 export const file_user = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIk4KBFVzZXISEAoIdXNlcm5hbWUYASABKAkSHgoFc3RhdGUYAiABKA4yDy51c2VyLlVzZXJTdGF0ZRIUCgxkZWJhdGVfdG9waWMYAyABKAkqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z");
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIlEKBFVzZXISEAoIdXNlcm5hbWUYASABKAkSHgoFc3RhdGUYAiABKA4yDy51c2VyLlVzZXJTdGF0ZRIXCg9kZWJhdGVfdG9waWNfaWQYAyABKAkqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * Describes the message user.User.

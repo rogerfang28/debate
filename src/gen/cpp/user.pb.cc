@@ -31,7 +31,7 @@ inline constexpr User::Impl_::Impl_(
       : username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        debate_topic_(
+        debate_topic_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         state_{static_cast< ::user::UserState >(0)},
@@ -73,7 +73,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.state_),
-        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.debate_topic_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.debate_topic_id_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -85,18 +85,18 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\nuser.proto\022\004user\"l\n\004User\022\032\n\010username\030\001"
+    "\n\nuser.proto\022\004user\"q\n\004User\022\032\n\010username\030\001"
     " \001(\tR\010username\022%\n\005state\030\002 \001(\0162\017.user.Use"
-    "rStateR\005state\022!\n\014debate_topic\030\003 \001(\tR\013deb"
-    "ateTopic*\?\n\tUserState\022\032\n\026USER_STATE_UNSP"
-    "ECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEBATING\020\002b\006proto"
-    "3"
+    "rStateR\005state\022&\n\017debate_topic_id\030\003 \001(\tR\r"
+    "debateTopicId*\?\n\tUserState\022\032\n\026USER_STATE"
+    "_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEBATING\020\002b\006"
+    "proto3"
 };
 static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    201,
+    206,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -138,7 +138,7 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::user::User& from_msg)
       : username_(arena, from.username_),
-        debate_topic_(arena, from.debate_topic_),
+        debate_topic_id_(arena, from.debate_topic_id_),
         _cached_size_{0} {}
 
 User::User(
@@ -162,7 +162,7 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : username_(arena),
-        debate_topic_(arena),
+        debate_topic_id_(arena),
         _cached_size_{0} {}
 
 inline void User::SharedCtor(::_pb::Arena* arena) {
@@ -178,7 +178,7 @@ inline void User::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.username_.Destroy();
-  this_._impl_.debate_topic_.Destroy();
+  this_._impl_.debate_topic_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -218,7 +218,7 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 38, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 41, 2> User::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -243,9 +243,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 38, 2> User::_table_ = {
     // .user.UserState state = 2 [json_name = "state"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.state_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.state_)}},
-    // string debate_topic = 3 [json_name = "debateTopic"];
+    // string debate_topic_id = 3 [json_name = "debateTopicId"];
     {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_)}},
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_id_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -255,16 +255,16 @@ const ::_pbi::TcParseTable<2, 3, 0, 38, 2> User::_table_ = {
     // .user.UserState state = 2 [json_name = "state"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.state_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // string debate_topic = 3 [json_name = "debateTopic"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_), 0, 0,
+    // string debate_topic_id = 3 [json_name = "debateTopicId"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\11\10\0\14\0\0\0\0"
+    "\11\10\0\17\0\0\0\0"
     "user.User"
     "username"
-    "debate_topic"
+    "debate_topic_id"
   }},
 };
 
@@ -276,7 +276,7 @@ PROTOBUF_NOINLINE void User::Clear() {
   (void) cached_has_bits;
 
   _impl_.username_.ClearToEmpty();
-  _impl_.debate_topic_.ClearToEmpty();
+  _impl_.debate_topic_id_.ClearToEmpty();
   _impl_.state_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -311,11 +311,11 @@ PROTOBUF_NOINLINE void User::Clear() {
                 2, this_._internal_state(), target);
           }
 
-          // string debate_topic = 3 [json_name = "debateTopic"];
-          if (!this_._internal_debate_topic().empty()) {
-            const std::string& _s = this_._internal_debate_topic();
+          // string debate_topic_id = 3 [json_name = "debateTopicId"];
+          if (!this_._internal_debate_topic_id().empty()) {
+            const std::string& _s = this_._internal_debate_topic_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.debate_topic");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.debate_topic_id");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
@@ -349,10 +349,10 @@ PROTOBUF_NOINLINE void User::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
             }
-            // string debate_topic = 3 [json_name = "debateTopic"];
-            if (!this_._internal_debate_topic().empty()) {
+            // string debate_topic_id = 3 [json_name = "debateTopicId"];
+            if (!this_._internal_debate_topic_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_topic());
+                                              this_._internal_debate_topic_id());
             }
             // .user.UserState state = 2 [json_name = "state"];
             if (this_._internal_state() != 0) {
@@ -375,8 +375,8 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   if (!from._internal_username().empty()) {
     _this->_internal_set_username(from._internal_username());
   }
-  if (!from._internal_debate_topic().empty()) {
-    _this->_internal_set_debate_topic(from._internal_debate_topic());
+  if (!from._internal_debate_topic_id().empty()) {
+    _this->_internal_set_debate_topic_id(from._internal_debate_topic_id());
   }
   if (from._internal_state() != 0) {
     _this->_impl_.state_ = from._impl_.state_;
@@ -398,7 +398,7 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_, &other->_impl_.debate_topic_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_id_, &other->_impl_.debate_topic_id_, arena);
   swap(_impl_.state_, other->_impl_.state_);
 }
 

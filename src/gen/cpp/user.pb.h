@@ -250,7 +250,7 @@ class User final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kUsernameFieldNumber = 1,
-    kDebateTopicFieldNumber = 3,
+    kDebateTopicIdFieldNumber = 3,
     kStateFieldNumber = 2,
   };
   // string username = 1 [json_name = "username"];
@@ -269,20 +269,20 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_username();
 
   public:
-  // string debate_topic = 3 [json_name = "debateTopic"];
-  void clear_debate_topic() ;
-  const std::string& debate_topic() const;
+  // string debate_topic_id = 3 [json_name = "debateTopicId"];
+  void clear_debate_topic_id() ;
+  const std::string& debate_topic_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_topic(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_topic();
-  PROTOBUF_NODISCARD std::string* release_debate_topic();
-  void set_allocated_debate_topic(std::string* value);
+  void set_debate_topic_id(Arg_&& arg, Args_... args);
+  std::string* mutable_debate_topic_id();
+  PROTOBUF_NODISCARD std::string* release_debate_topic_id();
+  void set_allocated_debate_topic_id(std::string* value);
 
   private:
-  const std::string& _internal_debate_topic() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_topic(
+  const std::string& _internal_debate_topic_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_topic_id(
       const std::string& value);
-  std::string* _internal_mutable_debate_topic();
+  std::string* _internal_mutable_debate_topic_id();
 
   public:
   // .user.UserState state = 2 [json_name = "state"];
@@ -301,7 +301,7 @@ class User final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 3, 0,
-      38, 2>
+      41, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -319,7 +319,7 @@ class User final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const User& from_msg);
     ::google::protobuf::internal::ArenaStringPtr username_;
-    ::google::protobuf::internal::ArenaStringPtr debate_topic_;
+    ::google::protobuf::internal::ArenaStringPtr debate_topic_id_;
     int state_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -414,52 +414,52 @@ inline void User::_internal_set_state(::user::UserState value) {
   _impl_.state_ = value;
 }
 
-// string debate_topic = 3 [json_name = "debateTopic"];
-inline void User::clear_debate_topic() {
+// string debate_topic_id = 3 [json_name = "debateTopicId"];
+inline void User::clear_debate_topic_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.ClearToEmpty();
+  _impl_.debate_topic_id_.ClearToEmpty();
 }
-inline const std::string& User::debate_topic() const
+inline const std::string& User::debate_topic_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:user.User.debate_topic)
-  return _internal_debate_topic();
+  // @@protoc_insertion_point(field_get:user.User.debate_topic_id)
+  return _internal_debate_topic_id();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void User::set_debate_topic(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void User::set_debate_topic_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:user.User.debate_topic)
+  _impl_.debate_topic_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.debate_topic_id)
 }
-inline std::string* User::mutable_debate_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_topic();
-  // @@protoc_insertion_point(field_mutable:user.User.debate_topic)
+inline std::string* User::mutable_debate_topic_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_debate_topic_id();
+  // @@protoc_insertion_point(field_mutable:user.User.debate_topic_id)
   return _s;
 }
-inline const std::string& User::_internal_debate_topic() const {
+inline const std::string& User::_internal_debate_topic_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_topic_.Get();
+  return _impl_.debate_topic_id_.Get();
 }
-inline void User::_internal_set_debate_topic(const std::string& value) {
+inline void User::_internal_set_debate_topic_id(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.Set(value, GetArena());
+  _impl_.debate_topic_id_.Set(value, GetArena());
 }
-inline std::string* User::_internal_mutable_debate_topic() {
+inline std::string* User::_internal_mutable_debate_topic_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_topic_.Mutable( GetArena());
+  return _impl_.debate_topic_id_.Mutable( GetArena());
 }
-inline std::string* User::release_debate_topic() {
+inline std::string* User::release_debate_topic_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:user.User.debate_topic)
-  return _impl_.debate_topic_.Release();
+  // @@protoc_insertion_point(field_release:user.User.debate_topic_id)
+  return _impl_.debate_topic_id_.Release();
 }
-inline void User::set_allocated_debate_topic(std::string* value) {
+inline void User::set_allocated_debate_topic_id(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_.IsDefault()) {
-    _impl_.debate_topic_.Set("", GetArena());
+  _impl_.debate_topic_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_id_.IsDefault()) {
+    _impl_.debate_topic_id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:user.User.debate_topic)
+  // @@protoc_insertion_point(field_set_allocated:user.User.debate_topic_id)
 }
 
 #ifdef __GNUC__

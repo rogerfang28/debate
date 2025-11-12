@@ -25,9 +25,9 @@ bool goHome(const std::string& user) {
             return false;
         }
         
-        // Update user state to NONE and clear debate topic
+        // Update user state to NONE and clear debate topic id
         userProto.set_state(user::NONE);
-        userProto.set_debate_topic("");
+        userProto.set_debate_topic_id("");
         
         // Serialize and save back to database
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());

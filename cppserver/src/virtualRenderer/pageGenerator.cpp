@@ -49,7 +49,7 @@ std::string generatePage(const std::string& user) {
         user::User newUser;
         newUser.set_username(user);
         newUser.set_state(user::UserState::NONE);
-        newUser.set_debate_topic("");
+        newUser.set_debate_topic_id("");
         
         std::vector<uint8_t> userData(newUser.ByteSizeLong());
         newUser.SerializeToArray(userData.data(), userData.size());
@@ -84,12 +84,12 @@ std::string generatePage(const std::string& user) {
             
         case user::UserState::DEBATING:
             // std::cout << "[DEBUGGING RIGHT NOW] Generating debate page for user with state DEBATING" << std::endl;
-            if (userProto.debate_topic().empty()) {
-                std::cerr << "[PageGen][WARN] User is DEBATING but has no debate_topic set" << std::endl;
+            if (userProto.debate_topic_id().empty()) {
+                std::cerr << "[PageGen][WARN] User is DEBATING but has no debate_topic_id set" << std::endl;
                 return generateHomePage(user);
             }
-            std::cerr << "[PageGen] Generating debate page for topic: " << userProto.debate_topic() << std::endl;
-            return generateDebateClaimPage(user, userProto.debate_topic(), userProto.debate_topic());
+            std::cerr << "[PageGen] Generating debate page for topic id: " << userProto.debate_topic_id() << std::endl;
+            return generateDebateClaimPage(user, userProto.debate_topic_id(), userProto.debate_topic_id());
             
         default:
             std::cerr << "[PageGen][WARN] Unknown user state: " << userProto.state() << std::endl;
@@ -216,7 +216,7 @@ std::string generateDebateClaimPage(const std::string& user, const std::string& 
     // -------- Fetch debate claims for user & topic --------
     DebateDatabaseHandler dbHandler(utils::getDatabasePath());
 
-    std::vector<uint8_t> bytes = dbHandler.getDebateProtobuf(user, topicId); // so right here it's not returning correctly
+    std::vector<uint8_t> bytes = dbHandler.getDebateProtobuf(user, "10");//topicId); // so right here it's not returning correctly
     debate::Debate debateProto;
     if (debateProto.ParseFromArray(bytes.data(), static_cast<int>(bytes.size()))) {
         std::cout << "[PageGen] Successfully parsed protobuf data from database. Topic: "
