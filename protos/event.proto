@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package event;
-
-message Event{
-  string action_id = 1; // e.g., "submitTopic", "voteClaim"
-  map<string, string> data = 2; // Key-value pairs of event data
-}

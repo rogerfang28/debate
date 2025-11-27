@@ -1,7 +1,0 @@
-foreach ($f in Get-ChildItem *.pb.cc) {
-    g++ -std=c++17 -I"C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include" -c $f -o ($f.BaseName + ".o")
-}
-
-this one makes libprotos.a
-g++ -std=c++17 -I"C:/Users/yunch/Important/Project/debate/third_party/vcpkg/installed/x64-mingw-dynamic/include" -c *.pb.cc
-ar rcs libprotos.a *.o

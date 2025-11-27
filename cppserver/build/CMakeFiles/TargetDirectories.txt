@@ -1,3 +1,0 @@
-C:/Users/yunch/Important/Project/debate/cppserver/build/CMakeFiles/debate_server.dir
-C:/Users/yunch/Important/Project/debate/cppserver/build/CMakeFiles/edit_cache.dir
-C:/Users/yunch/Important/Project/debate/cppserver/build/CMakeFiles/rebuild_cache.dir

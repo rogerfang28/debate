@@ -1,0 +1,323 @@
+page_id: "debate"
+title: "Debate View"
+
+components {
+  id: "mainLayout"
+  type: CONTAINER
+  style { custom_class: "min-h-screen bg-gray-900 p-4" }
+
+  # Top navigation section
+  children {
+    id: "topSection"
+    type: CONTAINER
+    style { custom_class: "flex justify-between items-start mb-8" }
+
+    # Left side: Parent button
+    children {
+      id: "leftTopSection"
+      type: CONTAINER
+      style { custom_class: "flex flex-col gap-2" }
+
+      children {
+        id: "goToParentButton"
+        type: BUTTON
+        text: "Go to Parent"
+        style { custom_class: "px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-sm" }
+      }
+
+      children {
+        id: "goHomeButton"
+        type: BUTTON
+        text: "Home"
+        style { custom_class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
+      }
+    }
+
+    # Center: Current claim focus
+    children {
+      id: "focusSection"
+      type: CONTAINER
+      style { custom_class: "flex-1 mx-8" }
+
+      children {
+        id: "focusingOnClaim"
+        type: CONTAINER
+        style { custom_class: "bg-gray-700 text-center py-4 px-6 rounded border" }
+
+        children {
+          id: "focusLabel"
+          type: TEXT
+          text: "Focusing on claim:"
+          style { custom_class: "text-sm text-white mb-2" }
+        }
+
+        children {
+          id: "currentClaimTitle"
+          type: TEXT
+          text: "AI systems should be transparent and explainable"
+          style { custom_class: "text-lg font-semibold text-white" }
+        }
+      }
+    }
+
+    # Right side: Minimap
+    children {
+      id: "rightTopSection"
+      type: CONTAINER
+      style { custom_class: "w-64" }
+
+      children {
+        id: "minimap"
+        type: CONTAINER
+        style { custom_class: "w-64 h-48 bg-gray-800 border-2 border-gray-300 rounded p-2" }
+
+        children {
+          id: "minimapTitle"
+          type: TEXT
+          text: "minimap"
+          style { custom_class: "text-xs text-gray-500 mb-2" }
+        }
+
+        children {
+          id: "minimapContent"
+          type: CONTAINER
+          style { custom_class: "grid grid-cols-4 gap-1 h-full" }
+
+          # Minimap nodes representation
+          children {
+            id: "minimapNode1"
+            type: CONTAINER
+            style { custom_class: "bg-yellow-200 rounded border" }
+          }
+          children {
+            id: "minimapNode2"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+          children {
+            id: "minimapNode3"
+            type: CONTAINER
+            style { custom_class: "bg-gray-200 rounded border" }
+          }
+          children {
+            id: "minimapNode4"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+          children {
+            id: "minimapNode5"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+          children {
+            id: "minimapNode6"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+          children {
+            id: "minimapNode7"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+          children {
+            id: "minimapNode8"
+            type: CONTAINER
+            style { custom_class: "bg-green-400 rounded border" }
+          }
+        }
+      }
+    }
+  }
+
+  # Main content area
+  children {
+    id: "contentArea"
+    type: CONTAINER
+    style { custom_class: "flex gap-8" }
+
+    # Left side: Guidance box
+    children {
+      id: "leftContent"
+      type: CONTAINER
+      style { custom_class: "w-96" }
+
+      children {
+        id: "guidanceBox"
+        type: CONTAINER
+        style { custom_class: "bg-gray-800 border-2 border-gray-700 rounded p-6 min-h-64" }
+
+        children {
+          id: "guidanceText"
+          type: TEXT
+          text: "Guide: "
+          style { custom_class: "text-white" }
+        }
+      }
+    }
+
+    # Center: Description and children area
+    children {
+      id: "centerContent"
+      type: CONTAINER
+      style { custom_class: "flex-1" }
+
+      # Description area
+      children {
+        id: "descriptionBox"
+        type: CONTAINER
+        style { custom_class: "bg-gray-800 border-2 border-gray-700 rounded p-6 mb-8" }
+
+        children {
+          id: "descriptionTitle"
+          type: TEXT
+          text: "Claim Description:"
+          style { custom_class: "text-lg font-semibold text-white mb-4" }
+        }
+
+        children {
+          id: "descriptionContent"
+          type: TEXT
+          text: "This is the main argument for why AI transparency is important for society. When AI systems are transparent and explainable, users can better understand how decisions are made, which builds trust and allows for proper oversight. This transparency is crucial in critical applications like healthcare, finance, and criminal justice where AI decisions can significantly impact people's lives."
+          style { custom_class: "text-white leading-relaxed mb-6" }
+        }
+
+        children {
+          id: "descriptionActions"
+          type: CONTAINER
+          style { custom_class: "flex gap-3" }
+
+          children {
+            id: "editDescriptionButton"
+            type: BUTTON
+            text: "Edit Description"
+            style { custom_class: "px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded transition-colors text-sm" }
+          }
+
+          children {
+            id: "addCounterArgument"
+            type: BUTTON
+            text: "Add Counter-Argument"
+            style { custom_class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition-colors text-sm" }
+          }
+
+          children {
+            id: "addSupportingEvidence"
+            type: BUTTON
+            text: "Add Supporting Evidence"
+            style { custom_class: "px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition-colors text-sm" }
+          }
+        }
+      }
+
+      # Child arguments section (now below description)
+      children {
+        id: "childArgumentsSection"
+        type: CONTAINER
+        style { custom_class: "bg-gray-800 border-2 border-gray-700 rounded p-6" }
+
+        children {
+          id: "childArgumentsTitle"
+          type: TEXT
+          text: "Child Arguments:"
+          style { custom_class: "text-lg font-semibold text-white mb-6" }
+        }
+
+        children {
+          id: "childArgumentsGrid"
+          type: CONTAINER
+          style { custom_class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" }
+
+          # Example child argument 1
+          children {
+            id: "childNode1"
+            type: CONTAINER
+            style { custom_class: "bg-gray-700 border border-gray-700 rounded p-4" }
+
+            children {
+              id: "childNode1Title"
+              type: TEXT
+              text: "some child node"
+              style { custom_class: "text-white mb-3" }
+            }
+
+            children {
+              id: "childNode1Button"
+              type: BUTTON
+              text: "button to go to this node"
+              style { custom_class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
+            }
+          }
+
+          # Example child argument 2
+          children {
+            id: "childNode2"
+            type: CONTAINER
+            style { custom_class: "bg-gray-700 border border-gray-700 rounded p-4" }
+
+            children {
+              id: "childNode2Title"
+              type: TEXT
+              text: "another"
+              style { custom_class: "text-white mb-3" }
+            }
+
+            children {
+              id: "childNode2Button"
+              type: BUTTON
+              text: "button"
+              style { custom_class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
+            }
+          }
+
+          # Example child argument 3
+          children {
+            id: "childNode3"
+            type: CONTAINER
+            style { custom_class: "bg-gray-700 border border-gray-700 rounded p-4" }
+
+            children {
+              id: "childNode3Title"
+              type: TEXT
+              text: "another"
+              style { custom_class: "text-white mb-3" }
+            }
+
+            children {
+              id: "childNode3Button"
+              type: BUTTON
+              text: "nutton"
+              style { custom_class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-sm" }
+            }
+          }
+        }
+      }
+    }
+
+    # Right side: Report section (moved down with more spacing)
+    children {
+      id: "rightContent"
+      type: CONTAINER
+      style { custom_class: "w-80 mt-16" }
+
+      children {
+        id: "reportSection"
+        type: CONTAINER
+        style { custom_class: "bg-gray-800 border-2 border-gray-700 rounded p-6" }
+
+        children {
+          id: "reportTitle"
+          type: TEXT
+          text: "Think this is wrong? File a claim report."
+          style { custom_class: "text-sm text-white mb-6" }
+        }
+
+        children {
+          id: "reportButton"
+          type: BUTTON
+          text: "Report Claim"
+          style { custom_class: "w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition-colors" }
+        }
+      }
+    }
+  }
+}

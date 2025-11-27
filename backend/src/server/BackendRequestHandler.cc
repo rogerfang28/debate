@@ -1,0 +1,1 @@
+// handles get and post requests and calls debate moderator
