@@ -88,7 +88,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
     std::cout << "User: " << user << "\n";
 
     // Log page data
-    if (client_message.has_page_data() && false) { // set to true to enable detailed logging
+    if (client_message.has_page_data() && true) { // set to true to enable detailed logging
       const auto& page_data = client_message.page_data();
       std::cout << "\n--- Page Data ---\n";
       std::cout << "Page ID: " << page_data.page_id() << "\n";
