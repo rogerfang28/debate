@@ -1,0 +1,284 @@
+page_id: "room"
+title: "DebateGraph - Room"
+
+components {
+  id: "navbar"
+  type: CONTAINER
+  style { custom_class: "flex justify-between items-center p-4 bg-gray-900 text-white border-b border-gray-700" }
+
+  children {
+    id: "navLeft"
+    type: CONTAINER
+    style { custom_class: "flex items-center gap-4" }
+
+    children {
+      id: "btnBack"
+      type: BUTTON
+      text: "← Home"
+      style { custom_class: "text-blue-400 hover:bg-blue-400/10 px-3 py-2 rounded-lg transition-colors border-none bg-transparent" }
+    }
+
+    children {
+      id: "roomTitle"
+      type: TEXT
+      text: "🗣️ DebateGraph"
+      style { custom_class: "text-xl font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" }
+    }
+  }
+
+  children {
+    id: "navRight"
+    type: CONTAINER
+    style { custom_class: "flex items-center gap-2" }
+
+    children {
+      id: "btnToggleMembers"
+      type: BUTTON
+      text: "👥 Members"
+      style { custom_class: "px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm" }
+    }
+
+    children {
+      id: "btnProfile"
+      type: BUTTON
+      text: "👤"
+      style { custom_class: "px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors" }
+    }
+
+    children {
+      id: "btnLogout"
+      type: BUTTON
+      text: "🚪"
+      style { custom_class: "px-3 py-2 bg-red-600 hover:bg-red-500 rounded-lg transition-colors" }
+    }
+  }
+}
+
+components {
+  id: "mainContent"
+  type: CONTAINER
+  style { custom_class: "flex h-screen" }
+
+  # Graph Canvas Area
+  children {
+    id: "graphContainer"
+    type: CONTAINER
+    style { custom_class: "flex-1 relative bg-gray-900" }
+
+    # Graph Canvas (COMMENTED OUT - Not implemented yet)
+    # children {
+    #   id: "graphCanvas"
+    #   type: GRAPH
+    #   style { custom_class: "w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" }
+    #
+    #   nodes { id: "node1" text: "Main Argument" x: 200 y: 150 }
+    #   nodes { id: "node2" text: "Supporting Evidence" x: 400 y: 250 }
+    #   nodes { id: "node3" text: "Counter Argument" x: 300 y: 350 }
+    #
+    #   edges { id: "edge1" source: "node1" target: "node2" }
+    #   edges { id: "edge2" source: "node2" target: "node3" }
+    # }
+
+    # Floating Toolbar
+    children {
+      id: "toolbar"
+      type: CONTAINER
+      style { custom_class: "absolute top-4 left-4 bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-700 p-2 flex gap-2" }
+
+      children {
+        id: "btnAddNode"
+        type: BUTTON
+        text: "➕ Node"
+        style { custom_class: "px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm font-medium transition-colors" }
+      }
+      children {
+        id: "btnAddEdge"
+        type: BUTTON
+        text: "🔗 Edge"
+        style { custom_class: "px-3 py-2 bg-green-600 hover:bg-green-500 text-white rounded-md text-sm font-medium transition-colors" }
+      }
+      children {
+        id: "btnChallenge"
+        type: BUTTON
+        text: "⚔️ Challenge"
+        style { custom_class: "px-3 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md text-sm font-medium transition-colors" }
+      }
+      children {
+        id: "btnZoomIn"
+        type: BUTTON
+        text: "🔍+"
+        style { custom_class: "px-3 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md text-sm transition-colors" }
+      }
+      children {
+        id: "btnZoomOut"
+        type: BUTTON
+        text: "🔍-"
+        style { custom_class: "px-3 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md text-sm transition-colors" }
+      }
+    }
+
+    # Selection Info Panel
+    children {
+      id: "selectionPanel"
+      type: CONTAINER
+      style { custom_class: "absolute bottom-4 right-4 bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-700 p-4 min-w-64 max-w-sm" }
+
+      children {
+        id: "selectionTitle"
+        type: TEXT
+        text: "Selection Info"
+        style { custom_class: "text-sm font-semibold text-gray-300 mb-2" }
+      }
+      children {
+        id: "selectionContent"
+        type: TEXT
+        text: "Click on a node or edge to see details"
+        style { custom_class: "text-sm text-gray-400" }
+      }
+    }
+  }
+
+  # Right Sidebar (Members Panel)
+  children {
+    id: "membersSidebar"
+    type: CONTAINER
+    style { custom_class: "hidden w-80 bg-gray-800 border-l border-gray-700" }
+
+    children {
+      id: "membersHeader"
+      type: CONTAINER
+      style { custom_class: "p-4 border-b border-gray-700 flex justify-between items-center" }
+
+      children {
+        id: "membersTitle"
+        type: TEXT
+        text: "👥 Room Members"
+        style { custom_class: "font-semibold text-white" }
+      }
+      children {
+        id: "btnCloseSidebar"
+        type: BUTTON
+        text: "✕"
+        style { custom_class: "text-gray-400 hover:text-white p-1 rounded transition-colors border-none bg-transparent" }
+      }
+    }
+
+    children {
+      id: "membersList"
+      type: CONTAINER
+      style { custom_class: "p-4" }
+
+      children {
+        id: "onlineMembers"
+        type: LIST
+        style { custom_class: "space-y-2" }
+        items { label: "👤 Loading members..." value: "loading" }
+      }
+    }
+
+    # Room Settings
+    children {
+      id: "roomSettings"
+      type: CONTAINER
+      style { custom_class: "p-4 border-t border-gray-700" }
+
+      children {
+        id: "settingsTitle"
+        type: TEXT
+        text: "⚙️ Room Settings"
+        style { custom_class: "font-semibold text-white mb-3" }
+      }
+
+      children {
+        id: "settingsButtons"
+        type: CONTAINER
+        style { custom_class: "space-y-2" }
+
+        children {
+          id: "btnInviteCode"
+          type: BUTTON
+          text: "📋 Copy Invite Code"
+          style { custom_class: "w-full p-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md text-sm transition-colors" }
+        }
+        children {
+          id: "btnRoomSettings"
+          type: BUTTON
+          text: "⚙️ Manage Room"
+          style { custom_class: "w-full p-2 bg-gray-600 hover:bg-gray-500 text-white rounded-md text-sm transition-colors" }
+        }
+      }
+    }
+  }
+}
+
+components {
+  id: "entityFormModal"
+  type: CONTAINER
+  style { custom_class: "hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center" }
+
+  children {
+    id: "entityForm"
+    type: CONTAINER
+    style { custom_class: "bg-gray-800 rounded-lg border border-gray-700 p-6 w-full max-w-md mx-4" }
+
+    children {
+      id: "formHeader"
+      type: CONTAINER
+      style { custom_class: "flex justify-between items-center mb-4" }
+
+      children {
+        id: "formTitle"
+        type: TEXT
+        text: "Add Node"
+        style { custom_class: "text-lg font-semibold text-white" }
+      }
+      children {
+        id: "btnCloseForm"
+        type: BUTTON
+        text: "✕"
+        style { custom_class: "text-gray-400 hover:text-white p-1 rounded transition-colors border-none bg-transparent" }
+      }
+    }
+
+    children {
+      id: "formFields"
+      type: CONTAINER
+      name: "entityForm"
+      style { custom_class: "space-y-4" }
+
+      children {
+        id: "nodeText"
+        type: TEXTAREA
+        text: "Enter node text..."
+        name: "text"
+        style { custom_class: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" }
+      }
+      children {
+        id: "nodeType"
+        type: INPUT
+        text: "Node type (optional)"
+        name: "type"
+        style { custom_class: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
+      }
+
+      children {
+        id: "formActions"
+        type: CONTAINER
+        style { custom_class: "flex gap-3 pt-2" }
+
+        children {
+          id: "btnSubmitForm"
+          type: BUTTON
+          text: "Create"
+          style { custom_class: "flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors" }
+        }
+        children {
+          id: "btnCancelForm"
+          type: BUTTON
+          text: "Cancel"
+          style { custom_class: "px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors" }
+        }
+      }
+    }
+  }
+}
