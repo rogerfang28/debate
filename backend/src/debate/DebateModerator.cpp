@@ -1,5 +1,5 @@
 #include "DebateModerator.h"
-#include "./DebateDatabaseHandler.h"   // now use the new handler
+#include "../database/handlers/DebateDatabaseHandler.h"   // now use the new handler
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../utils/pathUtils.h"
 #include <iostream>

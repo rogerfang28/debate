@@ -29,6 +29,8 @@ add_definitions(-DNOMINMAX)
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/server
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer
+    ${CMAKE_SOURCE_DIR}/src/database/handlers
+    ${CMAKE_SOURCE_DIR}/src/database/sqlite
     ${CMAKE_SOURCE_DIR}/src/main
     ${CMAKE_SOURCE_DIR}/../src/gen/cpp
     ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/include
@@ -41,13 +43,13 @@ include_directories(
 set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/DebateModerator.cpp
-    ${CMAKE_SOURCE_DIR}/src/debate/DebateDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pageGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/database/databaseCommunicator.cc
-    ${CMAKE_SOURCE_DIR}/src/database/sqlite3.o
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/database/sqlite/DatabaseCommunicator.cc
+    ${CMAKE_SOURCE_DIR}/src/database/sqlite/sqlite3.o
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
-    ${CMAKE_SOURCE_DIR}/src/debate/UserDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/main/events/enterDebate.cc
     ${CMAKE_SOURCE_DIR}/src/debate/main/events/goHome.cc
 )

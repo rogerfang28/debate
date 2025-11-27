@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "./DebateDatabaseHandler.h"
+#include "../database/handlers/DebateDatabaseHandler.h"
 
 class DebateModerator {
 public:

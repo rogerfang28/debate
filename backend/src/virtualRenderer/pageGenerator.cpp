@@ -2,9 +2,9 @@
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
-#include "../debate/DebateDatabaseHandler.h"
+#include "../database/handlers/DebateDatabaseHandler.h"
 #include "../utils/pathUtils.h"
-#include "../debate/UserDatabaseHandler.h"
+#include "../database/handlers/UserDatabaseHandler.h"
 
 #include <google/protobuf/text_format.h>
 #include <fstream>
