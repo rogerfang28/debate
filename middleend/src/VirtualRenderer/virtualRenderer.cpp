@@ -2,7 +2,7 @@
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 #include "./pageGenerator.h"
-#include "../debate/main/EventHandler.h"
+// #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
 

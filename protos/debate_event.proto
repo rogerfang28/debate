@@ -29,7 +29,7 @@ message GoHome {
 }
 
 // enum
-enum EventKind {
+enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
     CREATE_DEBATE          = 1;
     CLEAR_DEBATES          = 2;
@@ -43,7 +43,7 @@ message DebateEvent {
 
   string id = 1;
   google.protobuf.Timestamp occurred_at = 2;
-  EventKind kind = 3; 
+  EventType type = 3; 
 
   oneof payload {
     CreateDebate    create_debate    = 10;

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCI1CgxDcmVhdGVEZWJhdGUSDwoHdXNlcl9pZBgBIAEoCRIUCgxkZWJhdGVfdG9waWMYAiABKAkiHwoMQ2xlYXJEZWJhdGVzEg8KB3VzZXJfaWQYASABKAkiMgoMRGVsZXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSEQoJZGViYXRlX2lkGAIgASgJIjEKC0VudGVyRGViYXRlEg8KB3VzZXJfaWQYASABKAkSEQoJZGViYXRlX2lkGAIgASgJIhkKBkdvSG9tZRIPCgd1c2VyX2lkGAEgASgJIvcCCgtEZWJhdGVFdmVudBIKCgJpZBgBIAEoCRIvCgtvY2N1cnJlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJQoEa2luZBgDIAEoDjIXLmRlYmF0ZV9ldmVudC5FdmVudEtpbmQSMwoNY3JlYXRlX2RlYmF0ZRgKIAEoCzIaLmRlYmF0ZV9ldmVudC5DcmVhdGVEZWJhdGVIABIzCg1jbGVhcl9kZWJhdGVzGAsgASgLMhouZGViYXRlX2V2ZW50LkNsZWFyRGViYXRlc0gAEjMKDWRlbGV0ZV9kZWJhdGUYDCABKAsyGi5kZWJhdGVfZXZlbnQuRGVsZXRlRGViYXRlSAASMQoMZW50ZXJfZGViYXRlGA0gASgLMhkuZGViYXRlX2V2ZW50LkVudGVyRGViYXRlSAASJwoHZ29faG9tZRgOIAEoCzIULmRlYmF0ZV9ldmVudC5Hb0hvbWVIAEIJCgdwYXlsb2FkKn8KCUV2ZW50S2luZBIaChZFVkVOVF9LSU5EX1VOU1BFQ0lGSUVEEAASEQoNQ1JFQVRFX0RFQkFURRABEhEKDUNMRUFSX0RFQkFURVMQAhIRCg1ERUxFVEVfREVCQVRFEAMSEAoMRU5URVJfREVCQVRFEAQSCwoHR09fSE9NRRAFYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCI1CgxDcmVhdGVEZWJhdGUSDwoHdXNlcl9pZBgBIAEoCRIUCgxkZWJhdGVfdG9waWMYAiABKAkiHwoMQ2xlYXJEZWJhdGVzEg8KB3VzZXJfaWQYASABKAkiMgoMRGVsZXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSEQoJZGViYXRlX2lkGAIgASgJIjEKC0VudGVyRGViYXRlEg8KB3VzZXJfaWQYASABKAkSEQoJZGViYXRlX2lkGAIgASgJIhkKBkdvSG9tZRIPCgd1c2VyX2lkGAEgASgJIvcCCgtEZWJhdGVFdmVudBIKCgJpZBgBIAEoCRIvCgtvY2N1cnJlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJQoEdHlwZRgDIAEoDjIXLmRlYmF0ZV9ldmVudC5FdmVudFR5cGUSMwoNY3JlYXRlX2RlYmF0ZRgKIAEoCzIaLmRlYmF0ZV9ldmVudC5DcmVhdGVEZWJhdGVIABIzCg1jbGVhcl9kZWJhdGVzGAsgASgLMhouZGViYXRlX2V2ZW50LkNsZWFyRGViYXRlc0gAEjMKDWRlbGV0ZV9kZWJhdGUYDCABKAsyGi5kZWJhdGVfZXZlbnQuRGVsZXRlRGViYXRlSAASMQoMZW50ZXJfZGViYXRlGA0gASgLMhkuZGViYXRlX2V2ZW50LkVudGVyRGViYXRlSAASJwoHZ29faG9tZRgOIAEoCzIULmRlYmF0ZV9ldmVudC5Hb0hvbWVIAEIJCgdwYXlsb2FkKn8KCUV2ZW50VHlwZRIaChZFVkVOVF9LSU5EX1VOU1BFQ0lGSUVEEAASEQoNQ1JFQVRFX0RFQkFURRABEhEKDUNMRUFSX0RFQkFURVMQAhIRCg1ERUxFVEVfREVCQVRFEAMSEAoMRU5URVJfREVCQVRFEAQSCwoHR09fSE9NRRAFYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -133,9 +133,9 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
   occurredAt?: Timestamp;
 
   /**
-   * @generated from field: debate_event.EventKind kind = 3;
+   * @generated from field: debate_event.EventType type = 3;
    */
-  kind: EventKind;
+  type: EventType;
 
   /**
    * @generated from oneof debate_event.DebateEvent.payload
@@ -183,9 +183,9 @@ export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
 /**
  * enum
  *
- * @generated from enum debate_event.EventKind
+ * @generated from enum debate_event.EventType
  */
-export enum EventKind {
+export enum EventType {
   /**
    * @generated from enum value: EVENT_KIND_UNSPECIFIED = 0;
    */
@@ -218,8 +218,8 @@ export enum EventKind {
 }
 
 /**
- * Describes the enum debate_event.EventKind.
+ * Describes the enum debate_event.EventType.
  */
-export const EventKindSchema: GenEnum<EventKind> = /*@__PURE__*/
+export const EventTypeSchema: GenEnum<EventType> = /*@__PURE__*/
   enumDesc(file_debate_event, 0);
 

@@ -177,7 +177,7 @@ inline constexpr DebateEvent::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         occurred_at_{nullptr},
-        kind_{static_cast< ::debate_event::EventKind >(0)},
+        type_{static_cast< ::debate_event::EventType >(0)},
         payload_{},
         _oneof_case_{} {}
 
@@ -265,7 +265,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.occurred_at_),
-        PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.kind_),
+        PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.type_),
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
@@ -312,8 +312,8 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "eId\"!\n\006GoHome\022\027\n\007user_id\030\001 \001(\tR\006userId\"\314"
     "\003\n\013DebateEvent\022\016\n\002id\030\001 \001(\tR\002id\022;\n\013occurr"
     "ed_at\030\002 \001(\0132\032.google.protobuf.TimestampR"
-    "\noccurredAt\022+\n\004kind\030\003 \001(\0162\027.debate_event"
-    ".EventKindR\004kind\022A\n\rcreate_debate\030\n \001(\0132"
+    "\noccurredAt\022+\n\004type\030\003 \001(\0162\027.debate_event"
+    ".EventTypeR\004type\022A\n\rcreate_debate\030\n \001(\0132"
     "\032.debate_event.CreateDebateH\000R\014createDeb"
     "ate\022A\n\rclear_debates\030\013 \001(\0132\032.debate_even"
     "t.ClearDebatesH\000R\014clearDebates\022A\n\rdelete"
@@ -321,7 +321,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "eH\000R\014deleteDebate\022>\n\014enter_debate\030\r \001(\0132"
     "\031.debate_event.EnterDebateH\000R\013enterDebat"
     "e\022/\n\007go_home\030\016 \001(\0132\024.debate_event.GoHome"
-    "H\000R\006goHomeB\t\n\007payload*\177\n\tEventKind\022\032\n\026EV"
+    "H\000R\006goHomeB\t\n\007payload*\177\n\tEventType\022\032\n\026EV"
     "ENT_KIND_UNSPECIFIED\020\000\022\021\n\rCREATE_DEBATE\020"
     "\001\022\021\n\rCLEAR_DEBATES\020\002\022\021\n\rDELETE_DEBATE\020\003\022"
     "\020\n\014ENTER_DEBATE\020\004\022\013\n\007GO_HOME\020\005b\006proto3"
@@ -348,13 +348,13 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent
     file_level_service_descriptors_debate_5fevent_2eproto,
 };
 namespace debate_event {
-const ::google::protobuf::EnumDescriptor* EventKind_descriptor() {
+const ::google::protobuf::EnumDescriptor* EventType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_debate_5fevent_2eproto);
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
-PROTOBUF_CONSTINIT const uint32_t EventKind_internal_data_[] = {
+PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
     393216u, 0u, };
-bool EventKind_IsValid(int value) {
+bool EventType_IsValid(int value) {
   return 0 <= value && value <= 5;
 }
 // ===================================================================
@@ -1716,7 +1716,7 @@ DebateEvent::DebateEvent(
   _impl_.occurred_at_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::google::protobuf::Timestamp>(
                               arena, *from._impl_.occurred_at_)
                         : nullptr;
-  _impl_.kind_ = from._impl_.kind_;
+  _impl_.type_ = from._impl_.type_;
   switch (payload_case()) {
     case PAYLOAD_NOT_SET:
       break;
@@ -1752,9 +1752,9 @@ inline void DebateEvent::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, occurred_at_),
            0,
-           offsetof(Impl_, kind_) -
+           offsetof(Impl_, type_) -
                offsetof(Impl_, occurred_at_) +
-               sizeof(Impl_::kind_));
+               sizeof(Impl_::type_));
 }
 DebateEvent::~DebateEvent() {
   // @@protoc_insertion_point(destructor:debate_event.DebateEvent)
@@ -1885,9 +1885,9 @@ const ::_pbi::TcParseTable<2, 8, 6, 43, 2> DebateEvent::_table_ = {
     // .google.protobuf.Timestamp occurred_at = 2 [json_name = "occurredAt"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0, PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.occurred_at_)}},
-    // .debate_event.EventKind kind = 3 [json_name = "kind"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateEvent, _impl_.kind_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.kind_)}},
+    // .debate_event.EventType type = 3 [json_name = "type"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateEvent, _impl_.type_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.type_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1897,8 +1897,8 @@ const ::_pbi::TcParseTable<2, 8, 6, 43, 2> DebateEvent::_table_ = {
     // .google.protobuf.Timestamp occurred_at = 2 [json_name = "occurredAt"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.occurred_at_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.EventKind kind = 3 [json_name = "kind"];
-    {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.kind_), -1, 0,
+    // .debate_event.EventType type = 3 [json_name = "type"];
+    {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
     // .debate_event.CreateDebate create_debate = 10 [json_name = "createDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.create_debate_), _Internal::kOneofCaseOffset + 0, 1,
@@ -1942,7 +1942,7 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
     ABSL_DCHECK(_impl_.occurred_at_ != nullptr);
     _impl_.occurred_at_->Clear();
   }
-  _impl_.kind_ = 0;
+  _impl_.type_ = 0;
   clear_payload();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -1979,11 +1979,11 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
                 stream);
           }
 
-          // .debate_event.EventKind kind = 3 [json_name = "kind"];
-          if (this_._internal_kind() != 0) {
+          // .debate_event.EventType type = 3 [json_name = "type"];
+          if (this_._internal_type() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                3, this_._internal_kind(), target);
+                3, this_._internal_type(), target);
           }
 
           switch (this_.payload_case()) {
@@ -2060,10 +2060,10 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
             }
           }
            {
-            // .debate_event.EventKind kind = 3 [json_name = "kind"];
-            if (this_._internal_kind() != 0) {
+            // .debate_event.EventType type = 3 [json_name = "type"];
+            if (this_._internal_type() != 0) {
               total_size += 1 +
-                            ::_pbi::WireFormatLite::EnumSize(this_._internal_kind());
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
             }
           }
           switch (this_.payload_case()) {
@@ -2127,8 +2127,8 @@ void DebateEvent::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
       _this->_impl_.occurred_at_->MergeFrom(*from._impl_.occurred_at_);
     }
   }
-  if (from._internal_kind() != 0) {
-    _this->_impl_.kind_ = from._impl_.kind_;
+  if (from._internal_type() != 0) {
+    _this->_impl_.type_ = from._impl_.type_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
@@ -2210,8 +2210,8 @@ void DebateEvent::InternalSwap(DebateEvent* PROTOBUF_RESTRICT other) {
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.kind_)
-      + sizeof(DebateEvent::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.type_)
+      + sizeof(DebateEvent::_impl_.type_)
       - PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.occurred_at_)>(
           reinterpret_cast<char*>(&_impl_.occurred_at_),
           reinterpret_cast<char*>(&other->_impl_.occurred_at_));

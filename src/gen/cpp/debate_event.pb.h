@@ -79,42 +79,42 @@ namespace protobuf {
 }  // namespace google
 
 namespace debate_event {
-enum EventKind : int {
+enum EventType : int {
   EVENT_KIND_UNSPECIFIED = 0,
   CREATE_DEBATE = 1,
   CLEAR_DEBATES = 2,
   DELETE_DEBATE = 3,
   ENTER_DEBATE = 4,
   GO_HOME = 5,
-  EventKind_INT_MIN_SENTINEL_DO_NOT_USE_ =
+  EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
-  EventKind_INT_MAX_SENTINEL_DO_NOT_USE_ =
+  EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::max(),
 };
 
-bool EventKind_IsValid(int value);
-extern const uint32_t EventKind_internal_data_[];
-constexpr EventKind EventKind_MIN = static_cast<EventKind>(0);
-constexpr EventKind EventKind_MAX = static_cast<EventKind>(5);
-constexpr int EventKind_ARRAYSIZE = 5 + 1;
+bool EventType_IsValid(int value);
+extern const uint32_t EventType_internal_data_[];
+constexpr EventType EventType_MIN = static_cast<EventType>(0);
+constexpr EventType EventType_MAX = static_cast<EventType>(5);
+constexpr int EventType_ARRAYSIZE = 5 + 1;
 const ::google::protobuf::EnumDescriptor*
-EventKind_descriptor();
+EventType_descriptor();
 template <typename T>
-const std::string& EventKind_Name(T value) {
-  static_assert(std::is_same<T, EventKind>::value ||
+const std::string& EventType_Name(T value) {
+  static_assert(std::is_same<T, EventType>::value ||
                     std::is_integral<T>::value,
-                "Incorrect type passed to EventKind_Name().");
-  return EventKind_Name(static_cast<EventKind>(value));
+                "Incorrect type passed to EventType_Name().");
+  return EventType_Name(static_cast<EventType>(value));
 }
 template <>
-inline const std::string& EventKind_Name(EventKind value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventKind_descriptor,
+inline const std::string& EventType_Name(EventType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
                                                  0, 5>(
       static_cast<int>(value));
 }
-inline bool EventKind_Parse(absl::string_view name, EventKind* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EventKind>(
-      EventKind_descriptor(), name, value);
+inline bool EventType_Parse(absl::string_view name, EventType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<EventType>(
+      EventType_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -1312,7 +1312,7 @@ class DebateEvent final : public ::google::protobuf::Message
   enum : int {
     kIdFieldNumber = 1,
     kOccurredAtFieldNumber = 2,
-    kKindFieldNumber = 3,
+    kTypeFieldNumber = 3,
     kCreateDebateFieldNumber = 10,
     kClearDebatesFieldNumber = 11,
     kDeleteDebateFieldNumber = 12,
@@ -1350,14 +1350,14 @@ class DebateEvent final : public ::google::protobuf::Message
   ::google::protobuf::Timestamp* _internal_mutable_occurred_at();
 
   public:
-  // .debate_event.EventKind kind = 3 [json_name = "kind"];
-  void clear_kind() ;
-  ::debate_event::EventKind kind() const;
-  void set_kind(::debate_event::EventKind value);
+  // .debate_event.EventType type = 3 [json_name = "type"];
+  void clear_type() ;
+  ::debate_event::EventType type() const;
+  void set_type(::debate_event::EventType value);
 
   private:
-  ::debate_event::EventKind _internal_kind() const;
-  void _internal_set_kind(::debate_event::EventKind value);
+  ::debate_event::EventType _internal_type() const;
+  void _internal_set_type(::debate_event::EventType value);
 
   public:
   // .debate_event.CreateDebate create_debate = 10 [json_name = "createDebate"];
@@ -1491,7 +1491,7 @@ class DebateEvent final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::Timestamp* occurred_at_;
-    int kind_;
+    int type_;
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -2067,26 +2067,26 @@ inline void DebateEvent::set_allocated_occurred_at(::google::protobuf::Timestamp
   // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.occurred_at)
 }
 
-// .debate_event.EventKind kind = 3 [json_name = "kind"];
-inline void DebateEvent::clear_kind() {
+// .debate_event.EventType type = 3 [json_name = "type"];
+inline void DebateEvent::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.kind_ = 0;
+  _impl_.type_ = 0;
 }
-inline ::debate_event::EventKind DebateEvent::kind() const {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.kind)
-  return _internal_kind();
+inline ::debate_event::EventType DebateEvent::type() const {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.type)
+  return _internal_type();
 }
-inline void DebateEvent::set_kind(::debate_event::EventKind value) {
-  _internal_set_kind(value);
-  // @@protoc_insertion_point(field_set:debate_event.DebateEvent.kind)
+inline void DebateEvent::set_type(::debate_event::EventType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:debate_event.DebateEvent.type)
 }
-inline ::debate_event::EventKind DebateEvent::_internal_kind() const {
+inline ::debate_event::EventType DebateEvent::_internal_type() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::debate_event::EventKind>(_impl_.kind_);
+  return static_cast<::debate_event::EventType>(_impl_.type_);
 }
-inline void DebateEvent::_internal_set_kind(::debate_event::EventKind value) {
+inline void DebateEvent::_internal_set_type(::debate_event::EventType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.kind_ = value;
+  _impl_.type_ = value;
 }
 
 // .debate_event.CreateDebate create_debate = 10 [json_name = "createDebate"];
@@ -2505,10 +2505,10 @@ namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::debate_event::EventKind> : std::true_type {};
+struct is_proto_enum<::debate_event::EventType> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::debate_event::EventKind>() {
-  return ::debate_event::EventKind_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::debate_event::EventType>() {
+  return ::debate_event::EventType_descriptor();
 }
 
 }  // namespace protobuf

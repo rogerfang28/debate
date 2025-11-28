@@ -2,6 +2,8 @@
 
 #include <string>
 #include "../database/handlers/DebateDatabaseHandler.h"
+#include "../../../src/gen/cpp/moderator_to_vr.pb.h"
+#include "../../../src/gen/cpp/debate_event.pb.h"
 
 class DebateModerator {
 public:
@@ -9,12 +11,10 @@ public:
     ~DebateModerator();
 
     // Add and clear debate topics for a user
-    void handleAddDebate(const std::string& user, const std::string& debateTopic);
-    void handleClearDebates(const std::string& user);
+    moderator_to_vr::ModeratorToVRMessage handleRequest(const std::string& user, debate_event::DebateEvent& event);
 
 private:
-    DebateDatabaseHandler dbHandler;  // internal handler instance
-
-    // Helper to print current debates for a user
-    void printCurrentDebates(const std::string& user);
+    // DebateDatabaseHandler dbHandler;  // internal handler instance
+    void handleEvent(const std::string& user, debate_event::DebateEvent& event);
+    moderator_to_vr::ModeratorToVRMessage buildResponseMessage();
 };

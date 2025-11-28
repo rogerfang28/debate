@@ -3,7 +3,8 @@
 // #define _WIN32_WINNT 0x0A00
 // these are not needed because they are in cmakelists
 
-#include "../virtualRenderer/virtualRenderer.h"  // Add this include
+// #include "../virtualRenderer/virtualRenderer.h"  // Add this include
+#include "MiddleendRequestHandler.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 
 #include "httplib.h"
@@ -21,7 +22,8 @@ static std::filesystem::path exe_dir() {
 
 int main() {
   httplib::Server svr;
-  VirtualRenderer renderer;  // Create the renderer instance
+  // VirtualRenderer renderer;  // Create the renderer instance
+  MiddleendRequestHandler handler;
 
   // ---------- CORS middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
@@ -43,8 +45,8 @@ int main() {
   });
 
   // ---------- GET / ----------
-  svr.Get("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleGetRequest(req, res);
+  svr.Get("/", [&handler](const httplib::Request& req, httplib::Response& res) {
+    handler.handleGetRequest(req, res);
   });
 
   // ---------- POST / ----------

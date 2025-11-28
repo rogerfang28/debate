@@ -1,1 +1,0 @@
-module(name = "bazel", version = "0.1")
