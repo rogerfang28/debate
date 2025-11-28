@@ -38,13 +38,8 @@ int main() {
     return httplib::Server::HandlerResponse::Unhandled;
   });
 
-  // ---------- GET / ----------
-  svr.Get("/", [&handler](const httplib::Request& req, httplib::Response& res) {
-    handler.handleGetRequest(req, res);
-  });
-
-  svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {
-    handler.handlePostRequest(req,res);
+  svr.Post("/", [&handler](const httplib::Request& req, httplib::Response& res) {
+    handler.handleRequest(req,res);
   });
 
   // ---------- Start server ----------

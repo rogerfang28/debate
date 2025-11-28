@@ -1,4 +1,5 @@
 import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
+// import sendClientMessageGrpc from "../../backendCommunicator/GRCPSendClientMessage.ts";
 import getEntirePage from "../getEntirePage.js";
 
 // TypeScript interfaces

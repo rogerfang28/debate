@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 // @ts-ignore - PageRenderer not fully converted yet
 import { PageRenderer } from "./rendering/PageRenderer.js";
-import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
-
-// TypeScript interfaces
-interface PageData {
-  [key: string]: any; // Generic page data structure
-}
+// import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
+import sendClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
+import type { Page } from "../../../src/gen/ts/layout_pb";
 
 // Extend Window interface for global reloadPage function
 declare global {
@@ -16,7 +13,7 @@ declare global {
 }
 
 const Renderer: React.FC = () => {
-  const [data, setData] = useState<PageData | null>(null);
+  const [data, setData] = useState<Page | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   // 🔹 Global reload function for handleEvent.ts
@@ -24,7 +21,11 @@ const Renderer: React.FC = () => {
     try {
       setLoading(true); // show spinner
       // test();
-      const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+      const info: Page | null = await sendClientMessageToCPP({
+        componentId: "page",
+        eventType: "reload",
+        data: { _pageId: data?.pageId || "unknown" }
+      });
       if (info) {
         setData(info);
       } else {
@@ -43,7 +44,12 @@ const Renderer: React.FC = () => {
     async function fetchData(): Promise<void> {
       try {
         setLoading(true);
-        const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+        // Send an initial "load" event to get the page
+        const info: Page | null = await sendClientMessageToCPP({ // cheese
+          componentId: "page",
+          eventType: "load",
+          data: { _pageId: "initial" }
+        });
         if (info) {
           setData(info);
           if (intervalId) clearInterval(intervalId); // stop retry loop

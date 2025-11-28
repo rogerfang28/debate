@@ -1,10 +1,12 @@
 // src/functions/postClientMessageToCPP.ts
-import { create, toBinary } from "@bufbuild/protobuf";
+import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
 import {
   ClientMessageSchema,
   PageDataSchema,
   ComponentDataSchema,
 } from "../../../src/gen/ts/client_message_pb";
+import { PageSchema } from "../../../src/gen/ts/layout_pb";
+import type { Page } from "../../../src/gen/ts/layout_pb";
 
 export interface EventData {
   componentId?: string;
@@ -17,22 +19,10 @@ export interface EventData {
   timestamp?: number;
 }
 
-/**
- * Send a ClientMessage protobuf to your C++ server (POST / on :8080).
- * Contains the event info + complete page state with all component values.
- */
-export default async function postClientMessageToCPP(
-  eventData: EventData,
-  opts?: {
-    endpoint?: string;        // override target if needed
-    withCredentials?: boolean // set true only if your C++ CORS allows credentials
-  }
-): Promise<void> {
+export default async function sendClientMessageToCPP(
+  eventData: EventData
+): Promise<Page | null> {
   try {
-    console.log("🚀 postClientMessageToCPP received:", eventData);
-    console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
-
-    // Extract page ID (stored with special _pageId key)
     const pageId = eventData.data?._pageId as string || "unknown-page";
     
     // Build list of ComponentData from the page data (excluding _pageId)
@@ -69,8 +59,7 @@ export default async function postClientMessageToCPP(
     const bytes = toBinary(ClientMessageSchema, clientMessage);
 
     // POST to C++ server root (default http(s)://<host>:8080/)
-    const endpoint =
-      opts?.endpoint ?? `${location.protocol}//${location.hostname}:5000/clientmessage`;
+    const endpoint = `${location.protocol}//${location.hostname}:5000`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -81,26 +70,37 @@ export default async function postClientMessageToCPP(
     });
 
     if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(`POST failed: ${res.status} ${res.statusText} ${text}`);
+      console.error(`❌ Server returned status ${res.status}`);
+      return null;
     }
 
-    console.log("✅ ClientMessage posted to C++ server.");
+    // Parse the protobuf Page response
+    const responseBytes = new Uint8Array(await res.arrayBuffer());
+    const page = fromBinary(PageSchema, responseBytes);
+
+    console.log("✅ Received Page from server:", {
+      pageId: page.pageId,
+      title: page.title,
+      componentsCount: page.components.length,
+    });
+
+    return page;
     
-    // Check if this was a sign-in action that set a cookie
-    if (clientMessage.pageData?.pageId === "enter_username" && res.status === 200) {
-      console.log("🔐 Sign-in successful, reloading page...");
-      // Reload to get the authenticated page
-      window.location.reload();
-    }
+    // // Check if this was a sign-in action that set a cookie
+    // if (clientMessage.pageData?.pageId === "enter_username" && res.status === 200) {
+    //   console.log("🔐 Sign-in successful, reloading page...");
+    //   // Reload to get the authenticated page
+    //   window.location.reload();
+    // }
     
-    // Check if this was a logout action
-    if (eventData.componentId === "logoutButton" && res.status === 200) {
-      console.log("🚪 Logout successful, reloading page...");
-      // Reload to show sign-in page
-      window.location.reload();
-    }
+    // // Check if this was a logout action
+    // if (eventData.componentId === "logoutButton" && res.status === 200) {
+    //   console.log("🚪 Logout successful, reloading page...");
+    //   // Reload to show sign-in page
+    //   window.location.reload();
+    // }
   } catch (err) {
     console.error("❌ Error sending ClientMessage to C++ server:", err);
+    return null;
   }
 }

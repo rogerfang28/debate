@@ -8,6 +8,13 @@
 debate_event::DebateEvent parseMessage(const client_message::ClientMessage& message, const std::string& user) {
     debate_event::DebateEvent event;
 
+    // check to see if there is nothing actually happening, like nothing clicked, it's basically no event
+    if (message.component_id().empty() && message.event_type().empty()) {
+        std::cout << "No action in ClientMessage, returning empty DebateEvent.\n";
+        event.set_type(debate_event::NONE);
+        return event;
+    }
+
     // Set common fields
     event.set_id("evt_" + std::to_string(std::time(nullptr)));
     

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\FrontendCommunicator\server\VirtualRendererServer.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\BackendCommunicator\BackendCommunicator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\FrontendCommunicator\server\MiddleendRequestHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\VirtualRenderer\virtualRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\VirtualRenderer\layoutGenerator\LayoutGenerator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\VirtualRenderer\layoutGenerator\pageGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\middleend\src\VirtualRenderer\ClientMessageHandler\ClientMessageParser.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\DebateModerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\virtual-renderer-communicator\BuildPayload.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\database\handlers\DebateDatabaseHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\database\handlers\UserDatabaseHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\database\sqlite\DatabaseCommunicator.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\utils\pathUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\event-handlers\AddDebate\AddDebateHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\event-handlers\ClearDebates\ClearDebatesHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\event-handlers\DeleteDebate\DeleteDebateHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\event-handlers\EnterDebate\EnterDebateHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\backend\src\debate\event-handlers\GoHome\GoHomeHandler.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\ClientMessageService.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\ClientMessageService.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\DebateMessageService.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\DebateMessageService.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\backend_payload.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\claim.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\claim.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\client_message.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\client_message.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate_event.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate_event.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate_list.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\debate_list.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\layout.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\layout.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\moderator_to_vr.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\moderator_to_vr.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\user.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\user.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\user_engagement.grpc.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\yunch\Important\Project\debate\src\gen\cpp\user_engagement.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\yunch\Important\Project\debate\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="C:\Users\yunch\Important\Project\debate\backend\src\database\sqlite\sqlite3.o">
+      <Filter>Object Files</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Object Files">
+      <UniqueIdentifier>{71F4F871-56FA-3E7D-98C7-1D742E31AD4E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7B500425-0424-3499-8F2D-BED235019FF6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

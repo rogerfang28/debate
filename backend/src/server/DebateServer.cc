@@ -29,7 +29,7 @@ int main() {
     // Allow credentials (cookies) - must specify exact origin, not "*"
     std::string origin = req.get_header_value("Origin");
     if (origin.empty()) {
-      origin = "http://localhost:5173"; // Default for Vite dev server
+      origin = "http://localhost:5000";
     }
     
     // Allow requests from middleend (5000)
@@ -48,12 +48,6 @@ int main() {
       return httplib::Server::HandlerResponse::Handled;
     }
     return httplib::Server::HandlerResponse::Unhandled;
-  });
-
-  // ---------- GET / ----------
-  svr.Get("/", [&handler](const httplib::Request& req, httplib::Response& res) {
-    // renderer.handleGetRequest(req, res);
-    handler.handleGetRequest(req, res);
   });
 
   svr.Post("/", [&handler](const httplib::Request& req, httplib::Response& res) {

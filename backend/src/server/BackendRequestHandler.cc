@@ -14,25 +14,6 @@ BackendRequestHandler::~BackendRequestHandler() {
     std::cout << "[BackendRequestHandler] Destroyed" << std::endl;
 }
 
-std::string BackendRequestHandler::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
-    // Extract username from query parameter
-    std::string username = "guest";
-    if (req.has_param("user")) {
-        username = req.get_param_value("user");
-    }
-    
-    std::cout << "[BackendRequestHandler] GET request from user: " << username << std::endl;
-    
-    // Build response message
-    moderator_to_vr::ModeratorToVRMessage vr_msg;
-    vr_msg = BuildPayload().build(username);
-
-    // Serialize protobuf and send back
-    std::string serialized = vr_msg.SerializeAsString();
-    res.set_content(serialized, "application/x-protobuf");
-    return "";
-}
-
 std::string BackendRequestHandler::handlePostRequest(const httplib::Request& req, httplib::Response& res) {
     // Extract username from custom header
     std::string username = "guest";
@@ -55,10 +36,11 @@ std::string BackendRequestHandler::handlePostRequest(const httplib::Request& req
     
     // Call DebateModerator
     DebateModerator moderator;
-    moderator.handleEvent(username, event);
-    
-    // Send response
-    res.status = 200;
-    res.set_content("Event processed", "text/plain");
+    moderator_to_vr::ModeratorToVRMessage vr_msg;
+    vr_msg = moderator.handleRequest(username, event);
+
+    // Serialize protobuf and send back
+    std::string serialized = vr_msg.SerializeAsString();
+    res.set_content(serialized, "application/x-protobuf");
     return "";
 }

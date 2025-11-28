@@ -14,7 +14,7 @@ project(VirtualRenderer LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
+# add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
 
 # These replicate your -D flags
 add_definitions(-D_WIN32_WINNT=0x0A00)
@@ -32,6 +32,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/FrontendCommunicator/server
     ${CMAKE_SOURCE_DIR}/src/VirtualRenderer
     ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/ClientMessageHandler
     ${CMAKE_SOURCE_DIR}/../src/gen/cpp
     ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/include
 )
@@ -46,6 +47,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/virtualRenderer.cpp
     ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator/LayoutGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator/pageGenerator.cpp
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/ClientMessageHandler/ClientMessageParser.cc
 )
 
 
@@ -118,8 +120,8 @@ set_target_properties(middleend_server PROPERTIES
 # ---------------------------------
 # Ensure MinGW runtime and vcpkg DLLs are found
 # ---------------------------------
-# set(ENV{PATH} "C:\\mingw-w64\\mingw64\\bin;${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/bin;$ENV{PATH}")
-# message(STATUS "PATH = $ENV{PATH}")
+set(ENV{PATH} "C:\\mingw-w64\\mingw64\\bin;${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/bin;$ENV{PATH}")
+message(STATUS "PATH = $ENV{PATH}")
 # not sure if this is needed
 
 

@@ -22,9 +22,12 @@ DebateModerator::~DebateModerator() {
 }
 
 
-void handleEvent(const std::string& user, debate_event::DebateEvent& event) {
+void handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
+        case debate_event::NONE:
+            std::cout << "[DebateModerator] Event Type: NONE\n";
+            break;
         case debate_event::CREATE_DEBATE:
             std::cout << "[DebateModerator] Event Type: CREATE_DEBATE\n";
             AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user);
@@ -62,7 +65,7 @@ moderator_to_vr::ModeratorToVRMessage handleRequest(const std::string& user, deb
     // Process the debate event and update the database accordingly
     std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
     // Example: handle adding a debate topic
-    handleEvent(user, event);
+    handleDebateEvent(user, event);
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage();
     return res;
 }

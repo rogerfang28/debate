@@ -5,21 +5,24 @@ inputs:
   - directory: protos
 
 plugins:
-  # 1) JavaScript via protoc-gen-es
+  # TypeScript (messages + service descriptors for Connect-ES)
   - local: protoc-gen-es
-    opt:
-      - target=js
-      - import_extension=js
-    out: src/gen/js
-
-  # 2) TypeScript via protoc-gen-es
-  - local: protoc-gen-es
+    out: src/gen/ts
+    # include_imports = true will also generate code for any imported .proto files
+    include_imports: true
     opt:
       - target=ts
-      # TS files import .js at runtime (ESM-friendly)
-      - import_extension=js
-    out: src/gen/ts
+      # Import extension behavior:
+      # - omit this line (default) -> no extension in import paths (works well with TS+bundlers)
+      # - or use: import_extension=js   if you want explicit .js in imports for ESM/Node
+      # - or use: import_extension=ts   if you're doing pure TS tooling
+      # - import_extension=none         removes .js if added
+      # - import_extension=none
 
-  # 3) C++ via remote plugin
-  - remote: buf.build/protocolbuffers/cpp:v29.5   # if v29.5 tag isn't available, try v29.3 or v29.0
+  # C++ protobuf messages
+  - remote: buf.build/protocolbuffers/cpp:v29.5
+    out: src/gen/cpp
+
+  # C++ gRPC stubs
+  - remote: buf.build/grpc/cpp:v1.76.0
     out: src/gen/cpp

@@ -2,12 +2,20 @@ syntax = "proto3";
 
 package client_message;
 
+enum EventType {
+  UNKNOWN = 0;
+  NONE = 1;
+  CLICK = 2;
+  CHANGE = 3;
+  SUBMIT = 4;
+}
+
 // Simple message sent from client to server
 // Contains what was clicked + all component values on the page
 message ClientMessage {
   // Simple event - just which component triggered this
   string component_id = 1; // e.g., "btnSubmit", "usernameInput"
-  string event_type = 2; // e.g., "click", "change", "submit"
+  string event_type = 2; // "load" "click" "change" "submit" etc. will be replaced with enum later
   
   // Complete page state - list of all components with their current values
   PageData page_data = 3;

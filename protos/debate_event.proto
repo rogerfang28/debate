@@ -5,6 +5,10 @@ package debate_event;
 import "google/protobuf/timestamp.proto";
 
 // Individual event payloads
+message None{
+    string user_id = 1;
+}
+
 message CreateDebate {
     string user_id = 1;
     string debate_topic = 2;
@@ -31,19 +35,21 @@ message GoHome {
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
-    CREATE_DEBATE          = 1;
-    CLEAR_DEBATES          = 2;
-    DELETE_DEBATE          = 3;
-    ENTER_DEBATE           = 4;
-    GO_HOME                = 5;
+    NONE                   = 1;
+    CREATE_DEBATE          = 2;
+    CLEAR_DEBATES          = 3;
+    DELETE_DEBATE          = 4;
+    ENTER_DEBATE           = 5;
+    GO_HOME                = 6;
 }
 
 // main message
 message DebateEvent {
 
-  string id = 1;
-  google.protobuf.Timestamp occurred_at = 2;
-  EventType type = 3; 
+  string user_id = 1;
+  string id = 2;
+  google.protobuf.Timestamp occurred_at = 3;
+  EventType type = 4; 
 
   oneof payload {
     CreateDebate    create_debate    = 10;
