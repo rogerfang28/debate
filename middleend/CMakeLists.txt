@@ -27,10 +27,11 @@ add_definitions(-DNOMINMAX)
 # Include directories (same as -I flags)
 # ---------------------------------
 include_directories(
-    ${CMAKE_SOURCE_DIR}/src/backendCommunicator
-    ${CMAKE_SOURCE_DIR}/src/frontendCommunicator/eventHandler
-    ${CMAKE_SOURCE_DIR}/src/frontendCommunicator/server
-    ${CMAKE_SOURCE_DIR}/src/frontendCommunicator/layoutGenerator    
+    ${CMAKE_SOURCE_DIR}/src/BackendCommunicator
+    ${CMAKE_SOURCE_DIR}/src/FrontendCommunicator/eventHandler
+    ${CMAKE_SOURCE_DIR}/src/FrontendCommunicator/server
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator
     ${CMAKE_SOURCE_DIR}/../src/gen/cpp
     ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-dynamic/include
 )
@@ -40,7 +41,11 @@ include_directories(
 # Source files (same as task args)
 # ---------------------------------
 set(SRC_FILES
-
+    ${CMAKE_SOURCE_DIR}/src/BackendCommunicator/BackendCommunicator.cc
+    ${CMAKE_SOURCE_DIR}/src/FrontendCommunicator/server/MiddleendRequestHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/virtualRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator/LayoutGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/VirtualRenderer/layoutGenerator/pageGenerator.cpp
 )
 
 
@@ -82,8 +87,8 @@ file(GLOB ABSL_LIBS
 # ---------------------------------
 # Create executable
 # ---------------------------------
-add_executable(virtual_renderer_server
-    ${CMAKE_SOURCE_DIR}/src/server/main.cc
+add_executable(middleend_server
+    ${CMAKE_SOURCE_DIR}/src/FrontendCommunicator/server/VirtualRendererServer.cc
     ${SRC_FILES}   # all the other code files you already listed
 )
 
@@ -92,7 +97,7 @@ add_executable(virtual_renderer_server
 # ---------------------------------
 # Link libraries
 # ---------------------------------
-target_link_libraries(virtual_renderer_server
+target_link_libraries(middleend_server
     protobuf
     ${ABSL_LIBS}
     zlib
@@ -104,7 +109,7 @@ target_link_libraries(virtual_renderer_server
 # ---------------------------------
 # Output directory
 # ---------------------------------
-set_target_properties(virtual_renderer_server PROPERTIES
+set_target_properties(middleend_server PROPERTIES
     LINK_FLAGS "-mconsole"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )

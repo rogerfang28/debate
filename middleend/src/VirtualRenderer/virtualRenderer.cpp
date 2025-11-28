@@ -1,7 +1,10 @@
 #include "virtualRenderer.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
+#include "../../../src/gen/cpp/debate_event.pb.h"
 #include "./pageGenerator.h"
+#include "ClientMessageHandler/ClientMessageParser.h"
+#include "../BackendCommunicator/BackendCommunicator.h"
 // #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
@@ -69,7 +72,7 @@ void VirtualRenderer::handleGetRequest(const httplib::Request& req, httplib::Res
 void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::Response& res) {
     std::string user = extractUserFromCookies(req);
     // Parse ClientMessage protobuf
-    clientmessage::ClientMessage client_message;
+    client_message::ClientMessage client_message;
     if (!client_message.ParseFromString(req.body)) {
       std::cerr << "❌ Failed to parse ClientMessage\n";
       res.status = 400;
@@ -104,9 +107,6 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
     //   std::cout << "!!! No page data included\n";
     }
 
-    // Translate ClientMessage to Event protobuf
-    event::Event evt;
-    
     const std::string& componentId = client_message.component_id();
     const std::string& eventType = client_message.event_type();
     const std::string& pageId = client_message.page_data().page_id();
@@ -114,7 +114,7 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
     std::cout << "\n--- Translating to Event ---\n";
     std::cout << "  Page ID: " << pageId << "\n";
     
-    // Route based on page_id first, then component_id + event_type
+    // hard code the username part for now because idk how to do it properly
     if (pageId == "enter_username") {
         // ============ SIGN-IN PAGE ============
         if (componentId == "submitButton" && eventType == "onClick") {
@@ -141,58 +141,20 @@ void VirtualRenderer::handleClientMessage(const httplib::Request& req, httplib::
                 return;
             }
         }
-    } else if (pageId == "home") {
-        // ============ HOME PAGE ============
-        if (componentId == "submitButton" && eventType == "onClick") {
-            // Submit topic action
-            evt.set_action_id("submitTopic");
-            // Extract topicInput value from page_data
-            for (const auto& comp : client_message.page_data().components()) {
-                if (comp.id() == "topicInput") {
-                    (*evt.mutable_data())["topicInput"] = comp.value();
-                    std::cout << "  Added data: topicInput = " << comp.value() << "\n";
-                    break;
-                }
-            }
-        } else if (componentId == "clearButton" && eventType == "onClick") {
-            evt.set_action_id("clearTopics");
-        } else if (componentId == "logoutButton" && eventType == "onClick") {
-            // Logout - clear cookie and return success
-            std::cout << "[Auth] Logging out user: " << user << "\n";
-            res.set_header("Set-Cookie", "user=; Path=/; Max-Age=0");
-            res.status = 200;
-            res.set_content("Logged out", "text/plain");
-            return;
-        } else if (componentId.find("topicButton_") == 0 && eventType == "onClick") {
-            evt.set_action_id("enterTopic");
-            std::string topicID = componentId.substr(12); // Extract ID after "topicButton_"
-            (*evt.mutable_data())["topicID"] = topicID;
-            std::cout << "  Added data: topicID = " << topicID << "\n";
-        } else {
-            std::cerr << "Unknown component/event combination on home page: " 
-                      << componentId << "/" << eventType << "\n";
-            res.status = 400;
-            res.set_content("Unknown event", "text/plain");
-            return;
-        }
-    } else {
-        // ============ OTHER PAGES ============
-        if (componentId == "goHomeButton" && eventType == "onClick") {
-            evt.set_action_id("goHome");
-        } else {
-            std::cerr << "Unknown page or event: page=" << pageId 
-                      << " component=" << componentId << "/" << eventType << "\n";
-            res.status = 400;
-            res.set_content("Unknown event", "text/plain");
-            return;
-        }
     }
 
-    std::cout << "  Action ID: " << evt.action_id() << "\n";
-    std::cout << "========================================\n\n";
+    // Translate ClientMessage to Debate Event protobuf
+    ClientMessageParser parser;
+    std::string user = extractUserFromCookies(req);
+    debate_event::DebateEvent evt = parser.parseMessage(client_message, user);
+
 
     // Pass translated Event to EventHandler
-    EventHandler handler;
-    handler.handleEvent(evt, user);
+    // EventHandler handler;
+    // handler.handleEvent(evt, user);
+    // I NEED TO CALL THE DEBATE BACKEND SOMEHOW FROM HERE
+    BackendCommunicator backend;
+    
+
     res.status = 204;  // No Content
 }

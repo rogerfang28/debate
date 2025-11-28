@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package clientmessage;
+package client_message;
 
 // Simple message sent from client to server
 // Contains what was clicked + all component values on the page

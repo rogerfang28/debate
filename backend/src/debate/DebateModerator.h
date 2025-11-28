@@ -12,9 +12,10 @@ public:
 
     // Add and clear debate topics for a user
     moderator_to_vr::ModeratorToVRMessage handleRequest(const std::string& user, debate_event::DebateEvent& event);
-
+    void handleEvent(const std::string& user, debate_event::DebateEvent& event);
+    
 private:
     // DebateDatabaseHandler dbHandler;  // internal handler instance
-    void handleEvent(const std::string& user, debate_event::DebateEvent& event);
+    
     moderator_to_vr::ModeratorToVRMessage buildResponseMessage();
 };

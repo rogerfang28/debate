@@ -1,9 +1,3 @@
-// #define WIN32_LEAN_AND_MEAN
-// #define NOMINMAX
-// #define _WIN32_WINNT 0x0A00
-// these are not needed because they are in cmakelists
-
-// #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "MiddleendRequestHandler.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 
@@ -49,17 +43,11 @@ int main() {
     handler.handleGetRequest(req, res);
   });
 
-  // ---------- POST / ----------
-  // svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-  //   // renderer.handlePostRequest(req, res);
-  //   std::cout << "testAAAAAAAAAAAAAAAAA";
-  // });
-
-  svr.Post("/clientmessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleClientMessage(req,res);
+  svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {
+    handler.handlePostRequest(req,res);
   });
 
   // ---------- Start server ----------
-  std::cout << "Serving server on http://127.0.0.1:8080\n";
-  svr.listen("0.0.0.0", 8080);
+  std::cout << "Serving server on http://127.0.0.1:5000\n";
+  svr.listen("0.0.0.0", 5000);
 }

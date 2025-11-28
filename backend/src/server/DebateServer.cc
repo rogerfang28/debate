@@ -5,6 +5,7 @@
 
 #include "../debate/DebateModerator.h"
 #include "../../../src/gen/cpp/debate_event.pb.h"
+#include "BackendRequestHandler.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>
@@ -21,6 +22,7 @@ static std::filesystem::path exe_dir() {
 
 int main() {
   httplib::Server svr;
+  BackendRequestHandler handler;
 
   // ---------- CORS middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
@@ -29,7 +31,14 @@ int main() {
     if (origin.empty()) {
       origin = "http://localhost:5173"; // Default for Vite dev server
     }
-    res.set_header("Access-Control-Allow-Origin", origin);
+    
+    // Allow requests from middleend (5000)
+    if (origin == "http://localhost:5000"){ 
+      res.set_header("Access-Control-Allow-Origin", origin);
+    } else {
+      res.set_header("Access-Control-Allow-Origin", origin);
+    }
+    
     res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.set_header("Access-Control-Allow-Headers", "content-type");
     res.set_header("Access-Control-Allow-Credentials", "true"); // Enable cookies
@@ -42,18 +51,14 @@ int main() {
   });
 
   // ---------- GET / ----------
-  svr.Get("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleGetRequest(req, res);
+  svr.Get("/", [&handler](const httplib::Request& req, httplib::Response& res) {
+    // renderer.handleGetRequest(req, res);
+    handler.handleGetRequest(req, res);
   });
 
-  // ---------- POST / ----------
-  // svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-  //   // renderer.handlePostRequest(req, res);
-  //   std::cout << "testAAAAAAAAAAAAAAAAA";
-  // });
-
-  svr.Post("/clientmessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleClientMessage(req,res);
+  svr.Post("/", [&handler](const httplib::Request& req, httplib::Response& res) {
+    // renderer.handleClientMessage(req,res);
+    handler.handlePostRequest(req, res);
   });
 
   // ---------- Start server ----------

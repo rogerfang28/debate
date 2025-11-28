@@ -70,7 +70,7 @@ export default async function postClientMessageToCPP(
 
     // POST to C++ server root (default http(s)://<host>:8080/)
     const endpoint =
-      opts?.endpoint ?? `${location.protocol}//${location.hostname}:8080/clientmessage`;
+      opts?.endpoint ?? `${location.protocol}//${location.hostname}:5000/clientmessage`;
 
     const res = await fetch(endpoint, {
       method: "POST",

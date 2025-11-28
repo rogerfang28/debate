@@ -24,7 +24,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
-namespace clientmessage {
+namespace client_message {
 
 inline constexpr ComponentData::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -117,7 +117,7 @@ struct ClientMessageDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClientMessageDefaultTypeInternal _ClientMessage_default_instance_;
-}  // namespace clientmessage
+}  // namespace client_message
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_client_5fmessage_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -125,71 +125,71 @@ static constexpr const ::_pb::ServiceDescriptor**
 const ::uint32_t
     TableStruct_client_5fmessage_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ClientMessage, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ClientMessage, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ClientMessage, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ClientMessage, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ClientMessage, _impl_.component_id_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ClientMessage, _impl_.event_type_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ClientMessage, _impl_.page_data_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ClientMessage, _impl_.component_id_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ClientMessage, _impl_.event_type_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ClientMessage, _impl_.page_data_),
         ~0u,
         ~0u,
         0,
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::clientmessage::PageData, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::client_message::PageData, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::clientmessage::PageData, _impl_.page_id_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::PageData, _impl_.components_),
+        PROTOBUF_FIELD_OFFSET(::client_message::PageData, _impl_.page_id_),
+        PROTOBUF_FIELD_OFFSET(::client_message::PageData, _impl_.components_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ComponentData, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ComponentData, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ComponentData, _impl_.id_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ComponentData, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::clientmessage::ComponentData, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ComponentData, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ComponentData, _impl_.value_),
+        PROTOBUF_FIELD_OFFSET(::client_message::ComponentData, _impl_.type_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 11, -1, sizeof(::clientmessage::ClientMessage)},
-        {14, -1, -1, sizeof(::clientmessage::PageData)},
-        {24, -1, -1, sizeof(::clientmessage::ComponentData)},
+        {0, 11, -1, sizeof(::client_message::ClientMessage)},
+        {14, -1, -1, sizeof(::client_message::PageData)},
+        {24, -1, -1, sizeof(::client_message::ComponentData)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::clientmessage::_ClientMessage_default_instance_._instance,
-    &::clientmessage::_PageData_default_instance_._instance,
-    &::clientmessage::_ComponentData_default_instance_._instance,
+    &::client_message::_ClientMessage_default_instance_._instance,
+    &::client_message::_PageData_default_instance_._instance,
+    &::client_message::_ComponentData_default_instance_._instance,
 };
 const char descriptor_table_protodef_client_5fmessage_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\024client_message.proto\022\rclientmessage\"\207\001"
-    "\n\rClientMessage\022!\n\014component_id\030\001 \001(\tR\013c"
-    "omponentId\022\035\n\nevent_type\030\002 \001(\tR\teventTyp"
-    "e\0224\n\tpage_data\030\003 \001(\0132\027.clientmessage.Pag"
-    "eDataR\010pageData\"a\n\010PageData\022\027\n\007page_id\030\001"
-    " \001(\tR\006pageId\022<\n\ncomponents\030\002 \003(\0132\034.clien"
-    "tmessage.ComponentDataR\ncomponents\"I\n\rCo"
-    "mponentData\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005value\030\002 \001"
-    "(\tR\005value\022\022\n\004type\030\003 \001(\tR\004typeb\006proto3"
+    "\n\024client_message.proto\022\016client_message\"\210"
+    "\001\n\rClientMessage\022!\n\014component_id\030\001 \001(\tR\013"
+    "componentId\022\035\n\nevent_type\030\002 \001(\tR\teventTy"
+    "pe\0225\n\tpage_data\030\003 \001(\0132\030.client_message.P"
+    "ageDataR\010pageData\"b\n\010PageData\022\027\n\007page_id"
+    "\030\001 \001(\tR\006pageId\022=\n\ncomponents\030\002 \003(\0132\035.cli"
+    "ent_message.ComponentDataR\ncomponents\"I\n"
+    "\rComponentData\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005value\030"
+    "\002 \001(\tR\005value\022\022\n\004type\030\003 \001(\tR\004typeb\006proto3"
 };
 static ::absl::once_flag descriptor_table_client_5fmessage_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_client_5fmessage_2eproto = {
     false,
     false,
-    357,
+    360,
     descriptor_table_protodef_client_5fmessage_2eproto,
     "client_message.proto",
     &descriptor_table_client_5fmessage_2eproto_once,
@@ -202,7 +202,7 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_client_5fmessa
     file_level_enum_descriptors_client_5fmessage_2eproto,
     file_level_service_descriptors_client_5fmessage_2eproto,
 };
-namespace clientmessage {
+namespace client_message {
 // ===================================================================
 
 class ClientMessage::_Internal {
@@ -220,11 +220,11 @@ ClientMessage::ClientMessage(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:clientmessage.ClientMessage)
+  // @@protoc_insertion_point(arena_constructor:client_message.ClientMessage)
 }
 inline PROTOBUF_NDEBUG_INLINE ClientMessage::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::clientmessage::ClientMessage& from_msg)
+    const Impl_& from, const ::client_message::ClientMessage& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         component_id_(arena, from.component_id_),
@@ -244,11 +244,11 @@ ClientMessage::ClientMessage(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.page_data_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::clientmessage::PageData>(
+  _impl_.page_data_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::client_message::PageData>(
                               arena, *from._impl_.page_data_)
                         : nullptr;
 
-  // @@protoc_insertion_point(copy_constructor:clientmessage.ClientMessage)
+  // @@protoc_insertion_point(copy_constructor:client_message.ClientMessage)
 }
 inline PROTOBUF_NDEBUG_INLINE ClientMessage::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -262,7 +262,7 @@ inline void ClientMessage::SharedCtor(::_pb::Arena* arena) {
   _impl_.page_data_ = {};
 }
 ClientMessage::~ClientMessage() {
-  // @@protoc_insertion_point(destructor:clientmessage.ClientMessage)
+  // @@protoc_insertion_point(destructor:client_message.ClientMessage)
   SharedDtor(*this);
 }
 inline void ClientMessage::SharedDtor(MessageLite& self) {
@@ -311,7 +311,7 @@ const ::google::protobuf::internal::ClassData* ClientMessage::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 1, 58, 2> ClientMessage::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 1, 59, 2> ClientMessage::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_._has_bits_),
     0, // no _extensions_
@@ -326,7 +326,7 @@ const ::_pbi::TcParseTable<2, 3, 1, 58, 2> ClientMessage::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::clientmessage::ClientMessage>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::client_message::ClientMessage>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -336,7 +336,7 @@ const ::_pbi::TcParseTable<2, 3, 1, 58, 2> ClientMessage::_table_ = {
     // string event_type = 2 [json_name = "eventType"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.event_type_)}},
-    // .clientmessage.PageData page_data = 3 [json_name = "pageData"];
+    // .client_message.PageData page_data = 3 [json_name = "pageData"];
     {::_pbi::TcParser::FastMtS1,
      {26, 0, 0, PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.page_data_)}},
   }}, {{
@@ -348,21 +348,21 @@ const ::_pbi::TcParseTable<2, 3, 1, 58, 2> ClientMessage::_table_ = {
     // string event_type = 2 [json_name = "eventType"];
     {PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.event_type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .clientmessage.PageData page_data = 3 [json_name = "pageData"];
+    // .client_message.PageData page_data = 3 [json_name = "pageData"];
     {PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.page_data_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::clientmessage::PageData>()},
+    {::_pbi::TcParser::GetTable<::client_message::PageData>()},
   }}, {{
-    "\33\14\12\0\0\0\0\0"
-    "clientmessage.ClientMessage"
+    "\34\14\12\0\0\0\0\0"
+    "client_message.ClientMessage"
     "component_id"
     "event_type"
   }},
 };
 
 PROTOBUF_NOINLINE void ClientMessage::Clear() {
-// @@protoc_insertion_point(message_clear_start:clientmessage.ClientMessage)
+// @@protoc_insertion_point(message_clear_start:client_message.ClientMessage)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -390,7 +390,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const ClientMessage& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:clientmessage.ClientMessage)
+          // @@protoc_insertion_point(serialize_to_array_start:client_message.ClientMessage)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -398,7 +398,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
           if (!this_._internal_component_id().empty()) {
             const std::string& _s = this_._internal_component_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.ClientMessage.component_id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.ClientMessage.component_id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -406,12 +406,12 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
           if (!this_._internal_event_type().empty()) {
             const std::string& _s = this_._internal_event_type();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.ClientMessage.event_type");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.ClientMessage.event_type");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .clientmessage.PageData page_data = 3 [json_name = "pageData"];
+          // .client_message.PageData page_data = 3 [json_name = "pageData"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.page_data_, this_._impl_.page_data_->GetCachedSize(), target,
@@ -423,7 +423,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:clientmessage.ClientMessage)
+          // @@protoc_insertion_point(serialize_to_array_end:client_message.ClientMessage)
           return target;
         }
 
@@ -434,7 +434,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
         ::size_t ClientMessage::ByteSizeLong() const {
           const ClientMessage& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:clientmessage.ClientMessage)
+          // @@protoc_insertion_point(message_byte_size_start:client_message.ClientMessage)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -455,7 +455,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
             }
           }
            {
-            // .clientmessage.PageData page_data = 3 [json_name = "pageData"];
+            // .client_message.PageData page_data = 3 [json_name = "pageData"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -470,7 +470,7 @@ void ClientMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   auto* const _this = static_cast<ClientMessage*>(&to_msg);
   auto& from = static_cast<const ClientMessage&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:clientmessage.ClientMessage)
+  // @@protoc_insertion_point(class_specific_merge_from_start:client_message.ClientMessage)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -486,7 +486,7 @@ void ClientMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
     ABSL_DCHECK(from._impl_.page_data_ != nullptr);
     if (_this->_impl_.page_data_ == nullptr) {
       _this->_impl_.page_data_ =
-          ::google::protobuf::Message::CopyConstruct<::clientmessage::PageData>(arena, *from._impl_.page_data_);
+          ::google::protobuf::Message::CopyConstruct<::client_message::PageData>(arena, *from._impl_.page_data_);
     } else {
       _this->_impl_.page_data_->MergeFrom(*from._impl_.page_data_);
     }
@@ -496,7 +496,7 @@ void ClientMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
 }
 
 void ClientMessage::CopyFrom(const ClientMessage& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:clientmessage.ClientMessage)
+// @@protoc_insertion_point(class_specific_copy_from_start:client_message.ClientMessage)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -530,11 +530,11 @@ PageData::PageData(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:clientmessage.PageData)
+  // @@protoc_insertion_point(arena_constructor:client_message.PageData)
 }
 inline PROTOBUF_NDEBUG_INLINE PageData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::clientmessage::PageData& from_msg)
+    const Impl_& from, const ::client_message::PageData& from_msg)
       : components_{visibility, arena, from.components_},
         page_id_(arena, from.page_id_),
         _cached_size_{0} {}
@@ -553,7 +553,7 @@ PageData::PageData(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:clientmessage.PageData)
+  // @@protoc_insertion_point(copy_constructor:client_message.PageData)
 }
 inline PROTOBUF_NDEBUG_INLINE PageData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -566,7 +566,7 @@ inline void PageData::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 PageData::~PageData() {
-  // @@protoc_insertion_point(destructor:clientmessage.PageData)
+  // @@protoc_insertion_point(destructor:client_message.PageData)
   SharedDtor(*this);
 }
 inline void PageData::SharedDtor(MessageLite& self) {
@@ -625,7 +625,7 @@ const ::google::protobuf::internal::ClassData* PageData::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 38, 2> PageData::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 1, 39, 2> PageData::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -640,10 +640,10 @@ const ::_pbi::TcParseTable<1, 2, 1, 38, 2> PageData::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::clientmessage::PageData>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::client_message::PageData>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
+    // repeated .client_message.ComponentData components = 2 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(PageData, _impl_.components_)}},
     // string page_id = 1 [json_name = "pageId"];
@@ -655,20 +655,20 @@ const ::_pbi::TcParseTable<1, 2, 1, 38, 2> PageData::_table_ = {
     // string page_id = 1 [json_name = "pageId"];
     {PROTOBUF_FIELD_OFFSET(PageData, _impl_.page_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
+    // repeated .client_message.ComponentData components = 2 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(PageData, _impl_.components_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::clientmessage::ComponentData>()},
+    {::_pbi::TcParser::GetTable<::client_message::ComponentData>()},
   }}, {{
-    "\26\7\0\0\0\0\0\0"
-    "clientmessage.PageData"
+    "\27\7\0\0\0\0\0\0"
+    "client_message.PageData"
     "page_id"
   }},
 };
 
 PROTOBUF_NOINLINE void PageData::Clear() {
-// @@protoc_insertion_point(message_clear_start:clientmessage.PageData)
+// @@protoc_insertion_point(message_clear_start:client_message.PageData)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -690,7 +690,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const PageData& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:clientmessage.PageData)
+          // @@protoc_insertion_point(serialize_to_array_start:client_message.PageData)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -698,11 +698,11 @@ PROTOBUF_NOINLINE void PageData::Clear() {
           if (!this_._internal_page_id().empty()) {
             const std::string& _s = this_._internal_page_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.PageData.page_id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.PageData.page_id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
+          // repeated .client_message.ComponentData components = 2 [json_name = "components"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_components_size());
                i < n; i++) {
@@ -718,7 +718,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:clientmessage.PageData)
+          // @@protoc_insertion_point(serialize_to_array_end:client_message.PageData)
           return target;
         }
 
@@ -729,7 +729,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
         ::size_t PageData::ByteSizeLong() const {
           const PageData& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:clientmessage.PageData)
+          // @@protoc_insertion_point(message_byte_size_start:client_message.PageData)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -738,7 +738,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .clientmessage.ComponentData components = 2 [json_name = "components"];
+            // repeated .client_message.ComponentData components = 2 [json_name = "components"];
             {
               total_size += 1UL * this_._internal_components_size();
               for (const auto& msg : this_._internal_components()) {
@@ -760,7 +760,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
 void PageData::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<PageData*>(&to_msg);
   auto& from = static_cast<const PageData&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:clientmessage.PageData)
+  // @@protoc_insertion_point(class_specific_merge_from_start:client_message.PageData)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -774,7 +774,7 @@ void PageData::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
 }
 
 void PageData::CopyFrom(const PageData& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:clientmessage.PageData)
+// @@protoc_insertion_point(class_specific_copy_from_start:client_message.PageData)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -806,11 +806,11 @@ ComponentData::ComponentData(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:clientmessage.ComponentData)
+  // @@protoc_insertion_point(arena_constructor:client_message.ComponentData)
 }
 inline PROTOBUF_NDEBUG_INLINE ComponentData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::clientmessage::ComponentData& from_msg)
+    const Impl_& from, const ::client_message::ComponentData& from_msg)
       : id_(arena, from.id_),
         value_(arena, from.value_),
         type_(arena, from.type_),
@@ -830,7 +830,7 @@ ComponentData::ComponentData(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:clientmessage.ComponentData)
+  // @@protoc_insertion_point(copy_constructor:client_message.ComponentData)
 }
 inline PROTOBUF_NDEBUG_INLINE ComponentData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -844,7 +844,7 @@ inline void ComponentData::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 ComponentData::~ComponentData() {
-  // @@protoc_insertion_point(destructor:clientmessage.ComponentData)
+  // @@protoc_insertion_point(destructor:client_message.ComponentData)
   SharedDtor(*this);
 }
 inline void ComponentData::SharedDtor(MessageLite& self) {
@@ -893,7 +893,7 @@ const ::google::protobuf::internal::ClassData* ComponentData::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 47, 2> ComponentData::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 48, 2> ComponentData::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -908,7 +908,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 47, 2> ComponentData::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::clientmessage::ComponentData>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::client_message::ComponentData>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
@@ -936,8 +936,8 @@ const ::_pbi::TcParseTable<2, 3, 0, 47, 2> ComponentData::_table_ = {
   }},
   // no aux_entries
   {{
-    "\33\2\5\4\0\0\0\0"
-    "clientmessage.ComponentData"
+    "\34\2\5\4\0\0\0\0"
+    "client_message.ComponentData"
     "id"
     "value"
     "type"
@@ -945,7 +945,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 47, 2> ComponentData::_table_ = {
 };
 
 PROTOBUF_NOINLINE void ComponentData::Clear() {
-// @@protoc_insertion_point(message_clear_start:clientmessage.ComponentData)
+// @@protoc_insertion_point(message_clear_start:client_message.ComponentData)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -968,7 +968,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const ComponentData& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:clientmessage.ComponentData)
+          // @@protoc_insertion_point(serialize_to_array_start:client_message.ComponentData)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -976,7 +976,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.ComponentData.id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.ComponentData.id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -984,7 +984,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.ComponentData.value");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.ComponentData.value");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -992,7 +992,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
           if (!this_._internal_type().empty()) {
             const std::string& _s = this_._internal_type();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "clientmessage.ComponentData.type");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "client_message.ComponentData.type");
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
@@ -1001,7 +1001,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:clientmessage.ComponentData)
+          // @@protoc_insertion_point(serialize_to_array_end:client_message.ComponentData)
           return target;
         }
 
@@ -1012,7 +1012,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
         ::size_t ComponentData::ByteSizeLong() const {
           const ComponentData& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:clientmessage.ComponentData)
+          // @@protoc_insertion_point(message_byte_size_start:client_message.ComponentData)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -1044,7 +1044,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
 void ComponentData::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<ComponentData*>(&to_msg);
   auto& from = static_cast<const ComponentData&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:clientmessage.ComponentData)
+  // @@protoc_insertion_point(class_specific_merge_from_start:client_message.ComponentData)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1062,7 +1062,7 @@ void ComponentData::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
 }
 
 void ComponentData::CopyFrom(const ComponentData& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:clientmessage.ComponentData)
+// @@protoc_insertion_point(class_specific_copy_from_start:client_message.ComponentData)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1083,7 +1083,7 @@ void ComponentData::InternalSwap(ComponentData* PROTOBUF_RESTRICT other) {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace clientmessage
+}  // namespace client_message
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

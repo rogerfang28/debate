@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package client_message_service;
+
+import "client_message.proto";
+import "layout.proto";
+
+service ClientMessageService {
+  // RPC to send client message to server
+  rpc SendClientMessage(client_message.ClientMessage)
+      returns (ui.Page);
+}

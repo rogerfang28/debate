@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package debate_message_service;
+
+import "debate_event.proto";
+import "moderator_to_vr.proto";
+
+service DebateMessageService {
+  // RPC to send client message to server
+  rpc SendDebateEvent(debate_event.DebateEvent)
+      returns (moderator_to_vr.ModeratorToVRMessage);
+}
