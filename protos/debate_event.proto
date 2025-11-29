@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package debate_event;
+
+import "google/protobuf/timestamp.proto";
+
+// Individual event payloads
+message None{
+    string user_id = 1;
+}
+
+message CreateDebate {
+    string user_id = 1;
+    string debate_topic = 2;
+}
+
+message ClearDebates {
+    string user_id = 1;
+}
+
+message DeleteDebate {
+    string user_id = 1;
+    string debate_id = 2;
+}
+
+message EnterDebate {
+    string user_id = 1;
+    string debate_id = 2;
+}
+
+message GoHome {
+    string user_id       = 1;
+}
+
+// enum
+enum EventType {
+    EVENT_KIND_UNSPECIFIED = 0;
+    NONE                   = 1;
+    CREATE_DEBATE          = 2;
+    CLEAR_DEBATES          = 3;
+    DELETE_DEBATE          = 4;
+    ENTER_DEBATE           = 5;
+    GO_HOME                = 6;
+}
+
+// main message
+message DebateEvent {
+
+  string user_id = 1;
+  string id = 2;
+  google.protobuf.Timestamp occurred_at = 3;
+  EventType type = 4; 
+
+  oneof payload {
+    CreateDebate    create_debate    = 10;
+    ClearDebates    clear_debates    = 11;
+    DeleteDebate    delete_debate    = 12;
+    EnterDebate     enter_debate     = 13;
+    GoHome          go_home          = 14;
+  }
+}

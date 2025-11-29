@@ -28,7 +28,7 @@ events:
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
       
       The CXX compiler identification is GNU, found in:
-        C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/4.0.1/CompilerIdCXX/a.exe
+        C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/4.0.1/CompilerIdCXX/a.exe
       
   -
     kind: "try_compile-v1"
@@ -39,8 +39,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757"
-      binary: "C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757"
+      source: "C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757"
+      binary: "C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -54,11 +54,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
+        Change Dir: 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
         
         Run Build Command(s): C:/mingw-w64/mingw64/bin/cmake.exe -E env VERBOSE=1 C:/mingw-w64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_2a5aa/fast
         C:/mingw-w64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_2a5aa.dir\\build.make CMakeFiles/cmTC_2a5aa.dir/build
-        mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
+        mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
         Building CXX object CMakeFiles/cmTC_2a5aa.dir/CMakeCXXCompilerABI.cpp.obj
         C:\\mingw-w64\\mingw64\\bin\\c++.exe   -v -o CMakeFiles\\cmTC_2a5aa.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\mingw-w64\\mingw64\\share\\cmake-4.0\\Modules\\CMakeCXXCompilerABI.cpp
         Using built-in specs.
@@ -123,7 +123,7 @@ events:
         C:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin C:/mingw-w64/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/15.1.0/liblto_plugin.dll -plugin-opt=C:/mingw-w64/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/15.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\yunch\\AppData\\Local\\Temp\\cclmeaIW.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_2a5aa.exe C:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtbegin.o -LC:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0 -LC:/mingw-w64/mingw64/bin/../lib/gcc -LC:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib -LC:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib -LC:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_2a5aa.dir/objects.a --no-whole-archive --out-implib libcmTC_2a5aa.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 C:/mingw-w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtend.o
         GNU ld (Binutils for MinGW-W64 x86_64, built by Brecht Sanders, r1) 2.44
         COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2a5aa.exe' '-foffload-options=-l_GCC_stdc++' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_2a5aa.'
-        mingw32-make[1]: Leaving directory 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
+        mingw32-make[1]: Leaving directory 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757'
         
       exitCode: 0
   -
@@ -164,11 +164,11 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757']
+        ignore line: [Change Dir: 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757']
         ignore line: []
         ignore line: [Run Build Command(s): C:/mingw-w64/mingw64/bin/cmake.exe -E env VERBOSE=1 C:/mingw-w64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_2a5aa/fast]
         ignore line: [C:/mingw-w64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_2a5aa.dir\\build.make CMakeFiles/cmTC_2a5aa.dir/build]
-        ignore line: [mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757']
+        ignore line: [mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-nf1757']
         ignore line: [Building CXX object CMakeFiles/cmTC_2a5aa.dir/CMakeCXXCompilerABI.cpp.obj]
         ignore line: [C:\\mingw-w64\\mingw64\\bin\\c++.exe   -v -o CMakeFiles\\cmTC_2a5aa.dir\\CMakeCXXCompilerABI.cpp.obj -c C:\\mingw-w64\\mingw64\\share\\cmake-4.0\\Modules\\CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
@@ -372,8 +372,8 @@ events:
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v"
-      binary: "C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v"
+      source: "C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v"
+      binary: "C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -386,19 +386,19 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
+        Change Dir: 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
         
         Run Build Command(s): C:/mingw-w64/mingw64/bin/cmake.exe -E env VERBOSE=1 C:/mingw-w64/mingw64/bin/mingw32-make.exe -f Makefile cmTC_b69d5/fast
         C:/mingw-w64/mingw64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_b69d5.dir\\build.make CMakeFiles/cmTC_b69d5.dir/build
-        mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
+        mingw32-make[1]: Entering directory 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
         Building CXX object CMakeFiles/cmTC_b69d5.dir/src.cxx.obj
-        C:\\mingw-w64\\mingw64\\bin\\c++.exe -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++17 -o CMakeFiles\\cmTC_b69d5.dir\\src.cxx.obj -c C:\\Users\\yunch\\Important\\Project\\debate\\cppserver\\src\\server\\test\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k0sz0v\\src.cxx
+        C:\\mingw-w64\\mingw64\\bin\\c++.exe -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++17 -o CMakeFiles\\cmTC_b69d5.dir\\src.cxx.obj -c C:\\Users\\yunch\\Important\\Project\\debate\\backend\\src\\server\\test\\build\\CMakeFiles\\CMakeScratch\\TryCompile-k0sz0v\\src.cxx
         Linking CXX executable cmTC_b69d5.exe
         C:\\mingw-w64\\mingw64\\bin\\cmake.exe -E cmake_link_script CMakeFiles\\cmTC_b69d5.dir\\link.txt --verbose=1
         C:\\mingw-w64\\mingw64\\bin\\cmake.exe -E rm -f CMakeFiles\\cmTC_b69d5.dir/objects.a
         C:\\mingw-w64\\mingw64\\bin\\ar.exe qc CMakeFiles\\cmTC_b69d5.dir/objects.a @CMakeFiles\\cmTC_b69d5.dir\\objects1.rsp
         C:\\mingw-w64\\mingw64\\bin\\c++.exe -Wl,--whole-archive CMakeFiles\\cmTC_b69d5.dir/objects.a -Wl,--no-whole-archive -o cmTC_b69d5.exe -Wl,--out-implib,libcmTC_b69d5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_b69d5.dir\\linkLibs.rsp
-        mingw32-make[1]: Leaving directory 'C:/Users/yunch/Important/Project/debate/cppserver/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
+        mingw32-make[1]: Leaving directory 'C:/Users/yunch/Important/Project/debate/backend/src/server/test/build/CMakeFiles/CMakeScratch/TryCompile-k0sz0v'
         
       exitCode: 0
 ...

@@ -1,0 +1,119 @@
+// has handle get or post or any request, calls virtual renderer
+#include "MiddleendRequestHandler.h"
+
+#include "../../../src/gen/cpp/client_message.pb.h"
+#include "../../VirtualRenderer/virtualRenderer.h"
+
+std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
+    std::string user = extractUserFromCookies(req);
+
+    // Parse ClientMessage protobuf
+    client_message::ClientMessage client_message;
+    if (!client_message.ParseFromString(req.body)) {
+      std::cerr << "❌ Failed to parse ClientMessage\n";
+      res.status = 400;
+      res.set_content("Failed to parse ClientMessage", "text/plain");
+      return;
+    }
+
+    std::cout << "ClientMessage received\n";
+    
+    // Log the event info
+    std::cout << "\n--- Event Info ---\n";
+    std::cout << "Component ID: " << client_message.component_id() << "\n";
+    std::cout << "Event Type: " << client_message.event_type() << "\n";
+    std::cout << "User: " << user << "\n";
+
+    // Log page data
+    if (client_message.has_page_data() && true) { // set to true to enable detailed logging
+      const auto& page_data = client_message.page_data();
+      std::cout << "\n--- Page Data ---\n";
+      std::cout << "Page ID: " << page_data.page_id() << "\n";
+      std::cout << "Components count: " << page_data.components_size() << "\n";
+      
+      std::cout << "\n--- All Components ---\n";
+      for (int i = 0; i < page_data.components_size(); i++) {
+        const auto& comp = page_data.components(i);
+        std::cout << "  [" << i << "] id: \"" << comp.id() 
+                  << "\" = \"" << comp.value() << "\"\n";
+      }
+    } else {
+      std::cout << "!!! No page data included\n";
+    }
+
+    const std::string& componentId = client_message.component_id();
+    const std::string& eventType = client_message.event_type();
+    const std::string& pageId = client_message.page_data().page_id();
+    
+    // hard code the username part for now because idk how to do it properly
+    if (pageId == "enter_username") {
+        // ============ SIGN-IN PAGE ============
+        if (componentId == "submitButton" && eventType == "onClick") {
+            // Extract username from the page data
+            std::string username;
+            for (const auto& comp : client_message.page_data().components()) {
+                if (comp.id() == "usernameInput") {
+                    username = comp.value();
+                    break;
+                }
+            }
+            
+            if (!username.empty() && username != "guest") {
+                // Set cookie and redirect by setting a special response
+                std::cout << "[Auth] Setting user cookie: " << username << "\n";
+                res.set_header("Set-Cookie", "user=" + username + "; Path=/; Max-Age=2592000; SameSite=Lax");
+                res.status = 200;
+                res.set_content("OK", "text/plain");
+                return;
+            } else {
+                std::cerr << "[Auth] Invalid username: " << username << "\n";
+                res.status = 400;
+                res.set_content("Invalid username", "text/plain");
+                return;
+            }
+        }
+    }
+
+    // pass to VR
+    VirtualRenderer renderer;
+    ui::Page page = renderer.handleClientMessage(client_message, user);
+
+    // send proto back in the res
+    std::string page_data_serialized;
+    if (!page.SerializeToString(&page_data_serialized)) {
+        std::cerr << "❌ Failed to serialize Page response\n";
+        res.status = 500;
+        res.set_content("Failed to serialize Page response", "text/plain");
+        return;
+    }
+    res.status = 200;
+    res.set_content(page_data_serialized, "application/x-protobuf");
+}
+
+// Helper to extract user from cookies
+std::string extractUserFromCookies(const httplib::Request& req) {
+    auto cookie_header = req.get_header_value("Cookie");
+    std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
+    
+    if (cookie_header.empty()) {
+        std::cout << "[Auth] No cookie found, returning 'guest'\n";
+        return "guest";
+    }
+
+    // Parse cookies looking for "user=<username>"
+    std::string prefix = "user=";
+    size_t pos = cookie_header.find(prefix);
+    if (pos == std::string::npos) {
+        std::cout << "[Auth] No 'user=' cookie found, returning 'guest'\n";
+        return "guest";
+    }
+
+    size_t start = pos + prefix.length();
+    size_t end = cookie_header.find(';', start);
+    std::string user = (end == std::string::npos) 
+        ? cookie_header.substr(start)
+        : cookie_header.substr(start, end - start);
+
+    std::cout << "[Auth] Extracted user from cookie: '" << user << "'\n";
+    return user;
+}

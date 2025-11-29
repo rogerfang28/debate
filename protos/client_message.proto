@@ -2,6 +2,14 @@ syntax = "proto3";
 
 package clientmessage;
 
+enum EventType {
+  UNKNOWN = 0;
+  NONE = 1;
+  CLICK = 2;
+  CHANGE = 3;
+  SUBMIT = 4;
+}
+
 // Simple message sent from client to server
 // Contains what was clicked + all component values on the page
 message ClientMessage {
