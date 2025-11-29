@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include "../database/databaseCommunicator.h"
+#include "../database/sqlite/databaseCommunicator.h"
 
 // ---------------------------------------
 // Class: DebateDatabaseHandler

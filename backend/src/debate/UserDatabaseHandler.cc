@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdint>  // for std::vector<uint8_t>
-#include "../database/databaseCommunicator.h"
+#include "../database/sqlite/databaseCommunicator.h"
 
 UserDatabaseHandler::UserDatabaseHandler(const std::string& dbFile)
     : dbFilename(dbFile) {

@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstdint>
 #include <iostream>
-#include "../database/databaseCommunicator.h"  // for openDB, insertRowWithText, etc.
+#include "../database/sqlite/databaseCommunicator.h"  // for openDB, insertRowWithText, etc.
 
 class UserDatabaseHandler {
 public:
