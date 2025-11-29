@@ -35,12 +35,12 @@ include_directories(
 set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/DebateModerator.cpp
-    ${CMAKE_SOURCE_DIR}/src/debate/DebateDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pageGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
-    ${CMAKE_SOURCE_DIR}/src/debate/UserDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/main/events/enterDebate.cc
     ${CMAKE_SOURCE_DIR}/src/debate/main/events/goHome.cc
 )

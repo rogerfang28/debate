@@ -1,5 +1,5 @@
 #include "enterDebate.h"
-#include "../../UserDatabaseHandler.h"
+#include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
