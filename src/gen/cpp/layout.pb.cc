@@ -413,15 +413,15 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005IN"
     "PUT\020\003\022\014\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH\020\005\022\010\n\004C"
     "HAT\020\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIST\020\t\022\t\n\005"
-    "TABLE\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014*L\n\nLay"
-    "outType\022\014\n\010ABSOLUTE\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010F"
-    "LEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "TABLE\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014*I\n\nLay"
+    "outType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX"
+    "_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1079,
+    1076,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,

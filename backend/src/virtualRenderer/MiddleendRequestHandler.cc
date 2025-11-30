@@ -2,12 +2,16 @@
 #include "MiddleendRequestHandler.h"
 
 #include "../../../src/gen/cpp/client_message.pb.h"
-#ifdef ABSOLUTE
-#undef ABSOLUTE
-#endif
+#include "../utils/pathUtils.h"
+#include <google/protobuf/text_format.h>
+#include <fstream>
+// #ifdef ABSOLUTE
+// #undef ABSOLUTE
+// #endif
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./virtualRenderer.h"
 #include <iostream>
+
 
 void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
     std::string user = extractUserFromCookies(req);
@@ -67,13 +71,19 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
                 // Set cookie and redirect by setting a special response
                 std::cout << "[Auth] Setting user cookie: " << username << "\n";
                 res.set_header("Set-Cookie", "user=" + username + "; Path=/; Max-Age=2592000; SameSite=Lax");
-                res.status = 200;
-                res.set_content("OK", "text/plain");
-                return;
             } else {
                 std::cerr << "[Auth] Invalid username: " << username << "\n";
-                res.status = 400;
-                res.set_content("Invalid username", "text/plain");
+                // return login page again
+                ui::Page loginPage = createLoginPage();
+                std::string loginPageSerialized;
+                if (!loginPage.SerializeToString(&loginPageSerialized)) {
+                    std::cerr << "[Auth] Failed to serialize login page\n";
+                    res.status = 500;
+                    res.set_content("Failed to serialize login page", "text/plain");
+                    return;
+                }
+                res.set_content(loginPageSerialized, "application/x-protobuf");
+                res.status = 200;
                 return;
             }
         }
@@ -85,7 +95,16 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
         std::cout << "[Auth] Signing out user: " << user << "\n";
         res.set_header("Set-Cookie", "user=guest; Path=/; Max-Age=0; SameSite=Lax");
         res.status = 200;
-        res.set_content("OK", "text/plain");
+        // create login page
+        ui::Page loginPage = createLoginPage();
+        std::string loginPageSerialized;
+        if (!loginPage.SerializeToString(&loginPageSerialized)) {
+            std::cerr << "[Auth] Failed to serialize login page\n";
+            res.status = 500;
+            res.set_content("Failed to serialize login page", "text/plain");
+            return;
+        }
+        res.set_content(loginPageSerialized, "application/x-protobuf");
         return;
     }
 
@@ -131,4 +150,34 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
 
     std::cout << "[Auth] Extracted user from cookie: '" << user << "'\n";
     return user;
+}
+
+ui::Page MiddleendRequestHandler::createLoginPage() {
+    // for now just extract from pages/schema/usernamePage.pbtxt
+    // -------- Get absolute path to pbtxt --------
+    std::filesystem::path exeDir = utils::getExeDir();
+
+    // Navigate relative to exe location (usually backend/build/bin/)
+    std::filesystem::path pbtxtPath =
+        exeDir / ".." / ".." / "src" / "virtualRenderer" / "pages" / "schemas" / "usernamePage.pbtxt";
+
+    pbtxtPath = std::filesystem::weakly_canonical(pbtxtPath);
+
+    std::cerr << "[PageGen] Loading sign-in page from " << pbtxtPath.u8string() << "\n";
+
+    std::ifstream input(pbtxtPath, std::ios::binary);
+    if (!input) {
+        std::cerr << "[PageGen][ERR] Couldn't open " << pbtxtPath.u8string() << "\n";
+        return {};
+    }
+
+    std::ostringstream buffer;
+    buffer << input.rdbuf();
+
+    ui::Page page;
+    if (!google::protobuf::TextFormat::ParseFromString(buffer.str(), &page)) {
+        std::cerr << "[PageGen][ERR] TextFormat parse failed for sign-in page\n";
+        return {};
+    }
+    return page;
 }

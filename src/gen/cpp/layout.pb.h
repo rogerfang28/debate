@@ -132,7 +132,7 @@ inline bool ComponentType_Parse(absl::string_view name, ComponentType* value) {
       ComponentType_descriptor(), name, value);
 }
 enum LayoutType : int {
-  ABSOLUTE = 0,
+  ABSLT = 0,
   FLEX_ROW = 1,
   FLEX_COL = 2,
   GRID = 3,

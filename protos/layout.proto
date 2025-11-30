@@ -81,7 +81,7 @@ message Style {
 // Layout, position, size
 // ======================
 enum LayoutType {
-  ABSOLUTE = 0;
+  ABSLT = 0;
   FLEX_ROW = 1;
   FLEX_COL = 2;
   GRID = 3;
