@@ -4,7 +4,7 @@
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
 
-bool EnterDebate(const std::string& user, const std::string& topicID) {
+bool EnterDebateHandler::EnterDebate(const std::string& topicID, const std::string& user) {
     // std::string newtopicID = "16"; // Temporary override for testing
     std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << topicID << std::endl;
 

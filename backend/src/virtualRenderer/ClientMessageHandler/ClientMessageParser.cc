@@ -1,3 +1,4 @@
+#include "ClientMessageParser.h"
 #include <string>
 #include <iostream>
 #include <chrono>
@@ -5,7 +6,7 @@
 #include "../../../../src/gen/cpp/client_message.pb.h"
 #include "../../../../src/gen/cpp/debate_event.pb.h"
 
-debate_event::DebateEvent parseMessage(const client_message::ClientMessage& message, const std::string& user) {
+debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const std::string& user) {
     debate_event::DebateEvent event;
 
     // check to see if there is nothing actually happening, like nothing clicked, it's basically no event

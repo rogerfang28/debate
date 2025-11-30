@@ -2,15 +2,19 @@
 #include "MiddleendRequestHandler.h"
 
 #include "../../../src/gen/cpp/client_message.pb.h"
+#ifdef ABSOLUTE
+#undef ABSOLUTE
+#endif
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./virtualRenderer.h"
+#include <iostream>
 
-std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
+void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
     std::string user = extractUserFromCookies(req);
 
     // Parse ClientMessage protobuf
-    client_message::ClientMessage client_message;
-    if (!client_message.ParseFromString(req.body)) {
+    client_message::ClientMessage msg;
+    if (!msg.ParseFromString(req.body)) {
       std::cerr << "❌ Failed to parse ClientMessage\n";
       res.status = 400;
       res.set_content("Failed to parse ClientMessage", "text/plain");
@@ -21,13 +25,13 @@ std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, 
     
     // Log the event info
     std::cout << "\n--- Event Info ---\n";
-    std::cout << "Component ID: " << client_message.component_id() << "\n";
-    std::cout << "Event Type: " << client_message.event_type() << "\n";
+    std::cout << "Component ID: " << msg.component_id() << "\n";
+    std::cout << "Event Type: " << msg.event_type() << "\n";
     std::cout << "User: " << user << "\n";
 
     // Log page data
-    if (client_message.has_page_data() && true) { // set to true to enable detailed logging
-      const auto& page_data = client_message.page_data();
+    if (msg.has_page_data() && true) { // set to true to enable detailed logging
+      const auto& page_data = msg.page_data();
       std::cout << "\n--- Page Data ---\n";
       std::cout << "Page ID: " << page_data.page_id() << "\n";
       std::cout << "Components count: " << page_data.components_size() << "\n";
@@ -42,9 +46,9 @@ std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, 
       std::cout << "!!! No page data included\n";
     }
 
-    const std::string& componentId = client_message.component_id();
-    const std::string& eventType = client_message.event_type();
-    const std::string& pageId = client_message.page_data().page_id();
+    const std::string& componentId = msg.component_id();
+    const std::string& eventType = msg.event_type();
+    const std::string& pageId = msg.page_data().page_id();
     
     // hard code the username part for now because idk how to do it properly
     if (pageId == "enter_username") {
@@ -52,7 +56,7 @@ std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, 
         if (componentId == "submitButton" && eventType == "onClick") {
             // Extract username from the page data
             std::string username;
-            for (const auto& comp : client_message.page_data().components()) {
+            for (const auto& comp : msg.page_data().components()) {
                 if (comp.id() == "usernameInput") {
                     username = comp.value();
                     break;
@@ -77,7 +81,7 @@ std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, 
 
     // pass to VR
     VirtualRenderer renderer;
-    ui::Page page = renderer.handleClientMessage(client_message, user);
+    ui::Page page = renderer.handleClientMessage(msg, user);
 
     // send proto back in the res
     std::string page_data_serialized;
@@ -92,7 +96,7 @@ std::string MiddleendRequestHandler::handleRequest(const httplib::Request& req, 
 }
 
 // Helper to extract user from cookies
-std::string extractUserFromCookies(const httplib::Request& req) {
+std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Request& req) {
     auto cookie_header = req.get_header_value("Cookie");
     std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
     

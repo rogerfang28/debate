@@ -21,7 +21,7 @@ DebateModerator::~DebateModerator() {
 }
 
 
-void handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
+void DebateModerator::handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
         case debate_event::NONE:
@@ -53,14 +53,14 @@ void handleDebateEvent(const std::string& user, debate_event::DebateEvent& event
     }
 }
 
-moderator_to_vr::ModeratorToVRMessage buildResponseMessage() {
+moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage() {
     moderator_to_vr::ModeratorToVRMessage responseMessage;
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     return responseMessage;
 }
 
-moderator_to_vr::ModeratorToVRMessage handleRequest(const std::string& user, debate_event::DebateEvent& event){
+moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::string& user, debate_event::DebateEvent& event){
     // Process the debate event and update the database accordingly
     std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
     // Example: handle adding a debate topic

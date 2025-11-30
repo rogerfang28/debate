@@ -6,11 +6,11 @@
 
 class MiddleendRequestHandler {
 public:
-    MiddleendRequestHandler();
-    ~MiddleendRequestHandler();
+    MiddleendRequestHandler() = default;
+    ~MiddleendRequestHandler() = default;
 
     // Handle POST request
-    std::string handleRequest(const httplib::Request& req, httplib::Response& res);
+    void handleRequest(const httplib::Request& req, httplib::Response& res);
 private:
     // Helper methods can be added here
     std::string extractUserFromCookies(const httplib::Request& req);

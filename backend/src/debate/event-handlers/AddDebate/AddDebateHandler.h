@@ -3,5 +3,5 @@
 
 class AddDebateHandler {
 public:
-    static void AddDebate(const std::string debate_topic, const std::string user_id);
+    static void AddDebate(const std::string& debate_topic, const std::string& user);
 };

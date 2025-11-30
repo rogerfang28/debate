@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "../../../../src/gen/cpp/moderator_to_vr.pb.h"
-#include "../../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/moderator_to_vr.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
 
 class LayoutGenerator {
 public:

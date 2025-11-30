@@ -68,3 +68,30 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // handler.handleEvent(evt, user);
     // res.status = 204;  // No Content
 }
+
+std::string VirtualRenderer::extractUserFromCookies(const httplib::Request& req) {
+    auto cookie_header = req.get_header_value("Cookie");
+    std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
+    
+    if (cookie_header.empty()) {
+        std::cout << "[Auth] No cookie found, returning 'guest'\n";
+        return "guest";
+    }
+
+    // Parse cookies looking for "user=<username>"
+    std::string prefix = "user=";
+    size_t pos = cookie_header.find(prefix);
+    if (pos == std::string::npos) {
+        std::cout << "[Auth] No 'user=' cookie found, returning 'guest'\n";
+        return "guest";
+    }
+
+    size_t start = pos + prefix.length();
+    size_t end = cookie_header.find(';', start);
+    std::string user = (end == std::string::npos) 
+        ? cookie_header.substr(start)
+        : cookie_header.substr(start, end - start);
+
+    std::cout << "[Auth] Extracted user from cookie: '" << user << "'\n";
+    return user;
+}

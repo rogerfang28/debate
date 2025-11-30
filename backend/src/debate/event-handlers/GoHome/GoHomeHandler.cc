@@ -4,7 +4,7 @@
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
 
-bool GoHome(const std::string& user) {
+bool GoHomeHandler::GoHome(const std::string& user) {
     std::cout << "[GoHome] User " << user << " going home" << std::endl;
     
     try {

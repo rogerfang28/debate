@@ -1,11 +1,11 @@
 
 #include "AddDebateHandler.h"
 #include <iostream>
-#include "../../../../src/gen/cpp/debate.pb.h"
+#include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 
-void AddDebate(const std::string& user, const std::string& debateTopic) {
+void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::string& user) {
     DebateDatabaseHandler dbHandler(utils::getDatabasePath());
 
     std::cout << "[AddDebateHandler] AddDebate called for user: "

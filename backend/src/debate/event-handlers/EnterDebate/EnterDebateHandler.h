@@ -4,5 +4,5 @@
 
 class EnterDebateHandler {
 public:
-    static bool EnterDebate(const std::string& user, const std::string& topic);
+    static bool EnterDebate(const std::string& topicID, const std::string& user);
 };
