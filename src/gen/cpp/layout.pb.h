@@ -232,7 +232,7 @@ class Style final : public ::google::protobuf::Message
     return reinterpret_cast<const Style*>(
         &_Style_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(Style& a, Style& b) { a.Swap(&b); }
   inline void Swap(Style* other) {
     if (other == this) return;
@@ -428,7 +428,7 @@ class Size final : public ::google::protobuf::Message
     return reinterpret_cast<const Size*>(
         &_Size_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(Size& a, Size& b) { a.Swap(&b); }
   inline void Swap(Size* other) {
     if (other == this) return;
@@ -642,7 +642,7 @@ class Position final : public ::google::protobuf::Message
     return reinterpret_cast<const Position*>(
         &_Position_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(Position& a, Position& b) { a.Swap(&b); }
   inline void Swap(Position* other) {
     if (other == this) return;
@@ -862,7 +862,7 @@ class ListItem final : public ::google::protobuf::Message
     return reinterpret_cast<const ListItem*>(
         &_ListItem_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(ListItem& a, ListItem& b) { a.Swap(&b); }
   inline void Swap(ListItem* other) {
     if (other == this) return;
@@ -1172,7 +1172,7 @@ class Component final : public ::google::protobuf::Message
     return reinterpret_cast<const Component*>(
         &_Component_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(Component& a, Component& b) { a.Swap(&b); }
   inline void Swap(Component* other) {
     if (other == this) return;
@@ -1862,6 +1862,154 @@ inline ::google::protobuf::RepeatedPtrField<::ui::Component>*
 Page::_internal_mutable_components() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.components_;
+}
+
+// -------------------------------------------------------------------
+
+// ListItem
+
+// string label = 1 [json_name = "label"];
+inline void ListItem::clear_label() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.label_.ClearToEmpty();
+}
+inline const std::string& ListItem::label() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.ListItem.label)
+  return _internal_label();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ListItem::set_label(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.label_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.ListItem.label)
+}
+inline std::string* ListItem::mutable_label() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_label();
+  // @@protoc_insertion_point(field_mutable:ui.ListItem.label)
+  return _s;
+}
+inline const std::string& ListItem::_internal_label() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.label_.Get();
+}
+inline void ListItem::_internal_set_label(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.label_.Set(value, GetArena());
+}
+inline std::string* ListItem::_internal_mutable_label() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.label_.Mutable( GetArena());
+}
+inline std::string* ListItem::release_label() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.ListItem.label)
+  return _impl_.label_.Release();
+}
+inline void ListItem::set_allocated_label(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.label_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.label_.IsDefault()) {
+    _impl_.label_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.label)
+}
+
+// string value = 2 [json_name = "value"];
+inline void ListItem::clear_value() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.value_.ClearToEmpty();
+}
+inline const std::string& ListItem::value() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.ListItem.value)
+  return _internal_value();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ListItem::set_value(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.ListItem.value)
+}
+inline std::string* ListItem::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_value();
+  // @@protoc_insertion_point(field_mutable:ui.ListItem.value)
+  return _s;
+}
+inline const std::string& ListItem::_internal_value() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.value_.Get();
+}
+inline void ListItem::_internal_set_value(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.value_.Set(value, GetArena());
+}
+inline std::string* ListItem::_internal_mutable_value() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.value_.Mutable( GetArena());
+}
+inline std::string* ListItem::release_value() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.ListItem.value)
+  return _impl_.value_.Release();
+}
+inline void ListItem::set_allocated_value(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.value_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.value_.IsDefault()) {
+    _impl_.value_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.value)
+}
+
+// string icon = 3 [json_name = "icon"];
+inline void ListItem::clear_icon() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icon_.ClearToEmpty();
+}
+inline const std::string& ListItem::icon() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.ListItem.icon)
+  return _internal_icon();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ListItem::set_icon(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icon_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.ListItem.icon)
+}
+inline std::string* ListItem::mutable_icon() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_icon();
+  // @@protoc_insertion_point(field_mutable:ui.ListItem.icon)
+  return _s;
+}
+inline const std::string& ListItem::_internal_icon() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.icon_.Get();
+}
+inline void ListItem::_internal_set_icon(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icon_.Set(value, GetArena());
+}
+inline std::string* ListItem::_internal_mutable_icon() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.icon_.Mutable( GetArena());
+}
+inline std::string* ListItem::release_icon() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.ListItem.icon)
+  return _impl_.icon_.Release();
+}
+inline void ListItem::set_allocated_icon(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icon_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.icon_.IsDefault()) {
+    _impl_.icon_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.icon)
 }
 
 // -------------------------------------------------------------------
@@ -2582,154 +2730,6 @@ inline void Size::set_allocated_height(std::string* value) {
     _impl_.height_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ui.Size.height)
-}
-
-// -------------------------------------------------------------------
-
-// ListItem
-
-// string label = 1 [json_name = "label"];
-inline void ListItem::clear_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.ClearToEmpty();
-}
-inline const std::string& ListItem::label() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.label)
-  return _internal_label();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_label(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.label)
-}
-inline std::string* ListItem::mutable_label() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_label();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.label)
-  return _s;
-}
-inline const std::string& ListItem::_internal_label() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.label_.Get();
-}
-inline void ListItem::_internal_set_label(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.label_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.label)
-  return _impl_.label_.Release();
-}
-inline void ListItem::set_allocated_label(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.label_.IsDefault()) {
-    _impl_.label_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.label)
-}
-
-// string value = 2 [json_name = "value"];
-inline void ListItem::clear_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.ClearToEmpty();
-}
-inline const std::string& ListItem::value() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.value)
-  return _internal_value();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_value(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.value)
-}
-inline std::string* ListItem::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.value)
-  return _s;
-}
-inline const std::string& ListItem::_internal_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.value_.Get();
-}
-inline void ListItem::_internal_set_value(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.value_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.value)
-  return _impl_.value_.Release();
-}
-inline void ListItem::set_allocated_value(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.value_.IsDefault()) {
-    _impl_.value_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.value)
-}
-
-// string icon = 3 [json_name = "icon"];
-inline void ListItem::clear_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.ClearToEmpty();
-}
-inline const std::string& ListItem::icon() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.icon)
-  return _internal_icon();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_icon(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.icon)
-}
-inline std::string* ListItem::mutable_icon() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_icon();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.icon)
-  return _s;
-}
-inline const std::string& ListItem::_internal_icon() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.icon_.Get();
-}
-inline void ListItem::_internal_set_icon(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.icon_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.icon)
-  return _impl_.icon_.Release();
-}
-inline void ListItem::set_allocated_icon(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.icon_.IsDefault()) {
-    _impl_.icon_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.icon)
 }
 
 #ifdef __GNUC__

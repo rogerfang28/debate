@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package debate_list;
+
+message DebateTopic {
+    string id = 1;
+    string topic = 2;
+}
+
+message DebateList {
+    repeated DebateTopic topics = 1;
+}

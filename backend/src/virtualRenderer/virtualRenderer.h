@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include "../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 
 // Forward declarations to avoid heavy includes
 namespace httplib {
@@ -28,7 +30,7 @@ public:
     // HTTP request handlers
     void handleGetRequest(const httplib::Request& req, httplib::Response& res);
     // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
-    void handleClientMessage(const httplib::Request& req, httplib::Response& res);
+    ui::Page handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user);
 
 private:
     // Helper to extract user from cookies (returns "guest" if not found)

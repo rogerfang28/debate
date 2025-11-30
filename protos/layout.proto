@@ -12,6 +12,16 @@ message Page {
 }
 
 // ======================
+// List items
+// ======================
+message ListItem {
+  string label = 1;
+  string value = 2;
+  string icon = 3; // Optional icon class for UI frameworks
+}
+
+
+// ======================
 // Component definition
 // ======================
 message Component {
@@ -89,11 +99,3 @@ message Size {
   string height = 2; // Tailwind height class or explicit value
 }
 
-// ======================
-// List items
-// ======================
-message ListItem {
-  string label = 1;
-  string value = 2;
-  string icon = 3; // Optional icon class for UI frameworks
-}

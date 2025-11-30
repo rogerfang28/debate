@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package clientmessage;
+package client_message;
 
 enum EventType {
   UNKNOWN = 0;

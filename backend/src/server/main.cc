@@ -4,6 +4,7 @@
 // these are not needed because they are in cmakelists
 
 #include "../virtualRenderer/virtualRenderer.h"  // Add this include
+#include "../virtualRenderer/MiddleendRequestHandler.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 
 #include "httplib.h"
@@ -22,6 +23,7 @@ static std::filesystem::path exe_dir() {
 int main() {
   httplib::Server svr;
   VirtualRenderer renderer;  // Create the renderer instance
+  MiddleendRequestHandler handler;
 
   // ---------- CORS middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
@@ -53,8 +55,9 @@ int main() {
   //   std::cout << "testAAAAAAAAAAAAAAAAA";
   // });
 
-  svr.Post("/clientmessage", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleClientMessage(req,res);
+  svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {
+    // renderer.handleClientMessage(req,res);
+    handler.handleRequest(req, res);
   });
 
   // ---------- Start server ----------
