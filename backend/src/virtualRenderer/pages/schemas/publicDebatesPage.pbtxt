@@ -138,7 +138,7 @@ components {
 
     children {
       id: "debateCard1"
-      type: CARD
+      type: CONTAINER
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
 
       children {
@@ -184,7 +184,7 @@ components {
 
     children {
       id: "debateCard2"
-      type: CARD
+      type: CONTAINER
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
 
       children {
@@ -230,7 +230,7 @@ components {
 
     children {
       id: "debateCard3"
-      type: CARD
+      type: CONTAINER
       style { custom_class: "bg-gray-800 border border-gray-700 hover:border-gray-600 rounded-lg overflow-hidden transition-all hover:transform hover:scale-105 cursor-pointer" }
 
       children {

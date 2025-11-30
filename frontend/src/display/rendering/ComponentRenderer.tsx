@@ -28,12 +28,12 @@ interface ComponentRendererProps {
 const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.TEXT]: TextComponent,
   [ComponentType.BUTTON]: ButtonComponent,
-  [ComponentType.IMAGE]: ImageComponent,
-  [ComponentType.LIST]: ListComponent,
+  // [ComponentType.IMAGE]: ImageComponent,
+  // [ComponentType.LIST]: ListComponent,
   [ComponentType.CONTAINER]: ContainerComponent,
-  [ComponentType.CARD]: CardComponent,
+  // [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
-  [ComponentType.GRAPH]: GraphComponent,
+  // [ComponentType.GRAPH]: GraphComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {

@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file layout.proto.
  */
 export const file_layout: GenFile = /*@__PURE__*/
-  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IjYKCExpc3RJdGVtEg0KBWxhYmVsGAEgASgJEg0KBXZhbHVlGAIgASgJEgwKBGljb24YAyABKAki8gIKCUNvbXBvbmVudBIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEh8KBHR5cGUYAyABKA4yES51aS5Db21wb25lbnRUeXBlEgwKBHRleHQYBCABKAkSHwoIY2hpbGRyZW4YBSADKAsyDS51aS5Db21wb25lbnQSGAoFc3R5bGUYBiABKAsyCS51aS5TdHlsZRIjCgNjc3MYCCADKAsyFi51aS5Db21wb25lbnQuQ3NzRW50cnkSMQoKYXR0cmlidXRlcxgHIAMoCzIdLnVpLkNvbXBvbmVudC5BdHRyaWJ1dGVzRW50cnkSDQoFdmFsdWUYCSABKAkSGwoFaXRlbXMYCiADKAsyDC51aS5MaXN0SXRlbRoqCghDc3NFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIh0KBVN0eWxlEhQKDGN1c3RvbV9jbGFzcxgNIAEoCSIuCghQb3NpdGlvbhIJCgF4GAEgASgCEgkKAXkYAiABKAISDAoEdW5pdBgDIAEoCSIlCgRTaXplEg0KBXdpZHRoGAEgASgJEg4KBmhlaWdodBgCIAEoCSqpAQoNQ29tcG9uZW50VHlwZRILCgdVTktOT1dOEAASCAoEVEVYVBABEgoKBkJVVFRPThACEgkKBUlOUFVUEAMSDAoIVEVYVEFSRUEQBBIOCgpOT0RFX0dSQVBIEAUSCAoEQ0hBVBAGEgkKBUlNQUdFEAcSCAoEQ0FSRBAIEggKBExJU1QQCRIJCgVUQUJMRRAKEgkKBU1PREFMEAsSDQoJQ09OVEFJTkVSEAwqSQoKTGF5b3V0VHlwZRIJCgVBQlNMVBAAEgwKCEZMRVhfUk9XEAESDAoIRkxFWF9DT0wQAhIICgRHUklEEAMSCgoGSU5MSU5FEARiBnByb3RvMw");
+  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IjYKCExpc3RJdGVtEg0KBWxhYmVsGAEgASgJEg0KBXZhbHVlGAIgASgJEgwKBGljb24YAyABKAki8gIKCUNvbXBvbmVudBIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEh8KBHR5cGUYAyABKA4yES51aS5Db21wb25lbnRUeXBlEgwKBHRleHQYBCABKAkSHwoIY2hpbGRyZW4YBSADKAsyDS51aS5Db21wb25lbnQSGAoFc3R5bGUYBiABKAsyCS51aS5TdHlsZRIjCgNjc3MYCCADKAsyFi51aS5Db21wb25lbnQuQ3NzRW50cnkSMQoKYXR0cmlidXRlcxgHIAMoCzIdLnVpLkNvbXBvbmVudC5BdHRyaWJ1dGVzRW50cnkSDQoFdmFsdWUYCSABKAkSGwoFaXRlbXMYCiADKAsyDC51aS5MaXN0SXRlbRoqCghDc3NFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIh0KBVN0eWxlEhQKDGN1c3RvbV9jbGFzcxgNIAEoCSIuCghQb3NpdGlvbhIJCgF4GAEgASgCEgkKAXkYAiABKAISDAoEdW5pdBgDIAEoCSIlCgRTaXplEg0KBXdpZHRoGAEgASgJEg4KBmhlaWdodBgCIAEoCSpMCg1Db21wb25lbnRUeXBlEgsKB1VOS05PV04QABIICgRURVhUEAESCgoGQlVUVE9OEAISCQoFSU5QVVQQAxINCglDT05UQUlORVIQDCpJCgpMYXlvdXRUeXBlEgkKBUFCU0xUEAASDAoIRkxFWF9ST1cQARIMCghGTEVYX0NPTBACEggKBEdSSUQQAxIKCgZJTkxJTkUQBGIGcHJvdG8z");
 
 /**
  * ======================
@@ -190,7 +190,7 @@ export type Style = Message<"ui.Style"> & {
    * string gap = 11;                     // Tailwind gap utility
    * bool scrollable = 12;                // Allow scroll if content overflows
    *
-   * Any extra Tailwind classes
+   * Any extra Tailwind classes FOR NOW WE ONLY USING THIS
    *
    * @generated from field: string custom_class = 13;
    */
@@ -290,46 +290,15 @@ export enum ComponentType {
   INPUT = 3,
 
   /**
-   * @generated from enum value: TEXTAREA = 4;
-   */
-  TEXTAREA = 4,
-
-  /**
-   * @generated from enum value: NODE_GRAPH = 5;
-   */
-  NODE_GRAPH = 5,
-
-  /**
-   * @generated from enum value: CHAT = 6;
-   */
-  CHAT = 6,
-
-  /**
-   * @generated from enum value: IMAGE = 7;
-   */
-  IMAGE = 7,
-
-  /**
-   * @generated from enum value: CARD = 8;
-   */
-  CARD = 8,
-
-  /**
-   * @generated from enum value: LIST = 9;
-   */
-  LIST = 9,
-
-  /**
-   * @generated from enum value: TABLE = 10;
-   */
-  TABLE = 10,
-
-  /**
-   * @generated from enum value: MODAL = 11;
-   */
-  MODAL = 11,
-
-  /**
+   * TEXTAREA = 4;
+   * NODE_GRAPH = 5;
+   * CHAT = 6;
+   * IMAGE = 7;
+   * CARD = 8;
+   * LIST = 9;
+   * TABLE = 10;
+   * MODAL = 11;
+   *
    * FORM = 13;
    * ICON = 14;
    *

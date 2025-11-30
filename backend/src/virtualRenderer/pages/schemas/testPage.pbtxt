@@ -59,7 +59,7 @@ components {
   # Topics display (frontend hydrates after backend response)
   children {
     id: "topicsCard"
-    type: CARD
+    type: CONTAINER
     style { custom_class: "w-full max-w-md bg-gray-800 rounded-lg shadow p-4" }
 
     children {

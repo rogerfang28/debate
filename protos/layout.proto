@@ -45,14 +45,14 @@ enum ComponentType {
   TEXT = 1;
   BUTTON = 2;
   INPUT = 3;
-  TEXTAREA = 4;
-  NODE_GRAPH = 5;
-  CHAT = 6;
-  IMAGE = 7;
-  CARD = 8;
-  LIST = 9;
-  TABLE = 10;
-  MODAL = 11;
+  // TEXTAREA = 4;
+  // NODE_GRAPH = 5;
+  // CHAT = 6;
+  // IMAGE = 7;
+  // CARD = 8;
+  // LIST = 9;
+  // TABLE = 10;
+  // MODAL = 11;
   CONTAINER = 12;
   // FORM = 13;
   // ICON = 14;
@@ -74,7 +74,7 @@ message Style {
   // string shadow = 10;                  // Tailwind shadow class
   // string gap = 11;                     // Tailwind gap utility
   // bool scrollable = 12;                // Allow scroll if content overflows
-  string custom_class = 13;            // Any extra Tailwind classes
+  string custom_class = 13;            // Any extra Tailwind classes FOR NOW WE ONLY USING THIS
 }
 
 // ======================

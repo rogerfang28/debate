@@ -45,10 +45,14 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EnterDebate/EnterDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoHome/GoHomeHandler.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/ComponentGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/ClientMessageParser.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pages/generators/homePage/HomePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pages/generators/loginPage/LoginPageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pages/generators/debatePage/DebateClaimPageGenerator.cc
     # ${CMAKE_SOURCE_DIR}/src/debate/main/events/enterDebate.cc
     # ${CMAKE_SOURCE_DIR}/src/debate/main/events/goHome.cc
 )

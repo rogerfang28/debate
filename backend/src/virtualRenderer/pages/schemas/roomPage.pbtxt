@@ -166,13 +166,13 @@ components {
     children {
       id: "membersList"
       type: CONTAINER
-      style { custom_class: "p-4" }
+      style { custom_class: "p-4 space-y-2" }
 
       children {
-        id: "onlineMembers"
-        type: LIST
-        style { custom_class: "space-y-2" }
-        items { label: "👤 Loading members..." value: "loading" }
+        id: "member1"
+        type: TEXT
+        text: "👤 Loading members..."
+        style { custom_class: "text-gray-300" }
       }
     }
 
@@ -248,17 +248,19 @@ components {
 
       children {
         id: "nodeText"
-        type: TEXTAREA
-        text: "Enter node text..."
+        type: INPUT
+        value: ""
         name: "text"
-        style { custom_class: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" }
+        style { custom_class: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
+        attributes { key: "placeholder" value: "Enter node text..." }
       }
       children {
         id: "nodeType"
         type: INPUT
-        text: "Node type (optional)"
+        value: ""
         name: "type"
         style { custom_class: "w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent" }
+        attributes { key: "placeholder" value: "Node type (optional)" }
       }
 
       children {

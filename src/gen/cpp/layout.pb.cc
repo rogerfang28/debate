@@ -409,19 +409,17 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "om_class\030\r \001(\tR\013customClass\":\n\010Position\022"
     "\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001("
     "\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005width\022\026\n"
-    "\006height\030\002 \001(\tR\006height*\251\001\n\rComponentType\022"
-    "\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005IN"
-    "PUT\020\003\022\014\n\010TEXTAREA\020\004\022\016\n\nNODE_GRAPH\020\005\022\010\n\004C"
-    "HAT\020\006\022\t\n\005IMAGE\020\007\022\010\n\004CARD\020\010\022\010\n\004LIST\020\t\022\t\n\005"
-    "TABLE\020\n\022\t\n\005MODAL\020\013\022\r\n\tCONTAINER\020\014*I\n\nLay"
-    "outType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX"
-    "_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\006height\030\002 \001(\tR\006height*L\n\rComponentType\022\013"
+    "\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INP"
+    "UT\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t\n\005ABS"
+    "LT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID"
+    "\020\003\022\n\n\006INLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1076,
+    982,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -440,9 +438,9 @@ const ::google::protobuf::EnumDescriptor* ComponentType_descriptor() {
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    851968u, 0u, };
+    262144u, 32u, 256u, };
 bool ComponentType_IsValid(int value) {
-  return 0 <= value && value <= 12;
+  return 0 <= value && value <= 12 && ((4111u >> value) & 1) != 0;
 }
 const ::google::protobuf::EnumDescriptor* LayoutType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);

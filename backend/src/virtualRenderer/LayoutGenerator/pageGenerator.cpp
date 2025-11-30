@@ -2,9 +2,10 @@
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
-#include "../database/handlers/DebateDatabaseHandler.h"
-#include "../utils/pathUtils.h"
-#include "../database/handlers/UserDatabaseHandler.h"
+#include "../../database/handlers/DebateDatabaseHandler.h"
+#include "../../utils/pathUtils.h"
+#include "../../database/handlers/UserDatabaseHandler.h"
+#include "../pages/generators/homePage/HomePageGenerator.h"
 
 #include <google/protobuf/text_format.h>
 #include <fstream>
@@ -98,81 +99,47 @@ std::string generatePage(const std::string& user) {
 }
 
 std::string generateHomePage(const std::string& user) {
-    // -------- Get absolute path to pbtxt --------
-    std::filesystem::path exeDir = utils::getExeDir();
+    // // -------- Find topicsList component --------
+    // ui::Component* topicsList = nullptr;
+    // if (page.components_size() > 0) {
+    //     auto* root = page.mutable_components(0);
+    //     for (auto& comp : *root->mutable_children()) {
+    //         if (comp.id() == "topicsCard") {
+    //             for (auto& child : *comp.mutable_children()) {
+    //                 if (child.id() == "topicsList") {
+    //                     topicsList = &child;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    // Navigate relative to exe location (usually backend/build/bin/)
-    std::filesystem::path pbtxtPath =
-        exeDir / ".." / ".." / "src" / "virtualRenderer" / "pages" / "schemas" / "testPage.pbtxt";
+    // if (!topicsList) {
+    //     std::cerr << "[PageGen][WARN] topicsList component not found in page schema\n";
+    // } else {
+    //     std::cerr << "[PageGen] Injecting " << debates.size()
+    //               << " debate topics into topicsList\n";
 
-    pbtxtPath = std::filesystem::weakly_canonical(pbtxtPath);
-
-    std::cerr << "[PageGen] Looking for pbtxt at " << pbtxtPath.u8string() << "\n";
-
-    std::ifstream input(pbtxtPath, std::ios::binary);
-    if (!input) {
-        std::cerr << "[PageGen][ERR] Couldn't open " << pbtxtPath.u8string() << "\n";
-        return {};
-    }
-
-    std::ostringstream buffer;
-    buffer << input.rdbuf();
-
-    ui::Page page;
-    if (!google::protobuf::TextFormat::ParseFromString(buffer.str(), &page)) {
-        std::cerr << "[PageGen][ERR] TextFormat parse failed\n";
-        return {};
-    }
-
-    // -------- Fetch debates for user --------
-    DebateDatabaseHandler dbHandler(utils::getDatabasePath());
-    auto debates = dbHandler.getDebates(user);
-
-    std::cerr << "[PageGen] getDebates(\"" << user << "\") returned "
-              << debates.size() << " items\n";
-    for (const auto& d : debates) {
-        std::cerr << "    id=" << d.at("ID") << " topic=\"" << d.at("TOPIC") << "\"\n";
-    }
-
-    // -------- Find topicsList component --------
-    ui::Component* topicsList = nullptr;
-    if (page.components_size() > 0) {
-        auto* root = page.mutable_components(0);
-        for (auto& comp : *root->mutable_children()) {
-            if (comp.id() == "topicsCard") {
-                for (auto& child : *comp.mutable_children()) {
-                    if (child.id() == "topicsList") {
-                        topicsList = &child;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    if (!topicsList) {
-        std::cerr << "[PageGen][WARN] topicsList component not found in page schema\n";
-    } else {
-        std::cerr << "[PageGen] Injecting " << debates.size()
-                  << " debate topics into topicsList\n";
-
-        // Change the component type to CONTAINER so we can add children
-        topicsList->set_type(ui::ComponentType::CONTAINER);
-        topicsList->clear_children();
+    //     // Change the component type to CONTAINER so we can add children
+    //     topicsList->set_type(ui::ComponentType::CONTAINER);
+    //     topicsList->clear_children();
         
-        for (const auto& row : debates) {
-            std::cerr << "[PageGen] Adding topic: " << row.at("TOPIC") << " with ID: " << row.at("ID") << std::endl;
+    //     for (const auto& row : debates) {
+    //         std::cerr << "[PageGen] Adding topic: " << row.at("TOPIC") << " with ID: " << row.at("ID") << std::endl;
             
-            // Create a button for each topic (clickable to enter debate)
-            auto* topicButton = topicsList->add_children();
-            topicButton->set_id("topicButton_" + row.at("ID"));
-            topicButton->set_type(ui::ComponentType::BUTTON);
-            topicButton->set_text(row.at("TOPIC"));
-            topicButton->mutable_style()->set_custom_class("w-full p-3 text-left bg-gray-700 hover:bg-gray-600 text-white rounded-lg border border-gray-600 transition");
-        }
+    //         // Create a button for each topic (clickable to enter debate)
+    //         auto* topicButton = topicsList->add_children();
+    //         topicButton->set_id("topicButton_" + row.at("ID"));
+    //         topicButton->set_type(ui::ComponentType::BUTTON);
+    //         topicButton->set_text(row.at("TOPIC"));
+    //         topicButton->mutable_style()->set_custom_class("w-full p-3 text-left bg-gray-700 hover:bg-gray-600 text-white rounded-lg border border-gray-600 transition");
+    //     }
         
-        std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;
-    }
+    //     std::cerr << "[PageGen] Successfully added " << debates.size() << " topic components" << std::endl;
+    // }
+
+    ui::Page page = HomePageGenerator::GenerateHomePage();
 
     // -------- Serialize final page --------
     std::string page_bin;
