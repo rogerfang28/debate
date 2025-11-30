@@ -44,19 +44,7 @@ int main() {
     return httplib::Server::HandlerResponse::Unhandled;
   });
 
-  // ---------- GET / ----------
-  svr.Get("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-    renderer.handleGetRequest(req, res);
-  });
-
-  // ---------- POST / ----------
-  // svr.Post("/", [&renderer](const httplib::Request& req, httplib::Response& res) {
-  //   // renderer.handlePostRequest(req, res);
-  //   std::cout << "testAAAAAAAAAAAAAAAAA";
-  // });
-
   svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {
-    // renderer.handleClientMessage(req,res);
     handler.handleRequest(req, res);
   });
 

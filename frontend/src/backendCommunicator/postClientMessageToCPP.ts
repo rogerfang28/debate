@@ -1,10 +1,11 @@
 // src/functions/postClientMessageToCPP.ts
-import { create, toBinary } from "@bufbuild/protobuf";
+import { create, toBinary, fromBinary } from "@bufbuild/protobuf";
 import {
   ClientMessageSchema,
   PageDataSchema,
   ComponentDataSchema,
 } from "../../../src/gen/ts/client_message_pb";
+import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
 export interface EventData {
   componentId?: string;
@@ -20,6 +21,7 @@ export interface EventData {
 /**
  * Send a ClientMessage protobuf to your C++ server (POST / on :8080).
  * Contains the event info + complete page state with all component values.
+ * Returns the Page protobuf response from the server.
  */
 export default async function postClientMessageToCPP(
   eventData: EventData,
@@ -27,7 +29,7 @@ export default async function postClientMessageToCPP(
     endpoint?: string;        // override target if needed
     withCredentials?: boolean // set true only if your C++ CORS allows credentials
   }
-): Promise<void> {
+): Promise<any> {
   try {
     console.log("🚀 postClientMessageToCPP received:", eventData);
     console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
@@ -87,19 +89,14 @@ export default async function postClientMessageToCPP(
 
     console.log("✅ ClientMessage posted to C++ server.");
     
-    // Check if this was a sign-in action that set a cookie
-    if (clientMessage.pageData?.pageId === "enter_username" && res.status === 200) {
-      console.log("🔐 Sign-in successful, reloading page...");
-      // Reload to get the authenticated page
-      window.location.reload();
-    }
+    // Decode the Page protobuf response
+    const arrayBuffer = await res.arrayBuffer();
+    const page_bytes = new Uint8Array(arrayBuffer);
+    const page = fromBinary(PageSchema, page_bytes);
     
-    // Check if this was a logout action
-    if (eventData.componentId === "logoutButton" && res.status === 200) {
-      console.log("🚪 Logout successful, reloading page...");
-      // Reload to show sign-in page
-      window.location.reload();
-    }
+    console.log("📄 Received Page:", page);
+    return page;
+    
   } catch (err) {
     console.error("❌ Error sending ClientMessage to C++ server:", err);
   }

@@ -28,7 +28,7 @@ public:
     std::string layoutGenerator(const std::string& user);
 
     // HTTP request handlers
-    void handleGetRequest(const httplib::Request& req, httplib::Response& res);
+    // void handleGetRequest(const httplib::Request& req, httplib::Response& res);
     // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
     ui::Page handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user);
 

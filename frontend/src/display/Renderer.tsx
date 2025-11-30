@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // @ts-ignore - PageRenderer not fully converted yet
 import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
+import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
 
 // TypeScript interfaces
 interface PageData {
@@ -24,7 +25,7 @@ const Renderer: React.FC = () => {
     try {
       setLoading(true); // show spinner
       // test();
-      const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+      const info: PageData | null = await postClientMessageToCPP({});//getPageFromBackend("/api/data");
       if (info) {
         setData(info);
       } else {
@@ -43,7 +44,7 @@ const Renderer: React.FC = () => {
     async function fetchData(): Promise<void> {
       try {
         setLoading(true);
-        const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+        const info: PageData | null = await postClientMessageToCPP({}); // initial empty event
         if (info) {
           setData(info);
           if (intervalId) clearInterval(intervalId); // stop retry loop

@@ -21,28 +21,6 @@ VirtualRenderer::~VirtualRenderer() {
     std::cout << "VirtualRenderer destroyed.\n"; // probably never called
 }
 
-// Handle GET requests
-void VirtualRenderer::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
-    std::string user = extractUserFromCookies(req);
-    std::cout << "[GET] User determined: '" << user << "'\n";
-    
-    // If no user cookie, show sign-in page
-    if (user == "guest") {
-        std::cout << "[GET] Serving sign-in page...\n";
-        std::string page_bin = generateSignInPage();
-        std::cout << "[GET] Sign-in page size: " << page_bin.size() << " bytes\n";
-        res.set_content(page_bin, "application/x-protobuf");
-        std::cout << "[GET] Served sign-in page (no user cookie)\n";
-        return;
-    }
-    
-    std::cout << "[GET] Serving authenticated page for user: " << user << "\n";
-    std::string page_bin = generatePage(user);
-    res.set_content(page_bin, "application/x-protobuf");
-    std::cout << "[GET] Served page for user=" << user
-            << " (" << page_bin.size() << " bytes)\n";
-}
-
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user) {
 
     // translate client_message into debate event
