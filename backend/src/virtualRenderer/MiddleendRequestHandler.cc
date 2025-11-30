@@ -79,6 +79,16 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
         }
     }
 
+    // logout handling
+    if (componentId == "logoutButton" && eventType == "onClick") {
+        // ============ SIGN-OUT ============
+        std::cout << "[Auth] Signing out user: " << user << "\n";
+        res.set_header("Set-Cookie", "user=guest; Path=/; Max-Age=0; SameSite=Lax");
+        res.status = 200;
+        res.set_content("OK", "text/plain");
+        return;
+    }
+
     // pass to VR
     VirtualRenderer renderer;
     ui::Page page = renderer.handleClientMessage(msg, user);

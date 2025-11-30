@@ -3,10 +3,10 @@
 #include "../../../src/gen/cpp/client_message.pb.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/debate_event.pb.h"
-#include "../debate/DebateModerator.h"
+#include "../debateModerator/DebateModerator.h"
 #include "./LayoutGenerator/pageGenerator.h"
 #include "./ClientMessageHandler/ClientMessageParser.h"
-// #include "./LayoutGenerator/LayoutGenerator.h"
+#include "./LayoutGenerator/LayoutGenerator.h"
 // #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
@@ -57,7 +57,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // backend.sendEvent(evt, info);
 
     // parse the info and create a page
-    ui::Page page;// = LayoutGenerator::generateLayout(info, user);
+    ui::Page page = LayoutGenerator::generateLayout(info, user);
 
     // send back the page to handler
     return page;
