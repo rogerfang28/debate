@@ -90,6 +90,8 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     }
 
     // logout handling
+    // std::cout << (componentId == "logoutButton" && eventType == "onClick") << "\n";
+    // std::cout << componentId << " " << eventType << "\n";
     if (componentId == "logoutButton" && eventType == "onClick") {
         // ============ SIGN-OUT ============
         std::cout << "[Auth] Signing out user: " << user << "\n";
@@ -105,6 +107,21 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
             return;
         }
         res.set_content(loginPageSerialized, "application/x-protobuf");
+        return;
+    }
+
+    if (user == "guest") {
+        // if still guest, return login page
+        ui::Page loginPage = createLoginPage();
+        std::string loginPageSerialized;
+        if (!loginPage.SerializeToString(&loginPageSerialized)) {
+            std::cerr << "[Auth] Failed to serialize login page\n";
+            res.status = 500;
+            res.set_content("Failed to serialize login page", "text/plain");
+            return;
+        }
+        res.set_content(loginPageSerialized, "application/x-protobuf");
+        res.status = 200;
         return;
     }
 

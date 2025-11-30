@@ -9,19 +9,6 @@ enum EngagementAction {
 }
 
 
-// enum DebateRole {
-//   DEBATE_ROLE_UNSPECIFIED = 0;
-//   DEBATE_ROLE_PROPONENT   = 1;  // "pro"
-//   DEBATE_ROLE_OPPONENT    = 2;  // "con"
-//   DEBATE_ROLE_AUDIENCE    = 3;  // spectator
-// }
-
-// enum DebateAction {
-//   DEBATE_ACTIVITY_UNSPECIFIED = 0;
-//   DEBATE_ACTIVITY_VIEWING_STATEMENT = 1;
-//   DEBATE_ACTIVITY_CREATING_STATEMENT = 2;
-// }
-
 // shows what the user is currently doing
 message UserEngagement {
   string user_id = 1; // I mean we probably won't need this but it may be useful for debugging
