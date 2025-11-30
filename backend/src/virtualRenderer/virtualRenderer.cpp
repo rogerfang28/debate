@@ -4,8 +4,9 @@
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/debate_event.pb.h"
 #include "../debate/DebateModerator.h"
-#include "./pageGenerator.h"
+#include "./LayoutGenerator/pageGenerator.h"
 #include "./ClientMessageHandler/ClientMessageParser.h"
+// #include "./LayoutGenerator/LayoutGenerator.h"
 // #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
@@ -57,16 +58,9 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
     // parse the info and create a page
     ui::Page page;// = LayoutGenerator::generateLayout(info, user);
-    // testing purposes temp fix
 
     // send back the page to handler
     return page;
-
-    // Pass translated Event to EventHandler 
-    // THIS IS THE OLD EVENT
-    // EventHandler handler;
-    // handler.handleEvent(evt, user);
-    // res.status = 204;  // No Content
 }
 
 std::string VirtualRenderer::extractUserFromCookies(const httplib::Request& req) {

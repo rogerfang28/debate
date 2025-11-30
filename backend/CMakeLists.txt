@@ -36,15 +36,15 @@ set(SRC_FILES
     # ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/DebateModerator.cpp
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/pageGenerator.cpp
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pageGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/MiddleendRequestHandler.cc # BREAKS
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/MiddleendRequestHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/event-handlers/AddDebate/AddDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/event-handlers/ClearDebates/ClearDebatesHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/event-handlers/DeleteDebate/DeleteDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/event-handlers/EnterDebate/EnterDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debate/event-handlers/GoHome/GoHomeHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/ClientMessageParser.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
