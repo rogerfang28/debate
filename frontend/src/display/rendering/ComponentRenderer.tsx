@@ -1,16 +1,16 @@
 import React from "react";
 // @ts-ignore - Generated protobuf file
-import { ComponentType } from "../../../../src/gen/js/layout_pb.js";
-import buildClassName, { ComponentStyle } from "./buildClassName.js";
+import { ComponentType } from "../../../../src/gen/ts/layout_pb.ts";
+import buildClassName, { ComponentStyle } from "./buildClassName.ts";
 
-import TextComponent from "./componentTypes/TextComponent.js";
-import ButtonComponent from "./componentTypes/ButtonComponent.js";
-import ImageComponent from "./componentTypes/ImageComponent.js";
-import ListComponent from "./componentTypes/ListComponent.js";
-import ContainerComponent from "./componentTypes/ContainerComponent.js";
-import CardComponent from "./componentTypes/CardComponent.js";
-import InputComponent from "./componentTypes/InputComponent.js";
-import GraphComponent from "./componentTypes/GraphComponent.js";
+import TextComponent from "./componentTypes/TextComponent.tsx";
+import ButtonComponent from "./componentTypes/ButtonComponent.tsx";
+import ImageComponent from "./componentTypes/ImageComponent.tsx";
+import ListComponent from "./componentTypes/ListComponent.tsx";
+import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
+import CardComponent from "./componentTypes/CardComponent.tsx";
+import InputComponent from "./componentTypes/InputComponent.tsx";
+import GraphComponent from "./componentTypes/GraphComponent.tsx";
 
 // TypeScript interfaces
 interface ComponentProps {

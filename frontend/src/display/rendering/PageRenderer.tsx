@@ -1,6 +1,6 @@
 import React from "react";
 import ComponentRenderer from "./ComponentRenderer";
-import type { Page, Component } from "../../../../src/gen/ts/layout_pb.js";
+import type { Page, Component } from "../../../../src/gen/ts/layout_pb.ts";
 
 interface PageRendererProps {
   page: Page;

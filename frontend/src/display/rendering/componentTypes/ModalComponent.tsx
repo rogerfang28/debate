@@ -1,5 +1,5 @@
 import React from "react";
-import ComponentRenderer from "../ComponentRenderer.js";
+import ComponentRenderer from "../ComponentRenderer.ts";
 import { BaseComponentProps } from "./TextComponent";
 
 const ModalComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {

@@ -1,5 +1,5 @@
 import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
-import getEntirePage from "../getEntirePage.js";
+import getEntirePage from "../getEntirePage.ts";
 
 // TypeScript interfaces
 interface ComponentProps {

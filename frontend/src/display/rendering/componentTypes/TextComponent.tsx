@@ -1,6 +1,6 @@
 import React from "react";
 // @ts-ignore - Generated protobuf file
-import { ComponentType } from "../../../../../src/gen/js/layout_pb.js";
+import { ComponentType } from "../../../../../src/gen/ts/layout_pb.ts";
 
 // Shared TypeScript interfaces for all components
 export interface ComponentProps {

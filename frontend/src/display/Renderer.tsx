@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // @ts-ignore - PageRenderer not fully converted yet
-import { PageRenderer } from "./rendering/PageRenderer.js";
+import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
 
 // TypeScript interfaces
