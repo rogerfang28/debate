@@ -3,6 +3,7 @@
 #include "../database/handlers/DebateDatabaseHandler.h"   // now use the new handler
 #include "../database/handlers/UserDatabaseHandler.h"
 #include "../../../src/gen/cpp/debate.pb.h"
+#include "../../../src/gen/cpp/user.pb.h"
 #include "../utils/pathUtils.h"
 #include <iostream>
 #include <vector>
@@ -54,12 +55,26 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
     }
 }
 
-moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage() {
+moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(const std::string& user) {
     moderator_to_vr::ModeratorToVRMessage responseMessage;
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
+    UserDatabaseHandler userDbHandler(utils::getDatabasePath());
+    user::User userProto;
     
+    if (!userDbHandler.userExists(user)) {
+        // user doesn't exist yet, make a default user
+        userProto.set_username(user);
+        userProto.set_state(user::NONE);
+        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
+        userProto.mutable_engagement()->mutable_none_info();
+        // add to database
+        // serialize and add
+        std::vector<uint8_t> userData(userProto.ByteSizeLong());
+        userProto.SerializeToArray(userData.data(), userData.size());
+        userDbHandler.addUser(user, userData);
+    }
 
     return responseMessage;
 }
@@ -69,6 +84,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::
     std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
     // Example: handle adding a debate topic
     handleDebateEvent(user, event);
-    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage();
+    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user);
     return res;
 }

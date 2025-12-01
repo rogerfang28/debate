@@ -10,6 +10,6 @@ import "debate_list.proto";
 message ModeratorToVRMessage {
     user_engagement.UserEngagement engagement = 1;
     debate.Debate debate = 2;
-    debate.DebateList debate_list = 3;
+    debate.DebateList users_debates = 3;
 }
 

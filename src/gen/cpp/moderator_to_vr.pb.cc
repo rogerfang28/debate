@@ -31,7 +31,7 @@ inline constexpr ModeratorToVRMessage::Impl_::Impl_(
       : _cached_size_{0},
         engagement_{nullptr},
         debate_{nullptr},
-        debate_list_{nullptr} {}
+        users_debates_{nullptr} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR ModeratorToVRMessage::ModeratorToVRMessage(::_pbi::ConstantInitialized)
@@ -70,7 +70,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.engagement_),
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.debate_),
-        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.debate_list_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.users_debates_),
         0,
         1,
         2,
@@ -87,12 +87,12 @@ const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUT
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
     "\032\014debate.proto\032\025user_engagement.proto\032\021d"
-    "ebate_list.proto\"\264\001\n\024ModeratorToVRMessag"
+    "ebate_list.proto\"\270\001\n\024ModeratorToVRMessag"
     "e\022\?\n\nengagement\030\001 \001(\0132\037.user_engagement."
     "UserEngagementR\nengagement\022&\n\006debate\030\002 \001"
-    "(\0132\016.debate.DebateR\006debate\0223\n\013debate_lis"
-    "t\030\003 \001(\0132\022.debate.DebateListR\ndebateListb"
-    "\006proto3"
+    "(\0132\016.debate.DebateR\006debate\0227\n\rusers_deba"
+    "tes\030\003 \001(\0132\022.debate.DebateListR\014usersDeba"
+    "tesb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[3] =
     {
@@ -104,7 +104,7 @@ static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    287,
+    291,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
@@ -138,9 +138,9 @@ void ModeratorToVRMessage::clear_debate() {
   if (_impl_.debate_ != nullptr) _impl_.debate_->Clear();
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
-void ModeratorToVRMessage::clear_debate_list() {
+void ModeratorToVRMessage::clear_users_debates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.debate_list_ != nullptr) _impl_.debate_list_->Clear();
+  if (_impl_.users_debates_ != nullptr) _impl_.users_debates_->Clear();
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
 ModeratorToVRMessage::ModeratorToVRMessage(::google::protobuf::Arena* arena)
@@ -178,8 +178,8 @@ ModeratorToVRMessage::ModeratorToVRMessage(
   _impl_.debate_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::debate::Debate>(
                               arena, *from._impl_.debate_)
                         : nullptr;
-  _impl_.debate_list_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(
-                              arena, *from._impl_.debate_list_)
+  _impl_.users_debates_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(
+                              arena, *from._impl_.users_debates_)
                         : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:moderator_to_vr.ModeratorToVRMessage)
@@ -194,9 +194,9 @@ inline void ModeratorToVRMessage::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, engagement_),
            0,
-           offsetof(Impl_, debate_list_) -
+           offsetof(Impl_, users_debates_) -
                offsetof(Impl_, engagement_) +
-               sizeof(Impl_::debate_list_));
+               sizeof(Impl_::users_debates_));
 }
 ModeratorToVRMessage::~ModeratorToVRMessage() {
   // @@protoc_insertion_point(destructor:moderator_to_vr.ModeratorToVRMessage)
@@ -208,7 +208,7 @@ inline void ModeratorToVRMessage::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   delete this_._impl_.engagement_;
   delete this_._impl_.debate_;
-  delete this_._impl_.debate_list_;
+  delete this_._impl_.users_debates_;
   this_._impl_.~Impl_();
 }
 
@@ -273,9 +273,9 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> ModeratorToVRMessage::_table_ = {
     // .debate.Debate debate = 2 [json_name = "debate"];
     {::_pbi::TcParser::FastMtS1,
      {18, 1, 1, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_)}},
-    // .debate.DebateList debate_list = 3 [json_name = "debateList"];
+    // .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
     {::_pbi::TcParser::FastMtS1,
-     {26, 2, 2, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_)}},
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.users_debates_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -285,8 +285,8 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> ModeratorToVRMessage::_table_ = {
     // .debate.Debate debate = 2 [json_name = "debate"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.DebateList debate_list = 3 [json_name = "debateList"];
-    {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_), _Internal::kHasBitsOffset + 2, 2,
+    // .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
+    {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.users_debates_), _Internal::kHasBitsOffset + 2, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
@@ -314,8 +314,8 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
       _impl_.debate_->Clear();
     }
     if (cached_has_bits & 0x00000004u) {
-      ABSL_DCHECK(_impl_.debate_list_ != nullptr);
-      _impl_.debate_list_->Clear();
+      ABSL_DCHECK(_impl_.users_debates_ != nullptr);
+      _impl_.users_debates_->Clear();
     }
   }
   _impl_._has_bits_.Clear();
@@ -352,10 +352,10 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
                 stream);
           }
 
-          // .debate.DebateList debate_list = 3 [json_name = "debateList"];
+          // .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
           if (cached_has_bits & 0x00000004u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                3, *this_._impl_.debate_list_, this_._impl_.debate_list_->GetCachedSize(), target,
+                3, *this_._impl_.users_debates_, this_._impl_.users_debates_->GetCachedSize(), target,
                 stream);
           }
 
@@ -395,10 +395,10 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_);
             }
-            // .debate.DebateList debate_list = 3 [json_name = "debateList"];
+            // .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
             if (cached_has_bits & 0x00000004u) {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_list_);
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.users_debates_);
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -435,12 +435,12 @@ void ModeratorToVRMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, co
       }
     }
     if (cached_has_bits & 0x00000004u) {
-      ABSL_DCHECK(from._impl_.debate_list_ != nullptr);
-      if (_this->_impl_.debate_list_ == nullptr) {
-        _this->_impl_.debate_list_ =
-            ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(arena, *from._impl_.debate_list_);
+      ABSL_DCHECK(from._impl_.users_debates_ != nullptr);
+      if (_this->_impl_.users_debates_ == nullptr) {
+        _this->_impl_.users_debates_ =
+            ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(arena, *from._impl_.users_debates_);
       } else {
-        _this->_impl_.debate_list_->MergeFrom(*from._impl_.debate_list_);
+        _this->_impl_.users_debates_->MergeFrom(*from._impl_.users_debates_);
       }
     }
   }
@@ -461,8 +461,8 @@ void ModeratorToVRMessage::InternalSwap(ModeratorToVRMessage* PROTOBUF_RESTRICT 
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_)
-      + sizeof(ModeratorToVRMessage::_impl_.debate_list_)
+      PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.users_debates_)
+      + sizeof(ModeratorToVRMessage::_impl_.users_debates_)
       - PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.engagement_)>(
           reinterpret_cast<char*>(&_impl_.engagement_),
           reinterpret_cast<char*>(&other->_impl_.engagement_));

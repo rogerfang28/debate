@@ -14,5 +14,5 @@ public:
     
 private:
     void handleDebateEvent(const std::string& user, debate_event::DebateEvent& event);
-    moderator_to_vr::ModeratorToVRMessage buildResponseMessage();
+    moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const std::string& user);
 };

@@ -13,7 +13,8 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     // for now call pagegenerator
     // std::string page_bin = generatePage(user);
     std::string page_bin = HomePageGenerator::GenerateHomePage().SerializeAsString();
-    page_bin = DebateClaimPageGenerator::GenerateDebatePage("e","f").SerializeAsString();
+    // page_bin = DebateClaimPageGenerator::GenerateDebatePage("e","f").SerializeAsString();
+    // page_bin = LoginPageGenerator::GenerateLoginPage().SerializeAsString();
     ui::Page page;
     page.ParseFromString(page_bin);
     return page;

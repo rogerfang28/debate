@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKUAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USMwoKZW5nYWdlbWVudBgBIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIeCgZkZWJhdGUYAiABKAsyDi5kZWJhdGUuRGViYXRlEicKC2RlYmF0ZV9saXN0GAMgASgLMhIuZGViYXRlLkRlYmF0ZUxpc3RiBnByb3RvMw", [file_debate, file_user_engagement, file_debate_list]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKWAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USMwoKZW5nYWdlbWVudBgBIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIeCgZkZWJhdGUYAiABKAsyDi5kZWJhdGUuRGViYXRlEikKDXVzZXJzX2RlYmF0ZXMYAyABKAsyEi5kZWJhdGUuRGViYXRlTGlzdGIGcHJvdG8z", [file_debate, file_user_engagement, file_debate_list]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -35,9 +35,9 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
   debate?: Debate;
 
   /**
-   * @generated from field: debate.DebateList debate_list = 3;
+   * @generated from field: debate.DebateList users_debates = 3;
    */
-  debateList?: DebateList;
+  usersDebates?: DebateList;
 };
 
 /**

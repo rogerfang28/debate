@@ -4,7 +4,6 @@
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/debate_event.pb.h"
 #include "../debateModerator/DebateModerator.h"
-#include "./LayoutGenerator/pageGenerator.h"
 #include "./ClientMessageHandler/ClientMessageParser.h"
 #include "./LayoutGenerator/LayoutGenerator.h"
 // #include "../debate/main/EventHandler.h"
