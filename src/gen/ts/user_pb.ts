@@ -4,13 +4,15 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { UserEngagement } from "./user_engagement_pb";
+import { file_user_engagement } from "./user_engagement_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIlEKBFVzZXISEAoIdXNlcm5hbWUYASABKAkSHgoFc3RhdGUYAiABKA4yDy51c2VyLlVzZXJTdGF0ZRIXCg9kZWJhdGVfdG9waWNfaWQYAyABKAkqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z");
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIoYBCgRVc2VyEhAKCHVzZXJuYW1lGAEgASgJEh4KBXN0YXRlGAIgASgOMg8udXNlci5Vc2VyU3RhdGUSFwoPZGViYXRlX3RvcGljX2lkGAMgASgJEjMKCmVuZ2FnZW1lbnQYBCABKAsyHy51c2VyX2VuZ2FnZW1lbnQuVXNlckVuZ2FnZW1lbnQqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z", [file_user_engagement]);
 
 /**
  * @generated from message user.User
@@ -36,6 +38,13 @@ export type User = Message<"user.User"> & {
    * @generated from field: string debate_topic_id = 3;
    */
   debateTopicId: string;
+
+  /**
+   * current user state
+   *
+   * @generated from field: user_engagement.UserEngagement engagement = 4;
+   */
+  engagement?: UserEngagement;
 };
 
 /**

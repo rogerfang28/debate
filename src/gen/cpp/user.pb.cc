@@ -28,14 +28,15 @@ namespace user {
 
 inline constexpr User::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : username_(
+      : _cached_size_{0},
+        username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         debate_topic_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        state_{static_cast< ::user::UserState >(0)},
-        _cached_size_{0} {}
+        engagement_{nullptr},
+        state_{static_cast< ::user::UserState >(0)} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR User::User(::_pbi::ConstantInitialized)
@@ -63,7 +64,7 @@ static constexpr const ::_pb::ServiceDescriptor**
 const ::uint32_t
     TableStruct_user_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::user::User, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -74,34 +75,45 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.state_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.debate_topic_id_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.engagement_),
+        ~0u,
+        ~0u,
+        ~0u,
+        0,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::user::User)},
+        {0, 12, -1, sizeof(::user::User)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user::_User_default_instance_._instance,
 };
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\nuser.proto\022\004user\"q\n\004User\022\032\n\010username\030\001"
-    " \001(\tR\010username\022%\n\005state\030\002 \001(\0162\017.user.Use"
-    "rStateR\005state\022&\n\017debate_topic_id\030\003 \001(\tR\r"
-    "debateTopicId*\?\n\tUserState\022\032\n\026USER_STATE"
-    "_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEBATING\020\002b\006"
-    "proto3"
+    "\n\nuser.proto\022\004user\032\025user_engagement.prot"
+    "o\"\262\001\n\004User\022\032\n\010username\030\001 \001(\tR\010username\022%"
+    "\n\005state\030\002 \001(\0162\017.user.UserStateR\005state\022&\n"
+    "\017debate_topic_id\030\003 \001(\tR\rdebateTopicId\022\?\n"
+    "\nengagement\030\004 \001(\0132\037.user_engagement.User"
+    "EngagementR\nengagement*\?\n\tUserState\022\032\n\026U"
+    "SER_STATE_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEB"
+    "ATING\020\002b\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_user_2eproto_deps[1] =
+    {
+        &::descriptor_table_user_5fengagement_2eproto,
 };
 static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    206,
+    295,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
-    nullptr,
-    0,
+    descriptor_table_user_2eproto_deps,
+    1,
     1,
     schemas,
     file_default_instances,
@@ -123,8 +135,17 @@ bool UserState_IsValid(int value) {
 
 class User::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<User>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_);
 };
 
+void User::clear_engagement() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.engagement_ != nullptr) _impl_.engagement_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
 User::User(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
@@ -137,9 +158,10 @@ User::User(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::user::User& from_msg)
-      : username_(arena, from.username_),
-        debate_topic_id_(arena, from.debate_topic_id_),
-        _cached_size_{0} {}
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        username_(arena, from.username_),
+        debate_topic_id_(arena, from.debate_topic_id_) {}
 
 User::User(
     ::google::protobuf::Arena* arena,
@@ -154,6 +176,10 @@ User::User(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(
+                              arena, *from._impl_.engagement_)
+                        : nullptr;
   _impl_.state_ = from._impl_.state_;
 
   // @@protoc_insertion_point(copy_constructor:user.User)
@@ -161,13 +187,18 @@ User::User(
 inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : username_(arena),
-        debate_topic_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0},
+        username_(arena),
+        debate_topic_id_(arena) {}
 
 inline void User::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.state_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, engagement_),
+           0,
+           offsetof(Impl_, state_) -
+               offsetof(Impl_, engagement_) +
+               sizeof(Impl_::state_));
 }
 User::~User() {
   // @@protoc_insertion_point(destructor:user.User)
@@ -179,6 +210,7 @@ inline void User::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.username_.Destroy();
   this_._impl_.debate_topic_id_.Destroy();
+  delete this_._impl_.engagement_;
   this_._impl_.~Impl_();
 }
 
@@ -218,17 +250,17 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 41, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 1, 41, 2> User::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    4,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -236,7 +268,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 41, 2> User::_table_ = {
     ::_pbi::TcParser::GetTable<::user::User>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+    {::_pbi::TcParser::FastMtS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)}},
     // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
@@ -250,17 +284,20 @@ const ::_pbi::TcParseTable<2, 3, 0, 41, 2> User::_table_ = {
     65535, 65535
   }}, {{
     // string username = 1 [json_name = "username"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // .user.UserState state = 2 [json_name = "state"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.state_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.state_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
     // string debate_topic_id = 3 [json_name = "debateTopicId"];
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_id_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.debate_topic_id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
+    // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
+  }}, {{
     "\11\10\0\17\0\0\0\0"
     "user.User"
     "username"
@@ -277,7 +314,13 @@ PROTOBUF_NOINLINE void User::Clear() {
 
   _impl_.username_.ClearToEmpty();
   _impl_.debate_topic_id_.ClearToEmpty();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.engagement_ != nullptr);
+    _impl_.engagement_->Clear();
+  }
   _impl_.state_ = 0;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -319,6 +362,14 @@ PROTOBUF_NOINLINE void User::Clear() {
             target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                4, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
+                stream);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -354,6 +405,16 @@ PROTOBUF_NOINLINE void User::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_debate_topic_id());
             }
+          }
+           {
+            // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
+            }
+          }
+           {
             // .user.UserState state = 2 [json_name = "state"];
             if (this_._internal_state() != 0) {
               total_size += 1 +
@@ -367,6 +428,7 @@ PROTOBUF_NOINLINE void User::Clear() {
 void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<User*>(&to_msg);
   auto& from = static_cast<const User&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:user.User)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -378,9 +440,20 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   if (!from._internal_debate_topic_id().empty()) {
     _this->_internal_set_debate_topic_id(from._internal_debate_topic_id());
   }
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.engagement_ != nullptr);
+    if (_this->_impl_.engagement_ == nullptr) {
+      _this->_impl_.engagement_ =
+          ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(arena, *from._impl_.engagement_);
+    } else {
+      _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
+    }
+  }
   if (from._internal_state() != 0) {
     _this->_impl_.state_ = from._impl_.state_;
   }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -397,9 +470,15 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_id_, &other->_impl_.debate_topic_id_, arena);
-  swap(_impl_.state_, other->_impl_.state_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(User, _impl_.state_)
+      + sizeof(User::_impl_.state_)
+      - PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)>(
+          reinterpret_cast<char*>(&_impl_.engagement_),
+          reinterpret_cast<char*>(&other->_impl_.engagement_));
 }
 
 ::google::protobuf::Metadata User::GetMetadata() const {

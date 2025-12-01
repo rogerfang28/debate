@@ -30,6 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
+#include "user_engagement.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -251,6 +252,7 @@ class User final : public ::google::protobuf::Message
   enum : int {
     kUsernameFieldNumber = 1,
     kDebateTopicIdFieldNumber = 3,
+    kEngagementFieldNumber = 4,
     kStateFieldNumber = 2,
   };
   // string username = 1 [json_name = "username"];
@@ -285,6 +287,21 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_debate_topic_id();
 
   public:
+  // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+  bool has_engagement() const;
+  void clear_engagement() ;
+  const ::user_engagement::UserEngagement& engagement() const;
+  PROTOBUF_NODISCARD ::user_engagement::UserEngagement* release_engagement();
+  ::user_engagement::UserEngagement* mutable_engagement();
+  void set_allocated_engagement(::user_engagement::UserEngagement* value);
+  void unsafe_arena_set_allocated_engagement(::user_engagement::UserEngagement* value);
+  ::user_engagement::UserEngagement* unsafe_arena_release_engagement();
+
+  private:
+  const ::user_engagement::UserEngagement& _internal_engagement() const;
+  ::user_engagement::UserEngagement* _internal_mutable_engagement();
+
+  public:
   // .user.UserState state = 2 [json_name = "state"];
   void clear_state() ;
   ::user::UserState state() const;
@@ -300,7 +317,7 @@ class User final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 1,
       41, 2>
       _table_;
 
@@ -318,10 +335,12 @@ class User final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const User& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr username_;
     ::google::protobuf::internal::ArenaStringPtr debate_topic_id_;
+    ::user_engagement::UserEngagement* engagement_;
     int state_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -460,6 +479,97 @@ inline void User::set_allocated_debate_topic_id(std::string* value) {
     _impl_.debate_topic_id_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user.User.debate_topic_id)
+}
+
+// .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+inline bool User::has_engagement() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
+  return value;
+}
+inline const ::user_engagement::UserEngagement& User::_internal_engagement() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::user_engagement::UserEngagement* p = _impl_.engagement_;
+  return p != nullptr ? *p : reinterpret_cast<const ::user_engagement::UserEngagement&>(::user_engagement::_UserEngagement_default_instance_);
+}
+inline const ::user_engagement::UserEngagement& User::engagement() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.engagement)
+  return _internal_engagement();
+}
+inline void User::unsafe_arena_set_allocated_engagement(::user_engagement::UserEngagement* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.engagement_);
+  }
+  _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.engagement)
+}
+inline ::user_engagement::UserEngagement* User::release_engagement() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::user_engagement::UserEngagement* released = _impl_.engagement_;
+  _impl_.engagement_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::user_engagement::UserEngagement* User::unsafe_arena_release_engagement() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.engagement)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::user_engagement::UserEngagement* temp = _impl_.engagement_;
+  _impl_.engagement_ = nullptr;
+  return temp;
+}
+inline ::user_engagement::UserEngagement* User::_internal_mutable_engagement() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.engagement_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::user_engagement::UserEngagement>(GetArena());
+    _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(p);
+  }
+  return _impl_.engagement_;
+}
+inline ::user_engagement::UserEngagement* User::mutable_engagement() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::user_engagement::UserEngagement* _msg = _internal_mutable_engagement();
+  // @@protoc_insertion_point(field_mutable:user.User.engagement)
+  return _msg;
+}
+inline void User::set_allocated_engagement(::user_engagement::UserEngagement* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.engagement_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
+  // @@protoc_insertion_point(field_set_allocated:user.User.engagement)
 }
 
 #ifdef __GNUC__

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package debate;
 
+import "debate_settings.proto";
+
 // A single claim node in the debate graph
 message Claim {
   // The main sentence or statement of the claim
@@ -19,9 +21,9 @@ message Claim {
 
 // Represents a single debate, which contains a topic and a claim graph
 message Debate {
-  // The debate topic
   string topic = 1;
-
-  // A list of all claims belonging to this debate (the graph)
-  repeated Claim claims = 2;
+  repeated string debators = 2; // user id of participants
+  repeated Claim claims = 3; // claims under topic in the debate
+  string owner = 4; // user id of debate creator
+  debate.DebateSettings settings = 5; // settings for this debate
 }

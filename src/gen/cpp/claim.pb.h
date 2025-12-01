@@ -216,7 +216,7 @@ class Claim final : public ::google::protobuf::Message
   enum : int {
     kChildrenFieldNumber = 5,
     kIdFieldNumber = 1,
-    kTitleFieldNumber = 2,
+    kStatementFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kParentIdFieldNumber = 4,
   };
@@ -253,20 +253,20 @@ class Claim final : public ::google::protobuf::Message
   std::string* _internal_mutable_id();
 
   public:
-  // string title = 2 [json_name = "title"];
-  void clear_title() ;
-  const std::string& title() const;
+  // string statement = 2 [json_name = "statement"];
+  void clear_statement() ;
+  const std::string& statement() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_title(Arg_&& arg, Args_... args);
-  std::string* mutable_title();
-  PROTOBUF_NODISCARD std::string* release_title();
-  void set_allocated_title(std::string* value);
+  void set_statement(Arg_&& arg, Args_... args);
+  std::string* mutable_statement();
+  PROTOBUF_NODISCARD std::string* release_statement();
+  void set_allocated_statement(std::string* value);
 
   private:
-  const std::string& _internal_title() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_title(
+  const std::string& _internal_statement() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_statement(
       const std::string& value);
-  std::string* _internal_mutable_title();
+  std::string* _internal_mutable_statement();
 
   public:
   // string description = 3 [json_name = "description"];
@@ -307,7 +307,7 @@ class Claim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       3, 5, 1,
-      47, 2>
+      51, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -326,7 +326,7 @@ class Claim final : public ::google::protobuf::Message
                           const Claim& from_msg);
     ::google::protobuf::RepeatedPtrField< ::claim::Claim > children_;
     ::google::protobuf::internal::ArenaStringPtr id_;
-    ::google::protobuf::internal::ArenaStringPtr title_;
+    ::google::protobuf::internal::ArenaStringPtr statement_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr parent_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
@@ -400,52 +400,52 @@ inline void Claim::set_allocated_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:claim.Claim.id)
 }
 
-// string title = 2 [json_name = "title"];
-inline void Claim::clear_title() {
+// string statement = 2 [json_name = "statement"];
+inline void Claim::clear_statement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.title_.ClearToEmpty();
+  _impl_.statement_.ClearToEmpty();
 }
-inline const std::string& Claim::title() const
+inline const std::string& Claim::statement() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:claim.Claim.title)
-  return _internal_title();
+  // @@protoc_insertion_point(field_get:claim.Claim.statement)
+  return _internal_statement();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Claim::set_title(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Claim::set_statement(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.title_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:claim.Claim.title)
+  _impl_.statement_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:claim.Claim.statement)
 }
-inline std::string* Claim::mutable_title() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_title();
-  // @@protoc_insertion_point(field_mutable:claim.Claim.title)
+inline std::string* Claim::mutable_statement() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_statement();
+  // @@protoc_insertion_point(field_mutable:claim.Claim.statement)
   return _s;
 }
-inline const std::string& Claim::_internal_title() const {
+inline const std::string& Claim::_internal_statement() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.title_.Get();
+  return _impl_.statement_.Get();
 }
-inline void Claim::_internal_set_title(const std::string& value) {
+inline void Claim::_internal_set_statement(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.title_.Set(value, GetArena());
+  _impl_.statement_.Set(value, GetArena());
 }
-inline std::string* Claim::_internal_mutable_title() {
+inline std::string* Claim::_internal_mutable_statement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.title_.Mutable( GetArena());
+  return _impl_.statement_.Mutable( GetArena());
 }
-inline std::string* Claim::release_title() {
+inline std::string* Claim::release_statement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:claim.Claim.title)
-  return _impl_.title_.Release();
+  // @@protoc_insertion_point(field_release:claim.Claim.statement)
+  return _impl_.statement_.Release();
 }
-inline void Claim::set_allocated_title(std::string* value) {
+inline void Claim::set_allocated_statement(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.title_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.title_.IsDefault()) {
-    _impl_.title_.Set("", GetArena());
+  _impl_.statement_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.statement_.IsDefault()) {
+    _impl_.statement_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:claim.Claim.title)
+  // @@protoc_insertion_point(field_set_allocated:claim.Claim.statement)
 }
 
 // string description = 3 [json_name = "description"];

@@ -32,7 +32,7 @@ inline constexpr Claim::Impl_::Impl_(
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        title_(
+        statement_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         description_(
@@ -79,7 +79,7 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.id_),
-        PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.title_),
+        PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.statement_),
         PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.description_),
         PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.parent_id_),
         PROTOBUF_FIELD_OFFSET(::claim::Claim, _impl_.children_),
@@ -94,17 +94,17 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_claim_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\013claim.proto\022\005claim\"\226\001\n\005Claim\022\016\n\002id\030\001 \001"
-    "(\tR\002id\022\024\n\005title\030\002 \001(\tR\005title\022 \n\013descript"
-    "ion\030\003 \001(\tR\013description\022\033\n\tparent_id\030\004 \001("
-    "\tR\010parentId\022(\n\010children\030\005 \003(\0132\014.claim.Cl"
-    "aimR\010childrenb\006proto3"
+    "\n\013claim.proto\022\005claim\"\236\001\n\005Claim\022\016\n\002id\030\001 \001"
+    "(\tR\002id\022\034\n\tstatement\030\002 \001(\tR\tstatement\022 \n\013"
+    "description\030\003 \001(\tR\013description\022\033\n\tparent"
+    "_id\030\004 \001(\tR\010parentId\022(\n\010children\030\005 \003(\0132\014."
+    "claim.ClaimR\010childrenb\006proto3"
 };
 static ::absl::once_flag descriptor_table_claim_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_claim_2eproto = {
     false,
     false,
-    181,
+    189,
     descriptor_table_protodef_claim_2eproto,
     "claim.proto",
     &descriptor_table_claim_2eproto_once,
@@ -138,7 +138,7 @@ inline PROTOBUF_NDEBUG_INLINE Claim::Impl_::Impl_(
     const Impl_& from, const ::claim::Claim& from_msg)
       : children_{visibility, arena, from.children_},
         id_(arena, from.id_),
-        title_(arena, from.title_),
+        statement_(arena, from.statement_),
         description_(arena, from.description_),
         parent_id_(arena, from.parent_id_),
         _cached_size_{0} {}
@@ -164,7 +164,7 @@ inline PROTOBUF_NDEBUG_INLINE Claim::Impl_::Impl_(
     ::google::protobuf::Arena* arena)
       : children_{visibility, arena},
         id_(arena),
-        title_(arena),
+        statement_(arena),
         description_(arena),
         parent_id_(arena),
         _cached_size_{0} {}
@@ -181,7 +181,7 @@ inline void Claim::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.id_.Destroy();
-  this_._impl_.title_.Destroy();
+  this_._impl_.statement_.Destroy();
   this_._impl_.description_.Destroy();
   this_._impl_.parent_id_.Destroy();
   this_._impl_.~Impl_();
@@ -235,7 +235,7 @@ const ::google::protobuf::internal::ClassData* Claim::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 1, 47, 2> Claim::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 1, 51, 2> Claim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -257,9 +257,9 @@ const ::_pbi::TcParseTable<3, 5, 1, 47, 2> Claim::_table_ = {
     // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Claim, _impl_.id_)}},
-    // string title = 2 [json_name = "title"];
+    // string statement = 2 [json_name = "statement"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Claim, _impl_.title_)}},
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Claim, _impl_.statement_)}},
     // string description = 3 [json_name = "description"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Claim, _impl_.description_)}},
@@ -277,8 +277,8 @@ const ::_pbi::TcParseTable<3, 5, 1, 47, 2> Claim::_table_ = {
     // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(Claim, _impl_.id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string title = 2 [json_name = "title"];
-    {PROTOBUF_FIELD_OFFSET(Claim, _impl_.title_), 0, 0,
+    // string statement = 2 [json_name = "statement"];
+    {PROTOBUF_FIELD_OFFSET(Claim, _impl_.statement_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string description = 3 [json_name = "description"];
     {PROTOBUF_FIELD_OFFSET(Claim, _impl_.description_), 0, 0,
@@ -292,10 +292,10 @@ const ::_pbi::TcParseTable<3, 5, 1, 47, 2> Claim::_table_ = {
   }}, {{
     {::_pbi::TcParser::GetTable<::claim::Claim>()},
   }}, {{
-    "\13\2\5\13\11\0\0\0"
+    "\13\2\11\13\11\0\0\0"
     "claim.Claim"
     "id"
-    "title"
+    "statement"
     "description"
     "parent_id"
   }},
@@ -310,7 +310,7 @@ PROTOBUF_NOINLINE void Claim::Clear() {
 
   _impl_.children_.Clear();
   _impl_.id_.ClearToEmpty();
-  _impl_.title_.ClearToEmpty();
+  _impl_.statement_.ClearToEmpty();
   _impl_.description_.ClearToEmpty();
   _impl_.parent_id_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -339,11 +339,11 @@ PROTOBUF_NOINLINE void Claim::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string title = 2 [json_name = "title"];
-          if (!this_._internal_title().empty()) {
-            const std::string& _s = this_._internal_title();
+          // string statement = 2 [json_name = "statement"];
+          if (!this_._internal_statement().empty()) {
+            const std::string& _s = this_._internal_statement();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "claim.Claim.title");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "claim.Claim.statement");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -413,10 +413,10 @@ PROTOBUF_NOINLINE void Claim::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-            // string title = 2 [json_name = "title"];
-            if (!this_._internal_title().empty()) {
+            // string statement = 2 [json_name = "statement"];
+            if (!this_._internal_statement().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_title());
+                                              this_._internal_statement());
             }
             // string description = 3 [json_name = "description"];
             if (!this_._internal_description().empty()) {
@@ -446,8 +446,8 @@ void Claim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
-  if (!from._internal_title().empty()) {
-    _this->_internal_set_title(from._internal_title());
+  if (!from._internal_statement().empty()) {
+    _this->_internal_set_statement(from._internal_statement());
   }
   if (!from._internal_description().empty()) {
     _this->_internal_set_description(from._internal_description());
@@ -473,7 +473,7 @@ void Claim::InternalSwap(Claim* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.children_.InternalSwap(&other->_impl_.children_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.statement_, &other->_impl_.statement_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, &other->_impl_.description_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.parent_id_, &other->_impl_.parent_id_, arena);
 }

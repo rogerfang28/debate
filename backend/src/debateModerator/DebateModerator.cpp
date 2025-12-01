@@ -59,8 +59,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage() {
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
-
-
+    
 
     return responseMessage;
 }

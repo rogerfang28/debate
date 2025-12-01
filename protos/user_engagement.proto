@@ -1,18 +1,32 @@
 syntax = "proto3";
 
-package userengagement;
+package user_engagement;
 
 enum EngagementAction {
   ENGAGEMENT_ACTION_UNSPECIFIED = 0;
-  ACTION_NONE       = 1;  // basically home page I guess
-  ACTION_DEBATING   = 2;  // currently in a debate, include additional data
+  ACTION_NONE     = 1;  // basically home page / idle
+  ACTION_DEBATING = 2;  // currently in a debate
 }
 
+// Action-specific payloads
 
-// shows what the user is currently doing
+message NoneInfo {
+  // literally nothing
+}
+
+message DebatingInfo {
+  string debate_id = 1;
+  string current_claim_id = 2; // current claim being viewed/argued
+}
+
+// Main engagement message
+
 message UserEngagement {
-  string user_id = 1; // I mean we probably won't need this but it may be useful for debugging
+  string user_id = 1;
   EngagementAction current_action = 2;
-  map<string, string> data = 3;
-  // int64 action_start_timestamp = 4; // when the current action started, may be helpful?
+
+  oneof action_info {
+    NoneInfo     none_info     = 3;
+    DebatingInfo debating_info = 4;
+  }
 }

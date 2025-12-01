@@ -20,9 +20,7 @@ export const file_client_message: GenFile = /*@__PURE__*/
  */
 export type ClientMessage = Message<"client_message.ClientMessage"> & {
   /**
-   * Simple event - just which component triggered this
-   *
-   * e.g., "btnSubmit", "usernameInput"
+   * component that triggered the event, e.g., "btnSubmit", "usernameInput"
    *
    * @generated from field: string component_id = 1;
    */
@@ -36,8 +34,6 @@ export type ClientMessage = Message<"client_message.ClientMessage"> & {
   eventType: string;
 
   /**
-   * Complete page state - list of all components with their current values
-   *
    * @generated from field: client_message.PageData page_data = 3;
    */
   pageData?: PageData;

@@ -24,7 +24,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
-namespace debate_list {
+namespace debate {
 
 inline constexpr DebateTopic::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -80,7 +80,7 @@ struct DebateListDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DebateListDefaultTypeInternal _DebateList_default_instance_;
-}  // namespace debate_list
+}  // namespace debate
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_debate_5flist_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -89,47 +89,47 @@ const ::uint32_t
     TableStruct_debate_5flist_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::debate_list::DebateTopic, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::debate::DebateTopic, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_list::DebateTopic, _impl_.id_),
-        PROTOBUF_FIELD_OFFSET(::debate_list::DebateTopic, _impl_.topic_),
+        PROTOBUF_FIELD_OFFSET(::debate::DebateTopic, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::debate::DebateTopic, _impl_.topic_),
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::debate_list::DebateList, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::debate::DebateList, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_list::DebateList, _impl_.topics_),
+        PROTOBUF_FIELD_OFFSET(::debate::DebateList, _impl_.topics_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::debate_list::DebateTopic)},
-        {10, -1, -1, sizeof(::debate_list::DebateList)},
+        {0, -1, -1, sizeof(::debate::DebateTopic)},
+        {10, -1, -1, sizeof(::debate::DebateList)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::debate_list::_DebateTopic_default_instance_._instance,
-    &::debate_list::_DebateList_default_instance_._instance,
+    &::debate::_DebateTopic_default_instance_._instance,
+    &::debate::_DebateList_default_instance_._instance,
 };
 const char descriptor_table_protodef_debate_5flist_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\021debate_list.proto\022\013debate_list\"3\n\013Deba"
-    "teTopic\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005topic\030\002 \001(\tR\005"
-    "topic\">\n\nDebateList\0220\n\006topics\030\001 \003(\0132\030.de"
-    "bate_list.DebateTopicR\006topicsb\006proto3"
+    "\n\021debate_list.proto\022\006debate\"3\n\013DebateTop"
+    "ic\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005topic\030\002 \001(\tR\005topic"
+    "\"9\n\nDebateList\022+\n\006topics\030\001 \003(\0132\023.debate."
+    "DebateTopicR\006topicsb\006proto3"
 };
 static ::absl::once_flag descriptor_table_debate_5flist_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5flist_2eproto = {
     false,
     false,
-    157,
+    147,
     descriptor_table_protodef_debate_5flist_2eproto,
     "debate_list.proto",
     &descriptor_table_debate_5flist_2eproto_once,
@@ -142,7 +142,7 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5flist_
     file_level_enum_descriptors_debate_5flist_2eproto,
     file_level_service_descriptors_debate_5flist_2eproto,
 };
-namespace debate_list {
+namespace debate {
 // ===================================================================
 
 class DebateTopic::_Internal {
@@ -156,11 +156,11 @@ DebateTopic::DebateTopic(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:debate_list.DebateTopic)
+  // @@protoc_insertion_point(arena_constructor:debate.DebateTopic)
 }
 inline PROTOBUF_NDEBUG_INLINE DebateTopic::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_list::DebateTopic& from_msg)
+    const Impl_& from, const ::debate::DebateTopic& from_msg)
       : id_(arena, from.id_),
         topic_(arena, from.topic_),
         _cached_size_{0} {}
@@ -179,7 +179,7 @@ DebateTopic::DebateTopic(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:debate_list.DebateTopic)
+  // @@protoc_insertion_point(copy_constructor:debate.DebateTopic)
 }
 inline PROTOBUF_NDEBUG_INLINE DebateTopic::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -192,7 +192,7 @@ inline void DebateTopic::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 DebateTopic::~DebateTopic() {
-  // @@protoc_insertion_point(destructor:debate_list.DebateTopic)
+  // @@protoc_insertion_point(destructor:debate.DebateTopic)
   SharedDtor(*this);
 }
 inline void DebateTopic::SharedDtor(MessageLite& self) {
@@ -240,7 +240,7 @@ const ::google::protobuf::internal::ClassData* DebateTopic::GetClassData() const
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 39, 2> DebateTopic::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 34, 2> DebateTopic::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -255,7 +255,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 39, 2> DebateTopic::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::debate_list::DebateTopic>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::debate::DebateTopic>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     // string topic = 2 [json_name = "topic"];
@@ -276,15 +276,15 @@ const ::_pbi::TcParseTable<1, 2, 0, 39, 2> DebateTopic::_table_ = {
   }},
   // no aux_entries
   {{
-    "\27\2\5\0\0\0\0\0"
-    "debate_list.DebateTopic"
+    "\22\2\5\0\0\0\0\0"
+    "debate.DebateTopic"
     "id"
     "topic"
   }},
 };
 
 PROTOBUF_NOINLINE void DebateTopic::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_list.DebateTopic)
+// @@protoc_insertion_point(message_clear_start:debate.DebateTopic)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -306,7 +306,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const DebateTopic& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_list.DebateTopic)
+          // @@protoc_insertion_point(serialize_to_array_start:debate.DebateTopic)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
@@ -314,7 +314,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_list.DebateTopic.id");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.DebateTopic.id");
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
@@ -322,7 +322,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
           if (!this_._internal_topic().empty()) {
             const std::string& _s = this_._internal_topic();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_list.DebateTopic.topic");
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.DebateTopic.topic");
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
@@ -331,7 +331,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_list.DebateTopic)
+          // @@protoc_insertion_point(serialize_to_array_end:debate.DebateTopic)
           return target;
         }
 
@@ -342,7 +342,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
         ::size_t DebateTopic::ByteSizeLong() const {
           const DebateTopic& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_list.DebateTopic)
+          // @@protoc_insertion_point(message_byte_size_start:debate.DebateTopic)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -369,7 +369,7 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
 void DebateTopic::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<DebateTopic*>(&to_msg);
   auto& from = static_cast<const DebateTopic&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_list.DebateTopic)
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate.DebateTopic)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -384,7 +384,7 @@ void DebateTopic::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
 }
 
 void DebateTopic::CopyFrom(const DebateTopic& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_list.DebateTopic)
+// @@protoc_insertion_point(class_specific_copy_from_start:debate.DebateTopic)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -416,11 +416,11 @@ DebateList::DebateList(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:debate_list.DebateList)
+  // @@protoc_insertion_point(arena_constructor:debate.DebateList)
 }
 inline PROTOBUF_NDEBUG_INLINE DebateList::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_list::DebateList& from_msg)
+    const Impl_& from, const ::debate::DebateList& from_msg)
       : topics_{visibility, arena, from.topics_},
         _cached_size_{0} {}
 
@@ -438,7 +438,7 @@ DebateList::DebateList(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
-  // @@protoc_insertion_point(copy_constructor:debate_list.DebateList)
+  // @@protoc_insertion_point(copy_constructor:debate.DebateList)
 }
 inline PROTOBUF_NDEBUG_INLINE DebateList::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
@@ -450,7 +450,7 @@ inline void DebateList::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
 DebateList::~DebateList() {
-  // @@protoc_insertion_point(destructor:debate_list.DebateList)
+  // @@protoc_insertion_point(destructor:debate.DebateList)
   SharedDtor(*this);
 }
 inline void DebateList::SharedDtor(MessageLite& self) {
@@ -523,26 +523,26 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> DebateList::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::debate_list::DebateList>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::debate::DebateList>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+    // repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
     {::_pbi::TcParser::FastMtR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+    // repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
     {PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::debate_list::DebateTopic>()},
+    {::_pbi::TcParser::GetTable<::debate::DebateTopic>()},
   }}, {{
   }},
 };
 
 PROTOBUF_NOINLINE void DebateList::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_list.DebateList)
+// @@protoc_insertion_point(message_clear_start:debate.DebateList)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -563,11 +563,11 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
           const DebateList& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_list.DebateList)
+          // @@protoc_insertion_point(serialize_to_array_start:debate.DebateList)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+          // repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_topics_size());
                i < n; i++) {
@@ -583,7 +583,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_list.DebateList)
+          // @@protoc_insertion_point(serialize_to_array_end:debate.DebateList)
           return target;
         }
 
@@ -594,7 +594,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
         ::size_t DebateList::ByteSizeLong() const {
           const DebateList& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_list.DebateList)
+          // @@protoc_insertion_point(message_byte_size_start:debate.DebateList)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
@@ -603,7 +603,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+            // repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
             {
               total_size += 1UL * this_._internal_topics_size();
               for (const auto& msg : this_._internal_topics()) {
@@ -618,7 +618,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
 void DebateList::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<DebateList*>(&to_msg);
   auto& from = static_cast<const DebateList&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_list.DebateList)
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate.DebateList)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -629,7 +629,7 @@ void DebateList::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goog
 }
 
 void DebateList::CopyFrom(const DebateList& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_list.DebateList)
+// @@protoc_insertion_point(class_specific_copy_from_start:debate.DebateList)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -646,7 +646,7 @@ void DebateList::InternalSwap(DebateList* PROTOBUF_RESTRICT other) {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace debate_list
+}  // namespace debate
 namespace google {
 namespace protobuf {
 }  // namespace protobuf

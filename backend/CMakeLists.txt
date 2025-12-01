@@ -36,7 +36,7 @@ set(SRC_FILES
     # ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/DebateModerator.cpp
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pageGenerator.cpp
+    # ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pageGenerator.cpp
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/MiddleendRequestHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddDebate/AddDebateHandler.cc

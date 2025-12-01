@@ -13,11 +13,8 @@ enum EventType {
 // Simple message sent from client to server
 // Contains what was clicked + all component values on the page
 message ClientMessage {
-  // Simple event - just which component triggered this
-  string component_id = 1; // e.g., "btnSubmit", "usernameInput"
+  string component_id = 1; // component that triggered the event, e.g., "btnSubmit", "usernameInput"
   string event_type = 2; // e.g., "click", "change", "submit"
-  
-  // Complete page state - list of all components with their current values
   PageData page_data = 3;
 }
 

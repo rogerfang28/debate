@@ -87,12 +87,12 @@ const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUT
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
     "\032\014debate.proto\032\025user_engagement.proto\032\021d"
-    "ebate_list.proto\"\270\001\n\024ModeratorToVRMessag"
-    "e\022>\n\nengagement\030\001 \001(\0132\036.userengagement.U"
-    "serEngagementR\nengagement\022&\n\006debate\030\002 \001("
-    "\0132\016.debate.DebateR\006debate\0228\n\013debate_list"
-    "\030\003 \001(\0132\027.debate_list.DebateListR\ndebateL"
-    "istb\006proto3"
+    "ebate_list.proto\"\264\001\n\024ModeratorToVRMessag"
+    "e\022\?\n\nengagement\030\001 \001(\0132\037.user_engagement."
+    "UserEngagementR\nengagement\022&\n\006debate\030\002 \001"
+    "(\0132\016.debate.DebateR\006debate\0223\n\013debate_lis"
+    "t\030\003 \001(\0132\022.debate.DebateListR\ndebateListb"
+    "\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[3] =
     {
@@ -104,7 +104,7 @@ static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    291,
+    287,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
@@ -172,13 +172,13 @@ ModeratorToVRMessage::ModeratorToVRMessage(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::userengagement::UserEngagement>(
+  _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(
                               arena, *from._impl_.engagement_)
                         : nullptr;
   _impl_.debate_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::debate::Debate>(
                               arena, *from._impl_.debate_)
                         : nullptr;
-  _impl_.debate_list_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::debate_list::DebateList>(
+  _impl_.debate_list_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(
                               arena, *from._impl_.debate_list_)
                         : nullptr;
 
@@ -267,31 +267,31 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> ModeratorToVRMessage::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .userengagement.UserEngagement engagement = 1 [json_name = "engagement"];
+    // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.engagement_)}},
     // .debate.Debate debate = 2 [json_name = "debate"];
     {::_pbi::TcParser::FastMtS1,
      {18, 1, 1, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_)}},
-    // .debate_list.DebateList debate_list = 3 [json_name = "debateList"];
+    // .debate.DebateList debate_list = 3 [json_name = "debateList"];
     {::_pbi::TcParser::FastMtS1,
      {26, 2, 2, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .userengagement.UserEngagement engagement = 1 [json_name = "engagement"];
+    // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // .debate.Debate debate = 2 [json_name = "debate"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_list.DebateList debate_list = 3 [json_name = "debateList"];
+    // .debate.DebateList debate_list = 3 [json_name = "debateList"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_), _Internal::kHasBitsOffset + 2, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::userengagement::UserEngagement>()},
+    {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
     {::_pbi::TcParser::GetTable<::debate::Debate>()},
-    {::_pbi::TcParser::GetTable<::debate_list::DebateList>()},
+    {::_pbi::TcParser::GetTable<::debate::DebateList>()},
   }}, {{
   }},
 };
@@ -338,7 +338,7 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           (void)cached_has_bits;
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .userengagement.UserEngagement engagement = 1 [json_name = "engagement"];
+          // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 1, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
@@ -352,7 +352,7 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
                 stream);
           }
 
-          // .debate_list.DebateList debate_list = 3 [json_name = "debateList"];
+          // .debate.DebateList debate_list = 3 [json_name = "debateList"];
           if (cached_has_bits & 0x00000004u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.debate_list_, this_._impl_.debate_list_->GetCachedSize(), target,
@@ -385,7 +385,7 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
           cached_has_bits = this_._impl_._has_bits_[0];
           if (cached_has_bits & 0x00000007u) {
-            // .userengagement.UserEngagement engagement = 1 [json_name = "engagement"];
+            // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
@@ -395,7 +395,7 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_);
             }
-            // .debate_list.DebateList debate_list = 3 [json_name = "debateList"];
+            // .debate.DebateList debate_list = 3 [json_name = "debateList"];
             if (cached_has_bits & 0x00000004u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_list_);
@@ -420,7 +420,7 @@ void ModeratorToVRMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, co
       ABSL_DCHECK(from._impl_.engagement_ != nullptr);
       if (_this->_impl_.engagement_ == nullptr) {
         _this->_impl_.engagement_ =
-            ::google::protobuf::Message::CopyConstruct<::userengagement::UserEngagement>(arena, *from._impl_.engagement_);
+            ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(arena, *from._impl_.engagement_);
       } else {
         _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
       }
@@ -438,7 +438,7 @@ void ModeratorToVRMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, co
       ABSL_DCHECK(from._impl_.debate_list_ != nullptr);
       if (_this->_impl_.debate_list_ == nullptr) {
         _this->_impl_.debate_list_ =
-            ::google::protobuf::Message::CopyConstruct<::debate_list::DebateList>(arena, *from._impl_.debate_list_);
+            ::google::protobuf::Message::CopyConstruct<::debate::DebateList>(arena, *from._impl_.debate_list_);
       } else {
         _this->_impl_.debate_list_->MergeFrom(*from._impl_.debate_list_);
       }

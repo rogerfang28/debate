@@ -18,14 +18,14 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKYAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USMgoKZW5nYWdlbWVudBgBIAEoCzIeLnVzZXJlbmdhZ2VtZW50LlVzZXJFbmdhZ2VtZW50Eh4KBmRlYmF0ZRgCIAEoCzIOLmRlYmF0ZS5EZWJhdGUSLAoLZGViYXRlX2xpc3QYAyABKAsyFy5kZWJhdGVfbGlzdC5EZWJhdGVMaXN0YgZwcm90bzM", [file_debate, file_user_engagement, file_debate_list]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKUAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USMwoKZW5nYWdlbWVudBgBIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIeCgZkZWJhdGUYAiABKAsyDi5kZWJhdGUuRGViYXRlEicKC2RlYmF0ZV9saXN0GAMgASgLMhIuZGViYXRlLkRlYmF0ZUxpc3RiBnByb3RvMw", [file_debate, file_user_engagement, file_debate_list]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
  */
 export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage"> & {
   /**
-   * @generated from field: userengagement.UserEngagement engagement = 1;
+   * @generated from field: user_engagement.UserEngagement engagement = 1;
    */
   engagement?: UserEngagement;
 
@@ -35,7 +35,7 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
   debate?: Debate;
 
   /**
-   * @generated from field: debate_list.DebateList debate_list = 3;
+   * @generated from field: debate.DebateList debate_list = 3;
    */
   debateList?: DebateList;
 };

@@ -20,6 +20,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
+#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -28,9 +29,6 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
-#include "google/protobuf/map.h"  // IWYU pragma: export
-#include "google/protobuf/map_entry.h"
-#include "google/protobuf/map_field_inl.h"
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
@@ -55,20 +53,23 @@ struct TableStruct_user_5fengagement_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_user_5fengagement_2eproto;
-namespace userengagement {
+namespace user_engagement {
+class DebatingInfo;
+struct DebatingInfoDefaultTypeInternal;
+extern DebatingInfoDefaultTypeInternal _DebatingInfo_default_instance_;
+class NoneInfo;
+struct NoneInfoDefaultTypeInternal;
+extern NoneInfoDefaultTypeInternal _NoneInfo_default_instance_;
 class UserEngagement;
 struct UserEngagementDefaultTypeInternal;
 extern UserEngagementDefaultTypeInternal _UserEngagement_default_instance_;
-class UserEngagement_DataEntry_DoNotUse;
-struct UserEngagement_DataEntry_DoNotUseDefaultTypeInternal;
-extern UserEngagement_DataEntry_DoNotUseDefaultTypeInternal _UserEngagement_DataEntry_DoNotUse_default_instance_;
-}  // namespace userengagement
+}  // namespace user_engagement
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
-namespace userengagement {
+namespace user_engagement {
 enum EngagementAction : int {
   ENGAGEMENT_ACTION_UNSPECIFIED = 0,
   ACTION_NONE = 1,
@@ -109,47 +110,367 @@ inline bool EngagementAction_Parse(absl::string_view name, EngagementAction* val
 
 // -------------------------------------------------------------------
 
-class UserEngagement_DataEntry_DoNotUse final
-    : public ::google::protobuf::internal::MapEntry<
-          std::string, std::string,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-          ::google::protobuf::internal::WireFormatLite::TYPE_STRING> {
+class NoneInfo final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:user_engagement.NoneInfo) */ {
  public:
-  using SuperType = ::google::protobuf::internal::MapEntry<
-      std::string, std::string,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>;
-  UserEngagement_DataEntry_DoNotUse();
+  inline NoneInfo() : NoneInfo(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(NoneInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(NoneInfo));
+  }
+#endif
+
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR UserEngagement_DataEntry_DoNotUse(
+  explicit PROTOBUF_CONSTEXPR NoneInfo(
       ::google::protobuf::internal::ConstantInitialized);
-  explicit UserEngagement_DataEntry_DoNotUse(::google::protobuf::Arena* arena);
-  static const UserEngagement_DataEntry_DoNotUse* internal_default_instance() {
-    return reinterpret_cast<const UserEngagement_DataEntry_DoNotUse*>(
-        &_UserEngagement_DataEntry_DoNotUse_default_instance_);
+
+  inline NoneInfo(const NoneInfo& from) : NoneInfo(nullptr, from) {}
+  inline NoneInfo(NoneInfo&& from) noexcept
+      : NoneInfo(nullptr, std::move(from)) {}
+  inline NoneInfo& operator=(const NoneInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline NoneInfo& operator=(NoneInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
   }
 
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const NoneInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const NoneInfo* internal_default_instance() {
+    return reinterpret_cast<const NoneInfo*>(
+        &_NoneInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(NoneInfo& a, NoneInfo& b) { a.Swap(&b); }
+  inline void Swap(NoneInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(NoneInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  NoneInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<NoneInfo>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const NoneInfo& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const NoneInfo& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
  private:
-  friend class ::google::protobuf::MessageLite;
-  friend struct ::TableStruct_user_5fengagement_2eproto;
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "user_engagement.NoneInfo"; }
 
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      56, 2>
-      _table_;
-
+ protected:
+  explicit NoneInfo(::google::protobuf::Arena* arena);
+  NoneInfo(::google::protobuf::Arena* arena, const NoneInfo& from);
+  NoneInfo(::google::protobuf::Arena* arena, NoneInfo&& from) noexcept
+      : NoneInfo(arena) {
+    *this = ::std::move(from);
+  }
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
   static void* PlacementNew_(const void*, void* mem,
                              ::google::protobuf::Arena* arena);
   static constexpr auto InternalNewImpl_();
   static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:user_engagement.NoneInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const NoneInfo& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_user_5fengagement_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DebatingInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:user_engagement.DebatingInfo) */ {
+ public:
+  inline DebatingInfo() : DebatingInfo(nullptr) {}
+  ~DebatingInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DebatingInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DebatingInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DebatingInfo(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DebatingInfo(const DebatingInfo& from) : DebatingInfo(nullptr, from) {}
+  inline DebatingInfo(DebatingInfo&& from) noexcept
+      : DebatingInfo(nullptr, std::move(from)) {}
+  inline DebatingInfo& operator=(const DebatingInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DebatingInfo& operator=(DebatingInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DebatingInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DebatingInfo* internal_default_instance() {
+    return reinterpret_cast<const DebatingInfo*>(
+        &_DebatingInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(DebatingInfo& a, DebatingInfo& b) { a.Swap(&b); }
+  inline void Swap(DebatingInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DebatingInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DebatingInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DebatingInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DebatingInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DebatingInfo& from) { DebatingInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DebatingInfo* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "user_engagement.DebatingInfo"; }
+
+ protected:
+  explicit DebatingInfo(::google::protobuf::Arena* arena);
+  DebatingInfo(::google::protobuf::Arena* arena, const DebatingInfo& from);
+  DebatingInfo(::google::protobuf::Arena* arena, DebatingInfo&& from) noexcept
+      : DebatingInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDebateIdFieldNumber = 1,
+    kCurrentClaimIdFieldNumber = 2,
+  };
+  // string debate_id = 1 [json_name = "debateId"];
+  void clear_debate_id() ;
+  const std::string& debate_id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_debate_id(Arg_&& arg, Args_... args);
+  std::string* mutable_debate_id();
+  PROTOBUF_NODISCARD std::string* release_debate_id();
+  void set_allocated_debate_id(std::string* value);
+
+  private:
+  const std::string& _internal_debate_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
+      const std::string& value);
+  std::string* _internal_mutable_debate_id();
+
+  public:
+  // string current_claim_id = 2 [json_name = "currentClaimId"];
+  void clear_current_claim_id() ;
+  const std::string& current_claim_id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_current_claim_id(Arg_&& arg, Args_... args);
+  std::string* mutable_current_claim_id();
+  PROTOBUF_NODISCARD std::string* release_current_claim_id();
+  void set_allocated_current_claim_id(std::string* value);
+
+  private:
+  const std::string& _internal_current_claim_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_current_claim_id(
+      const std::string& value);
+  std::string* _internal_mutable_current_claim_id();
+
+  public:
+  // @@protoc_insertion_point(class_scope:user_engagement.DebatingInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      62, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DebatingInfo& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr debate_id_;
+    ::google::protobuf::internal::ArenaStringPtr current_claim_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_user_5fengagement_2eproto;
 };
 // -------------------------------------------------------------------
 
 class UserEngagement final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:userengagement.UserEngagement) */ {
+/* @@protoc_insertion_point(class_definition:user_engagement.UserEngagement) */ {
  public:
   inline UserEngagement() : UserEngagement(nullptr) {}
   ~UserEngagement() PROTOBUF_FINAL;
@@ -203,11 +524,16 @@ class UserEngagement final : public ::google::protobuf::Message
   static const UserEngagement& default_instance() {
     return *internal_default_instance();
   }
+  enum ActionInfoCase {
+    kNoneInfo = 3,
+    kDebatingInfo = 4,
+    ACTION_INFO_NOT_SET = 0,
+  };
   static inline const UserEngagement* internal_default_instance() {
     return reinterpret_cast<const UserEngagement*>(
         &_UserEngagement_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(UserEngagement& a, UserEngagement& b) { a.Swap(&b); }
   inline void Swap(UserEngagement* other) {
     if (other == this) return;
@@ -273,7 +599,7 @@ class UserEngagement final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "userengagement.UserEngagement"; }
+  static ::absl::string_view FullMessageName() { return "user_engagement.UserEngagement"; }
 
  protected:
   explicit UserEngagement(::google::protobuf::Arena* arena);
@@ -294,25 +620,11 @@ class UserEngagement final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kDataFieldNumber = 3,
     kUserIdFieldNumber = 1,
     kCurrentActionFieldNumber = 2,
+    kNoneInfoFieldNumber = 3,
+    kDebatingInfoFieldNumber = 4,
   };
-  // map<string, string> data = 3 [json_name = "data"];
-  int data_size() const;
-  private:
-  int _internal_data_size() const;
-
-  public:
-  void clear_data() ;
-  const ::google::protobuf::Map<std::string, std::string>& data() const;
-  ::google::protobuf::Map<std::string, std::string>* mutable_data();
-
-  private:
-  const ::google::protobuf::Map<std::string, std::string>& _internal_data() const;
-  ::google::protobuf::Map<std::string, std::string>* _internal_mutable_data();
-
-  public:
   // string user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
   const std::string& user_id() const;
@@ -329,23 +641,67 @@ class UserEngagement final : public ::google::protobuf::Message
   std::string* _internal_mutable_user_id();
 
   public:
-  // .userengagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+  // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
   void clear_current_action() ;
-  ::userengagement::EngagementAction current_action() const;
-  void set_current_action(::userengagement::EngagementAction value);
+  ::user_engagement::EngagementAction current_action() const;
+  void set_current_action(::user_engagement::EngagementAction value);
 
   private:
-  ::userengagement::EngagementAction _internal_current_action() const;
-  void _internal_set_current_action(::userengagement::EngagementAction value);
+  ::user_engagement::EngagementAction _internal_current_action() const;
+  void _internal_set_current_action(::user_engagement::EngagementAction value);
 
   public:
-  // @@protoc_insertion_point(class_scope:userengagement.UserEngagement)
+  // .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+  bool has_none_info() const;
+  private:
+  bool _internal_has_none_info() const;
+
+  public:
+  void clear_none_info() ;
+  const ::user_engagement::NoneInfo& none_info() const;
+  PROTOBUF_NODISCARD ::user_engagement::NoneInfo* release_none_info();
+  ::user_engagement::NoneInfo* mutable_none_info();
+  void set_allocated_none_info(::user_engagement::NoneInfo* value);
+  void unsafe_arena_set_allocated_none_info(::user_engagement::NoneInfo* value);
+  ::user_engagement::NoneInfo* unsafe_arena_release_none_info();
+
+  private:
+  const ::user_engagement::NoneInfo& _internal_none_info() const;
+  ::user_engagement::NoneInfo* _internal_mutable_none_info();
+
+  public:
+  // .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+  bool has_debating_info() const;
+  private:
+  bool _internal_has_debating_info() const;
+
+  public:
+  void clear_debating_info() ;
+  const ::user_engagement::DebatingInfo& debating_info() const;
+  PROTOBUF_NODISCARD ::user_engagement::DebatingInfo* release_debating_info();
+  ::user_engagement::DebatingInfo* mutable_debating_info();
+  void set_allocated_debating_info(::user_engagement::DebatingInfo* value);
+  void unsafe_arena_set_allocated_debating_info(::user_engagement::DebatingInfo* value);
+  ::user_engagement::DebatingInfo* unsafe_arena_release_debating_info();
+
+  private:
+  const ::user_engagement::DebatingInfo& _internal_debating_info() const;
+  ::user_engagement::DebatingInfo* _internal_mutable_debating_info();
+
+  public:
+  void clear_action_info();
+  ActionInfoCase action_info_case() const;
+  // @@protoc_insertion_point(class_scope:user_engagement.UserEngagement)
  private:
   class _Internal;
+  void set_has_none_info();
+  void set_has_debating_info();
+  inline bool has_action_info() const;
+  inline void clear_has_action_info();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 3, 1,
-      49, 2>
+      1, 4, 2,
+      46, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -362,13 +718,16 @@ class UserEngagement final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const UserEngagement& from_msg);
-    ::google::protobuf::internal::MapField<UserEngagement_DataEntry_DoNotUse, std::string, std::string,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
-                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING>
-        data_;
     ::google::protobuf::internal::ArenaStringPtr user_id_;
     int current_action_;
+    union ActionInfoUnion {
+      constexpr ActionInfoUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::user_engagement::NoneInfo* none_info_;
+      ::user_engagement::DebatingInfo* debating_info_;
+    } action_info_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -389,6 +748,108 @@ class UserEngagement final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
+// NoneInfo
+
+// -------------------------------------------------------------------
+
+// DebatingInfo
+
+// string debate_id = 1 [json_name = "debateId"];
+inline void DebatingInfo::clear_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.ClearToEmpty();
+}
+inline const std::string& DebatingInfo::debate_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.debate_id)
+  return _internal_debate_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DebatingInfo::set_debate_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.debate_id)
+}
+inline std::string* DebatingInfo::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_debate_id();
+  // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.debate_id)
+  return _s;
+}
+inline const std::string& DebatingInfo::_internal_debate_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.debate_id_.Get();
+}
+inline void DebatingInfo::_internal_set_debate_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.Set(value, GetArena());
+}
+inline std::string* DebatingInfo::_internal_mutable_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.debate_id_.Mutable( GetArena());
+}
+inline std::string* DebatingInfo::release_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.debate_id)
+  return _impl_.debate_id_.Release();
+}
+inline void DebatingInfo::set_allocated_debate_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
+    _impl_.debate_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.debate_id)
+}
+
+// string current_claim_id = 2 [json_name = "currentClaimId"];
+inline void DebatingInfo::clear_current_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_id_.ClearToEmpty();
+}
+inline const std::string& DebatingInfo::current_claim_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.current_claim_id)
+  return _internal_current_claim_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DebatingInfo::set_current_claim_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.current_claim_id)
+}
+inline std::string* DebatingInfo::mutable_current_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_current_claim_id();
+  // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.current_claim_id)
+  return _s;
+}
+inline const std::string& DebatingInfo::_internal_current_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.current_claim_id_.Get();
+}
+inline void DebatingInfo::_internal_set_current_claim_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_id_.Set(value, GetArena());
+}
+inline std::string* DebatingInfo::_internal_mutable_current_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.current_claim_id_.Mutable( GetArena());
+}
+inline std::string* DebatingInfo::release_current_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.current_claim_id)
+  return _impl_.current_claim_id_.Release();
+}
+inline void DebatingInfo::set_allocated_current_claim_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.current_claim_id_.IsDefault()) {
+    _impl_.current_claim_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim_id)
+}
+
 // -------------------------------------------------------------------
 
 // UserEngagement
@@ -400,7 +861,7 @@ inline void UserEngagement::clear_user_id() {
 }
 inline const std::string& UserEngagement::user_id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:userengagement.UserEngagement.user_id)
+  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.user_id)
   return _internal_user_id();
 }
 template <typename Arg_, typename... Args_>
@@ -408,11 +869,11 @@ inline PROTOBUF_ALWAYS_INLINE void UserEngagement::set_user_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:userengagement.UserEngagement.user_id)
+  // @@protoc_insertion_point(field_set:user_engagement.UserEngagement.user_id)
 }
 inline std::string* UserEngagement::mutable_user_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:userengagement.UserEngagement.user_id)
+  // @@protoc_insertion_point(field_mutable:user_engagement.UserEngagement.user_id)
   return _s;
 }
 inline const std::string& UserEngagement::_internal_user_id() const {
@@ -429,7 +890,7 @@ inline std::string* UserEngagement::_internal_mutable_user_id() {
 }
 inline std::string* UserEngagement::release_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:userengagement.UserEngagement.user_id)
+  // @@protoc_insertion_point(field_release:user_engagement.UserEngagement.user_id)
   return _impl_.user_id_.Release();
 }
 inline void UserEngagement::set_allocated_user_id(std::string* value) {
@@ -438,75 +899,214 @@ inline void UserEngagement::set_allocated_user_id(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.user_id_.IsDefault()) {
     _impl_.user_id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:userengagement.UserEngagement.user_id)
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.user_id)
 }
 
-// .userengagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+// .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
 inline void UserEngagement::clear_current_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_action_ = 0;
 }
-inline ::userengagement::EngagementAction UserEngagement::current_action() const {
-  // @@protoc_insertion_point(field_get:userengagement.UserEngagement.current_action)
+inline ::user_engagement::EngagementAction UserEngagement::current_action() const {
+  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.current_action)
   return _internal_current_action();
 }
-inline void UserEngagement::set_current_action(::userengagement::EngagementAction value) {
+inline void UserEngagement::set_current_action(::user_engagement::EngagementAction value) {
   _internal_set_current_action(value);
-  // @@protoc_insertion_point(field_set:userengagement.UserEngagement.current_action)
+  // @@protoc_insertion_point(field_set:user_engagement.UserEngagement.current_action)
 }
-inline ::userengagement::EngagementAction UserEngagement::_internal_current_action() const {
+inline ::user_engagement::EngagementAction UserEngagement::_internal_current_action() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::userengagement::EngagementAction>(_impl_.current_action_);
+  return static_cast<::user_engagement::EngagementAction>(_impl_.current_action_);
 }
-inline void UserEngagement::_internal_set_current_action(::userengagement::EngagementAction value) {
+inline void UserEngagement::_internal_set_current_action(::user_engagement::EngagementAction value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_action_ = value;
 }
 
-// map<string, string> data = 3 [json_name = "data"];
-inline int UserEngagement::_internal_data_size() const {
-  return _internal_data().size();
+// .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+inline bool UserEngagement::has_none_info() const {
+  return action_info_case() == kNoneInfo;
 }
-inline int UserEngagement::data_size() const {
-  return _internal_data_size();
+inline bool UserEngagement::_internal_has_none_info() const {
+  return action_info_case() == kNoneInfo;
 }
-inline void UserEngagement::clear_data() {
+inline void UserEngagement::set_has_none_info() {
+  _impl_._oneof_case_[0] = kNoneInfo;
+}
+inline void UserEngagement::clear_none_info() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.data_.Clear();
+  if (action_info_case() == kNoneInfo) {
+    if (GetArena() == nullptr) {
+      delete _impl_.action_info_.none_info_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.none_info_);
+    }
+    clear_has_action_info();
+  }
 }
-inline const ::google::protobuf::Map<std::string, std::string>& UserEngagement::_internal_data() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.data_.GetMap();
+inline ::user_engagement::NoneInfo* UserEngagement::release_none_info() {
+  // @@protoc_insertion_point(field_release:user_engagement.UserEngagement.none_info)
+  if (action_info_case() == kNoneInfo) {
+    clear_has_action_info();
+    auto* temp = _impl_.action_info_.none_info_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.action_info_.none_info_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
 }
-inline const ::google::protobuf::Map<std::string, std::string>& UserEngagement::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_map:userengagement.UserEngagement.data)
-  return _internal_data();
+inline const ::user_engagement::NoneInfo& UserEngagement::_internal_none_info() const {
+  return action_info_case() == kNoneInfo ? *_impl_.action_info_.none_info_ : reinterpret_cast<::user_engagement::NoneInfo&>(::user_engagement::_NoneInfo_default_instance_);
 }
-inline ::google::protobuf::Map<std::string, std::string>* UserEngagement::_internal_mutable_data() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.data_.MutableMap();
+inline const ::user_engagement::NoneInfo& UserEngagement::none_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.none_info)
+  return _internal_none_info();
 }
-inline ::google::protobuf::Map<std::string, std::string>* UserEngagement::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_map:userengagement.UserEngagement.data)
-  return _internal_mutable_data();
+inline ::user_engagement::NoneInfo* UserEngagement::unsafe_arena_release_none_info() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:user_engagement.UserEngagement.none_info)
+  if (action_info_case() == kNoneInfo) {
+    clear_has_action_info();
+    auto* temp = _impl_.action_info_.none_info_;
+    _impl_.action_info_.none_info_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void UserEngagement::unsafe_arena_set_allocated_none_info(::user_engagement::NoneInfo* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_action_info();
+  if (value) {
+    set_has_none_info();
+    _impl_.action_info_.none_info_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.UserEngagement.none_info)
+}
+inline ::user_engagement::NoneInfo* UserEngagement::_internal_mutable_none_info() {
+  if (action_info_case() != kNoneInfo) {
+    clear_action_info();
+    set_has_none_info();
+    _impl_.action_info_.none_info_ =
+        ::google::protobuf::Message::DefaultConstruct<::user_engagement::NoneInfo>(GetArena());
+  }
+  return _impl_.action_info_.none_info_;
+}
+inline ::user_engagement::NoneInfo* UserEngagement::mutable_none_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::user_engagement::NoneInfo* _msg = _internal_mutable_none_info();
+  // @@protoc_insertion_point(field_mutable:user_engagement.UserEngagement.none_info)
+  return _msg;
 }
 
+// .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+inline bool UserEngagement::has_debating_info() const {
+  return action_info_case() == kDebatingInfo;
+}
+inline bool UserEngagement::_internal_has_debating_info() const {
+  return action_info_case() == kDebatingInfo;
+}
+inline void UserEngagement::set_has_debating_info() {
+  _impl_._oneof_case_[0] = kDebatingInfo;
+}
+inline void UserEngagement::clear_debating_info() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (action_info_case() == kDebatingInfo) {
+    if (GetArena() == nullptr) {
+      delete _impl_.action_info_.debating_info_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.debating_info_);
+    }
+    clear_has_action_info();
+  }
+}
+inline ::user_engagement::DebatingInfo* UserEngagement::release_debating_info() {
+  // @@protoc_insertion_point(field_release:user_engagement.UserEngagement.debating_info)
+  if (action_info_case() == kDebatingInfo) {
+    clear_has_action_info();
+    auto* temp = _impl_.action_info_.debating_info_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.action_info_.debating_info_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::user_engagement::DebatingInfo& UserEngagement::_internal_debating_info() const {
+  return action_info_case() == kDebatingInfo ? *_impl_.action_info_.debating_info_ : reinterpret_cast<::user_engagement::DebatingInfo&>(::user_engagement::_DebatingInfo_default_instance_);
+}
+inline const ::user_engagement::DebatingInfo& UserEngagement::debating_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.debating_info)
+  return _internal_debating_info();
+}
+inline ::user_engagement::DebatingInfo* UserEngagement::unsafe_arena_release_debating_info() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:user_engagement.UserEngagement.debating_info)
+  if (action_info_case() == kDebatingInfo) {
+    clear_has_action_info();
+    auto* temp = _impl_.action_info_.debating_info_;
+    _impl_.action_info_.debating_info_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void UserEngagement::unsafe_arena_set_allocated_debating_info(::user_engagement::DebatingInfo* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_action_info();
+  if (value) {
+    set_has_debating_info();
+    _impl_.action_info_.debating_info_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.UserEngagement.debating_info)
+}
+inline ::user_engagement::DebatingInfo* UserEngagement::_internal_mutable_debating_info() {
+  if (action_info_case() != kDebatingInfo) {
+    clear_action_info();
+    set_has_debating_info();
+    _impl_.action_info_.debating_info_ =
+        ::google::protobuf::Message::DefaultConstruct<::user_engagement::DebatingInfo>(GetArena());
+  }
+  return _impl_.action_info_.debating_info_;
+}
+inline ::user_engagement::DebatingInfo* UserEngagement::mutable_debating_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::user_engagement::DebatingInfo* _msg = _internal_mutable_debating_info();
+  // @@protoc_insertion_point(field_mutable:user_engagement.UserEngagement.debating_info)
+  return _msg;
+}
+
+inline bool UserEngagement::has_action_info() const {
+  return action_info_case() != ACTION_INFO_NOT_SET;
+}
+inline void UserEngagement::clear_has_action_info() {
+  _impl_._oneof_case_[0] = ACTION_INFO_NOT_SET;
+}
+inline UserEngagement::ActionInfoCase UserEngagement::action_info_case() const {
+  return UserEngagement::ActionInfoCase(_impl_._oneof_case_[0]);
+}
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace userengagement
+}  // namespace user_engagement
 
 
 namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::userengagement::EngagementAction> : std::true_type {};
+struct is_proto_enum<::user_engagement::EngagementAction> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::userengagement::EngagementAction>() {
-  return ::userengagement::EngagementAction_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::user_engagement::EngagementAction>() {
+  return ::user_engagement::EngagementAction_descriptor();
 }
 
 }  // namespace protobuf

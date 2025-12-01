@@ -51,20 +51,20 @@ struct TableStruct_debate_5flist_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_debate_5flist_2eproto;
-namespace debate_list {
+namespace debate {
 class DebateList;
 struct DebateListDefaultTypeInternal;
 extern DebateListDefaultTypeInternal _DebateList_default_instance_;
 class DebateTopic;
 struct DebateTopicDefaultTypeInternal;
 extern DebateTopicDefaultTypeInternal _DebateTopic_default_instance_;
-}  // namespace debate_list
+}  // namespace debate
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
-namespace debate_list {
+namespace debate {
 
 // ===================================================================
 
@@ -72,7 +72,7 @@ namespace debate_list {
 // -------------------------------------------------------------------
 
 class DebateTopic final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate_list.DebateTopic) */ {
+/* @@protoc_insertion_point(class_definition:debate.DebateTopic) */ {
  public:
   inline DebateTopic() : DebateTopic(nullptr) {}
   ~DebateTopic() PROTOBUF_FINAL;
@@ -196,7 +196,7 @@ class DebateTopic final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_list.DebateTopic"; }
+  static ::absl::string_view FullMessageName() { return "debate.DebateTopic"; }
 
  protected:
   explicit DebateTopic(::google::protobuf::Arena* arena);
@@ -252,13 +252,13 @@ class DebateTopic final : public ::google::protobuf::Message
   std::string* _internal_mutable_topic();
 
   public:
-  // @@protoc_insertion_point(class_scope:debate_list.DebateTopic)
+  // @@protoc_insertion_point(class_scope:debate.DebateTopic)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       1, 2, 0,
-      39, 2>
+      34, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -286,7 +286,7 @@ class DebateTopic final : public ::google::protobuf::Message
 // -------------------------------------------------------------------
 
 class DebateList final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate_list.DebateList) */ {
+/* @@protoc_insertion_point(class_definition:debate.DebateList) */ {
  public:
   inline DebateList() : DebateList(nullptr) {}
   ~DebateList() PROTOBUF_FINAL;
@@ -410,7 +410,7 @@ class DebateList final : public ::google::protobuf::Message
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_list.DebateList"; }
+  static ::absl::string_view FullMessageName() { return "debate.DebateList"; }
 
  protected:
   explicit DebateList(::google::protobuf::Arena* arena);
@@ -433,24 +433,24 @@ class DebateList final : public ::google::protobuf::Message
   enum : int {
     kTopicsFieldNumber = 1,
   };
-  // repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+  // repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
   int topics_size() const;
   private:
   int _internal_topics_size() const;
 
   public:
   void clear_topics() ;
-  ::debate_list::DebateTopic* mutable_topics(int index);
-  ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>* mutable_topics();
+  ::debate::DebateTopic* mutable_topics(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>* mutable_topics();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>& _internal_topics() const;
-  ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>* _internal_mutable_topics();
+  const ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>& _internal_topics() const;
+  ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>* _internal_mutable_topics();
   public:
-  const ::debate_list::DebateTopic& topics(int index) const;
-  ::debate_list::DebateTopic* add_topics();
-  const ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>& topics() const;
-  // @@protoc_insertion_point(class_scope:debate_list.DebateList)
+  const ::debate::DebateTopic& topics(int index) const;
+  ::debate::DebateTopic* add_topics();
+  const ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>& topics() const;
+  // @@protoc_insertion_point(class_scope:debate.DebateList)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -473,7 +473,7 @@ class DebateList final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const DebateList& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::debate_list::DebateTopic > topics_;
+    ::google::protobuf::RepeatedPtrField< ::debate::DebateTopic > topics_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -504,7 +504,7 @@ inline void DebateTopic::clear_id() {
 }
 inline const std::string& DebateTopic::id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_list.DebateTopic.id)
+  // @@protoc_insertion_point(field_get:debate.DebateTopic.id)
   return _internal_id();
 }
 template <typename Arg_, typename... Args_>
@@ -512,11 +512,11 @@ inline PROTOBUF_ALWAYS_INLINE void DebateTopic::set_id(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate_list.DebateTopic.id)
+  // @@protoc_insertion_point(field_set:debate.DebateTopic.id)
 }
 inline std::string* DebateTopic::mutable_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:debate_list.DebateTopic.id)
+  // @@protoc_insertion_point(field_mutable:debate.DebateTopic.id)
   return _s;
 }
 inline const std::string& DebateTopic::_internal_id() const {
@@ -533,7 +533,7 @@ inline std::string* DebateTopic::_internal_mutable_id() {
 }
 inline std::string* DebateTopic::release_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_list.DebateTopic.id)
+  // @@protoc_insertion_point(field_release:debate.DebateTopic.id)
   return _impl_.id_.Release();
 }
 inline void DebateTopic::set_allocated_id(std::string* value) {
@@ -542,7 +542,7 @@ inline void DebateTopic::set_allocated_id(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
     _impl_.id_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate_list.DebateTopic.id)
+  // @@protoc_insertion_point(field_set_allocated:debate.DebateTopic.id)
 }
 
 // string topic = 2 [json_name = "topic"];
@@ -552,7 +552,7 @@ inline void DebateTopic::clear_topic() {
 }
 inline const std::string& DebateTopic::topic() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_list.DebateTopic.topic)
+  // @@protoc_insertion_point(field_get:debate.DebateTopic.topic)
   return _internal_topic();
 }
 template <typename Arg_, typename... Args_>
@@ -560,11 +560,11 @@ inline PROTOBUF_ALWAYS_INLINE void DebateTopic::set_topic(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate_list.DebateTopic.topic)
+  // @@protoc_insertion_point(field_set:debate.DebateTopic.topic)
 }
 inline std::string* DebateTopic::mutable_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_topic();
-  // @@protoc_insertion_point(field_mutable:debate_list.DebateTopic.topic)
+  // @@protoc_insertion_point(field_mutable:debate.DebateTopic.topic)
   return _s;
 }
 inline const std::string& DebateTopic::_internal_topic() const {
@@ -581,7 +581,7 @@ inline std::string* DebateTopic::_internal_mutable_topic() {
 }
 inline std::string* DebateTopic::release_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_list.DebateTopic.topic)
+  // @@protoc_insertion_point(field_release:debate.DebateTopic.topic)
   return _impl_.topic_.Release();
 }
 inline void DebateTopic::set_allocated_topic(std::string* value) {
@@ -590,14 +590,14 @@ inline void DebateTopic::set_allocated_topic(std::string* value) {
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.topic_.IsDefault()) {
     _impl_.topic_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate_list.DebateTopic.topic)
+  // @@protoc_insertion_point(field_set_allocated:debate.DebateTopic.topic)
 }
 
 // -------------------------------------------------------------------
 
 // DebateList
 
-// repeated .debate_list.DebateTopic topics = 1 [json_name = "topics"];
+// repeated .debate.DebateTopic topics = 1 [json_name = "topics"];
 inline int DebateList::_internal_topics_size() const {
   return _internal_topics().size();
 }
@@ -608,39 +608,39 @@ inline void DebateList::clear_topics() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topics_.Clear();
 }
-inline ::debate_list::DebateTopic* DebateList::mutable_topics(int index)
+inline ::debate::DebateTopic* DebateList::mutable_topics(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate_list.DebateList.topics)
+  // @@protoc_insertion_point(field_mutable:debate.DebateList.topics)
   return _internal_mutable_topics()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>* DebateList::mutable_topics()
+inline ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>* DebateList::mutable_topics()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate_list.DebateList.topics)
+  // @@protoc_insertion_point(field_mutable_list:debate.DebateList.topics)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_topics();
 }
-inline const ::debate_list::DebateTopic& DebateList::topics(int index) const
+inline const ::debate::DebateTopic& DebateList::topics(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_list.DebateList.topics)
+  // @@protoc_insertion_point(field_get:debate.DebateList.topics)
   return _internal_topics().Get(index);
 }
-inline ::debate_list::DebateTopic* DebateList::add_topics() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::debate::DebateTopic* DebateList::add_topics() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate_list::DebateTopic* _add = _internal_mutable_topics()->Add();
-  // @@protoc_insertion_point(field_add:debate_list.DebateList.topics)
+  ::debate::DebateTopic* _add = _internal_mutable_topics()->Add();
+  // @@protoc_insertion_point(field_add:debate.DebateList.topics)
   return _add;
 }
-inline const ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>& DebateList::topics() const
+inline const ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>& DebateList::topics() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate_list.DebateList.topics)
+  // @@protoc_insertion_point(field_list:debate.DebateList.topics)
   return _internal_topics();
 }
-inline const ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>&
+inline const ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>&
 DebateList::_internal_topics() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.topics_;
 }
-inline ::google::protobuf::RepeatedPtrField<::debate_list::DebateTopic>*
+inline ::google::protobuf::RepeatedPtrField<::debate::DebateTopic>*
 DebateList::_internal_mutable_topics() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.topics_;
@@ -651,7 +651,7 @@ DebateList::_internal_mutable_topics() {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace debate_list
+}  // namespace debate
 
 
 // @@protoc_insertion_point(global_scope)

@@ -4,13 +4,15 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { DebateSettings } from "./debate_settings_pb";
+import { file_debate_settings } from "./debate_settings_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJQCgVDbGFpbRIQCghzZW50ZW5jZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZwYXJlbnQYAyABKAkSEAoIY2hpbGRyZW4YBCADKAkiNgoGRGViYXRlEg0KBXRvcGljGAEgASgJEh0KBmNsYWltcxgCIAMoCzINLmRlYmF0ZS5DbGFpbWIGcHJvdG8z");
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJQCgVDbGFpbRIQCghzZW50ZW5jZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZwYXJlbnQYAyABKAkSEAoIY2hpbGRyZW4YBCADKAkigQEKBkRlYmF0ZRINCgV0b3BpYxgBIAEoCRIQCghkZWJhdG9ycxgCIAMoCRIdCgZjbGFpbXMYAyADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBCABKAkSKAoIc2V0dGluZ3MYBSABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3NiBnByb3RvMw", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -61,18 +63,37 @@ export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
  */
 export type Debate = Message<"debate.Debate"> & {
   /**
-   * The debate topic
-   *
    * @generated from field: string topic = 1;
    */
   topic: string;
 
   /**
-   * A list of all claims belonging to this debate (the graph)
+   * user id of participants
    *
-   * @generated from field: repeated debate.Claim claims = 2;
+   * @generated from field: repeated string debators = 2;
+   */
+  debators: string[];
+
+  /**
+   * claims under topic in the debate
+   *
+   * @generated from field: repeated debate.Claim claims = 3;
    */
   claims: Claim[];
+
+  /**
+   * user id of debate creator
+   *
+   * @generated from field: string owner = 4;
+   */
+  owner: string;
+
+  /**
+   * settings for this debate
+   *
+   * @generated from field: debate.DebateSettings settings = 5;
+   */
+  settings?: DebateSettings;
 };
 
 /**

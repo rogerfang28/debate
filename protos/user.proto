@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package user;
 
+import "user_engagement.proto";
+
 enum UserState {
   USER_STATE_UNSPECIFIED = 0;
   NONE = 1;
@@ -12,5 +14,6 @@ message User {
   string username = 1;      // unique username
   UserState state = 2;      // current user state
   string debate_topic_id = 3;  // topic of current debate (if state == DEBATING)
+  user_engagement.UserEngagement engagement = 4;      // current user state
   // Add more fields as needed from user_engagement.proto later
 }
