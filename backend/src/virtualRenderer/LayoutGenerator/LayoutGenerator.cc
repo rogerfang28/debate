@@ -10,12 +10,35 @@
 // #include "../utils/pathUtils.h"
 
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const std::string& user) {
-    // for now call pagegenerator
-    // std::string page_bin = generatePage(user);
-    std::string page_bin = HomePageGenerator::GenerateHomePage().SerializeAsString();
-    // page_bin = DebateClaimPageGenerator::GenerateDebatePage("e","f").SerializeAsString();
-    // page_bin = LoginPageGenerator::GenerateLoginPage().SerializeAsString();
-    ui::Page page;
-    page.ParseFromString(page_bin);
-    return page;
+    // ok so we need to decode the info and generate a page based on it
+    // so we should check user engagement first
+    switch (info.engagement().current_action()){
+        case user_engagement::ACTION_NONE:
+            // generate home page
+            std::cout << "[LayoutGenerator] Generating Home Page for user: " << user << "\n";
+
+            // get the debate list from info
+            if (info.has_users_debates()) {
+                return HomePageGenerator::GenerateHomePage(info.users_debates());
+            } else {
+                debate::DebateList emptyList;
+                return HomePageGenerator::GenerateHomePage(emptyList);
+            }
+        case user_engagement::ACTION_DEBATING:
+            // generate debate page
+            std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
+            if (info.has_debate()) {
+                const auto& debate = info.debate();
+                return DebateClaimPageGenerator::GenerateDebatePage(debate.topic(), "test");
+            } else {
+                std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
+                debate::DebateList emptyList;
+                return HomePageGenerator::GenerateHomePage(emptyList);
+            }
+        default:
+            std::cout << "[LayoutGenerator] Unknown engagement action, generating Home Page by default.\n";
+            debate::DebateList emptyList;
+            return HomePageGenerator::GenerateHomePage(emptyList);
+    }
+    // Unreachable code - removed dead code below
 }

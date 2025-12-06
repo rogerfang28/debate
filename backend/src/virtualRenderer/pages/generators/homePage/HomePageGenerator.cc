@@ -1,7 +1,7 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page HomePageGenerator::GenerateHomePage() {
+ui::Page HomePageGenerator::GenerateHomePage(debate::DebateList usersDebates) {
     ui::Page page;
     page.set_page_id("home");
     page.set_title("Debate Topic Entry");
@@ -131,6 +131,24 @@ ui::Page HomePageGenerator::GenerateHomePage() {
         "",
         ""
     );
+    
+    // Populate topics list with user's debates
+    for (const auto& topic : usersDebates.topics()) {
+        ui::Component debateItem = ComponentGenerator::createButton(
+            "enterDebateTopicButton_" + topic.id(),
+            topic.topic(),
+            "selectDebate",
+            "bg-gray-700",
+            "hover:bg-gray-600",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "w-full text-left transition border border-gray-600"
+        );
+        ComponentGenerator::addAttribute(&debateItem, "data-debate-id", topic.id());
+        ComponentGenerator::addChild(&topicsList, debateItem);
+    }
+    
     ComponentGenerator::addChild(&topicsCard, topicsList);
 
     // Add topics card to main
@@ -139,6 +157,8 @@ ui::Page HomePageGenerator::GenerateHomePage() {
     // Add main container to page
     ui::Component* pageMain = page.add_components();
     pageMain->CopyFrom(main);
+
+
 
     return page;
 }

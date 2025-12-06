@@ -56,16 +56,16 @@ DebateDatabaseHandler::getDebates(const std::string& user) {
     return rows;
 }
 
-std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(const std::string& user, 
+std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(//const std::string& user, 
                                                               const std::string& id) {
     if (!openDB(dbFilename)) return {};
     
-    std::string whereClause = "USER = '" + user + "' AND ID = '" + id + "'";
+    std::string whereClause = "ID = '" + id + "'";
     auto protobufData = readBlob("DEBATE", "PAGE_DATA", whereClause);
     closeDB();
     
     std::cout << "[DebateDB] Retrieved protobuf data for id: " << id 
-              << " for user " << user << " (size: " << protobufData.size() << " bytes)\n";
+            << " (size: " << protobufData.size() << " bytes)\n";
     return protobufData;
 }
 
@@ -102,4 +102,14 @@ bool DebateDatabaseHandler::clearUserDebates(const std::string& user) {
     if (ok)
         std::cout << "[DebateDB] Cleared all debates for user: " << user << "\n";
     return ok;
+}
+
+bool DebateDatabaseHandler::debateExists(const std::string& id) {
+    if (!openDB(dbFilename)) return false;
+    auto rows = readRows("DEBATE", "ID = '" + id + "'");
+    closeDB();
+    bool exists = !rows.empty();
+    std::cout << "[DebateDB] Debate with id: " << id 
+              << (exists ? " exists.\n" : " does not exist.\n");
+    return exists;
 }

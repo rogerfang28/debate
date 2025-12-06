@@ -28,6 +28,8 @@ bool EnterDebateHandler::EnterDebate(const std::string& topicID, const std::stri
         
         // Update user state to DEBATING and set debate topic id
         userProto.set_state(user::DEBATING);
+        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
+        userProto.mutable_engagement()->mutable_debating_info()->set_debate_id(topicID);
         userProto.set_debate_topic_id(topicID);
         
         // Serialize and save back to database

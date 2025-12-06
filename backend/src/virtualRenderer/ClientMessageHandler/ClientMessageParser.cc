@@ -57,12 +57,12 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
             auto* clear = event.mutable_clear_debates();
             clear->set_user_id(user);
             std::cout << "  CLEAR_DEBATES for user: " << user << "\n";
-        } else if (componentId.find("topicButton_") == 0 && eventType == "onClick") {
+        } else if (componentId.find("enterDebateTopicButton_") == 0 && eventType == "onClick") {
             // Enter a debate
             event.set_type(debate_event::ENTER_DEBATE);
             auto* enter = event.mutable_enter_debate();
             enter->set_user_id(user);
-            std::string debateID = componentId.substr(12); // Extract ID after "topicButton_"
+            std::string debateID = componentId.substr(23); // Extract ID after "enterDebateTopicButton_"
             enter->set_debate_id(debateID);
             std::cout << "  ENTER_DEBATE: debate_id = " << debateID << "\n";
         } else {
