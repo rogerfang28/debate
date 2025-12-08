@@ -12,8 +12,6 @@ enum UserState {
 
 message User {
   string username = 1;      // unique username
-  UserState state = 2;      // current user state
-  string debate_topic_id = 3;  // topic of current debate (if state == DEBATING)
-  user_engagement.UserEngagement engagement = 4;      // current user state
+  user_engagement.UserEngagement engagement = 2;      // current user state
   // Add more fields as needed from user_engagement.proto later
 }

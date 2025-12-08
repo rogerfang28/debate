@@ -25,9 +25,9 @@ bool GoHomeHandler::GoHome(const std::string& user) {
         }
         
         // Update user state to NONE and clear debate topic id
-        userProto.set_state(user::NONE);
+        // userProto.set_state(user::NONE);
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
-        userProto.set_debate_topic_id("");
+        // userProto.set_debate_topic_id("");
         
         // Serialize and save back to database
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());

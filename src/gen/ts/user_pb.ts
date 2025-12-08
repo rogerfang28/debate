@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIoYBCgRVc2VyEhAKCHVzZXJuYW1lGAEgASgJEh4KBXN0YXRlGAIgASgOMg8udXNlci5Vc2VyU3RhdGUSFwoPZGViYXRlX3RvcGljX2lkGAMgASgJEjMKCmVuZ2FnZW1lbnQYBCABKAsyHy51c2VyX2VuZ2FnZW1lbnQuVXNlckVuZ2FnZW1lbnQqPwoJVXNlclN0YXRlEhoKFlVTRVJfU1RBVEVfVU5TUEVDSUZJRUQQABIICgROT05FEAESDAoIREVCQVRJTkcQAmIGcHJvdG8z", [file_user_engagement]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIk0KBFVzZXISEAoIdXNlcm5hbWUYASABKAkSMwoKZW5nYWdlbWVudBgCIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudCo/CglVc2VyU3RhdGUSGgoWVVNFUl9TVEFURV9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIMCghERUJBVElORxACYgZwcm90bzM", [file_user_engagement]);
 
 /**
  * @generated from message user.User
@@ -28,21 +28,7 @@ export type User = Message<"user.User"> & {
   /**
    * current user state
    *
-   * @generated from field: user.UserState state = 2;
-   */
-  state: UserState;
-
-  /**
-   * topic of current debate (if state == DEBATING)
-   *
-   * @generated from field: string debate_topic_id = 3;
-   */
-  debateTopicId: string;
-
-  /**
-   * current user state
-   *
-   * @generated from field: user_engagement.UserEngagement engagement = 4;
+   * @generated from field: user_engagement.UserEngagement engagement = 2;
    */
   engagement?: UserEngagement;
 };

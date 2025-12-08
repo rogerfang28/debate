@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIXCgROb25lEg8KB3VzZXJfaWQYASABKAkiNQoMQ3JlYXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSFAoMZGViYXRlX3RvcGljGAIgASgJIh8KDENsZWFyRGViYXRlcxIPCgd1c2VyX2lkGAEgASgJIjIKDERlbGV0ZURlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIxCgtFbnRlckRlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIZCgZHb0hvbWUSDwoHdXNlcl9pZBgBIAEoCSKIAwoLRGViYXRlRXZlbnQSDwoHdXNlcl9pZBgBIAEoCRIKCgJpZBgCIAEoCRIvCgtvY2N1cnJlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJQoEdHlwZRgEIAEoDjIXLmRlYmF0ZV9ldmVudC5FdmVudFR5cGUSMwoNY3JlYXRlX2RlYmF0ZRgKIAEoCzIaLmRlYmF0ZV9ldmVudC5DcmVhdGVEZWJhdGVIABIzCg1jbGVhcl9kZWJhdGVzGAsgASgLMhouZGViYXRlX2V2ZW50LkNsZWFyRGViYXRlc0gAEjMKDWRlbGV0ZV9kZWJhdGUYDCABKAsyGi5kZWJhdGVfZXZlbnQuRGVsZXRlRGViYXRlSAASMQoMZW50ZXJfZGViYXRlGA0gASgLMhkuZGViYXRlX2V2ZW50LkVudGVyRGViYXRlSAASJwoHZ29faG9tZRgOIAEoCzIULmRlYmF0ZV9ldmVudC5Hb0hvbWVIAEIJCgdwYXlsb2FkKokBCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAZiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIXCgROb25lEg8KB3VzZXJfaWQYASABKAkiNQoMQ3JlYXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSFAoMZGViYXRlX3RvcGljGAIgASgJIh8KDENsZWFyRGViYXRlcxIPCgd1c2VyX2lkGAEgASgJIjIKDERlbGV0ZURlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIxCgtFbnRlckRlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIZCgZHb0hvbWUSDwoHdXNlcl9pZBgBIAEoCSJvCg9DcmVhdGVTdGF0ZW1lbnQSDwoHdXNlcl9pZBgBIAEoCRIRCglkZWJhdGVfaWQYAiABKAkSEQoJc3RhdGVtZW50GAMgASgJEhEKCXBhcmVudF9pZBgEIAEoCRISCgpjb25uZWN0aW9uGAUgASgJIksKD0RlbGV0ZVN0YXRlbWVudBIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIUCgxzdGF0ZW1lbnRfaWQYAyABKAkiZwoNQWRkQ29ubmVjdGlvbhIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIPCgdmcm9tX2lkGAMgASgJEg0KBXRvX2lkGAQgASgJEhIKCmNvbm5lY3Rpb24YBSABKAkiiAMKC0RlYmF0ZUV2ZW50Eg8KB3VzZXJfaWQYASABKAkSCgoCaWQYAiABKAkSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiUKBHR5cGUYBCABKA4yFy5kZWJhdGVfZXZlbnQuRXZlbnRUeXBlEjMKDWNyZWF0ZV9kZWJhdGUYCiABKAsyGi5kZWJhdGVfZXZlbnQuQ3JlYXRlRGViYXRlSAASMwoNY2xlYXJfZGViYXRlcxgLIAEoCzIaLmRlYmF0ZV9ldmVudC5DbGVhckRlYmF0ZXNIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEicKB2dvX2hvbWUYDiABKAsyFC5kZWJhdGVfZXZlbnQuR29Ib21lSABCCQoHcGF5bG9hZCqJAQoJRXZlbnRUeXBlEhoKFkVWRU5UX0tJTkRfVU5TUEVDSUZJRUQQABIICgROT05FEAESEQoNQ1JFQVRFX0RFQkFURRACEhEKDUNMRUFSX0RFQkFURVMQAxIRCg1ERUxFVEVfREVCQVRFEAQSEAoMRU5URVJfREVCQVRFEAUSCwoHR09fSE9NRRAGYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -134,6 +134,107 @@ export const GoHomeSchema: GenMessage<GoHome> = /*@__PURE__*/
   messageDesc(file_debate_event, 5);
 
 /**
+ * @generated from message debate_event.CreateStatement
+ */
+export type CreateStatement = Message<"debate_event.CreateStatement"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string debate_id = 2;
+   */
+  debateId: string;
+
+  /**
+   * @generated from field: string statement = 3;
+   */
+  statement: string;
+
+  /**
+   * @generated from field: string parent_id = 4;
+   */
+  parentId: string;
+
+  /**
+   * @generated from field: string connection = 5;
+   */
+  connection: string;
+};
+
+/**
+ * Describes the message debate_event.CreateStatement.
+ * Use `create(CreateStatementSchema)` to create a new message.
+ */
+export const CreateStatementSchema: GenMessage<CreateStatement> = /*@__PURE__*/
+  messageDesc(file_debate_event, 6);
+
+/**
+ * @generated from message debate_event.DeleteStatement
+ */
+export type DeleteStatement = Message<"debate_event.DeleteStatement"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string debate_id = 2;
+   */
+  debateId: string;
+
+  /**
+   * @generated from field: string statement_id = 3;
+   */
+  statementId: string;
+};
+
+/**
+ * Describes the message debate_event.DeleteStatement.
+ * Use `create(DeleteStatementSchema)` to create a new message.
+ */
+export const DeleteStatementSchema: GenMessage<DeleteStatement> = /*@__PURE__*/
+  messageDesc(file_debate_event, 7);
+
+/**
+ * @generated from message debate_event.AddConnection
+ */
+export type AddConnection = Message<"debate_event.AddConnection"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string debate_id = 2;
+   */
+  debateId: string;
+
+  /**
+   * @generated from field: string from_id = 3;
+   */
+  fromId: string;
+
+  /**
+   * @generated from field: string to_id = 4;
+   */
+  toId: string;
+
+  /**
+   * @generated from field: string connection = 5;
+   */
+  connection: string;
+};
+
+/**
+ * Describes the message debate_event.AddConnection.
+ * Use `create(AddConnectionSchema)` to create a new message.
+ */
+export const AddConnectionSchema: GenMessage<AddConnection> = /*@__PURE__*/
+  messageDesc(file_debate_event, 8);
+
+/**
  * main message
  *
  * @generated from message debate_event.DebateEvent
@@ -200,7 +301,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 6);
+  messageDesc(file_debate_event, 9);
 
 /**
  * enum

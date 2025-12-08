@@ -32,6 +32,28 @@ message GoHome {
     string user_id       = 1;
 }
 
+message CreateStatement {
+    string user_id       = 1;
+    string debate_id     = 2;
+    string statement     = 3;
+    string parent_id     = 4;
+    string connection    = 5;
+}
+
+message DeleteStatement {
+    string user_id       = 1;
+    string debate_id     = 2;
+    string statement_id  = 3;
+}
+
+message AddConnection {
+    string user_id       = 1;
+    string debate_id     = 2;
+    string from_id       = 3;
+    string to_id         = 4;
+    string connection    = 5;
+}
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;

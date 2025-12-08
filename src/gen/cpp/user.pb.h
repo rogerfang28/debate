@@ -251,9 +251,7 @@ class User final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kUsernameFieldNumber = 1,
-    kDebateTopicIdFieldNumber = 3,
-    kEngagementFieldNumber = 4,
-    kStateFieldNumber = 2,
+    kEngagementFieldNumber = 2,
   };
   // string username = 1 [json_name = "username"];
   void clear_username() ;
@@ -271,23 +269,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_username();
 
   public:
-  // string debate_topic_id = 3 [json_name = "debateTopicId"];
-  void clear_debate_topic_id() ;
-  const std::string& debate_topic_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_topic_id(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_topic_id();
-  PROTOBUF_NODISCARD std::string* release_debate_topic_id();
-  void set_allocated_debate_topic_id(std::string* value);
-
-  private:
-  const std::string& _internal_debate_topic_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_topic_id(
-      const std::string& value);
-  std::string* _internal_mutable_debate_topic_id();
-
-  public:
-  // .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+  // .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
   bool has_engagement() const;
   void clear_engagement() ;
   const ::user_engagement::UserEngagement& engagement() const;
@@ -302,23 +284,13 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* _internal_mutable_engagement();
 
   public:
-  // .user.UserState state = 2 [json_name = "state"];
-  void clear_state() ;
-  ::user::UserState state() const;
-  void set_state(::user::UserState value);
-
-  private:
-  ::user::UserState _internal_state() const;
-  void _internal_set_state(::user::UserState value);
-
-  public:
   // @@protoc_insertion_point(class_scope:user.User)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 1,
-      41, 2>
+      1, 2, 1,
+      26, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -338,9 +310,7 @@ class User final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr username_;
-    ::google::protobuf::internal::ArenaStringPtr debate_topic_id_;
     ::user_engagement::UserEngagement* engagement_;
-    int state_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -411,77 +381,7 @@ inline void User::set_allocated_username(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user.User.username)
 }
 
-// .user.UserState state = 2 [json_name = "state"];
-inline void User::clear_state() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.state_ = 0;
-}
-inline ::user::UserState User::state() const {
-  // @@protoc_insertion_point(field_get:user.User.state)
-  return _internal_state();
-}
-inline void User::set_state(::user::UserState value) {
-  _internal_set_state(value);
-  // @@protoc_insertion_point(field_set:user.User.state)
-}
-inline ::user::UserState User::_internal_state() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::user::UserState>(_impl_.state_);
-}
-inline void User::_internal_set_state(::user::UserState value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.state_ = value;
-}
-
-// string debate_topic_id = 3 [json_name = "debateTopicId"];
-inline void User::clear_debate_topic_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_id_.ClearToEmpty();
-}
-inline const std::string& User::debate_topic_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:user.User.debate_topic_id)
-  return _internal_debate_topic_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void User::set_debate_topic_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:user.User.debate_topic_id)
-}
-inline std::string* User::mutable_debate_topic_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_topic_id();
-  // @@protoc_insertion_point(field_mutable:user.User.debate_topic_id)
-  return _s;
-}
-inline const std::string& User::_internal_debate_topic_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_topic_id_.Get();
-}
-inline void User::_internal_set_debate_topic_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_id_.Set(value, GetArena());
-}
-inline std::string* User::_internal_mutable_debate_topic_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_topic_id_.Mutable( GetArena());
-}
-inline std::string* User::release_debate_topic_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:user.User.debate_topic_id)
-  return _impl_.debate_topic_id_.Release();
-}
-inline void User::set_allocated_debate_topic_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_id_.IsDefault()) {
-    _impl_.debate_topic_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:user.User.debate_topic_id)
-}
-
-// .user_engagement.UserEngagement engagement = 4 [json_name = "engagement"];
+// .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
 inline bool User::has_engagement() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
