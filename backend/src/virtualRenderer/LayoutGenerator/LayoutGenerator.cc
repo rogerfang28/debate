@@ -3,9 +3,10 @@
 // #include "./pageGenerator.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/layout.pb.h"
-#include "../pages/generators/homePage/HomePageGenerator.h"
-#include "../pages/generators/debatePage/DebateClaimPageGenerator.h"
-#include "../pages/generators/loginPage/LoginPageGenerator.h"
+#include "./pages/homePage/HomePageGenerator.h"
+#include "./pages/debatePage/DebatePageGenerator.h"
+#include "./pages/loginPage/LoginPageGenerator.h"
+#include "./pages/errorPage/ErrorPageGenerator.h"
 
 // #include "../utils/pathUtils.h"
 
@@ -29,16 +30,15 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (info.has_debate()) {
                 const auto& debate = info.debate();
-                return DebateClaimPageGenerator::GenerateDebatePage(debate.topic(), "test");
+                return DebatePageGenerator::GenerateDebatePage(debate.topic(), "test");
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
                 debate::DebateList emptyList;
                 return HomePageGenerator::GenerateHomePage(emptyList);
             }
         default:
-            std::cout << "[LayoutGenerator] Unknown engagement action, generating Home Page by default.\n";
-            debate::DebateList emptyList;
-            return HomePageGenerator::GenerateHomePage(emptyList);
+            std::cout << "[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.\n";
+            std::cout << "[LayoutGenerator] engagement action: " << info.engagement().current_action() << "\n";
+            return ErrorPageGenerator::GenerateErrorPage();
     }
-    // Unreachable code - removed dead code below
 }

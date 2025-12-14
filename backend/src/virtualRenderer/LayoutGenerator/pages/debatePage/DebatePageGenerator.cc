@@ -1,7 +1,7 @@
-#include "DebateClaimPageGenerator.h"
+#include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebateClaimPageGenerator::GenerateDebatePage(const std::string& claimTitle, const std::string& claimDescription) {
+ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, const std::string& claimDescription) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
