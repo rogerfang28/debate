@@ -63,7 +63,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         "hover:bg-blue-700",
         "text-white",
         "px-4 py-2",
-        "rounded",
+        "rounded",  
         "transition-colors text-sm"
     );
     ComponentGenerator::addChild(&leftTopSection, goHomeButton);

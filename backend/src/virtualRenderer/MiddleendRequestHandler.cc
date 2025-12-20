@@ -5,12 +5,11 @@
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
 #include <fstream>
-// #ifdef ABSOLUTE
-// #undef ABSOLUTE
-// #endif
+
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./virtualRenderer.h"
 #include <iostream>
+#include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
 
 
 void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
@@ -19,7 +18,7 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     // Parse ClientMessage protobuf
     client_message::ClientMessage msg;
     if (!msg.ParseFromString(req.body)) {
-      std::cerr << "❌ Failed to parse ClientMessage\n";
+      std::cerr << "Failed to parse ClientMessage\n";
       res.status = 400;
       res.set_content("Failed to parse ClientMessage", "text/plain");
       return;
@@ -40,12 +39,12 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
       std::cout << "Page ID: " << page_data.page_id() << "\n";
       std::cout << "Components count: " << page_data.components_size() << "\n";
       
-      std::cout << "\n--- All Components ---\n";
-      for (int i = 0; i < page_data.components_size(); i++) {
-        const auto& comp = page_data.components(i);
-        std::cout << "  [" << i << "] id: \"" << comp.id() 
-                  << "\" = \"" << comp.value() << "\"\n";
-      }
+    //   std::cout << "\n--- All Components ---\n";
+    //   for (int i = 0; i < page_data.components_size(); i++) {
+    //     const auto& comp = page_data.components(i);
+    //     std::cout << "  [" << i << "] id: \"" << comp.id() 
+    //               << "\" = \"" << comp.value() << "\"\n";
+    //   }
     } else {
       std::cout << "!!! No page data included\n";
     }
@@ -170,31 +169,7 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
 }
 
 ui::Page MiddleendRequestHandler::createLoginPage() {
-    // for now just extract from pages/schema/usernamePage.pbtxt
-    // -------- Get absolute path to pbtxt --------
-    std::filesystem::path exeDir = utils::getExeDir();
-
-    // Navigate relative to exe location (usually backend/build/bin/)
-    std::filesystem::path pbtxtPath =
-        exeDir / ".." / ".." / "src" / "virtualRenderer" / "pages" / "schemas" / "usernamePage.pbtxt";
-
-    pbtxtPath = std::filesystem::weakly_canonical(pbtxtPath);
-
-    std::cerr << "[PageGen] Loading sign-in page from " << pbtxtPath.u8string() << "\n";
-
-    std::ifstream input(pbtxtPath, std::ios::binary);
-    if (!input) {
-        std::cerr << "[PageGen][ERR] Couldn't open " << pbtxtPath.u8string() << "\n";
-        return {};
-    }
-
-    std::ostringstream buffer;
-    buffer << input.rdbuf();
-
-    ui::Page page;
-    if (!google::protobuf::TextFormat::ParseFromString(buffer.str(), &page)) {
-        std::cerr << "[PageGen][ERR] TextFormat parse failed for sign-in page\n";
-        return {};
-    }
-    return page;
+    // use LoginPageGenerator to create login page
+    ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
+    return loginPage;
 }

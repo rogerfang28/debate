@@ -30,7 +30,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (info.has_debate()) {
                 const auto& debate = info.debate();
-                return DebatePageGenerator::GenerateDebatePage(debate.topic(), "test");
+                return DebatePageGenerator::GenerateDebatePage(debate.topic(), "testiijng");
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
                 debate::DebateList emptyList;

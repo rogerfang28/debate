@@ -65,14 +65,12 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
     user::User userProto;
     
+    // user doesn't exist yet, make a default user
     if (!userDbHandler.userExists(user)) {
-        // user doesn't exist yet, make a default user
         userProto.set_username(user);
-        // userProto.set_state(user::NONE);
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
         userProto.mutable_engagement()->mutable_none_info();
-        // add to database
-        // serialize and add
+
         std::vector<uint8_t> userData(userProto.ByteSizeLong());
         userProto.SerializeToArray(userData.data(), userData.size());
         userDbHandler.addUser(user, userData);
