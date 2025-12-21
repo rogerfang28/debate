@@ -48,6 +48,14 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                 for (const auto& child: claim.children()) {
                     childClaims.push_back(child);
                 }
+                // test hardcode a child claim
+                // debate::Claim testChild;
+                // testChild.set_id("2");
+                // testChild.set_sentence("This is a test child claim.");
+                // testChild.set_description("This is the description of the test child claim.");
+                // childClaims.push_back(testChild);
+                // it worked
+
                 return DebatePageGenerator::GenerateDebatePage(debate.topic(), claim.sentence(), childClaims);
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
