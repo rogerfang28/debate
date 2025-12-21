@@ -294,24 +294,12 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         "rounded",
         "transition-colors text-sm"
     );
+
     ComponentGenerator::addChild(&descriptionActions, editDescriptionButton);
 
-    ui::Component addCounterArgument = ComponentGenerator::createButton(
-        "addCounterArgument",
-        "Add Counter-Argument",
-        "",
-        "bg-red-600",
-        "hover:bg-red-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&descriptionActions, addCounterArgument);
-
-    ui::Component addSupportingEvidence = ComponentGenerator::createButton(
-        "addSupportingEvidence",
-        "Add Supporting Evidence",
+    ui::Component addChildClaim = ComponentGenerator::createButton(
+        "addChildClaimButton",
+        "Add Child Claim",
         "",
         "bg-green-600",
         "hover:bg-green-700",
@@ -320,7 +308,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         "rounded",
         "transition-colors text-sm"
     );
-    ComponentGenerator::addChild(&descriptionActions, addSupportingEvidence);
+    ComponentGenerator::addChild(&descriptionActions, addChildClaim);
     ComponentGenerator::addChild(&descriptionBox, descriptionActions);
     ComponentGenerator::addChild(&centerContent, descriptionBox);
 

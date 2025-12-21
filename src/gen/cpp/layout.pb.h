@@ -65,9 +65,6 @@ extern Component_AttributesEntry_DoNotUseDefaultTypeInternal _Component_Attribut
 class Component_CssEntry_DoNotUse;
 struct Component_CssEntry_DoNotUseDefaultTypeInternal;
 extern Component_CssEntry_DoNotUseDefaultTypeInternal _Component_CssEntry_DoNotUse_default_instance_;
-class ListItem;
-struct ListItemDefaultTypeInternal;
-extern ListItemDefaultTypeInternal _ListItem_default_instance_;
 class Page;
 struct PageDefaultTypeInternal;
 extern PageDefaultTypeInternal _Page_default_instance_;
@@ -224,7 +221,7 @@ class Style final : public ::google::protobuf::Message
     return reinterpret_cast<const Style*>(
         &_Style_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(Style& a, Style& b) { a.Swap(&b); }
   inline void Swap(Style* other) {
     if (other == this) return;
@@ -311,9 +308,9 @@ class Style final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kCustomClassFieldNumber = 13,
+    kCustomClassFieldNumber = 1,
   };
-  // string custom_class = 13 [json_name = "customClass"];
+  // string custom_class = 1 [json_name = "customClass"];
   void clear_custom_class() ;
   const std::string& custom_class() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -420,7 +417,7 @@ class Size final : public ::google::protobuf::Message
     return reinterpret_cast<const Size*>(
         &_Size_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(Size& a, Size& b) { a.Swap(&b); }
   inline void Swap(Size* other) {
     if (other == this) return;
@@ -634,7 +631,7 @@ class Position final : public ::google::protobuf::Message
     return reinterpret_cast<const Position*>(
         &_Position_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(Position& a, Position& b) { a.Swap(&b); }
   inline void Swap(Position* other) {
     if (other == this) return;
@@ -795,238 +792,6 @@ class Position final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class ListItem final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:ui.ListItem) */ {
- public:
-  inline ListItem() : ListItem(nullptr) {}
-  ~ListItem() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ListItem* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListItem));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ListItem(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline ListItem(const ListItem& from) : ListItem(nullptr, from) {}
-  inline ListItem(ListItem&& from) noexcept
-      : ListItem(nullptr, std::move(from)) {}
-  inline ListItem& operator=(const ListItem& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ListItem& operator=(ListItem&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ListItem& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ListItem* internal_default_instance() {
-    return reinterpret_cast<const ListItem*>(
-        &_ListItem_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 1;
-  friend void swap(ListItem& a, ListItem& b) { a.Swap(&b); }
-  inline void Swap(ListItem* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ListItem* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ListItem* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ListItem>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ListItem& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ListItem& from) { ListItem::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(ListItem* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "ui.ListItem"; }
-
- protected:
-  explicit ListItem(::google::protobuf::Arena* arena);
-  ListItem(::google::protobuf::Arena* arena, const ListItem& from);
-  ListItem(::google::protobuf::Arena* arena, ListItem&& from) noexcept
-      : ListItem(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kLabelFieldNumber = 1,
-    kValueFieldNumber = 2,
-    kIconFieldNumber = 3,
-  };
-  // string label = 1 [json_name = "label"];
-  void clear_label() ;
-  const std::string& label() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_label(Arg_&& arg, Args_... args);
-  std::string* mutable_label();
-  PROTOBUF_NODISCARD std::string* release_label();
-  void set_allocated_label(std::string* value);
-
-  private:
-  const std::string& _internal_label() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_label(
-      const std::string& value);
-  std::string* _internal_mutable_label();
-
-  public:
-  // string value = 2 [json_name = "value"];
-  void clear_value() ;
-  const std::string& value() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_value(Arg_&& arg, Args_... args);
-  std::string* mutable_value();
-  PROTOBUF_NODISCARD std::string* release_value();
-  void set_allocated_value(std::string* value);
-
-  private:
-  const std::string& _internal_value() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_value(
-      const std::string& value);
-  std::string* _internal_mutable_value();
-
-  public:
-  // string icon = 3 [json_name = "icon"];
-  void clear_icon() ;
-  const std::string& icon() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_icon(Arg_&& arg, Args_... args);
-  std::string* mutable_icon();
-  PROTOBUF_NODISCARD std::string* release_icon();
-  void set_allocated_icon(std::string* value);
-
-  private:
-  const std::string& _internal_icon() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_icon(
-      const std::string& value);
-  std::string* _internal_mutable_icon();
-
-  public:
-  // @@protoc_insertion_point(class_scope:ui.ListItem)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
-      34, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const ListItem& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr label_;
-    ::google::protobuf::internal::ArenaStringPtr value_;
-    ::google::protobuf::internal::ArenaStringPtr icon_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_layout_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Component_CssEntry_DoNotUse final
     : public ::google::protobuf::internal::MapEntry<
           std::string, std::string,
@@ -1164,7 +929,7 @@ class Component final : public ::google::protobuf::Message
     return reinterpret_cast<const Component*>(
         &_Component_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(Component& a, Component& b) { a.Swap(&b); }
   inline void Swap(Component* other) {
     if (other == this) return;
@@ -1254,7 +1019,6 @@ class Component final : public ::google::protobuf::Message
     kChildrenFieldNumber = 5,
     kAttributesFieldNumber = 7,
     kCssFieldNumber = 8,
-    kItemsFieldNumber = 10,
     kIdFieldNumber = 1,
     kNameFieldNumber = 2,
     kTextFieldNumber = 4,
@@ -1309,23 +1073,6 @@ class Component final : public ::google::protobuf::Message
   ::google::protobuf::Map<std::string, std::string>* _internal_mutable_css();
 
   public:
-  // repeated .ui.ListItem items = 10 [json_name = "items"];
-  int items_size() const;
-  private:
-  int _internal_items_size() const;
-
-  public:
-  void clear_items() ;
-  ::ui::ListItem* mutable_items(int index);
-  ::google::protobuf::RepeatedPtrField<::ui::ListItem>* mutable_items();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::ui::ListItem>& _internal_items() const;
-  ::google::protobuf::RepeatedPtrField<::ui::ListItem>* _internal_mutable_items();
-  public:
-  const ::ui::ListItem& items(int index) const;
-  ::ui::ListItem* add_items();
-  const ::google::protobuf::RepeatedPtrField<::ui::ListItem>& items() const;
   // string id = 1 [json_name = "id"];
   void clear_id() ;
   const std::string& id() const;
@@ -1420,7 +1167,7 @@ class Component final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 10, 5,
+      4, 9, 4,
       57, 2>
       _table_;
 
@@ -1449,7 +1196,6 @@ class Component final : public ::google::protobuf::Message
                       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
                       ::google::protobuf::internal::WireFormatLite::TYPE_STRING>
         css_;
-    ::google::protobuf::RepeatedPtrField< ::ui::ListItem > items_;
     ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::internal::ArenaStringPtr name_;
     ::google::protobuf::internal::ArenaStringPtr text_;
@@ -1854,154 +1600,6 @@ inline ::google::protobuf::RepeatedPtrField<::ui::Component>*
 Page::_internal_mutable_components() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.components_;
-}
-
-// -------------------------------------------------------------------
-
-// ListItem
-
-// string label = 1 [json_name = "label"];
-inline void ListItem::clear_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.ClearToEmpty();
-}
-inline const std::string& ListItem::label() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.label)
-  return _internal_label();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_label(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.label)
-}
-inline std::string* ListItem::mutable_label() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_label();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.label)
-  return _s;
-}
-inline const std::string& ListItem::_internal_label() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.label_.Get();
-}
-inline void ListItem::_internal_set_label(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.label_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_label() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.label)
-  return _impl_.label_.Release();
-}
-inline void ListItem::set_allocated_label(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.label_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.label_.IsDefault()) {
-    _impl_.label_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.label)
-}
-
-// string value = 2 [json_name = "value"];
-inline void ListItem::clear_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.ClearToEmpty();
-}
-inline const std::string& ListItem::value() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.value)
-  return _internal_value();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_value(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.value)
-}
-inline std::string* ListItem::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.value)
-  return _s;
-}
-inline const std::string& ListItem::_internal_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.value_.Get();
-}
-inline void ListItem::_internal_set_value(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.value_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.value)
-  return _impl_.value_.Release();
-}
-inline void ListItem::set_allocated_value(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.value_.IsDefault()) {
-    _impl_.value_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.value)
-}
-
-// string icon = 3 [json_name = "icon"];
-inline void ListItem::clear_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.ClearToEmpty();
-}
-inline const std::string& ListItem::icon() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.ListItem.icon)
-  return _internal_icon();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListItem::set_icon(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.ListItem.icon)
-}
-inline std::string* ListItem::mutable_icon() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_icon();
-  // @@protoc_insertion_point(field_mutable:ui.ListItem.icon)
-  return _s;
-}
-inline const std::string& ListItem::_internal_icon() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.icon_.Get();
-}
-inline void ListItem::_internal_set_icon(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.Set(value, GetArena());
-}
-inline std::string* ListItem::_internal_mutable_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.icon_.Mutable( GetArena());
-}
-inline std::string* ListItem::release_icon() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.ListItem.icon)
-  return _impl_.icon_.Release();
-}
-inline void ListItem::set_allocated_icon(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.icon_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.icon_.IsDefault()) {
-    _impl_.icon_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.ListItem.icon)
 }
 
 // -------------------------------------------------------------------
@@ -2427,60 +2025,11 @@ inline void Component::set_allocated_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Component.value)
 }
 
-// repeated .ui.ListItem items = 10 [json_name = "items"];
-inline int Component::_internal_items_size() const {
-  return _internal_items().size();
-}
-inline int Component::items_size() const {
-  return _internal_items_size();
-}
-inline void Component::clear_items() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.items_.Clear();
-}
-inline ::ui::ListItem* Component::mutable_items(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:ui.Component.items)
-  return _internal_mutable_items()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::ui::ListItem>* Component::mutable_items()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:ui.Component.items)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_items();
-}
-inline const ::ui::ListItem& Component::items(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.Component.items)
-  return _internal_items().Get(index);
-}
-inline ::ui::ListItem* Component::add_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::ui::ListItem* _add = _internal_mutable_items()->Add();
-  // @@protoc_insertion_point(field_add:ui.Component.items)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::ui::ListItem>& Component::items() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:ui.Component.items)
-  return _internal_items();
-}
-inline const ::google::protobuf::RepeatedPtrField<::ui::ListItem>&
-Component::_internal_items() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.items_;
-}
-inline ::google::protobuf::RepeatedPtrField<::ui::ListItem>*
-Component::_internal_mutable_items() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.items_;
-}
-
 // -------------------------------------------------------------------
 
 // Style
 
-// string custom_class = 13 [json_name = "customClass"];
+// string custom_class = 1 [json_name = "customClass"];
 inline void Style::clear_custom_class() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.custom_class_.ClearToEmpty();

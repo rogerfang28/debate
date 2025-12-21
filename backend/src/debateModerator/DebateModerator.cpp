@@ -13,6 +13,7 @@
 #include "event-handlers/DeleteDebate/DeleteDebateHandler.h"
 #include "event-handlers/EnterDebate/EnterDebateHandler.h"
 #include "event-handlers/GoHome/GoHomeHandler.h"
+#include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
 DebateModerator::DebateModerator()
     // : dbHandler(utils::getDatabasePath()) // initialize handler with database
 {
@@ -49,6 +50,30 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
         case debate_event::GO_HOME:
             std::cout << "[DebateModerator] Event Type: GO_HOME\n";
             GoHomeHandler::GoHome(user);
+            break;
+        case debate_event::GO_TO_PARENT:
+            std::cout << "[DebateModerator] Event Type: GO_TO_PARENT\n";
+            // implement later
+            break;
+        case debate_event::OPEN_ADD_CHILD_CLAIM:
+            std::cout << "[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM\n";
+            // implement later
+            break;
+        case debate_event::ADD_CHILD_CLAIM:
+            std::cout << "[DebateModerator] Event Type: ADD_CHILD_CLAIM\n";
+            AddClaimUnderClaimHandler::AddClaimUnderClaim(
+                event.add_child_claim().claim(),
+                event.add_child_claim().connection_to_parent(),
+                user
+            );
+            break;
+        case debate_event::REPORT_CLAIM:
+            std::cout << "[DebateModerator] Event Type: REPORT_CLAIM\n";
+            // implement later
+            break;
+        case debate_event::DELETE_CURRENT_STATEMENT:
+            std::cout << "[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT\n";
+            // implement later
             break;
         default:
             std::cout << "[DebateModerator] Event Type: UNKNOWN\n";

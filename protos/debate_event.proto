@@ -32,18 +32,22 @@ message GoHome {
     string user_id       = 1;
 }
 
-message CreateStatement {
+message OpenAddChildClaim {
     string user_id       = 1;
-    string debate_id     = 2;
-    string statement     = 3;
-    string parent_id     = 4;
-    string connection    = 5;
 }
 
-message DeleteStatement {
+message AddChildClaim {
     string user_id       = 1;
-    string debate_id     = 2;
-    string statement_id  = 3;
+    string claim         = 2;
+    string connection_to_parent = 3;
+}
+
+message OpenReportClaim {
+    string user_id       = 1;
+}
+
+message DeleteCurrentStatement {
+    string user_id       = 1;
 }
 
 message AddConnection {
@@ -52,6 +56,10 @@ message AddConnection {
     string from_id       = 3;
     string to_id         = 4;
     string connection    = 5;
+}
+
+message GoToParentClaim {
+    string user_id       = 1;
 }
 
 // enum
@@ -63,6 +71,11 @@ enum EventType {
     DELETE_DEBATE          = 4;
     ENTER_DEBATE           = 5;
     GO_HOME                = 6;
+    GO_TO_PARENT          = 7;
+    OPEN_ADD_CHILD_CLAIM   = 8;
+    ADD_CHILD_CLAIM        = 9;
+    DELETE_CURRENT_STATEMENT = 10;
+    REPORT_CLAIM           = 11;
 }
 
 // main message
@@ -79,5 +92,10 @@ message DebateEvent {
     DeleteDebate    delete_debate    = 12;
     EnterDebate     enter_debate     = 13;
     GoHome          go_home          = 14;
+    OpenAddChildClaim open_add_child_claim = 15;
+    AddChildClaim   add_child_claim  = 16;
+    OpenReportClaim    open_report_claim    = 17;
+    DeleteCurrentStatement delete_current_statement = 18;
+    GoToParentClaim   go_to_parent    = 19;
   }
 }

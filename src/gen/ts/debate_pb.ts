@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJuCgVDbGFpbRIKCgJpZBgBIAEoCRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIRCglwYXJlbnRfaWQYBCABKAkSHwoIY2hpbGRyZW4YBSADKAsyDS5kZWJhdGUuQ2xhaW0ijQEKBkRlYmF0ZRIKCgJpZBgBIAEoCRINCgV0b3BpYxgCIAEoCRIQCghkZWJhdG9ycxgDIAMoCRIdCgZjbGFpbXMYBCADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBSABKAkSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3NiBnByb3RvMw", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKBAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCSKlAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0b3JzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIWCg5udW1fc3RhdGVtZW50cxgHIAEoBWIGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -43,9 +43,16 @@ export type Claim = Message<"debate.Claim"> & {
   parentId: string;
 
   /**
-   * @generated from field: repeated debate.Claim children = 5;
+   * @generated from field: repeated string children_ids = 5;
    */
-  children: Claim[];
+  childrenIds: string[];
+
+  /**
+   * e.g., "supports", "opposes"
+   *
+   * @generated from field: string connection_to_parent = 6;
+   */
+  connectionToParent: string;
 };
 
 /**
@@ -77,7 +84,7 @@ export type Debate = Message<"debate.Debate"> & {
   debators: string[];
 
   /**
-   * claims under topic in the debate
+   * every claim in the debate
    *
    * @generated from field: repeated debate.Claim claims = 4;
    */
@@ -96,6 +103,13 @@ export type Debate = Message<"debate.Debate"> & {
    * @generated from field: debate.DebateSettings settings = 6;
    */
   settings?: DebateSettings;
+
+  /**
+   * total number of statements in the debate so we can assign unique IDs
+   *
+   * @generated from field: int32 num_statements = 7;
+   */
+  numStatements: number;
 };
 
 /**

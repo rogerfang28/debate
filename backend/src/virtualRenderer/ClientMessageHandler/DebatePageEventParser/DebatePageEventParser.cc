@@ -14,7 +14,27 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         auto* goHome = event.mutable_go_home();
         goHome->set_user_id(user);
         std::cout << "  GO_HOME for user: " << user << "\n";
-    } else {
+    } else if (componentId == "goToParentButton" && eventType == "onClick") {
+        std::cout << "  GO_TO_PARENT for user: " << user << "\n";
+        event.set_type(debate_event::GO_TO_PARENT);
+        event.mutable_go_to_parent()->set_user_id(user);
+    } else if (componentId == "addChildClaimButton" && eventType == "onClick") {
+        std::cout << "  ADD_CLAIM for user: " << user << "\n";
+        event.set_type(debate_event::ADD_CHILD_CLAIM);
+        event.mutable_add_child_claim()->set_user_id(user);
+        event.mutable_add_child_claim()->set_claim("test claim text");
+        event.mutable_add_child_claim()->set_connection_to_parent("supports");
+    } else if (componentId == "deleteStatementButton" && eventType == "onClick") {
+        std::cout << "  DELETE_CURRENT_STATEMENT for user: " << user << "\n";
+        event.set_type(debate_event::DELETE_CURRENT_STATEMENT);
+        event.mutable_delete_current_statement()->set_user_id(user);
+    } else if (componentId == "reportButton" && eventType == "onClick") {
+        std::cout << "  REPORT_CLAIM for user: " << user << "\n";
+        event.set_type(debate_event::REPORT_CLAIM);
+    } else if (componentId == "editDescriptionButton" && eventType == "onClick") {
+        std::cout << "  EDIT_DESCRIPTION for user: " << user << "\n";
+    }
+    else {
         std::cerr << "Unknown component/event combination on debate page: " 
                   << componentId << "/" << eventType << "\n";
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIXCgROb25lEg8KB3VzZXJfaWQYASABKAkiNQoMQ3JlYXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSFAoMZGViYXRlX3RvcGljGAIgASgJIh8KDENsZWFyRGViYXRlcxIPCgd1c2VyX2lkGAEgASgJIjIKDERlbGV0ZURlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIxCgtFbnRlckRlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIZCgZHb0hvbWUSDwoHdXNlcl9pZBgBIAEoCSJvCg9DcmVhdGVTdGF0ZW1lbnQSDwoHdXNlcl9pZBgBIAEoCRIRCglkZWJhdGVfaWQYAiABKAkSEQoJc3RhdGVtZW50GAMgASgJEhEKCXBhcmVudF9pZBgEIAEoCRISCgpjb25uZWN0aW9uGAUgASgJIksKD0RlbGV0ZVN0YXRlbWVudBIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIUCgxzdGF0ZW1lbnRfaWQYAyABKAkiZwoNQWRkQ29ubmVjdGlvbhIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIPCgdmcm9tX2lkGAMgASgJEg0KBXRvX2lkGAQgASgJEhIKCmNvbm5lY3Rpb24YBSABKAkiiAMKC0RlYmF0ZUV2ZW50Eg8KB3VzZXJfaWQYASABKAkSCgoCaWQYAiABKAkSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiUKBHR5cGUYBCABKA4yFy5kZWJhdGVfZXZlbnQuRXZlbnRUeXBlEjMKDWNyZWF0ZV9kZWJhdGUYCiABKAsyGi5kZWJhdGVfZXZlbnQuQ3JlYXRlRGViYXRlSAASMwoNY2xlYXJfZGViYXRlcxgLIAEoCzIaLmRlYmF0ZV9ldmVudC5DbGVhckRlYmF0ZXNIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEicKB2dvX2hvbWUYDiABKAsyFC5kZWJhdGVfZXZlbnQuR29Ib21lSABCCQoHcGF5bG9hZCqJAQoJRXZlbnRUeXBlEhoKFkVWRU5UX0tJTkRfVU5TUEVDSUZJRUQQABIICgROT05FEAESEQoNQ1JFQVRFX0RFQkFURRACEhEKDUNMRUFSX0RFQkFURVMQAxIRCg1ERUxFVEVfREVCQVRFEAQSEAoMRU5URVJfREVCQVRFEAUSCwoHR09fSE9NRRAGYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIXCgROb25lEg8KB3VzZXJfaWQYASABKAkiNQoMQ3JlYXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSFAoMZGViYXRlX3RvcGljGAIgASgJIh8KDENsZWFyRGViYXRlcxIPCgd1c2VyX2lkGAEgASgJIjIKDERlbGV0ZURlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIxCgtFbnRlckRlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIZCgZHb0hvbWUSDwoHdXNlcl9pZBgBIAEoCSIkChFPcGVuQWRkQ2hpbGRDbGFpbRIPCgd1c2VyX2lkGAEgASgJIk0KDUFkZENoaWxkQ2xhaW0SDwoHdXNlcl9pZBgBIAEoCRINCgVjbGFpbRgCIAEoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgDIAEoCSIiCg9PcGVuUmVwb3J0Q2xhaW0SDwoHdXNlcl9pZBgBIAEoCSIpChZEZWxldGVDdXJyZW50U3RhdGVtZW50Eg8KB3VzZXJfaWQYASABKAkiZwoNQWRkQ29ubmVjdGlvbhIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIPCgdmcm9tX2lkGAMgASgJEg0KBXRvX2lkGAQgASgJEhIKCmNvbm5lY3Rpb24YBSABKAkiIgoPR29Ub1BhcmVudENsYWltEg8KB3VzZXJfaWQYASABKAkivgUKC0RlYmF0ZUV2ZW50Eg8KB3VzZXJfaWQYASABKAkSCgoCaWQYAiABKAkSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiUKBHR5cGUYBCABKA4yFy5kZWJhdGVfZXZlbnQuRXZlbnRUeXBlEjMKDWNyZWF0ZV9kZWJhdGUYCiABKAsyGi5kZWJhdGVfZXZlbnQuQ3JlYXRlRGViYXRlSAASMwoNY2xlYXJfZGViYXRlcxgLIAEoCzIaLmRlYmF0ZV9ldmVudC5DbGVhckRlYmF0ZXNIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEicKB2dvX2hvbWUYDiABKAsyFC5kZWJhdGVfZXZlbnQuR29Ib21lSAASPwoUb3Blbl9hZGRfY2hpbGRfY2xhaW0YDyABKAsyHy5kZWJhdGVfZXZlbnQuT3BlbkFkZENoaWxkQ2xhaW1IABI2Cg9hZGRfY2hpbGRfY2xhaW0YECABKAsyGy5kZWJhdGVfZXZlbnQuQWRkQ2hpbGRDbGFpbUgAEjoKEW9wZW5fcmVwb3J0X2NsYWltGBEgASgLMh0uZGViYXRlX2V2ZW50Lk9wZW5SZXBvcnRDbGFpbUgAEkgKGGRlbGV0ZV9jdXJyZW50X3N0YXRlbWVudBgSIAEoCzIkLmRlYmF0ZV9ldmVudC5EZWxldGVDdXJyZW50U3RhdGVtZW50SAASNQoMZ29fdG9fcGFyZW50GBMgASgLMh0uZGViYXRlX2V2ZW50LkdvVG9QYXJlbnRDbGFpbUgAQgkKB3BheWxvYWQq+gEKCUV2ZW50VHlwZRIaChZFVkVOVF9LSU5EX1VOU1BFQ0lGSUVEEAASCAoETk9ORRABEhEKDUNSRUFURV9ERUJBVEUQAhIRCg1DTEVBUl9ERUJBVEVTEAMSEQoNREVMRVRFX0RFQkFURRAEEhAKDEVOVEVSX0RFQkFURRAFEgsKB0dPX0hPTUUQBhIQCgxHT19UT19QQVJFTlQQBxIYChRPUEVOX0FERF9DSElMRF9DTEFJTRAIEhMKD0FERF9DSElMRF9DTEFJTRAJEhwKGERFTEVURV9DVVJSRU5UX1NUQVRFTUVOVBAKEhAKDFJFUE9SVF9DTEFJTRALYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -134,68 +134,82 @@ export const GoHomeSchema: GenMessage<GoHome> = /*@__PURE__*/
   messageDesc(file_debate_event, 5);
 
 /**
- * @generated from message debate_event.CreateStatement
+ * @generated from message debate_event.OpenAddChildClaim
  */
-export type CreateStatement = Message<"debate_event.CreateStatement"> & {
+export type OpenAddChildClaim = Message<"debate_event.OpenAddChildClaim"> & {
   /**
    * @generated from field: string user_id = 1;
    */
   userId: string;
-
-  /**
-   * @generated from field: string debate_id = 2;
-   */
-  debateId: string;
-
-  /**
-   * @generated from field: string statement = 3;
-   */
-  statement: string;
-
-  /**
-   * @generated from field: string parent_id = 4;
-   */
-  parentId: string;
-
-  /**
-   * @generated from field: string connection = 5;
-   */
-  connection: string;
 };
 
 /**
- * Describes the message debate_event.CreateStatement.
- * Use `create(CreateStatementSchema)` to create a new message.
+ * Describes the message debate_event.OpenAddChildClaim.
+ * Use `create(OpenAddChildClaimSchema)` to create a new message.
  */
-export const CreateStatementSchema: GenMessage<CreateStatement> = /*@__PURE__*/
+export const OpenAddChildClaimSchema: GenMessage<OpenAddChildClaim> = /*@__PURE__*/
   messageDesc(file_debate_event, 6);
 
 /**
- * @generated from message debate_event.DeleteStatement
+ * @generated from message debate_event.AddChildClaim
  */
-export type DeleteStatement = Message<"debate_event.DeleteStatement"> & {
+export type AddChildClaim = Message<"debate_event.AddChildClaim"> & {
   /**
    * @generated from field: string user_id = 1;
    */
   userId: string;
 
   /**
-   * @generated from field: string debate_id = 2;
+   * @generated from field: string claim = 2;
    */
-  debateId: string;
+  claim: string;
 
   /**
-   * @generated from field: string statement_id = 3;
+   * @generated from field: string connection_to_parent = 3;
    */
-  statementId: string;
+  connectionToParent: string;
 };
 
 /**
- * Describes the message debate_event.DeleteStatement.
- * Use `create(DeleteStatementSchema)` to create a new message.
+ * Describes the message debate_event.AddChildClaim.
+ * Use `create(AddChildClaimSchema)` to create a new message.
  */
-export const DeleteStatementSchema: GenMessage<DeleteStatement> = /*@__PURE__*/
+export const AddChildClaimSchema: GenMessage<AddChildClaim> = /*@__PURE__*/
   messageDesc(file_debate_event, 7);
+
+/**
+ * @generated from message debate_event.OpenReportClaim
+ */
+export type OpenReportClaim = Message<"debate_event.OpenReportClaim"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message debate_event.OpenReportClaim.
+ * Use `create(OpenReportClaimSchema)` to create a new message.
+ */
+export const OpenReportClaimSchema: GenMessage<OpenReportClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 8);
+
+/**
+ * @generated from message debate_event.DeleteCurrentStatement
+ */
+export type DeleteCurrentStatement = Message<"debate_event.DeleteCurrentStatement"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message debate_event.DeleteCurrentStatement.
+ * Use `create(DeleteCurrentStatementSchema)` to create a new message.
+ */
+export const DeleteCurrentStatementSchema: GenMessage<DeleteCurrentStatement> = /*@__PURE__*/
+  messageDesc(file_debate_event, 9);
 
 /**
  * @generated from message debate_event.AddConnection
@@ -232,7 +246,24 @@ export type AddConnection = Message<"debate_event.AddConnection"> & {
  * Use `create(AddConnectionSchema)` to create a new message.
  */
 export const AddConnectionSchema: GenMessage<AddConnection> = /*@__PURE__*/
-  messageDesc(file_debate_event, 8);
+  messageDesc(file_debate_event, 10);
+
+/**
+ * @generated from message debate_event.GoToParentClaim
+ */
+export type GoToParentClaim = Message<"debate_event.GoToParentClaim"> & {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message debate_event.GoToParentClaim.
+ * Use `create(GoToParentClaimSchema)` to create a new message.
+ */
+export const GoToParentClaimSchema: GenMessage<GoToParentClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 11);
 
 /**
  * main message
@@ -293,6 +324,36 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
      */
     value: GoHome;
     case: "goHome";
+  } | {
+    /**
+     * @generated from field: debate_event.OpenAddChildClaim open_add_child_claim = 15;
+     */
+    value: OpenAddChildClaim;
+    case: "openAddChildClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.AddChildClaim add_child_claim = 16;
+     */
+    value: AddChildClaim;
+    case: "addChildClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.OpenReportClaim open_report_claim = 17;
+     */
+    value: OpenReportClaim;
+    case: "openReportClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.DeleteCurrentStatement delete_current_statement = 18;
+     */
+    value: DeleteCurrentStatement;
+    case: "deleteCurrentStatement";
+  } | {
+    /**
+     * @generated from field: debate_event.GoToParentClaim go_to_parent = 19;
+     */
+    value: GoToParentClaim;
+    case: "goToParent";
   } | { case: undefined; value?: undefined };
 };
 
@@ -301,7 +362,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 9);
+  messageDesc(file_debate_event, 12);
 
 /**
  * enum
@@ -343,6 +404,31 @@ export enum EventType {
    * @generated from enum value: GO_HOME = 6;
    */
   GO_HOME = 6,
+
+  /**
+   * @generated from enum value: GO_TO_PARENT = 7;
+   */
+  GO_TO_PARENT = 7,
+
+  /**
+   * @generated from enum value: OPEN_ADD_CHILD_CLAIM = 8;
+   */
+  OPEN_ADD_CHILD_CLAIM = 8,
+
+  /**
+   * @generated from enum value: ADD_CHILD_CLAIM = 9;
+   */
+  ADD_CHILD_CLAIM = 9,
+
+  /**
+   * @generated from enum value: DELETE_CURRENT_STATEMENT = 10;
+   */
+  DELETE_CURRENT_STATEMENT = 10,
+
+  /**
+   * @generated from enum value: REPORT_CLAIM = 11;
+   */
+  REPORT_CLAIM = 11,
 }
 
 /**

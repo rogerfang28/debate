@@ -42,7 +42,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
 std::string VirtualRenderer::extractUserFromCookies(const httplib::Request& req) {
     auto cookie_header = req.get_header_value("Cookie");
-    std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
+    // std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
     
     if (cookie_header.empty()) {
         std::cout << "[Auth] No cookie found, returning 'guest'\n";

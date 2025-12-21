@@ -2,28 +2,18 @@ syntax = "proto3";
 
 package ui;
 
-// ======================
-// Root Page definition
-// ======================
 message Page {
   string page_id = 1;                 // Unique page identifier
   string title = 2;                   // Page title (optional)
   repeated Component components = 3;  // Top-level components
 }
 
-// ======================
-// List items
-// ======================
-message ListItem {
-  string label = 1;
-  string value = 2;
-  string icon = 3; // Optional icon class for UI frameworks
-}
+// message ListItem {
+//   string label = 1;
+//   string value = 2;
+//   string icon = 3; // Optional icon class for UI frameworks
+// }
 
-
-// ======================
-// Component definition
-// ======================
 message Component {
   string id = 1;                       // Unique component ID
   string name = 2;                      // Component name
@@ -34,52 +24,21 @@ message Component {
   map<string, string> css = 8;         // Arbitrary inline CSS (fallback/flexibility)
   map<string, string> attributes = 7;  // Arbitrary HTML attributes (e.g., data-* attrs)
   string value = 9;                   // Default or bound value
-  repeated ListItem items = 10;        // For lists, dropdowns, menus
+  // repeated ListItem items = 10;        // For lists, dropdowns, menus
 }
 
-// ======================
-// Component types
-// ======================
 enum ComponentType {
   UNKNOWN = 0;
   TEXT = 1;
   BUTTON = 2;
   INPUT = 3;
-  // TEXTAREA = 4;
-  // NODE_GRAPH = 5;
-  // CHAT = 6;
-  // IMAGE = 7;
-  // CARD = 8;
-  // LIST = 9;
-  // TABLE = 10;
-  // MODAL = 11;
   CONTAINER = 12;
-  // FORM = 13;
-  // ICON = 14;
 }
 
-// ======================
-// Styling information
-// ======================
 message Style {
-  // LayoutType layout = 1;              // flex/grid/absolute/etc.
-  // Position position = 2;              // For absolute/fixed layout
-  // Size size = 3;                       // Width & height
-  // string padding = 4;                  // Tailwind padding utility (e.g., "p-4")
-  // string margin = 5;                   // Tailwind margin utility (e.g., "m-2")
-  // string bg_color = 6;                 // Tailwind background color class
-  // string text_color = 7;               // Tailwind text color class
-  // string border = 8;                   // Tailwind border utility
-  // string rounded = 9;                  // Tailwind rounded corners
-  // string shadow = 10;                  // Tailwind shadow class
-  // string gap = 11;                     // Tailwind gap utility
-  // bool scrollable = 12;                // Allow scroll if content overflows
-  string custom_class = 13;            // Any extra Tailwind classes FOR NOW WE ONLY USING THIS
+  string custom_class = 1;            // Any extra Tailwind classes FOR NOW WE ONLY USING THIS
 }
 
-// ======================
-// Layout, position, size
-// ======================
 enum LayoutType {
   ABSLT = 0;
   FLEX_ROW = 1;

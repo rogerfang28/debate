@@ -10,14 +10,16 @@ message Claim {
   string sentence = 2;
   string description = 3;
   string parent_id = 4;
-  repeated Claim children = 5;
+  repeated string children_ids = 5;
+  string connection_to_parent = 6; // e.g., "supports", "opposes"
 }
 
 message Debate {
   string id = 1;
   string topic = 2;
   repeated string debators = 3; // user id of participants
-  repeated Claim claims = 4; // claims under topic in the debate
+  repeated Claim claims = 4; // every claim in the debate
   string owner = 5; // user id of debate creator
   debate.DebateSettings settings = 6; // settings for this debate
+  int32 num_statements = 7; // total number of statements in the debate so we can assign unique IDs
 }

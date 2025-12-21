@@ -111,39 +111,6 @@ struct PositionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
-
-inline constexpr ListItem::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : label_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        value_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        icon_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR ListItem::ListItem(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ListItemDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ListItemDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ListItemDefaultTypeInternal() {}
-  union {
-    ListItem _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListItemDefaultTypeInternal _ListItem_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR Component_CssEntry_DoNotUse::Component_CssEntry_DoNotUse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -187,7 +154,6 @@ inline constexpr Component::Impl_::Impl_(
         children_{},
         attributes_{},
         css_{},
-        items_{},
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -271,17 +237,6 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.page_id_),
         PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.title_),
         PROTOBUF_FIELD_OFFSET(::ui::Page, _impl_.components_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.label_),
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::ui::ListItem, _impl_.icon_),
         PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::ui::Component_CssEntry_DoNotUse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -323,14 +278,12 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.css_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.attributes_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.value_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.items_),
         ~0u,
         ~0u,
         ~0u,
         ~0u,
         ~0u,
         0,
-        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -369,17 +322,15 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::ui::Page)},
-        {11, -1, -1, sizeof(::ui::ListItem)},
-        {22, 32, -1, sizeof(::ui::Component_CssEntry_DoNotUse)},
-        {34, 44, -1, sizeof(::ui::Component_AttributesEntry_DoNotUse)},
-        {46, 64, -1, sizeof(::ui::Component)},
-        {74, -1, -1, sizeof(::ui::Style)},
-        {83, -1, -1, sizeof(::ui::Position)},
-        {94, -1, -1, sizeof(::ui::Size)},
+        {11, 21, -1, sizeof(::ui::Component_CssEntry_DoNotUse)},
+        {23, 33, -1, sizeof(::ui::Component_AttributesEntry_DoNotUse)},
+        {35, 52, -1, sizeof(::ui::Component)},
+        {61, -1, -1, sizeof(::ui::Style)},
+        {70, -1, -1, sizeof(::ui::Position)},
+        {81, -1, -1, sizeof(::ui::Size)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
-    &::ui::_ListItem_default_instance_._instance,
     &::ui::_Component_CssEntry_DoNotUse_default_instance_._instance,
     &::ui::_Component_AttributesEntry_DoNotUse_default_instance_._instance,
     &::ui::_Component_default_instance_._instance,
@@ -392,40 +343,37 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\014layout.proto\022\002ui\"d\n\004Page\022\027\n\007page_id\030\001 "
     "\001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncom"
     "ponents\030\003 \003(\0132\r.ui.ComponentR\ncomponents"
-    "\"J\n\010ListItem\022\024\n\005label\030\001 \001(\tR\005label\022\024\n\005va"
-    "lue\030\002 \001(\tR\005value\022\022\n\004icon\030\003 \001(\tR\004icon\"\320\003\n"
-    "\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002 \001(\t"
-    "R\004name\022%\n\004type\030\003 \001(\0162\021.ui.ComponentTypeR"
-    "\004type\022\022\n\004text\030\004 \001(\tR\004text\022)\n\010children\030\005 "
-    "\003(\0132\r.ui.ComponentR\010children\022\037\n\005style\030\006 "
-    "\001(\0132\t.ui.StyleR\005style\022(\n\003css\030\010 \003(\0132\026.ui."
-    "Component.CssEntryR\003css\022=\n\nattributes\030\007 "
-    "\003(\0132\035.ui.Component.AttributesEntryR\nattr"
-    "ibutes\022\024\n\005value\030\t \001(\tR\005value\022\"\n\005items\030\n "
-    "\003(\0132\014.ui.ListItemR\005items\0326\n\010CssEntry\022\020\n\003"
-    "key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001"
-    "\032=\n\017AttributesEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n"
-    "\005value\030\002 \001(\tR\005value:\0028\001\"*\n\005Style\022!\n\014cust"
-    "om_class\030\r \001(\tR\013customClass\":\n\010Position\022"
-    "\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001("
-    "\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005width\022\026\n"
-    "\006height\030\002 \001(\tR\006height*L\n\rComponentType\022\013"
-    "\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INP"
-    "UT\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t\n\005ABS"
-    "LT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID"
-    "\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\"\254\003\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002"
+    " \001(\tR\004name\022%\n\004type\030\003 \001(\0162\021.ui.ComponentT"
+    "ypeR\004type\022\022\n\004text\030\004 \001(\tR\004text\022)\n\010childre"
+    "n\030\005 \003(\0132\r.ui.ComponentR\010children\022\037\n\005styl"
+    "e\030\006 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\010 \003(\0132\026"
+    ".ui.Component.CssEntryR\003css\022=\n\nattribute"
+    "s\030\007 \003(\0132\035.ui.Component.AttributesEntryR\n"
+    "attributes\022\024\n\005value\030\t \001(\tR\005value\0326\n\010CssE"
+    "ntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005v"
+    "alue:\0028\001\032=\n\017AttributesEntry\022\020\n\003key\030\001 \001(\t"
+    "R\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"*\n\005Style"
+    "\022!\n\014custom_class\030\001 \001(\tR\013customClass\":\n\010P"
+    "osition\022\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004u"
+    "nit\030\003 \001(\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005"
+    "width\022\026\n\006height\030\002 \001(\tR\006height*L\n\rCompone"
+    "ntType\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020"
+    "\002\022\t\n\005INPUT\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutTyp"
+    "e\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002"
+    "\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    982,
+    870,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
     nullptr,
     0,
-    8,
+    7,
     schemas,
     file_default_instances,
     TableStruct_layout_2eproto::offsets,
@@ -758,295 +706,6 @@ void Page::InternalSwap(Page* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class ListItem::_Internal {
- public:
-};
-
-ListItem::ListItem(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:ui.ListItem)
-}
-inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::ui::ListItem& from_msg)
-      : label_(arena, from.label_),
-        value_(arena, from.value_),
-        icon_(arena, from.icon_),
-        _cached_size_{0} {}
-
-ListItem::ListItem(
-    ::google::protobuf::Arena* arena,
-    const ListItem& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  ListItem* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:ui.ListItem)
-}
-inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : label_(arena),
-        value_(arena),
-        icon_(arena),
-        _cached_size_{0} {}
-
-inline void ListItem::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-ListItem::~ListItem() {
-  // @@protoc_insertion_point(destructor:ui.ListItem)
-  SharedDtor(*this);
-}
-inline void ListItem::SharedDtor(MessageLite& self) {
-  ListItem& this_ = static_cast<ListItem&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.label_.Destroy();
-  this_._impl_.value_.Destroy();
-  this_._impl_.icon_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* ListItem::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) ListItem(arena);
-}
-constexpr auto ListItem::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ListItem),
-                                            alignof(ListItem));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull ListItem::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_ListItem_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &ListItem::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<ListItem>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &ListItem::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ListItem>(), &ListItem::ByteSizeLong,
-            &ListItem::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(ListItem, _impl_._cached_size_),
-        false,
-    },
-    &ListItem::kDescriptorMethods,
-    &descriptor_table_layout_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* ListItem::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 34, 2> ListItem::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::ui::ListItem>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string label = 1 [json_name = "label"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_)}},
-    // string value = 2 [json_name = "value"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_)}},
-    // string icon = 3 [json_name = "icon"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string label = 1 [json_name = "label"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.label_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2 [json_name = "value"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.value_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string icon = 3 [json_name = "icon"];
-    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.icon_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\13\5\5\4\0\0\0\0"
-    "ui.ListItem"
-    "label"
-    "value"
-    "icon"
-  }},
-};
-
-PROTOBUF_NOINLINE void ListItem::Clear() {
-// @@protoc_insertion_point(message_clear_start:ui.ListItem)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.label_.ClearToEmpty();
-  _impl_.value_.ClearToEmpty();
-  _impl_.icon_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* ListItem::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const ListItem& this_ = static_cast<const ListItem&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* ListItem::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const ListItem& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:ui.ListItem)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string label = 1 [json_name = "label"];
-          if (!this_._internal_label().empty()) {
-            const std::string& _s = this_._internal_label();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.label");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string value = 2 [json_name = "value"];
-          if (!this_._internal_value().empty()) {
-            const std::string& _s = this_._internal_value();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.value");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          // string icon = 3 [json_name = "icon"];
-          if (!this_._internal_icon().empty()) {
-            const std::string& _s = this_._internal_icon();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.ListItem.icon");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:ui.ListItem)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t ListItem::ByteSizeLong(const MessageLite& base) {
-          const ListItem& this_ = static_cast<const ListItem&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t ListItem::ByteSizeLong() const {
-          const ListItem& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:ui.ListItem)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string label = 1 [json_name = "label"];
-            if (!this_._internal_label().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_label());
-            }
-            // string value = 2 [json_name = "value"];
-            if (!this_._internal_value().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_value());
-            }
-            // string icon = 3 [json_name = "icon"];
-            if (!this_._internal_icon().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_icon());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void ListItem::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<ListItem*>(&to_msg);
-  auto& from = static_cast<const ListItem&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:ui.ListItem)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_label().empty()) {
-    _this->_internal_set_label(from._internal_label());
-  }
-  if (!from._internal_value().empty()) {
-    _this->_internal_set_value(from._internal_value());
-  }
-  if (!from._internal_icon().empty()) {
-    _this->_internal_set_icon(from._internal_icon());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void ListItem::CopyFrom(const ListItem& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:ui.ListItem)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void ListItem::InternalSwap(ListItem* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.label_, &other->_impl_.label_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, &other->_impl_.value_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.icon_, &other->_impl_.icon_, arena);
-}
-
-::google::protobuf::Metadata ListItem::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 #if defined(PROTOBUF_CUSTOM_VTABLE)
               Component_CssEntry_DoNotUse::Component_CssEntry_DoNotUse() : SuperType(_class_data_.base()) {}
               Component_CssEntry_DoNotUse::Component_CssEntry_DoNotUse(::google::protobuf::Arena* arena)
@@ -1254,7 +913,6 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         children_{visibility, arena, from.children_},
         attributes_{visibility, arena, from.attributes_},
         css_{visibility, arena, from.css_},
-        items_{visibility, arena, from.items_},
         id_(arena, from.id_),
         name_(arena, from.name_),
         text_(arena, from.text_),
@@ -1288,7 +946,6 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         children_{visibility, arena},
         attributes_{visibility, arena},
         css_{visibility, arena},
-        items_{visibility, arena},
         id_(arena),
         name_(arena),
         text_(arena),
@@ -1345,10 +1002,6 @@ constexpr auto Component::InternalNewImpl_() {
           decltype(Component::_impl_.attributes_)::
               InternalGetArenaOffsetAlt(
                   ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(Component, _impl_.items_) +
-          decltype(Component::_impl_.items_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
   });
   if (arena_bits.has_value()) {
     return ::google::protobuf::internal::MessageCreator::CopyInit(
@@ -1387,16 +1040,16 @@ const ::google::protobuf::internal::ClassData* Component::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 10, 5, 57, 2> Component::_table_ = {
+const ::_pbi::TcParseTable<4, 9, 4, 57, 2> Component::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_),
     0, // no _extensions_
-    10, 120,  // max_field_number, fast_idx_mask
+    9, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966272,  // skipmap
+    4294966784,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    10,  // num_field_entries
-    5,  // num_aux_entries
+    9,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1429,9 +1082,7 @@ const ::_pbi::TcParseTable<4, 10, 5, 57, 2> Component::_table_ = {
     // string value = 9 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {74, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.value_)}},
-    // repeated .ui.ListItem items = 10 [json_name = "items"];
-    {::_pbi::TcParser::FastMtR1,
-     {82, 63, 2, PROTOBUF_FIELD_OFFSET(Component, _impl_.items_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1459,21 +1110,17 @@ const ::_pbi::TcParseTable<4, 10, 5, 57, 2> Component::_table_ = {
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // map<string, string> attributes = 7 [json_name = "attributes"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), -1, 3,
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
     // map<string, string> css = 8 [json_name = "css"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), -1, 4,
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), -1, 3,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
     // string value = 9 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.ListItem items = 10 [json_name = "items"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.items_), -1, 2,
-    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::ui::Component>()},
     {::_pbi::TcParser::GetTable<::ui::Style>()},
-    {::_pbi::TcParser::GetTable<::ui::ListItem>()},
     {::_pbi::TcParser::GetMapAuxInfo<
         decltype(Component()._impl_.attributes_)>(
         1, 0, 0, 9,
@@ -1504,7 +1151,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
   _impl_.children_.Clear();
   _impl_.attributes_.Clear();
   _impl_.css_.Clear();
-  _impl_.items_.Clear();
   _impl_.id_.ClearToEmpty();
   _impl_.name_.ClearToEmpty();
   _impl_.text_.ClearToEmpty();
@@ -1658,17 +1304,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(9, _s, target);
           }
 
-          // repeated .ui.ListItem items = 10 [json_name = "items"];
-          for (unsigned i = 0, n = static_cast<unsigned>(
-                                   this_._internal_items_size());
-               i < n; i++) {
-            const auto& repfield = this_._internal_items().Get(i);
-            target =
-                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    10, repfield, repfield.GetCachedSize(),
-                    target, stream);
-          }
-
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1719,13 +1354,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
                 total_size += _pbi::MapEntryFuncs<std::string, std::string,
                                                _pbi::WireFormatLite::TYPE_STRING,
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
-              }
-            }
-            // repeated .ui.ListItem items = 10 [json_name = "items"];
-            {
-              total_size += 1UL * this_._internal_items_size();
-              for (const auto& msg : this_._internal_items()) {
-                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
           }
@@ -1783,8 +1411,6 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
       from._internal_children());
   _this->_impl_.attributes_.MergeFrom(from._impl_.attributes_);
   _this->_impl_.css_.MergeFrom(from._impl_.css_);
-  _this->_internal_mutable_items()->MergeFrom(
-      from._internal_items());
   if (!from._internal_id().empty()) {
     _this->_internal_set_id(from._internal_id());
   }
@@ -1831,7 +1457,6 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT other) {
   _impl_.children_.InternalSwap(&other->_impl_.children_);
   _impl_.attributes_.InternalSwap(&other->_impl_.attributes_);
   _impl_.css_.InternalSwap(&other->_impl_.css_);
-  _impl_.items_.InternalSwap(&other->_impl_.items_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
@@ -1945,9 +1570,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 29, 2> Style::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    13, 0,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294963199,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
     0,  // num_aux_entries
@@ -1959,13 +1584,13 @@ const ::_pbi::TcParseTable<0, 1, 0, 29, 2> Style::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Style>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string custom_class = 13 [json_name = "customClass"];
+    // string custom_class = 1 [json_name = "customClass"];
     {::_pbi::TcParser::FastUS1,
-     {106, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string custom_class = 13 [json_name = "customClass"];
+    // string custom_class = 1 [json_name = "customClass"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2003,12 +1628,12 @@ PROTOBUF_NOINLINE void Style::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string custom_class = 13 [json_name = "customClass"];
+          // string custom_class = 1 [json_name = "customClass"];
           if (!this_._internal_custom_class().empty()) {
             const std::string& _s = this_._internal_custom_class();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Style.custom_class");
-            target = stream->WriteStringMaybeAliased(13, _s, target);
+            target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2035,7 +1660,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           (void)cached_has_bits;
 
            {
-            // string custom_class = 13 [json_name = "customClass"];
+            // string custom_class = 1 [json_name = "customClass"];
             if (!this_._internal_custom_class().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_custom_class());

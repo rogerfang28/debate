@@ -45,8 +45,14 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                 // now i have the claim
                 // i need to find its children
                 std::vector<debate::Claim> childClaims;
-                for (const auto& child: claim.children()) {
-                    childClaims.push_back(child);
+                for (const auto& childId: claim.children_ids()) {
+                    // find the child claim by id
+                    for (const auto& c : debate.claims()) {
+                        if (c.id() == childId) {
+                            childClaims.push_back(c);
+                            break;
+                        }
+                    }
                 }
                 // test hardcode a child claim
                 // debate::Claim testChild;

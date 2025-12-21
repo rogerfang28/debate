@@ -44,6 +44,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteDebate/DeleteDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EnterDebate/EnterDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoHome/GoHomeHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.cc
 
     # databse communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
