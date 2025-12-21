@@ -357,6 +357,44 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         ""
     );
 
+    // Use actual child claims from the vector
+    for (size_t i = 0; i < childClaims.size(); i++) {
+        std::string nodeId = "childNode" + std::to_string(i + 1);
+        ui::Component childNode = ComponentGenerator::createContainer(
+            nodeId,
+            "",
+            "bg-gray-700",
+            "p-4",
+            "",
+            "border border-gray-700",
+            "rounded",
+            ""
+        );
+
+        ui::Component childNodeTitle = ComponentGenerator::createText(
+            nodeId + "Title",
+            childClaims[i].sentence(),
+            "",
+            "text-white",
+            "",
+            "mb-3"
+        );
+        ComponentGenerator::addChild(&childNode, childNodeTitle);
+
+        ui::Component childNodeButton = ComponentGenerator::createButton(
+            nodeId + "Button",
+            "View Claim",
+            "",
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "w-full transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&childNode, childNodeButton);
+        ComponentGenerator::addChild(&childArgumentsGrid, childNode);
+    }
 
     ComponentGenerator::addChild(&childArgumentsSection, childArgumentsGrid);
     ComponentGenerator::addChild(&centerContent, childArgumentsSection);
