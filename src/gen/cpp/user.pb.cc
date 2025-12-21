@@ -29,6 +29,9 @@ namespace user {
 inline constexpr User::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        user_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -54,7 +57,8 @@ struct UserDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UserDefaultTypeInternal _User_default_instance_;
 }  // namespace user
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_user_2eproto[1];
+static constexpr const ::_pb::EnumDescriptor**
+    file_level_enum_descriptors_user_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_user_2eproto = nullptr;
 const ::uint32_t
@@ -68,15 +72,17 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.engagement_),
+        ~0u,
         ~0u,
         0,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 10, -1, sizeof(::user::User)},
+        {0, 11, -1, sizeof(::user::User)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user::_User_default_instance_._instance,
@@ -84,11 +90,10 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\"c\n\004User\022\032\n\010username\030\001 \001(\tR\010username\022\?\n"
-    "\nengagement\030\002 \001(\0132\037.user_engagement.User"
-    "EngagementR\nengagement*\?\n\tUserState\022\032\n\026U"
-    "SER_STATE_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\014\n\010DEB"
-    "ATING\020\002b\006proto3"
+    "o\"|\n\004User\022\027\n\007user_id\030\001 \001(\tR\006userId\022\032\n\010us"
+    "ername\030\002 \001(\tR\010username\022\?\n\nengagement\030\003 \001"
+    "(\0132\037.user_engagement.UserEngagementR\neng"
+    "agementb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_user_2eproto_deps[1] =
     {
@@ -98,7 +103,7 @@ static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    215,
+    175,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -112,15 +117,6 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto =
     file_level_service_descriptors_user_2eproto,
 };
 namespace user {
-const ::google::protobuf::EnumDescriptor* UserState_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_user_2eproto);
-  return file_level_enum_descriptors_user_2eproto[0];
-}
-PROTOBUF_CONSTINIT const uint32_t UserState_internal_data_[] = {
-    196608u, 0u, };
-bool UserState_IsValid(int value) {
-  return 0 <= value && value <= 2;
-}
 // ===================================================================
 
 class User::_Internal {
@@ -150,6 +146,7 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     const Impl_& from, const ::user::User& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        user_id_(arena, from.user_id_),
         username_(arena, from.username_) {}
 
 User::User(
@@ -176,6 +173,7 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0},
+        user_id_(arena),
         username_(arena) {}
 
 inline void User::SharedCtor(::_pb::Arena* arena) {
@@ -190,6 +188,7 @@ inline void User::SharedDtor(MessageLite& self) {
   User& this_ = static_cast<User&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.user_id_.Destroy();
   this_._impl_.username_.Destroy();
   delete this_._impl_.engagement_;
   this_._impl_.~Impl_();
@@ -231,15 +230,15 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 26, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 1, 33, 2> User::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -249,26 +248,34 @@ const ::_pbi::TcParseTable<1, 2, 1, 26, 2> User::_table_ = {
     ::_pbi::TcParser::GetTable<::user::User>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
-    {::_pbi::TcParser::FastMtS1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)}},
-    // string username = 1 [json_name = "username"];
+    {::_pbi::TcParser::MiniParse, {}},
+    // string user_id = 1 [json_name = "userId"];
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
+    // string username = 2 [json_name = "username"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
+    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+    {::_pbi::TcParser::FastMtS1,
+     {26, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string username = 1 [json_name = "username"];
+    // string user_id = 1 [json_name = "userId"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string username = 2 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
+    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
   }}, {{
-    "\11\10\0\0\0\0\0\0"
+    "\11\7\10\0\0\0\0\0"
     "user.User"
+    "user_id"
     "username"
   }},
 };
@@ -280,6 +287,7 @@ PROTOBUF_NOINLINE void User::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.user_id_.ClearToEmpty();
   _impl_.username_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
@@ -305,19 +313,27 @@ PROTOBUF_NOINLINE void User::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string username = 1 [json_name = "username"];
+          // string user_id = 1 [json_name = "userId"];
+          if (!this_._internal_user_id().empty()) {
+            const std::string& _s = this_._internal_user_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.user_id");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // string username = 2 [json_name = "username"];
           if (!this_._internal_username().empty()) {
             const std::string& _s = this_._internal_username();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.username");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+            target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
+          // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                2, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
+                3, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
                 stream);
           }
 
@@ -346,14 +362,19 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string username = 1 [json_name = "username"];
+            // string user_id = 1 [json_name = "userId"];
+            if (!this_._internal_user_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_user_id());
+            }
+            // string username = 2 [json_name = "username"];
             if (!this_._internal_username().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
             }
           }
            {
-            // .user_engagement.UserEngagement engagement = 2 [json_name = "engagement"];
+            // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -373,6 +394,9 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_user_id().empty()) {
+    _this->_internal_set_user_id(from._internal_user_id());
+  }
   if (!from._internal_username().empty()) {
     _this->_internal_set_username(from._internal_username());
   }
@@ -404,6 +428,7 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
   swap(_impl_.engagement_, other->_impl_.engagement_);
 }

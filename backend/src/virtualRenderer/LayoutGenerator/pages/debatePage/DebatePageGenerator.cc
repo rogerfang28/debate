@@ -1,7 +1,7 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, const std::string& claimDescription) {
+ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, const std::string& claimDescription, std::vector<debate::Claim> childClaims) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -357,50 +357,6 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         ""
     );
 
-    // Example child nodes (3 nodes as in the pbtxt)
-    std::vector<std::pair<std::string, std::string>> childNodes = {
-        {"some child node", "button to go to this node"},
-        {"another", "button"},
-        {"another", "nutton"}
-    };
-
-    for (size_t i = 0; i < childNodes.size(); i++) {
-        std::string nodeId = "childNode" + std::to_string(i + 1);
-        ui::Component childNode = ComponentGenerator::createContainer(
-            nodeId,
-            "",
-            "bg-gray-700",
-            "p-4",
-            "",
-            "border border-gray-700",
-            "rounded",
-            ""
-        );
-
-        ui::Component childNodeTitle = ComponentGenerator::createText(
-            nodeId + "Title",
-            childNodes[i].first,
-            "",
-            "text-white",
-            "",
-            "mb-3"
-        );
-        ComponentGenerator::addChild(&childNode, childNodeTitle);
-
-        ui::Component childNodeButton = ComponentGenerator::createButton(
-            nodeId + "Button",
-            childNodes[i].second,
-            "",
-            "bg-blue-600",
-            "hover:bg-blue-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "w-full transition-colors text-sm"
-        );
-        ComponentGenerator::addChild(&childNode, childNodeButton);
-        ComponentGenerator::addChild(&childArgumentsGrid, childNode);
-    }
 
     ComponentGenerator::addChild(&childArgumentsSection, childArgumentsGrid);
     ComponentGenerator::addChild(&centerContent, childArgumentsSection);

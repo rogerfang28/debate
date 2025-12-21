@@ -86,7 +86,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
         case user_engagement::ACTION_NONE:
         {
             // add debate list of debates user is in
-            std::vector<std::map<std::string, std::string>> debates = debateDbHandler.getDebates(user);
+            std::vector<std::map<std::string, std::string>> debates = debateDbHandler.getDebates(user); // this is how it gets all debates for user
             // put in a debate_list proto
             debate::DebateList debateListProto;
             for (const auto& row : debates) {
@@ -108,6 +108,11 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
                     debate::Debate debateProto;
                     debateProto.ParseFromArray(debateData.data(), debateData.size());
                     *responseMessage.mutable_debate() = debateProto;
+                    std::cout << "[DebateModerator] Debate Topic: " << debateProto.topic() << "\n";
+                    std::cout << "[DebateModerator] Added debate info to response for debate ID: " << debateID << "\n";
+                }
+                else{
+                    std::cout << "[DebateModerator] Warning: Debate ID " << debateID << " does not exist in database.\n";
                 }
             }
             break;

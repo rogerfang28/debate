@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJQCgVDbGFpbRIQCghzZW50ZW5jZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRIOCgZwYXJlbnQYAyABKAkSEAoIY2hpbGRyZW4YBCADKAkigQEKBkRlYmF0ZRINCgV0b3BpYxgBIAEoCRIQCghkZWJhdG9ycxgCIAMoCRIdCgZjbGFpbXMYAyADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBCABKAkSKAoIc2V0dGluZ3MYBSABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3NiBnByb3RvMw", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJuCgVDbGFpbRIKCgJpZBgBIAEoCRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIRCglwYXJlbnRfaWQYBCABKAkSHwoIY2hpbGRyZW4YBSADKAsyDS5kZWJhdGUuQ2xhaW0ijQEKBkRlYmF0ZRIKCgJpZBgBIAEoCRINCgV0b3BpYxgCIAEoCRIQCghkZWJhdG9ycxgDIAMoCRIdCgZjbGFpbXMYBCADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBSABKAkSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3NiBnByb3RvMw", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -21,32 +21,31 @@ export const file_debate: GenFile = /*@__PURE__*/
  */
 export type Claim = Message<"debate.Claim"> & {
   /**
-   * The main sentence or statement of the claim
+   * unique claim ID
    *
-   * @generated from field: string sentence = 1;
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string sentence = 2;
    */
   sentence: string;
 
   /**
-   * Optional description or elaboration
-   *
-   * @generated from field: string description = 2;
+   * @generated from field: string description = 3;
    */
   description: string;
 
   /**
-   * Reference to the parent claim (by ID or sentence)
-   *
-   * @generated from field: string parent = 3;
+   * @generated from field: string parent_id = 4;
    */
-  parent: string;
+  parentId: string;
 
   /**
-   * References to child claims (by ID or sentence)
-   *
-   * @generated from field: repeated string children = 4;
+   * @generated from field: repeated debate.Claim children = 5;
    */
-  children: string[];
+  children: Claim[];
 };
 
 /**
@@ -57,41 +56,44 @@ export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
   messageDesc(file_debate, 0);
 
 /**
- * Represents a single debate, which contains a topic and a claim graph
- *
  * @generated from message debate.Debate
  */
 export type Debate = Message<"debate.Debate"> & {
   /**
-   * @generated from field: string topic = 1;
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string topic = 2;
    */
   topic: string;
 
   /**
    * user id of participants
    *
-   * @generated from field: repeated string debators = 2;
+   * @generated from field: repeated string debators = 3;
    */
   debators: string[];
 
   /**
    * claims under topic in the debate
    *
-   * @generated from field: repeated debate.Claim claims = 3;
+   * @generated from field: repeated debate.Claim claims = 4;
    */
   claims: Claim[];
 
   /**
    * user id of debate creator
    *
-   * @generated from field: string owner = 4;
+   * @generated from field: string owner = 5;
    */
   owner: string;
 
   /**
    * settings for this debate
    *
-   * @generated from field: debate.DebateSettings settings = 5;
+   * @generated from field: debate.DebateSettings settings = 6;
    */
   settings?: DebateSettings;
 };

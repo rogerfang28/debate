@@ -6,24 +6,18 @@ import "debate_settings.proto";
 
 // A single claim node in the debate graph
 message Claim {
-  // The main sentence or statement of the claim
-  string sentence = 1;
-
-  // Optional description or elaboration
-  string description = 2;
-
-  // Reference to the parent claim (by ID or sentence)
-  string parent = 3;
-
-  // References to child claims (by ID or sentence)
-  repeated string children = 4;
+  string id = 1; // unique claim ID
+  string sentence = 2;
+  string description = 3;
+  string parent_id = 4;
+  repeated Claim children = 5;
 }
 
-// Represents a single debate, which contains a topic and a claim graph
 message Debate {
-  string topic = 1;
-  repeated string debators = 2; // user id of participants
-  repeated Claim claims = 3; // claims under topic in the debate
-  string owner = 4; // user id of debate creator
-  debate.DebateSettings settings = 5; // settings for this debate
+  string id = 1;
+  string topic = 2;
+  repeated string debators = 3; // user id of participants
+  repeated Claim claims = 4; // claims under topic in the debate
+  string owner = 5; // user id of debate creator
+  debate.DebateSettings settings = 6; // settings for this debate
 }

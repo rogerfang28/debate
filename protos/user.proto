@@ -4,14 +4,9 @@ package user;
 
 import "user_engagement.proto";
 
-enum UserState {
-  USER_STATE_UNSPECIFIED = 0;
-  NONE = 1;
-  DEBATING = 2;
-}
-
 message User {
-  string username = 1;      // unique username
-  user_engagement.UserEngagement engagement = 2;      // current user state
+  string user_id = 1;       // unique user ID
+  string username = 2;      // unique username
+  user_engagement.UserEngagement engagement = 3;      // current user state
   // Add more fields as needed from user_engagement.proto later
 }

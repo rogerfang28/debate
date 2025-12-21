@@ -56,8 +56,7 @@ DebateDatabaseHandler::getDebates(const std::string& user) {
     return rows;
 }
 
-std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(//const std::string& user, 
-                                                              const std::string& id) {
+std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(const std::string& id) {
     if (!openDB(dbFilename)) return {};
     
     std::string whereClause = "ID = '" + id + "'";
