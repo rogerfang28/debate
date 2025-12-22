@@ -73,7 +73,6 @@ ui::Page HomePageGenerator::GenerateHomePage(debate::DebateList usersDebates) {
         "topicInput",
         "Enter a debate topic...",
         "topic",
-        "",
         "bg-gray-800",
         "text-white",
         "border-gray-600",

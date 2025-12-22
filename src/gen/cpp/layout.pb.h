@@ -1022,7 +1022,6 @@ class Component final : public ::google::protobuf::Message
     kIdFieldNumber = 1,
     kNameFieldNumber = 2,
     kTextFieldNumber = 4,
-    kValueFieldNumber = 9,
     kStyleFieldNumber = 6,
     kTypeFieldNumber = 3,
   };
@@ -1121,22 +1120,6 @@ class Component final : public ::google::protobuf::Message
   std::string* _internal_mutable_text();
 
   public:
-  // string value = 9 [json_name = "value"];
-  void clear_value() ;
-  const std::string& value() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_value(Arg_&& arg, Args_... args);
-  std::string* mutable_value();
-  PROTOBUF_NODISCARD std::string* release_value();
-  void set_allocated_value(std::string* value);
-
-  private:
-  const std::string& _internal_value() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_value(
-      const std::string& value);
-  std::string* _internal_mutable_value();
-
-  public:
   // .ui.Style style = 6 [json_name = "style"];
   bool has_style() const;
   void clear_style() ;
@@ -1167,8 +1150,8 @@ class Component final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 9, 4,
-      57, 2>
+      3, 8, 4,
+      52, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1199,7 +1182,6 @@ class Component final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::internal::ArenaStringPtr name_;
     ::google::protobuf::internal::ArenaStringPtr text_;
-    ::google::protobuf::internal::ArenaStringPtr value_;
     ::ui::Style* style_;
     int type_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -1975,54 +1957,6 @@ inline ::google::protobuf::Map<std::string, std::string>* Component::_internal_m
 inline ::google::protobuf::Map<std::string, std::string>* Component::mutable_attributes() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_mutable_map:ui.Component.attributes)
   return _internal_mutable_attributes();
-}
-
-// string value = 9 [json_name = "value"];
-inline void Component::clear_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.ClearToEmpty();
-}
-inline const std::string& Component::value() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:ui.Component.value)
-  return _internal_value();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Component::set_value(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:ui.Component.value)
-}
-inline std::string* Component::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_value();
-  // @@protoc_insertion_point(field_mutable:ui.Component.value)
-  return _s;
-}
-inline const std::string& Component::_internal_value() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.value_.Get();
-}
-inline void Component::_internal_set_value(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.Set(value, GetArena());
-}
-inline std::string* Component::_internal_mutable_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.value_.Mutable( GetArena());
-}
-inline std::string* Component::release_value() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:ui.Component.value)
-  return _impl_.value_.Release();
-}
-inline void Component::set_allocated_value(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.value_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.value_.IsDefault()) {
-    _impl_.value_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:ui.Component.value)
 }
 
 // -------------------------------------------------------------------

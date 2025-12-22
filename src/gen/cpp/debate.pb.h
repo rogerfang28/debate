@@ -989,7 +989,7 @@ class Debate final : public ::google::protobuf::Message
     kTopicFieldNumber = 2,
     kOwnerFieldNumber = 5,
     kSettingsFieldNumber = 6,
-    kNumStatementsFieldNumber = 7,
+    kNumItemsFieldNumber = 7,
   };
   // repeated string debaters = 3 [json_name = "debaters"];
   int debaters_size() const;
@@ -1093,14 +1093,14 @@ class Debate final : public ::google::protobuf::Message
   ::debate::DebateSettings* _internal_mutable_settings();
 
   public:
-  // int32 num_statements = 7 [json_name = "numStatements"];
-  void clear_num_statements() ;
-  ::int32_t num_statements() const;
-  void set_num_statements(::int32_t value);
+  // int32 num_items = 7 [json_name = "numItems"];
+  void clear_num_items() ;
+  ::int32_t num_items() const;
+  void set_num_items(::int32_t value);
 
   private:
-  ::int32_t _internal_num_statements() const;
-  void _internal_set_num_statements(::int32_t value);
+  ::int32_t _internal_num_items() const;
+  void _internal_set_num_items(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate.Debate)
@@ -1134,7 +1134,7 @@ class Debate final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr topic_;
     ::google::protobuf::internal::ArenaStringPtr owner_;
     ::debate::DebateSettings* settings_;
-    ::int32_t num_statements_;
+    ::int32_t num_items_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2112,26 +2112,26 @@ inline void Debate::set_allocated_settings(::debate::DebateSettings* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Debate.settings)
 }
 
-// int32 num_statements = 7 [json_name = "numStatements"];
-inline void Debate::clear_num_statements() {
+// int32 num_items = 7 [json_name = "numItems"];
+inline void Debate::clear_num_items() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.num_statements_ = 0;
+  _impl_.num_items_ = 0;
 }
-inline ::int32_t Debate::num_statements() const {
-  // @@protoc_insertion_point(field_get:debate.Debate.num_statements)
-  return _internal_num_statements();
+inline ::int32_t Debate::num_items() const {
+  // @@protoc_insertion_point(field_get:debate.Debate.num_items)
+  return _internal_num_items();
 }
-inline void Debate::set_num_statements(::int32_t value) {
-  _internal_set_num_statements(value);
-  // @@protoc_insertion_point(field_set:debate.Debate.num_statements)
+inline void Debate::set_num_items(::int32_t value) {
+  _internal_set_num_items(value);
+  // @@protoc_insertion_point(field_set:debate.Debate.num_items)
 }
-inline ::int32_t Debate::_internal_num_statements() const {
+inline ::int32_t Debate::_internal_num_items() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.num_statements_;
+  return _impl_.num_items_;
 }
-inline void Debate::_internal_set_num_statements(::int32_t value) {
+inline void Debate::_internal_set_num_items(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.num_statements_ = value;
+  _impl_.num_items_ = value;
 }
 
 #ifdef __GNUC__

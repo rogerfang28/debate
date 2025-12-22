@@ -37,13 +37,13 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
 
     // create new claim
     debate::Claim* newClaim = debateProto.add_claims();
-    std::string newClaimID = std::to_string(debateProto.num_statements()); // simple unique ID
+    std::string newClaimID = std::to_string(debateProto.num_items()); // simple unique ID
     newClaim->set_id(newClaimID);
     newClaim->set_sentence(claim_text);
     newClaim->set_connection_to_parent(connection_to_parent);
     newClaim->set_parent_id(currentClaimID);
     // increment total statements count
-    debateProto.set_num_statements(debateProto.num_statements() + 1);
+    debateProto.set_num_items(debateProto.num_items() + 1);
 
     // add new claim ID to parent's children list
     parentClaim->add_children_ids(newClaimID);

@@ -35,7 +35,6 @@ public:
         const std::string& id,
         const std::string& placeholder = "",
         const std::string& name = "",
-        const std::string& value = "",
         const std::string& bgColor = "bg-gray-800",
         const std::string& textColor = "text-white",
         const std::string& borderColor = "border-gray-600",

@@ -35,5 +35,5 @@ message Debate {
   repeated Claim claims = 4; // every claim in the debate
   string owner = 5; // user id of debate creator
   debate.DebateSettings settings = 6; // settings for this debate
-  int32 num_statements = 7; // total number of statements in the debate so we can assign unique IDs
+  int32 num_items = 7; // total number of items in the debate so we can assign unique IDs
 }

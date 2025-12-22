@@ -45,7 +45,6 @@ ui::Page LoginPageGenerator::GenerateLoginPage() {
         "usernameInput",
         "Enter your username...",
         "username",
-        "",
         "bg-gray-800",
         "text-white",
         "border-gray-600",

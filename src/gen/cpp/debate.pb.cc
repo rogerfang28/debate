@@ -141,7 +141,7 @@ inline constexpr Debate::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         settings_{nullptr},
-        num_statements_{0} {}
+        num_items_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR Debate::Debate(::_pbi::ConstantInitialized)
@@ -220,7 +220,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.claims_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.owner_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.settings_),
-        PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.num_statements_),
+        PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.num_items_),
         ~0u,
         ~0u,
         ~0u,
@@ -256,13 +256,13 @@ const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "ctFrom\022\035\n\nconnect_to\030\002 \001(\tR\tconnectTo\022\036\n"
     "\nconnection\030\003 \001(\tR\nconnection\"R\n\005Proof\022%"
     "\n\006claims\030\001 \003(\0132\r.debate.ClaimR\006claims\022\"\n"
-    "\005links\030\002 \003(\0132\014.debate.LinkR\005links\"\342\001\n\006De"
+    "\005links\030\002 \003(\0132\014.debate.LinkR\005links\"\330\001\n\006De"
     "bate\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005topic\030\002 \001(\tR\005top"
     "ic\022\032\n\010debaters\030\003 \003(\tR\010debaters\022%\n\006claims"
     "\030\004 \003(\0132\r.debate.ClaimR\006claims\022\024\n\005owner\030\005"
     " \001(\tR\005owner\0222\n\010settings\030\006 \001(\0132\026.debate.D"
-    "ebateSettingsR\010settings\022%\n\016num_statement"
-    "s\030\007 \001(\005R\rnumStatementsb\006proto3"
+    "ebateSettingsR\010settings\022\033\n\tnum_items\030\007 \001"
+    "(\005R\010numItemsb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_2eproto_deps[1] =
     {
@@ -272,7 +272,7 @@ static ::absl::once_flag descriptor_table_debate_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_2eproto = {
     false,
     false,
-    710,
+    700,
     descriptor_table_protodef_debate_2eproto,
     "debate.proto",
     &descriptor_table_debate_2eproto_once,
@@ -1326,7 +1326,7 @@ Debate::Debate(
   _impl_.settings_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::debate::DebateSettings>(
                               arena, *from._impl_.settings_)
                         : nullptr;
-  _impl_.num_statements_ = from._impl_.num_statements_;
+  _impl_.num_items_ = from._impl_.num_items_;
 
   // @@protoc_insertion_point(copy_constructor:debate.Debate)
 }
@@ -1345,9 +1345,9 @@ inline void Debate::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, settings_),
            0,
-           offsetof(Impl_, num_statements_) -
+           offsetof(Impl_, num_items_) -
                offsetof(Impl_, settings_) +
-               sizeof(Impl_::num_statements_));
+               sizeof(Impl_::num_items_));
 }
 Debate::~Debate() {
   // @@protoc_insertion_point(destructor:debate.Debate)
@@ -1453,9 +1453,9 @@ const ::_pbi::TcParseTable<3, 7, 2, 42, 2> Debate::_table_ = {
     // .debate.DebateSettings settings = 6 [json_name = "settings"];
     {::_pbi::TcParser::FastMtS1,
      {50, 0, 1, PROTOBUF_FIELD_OFFSET(Debate, _impl_.settings_)}},
-    // int32 num_statements = 7 [json_name = "numStatements"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Debate, _impl_.num_statements_), 63>(),
-     {56, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_statements_)}},
+    // int32 num_items = 7 [json_name = "numItems"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Debate, _impl_.num_items_), 63>(),
+     {56, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_items_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1477,8 +1477,8 @@ const ::_pbi::TcParseTable<3, 7, 2, 42, 2> Debate::_table_ = {
     // .debate.DebateSettings settings = 6 [json_name = "settings"];
     {PROTOBUF_FIELD_OFFSET(Debate, _impl_.settings_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // int32 num_statements = 7 [json_name = "numStatements"];
-    {PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_statements_), -1, 0,
+    // int32 num_items = 7 [json_name = "numItems"];
+    {PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_items_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }}, {{
     {::_pbi::TcParser::GetTable<::debate::Claim>()},
@@ -1510,7 +1510,7 @@ PROTOBUF_NOINLINE void Debate::Clear() {
     ABSL_DCHECK(_impl_.settings_ != nullptr);
     _impl_.settings_->Clear();
   }
-  _impl_.num_statements_ = 0;
+  _impl_.num_items_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1581,11 +1581,11 @@ PROTOBUF_NOINLINE void Debate::Clear() {
                 stream);
           }
 
-          // int32 num_statements = 7 [json_name = "numStatements"];
-          if (this_._internal_num_statements() != 0) {
+          // int32 num_items = 7 [json_name = "numItems"];
+          if (this_._internal_num_items() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<7>(
-                    stream, this_._internal_num_statements(), target);
+                    stream, this_._internal_num_items(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1656,10 +1656,10 @@ PROTOBUF_NOINLINE void Debate::Clear() {
             }
           }
            {
-            // int32 num_statements = 7 [json_name = "numStatements"];
-            if (this_._internal_num_statements() != 0) {
+            // int32 num_items = 7 [json_name = "numItems"];
+            if (this_._internal_num_items() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-                  this_._internal_num_statements());
+                  this_._internal_num_items());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -1697,8 +1697,8 @@ void Debate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::
       _this->_impl_.settings_->MergeFrom(*from._impl_.settings_);
     }
   }
-  if (from._internal_num_statements() != 0) {
-    _this->_impl_.num_statements_ = from._impl_.num_statements_;
+  if (from._internal_num_items() != 0) {
+    _this->_impl_.num_items_ = from._impl_.num_items_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -1724,8 +1724,8 @@ void Debate::InternalSwap(Debate* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.topic_, &other->_impl_.topic_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.owner_, &other->_impl_.owner_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_statements_)
-      + sizeof(Debate::_impl_.num_statements_)
+      PROTOBUF_FIELD_OFFSET(Debate, _impl_.num_items_)
+      + sizeof(Debate::_impl_.num_items_)
       - PROTOBUF_FIELD_OFFSET(Debate, _impl_.settings_)>(
           reinterpret_cast<char*>(&_impl_.settings_),
           reinterpret_cast<char*>(&other->_impl_.settings_));

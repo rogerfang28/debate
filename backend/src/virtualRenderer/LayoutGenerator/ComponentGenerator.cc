@@ -68,7 +68,6 @@ ui::Component ComponentGenerator::createInput(
     const std::string& id,
     const std::string& placeholder,
     const std::string& name,
-    const std::string& value,
     const std::string& bgColor,
     const std::string& textColor,
     const std::string& borderColor,
@@ -82,10 +81,6 @@ ui::Component ComponentGenerator::createInput(
     
     if (!name.empty()) {
         component.set_name(name);
-    }
-    
-    if (!value.empty()) {
-        component.set_value(value);
     }
     
     if (!placeholder.empty()) {

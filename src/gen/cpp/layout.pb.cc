@@ -163,9 +163,6 @@ inline constexpr Component::Impl_::Impl_(
         text_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        value_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
         style_{nullptr},
         type_{static_cast< ::ui::ComponentType >(0)} {}
 
@@ -277,14 +274,12 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.style_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.css_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.attributes_),
-        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.value_),
         ~0u,
         ~0u,
         ~0u,
         ~0u,
         ~0u,
         0,
-        ~0u,
         ~0u,
         ~0u,
         ~0u,  // no _has_bits_
@@ -324,10 +319,10 @@ static const ::_pbi::MigrationSchema
         {0, -1, -1, sizeof(::ui::Page)},
         {11, 21, -1, sizeof(::ui::Component_CssEntry_DoNotUse)},
         {23, 33, -1, sizeof(::ui::Component_AttributesEntry_DoNotUse)},
-        {35, 52, -1, sizeof(::ui::Component)},
-        {61, -1, -1, sizeof(::ui::Style)},
-        {70, -1, -1, sizeof(::ui::Position)},
-        {81, -1, -1, sizeof(::ui::Size)},
+        {35, 51, -1, sizeof(::ui::Component)},
+        {59, -1, -1, sizeof(::ui::Style)},
+        {68, -1, -1, sizeof(::ui::Position)},
+        {79, -1, -1, sizeof(::ui::Size)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
@@ -343,31 +338,31 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\014layout.proto\022\002ui\"d\n\004Page\022\027\n\007page_id\030\001 "
     "\001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncom"
     "ponents\030\003 \003(\0132\r.ui.ComponentR\ncomponents"
-    "\"\254\003\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002"
+    "\"\226\003\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002"
     " \001(\tR\004name\022%\n\004type\030\003 \001(\0162\021.ui.ComponentT"
     "ypeR\004type\022\022\n\004text\030\004 \001(\tR\004text\022)\n\010childre"
     "n\030\005 \003(\0132\r.ui.ComponentR\010children\022\037\n\005styl"
     "e\030\006 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\010 \003(\0132\026"
     ".ui.Component.CssEntryR\003css\022=\n\nattribute"
     "s\030\007 \003(\0132\035.ui.Component.AttributesEntryR\n"
-    "attributes\022\024\n\005value\030\t \001(\tR\005value\0326\n\010CssE"
-    "ntry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005v"
-    "alue:\0028\001\032=\n\017AttributesEntry\022\020\n\003key\030\001 \001(\t"
-    "R\003key\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\"*\n\005Style"
-    "\022!\n\014custom_class\030\001 \001(\tR\013customClass\":\n\010P"
-    "osition\022\014\n\001x\030\001 \001(\002R\001x\022\014\n\001y\030\002 \001(\002R\001y\022\022\n\004u"
-    "nit\030\003 \001(\tR\004unit\"4\n\004Size\022\024\n\005width\030\001 \001(\tR\005"
-    "width\022\026\n\006height\030\002 \001(\tR\006height*L\n\rCompone"
-    "ntType\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020"
-    "\002\022\t\n\005INPUT\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutTyp"
-    "e\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002"
-    "\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "attributes\0326\n\010CssEntry\022\020\n\003key\030\001 \001(\tR\003key"
+    "\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\032=\n\017Attributes"
+    "Entry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005"
+    "value:\0028\001\"*\n\005Style\022!\n\014custom_class\030\001 \001(\t"
+    "R\013customClass\":\n\010Position\022\014\n\001x\030\001 \001(\002R\001x\022"
+    "\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001(\tR\004unit\"4\n\004Siz"
+    "e\022\024\n\005width\030\001 \001(\tR\005width\022\026\n\006height\030\002 \001(\tR"
+    "\006height*L\n\rComponentType\022\013\n\007UNKNOWN\020\000\022\010\n"
+    "\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\r\n\tCONTAI"
+    "NER\020\014*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_R"
+    "OW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004"
+    "b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    870,
+    848,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -915,8 +910,7 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         css_{visibility, arena, from.css_},
         id_(arena, from.id_),
         name_(arena, from.name_),
-        text_(arena, from.text_),
-        value_(arena, from.value_) {}
+        text_(arena, from.text_) {}
 
 Component::Component(
     ::google::protobuf::Arena* arena,
@@ -948,8 +942,7 @@ inline PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
         css_{visibility, arena},
         id_(arena),
         name_(arena),
-        text_(arena),
-        value_(arena) {}
+        text_(arena) {}
 
 inline void Component::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -971,7 +964,6 @@ inline void Component::SharedDtor(MessageLite& self) {
   this_._impl_.id_.Destroy();
   this_._impl_.name_.Destroy();
   this_._impl_.text_.Destroy();
-  this_._impl_.value_.Destroy();
   delete this_._impl_.style_;
   this_._impl_.~Impl_();
 }
@@ -1040,15 +1032,15 @@ const ::google::protobuf::internal::ClassData* Component::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 4, 57, 2> Component::_table_ = {
+const ::_pbi::TcParseTable<3, 8, 4, 52, 2> Component::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_),
     0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
+    8, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
+    4294967040,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
+    8,  // num_field_entries
     4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -1078,16 +1070,6 @@ const ::_pbi::TcParseTable<4, 9, 4, 57, 2> Component::_table_ = {
     {::_pbi::TcParser::FastMtS1,
      {50, 0, 1, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
     {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    // string value = 9 [json_name = "value"];
-    {::_pbi::TcParser::FastUS1,
-     {74, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.value_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1115,9 +1097,6 @@ const ::_pbi::TcParseTable<4, 9, 4, 57, 2> Component::_table_ = {
     // map<string, string> css = 8 [json_name = "css"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), -1, 3,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // string value = 9 [json_name = "value"];
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.value_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }}, {{
     {::_pbi::TcParser::GetTable<::ui::Component>()},
     {::_pbi::TcParser::GetTable<::ui::Style>()},
@@ -1130,14 +1109,13 @@ const ::_pbi::TcParseTable<4, 9, 4, 57, 2> Component::_table_ = {
         1, 0, 0, 9,
         9)},
   }}, {{
-    "\14\2\4\0\4\0\0\12\3\5\0\0\0\0\0\0"
+    "\14\2\4\0\4\0\0\12\3\0\0\0\0\0\0\0"
     "ui.Component"
     "id"
     "name"
     "text"
     "attributes"
     "css"
-    "value"
   }},
 };
 
@@ -1154,7 +1132,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
   _impl_.id_.ClearToEmpty();
   _impl_.name_.ClearToEmpty();
   _impl_.text_.ClearToEmpty();
-  _impl_.value_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(_impl_.style_ != nullptr);
@@ -1296,14 +1273,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
 
-          // string value = 9 [json_name = "value"];
-          if (!this_._internal_value().empty()) {
-            const std::string& _s = this_._internal_value();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.value");
-            target = stream->WriteStringMaybeAliased(9, _s, target);
-          }
-
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1373,11 +1342,6 @@ PROTOBUF_NOINLINE void Component::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_text());
             }
-            // string value = 9 [json_name = "value"];
-            if (!this_._internal_value().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_value());
-            }
           }
            {
             // .ui.Style style = 6 [json_name = "style"];
@@ -1420,9 +1384,6 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   if (!from._internal_text().empty()) {
     _this->_internal_set_text(from._internal_text());
   }
-  if (!from._internal_value().empty()) {
-    _this->_internal_set_value(from._internal_value());
-  }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(from._impl_.style_ != nullptr);
@@ -1460,7 +1421,6 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.value_, &other->_impl_.value_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)
       + sizeof(Component::_impl_.type_)
