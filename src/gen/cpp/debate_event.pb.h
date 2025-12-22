@@ -1083,26 +1083,9 @@ class GoToClaim final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kUserIdFieldNumber = 1,
-    kClaimIdFieldNumber = 2,
+    kClaimIdFieldNumber = 1,
   };
-  // string user_id = 1 [json_name = "userId"];
-  void clear_user_id() ;
-  const std::string& user_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_user_id(Arg_&& arg, Args_... args);
-  std::string* mutable_user_id();
-  PROTOBUF_NODISCARD std::string* release_user_id();
-  void set_allocated_user_id(std::string* value);
-
-  private:
-  const std::string& _internal_user_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(
-      const std::string& value);
-  std::string* _internal_mutable_user_id();
-
-  public:
-  // string claim_id = 2 [json_name = "claimId"];
+  // string claim_id = 1 [json_name = "claimId"];
   void clear_claim_id() ;
   const std::string& claim_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1123,8 +1106,8 @@ class GoToClaim final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      46, 2>
+      0, 1, 0,
+      39, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1141,7 +1124,6 @@ class GoToClaim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GoToClaim& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr user_id_;
     ::google::protobuf::internal::ArenaStringPtr claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4461,55 +4443,7 @@ inline void GoToParentClaim::set_allocated_user_id(std::string* value) {
 
 // GoToClaim
 
-// string user_id = 1 [json_name = "userId"];
-inline void GoToClaim::clear_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.ClearToEmpty();
-}
-inline const std::string& GoToClaim::user_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.GoToClaim.user_id)
-  return _internal_user_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void GoToClaim::set_user_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate_event.GoToClaim.user_id)
-}
-inline std::string* GoToClaim::mutable_user_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.GoToClaim.user_id)
-  return _s;
-}
-inline const std::string& GoToClaim::_internal_user_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.user_id_.Get();
-}
-inline void GoToClaim::_internal_set_user_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(value, GetArena());
-}
-inline std::string* GoToClaim::_internal_mutable_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.user_id_.Mutable( GetArena());
-}
-inline std::string* GoToClaim::release_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.GoToClaim.user_id)
-  return _impl_.user_id_.Release();
-}
-inline void GoToClaim::set_allocated_user_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.user_id_.IsDefault()) {
-    _impl_.user_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.GoToClaim.user_id)
-}
-
-// string claim_id = 2 [json_name = "claimId"];
+// string claim_id = 1 [json_name = "claimId"];
 inline void GoToClaim::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_.ClearToEmpty();

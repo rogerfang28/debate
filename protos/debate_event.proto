@@ -63,8 +63,7 @@ message GoToParentClaim {
 }
 
 message GoToClaim {
-    string user_id       = 1;
-    string claim_id      = 2;
+    string claim_id      = 1;
 }
 
 // enum

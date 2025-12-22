@@ -37,7 +37,7 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         std::string claimId = componentId.substr(strlen("viewChildNodeButton_"));
         std::cout << "  GO_TO_CLAIM for user: " << user << " to claim ID: " << claimId << "\n";
         event.set_type(debate_event::GO_TO_CLAIM); // Placeholder, replace with actual GO_TO_CLAIM type
-        event.mutable_go_to_claim()->set_user_id(user); // Placeholder, replace with actual GoToClaim message
+        event.set_user_id(user);
         event.mutable_go_to_claim()->set_claim_id(claimId);
     } else {
         std::cerr << "Unknown component/event combination on debate page: " 
