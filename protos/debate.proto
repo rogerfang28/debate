@@ -12,8 +12,7 @@ message Claim {
   string parent_id = 4;
   repeated string children_ids = 5;
   string connection_to_parent = 6; // e.g., "supports", "opposes"
-  repeated Link links = 7; // links to other claims
-  
+  Proof proof = 7; // proof structure for this claim
 }
 
 message Link {
@@ -36,4 +35,5 @@ message Debate {
   string owner = 5; // user id of debate creator
   debate.DebateSettings settings = 6; // settings for this debate
   int32 num_items = 7; // total number of items in the debate so we can assign unique IDs
+  Claim root_claim = 8; // the root claim representing the main topic
 }

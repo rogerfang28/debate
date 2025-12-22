@@ -15,12 +15,18 @@ void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::stri
     debateProto.set_topic(debateTopic);
     
     // Add the first claim (root claim) with proper content
-    auto* rootClaim = debateProto.add_claims();
+    auto* claim = debateProto.add_claims();
+    claim->set_sentence(debateTopic);
+    claim->set_description("This is the main topic of the debate, and for now this will be the placeholder text.");
+    claim->set_parent_id("0"); // parent is itself for root
+    claim->set_id("0"); // unique ID for root claim, later make id system that increments
+    debateProto.set_num_items(1); // start with 1 statement
+
+    auto* rootClaim = debateProto.mutable_root_claim();
     rootClaim->set_sentence(debateTopic);
     rootClaim->set_description("This is the main topic of the debate, and for now this will be the placeholder text.");
-    rootClaim->set_parent_id("0"); // parent is itself for root
-    rootClaim->set_id("0"); // unique ID for root claim, later make id system that increments
-    debateProto.set_num_items(1); // start with 1 statement
+    rootClaim->set_id("0");
+    
     
     std::cout << "[AddDebateHandler] Created Debate protobuf for topic: " << debateProto.topic() 
               << " with " << debateProto.claims_size() << " claims" << std::endl;

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKeAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIbCgVsaW5rcxgHIAMoCzIMLmRlYmF0ZS5MaW5rIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSJDCgVQcm9vZhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGluayKgAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0ZXJzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIRCgludW1faXRlbXMYByABKAViBnByb3RvMw", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiQwoFUHJvb2YSHQoGY2xhaW1zGAEgAygLMg0uZGViYXRlLkNsYWltEhsKBWxpbmtzGAIgAygLMgwuZGViYXRlLkxpbmsiwwEKBkRlYmF0ZRIKCgJpZBgBIAEoCRINCgV0b3BpYxgCIAEoCRIQCghkZWJhdGVycxgDIAMoCRIdCgZjbGFpbXMYBCADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBSABKAkSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3MSEQoJbnVtX2l0ZW1zGAcgASgFEiEKCnJvb3RfY2xhaW0YCCABKAsyDS5kZWJhdGUuQ2xhaW1iBnByb3RvMw", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -55,11 +55,11 @@ export type Claim = Message<"debate.Claim"> & {
   connectionToParent: string;
 
   /**
-   * links to other claims
+   * proof structure for this claim
    *
-   * @generated from field: repeated debate.Link links = 7;
+   * @generated from field: debate.Proof proof = 7;
    */
-  links: Link[];
+  proof?: Proof;
 };
 
 /**
@@ -166,6 +166,13 @@ export type Debate = Message<"debate.Debate"> & {
    * @generated from field: int32 num_items = 7;
    */
   numItems: number;
+
+  /**
+   * the root claim representing the main topic
+   *
+   * @generated from field: debate.Claim root_claim = 8;
+   */
+  rootClaim?: Claim;
 };
 
 /**
