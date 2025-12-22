@@ -12,4 +12,4 @@ plugins:
     out: src/gen/ts
 
   - remote: buf.build/protocolbuffers/cpp:v29.5   # if v29.5 tag isn't available, try v29.3 or v29.0
-    out: src/gen/cpp
+    out: src/gen/temp_cpp

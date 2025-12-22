@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKBAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCSKlAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0b3JzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIWCg5udW1fc3RhdGVtZW50cxgHIAEoBWIGcHJvdG8z", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKeAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIbCgVsaW5rcxgHIAMoCzIMLmRlYmF0ZS5MaW5rIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSJDCgVQcm9vZhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGluayKlAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0b3JzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIWCg5udW1fc3RhdGVtZW50cxgHIAEoBWIGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -53,6 +53,13 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: string connection_to_parent = 6;
    */
   connectionToParent: string;
+
+  /**
+   * links to other claims
+   *
+   * @generated from field: repeated debate.Link links = 7;
+   */
+  links: Link[];
 };
 
 /**
@@ -61,6 +68,55 @@ export type Claim = Message<"debate.Claim"> & {
  */
 export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
   messageDesc(file_debate, 0);
+
+/**
+ * @generated from message debate.Link
+ */
+export type Link = Message<"debate.Link"> & {
+  /**
+   * @generated from field: string connect_from = 1;
+   */
+  connectFrom: string;
+
+  /**
+   * @generated from field: string connect_to = 2;
+   */
+  connectTo: string;
+
+  /**
+   * @generated from field: string connection = 3;
+   */
+  connection: string;
+};
+
+/**
+ * Describes the message debate.Link.
+ * Use `create(LinkSchema)` to create a new message.
+ */
+export const LinkSchema: GenMessage<Link> = /*@__PURE__*/
+  messageDesc(file_debate, 1);
+
+/**
+ * @generated from message debate.Proof
+ */
+export type Proof = Message<"debate.Proof"> & {
+  /**
+   * @generated from field: repeated debate.Claim claims = 1;
+   */
+  claims: Claim[];
+
+  /**
+   * @generated from field: repeated debate.Link links = 2;
+   */
+  links: Link[];
+};
+
+/**
+ * Describes the message debate.Proof.
+ * Use `create(ProofSchema)` to create a new message.
+ */
+export const ProofSchema: GenMessage<Proof> = /*@__PURE__*/
+  messageDesc(file_debate, 2);
 
 /**
  * @generated from message debate.Debate
@@ -117,5 +173,5 @@ export type Debate = Message<"debate.Debate"> & {
  * Use `create(DebateSchema)` to create a new message.
  */
 export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
-  messageDesc(file_debate, 1);
+  messageDesc(file_debate, 3);
 

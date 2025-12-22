@@ -12,6 +12,20 @@ message Claim {
   string parent_id = 4;
   repeated string children_ids = 5;
   string connection_to_parent = 6; // e.g., "supports", "opposes"
+  repeated Link links = 7; // links to other claims
+  
+}
+
+message Link {
+  string connect_from = 1;
+  string connect_to = 2;
+  string connection = 3;  
+}
+
+message Proof {
+  repeated Claim claims = 1;
+  repeated Link links = 2;
+  
 }
 
 message Debate {
