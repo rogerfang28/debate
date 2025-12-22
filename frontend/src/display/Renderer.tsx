@@ -67,7 +67,7 @@ const Renderer: React.FC = () => {
   }, []);
 
   // 🔹 Loading spinner (Tailwind styled)
-  if (loading && !data) {
+  if (loading && !data && false) { // temporary disable loading spinner
     return (
       <div className="flex flex-col items-center justify-center h-screen text-gray-300">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
@@ -78,11 +78,11 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      {loading && (
+      {/*loading && (
         <div className="absolute top-4 right-4 bg-gray-800 px-4 py-2 rounded shadow text-sm text-gray-200">
           Loading new page...
         </div>
-      )}
+      )*/}
       {data ? <PageRenderer page={data} /> : <div className="p-6">Loading...</div>}
     </div>
   );

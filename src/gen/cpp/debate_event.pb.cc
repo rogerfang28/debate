@@ -25,23 +25,14 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace debate_event {
-
-inline constexpr OpenReportClaim::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR OpenReportClaim::OpenReportClaim(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct OpenReportClaimDefaultTypeInternal {
   PROTOBUF_CONSTEXPR OpenReportClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~OpenReportClaimDefaultTypeInternal() {}
@@ -52,23 +43,14 @@ struct OpenReportClaimDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OpenReportClaimDefaultTypeInternal _OpenReportClaim_default_instance_;
-
-inline constexpr OpenAddChildClaim::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR OpenAddChildClaim::OpenAddChildClaim(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct OpenAddChildClaimDefaultTypeInternal {
   PROTOBUF_CONSTEXPR OpenAddChildClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~OpenAddChildClaimDefaultTypeInternal() {}
@@ -79,23 +61,14 @@ struct OpenAddChildClaimDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OpenAddChildClaimDefaultTypeInternal _OpenAddChildClaim_default_instance_;
-
-inline constexpr None::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR None::None(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct NoneDefaultTypeInternal {
   PROTOBUF_CONSTEXPR NoneDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~NoneDefaultTypeInternal() {}
@@ -106,23 +79,14 @@ struct NoneDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 NoneDefaultTypeInternal _None_default_instance_;
-
-inline constexpr GoToParentClaim::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR GoToParentClaim::GoToParentClaim(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct GoToParentClaimDefaultTypeInternal {
   PROTOBUF_CONSTEXPR GoToParentClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GoToParentClaimDefaultTypeInternal() {}
@@ -160,23 +124,14 @@ struct GoToClaimDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GoToClaimDefaultTypeInternal _GoToClaim_default_instance_;
-
-inline constexpr GoHome::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR GoHome::GoHome(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct GoHomeDefaultTypeInternal {
   PROTOBUF_CONSTEXPR GoHomeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GoHomeDefaultTypeInternal() {}
@@ -190,10 +145,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr EnterDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        debate_id_(
+      : debate_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
@@ -220,10 +172,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr DeleteDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        debate_id_(
+      : debate_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
@@ -247,23 +196,14 @@ struct DeleteDebateDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteDebateDefaultTypeInternal _DeleteDebate_default_instance_;
-
-inline constexpr DeleteCurrentStatement::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR DeleteCurrentStatement::DeleteCurrentStatement(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct DeleteCurrentStatementDefaultTypeInternal {
   PROTOBUF_CONSTEXPR DeleteCurrentStatementDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~DeleteCurrentStatementDefaultTypeInternal() {}
@@ -277,10 +217,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr CreateDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        debate_topic_(
+      : debate_topic_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
@@ -304,23 +241,14 @@ struct CreateDebateDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CreateDebateDefaultTypeInternal _CreateDebate_default_instance_;
-
-inline constexpr ClearDebates::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        _cached_size_{0} {}
-
-template <typename>
+              template <typename>
 PROTOBUF_CONSTEXPR ClearDebates::ClearDebates(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
+#endif  // PROTOBUF_CUSTOM_VTABLE
 struct ClearDebatesDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ClearDebatesDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ClearDebatesDefaultTypeInternal() {}
@@ -334,10 +262,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr AddConnection::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        debate_id_(
+      : debate_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         from_id_(
@@ -373,10 +298,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr AddChildClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        claim_(
+      : claim_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         connection_to_parent_(
@@ -452,7 +374,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::None, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::CreateDebate, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -461,7 +382,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::CreateDebate, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::CreateDebate, _impl_.debate_topic_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::ClearDebates, _internal_metadata_),
@@ -471,7 +391,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::ClearDebates, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::DeleteDebate, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -480,7 +399,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::DeleteDebate, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DeleteDebate, _impl_.debate_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::EnterDebate, _internal_metadata_),
@@ -490,7 +408,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::EnterDebate, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::EnterDebate, _impl_.debate_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::GoHome, _internal_metadata_),
@@ -500,7 +417,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::GoHome, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::OpenAddChildClaim, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -509,7 +425,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::OpenAddChildClaim, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::AddChildClaim, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -518,7 +433,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::AddChildClaim, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::AddChildClaim, _impl_.claim_),
         PROTOBUF_FIELD_OFFSET(::debate_event::AddChildClaim, _impl_.connection_to_parent_),
         ~0u,  // no _has_bits_
@@ -529,7 +443,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::OpenReportClaim, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::DeleteCurrentStatement, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -538,7 +451,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::DeleteCurrentStatement, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::AddConnection, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -547,7 +459,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::AddConnection, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::AddConnection, _impl_.debate_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::AddConnection, _impl_.from_id_),
         PROTOBUF_FIELD_OFFSET(::debate_event::AddConnection, _impl_.to_id_),
@@ -560,7 +471,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::debate_event::GoToParentClaim, _impl_.user_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate_event::GoToClaim, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -614,19 +524,19 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::debate_event::None)},
-        {9, -1, -1, sizeof(::debate_event::CreateDebate)},
-        {19, -1, -1, sizeof(::debate_event::ClearDebates)},
-        {28, -1, -1, sizeof(::debate_event::DeleteDebate)},
-        {38, -1, -1, sizeof(::debate_event::EnterDebate)},
-        {48, -1, -1, sizeof(::debate_event::GoHome)},
-        {57, -1, -1, sizeof(::debate_event::OpenAddChildClaim)},
-        {66, -1, -1, sizeof(::debate_event::AddChildClaim)},
-        {77, -1, -1, sizeof(::debate_event::OpenReportClaim)},
-        {86, -1, -1, sizeof(::debate_event::DeleteCurrentStatement)},
-        {95, -1, -1, sizeof(::debate_event::AddConnection)},
-        {108, -1, -1, sizeof(::debate_event::GoToParentClaim)},
-        {117, -1, -1, sizeof(::debate_event::GoToClaim)},
-        {126, 150, -1, sizeof(::debate_event::DebateEvent)},
+        {8, -1, -1, sizeof(::debate_event::CreateDebate)},
+        {17, -1, -1, sizeof(::debate_event::ClearDebates)},
+        {25, -1, -1, sizeof(::debate_event::DeleteDebate)},
+        {34, -1, -1, sizeof(::debate_event::EnterDebate)},
+        {43, -1, -1, sizeof(::debate_event::GoHome)},
+        {51, -1, -1, sizeof(::debate_event::OpenAddChildClaim)},
+        {59, -1, -1, sizeof(::debate_event::AddChildClaim)},
+        {69, -1, -1, sizeof(::debate_event::OpenReportClaim)},
+        {77, -1, -1, sizeof(::debate_event::DeleteCurrentStatement)},
+        {85, -1, -1, sizeof(::debate_event::AddConnection)},
+        {97, -1, -1, sizeof(::debate_event::GoToParentClaim)},
+        {105, -1, -1, sizeof(::debate_event::GoToClaim)},
+        {114, 138, -1, sizeof(::debate_event::DebateEvent)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::debate_event::_None_default_instance_._instance,
@@ -647,58 +557,51 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\022debate_event.proto\022\014debate_event\032\037goog"
-    "le/protobuf/timestamp.proto\"\037\n\004None\022\027\n\007u"
-    "ser_id\030\001 \001(\tR\006userId\"J\n\014CreateDebate\022\027\n\007"
-    "user_id\030\001 \001(\tR\006userId\022!\n\014debate_topic\030\002 "
-    "\001(\tR\013debateTopic\"\'\n\014ClearDebates\022\027\n\007user"
-    "_id\030\001 \001(\tR\006userId\"D\n\014DeleteDebate\022\027\n\007use"
-    "r_id\030\001 \001(\tR\006userId\022\033\n\tdebate_id\030\002 \001(\tR\010d"
-    "ebateId\"C\n\013EnterDebate\022\027\n\007user_id\030\001 \001(\tR"
-    "\006userId\022\033\n\tdebate_id\030\002 \001(\tR\010debateId\"!\n\006"
-    "GoHome\022\027\n\007user_id\030\001 \001(\tR\006userId\",\n\021OpenA"
-    "ddChildClaim\022\027\n\007user_id\030\001 \001(\tR\006userId\"p\n"
-    "\rAddChildClaim\022\027\n\007user_id\030\001 \001(\tR\006userId\022"
-    "\024\n\005claim\030\002 \001(\tR\005claim\0220\n\024connection_to_p"
-    "arent\030\003 \001(\tR\022connectionToParent\"*\n\017OpenR"
-    "eportClaim\022\027\n\007user_id\030\001 \001(\tR\006userId\"1\n\026D"
-    "eleteCurrentStatement\022\027\n\007user_id\030\001 \001(\tR\006"
-    "userId\"\223\001\n\rAddConnection\022\027\n\007user_id\030\001 \001("
-    "\tR\006userId\022\033\n\tdebate_id\030\002 \001(\tR\010debateId\022\027"
-    "\n\007from_id\030\003 \001(\tR\006fromId\022\023\n\005to_id\030\004 \001(\tR\004"
-    "toId\022\036\n\nconnection\030\005 \001(\tR\nconnection\"*\n\017"
-    "GoToParentClaim\022\027\n\007user_id\030\001 \001(\tR\006userId"
-    "\"&\n\tGoToClaim\022\031\n\010claim_id\030\001 \001(\tR\007claimId"
-    "\"\255\007\n\013DebateEvent\022\027\n\007user_id\030\001 \001(\tR\006userI"
-    "d\022\016\n\002id\030\002 \001(\tR\002id\022;\n\013occurred_at\030\003 \001(\0132\032"
-    ".google.protobuf.TimestampR\noccurredAt\022+"
-    "\n\004type\030\004 \001(\0162\027.debate_event.EventTypeR\004t"
-    "ype\022A\n\rcreate_debate\030\n \001(\0132\032.debate_even"
-    "t.CreateDebateH\000R\014createDebate\022A\n\rclear_"
-    "debates\030\013 \001(\0132\032.debate_event.ClearDebate"
-    "sH\000R\014clearDebates\022A\n\rdelete_debate\030\014 \001(\013"
-    "2\032.debate_event.DeleteDebateH\000R\014deleteDe"
-    "bate\022>\n\014enter_debate\030\r \001(\0132\031.debate_even"
-    "t.EnterDebateH\000R\013enterDebate\022/\n\007go_home\030"
-    "\016 \001(\0132\024.debate_event.GoHomeH\000R\006goHome\022R\n"
-    "\024open_add_child_claim\030\017 \001(\0132\037.debate_eve"
-    "nt.OpenAddChildClaimH\000R\021openAddChildClai"
-    "m\022E\n\017add_child_claim\030\020 \001(\0132\033.debate_even"
-    "t.AddChildClaimH\000R\raddChildClaim\022K\n\021open"
-    "_report_claim\030\021 \001(\0132\035.debate_event.OpenR"
-    "eportClaimH\000R\017openReportClaim\022`\n\030delete_"
-    "current_statement\030\022 \001(\0132$.debate_event.D"
-    "eleteCurrentStatementH\000R\026deleteCurrentSt"
-    "atement\022A\n\014go_to_parent\030\023 \001(\0132\035.debate_e"
-    "vent.GoToParentClaimH\000R\ngoToParent\0229\n\013go"
-    "_to_claim\030\024 \001(\0132\027.debate_event.GoToClaim"
-    "H\000R\tgoToClaimB\t\n\007payload*\213\002\n\tEventType\022\032"
-    "\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\r"
-    "CREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDE"
-    "LETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HO"
-    "ME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n\024OPEN_ADD_CHILD"
-    "_CLAIM\020\010\022\023\n\017ADD_CHILD_CLAIM\020\t\022\034\n\030DELETE_"
-    "CURRENT_STATEMENT\020\n\022\020\n\014REPORT_CLAIM\020\013\022\017\n"
-    "\013GO_TO_CLAIM\020\014b\006proto3"
+    "le/protobuf/timestamp.proto\"\006\n\004None\"1\n\014C"
+    "reateDebate\022!\n\014debate_topic\030\002 \001(\tR\013debat"
+    "eTopic\"\016\n\014ClearDebates\"+\n\014DeleteDebate\022\033"
+    "\n\tdebate_id\030\001 \001(\tR\010debateId\"*\n\013EnterDeba"
+    "te\022\033\n\tdebate_id\030\001 \001(\tR\010debateId\"\010\n\006GoHom"
+    "e\"\023\n\021OpenAddChildClaim\"W\n\rAddChildClaim\022"
+    "\024\n\005claim\030\001 \001(\tR\005claim\0220\n\024connection_to_p"
+    "arent\030\002 \001(\tR\022connectionToParent\"\021\n\017OpenR"
+    "eportClaim\"\030\n\026DeleteCurrentStatement\"z\n\r"
+    "AddConnection\022\033\n\tdebate_id\030\002 \001(\tR\010debate"
+    "Id\022\027\n\007from_id\030\003 \001(\tR\006fromId\022\023\n\005to_id\030\004 \001"
+    "(\tR\004toId\022\036\n\nconnection\030\005 \001(\tR\nconnection"
+    "\"\021\n\017GoToParentClaim\"&\n\tGoToClaim\022\031\n\010clai"
+    "m_id\030\002 \001(\tR\007claimId\"\255\007\n\013DebateEvent\022\027\n\007u"
+    "ser_id\030\001 \001(\tR\006userId\022\016\n\002id\030\002 \001(\tR\002id\022;\n\013"
+    "occurred_at\030\003 \001(\0132\032.google.protobuf.Time"
+    "stampR\noccurredAt\022+\n\004type\030\004 \001(\0162\027.debate"
+    "_event.EventTypeR\004type\022A\n\rcreate_debate\030"
+    "\n \001(\0132\032.debate_event.CreateDebateH\000R\014cre"
+    "ateDebate\022A\n\rclear_debates\030\013 \001(\0132\032.debat"
+    "e_event.ClearDebatesH\000R\014clearDebates\022A\n\r"
+    "delete_debate\030\014 \001(\0132\032.debate_event.Delet"
+    "eDebateH\000R\014deleteDebate\022>\n\014enter_debate\030"
+    "\r \001(\0132\031.debate_event.EnterDebateH\000R\013ente"
+    "rDebate\022/\n\007go_home\030\016 \001(\0132\024.debate_event."
+    "GoHomeH\000R\006goHome\022R\n\024open_add_child_claim"
+    "\030\017 \001(\0132\037.debate_event.OpenAddChildClaimH"
+    "\000R\021openAddChildClaim\022E\n\017add_child_claim\030"
+    "\020 \001(\0132\033.debate_event.AddChildClaimH\000R\rad"
+    "dChildClaim\022K\n\021open_report_claim\030\021 \001(\0132\035"
+    ".debate_event.OpenReportClaimH\000R\017openRep"
+    "ortClaim\022`\n\030delete_current_statement\030\022 \001"
+    "(\0132$.debate_event.DeleteCurrentStatement"
+    "H\000R\026deleteCurrentStatement\022A\n\014go_to_pare"
+    "nt\030\023 \001(\0132\035.debate_event.GoToParentClaimH"
+    "\000R\ngoToParent\0229\n\013go_to_claim\030\024 \001(\0132\027.deb"
+    "ate_event.GoToClaimH\000R\tgoToClaimB\t\n\007payl"
+    "oad*\213\002\n\tEventType\022\032\n\026EVENT_KIND_UNSPECIF"
+    "IED\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCL"
+    "EAR_DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTE"
+    "R_DEBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020"
+    "\007\022\030\n\024OPEN_ADD_CHILD_CLAIM\020\010\022\023\n\017ADD_CHILD"
+    "_CLAIM\020\t\022\034\n\030DELETE_CURRENT_STATEMENT\020\n\022\020"
+    "\n\014REPORT_CLAIM\020\013\022\017\n\013GO_TO_CLAIM\020\014b\006proto"
+    "3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_5fevent_2eproto_deps[1] =
     {
@@ -708,7 +611,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    2102,
+    1801,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -739,54 +642,26 @@ class None::_Internal {
 
 None::None(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.None)
 }
-inline PROTOBUF_NDEBUG_INLINE None::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::None& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 None::None(
     ::google::protobuf::Arena* arena,
     const None& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   None* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.None)
-}
-inline PROTOBUF_NDEBUG_INLINE None::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void None::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-None::~None() {
-  // @@protoc_insertion_point(destructor:debate_event.None)
-  SharedDtor(*this);
-}
-inline void None::SharedDtor(MessageLite& self) {
-  None& this_ = static_cast<None&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* None::PlacementNew_(const void*, void* mem,
@@ -794,7 +669,7 @@ inline void* None::PlacementNew_(const void*, void* mem,
   return ::new (mem) None(arena);
 }
 constexpr auto None::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(None),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(None),
                                             alignof(None));
 }
 PROTOBUF_CONSTINIT
@@ -806,10 +681,10 @@ const ::google::protobuf::internal::ClassDataFull None::_class_data_ = {
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &None::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<None>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<None>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &None::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<None>(), &None::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<None>(), &None::ByteSizeLong,
             &None::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(None, _impl_._cached_size_),
@@ -825,15 +700,15 @@ const ::google::protobuf::internal::ClassData* None::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 33, 2> None::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> None::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -843,124 +718,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 33, 2> None::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::None>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(None, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(None, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\21\7\0\0\0\0\0\0"
-    "debate_event.None"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void None::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.None)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* None::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const None& this_ = static_cast<const None&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* None::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const None& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.None)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.None.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.None)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t None::ByteSizeLong(const MessageLite& base) {
-          const None& this_ = static_cast<const None&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t None::ByteSizeLong() const {
-          const None& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.None)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void None::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<None*>(&to_msg);
-  auto& from = static_cast<const None&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.None)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void None::CopyFrom(const None& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.None)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void None::InternalSwap(None* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata None::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -980,8 +755,7 @@ CreateDebate::CreateDebate(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE CreateDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::CreateDebate& from_msg)
-      : user_id_(arena, from.user_id_),
-        debate_topic_(arena, from.debate_topic_),
+      : debate_topic_(arena, from.debate_topic_),
         _cached_size_{0} {}
 
 CreateDebate::CreateDebate(
@@ -1003,8 +777,7 @@ CreateDebate::CreateDebate(
 inline PROTOBUF_NDEBUG_INLINE CreateDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        debate_topic_(arena),
+      : debate_topic_(arena),
         _cached_size_{0} {}
 
 inline void CreateDebate::SharedCtor(::_pb::Arena* arena) {
@@ -1018,7 +791,6 @@ inline void CreateDebate::SharedDtor(MessageLite& self) {
   CreateDebate& this_ = static_cast<CreateDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.debate_topic_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -1059,15 +831,15 @@ const ::google::protobuf::internal::ClassData* CreateDebate::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 53, 2> CreateDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 46, 2> CreateDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967293,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1080,24 +852,17 @@ const ::_pbi::TcParseTable<1, 2, 0, 53, 2> CreateDebate::_table_ = {
     // string debate_topic = 2 [json_name = "debateTopic"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.debate_topic_)}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.user_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string debate_topic = 2 [json_name = "debateTopic"];
     {PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.debate_topic_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\31\7\14\0\0\0\0\0"
+    "\31\14\0\0\0\0\0\0"
     "debate_event.CreateDebate"
-    "user_id"
     "debate_topic"
   }},
 };
@@ -1109,7 +874,6 @@ PROTOBUF_NOINLINE void CreateDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.debate_topic_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1128,14 +892,6 @@ PROTOBUF_NOINLINE void CreateDebate::Clear() {
           // @@protoc_insertion_point(serialize_to_array_start:debate_event.CreateDebate)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.CreateDebate.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
 
           // string debate_topic = 2 [json_name = "debateTopic"];
           if (!this_._internal_debate_topic().empty()) {
@@ -1168,13 +924,7 @@ PROTOBUF_NOINLINE void CreateDebate::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
             // string debate_topic = 2 [json_name = "debateTopic"];
             if (!this_._internal_debate_topic().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1193,9 +943,6 @@ void CreateDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_debate_topic().empty()) {
     _this->_internal_set_debate_topic(from._internal_debate_topic());
   }
@@ -1215,7 +962,6 @@ void CreateDebate::InternalSwap(CreateDebate* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_, &other->_impl_.debate_topic_, arena);
 }
 
@@ -1230,54 +976,26 @@ class ClearDebates::_Internal {
 
 ClearDebates::ClearDebates(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.ClearDebates)
 }
-inline PROTOBUF_NDEBUG_INLINE ClearDebates::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::ClearDebates& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 ClearDebates::ClearDebates(
     ::google::protobuf::Arena* arena,
     const ClearDebates& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   ClearDebates* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.ClearDebates)
-}
-inline PROTOBUF_NDEBUG_INLINE ClearDebates::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void ClearDebates::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-ClearDebates::~ClearDebates() {
-  // @@protoc_insertion_point(destructor:debate_event.ClearDebates)
-  SharedDtor(*this);
-}
-inline void ClearDebates::SharedDtor(MessageLite& self) {
-  ClearDebates& this_ = static_cast<ClearDebates&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* ClearDebates::PlacementNew_(const void*, void* mem,
@@ -1285,7 +1003,7 @@ inline void* ClearDebates::PlacementNew_(const void*, void* mem,
   return ::new (mem) ClearDebates(arena);
 }
 constexpr auto ClearDebates::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ClearDebates),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ClearDebates),
                                             alignof(ClearDebates));
 }
 PROTOBUF_CONSTINIT
@@ -1297,10 +1015,10 @@ const ::google::protobuf::internal::ClassDataFull ClearDebates::_class_data_ = {
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &ClearDebates::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<ClearDebates>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<ClearDebates>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ClearDebates::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ClearDebates>(), &ClearDebates::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<ClearDebates>(), &ClearDebates::ByteSizeLong,
             &ClearDebates::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ClearDebates, _impl_._cached_size_),
@@ -1316,15 +1034,15 @@ const ::google::protobuf::internal::ClassData* ClearDebates::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 41, 2> ClearDebates::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> ClearDebates::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1334,124 +1052,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 41, 2> ClearDebates::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ClearDebates>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ClearDebates, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(ClearDebates, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\31\7\0\0\0\0\0\0"
-    "debate_event.ClearDebates"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void ClearDebates::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.ClearDebates)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* ClearDebates::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const ClearDebates& this_ = static_cast<const ClearDebates&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* ClearDebates::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const ClearDebates& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.ClearDebates)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.ClearDebates.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.ClearDebates)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t ClearDebates::ByteSizeLong(const MessageLite& base) {
-          const ClearDebates& this_ = static_cast<const ClearDebates&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t ClearDebates::ByteSizeLong() const {
-          const ClearDebates& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.ClearDebates)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void ClearDebates::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<ClearDebates*>(&to_msg);
-  auto& from = static_cast<const ClearDebates&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.ClearDebates)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void ClearDebates::CopyFrom(const ClearDebates& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.ClearDebates)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void ClearDebates::InternalSwap(ClearDebates* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata ClearDebates::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -1471,8 +1089,7 @@ DeleteDebate::DeleteDebate(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE DeleteDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::DeleteDebate& from_msg)
-      : user_id_(arena, from.user_id_),
-        debate_id_(arena, from.debate_id_),
+      : debate_id_(arena, from.debate_id_),
         _cached_size_{0} {}
 
 DeleteDebate::DeleteDebate(
@@ -1494,8 +1111,7 @@ DeleteDebate::DeleteDebate(
 inline PROTOBUF_NDEBUG_INLINE DeleteDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        debate_id_(arena),
+      : debate_id_(arena),
         _cached_size_{0} {}
 
 inline void DeleteDebate::SharedCtor(::_pb::Arena* arena) {
@@ -1509,7 +1125,6 @@ inline void DeleteDebate::SharedDtor(MessageLite& self) {
   DeleteDebate& this_ = static_cast<DeleteDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.debate_id_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -1550,15 +1165,15 @@ const ::google::protobuf::internal::ClassData* DeleteDebate::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 50, 2> DeleteDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DeleteDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1568,27 +1183,20 @@ const ::_pbi::TcParseTable<1, 2, 0, 50, 2> DeleteDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_id = 2 [json_name = "debateId"];
+    // string debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_)}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.user_id_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string debate_id = 2 [json_name = "debateId"];
+    // string debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\31\7\11\0\0\0\0\0"
+    "\31\11\0\0\0\0\0\0"
     "debate_event.DeleteDebate"
-    "user_id"
     "debate_id"
   }},
 };
@@ -1600,7 +1208,6 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.debate_id_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1620,20 +1227,12 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.DeleteDebate.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string debate_id = 2 [json_name = "debateId"];
+          // string debate_id = 1 [json_name = "debateId"];
           if (!this_._internal_debate_id().empty()) {
             const std::string& _s = this_._internal_debate_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.DeleteDebate.debate_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+            target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1659,14 +1258,8 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-            // string debate_id = 2 [json_name = "debateId"];
+            // string debate_id = 1 [json_name = "debateId"];
             if (!this_._internal_debate_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_debate_id());
@@ -1684,9 +1277,6 @@ void DeleteDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_debate_id().empty()) {
     _this->_internal_set_debate_id(from._internal_debate_id());
   }
@@ -1706,7 +1296,6 @@ void DeleteDebate::InternalSwap(DeleteDebate* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
 }
 
@@ -1731,8 +1320,7 @@ EnterDebate::EnterDebate(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE EnterDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::EnterDebate& from_msg)
-      : user_id_(arena, from.user_id_),
-        debate_id_(arena, from.debate_id_),
+      : debate_id_(arena, from.debate_id_),
         _cached_size_{0} {}
 
 EnterDebate::EnterDebate(
@@ -1754,8 +1342,7 @@ EnterDebate::EnterDebate(
 inline PROTOBUF_NDEBUG_INLINE EnterDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        debate_id_(arena),
+      : debate_id_(arena),
         _cached_size_{0} {}
 
 inline void EnterDebate::SharedCtor(::_pb::Arena* arena) {
@@ -1769,7 +1356,6 @@ inline void EnterDebate::SharedDtor(MessageLite& self) {
   EnterDebate& this_ = static_cast<EnterDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.debate_id_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -1810,15 +1396,15 @@ const ::google::protobuf::internal::ClassData* EnterDebate::GetClassData() const
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnterDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 42, 2> EnterDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1828,27 +1414,20 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnterDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::EnterDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_id = 2 [json_name = "debateId"];
+    // string debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_)}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.user_id_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string debate_id = 2 [json_name = "debateId"];
+    // string debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\30\7\11\0\0\0\0\0"
+    "\30\11\0\0\0\0\0\0"
     "debate_event.EnterDebate"
-    "user_id"
     "debate_id"
   }},
 };
@@ -1860,7 +1439,6 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.debate_id_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1880,20 +1458,12 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.EnterDebate.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string debate_id = 2 [json_name = "debateId"];
+          // string debate_id = 1 [json_name = "debateId"];
           if (!this_._internal_debate_id().empty()) {
             const std::string& _s = this_._internal_debate_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.EnterDebate.debate_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+            target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1919,14 +1489,8 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-            // string debate_id = 2 [json_name = "debateId"];
+            // string debate_id = 1 [json_name = "debateId"];
             if (!this_._internal_debate_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_debate_id());
@@ -1944,9 +1508,6 @@ void EnterDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_debate_id().empty()) {
     _this->_internal_set_debate_id(from._internal_debate_id());
   }
@@ -1966,7 +1527,6 @@ void EnterDebate::InternalSwap(EnterDebate* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
 }
 
@@ -1981,54 +1541,26 @@ class GoHome::_Internal {
 
 GoHome::GoHome(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.GoHome)
 }
-inline PROTOBUF_NDEBUG_INLINE GoHome::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::GoHome& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 GoHome::GoHome(
     ::google::protobuf::Arena* arena,
     const GoHome& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   GoHome* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.GoHome)
-}
-inline PROTOBUF_NDEBUG_INLINE GoHome::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void GoHome::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-GoHome::~GoHome() {
-  // @@protoc_insertion_point(destructor:debate_event.GoHome)
-  SharedDtor(*this);
-}
-inline void GoHome::SharedDtor(MessageLite& self) {
-  GoHome& this_ = static_cast<GoHome&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* GoHome::PlacementNew_(const void*, void* mem,
@@ -2036,7 +1568,7 @@ inline void* GoHome::PlacementNew_(const void*, void* mem,
   return ::new (mem) GoHome(arena);
 }
 constexpr auto GoHome::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GoHome),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GoHome),
                                             alignof(GoHome));
 }
 PROTOBUF_CONSTINIT
@@ -2048,10 +1580,10 @@ const ::google::protobuf::internal::ClassDataFull GoHome::_class_data_ = {
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &GoHome::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<GoHome>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GoHome>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GoHome::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GoHome>(), &GoHome::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GoHome>(), &GoHome::ByteSizeLong,
             &GoHome::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GoHome, _impl_._cached_size_),
@@ -2067,15 +1599,15 @@ const ::google::protobuf::internal::ClassData* GoHome::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 35, 2> GoHome::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GoHome::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2085,124 +1617,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 35, 2> GoHome::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoHome>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GoHome, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(GoHome, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\23\7\0\0\0\0\0\0"
-    "debate_event.GoHome"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void GoHome::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.GoHome)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* GoHome::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const GoHome& this_ = static_cast<const GoHome&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* GoHome::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const GoHome& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.GoHome)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.GoHome.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.GoHome)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t GoHome::ByteSizeLong(const MessageLite& base) {
-          const GoHome& this_ = static_cast<const GoHome&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t GoHome::ByteSizeLong() const {
-          const GoHome& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.GoHome)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void GoHome::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<GoHome*>(&to_msg);
-  auto& from = static_cast<const GoHome&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.GoHome)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void GoHome::CopyFrom(const GoHome& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.GoHome)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void GoHome::InternalSwap(GoHome* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata GoHome::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -2212,54 +1644,26 @@ class OpenAddChildClaim::_Internal {
 
 OpenAddChildClaim::OpenAddChildClaim(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.OpenAddChildClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE OpenAddChildClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::OpenAddChildClaim& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 OpenAddChildClaim::OpenAddChildClaim(
     ::google::protobuf::Arena* arena,
     const OpenAddChildClaim& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   OpenAddChildClaim* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.OpenAddChildClaim)
-}
-inline PROTOBUF_NDEBUG_INLINE OpenAddChildClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void OpenAddChildClaim::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-OpenAddChildClaim::~OpenAddChildClaim() {
-  // @@protoc_insertion_point(destructor:debate_event.OpenAddChildClaim)
-  SharedDtor(*this);
-}
-inline void OpenAddChildClaim::SharedDtor(MessageLite& self) {
-  OpenAddChildClaim& this_ = static_cast<OpenAddChildClaim&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* OpenAddChildClaim::PlacementNew_(const void*, void* mem,
@@ -2267,7 +1671,7 @@ inline void* OpenAddChildClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) OpenAddChildClaim(arena);
 }
 constexpr auto OpenAddChildClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(OpenAddChildClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(OpenAddChildClaim),
                                             alignof(OpenAddChildClaim));
 }
 PROTOBUF_CONSTINIT
@@ -2279,10 +1683,10 @@ const ::google::protobuf::internal::ClassDataFull OpenAddChildClaim::_class_data
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &OpenAddChildClaim::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<OpenAddChildClaim>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<OpenAddChildClaim>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &OpenAddChildClaim::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<OpenAddChildClaim>(), &OpenAddChildClaim::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<OpenAddChildClaim>(), &OpenAddChildClaim::ByteSizeLong,
             &OpenAddChildClaim::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(OpenAddChildClaim, _impl_._cached_size_),
@@ -2298,15 +1702,15 @@ const ::google::protobuf::internal::ClassData* OpenAddChildClaim::GetClassData()
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 46, 2> OpenAddChildClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> OpenAddChildClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2316,124 +1720,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 46, 2> OpenAddChildClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::OpenAddChildClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(OpenAddChildClaim, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(OpenAddChildClaim, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\36\7\0\0\0\0\0\0"
-    "debate_event.OpenAddChildClaim"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void OpenAddChildClaim::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.OpenAddChildClaim)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* OpenAddChildClaim::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const OpenAddChildClaim& this_ = static_cast<const OpenAddChildClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* OpenAddChildClaim::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const OpenAddChildClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.OpenAddChildClaim)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.OpenAddChildClaim.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.OpenAddChildClaim)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t OpenAddChildClaim::ByteSizeLong(const MessageLite& base) {
-          const OpenAddChildClaim& this_ = static_cast<const OpenAddChildClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t OpenAddChildClaim::ByteSizeLong() const {
-          const OpenAddChildClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.OpenAddChildClaim)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void OpenAddChildClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<OpenAddChildClaim*>(&to_msg);
-  auto& from = static_cast<const OpenAddChildClaim&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.OpenAddChildClaim)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void OpenAddChildClaim::CopyFrom(const OpenAddChildClaim& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.OpenAddChildClaim)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void OpenAddChildClaim::InternalSwap(OpenAddChildClaim* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata OpenAddChildClaim::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -2453,8 +1757,7 @@ AddChildClaim::AddChildClaim(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE AddChildClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::AddChildClaim& from_msg)
-      : user_id_(arena, from.user_id_),
-        claim_(arena, from.claim_),
+      : claim_(arena, from.claim_),
         connection_to_parent_(arena, from.connection_to_parent_),
         _cached_size_{0} {}
 
@@ -2477,8 +1780,7 @@ AddChildClaim::AddChildClaim(
 inline PROTOBUF_NDEBUG_INLINE AddChildClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        claim_(arena),
+      : claim_(arena),
         connection_to_parent_(arena),
         _cached_size_{0} {}
 
@@ -2493,7 +1795,6 @@ inline void AddChildClaim::SharedDtor(MessageLite& self) {
   AddChildClaim& this_ = static_cast<AddChildClaim&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.claim_.Destroy();
   this_._impl_.connection_to_parent_.Destroy();
   this_._impl_.~Impl_();
@@ -2535,15 +1836,15 @@ const ::google::protobuf::internal::ClassData* AddChildClaim::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 67, 2> AddChildClaim::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 60, 2> AddChildClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2553,34 +1854,26 @@ const ::_pbi::TcParseTable<2, 3, 0, 67, 2> AddChildClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddChildClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string user_id = 1 [json_name = "userId"];
+    // string connection_to_parent = 2 [json_name = "connectionToParent"];
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.user_id_)}},
-    // string claim = 2 [json_name = "claim"];
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.connection_to_parent_)}},
+    // string claim = 1 [json_name = "claim"];
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.claim_)}},
-    // string connection_to_parent = 3 [json_name = "connectionToParent"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.connection_to_parent_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.claim_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string claim = 2 [json_name = "claim"];
+    // string claim = 1 [json_name = "claim"];
     {PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.claim_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string connection_to_parent = 3 [json_name = "connectionToParent"];
+    // string connection_to_parent = 2 [json_name = "connectionToParent"];
     {PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.connection_to_parent_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\32\7\5\24\0\0\0\0"
+    "\32\5\24\0\0\0\0\0"
     "debate_event.AddChildClaim"
-    "user_id"
     "claim"
     "connection_to_parent"
   }},
@@ -2593,7 +1886,6 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.claim_.ClearToEmpty();
   _impl_.connection_to_parent_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -2614,28 +1906,20 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddChildClaim.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // string claim = 2 [json_name = "claim"];
+          // string claim = 1 [json_name = "claim"];
           if (!this_._internal_claim().empty()) {
             const std::string& _s = this_._internal_claim();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddChildClaim.claim");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+            target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string connection_to_parent = 3 [json_name = "connectionToParent"];
+          // string connection_to_parent = 2 [json_name = "connectionToParent"];
           if (!this_._internal_connection_to_parent().empty()) {
             const std::string& _s = this_._internal_connection_to_parent();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddChildClaim.connection_to_parent");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
+            target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2663,17 +1947,12 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-            // string claim = 2 [json_name = "claim"];
+            // string claim = 1 [json_name = "claim"];
             if (!this_._internal_claim().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_claim());
             }
-            // string connection_to_parent = 3 [json_name = "connectionToParent"];
+            // string connection_to_parent = 2 [json_name = "connectionToParent"];
             if (!this_._internal_connection_to_parent().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_connection_to_parent());
@@ -2691,9 +1970,6 @@ void AddChildClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_claim().empty()) {
     _this->_internal_set_claim(from._internal_claim());
   }
@@ -2716,7 +1992,6 @@ void AddChildClaim::InternalSwap(AddChildClaim* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.claim_, &other->_impl_.claim_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.connection_to_parent_, &other->_impl_.connection_to_parent_, arena);
 }
@@ -2732,54 +2007,26 @@ class OpenReportClaim::_Internal {
 
 OpenReportClaim::OpenReportClaim(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.OpenReportClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE OpenReportClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::OpenReportClaim& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 OpenReportClaim::OpenReportClaim(
     ::google::protobuf::Arena* arena,
     const OpenReportClaim& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   OpenReportClaim* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.OpenReportClaim)
-}
-inline PROTOBUF_NDEBUG_INLINE OpenReportClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void OpenReportClaim::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-OpenReportClaim::~OpenReportClaim() {
-  // @@protoc_insertion_point(destructor:debate_event.OpenReportClaim)
-  SharedDtor(*this);
-}
-inline void OpenReportClaim::SharedDtor(MessageLite& self) {
-  OpenReportClaim& this_ = static_cast<OpenReportClaim&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* OpenReportClaim::PlacementNew_(const void*, void* mem,
@@ -2787,7 +2034,7 @@ inline void* OpenReportClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) OpenReportClaim(arena);
 }
 constexpr auto OpenReportClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(OpenReportClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(OpenReportClaim),
                                             alignof(OpenReportClaim));
 }
 PROTOBUF_CONSTINIT
@@ -2799,10 +2046,10 @@ const ::google::protobuf::internal::ClassDataFull OpenReportClaim::_class_data_ 
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &OpenReportClaim::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<OpenReportClaim>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<OpenReportClaim>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &OpenReportClaim::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<OpenReportClaim>(), &OpenReportClaim::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<OpenReportClaim>(), &OpenReportClaim::ByteSizeLong,
             &OpenReportClaim::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(OpenReportClaim, _impl_._cached_size_),
@@ -2818,15 +2065,15 @@ const ::google::protobuf::internal::ClassData* OpenReportClaim::GetClassData() c
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 44, 2> OpenReportClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> OpenReportClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -2836,124 +2083,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 44, 2> OpenReportClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::OpenReportClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(OpenReportClaim, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(OpenReportClaim, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\34\7\0\0\0\0\0\0"
-    "debate_event.OpenReportClaim"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void OpenReportClaim::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.OpenReportClaim)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* OpenReportClaim::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const OpenReportClaim& this_ = static_cast<const OpenReportClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* OpenReportClaim::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const OpenReportClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.OpenReportClaim)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.OpenReportClaim.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.OpenReportClaim)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t OpenReportClaim::ByteSizeLong(const MessageLite& base) {
-          const OpenReportClaim& this_ = static_cast<const OpenReportClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t OpenReportClaim::ByteSizeLong() const {
-          const OpenReportClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.OpenReportClaim)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void OpenReportClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<OpenReportClaim*>(&to_msg);
-  auto& from = static_cast<const OpenReportClaim&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.OpenReportClaim)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void OpenReportClaim::CopyFrom(const OpenReportClaim& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.OpenReportClaim)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void OpenReportClaim::InternalSwap(OpenReportClaim* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata OpenReportClaim::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -2963,54 +2110,26 @@ class DeleteCurrentStatement::_Internal {
 
 DeleteCurrentStatement::DeleteCurrentStatement(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.DeleteCurrentStatement)
 }
-inline PROTOBUF_NDEBUG_INLINE DeleteCurrentStatement::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::DeleteCurrentStatement& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 DeleteCurrentStatement::DeleteCurrentStatement(
     ::google::protobuf::Arena* arena,
     const DeleteCurrentStatement& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   DeleteCurrentStatement* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.DeleteCurrentStatement)
-}
-inline PROTOBUF_NDEBUG_INLINE DeleteCurrentStatement::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void DeleteCurrentStatement::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-DeleteCurrentStatement::~DeleteCurrentStatement() {
-  // @@protoc_insertion_point(destructor:debate_event.DeleteCurrentStatement)
-  SharedDtor(*this);
-}
-inline void DeleteCurrentStatement::SharedDtor(MessageLite& self) {
-  DeleteCurrentStatement& this_ = static_cast<DeleteCurrentStatement&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* DeleteCurrentStatement::PlacementNew_(const void*, void* mem,
@@ -3018,7 +2137,7 @@ inline void* DeleteCurrentStatement::PlacementNew_(const void*, void* mem,
   return ::new (mem) DeleteCurrentStatement(arena);
 }
 constexpr auto DeleteCurrentStatement::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DeleteCurrentStatement),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DeleteCurrentStatement),
                                             alignof(DeleteCurrentStatement));
 }
 PROTOBUF_CONSTINIT
@@ -3030,10 +2149,10 @@ const ::google::protobuf::internal::ClassDataFull DeleteCurrentStatement::_class
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &DeleteCurrentStatement::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<DeleteCurrentStatement>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<DeleteCurrentStatement>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &DeleteCurrentStatement::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<DeleteCurrentStatement>(), &DeleteCurrentStatement::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<DeleteCurrentStatement>(), &DeleteCurrentStatement::ByteSizeLong,
             &DeleteCurrentStatement::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(DeleteCurrentStatement, _impl_._cached_size_),
@@ -3049,15 +2168,15 @@ const ::google::protobuf::internal::ClassData* DeleteCurrentStatement::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 51, 2> DeleteCurrentStatement::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> DeleteCurrentStatement::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -3067,124 +2186,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 51, 2> DeleteCurrentStatement::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteCurrentStatement>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteCurrentStatement, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(DeleteCurrentStatement, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\43\7\0\0\0\0\0\0"
-    "debate_event.DeleteCurrentStatement"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void DeleteCurrentStatement::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.DeleteCurrentStatement)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* DeleteCurrentStatement::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const DeleteCurrentStatement& this_ = static_cast<const DeleteCurrentStatement&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* DeleteCurrentStatement::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const DeleteCurrentStatement& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.DeleteCurrentStatement)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.DeleteCurrentStatement.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.DeleteCurrentStatement)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t DeleteCurrentStatement::ByteSizeLong(const MessageLite& base) {
-          const DeleteCurrentStatement& this_ = static_cast<const DeleteCurrentStatement&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t DeleteCurrentStatement::ByteSizeLong() const {
-          const DeleteCurrentStatement& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.DeleteCurrentStatement)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void DeleteCurrentStatement::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<DeleteCurrentStatement*>(&to_msg);
-  auto& from = static_cast<const DeleteCurrentStatement&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.DeleteCurrentStatement)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void DeleteCurrentStatement::CopyFrom(const DeleteCurrentStatement& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.DeleteCurrentStatement)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void DeleteCurrentStatement::InternalSwap(DeleteCurrentStatement* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata DeleteCurrentStatement::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -3204,8 +2223,7 @@ AddConnection::AddConnection(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE AddConnection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::AddConnection& from_msg)
-      : user_id_(arena, from.user_id_),
-        debate_id_(arena, from.debate_id_),
+      : debate_id_(arena, from.debate_id_),
         from_id_(arena, from.from_id_),
         to_id_(arena, from.to_id_),
         connection_(arena, from.connection_),
@@ -3230,8 +2248,7 @@ AddConnection::AddConnection(
 inline PROTOBUF_NDEBUG_INLINE AddConnection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        debate_id_(arena),
+      : debate_id_(arena),
         from_id_(arena),
         to_id_(arena),
         connection_(arena),
@@ -3248,7 +2265,6 @@ inline void AddConnection::SharedDtor(MessageLite& self) {
   AddConnection& this_ = static_cast<AddConnection&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.debate_id_.Destroy();
   this_._impl_.from_id_.Destroy();
   this_._impl_.to_id_.Destroy();
@@ -3292,15 +2308,15 @@ const ::google::protobuf::internal::ClassData* AddConnection::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 73, 2> AddConnection::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 66, 2> AddConnection::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    5, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967265,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -3310,30 +2326,21 @@ const ::_pbi::TcParseTable<3, 5, 0, 73, 2> AddConnection::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddConnection>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.user_id_)}},
-    // string debate_id = 2 [json_name = "debateId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)}},
-    // string from_id = 3 [json_name = "fromId"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_)}},
     // string to_id = 4 [json_name = "toId"];
     {::_pbi::TcParser::FastUS1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_)}},
     // string connection = 5 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.connection_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // string debate_id = 2 [json_name = "debateId"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)}},
+    // string from_id = 3 [json_name = "fromId"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string debate_id = 2 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
@@ -3349,9 +2356,8 @@ const ::_pbi::TcParseTable<3, 5, 0, 73, 2> AddConnection::_table_ = {
   }},
   // no aux_entries
   {{
-    "\32\7\11\7\5\12\0\0"
+    "\32\11\7\5\12\0\0\0"
     "debate_event.AddConnection"
-    "user_id"
     "debate_id"
     "from_id"
     "to_id"
@@ -3366,7 +2372,6 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.debate_id_.ClearToEmpty();
   _impl_.from_id_.ClearToEmpty();
   _impl_.to_id_.ClearToEmpty();
@@ -3388,14 +2393,6 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
           // @@protoc_insertion_point(serialize_to_array_start:debate_event.AddConnection)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddConnection.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
 
           // string debate_id = 2 [json_name = "debateId"];
           if (!this_._internal_debate_id().empty()) {
@@ -3454,11 +2451,6 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
             // string debate_id = 2 [json_name = "debateId"];
             if (!this_._internal_debate_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3492,9 +2484,6 @@ void AddConnection::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_debate_id().empty()) {
     _this->_internal_set_debate_id(from._internal_debate_id());
   }
@@ -3523,7 +2512,6 @@ void AddConnection::InternalSwap(AddConnection* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_id_, &other->_impl_.from_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.to_id_, &other->_impl_.to_id_, arena);
@@ -3541,54 +2529,26 @@ class GoToParentClaim::_Internal {
 
 GoToParentClaim::GoToParentClaim(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.GoToParentClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE GoToParentClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::GoToParentClaim& from_msg)
-      : user_id_(arena, from.user_id_),
-        _cached_size_{0} {}
-
 GoToParentClaim::GoToParentClaim(
     ::google::protobuf::Arena* arena,
     const GoToParentClaim& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   GoToParentClaim* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:debate_event.GoToParentClaim)
-}
-inline PROTOBUF_NDEBUG_INLINE GoToParentClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        _cached_size_{0} {}
-
-inline void GoToParentClaim::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-GoToParentClaim::~GoToParentClaim() {
-  // @@protoc_insertion_point(destructor:debate_event.GoToParentClaim)
-  SharedDtor(*this);
-}
-inline void GoToParentClaim::SharedDtor(MessageLite& self) {
-  GoToParentClaim& this_ = static_cast<GoToParentClaim&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
-  this_._impl_.~Impl_();
 }
 
 inline void* GoToParentClaim::PlacementNew_(const void*, void* mem,
@@ -3596,7 +2556,7 @@ inline void* GoToParentClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) GoToParentClaim(arena);
 }
 constexpr auto GoToParentClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GoToParentClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GoToParentClaim),
                                             alignof(GoToParentClaim));
 }
 PROTOBUF_CONSTINIT
@@ -3608,10 +2568,10 @@ const ::google::protobuf::internal::ClassDataFull GoToParentClaim::_class_data_ 
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &GoToParentClaim::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<GoToParentClaim>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GoToParentClaim>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GoToParentClaim::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GoToParentClaim>(), &GoToParentClaim::ByteSizeLong,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GoToParentClaim>(), &GoToParentClaim::ByteSizeLong,
             &GoToParentClaim::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GoToParentClaim, _impl_._cached_size_),
@@ -3627,15 +2587,15 @@ const ::google::protobuf::internal::ClassData* GoToParentClaim::GetClassData() c
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 44, 2> GoToParentClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GoToParentClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    0, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -3645,124 +2605,24 @@ const ::_pbi::TcParseTable<0, 1, 0, 44, 2> GoToParentClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoToParentClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GoToParentClaim, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
-  }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(GoToParentClaim, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no aux_entries
+  // no field_entries, or aux_entries
   {{
-    "\34\7\0\0\0\0\0\0"
-    "debate_event.GoToParentClaim"
-    "user_id"
   }},
 };
 
-PROTOBUF_NOINLINE void GoToParentClaim::Clear() {
-// @@protoc_insertion_point(message_clear_start:debate_event.GoToParentClaim)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.user_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* GoToParentClaim::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const GoToParentClaim& this_ = static_cast<const GoToParentClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* GoToParentClaim::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const GoToParentClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:debate_event.GoToParentClaim)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.GoToParentClaim.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:debate_event.GoToParentClaim)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t GoToParentClaim::ByteSizeLong(const MessageLite& base) {
-          const GoToParentClaim& this_ = static_cast<const GoToParentClaim&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t GoToParentClaim::ByteSizeLong() const {
-          const GoToParentClaim& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:debate_event.GoToParentClaim)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void GoToParentClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<GoToParentClaim*>(&to_msg);
-  auto& from = static_cast<const GoToParentClaim&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.GoToParentClaim)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void GoToParentClaim::CopyFrom(const GoToParentClaim& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.GoToParentClaim)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
 
 
-void GoToParentClaim::InternalSwap(GoToParentClaim* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-}
+
+
+
+
 
 ::google::protobuf::Metadata GoToParentClaim::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -3862,9 +2722,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 39, 2> GoToClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967293,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
     0,  // num_aux_entries
@@ -3876,13 +2736,13 @@ const ::_pbi::TcParseTable<0, 1, 0, 39, 2> GoToClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoToClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string claim_id = 1 [json_name = "claimId"];
+    // string claim_id = 2 [json_name = "claimId"];
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_)}},
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string claim_id = 1 [json_name = "claimId"];
+    // string claim_id = 2 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -3920,12 +2780,12 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string claim_id = 1 [json_name = "claimId"];
+          // string claim_id = 2 [json_name = "claimId"];
           if (!this_._internal_claim_id().empty()) {
             const std::string& _s = this_._internal_claim_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.GoToClaim.claim_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+            target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -3952,7 +2812,7 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
           (void)cached_has_bits;
 
            {
-            // string claim_id = 1 [json_name = "claimId"];
+            // string claim_id = 2 [json_name = "claimId"];
             if (!this_._internal_claim_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_claim_id());

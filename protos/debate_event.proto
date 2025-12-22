@@ -6,52 +6,43 @@ import "google/protobuf/timestamp.proto";
 
 // Individual event payloads
 message None{
-    string user_id = 1;
 }
 
 message CreateDebate {
-    string user_id = 1;
     string debate_topic = 2;
 }
 
 message ClearDebates {
-    string user_id = 1;
+
 }
 
 message DeleteDebate {
-    string user_id = 1;
-    string debate_id = 2;
+    string debate_id = 1;
 }
 
 message EnterDebate {
-    string user_id = 1;
-    string debate_id = 2;
+    string debate_id = 1;
 }
 
 message GoHome {
-    string user_id       = 1;
 }
 
 message OpenAddChildClaim {
-    string user_id       = 1;
 }
 
 message AddChildClaim {
-    string user_id       = 1;
-    string claim         = 2;
-    string connection_to_parent = 3;
+    string claim         = 1;
+    string connection_to_parent = 2;
 }
 
 message OpenReportClaim {
-    string user_id       = 1;
 }
 
 message DeleteCurrentStatement {
-    string user_id       = 1;
+
 }
 
 message AddConnection {
-    string user_id       = 1;
     string debate_id     = 2;
     string from_id       = 3;
     string to_id         = 4;
@@ -59,11 +50,10 @@ message AddConnection {
 }
 
 message GoToParentClaim {
-    string user_id       = 1;
 }
 
 message GoToClaim {
-    string claim_id      = 1;
+    string claim_id      = 2;
 }
 
 // enum

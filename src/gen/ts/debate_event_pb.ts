@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIXCgROb25lEg8KB3VzZXJfaWQYASABKAkiNQoMQ3JlYXRlRGViYXRlEg8KB3VzZXJfaWQYASABKAkSFAoMZGViYXRlX3RvcGljGAIgASgJIh8KDENsZWFyRGViYXRlcxIPCgd1c2VyX2lkGAEgASgJIjIKDERlbGV0ZURlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIxCgtFbnRlckRlYmF0ZRIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCSIZCgZHb0hvbWUSDwoHdXNlcl9pZBgBIAEoCSIkChFPcGVuQWRkQ2hpbGRDbGFpbRIPCgd1c2VyX2lkGAEgASgJIk0KDUFkZENoaWxkQ2xhaW0SDwoHdXNlcl9pZBgBIAEoCRINCgVjbGFpbRgCIAEoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgDIAEoCSIiCg9PcGVuUmVwb3J0Q2xhaW0SDwoHdXNlcl9pZBgBIAEoCSIpChZEZWxldGVDdXJyZW50U3RhdGVtZW50Eg8KB3VzZXJfaWQYASABKAkiZwoNQWRkQ29ubmVjdGlvbhIPCgd1c2VyX2lkGAEgASgJEhEKCWRlYmF0ZV9pZBgCIAEoCRIPCgdmcm9tX2lkGAMgASgJEg0KBXRvX2lkGAQgASgJEhIKCmNvbm5lY3Rpb24YBSABKAkiIgoPR29Ub1BhcmVudENsYWltEg8KB3VzZXJfaWQYASABKAkiHQoJR29Ub0NsYWltEhAKCGNsYWltX2lkGAEgASgJIu4FCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABI6ChFvcGVuX3JlcG9ydF9jbGFpbRgRIAEoCzIdLmRlYmF0ZV9ldmVudC5PcGVuUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IAEIJCgdwYXlsb2FkKosCCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSI8Cg1BZGRDaGlsZENsYWltEg0KBWNsYWltGAEgASgJEhwKFGNvbm5lY3Rpb25fdG9fcGFyZW50GAIgASgJIhEKD09wZW5SZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgJEg8KB2Zyb21faWQYAyABKAkSDQoFdG9faWQYBCABKAkSEgoKY29ubmVjdGlvbhgFIAEoCSIRCg9Hb1RvUGFyZW50Q2xhaW0iHQoJR29Ub0NsYWltEhAKCGNsYWltX2lkGAIgASgJIu4FCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABI6ChFvcGVuX3JlcG9ydF9jbGFpbRgRIAEoCzIdLmRlYmF0ZV9ldmVudC5PcGVuUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IAEIJCgdwYXlsb2FkKosCCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -20,10 +20,6 @@ export const file_debate_event: GenFile = /*@__PURE__*/
  * @generated from message debate_event.None
  */
 export type None = Message<"debate_event.None"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -37,11 +33,6 @@ export const NoneSchema: GenMessage<None> = /*@__PURE__*/
  * @generated from message debate_event.CreateDebate
  */
 export type CreateDebate = Message<"debate_event.CreateDebate"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
   /**
    * @generated from field: string debate_topic = 2;
    */
@@ -59,10 +50,6 @@ export const CreateDebateSchema: GenMessage<CreateDebate> = /*@__PURE__*/
  * @generated from message debate_event.ClearDebates
  */
 export type ClearDebates = Message<"debate_event.ClearDebates"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -77,12 +64,7 @@ export const ClearDebatesSchema: GenMessage<ClearDebates> = /*@__PURE__*/
  */
 export type DeleteDebate = Message<"debate_event.DeleteDebate"> & {
   /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  /**
-   * @generated from field: string debate_id = 2;
+   * @generated from field: string debate_id = 1;
    */
   debateId: string;
 };
@@ -99,12 +81,7 @@ export const DeleteDebateSchema: GenMessage<DeleteDebate> = /*@__PURE__*/
  */
 export type EnterDebate = Message<"debate_event.EnterDebate"> & {
   /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  /**
-   * @generated from field: string debate_id = 2;
+   * @generated from field: string debate_id = 1;
    */
   debateId: string;
 };
@@ -120,10 +97,6 @@ export const EnterDebateSchema: GenMessage<EnterDebate> = /*@__PURE__*/
  * @generated from message debate_event.GoHome
  */
 export type GoHome = Message<"debate_event.GoHome"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -137,10 +110,6 @@ export const GoHomeSchema: GenMessage<GoHome> = /*@__PURE__*/
  * @generated from message debate_event.OpenAddChildClaim
  */
 export type OpenAddChildClaim = Message<"debate_event.OpenAddChildClaim"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -155,17 +124,12 @@ export const OpenAddChildClaimSchema: GenMessage<OpenAddChildClaim> = /*@__PURE_
  */
 export type AddChildClaim = Message<"debate_event.AddChildClaim"> & {
   /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  /**
-   * @generated from field: string claim = 2;
+   * @generated from field: string claim = 1;
    */
   claim: string;
 
   /**
-   * @generated from field: string connection_to_parent = 3;
+   * @generated from field: string connection_to_parent = 2;
    */
   connectionToParent: string;
 };
@@ -181,10 +145,6 @@ export const AddChildClaimSchema: GenMessage<AddChildClaim> = /*@__PURE__*/
  * @generated from message debate_event.OpenReportClaim
  */
 export type OpenReportClaim = Message<"debate_event.OpenReportClaim"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -198,10 +158,6 @@ export const OpenReportClaimSchema: GenMessage<OpenReportClaim> = /*@__PURE__*/
  * @generated from message debate_event.DeleteCurrentStatement
  */
 export type DeleteCurrentStatement = Message<"debate_event.DeleteCurrentStatement"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -215,11 +171,6 @@ export const DeleteCurrentStatementSchema: GenMessage<DeleteCurrentStatement> = 
  * @generated from message debate_event.AddConnection
  */
 export type AddConnection = Message<"debate_event.AddConnection"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
   /**
    * @generated from field: string debate_id = 2;
    */
@@ -252,10 +203,6 @@ export const AddConnectionSchema: GenMessage<AddConnection> = /*@__PURE__*/
  * @generated from message debate_event.GoToParentClaim
  */
 export type GoToParentClaim = Message<"debate_event.GoToParentClaim"> & {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
 };
 
 /**
@@ -270,7 +217,7 @@ export const GoToParentClaimSchema: GenMessage<GoToParentClaim> = /*@__PURE__*/
  */
 export type GoToClaim = Message<"debate_event.GoToClaim"> & {
   /**
-   * @generated from field: string claim_id = 1;
+   * @generated from field: string claim_id = 2;
    */
   claimId: string;
 };
