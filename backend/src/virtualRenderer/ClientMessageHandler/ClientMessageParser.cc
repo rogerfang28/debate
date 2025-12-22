@@ -48,6 +48,8 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
         std::cerr << "Unknown page ID: " << pageId << "\n";
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
+    
+    event.set_user_id(user);
 
     std::cout << "  Event Type: " << event.type() << "\n";
     std::cout << "========================================\n\n";

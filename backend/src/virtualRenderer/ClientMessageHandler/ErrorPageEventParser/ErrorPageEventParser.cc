@@ -12,7 +12,6 @@ debate_event::DebateEvent ErrorPageEventParser::ParseErrorPageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         auto* goHome = event.mutable_go_home();
-        goHome->set_user_id(user);
         std::cout << "  GO_HOME from error page for user: " << user << "\n";
     } else {
         std::cerr << "[ErrorPageEvent] Unknown component/event combination on error page: " 

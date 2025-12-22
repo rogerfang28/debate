@@ -10,10 +10,8 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     debate_event::DebateEvent event;
     
     if (componentId == "submitButton" && eventType == "onClick") {
-        // Create debate
         event.set_type(debate_event::CREATE_DEBATE);
         auto* create = event.mutable_create_debate();
-        create->set_user_id(user);
         
         // Extract topicInput value from page_data
         for (const auto& comp : message.page_data().components()) {
@@ -24,16 +22,13 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
             }
         }
     } else if (componentId == "clearButton" && eventType == "onClick") {
-        // Clear all debates
         event.set_type(debate_event::CLEAR_DEBATES);
         auto* clear = event.mutable_clear_debates();
-        clear->set_user_id(user);
         std::cout << "  CLEAR_DEBATES for user: " << user << "\n";
     } else if (componentId.find("enterDebateTopicButton_") == 0 && eventType == "onClick") {
         // Enter a debate
         event.set_type(debate_event::ENTER_DEBATE);
         auto* enter = event.mutable_enter_debate();
-        enter->set_user_id(user);
         std::string debateID = componentId.substr(23); // Extract ID after "enterDebateTopicButton_"
         enter->set_debate_id(debateID);
         std::cout << "  ENTER_DEBATE: debate_id = " << debateID << "\n";
