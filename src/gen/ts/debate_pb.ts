@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKeAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIbCgVsaW5rcxgHIAMoCzIMLmRlYmF0ZS5MaW5rIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSJDCgVQcm9vZhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGluayKlAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0b3JzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIWCg5udW1fc3RhdGVtZW50cxgHIAEoBWIGcHJvdG8z", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKeAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIbCgVsaW5rcxgHIAMoCzIMLmRlYmF0ZS5MaW5rIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSJDCgVQcm9vZhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGluayKlAQoGRGViYXRlEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhAKCGRlYmF0ZXJzGAMgAygJEh0KBmNsYWltcxgEIAMoCzINLmRlYmF0ZS5DbGFpbRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIWCg5udW1fc3RhdGVtZW50cxgHIAEoBWIGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -135,9 +135,9 @@ export type Debate = Message<"debate.Debate"> & {
   /**
    * user id of participants
    *
-   * @generated from field: repeated string debators = 3;
+   * @generated from field: repeated string debaters = 3;
    */
-  debators: string[];
+  debaters: string[];
 
   /**
    * every claim in the debate

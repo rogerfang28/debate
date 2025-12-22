@@ -525,8 +525,8 @@ class UserEngagement final : public ::google::protobuf::Message
     return *internal_default_instance();
   }
   enum ActionInfoCase {
-    kNoneInfo = 3,
-    kDebatingInfo = 4,
+    kNoneInfo = 2,
+    kDebatingInfo = 3,
     ACTION_INFO_NOT_SET = 0,
   };
   static inline const UserEngagement* internal_default_instance() {
@@ -620,28 +620,11 @@ class UserEngagement final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kUserIdFieldNumber = 1,
-    kCurrentActionFieldNumber = 2,
-    kNoneInfoFieldNumber = 3,
-    kDebatingInfoFieldNumber = 4,
+    kCurrentActionFieldNumber = 1,
+    kNoneInfoFieldNumber = 2,
+    kDebatingInfoFieldNumber = 3,
   };
-  // string user_id = 1 [json_name = "userId"];
-  void clear_user_id() ;
-  const std::string& user_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_user_id(Arg_&& arg, Args_... args);
-  std::string* mutable_user_id();
-  PROTOBUF_NODISCARD std::string* release_user_id();
-  void set_allocated_user_id(std::string* value);
-
-  private:
-  const std::string& _internal_user_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(
-      const std::string& value);
-  std::string* _internal_mutable_user_id();
-
-  public:
-  // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+  // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
   void clear_current_action() ;
   ::user_engagement::EngagementAction current_action() const;
   void set_current_action(::user_engagement::EngagementAction value);
@@ -651,7 +634,7 @@ class UserEngagement final : public ::google::protobuf::Message
   void _internal_set_current_action(::user_engagement::EngagementAction value);
 
   public:
-  // .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+  // .user_engagement.NoneInfo none_info = 2 [json_name = "noneInfo"];
   bool has_none_info() const;
   private:
   bool _internal_has_none_info() const;
@@ -670,7 +653,7 @@ class UserEngagement final : public ::google::protobuf::Message
   ::user_engagement::NoneInfo* _internal_mutable_none_info();
 
   public:
-  // .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+  // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
   bool has_debating_info() const;
   private:
   bool _internal_has_debating_info() const;
@@ -700,8 +683,8 @@ class UserEngagement final : public ::google::protobuf::Message
   inline void clear_has_action_info();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 4, 2,
-      46, 2>
+      0, 3, 2,
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -718,7 +701,6 @@ class UserEngagement final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const UserEngagement& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr user_id_;
     int current_action_;
     union ActionInfoUnion {
       constexpr ActionInfoUnion() : _constinit_{} {}
@@ -854,55 +836,7 @@ inline void DebatingInfo::set_allocated_current_claim_id(std::string* value) {
 
 // UserEngagement
 
-// string user_id = 1 [json_name = "userId"];
-inline void UserEngagement::clear_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.ClearToEmpty();
-}
-inline const std::string& UserEngagement::user_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.user_id)
-  return _internal_user_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void UserEngagement::set_user_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:user_engagement.UserEngagement.user_id)
-}
-inline std::string* UserEngagement::mutable_user_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:user_engagement.UserEngagement.user_id)
-  return _s;
-}
-inline const std::string& UserEngagement::_internal_user_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.user_id_.Get();
-}
-inline void UserEngagement::_internal_set_user_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(value, GetArena());
-}
-inline std::string* UserEngagement::_internal_mutable_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.user_id_.Mutable( GetArena());
-}
-inline std::string* UserEngagement::release_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:user_engagement.UserEngagement.user_id)
-  return _impl_.user_id_.Release();
-}
-inline void UserEngagement::set_allocated_user_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.user_id_.IsDefault()) {
-    _impl_.user_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.user_id)
-}
-
-// .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+// .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
 inline void UserEngagement::clear_current_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_action_ = 0;
@@ -924,7 +858,7 @@ inline void UserEngagement::_internal_set_current_action(::user_engagement::Enga
   _impl_.current_action_ = value;
 }
 
-// .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+// .user_engagement.NoneInfo none_info = 2 [json_name = "noneInfo"];
 inline bool UserEngagement::has_none_info() const {
   return action_info_case() == kNoneInfo;
 }
@@ -1003,7 +937,7 @@ inline ::user_engagement::NoneInfo* UserEngagement::mutable_none_info() ABSL_ATT
   return _msg;
 }
 
-// .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+// .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
 inline bool UserEngagement::has_debating_info() const {
   return action_info_case() == kDebatingInfo;
 }

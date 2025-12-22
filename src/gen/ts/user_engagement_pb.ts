@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyI7CgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAki0wEKDlVzZXJFbmdhZ2VtZW50Eg8KB3VzZXJfaWQYASABKAkSOQoOY3VycmVudF9hY3Rpb24YAiABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglub25lX2luZm8YAyABKAsyGS51c2VyX2VuZ2FnZW1lbnQuTm9uZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAQgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAQg0KC2FjdGlvbl9pbmZvKlsKEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fTk9ORRABEhMKD0FDVElPTl9ERUJBVElORxACYgZwcm90bzM");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyI7CgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * literally nothing
@@ -56,12 +56,7 @@ export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
  */
 export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
   /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  /**
-   * @generated from field: user_engagement.EngagementAction current_action = 2;
+   * @generated from field: user_engagement.EngagementAction current_action = 1;
    */
   currentAction: EngagementAction;
 
@@ -70,13 +65,13 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
    */
   actionInfo: {
     /**
-     * @generated from field: user_engagement.NoneInfo none_info = 3;
+     * @generated from field: user_engagement.NoneInfo none_info = 2;
      */
     value: NoneInfo;
     case: "noneInfo";
   } | {
     /**
-     * @generated from field: user_engagement.DebatingInfo debating_info = 4;
+     * @generated from field: user_engagement.DebatingInfo debating_info = 3;
      */
     value: DebatingInfo;
     case: "debatingInfo";

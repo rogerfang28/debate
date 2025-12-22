@@ -983,7 +983,7 @@ class Debate final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kDebatorsFieldNumber = 3,
+    kDebatersFieldNumber = 3,
     kClaimsFieldNumber = 4,
     kIdFieldNumber = 1,
     kTopicFieldNumber = 2,
@@ -991,26 +991,26 @@ class Debate final : public ::google::protobuf::Message
     kSettingsFieldNumber = 6,
     kNumStatementsFieldNumber = 7,
   };
-  // repeated string debators = 3 [json_name = "debators"];
-  int debators_size() const;
+  // repeated string debaters = 3 [json_name = "debaters"];
+  int debaters_size() const;
   private:
-  int _internal_debators_size() const;
+  int _internal_debaters_size() const;
 
   public:
-  void clear_debators() ;
-  const std::string& debators(int index) const;
-  std::string* mutable_debators(int index);
+  void clear_debaters() ;
+  const std::string& debaters(int index) const;
+  std::string* mutable_debaters(int index);
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debators(int index, Arg_&& value, Args_... args);
-  std::string* add_debators();
+  void set_debaters(int index, Arg_&& value, Args_... args);
+  std::string* add_debaters();
   template <typename Arg_ = const std::string&, typename... Args_>
-  void add_debators(Arg_&& value, Args_... args);
-  const ::google::protobuf::RepeatedPtrField<std::string>& debators() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* mutable_debators();
+  void add_debaters(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& debaters() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_debaters();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_debators() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_debators();
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_debaters() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_debaters();
 
   public:
   // repeated .debate.Claim claims = 4 [json_name = "claims"];
@@ -1128,7 +1128,7 @@ class Debate final : public ::google::protobuf::Message
                           const Debate& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<std::string> debators_;
+    ::google::protobuf::RepeatedPtrField<std::string> debaters_;
     ::google::protobuf::RepeatedPtrField< ::debate::Claim > claims_;
     ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::internal::ArenaStringPtr topic_;
@@ -1860,68 +1860,68 @@ inline void Debate::set_allocated_topic(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Debate.topic)
 }
 
-// repeated string debators = 3 [json_name = "debators"];
-inline int Debate::_internal_debators_size() const {
-  return _internal_debators().size();
+// repeated string debaters = 3 [json_name = "debaters"];
+inline int Debate::_internal_debaters_size() const {
+  return _internal_debaters().size();
 }
-inline int Debate::debators_size() const {
-  return _internal_debators_size();
+inline int Debate::debaters_size() const {
+  return _internal_debaters_size();
 }
-inline void Debate::clear_debators() {
+inline void Debate::clear_debaters() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debators_.Clear();
+  _impl_.debaters_.Clear();
 }
-inline std::string* Debate::add_debators() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* Debate::add_debaters() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  std::string* _s = _internal_mutable_debators()->Add();
-  // @@protoc_insertion_point(field_add_mutable:debate.Debate.debators)
+  std::string* _s = _internal_mutable_debaters()->Add();
+  // @@protoc_insertion_point(field_add_mutable:debate.Debate.debaters)
   return _s;
 }
-inline const std::string& Debate::debators(int index) const
+inline const std::string& Debate::debaters(int index) const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Debate.debators)
-  return _internal_debators().Get(index);
+  // @@protoc_insertion_point(field_get:debate.Debate.debaters)
+  return _internal_debaters().Get(index);
 }
-inline std::string* Debate::mutable_debators(int index)
+inline std::string* Debate::mutable_debaters(int index)
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.Debate.debators)
-  return _internal_mutable_debators()->Mutable(index);
+  // @@protoc_insertion_point(field_mutable:debate.Debate.debaters)
+  return _internal_mutable_debaters()->Mutable(index);
 }
 template <typename Arg_, typename... Args_>
-inline void Debate::set_debators(int index, Arg_&& value, Args_... args) {
+inline void Debate::set_debaters(int index, Arg_&& value, Args_... args) {
   ::google::protobuf::internal::AssignToString(
-      *_internal_mutable_debators()->Mutable(index),
+      *_internal_mutable_debaters()->Mutable(index),
       std::forward<Arg_>(value), args... );
-  // @@protoc_insertion_point(field_set:debate.Debate.debators)
+  // @@protoc_insertion_point(field_set:debate.Debate.debaters)
 }
 template <typename Arg_, typename... Args_>
-inline void Debate::add_debators(Arg_&& value, Args_... args) {
+inline void Debate::add_debaters(Arg_&& value, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_debators(),
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_debaters(),
                                std::forward<Arg_>(value),
                                args... );
-  // @@protoc_insertion_point(field_add:debate.Debate.debators)
+  // @@protoc_insertion_point(field_add:debate.Debate.debaters)
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-Debate::debators() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Debate.debators)
-  return _internal_debators();
+Debate::debaters() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Debate.debaters)
+  return _internal_debaters();
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-Debate::mutable_debators() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Debate.debators)
+Debate::mutable_debaters() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Debate.debaters)
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_debators();
+  return _internal_mutable_debaters();
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-Debate::_internal_debators() const {
+Debate::_internal_debaters() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debators_;
+  return _impl_.debaters_;
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-Debate::_internal_mutable_debators() {
+Debate::_internal_mutable_debaters() {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.debators_;
+  return &_impl_.debaters_;
 }
 
 // repeated .debate.Claim claims = 4 [json_name = "claims"];

@@ -76,10 +76,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr UserEngagement::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        current_action_{static_cast< ::user_engagement::EngagementAction >(0)},
+      : current_action_{static_cast< ::user_engagement::EngagementAction >(0)},
         action_info_{},
         _cached_size_{0},
         _oneof_case_{} {}
@@ -136,7 +133,6 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.current_action_),
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
@@ -159,22 +155,21 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "\n\025user_engagement.proto\022\017user_engagement"
     "\"\n\n\010NoneInfo\"U\n\014DebatingInfo\022\033\n\tdebate_i"
     "d\030\001 \001(\tR\010debateId\022(\n\020current_claim_id\030\002 "
-    "\001(\tR\016currentClaimId\"\202\002\n\016UserEngagement\022\027"
-    "\n\007user_id\030\001 \001(\tR\006userId\022H\n\016current_actio"
-    "n\030\002 \001(\0162!.user_engagement.EngagementActi"
-    "onR\rcurrentAction\0228\n\tnone_info\030\003 \001(\0132\031.u"
-    "ser_engagement.NoneInfoH\000R\010noneInfo\022D\n\rd"
-    "ebating_info\030\004 \001(\0132\035.user_engagement.Deb"
-    "atingInfoH\000R\014debatingInfoB\r\n\013action_info"
-    "*[\n\020EngagementAction\022!\n\035ENGAGEMENT_ACTIO"
-    "N_UNSPECIFIED\020\000\022\017\n\013ACTION_NONE\020\001\022\023\n\017ACTI"
-    "ON_DEBATING\020\002b\006proto3"
+    "\001(\tR\016currentClaimId\"\351\001\n\016UserEngagement\022H"
+    "\n\016current_action\030\001 \001(\0162!.user_engagement"
+    ".EngagementActionR\rcurrentAction\0228\n\tnone"
+    "_info\030\002 \001(\0132\031.user_engagement.NoneInfoH\000"
+    "R\010noneInfo\022D\n\rdebating_info\030\003 \001(\0132\035.user"
+    "_engagement.DebatingInfoH\000R\014debatingInfo"
+    "B\r\n\013action_info*[\n\020EngagementAction\022!\n\035E"
+    "NGAGEMENT_ACTION_UNSPECIFIED\020\000\022\017\n\013ACTION"
+    "_NONE\020\001\022\023\n\017ACTION_DEBATING\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    501,
+    476,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -606,8 +601,7 @@ UserEngagement::UserEngagement(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::user_engagement::UserEngagement& from_msg)
-      : user_id_(arena, from.user_id_),
-        action_info_{},
+      : action_info_{},
         _cached_size_{0},
         _oneof_case_{from._oneof_case_[0]} {}
 
@@ -641,8 +635,7 @@ UserEngagement::UserEngagement(
 inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : user_id_(arena),
-        action_info_{},
+      : action_info_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
@@ -658,7 +651,6 @@ inline void UserEngagement::SharedDtor(MessageLite& self) {
   UserEngagement& this_ = static_cast<UserEngagement&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   if (this_.has_action_info()) {
     this_.clear_action_info();
   }
@@ -698,7 +690,7 @@ inline void* UserEngagement::PlacementNew_(const void*, void* mem,
   return ::new (mem) UserEngagement(arena);
 }
 constexpr auto UserEngagement::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(UserEngagement),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(UserEngagement),
                                             alignof(UserEngagement));
 }
 PROTOBUF_CONSTINIT
@@ -729,15 +721,15 @@ const ::google::protobuf::internal::ClassData* UserEngagement::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 4, 2, 46, 2> UserEngagement::_table_ = {
+const ::_pbi::TcParseTable<0, 3, 2, 0, 2> UserEngagement::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 8,  // max_field_number, fast_idx_mask
+    3, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    3,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -747,34 +739,25 @@ const ::_pbi::TcParseTable<1, 4, 2, 46, 2> UserEngagement::_table_ = {
     ::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserEngagement, _impl_.current_action_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_)}},
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
     {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+    // .user_engagement.NoneInfo none_info = 2 [json_name = "noneInfo"];
     {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.none_info_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+    // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
     {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.debating_info_), _Internal::kOneofCaseOffset + 0, 1,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::NoneInfo>()},
     {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>()},
   }}, {{
-    "\36\7\0\0\0\0\0\0"
-    "user_engagement.UserEngagement"
-    "user_id"
   }},
 };
 
@@ -785,7 +768,6 @@ PROTOBUF_NOINLINE void UserEngagement::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.current_action_ = 0;
   clear_action_info();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -806,31 +788,23 @@ PROTOBUF_NOINLINE void UserEngagement::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.UserEngagement.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+          // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
           if (this_._internal_current_action() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                2, this_._internal_current_action(), target);
+                1, this_._internal_current_action(), target);
           }
 
           switch (this_.action_info_case()) {
             case kNoneInfo: {
               target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                  3, *this_._impl_.action_info_.none_info_, this_._impl_.action_info_.none_info_->GetCachedSize(), target,
+                  2, *this_._impl_.action_info_.none_info_, this_._impl_.action_info_.none_info_->GetCachedSize(), target,
                   stream);
               break;
             }
             case kDebatingInfo: {
               target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                  4, *this_._impl_.action_info_.debating_info_, this_._impl_.action_info_.debating_info_->GetCachedSize(), target,
+                  3, *this_._impl_.action_info_.debating_info_, this_._impl_.action_info_.debating_info_->GetCachedSize(), target,
                   stream);
               break;
             }
@@ -860,27 +834,21 @@ PROTOBUF_NOINLINE void UserEngagement::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
-            // .user_engagement.EngagementAction current_action = 2 [json_name = "currentAction"];
+            // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
             if (this_._internal_current_action() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_current_action());
             }
           }
           switch (this_.action_info_case()) {
-            // .user_engagement.NoneInfo none_info = 3 [json_name = "noneInfo"];
+            // .user_engagement.NoneInfo none_info = 2 [json_name = "noneInfo"];
             case kNoneInfo: {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.none_info_);
               break;
             }
-            // .user_engagement.DebatingInfo debating_info = 4 [json_name = "debatingInfo"];
+            // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
             case kDebatingInfo: {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.debating_info_);
@@ -903,9 +871,6 @@ void UserEngagement::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (from._internal_current_action() != 0) {
     _this->_impl_.current_action_ = from._impl_.current_action_;
   }
@@ -955,10 +920,7 @@ void UserEngagement::CopyFrom(const UserEngagement& from) {
 
 void UserEngagement::InternalSwap(UserEngagement* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   swap(_impl_.current_action_, other->_impl_.current_action_);
   swap(_impl_.action_info_, other->_impl_.action_info_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);

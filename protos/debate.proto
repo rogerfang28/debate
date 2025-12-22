@@ -31,7 +31,7 @@ message Proof {
 message Debate {
   string id = 1;
   string topic = 2;
-  repeated string debators = 3; // user id of participants
+  repeated string debaters = 3; // user id of participants
   repeated Claim claims = 4; // every claim in the debate
   string owner = 5; // user id of debate creator
   debate.DebateSettings settings = 6; // settings for this debate

@@ -129,7 +129,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr Debate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        debators_{},
+        debaters_{},
         claims_{},
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
@@ -216,7 +216,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.topic_),
-        PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.debators_),
+        PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.debaters_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.claims_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.owner_),
         PROTOBUF_FIELD_OFFSET(::debate::Debate, _impl_.settings_),
@@ -258,7 +258,7 @@ const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\n\006claims\030\001 \003(\0132\r.debate.ClaimR\006claims\022\"\n"
     "\005links\030\002 \003(\0132\014.debate.LinkR\005links\"\342\001\n\006De"
     "bate\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005topic\030\002 \001(\tR\005top"
-    "ic\022\032\n\010debators\030\003 \003(\tR\010debators\022%\n\006claims"
+    "ic\022\032\n\010debaters\030\003 \003(\tR\010debaters\022%\n\006claims"
     "\030\004 \003(\0132\r.debate.ClaimR\006claims\022\024\n\005owner\030\005"
     " \001(\tR\005owner\0222\n\010settings\030\006 \001(\0132\026.debate.D"
     "ebateSettingsR\010settings\022%\n\016num_statement"
@@ -1303,7 +1303,7 @@ inline PROTOBUF_NDEBUG_INLINE Debate::Impl_::Impl_(
     const Impl_& from, const ::debate::Debate& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        debators_{visibility, arena, from.debators_},
+        debaters_{visibility, arena, from.debaters_},
         claims_{visibility, arena, from.claims_},
         id_(arena, from.id_),
         topic_(arena, from.topic_),
@@ -1334,7 +1334,7 @@ inline PROTOBUF_NDEBUG_INLINE Debate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0},
-        debators_{visibility, arena},
+        debaters_{visibility, arena},
         claims_{visibility, arena},
         id_(arena),
         topic_(arena),
@@ -1370,8 +1370,8 @@ inline void* Debate::PlacementNew_(const void*, void* mem,
 }
 constexpr auto Debate::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(Debate, _impl_.debators_) +
-          decltype(Debate::_impl_.debators_)::
+      PROTOBUF_FIELD_OFFSET(Debate, _impl_.debaters_) +
+          decltype(Debate::_impl_.debaters_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(Debate, _impl_.claims_) +
@@ -1441,9 +1441,9 @@ const ::_pbi::TcParseTable<3, 7, 2, 42, 2> Debate::_table_ = {
     // string topic = 2 [json_name = "topic"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.topic_)}},
-    // repeated string debators = 3 [json_name = "debators"];
+    // repeated string debaters = 3 [json_name = "debaters"];
     {::_pbi::TcParser::FastUR1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.debators_)}},
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.debaters_)}},
     // repeated .debate.Claim claims = 4 [json_name = "claims"];
     {::_pbi::TcParser::FastMtR1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Debate, _impl_.claims_)}},
@@ -1465,8 +1465,8 @@ const ::_pbi::TcParseTable<3, 7, 2, 42, 2> Debate::_table_ = {
     // string topic = 2 [json_name = "topic"];
     {PROTOBUF_FIELD_OFFSET(Debate, _impl_.topic_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated string debators = 3 [json_name = "debators"];
-    {PROTOBUF_FIELD_OFFSET(Debate, _impl_.debators_), -1, 0,
+    // repeated string debaters = 3 [json_name = "debaters"];
+    {PROTOBUF_FIELD_OFFSET(Debate, _impl_.debaters_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
     // repeated .debate.Claim claims = 4 [json_name = "claims"];
     {PROTOBUF_FIELD_OFFSET(Debate, _impl_.claims_), -1, 0,
@@ -1488,7 +1488,7 @@ const ::_pbi::TcParseTable<3, 7, 2, 42, 2> Debate::_table_ = {
     "debate.Debate"
     "id"
     "topic"
-    "debators"
+    "debaters"
     "owner"
   }},
 };
@@ -1500,7 +1500,7 @@ PROTOBUF_NOINLINE void Debate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.debators_.Clear();
+  _impl_.debaters_.Clear();
   _impl_.claims_.Clear();
   _impl_.id_.ClearToEmpty();
   _impl_.topic_.ClearToEmpty();
@@ -1546,11 +1546,11 @@ PROTOBUF_NOINLINE void Debate::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // repeated string debators = 3 [json_name = "debators"];
-          for (int i = 0, n = this_._internal_debators_size(); i < n; ++i) {
-            const auto& s = this_._internal_debators().Get(i);
+          // repeated string debaters = 3 [json_name = "debaters"];
+          for (int i = 0, n = this_._internal_debaters_size(); i < n; ++i) {
+            const auto& s = this_._internal_debaters().Get(i);
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.Debate.debators");
+                s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.Debate.debaters");
             target = stream->WriteString(3, s, target);
           }
 
@@ -1613,13 +1613,13 @@ PROTOBUF_NOINLINE void Debate::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated string debators = 3 [json_name = "debators"];
+            // repeated string debaters = 3 [json_name = "debaters"];
             {
               total_size +=
-                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_debators().size());
-              for (int i = 0, n = this_._internal_debators().size(); i < n; ++i) {
+                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_debaters().size());
+              for (int i = 0, n = this_._internal_debaters().size(); i < n; ++i) {
                 total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-                    this_._internal_debators().Get(i));
+                    this_._internal_debaters().Get(i));
               }
             }
             // repeated .debate.Claim claims = 4 [json_name = "claims"];
@@ -1675,7 +1675,7 @@ void Debate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_debators()->MergeFrom(from._internal_debators());
+  _this->_internal_mutable_debaters()->MergeFrom(from._internal_debaters());
   _this->_internal_mutable_claims()->MergeFrom(
       from._internal_claims());
   if (!from._internal_id().empty()) {
@@ -1718,7 +1718,7 @@ void Debate::InternalSwap(Debate* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.debators_.InternalSwap(&other->_impl_.debators_);
+  _impl_.debaters_.InternalSwap(&other->_impl_.debaters_);
   _impl_.claims_.InternalSwap(&other->_impl_.claims_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.topic_, &other->_impl_.topic_, arena);
