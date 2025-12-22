@@ -1,7 +1,7 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, const std::string& claimDescription, std::vector<debate::Claim> childClaims) {
+ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<debate::Claim> childClaims) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -69,6 +69,9 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
     ComponentGenerator::addChild(&leftTopSection, goHomeButton);
     ComponentGenerator::addChild(&topSection, leftTopSection);
 
+    // Debate topic title in the center top
+    // ui::Componen
+
     // Focus section (center)
     ui::Component focusSection = ComponentGenerator::createContainer(
         "focusSection",
@@ -104,7 +107,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
 
     ui::Component currentClaimTitle = ComponentGenerator::createText(
         "currentClaimTitle",
-        claimTitle,
+        claim,
         "text-lg",
         "text-white",
         "font-semibold",
@@ -263,7 +266,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
 
     ui::Component descriptionContent = ComponentGenerator::createText(
         "descriptionContent",
-        claimDescription,
+        claim,
         "",
         "text-white",
         "",
@@ -347,7 +350,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
 
     // Use actual child claims from the vector
     for (size_t i = 0; i < childClaims.size(); i++) {
-        std::string nodeId = "childNode" + std::to_string(i + 1);
+        std::string nodeId = "childNode_" + childClaims[i].id();
         ui::Component childNode = ComponentGenerator::createContainer(
             nodeId,
             "",
@@ -370,7 +373,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& claimTitle, 
         ComponentGenerator::addChild(&childNode, childNodeTitle);
 
         ui::Component childNodeButton = ComponentGenerator::createButton(
-            nodeId + "Button",
+            "viewChildNodeButton_" + childClaims[i].id(),
             "View Claim",
             "",
             "bg-blue-600",

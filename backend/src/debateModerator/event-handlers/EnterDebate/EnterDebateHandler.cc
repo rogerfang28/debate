@@ -30,7 +30,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& topicID, const std::stri
         // userProto.set_state(user::DEBATING);
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
         userProto.mutable_engagement()->mutable_debating_info()->set_debate_id(topicID);
-        userProto.mutable_engagement()->mutable_debating_info()->set_current_claim_id("1"); // root
+        userProto.mutable_engagement()->mutable_debating_info()->set_current_claim_id("0"); // root
         // userProto.set_debate_topic_id(topicID);
         
         // Serialize and save back to database

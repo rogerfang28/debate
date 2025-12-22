@@ -12,6 +12,7 @@
 #include "event-handlers/ClearDebates/ClearDebatesHandler.h"
 #include "event-handlers/DeleteDebate/DeleteDebateHandler.h"
 #include "event-handlers/EnterDebate/EnterDebateHandler.h"
+#include "event-handlers/GoToClaim/GoToClaim.h"
 #include "event-handlers/GoHome/GoHomeHandler.h"
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
 DebateModerator::DebateModerator()
@@ -54,6 +55,10 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
         case debate_event::GO_TO_PARENT:
             std::cout << "[DebateModerator] Event Type: GO_TO_PARENT\n";
             // implement later
+            break;
+        case debate_event::GO_TO_CLAIM:
+            std::cout << "[DebateModerator] Event Type: GO_TO_CLAIM\n";
+            GoToClaimHandler::GoToClaim(event.go_to_claim().claim_id(), user);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             std::cout << "[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM\n";

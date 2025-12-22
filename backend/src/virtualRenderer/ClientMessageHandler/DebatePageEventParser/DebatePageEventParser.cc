@@ -33,8 +33,13 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::REPORT_CLAIM);
     } else if (componentId == "editDescriptionButton" && eventType == "onClick") {
         std::cout << "  EDIT_DESCRIPTION for user: " << user << "\n";
-    }
-    else {
+    } else if (componentId.rfind("viewChildNodeButton_", 0) == 0 && eventType == "onClick") {
+        std::string claimId = componentId.substr(strlen("viewChildNodeButton_"));
+        std::cout << "  GO_TO_CLAIM for user: " << user << " to claim ID: " << claimId << "\n";
+        event.set_type(debate_event::GO_TO_CLAIM); // Placeholder, replace with actual GO_TO_CLAIM type
+        event.mutable_go_to_claim()->set_user_id(user); // Placeholder, replace with actual GoToClaim message
+        event.mutable_go_to_claim()->set_claim_id(claimId);
+    } else {
         std::cerr << "Unknown component/event combination on debate page: " 
                   << componentId << "/" << eventType << "\n";
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);

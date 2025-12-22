@@ -62,6 +62,11 @@ message GoToParentClaim {
     string user_id       = 1;
 }
 
+message GoToClaim {
+    string user_id       = 1;
+    string claim_id      = 2;
+}
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
@@ -76,6 +81,7 @@ enum EventType {
     ADD_CHILD_CLAIM        = 9;
     DELETE_CURRENT_STATEMENT = 10;
     REPORT_CLAIM           = 11;
+    GO_TO_CLAIM            = 12;
 }
 
 // main message
@@ -97,5 +103,6 @@ message DebateEvent {
     OpenReportClaim    open_report_claim    = 17;
     DeleteCurrentStatement delete_current_statement = 18;
     GoToParentClaim   go_to_parent    = 19;
+    GoToClaim        go_to_claim     = 20;
   }
 }
