@@ -8,12 +8,6 @@ message Page {
   repeated Component components = 3;  // Top-level components
 }
 
-// message ListItem {
-//   string label = 1;
-//   string value = 2;
-//   string icon = 3; // Optional icon class for UI frameworks
-// }
-
 message Component {
   string id = 1;                       // Unique component ID
   string name = 2;                      // Component name
@@ -23,8 +17,7 @@ message Component {
   Style style = 6;                     // Tailwind / structured style info
   map<string, string> css = 8;         // Arbitrary inline CSS (fallback/flexibility)
   map<string, string> attributes = 7;  // Arbitrary HTML attributes (e.g., data-* attrs)
-  string value = 9;                   // Default or bound value
-  // repeated ListItem items = 10;        // For lists, dropdowns, menus
+  // string value = 9;                   // Default or bound value
 }
 
 enum ComponentType {

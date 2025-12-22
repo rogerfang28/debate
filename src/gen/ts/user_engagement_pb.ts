@@ -13,8 +13,6 @@ export const file_user_engagement: GenFile = /*@__PURE__*/
   fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyI7CgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
- * literally nothing
- *
  * @generated from message user_engagement.NoneInfo
  */
 export type NoneInfo = Message<"user_engagement.NoneInfo"> & {
@@ -61,6 +59,8 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
   currentAction: EngagementAction;
 
   /**
+   * kind of like information about the current state of the user
+   *
    * @generated from oneof user_engagement.UserEngagement.action_info
    */
   actionInfo: {

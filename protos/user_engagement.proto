@@ -8,11 +8,7 @@ enum EngagementAction {
   ACTION_DEBATING = 2;  // currently in a debate
 }
 
-// Action-specific payloads
-
-message NoneInfo {
-  // literally nothing
-}
+message NoneInfo {}
 
 message DebatingInfo {
   string debate_id = 1;
@@ -24,7 +20,7 @@ message DebatingInfo {
 message UserEngagement {
   EngagementAction current_action = 1;
 
-  oneof action_info {
+  oneof action_info { // kind of like information about the current state of the user
     NoneInfo     none_info     = 2;
     DebatingInfo debating_info = 3;
   }
