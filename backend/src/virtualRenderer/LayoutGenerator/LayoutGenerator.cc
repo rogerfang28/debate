@@ -35,7 +35,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                 const auto& debate = info.debate();
                 // find the claim that the user is on
                 std::string currentClaimId = info.engagement().debating_info().current_claim_id();
-                debate::Claim claim = debateWrapper.findClaim(debate.id(), currentClaimId);
+                debate::Claim claim = debateWrapper.findClaim(currentClaimId);
                 std::vector<debate::Claim> childClaims = debateWrapper.findChildren(claim.id());
 
                 return DebatePageGenerator::GenerateDebatePage(debate.topic(), claim.sentence(), childClaims);

@@ -5,6 +5,7 @@
 #include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
+#include "../../../utils/DebateWrapper.h"
 
 void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const std::string& user) {
     // first find where the user is in the debate
@@ -22,31 +23,39 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
     debate::Debate debateProto;
     debateProto.ParseFromArray(debateData.data(), debateData.size());
 
+    DebateWrapper debateWrapper(debateProto);
+
     // find the current claim to add under
-    debate::Claim* parentClaim = nullptr;
-    for (int i = 0; i < debateProto.claims_size(); i++) {
-        if (debateProto.claims(i).id() == currentClaimID) {
-            parentClaim = debateProto.mutable_claims(i);
-            break;
-        }
-    }
-    if (parentClaim == nullptr) {
-        std::cerr << "Error: Parent claim not found for ID " << currentClaimID << "\n";
-        return;
-    }
+    // debate::Claim* parentClaim = nullptr;
+    debate::Claim parentClaim = debateWrapper.findClaim(currentClaimID);
+    // for (int i = 0; i < debateProto.claims_size(); i++) {
+    //     if (debateProto.claims(i).id() == currentClaimID) {
+    //         parentClaim = debateProto.mutable_claims(i);
+    //         break;
+    //     }
+    // }
+    // if (parentClaim == nullptr) {
+    //     std::cerr << "Error: Parent claim not found for ID " << currentClaimID << "\n";
+    //     return;
+    // }
 
     // create new claim
-    debate::Claim* newClaim = debateProto.add_claims();
-    std::string newClaimID = std::to_string(debateProto.num_items()); // simple unique ID
-    newClaim->set_id(newClaimID);
-    newClaim->set_sentence(claim_text);
-    newClaim->set_connection_to_parent(connection_to_parent);
-    newClaim->set_parent_id(currentClaimID);
+    debateWrapper.addClaimUnderParent(
+        currentClaimID, // parentId
+        claim_text,
+        connection_to_parent
+    );
+    // debate::Claim* newClaim = debateProto.add_claims();
+    // std::string newClaimID = std::to_string(debateProto.num_items()); // simple unique ID
+    // newClaim->set_id(newClaimID);
+    // newClaim->set_sentence(claim_text);
+    // newClaim->set_connection_to_parent(connection_to_parent);
+    // newClaim->set_parent_id(currentClaimID);
     // increment total statements count
-    debateProto.set_num_items(debateProto.num_items() + 1);
+    // debateProto.set_num_items(debateProto.num_items() + 1);
 
     // add new claim ID to parent's children list
-    parentClaim->add_children_ids(newClaimID);
+    // parentClaim->add_children_ids(newClaimID);
 
     // save updated debate protobuf back to database
     // serialize to vector<uint8_t>
