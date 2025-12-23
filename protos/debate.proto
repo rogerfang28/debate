@@ -6,7 +6,7 @@ import "debate_settings.proto";
 
 // A single claim node in the debate graph
 message Claim {
-  string id = 1; // unique claim ID
+  string id = 1;
   string sentence = 2;
   string description = 3;
   string parent_id = 4;

@@ -1,6 +1,7 @@
 #include "LayoutGenerator.h"
 
 // #include "./pageGenerator.h"
+#include "../../utils/DebateWrapper.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./pages/homePage/HomePageGenerator.h"
@@ -13,6 +14,8 @@
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const std::string& user) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
+    debate::Debate debate = info.debate();
+    DebateWrapper debateWrapper(debate);
     switch (info.engagement().current_action()){
         case user_engagement::ACTION_NONE:
             // generate home page
@@ -32,35 +35,8 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                 const auto& debate = info.debate();
                 // find the claim that the user is on
                 std::string currentClaimId = info.engagement().debating_info().current_claim_id();
-                // go through the debate to find the claim
-                debate::Claim claim;
-                std::cout << "[LayoutGenerator] Searching for current claim ID: " << currentClaimId << "\n";
-                for (const auto& c : debate.claims()) {
-                    if (c.id() == currentClaimId) {
-                        std::cout << "[LayoutGenerator] Current Claim found: " << c.sentence() << "\n";
-                        claim = c;
-                        break;
-                    }
-                }
-                // now i have the claim
-                // i need to find its children
-                std::vector<debate::Claim> childClaims;
-                for (const auto& childId: claim.children_ids()) {
-                    // find the child claim by id
-                    for (const auto& c : debate.claims()) {
-                        if (c.id() == childId) {
-                            childClaims.push_back(c);
-                            break;
-                        }
-                    }
-                }
-                // test hardcode a child claim
-                // debate::Claim testChild;
-                // testChild.set_id("2");
-                // testChild.set_sentence("This is a test child claim.");
-                // testChild.set_description("This is the description of the test child claim.");
-                // childClaims.push_back(testChild);
-                // it worked
+                debate::Claim claim = debateWrapper.findClaim(debate.id(), currentClaimId);
+                std::vector<debate::Claim> childClaims = debateWrapper.findChildren(claim.id());
 
                 return DebatePageGenerator::GenerateDebatePage(debate.topic(), claim.sentence(), childClaims);
             } else {

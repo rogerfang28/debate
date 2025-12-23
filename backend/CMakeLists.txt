@@ -34,8 +34,8 @@ include_directories(
 
 set(SRC_FILES
     # ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/DebateModerator.cpp
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/DebateModerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/MiddleendRequestHandler.cc
     
     # event handlers
@@ -50,6 +50,7 @@ set(SRC_FILES
     # databse communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
+    ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
 
