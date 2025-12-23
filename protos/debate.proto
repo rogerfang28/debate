@@ -22,8 +22,8 @@ message Link {
 }
 
 message Proof {
-  repeated Claim claims = 1;
-  repeated Link links = 2;
+  repeated string claim_ids = 1;
+  repeated string link_ids = 2;
   
 }
 

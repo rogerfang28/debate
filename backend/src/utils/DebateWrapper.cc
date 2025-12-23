@@ -15,6 +15,42 @@ std::vector<debate::Claim> DebateWrapper::findChildren(
     return children;
 }
 
+std::vector<std::string> DebateWrapper::findChildrenIds(
+    const std::string& parentId) const {
+    std::vector<std::string> childrenIds;
+    for (const auto& claim : debateProto.claims()) {
+        if (claim.parent_id() == parentId) {
+            childrenIds.push_back(claim.id());
+        }
+    }
+    return childrenIds;
+}
+
+std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
+    const std::string& parentId) const {
+    std::vector<std::pair<std::string,std::string>> childrenInfo;
+    for (const auto& claim : debateProto.claims()) {
+        if (claim.parent_id() == parentId) {
+            childrenInfo.emplace_back(claim.id(), claim.sentence());
+        }
+    }
+    return childrenInfo;
+}
+
+std::string DebateWrapper::getTopic() const {
+    return debateProto.topic();
+}
+
+std::string DebateWrapper::findClaimSentence(
+    const std::string& claimId) const {
+    for (const auto& claim : debateProto.claims()) {
+        if (claim.id() == claimId) {
+            return claim.sentence();
+        }
+    }
+    return "";
+}
+
 debate::Claim DebateWrapper::findClaim(const std::string& claimId) const {
     for (const auto& claim : debateProto.claims()) {
         if (claim.id() == claimId) {
@@ -45,16 +81,13 @@ void DebateWrapper::addClaimUnderParent(
     const std::string& claimText, 
     const std::string& connectionToParent) {
     // Find and modify parent claim using pointer
+    // debate::Claim* parentClaim = findClaim(parentId);
     debate::Claim* parentClaim = nullptr;
     for (int i = 0; i < debateProto.claims_size(); ++i) {
         if (debateProto.claims(i).id() == parentId) {
             parentClaim = debateProto.mutable_claims(i);
             break;
         }
-    }
-    
-    if (parentClaim) {
-        parentClaim->add_children_ids(std::to_string(debateProto.num_items()));
     }
     
     // Add new claim
@@ -64,6 +97,11 @@ void DebateWrapper::addClaimUnderParent(
     newClaim->set_parent_id(parentId);
     newClaim->set_id(std::to_string(debateProto.num_items()));
     debateProto.set_num_items(debateProto.num_items() + 1);
+
+    if (parentClaim) {
+        parentClaim->mutable_proof()->add_claim_ids(newClaim->id());
+        parentClaim->add_children_ids(newClaim->id());
+    }
 }
 
 void DebateWrapper::setDebateTopic(

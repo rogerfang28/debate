@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiQwoFUHJvb2YSHQoGY2xhaW1zGAEgAygLMg0uZGViYXRlLkNsYWltEhsKBWxpbmtzGAIgAygLMgwuZGViYXRlLkxpbmsiwwEKBkRlYmF0ZRIKCgJpZBgBIAEoCRINCgV0b3BpYxgCIAEoCRIQCghkZWJhdGVycxgDIAMoCRIdCgZjbGFpbXMYBCADKAsyDS5kZWJhdGUuQ2xhaW0SDQoFb3duZXIYBSABKAkSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3MSEQoJbnVtX2l0ZW1zGAcgASgFEiEKCnJvb3RfY2xhaW0YCCABKAsyDS5kZWJhdGUuQ2xhaW1iBnByb3RvMw", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIsMBCgZEZWJhdGUSCgoCaWQYASABKAkSDQoFdG9waWMYAiABKAkSEAoIZGViYXRlcnMYAyADKAkSHQoGY2xhaW1zGAQgAygLMg0uZGViYXRlLkNsYWltEg0KBW93bmVyGAUgASgJEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhEKCW51bV9pdGVtcxgHIAEoBRIhCgpyb290X2NsYWltGAggASgLMg0uZGViYXRlLkNsYWltYgZwcm90bzM", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -21,8 +21,6 @@ export const file_debate: GenFile = /*@__PURE__*/
  */
 export type Claim = Message<"debate.Claim"> & {
   /**
-   * unique claim ID
-   *
    * @generated from field: string id = 1;
    */
   id: string;
@@ -101,14 +99,14 @@ export const LinkSchema: GenMessage<Link> = /*@__PURE__*/
  */
 export type Proof = Message<"debate.Proof"> & {
   /**
-   * @generated from field: repeated debate.Claim claims = 1;
+   * @generated from field: repeated string claim_ids = 1;
    */
-  claims: Claim[];
+  claimIds: string[];
 
   /**
-   * @generated from field: repeated debate.Link links = 2;
+   * @generated from field: repeated string link_ids = 2;
    */
-  links: Link[];
+  linkIds: string[];
 };
 
 /**

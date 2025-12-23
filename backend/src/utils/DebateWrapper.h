@@ -23,8 +23,15 @@ public:
         const std::string& newText);
     void setDebateTopic(
         const std::string& newTopic);
-    
+    std::string getTopic() const;
+    std::string findClaimSentence(
+        const std::string& claimId) const;
+    std::vector<std::string> findChildrenIds(
+        const std::string& parentId) const;
+    std::vector<std::pair<std::string,std::string>> findChildrenInfo(
+        const std::string& parentId) const; // returns vector of (id, sentence) pairs
 
 private:
     debate::Debate& debateProto;
+    debate::Claim* findClaimProto(const std::string& claimId);
 };

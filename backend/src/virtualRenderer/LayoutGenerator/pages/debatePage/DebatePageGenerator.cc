@@ -1,7 +1,7 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<debate::Claim> childClaims) {
+ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -349,8 +349,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
     );
 
     // Use actual child claims from the vector
-    for (size_t i = 0; i < childClaims.size(); i++) {
-        std::string nodeId = "childNode_" + childClaims[i].id();
+    for (size_t i = 0; i < childClaimInfo.size(); i++) {
+        std::string nodeId = "childNode_" + childClaimInfo[i].first;
         ui::Component childNode = ComponentGenerator::createContainer(
             nodeId,
             "",
@@ -364,7 +364,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
-            childClaims[i].sentence(),
+            childClaimInfo[i].second,
             "",
             "text-white",
             "",
@@ -373,7 +373,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         ComponentGenerator::addChild(&childNode, childNodeTitle);
 
         ui::Component childNodeButton = ComponentGenerator::createButton(
-            "viewChildNodeButton_" + childClaims[i].id(),
+            "viewChildNodeButton_" + childClaimInfo[i].first,
             "View Claim",
             "",
             "bg-blue-600",
