@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyI7CgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyJSCgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAkSFQoNcm9vdF9jbGFpbV9pZBgDIAEoCSLCAQoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglub25lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuTm9uZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAQg0KC2FjdGlvbl9pbmZvKlsKEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fTk9ORRABEhMKD0FDVElPTl9ERUJBVElORxACYgZwcm90bzM");
 
 /**
  * @generated from message user_engagement.NoneInfo
@@ -40,6 +40,13 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
    * @generated from field: string current_claim_id = 2;
    */
   currentClaimId: string;
+
+  /**
+   * root claim of the debate
+   *
+   * @generated from field: string root_claim_id = 3;
+   */
+  rootClaimId: string;
 };
 
 /**

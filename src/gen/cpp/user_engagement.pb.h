@@ -403,6 +403,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
     kCurrentClaimIdFieldNumber = 2,
+    kRootClaimIdFieldNumber = 3,
   };
   // string debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
@@ -436,13 +437,29 @@ class DebatingInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_current_claim_id();
 
   public:
+  // string root_claim_id = 3 [json_name = "rootClaimId"];
+  void clear_root_claim_id() ;
+  const std::string& root_claim_id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_root_claim_id(Arg_&& arg, Args_... args);
+  std::string* mutable_root_claim_id();
+  PROTOBUF_NODISCARD std::string* release_root_claim_id();
+  void set_allocated_root_claim_id(std::string* value);
+
+  private:
+  const std::string& _internal_root_claim_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_root_claim_id(
+      const std::string& value);
+  std::string* _internal_mutable_root_claim_id();
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.DebatingInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      62, 2>
+      2, 3, 0,
+      75, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -461,6 +478,7 @@ class DebatingInfo final : public ::google::protobuf::Message
                           const DebatingInfo& from_msg);
     ::google::protobuf::internal::ArenaStringPtr debate_id_;
     ::google::protobuf::internal::ArenaStringPtr current_claim_id_;
+    ::google::protobuf::internal::ArenaStringPtr root_claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -830,6 +848,54 @@ inline void DebatingInfo::set_allocated_current_claim_id(std::string* value) {
     _impl_.current_claim_id_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim_id)
+}
+
+// string root_claim_id = 3 [json_name = "rootClaimId"];
+inline void DebatingInfo::clear_root_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_claim_id_.ClearToEmpty();
+}
+inline const std::string& DebatingInfo::root_claim_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.root_claim_id)
+  return _internal_root_claim_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DebatingInfo::set_root_claim_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.root_claim_id)
+}
+inline std::string* DebatingInfo::mutable_root_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_root_claim_id();
+  // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.root_claim_id)
+  return _s;
+}
+inline const std::string& DebatingInfo::_internal_root_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.root_claim_id_.Get();
+}
+inline void DebatingInfo::_internal_set_root_claim_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_claim_id_.Set(value, GetArena());
+}
+inline std::string* DebatingInfo::_internal_mutable_root_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.root_claim_id_.Mutable( GetArena());
+}
+inline std::string* DebatingInfo::release_root_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.root_claim_id)
+  return _impl_.root_claim_id_.Release();
+}
+inline void DebatingInfo::set_allocated_root_claim_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_claim_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.root_claim_id_.IsDefault()) {
+    _impl_.root_claim_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.root_claim_id)
 }
 
 // -------------------------------------------------------------------

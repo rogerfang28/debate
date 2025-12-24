@@ -13,6 +13,7 @@ message NoneInfo {}
 message DebatingInfo {
   string debate_id = 1;
   string current_claim_id = 2; // current claim being viewed/argued
+  string root_claim_id = 3;    // root claim of the debate
 }
 
 // Main engagement message

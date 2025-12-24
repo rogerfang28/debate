@@ -37,4 +37,5 @@ private:
     debate::Debate& debateProto;
     debate::Claim* findClaimProto(const std::string& claimId);
     StatementDatabaseHandler statementDBHandler{utils::getDatabasePath()}; // path from path utils
+    void addClaimToDB(debate::Claim& claim);
 };

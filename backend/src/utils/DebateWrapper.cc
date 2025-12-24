@@ -68,24 +68,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     debateProto.set_num_items(0);
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
-    int newId = statementDBHandler.addStatement(
-        rootClaim.id(), 
-        rootClaim.sentence(), 
-        std::vector<uint8_t>{} // empty protobuf data for now
-    );
-    rootClaim.set_id(std::to_string(newId));
-    std::cout << "[DebateWrapper] Initialized new debate with root claim ID: " << rootClaim.id() << "\n";
-    std::vector<uint8_t> serializedData(rootClaim.ByteSizeLong());
-    rootClaim.SerializeToArray(serializedData.data(), serializedData.size());
-    // unserialize it to see if its correct
-    debate::Claim deserializedClaim;
-    deserializedClaim.ParseFromArray(serializedData.data(), serializedData.size());
-    std::cout << "[DebateWrapper] Serialized root id: " << deserializedClaim.id() << "\n";
-    statementDBHandler.updateStatementProtobuf(
-        rootClaim.id(), 
-        serializedData
-    );
-
+    addClaimToDB(rootClaim);
 }
 
 
@@ -109,8 +92,17 @@ void DebateWrapper::addClaimUnderParent(
             break;
         }
     }
-    
+    std::vector<uint8_t> parentSerializedData = statementDBHandler.getStatementProtobuf(parentId);;
+    // parse from array
+    debate::Claim parentClaimFromDB;
+    parentClaimFromDB.ParseFromArray(parentSerializedData.data(), parentSerializedData.size());
+
     // Add new claim
+    debate::Claim childClaim;
+    childClaim.set_sentence(claimText);
+    childClaim.set_parent_id(parentId);
+    
+
     debate::Claim* newClaim = debateProto.add_claims();
     newClaim->set_sentence(claimText);
     newClaim->set_connection_to_parent(connectionToParent);
@@ -127,4 +119,21 @@ void DebateWrapper::addClaimUnderParent(
 void DebateWrapper::setDebateTopic(
     const std::string& newTopic) {
     debateProto.set_topic(newTopic);
+}
+
+void DebateWrapper::addClaimToDB(debate::Claim& claim) {
+    std::vector<uint8_t> serializedData(claim.ByteSizeLong());
+    claim.SerializeToArray(serializedData.data(), serializedData.size());
+    int newId = statementDBHandler.addStatement(
+        claim.id(), 
+        claim.sentence(), 
+        serializedData
+    );
+    claim.set_id(std::to_string(newId));
+    std::vector<uint8_t> updatedSerializedData(claim.ByteSizeLong());
+    claim.SerializeToArray(updatedSerializedData.data(), updatedSerializedData.size());
+    statementDBHandler.updateStatementProtobuf(
+        claim.id(), 
+        updatedSerializedData
+    );
 }

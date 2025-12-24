@@ -52,6 +52,9 @@ inline constexpr DebatingInfo::Impl_::Impl_(
         current_claim_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        root_claim_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
 
 template <typename>
@@ -125,6 +128,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.debate_id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.current_claim_id_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.root_claim_id_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -143,7 +147,7 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::user_engagement::NoneInfo)},
         {8, -1, -1, sizeof(::user_engagement::DebatingInfo)},
-        {18, -1, -1, sizeof(::user_engagement::UserEngagement)},
+        {19, -1, -1, sizeof(::user_engagement::UserEngagement)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user_engagement::_NoneInfo_default_instance_._instance,
@@ -153,23 +157,24 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025user_engagement.proto\022\017user_engagement"
-    "\"\n\n\010NoneInfo\"U\n\014DebatingInfo\022\033\n\tdebate_i"
+    "\"\n\n\010NoneInfo\"y\n\014DebatingInfo\022\033\n\tdebate_i"
     "d\030\001 \001(\tR\010debateId\022(\n\020current_claim_id\030\002 "
-    "\001(\tR\016currentClaimId\"\351\001\n\016UserEngagement\022H"
-    "\n\016current_action\030\001 \001(\0162!.user_engagement"
-    ".EngagementActionR\rcurrentAction\0228\n\tnone"
-    "_info\030\002 \001(\0132\031.user_engagement.NoneInfoH\000"
-    "R\010noneInfo\022D\n\rdebating_info\030\003 \001(\0132\035.user"
-    "_engagement.DebatingInfoH\000R\014debatingInfo"
-    "B\r\n\013action_info*[\n\020EngagementAction\022!\n\035E"
-    "NGAGEMENT_ACTION_UNSPECIFIED\020\000\022\017\n\013ACTION"
-    "_NONE\020\001\022\023\n\017ACTION_DEBATING\020\002b\006proto3"
+    "\001(\tR\016currentClaimId\022\"\n\rroot_claim_id\030\003 \001"
+    "(\tR\013rootClaimId\"\351\001\n\016UserEngagement\022H\n\016cu"
+    "rrent_action\030\001 \001(\0162!.user_engagement.Eng"
+    "agementActionR\rcurrentAction\0228\n\tnone_inf"
+    "o\030\002 \001(\0132\031.user_engagement.NoneInfoH\000R\010no"
+    "neInfo\022D\n\rdebating_info\030\003 \001(\0132\035.user_eng"
+    "agement.DebatingInfoH\000R\014debatingInfoB\r\n\013"
+    "action_info*[\n\020EngagementAction\022!\n\035ENGAG"
+    "EMENT_ACTION_UNSPECIFIED\020\000\022\017\n\013ACTION_NON"
+    "E\020\001\022\023\n\017ACTION_DEBATING\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    476,
+    512,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -315,6 +320,7 @@ inline PROTOBUF_NDEBUG_INLINE DebatingInfo::Impl_::Impl_(
     const Impl_& from, const ::user_engagement::DebatingInfo& from_msg)
       : debate_id_(arena, from.debate_id_),
         current_claim_id_(arena, from.current_claim_id_),
+        root_claim_id_(arena, from.root_claim_id_),
         _cached_size_{0} {}
 
 DebatingInfo::DebatingInfo(
@@ -338,6 +344,7 @@ inline PROTOBUF_NDEBUG_INLINE DebatingInfo::Impl_::Impl_(
     ::google::protobuf::Arena* arena)
       : debate_id_(arena),
         current_claim_id_(arena),
+        root_claim_id_(arena),
         _cached_size_{0} {}
 
 inline void DebatingInfo::SharedCtor(::_pb::Arena* arena) {
@@ -353,6 +360,7 @@ inline void DebatingInfo::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.debate_id_.Destroy();
   this_._impl_.current_claim_id_.Destroy();
+  this_._impl_.root_claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -392,15 +400,15 @@ const ::google::protobuf::internal::ClassData* DebatingInfo::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 62, 2> DebatingInfo::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 75, 2> DebatingInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -410,12 +418,16 @@ const ::_pbi::TcParseTable<1, 2, 0, 62, 2> DebatingInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string current_claim_id = 2 [json_name = "currentClaimId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.debate_id_)}},
+    // string current_claim_id = 2 [json_name = "currentClaimId"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_id_)}},
+    // string root_claim_id = 3 [json_name = "rootClaimId"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.root_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -425,13 +437,17 @@ const ::_pbi::TcParseTable<1, 2, 0, 62, 2> DebatingInfo::_table_ = {
     // string current_claim_id = 2 [json_name = "currentClaimId"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string root_claim_id = 3 [json_name = "rootClaimId"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.root_claim_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\34\11\20\0\0\0\0\0"
+    "\34\11\20\15\0\0\0\0"
     "user_engagement.DebatingInfo"
     "debate_id"
     "current_claim_id"
+    "root_claim_id"
   }},
 };
 
@@ -444,6 +460,7 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
 
   _impl_.debate_id_.ClearToEmpty();
   _impl_.current_claim_id_.ClearToEmpty();
+  _impl_.root_claim_id_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -476,6 +493,14 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.DebatingInfo.current_claim_id");
             target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // string root_claim_id = 3 [json_name = "rootClaimId"];
+          if (!this_._internal_root_claim_id().empty()) {
+            const std::string& _s = this_._internal_root_claim_id();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.DebatingInfo.root_claim_id");
+            target = stream->WriteStringMaybeAliased(3, _s, target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -513,6 +538,11 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_current_claim_id());
             }
+            // string root_claim_id = 3 [json_name = "rootClaimId"];
+            if (!this_._internal_root_claim_id().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_root_claim_id());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -532,6 +562,9 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   if (!from._internal_current_claim_id().empty()) {
     _this->_internal_set_current_claim_id(from._internal_current_claim_id());
   }
+  if (!from._internal_root_claim_id().empty()) {
+    _this->_internal_set_root_claim_id(from._internal_root_claim_id());
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -550,6 +583,7 @@ void DebatingInfo::InternalSwap(DebatingInfo* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.current_claim_id_, &other->_impl_.current_claim_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.root_claim_id_, &other->_impl_.root_claim_id_, arena);
 }
 
 ::google::protobuf::Metadata DebatingInfo::GetMetadata() const {

@@ -131,15 +131,11 @@ export type Debate = Message<"debate.Debate"> & {
   topic: string;
 
   /**
-   * user id of participants
-   *
    * @generated from field: repeated string debaters = 3;
    */
   debaters: string[];
 
   /**
-   * every claim in the debate
-   *
    * @generated from field: repeated debate.Claim claims = 4;
    */
   claims: Claim[];
