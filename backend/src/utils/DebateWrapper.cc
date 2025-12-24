@@ -66,18 +66,25 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     debateProto.set_topic(topic);
     debateProto.set_owner(owner);
     debateProto.set_num_items(0);
-    // debate::Claim rootClaim;
-    // rootClaim.set_sentence(topic);
-    // int newId = statementDBHandler.addStatement(
-    //     rootClaim.id(), 
-    //     rootClaim.sentence(), 
-    //     std::vector<uint8_t>{} // empty protobuf data for now
-    // );
-    // rootClaim.set_id(std::to_string(newId));
-    // statementDBHandler.updateStatementProtobuf(
-    //     rootClaim.id(), 
-    //     std::vector<uint8_t>(rootClaim.SerializeAsString().begin(), rootClaim.SerializeAsString().end())
-    // );
+    debate::Claim rootClaim;
+    rootClaim.set_sentence(topic);
+    int newId = statementDBHandler.addStatement(
+        rootClaim.id(), 
+        rootClaim.sentence(), 
+        std::vector<uint8_t>{} // empty protobuf data for now
+    );
+    rootClaim.set_id(std::to_string(newId));
+    std::cout << "[DebateWrapper] Initialized new debate with root claim ID: " << rootClaim.id() << "\n";
+    std::vector<uint8_t> serializedData(rootClaim.ByteSizeLong());
+    rootClaim.SerializeToArray(serializedData.data(), serializedData.size());
+    // unserialize it to see if its correct
+    debate::Claim deserializedClaim;
+    deserializedClaim.ParseFromArray(serializedData.data(), serializedData.size());
+    std::cout << "[DebateWrapper] Serialized root id: " << deserializedClaim.id() << "\n";
+    statementDBHandler.updateStatementProtobuf(
+        rootClaim.id(), 
+        serializedData
+    );
 
 }
 

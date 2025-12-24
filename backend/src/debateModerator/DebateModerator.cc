@@ -125,15 +125,11 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_NONE:
-        {
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user);
             break;
-        }
             
         case user_engagement::ACTION_DEBATING:
-            {
-                DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto);
-            }
+            DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto);
             break;
         default:
             // unknown action
