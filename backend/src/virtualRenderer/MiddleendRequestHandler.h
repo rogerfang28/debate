@@ -4,6 +4,7 @@
 #include <map>
 #include "httplib.h"
 #include "../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 
 class MiddleendRequestHandler {
 public:
@@ -16,4 +17,5 @@ private:
     // Helper methods can be added here
     std::string extractUserFromCookies(const httplib::Request& req);
     ui::Page createLoginPage();
+    void log(const std::string& user, const client_message::ClientMessage& msg);
 };

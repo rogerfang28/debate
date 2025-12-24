@@ -1,7 +1,7 @@
 // has handle get or post or any request, calls virtual renderer
 #include "MiddleendRequestHandler.h"
 
-#include "../../../src/gen/cpp/client_message.pb.h"
+// #include "../../../src/gen/cpp/client_message.pb.h"
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
 #include <fstream>
@@ -25,35 +25,15 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     }
 
     std::cout << "ClientMessage received\n";
-    
-    // Log the event info
-    std::cout << "\n--- Event Info ---\n";
-    std::cout << "Component ID: " << msg.component_id() << "\n";
-    std::cout << "Event Type: " << msg.event_type() << "\n";
-    std::cout << "User: " << user << "\n";
 
-    // Log page data
-    if (msg.has_page_data() && true) { // set to true to enable detailed logging
-      const auto& page_data = msg.page_data();
-      std::cout << "\n--- Page Data ---\n";
-      std::cout << "Page ID: " << page_data.page_id() << "\n";
-      std::cout << "Components count: " << page_data.components_size() << "\n";
-      
-    //   std::cout << "\n--- All Components ---\n";
-    //   for (int i = 0; i < page_data.components_size(); i++) {
-    //     const auto& comp = page_data.components(i);
-    //     std::cout << "  [" << i << "] id: \"" << comp.id() 
-    //               << "\" = \"" << comp.value() << "\"\n";
-    //   }
-    } else {
-      std::cout << "!!! No page data included\n";
-    }
+    // log(user, msg); // detailed logging
 
     const std::string& componentId = msg.component_id();
     const std::string& eventType = msg.event_type();
     const std::string& pageId = msg.page_data().page_id();
     
     // hard code the username part for now because idk how to do it properly
+    // function to check if user is logged in
     if (pageId == "enter_username") {
         // ============ SIGN-IN PAGE ============
         if (componentId == "submitButton" && eventType == "onClick") {
@@ -172,4 +152,30 @@ ui::Page MiddleendRequestHandler::createLoginPage() {
     // use LoginPageGenerator to create login page
     ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
     return loginPage;
+}
+
+// make a log function
+void MiddleendRequestHandler::log(const std::string& user, const client_message::ClientMessage& msg) {
+        // Log the event info
+    std::cout << "\n--- Event Info ---\n";
+    std::cout << "Component ID: " << msg.component_id() << "\n";
+    std::cout << "Event Type: " << msg.event_type() << "\n";
+    std::cout << "User: " << user << "\n";
+
+    // Log page data
+    if (msg.has_page_data() && true) { // set to true to enable detailed logging
+      const auto& page_data = msg.page_data();
+      std::cout << "\n--- Page Data ---\n";
+      std::cout << "Page ID: " << page_data.page_id() << "\n";
+      std::cout << "Components count: " << page_data.components_size() << "\n";
+      
+      std::cout << "\n--- All Components ---\n";
+      for (int i = 0; i < page_data.components_size(); i++) {
+        const auto& comp = page_data.components(i);
+        std::cout << "  [" << i << "] id: \"" << comp.id() 
+                  << "\" = \"" << comp.value() << "\"\n";
+      }
+    } else {
+      std::cout << "!!! No page data included\n";
+    }
 }
