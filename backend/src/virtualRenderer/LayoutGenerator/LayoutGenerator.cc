@@ -1,7 +1,7 @@
 #include "LayoutGenerator.h"
 
 // #include "./pageGenerator.h"
-#include "../../utils/DebateWrapper.h"
+// #include "../../utils/DebateWrapper.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./pages/homePage/HomePageGenerator.h"
@@ -14,8 +14,8 @@
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const std::string& user) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
-    debate::Debate debate = info.debate();
-    DebateWrapper debateWrapper(debate);
+    // debate::Debate debate = info.debate();
+    // DebateWrapper debateWrapper(debate);
     switch (info.engagement().current_action()){
         case user_engagement::ACTION_NONE:
             // generate home page
@@ -33,10 +33,15 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (info.has_debate()) {
                 std::string currentClaimId = info.engagement().debating_info().current_claim_id();
-                std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
-                std::string debate_topic = debateWrapper.getTopic();
-                std::string debate_claim_sentence = debateWrapper.findClaimSentence(currentClaimId);
-                return DebatePageGenerator::GenerateDebatePage(debate_topic, debate_claim_sentence, childClaimInfo);
+                // std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
+                // std::string debate_topic = debateWrapper.getTopic();
+                // std::string debate_claim_sentence = debateWrapper.findClaimSentence(currentClaimId);
+                std::vector<std::pair<std::string,std::string>> placeholderChildClaims = {
+                    {"1", "This is the first child claim."},
+                    {"2", "This is the second child claim."},
+                    {"3", "This is the third child claim."}
+                };
+                return DebatePageGenerator::GenerateDebatePage("Placeholder topic", "Placeholder claim sentence", placeholderChildClaims);
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
                 debate::DebateList emptyList;
