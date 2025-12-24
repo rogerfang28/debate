@@ -18,4 +18,5 @@ private:
     std::string extractUserFromCookies(const httplib::Request& req);
     ui::Page createLoginPage();
     void log(const std::string& user, const client_message::ClientMessage& msg);
+    bool validateAuth(client_message::ClientMessage& msg, httplib::Response& res, const std::string& user);
 };

@@ -28,80 +28,8 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
 
     // log(user, msg); // detailed logging
 
-    const std::string& componentId = msg.component_id();
-    const std::string& eventType = msg.event_type();
-    const std::string& pageId = msg.page_data().page_id();
-    
-    // hard code the username part for now because idk how to do it properly
-    // function to check if user is logged in
-    if (pageId == "enter_username") {
-        // ============ SIGN-IN PAGE ============
-        if (componentId == "submitButton" && eventType == "onClick") {
-            // Extract username from the page data
-            std::string username;
-            for (const auto& comp : msg.page_data().components()) {
-                if (comp.id() == "usernameInput") {
-                    username = comp.value();
-                    break;
-                }
-            }
-            
-            if (!username.empty() && username != "guest") {
-                // Set cookie and redirect by setting a special response
-                std::cout << "[Auth] Setting user cookie: " << username << "\n";
-                res.set_header("Set-Cookie", "user=" + username + "; Path=/; Max-Age=2592000; SameSite=Lax");
-            } else {
-                std::cerr << "[Auth] Invalid username: " << username << "\n";
-                // return login page again
-                ui::Page loginPage = createLoginPage();
-                std::string loginPageSerialized;
-                if (!loginPage.SerializeToString(&loginPageSerialized)) {
-                    std::cerr << "[Auth] Failed to serialize login page\n";
-                    res.status = 500;
-                    res.set_content("Failed to serialize login page", "text/plain");
-                    return;
-                }
-                res.set_content(loginPageSerialized, "application/x-protobuf");
-                res.status = 200;
-                return;
-            }
-        }
-    }
-
-    // logout handling
-    // std::cout << (componentId == "logoutButton" && eventType == "onClick") << "\n";
-    // std::cout << componentId << " " << eventType << "\n";
-    if (componentId == "logoutButton" && eventType == "onClick") {
-        // ============ SIGN-OUT ============
-        std::cout << "[Auth] Signing out user: " << user << "\n";
-        res.set_header("Set-Cookie", "user=guest; Path=/; Max-Age=0; SameSite=Lax");
-        res.status = 200;
-        // create login page
-        ui::Page loginPage = createLoginPage();
-        std::string loginPageSerialized;
-        if (!loginPage.SerializeToString(&loginPageSerialized)) {
-            std::cerr << "[Auth] Failed to serialize login page\n";
-            res.status = 500;
-            res.set_content("Failed to serialize login page", "text/plain");
-            return;
-        }
-        res.set_content(loginPageSerialized, "application/x-protobuf");
-        return;
-    }
-
-    if (user == "guest") {
-        // if still guest, return login page
-        ui::Page loginPage = createLoginPage();
-        std::string loginPageSerialized;
-        if (!loginPage.SerializeToString(&loginPageSerialized)) {
-            std::cerr << "[Auth] Failed to serialize login page\n";
-            res.status = 500;
-            res.set_content("Failed to serialize login page", "text/plain");
-            return;
-        }
-        res.set_content(loginPageSerialized, "application/x-protobuf");
-        res.status = 200;
-        return;
+    if (!validateAuth(msg, res, user)) {
+        return; // auth failed and response already set
     }
 
     // pass to VR
@@ -148,12 +76,6 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
     return user;
 }
 
-ui::Page MiddleendRequestHandler::createLoginPage() {
-    // use LoginPageGenerator to create login page
-    ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
-    return loginPage;
-}
-
 // make a log function
 void MiddleendRequestHandler::log(const std::string& user, const client_message::ClientMessage& msg) {
         // Log the event info
@@ -178,4 +100,83 @@ void MiddleendRequestHandler::log(const std::string& user, const client_message:
     } else {
       std::cout << "!!! No page data included\n";
     }
+}
+
+bool MiddleendRequestHandler::validateAuth(client_message::ClientMessage& msg, httplib::Response& res, const std::string& user) {
+    const std::string& componentId = msg.component_id();
+    const std::string& eventType = msg.event_type();
+    const std::string& pageId = msg.page_data().page_id();
+    
+    // hard code the username part for now because idk how to do it properly
+    // function to check if user is logged in
+    if (pageId == "enter_username") {
+        // ============ SIGN-IN PAGE ============
+        if (componentId == "submitButton" && eventType == "onClick") {
+            // Extract username from the page data
+            std::string username;
+            for (const auto& comp : msg.page_data().components()) {
+                if (comp.id() == "usernameInput") {
+                    username = comp.value();
+                    break;
+                }
+            }
+            
+            if (!username.empty() && username != "guest") {
+                // Set cookie and redirect by setting a special response
+                std::cout << "[Auth] Setting user cookie: " << username << "\n";
+                res.set_header("Set-Cookie", "user=" + username + "; Path=/; Max-Age=2592000; SameSite=Lax");
+            } else {
+                std::cerr << "[Auth] Invalid username: " << username << "\n";
+                // return login page again
+                ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
+                std::string loginPageSerialized;
+                if (!loginPage.SerializeToString(&loginPageSerialized)) {
+                    std::cerr << "[Auth] Failed to serialize login page\n";
+                    res.status = 500;
+                    res.set_content("Failed to serialize login page", "text/plain");
+                    return false;
+                }
+                res.set_content(loginPageSerialized, "application/x-protobuf");
+                res.status = 200;
+                return false;
+            }
+        }
+    }
+
+    // logout handling
+    // std::cout << (componentId == "logoutButton" && eventType == "onClick") << "\n";
+    // std::cout << componentId << " " << eventType << "\n";
+    if (componentId == "logoutButton" && eventType == "onClick") {
+        // ============ SIGN-OUT ============
+        std::cout << "[Auth] Signing out user: " << user << "\n";
+        res.set_header("Set-Cookie", "user=guest; Path=/; Max-Age=0; SameSite=Lax");
+        res.status = 200;
+        // create login page
+        ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
+        std::string loginPageSerialized;
+        if (!loginPage.SerializeToString(&loginPageSerialized)) {
+            std::cerr << "[Auth] Failed to serialize login page\n";
+            res.status = 500;
+            res.set_content("Failed to serialize login page", "text/plain");
+            return false;
+        }
+        res.set_content(loginPageSerialized, "application/x-protobuf");
+        return false;
+    }
+
+    if (user == "guest") {
+        // if still guest, return login page
+        ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
+        std::string loginPageSerialized;
+        if (!loginPage.SerializeToString(&loginPageSerialized)) {
+            std::cerr << "[Auth] Failed to serialize login page\n";
+            res.status = 500;
+            res.set_content("Failed to serialize login page", "text/plain");
+            return false;
+        }
+        res.set_content(loginPageSerialized, "application/x-protobuf");
+        res.status = 200;
+        return false;
+    }
+    return true;
 }
