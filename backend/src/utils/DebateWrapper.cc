@@ -5,18 +5,23 @@ DebateWrapper::DebateWrapper(debate::Debate& debate)
     : debateProto(debate) {}
 
 std::vector<debate::Claim> DebateWrapper::findChildren(
-    const std::string& parentId) const {
-    std::vector<debate::Claim> children;
-    for (const auto& claim : debateProto.claims()) {
-        if (claim.parent_id() == parentId) {
-            children.push_back(claim);
-        }
-    }
-    return children;
+    const std::string& parentId) {
+        std::vector<uint8_t> parentSerializedData = statementDBHandler.getStatementProtobuf(parentId);
+        debate::Claim parentClaim;
+        parentClaim.ParseFromArray(parentSerializedData.data(), parentSerializedData.size());
+        
+
+    // std::vector<debate::Claim> children;
+    // for (const auto& claim : debateProto.claims()) {
+    //     if (claim.parent_id() == parentId) {
+    //         children.push_back(claim);
+    //     }
+    // }
+    // return children;
 }
 
 std::vector<std::string> DebateWrapper::findChildrenIds(
-    const std::string& parentId) const {
+    const std::string& parentId) {
     std::vector<std::string> childrenIds;
     for (const auto& claim : debateProto.claims()) {
         if (claim.parent_id() == parentId) {
@@ -27,7 +32,7 @@ std::vector<std::string> DebateWrapper::findChildrenIds(
 }
 
 std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
-    const std::string& parentId) const {
+    const std::string& parentId) {
     std::vector<std::pair<std::string,std::string>> childrenInfo;
     for (const auto& claim : debateProto.claims()) {
         if (claim.parent_id() == parentId) {
@@ -42,7 +47,7 @@ std::string DebateWrapper::getTopic() const {
 }
 
 std::string DebateWrapper::findClaimSentence(
-    const std::string& claimId) const {
+    const std::string& claimId) {
     for (const auto& claim : debateProto.claims()) {
         if (claim.id() == claimId) {
             return claim.sentence();
@@ -51,7 +56,7 @@ std::string DebateWrapper::findClaimSentence(
     return "";
 }
 
-debate::Claim DebateWrapper::findClaim(const std::string& claimId) const {
+debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
     for (const auto& claim : debateProto.claims()) {
         if (claim.id() == claimId) {
             return claim;
@@ -73,7 +78,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
 
 
 
-debate::Claim DebateWrapper::findClaimParent(const std::string& claimId) const {
+debate::Claim DebateWrapper::findClaimParent(const std::string& claimId) {
     debate::Claim claim = findClaim(claimId);
     std::string parentId = claim.parent_id();
     return findClaim(parentId);
@@ -101,7 +106,9 @@ void DebateWrapper::addClaimUnderParent(
     debate::Claim childClaim;
     childClaim.set_sentence(claimText);
     childClaim.set_parent_id(parentId);
-    
+    addClaimToDB(childClaim);
+    parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
+    updateClaimInDB(parentClaimFromDB);
 
     debate::Claim* newClaim = debateProto.add_claims();
     newClaim->set_sentence(claimText);
@@ -135,5 +142,14 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim) {
     statementDBHandler.updateStatementProtobuf(
         claim.id(), 
         updatedSerializedData
+    );
+}
+
+void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
+    std::vector<uint8_t> serializedData(claim.ByteSizeLong());
+    claim.SerializeToArray(serializedData.data(), serializedData.size());
+    statementDBHandler.updateStatementProtobuf(
+        claim.id(), 
+        serializedData
     );
 }

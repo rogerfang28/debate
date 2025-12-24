@@ -1,6 +1,7 @@
 #include "DebatePageResponseGenerator.h"
 #include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
+#include "../../../utils/DebateWrapper.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include <iostream>
 #include <vector>
@@ -11,6 +12,8 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     const user::User& userProto
 ) {
     // populate debate info, maybe refactor to different file later
+    // DebateWrapper debateWrapper;
+
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
     std::string debateID = userProto.engagement().debating_info().debate_id();
     if (debateDbHandler.debateExists(debateID)) {
