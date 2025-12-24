@@ -23,10 +23,11 @@ VirtualRenderer::~VirtualRenderer() {
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user) {
 
     // translate client_message into debate event
-    debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user);
+    debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user); // * looks good
 
     // I NEED TO CALL THE DEBATE BACKEND SOMEHOW FROM HERE
     // BackendCommunicator backend("localhost", 8080);
+    // ! no server call for now, backend and virtual renderer are on the same backend
     
     moderator_to_vr::ModeratorToVRMessage info;
     DebateModerator moderator;
@@ -38,31 +39,4 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
     // send back the page to handler
     return page;
-}
-
-std::string VirtualRenderer::extractUserFromCookies(const httplib::Request& req) {
-    auto cookie_header = req.get_header_value("Cookie");
-    // std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
-    
-    if (cookie_header.empty()) {
-        std::cout << "[Auth] No cookie found, returning 'guest'\n";
-        return "guest";
-    }
-
-    // Parse cookies looking for "user=<username>"
-    std::string prefix = "user=";
-    size_t pos = cookie_header.find(prefix);
-    if (pos == std::string::npos) {
-        std::cout << "[Auth] No 'user=' cookie found, returning 'guest'\n";
-        return "guest";
-    }
-
-    size_t start = pos + prefix.length();
-    size_t end = cookie_header.find(';', start);
-    std::string user = (end == std::string::npos) 
-        ? cookie_header.substr(start)
-        : cookie_header.substr(start, end - start);
-
-    std::cout << "[Auth] Extracted user from cookie: '" << user << "'\n";
-    return user;
 }

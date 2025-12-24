@@ -8,7 +8,7 @@ public:
     static debate_event::DebateEvent ParseHomePageEvent(
         const std::string& componentId,
         const std::string& eventType,
-        const std::string& user,
+        // const std::string& user,
         const client_message::ClientMessage& message
     );
 };

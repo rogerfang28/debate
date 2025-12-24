@@ -11,4 +11,5 @@ public:
 
     // Parse raw binary data into a ClientMessage protobuf
     static debate_event::DebateEvent parseMessage(const client_message::ClientMessage& message, const std::string& user);
+    static void timestampEvent(debate_event::DebateEvent& event);
 };

@@ -11,6 +11,7 @@
 
 debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const std::string& user) {
     debate_event::DebateEvent event;
+    timestampEvent(event); // set timestamp and id
 
     // check to see if there is nothing actually happening, like nothing clicked, it's basically no event
     if (message.component_id().empty() && message.event_type().empty()) {
@@ -18,15 +19,6 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
         event.set_type(debate_event::NONE);
         return event;
     }
-
-    // Set common fields
-    event.set_id("evt_" + std::to_string(std::time(nullptr)));
-    
-    // Set timestamp to current time
-    auto* timestamp = event.mutable_occurred_at();
-    auto now = std::chrono::system_clock::now();
-    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
-    timestamp->set_seconds(seconds);
 
     const std::string& componentId = message.component_id();
     const std::string& eventType = message.event_type();
@@ -39,7 +31,7 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     
     // Route based on page_id and delegate to specific parsers
     if (pageId == "home") {
-        event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, user, message);
+        event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     } else if (pageId == "debate") {
         event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user, message);
     } else if (pageId == "error") {
@@ -55,4 +47,15 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     std::cout << "========================================\n\n";
     
     return event;
+}
+
+void ClientMessageParser::timestampEvent(debate_event::DebateEvent& event) {
+    // Set common fields
+    event.set_id("evt_" + std::to_string(std::time(nullptr)));
+    
+    // Set timestamp to current time
+    auto* timestamp = event.mutable_occurred_at();
+    auto now = std::chrono::system_clock::now();
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+    timestamp->set_seconds(seconds);
 }

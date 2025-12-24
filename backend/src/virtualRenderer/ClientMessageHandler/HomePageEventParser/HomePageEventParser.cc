@@ -4,7 +4,7 @@
 debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     const std::string& componentId,
     const std::string& eventType,
-    const std::string& user,
+    // const std::string& user,
     const client_message::ClientMessage& message
 ) {
     debate_event::DebateEvent event;
@@ -24,7 +24,7 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     } else if (componentId == "clearButton" && eventType == "onClick") {
         event.set_type(debate_event::CLEAR_DEBATES);
         auto* clear = event.mutable_clear_debates();
-        std::cout << "  CLEAR_DEBATES for user: " << user << "\n";
+        // std::cout << "  CLEAR_DEBATES for user: " << user << "\n";
     } else if (componentId.find("enterDebateTopicButton_") == 0 && eventType == "onClick") {
         // Enter a debate
         event.set_type(debate_event::ENTER_DEBATE);

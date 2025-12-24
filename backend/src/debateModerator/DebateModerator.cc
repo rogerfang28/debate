@@ -15,6 +15,8 @@
 #include "event-handlers/GoToClaim/GoToClaim.h"
 #include "event-handlers/GoHome/GoHomeHandler.h"
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
+#include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
+#include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 DebateModerator::DebateModerator()
     // : dbHandler(utils::getDatabasePath()) // initialize handler with database
 {
@@ -25,6 +27,15 @@ DebateModerator::~DebateModerator() {
     std::cout << "[DebateModerator] Destroyed.\n";
 }
 
+// * main function to handle debate event requests
+moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::string& user, debate_event::DebateEvent& event){
+    // Process the debate event and update the database accordingly
+    std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
+    // Example: handle adding a debate topic
+    handleDebateEvent(user, event);
+    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user);
+    return res;
+}
 
 void DebateModerator::handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
     // Determine the type of event and call the appropriate handler
@@ -115,35 +126,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_NONE:
         {
-            // add debate list of debates user is in
-            std::vector<std::map<std::string, std::string>> debates = debateDbHandler.getDebates(user); // this is how it gets all debates for user
-            // put in a debate_list proto
-            debate::DebateList debateListProto;
-            for (const auto& row : debates) {
-                auto* topic = debateListProto.add_topics();
-                topic->set_id(row.at("ID"));
-                topic->set_topic(row.at("TOPIC"));
-            }
-            *responseMessage.mutable_users_debates() = debateListProto;
+            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user);
             break;
         }
             
         case user_engagement::ACTION_DEBATING:
             {
-                // populate debate info, maybe refactor to different file later
-                DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
-                std::string debateID = userProto.engagement().debating_info().debate_id();
-                if (debateDbHandler.debateExists(debateID)) {
-                    std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateID);
-                    debate::Debate debateProto;
-                    debateProto.ParseFromArray(debateData.data(), debateData.size());
-                    *responseMessage.mutable_debate() = debateProto;
-                    std::cout << "[DebateModerator] Debate Topic: " << debateProto.topic() << "\n";
-                    std::cout << "[DebateModerator] Added debate info to response for debate ID: " << debateID << "\n";
-                }
-                else{
-                    std::cout << "[DebateModerator] Warning: Debate ID " << debateID << " does not exist in database.\n";
-                }
+                DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto);
             }
             break;
         default:
@@ -152,13 +141,4 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     }
 
     return responseMessage;
-}
-
-moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::string& user, debate_event::DebateEvent& event){
-    // Process the debate event and update the database accordingly
-    std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
-    // Example: handle adding a debate topic
-    handleDebateEvent(user, event);
-    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user);
-    return res;
 }
