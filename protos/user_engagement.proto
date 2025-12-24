@@ -8,7 +8,18 @@ enum EngagementAction {
   ACTION_DEBATING = 2;  // currently in a debate
 }
 
-message NoneInfo {}
+message NoneInfo {
+  DebateList available_debates = 1; // list of debates user can join
+}
+
+message DebateTopic {
+    string id = 1;
+    string topic = 2;
+}
+
+message DebateList {
+    repeated DebateTopic topics = 1;
+}
 
 message DebatingInfo {
   string debate_id = 1;

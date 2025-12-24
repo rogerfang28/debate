@@ -2,6 +2,7 @@
 #include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <iostream>
 #include <vector>
 #include <map>
@@ -14,11 +15,11 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
     std::vector<std::map<std::string, std::string>> debates = debateDbHandler.getDebates(user); // this is how it gets all debates for user
     // put in a debate_list proto
-    debate::DebateList debateListProto;
+    user_engagement::DebateList debateListProto;
     for (const auto& row : debates) {
         auto* topic = debateListProto.add_topics();
         topic->set_id(row.at("ID"));
         topic->set_topic(row.at("TOPIC"));
     }
-    *responseMessage.mutable_users_debates() = debateListProto;
+    *responseMessage.mutable_engagement()->mutable_none_info()->mutable_available_debates() = debateListProto;
 }

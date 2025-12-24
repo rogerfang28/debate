@@ -6,38 +6,28 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Debate } from "./debate_pb";
 import { file_debate } from "./debate_pb";
 import type { UserEngagement } from "./user_engagement_pb";
 import { file_user_engagement } from "./user_engagement_pb";
-import type { DebateList } from "./debate_list_pb";
-import { file_debate_list } from "./debate_list_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKWAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USMwoKZW5nYWdlbWVudBgBIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIeCgZkZWJhdGUYAiABKAsyDi5kZWJhdGUuRGViYXRlEikKDXVzZXJzX2RlYmF0ZXMYAyABKAsyEi5kZWJhdGUuRGViYXRlTGlzdGIGcHJvdG8z", [file_debate, file_user_engagement, file_debate_list]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciJLChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIzCgplbmdhZ2VtZW50GAEgASgLMh8udXNlcl9lbmdhZ2VtZW50LlVzZXJFbmdhZ2VtZW50YgZwcm90bzM", [file_debate, file_user_engagement]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
  */
 export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage"> & {
   /**
+   * debate.Debate debate = 2;
+   * debate.DebateList users_debates = 3;
+   *
    * @generated from field: user_engagement.UserEngagement engagement = 1;
    */
   engagement?: UserEngagement;
-
-  /**
-   * @generated from field: debate.Debate debate = 2;
-   */
-  debate?: Debate;
-
-  /**
-   * @generated from field: debate.DebateList users_debates = 3;
-   */
-  usersDebates?: DebateList;
 };
 
 /**

@@ -31,7 +31,6 @@
 #include "google/protobuf/unknown_field_set.h"
 #include "debate.pb.h"
 #include "user_engagement.pb.h"
-#include "debate_list.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -218,8 +217,6 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kEngagementFieldNumber = 1,
-    kDebateFieldNumber = 2,
-    kUsersDebatesFieldNumber = 3,
   };
   // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
   bool has_engagement() const;
@@ -236,42 +233,12 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* _internal_mutable_engagement();
 
   public:
-  // .debate.Debate debate = 2 [json_name = "debate"];
-  bool has_debate() const;
-  void clear_debate() ;
-  const ::debate::Debate& debate() const;
-  PROTOBUF_NODISCARD ::debate::Debate* release_debate();
-  ::debate::Debate* mutable_debate();
-  void set_allocated_debate(::debate::Debate* value);
-  void unsafe_arena_set_allocated_debate(::debate::Debate* value);
-  ::debate::Debate* unsafe_arena_release_debate();
-
-  private:
-  const ::debate::Debate& _internal_debate() const;
-  ::debate::Debate* _internal_mutable_debate();
-
-  public:
-  // .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
-  bool has_users_debates() const;
-  void clear_users_debates() ;
-  const ::debate::DebateList& users_debates() const;
-  PROTOBUF_NODISCARD ::debate::DebateList* release_users_debates();
-  ::debate::DebateList* mutable_users_debates();
-  void set_allocated_users_debates(::debate::DebateList* value);
-  void unsafe_arena_set_allocated_users_debates(::debate::DebateList* value);
-  ::debate::DebateList* unsafe_arena_release_users_debates();
-
-  private:
-  const ::debate::DebateList& _internal_users_debates() const;
-  ::debate::DebateList* _internal_mutable_users_debates();
-
-  public:
   // @@protoc_insertion_point(class_scope:moderator_to_vr.ModeratorToVRMessage)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 3,
+      0, 1, 1,
       0, 2>
       _table_;
 
@@ -292,8 +259,6 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::user_engagement::UserEngagement* engagement_;
-    ::debate::Debate* debate_;
-    ::debate::DebateList* users_debates_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -405,188 +370,6 @@ inline void ModeratorToVRMessage::set_allocated_engagement(::user_engagement::Us
 
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.engagement)
-}
-
-// .debate.Debate debate = 2 [json_name = "debate"];
-inline bool ModeratorToVRMessage::has_debate() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.debate_ != nullptr);
-  return value;
-}
-inline const ::debate::Debate& ModeratorToVRMessage::_internal_debate() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::Debate* p = _impl_.debate_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::Debate&>(::debate::_Debate_default_instance_);
-}
-inline const ::debate::Debate& ModeratorToVRMessage::debate() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.debate)
-  return _internal_debate();
-}
-inline void ModeratorToVRMessage::unsafe_arena_set_allocated_debate(::debate::Debate* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.debate_);
-  }
-  _impl_.debate_ = reinterpret_cast<::debate::Debate*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.debate)
-}
-inline ::debate::Debate* ModeratorToVRMessage::release_debate() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::debate::Debate* released = _impl_.debate_;
-  _impl_.debate_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::debate::Debate* ModeratorToVRMessage::unsafe_arena_release_debate() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.debate)
-
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::debate::Debate* temp = _impl_.debate_;
-  _impl_.debate_ = nullptr;
-  return temp;
-}
-inline ::debate::Debate* ModeratorToVRMessage::_internal_mutable_debate() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.debate_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Debate>(GetArena());
-    _impl_.debate_ = reinterpret_cast<::debate::Debate*>(p);
-  }
-  return _impl_.debate_;
-}
-inline ::debate::Debate* ModeratorToVRMessage::mutable_debate() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  ::debate::Debate* _msg = _internal_mutable_debate();
-  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.debate)
-  return _msg;
-}
-inline void ModeratorToVRMessage::set_allocated_debate(::debate::Debate* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.debate_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-
-  _impl_.debate_ = reinterpret_cast<::debate::Debate*>(value);
-  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.debate)
-}
-
-// .debate.DebateList users_debates = 3 [json_name = "usersDebates"];
-inline bool ModeratorToVRMessage::has_users_debates() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.users_debates_ != nullptr);
-  return value;
-}
-inline const ::debate::DebateList& ModeratorToVRMessage::_internal_users_debates() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::DebateList* p = _impl_.users_debates_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::DebateList&>(::debate::_DebateList_default_instance_);
-}
-inline const ::debate::DebateList& ModeratorToVRMessage::users_debates() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.users_debates)
-  return _internal_users_debates();
-}
-inline void ModeratorToVRMessage::unsafe_arena_set_allocated_users_debates(::debate::DebateList* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.users_debates_);
-  }
-  _impl_.users_debates_ = reinterpret_cast<::debate::DebateList*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000004u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000004u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.users_debates)
-}
-inline ::debate::DebateList* ModeratorToVRMessage::release_users_debates() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000004u;
-  ::debate::DebateList* released = _impl_.users_debates_;
-  _impl_.users_debates_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::debate::DebateList* ModeratorToVRMessage::unsafe_arena_release_users_debates() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.users_debates)
-
-  _impl_._has_bits_[0] &= ~0x00000004u;
-  ::debate::DebateList* temp = _impl_.users_debates_;
-  _impl_.users_debates_ = nullptr;
-  return temp;
-}
-inline ::debate::DebateList* ModeratorToVRMessage::_internal_mutable_users_debates() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.users_debates_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::DebateList>(GetArena());
-    _impl_.users_debates_ = reinterpret_cast<::debate::DebateList*>(p);
-  }
-  return _impl_.users_debates_;
-}
-inline ::debate::DebateList* ModeratorToVRMessage::mutable_users_debates() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000004u;
-  ::debate::DebateList* _msg = _internal_mutable_users_debates();
-  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.users_debates)
-  return _msg;
-}
-inline void ModeratorToVRMessage::set_allocated_users_debates(::debate::DebateList* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.users_debates_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000004u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000004u;
-  }
-
-  _impl_.users_debates_ = reinterpret_cast<::debate::DebateList*>(value);
-  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.users_debates)
 }
 
 #ifdef __GNUC__

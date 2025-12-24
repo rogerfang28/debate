@@ -5,11 +5,10 @@ package moderator_to_vr;
 
 import "debate.proto";
 import "user_engagement.proto";
-import "debate_list.proto";
 
 message ModeratorToVRMessage {
     user_engagement.UserEngagement engagement = 1;
-    debate.Debate debate = 2;
-    debate.DebateList users_debates = 3;
+    // debate.Debate debate = 2;
+    // debate.DebateList users_debates = 3;
 }
 

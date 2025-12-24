@@ -1,7 +1,7 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page HomePageGenerator::GenerateHomePage(debate::DebateList usersDebates) {
+ui::Page HomePageGenerator::GenerateHomePage(user_engagement::DebateList usersDebates) {
     ui::Page page;
     page.set_page_id("home");
     page.set_title("Debate Topic Entry");

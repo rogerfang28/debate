@@ -10,12 +10,18 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCIKCghOb25lSW5mbyJSCgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgJEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAkSFQoNcm9vdF9jbGFpbV9pZBgDIAEoCSLCAQoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglub25lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuTm9uZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAQg0KC2FjdGlvbl9pbmZvKlsKEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fTk9ORRABEhMKD0FDVElPTl9ERUJBVElORxACYgZwcm90bzM");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIlIKDERlYmF0aW5nSW5mbxIRCglkZWJhdGVfaWQYASABKAkSGAoQY3VycmVudF9jbGFpbV9pZBgCIAEoCRIVCg1yb290X2NsYWltX2lkGAMgASgJIsIBCg5Vc2VyRW5nYWdlbWVudBI5Cg5jdXJyZW50X2FjdGlvbhgBIAEoDjIhLnVzZXJfZW5nYWdlbWVudC5FbmdhZ2VtZW50QWN0aW9uEi4KCW5vbmVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ob25lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSABCDQoLYWN0aW9uX2luZm8qWwoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9OT05FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAJiBnByb3RvMw");
 
 /**
  * @generated from message user_engagement.NoneInfo
  */
 export type NoneInfo = Message<"user_engagement.NoneInfo"> & {
+  /**
+   * list of debates user can join
+   *
+   * @generated from field: user_engagement.DebateList available_debates = 1;
+   */
+  availableDebates?: DebateList;
 };
 
 /**
@@ -24,6 +30,45 @@ export type NoneInfo = Message<"user_engagement.NoneInfo"> & {
  */
 export const NoneInfoSchema: GenMessage<NoneInfo> = /*@__PURE__*/
   messageDesc(file_user_engagement, 0);
+
+/**
+ * @generated from message user_engagement.DebateTopic
+ */
+export type DebateTopic = Message<"user_engagement.DebateTopic"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string topic = 2;
+   */
+  topic: string;
+};
+
+/**
+ * Describes the message user_engagement.DebateTopic.
+ * Use `create(DebateTopicSchema)` to create a new message.
+ */
+export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 1);
+
+/**
+ * @generated from message user_engagement.DebateList
+ */
+export type DebateList = Message<"user_engagement.DebateList"> & {
+  /**
+   * @generated from field: repeated user_engagement.DebateTopic topics = 1;
+   */
+  topics: DebateTopic[];
+};
+
+/**
+ * Describes the message user_engagement.DebateList.
+ * Use `create(DebateListSchema)` to create a new message.
+ */
+export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 2);
 
 /**
  * @generated from message user_engagement.DebatingInfo
@@ -54,7 +99,7 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
  * Use `create(DebatingInfoSchema)` to create a new message.
  */
 export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 1);
+  messageDesc(file_user_engagement, 3);
 
 /**
  * @generated from message user_engagement.UserEngagement
@@ -90,7 +135,7 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
  * Use `create(UserEngagementSchema)` to create a new message.
  */
 export const UserEngagementSchema: GenMessage<UserEngagement> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 2);
+  messageDesc(file_user_engagement, 4);
 
 /**
  * @generated from enum user_engagement.EngagementAction

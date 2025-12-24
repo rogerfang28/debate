@@ -22,16 +22,16 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Home Page for user: " << user << "\n";
 
             // get the debate list from info
-            if (info.has_users_debates()) {
-                return HomePageGenerator::GenerateHomePage(info.users_debates());
+            if (info.has_engagement() && info.engagement().has_none_info()) {
+                return HomePageGenerator::GenerateHomePage(info.engagement().none_info().available_debates());
             } else {
-                debate::DebateList emptyList;
+                user_engagement::DebateList emptyList;
                 return HomePageGenerator::GenerateHomePage(emptyList);
             }
         case user_engagement::ACTION_DEBATING:
             // generate debate page
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
-            if (info.has_debate()) {
+            if (true) {
                 std::string currentClaimId = info.engagement().debating_info().current_claim_id();
                 // std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
                 // std::string debate_topic = debateWrapper.getTopic();
@@ -44,7 +44,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                 return DebatePageGenerator::GenerateDebatePage("Placeholder topic", "Placeholder claim sentence", placeholderChildClaims);
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
-                debate::DebateList emptyList;
+                user_engagement::DebateList emptyList;
                 return HomePageGenerator::GenerateHomePage(emptyList);
             }
         default:
