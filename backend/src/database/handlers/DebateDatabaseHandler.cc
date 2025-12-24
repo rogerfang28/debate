@@ -23,6 +23,9 @@ int DebateDatabaseHandler::addDebate(const std::string& user, const std::string&
     closeDB();
     if (id != -1)
         std::cout << "[DebateDB] Added debate: " << topic << " for user " << user << "\n";
+    else {
+        std::cout << "[DebateDB] Failed to add debate: " << topic << " for user " << user << "\n";
+    }
     return id;
 }
 

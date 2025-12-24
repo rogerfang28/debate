@@ -1,7 +1,7 @@
 #include "DebateWrapper.h"
+#include "../database/handlers/StatementDatabaseHandler.h"
 
-
-DebateWrapper::DebateWrapper(debate::Debate& debate) 
+DebateWrapper::DebateWrapper(debate::Debate& debate)
     : debateProto(debate) {}
 
 std::vector<debate::Claim> DebateWrapper::findChildren(
@@ -66,6 +66,19 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     debateProto.set_topic(topic);
     debateProto.set_owner(owner);
     debateProto.set_num_items(0);
+    // debate::Claim rootClaim;
+    // rootClaim.set_sentence(topic);
+    // int newId = statementDBHandler.addStatement(
+    //     rootClaim.id(), 
+    //     rootClaim.sentence(), 
+    //     std::vector<uint8_t>{} // empty protobuf data for now
+    // );
+    // rootClaim.set_id(std::to_string(newId));
+    // statementDBHandler.updateStatementProtobuf(
+    //     rootClaim.id(), 
+    //     std::vector<uint8_t>(rootClaim.SerializeAsString().begin(), rootClaim.SerializeAsString().end())
+    // );
+
 }
 
 

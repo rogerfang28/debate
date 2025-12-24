@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../database/handlers/StatementDatabaseHandler.h"
+#include "./pathUtils.h"
 #include <vector>
 #include <string>
 
@@ -34,4 +36,5 @@ public:
 private:
     debate::Debate& debateProto;
     debate::Claim* findClaimProto(const std::string& claimId);
+    StatementDatabaseHandler statementDBHandler{utils::getDatabasePath()}; // path from path utils
 };

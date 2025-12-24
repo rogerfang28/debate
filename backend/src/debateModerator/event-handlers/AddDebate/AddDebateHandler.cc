@@ -24,12 +24,6 @@ void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::stri
         debateTopic,
         "This is the main topic of the debate, and for now this will be the placeholder text."
     );
-
-    auto* rootClaim = debateProto.mutable_root_claim();
-    rootClaim->set_sentence(debateTopic);
-    rootClaim->set_description("This is the main topic of the debate, and for now this will be the placeholder text.");
-    rootClaim->set_id("0"); // change back to 0
-    
     
     std::cout << "[AddDebateHandler] Created Debate protobuf for topic: " << debateProto.topic() 
               << " with " << debateProto.claims_size() << " claims" << std::endl;
