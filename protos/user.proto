@@ -4,6 +4,8 @@ package user;
 
 import "user_engagement.proto";
 
+
+
 message User {
   string user_id = 1;       // unique user ID
   string username = 2;      // unique username

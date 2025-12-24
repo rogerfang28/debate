@@ -32,7 +32,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             // generate debate page
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (true) {
-                std::string currentClaimId = info.engagement().debating_info().current_claim_id();
+                std::string currentClaimId = info.engagement().debating_info().current_claim().id();
                 // std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
                 // std::string debate_topic = debateWrapper.getTopic();
                 // std::string debate_claim_sentence = debateWrapper.findClaimSentence(currentClaimId);

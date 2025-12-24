@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIlIKDERlYmF0aW5nSW5mbxIRCglkZWJhdGVfaWQYASABKAkSGAoQY3VycmVudF9jbGFpbV9pZBgCIAEoCRIVCg1yb290X2NsYWltX2lkGAMgASgJIsIBCg5Vc2VyRW5nYWdlbWVudBI5Cg5jdXJyZW50X2FjdGlvbhgBIAEoDjIhLnVzZXJfZW5nYWdlbWVudC5FbmdhZ2VtZW50QWN0aW9uEi4KCW5vbmVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ob25lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSABCDQoLYWN0aW9uX2luZm8qWwoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9OT05FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAJiBnByb3RvMw");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIr8BCgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMAoMcGFyZW50X2NsYWltGAUgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIVCg1yb290X2NsYWltX2lkGAMgASgJEjMKD2NoaWxkcmVuX2NsYWltcxgEIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8iKQoJQ2xhaW1JbmZvEgoKAmlkGAEgASgJEhAKCHNlbnRlbmNlGAIgASgJIsIBCg5Vc2VyRW5nYWdlbWVudBI5Cg5jdXJyZW50X2FjdGlvbhgBIAEoDjIhLnVzZXJfZW5nYWdlbWVudC5FbmdhZ2VtZW50QWN0aW9uEi4KCW5vbmVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ob25lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSABCDQoLYWN0aW9uX2luZm8qWwoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9OT05FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAJiBnByb3RvMw");
 
 /**
  * @generated from message user_engagement.NoneInfo
@@ -75,16 +75,20 @@ export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
  */
 export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   /**
-   * @generated from field: string debate_id = 1;
-   */
-  debateId: string;
-
-  /**
+   * string debate_id = 1;
+   *
    * current claim being viewed/argued
    *
-   * @generated from field: string current_claim_id = 2;
+   * @generated from field: user_engagement.ClaimInfo current_claim = 2;
    */
-  currentClaimId: string;
+  currentClaim?: ClaimInfo;
+
+  /**
+   * parent claim of the current claim
+   *
+   * @generated from field: user_engagement.ClaimInfo parent_claim = 5;
+   */
+  parentClaim?: ClaimInfo;
 
   /**
    * root claim of the debate
@@ -92,6 +96,13 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
    * @generated from field: string root_claim_id = 3;
    */
   rootClaimId: string;
+
+  /**
+   * child claims of the current claim
+   *
+   * @generated from field: repeated user_engagement.ClaimInfo children_claims = 4;
+   */
+  childrenClaims: ClaimInfo[];
 };
 
 /**
@@ -100,6 +111,28 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
  */
 export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
   messageDesc(file_user_engagement, 3);
+
+/**
+ * @generated from message user_engagement.ClaimInfo
+ */
+export type ClaimInfo = Message<"user_engagement.ClaimInfo"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string sentence = 2;
+   */
+  sentence: string;
+};
+
+/**
+ * Describes the message user_engagement.ClaimInfo.
+ * Use `create(ClaimInfoSchema)` to create a new message.
+ */
+export const ClaimInfoSchema: GenMessage<ClaimInfo> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 4);
 
 /**
  * @generated from message user_engagement.UserEngagement
@@ -135,7 +168,7 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
  * Use `create(UserEngagementSchema)` to create a new message.
  */
 export const UserEngagementSchema: GenMessage<UserEngagement> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4);
+  messageDesc(file_user_engagement, 5);
 
 /**
  * @generated from enum user_engagement.EngagementAction

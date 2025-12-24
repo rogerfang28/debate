@@ -15,7 +15,7 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     // DebateWrapper debateWrapper;
 
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
-    std::string debateID = userProto.engagement().debating_info().debate_id();
+    // std::string debateID = userProto.engagement().debating_info().root_claim_id();
     // if (debateDbHandler.debateExists(debateID)) {
         // std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateID);
         // debate::Debate debateProto;

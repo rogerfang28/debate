@@ -80,26 +80,24 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
-    "\032\014debate.proto\032\025user_engagement.proto\"W\n"
-    "\024ModeratorToVRMessage\022\?\n\nengagement\030\001 \001("
-    "\0132\037.user_engagement.UserEngagementR\nenga"
-    "gementb\006proto3"
+    "\032\025user_engagement.proto\"W\n\024ModeratorToVR"
+    "Message\022\?\n\nengagement\030\001 \001(\0132\037.user_engag"
+    "ement.UserEngagementR\nengagementb\006proto3"
 };
-static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[2] =
+static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[1] =
     {
-        &::descriptor_table_debate_2eproto,
         &::descriptor_table_user_5fengagement_2eproto,
 };
 static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    174,
+    160,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
     descriptor_table_moderator_5fto_5fvr_2eproto_deps,
-    2,
+    1,
     1,
     schemas,
     file_default_instances,

@@ -14,19 +14,20 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
     std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
     user::User userProto;
     userProto.ParseFromArray(userData.data(), userData.size());
-    std::string debateID = userProto.engagement().debating_info().debate_id();
+    // std::string debateID = userProto.engagement().debating_info().debate_id();
     std::string rootClaimID = userProto.engagement().debating_info().root_claim_id();
-    std::string currentClaimID = userProto.engagement().debating_info().current_claim_id();
+    user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();
+    std::string currentClaimID = currentClaimInfo.id();
 
     // find the debate protobuf and update it
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
-    std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateID);
+    // std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateID);
     debate::Debate debateProto;
-    debateProto.ParseFromArray(debateData.data(), debateData.size());
+    // debateProto.ParseFromArray(debateData.data(), debateData.size());
 
     DebateWrapper debateWrapper(debateProto);
 
-    debate::Claim parentClaim = debateWrapper.findClaim(currentClaimID);
+    // debate::Claim parentClaim = debateWrapper.findClaim(currentClaimID);
 
     debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId
@@ -34,10 +35,10 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
         connection_to_parent
     );
 
-    std::vector<uint8_t> serializedDebate(debateProto.ByteSizeLong());
-    debateProto.SerializeToArray(serializedDebate.data(), serializedDebate.size());
-    debateDbHandler.updateDebateProtobuf(user, debateID, serializedDebate);
+    // std::vector<uint8_t> serializedDebate(debateProto.ByteSizeLong());
+    // debateProto.SerializeToArray(serializedDebate.data(), serializedDebate.size());
+    // debateDbHandler.updateDebateProtobuf(user, debateID, serializedDebate);
     // log
-    std::cout << "[AddClaimUnderClaimHandler] Added new claim under claim ID " << currentClaimID 
-              << " in debate ID " << debateID << " for user " << user << "\n";
+    // std::cout << "[AddClaimUnderClaimHandler] Added new claim under claim ID " << currentClaimID 
+            //   << " in debate ID " << debateID << " for user " << user << "\n";
 }
