@@ -18,8 +18,12 @@
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
+
 DebateModerator::DebateModerator()
-    // : dbHandler(utils::getDatabasePath()) // initialize handler with database
+    : globalDb(utils::getDatabasePath()),
+      userDb(globalDb),
+      debateDb(globalDb),
+      statementDb(globalDb)
 {
     Log::debug("[DebateModerator] Initialized.");
 }

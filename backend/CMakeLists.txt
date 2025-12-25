@@ -62,6 +62,10 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/StatementDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateMembersDatabaseHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/handlers/StatementDatabase.cc
 
     # layout generators
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc

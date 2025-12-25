@@ -1,7 +1,5 @@
 #include "LayoutGenerator.h"
 
-// #include "./pageGenerator.h"
-// #include "../../utils/DebateWrapper.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "./pages/homePage/HomePageGenerator.h"
@@ -9,8 +7,6 @@
 #include "./pages/loginPage/LoginPageGenerator.h"
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
-
-// #include "../utils/pathUtils.h"
 
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const std::string& user) {
     // ok so we need to decode the info and generate a page based on it
