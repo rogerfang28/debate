@@ -11,15 +11,4 @@ void ClearDebatesHandler::ClearDebates(const std::string& user) {
 
     DebateWrapper debateWrapper;
     debateWrapper.deleteAllDebates(user);
-    
-    
-    // bool ok = dbHandler.clearUserDebates(user);
-
-    // if (ok) {
-    //     std::cout << "[ClearDebatesHandler] All debates cleared for user: " 
-    //               << user << std::endl;
-    // } else {
-    //     std::cerr << "[ClearDebatesHandler] Failed to clear debates for user: " 
-    //               << user << std::endl;
-    // }
 }

@@ -39,6 +39,9 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                     const user_engagement::ClaimInfo& claim = info.engagement().debating_info().children_claims(i);
                     childClaims.push_back({claim.id(), claim.sentence()});
                 }
+                std::cout << "[LayoutGenerator] Debate Topic: " << debate_topic << "\n";
+                std::cout << "[LayoutGenerator] Current Claim: " << debate_claim_sentence << "\n";
+                std::cout << "[LayoutGenerator] Number of Child Claims: " << childClaims.size() << "\n";
                 return DebatePageGenerator::GenerateDebatePage(debate_topic, debate_claim_sentence, childClaims);
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
