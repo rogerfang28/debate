@@ -56,6 +56,8 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
     
     debateDBHandler.addDebateWithProtobuf(owner, topic, serialized_debate);
+
+    debateMembersDBHandler.addMember(debate.root_claim_id(), owner);
 }
 
 
