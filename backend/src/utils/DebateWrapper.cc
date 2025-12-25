@@ -110,6 +110,39 @@ void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
     );
 }
 
-void DebateWrapper::deleteDebate(const std::string& rootClaimId) {
+void DebateWrapper::deleteDebate(const std::string& debateId) {
+    // find the debate protobuf
+    std::vector<uint8_t> debateData = debateDBHandler.getDebateProtobuf(debateId);
+    if (debateData.empty()) {
+        std::cerr << "[DebateWrapper] Debate with ID " << debateId << " not found.\n";
+        return;
+    }
+    debate::Debate debateProto;
+    debateProto.ParseFromArray(debateData.data(), debateData.size());
     
+    // find all debatemembers and delete
+    debateMembersDBHandler.removeAllMembersFromDebate(debateProto.root_claim_id());
+
+    // delete all claims associated with the debate
+    debate::Claim rootClaim = findClaim(debateProto.root_claim_id());
+    std::vector<std::string> claimsToDelete;
+    claimsToDelete.push_back(debateProto.root_claim_id());
+
+    size_t index = 0;
+    while (index < claimsToDelete.size()) { // BFS-like traversal
+        std::string currentClaimId = claimsToDelete[index];
+        debate::Claim currentClaim = findClaim(currentClaimId);
+        for (const auto& childId : currentClaim.proof().claim_ids()) {
+            claimsToDelete.push_back(childId);
+        }
+        index++;
+    }
+
+    for (const auto& claimId : claimsToDelete) {
+        deleteClaim(claimId);
+    }
+}
+
+void DebateWrapper::deleteClaim(const std::string& claimId) {
+    statementDBHandler.removeStatement(claimId);
 }

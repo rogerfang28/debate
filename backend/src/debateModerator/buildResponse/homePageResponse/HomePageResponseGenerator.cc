@@ -1,5 +1,8 @@
 #include "HomePageResponseGenerator.h"
 #include "../../../utils/pathUtils.h"
+#include "../../../utils/DebateWrapper.h"
+#include "../../../database/handlers/DebateMembersDatabaseHandler.h"
+#include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <iostream>
@@ -10,17 +13,26 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
     const std::string& user
 ) {
-    // put in a debate_list proto
-    std::vector<std::map<std::string, std::string>> debates;
-    // for testing purposes, just add some dummy debates
-    debates.push_back({{"ID", "1"}, {"TOPIC", "Is AI beneficial to humanity?"}});
-    debates.push_back({{"ID", "2"}, {"TOPIC", "Should space exploration be prioritized?"}});
-    debates.push_back({{"ID", "3"}, {"TOPIC", "Is remote work the future of employment?"}});
+    std::cout << "[HomePageResponseGenerator] Building Home Page response for user: "
+              << user << std::endl;
+    
+    // find all debates with user
+    DebateMembersDatabaseHandler debateMembersDBHandler(utils::getDatabasePath());
+    std::vector<std::string> debateIds = debateMembersDBHandler.getDebateIdsForUser(user);
+
     user_engagement::DebateList debateListProto;
-    for (const auto& row : debates) {
-        auto* topic = debateListProto.add_topics();
-        topic->set_id(row.at("ID"));
-        topic->set_topic(row.at("TOPIC"));
+    // build debate list protobuf
+    // for each debate id find the topic
+    DebateDatabaseHandler debateDBHandler(utils::getDatabasePath());
+    for (const std::string& debateId : debateIds) {
+        std::vector<uint8_t> debateBytes = debateDBHandler.getDebateProtobuf(debateId);
+        debate::Debate debateProto;
+        debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
+        user_engagement::DebateTopic* topicProto = debateListProto.add_topics();
+        topicProto->set_id(debateProto.id());
+        topicProto->set_topic(debateProto.topic());
     }
+
+
     *responseMessage.mutable_engagement()->mutable_none_info()->mutable_available_debates() = debateListProto;
 }

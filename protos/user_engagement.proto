@@ -34,8 +34,6 @@ message ClaimInfo {
   string sentence = 2;
 }
 
-// Main engagement message
-
 message UserEngagement {
   EngagementAction current_action = 1;
 

@@ -32,16 +32,14 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (true) {
                 std::string currentClaimId = info.engagement().debating_info().current_claim().id();
-
-                // std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
-                // std::string debate_topic = ;
-                // std::string debate_claim_sentence = debateWrapper.findClaimSentence(currentClaimId);
-                std::vector<std::pair<std::string,std::string>> placeholderChildClaims = {
-                    {"1", "This is the first child claim."},
-                    {"2", "This is the second child claim."},
-                    {"3", "This is the third child claim."}
-                };
-                return DebatePageGenerator::GenerateDebatePage("Placeholder topic", "Placeholder claim sentence", placeholderChildClaims);
+                std::string debate_topic = info.engagement().debating_info().root_claim().sentence();
+                std::string debate_claim_sentence = info.engagement().debating_info().current_claim().sentence();
+                std::vector<std::pair<std::string,std::string>> childClaims;
+                for (int i = 0; i < info.engagement().debating_info().children_claims_size(); i++) {
+                    const user_engagement::ClaimInfo& claim = info.engagement().debating_info().children_claims(i);
+                    childClaims.push_back({claim.id(), claim.sentence()});
+                }
+                return DebatePageGenerator::GenerateDebatePage(debate_topic, debate_claim_sentence, childClaims);
             } else {
                 std::cout << "[LayoutGenerator] No debate info found, generating Home Page instead.\n";
                 user_engagement::DebateList emptyList;

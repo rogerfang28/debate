@@ -32,7 +32,8 @@ public:
         const std::string& parentId);
     std::vector<std::pair<std::string,std::string>> findChildrenInfo(
         const std::string& parentId); // returns vector of (id, sentence) pairs
-    void deleteDebate(const std::string& rootClaimId);
+    void deleteDebate(const std::string& debateId);
+    void deleteClaim(const std::string& claimId);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
