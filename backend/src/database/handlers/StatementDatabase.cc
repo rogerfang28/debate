@@ -7,27 +7,25 @@ StatementDatabase::StatementDatabase(Database& db) : db_(db) {
 
 bool StatementDatabase::ensureTable() {
     const char* sql = R"(
-        CREATE TABLE IF NOT EXISTS statements (
-            statement_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            root_id INTEGER NOT NULL,
-            content TEXT NOT NULL,
-            protobuf_data BLOB,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (root_id) REFERENCES debates(id) ON DELETE CASCADE
+        CREATE TABLE IF NOT EXISTS STATEMENTS (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            ROOT_ID TEXT NOT NULL,
+            TEXT TEXT NOT NULL,
+            STATEMENT_DATA BLOB
         );
     )";
     return db_.execute(sql);
 }
 
 int StatementDatabase::addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData) {
-    const char* sql = "INSERT INTO statements (root_id, content, protobuf_data) VALUES (?, ?, ?);";
+    const char* sql = "INSERT INTO STATEMENTS (ROOT_ID, TEXT, STATEMENT_DATA) VALUES (?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return -1;
     }
 
-    sqlite3_bind_int(stmt, 1, root_id);
+    sqlite3_bind_text(stmt, 1, std::to_string(root_id).c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, content.c_str(), -1, SQLITE_TRANSIENT);
     
     if (!protobufData.empty()) {
@@ -51,7 +49,7 @@ int StatementDatabase::addStatement(int root_id, const std::string& content, std
 
 std::vector<uint8_t> StatementDatabase::getStatementProtobuf(int statementId) {
     std::vector<uint8_t> protobufData;
-    const char* sql = "SELECT protobuf_data FROM statements WHERE statement_id = ?;";
+    const char* sql = "SELECT STATEMENT_DATA FROM STATEMENTS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -75,7 +73,7 @@ std::vector<uint8_t> StatementDatabase::getStatementProtobuf(int statementId) {
 }
 
 bool StatementDatabase::updateStatementContent(int statementId, const std::string& newContent) {
-    const char* sql = "UPDATE statements SET content = ? WHERE statement_id = ?;";
+    const char* sql = "UPDATE STATEMENTS SET TEXT = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -93,7 +91,7 @@ bool StatementDatabase::updateStatementContent(int statementId, const std::strin
 }
 
 bool StatementDatabase::updateStatementProtobuf(int statementId, const std::vector<uint8_t>& protobufData) {
-    const char* sql = "UPDATE statements SET protobuf_data = ? WHERE statement_id = ?;";
+    const char* sql = "UPDATE STATEMENTS SET STATEMENT_DATA = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -115,14 +113,14 @@ bool StatementDatabase::updateStatementProtobuf(int statementId, const std::vect
 }
 
 bool StatementDatabase::updateStatementRoot(int statementId, int newRootId) {
-    const char* sql = "UPDATE statements SET root_id = ? WHERE statement_id = ?;";
+    const char* sql = "UPDATE STATEMENTS SET ROOT_ID = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return false;
     }
 
-    sqlite3_bind_int(stmt, 1, newRootId);
+    sqlite3_bind_text(stmt, 1, std::to_string(newRootId).c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, statementId);
 
     int result = sqlite3_step(stmt);
@@ -133,7 +131,7 @@ bool StatementDatabase::updateStatementRoot(int statementId, int newRootId) {
 }
 
 bool StatementDatabase::deleteStatement(int statementId) {
-    const char* sql = "DELETE FROM statements WHERE statement_id = ?;";
+    const char* sql = "DELETE FROM STATEMENTS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -150,7 +148,7 @@ bool StatementDatabase::deleteStatement(int statementId) {
 }
 
 bool StatementDatabase::statementExists(int statementId) {
-    const char* sql = "SELECT 1 FROM statements WHERE statement_id = ?;";
+    const char* sql = "SELECT 1 FROM STATEMENTS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {

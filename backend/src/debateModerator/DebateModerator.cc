@@ -50,7 +50,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CREATE_DEBATE:
             Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
-            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user);
+            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateDb, statementDb, userDb);
             break;
         case debate_event::CLEAR_DEBATES:
             Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");

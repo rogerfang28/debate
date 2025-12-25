@@ -34,24 +34,33 @@ static std::string getTimestamp() {
 
 void Log::error(const std::string& msg) {
     if (currentLevel >= LogLevel::Error) {
-        std::cerr << "[" << getTimestamp() << "] [ERROR] " << msg << "\n";
+std::cerr << "\033[31m"
+        << "[" << getTimestamp() << "] [ERROR] " << msg
+        << "\033[0m\n";
     }
 }
 
 void Log::warn(const std::string& msg) {
     if (currentLevel >= LogLevel::Warn) {
-        std::cerr << "[" << getTimestamp() << "] [WARN] " << msg << "\n";
+std::cerr << "\033[33m"
+          << "[" << getTimestamp() << "] [WARN] " << msg
+          << "\033[0m\n";
     }
 }
 
 void Log::info(const std::string& msg) {
     if (currentLevel >= LogLevel::Info) {
-        std::cout << "[" << getTimestamp() << "] [INFO] " << msg << "\n";
+std::cout << "\033[36m"
+          << "[" << getTimestamp() << "] [INFO] " << msg
+          << "\033[0m\n";
+
     }
 }
 
 void Log::debug(const std::string& msg) {
     if (currentLevel >= LogLevel::Debug) {
-        std::cout << "[" << getTimestamp() << "] [DEBUG] " << msg << "\n";
+std::cout << "\033[34m"
+          << "[" << getTimestamp() << "] [DEBUG] " << msg
+          << "\033[0m\n";
     }
 }

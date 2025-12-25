@@ -7,19 +7,18 @@ DebateDatabase::DebateDatabase(Database& db) : db_(db) {
 
 bool DebateDatabase::ensureTable() {
     const char* sql = R"(
-        CREATE TABLE IF NOT EXISTS debates (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user TEXT NOT NULL,
-            topic TEXT NOT NULL,
-            protobuf_data BLOB,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        CREATE TABLE IF NOT EXISTS DEBATE (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            USER TEXT NOT NULL,
+            TOPIC TEXT NOT NULL,
+            PAGE_DATA BLOB
         );
     )";
     return db_.execute(sql);
 }
 
 int DebateDatabase::addDebate(const std::string& user, const std::string& topic, const std::vector<uint8_t>& protobufData) {
-    const char* sql = "INSERT INTO debates (user, topic, protobuf_data) VALUES (?, ?, ?);";
+    const char* sql = "INSERT INTO DEBATE (USER, TOPIC, PAGE_DATA) VALUES (?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -50,7 +49,7 @@ int DebateDatabase::addDebate(const std::string& user, const std::string& topic,
 
 // std::vector<std::map<std::string, std::string>> DebateDatabase::getDebates(const std::string& user) {
 //     std::vector<std::map<std::string, std::string>> debates;
-//     const char* sql = "SELECT id, user, topic, created_at FROM debates WHERE user = ?;";
+//     const char* sql = "SELECT ID, USER, TOPIC FROM DEBATE WHERE USER = ?;";
     
 //     sqlite3_stmt* stmt = db_.prepare(sql);
 //     if (!stmt) {
@@ -65,11 +64,6 @@ int DebateDatabase::addDebate(const std::string& user, const std::string& topic,
 //         debate["user"] = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
 //         debate["topic"] = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
         
-//         const unsigned char* timestamp = sqlite3_column_text(stmt, 3);
-//         if (timestamp) {
-//             debate["created_at"] = reinterpret_cast<const char*>(timestamp);
-//         }
-        
 //         debates.push_back(debate);
 //     }
 
@@ -79,7 +73,7 @@ int DebateDatabase::addDebate(const std::string& user, const std::string& topic,
 
 std::vector<uint8_t> DebateDatabase::getDebateProtobuf(int debateId) {
     std::vector<uint8_t> protobufData;
-    const char* sql = "SELECT protobuf_data FROM debates WHERE id = ?;";
+    const char* sql = "SELECT PAGE_DATA FROM DEBATE WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -103,7 +97,7 @@ std::vector<uint8_t> DebateDatabase::getDebateProtobuf(int debateId) {
 }
 
 bool DebateDatabase::updateDebateProtobuf(int debateId, const std::string& user, const std::vector<uint8_t>& protobufData) {
-    const char* sql = "UPDATE debates SET protobuf_data = ? WHERE id = ? AND user = ?;";
+    const char* sql = "UPDATE DEBATE SET PAGE_DATA = ? WHERE ID = ? AND USER = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -126,7 +120,7 @@ bool DebateDatabase::updateDebateProtobuf(int debateId, const std::string& user,
 }
 
 bool DebateDatabase::removeDebate(int debateId, const std::string& user) {
-    const char* sql = "DELETE FROM debates WHERE id = ? AND user = ?;";
+    const char* sql = "DELETE FROM DEBATE WHERE ID = ? AND USER = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -144,7 +138,7 @@ bool DebateDatabase::removeDebate(int debateId, const std::string& user) {
 }
 
 bool DebateDatabase::clearUserDebates(const std::string& user) {
-    const char* sql = "DELETE FROM debates WHERE user = ?;";
+    const char* sql = "DELETE FROM DEBATE WHERE USER = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -161,7 +155,7 @@ bool DebateDatabase::clearUserDebates(const std::string& user) {
 }
 
 bool DebateDatabase::debateExists(int debateId) {
-    const char* sql = "SELECT 1 FROM debates WHERE id = ?;";
+    const char* sql = "SELECT 1 FROM DEBATE WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {

@@ -6,13 +6,12 @@
 #include "../../../utils/DebateWrapper.h"
 #include "../../../utils/Log.h"
 
-void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::string& user) {
+void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::string& user, DebateDatabase& debateDb, StatementDatabase& statementDb, UserDatabase& userDb) {
 
     Log::debug("[AddDebateHandler] AddDebate called for user: "
               + user + ", topic: " + debateTopic);
 
-    // debate::Debate debateProto;
     DebateWrapper debateWrapper;
 
-    debateWrapper.initNewDebate(debateTopic, user);
+    debateWrapper.initNewDebate(debateTopic, user, debateDb, statementDb, userDb);
 }
