@@ -8,5 +8,5 @@ void DeleteDebateHandler::DeleteDebate(const std::string& debate_id, const std::
     DebateWrapper debateWrapper;
     std::cout << "[DeleteDebateHandler] DeleteDebate called for user: " << user << ", debate ID: " << debate_id << std::endl;
 
-    debateWrapper.deleteDebate(debate_id);
+    debateWrapper.deleteDebate(debate_id, user);
 }

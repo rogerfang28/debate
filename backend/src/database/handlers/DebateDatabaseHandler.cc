@@ -66,8 +66,8 @@ std::vector<uint8_t> DebateDatabaseHandler::getDebateProtobuf(const std::string&
     auto protobufData = readBlob("DEBATE", "PAGE_DATA", whereClause);
     closeDB();
     
-    std::cout << "[DebateDB] Retrieved protobuf data for id: " << id 
-            << " (size: " << protobufData.size() << " bytes)\n";
+    // std::cout << "[DebateDB] Retrieved protobuf data for id: " << id 
+            // << " (size: " << protobufData.size() << " bytes)\n";
     return protobufData;
 }
 
