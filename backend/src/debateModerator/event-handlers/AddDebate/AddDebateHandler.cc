@@ -13,8 +13,8 @@ void AddDebateHandler::AddDebate(const std::string& debateTopic, const std::stri
               << user << ", topic: " << debateTopic << std::endl;
 
     debate::Debate debateProto;
-    DebateWrapper debateWrapper(debateProto);
-    debateWrapper.setDebateTopic(debateTopic);
+    DebateWrapper debateWrapper;
+    // debateWrapper.setDebateTopic(debateTopic);
 
     // Add the first claim (root claim) with proper content
 

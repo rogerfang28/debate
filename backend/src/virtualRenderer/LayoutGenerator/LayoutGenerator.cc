@@ -15,7 +15,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
     // debate::Debate debate = info.debate();
-    // DebateWrapper debateWrapper(debate);
+    // DebateWrapper debateWrapper;
     switch (info.engagement().current_action()){
         case user_engagement::ACTION_NONE:
             // generate home page

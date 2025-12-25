@@ -25,7 +25,7 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
     debate::Debate debateProto;
     // debateProto.ParseFromArray(debateData.data(), debateData.size());
 
-    DebateWrapper debateWrapper(debateProto);
+    DebateWrapper debateWrapper;
 
     // debate::Claim parentClaim = debateWrapper.findClaim(currentClaimID);
 
