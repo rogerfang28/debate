@@ -34,6 +34,7 @@ public:
         const std::string& parentId); // returns vector of (id, sentence) pairs
     void deleteDebate(const std::string& debateId);
     void deleteClaim(const std::string& claimId);
+    void deleteAllDebates(const std::string& user);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);

@@ -146,3 +146,11 @@ void DebateWrapper::deleteDebate(const std::string& debateId) {
 void DebateWrapper::deleteClaim(const std::string& claimId) {
     statementDBHandler.removeStatement(claimId);
 }
+
+void DebateWrapper::deleteAllDebates(const std::string& user) {
+    std::vector<std::map<std::string, std::string>> allDebates = debateDBHandler.getDebates(user);
+    for (const auto& debateRow : allDebates) {
+        std::string debateId = debateRow.at("ID");
+        deleteDebate(debateId);
+    }
+}
