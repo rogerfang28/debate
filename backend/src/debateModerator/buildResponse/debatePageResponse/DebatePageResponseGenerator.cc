@@ -11,20 +11,21 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     const std::string& user,
     const user::User& userProto
 ) {
-    // populate debate info, maybe refactor to different file later
-    // DebateWrapper debateWrapper;
+    DebateWrapper debateWrapper;
 
-    DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
-    // std::string debateID = userProto.engagement().debating_info().root_claim_id();
-    // if (debateDbHandler.debateExists(debateID)) {
-        // std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateID);
-        // debate::Debate debateProto;
-        // debateProto.ParseFromArray(debateData.data(), debateData.size());
-        // *responseMessage.mutable_debate() = debateProto;
-        // std::cout << "[DebateModerator] Debate Topic: " << debateProto.topic() << "\n";
-        // std::cout << "[DebateModerator] Added debate info to response for debate ID: " << debateID << "\n";
-    // }
-    // else{
-        // std::cout << "[DebateModerator] Warning: Debate ID " << debateID << " does not exist in database.\n";
-    // }
+    user_engagement::DebatingInfo debatingInfo = userProto.engagement().debating_info();
+    // based on the current claim id, generate the children claims and sentences and parent claim
+    std::string currentClaimId = debatingInfo.current_claim().id();
+    debate::Claim currentClaim = debateWrapper.findClaim(currentClaimId);
+    debatingInfo.mutable_current_claim()->set_sentence(currentClaim.sentence());
+    debate::Claim parentClaim = debateWrapper.findClaim(currentClaim.parent_id());
+    debatingInfo.mutable_parent_claim()->set_sentence(parentClaim.sentence());
+    debatingInfo.mutable_parent_claim()->set_id(parentClaim.id());
+    for (int i = 0; i < currentClaim.children_ids_size(); i++) {
+        std::string childId = currentClaim.children_ids(i);
+        debate::Claim childClaim = debateWrapper.findClaim(childId);
+        user_engagement::ClaimInfo* childClaimInfo = debatingInfo.add_children_claims();
+        childClaimInfo->set_id(childClaim.id());
+        childClaimInfo->set_sentence(childClaim.sentence());
+    }
 }

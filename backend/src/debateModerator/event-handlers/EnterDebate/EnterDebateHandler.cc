@@ -6,37 +6,25 @@
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <iostream>
 
-bool EnterDebateHandler::EnterDebate(const std::string& topicID, const std::string& user) {
+bool EnterDebateHandler::EnterDebate(const std::string& rootClaimId, const std::string& user) {
     // std::string newtopicID = "16"; // Temporary override for testing
-    std::cout << "[EnterDebate] User " << user << " entering debate topic with id: " << topicID << std::endl;
+    std::cout << "[EnterDebate] User " << user << " entering debate root claim with id: " << rootClaimId << std::endl;
 
     try {
-        // Create database handler
         UserDatabaseHandler userDbHandler(utils::getDatabasePath());
-        
-        // Get current user protobuf
         std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
-        if (userData.empty()) {
-            std::cerr << "[EnterDebate][ERR] User " << user << " not found" << std::endl;
-            return false;
-        }
-        
-        // Parse user protobuf
+
         user::User userProto;
         if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
             std::cerr << "[EnterDebate][ERR] Failed to parse user protobuf for " << user << std::endl;
             return false;
         }
-        
-        // Update user state to DEBATING and set debate topic id
-        // userProto.set_state(user::DEBATING);
-        // DebateWrapper debateWrapper;
+
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
-        userProto.mutable_engagement()->mutable_debating_info()->set_root_claim_id(topicID);
+        userProto.mutable_engagement()->mutable_debating_info()->set_root_claim_id(rootClaimId);
         user_engagement::ClaimInfo currentClaim;
-        currentClaim.set_id(topicID);
-        // std::string sentence = ;
-        currentClaim.set_sentence("Root claim for debate topic " + topicID);
+        currentClaim.set_id(rootClaimId);
+        // currentClaim.set_sentence("Root claim for debate topic " + rootClaimId);
         // userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(); // root
         
         // userProto.mutable_engagement()->mutable_debating_info()->set_current_claim_id("0"); // root
@@ -49,7 +37,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& topicID, const std::stri
         bool success = userDbHandler.updateUserProtobuf(user, updatedData);
         
         if (success) {
-            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << topicID 
+            std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << rootClaimId 
                       << " (state=DEBATING)" << std::endl;
         } else {
             std::cerr << "[EnterDebate][ERR] Failed to update user protobuf for " << user << std::endl;
