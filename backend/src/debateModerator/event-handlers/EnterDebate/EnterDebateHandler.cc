@@ -7,15 +7,16 @@
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <iostream>
 #include <vector>
+#include "../../../utils/Log.h"
 
 bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::string& user) {
-    std::cout << "[EnterDebate] User " << user << " entering debate with id: " << debateId << std::endl;
+    Log::debug("[EnterDebate] User " + user + " entering debate with id: " + debateId);
 
     DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
     std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateId);
     debate::Debate debateProto;
     if (!debateProto.ParseFromArray(debateData.data(), static_cast<int>(debateData.size()))) {
-        std::cerr << "[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " << debateId << std::endl;
+        Log::error("[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " + debateId);
         return false;
     }
     std::string rootClaimId = debateProto.root_claim_id();
@@ -25,7 +26,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
 
     user::User userProto;
     if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-        std::cerr << "[EnterDebate][ERR] Failed to parse user protobuf for " << user << std::endl;
+        Log::error("[EnterDebate][ERR] Failed to parse user protobuf for " + user);
         return false;
     }
 
@@ -41,10 +42,10 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
     bool success = userDbHandler.updateUserProtobuf(user, updatedData);
     
     if (success) {
-        std::cout << "[EnterDebate] Successfully moved user " << user << " to topic " << rootClaimId 
-                    << " (state=DEBATING)" << std::endl;
+        Log::debug("[EnterDebate] Successfully moved user " + user + " to topic " + rootClaimId 
+                    + " (state=DEBATING)");
     } else {
-        std::cerr << "[EnterDebate][ERR] Failed to update user protobuf for " << user << std::endl;
+        Log::error("[EnterDebate][ERR] Failed to update user protobuf for " + user);
     }
     
     return success;

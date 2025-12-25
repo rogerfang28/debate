@@ -8,6 +8,7 @@
 #include "HomePageEventParser/HomePageEventParser.h"
 #include "DebatePageEventParser/DebatePageEventParser.h"
 #include "ErrorPageEventParser/ErrorPageEventParser.h"
+#include "../../utils/Log.h"
 
 debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const std::string& user) {
     debate_event::DebateEvent event;
@@ -15,7 +16,7 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
 
     // check to see if there is nothing actually happening, like nothing clicked, it's basically no event
     if (message.component_id().empty() && message.event_type().empty()) {
-        std::cout << "No action in ClientMessage, returning empty DebateEvent.\n";
+        Log::debug("No action in ClientMessage, returning empty DebateEvent.");
         event.set_type(debate_event::NONE);
         return event;
     }
@@ -24,10 +25,10 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     const std::string& eventType = message.event_type();
     const std::string& pageId = message.page_data().page_id();
     
-    std::cout << "\n--- Translating ClientMessage to DebateEvent ---\n";
-    std::cout << "  Page ID: " << pageId << "\n";
-    std::cout << "  Component ID: " << componentId << "\n";
-    std::cout << "  Event Type: " << eventType << "\n";
+    Log::debug("\n--- Translating ClientMessage to DebateEvent ---");
+    Log::debug("  Page ID: " + pageId);
+    Log::debug("  Component ID: " + componentId);
+    Log::debug("  Event Type: " + eventType);
     
     // Route based on page_id and delegate to specific parsers
     if (pageId == "home") {
@@ -37,14 +38,14 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     } else if (pageId == "error") {
         event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user, message);
     } else {
-        std::cerr << "Unknown page ID: " << pageId << "\n";
+        Log::error("Unknown page ID: " + pageId);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     
     event.set_user_id(user);
 
-    std::cout << "  Event Type: " << event.type() << "\n";
-    std::cout << "========================================\n\n";
+    Log::debug("  Event Type: " + std::to_string(event.type()));
+    Log::debug("========================================\n");
     
     return event;
 }

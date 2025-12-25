@@ -10,6 +10,7 @@
 #include "./virtualRenderer.h"
 #include <iostream>
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
+#include "../utils/Log.h"
 
 
 void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
@@ -18,13 +19,13 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     // Parse ClientMessage protobuf
     client_message::ClientMessage msg;
     if (!msg.ParseFromString(req.body)) {
-      std::cerr << "Failed to parse ClientMessage\n";
+      Log::error("Failed to parse ClientMessage");
       res.status = 400;
       res.set_content("Failed to parse ClientMessage", "text/plain");
       return;
     }
 
-    std::cout << "ClientMessage received\n";
+    Log::debug("ClientMessage received");
 
     // log(user, msg); // detailed logging
 
@@ -39,7 +40,7 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     // send proto back in the res
     std::string page_data_serialized;
     if (!page.SerializeToString(&page_data_serialized)) {
-        std::cerr << "❌ Failed to serialize Page response\n";
+        Log::error("❌ Failed to serialize Page response");
         res.status = 500;
         res.set_content("Failed to serialize Page response", "text/plain");
         return;
@@ -54,7 +55,7 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
     // std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
     
     if (cookie_header.empty()) {
-        std::cout << "[Auth] No cookie found, returning 'guest'\n";
+        Log::debug("[Auth] No cookie found, returning 'guest'");
         return "guest";
     }
 
@@ -62,7 +63,7 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
     std::string prefix = "user=";
     size_t pos = cookie_header.find(prefix);
     if (pos == std::string::npos) {
-        std::cout << "[Auth] No 'user=' cookie found, returning 'guest'\n";
+        Log::debug("[Auth] No 'user=' cookie found, returning 'guest'");
         return "guest";
     }
 
@@ -72,33 +73,33 @@ std::string MiddleendRequestHandler::extractUserFromCookies(const httplib::Reque
         ? cookie_header.substr(start)
         : cookie_header.substr(start, end - start);
 
-    std::cout << "[Auth] Extracted user from cookie: '" << user << "'\n";
+    Log::debug("[Auth] Extracted user from cookie: '" + user + "'");
     return user;
 }
 
 // make a log function
 void MiddleendRequestHandler::log(const std::string& user, const client_message::ClientMessage& msg) {
         // Log the event info
-    std::cout << "\n--- Event Info ---\n";
-    std::cout << "Component ID: " << msg.component_id() << "\n";
-    std::cout << "Event Type: " << msg.event_type() << "\n";
-    std::cout << "User: " << user << "\n";
+    Log::debug("\n--- Event Info ---");
+    Log::debug("Component ID: " + msg.component_id());
+    Log::debug("Event Type: " + msg.event_type());
+    Log::debug("User: " + user);
 
     // Log page data
     if (msg.has_page_data() && true) { // set to true to enable detailed logging
       const auto& page_data = msg.page_data();
-      std::cout << "\n--- Page Data ---\n";
-      std::cout << "Page ID: " << page_data.page_id() << "\n";
-      std::cout << "Components count: " << page_data.components_size() << "\n";
+      Log::debug("\n--- Page Data ---");
+      Log::debug("Page ID: " + page_data.page_id());
+      Log::debug("Components count: " + std::to_string(page_data.components_size()));
       
-      std::cout << "\n--- All Components ---\n";
+      Log::debug("\n--- All Components ---");
       for (int i = 0; i < page_data.components_size(); i++) {
         const auto& comp = page_data.components(i);
-        std::cout << "  [" << i << "] id: \"" << comp.id() 
-                  << "\" = \"" << comp.value() << "\"\n";
+        Log::debug("  [" + std::to_string(i) + "] id: \"" + comp.id() 
+                  + "\" = \"" + comp.value() + "\"");
       }
     } else {
-      std::cout << "!!! No page data included\n";
+      Log::debug("!!! No page data included");
     }
 }
 
@@ -123,15 +124,15 @@ bool MiddleendRequestHandler::validateAuth(client_message::ClientMessage& msg, h
             
             if (!username.empty() && username != "guest") {
                 // Set cookie and redirect by setting a special response
-                std::cout << "[Auth] Setting user cookie: " << username << "\n";
+                Log::debug("[Auth] Setting user cookie: " + username);
                 res.set_header("Set-Cookie", "user=" + username + "; Path=/; Max-Age=2592000; SameSite=Lax");
             } else {
-                std::cerr << "[Auth] Invalid username: " << username << "\n";
+                Log::error("[Auth] Invalid username: " + username);
                 // return login page again
                 ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
                 std::string loginPageSerialized;
                 if (!loginPage.SerializeToString(&loginPageSerialized)) {
-                    std::cerr << "[Auth] Failed to serialize login page\n";
+                    Log::error("[Auth] Failed to serialize login page");
                     res.status = 500;
                     res.set_content("Failed to serialize login page", "text/plain");
                     return false;
@@ -148,14 +149,14 @@ bool MiddleendRequestHandler::validateAuth(client_message::ClientMessage& msg, h
     // std::cout << componentId << " " << eventType << "\n";
     if (componentId == "logoutButton" && eventType == "onClick") {
         // ============ SIGN-OUT ============
-        std::cout << "[Auth] Signing out user: " << user << "\n";
+        Log::debug("[Auth] Signing out user: " + user);
         res.set_header("Set-Cookie", "user=guest; Path=/; Max-Age=0; SameSite=Lax");
         res.status = 200;
         // create login page
         ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
         std::string loginPageSerialized;
         if (!loginPage.SerializeToString(&loginPageSerialized)) {
-            std::cerr << "[Auth] Failed to serialize login page\n";
+            Log::error("[Auth] Failed to serialize login page");
             res.status = 500;
             res.set_content("Failed to serialize login page", "text/plain");
             return false;
@@ -169,7 +170,7 @@ bool MiddleendRequestHandler::validateAuth(client_message::ClientMessage& msg, h
         ui::Page loginPage = LoginPageGenerator::GenerateLoginPage();
         std::string loginPageSerialized;
         if (!loginPage.SerializeToString(&loginPageSerialized)) {
-            std::cerr << "[Auth] Failed to serialize login page\n";
+            Log::error("[Auth] Failed to serialize login page");
             res.status = 500;
             res.set_content("Failed to serialize login page", "text/plain");
             return false;

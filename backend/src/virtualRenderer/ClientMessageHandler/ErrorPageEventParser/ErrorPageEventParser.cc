@@ -1,5 +1,6 @@
 #include "ErrorPageEventParser.h"
 #include <iostream>
+#include "../../../utils/Log.h"
 
 debate_event::DebateEvent ErrorPageEventParser::ParseErrorPageEvent(
     const std::string& componentId,
@@ -12,10 +13,10 @@ debate_event::DebateEvent ErrorPageEventParser::ParseErrorPageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         auto* goHome = event.mutable_go_home();
-        std::cout << "  GO_HOME from error page for user: " << user << "\n";
+        Log::debug("  GO_HOME from error page for user: " + user);
     } else {
-        std::cerr << "[ErrorPageEvent] Unknown component/event combination on error page: " 
-                  << componentId << "/" << eventType << "\n";
+        Log::error("[ErrorPageEvent] Unknown component/event combination on error page: " 
+                  + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     

@@ -9,15 +9,16 @@
 // #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
+#include "../utils/Log.h"
 
 // Constructor
 VirtualRenderer::VirtualRenderer() {
-    std::cout << "VirtualRenderer initialized.\n";
+    Log::debug("VirtualRenderer initialized.");
 }
 
 // Destructor
 VirtualRenderer::~VirtualRenderer() {
-    std::cout << "VirtualRenderer destroyed.\n"; // probably never called
+    Log::debug("VirtualRenderer destroyed."); // probably never called
 }
 
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user) {

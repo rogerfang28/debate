@@ -1,0 +1,25 @@
+#pragma once
+
+#include <string>
+
+enum class LogLevel {
+    Error = 0,
+    Warn  = 1,
+    Info  = 2,
+    Debug = 3
+};
+
+class Log {
+public:
+    // Initialize the logger with a minimum log level
+    static void init(LogLevel level);
+    
+    // Logging functions
+    static void error(const std::string& msg);
+    static void warn(const std::string& msg);
+    static void info(const std::string& msg);
+    static void debug(const std::string& msg);
+
+private:
+    static LogLevel currentLevel;
+};

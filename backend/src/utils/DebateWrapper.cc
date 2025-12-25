@@ -1,5 +1,6 @@
 #include "DebateWrapper.h"
 #include <iostream>
+#include "Log.h"
 
 DebateWrapper::DebateWrapper() {}
 
@@ -39,7 +40,7 @@ debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
         return claim;
     }
     // return an empty Claim if not found
-    std::cout << "[DebateWrapper] Claim with ID " << claimId << " not found in database.\n";
+    Log::warn("[DebateWrapper] Claim with ID " + claimId + " not found in database.");
     return debate::Claim();
 }
 
@@ -114,7 +115,7 @@ void DebateWrapper::deleteDebate(const std::string& debateId, const std::string&
     // find the debate protobuf
     std::vector<uint8_t> debateData = debateDBHandler.getDebateProtobuf(debateId);
     if (debateData.empty()) {
-        std::cerr << "[DebateWrapper] Debate with ID " << debateId << " not found.\n";
+        Log::error("[DebateWrapper] Debate with ID " + debateId + " not found.");
     }
     else {
         debate::Debate debateProto;

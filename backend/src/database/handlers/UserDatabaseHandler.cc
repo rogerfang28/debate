@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdint>  // for std::vector<uint8_t>
 #include "../sqlite/databaseCommunicator.h"
+#include "../../utils/Log.h"
 
 UserDatabaseHandler::UserDatabaseHandler(const std::string& dbFile)
     : dbFilename(dbFile) {
@@ -51,8 +52,8 @@ int UserDatabaseHandler::addUser(const std::string& username,
     closeDB();
 
     if (id != -1)
-        std::cout << "[UserDB] Added user: " << username
-                  << " [data size: " << protobufData.size() << " bytes]\n";
+        Log::debug("[UserDB] Added user: " + username
+                  + " [data size: " + std::to_string(protobufData.size()) + " bytes]");
 
     return id;
 }
@@ -67,7 +68,7 @@ UserDatabaseHandler::getAllUsers() {
     auto rows = readRows("USERS");
     closeDB();
 
-    std::cout << "[UserDB] Retrieved " << rows.size() << " users.\n";
+    Log::debug("[UserDB] Retrieved " + std::to_string(rows.size()) + " users.");
     return rows;
 }
 
@@ -77,8 +78,8 @@ UserDatabaseHandler::getUserProtobuf(const std::string& username) {
     auto blob = readBlob("USERS", "USER_DATA", "USERNAME = '" + username + "'");
     closeDB();
 
-    std::cout << "[UserDB] Retrieved protobuf data for user " << username
-              << " (size: " << blob.size() << " bytes)\n";
+    Log::debug("[UserDB] Retrieved protobuf data for user " + username
+              + " (size: " + std::to_string(blob.size()) + " bytes)");
     return blob;
 }
 
@@ -96,8 +97,8 @@ bool UserDatabaseHandler::userExists(const std::string& username) {
 
 bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
                                              const std::vector<uint8_t>& protobufData) {
-    std::cout << "[UserDB] Updating protobuf data for user " << username
-              << " (size: " << protobufData.size() << " bytes)\n";
+    Log::debug("[UserDB] Updating protobuf data for user " + username
+              + " (size: " + std::to_string(protobufData.size()) + " bytes)");
 
     if (!openDB(dbFilename)) return false;
     bool ok = updateRowWithBlob("USERS", "USER_DATA", protobufData,
@@ -105,7 +106,7 @@ bool UserDatabaseHandler::updateUserProtobuf(const std::string& username,
     closeDB();
 
     if (ok)
-        std::cout << "[UserDB] Updated protobuf data for " << username << "\n";
+        Log::debug("[UserDB] Updated protobuf data for " + username);
     return ok;
 }
 
@@ -115,7 +116,7 @@ bool UserDatabaseHandler::removeUser(const std::string& username) {
     closeDB();
 
     if (ok)
-        std::cout << "[UserDB] Removed user: " << username << "\n";
+        Log::debug("[UserDB] Removed user: " + username);
     return ok;
 }
 
@@ -125,6 +126,6 @@ bool UserDatabaseHandler::clearAllUsers() {
     closeDB();
 
     if (ok)
-        std::cout << "[UserDB] Cleared all users.\n";
+        Log::debug("[UserDB] Cleared all users.");
     return ok;
 }

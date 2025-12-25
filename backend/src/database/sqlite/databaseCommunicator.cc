@@ -6,6 +6,7 @@
 #include <mutex>
 #include "sqlite3.h"
 #include <cstdint>  // for std::vector<uint8_t>
+#include "../../utils/Log.h"
 
 
 sqlite3* db = nullptr;
@@ -27,7 +28,7 @@ bool openDB(const std::string& filename) {
     // Use thread-safe mode
     int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX;
     if (sqlite3_open_v2(filename.c_str(), &db, flags, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Could not open: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Could not open: " + std::string(sqlite3_errmsg(db)));
         return false;
     }
     return true;
@@ -46,14 +47,14 @@ bool execSQL(const std::string& sql) {
     std::lock_guard<std::mutex> lock(db_mutex);
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return false;
     }
     
     char* errMsg = nullptr;
     int rc = sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "[DB] SQL error: " << errMsg << "\n";
+        Log::error("[DB] SQL error: " + std::string(errMsg));
         sqlite3_free(errMsg);
         return false;
     }
@@ -82,12 +83,12 @@ int insertRowWithText(const std::string& tableName, const std::vector<std::strin
     std::lock_guard<std::mutex> lock(db_mutex);
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return -1;
     }
     
     if (columns.size() != values.size()) {
-        std::cerr << "[DB] Insert failed: mismatched columns and values.\n";
+        Log::error("[DB] Insert failed: mismatched columns and values.");
         return -1;
     }
 
@@ -106,7 +107,7 @@ int insertRowWithText(const std::string& tableName, const std::vector<std::strin
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Prepare failed: " + std::string(sqlite3_errmsg(db)));
         return -1;
     }
 
@@ -115,7 +116,7 @@ int insertRowWithText(const std::string& tableName, const std::vector<std::strin
 
     int rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
-        std::cerr << "[DB] Insert failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Insert failed: " + std::string(sqlite3_errmsg(db)));
         sqlite3_finalize(stmt);
         return -1;
     }
@@ -134,12 +135,12 @@ int insertRowWithBlob(
     std::lock_guard<std::mutex> lock(db_mutex);
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return -1;
     }
     
     if (columns.size() != textValues.size() + blobValues.size()) {
-        std::cerr << "[DB] Insert failed: mismatched column count.\n";
+        Log::error("[DB] Insert failed: mismatched column count.");
         return -1;
     }
 
@@ -158,7 +159,7 @@ int insertRowWithBlob(
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Prepare failed: " + std::string(sqlite3_errmsg(db)));
         return -1;
     }
 
@@ -174,7 +175,7 @@ int insertRowWithBlob(
 
     int rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
-        std::cerr << "[DB] Insert failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Insert failed: " + std::string(sqlite3_errmsg(db)));
         sqlite3_finalize(stmt);
         return -1;
     }
@@ -198,7 +199,7 @@ std::vector<std::map<std::string, std::string>> readRows(
     std::vector<std::map<std::string, std::string>> results;
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return results;
     }
     
@@ -209,7 +210,7 @@ std::vector<std::map<std::string, std::string>> readRows(
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Prepare failed: " + std::string(sqlite3_errmsg(db)));
         return results;
     }
 
@@ -237,7 +238,7 @@ std::vector<uint8_t> readBlob(
     std::vector<uint8_t> data;
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return data;
     }
     
@@ -248,7 +249,7 @@ std::vector<uint8_t> readBlob(
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Prepare failed: " + std::string(sqlite3_errmsg(db)));
         return data;
     }
 
@@ -285,12 +286,12 @@ bool updateRowWithBlob(const std::string& tableName, const std::string& blobColu
     std::lock_guard<std::mutex> lock(db_mutex);
     
     if (db == nullptr) {
-        std::cerr << "[DB] Error: Database not open!\n";
+        Log::error("[DB] Error: Database not open!");
         return false;
     }
     
     if (whereClause.empty()) {
-        std::cerr << "[DB] Update failed: WHERE clause is required for safety.\n";
+        Log::error("[DB] Update failed: WHERE clause is required for safety.");
         return false;
     }
 
@@ -299,7 +300,7 @@ bool updateRowWithBlob(const std::string& tableName, const std::string& blobColu
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[DB] Prepare failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Prepare failed: " + std::string(sqlite3_errmsg(db)));
         return false;
     }
 
@@ -313,7 +314,7 @@ bool updateRowWithBlob(const std::string& tableName, const std::string& blobColu
     sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE) {
-        std::cerr << "[DB] Update failed: " << sqlite3_errmsg(db) << "\n";
+        Log::error("[DB] Update failed: " + std::string(sqlite3_errmsg(db)));
         return false;
     }
 

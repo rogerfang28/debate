@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstdint>
 #include "../sqlite/databaseCommunicator.h"
+#include "../../utils/Log.h"
 
 StatementDatabaseHandler::StatementDatabaseHandler(const std::string& dbFile)
     : dbFilename(dbFile) {
@@ -49,9 +50,9 @@ int StatementDatabaseHandler::addStatement(const std::string& rootId, const std:
     closeDB();
     
     if (id != -1)
-        std::cout << "[StatementDB] Added statement: " << text 
-                  << " with root " << rootId
-                  << " [data size: " << protobufData.size() << " bytes]\n";
+        Log::debug("[StatementDB] Added statement: " + text 
+                  + " with root " + rootId
+                  + " [data size: " + std::to_string(protobufData.size()) + " bytes]");
     
     return id;
 }
@@ -66,8 +67,8 @@ std::vector<uint8_t> StatementDatabaseHandler::getStatementProtobuf(const std::s
     auto blob = readBlob("STATEMENTS", "STATEMENT_DATA", "ID = '" + id + "'");
     closeDB();
     
-    std::cout << "[StatementDB] Retrieved protobuf data for id: " << id 
-              << " (size: " << blob.size() << " bytes)\n";
+    // std::cout << "[StatementDB] Retrieved protobuf data for id: " << id 
+    //           << " (size: " << blob.size() << " bytes)\n";
     return blob;
 }
 
@@ -78,7 +79,7 @@ std::string StatementDatabaseHandler::getStatementText(const std::string& id) {
     closeDB();
     
     if (!rows.empty() && rows[0].count("TEXT")) {
-        std::cout << "[StatementDB] Retrieved text for id: " << id << "\n";
+        Log::debug("[StatementDB] Retrieved text for id: " + id);
         return rows[0]["TEXT"];
     }
     return "";
@@ -91,7 +92,7 @@ std::string StatementDatabaseHandler::getStatementRootId(const std::string& id) 
     closeDB();
     
     if (!rows.empty() && rows[0].count("ROOT_ID")) {
-        std::cout << "[StatementDB] Retrieved root ID for id: " << id << "\n";
+        Log::debug("[StatementDB] Retrieved root ID for id: " + id);
         return rows[0]["ROOT_ID"];
     }
     return "";
@@ -103,8 +104,8 @@ bool StatementDatabaseHandler::statementExists(const std::string& id) {
     closeDB();
     
     bool exists = !rows.empty();
-    std::cout << "[StatementDB] Statement with id: " << id 
-              << (exists ? " exists.\n" : " does not exist.\n");
+    Log::debug("[StatementDB] Statement with id: " + id 
+              + (exists ? " exists." : " does not exist."));
     return exists;
 }
 
@@ -114,8 +115,8 @@ bool StatementDatabaseHandler::statementExists(const std::string& id) {
 
 bool StatementDatabaseHandler::updateStatementProtobuf(const std::string& id, 
                                                      const std::vector<uint8_t>& protobufData) {
-    std::cout << "[StatementDB] Updating protobuf data for id: " << id 
-              << " (size: " << protobufData.size() << " bytes)\n";
+    Log::debug("[StatementDB] Updating protobuf data for id: " + id 
+              + " (size: " + std::to_string(protobufData.size()) + " bytes)");
     
     if (!openDB(dbFilename)) return false;
     bool ok = updateRowWithBlob("STATEMENTS", "STATEMENT_DATA", protobufData,
@@ -123,7 +124,7 @@ bool StatementDatabaseHandler::updateStatementProtobuf(const std::string& id,
     closeDB();
     
     if (ok)
-        std::cout << "[StatementDB] Updated protobuf data for id: " << id << "\n";
+        Log::debug("[StatementDB] Updated protobuf data for id: " + id);
     return ok;
 }
 
@@ -133,6 +134,6 @@ bool StatementDatabaseHandler::removeStatement(const std::string& id) {
     closeDB();
     
     if (ok)
-        std::cout << "[StatementDB] Removed statement with id: " << id << "\n";
+        Log::debug("[StatementDB] Removed statement with id: " + id);
     return ok;
 }

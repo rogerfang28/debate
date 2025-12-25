@@ -3,9 +3,10 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
+#include "../../../utils/Log.h"
 
 bool GoHomeHandler::GoHome(const std::string& user) {
-    std::cout << "[GoHome] User " << user << " going home" << std::endl;
+    Log::debug("[GoHome] User " + user + " going home");
     
     try {
         UserDatabaseHandler userDbHandler(utils::getDatabasePath());
@@ -13,14 +14,14 @@ bool GoHomeHandler::GoHome(const std::string& user) {
         // Get current user protobuf
         std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
         if (userData.empty()) {
-            std::cerr << "[GoHome][ERR] User " << user << " not found" << std::endl;
+            Log::error("[GoHome][ERR] User " + user + " not found");
             return false;
         }
         
         // Parse user protobuf
         user::User userProto;
         if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-            std::cerr << "[GoHome][ERR] Failed to parse user protobuf for " << user << std::endl;
+            Log::error("[GoHome][ERR] Failed to parse user protobuf for " + user);
             return false;
         }
         
@@ -39,7 +40,7 @@ bool GoHomeHandler::GoHome(const std::string& user) {
         
         return success;
     } catch (const std::exception& e) {
-        std::cerr << "[GoHome][ERR] Exception: " << e.what() << std::endl;
+        Log::error("[GoHome][ERR] Exception: " + std::string(e.what()));
         return false;
     }
 }

@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <filesystem>
 #include <iostream>
+#include "../utils/Log.h"
 
 // ---------- util: exe directory ----------
 static std::filesystem::path exe_dir() {
@@ -49,6 +50,6 @@ int main() {
   });
 
   // ---------- Start server ----------
-  std::cout << "Serving server on http://127.0.0.1:8080\n";
+  Log::info("Serving server on http://127.0.0.1:8080");
   svr.listen("0.0.0.0", 8080);
 }

@@ -33,6 +33,8 @@ include_directories(
 
 
 set(SRC_FILES
+
+    ${CMAKE_SOURCE_DIR}/src/utils/Log.cc
     # ${CMAKE_SOURCE_DIR}/src/debate/main/EventHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/DebateModerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/virtualRenderer.cc

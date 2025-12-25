@@ -1,5 +1,6 @@
 #include "HomePageEventParser.h"
 #include <iostream>
+#include "../../../utils/Log.h"
 
 debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     const std::string& componentId,
@@ -17,7 +18,7 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         for (const auto& comp : message.page_data().components()) {
             if (comp.id() == "topicInput") {
                 create->set_debate_topic(comp.value());
-                std::cout << "  CREATE_DEBATE: topic = " << comp.value() << "\n";
+                Log::debug("  CREATE_DEBATE: topic = " + comp.value());
                 break;
             }
         }
@@ -31,10 +32,10 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         auto* enter = event.mutable_enter_debate();
         std::string debateID = componentId.substr(23); // Extract ID after "enterDebateTopicButton_"
         enter->set_debate_id(debateID);
-        std::cout << "  ENTER_DEBATE: debate_id = " << debateID << "\n";
+        Log::debug("  ENTER_DEBATE: debate_id = " + debateID);
     } else {
-        std::cerr << "Unknown component/event combination on home page: " 
-                  << componentId << "/" << eventType << "\n";
+        Log::error("Unknown component/event combination on home page: " 
+                  + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     

@@ -8,13 +8,14 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include "../../../utils/Log.h"
 
 void HomePageResponseGenerator::BuildHomePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
     const std::string& user
 ) {
-    std::cout << "[HomePageResponseGenerator] Building Home Page response for user: "
-              << user << std::endl;
+    Log::debug("[HomePageResponseGenerator] Building Home Page response for user: "
+              + user);
     
     // find all debates with user
     DebateMembersDatabaseHandler debateMembersDBHandler(utils::getDatabasePath());

@@ -16,20 +16,21 @@
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
+#include "../utils/Log.h"
 DebateModerator::DebateModerator()
     // : dbHandler(utils::getDatabasePath()) // initialize handler with database
 {
-    std::cout << "[DebateModerator] Initialized.\n";
+    Log::debug("[DebateModerator] Initialized.");
 }
 
 DebateModerator::~DebateModerator() {
-    std::cout << "[DebateModerator] Destroyed.\n";
+    Log::debug("[DebateModerator] Destroyed.");
 }
 
 // * main function to handle debate event requests
 moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::string& user, debate_event::DebateEvent& event){
     // Process the debate event and update the database accordingly
-    std::cout << "[DebateModerator] Handling request for user: " << user << "\n";
+    Log::debug("[DebateModerator] Handling request for user: " + user);
     // Example: handle adding a debate topic
     handleDebateEvent(user, event);
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user);
@@ -40,42 +41,42 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
         case debate_event::NONE:
-            std::cout << "[DebateModerator] Event Type: NONE\n";
+            Log::debug("[DebateModerator] Event Type: NONE");
             break;
         case debate_event::CREATE_DEBATE:
-            std::cout << "[DebateModerator] Event Type: CREATE_DEBATE\n";
+            Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
             AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user);
             break;
         case debate_event::CLEAR_DEBATES:
-            std::cout << "[DebateModerator] Event Type: CLEAR_DEBATES\n";
+            Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
             ClearDebatesHandler::ClearDebates(user);
             break;
         case debate_event::DELETE_DEBATE:
-            std::cout << "[DebateModerator] Event Type: DELETE_DEBATE\n";
+            Log::debug("[DebateModerator] Event Type: DELETE_DEBATE");
             DeleteDebateHandler::DeleteDebate(event.delete_debate().debate_id(), user);
             break;
         case debate_event::ENTER_DEBATE:
-            std::cout << "[DebateModerator] Event Type: ENTER_DEBATE\n";
+            Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
             EnterDebateHandler::EnterDebate(event.enter_debate().debate_id(), user);
             break;
         case debate_event::GO_HOME:
-            std::cout << "[DebateModerator] Event Type: GO_HOME\n";
+            Log::debug("[DebateModerator] Event Type: GO_HOME");
             GoHomeHandler::GoHome(user);
             break;
         case debate_event::GO_TO_PARENT:
-            std::cout << "[DebateModerator] Event Type: GO_TO_PARENT\n";
+            Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
             // implement later
             break;
         case debate_event::GO_TO_CLAIM:
-            std::cout << "[DebateModerator] Event Type: GO_TO_CLAIM\n";
+            Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
             GoToClaimHandler::GoToClaim(event.go_to_claim().claim_id(), user);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
-            std::cout << "[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM\n";
+            Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
             // implement later
             break;
         case debate_event::ADD_CHILD_CLAIM:
-            std::cout << "[DebateModerator] Event Type: ADD_CHILD_CLAIM\n";
+            Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
             AddClaimUnderClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().connection_to_parent(),
@@ -83,15 +84,15 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             );
             break;
         case debate_event::REPORT_CLAIM:
-            std::cout << "[DebateModerator] Event Type: REPORT_CLAIM\n";
+            Log::debug("[DebateModerator] Event Type: REPORT_CLAIM");
             // implement later
             break;
         case debate_event::DELETE_CURRENT_STATEMENT:
-            std::cout << "[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT\n";
+            Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
             // implement later
             break;
         default:
-            std::cout << "[DebateModerator] Event Type: UNKNOWN\n";
+            Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
     }
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "../sqlite/databaseCommunicator.h"
+#include "../../utils/Log.h"
 
 DebateMembersDatabaseHandler::DebateMembersDatabaseHandler(const std::string& dbFile)
     : dbFilename(dbFile) {
@@ -26,8 +27,8 @@ int DebateMembersDatabaseHandler::addMember(const std::string& debateId, const s
     closeDB();
 
     if (id != -1)
-        std::cout << "[DebateMembersDB] Added user " << userId 
-                  << " to debate " << debateId << "\n";
+        Log::debug("[DebateMembersDB] Added user " + userId 
+                  + " to debate " + debateId);
 
     return id;
 }
@@ -45,8 +46,8 @@ std::vector<std::string> DebateMembersDatabaseHandler::getDebateIdsForUser(const
         }
     }
 
-    std::cout << "[DebateMembersDB] Found " << debateIds.size() 
-              << " debates for user " << userId << "\n";
+    Log::debug("[DebateMembersDB] Found " + std::to_string(debateIds.size()) 
+              + " debates for user " + userId);
     return debateIds;
 }
 
@@ -63,8 +64,8 @@ std::vector<std::string> DebateMembersDatabaseHandler::getUserIdsForDebate(const
         }
     }
 
-    std::cout << "[DebateMembersDB] Found " << userIds.size() 
-              << " users in debate " << debateId << "\n";
+    Log::debug("[DebateMembersDB] Found " + std::to_string(userIds.size()) 
+              + " users in debate " + debateId);
     return userIds;
 }
 
@@ -86,8 +87,8 @@ bool DebateMembersDatabaseHandler::removeMember(const std::string& debateId, con
     closeDB();
 
     if (ok)
-        std::cout << "[DebateMembersDB] Removed user " << userId 
-                  << " from debate " << debateId << "\n";
+        Log::debug("[DebateMembersDB] Removed user " + userId 
+                  + " from debate " + debateId);
     return ok;
 }
 
@@ -98,7 +99,7 @@ bool DebateMembersDatabaseHandler::removeAllMembersFromDebate(const std::string&
     closeDB();
 
     if (ok)
-        std::cout << "[DebateMembersDB] Removed all members from debate " << debateId << "\n";
+        // std::cout << "[DebateMembersDB] Removed all members from debate " << debateId << "\n";
     return ok;
 }
 
@@ -109,6 +110,6 @@ bool DebateMembersDatabaseHandler::removeUserFromAllDebates(const std::string& u
     closeDB();
 
     if (ok)
-        std::cout << "[DebateMembersDB] Removed user " << userId << " from all debates\n";
+        Log::debug("[DebateMembersDB] Removed user " + userId + " from all debates");
     return ok;
 }
