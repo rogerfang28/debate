@@ -1,32 +1,11 @@
 #include "DebateWrapper.h"
-#include "../database/handlers/StatementDatabaseHandler.h"
+#include <iostream>
 
 DebateWrapper::DebateWrapper() {}
-
-// std::vector<debate::Claim> DebateWrapper::findChildren(
-//     const std::string& parentId) {
-//         std::vector<uint8_t> parentSerializedData = statementDBHandler.getStatementProtobuf(parentId);
-//         debate::Claim parentClaim;
-//         parentClaim.ParseFromArray(parentSerializedData.data(), parentSerializedData.size());
-        
-
-    // std::vector<debate::Claim> children;
-    // for (const auto& claim : debateProto.claims()) {
-    //     if (claim.parent_id() == parentId) {
-    //         children.push_back(claim);
-    //     }
-    // }
-    // return children;
-// }
 
 std::vector<std::string> DebateWrapper::findChildrenIds(
     const std::string& parentId) {
     std::vector<std::string> childrenIds;
-    // for (const auto& claim : debateProto.claims()) {
-    //     if (claim.parent_id() == parentId) {
-    //         childrenIds.push_back(claim.id());
-    //     }
-    // }
     debate::Claim parentClaim = findClaim(parentId);
     for (const auto& childId : parentClaim.proof().claim_ids()) {
         childrenIds.push_back(childId);
@@ -45,10 +24,6 @@ std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
     }
     return childrenInfo;
 }
-
-// std::string DebateWrapper::getTopic() const {
-//     return debateProto.topic();
-// }
 
 std::string DebateWrapper::findClaimSentence(
     const std::string& claimId) {
@@ -69,13 +44,18 @@ debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
 }
 
 void DebateWrapper::initNewDebate(const std::string& topic, const std::string& owner) {
-    // assumes empty debateProto
-    // debateProto.set_topic(topic);
-    // debateProto.set_owner(owner);
-    // debateProto.set_num_items(0);
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     addClaimToDB(rootClaim);
+    debate::Debate debate;
+    debate.set_root_claim_id(rootClaim.id());
+    debate.set_topic(topic);
+    debate.add_debaters(owner);
+    debate.set_owner(owner);
+    std::vector<uint8_t> serialized_debate(debate.ByteSizeLong());
+    debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
+    
+    debateDBHandler.addDebateWithProtobuf(owner, topic, serialized_debate);
 }
 
 
@@ -90,15 +70,6 @@ void DebateWrapper::addClaimUnderParent(
     const std::string& parentId, 
     const std::string& claimText, 
     const std::string& connectionToParent) {
-    // Find and modify parent claim using pointer
-    // debate::Claim* parentClaim = findClaim(parentId);
-    // debate::Claim* parentClaim = nullptr;
-    // for (int i = 0; i < debateProto.claims_size(); ++i) {
-    //     if (debateProto.claims(i).id() == parentId) {
-    //         parentClaim = debateProto.mutable_claims(i);
-    //         break;
-    //     }
-    // }
 
     debate::Claim parentClaimFromDB = findClaim(parentId);
 
@@ -109,24 +80,7 @@ void DebateWrapper::addClaimUnderParent(
     addClaimToDB(childClaim);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
-
-    // debate::Claim* newClaim = debateProto.add_claims();
-    // newClaim->set_sentence(claimText);
-    // newClaim->set_connection_to_parent(connectionToParent);
-    // newClaim->set_parent_id(parentId);
-    // newClaim->set_id(std::to_string(debateProto.num_items()));
-    // debateProto.set_num_items(debateProto.num_items() + 1);
-
-    // if (parentClaim) {
-    //     parentClaim->mutable_proof()->add_claim_ids(newClaim->id());
-    //     parentClaim->add_children_ids(newClaim->id());
-    // }
 }
-
-// void DebateWrapper::setDebateTopic(
-//     const std::string& newTopic) {
-//     debateProto.set_topic(newTopic);
-// }
 
 void DebateWrapper::addClaimToDB(debate::Claim& claim) {
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
@@ -152,4 +106,8 @@ void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
         claim.id(), 
         serializedData
     );
+}
+
+void DebateWrapper::deleteDebate(const std::string& rootClaimId) {
+    
 }

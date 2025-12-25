@@ -1,6 +1,5 @@
 // should take in debate event protobuf and handle it and give back information
 #include "DebateModerator.h"
-#include "../database/handlers/DebateDatabaseHandler.h"   // now use the new handler
 #include "../database/handlers/UserDatabaseHandler.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 // #include "../../../src/gen/cpp/debate_list.pb.h"
@@ -103,7 +102,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
     UserDatabaseHandler userDbHandler(utils::getDatabasePath());
-    DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
     user::User userProto;
     
     // user doesn't exist yet, make a default user

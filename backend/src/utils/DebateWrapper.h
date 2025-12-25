@@ -2,6 +2,8 @@
 
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../database/handlers/StatementDatabaseHandler.h"
+#include "../database/handlers/DebateMembersDatabaseHandler.h"
+#include "../database/handlers/DebateDatabaseHandler.h"
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
@@ -30,10 +32,13 @@ public:
         const std::string& parentId);
     std::vector<std::pair<std::string,std::string>> findChildrenInfo(
         const std::string& parentId); // returns vector of (id, sentence) pairs
+    void deleteDebate(const std::string& rootClaimId);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
     StatementDatabaseHandler statementDBHandler{utils::getDatabasePath()}; // path from path utils
+    DebateDatabaseHandler debateDBHandler{utils::getDatabasePath()};
+    DebateMembersDatabaseHandler debateMembersDBHandler{utils::getDatabasePath()};
     void addClaimToDB(debate::Claim& claim);
     void updateClaimInDB(const debate::Claim& claim);
 };

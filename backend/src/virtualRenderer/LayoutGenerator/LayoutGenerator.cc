@@ -14,8 +14,6 @@
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const std::string& user) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
-    // debate::Debate debate = info.debate();
-    // DebateWrapper debateWrapper;
     switch (info.engagement().current_action()){
         case user_engagement::ACTION_NONE:
             // generate home page
@@ -25,6 +23,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             if (info.has_engagement() && info.engagement().has_none_info()) {
                 return HomePageGenerator::GenerateHomePage(info.engagement().none_info().available_debates());
             } else {
+                std::cout << "[LayoutGenerator] No debate list found, generating empty Home Page.\n";
                 user_engagement::DebateList emptyList;
                 return HomePageGenerator::GenerateHomePage(emptyList);
             }
@@ -33,8 +32,9 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             std::cout << "[LayoutGenerator] Generating Debate Page for user: " << user << "\n";
             if (true) {
                 std::string currentClaimId = info.engagement().debating_info().current_claim().id();
+
                 // std::vector<std::pair<std::string,std::string>> childClaimInfo = debateWrapper.findChildrenInfo(currentClaimId);
-                // std::string debate_topic = debateWrapper.getTopic();
+                // std::string debate_topic = ;
                 // std::string debate_claim_sentence = debateWrapper.findClaimSentence(currentClaimId);
                 std::vector<std::pair<std::string,std::string>> placeholderChildClaims = {
                     {"1", "This is the first child claim."},

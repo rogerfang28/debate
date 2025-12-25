@@ -1,5 +1,4 @@
 #include "DebatePageResponseGenerator.h"
-#include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/DebateWrapper.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"

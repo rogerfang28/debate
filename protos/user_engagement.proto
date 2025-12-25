@@ -25,7 +25,7 @@ message DebatingInfo {
   // string debate_id = 1;
   ClaimInfo current_claim = 2; // current claim being viewed/argued
   ClaimInfo parent_claim = 5;  // parent claim of the current claim
-  string root_claim_id = 3;    // root claim of the debate
+  ClaimInfo root_claim = 3;    // root claim of the debate
   repeated ClaimInfo children_claims = 4; // child claims of the current claim
 }
 

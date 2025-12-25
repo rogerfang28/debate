@@ -21,7 +21,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& rootClaimId, const std::
         }
 
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
-        userProto.mutable_engagement()->mutable_debating_info()->set_root_claim_id(rootClaimId);
+        userProto.mutable_engagement()->mutable_debating_info()->mutable_root_claim()->set_id(rootClaimId);
         user_engagement::ClaimInfo currentClaim;
         currentClaim.set_id(rootClaimId);
         // currentClaim.set_sentence("Root claim for debate topic " + rootClaimId);

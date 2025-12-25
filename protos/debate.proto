@@ -29,11 +29,9 @@ message Proof {
 
 message Debate {
   string id = 1;
-  string topic = 2;
-  repeated string debaters = 3;
-  repeated Claim claims = 4;
-  string owner = 5; // user id of debate creator
-  debate.DebateSettings settings = 6; // settings for this debate
-  int32 num_items = 7; // total number of items in the debate so we can assign unique IDs
-  Claim root_claim = 8; // the root claim representing the main topic
+  string root_claim_id = 2;
+  string topic = 3;
+  repeated string debaters = 4;
+  string owner = 5;
+  debate.DebateSettings settings = 6;
 }

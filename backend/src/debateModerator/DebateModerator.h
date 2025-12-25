@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "../database/handlers/DebateDatabaseHandler.h"
 #include "../../../src/gen/cpp/moderator_to_vr.pb.h"
 #include "../../../src/gen/cpp/debate_event.pb.h"
 

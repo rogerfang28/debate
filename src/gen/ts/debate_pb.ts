@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIsMBCgZEZWJhdGUSCgoCaWQYASABKAkSDQoFdG9waWMYAiABKAkSEAoIZGViYXRlcnMYAyADKAkSHQoGY2xhaW1zGAQgAygLMg0uZGViYXRlLkNsYWltEg0KBW93bmVyGAUgASgJEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhEKCW51bV9pdGVtcxgHIAEoBRIhCgpyb290X2NsYWltGAggASgLMg0uZGViYXRlLkNsYWltYgZwcm90bzM", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIoUBCgZEZWJhdGUSCgoCaWQYASABKAkSFQoNcm9vdF9jbGFpbV9pZBgCIAEoCRINCgV0b3BpYxgDIAEoCRIQCghkZWJhdGVycxgEIAMoCRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -126,47 +126,29 @@ export type Debate = Message<"debate.Debate"> & {
   id: string;
 
   /**
-   * @generated from field: string topic = 2;
+   * @generated from field: string root_claim_id = 2;
+   */
+  rootClaimId: string;
+
+  /**
+   * @generated from field: string topic = 3;
    */
   topic: string;
 
   /**
-   * @generated from field: repeated string debaters = 3;
+   * @generated from field: repeated string debaters = 4;
    */
   debaters: string[];
 
   /**
-   * @generated from field: repeated debate.Claim claims = 4;
-   */
-  claims: Claim[];
-
-  /**
-   * user id of debate creator
-   *
    * @generated from field: string owner = 5;
    */
   owner: string;
 
   /**
-   * settings for this debate
-   *
    * @generated from field: debate.DebateSettings settings = 6;
    */
   settings?: DebateSettings;
-
-  /**
-   * total number of items in the debate so we can assign unique IDs
-   *
-   * @generated from field: int32 num_items = 7;
-   */
-  numItems: number;
-
-  /**
-   * the root claim representing the main topic
-   *
-   * @generated from field: debate.Claim root_claim = 8;
-   */
-  rootClaim?: Claim;
 };
 
 /**
