@@ -54,19 +54,6 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         "transition-colors text-sm"
     );
     ComponentGenerator::addChild(&leftTopSection, goToParentButton);
-
-    ui::Component goHomeButton = ComponentGenerator::createButton(
-        "goHomeButton",
-        "Home",
-        "",
-        "bg-blue-600",
-        "hover:bg-blue-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",  
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&leftTopSection, goHomeButton);
     ComponentGenerator::addChild(&topSection, leftTopSection);
 
     // Debate topic title in the center top
@@ -120,7 +107,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
     // Right top section - minimap
     ui::Component rightTopSection = ComponentGenerator::createContainer(
         "rightTopSection",
-        "",
+        "flex flex-col gap-2",
         "",
         "",
         "",
@@ -128,6 +115,19 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         "",
         "w-64"
     );
+
+    ui::Component goHomeButton = ComponentGenerator::createButton(
+        "goHomeButton",
+        "Home",
+        "",
+        "bg-blue-600",
+        "hover:bg-blue-700",
+        "text-white",
+        "px-4 py-2",
+        "rounded",  
+        "transition-colors text-sm"
+    );
+    ComponentGenerator::addChild(&rightTopSection, goHomeButton);
 
     ui::Component minimap = ComponentGenerator::createContainer(
         "minimap",
