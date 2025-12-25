@@ -3,6 +3,7 @@
 #include <string>
 
 enum class LogLevel {
+    None = -1,
     Error = 0,
     Warn  = 1,
     Info  = 2,

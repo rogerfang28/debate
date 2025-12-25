@@ -20,6 +20,8 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     // find all debates with user
     DebateMembersDatabaseHandler debateMembersDBHandler(utils::getDatabasePath());
     std::vector<std::string> debateIds = debateMembersDBHandler.getDebateIdsForUser(user);
+    Log::debug("[HomePageResponseGenerator] User " + user + " is a member of "
+              + std::to_string(debateIds.size()) + " debates.");
 
     user_engagement::DebateList debateListProto;
     // build debate list protobuf
@@ -32,6 +34,8 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         user_engagement::DebateTopic* topicProto = debateListProto.add_topics();
         topicProto->set_id(debateProto.id());
         topicProto->set_topic(debateProto.topic());
+        Log::debug("[HomePageResponseGenerator] Added debate to list: ID = "
+                  + debateProto.id() + ", Topic = " + debateProto.topic());
     }
 
 

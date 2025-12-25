@@ -5,7 +5,7 @@
 #include <ctime>
 
 // Initialize static member
-LogLevel Log::currentLevel = LogLevel::Error;
+LogLevel Log::currentLevel = LogLevel::Debug;
 
 void Log::init(LogLevel level) {
     currentLevel = level;
@@ -33,7 +33,9 @@ static std::string getTimestamp() {
 }
 
 void Log::error(const std::string& msg) {
-    std::cerr << "[" << getTimestamp() << "] [ERROR] " << msg << "\n";
+    if (currentLevel >= LogLevel::Error) {
+        std::cerr << "[" << getTimestamp() << "] [ERROR] " << msg << "\n";
+    }
 }
 
 void Log::warn(const std::string& msg) {

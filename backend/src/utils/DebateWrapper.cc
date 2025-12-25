@@ -56,7 +56,16 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     std::vector<uint8_t> serialized_debate(debate.ByteSizeLong());
     debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
     
-    debateDBHandler.addDebateWithProtobuf(owner, topic, serialized_debate);
+    int newId = debateDBHandler.addDebateWithProtobuf(owner, topic, serialized_debate);
+    if (newId == -1) {
+        Log::error("[DebateWrapper] Failed to create new debate for topic: " + topic);
+        return;
+    }
+
+    debate.set_id(std::to_string(newId));
+    std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
+    debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
+    debateDBHandler.updateDebateProtobuf(owner, debate.id(), updatedSerializedDebate);
 
     debateMembersDBHandler.addMember(debate.root_claim_id(), owner);
 }

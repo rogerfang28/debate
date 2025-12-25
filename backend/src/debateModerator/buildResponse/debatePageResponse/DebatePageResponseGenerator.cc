@@ -2,6 +2,7 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/DebateWrapper.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../utils/Log.h"
 #include <iostream>
 #include <vector>
 
@@ -20,11 +21,14 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     debate::Claim parentClaim = debateWrapper.findClaim(currentClaim.parent_id());
     debatingInfo.mutable_parent_claim()->set_sentence(parentClaim.sentence());
     debatingInfo.mutable_parent_claim()->set_id(parentClaim.id());
-    for (int i = 0; i < currentClaim.children_ids_size(); i++) {
-        std::string childId = currentClaim.children_ids(i);
+    for (int i = 0; i < currentClaim.proof().claim_ids_size(); i++) {
+        Log::debug("[DebatePageResponseGenerator] Processing child claim "
+                  + std::to_string(i) + " of current claim " + currentClaimId);
+        std::string childId = currentClaim.proof().claim_ids(i);
         debate::Claim childClaim = debateWrapper.findClaim(childId);
         user_engagement::ClaimInfo* childClaimInfo = debatingInfo.add_children_claims();
         childClaimInfo->set_id(childClaim.id());
         childClaimInfo->set_sentence(childClaim.sentence());
     }
+    *responseMessage.mutable_engagement()->mutable_debating_info() = debatingInfo;
 }
