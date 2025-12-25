@@ -48,6 +48,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoHome/GoHomeHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToClaim/GoToClaim.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToParentClaim/GoToParentClaim.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc

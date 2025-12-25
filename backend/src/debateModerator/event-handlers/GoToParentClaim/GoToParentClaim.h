@@ -3,5 +3,5 @@
 
 class GoToParentClaimHandler {
 public:
-    static void GoToParentClaim(const std::string& claim_id, const std::string& user);
+    static void GoToParentClaim(const std::string& user);
 };

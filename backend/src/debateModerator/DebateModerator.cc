@@ -13,6 +13,7 @@
 #include "event-handlers/EnterDebate/EnterDebateHandler.h"
 #include "event-handlers/GoToClaim/GoToClaim.h"
 #include "event-handlers/GoHome/GoHomeHandler.h"
+#include "event-handlers/GoToParentClaim/GoToParentClaim.h"
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
@@ -65,7 +66,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::GO_TO_PARENT:
             Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
-            // implement later
+            GoToParentClaimHandler::GoToParentClaim(user);
             break;
         case debate_event::GO_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
