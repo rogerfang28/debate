@@ -18,5 +18,24 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
     std::string rootClaimId = debateProto.root_claim_id();
 
     debateWrapper.moveUserToClaim(user, rootClaimId);
+
+    // change some info in the user protobuf
+    std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto;
+    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
+        Log::error("[EnterDebate][ERR] Failed to parse user protobuf for " + user);
+        return false;
+    }
+    userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->set_reporting_claim(false);
+
+    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
+    if (!userProto.SerializeToArray(updatedUserData.data(), static_cast<int>(updatedUserData.size()))) {
+        Log::error("[EnterDebate][ERR] Failed to serialize updated user protobuf for " + user);
+        return false;
+    }
+    debateWrapper.updateUserProtobuf(user, updatedUserData);
+
     return true;
 }

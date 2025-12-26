@@ -51,7 +51,9 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToParentClaim/GoToParentClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/OpenAddChildClaim/OpenAddChildClaim.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/CloseAddChildClaim/CloseAddChildClaim.cc
     
+
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc

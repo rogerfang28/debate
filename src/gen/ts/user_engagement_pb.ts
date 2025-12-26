@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljItgBCgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMAoMcGFyZW50X2NsYWltGAUgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIuCgpyb290X2NsYWltGAMgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIzCg9jaGlsZHJlbl9jbGFpbXMYBCADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvIikKCUNsYWltSW5mbxIKCgJpZBgBIAEoCRIQCghzZW50ZW5jZRgCIAEoCSLCAQoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglub25lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuTm9uZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAQg0KC2FjdGlvbl9pbmZvKlsKEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fTk9ORRABEhMKD0FDVElPTl9ERUJBVElORxACYgZwcm90bzM");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIqQCCgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMAoMcGFyZW50X2NsYWltGAUgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIuCgpyb290X2NsYWltGAMgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIzCg9jaGlsZHJlbl9jbGFpbXMYBCADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEhoKEmFkZGluZ19jaGlsZF9jbGFpbRgGIAEoCBIVCg1lZGl0aW5nX2NsYWltGAcgASgIEhcKD3JlcG9ydGluZ19jbGFpbRgIIAEoCCIpCglDbGFpbUluZm8SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * @generated from message user_engagement.NoneInfo
@@ -103,6 +103,27 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
    * @generated from field: repeated user_engagement.ClaimInfo children_claims = 4;
    */
   childrenClaims: ClaimInfo[];
+
+  /**
+   * whether the add child claim modal is opened
+   *
+   * @generated from field: bool adding_child_claim = 6;
+   */
+  addingChildClaim: boolean;
+
+  /**
+   * whether the user is editing the current claim
+   *
+   * @generated from field: bool editing_claim = 7;
+   */
+  editingClaim: boolean;
+
+  /**
+   * whether the user is reporting the current claim
+   *
+   * @generated from field: bool reporting_claim = 8;
+   */
+  reportingClaim: boolean;
 };
 
 /**

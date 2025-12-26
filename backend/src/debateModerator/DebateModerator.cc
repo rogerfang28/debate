@@ -15,6 +15,8 @@
 #include "event-handlers/GoToParentClaim/GoToParentClaim.h"
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
 #include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
+#include "event-handlers/OpenAddChildClaim/OpenAddChildClaim.h"
+#include "event-handlers/CloseAddChildClaim/CloseAddChildClaim.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -80,7 +82,11 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
-            // implement later
+            OpenAddChildClaimHandler::OpenAddChildClaim(user, debateWrapper);
+            break;
+        case debate_event::CLOSE_ADD_CHILD_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CLOSE_ADD_CHILD_CLAIM");
+            CloseAddChildClaimHandler::CloseAddChildClaim(user, debateWrapper);
             break;
         case debate_event::ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");

@@ -4,5 +4,5 @@
 
 class DebatePageGenerator {
 public:
-    static ui::Page GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo);
+    static ui::Page GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo, bool openedAddChildClaimModal);
 };

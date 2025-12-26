@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSI8Cg1BZGRDaGlsZENsYWltEg0KBWNsYWltGAEgASgJEhwKFGNvbm5lY3Rpb25fdG9fcGFyZW50GAIgASgJIhEKD09wZW5SZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgJEg8KB2Zyb21faWQYAyABKAkSDQoFdG9faWQYBCABKAkSEgoKY29ubmVjdGlvbhgFIAEoCSIRCg9Hb1RvUGFyZW50Q2xhaW0iHQoJR29Ub0NsYWltEhAKCGNsYWltX2lkGAIgASgJIu4FCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABI6ChFvcGVuX3JlcG9ydF9jbGFpbRgRIAEoCzIdLmRlYmF0ZV9ldmVudC5PcGVuUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IAEIJCgdwYXlsb2FkKosCCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSIUChJDbG9zZUFkZENoaWxkQ2xhaW0iPAoNQWRkQ2hpbGRDbGFpbRINCgVjbGFpbRgBIAEoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgCIAEoCSIRCg9PcGVuUmVwb3J0Q2xhaW0iEgoQQ2xvc2VSZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgJEg8KB2Zyb21faWQYAyABKAkSDQoFdG9faWQYBCABKAkSEgoKY29ubmVjdGlvbhgFIAEoCSIRCg9Hb1RvUGFyZW50Q2xhaW0iHQoJR29Ub0NsYWltEhAKCGNsYWltX2lkGAIgASgJIu8GCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASQQoVY2xvc2VfYWRkX2NoaWxkX2NsYWltGBUgASgLMiAuZGViYXRlX2V2ZW50LkNsb3NlQWRkQ2hpbGRDbGFpbUgAEjYKD2FkZF9jaGlsZF9jbGFpbRgQIAEoCzIbLmRlYmF0ZV9ldmVudC5BZGRDaGlsZENsYWltSAASOgoRb3Blbl9yZXBvcnRfY2xhaW0YESABKAsyHS5kZWJhdGVfZXZlbnQuT3BlblJlcG9ydENsYWltSAASPAoSY2xvc2VfcmVwb3J0X2NsYWltGBYgASgLMh4uZGViYXRlX2V2ZW50LkNsb3NlUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IAEIJCgdwYXlsb2FkKr4CCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMEhkKFUNMT1NFX0FERF9DSElMRF9DTEFJTRANEhYKEkNMT1NFX1JFUE9SVF9DTEFJTRAOYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -120,6 +120,19 @@ export const OpenAddChildClaimSchema: GenMessage<OpenAddChildClaim> = /*@__PURE_
   messageDesc(file_debate_event, 6);
 
 /**
+ * @generated from message debate_event.CloseAddChildClaim
+ */
+export type CloseAddChildClaim = Message<"debate_event.CloseAddChildClaim"> & {
+};
+
+/**
+ * Describes the message debate_event.CloseAddChildClaim.
+ * Use `create(CloseAddChildClaimSchema)` to create a new message.
+ */
+export const CloseAddChildClaimSchema: GenMessage<CloseAddChildClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 7);
+
+/**
  * @generated from message debate_event.AddChildClaim
  */
 export type AddChildClaim = Message<"debate_event.AddChildClaim"> & {
@@ -139,7 +152,7 @@ export type AddChildClaim = Message<"debate_event.AddChildClaim"> & {
  * Use `create(AddChildClaimSchema)` to create a new message.
  */
 export const AddChildClaimSchema: GenMessage<AddChildClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 7);
+  messageDesc(file_debate_event, 8);
 
 /**
  * @generated from message debate_event.OpenReportClaim
@@ -152,7 +165,20 @@ export type OpenReportClaim = Message<"debate_event.OpenReportClaim"> & {
  * Use `create(OpenReportClaimSchema)` to create a new message.
  */
 export const OpenReportClaimSchema: GenMessage<OpenReportClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 8);
+  messageDesc(file_debate_event, 9);
+
+/**
+ * @generated from message debate_event.CloseReportClaim
+ */
+export type CloseReportClaim = Message<"debate_event.CloseReportClaim"> & {
+};
+
+/**
+ * Describes the message debate_event.CloseReportClaim.
+ * Use `create(CloseReportClaimSchema)` to create a new message.
+ */
+export const CloseReportClaimSchema: GenMessage<CloseReportClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 10);
 
 /**
  * @generated from message debate_event.DeleteCurrentStatement
@@ -165,7 +191,7 @@ export type DeleteCurrentStatement = Message<"debate_event.DeleteCurrentStatemen
  * Use `create(DeleteCurrentStatementSchema)` to create a new message.
  */
 export const DeleteCurrentStatementSchema: GenMessage<DeleteCurrentStatement> = /*@__PURE__*/
-  messageDesc(file_debate_event, 9);
+  messageDesc(file_debate_event, 11);
 
 /**
  * @generated from message debate_event.AddConnection
@@ -197,7 +223,7 @@ export type AddConnection = Message<"debate_event.AddConnection"> & {
  * Use `create(AddConnectionSchema)` to create a new message.
  */
 export const AddConnectionSchema: GenMessage<AddConnection> = /*@__PURE__*/
-  messageDesc(file_debate_event, 10);
+  messageDesc(file_debate_event, 12);
 
 /**
  * @generated from message debate_event.GoToParentClaim
@@ -210,7 +236,7 @@ export type GoToParentClaim = Message<"debate_event.GoToParentClaim"> & {
  * Use `create(GoToParentClaimSchema)` to create a new message.
  */
 export const GoToParentClaimSchema: GenMessage<GoToParentClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 11);
+  messageDesc(file_debate_event, 13);
 
 /**
  * @generated from message debate_event.GoToClaim
@@ -227,7 +253,7 @@ export type GoToClaim = Message<"debate_event.GoToClaim"> & {
  * Use `create(GoToClaimSchema)` to create a new message.
  */
 export const GoToClaimSchema: GenMessage<GoToClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 12);
+  messageDesc(file_debate_event, 14);
 
 /**
  * main message
@@ -296,6 +322,12 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
     case: "openAddChildClaim";
   } | {
     /**
+     * @generated from field: debate_event.CloseAddChildClaim close_add_child_claim = 21;
+     */
+    value: CloseAddChildClaim;
+    case: "closeAddChildClaim";
+  } | {
+    /**
      * @generated from field: debate_event.AddChildClaim add_child_claim = 16;
      */
     value: AddChildClaim;
@@ -306,6 +338,12 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
      */
     value: OpenReportClaim;
     case: "openReportClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.CloseReportClaim close_report_claim = 22;
+     */
+    value: CloseReportClaim;
+    case: "closeReportClaim";
   } | {
     /**
      * @generated from field: debate_event.DeleteCurrentStatement delete_current_statement = 18;
@@ -332,7 +370,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 13);
+  messageDesc(file_debate_event, 15);
 
 /**
  * enum
@@ -404,6 +442,16 @@ export enum EventType {
    * @generated from enum value: GO_TO_CLAIM = 12;
    */
   GO_TO_CLAIM = 12,
+
+  /**
+   * @generated from enum value: CLOSE_ADD_CHILD_CLAIM = 13;
+   */
+  CLOSE_ADD_CHILD_CLAIM = 13,
+
+  /**
+   * @generated from enum value: CLOSE_REPORT_CLAIM = 14;
+   */
+  CLOSE_REPORT_CLAIM = 14,
 }
 
 /**

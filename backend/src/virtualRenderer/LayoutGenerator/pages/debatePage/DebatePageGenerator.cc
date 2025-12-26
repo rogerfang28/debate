@@ -1,7 +1,7 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo) {
+ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo, bool openedAddChildClaimModal) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -453,6 +453,136 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
     ComponentGenerator::addChild(&rightContent, reportSection);
     ComponentGenerator::addChild(&contentArea, rightContent);
     ComponentGenerator::addChild(&mainLayout, contentArea);
+
+    // Add Child Claim Modal
+    if (openedAddChildClaimModal) {
+        // Modal overlay
+        ui::Component modalOverlay = ComponentGenerator::createContainer(
+            "addChildClaimModalOverlay",
+            "fixed inset-0 flex items-center justify-center",
+            "bg-black/50",
+            "",
+            "",
+            "",
+            "",
+            "z-50"
+        );
+
+        // Modal content
+        ui::Component modalContent = ComponentGenerator::createContainer(
+            "addChildClaimModalContent",
+            "",
+            "bg-gray-800",
+            "p-8",
+            "",
+            "border-2 border-gray-700",
+            "rounded-lg",
+            "w-full max-w-2xl"
+        );
+
+        // Modal title
+        ui::Component modalTitle = ComponentGenerator::createText(
+            "addChildClaimModalTitle",
+            "Add Child Claim",
+            "text-2xl",
+            "text-white",
+            "font-bold",
+            "mb-6"
+        );
+        ComponentGenerator::addChild(&modalContent, modalTitle);
+
+        // Claim sentence label
+        ui::Component claimSentenceLabel = ComponentGenerator::createText(
+            "claimSentenceLabel",
+            "Claim Sentence:",
+            "text-sm",
+            "text-white",
+            "font-semibold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&modalContent, claimSentenceLabel);
+
+        // Claim sentence input
+        ui::Component claimSentenceInput = ComponentGenerator::createInput(
+            "claimSentenceInput",
+            "Enter the claim sentence...",
+            "claimSentence",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-4"
+        );
+        ComponentGenerator::addChild(&modalContent, claimSentenceInput);
+
+        // Description label
+        ui::Component descriptionLabel = ComponentGenerator::createText(
+            "descriptionLabel",
+            "Description:",
+            "text-sm",
+            "text-white",
+            "font-semibold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&modalContent, descriptionLabel);
+
+        // Description input (using input as textarea)
+        ui::Component descriptionInput = ComponentGenerator::createInput(
+            "descriptionInput",
+            "Enter the description...",
+            "description",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-6 h-32"
+        );
+        ComponentGenerator::addChild(&modalContent, descriptionInput);
+
+        // Modal action buttons
+        ui::Component modalActions = ComponentGenerator::createContainer(
+            "modalActions",
+            "flex gap-3 justify-end",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
+        ui::Component cancelButton = ComponentGenerator::createButton(
+            "closeAddChildClaimButton",
+            "Cancel",
+            "",
+            "bg-gray-600",
+            "hover:bg-gray-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&modalActions, cancelButton);
+
+        ui::Component submitButton = ComponentGenerator::createButton(
+            "submitAddChildClaimButton",
+            "Submit",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&modalActions, submitButton);
+
+        ComponentGenerator::addChild(&modalContent, modalActions);
+        ComponentGenerator::addChild(&modalOverlay, modalContent);
+        ComponentGenerator::addChild(&mainLayout, modalOverlay);
+    }
 
     // Add main layout to page
     ui::Component* pageLayout = page.add_components();

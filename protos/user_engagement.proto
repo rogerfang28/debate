@@ -27,6 +27,9 @@ message DebatingInfo {
   ClaimInfo parent_claim = 5;  // parent claim of the current claim
   ClaimInfo root_claim = 3;    // root claim of the debate
   repeated ClaimInfo children_claims = 4; // child claims of the current claim
+  bool adding_child_claim = 6; // whether the add child claim modal is opened
+  bool editing_claim = 7; // whether the user is editing the current claim
+  bool reporting_claim = 8; // whether the user is reporting the current claim
 }
 
 message ClaimInfo {

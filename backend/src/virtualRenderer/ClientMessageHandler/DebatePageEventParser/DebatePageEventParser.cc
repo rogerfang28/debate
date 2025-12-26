@@ -18,10 +18,8 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  GO_TO_PARENT for user: " + user);
         event.set_type(debate_event::GO_TO_PARENT);
     } else if (componentId == "addChildClaimButton" && eventType == "onClick") {
-        Log::debug("  ADD_CLAIM for user: " + user);
-        event.set_type(debate_event::ADD_CHILD_CLAIM);
-        event.mutable_add_child_claim()->set_claim("test claim text");
-        event.mutable_add_child_claim()->set_connection_to_parent("supports");
+        Log::debug("  OPEN_ADD_CHILD_CLAIM for user: " + user);
+        event.set_type(debate_event::OPEN_ADD_CHILD_CLAIM);
     } else if (componentId == "deleteStatementButton" && eventType == "onClick") {
         Log::debug("  DELETE_CURRENT_STATEMENT for user: " + user);
         event.set_type(debate_event::DELETE_CURRENT_STATEMENT);
@@ -35,7 +33,14 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  GO_TO_CLAIM for user: " + user + " to claim ID: " + claimId);
         event.set_type(debate_event::GO_TO_CLAIM); // Placeholder, replace with actual GO_TO_CLAIM type
         event.mutable_go_to_claim()->set_claim_id(claimId);
-    } else {
+    } else if (componentId == "closeAddChildClaimButton" && eventType == "onClick") {
+        Log::debug("  CLOSE_ADD_CHILD_CLAIM for user: " + user);
+        event.set_type(debate_event::CLOSE_ADD_CHILD_CLAIM);
+     } //else if (componentId == "submitAddChildClaimButton" && eventType == "onClick") {
+    //     Log::debug("  SUBMIT_ADD_CHILD_CLAIM for user: " + user);
+    //     event.set_type(debate_event::SUBMIT_ADD_CHILD_CLAIM);
+    // }
+    else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
