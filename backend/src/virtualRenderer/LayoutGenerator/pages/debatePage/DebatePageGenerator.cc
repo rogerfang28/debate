@@ -312,6 +312,20 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         "transition-colors text-sm"
     );
     ComponentGenerator::addChild(&descriptionActions, addChildClaim);
+
+    ui::Component deleteStatementButton = ComponentGenerator::createButton(
+        "deleteStatementButton",
+        "Delete Statement",
+        "",
+        "bg-red-600",
+        "hover:bg-red-700",
+        "text-white",
+        "px-4 py-2",
+        "rounded",
+        "transition-colors text-sm"
+    );
+    ComponentGenerator::addChild(&descriptionActions, deleteStatementButton);
+
     ComponentGenerator::addChild(&descriptionBox, descriptionActions);
     ComponentGenerator::addChild(&centerContent, descriptionBox);
 

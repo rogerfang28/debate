@@ -1,7 +1,5 @@
 #include "HomePageResponseGenerator.h"
 #include "../../../utils/pathUtils.h"
-// #include "../../../database/handlers/DebateMembersDatabaseHandler.h"
-// #include "../../../database/handlers/DebateDatabaseHandler.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <iostream>
@@ -18,15 +16,12 @@ void HomePageResponseGenerator::BuildHomePageResponse(
               + user);
     
     // find all debates with user
-    // DebateMembersDatabaseHandler debateMembersDBHandler(utils::getDatabasePath());
     std::vector<std::string> debateIds = debateWrapper.getUserDebateIds(user);
     Log::debug("[HomePageResponseGenerator] User " + user + " is a member of "
               + std::to_string(debateIds.size()) + " debates.");
 
     user_engagement::DebateList debateListProto;
-    // build debate list protobuf
-    // for each debate id find the topic
-    // DebateDatabaseHandler debateDBHandler(utils::getDatabasePath());
+
     for (const std::string& debateId : debateIds) {
         std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobuf(debateId);
         debate::Debate debateProto;

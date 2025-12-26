@@ -99,7 +99,7 @@ bool DebateMembersDatabase::isMember(const std::string& debateId, const std::str
     return exists;
 }
 
-bool DebateMembersDatabase::removeMember(const std::string& debateId, const std::string& userId) {
+bool DebateMembersDatabase::removeMember(const std::string& debateId, const std::string& userId) { // ! FOR NOW ITS USING USERNAME
     const char* sql = "DELETE FROM DEBATE_MEMBERS WHERE DEBATE_ID = ? AND USER_ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);

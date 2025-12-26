@@ -1,5 +1,4 @@
 #include "GoHomeHandler.h"
-// #include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
@@ -8,9 +7,7 @@
 bool GoHomeHandler::GoHome(const std::string& user, DebateWrapper& debateWrapper) {
     Log::debug("[GoHome] User " + user + " going home");
     
-    try {
-        // UserDatabaseHandler userDbHandler(utils::getDatabasePath());
-        
+    try { 
         // Get current user protobuf
         std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
         if (userData.empty()) {

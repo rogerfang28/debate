@@ -53,6 +53,7 @@ debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
 void DebateWrapper::initNewDebate(const std::string& topic, const std::string& owner) {
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
+    rootClaim.set_parent_id("-1"); // root claim has no parent
     addClaimToDB(rootClaim);
     debate::Debate debate;
     debate.set_root_claim_id(rootClaim.id());
@@ -70,7 +71,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
     debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
     debateDb.updateDebateProtobuf(std::stoi(debate.id()), owner, updatedSerializedDebate);
-    debateMembersDb.addMember(debate.root_claim_id(), owner);
+    debateMembersDb.addMember(std::to_string(newId), owner);
 }
 
 
@@ -78,6 +79,9 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
 debate::Claim DebateWrapper::findClaimParent(const std::string& claimId) {
     debate::Claim claim = findClaim(claimId);
     std::string parentId = claim.parent_id();
+    if (parentId == "-1"){
+        return claim; // root claim has no parent
+    }
     return findClaim(parentId);
 }
 
@@ -160,10 +164,31 @@ void DebateWrapper::deleteDebate(const std::string& debateId, const std::string&
 
         // Delete the debate entry from the DEBATE table
         debateDb.removeDebate(std::stoi(debateId), user);
+        debateMembersDb.removeMember(debateId, user);
     }
 }
 
 void DebateWrapper::deleteClaim(const std::string& claimId) {
+    // find the claim parent to remove it's reference and also find it's children to delete them recursively
+    debate::Claim claim = findClaim(claimId);
+    std::string parentId = claim.parent_id();
+    if (parentId != "-1") {
+        debate::Claim parentClaim = findClaim(parentId);
+        auto* proof = parentClaim.mutable_proof();
+        auto& claimIds = *proof->mutable_claim_ids();
+        claimIds.erase(
+            std::remove(claimIds.begin(), claimIds.end(), claimId),
+            claimIds.end()
+        );
+        updateClaimInDB(parentClaim);
+    }
+    else{
+        return; // root claim should not be deleted here
+    }
+    // delete all children recursively
+    for (const auto& childId : claim.proof().claim_ids()) {
+        deleteClaim(childId);
+    }
     statementDb.deleteStatement(std::stoi(claimId));
 }
 
@@ -185,9 +210,7 @@ void DebateWrapper::moveUserToClaim(const std::string& username, const std::stri
 
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_root_claim()->set_id(claimId);
-    user_engagement::ClaimInfo currentClaim;
-    currentClaim.set_id(claimId);
-    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->CopyFrom(currentClaim);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claimId);
     
     std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
     userProto.SerializeToArray(updatedData.data(), updatedData.size());

@@ -1,6 +1,5 @@
 // should take in debate event protobuf and handle it and give back information
 #include "DebateModerator.h"
-// #include "../database/handlers/UserDatabaseHandler.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 // #include "../../../src/gen/cpp/debate_list.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
@@ -15,6 +14,7 @@
 #include "event-handlers/GoHome/GoHomeHandler.h"
 #include "event-handlers/GoToParentClaim/GoToParentClaim.h"
 #include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
+#include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -76,7 +76,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::GO_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
-            GoToClaimHandler::GoToClaim(event.go_to_claim().claim_id(), user);
+            GoToClaimHandler::GoToClaim(event.go_to_claim().claim_id(), user, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
@@ -97,7 +97,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::DELETE_CURRENT_STATEMENT:
             Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
-            // implement later
+            DeleteCurrentStatementHandler::DeleteCurrentStatement(user, debateWrapper);
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
@@ -110,7 +110,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
-    // UserDatabaseHandler userDbHandler(utils::getDatabasePath());
     user::User userProto;
     
     // user doesn't exist yet, make a default user
@@ -138,10 +137,12 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_NONE:
+            Log::debug("[DebateModerator] Building HOME page response for user: " + user);
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user, debateWrapper);
             break;
             
         case user_engagement::ACTION_DEBATING:
+            Log::debug("[DebateModerator] Building DEBATE page response for user: " + user);
             DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto, debateWrapper);
             break;
         default:

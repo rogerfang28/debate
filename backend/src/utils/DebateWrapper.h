@@ -1,15 +1,12 @@
 #pragma once
 
 #include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../database/handlers/StatementDatabaseHandler.h"
-#include "../database/handlers/DebateMembersDatabaseHandler.h"
-#include "../database/handlers/DebateDatabaseHandler.h"
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
 #include "../database/handlers/DebateDatabase.h"
-#include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/UserDatabase.h"
+#include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/DebateMembersDatabase.h"
 
 class DebateWrapper {
@@ -49,9 +46,6 @@ public:
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
-    StatementDatabaseHandler statementDBHandler{utils::getDatabasePath()}; // path from path utils
-    DebateDatabaseHandler debateDBHandler{utils::getDatabasePath()};
-    DebateMembersDatabaseHandler debateMembersDBHandler{utils::getDatabasePath()};
     DebateDatabase& debateDb;
     StatementDatabase& statementDb;
     UserDatabase& userDb;

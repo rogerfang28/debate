@@ -49,19 +49,17 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToClaim/GoToClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToParentClaim/GoToParentClaim.cc
-
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/OpenAddChildClaim/OpenAddChildClaim.cc
+    
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
 
-    # databse communicators and utils
+    # database communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabaseHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabaseHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/StatementDatabaseHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateMembersDatabaseHandler.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabase.cc
