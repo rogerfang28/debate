@@ -88,7 +88,7 @@ debate::Claim DebateWrapper::findClaimParent(const std::string& claimId) {
 void DebateWrapper::addClaimUnderParent(
     const std::string& parentId, 
     const std::string& claimText, 
-    const std::string& connectionToParent) {
+    const std::string& description) {
 
     debate::Claim parentClaimFromDB = findClaim(parentId);
 
@@ -96,6 +96,7 @@ void DebateWrapper::addClaimUnderParent(
     debate::Claim childClaim;
     childClaim.set_sentence(claimText);
     childClaim.set_parent_id(parentId);
+    childClaim.set_description(description);
     addClaimToDB(childClaim);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
@@ -181,9 +182,6 @@ void DebateWrapper::deleteClaim(const std::string& claimId) {
             claimIds.end()
         );
         updateClaimInDB(parentClaim);
-    }
-    else{
-        return; // root claim should not be deleted here
     }
     // delete all children recursively
     for (const auto& childId : claim.proof().claim_ids()) {

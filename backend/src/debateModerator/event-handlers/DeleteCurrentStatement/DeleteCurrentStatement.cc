@@ -20,6 +20,11 @@ void DeleteCurrentStatementHandler::DeleteCurrentStatement(const std::string& us
     std::string parentClaimId = debateWrapper.findClaimParent(currentStatementId).id();
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(parentClaimId);
 
+    // check if its a root claim
+    if (parentClaimId == "-1") {
+        return;
+    }
+
     // delete the current statement from the debate
     debateWrapper.deleteClaim(currentStatementId);
 

@@ -35,7 +35,7 @@ message CloseAddChildClaim {
 
 message AddChildClaim {
     string claim         = 1;
-    string connection_to_parent = 2;
+    string description   = 2;
 }
 
 message OpenReportClaim {
@@ -46,6 +46,10 @@ message CloseReportClaim {
 
 message DeleteCurrentStatement {
 
+}
+
+message DeleteChildClaim {
+    string claim_id      = 2;
 }
 
 message AddConnection {
@@ -79,6 +83,8 @@ enum EventType {
     GO_TO_CLAIM            = 12;
     CLOSE_ADD_CHILD_CLAIM  = 13;
     CLOSE_REPORT_CLAIM     = 14;
+    SUBMIT_ADD_CHILD_CLAIM = 15;
+    DELETE_CHILD_CLAIM     = 16;
 }
 
 // main message
@@ -103,5 +109,6 @@ message DebateEvent {
     DeleteCurrentStatement delete_current_statement = 18;
     GoToParentClaim   go_to_parent    = 19;
     GoToClaim        go_to_claim     = 20;
+    DeleteChildClaim delete_child_claim = 23;
   }
 }

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSIUChJDbG9zZUFkZENoaWxkQ2xhaW0iPAoNQWRkQ2hpbGRDbGFpbRINCgVjbGFpbRgBIAEoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgCIAEoCSIRCg9PcGVuUmVwb3J0Q2xhaW0iEgoQQ2xvc2VSZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgJEg8KB2Zyb21faWQYAyABKAkSDQoFdG9faWQYBCABKAkSEgoKY29ubmVjdGlvbhgFIAEoCSIRCg9Hb1RvUGFyZW50Q2xhaW0iHQoJR29Ub0NsYWltEhAKCGNsYWltX2lkGAIgASgJIu8GCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASQQoVY2xvc2VfYWRkX2NoaWxkX2NsYWltGBUgASgLMiAuZGViYXRlX2V2ZW50LkNsb3NlQWRkQ2hpbGRDbGFpbUgAEjYKD2FkZF9jaGlsZF9jbGFpbRgQIAEoCzIbLmRlYmF0ZV9ldmVudC5BZGRDaGlsZENsYWltSAASOgoRb3Blbl9yZXBvcnRfY2xhaW0YESABKAsyHS5kZWJhdGVfZXZlbnQuT3BlblJlcG9ydENsYWltSAASPAoSY2xvc2VfcmVwb3J0X2NsYWltGBYgASgLMh4uZGViYXRlX2V2ZW50LkNsb3NlUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IAEIJCgdwYXlsb2FkKr4CCglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMEhkKFUNMT1NFX0FERF9DSElMRF9DTEFJTRANEhYKEkNMT1NFX1JFUE9SVF9DTEFJTRAOYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSIUChJDbG9zZUFkZENoaWxkQ2xhaW0iMwoNQWRkQ2hpbGRDbGFpbRINCgVjbGFpbRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCSIRCg9PcGVuUmVwb3J0Q2xhaW0iEgoQQ2xvc2VSZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IiQKEERlbGV0ZUNoaWxkQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkiVgoNQWRkQ29ubmVjdGlvbhIRCglkZWJhdGVfaWQYAiABKAkSDwoHZnJvbV9pZBgDIAEoCRINCgV0b19pZBgEIAEoCRISCgpjb25uZWN0aW9uGAUgASgJIhEKD0dvVG9QYXJlbnRDbGFpbSIdCglHb1RvQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkirQcKC0RlYmF0ZUV2ZW50Eg8KB3VzZXJfaWQYASABKAkSCgoCaWQYAiABKAkSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiUKBHR5cGUYBCABKA4yFy5kZWJhdGVfZXZlbnQuRXZlbnRUeXBlEjMKDWNyZWF0ZV9kZWJhdGUYCiABKAsyGi5kZWJhdGVfZXZlbnQuQ3JlYXRlRGViYXRlSAASMwoNY2xlYXJfZGViYXRlcxgLIAEoCzIaLmRlYmF0ZV9ldmVudC5DbGVhckRlYmF0ZXNIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEicKB2dvX2hvbWUYDiABKAsyFC5kZWJhdGVfZXZlbnQuR29Ib21lSAASPwoUb3Blbl9hZGRfY2hpbGRfY2xhaW0YDyABKAsyHy5kZWJhdGVfZXZlbnQuT3BlbkFkZENoaWxkQ2xhaW1IABJBChVjbG9zZV9hZGRfY2hpbGRfY2xhaW0YFSABKAsyIC5kZWJhdGVfZXZlbnQuQ2xvc2VBZGRDaGlsZENsYWltSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABI6ChFvcGVuX3JlcG9ydF9jbGFpbRgRIAEoCzIdLmRlYmF0ZV9ldmVudC5PcGVuUmVwb3J0Q2xhaW1IABI8ChJjbG9zZV9yZXBvcnRfY2xhaW0YFiABKAsyHi5kZWJhdGVfZXZlbnQuQ2xvc2VSZXBvcnRDbGFpbUgAEkgKGGRlbGV0ZV9jdXJyZW50X3N0YXRlbWVudBgSIAEoCzIkLmRlYmF0ZV9ldmVudC5EZWxldGVDdXJyZW50U3RhdGVtZW50SAASNQoMZ29fdG9fcGFyZW50GBMgASgLMh0uZGViYXRlX2V2ZW50LkdvVG9QYXJlbnRDbGFpbUgAEi4KC2dvX3RvX2NsYWltGBQgASgLMhcuZGViYXRlX2V2ZW50LkdvVG9DbGFpbUgAEjwKEmRlbGV0ZV9jaGlsZF9jbGFpbRgXIAEoCzIeLmRlYmF0ZV9ldmVudC5EZWxldGVDaGlsZENsYWltSABCCQoHcGF5bG9hZCryAgoJRXZlbnRUeXBlEhoKFkVWRU5UX0tJTkRfVU5TUEVDSUZJRUQQABIICgROT05FEAESEQoNQ1JFQVRFX0RFQkFURRACEhEKDUNMRUFSX0RFQkFURVMQAxIRCg1ERUxFVEVfREVCQVRFEAQSEAoMRU5URVJfREVCQVRFEAUSCwoHR09fSE9NRRAGEhAKDEdPX1RPX1BBUkVOVBAHEhgKFE9QRU5fQUREX0NISUxEX0NMQUlNEAgSEwoPQUREX0NISUxEX0NMQUlNEAkSHAoYREVMRVRFX0NVUlJFTlRfU1RBVEVNRU5UEAoSEAoMUkVQT1JUX0NMQUlNEAsSDwoLR09fVE9fQ0xBSU0QDBIZChVDTE9TRV9BRERfQ0hJTERfQ0xBSU0QDRIWChJDTE9TRV9SRVBPUlRfQ0xBSU0QDhIaChZTVUJNSVRfQUREX0NISUxEX0NMQUlNEA8SFgoSREVMRVRFX0NISUxEX0NMQUlNEBBiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -142,9 +142,9 @@ export type AddChildClaim = Message<"debate_event.AddChildClaim"> & {
   claim: string;
 
   /**
-   * @generated from field: string connection_to_parent = 2;
+   * @generated from field: string description = 2;
    */
-  connectionToParent: string;
+  description: string;
 };
 
 /**
@@ -194,6 +194,23 @@ export const DeleteCurrentStatementSchema: GenMessage<DeleteCurrentStatement> = 
   messageDesc(file_debate_event, 11);
 
 /**
+ * @generated from message debate_event.DeleteChildClaim
+ */
+export type DeleteChildClaim = Message<"debate_event.DeleteChildClaim"> & {
+  /**
+   * @generated from field: string claim_id = 2;
+   */
+  claimId: string;
+};
+
+/**
+ * Describes the message debate_event.DeleteChildClaim.
+ * Use `create(DeleteChildClaimSchema)` to create a new message.
+ */
+export const DeleteChildClaimSchema: GenMessage<DeleteChildClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 12);
+
+/**
  * @generated from message debate_event.AddConnection
  */
 export type AddConnection = Message<"debate_event.AddConnection"> & {
@@ -223,7 +240,7 @@ export type AddConnection = Message<"debate_event.AddConnection"> & {
  * Use `create(AddConnectionSchema)` to create a new message.
  */
 export const AddConnectionSchema: GenMessage<AddConnection> = /*@__PURE__*/
-  messageDesc(file_debate_event, 12);
+  messageDesc(file_debate_event, 13);
 
 /**
  * @generated from message debate_event.GoToParentClaim
@@ -236,7 +253,7 @@ export type GoToParentClaim = Message<"debate_event.GoToParentClaim"> & {
  * Use `create(GoToParentClaimSchema)` to create a new message.
  */
 export const GoToParentClaimSchema: GenMessage<GoToParentClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 13);
+  messageDesc(file_debate_event, 14);
 
 /**
  * @generated from message debate_event.GoToClaim
@@ -253,7 +270,7 @@ export type GoToClaim = Message<"debate_event.GoToClaim"> & {
  * Use `create(GoToClaimSchema)` to create a new message.
  */
 export const GoToClaimSchema: GenMessage<GoToClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 14);
+  messageDesc(file_debate_event, 15);
 
 /**
  * main message
@@ -362,6 +379,12 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
      */
     value: GoToClaim;
     case: "goToClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.DeleteChildClaim delete_child_claim = 23;
+     */
+    value: DeleteChildClaim;
+    case: "deleteChildClaim";
   } | { case: undefined; value?: undefined };
 };
 
@@ -370,7 +393,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 15);
+  messageDesc(file_debate_event, 16);
 
 /**
  * enum
@@ -452,6 +475,16 @@ export enum EventType {
    * @generated from enum value: CLOSE_REPORT_CLAIM = 14;
    */
   CLOSE_REPORT_CLAIM = 14,
+
+  /**
+   * @generated from enum value: SUBMIT_ADD_CHILD_CLAIM = 15;
+   */
+  SUBMIT_ADD_CHILD_CLAIM = 15,
+
+  /**
+   * @generated from enum value: DELETE_CHILD_CLAIM = 16;
+   */
+  DELETE_CHILD_CLAIM = 16,
 }
 
 /**

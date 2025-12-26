@@ -17,6 +17,7 @@
 #include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
 #include "event-handlers/OpenAddChildClaim/OpenAddChildClaim.h"
 #include "event-handlers/CloseAddChildClaim/CloseAddChildClaim.h"
+#include "event-handlers/DeleteChildClaim/DeleteChildClaim.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -92,7 +93,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
             AddClaimUnderClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
-                event.add_child_claim().connection_to_parent(),
+                event.add_child_claim().description(),
                 user,
                 debateWrapper
             );
@@ -104,6 +105,14 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
         case debate_event::DELETE_CURRENT_STATEMENT:
             Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
             DeleteCurrentStatementHandler::DeleteCurrentStatement(user, debateWrapper);
+            break;
+        case debate_event::DELETE_CHILD_CLAIM:
+            Log::debug("[DebateModerator] Event Type: DELETE_CHILD_CLAIM");
+            DeleteChildClaimHandler::DeleteChildClaim(
+                event.delete_child_claim().claim_id(),
+                user,
+                debateWrapper
+            );
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");

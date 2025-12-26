@@ -324,7 +324,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         "rounded",
         "transition-colors text-sm"
     );
-    ComponentGenerator::addChild(&descriptionActions, deleteStatementButton);
+    // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
 
     ComponentGenerator::addChild(&descriptionBox, descriptionActions);
     ComponentGenerator::addChild(&centerContent, descriptionBox);
@@ -386,6 +386,17 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
         );
         ComponentGenerator::addChild(&childNode, childNodeTitle);
 
+        ui::Component childNodeButtonContainer = ComponentGenerator::createContainer(
+            nodeId + "ButtonContainer",
+            "flex gap-2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
         ui::Component childNodeButton = ComponentGenerator::createButton(
             "viewChildNodeButton_" + childClaimInfo[i].first,
             "View Claim",
@@ -395,9 +406,24 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
             "text-white",
             "px-4 py-2",
             "rounded",
-            "w-full transition-colors text-sm"
+            "flex-1 transition-colors text-sm"
         );
-        ComponentGenerator::addChild(&childNode, childNodeButton);
+        ComponentGenerator::addChild(&childNodeButtonContainer, childNodeButton);
+
+        ui::Component deleteChildClaimButton = ComponentGenerator::createButton(
+            "deleteChildClaimButton_" + childClaimInfo[i].first,
+            "Delete",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&childNodeButtonContainer, deleteChildClaimButton);
+
+        ComponentGenerator::addChild(&childNode, childNodeButtonContainer);
         ComponentGenerator::addChild(&childArgumentsGrid, childNode);
     }
 

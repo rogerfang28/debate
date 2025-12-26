@@ -3,8 +3,9 @@
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include "../../../utils/pathUtils.h"
+#include "../CloseAddChildClaim/CloseAddChildClaim.h"
 
-void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const std::string& user, DebateWrapper& debateWrapper) {
+void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const std::string& user, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     // get user protobuf
     std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
@@ -20,6 +21,8 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
     debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId
         claim_text,
-        connection_to_parent
+        description
     );
+
+    CloseAddChildClaimHandler::CloseAddChildClaim(user, debateWrapper);
 }
