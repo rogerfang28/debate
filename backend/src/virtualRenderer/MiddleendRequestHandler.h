@@ -5,10 +5,11 @@
 #include "httplib.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
+#include "./virtualRenderer.h"
 
 class MiddleendRequestHandler {
 public:
-    MiddleendRequestHandler() = default;
+    MiddleendRequestHandler();
     ~MiddleendRequestHandler() = default;
 
     // Handle POST request
@@ -19,4 +20,5 @@ private:
     ui::Page createLoginPage();
     void log(const std::string& user, const client_message::ClientMessage& msg);
     bool validateAuth(client_message::ClientMessage& msg, httplib::Response& res, const std::string& user);
+    VirtualRenderer renderer;
 };

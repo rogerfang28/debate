@@ -31,7 +31,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // ! no server call for now, backend and virtual renderer are on the same backend
     
     moderator_to_vr::ModeratorToVRMessage info;
-    DebateModerator moderator;
+    // DebateModerator moderator;
     info = moderator.handleRequest(user, evt);
     // backend.sendEvent(evt, info);
 

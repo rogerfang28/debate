@@ -12,6 +12,10 @@
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
 #include "../utils/Log.h"
 
+MiddleendRequestHandler::MiddleendRequestHandler() {
+    // this->renderer = VirtualRenderer();
+    Log::debug("[MiddleendRequestHandler] Initialized.");
+}
 
 void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
     std::string user = extractUserFromCookies(req);
@@ -34,7 +38,7 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     }
 
     // pass to VR
-    VirtualRenderer renderer;
+    // VirtualRenderer renderer;
     ui::Page page = renderer.handleClientMessage(msg, user);
 
     // send proto back in the res

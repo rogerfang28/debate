@@ -28,7 +28,7 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     // for each debate id find the topic
     // DebateDatabaseHandler debateDBHandler(utils::getDatabasePath());
     for (const std::string& debateId : debateIds) {
-        std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobufById(debateId);
+        std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobuf(debateId);
         debate::Debate debateProto;
         debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
         user_engagement::DebateTopic* topicProto = debateListProto.add_topics();

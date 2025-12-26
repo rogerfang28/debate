@@ -1,18 +1,18 @@
 #include "GoHomeHandler.h"
-#include "../../../database/handlers/UserDatabaseHandler.h"
+// #include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include <iostream>
 #include "../../../utils/Log.h"
 
-bool GoHomeHandler::GoHome(const std::string& user) {
+bool GoHomeHandler::GoHome(const std::string& user, DebateWrapper& debateWrapper) {
     Log::debug("[GoHome] User " + user + " going home");
     
     try {
-        UserDatabaseHandler userDbHandler(utils::getDatabasePath());
+        // UserDatabaseHandler userDbHandler(utils::getDatabasePath());
         
         // Get current user protobuf
-        std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
+        std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
         if (userData.empty()) {
             Log::error("[GoHome][ERR] User " + user + " not found");
             return false;
@@ -36,9 +36,9 @@ bool GoHomeHandler::GoHome(const std::string& user) {
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
         userProto.SerializeToArray(updatedData.data(), updatedData.size());
         
-        bool success = userDbHandler.updateUserProtobuf(user, updatedData);
+        debateWrapper.updateUserProtobuf(user, updatedData);
         
-        return success;
+        return true;
     } catch (const std::exception& e) {
         Log::error("[GoHome][ERR] Exception: " + std::string(e.what()));
         return false;

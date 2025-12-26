@@ -2,6 +2,7 @@
 #include <string>
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
+#include "../debateModerator/DebateModerator.h"
 
 // Forward declarations to avoid heavy includes
 namespace httplib {
@@ -35,4 +36,5 @@ public:
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
     std::string extractUserFromCookies(const httplib::Request& req);
+    DebateModerator moderator;
 };

@@ -44,6 +44,7 @@ int UserDatabase::createUser(const std::string& username, std::vector<uint8_t> d
     return userId;
 }
 
+
 std::vector<uint8_t> UserDatabase::getUserProtobuf(const std::string& user_id) {
     // This function is not used with the old schema - redirect to getUserProtobufByUsername
     return std::vector<uint8_t>();

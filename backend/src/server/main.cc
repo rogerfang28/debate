@@ -3,7 +3,7 @@
 // #define _WIN32_WINNT 0x0A00
 // these are not needed because they are in cmakelists
 
-#include "../virtualRenderer/virtualRenderer.h"  // Add this include
+// #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../virtualRenderer/MiddleendRequestHandler.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 
@@ -23,7 +23,6 @@ static std::filesystem::path exe_dir() {
 
 int main() {
   httplib::Server svr;
-  VirtualRenderer renderer;  // Create the renderer instance
   MiddleendRequestHandler handler;
 
   // ---------- CORS middleware ----------

@@ -11,8 +11,8 @@
 bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::string& user, DebateWrapper& debateWrapper) {
     Log::debug("[EnterDebate] User " + user + " entering debate with id: " + debateId);
 
-    DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
-    std::vector<uint8_t> debateData = debateDbHandler.getDebateProtobuf(debateId);
+    // DebateDatabaseHandler debateDbHandler(utils::getDatabasePath());
+    std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debateId);
     debate::Debate debateProto;
     if (!debateProto.ParseFromArray(debateData.data(), static_cast<int>(debateData.size()))) {
         Log::error("[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " + debateId);

@@ -174,12 +174,12 @@ void DebateWrapper::deleteAllDebates(const std::string& user) {
     }
 }
 
-void DebateWrapper::moveUserToClaim(const std::string& user, const std::string& claimId) {
-    std::vector<uint8_t> userData = userDb.getUserProtobuf(user);
+void DebateWrapper::moveUserToClaim(const std::string& username, const std::string& claimId) {
+    std::vector<uint8_t> userData = userDb.getUserProtobufByUsername(username);
 
     user::User userProto;
     if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-        Log::error("[DebateWrapper][ERR] Failed to parse user protobuf for " + user);
+        Log::error("[DebateWrapper][ERR] Failed to parse user protobuf for " + username);
         return;
     }
 
@@ -192,13 +192,13 @@ void DebateWrapper::moveUserToClaim(const std::string& user, const std::string& 
     std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
     userProto.SerializeToArray(updatedData.data(), updatedData.size());
     
-    bool success = userDb.updateUserProtobuf(user, updatedData);
+    bool success = userDb.updateUserProtobuf(username, updatedData);
     
     if (success) {
-        Log::debug("[DebateWrapper] Successfully moved user " + user + " to claim id " + claimId 
+        Log::debug("[DebateWrapper] Successfully moved user " + username + " to claim id " + claimId 
                     + " (state=DEBATING)");
     } else {
-        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + user);
+        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + username);
     }
     
     return;
@@ -208,6 +208,23 @@ std::vector<std::string> DebateWrapper::getUserDebateIds(const std::string& user
     return debateMembersDb.getDebateIdsForUser(user);
 }
 
-std::vector<uint8_t> DebateWrapper::getDebateProtobufById(const std::string& debateId) {
+std::vector<uint8_t> DebateWrapper::getDebateProtobuf(const std::string& debateId) {
     return debateDb.getDebateProtobuf(std::stoi(debateId));
+}
+
+std::vector<uint8_t> DebateWrapper::getUserProtobuf(const std::string& user) {
+    return userDb.getUserProtobuf(user);
+}
+
+std::vector<uint8_t> DebateWrapper::getUserProtobufByUsername(const std::string& username) {
+    return userDb.getUserProtobufByUsername(username);
+}
+
+void DebateWrapper::updateUserProtobuf(const std::string& user, const std::vector<uint8_t>& protobufData) {
+    bool success = userDb.updateUserProtobuf(user, protobufData);
+    if (success) {
+        Log::debug("[DebateWrapper] Successfully updated user protobuf for " + user);
+    } else {
+        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + user);
+    }
 }
