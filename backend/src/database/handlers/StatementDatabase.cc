@@ -1,5 +1,6 @@
 #include "StatementDatabase.h"
 #include <iostream>
+#include "../../utils/Log.h"
 
 StatementDatabase::StatementDatabase(Database& db) : db_(db) {
     ensureTable();

@@ -1,6 +1,6 @@
 // should take in debate event protobuf and handle it and give back information
 #include "DebateModerator.h"
-#include "../database/handlers/UserDatabaseHandler.h"
+// #include "../database/handlers/UserDatabaseHandler.h"
 #include "../../../src/gen/cpp/debate.pb.h"
 // #include "../../../src/gen/cpp/debate_list.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
@@ -64,7 +64,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::ENTER_DEBATE:
             Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
-            EnterDebateHandler::EnterDebate(event.enter_debate().debate_id(), user);
+            EnterDebateHandler::EnterDebate(event.enter_debate().debate_id(), user, debateWrapper);
             break;
         case debate_event::GO_HOME:
             Log::debug("[DebateModerator] Event Type: GO_HOME");
@@ -110,29 +110,29 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
-    UserDatabaseHandler userDbHandler(utils::getDatabasePath());
+    // UserDatabaseHandler userDbHandler(utils::getDatabasePath());
     user::User userProto;
     
     // user doesn't exist yet, make a default user
-    if (!userDbHandler.userExists(user)) {
+    if (!userDb.userExists(user)) {
         userProto.set_username(user);
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
         userProto.mutable_engagement()->mutable_none_info();
 
         std::vector<uint8_t> userData(userProto.ByteSizeLong());
         userProto.SerializeToArray(userData.data(), userData.size());
-        userDbHandler.addUser(user, userData);
+        userDb.createUser(user, userData);
     }
 
     // now we get info from the database
-    std::vector<uint8_t> userData = userDbHandler.getUserProtobuf(user);
+    std::vector<uint8_t> userData = userDb.getUserProtobuf(user);
     userProto.ParseFromArray(userData.data(), userData.size());
     *responseMessage.mutable_engagement() = userProto.engagement();
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_NONE:
-            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user);
+            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user, debateWrapper);
             break;
             
         case user_engagement::ACTION_DEBATING:

@@ -47,30 +47,6 @@ int DebateDatabase::addDebate(const std::string& user, const std::string& topic,
     return debateId;
 }
 
-// std::vector<std::map<std::string, std::string>> DebateDatabase::getDebates(const std::string& user) {
-//     std::vector<std::map<std::string, std::string>> debates;
-//     const char* sql = "SELECT ID, USER, TOPIC FROM DEBATE WHERE USER = ?;";
-    
-//     sqlite3_stmt* stmt = db_.prepare(sql);
-//     if (!stmt) {
-//         return debates;
-//     }
-
-//     sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
-
-//     while (sqlite3_step(stmt) == SQLITE_ROW) {
-//         std::map<std::string, std::string> debate;
-//         debate["id"] = std::to_string(sqlite3_column_int(stmt, 0));
-//         debate["user"] = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-//         debate["topic"] = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        
-//         debates.push_back(debate);
-//     }
-
-//     sqlite3_finalize(stmt);
-//     return debates;
-// }
-
 std::vector<uint8_t> DebateDatabase::getDebateProtobuf(int debateId) {
     std::vector<uint8_t> protobufData;
     const char* sql = "SELECT PAGE_DATA FROM DEBATE WHERE ID = ?;";

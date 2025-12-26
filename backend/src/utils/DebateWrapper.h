@@ -39,6 +39,9 @@ public:
     void deleteDebate(const std::string& debateId, const std::string& user);
     void deleteClaim(const std::string& claimId);
     void deleteAllDebates(const std::string& user);
+    void moveUserToClaim(const std::string& user, const std::string& claimId);
+    std::vector<std::string> getUserDebateIds(const std::string& user);
+    std::vector<uint8_t> getDebateProtobufById(const std::string& debateId);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
