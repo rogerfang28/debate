@@ -2,7 +2,11 @@
 #include <iostream>
 #include "Log.h"
 
-DebateWrapper::DebateWrapper() {}
+DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase)
+    : debateDb(debateDatabase),
+      statementDb(statementDatabase),
+      userDb(userDatabase),
+      debateMembersDb(debateMembersDatabase) {}
 
 std::vector<std::string> DebateWrapper::findChildrenIds(
     const std::string& parentId) {
@@ -44,12 +48,7 @@ debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
     return debate::Claim();
 }
 
-void DebateWrapper::initNewDebate(const std::string& topic, 
-    const std::string& owner, 
-    DebateDatabase& debateDb, 
-    StatementDatabase& statementDb, UserDatabase& userDb, 
-    DebateMembersDatabase& debateMembersDb
-) {
+void DebateWrapper::initNewDebate(const std::string& topic, const std::string& owner) {
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     addClaimToDB(rootClaim);
@@ -60,19 +59,6 @@ void DebateWrapper::initNewDebate(const std::string& topic,
     debate.set_owner(owner);
     std::vector<uint8_t> serialized_debate(debate.ByteSizeLong());
     debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
-    
-    // int newId = debateDBHandler.addDebateWithProtobuf(owner, topic, serialized_debate);
-    // if (newId == -1) {
-    //     Log::error("[DebateWrapper] Failed to create new debate for topic: " + topic);
-    //     return;
-    // }
-
-    // debate.set_id(std::to_string(newId));
-    // std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
-    // debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
-    // debateDBHandler.updateDebateProtobuf(owner, debate.id(), updatedSerializedDebate);
-
-    // debateMembersDBHandler.addMember(debate.root_claim_id(), owner);
     int newId = debateDb.addDebate(owner, topic, serialized_debate);
     if (newId == -1) {
         Log::error("[DebateWrapper] Failed to create new debate for topic: " + topic);

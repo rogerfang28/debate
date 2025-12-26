@@ -14,11 +14,11 @@
 
 class DebateWrapper {
 public:
-    explicit DebateWrapper();
+    explicit DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase);
     // DebateWrapper() = default;
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim findClaim(const std::string& claimId);
-    void initNewDebate(const std::string& topic, const std::string& owner, DebateDatabase& debateDb, StatementDatabase& statementDb, UserDatabase& userDb, DebateMembersDatabase& debateMembersDb);
+    void initNewDebate(const std::string& topic, const std::string& owner);
     debate::Claim findClaimParent(const std::string& claimId);
     void addClaimUnderParent(
         const std::string& parentId, 
@@ -45,6 +45,10 @@ private:
     StatementDatabaseHandler statementDBHandler{utils::getDatabasePath()}; // path from path utils
     DebateDatabaseHandler debateDBHandler{utils::getDatabasePath()};
     DebateMembersDatabaseHandler debateMembersDBHandler{utils::getDatabasePath()};
+    DebateDatabase& debateDb;
+    StatementDatabase& statementDb;
+    UserDatabase& userDb;
+    DebateMembersDatabase& debateMembersDb;
     void addClaimToDB(debate::Claim& claim);
     void updateClaimInDB(const debate::Claim& claim);
 };

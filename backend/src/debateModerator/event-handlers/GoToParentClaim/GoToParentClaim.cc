@@ -2,12 +2,11 @@
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
-#include "../../../utils/DebateWrapper.h"
 #include "../../../utils/Log.h"
 #include "../GoToClaim/GoToClaim.h"
 
-void GoToParentClaimHandler::GoToParentClaim(const std::string& user) {
-    DebateWrapper debateWrapper;
+void GoToParentClaimHandler::GoToParentClaim(const std::string& user, DebateWrapper& debateWrapper) {
+    // DebateWrapper debateWrapper;
     // first find where the user is in the debate
     UserDatabaseHandler userDbHandler(utils::getDatabasePath());
     // get user protobuf

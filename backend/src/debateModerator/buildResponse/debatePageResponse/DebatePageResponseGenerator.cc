@@ -1,6 +1,5 @@
 #include "DebatePageResponseGenerator.h"
 #include "../../../utils/pathUtils.h"
-#include "../../../utils/DebateWrapper.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../utils/Log.h"
 #include <iostream>
@@ -9,9 +8,9 @@
 void DebatePageResponseGenerator::BuildDebatePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
     const std::string& user,
-    const user::User& userProto
+    const user::User& userProto,
+    DebateWrapper& debateWrapper
 ) {
-    DebateWrapper debateWrapper;
 
     user_engagement::DebatingInfo debatingInfo = userProto.engagement().debating_info();
     // based on the current claim id, generate the children claims and sentences and parent claim

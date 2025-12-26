@@ -4,9 +4,8 @@
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include "../../../database/handlers/UserDatabaseHandler.h"
 #include "../../../utils/pathUtils.h"
-#include "../../../utils/DebateWrapper.h"
 
-void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const std::string& user) {
+void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const std::string& user, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     UserDatabaseHandler userDbHandler(utils::getDatabasePath());
     // get user protobuf
@@ -18,7 +17,7 @@ void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text
     user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();
     std::string currentClaimID = currentClaimInfo.id();
 
-    DebateWrapper debateWrapper;
+    // DebateWrapper debateWrapper;
 
     debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId

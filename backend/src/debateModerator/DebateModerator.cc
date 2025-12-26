@@ -24,7 +24,8 @@ DebateModerator::DebateModerator()
       userDb(globalDb),
       debateDb(globalDb),
       statementDb(globalDb),
-      debateMembersDb(globalDb)
+      debateMembersDb(globalDb),
+      debateWrapper(debateDb, statementDb, userDb, debateMembersDb)
 {
     Log::debug("[DebateModerator] Initialized.");
 }
@@ -51,15 +52,15 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CREATE_DEBATE:
             Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
-            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateDb, statementDb, userDb, debateMembersDb);
+            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateWrapper);
             break;
         case debate_event::CLEAR_DEBATES:
             Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
-            ClearDebatesHandler::ClearDebates(user);
+            ClearDebatesHandler::ClearDebates(user, debateWrapper);
             break;
         case debate_event::DELETE_DEBATE:
             Log::debug("[DebateModerator] Event Type: DELETE_DEBATE");
-            DeleteDebateHandler::DeleteDebate(event.delete_debate().debate_id(), user);
+            DeleteDebateHandler::DeleteDebate(event.delete_debate().debate_id(), user, debateWrapper);
             break;
         case debate_event::ENTER_DEBATE:
             Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
@@ -71,7 +72,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::GO_TO_PARENT:
             Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
-            GoToParentClaimHandler::GoToParentClaim(user);
+            GoToParentClaimHandler::GoToParentClaim(user, debateWrapper);
             break;
         case debate_event::GO_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
@@ -86,7 +87,8 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             AddClaimUnderClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().connection_to_parent(),
-                user
+                user,
+                debateWrapper
             );
             break;
         case debate_event::REPORT_CLAIM:
@@ -134,7 +136,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
             break;
             
         case user_engagement::ACTION_DEBATING:
-            DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto);
+            DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto, debateWrapper);
             break;
         default:
             // unknown action

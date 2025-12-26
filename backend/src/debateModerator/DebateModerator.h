@@ -11,7 +11,7 @@
 #include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/UserDatabase.h"
 #include "../database/handlers/DebateMembersDatabase.h"
-
+#include "../utils/DebateWrapper.h"
 class DebateModerator {
 public:
     DebateModerator();
@@ -28,4 +28,5 @@ private:
     DebateDatabase debateDb;
     StatementDatabase statementDb;
     DebateMembersDatabase debateMembersDb;
+    DebateWrapper debateWrapper;
 };
