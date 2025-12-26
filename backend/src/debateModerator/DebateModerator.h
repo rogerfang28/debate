@@ -10,7 +10,7 @@
 #include "../database/handlers/DebateDatabase.h"
 #include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/UserDatabase.h"
-
+#include "../database/handlers/DebateMembersDatabase.h"
 
 class DebateModerator {
 public:
@@ -27,4 +27,5 @@ private:
     UserDatabase userDb;
     DebateDatabase debateDb;
     StatementDatabase statementDb;
+    DebateMembersDatabase debateMembersDb;
 };

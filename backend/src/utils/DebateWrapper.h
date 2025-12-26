@@ -10,6 +10,7 @@
 #include "../database/handlers/DebateDatabase.h"
 #include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/UserDatabase.h"
+#include "../database/handlers/DebateMembersDatabase.h"
 
 class DebateWrapper {
 public:
@@ -17,7 +18,7 @@ public:
     // DebateWrapper() = default;
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim findClaim(const std::string& claimId);
-    void initNewDebate(const std::string& topic, const std::string& owner, DebateDatabase& debateDb, StatementDatabase& statementDb, UserDatabase& debateMembersDb);
+    void initNewDebate(const std::string& topic, const std::string& owner, DebateDatabase& debateDb, StatementDatabase& statementDb, UserDatabase& userDb, DebateMembersDatabase& debateMembersDb);
     debate::Claim findClaimParent(const std::string& claimId);
     void addClaimUnderParent(
         const std::string& parentId, 

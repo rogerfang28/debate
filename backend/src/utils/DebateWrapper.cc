@@ -44,7 +44,12 @@ debate::Claim DebateWrapper::findClaim(const std::string& claimId) {
     return debate::Claim();
 }
 
-void DebateWrapper::initNewDebate(const std::string& topic, const std::string& owner, DebateDatabase& debateDb, StatementDatabase& statementDb, UserDatabase& debateMembersDb) {
+void DebateWrapper::initNewDebate(const std::string& topic, 
+    const std::string& owner, 
+    DebateDatabase& debateDb, 
+    StatementDatabase& statementDb, UserDatabase& userDb, 
+    DebateMembersDatabase& debateMembersDb
+) {
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     addClaimToDB(rootClaim);
@@ -77,6 +82,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const std::string& o
     std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
     debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
     debateDb.updateDebateProtobuf(std::stoi(debate.id()), owner, updatedSerializedDebate);
+    debateMembersDb.addMember(debate.root_claim_id(), owner);
 }
 
 

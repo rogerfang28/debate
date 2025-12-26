@@ -23,7 +23,8 @@ DebateModerator::DebateModerator()
     : globalDb(utils::getDatabasePath()),
       userDb(globalDb),
       debateDb(globalDb),
-      statementDb(globalDb)
+      statementDb(globalDb),
+      debateMembersDb(globalDb)
 {
     Log::debug("[DebateModerator] Initialized.");
 }
@@ -50,7 +51,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CREATE_DEBATE:
             Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
-            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateDb, statementDb, userDb);
+            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateDb, statementDb, userDb, debateMembersDb);
             break;
         case debate_event::CLEAR_DEBATES:
             Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
