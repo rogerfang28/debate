@@ -26,12 +26,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_reporting_claim(false);
 
-    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
-    if (!userProto.SerializeToArray(updatedUserData.data(), static_cast<int>(updatedUserData.size()))) {
-        Log::error("[EnterDebate][ERR] Failed to serialize updated user protobuf for " + user);
-        return false;
-    }
-    debateWrapper.updateUserProtobuf(user, updatedUserData);
+    debateWrapper.updateUserProtobuf(user, userProto);
 
     return true;
 }

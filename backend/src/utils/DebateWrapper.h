@@ -44,7 +44,8 @@ public:
     user::User getUserProtobufByUsername(const std::string& username);
     std::vector<uint8_t> getUserProtobufBinaryByUsername(const std::string& username);
 
-    void updateUserProtobuf(const std::string& user, const std::vector<uint8_t>& protobufData);
+    void updateUserProtobufBinary(const std::string& user, const std::vector<uint8_t>& protobufData);
+    void updateUserProtobuf(const std::string& username, const user::User& userProto);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);

@@ -8,8 +8,5 @@ void CloseAddChildClaimHandler::CloseAddChildClaim(const std::string& user, Deba
     // set adding_child_claim to true
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
 
-    // serialize and save back
-    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
-    userProto.SerializeToArray(updatedUserData.data(), static_cast<int>(updatedUserData.size()));
-    debateWrapper.updateUserProtobuf(user, updatedUserData);
+    debateWrapper.updateUserProtobuf(user, userProto);
 }

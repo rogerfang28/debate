@@ -37,6 +37,7 @@ message DebatingInfo {
     string to_claim_id   = 2;
     string connection = 3;
     bool connecting = 4;
+    bool opened_connect_modal = 5;  
   }
   ConnectingInfo connecting_info = 11; // info about connecting claims
 }

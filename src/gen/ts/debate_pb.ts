@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKfAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcChRjb25uZWN0aW9uX3RvX3BhcmVudBgGIAEoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIoUBCgZEZWJhdGUSCgoCaWQYASABKAkSFQoNcm9vdF9jbGFpbV9pZBgCIAEoCRINCgV0b3BpYxgDIAEoCRIQCghkZWJhdGVycxgEIAMoCRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKBAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIoUBCgZEZWJhdGUSCgoCaWQYASABKAkSFQoNcm9vdF9jbGFpbV9pZBgCIAEoCRINCgV0b3BpYxgDIAEoCRIQCghkZWJhdGVycxgEIAMoCRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -44,13 +44,6 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: repeated string children_ids = 5;
    */
   childrenIds: string[];
-
-  /**
-   * e.g., "supports", "opposes"
-   *
-   * @generated from field: string connection_to_parent = 6;
-   */
-  connectionToParent: string;
 
   /**
    * proof structure for this claim

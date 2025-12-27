@@ -240,7 +240,18 @@ user::User DebateWrapper::getUserProtobufByUsername(const std::string& username)
     return userProto;
 }
 
-void DebateWrapper::updateUserProtobuf(const std::string& username, const std::vector<uint8_t>& protobufData) {
+void DebateWrapper::updateUserProtobuf(const std::string& username, const user::User& userProto) {
+    std::vector<uint8_t> protobufData(userProto.ByteSizeLong());
+    userProto.SerializeToArray(protobufData.data(), protobufData.size());
+    bool success = userDb.updateUserProtobuf(username, protobufData);
+    if (success) {
+        Log::debug("[DebateWrapper] Successfully updated user protobuf for " + username);
+    } else {
+        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + username);
+    }
+}
+
+void DebateWrapper::updateUserProtobufBinary(const std::string& username, const std::vector<uint8_t>& protobufData) {
     bool success = userDb.updateUserProtobuf(username, protobufData);
     if (success) {
         Log::debug("[DebateWrapper] Successfully updated user protobuf for " + username);

@@ -271,6 +271,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
     kToClaimIdFieldNumber = 2,
     kConnectionFieldNumber = 3,
     kConnectingFieldNumber = 4,
+    kOpenedConnectModalFieldNumber = 5,
   };
   // string from_claim_id = 1 [json_name = "fromClaimId"];
   void clear_from_claim_id() ;
@@ -330,12 +331,22 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
   void _internal_set_connecting(bool value);
 
   public:
+  // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+  void clear_opened_connect_modal() ;
+  bool opened_connect_modal() const;
+  void set_opened_connect_modal(bool value);
+
+  private:
+  bool _internal_opened_connect_modal() const;
+  void _internal_set_opened_connect_modal(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.DebatingInfo.ConnectingInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      3, 5, 0,
       86, 2>
       _table_;
 
@@ -357,6 +368,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr to_claim_id_;
     ::google::protobuf::internal::ArenaStringPtr connection_;
     bool connecting_;
+    bool opened_connect_modal_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2199,6 +2211,28 @@ inline bool DebatingInfo_ConnectingInfo::_internal_connecting() const {
 inline void DebatingInfo_ConnectingInfo::_internal_set_connecting(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connecting_ = value;
+}
+
+// bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+inline void DebatingInfo_ConnectingInfo::clear_opened_connect_modal() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.opened_connect_modal_ = false;
+}
+inline bool DebatingInfo_ConnectingInfo::opened_connect_modal() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.ConnectingInfo.opened_connect_modal)
+  return _internal_opened_connect_modal();
+}
+inline void DebatingInfo_ConnectingInfo::set_opened_connect_modal(bool value) {
+  _internal_set_opened_connect_modal(value);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.ConnectingInfo.opened_connect_modal)
+}
+inline bool DebatingInfo_ConnectingInfo::_internal_opened_connect_modal() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.opened_connect_modal_;
+}
+inline void DebatingInfo_ConnectingInfo::_internal_set_opened_connect_modal(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.opened_connect_modal_ = value;
 }
 
 // -------------------------------------------------------------------

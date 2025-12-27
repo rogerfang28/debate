@@ -8,8 +8,5 @@ void CancelEditClaimDescriptionHandler::CancelEditClaimDescription(const std::st
     // set editing_claim to false
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);
 
-    // serialize and save back
-    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
-    userProto.SerializeToArray(updatedUserData.data(), static_cast<int>(updatedUserData.size()));
-    debateWrapper.updateUserProtobuf(user, updatedUserData);
+    debateWrapper.updateUserProtobuf(user, userProto);
 }

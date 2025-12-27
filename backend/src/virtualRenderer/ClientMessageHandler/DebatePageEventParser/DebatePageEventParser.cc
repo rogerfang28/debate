@@ -99,6 +99,26 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  CANCEL_EDIT_CLAIM for user: " + user);
         event.set_type(debate_event::CANCEL_EDIT_CLAIM);
     }
+
+    // connect claims
+    else if (componentId.find("connectFromClaimButton_") == 0 && eventType == "onClick") {
+        Log::debug("  CONNECT_FROM_CLAIM for user: " + user);
+        event.set_type(debate_event::CONNECT_FROM_CLAIM);
+        std::string fromClaimId = componentId.substr(strlen("connectFromClaimButton_"));
+        event.mutable_connect_from_claim()->set_from_claim_id(fromClaimId);
+    } else if (componentId.find("connectToClaimButton_") == 0 && eventType == "onClick") {
+        Log::debug("  CONNECT_TO_CLAIM for user: " + user);
+        event.set_type(debate_event::CONNECT_TO_CLAIM);
+        std::string toClaimId = componentId.substr(strlen("connectToClaimButton_"));
+        event.mutable_connect_to_claim()->set_to_claim_id(toClaimId);
+    } else if (componentId == "submitConnectClaimsButton" && eventType == "onClick") {
+        Log::debug("  SUBMIT_CONNECT_CLAIMS for user: " + user);
+        event.set_type(debate_event::SUBMIT_CONNECT_CLAIMS);
+        // find the connection input from the page
+    } else if ((componentId.rfind("cancelConnectClaimsButton", 0) == 0 || componentId == "closeConnectModalButton") && eventType == "onClick") {
+        Log::debug("  CANCEL_CONNECT_CLAIMS for user: " + user);
+        event.set_type(debate_event::CANCEL_CONNECT_CLAIMS);
+    }
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);

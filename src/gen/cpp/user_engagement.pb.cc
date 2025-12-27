@@ -38,6 +38,7 @@ inline constexpr DebatingInfo_ConnectingInfo::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         connecting_{false},
+        opened_connect_modal_{false},
         _cached_size_{0} {}
 
 template <typename>
@@ -280,6 +281,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_ConnectingInfo, _impl_.to_claim_id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_ConnectingInfo, _impl_.connection_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_ConnectingInfo, _impl_.connecting_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_ConnectingInfo, _impl_.opened_connect_modal_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -338,9 +340,9 @@ static const ::_pbi::MigrationSchema
         {10, -1, -1, sizeof(::user_engagement::DebateTopic)},
         {20, -1, -1, sizeof(::user_engagement::DebateList)},
         {29, -1, -1, sizeof(::user_engagement::DebatingInfo_ConnectingInfo)},
-        {41, 59, -1, sizeof(::user_engagement::DebatingInfo)},
-        {69, -1, -1, sizeof(::user_engagement::ClaimInfo)},
-        {79, -1, -1, sizeof(::user_engagement::UserEngagement)},
+        {42, 60, -1, sizeof(::user_engagement::DebatingInfo)},
+        {70, -1, -1, sizeof(::user_engagement::ClaimInfo)},
+        {80, -1, -1, sizeof(::user_engagement::UserEngagement)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user_engagement::_NoneInfo_default_instance_._instance,
@@ -359,7 +361,7 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "ebates\"3\n\013DebateTopic\022\016\n\002id\030\001 \001(\tR\002id\022\024\n"
     "\005topic\030\002 \001(\tR\005topic\"B\n\nDebateList\0224\n\006top"
     "ics\030\001 \003(\0132\034.user_engagement.DebateTopicR"
-    "\006topics\"\201\006\n\014DebatingInfo\022\?\n\rcurrent_clai"
+    "\006topics\"\263\006\n\014DebatingInfo\022\?\n\rcurrent_clai"
     "m\030\002 \001(\0132\032.user_engagement.ClaimInfoR\014cur"
     "rentClaim\022:\n\031current_claim_description\030\t"
     " \001(\tR\027currentClaimDescription\022=\n\014parent_"
@@ -374,27 +376,28 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "tingClaimDescription\022\'\n\017reporting_claim\030"
     "\010 \001(\010R\016reportingClaim\022U\n\017connecting_info"
     "\030\013 \001(\0132,.user_engagement.DebatingInfo.Co"
-    "nnectingInfoR\016connectingInfo\032\224\001\n\016Connect"
+    "nnectingInfoR\016connectingInfo\032\306\001\n\016Connect"
     "ingInfo\022\"\n\rfrom_claim_id\030\001 \001(\tR\013fromClai"
     "mId\022\036\n\013to_claim_id\030\002 \001(\tR\ttoClaimId\022\036\n\nc"
     "onnection\030\003 \001(\tR\nconnection\022\036\n\nconnectin"
-    "g\030\004 \001(\010R\nconnecting\"7\n\tClaimInfo\022\016\n\002id\030\001"
-    " \001(\tR\002id\022\032\n\010sentence\030\002 \001(\tR\010sentence\"\351\001\n"
-    "\016UserEngagement\022H\n\016current_action\030\001 \001(\0162"
-    "!.user_engagement.EngagementActionR\rcurr"
-    "entAction\0228\n\tnone_info\030\002 \001(\0132\031.user_enga"
-    "gement.NoneInfoH\000R\010noneInfo\022D\n\rdebating_"
-    "info\030\003 \001(\0132\035.user_engagement.DebatingInf"
-    "oH\000R\014debatingInfoB\r\n\013action_info*[\n\020Enga"
-    "gementAction\022!\n\035ENGAGEMENT_ACTION_UNSPEC"
-    "IFIED\020\000\022\017\n\013ACTION_NONE\020\001\022\023\n\017ACTION_DEBAT"
-    "ING\020\002b\006proto3"
+    "g\030\004 \001(\010R\nconnecting\0220\n\024opened_connect_mo"
+    "dal\030\005 \001(\010R\022openedConnectModal\"7\n\tClaimIn"
+    "fo\022\016\n\002id\030\001 \001(\tR\002id\022\032\n\010sentence\030\002 \001(\tR\010se"
+    "ntence\"\351\001\n\016UserEngagement\022H\n\016current_act"
+    "ion\030\001 \001(\0162!.user_engagement.EngagementAc"
+    "tionR\rcurrentAction\0228\n\tnone_info\030\002 \001(\0132\031"
+    ".user_engagement.NoneInfoH\000R\010noneInfo\022D\n"
+    "\rdebating_info\030\003 \001(\0132\035.user_engagement.D"
+    "ebatingInfoH\000R\014debatingInfoB\r\n\013action_in"
+    "fo*[\n\020EngagementAction\022!\n\035ENGAGEMENT_ACT"
+    "ION_UNSPECIFIED\020\000\022\017\n\013ACTION_NONE\020\001\022\023\n\017AC"
+    "TION_DEBATING\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    1413,
+    1463,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -1205,7 +1208,13 @@ DebatingInfo_ConnectingInfo::DebatingInfo_ConnectingInfo(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.connecting_ = from._impl_.connecting_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, connecting_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, connecting_),
+           offsetof(Impl_, opened_connect_modal_) -
+               offsetof(Impl_, connecting_) +
+               sizeof(Impl_::opened_connect_modal_));
 
   // @@protoc_insertion_point(copy_constructor:user_engagement.DebatingInfo.ConnectingInfo)
 }
@@ -1219,7 +1228,12 @@ inline PROTOBUF_NDEBUG_INLINE DebatingInfo_ConnectingInfo::Impl_::Impl_(
 
 inline void DebatingInfo_ConnectingInfo::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.connecting_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, connecting_),
+           0,
+           offsetof(Impl_, opened_connect_modal_) -
+               offsetof(Impl_, connecting_) +
+               sizeof(Impl_::opened_connect_modal_));
 }
 DebatingInfo_ConnectingInfo::~DebatingInfo_ConnectingInfo() {
   // @@protoc_insertion_point(destructor:user_engagement.DebatingInfo.ConnectingInfo)
@@ -1271,15 +1285,15 @@ const ::google::protobuf::internal::ClassData* DebatingInfo_ConnectingInfo::GetC
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 86, 2> DebatingInfo_ConnectingInfo::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 0, 86, 2> DebatingInfo_ConnectingInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -1289,9 +1303,7 @@ const ::_pbi::TcParseTable<2, 4, 0, 86, 2> DebatingInfo_ConnectingInfo::_table_ 
     ::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo_ConnectingInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool connecting = 4 [json_name = "connecting"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo_ConnectingInfo, _impl_.connecting_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.connecting_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string from_claim_id = 1 [json_name = "fromClaimId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.from_claim_id_)}},
@@ -1301,6 +1313,14 @@ const ::_pbi::TcParseTable<2, 4, 0, 86, 2> DebatingInfo_ConnectingInfo::_table_ 
     // string connection = 3 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.connection_)}},
+    // bool connecting = 4 [json_name = "connecting"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo_ConnectingInfo, _impl_.connecting_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.connecting_)}},
+    // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo_ConnectingInfo, _impl_.opened_connect_modal_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.opened_connect_modal_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1315,6 +1335,9 @@ const ::_pbi::TcParseTable<2, 4, 0, 86, 2> DebatingInfo_ConnectingInfo::_table_ 
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // bool connecting = 4 [json_name = "connecting"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.connecting_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.opened_connect_modal_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
@@ -1337,7 +1360,9 @@ PROTOBUF_NOINLINE void DebatingInfo_ConnectingInfo::Clear() {
   _impl_.from_claim_id_.ClearToEmpty();
   _impl_.to_claim_id_.ClearToEmpty();
   _impl_.connection_.ClearToEmpty();
-  _impl_.connecting_ = false;
+  ::memset(&_impl_.connecting_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.opened_connect_modal_) -
+      reinterpret_cast<char*>(&_impl_.connecting_)) + sizeof(_impl_.opened_connect_modal_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1387,6 +1412,13 @@ PROTOBUF_NOINLINE void DebatingInfo_ConnectingInfo::Clear() {
                 4, this_._internal_connecting(), target);
           }
 
+          // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+          if (this_._internal_opened_connect_modal() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                5, this_._internal_opened_connect_modal(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1431,6 +1463,10 @@ PROTOBUF_NOINLINE void DebatingInfo_ConnectingInfo::Clear() {
             if (this_._internal_connecting() != 0) {
               total_size += 2;
             }
+            // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+            if (this_._internal_opened_connect_modal() != 0) {
+              total_size += 2;
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -1456,6 +1492,9 @@ void DebatingInfo_ConnectingInfo::MergeImpl(::google::protobuf::MessageLite& to_
   if (from._internal_connecting() != 0) {
     _this->_impl_.connecting_ = from._impl_.connecting_;
   }
+  if (from._internal_opened_connect_modal() != 0) {
+    _this->_impl_.opened_connect_modal_ = from._impl_.opened_connect_modal_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1475,7 +1514,12 @@ void DebatingInfo_ConnectingInfo::InternalSwap(DebatingInfo_ConnectingInfo* PROT
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_claim_id_, &other->_impl_.from_claim_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.to_claim_id_, &other->_impl_.to_claim_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.connection_, &other->_impl_.connection_, arena);
-        swap(_impl_.connecting_, other->_impl_.connecting_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.opened_connect_modal_)
+      + sizeof(DebatingInfo_ConnectingInfo::_impl_.opened_connect_modal_)
+      - PROTOBUF_FIELD_OFFSET(DebatingInfo_ConnectingInfo, _impl_.connecting_)>(
+          reinterpret_cast<char*>(&_impl_.connecting_),
+          reinterpret_cast<char*>(&other->_impl_.connecting_));
 }
 
 ::google::protobuf::Metadata DebatingInfo_ConnectingInfo::GetMetadata() const {

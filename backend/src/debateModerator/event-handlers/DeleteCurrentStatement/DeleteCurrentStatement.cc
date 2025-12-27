@@ -26,8 +26,5 @@ void DeleteCurrentStatementHandler::DeleteCurrentStatement(const std::string& us
     // delete the current statement from the debate
     debateWrapper.deleteClaim(currentStatementId);
 
-    // serialize and save back
-    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
-    userProto.SerializeToArray(updatedUserData.data(), updatedUserData.size());
-    debateWrapper.updateUserProtobuf(user, updatedUserData);
+    debateWrapper.updateUserProtobuf(user, userProto);
 }

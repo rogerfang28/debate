@@ -18,11 +18,7 @@ bool GoHomeHandler::GoHome(const std::string& user, DebateWrapper& debateWrapper
         userProto.mutable_engagement()->mutable_none_info();
         // userProto.set_debate_topic_id("");
         
-        // Serialize and save back to database
-        std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
-        userProto.SerializeToArray(updatedData.data(), updatedData.size());
-        
-        debateWrapper.updateUserProtobuf(user, updatedData);
+        debateWrapper.updateUserProtobuf(user, userProto);
         
         return true;
     } catch (const std::exception& e) {

@@ -24,6 +24,7 @@
 #include "event-handlers/StartEditClaim/StartEditClaim.h"
 #include "event-handlers/SubmitEditClaim/SubmitEditClaim.h"
 #include "event-handlers/CancelEditClaim/CancelEditClaim.h"
+#include "event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -154,11 +155,19 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CONNECT_FROM_CLAIM:
             Log::debug("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
-            // implement later
+            ConnectClaimsHandler::ConnectFromClaim(
+                user,
+                event.connect_from_claim().from_claim_id(),
+                debateWrapper
+            );
             break;
         case debate_event::CONNECT_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: CONNECT_TO_CLAIM");
-            // implement later
+            ConnectClaimsHandler::ConnectToClaim(
+                user,
+                event.connect_to_claim().to_claim_id(),
+                debateWrapper
+            );
             break;
         case debate_event::SUBMIT_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
@@ -166,7 +175,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break; 
         case debate_event::CANCEL_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
-            // implement later
+            ConnectClaimsHandler::CancelConnectClaims(user, debateWrapper);
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");

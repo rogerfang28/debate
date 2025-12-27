@@ -1,6 +1,7 @@
 #include "ConnectClaimsHandler.h"
 #include "../../../utils/Log.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "../../../../../src/gen/cpp/debate.pb.h"
 
 void ConnectClaimsHandler::ConnectClaims(
     const std::string& user,
@@ -9,7 +10,8 @@ void ConnectClaimsHandler::ConnectClaims(
     const std::string& connection,
     DebateWrapper& debateWrapper
 ) {
-    // this one should actually update the protobuf
+    // this one should actually update the claim protobuf
+    
 }
 
 void ConnectClaimsHandler::ConnectFromClaim(
@@ -19,8 +21,11 @@ void ConnectClaimsHandler::ConnectFromClaim(
 ) {
     // take user proto and put connect from claim);
     user_engagement::UserEngagement userEngagement;
-    userEngagement = debateWrapper.getUserProtobufByUsername(user).engagement();
-    
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_from_claim_id(fromClaimId);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_connecting(true);
+
+    debateWrapper.updateUserProtobuf(user, userProto);
 }
 
 void ConnectClaimsHandler::ConnectToClaim(
@@ -29,6 +34,11 @@ void ConnectClaimsHandler::ConnectToClaim(
     DebateWrapper& debateWrapper
 ) {
     // take user proto and put connect to claim
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_to_claim_id(toClaimId);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(true);
+
+    debateWrapper.updateUserProtobuf(user, userProto);
 }
 
 void ConnectClaimsHandler::CancelConnectClaims(
@@ -36,5 +46,12 @@ void ConnectClaimsHandler::CancelConnectClaims(
     DebateWrapper& debateWrapper
 ) {
     // take user proto and cancel connect claims
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_connecting(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->clear_from_claim_id();
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->clear_to_claim_id();
+
+    debateWrapper.updateUserProtobuf(user, userProto);
 
 }

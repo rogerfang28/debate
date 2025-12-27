@@ -59,6 +59,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/StartEditClaim/StartEditClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SubmitEditClaim/SubmitEditClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/CancelEditClaim/CancelEditClaim.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
+
 
 
     # build response

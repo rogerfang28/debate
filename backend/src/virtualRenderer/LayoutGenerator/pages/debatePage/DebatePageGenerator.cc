@@ -18,10 +18,20 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
     bool editingClaimDescription = debatingInfo.editing_claim_description();
     bool editingClaimSentence = debatingInfo.editing_claim_sentence();
+    bool openedConnectModal = debatingInfo.connecting_info().opened_connect_modal();
     std::string currentClaimDescription = debatingInfo.current_claim_description();
     Log::debug("[DebatePageGenerator] Debate Topic: " + debate_topic);
     Log::debug("[DebatePageGenerator] Current Claim: " + claim);
     Log::debug("[DebatePageGenerator] Number of Child Claims: " + std::to_string(childClaimInfo.size()));
+
+    // connecting info
+    bool connecting = debatingInfo.connecting_info().connecting();
+    std::string fromClaimId = debatingInfo.connecting_info().from_claim_id();
+    std::string toClaimId = debatingInfo.connecting_info().to_claim_id();
+    Log::debug("[DebatePageGenerator] Connecting: " + std::to_string(connecting));
+    Log::debug("[DebatePageGenerator] From Claim ID: " + fromClaimId
+        + ", To Claim ID: " + toClaimId);
+
     // Main layout container
     ui::Component mainLayout = ComponentGenerator::createContainer(
         "mainLayout",
@@ -568,6 +578,53 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         );
         ComponentGenerator::addChild(&childNodeButtonContainer, childNodeButton);
 
+        // Add connection buttons based on connecting state
+        if (connecting) {
+            // If we're connecting and this is the FROM claim, show Cancel button
+            if (childClaimInfo[i].first == fromClaimId) {
+                ui::Component cancelConnectClaimsButton = ComponentGenerator::createButton(
+                    "cancelConnectClaimsButton_" + childClaimInfo[i].first,
+                    "Cancel Connection",
+                    "",
+                    "bg-gray-600",
+                    "hover:bg-gray-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&childNodeButtonContainer, cancelConnectClaimsButton);
+            } else {
+                // For all other claims, show Connect To button
+                ui::Component connectToClaimButton = ComponentGenerator::createButton(
+                    "connectToClaimButton_" + childClaimInfo[i].first,
+                    "Connect To",
+                    "",
+                    "bg-purple-600",
+                    "hover:bg-purple-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&childNodeButtonContainer, connectToClaimButton);
+            }
+        } else {
+            // If we're not connecting, show Connect From button
+            ui::Component connectFromClaimButton = ComponentGenerator::createButton(
+                "connectFromClaimButton_" + childClaimInfo[i].first,
+                "Connect From",
+                "",
+                "bg-purple-600",
+                "hover:bg-purple-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(&childNodeButtonContainer, connectFromClaimButton);
+        }
+
         ui::Component deleteChildClaimButton = ComponentGenerator::createButton(
             "deleteChildClaimButton_" + childClaimInfo[i].first,
             "Delete",
@@ -766,6 +823,111 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         ComponentGenerator::addChild(&modalContent, modalActions);
         ComponentGenerator::addChild(&modalOverlay, modalContent);
         ComponentGenerator::addChild(&mainLayout, modalOverlay);
+    }
+
+    // Connect Modal
+    if (openedConnectModal) {
+        // Modal overlay
+        ui::Component connectModalOverlay = ComponentGenerator::createContainer(
+            "connectModalOverlay",
+            "fixed inset-0 flex items-center justify-center",
+            "bg-black/50",
+            "",
+            "",
+            "",
+            "",
+            "z-50"
+        );
+
+        // Modal content
+        ui::Component connectModalContent = ComponentGenerator::createContainer(
+            "connectModalContent",
+            "",
+            "bg-gray-800",
+            "p-8",
+            "",
+            "border-2 border-gray-700",
+            "rounded-lg",
+            "w-full max-w-2xl"
+        );
+
+        // Modal title
+        ui::Component connectModalTitle = ComponentGenerator::createText(
+            "connectModalTitle",
+            "Create Connection",
+            "text-2xl",
+            "text-white",
+            "font-bold",
+            "mb-6"
+        );
+        ComponentGenerator::addChild(&connectModalContent, connectModalTitle);
+
+        // Connection label
+        ui::Component connectionLabel = ComponentGenerator::createText(
+            "connectionLabel",
+            "Connection:",
+            "text-sm",
+            "text-white",
+            "font-semibold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&connectModalContent, connectionLabel);
+
+        // Connection input
+        ui::Component connectionInput = ComponentGenerator::createInput(
+            "connectionInput",
+            "Enter the connection type...",
+            "connection",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-6"
+        );
+        ComponentGenerator::addChild(&connectModalContent, connectionInput);
+
+        // Modal action buttons
+        ui::Component connectModalActions = ComponentGenerator::createContainer(
+            "connectModalActions",
+            "flex gap-3 justify-end",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
+        ui::Component connectCancelButton = ComponentGenerator::createButton(
+            "closeConnectModalButton",
+            "Cancel",
+            "",
+            "bg-gray-600",
+            "hover:bg-gray-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&connectModalActions, connectCancelButton);
+
+        ui::Component connectSubmitButton = ComponentGenerator::createButton(
+            "submitConnectButton",
+            "Submit",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&connectModalActions, connectSubmitButton);
+
+        ComponentGenerator::addChild(&connectModalContent, connectModalActions);
+        ComponentGenerator::addChild(&connectModalOverlay, connectModalContent);
+        ComponentGenerator::addChild(&mainLayout, connectModalOverlay);
     }
 
     // Add main layout to page

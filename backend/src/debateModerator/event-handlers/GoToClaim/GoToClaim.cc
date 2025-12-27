@@ -8,8 +8,5 @@ void GoToClaimHandler::GoToClaim(const std::string& claim_id, const std::string&
     // save back to database;
     user::User userProto = debateWrapper.getUserProtobufByUsername(user);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
-    // serialize and save back
-    std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());
-    userProto.SerializeToArray(updatedUserData.data(), updatedUserData.size());
-    debateWrapper.updateUserProtobuf(user, updatedUserData);
+    debateWrapper.updateUserProtobuf(user, userProto);
 }

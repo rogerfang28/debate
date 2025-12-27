@@ -11,7 +11,6 @@ message Claim {
   string description = 3;
   string parent_id = 4;
   repeated string children_ids = 5;
-  string connection_to_parent = 6; // e.g., "supports", "opposes"
   Proof proof = 7; // proof structure for this claim
 }
 
