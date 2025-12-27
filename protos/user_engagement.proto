@@ -32,6 +32,10 @@ message DebatingInfo {
   bool editing_claim_sentence = 7; // whether the user is editing the current claim
   bool editing_claim_description = 10; // whether the user is editing the current claim description
   bool reporting_claim = 8; // whether the user is reporting the current claim
+  message ConnectingInfo {
+    string from_claim_id = 1;
+    bool connecting = 2; // whether the user is connecting claims
+  }
 }
 
 message ClaimInfo {

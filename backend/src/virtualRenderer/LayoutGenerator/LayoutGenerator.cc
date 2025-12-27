@@ -27,36 +27,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         case user_engagement::ACTION_DEBATING:
             // generate debate page
             Log::debug("[LayoutGenerator] Generating Debate Page for user: " + user);
-            if (true) {
-                std::string currentClaimId = info.engagement().debating_info().current_claim().id();
-                std::string debate_topic = info.engagement().debating_info().root_claim().sentence();
-                std::string debate_claim_sentence = info.engagement().debating_info().current_claim().sentence();
-                std::vector<std::pair<std::string,std::string>> childClaims;
-                for (int i = 0; i < info.engagement().debating_info().children_claims_size(); i++) {
-                    const user_engagement::ClaimInfo& claim = info.engagement().debating_info().children_claims(i);
-                    childClaims.push_back({claim.id(), claim.sentence()});
-                }
-                bool openedAddChildClaimModal = info.engagement().debating_info().adding_child_claim();
-                bool editingClaimDescription = info.engagement().debating_info().editing_claim_description();
-                bool editingClaimSentence = info.engagement().debating_info().editing_claim_sentence();
-                std::string currentClaimDescription = info.engagement().debating_info().current_claim_description();
-                Log::debug("[LayoutGenerator] Debate Topic: " + debate_topic);
-                Log::debug("[LayoutGenerator] Current Claim: " + debate_claim_sentence);
-                Log::debug("[LayoutGenerator] Number of Child Claims: " + std::to_string(childClaims.size()));
-
-                return DebatePageGenerator::GenerateDebatePage(
-                    debate_topic, 
-                    debate_claim_sentence, 
-                    currentClaimDescription, 
-                    childClaims, 
-                    openedAddChildClaimModal,
-                    editingClaimDescription,
-                    editingClaimSentence);
-            } else {
-                Log::debug("[LayoutGenerator] No debate info found, generating Home Page instead.");
-                user_engagement::DebateList emptyList;
-                return HomePageGenerator::GenerateHomePage(emptyList);
-            }
+            return DebatePageGenerator::GenerateDebatePage(info.engagement().debating_info());
         default:
             Log::debug("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");
             Log::debug("[LayoutGenerator] engagement action: " + std::to_string(info.engagement().current_action()));

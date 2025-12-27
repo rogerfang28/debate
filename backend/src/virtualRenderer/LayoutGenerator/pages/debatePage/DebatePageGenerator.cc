@@ -1,18 +1,27 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
+#include "../../../../utils/Log.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(
-    const std::string& debateTopic, 
-    const std::string& claim, 
-    const std::string& currentClaimDescription, 
-    std::vector<std::pair<std::string,std::string>> childClaimInfo, 
-    bool openedAddChildClaimModal, 
-    bool editingClaimDescription,
-    bool editingClaimSentence) {
+ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo debatingInfo) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
 
+    std::string currentClaimId = debatingInfo.current_claim().id();
+    std::string debate_topic = debatingInfo.root_claim().sentence();
+    std::string claim = debatingInfo.current_claim().sentence();
+    std::vector<std::pair<std::string,std::string>> childClaimInfo;
+    for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
+        const user_engagement::ClaimInfo& claim = debatingInfo.children_claims(i);
+        childClaimInfo.push_back({claim.id(), claim.sentence()});
+    }
+    bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
+    bool editingClaimDescription = debatingInfo.editing_claim_description();
+    bool editingClaimSentence = debatingInfo.editing_claim_sentence();
+    std::string currentClaimDescription = debatingInfo.current_claim_description();
+    Log::debug("[DebatePageGenerator] Debate Topic: " + debate_topic);
+    Log::debug("[DebatePageGenerator] Current Claim: " + claim);
+    Log::debug("[DebatePageGenerator] Number of Child Claims: " + std::to_string(childClaimInfo.size()));
     // Main layout container
     ui::Component mainLayout = ComponentGenerator::createContainer(
         "mainLayout",
