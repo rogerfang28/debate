@@ -61,6 +61,9 @@ extern AddChildClaimDefaultTypeInternal _AddChildClaim_default_instance_;
 class AddConnection;
 struct AddConnectionDefaultTypeInternal;
 extern AddConnectionDefaultTypeInternal _AddConnection_default_instance_;
+class CancelEditClaim;
+struct CancelEditClaimDefaultTypeInternal;
+extern CancelEditClaimDefaultTypeInternal _CancelEditClaim_default_instance_;
 class CancelEditClaimDescription;
 struct CancelEditClaimDescriptionDefaultTypeInternal;
 extern CancelEditClaimDescriptionDefaultTypeInternal _CancelEditClaimDescription_default_instance_;
@@ -109,9 +112,15 @@ extern OpenAddChildClaimDefaultTypeInternal _OpenAddChildClaim_default_instance_
 class OpenReportClaim;
 struct OpenReportClaimDefaultTypeInternal;
 extern OpenReportClaimDefaultTypeInternal _OpenReportClaim_default_instance_;
+class StartEditClaim;
+struct StartEditClaimDefaultTypeInternal;
+extern StartEditClaimDefaultTypeInternal _StartEditClaim_default_instance_;
 class StartEditClaimDescription;
 struct StartEditClaimDescriptionDefaultTypeInternal;
 extern StartEditClaimDescriptionDefaultTypeInternal _StartEditClaimDescription_default_instance_;
+class SubmitEditClaim;
+struct SubmitEditClaimDefaultTypeInternal;
+extern SubmitEditClaimDefaultTypeInternal _SubmitEditClaim_default_instance_;
 class SubmitEditClaimDescription;
 struct SubmitEditClaimDescriptionDefaultTypeInternal;
 extern SubmitEditClaimDescriptionDefaultTypeInternal _SubmitEditClaimDescription_default_instance_;
@@ -143,6 +152,9 @@ enum EventType : int {
   START_EDIT_CLAIM_DESCRIPTION = 17,
   SUBMIT_EDIT_CLAIM_DESCRIPTION = 18,
   CANCEL_EDIT_CLAIM_DESCRIPTION = 19,
+  START_EDIT_CLAIM = 20,
+  SUBMIT_EDIT_CLAIM = 21,
+  CANCEL_EDIT_CLAIM = 22,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -152,8 +164,8 @@ enum EventType : int {
 bool EventType_IsValid(int value);
 extern const uint32_t EventType_internal_data_[];
 constexpr EventType EventType_MIN = static_cast<EventType>(0);
-constexpr EventType EventType_MAX = static_cast<EventType>(19);
-constexpr int EventType_ARRAYSIZE = 19 + 1;
+constexpr EventType EventType_MAX = static_cast<EventType>(22);
+constexpr int EventType_ARRAYSIZE = 22 + 1;
 const ::google::protobuf::EnumDescriptor*
 EventType_descriptor();
 template <typename T>
@@ -166,7 +178,7 @@ const std::string& EventType_Name(T value) {
 template <>
 inline const std::string& EventType_Name(EventType value) {
   return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
-                                                 0, 19>(
+                                                 0, 22>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(absl::string_view name, EventType* value) {
@@ -375,6 +387,202 @@ class SubmitEditClaimDescription final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class SubmitEditClaim final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.SubmitEditClaim) */ {
+ public:
+  inline SubmitEditClaim() : SubmitEditClaim(nullptr) {}
+  ~SubmitEditClaim() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubmitEditClaim* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubmitEditClaim));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubmitEditClaim(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubmitEditClaim(const SubmitEditClaim& from) : SubmitEditClaim(nullptr, from) {}
+  inline SubmitEditClaim(SubmitEditClaim&& from) noexcept
+      : SubmitEditClaim(nullptr, std::move(from)) {}
+  inline SubmitEditClaim& operator=(const SubmitEditClaim& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubmitEditClaim& operator=(SubmitEditClaim&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubmitEditClaim& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubmitEditClaim* internal_default_instance() {
+    return reinterpret_cast<const SubmitEditClaim*>(
+        &_SubmitEditClaim_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 20;
+  friend void swap(SubmitEditClaim& a, SubmitEditClaim& b) { a.Swap(&b); }
+  inline void Swap(SubmitEditClaim* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubmitEditClaim* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubmitEditClaim* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SubmitEditClaim>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubmitEditClaim& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubmitEditClaim& from) { SubmitEditClaim::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubmitEditClaim* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.SubmitEditClaim"; }
+
+ protected:
+  explicit SubmitEditClaim(::google::protobuf::Arena* arena);
+  SubmitEditClaim(::google::protobuf::Arena* arena, const SubmitEditClaim& from);
+  SubmitEditClaim(::google::protobuf::Arena* arena, SubmitEditClaim&& from) noexcept
+      : SubmitEditClaim(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewClaimFieldNumber = 1,
+  };
+  // string new_claim = 1 [json_name = "newClaim"];
+  void clear_new_claim() ;
+  const std::string& new_claim() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_new_claim(Arg_&& arg, Args_... args);
+  std::string* mutable_new_claim();
+  PROTOBUF_NODISCARD std::string* release_new_claim();
+  void set_allocated_new_claim(std::string* value);
+
+  private:
+  const std::string& _internal_new_claim() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_new_claim(
+      const std::string& value);
+  std::string* _internal_mutable_new_claim();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.SubmitEditClaim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      46, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubmitEditClaim& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr new_claim_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
 class StartEditClaimDescription final : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:debate_event.StartEditClaimDescription) */ {
  public:
@@ -514,6 +722,151 @@ class StartEditClaimDescription final : public ::google::protobuf::internal::Zer
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const StartEditClaimDescription& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
+class StartEditClaim final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:debate_event.StartEditClaim) */ {
+ public:
+  inline StartEditClaim() : StartEditClaim(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(StartEditClaim* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartEditClaim));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartEditClaim(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline StartEditClaim(const StartEditClaim& from) : StartEditClaim(nullptr, from) {}
+  inline StartEditClaim(StartEditClaim&& from) noexcept
+      : StartEditClaim(nullptr, std::move(from)) {}
+  inline StartEditClaim& operator=(const StartEditClaim& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartEditClaim& operator=(StartEditClaim&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartEditClaim& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartEditClaim* internal_default_instance() {
+    return reinterpret_cast<const StartEditClaim*>(
+        &_StartEditClaim_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(StartEditClaim& a, StartEditClaim& b) { a.Swap(&b); }
+  inline void Swap(StartEditClaim* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StartEditClaim* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StartEditClaim* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartEditClaim>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const StartEditClaim& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const StartEditClaim& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.StartEditClaim"; }
+
+ protected:
+  explicit StartEditClaim(::google::protobuf::Arena* arena);
+  StartEditClaim(::google::protobuf::Arena* arena, const StartEditClaim& from);
+  StartEditClaim(::google::protobuf::Arena* arena, StartEditClaim&& from) noexcept
+      : StartEditClaim(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:debate_event.StartEditClaim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartEditClaim& from_msg);
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   friend struct ::TableStruct_debate_5fevent_2eproto;
@@ -2950,6 +3303,151 @@ class CancelEditClaimDescription final : public ::google::protobuf::internal::Ze
 };
 // -------------------------------------------------------------------
 
+class CancelEditClaim final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:debate_event.CancelEditClaim) */ {
+ public:
+  inline CancelEditClaim() : CancelEditClaim(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CancelEditClaim* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelEditClaim));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelEditClaim(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline CancelEditClaim(const CancelEditClaim& from) : CancelEditClaim(nullptr, from) {}
+  inline CancelEditClaim(CancelEditClaim&& from) noexcept
+      : CancelEditClaim(nullptr, std::move(from)) {}
+  inline CancelEditClaim& operator=(const CancelEditClaim& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelEditClaim& operator=(CancelEditClaim&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelEditClaim& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelEditClaim* internal_default_instance() {
+    return reinterpret_cast<const CancelEditClaim*>(
+        &_CancelEditClaim_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 21;
+  friend void swap(CancelEditClaim& a, CancelEditClaim& b) { a.Swap(&b); }
+  inline void Swap(CancelEditClaim* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CancelEditClaim* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CancelEditClaim* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelEditClaim>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const CancelEditClaim& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const CancelEditClaim& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.CancelEditClaim"; }
+
+ protected:
+  explicit CancelEditClaim(::google::protobuf::Arena* arena);
+  CancelEditClaim(::google::protobuf::Arena* arena, const CancelEditClaim& from);
+  CancelEditClaim(::google::protobuf::Arena* arena, CancelEditClaim&& from) noexcept
+      : CancelEditClaim(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:debate_event.CancelEditClaim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelEditClaim& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
 class AddConnection final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.AddConnection) */ {
  public:
@@ -3493,7 +3991,7 @@ class DebateEvent final : public ::google::protobuf::Message
     return reinterpret_cast<const DebateEvent*>(
         &_DebateEvent_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* other) {
     if (other == this) return;
@@ -4723,6 +5221,66 @@ inline void SubmitEditClaimDescription::set_allocated_new_description(std::strin
 // -------------------------------------------------------------------
 
 // CancelEditClaimDescription
+
+// -------------------------------------------------------------------
+
+// StartEditClaim
+
+// -------------------------------------------------------------------
+
+// SubmitEditClaim
+
+// string new_claim = 1 [json_name = "newClaim"];
+inline void SubmitEditClaim::clear_new_claim() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_claim_.ClearToEmpty();
+}
+inline const std::string& SubmitEditClaim::new_claim() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitEditClaim.new_claim)
+  return _internal_new_claim();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubmitEditClaim::set_new_claim(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_claim_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitEditClaim.new_claim)
+}
+inline std::string* SubmitEditClaim::mutable_new_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_new_claim();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitEditClaim.new_claim)
+  return _s;
+}
+inline const std::string& SubmitEditClaim::_internal_new_claim() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_claim_.Get();
+}
+inline void SubmitEditClaim::_internal_set_new_claim(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_claim_.Set(value, GetArena());
+}
+inline std::string* SubmitEditClaim::_internal_mutable_new_claim() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.new_claim_.Mutable( GetArena());
+}
+inline std::string* SubmitEditClaim::release_new_claim() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitEditClaim.new_claim)
+  return _impl_.new_claim_.Release();
+}
+inline void SubmitEditClaim::set_allocated_new_claim(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_claim_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.new_claim_.IsDefault()) {
+    _impl_.new_claim_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitEditClaim.new_claim)
+}
+
+// -------------------------------------------------------------------
+
+// CancelEditClaim
 
 // -------------------------------------------------------------------
 

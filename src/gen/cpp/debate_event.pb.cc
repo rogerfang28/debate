@@ -52,6 +52,33 @@ struct SubmitEditClaimDescriptionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubmitEditClaimDescriptionDefaultTypeInternal _SubmitEditClaimDescription_default_instance_;
+
+inline constexpr SubmitEditClaim::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : new_claim_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SubmitEditClaim::SubmitEditClaim(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SubmitEditClaimDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubmitEditClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubmitEditClaimDefaultTypeInternal() {}
+  union {
+    SubmitEditClaim _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubmitEditClaimDefaultTypeInternal _SubmitEditClaim_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR StartEditClaimDescription::StartEditClaimDescription(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -70,6 +97,24 @@ struct StartEditClaimDescriptionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartEditClaimDescriptionDefaultTypeInternal _StartEditClaimDescription_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR StartEditClaim::StartEditClaim(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct StartEditClaimDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR StartEditClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~StartEditClaimDefaultTypeInternal() {}
+  union {
+    StartEditClaim _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartEditClaimDefaultTypeInternal _StartEditClaim_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR OpenReportClaim::OpenReportClaim(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -385,6 +430,24 @@ struct CancelEditClaimDescriptionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CancelEditClaimDescriptionDefaultTypeInternal _CancelEditClaimDescription_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR CancelEditClaim::CancelEditClaim(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct CancelEditClaimDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CancelEditClaimDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CancelEditClaimDefaultTypeInternal() {}
+  union {
+    CancelEditClaim _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CancelEditClaimDefaultTypeInternal _CancelEditClaim_default_instance_;
 
 inline constexpr AddConnection::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -656,6 +719,31 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::debate_event::StartEditClaim, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::debate_event::SubmitEditClaim, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::debate_event::SubmitEditClaim, _impl_.new_claim_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::debate_event::CancelEditClaim, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -730,7 +818,10 @@ static const ::_pbi::MigrationSchema
         {139, -1, -1, sizeof(::debate_event::StartEditClaimDescription)},
         {147, -1, -1, sizeof(::debate_event::SubmitEditClaimDescription)},
         {156, -1, -1, sizeof(::debate_event::CancelEditClaimDescription)},
-        {164, 194, -1, sizeof(::debate_event::DebateEvent)},
+        {164, -1, -1, sizeof(::debate_event::StartEditClaim)},
+        {172, -1, -1, sizeof(::debate_event::SubmitEditClaim)},
+        {181, -1, -1, sizeof(::debate_event::CancelEditClaim)},
+        {189, 219, -1, sizeof(::debate_event::DebateEvent)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::debate_event::_None_default_instance_._instance,
@@ -752,6 +843,9 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::debate_event::_StartEditClaimDescription_default_instance_._instance,
     &::debate_event::_SubmitEditClaimDescription_default_instance_._instance,
     &::debate_event::_CancelEditClaimDescription_default_instance_._instance,
+    &::debate_event::_StartEditClaim_default_instance_._instance,
+    &::debate_event::_SubmitEditClaim_default_instance_._instance,
+    &::debate_event::_CancelEditClaim_default_instance_._instance,
     &::debate_event::_DebateEvent_default_instance_._instance,
 };
 const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -775,57 +869,61 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "\001(\tR\007claimId\"\033\n\031StartEditClaimDescriptio"
     "n\"E\n\032SubmitEditClaimDescription\022\'\n\017new_d"
     "escription\030\001 \001(\tR\016newDescription\"\034\n\032Canc"
-    "elEditClaimDescription\"\356\013\n\013DebateEvent\022\027"
-    "\n\007user_id\030\001 \001(\tR\006userId\022\016\n\002id\030\002 \001(\tR\002id\022"
-    ";\n\013occurred_at\030\003 \001(\0132\032.google.protobuf.T"
-    "imestampR\noccurredAt\022+\n\004type\030\004 \001(\0162\027.deb"
-    "ate_event.EventTypeR\004type\022A\n\rcreate_deba"
-    "te\030\n \001(\0132\032.debate_event.CreateDebateH\000R\014"
-    "createDebate\022A\n\rclear_debates\030\013 \001(\0132\032.de"
-    "bate_event.ClearDebatesH\000R\014clearDebates\022"
-    "A\n\rdelete_debate\030\014 \001(\0132\032.debate_event.De"
-    "leteDebateH\000R\014deleteDebate\022>\n\014enter_deba"
-    "te\030\r \001(\0132\031.debate_event.EnterDebateH\000R\013e"
-    "nterDebate\022/\n\007go_home\030\016 \001(\0132\024.debate_eve"
-    "nt.GoHomeH\000R\006goHome\022R\n\024open_add_child_cl"
-    "aim\030\017 \001(\0132\037.debate_event.OpenAddChildCla"
-    "imH\000R\021openAddChildClaim\022U\n\025close_add_chi"
-    "ld_claim\030\025 \001(\0132 .debate_event.CloseAddCh"
-    "ildClaimH\000R\022closeAddChildClaim\022E\n\017add_ch"
-    "ild_claim\030\020 \001(\0132\033.debate_event.AddChildC"
-    "laimH\000R\raddChildClaim\022K\n\021open_report_cla"
-    "im\030\021 \001(\0132\035.debate_event.OpenReportClaimH"
-    "\000R\017openReportClaim\022N\n\022close_report_claim"
-    "\030\026 \001(\0132\036.debate_event.CloseReportClaimH\000"
-    "R\020closeReportClaim\022`\n\030delete_current_sta"
-    "tement\030\022 \001(\0132$.debate_event.DeleteCurren"
-    "tStatementH\000R\026deleteCurrentStatement\022A\n\014"
-    "go_to_parent\030\023 \001(\0132\035.debate_event.GoToPa"
-    "rentClaimH\000R\ngoToParent\0229\n\013go_to_claim\030\024"
-    " \001(\0132\027.debate_event.GoToClaimH\000R\tgoToCla"
-    "im\022N\n\022delete_child_claim\030\027 \001(\0132\036.debate_"
-    "event.DeleteChildClaimH\000R\020deleteChildCla"
-    "im\022j\n\034start_edit_claim_description\030\030 \001(\013"
-    "2\'.debate_event.StartEditClaimDescriptio"
-    "nH\000R\031startEditClaimDescription\022m\n\035submit"
-    "_edit_claim_description\030\031 \001(\0132(.debate_e"
-    "vent.SubmitEditClaimDescriptionH\000R\032submi"
-    "tEditClaimDescription\022m\n\035cancel_edit_cla"
-    "im_description\030\032 \001(\0132(.debate_event.Canc"
-    "elEditClaimDescriptionH\000R\032cancelEditClai"
-    "mDescriptionB\t\n\007payload*\332\003\n\tEventType\022\032\n"
-    "\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\rC"
-    "REATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDEL"
-    "ETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HOM"
-    "E\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n\024OPEN_ADD_CHILD_"
-    "CLAIM\020\010\022\023\n\017ADD_CHILD_CLAIM\020\t\022\034\n\030DELETE_C"
-    "URRENT_STATEMENT\020\n\022\020\n\014REPORT_CLAIM\020\013\022\017\n\013"
-    "GO_TO_CLAIM\020\014\022\031\n\025CLOSE_ADD_CHILD_CLAIM\020\r"
-    "\022\026\n\022CLOSE_REPORT_CLAIM\020\016\022\032\n\026SUBMIT_ADD_C"
-    "HILD_CLAIM\020\017\022\026\n\022DELETE_CHILD_CLAIM\020\020\022 \n\034"
-    "START_EDIT_CLAIM_DESCRIPTION\020\021\022!\n\035SUBMIT"
-    "_EDIT_CLAIM_DESCRIPTION\020\022\022!\n\035CANCEL_EDIT"
-    "_CLAIM_DESCRIPTION\020\023b\006proto3"
+    "elEditClaimDescription\"\020\n\016StartEditClaim"
+    "\".\n\017SubmitEditClaim\022\033\n\tnew_claim\030\001 \001(\tR\010"
+    "newClaim\"\021\n\017CancelEditClaim\"\356\013\n\013DebateEv"
+    "ent\022\027\n\007user_id\030\001 \001(\tR\006userId\022\016\n\002id\030\002 \001(\t"
+    "R\002id\022;\n\013occurred_at\030\003 \001(\0132\032.google.proto"
+    "buf.TimestampR\noccurredAt\022+\n\004type\030\004 \001(\0162"
+    "\027.debate_event.EventTypeR\004type\022A\n\rcreate"
+    "_debate\030\n \001(\0132\032.debate_event.CreateDebat"
+    "eH\000R\014createDebate\022A\n\rclear_debates\030\013 \001(\013"
+    "2\032.debate_event.ClearDebatesH\000R\014clearDeb"
+    "ates\022A\n\rdelete_debate\030\014 \001(\0132\032.debate_eve"
+    "nt.DeleteDebateH\000R\014deleteDebate\022>\n\014enter"
+    "_debate\030\r \001(\0132\031.debate_event.EnterDebate"
+    "H\000R\013enterDebate\022/\n\007go_home\030\016 \001(\0132\024.debat"
+    "e_event.GoHomeH\000R\006goHome\022R\n\024open_add_chi"
+    "ld_claim\030\017 \001(\0132\037.debate_event.OpenAddChi"
+    "ldClaimH\000R\021openAddChildClaim\022U\n\025close_ad"
+    "d_child_claim\030\025 \001(\0132 .debate_event.Close"
+    "AddChildClaimH\000R\022closeAddChildClaim\022E\n\017a"
+    "dd_child_claim\030\020 \001(\0132\033.debate_event.AddC"
+    "hildClaimH\000R\raddChildClaim\022K\n\021open_repor"
+    "t_claim\030\021 \001(\0132\035.debate_event.OpenReportC"
+    "laimH\000R\017openReportClaim\022N\n\022close_report_"
+    "claim\030\026 \001(\0132\036.debate_event.CloseReportCl"
+    "aimH\000R\020closeReportClaim\022`\n\030delete_curren"
+    "t_statement\030\022 \001(\0132$.debate_event.DeleteC"
+    "urrentStatementH\000R\026deleteCurrentStatemen"
+    "t\022A\n\014go_to_parent\030\023 \001(\0132\035.debate_event.G"
+    "oToParentClaimH\000R\ngoToParent\0229\n\013go_to_cl"
+    "aim\030\024 \001(\0132\027.debate_event.GoToClaimH\000R\tgo"
+    "ToClaim\022N\n\022delete_child_claim\030\027 \001(\0132\036.de"
+    "bate_event.DeleteChildClaimH\000R\020deleteChi"
+    "ldClaim\022j\n\034start_edit_claim_description\030"
+    "\030 \001(\0132\'.debate_event.StartEditClaimDescr"
+    "iptionH\000R\031startEditClaimDescription\022m\n\035s"
+    "ubmit_edit_claim_description\030\031 \001(\0132(.deb"
+    "ate_event.SubmitEditClaimDescriptionH\000R\032"
+    "submitEditClaimDescription\022m\n\035cancel_edi"
+    "t_claim_description\030\032 \001(\0132(.debate_event"
+    ".CancelEditClaimDescriptionH\000R\032cancelEdi"
+    "tClaimDescriptionB\t\n\007payload*\236\004\n\tEventTy"
+    "pe\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE\020\001"
+    "\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003\022\021"
+    "\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n\007G"
+    "O_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n\024OPEN_ADD_C"
+    "HILD_CLAIM\020\010\022\023\n\017ADD_CHILD_CLAIM\020\t\022\034\n\030DEL"
+    "ETE_CURRENT_STATEMENT\020\n\022\020\n\014REPORT_CLAIM\020"
+    "\013\022\017\n\013GO_TO_CLAIM\020\014\022\031\n\025CLOSE_ADD_CHILD_CL"
+    "AIM\020\r\022\026\n\022CLOSE_REPORT_CLAIM\020\016\022\032\n\026SUBMIT_"
+    "ADD_CHILD_CLAIM\020\017\022\026\n\022DELETE_CHILD_CLAIM\020"
+    "\020\022 \n\034START_EDIT_CLAIM_DESCRIPTION\020\021\022!\n\035S"
+    "UBMIT_EDIT_CLAIM_DESCRIPTION\020\022\022!\n\035CANCEL"
+    "_EDIT_CLAIM_DESCRIPTION\020\023\022\024\n\020START_EDIT_"
+    "CLAIM\020\024\022\025\n\021SUBMIT_EDIT_CLAIM\020\025\022\025\n\021CANCEL"
+    "_EDIT_CLAIM\020\026b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_5fevent_2eproto_deps[1] =
     {
@@ -835,13 +933,13 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    2788,
+    2941,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
     descriptor_table_debate_5fevent_2eproto_deps,
     1,
-    20,
+    23,
     schemas,
     file_default_instances,
     TableStruct_debate_5fevent_2eproto::offsets,
@@ -854,9 +952,9 @@ const ::google::protobuf::EnumDescriptor* EventType_descriptor() {
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    1310720u, 0u, };
+    1507328u, 0u, };
 bool EventType_IsValid(int value) {
-  return 0 <= value && value <= 19;
+  return 0 <= value && value <= 22;
 }
 // ===================================================================
 
@@ -3951,6 +4049,443 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> CancelEditClaimDescription::_table_ = 
 
 
 ::google::protobuf::Metadata CancelEditClaimDescription::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class StartEditClaim::_Internal {
+ public:
+};
+
+StartEditClaim::StartEditClaim(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:debate_event.StartEditClaim)
+}
+StartEditClaim::StartEditClaim(
+    ::google::protobuf::Arena* arena,
+    const StartEditClaim& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  StartEditClaim* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:debate_event.StartEditClaim)
+}
+
+inline void* StartEditClaim::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) StartEditClaim(arena);
+}
+constexpr auto StartEditClaim::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(StartEditClaim),
+                                            alignof(StartEditClaim));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull StartEditClaim::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_StartEditClaim_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &StartEditClaim::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<StartEditClaim>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &StartEditClaim::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<StartEditClaim>(), &StartEditClaim::ByteSizeLong,
+            &StartEditClaim::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(StartEditClaim, _impl_._cached_size_),
+        false,
+    },
+    &StartEditClaim::kDescriptorMethods,
+    &descriptor_table_debate_5fevent_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* StartEditClaim::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> StartEditClaim::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::StartEditClaim>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata StartEditClaim::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubmitEditClaim::_Internal {
+ public:
+};
+
+SubmitEditClaim::SubmitEditClaim(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate_event.SubmitEditClaim)
+}
+inline PROTOBUF_NDEBUG_INLINE SubmitEditClaim::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::debate_event::SubmitEditClaim& from_msg)
+      : new_claim_(arena, from.new_claim_),
+        _cached_size_{0} {}
+
+SubmitEditClaim::SubmitEditClaim(
+    ::google::protobuf::Arena* arena,
+    const SubmitEditClaim& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubmitEditClaim* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:debate_event.SubmitEditClaim)
+}
+inline PROTOBUF_NDEBUG_INLINE SubmitEditClaim::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : new_claim_(arena),
+        _cached_size_{0} {}
+
+inline void SubmitEditClaim::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+SubmitEditClaim::~SubmitEditClaim() {
+  // @@protoc_insertion_point(destructor:debate_event.SubmitEditClaim)
+  SharedDtor(*this);
+}
+inline void SubmitEditClaim::SharedDtor(MessageLite& self) {
+  SubmitEditClaim& this_ = static_cast<SubmitEditClaim&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.new_claim_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* SubmitEditClaim::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubmitEditClaim(arena);
+}
+constexpr auto SubmitEditClaim::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(SubmitEditClaim),
+                                            alignof(SubmitEditClaim));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubmitEditClaim::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubmitEditClaim_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubmitEditClaim::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SubmitEditClaim>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubmitEditClaim::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SubmitEditClaim>(), &SubmitEditClaim::ByteSizeLong,
+            &SubmitEditClaim::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubmitEditClaim, _impl_._cached_size_),
+        false,
+    },
+    &SubmitEditClaim::kDescriptorMethods,
+    &descriptor_table_debate_5fevent_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubmitEditClaim::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 46, 2> SubmitEditClaim::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::SubmitEditClaim>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string new_claim = 1 [json_name = "newClaim"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitEditClaim, _impl_.new_claim_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string new_claim = 1 [json_name = "newClaim"];
+    {PROTOBUF_FIELD_OFFSET(SubmitEditClaim, _impl_.new_claim_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\34\11\0\0\0\0\0\0"
+    "debate_event.SubmitEditClaim"
+    "new_claim"
+  }},
+};
+
+PROTOBUF_NOINLINE void SubmitEditClaim::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate_event.SubmitEditClaim)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.new_claim_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SubmitEditClaim::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SubmitEditClaim& this_ = static_cast<const SubmitEditClaim&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SubmitEditClaim::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SubmitEditClaim& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:debate_event.SubmitEditClaim)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string new_claim = 1 [json_name = "newClaim"];
+          if (!this_._internal_new_claim().empty()) {
+            const std::string& _s = this_._internal_new_claim();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.SubmitEditClaim.new_claim");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:debate_event.SubmitEditClaim)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SubmitEditClaim::ByteSizeLong(const MessageLite& base) {
+          const SubmitEditClaim& this_ = static_cast<const SubmitEditClaim&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SubmitEditClaim::ByteSizeLong() const {
+          const SubmitEditClaim& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:debate_event.SubmitEditClaim)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string new_claim = 1 [json_name = "newClaim"];
+            if (!this_._internal_new_claim().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_new_claim());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SubmitEditClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SubmitEditClaim*>(&to_msg);
+  auto& from = static_cast<const SubmitEditClaim&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.SubmitEditClaim)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_new_claim().empty()) {
+    _this->_internal_set_new_claim(from._internal_new_claim());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SubmitEditClaim::CopyFrom(const SubmitEditClaim& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:debate_event.SubmitEditClaim)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SubmitEditClaim::InternalSwap(SubmitEditClaim* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.new_claim_, &other->_impl_.new_claim_, arena);
+}
+
+::google::protobuf::Metadata SubmitEditClaim::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CancelEditClaim::_Internal {
+ public:
+};
+
+CancelEditClaim::CancelEditClaim(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:debate_event.CancelEditClaim)
+}
+CancelEditClaim::CancelEditClaim(
+    ::google::protobuf::Arena* arena,
+    const CancelEditClaim& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CancelEditClaim* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:debate_event.CancelEditClaim)
+}
+
+inline void* CancelEditClaim::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CancelEditClaim(arena);
+}
+constexpr auto CancelEditClaim::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(CancelEditClaim),
+                                            alignof(CancelEditClaim));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CancelEditClaim::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CancelEditClaim_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CancelEditClaim::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<CancelEditClaim>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CancelEditClaim::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<CancelEditClaim>(), &CancelEditClaim::ByteSizeLong,
+            &CancelEditClaim::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CancelEditClaim, _impl_._cached_size_),
+        false,
+    },
+    &CancelEditClaim::kDescriptorMethods,
+    &descriptor_table_debate_5fevent_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CancelEditClaim::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> CancelEditClaim::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::CancelEditClaim>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata CancelEditClaim::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

@@ -98,6 +98,17 @@ ui::Page DebatePageGenerator::GenerateDebatePage(
     );
     ComponentGenerator::addChild(&focusingOnClaim, focusLabel);
 
+    ui::Component claimTitleContainer = ComponentGenerator::createContainer(
+        "claimTitleContainer",
+        "flex items-center justify-center gap-3",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+
     ui::Component currentClaimTitle = ComponentGenerator::createText(
         "currentClaimTitle",
         claim,
@@ -106,7 +117,22 @@ ui::Page DebatePageGenerator::GenerateDebatePage(
         "font-semibold",
         ""
     );
-    ComponentGenerator::addChild(&focusingOnClaim, currentClaimTitle);
+    ComponentGenerator::addChild(&claimTitleContainer, currentClaimTitle);
+
+    ui::Component editClaimButton = ComponentGenerator::createButton(
+        "editClaimButton",
+        "Edit",
+        "",
+        "bg-yellow-600",
+        "hover:bg-yellow-700",
+        "text-white",
+        "px-3 py-1",
+        "rounded",
+        "transition-colors text-xs"
+    );
+    ComponentGenerator::addChild(&claimTitleContainer, editClaimButton);
+
+    ComponentGenerator::addChild(&focusingOnClaim, claimTitleContainer);
     ComponentGenerator::addChild(&focusSection, focusingOnClaim);
     ComponentGenerator::addChild(&topSection, focusSection);
 

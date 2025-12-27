@@ -78,6 +78,27 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             }
         }
      }
+     
+     // edit claim
+    else if (componentId == "editClaimButton" && eventType == "onClick") {
+        Log::debug("  START_EDIT_CLAIM for user: " + user);
+        event.set_type(debate_event::START_EDIT_CLAIM);
+    } else if (componentId == "saveClaimButton" && eventType == "onClick") {
+        Log::debug("  SUBMIT_EDIT_CLAIM for user: " + user);
+        event.set_type(debate_event::SUBMIT_EDIT_CLAIM);
+        // find the new claim from the message
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            auto* submitEvent = event.mutable_submit_edit_claim();
+            if (comp.id() == "editClaimInput") {
+                submitEvent->set_new_claim(comp.value());
+                Log::debug("  New Claim: " + comp.value());
+            }
+        }
+    } else if (componentId == "cancelEditClaimButton" && eventType == "onClick") {
+        Log::debug("  CANCEL_EDIT_CLAIM for user: " + user);
+        event.set_type(debate_event::CANCEL_EDIT_CLAIM);
+    }
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);

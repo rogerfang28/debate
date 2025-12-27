@@ -76,6 +76,14 @@ message SubmitEditClaimDescription {
 message CancelEditClaimDescription {
 }
 
+message StartEditClaim {
+}
+message SubmitEditClaim {
+    string new_claim = 1;
+}
+message CancelEditClaim {
+}
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
@@ -98,6 +106,9 @@ enum EventType {
     START_EDIT_CLAIM_DESCRIPTION = 17;
     SUBMIT_EDIT_CLAIM_DESCRIPTION = 18;
     CANCEL_EDIT_CLAIM_DESCRIPTION = 19;
+    START_EDIT_CLAIM = 20;
+    SUBMIT_EDIT_CLAIM = 21;
+    CANCEL_EDIT_CLAIM = 22;
 }
 
 // main message

@@ -133,6 +133,18 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM_DESCRIPTION");
             CancelEditClaimDescriptionHandler::CancelEditClaimDescription(user, debateWrapper);
             break;
+        case debate_event::START_EDIT_CLAIM:
+            Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM");
+            // implement later
+            break;
+        case debate_event::SUBMIT_EDIT_CLAIM:
+            Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
+            // implement later
+            break;
+        case debate_event::CANCEL_EDIT_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
+            // implement later
+            break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
