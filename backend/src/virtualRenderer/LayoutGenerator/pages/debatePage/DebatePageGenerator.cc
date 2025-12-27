@@ -827,6 +827,36 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
     // Connect Modal
     if (openedConnectModal) {
+        // Find the sentence for fromClaimId and toClaimId
+        std::string fromClaimSentence = "";
+        std::string toClaimSentence = "";
+        
+        // Check if fromClaimId is the current claim
+        if (fromClaimId == currentClaimId) {
+            fromClaimSentence = claim;
+        } else {
+            // Search in child claims
+            for (const auto& childClaim : childClaimInfo) {
+                if (childClaim.first == fromClaimId) {
+                    fromClaimSentence = childClaim.second;
+                    break;
+                }
+            }
+        }
+        
+        // Check if toClaimId is the current claim
+        if (toClaimId == currentClaimId) {
+            toClaimSentence = claim;
+        } else {
+            // Search in child claims
+            for (const auto& childClaim : childClaimInfo) {
+                if (childClaim.first == toClaimId) {
+                    toClaimSentence = childClaim.second;
+                    break;
+                }
+            }
+        }
+
         // Modal overlay
         ui::Component connectModalOverlay = ComponentGenerator::createContainer(
             "connectModalOverlay",
@@ -861,6 +891,70 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
             "mb-6"
         );
         ComponentGenerator::addChild(&connectModalContent, connectModalTitle);
+
+        // Display connecting claims
+        ui::Component connectingClaimsContainer = ComponentGenerator::createContainer(
+            "connectingClaimsContainer",
+            "",
+            "bg-gray-700",
+            "p-4",
+            "mb-6",
+            "border border-gray-600",
+            "rounded",
+            ""
+        );
+
+        ui::Component fromClaimLabel = ComponentGenerator::createText(
+            "fromClaimLabel",
+            "From:",
+            "text-xs",
+            "text-gray-400",
+            "font-semibold",
+            "mb-1"
+        );
+        ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimLabel);
+
+        ui::Component fromClaimText = ComponentGenerator::createText(
+            "fromClaimText",
+            fromClaimSentence,
+            "text-sm",
+            "text-white",
+            "",
+            "mb-3"
+        );
+        ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimText);
+
+        ui::Component arrowText = ComponentGenerator::createText(
+            "arrowText",
+            "↓",
+            "text-center text-2xl",
+            "text-purple-400",
+            "",
+            "mb-3"
+        );
+        ComponentGenerator::addChild(&connectingClaimsContainer, arrowText);
+
+        ui::Component toClaimLabel = ComponentGenerator::createText(
+            "toClaimLabel",
+            "To:",
+            "text-xs",
+            "text-gray-400",
+            "font-semibold",
+            "mb-1"
+        );
+        ComponentGenerator::addChild(&connectingClaimsContainer, toClaimLabel);
+
+        ui::Component toClaimText = ComponentGenerator::createText(
+            "toClaimText",
+            toClaimSentence,
+            "text-sm",
+            "text-white",
+            "",
+            ""
+        );
+        ComponentGenerator::addChild(&connectingClaimsContainer, toClaimText);
+
+        ComponentGenerator::addChild(&connectModalContent, connectingClaimsContainer);
 
         // Connection label
         ui::Component connectionLabel = ComponentGenerator::createText(
