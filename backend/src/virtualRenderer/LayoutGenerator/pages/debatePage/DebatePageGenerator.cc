@@ -7,7 +7,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(
     const std::string& currentClaimDescription, 
     std::vector<std::pair<std::string,std::string>> childClaimInfo, 
     bool openedAddChildClaimModal, 
-    bool editingClaimDescription) {
+    bool editingClaimDescription,
+    bool editingClaimSentence) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -98,41 +99,98 @@ ui::Page DebatePageGenerator::GenerateDebatePage(
     );
     ComponentGenerator::addChild(&focusingOnClaim, focusLabel);
 
-    ui::Component claimTitleContainer = ComponentGenerator::createContainer(
-        "claimTitleContainer",
-        "flex items-center justify-center gap-3",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    );
+    if (editingClaimSentence) {
+        // Edit mode: show input field and buttons
+        ui::Component claimInput = ComponentGenerator::createInput(
+            "editClaimInput",
+            "Enter the claim...",
+            "claim",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-3",
+            claim
+        );
+        ComponentGenerator::addChild(&focusingOnClaim, claimInput);
 
-    ui::Component currentClaimTitle = ComponentGenerator::createText(
-        "currentClaimTitle",
-        claim,
-        "text-lg",
-        "text-white",
-        "font-semibold",
-        ""
-    );
-    ComponentGenerator::addChild(&claimTitleContainer, currentClaimTitle);
+        ui::Component claimEditActions = ComponentGenerator::createContainer(
+            "claimEditActions",
+            "flex gap-2 justify-center",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
 
-    ui::Component editClaimButton = ComponentGenerator::createButton(
-        "editClaimButton",
-        "Edit",
-        "",
-        "bg-yellow-600",
-        "hover:bg-yellow-700",
-        "text-white",
-        "px-3 py-1",
-        "rounded",
-        "transition-colors text-xs"
-    );
-    ComponentGenerator::addChild(&claimTitleContainer, editClaimButton);
+        ui::Component cancelEditClaimButton = ComponentGenerator::createButton(
+            "cancelEditClaimButton",
+            "Cancel",
+            "",
+            "bg-gray-600",
+            "hover:bg-gray-700",
+            "text-white",
+            "px-4 py-1",
+            "rounded",
+            "transition-colors text-xs"
+        );
+        ComponentGenerator::addChild(&claimEditActions, cancelEditClaimButton);
 
-    ComponentGenerator::addChild(&focusingOnClaim, claimTitleContainer);
+        ui::Component saveClaimButton = ComponentGenerator::createButton(
+            "saveClaimButton",
+            "Save",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-4 py-1",
+            "rounded",
+            "transition-colors text-xs"
+        );
+        ComponentGenerator::addChild(&claimEditActions, saveClaimButton);
+
+        ComponentGenerator::addChild(&focusingOnClaim, claimEditActions);
+    } else {
+        // View mode: show text and edit button
+        ui::Component claimTitleContainer = ComponentGenerator::createContainer(
+            "claimTitleContainer",
+            "flex items-center justify-center gap-3",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
+        ui::Component currentClaimTitle = ComponentGenerator::createText(
+            "currentClaimTitle",
+            claim,
+            "text-lg",
+            "text-white",
+            "font-semibold",
+            ""
+        );
+        ComponentGenerator::addChild(&claimTitleContainer, currentClaimTitle);
+
+        ui::Component editClaimButton = ComponentGenerator::createButton(
+            "editClaimButton",
+            "Edit",
+            "",
+            "bg-yellow-600",
+            "hover:bg-yellow-700",
+            "text-white",
+            "px-3 py-1",
+            "rounded",
+            "transition-colors text-xs"
+        );
+        ComponentGenerator::addChild(&claimTitleContainer, editClaimButton);
+
+        ComponentGenerator::addChild(&focusingOnClaim, claimTitleContainer);
+    }
     ComponentGenerator::addChild(&focusSection, focusingOnClaim);
     ComponentGenerator::addChild(&topSection, focusSection);
 

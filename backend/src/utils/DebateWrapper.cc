@@ -257,3 +257,13 @@ void DebateWrapper::changeDescriptionOfClaim(
     claim.set_description(newDescription);
     updateClaimInDB(claim);
 }
+
+void DebateWrapper::editClaimText(
+    const std::string& claimId,
+    const std::string& newText) {
+    debate::Claim claim = findClaim(claimId);
+    claim.set_sentence(newText);
+    updateClaimInDB(claim);
+    // also update the actual topic in the statement database
+    statementDb.updateStatementContent(std::stoi(claimId), newText);
+}

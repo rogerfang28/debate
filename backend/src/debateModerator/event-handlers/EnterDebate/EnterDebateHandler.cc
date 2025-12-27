@@ -27,7 +27,8 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
         return false;
     }
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_sentence(false);
+    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_reporting_claim(false);
 
     std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());

@@ -137,5 +137,8 @@ message DebateEvent {
     StartEditClaimDescription start_edit_claim_description = 24;
     SubmitEditClaimDescription submit_edit_claim_description = 25;
     CancelEditClaimDescription cancel_edit_claim_description = 26;
+    StartEditClaim start_edit_claim = 27;
+    SubmitEditClaim submit_edit_claim = 28;
+    CancelEditClaim cancel_edit_claim = 29;
   }
 }

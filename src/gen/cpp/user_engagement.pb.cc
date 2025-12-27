@@ -97,7 +97,8 @@ inline constexpr DebatingInfo::Impl_::Impl_(
         root_claim_{nullptr},
         parent_claim_{nullptr},
         adding_child_claim_{false},
-        editing_claim_{false},
+        editing_claim_sentence_{false},
+        editing_claim_description_{false},
         reporting_claim_{false} {}
 
 template <typename>
@@ -246,12 +247,14 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.root_claim_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.children_claims_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.adding_child_claim_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.editing_claim_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.editing_claim_sentence_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.editing_claim_description_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.reporting_claim_),
         0,
         ~0u,
         2,
         1,
+        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -285,9 +288,9 @@ static const ::_pbi::MigrationSchema
         {0, 9, -1, sizeof(::user_engagement::NoneInfo)},
         {10, -1, -1, sizeof(::user_engagement::DebateTopic)},
         {20, -1, -1, sizeof(::user_engagement::DebateList)},
-        {29, 45, -1, sizeof(::user_engagement::DebatingInfo)},
-        {53, -1, -1, sizeof(::user_engagement::ClaimInfo)},
-        {63, -1, -1, sizeof(::user_engagement::UserEngagement)},
+        {29, 46, -1, sizeof(::user_engagement::DebatingInfo)},
+        {55, -1, -1, sizeof(::user_engagement::ClaimInfo)},
+        {65, -1, -1, sizeof(::user_engagement::UserEngagement)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user_engagement::_NoneInfo_default_instance_._instance,
@@ -305,7 +308,7 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "ebates\"3\n\013DebateTopic\022\016\n\002id\030\001 \001(\tR\002id\022\024\n"
     "\005topic\030\002 \001(\tR\005topic\"B\n\nDebateList\0224\n\006top"
     "ics\030\001 \003(\0132\034.user_engagement.DebateTopicR"
-    "\006topics\"\306\003\n\014DebatingInfo\022\?\n\rcurrent_clai"
+    "\006topics\"\223\004\n\014DebatingInfo\022\?\n\rcurrent_clai"
     "m\030\002 \001(\0132\032.user_engagement.ClaimInfoR\014cur"
     "rentClaim\022:\n\031current_claim_description\030\t"
     " \001(\tR\027currentClaimDescription\022=\n\014parent_"
@@ -314,25 +317,27 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "engagement.ClaimInfoR\trootClaim\022C\n\017child"
     "ren_claims\030\004 \003(\0132\032.user_engagement.Claim"
     "InfoR\016childrenClaims\022,\n\022adding_child_cla"
-    "im\030\006 \001(\010R\020addingChildClaim\022#\n\rediting_cl"
-    "aim\030\007 \001(\010R\014editingClaim\022\'\n\017reporting_cla"
-    "im\030\010 \001(\010R\016reportingClaim\"7\n\tClaimInfo\022\016\n"
-    "\002id\030\001 \001(\tR\002id\022\032\n\010sentence\030\002 \001(\tR\010sentenc"
-    "e\"\351\001\n\016UserEngagement\022H\n\016current_action\030\001"
-    " \001(\0162!.user_engagement.EngagementActionR"
-    "\rcurrentAction\0228\n\tnone_info\030\002 \001(\0132\031.user"
-    "_engagement.NoneInfoH\000R\010noneInfo\022D\n\rdeba"
-    "ting_info\030\003 \001(\0132\035.user_engagement.Debati"
-    "ngInfoH\000R\014debatingInfoB\r\n\013action_info*[\n"
-    "\020EngagementAction\022!\n\035ENGAGEMENT_ACTION_U"
-    "NSPECIFIED\020\000\022\017\n\013ACTION_NONE\020\001\022\023\n\017ACTION_"
-    "DEBATING\020\002b\006proto3"
+    "im\030\006 \001(\010R\020addingChildClaim\0224\n\026editing_cl"
+    "aim_sentence\030\007 \001(\010R\024editingClaimSentence"
+    "\022:\n\031editing_claim_description\030\n \001(\010R\027edi"
+    "tingClaimDescription\022\'\n\017reporting_claim\030"
+    "\010 \001(\010R\016reportingClaim\"7\n\tClaimInfo\022\016\n\002id"
+    "\030\001 \001(\tR\002id\022\032\n\010sentence\030\002 \001(\tR\010sentence\"\351"
+    "\001\n\016UserEngagement\022H\n\016current_action\030\001 \001("
+    "\0162!.user_engagement.EngagementActionR\rcu"
+    "rrentAction\0228\n\tnone_info\030\002 \001(\0132\031.user_en"
+    "gagement.NoneInfoH\000R\010noneInfo\022D\n\rdebatin"
+    "g_info\030\003 \001(\0132\035.user_engagement.DebatingI"
+    "nfoH\000R\014debatingInfoB\r\n\013action_info*[\n\020En"
+    "gagementAction\022!\n\035ENGAGEMENT_ACTION_UNSP"
+    "ECIFIED\020\000\022\017\n\013ACTION_NONE\020\001\022\023\n\017ACTION_DEB"
+    "ATING\020\002b\006proto3"
 };
 static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    1098,
+    1175,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -1246,15 +1251,15 @@ const ::google::protobuf::internal::ClassData* DebatingInfo::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 8, 4, 70, 2> DebatingInfo::_table_ = {
+const ::_pbi::TcParseTable<4, 9, 4, 70, 2> DebatingInfo::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_._has_bits_),
     0, // no _extensions_
-    9, 56,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966785,  // skipmap
+    4294966273,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    8,  // num_field_entries
+    9,  // num_field_entries
     4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -1264,12 +1269,8 @@ const ::_pbi::TcParseTable<3, 8, 4, 70, 2> DebatingInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool reporting_claim = 8 [json_name = "reportingClaim"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.reporting_claim_), 63>(),
-     {64, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.reporting_claim_)}},
-    // string current_claim_description = 9 [json_name = "currentClaimDescription"];
-    {::_pbi::TcParser::FastUS1,
-     {74, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_description_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
     // .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_)}},
@@ -1285,9 +1286,23 @@ const ::_pbi::TcParseTable<3, 8, 4, 70, 2> DebatingInfo::_table_ = {
     // bool adding_child_claim = 6 [json_name = "addingChildClaim"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.adding_child_claim_), 63>(),
      {48, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.adding_child_claim_)}},
-    // bool editing_claim = 7 [json_name = "editingClaim"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.editing_claim_), 63>(),
-     {56, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_)}},
+    // bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.editing_claim_sentence_), 63>(),
+     {56, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_sentence_)}},
+    // bool reporting_claim = 8 [json_name = "reportingClaim"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.reporting_claim_), 63>(),
+     {64, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.reporting_claim_)}},
+    // string current_claim_description = 9 [json_name = "currentClaimDescription"];
+    {::_pbi::TcParser::FastUS1,
+     {74, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_description_)}},
+    // bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.editing_claim_description_), 63>(),
+     {80, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_description_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1306,8 +1321,8 @@ const ::_pbi::TcParseTable<3, 8, 4, 70, 2> DebatingInfo::_table_ = {
     // bool adding_child_claim = 6 [json_name = "addingChildClaim"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.adding_child_claim_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool editing_claim = 7 [json_name = "editingClaim"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_), -1, 0,
+    // bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_sentence_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool reporting_claim = 8 [json_name = "reportingClaim"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.reporting_claim_), -1, 0,
@@ -1315,6 +1330,9 @@ const ::_pbi::TcParseTable<3, 8, 4, 70, 2> DebatingInfo::_table_ = {
     // string current_claim_description = 9 [json_name = "currentClaimDescription"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_description_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::ClaimInfo>()},
     {::_pbi::TcParser::GetTable<::user_engagement::ClaimInfo>()},
@@ -1413,11 +1431,11 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
                 6, this_._internal_adding_child_claim(), target);
           }
 
-          // bool editing_claim = 7 [json_name = "editingClaim"];
-          if (this_._internal_editing_claim() != 0) {
+          // bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+          if (this_._internal_editing_claim_sentence() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                7, this_._internal_editing_claim(), target);
+                7, this_._internal_editing_claim_sentence(), target);
           }
 
           // bool reporting_claim = 8 [json_name = "reportingClaim"];
@@ -1433,6 +1451,13 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
                 _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.DebatingInfo.current_claim_description");
             target = stream->WriteStringMaybeAliased(9, _s, target);
+          }
+
+          // bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+          if (this_._internal_editing_claim_description() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                10, this_._internal_editing_claim_description(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1498,8 +1523,12 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             if (this_._internal_adding_child_claim() != 0) {
               total_size += 2;
             }
-            // bool editing_claim = 7 [json_name = "editingClaim"];
-            if (this_._internal_editing_claim() != 0) {
+            // bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+            if (this_._internal_editing_claim_sentence() != 0) {
+              total_size += 2;
+            }
+            // bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+            if (this_._internal_editing_claim_description() != 0) {
               total_size += 2;
             }
             // bool reporting_claim = 8 [json_name = "reportingClaim"];
@@ -1558,8 +1587,11 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   if (from._internal_adding_child_claim() != 0) {
     _this->_impl_.adding_child_claim_ = from._impl_.adding_child_claim_;
   }
-  if (from._internal_editing_claim() != 0) {
-    _this->_impl_.editing_claim_ = from._impl_.editing_claim_;
+  if (from._internal_editing_claim_sentence() != 0) {
+    _this->_impl_.editing_claim_sentence_ = from._impl_.editing_claim_sentence_;
+  }
+  if (from._internal_editing_claim_description() != 0) {
+    _this->_impl_.editing_claim_description_ = from._impl_.editing_claim_description_;
   }
   if (from._internal_reporting_claim() != 0) {
     _this->_impl_.reporting_claim_ = from._impl_.reporting_claim_;

@@ -8,7 +8,7 @@ void StartEditClaimDescriptionHandler::StartEditClaimDescription(const std::stri
     userProto.ParseFromArray(userData.data(), userData.size());
 
     // set editing_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim(true);
+    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(true);
 
     // serialize and save back
     std::vector<uint8_t> updatedUserData(userProto.ByteSizeLong());

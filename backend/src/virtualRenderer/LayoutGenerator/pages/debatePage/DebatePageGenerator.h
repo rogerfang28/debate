@@ -10,5 +10,6 @@ public:
         const std::string& currentClaimDescription, 
         std::vector<std::pair<std::string,std::string>> childClaimInfo, 
         bool openedAddChildClaimModal, 
-        bool editingClaimDescription);
+        bool editingClaimDescription,
+        bool editingClaim);
 };

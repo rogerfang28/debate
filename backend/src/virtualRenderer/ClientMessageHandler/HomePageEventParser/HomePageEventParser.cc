@@ -33,7 +33,15 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         std::string debateID = componentId.substr(23); // Extract ID after "enterDebateTopicButton_"
         enter->set_debate_id(debateID);
         Log::debug("  ENTER_DEBATE: debate_id = " + debateID);
-    } else {
+    } else if (componentId.find("deleteDebateButton_") == 0 && eventType == "onClick") {
+        // Delete a debate
+        event.set_type(debate_event::DELETE_DEBATE);
+        auto* deleteDebate = event.mutable_delete_debate();
+        std::string debateID = componentId.substr(19); // Extract ID after "deleteDebateButton_"
+        deleteDebate->set_debate_id(debateID);
+        Log::debug("  DELETE_DEBATE: debate_id = " + debateID);
+    }
+    else {
         Log::error("Unknown component/event combination on home page: " 
                   + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);

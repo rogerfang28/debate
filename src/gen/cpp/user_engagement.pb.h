@@ -698,7 +698,8 @@ class DebatingInfo final : public ::google::protobuf::Message
     kRootClaimFieldNumber = 3,
     kParentClaimFieldNumber = 5,
     kAddingChildClaimFieldNumber = 6,
-    kEditingClaimFieldNumber = 7,
+    kEditingClaimSentenceFieldNumber = 7,
+    kEditingClaimDescriptionFieldNumber = 10,
     kReportingClaimFieldNumber = 8,
   };
   // repeated .user_engagement.ClaimInfo children_claims = 4 [json_name = "childrenClaims"];
@@ -789,14 +790,24 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_adding_child_claim(bool value);
 
   public:
-  // bool editing_claim = 7 [json_name = "editingClaim"];
-  void clear_editing_claim() ;
-  bool editing_claim() const;
-  void set_editing_claim(bool value);
+  // bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+  void clear_editing_claim_sentence() ;
+  bool editing_claim_sentence() const;
+  void set_editing_claim_sentence(bool value);
 
   private:
-  bool _internal_editing_claim() const;
-  void _internal_set_editing_claim(bool value);
+  bool _internal_editing_claim_sentence() const;
+  void _internal_set_editing_claim_sentence(bool value);
+
+  public:
+  // bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+  void clear_editing_claim_description() ;
+  bool editing_claim_description() const;
+  void set_editing_claim_description(bool value);
+
+  private:
+  bool _internal_editing_claim_description() const;
+  void _internal_set_editing_claim_description(bool value);
 
   public:
   // bool reporting_claim = 8 [json_name = "reportingClaim"];
@@ -814,7 +825,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 8, 4,
+      4, 9, 4,
       70, 2>
       _table_;
 
@@ -840,7 +851,8 @@ class DebatingInfo final : public ::google::protobuf::Message
     ::user_engagement::ClaimInfo* root_claim_;
     ::user_engagement::ClaimInfo* parent_claim_;
     bool adding_child_claim_;
-    bool editing_claim_;
+    bool editing_claim_sentence_;
+    bool editing_claim_description_;
     bool reporting_claim_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2165,26 +2177,48 @@ inline void DebatingInfo::_internal_set_adding_child_claim(bool value) {
   _impl_.adding_child_claim_ = value;
 }
 
-// bool editing_claim = 7 [json_name = "editingClaim"];
-inline void DebatingInfo::clear_editing_claim() {
+// bool editing_claim_sentence = 7 [json_name = "editingClaimSentence"];
+inline void DebatingInfo::clear_editing_claim_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.editing_claim_ = false;
+  _impl_.editing_claim_sentence_ = false;
 }
-inline bool DebatingInfo::editing_claim() const {
-  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.editing_claim)
-  return _internal_editing_claim();
+inline bool DebatingInfo::editing_claim_sentence() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.editing_claim_sentence)
+  return _internal_editing_claim_sentence();
 }
-inline void DebatingInfo::set_editing_claim(bool value) {
-  _internal_set_editing_claim(value);
-  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.editing_claim)
+inline void DebatingInfo::set_editing_claim_sentence(bool value) {
+  _internal_set_editing_claim_sentence(value);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.editing_claim_sentence)
 }
-inline bool DebatingInfo::_internal_editing_claim() const {
+inline bool DebatingInfo::_internal_editing_claim_sentence() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.editing_claim_;
+  return _impl_.editing_claim_sentence_;
 }
-inline void DebatingInfo::_internal_set_editing_claim(bool value) {
+inline void DebatingInfo::_internal_set_editing_claim_sentence(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.editing_claim_ = value;
+  _impl_.editing_claim_sentence_ = value;
+}
+
+// bool editing_claim_description = 10 [json_name = "editingClaimDescription"];
+inline void DebatingInfo::clear_editing_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.editing_claim_description_ = false;
+}
+inline bool DebatingInfo::editing_claim_description() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.editing_claim_description)
+  return _internal_editing_claim_description();
+}
+inline void DebatingInfo::set_editing_claim_description(bool value) {
+  _internal_set_editing_claim_description(value);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.editing_claim_description)
+}
+inline bool DebatingInfo::_internal_editing_claim_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.editing_claim_description_;
+}
+inline void DebatingInfo::_internal_set_editing_claim_description(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.editing_claim_description_ = value;
 }
 
 // bool reporting_claim = 8 [json_name = "reportingClaim"];

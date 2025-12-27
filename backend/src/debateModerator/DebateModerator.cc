@@ -21,6 +21,9 @@
 #include "event-handlers/StartEditClaimDescription/StartEditClaimDescription.h"
 #include "event-handlers/SubmitEditClaimDescription/SubmitEditClaimDescription.h"
 #include "event-handlers/CancelEditClaimDescription/CancelEditClaimDescription.h"
+#include "event-handlers/StartEditClaim/StartEditClaim.h"
+#include "event-handlers/SubmitEditClaim/SubmitEditClaim.h"
+#include "event-handlers/CancelEditClaim/CancelEditClaim.h"
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -135,15 +138,19 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::START_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM");
-            // implement later
+            StartEditClaim::StartEdit(user, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
-            // implement later
+            SubmitEditClaim::Submit(
+                user,
+                event.submit_edit_claim().new_claim(),
+                debateWrapper
+            );
             break;
         case debate_event::CANCEL_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
-            // implement later
+            CancelEditClaim::Cancel(user, debateWrapper);
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
