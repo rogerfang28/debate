@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../../../src/gen/cpp/user.pb.h"
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
@@ -39,8 +40,9 @@ public:
     void moveUserToClaim(const std::string& user, const std::string& claimId);
     std::vector<std::string> getUserDebateIds(const std::string& user);
     std::vector<uint8_t> getDebateProtobuf(const std::string& debateId);
-    std::vector<uint8_t> getUserProtobuf(const std::string& user_id);
-    std::vector<uint8_t> getUserProtobufByUsername(const std::string& username);
+    // std::vector<uint8_t> getUserProtobufBinary(const std::string& user_id);
+    user::User getUserProtobufByUsername(const std::string& username);
+    std::vector<uint8_t> getUserProtobufBinaryByUsername(const std::string& username);
 
     void updateUserProtobuf(const std::string& user, const std::vector<uint8_t>& protobufData);
 

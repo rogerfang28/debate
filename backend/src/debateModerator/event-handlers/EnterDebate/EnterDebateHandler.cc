@@ -20,12 +20,7 @@ bool EnterDebateHandler::EnterDebate(const std::string& debateId, const std::str
     debateWrapper.moveUserToClaim(user, rootClaimId);
 
     // change some info in the user protobuf
-    std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
-    user::User userProto;
-    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-        Log::error("[EnterDebate][ERR] Failed to parse user protobuf for " + user);
-        return false;
-    }
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_sentence(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);

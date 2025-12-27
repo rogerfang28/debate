@@ -34,8 +34,11 @@ message DebatingInfo {
   bool reporting_claim = 8; // whether the user is reporting the current claim
   message ConnectingInfo {
     string from_claim_id = 1;
-    bool connecting = 2; // whether the user is connecting claims
+    string to_claim_id   = 2;
+    string connection = 3;
+    bool connecting = 4;
   }
+  ConnectingInfo connecting_info = 11; // info about connecting claims
 }
 
 message ClaimInfo {

@@ -198,13 +198,7 @@ void DebateWrapper::deleteAllDebates(const std::string& user) {
 }
 
 void DebateWrapper::moveUserToClaim(const std::string& username, const std::string& claimId) {
-    std::vector<uint8_t> userData = userDb.getUserProtobufByUsername(username);
-
-    user::User userProto;
-    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-        Log::error("[DebateWrapper][ERR] Failed to parse user protobuf for " + username);
-        return;
-    }
+    user::User userProto = getUserProtobufByUsername(username);
 
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_root_claim()->set_id(claimId);
@@ -233,20 +227,25 @@ std::vector<uint8_t> DebateWrapper::getDebateProtobuf(const std::string& debateI
     return debateDb.getDebateProtobuf(std::stoi(debateId));
 }
 
-std::vector<uint8_t> DebateWrapper::getUserProtobuf(const std::string& user) {
-    return userDb.getUserProtobuf(user);
-}
-
-std::vector<uint8_t> DebateWrapper::getUserProtobufByUsername(const std::string& username) {
+std::vector<uint8_t> DebateWrapper::getUserProtobufBinaryByUsername(const std::string& username) {
     return userDb.getUserProtobufByUsername(username);
 }
 
-void DebateWrapper::updateUserProtobuf(const std::string& user, const std::vector<uint8_t>& protobufData) {
-    bool success = userDb.updateUserProtobuf(user, protobufData);
+user::User DebateWrapper::getUserProtobufByUsername(const std::string& username) {
+    std::vector<uint8_t> userData = userDb.getUserProtobufByUsername(username);
+    user::User userProto;
+    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
+        Log::error("[DebateWrapper][ERR] Failed to parse user protobuf for " + username);
+    }
+    return userProto;
+}
+
+void DebateWrapper::updateUserProtobuf(const std::string& username, const std::vector<uint8_t>& protobufData) {
+    bool success = userDb.updateUserProtobuf(username, protobufData);
     if (success) {
-        Log::debug("[DebateWrapper] Successfully updated user protobuf for " + user);
+        Log::debug("[DebateWrapper] Successfully updated user protobuf for " + username);
     } else {
-        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + user);
+        Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + username);
     }
 }
 

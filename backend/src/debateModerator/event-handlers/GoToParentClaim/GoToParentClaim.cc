@@ -5,9 +5,7 @@
 #include "../GoToClaim/GoToClaim.h"
 
 void GoToParentClaimHandler::GoToParentClaim(const std::string& user, DebateWrapper& debateWrapper) {
-    std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
-    user::User userProto;
-    userProto.ParseFromArray(userData.data(), userData.size());
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
     std::string currentClaimId = userProto.engagement().debating_info().current_claim().id();
     // find parent claim
     debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);

@@ -8,9 +8,7 @@
 void AddClaimUnderClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const std::string& user, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     // get user protobuf
-    std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
-    user::User userProto;
-    userProto.ParseFromArray(userData.data(), userData.size());
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
     // std::string debateID = userProto.engagement().debating_info().debate_id();
     std::string rootClaimID = userProto.engagement().debating_info().root_claim().id();
     user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();

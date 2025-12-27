@@ -9,18 +9,7 @@ bool GoHomeHandler::GoHome(const std::string& user, DebateWrapper& debateWrapper
     
     try { 
         // Get current user protobuf
-        std::vector<uint8_t> userData = debateWrapper.getUserProtobufByUsername(user);
-        if (userData.empty()) {
-            Log::error("[GoHome][ERR] User " + user + " not found");
-            return false;
-        }
-        
-        // Parse user protobuf
-        user::User userProto;
-        if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
-            Log::error("[GoHome][ERR] Failed to parse user protobuf for " + user);
-            return false;
-        }
+        user::User userProto = debateWrapper.getUserProtobufByUsername(user);
         
         // Update user state to NONE and clear debate topic id
         // userProto.set_state(user::NONE);

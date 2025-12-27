@@ -152,6 +152,22 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
             CancelEditClaim::Cancel(user, debateWrapper);
             break;
+        case debate_event::CONNECT_FROM_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
+            // implement later
+            break;
+        case debate_event::CONNECT_TO_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CONNECT_TO_CLAIM");
+            // implement later
+            break;
+        case debate_event::SUBMIT_CONNECT_CLAIMS:
+            Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
+            // implement later
+            break; 
+        case debate_event::CANCEL_CONNECT_CLAIMS:
+            Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
+            // implement later
+            break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
@@ -183,8 +199,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     }
 
     // now we get info from the database
-    std::vector<uint8_t> userData = userDb.getUserProtobufByUsername(user);
-    userProto.ParseFromArray(userData.data(), userData.size());
+    userProto = debateWrapper.getUserProtobufByUsername(user);
     *responseMessage.mutable_engagement() = userProto.engagement();
 
     // switch statement for different engagement states

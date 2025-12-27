@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSIUChJDbG9zZUFkZENoaWxkQ2xhaW0iMwoNQWRkQ2hpbGRDbGFpbRINCgVjbGFpbRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCSIRCg9PcGVuUmVwb3J0Q2xhaW0iEgoQQ2xvc2VSZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IiQKEERlbGV0ZUNoaWxkQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkiVgoNQWRkQ29ubmVjdGlvbhIRCglkZWJhdGVfaWQYAiABKAkSDwoHZnJvbV9pZBgDIAEoCRINCgV0b19pZBgEIAEoCRISCgpjb25uZWN0aW9uGAUgASgJIhEKD0dvVG9QYXJlbnRDbGFpbSIdCglHb1RvQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkiGwoZU3RhcnRFZGl0Q2xhaW1EZXNjcmlwdGlvbiI1ChpTdWJtaXRFZGl0Q2xhaW1EZXNjcmlwdGlvbhIXCg9uZXdfZGVzY3JpcHRpb24YASABKAkiHAoaQ2FuY2VsRWRpdENsYWltRGVzY3JpcHRpb24iEAoOU3RhcnRFZGl0Q2xhaW0iJAoPU3VibWl0RWRpdENsYWltEhEKCW5ld19jbGFpbRgBIAEoCSIRCg9DYW5jZWxFZGl0Q2xhaW0i1goKC0RlYmF0ZUV2ZW50Eg8KB3VzZXJfaWQYASABKAkSCgoCaWQYAiABKAkSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiUKBHR5cGUYBCABKA4yFy5kZWJhdGVfZXZlbnQuRXZlbnRUeXBlEjMKDWNyZWF0ZV9kZWJhdGUYCiABKAsyGi5kZWJhdGVfZXZlbnQuQ3JlYXRlRGViYXRlSAASMwoNY2xlYXJfZGViYXRlcxgLIAEoCzIaLmRlYmF0ZV9ldmVudC5DbGVhckRlYmF0ZXNIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEicKB2dvX2hvbWUYDiABKAsyFC5kZWJhdGVfZXZlbnQuR29Ib21lSAASPwoUb3Blbl9hZGRfY2hpbGRfY2xhaW0YDyABKAsyHy5kZWJhdGVfZXZlbnQuT3BlbkFkZENoaWxkQ2xhaW1IABJBChVjbG9zZV9hZGRfY2hpbGRfY2xhaW0YFSABKAsyIC5kZWJhdGVfZXZlbnQuQ2xvc2VBZGRDaGlsZENsYWltSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABI6ChFvcGVuX3JlcG9ydF9jbGFpbRgRIAEoCzIdLmRlYmF0ZV9ldmVudC5PcGVuUmVwb3J0Q2xhaW1IABI8ChJjbG9zZV9yZXBvcnRfY2xhaW0YFiABKAsyHi5kZWJhdGVfZXZlbnQuQ2xvc2VSZXBvcnRDbGFpbUgAEkgKGGRlbGV0ZV9jdXJyZW50X3N0YXRlbWVudBgSIAEoCzIkLmRlYmF0ZV9ldmVudC5EZWxldGVDdXJyZW50U3RhdGVtZW50SAASNQoMZ29fdG9fcGFyZW50GBMgASgLMh0uZGViYXRlX2V2ZW50LkdvVG9QYXJlbnRDbGFpbUgAEi4KC2dvX3RvX2NsYWltGBQgASgLMhcuZGViYXRlX2V2ZW50LkdvVG9DbGFpbUgAEjwKEmRlbGV0ZV9jaGlsZF9jbGFpbRgXIAEoCzIeLmRlYmF0ZV9ldmVudC5EZWxldGVDaGlsZENsYWltSAASTwocc3RhcnRfZWRpdF9jbGFpbV9kZXNjcmlwdGlvbhgYIAEoCzInLmRlYmF0ZV9ldmVudC5TdGFydEVkaXRDbGFpbURlc2NyaXB0aW9uSAASUQodc3VibWl0X2VkaXRfY2xhaW1fZGVzY3JpcHRpb24YGSABKAsyKC5kZWJhdGVfZXZlbnQuU3VibWl0RWRpdENsYWltRGVzY3JpcHRpb25IABJRCh1jYW5jZWxfZWRpdF9jbGFpbV9kZXNjcmlwdGlvbhgaIAEoCzIoLmRlYmF0ZV9ldmVudC5DYW5jZWxFZGl0Q2xhaW1EZXNjcmlwdGlvbkgAEjgKEHN0YXJ0X2VkaXRfY2xhaW0YGyABKAsyHC5kZWJhdGVfZXZlbnQuU3RhcnRFZGl0Q2xhaW1IABI6ChFzdWJtaXRfZWRpdF9jbGFpbRgcIAEoCzIdLmRlYmF0ZV9ldmVudC5TdWJtaXRFZGl0Q2xhaW1IABI6ChFjYW5jZWxfZWRpdF9jbGFpbRgdIAEoCzIdLmRlYmF0ZV9ldmVudC5DYW5jZWxFZGl0Q2xhaW1IAEIJCgdwYXlsb2FkKp4ECglFdmVudFR5cGUSGgoWRVZFTlRfS0lORF9VTlNQRUNJRklFRBAAEggKBE5PTkUQARIRCg1DUkVBVEVfREVCQVRFEAISEQoNQ0xFQVJfREVCQVRFUxADEhEKDURFTEVURV9ERUJBVEUQBBIQCgxFTlRFUl9ERUJBVEUQBRILCgdHT19IT01FEAYSEAoMR09fVE9fUEFSRU5UEAcSGAoUT1BFTl9BRERfQ0hJTERfQ0xBSU0QCBITCg9BRERfQ0hJTERfQ0xBSU0QCRIcChhERUxFVEVfQ1VSUkVOVF9TVEFURU1FTlQQChIQCgxSRVBPUlRfQ0xBSU0QCxIPCgtHT19UT19DTEFJTRAMEhkKFUNMT1NFX0FERF9DSElMRF9DTEFJTRANEhYKEkNMT1NFX1JFUE9SVF9DTEFJTRAOEhoKFlNVQk1JVF9BRERfQ0hJTERfQ0xBSU0QDxIWChJERUxFVEVfQ0hJTERfQ0xBSU0QEBIgChxTVEFSVF9FRElUX0NMQUlNX0RFU0NSSVBUSU9OEBESIQodU1VCTUlUX0VESVRfQ0xBSU1fREVTQ1JJUFRJT04QEhIhCh1DQU5DRUxfRURJVF9DTEFJTV9ERVNDUklQVElPThATEhQKEFNUQVJUX0VESVRfQ0xBSU0QFBIVChFTVUJNSVRfRURJVF9DTEFJTRAVEhUKEUNBTkNFTF9FRElUX0NMQUlNEBZiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIGCgROb25lIiQKDENyZWF0ZURlYmF0ZRIUCgxkZWJhdGVfdG9waWMYAiABKAkiDgoMQ2xlYXJEZWJhdGVzIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAkiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgJIggKBkdvSG9tZSITChFPcGVuQWRkQ2hpbGRDbGFpbSIUChJDbG9zZUFkZENoaWxkQ2xhaW0iMwoNQWRkQ2hpbGRDbGFpbRINCgVjbGFpbRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCSIRCg9PcGVuUmVwb3J0Q2xhaW0iEgoQQ2xvc2VSZXBvcnRDbGFpbSIYChZEZWxldGVDdXJyZW50U3RhdGVtZW50IiQKEERlbGV0ZUNoaWxkQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkiVgoNQWRkQ29ubmVjdGlvbhIRCglkZWJhdGVfaWQYAiABKAkSDwoHZnJvbV9pZBgDIAEoCRINCgV0b19pZBgEIAEoCRISCgpjb25uZWN0aW9uGAUgASgJIhEKD0dvVG9QYXJlbnRDbGFpbSIdCglHb1RvQ2xhaW0SEAoIY2xhaW1faWQYAiABKAkiGwoZU3RhcnRFZGl0Q2xhaW1EZXNjcmlwdGlvbiI1ChpTdWJtaXRFZGl0Q2xhaW1EZXNjcmlwdGlvbhIXCg9uZXdfZGVzY3JpcHRpb24YASABKAkiHAoaQ2FuY2VsRWRpdENsYWltRGVzY3JpcHRpb24iEAoOU3RhcnRFZGl0Q2xhaW0iJAoPU3VibWl0RWRpdENsYWltEhEKCW5ld19jbGFpbRgBIAEoCSIRCg9DYW5jZWxFZGl0Q2xhaW0iKQoQQ29ubmVjdEZyb21DbGFpbRIVCg1mcm9tX2NsYWltX2lkGAEgASgJIiUKDkNvbm5lY3RUb0NsYWltEhMKC3RvX2NsYWltX2lkGAIgASgJIikKE1N1Ym1pdENvbm5lY3RDbGFpbXMSEgoKY29ubmVjdGlvbhgBIAEoCSIVChNDYW5jZWxDb25uZWN0Q2xhaW1zItYMCgtEZWJhdGVFdmVudBIPCgd1c2VyX2lkGAEgASgJEgoKAmlkGAIgASgJEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWNsZWFyX2RlYmF0ZXMYCyABKAsyGi5kZWJhdGVfZXZlbnQuQ2xlYXJEZWJhdGVzSAASMwoNZGVsZXRlX2RlYmF0ZRgMIAEoCzIaLmRlYmF0ZV9ldmVudC5EZWxldGVEZWJhdGVIABIxCgxlbnRlcl9kZWJhdGUYDSABKAsyGS5kZWJhdGVfZXZlbnQuRW50ZXJEZWJhdGVIABInCgdnb19ob21lGA4gASgLMhQuZGViYXRlX2V2ZW50LkdvSG9tZUgAEj8KFG9wZW5fYWRkX2NoaWxkX2NsYWltGA8gASgLMh8uZGViYXRlX2V2ZW50Lk9wZW5BZGRDaGlsZENsYWltSAASQQoVY2xvc2VfYWRkX2NoaWxkX2NsYWltGBUgASgLMiAuZGViYXRlX2V2ZW50LkNsb3NlQWRkQ2hpbGRDbGFpbUgAEjYKD2FkZF9jaGlsZF9jbGFpbRgQIAEoCzIbLmRlYmF0ZV9ldmVudC5BZGRDaGlsZENsYWltSAASOgoRb3Blbl9yZXBvcnRfY2xhaW0YESABKAsyHS5kZWJhdGVfZXZlbnQuT3BlblJlcG9ydENsYWltSAASPAoSY2xvc2VfcmVwb3J0X2NsYWltGBYgASgLMh4uZGViYXRlX2V2ZW50LkNsb3NlUmVwb3J0Q2xhaW1IABJIChhkZWxldGVfY3VycmVudF9zdGF0ZW1lbnQYEiABKAsyJC5kZWJhdGVfZXZlbnQuRGVsZXRlQ3VycmVudFN0YXRlbWVudEgAEjUKDGdvX3RvX3BhcmVudBgTIAEoCzIdLmRlYmF0ZV9ldmVudC5Hb1RvUGFyZW50Q2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IABI8ChJkZWxldGVfY2hpbGRfY2xhaW0YFyABKAsyHi5kZWJhdGVfZXZlbnQuRGVsZXRlQ2hpbGRDbGFpbUgAEk8KHHN0YXJ0X2VkaXRfY2xhaW1fZGVzY3JpcHRpb24YGCABKAsyJy5kZWJhdGVfZXZlbnQuU3RhcnRFZGl0Q2xhaW1EZXNjcmlwdGlvbkgAElEKHXN1Ym1pdF9lZGl0X2NsYWltX2Rlc2NyaXB0aW9uGBkgASgLMiguZGViYXRlX2V2ZW50LlN1Ym1pdEVkaXRDbGFpbURlc2NyaXB0aW9uSAASUQodY2FuY2VsX2VkaXRfY2xhaW1fZGVzY3JpcHRpb24YGiABKAsyKC5kZWJhdGVfZXZlbnQuQ2FuY2VsRWRpdENsYWltRGVzY3JpcHRpb25IABI4ChBzdGFydF9lZGl0X2NsYWltGBsgASgLMhwuZGViYXRlX2V2ZW50LlN0YXJ0RWRpdENsYWltSAASOgoRc3VibWl0X2VkaXRfY2xhaW0YHCABKAsyHS5kZWJhdGVfZXZlbnQuU3VibWl0RWRpdENsYWltSAASOgoRY2FuY2VsX2VkaXRfY2xhaW0YHSABKAsyHS5kZWJhdGVfZXZlbnQuQ2FuY2VsRWRpdENsYWltSAASPAoSY29ubmVjdF9mcm9tX2NsYWltGB4gASgLMh4uZGViYXRlX2V2ZW50LkNvbm5lY3RGcm9tQ2xhaW1IABI4ChBjb25uZWN0X3RvX2NsYWltGB8gASgLMhwuZGViYXRlX2V2ZW50LkNvbm5lY3RUb0NsYWltSAASQgoVc3VibWl0X2Nvbm5lY3RfY2xhaW1zGCAgASgLMiEuZGViYXRlX2V2ZW50LlN1Ym1pdENvbm5lY3RDbGFpbXNIABJCChVjYW5jZWxfY29ubmVjdF9jbGFpbXMYISABKAsyIS5kZWJhdGVfZXZlbnQuQ2FuY2VsQ29ubmVjdENsYWltc0gAQgkKB3BheWxvYWQqggUKCUV2ZW50VHlwZRIaChZFVkVOVF9LSU5EX1VOU1BFQ0lGSUVEEAASCAoETk9ORRABEhEKDUNSRUFURV9ERUJBVEUQAhIRCg1DTEVBUl9ERUJBVEVTEAMSEQoNREVMRVRFX0RFQkFURRAEEhAKDEVOVEVSX0RFQkFURRAFEgsKB0dPX0hPTUUQBhIQCgxHT19UT19QQVJFTlQQBxIYChRPUEVOX0FERF9DSElMRF9DTEFJTRAIEhMKD0FERF9DSElMRF9DTEFJTRAJEhwKGERFTEVURV9DVVJSRU5UX1NUQVRFTUVOVBAKEhAKDFJFUE9SVF9DTEFJTRALEg8KC0dPX1RPX0NMQUlNEAwSGQoVQ0xPU0VfQUREX0NISUxEX0NMQUlNEA0SFgoSQ0xPU0VfUkVQT1JUX0NMQUlNEA4SGgoWU1VCTUlUX0FERF9DSElMRF9DTEFJTRAPEhYKEkRFTEVURV9DSElMRF9DTEFJTRAQEiAKHFNUQVJUX0VESVRfQ0xBSU1fREVTQ1JJUFRJT04QERIhCh1TVUJNSVRfRURJVF9DTEFJTV9ERVNDUklQVElPThASEiEKHUNBTkNFTF9FRElUX0NMQUlNX0RFU0NSSVBUSU9OEBMSFAoQU1RBUlRfRURJVF9DTEFJTRAUEhUKEVNVQk1JVF9FRElUX0NMQUlNEBUSFQoRQ0FOQ0VMX0VESVRfQ0xBSU0QFhIWChJDT05ORUNUX0ZST01fQ0xBSU0QFxIUChBDT05ORUNUX1RPX0NMQUlNEBgSGQoVU1VCTUlUX0NPTk5FQ1RfQ0xBSU1TEBkSGQoVQ0FOQ0VMX0NPTk5FQ1RfQ0xBSU1TEBpiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * Individual event payloads
@@ -359,6 +359,70 @@ export const CancelEditClaimSchema: GenMessage<CancelEditClaim> = /*@__PURE__*/
   messageDesc(file_debate_event, 21);
 
 /**
+ * @generated from message debate_event.ConnectFromClaim
+ */
+export type ConnectFromClaim = Message<"debate_event.ConnectFromClaim"> & {
+  /**
+   * @generated from field: string from_claim_id = 1;
+   */
+  fromClaimId: string;
+};
+
+/**
+ * Describes the message debate_event.ConnectFromClaim.
+ * Use `create(ConnectFromClaimSchema)` to create a new message.
+ */
+export const ConnectFromClaimSchema: GenMessage<ConnectFromClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 22);
+
+/**
+ * @generated from message debate_event.ConnectToClaim
+ */
+export type ConnectToClaim = Message<"debate_event.ConnectToClaim"> & {
+  /**
+   * @generated from field: string to_claim_id = 2;
+   */
+  toClaimId: string;
+};
+
+/**
+ * Describes the message debate_event.ConnectToClaim.
+ * Use `create(ConnectToClaimSchema)` to create a new message.
+ */
+export const ConnectToClaimSchema: GenMessage<ConnectToClaim> = /*@__PURE__*/
+  messageDesc(file_debate_event, 23);
+
+/**
+ * @generated from message debate_event.SubmitConnectClaims
+ */
+export type SubmitConnectClaims = Message<"debate_event.SubmitConnectClaims"> & {
+  /**
+   * @generated from field: string connection = 1;
+   */
+  connection: string;
+};
+
+/**
+ * Describes the message debate_event.SubmitConnectClaims.
+ * Use `create(SubmitConnectClaimsSchema)` to create a new message.
+ */
+export const SubmitConnectClaimsSchema: GenMessage<SubmitConnectClaims> = /*@__PURE__*/
+  messageDesc(file_debate_event, 24);
+
+/**
+ * @generated from message debate_event.CancelConnectClaims
+ */
+export type CancelConnectClaims = Message<"debate_event.CancelConnectClaims"> & {
+};
+
+/**
+ * Describes the message debate_event.CancelConnectClaims.
+ * Use `create(CancelConnectClaimsSchema)` to create a new message.
+ */
+export const CancelConnectClaimsSchema: GenMessage<CancelConnectClaims> = /*@__PURE__*/
+  messageDesc(file_debate_event, 25);
+
+/**
  * main message
  *
  * @generated from message debate_event.DebateEvent
@@ -507,6 +571,30 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
      */
     value: CancelEditClaim;
     case: "cancelEditClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.ConnectFromClaim connect_from_claim = 30;
+     */
+    value: ConnectFromClaim;
+    case: "connectFromClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.ConnectToClaim connect_to_claim = 31;
+     */
+    value: ConnectToClaim;
+    case: "connectToClaim";
+  } | {
+    /**
+     * @generated from field: debate_event.SubmitConnectClaims submit_connect_claims = 32;
+     */
+    value: SubmitConnectClaims;
+    case: "submitConnectClaims";
+  } | {
+    /**
+     * @generated from field: debate_event.CancelConnectClaims cancel_connect_claims = 33;
+     */
+    value: CancelConnectClaims;
+    case: "cancelConnectClaims";
   } | { case: undefined; value?: undefined };
 };
 
@@ -515,7 +603,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 22);
+  messageDesc(file_debate_event, 26);
 
 /**
  * enum
@@ -637,6 +725,28 @@ export enum EventType {
    * @generated from enum value: CANCEL_EDIT_CLAIM = 22;
    */
   CANCEL_EDIT_CLAIM = 22,
+
+  /**
+   * connecting claims
+   *
+   * @generated from enum value: CONNECT_FROM_CLAIM = 23;
+   */
+  CONNECT_FROM_CLAIM = 23,
+
+  /**
+   * @generated from enum value: CONNECT_TO_CLAIM = 24;
+   */
+  CONNECT_TO_CLAIM = 24,
+
+  /**
+   * @generated from enum value: SUBMIT_CONNECT_CLAIMS = 25;
+   */
+  SUBMIT_CONNECT_CLAIMS = 25,
+
+  /**
+   * @generated from enum value: CANCEL_CONNECT_CLAIMS = 26;
+   */
+  CANCEL_CONNECT_CLAIMS = 26,
 }
 
 /**

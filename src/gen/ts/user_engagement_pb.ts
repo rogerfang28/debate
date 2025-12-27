@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIvMCCgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgJIAEoCRIwCgxwYXJlbnRfY2xhaW0YBSABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEi4KCnJvb3RfY2xhaW0YAyABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEjMKD2NoaWxkcmVuX2NsYWltcxgEIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SGgoSYWRkaW5nX2NoaWxkX2NsYWltGAYgASgIEh4KFmVkaXRpbmdfY2xhaW1fc2VudGVuY2UYByABKAgSIQoZZWRpdGluZ19jbGFpbV9kZXNjcmlwdGlvbhgKIAEoCBIXCg9yZXBvcnRpbmdfY2xhaW0YCCABKAgiKQoJQ2xhaW1JbmZvEgoKAmlkGAEgASgJEhAKCHNlbnRlbmNlGAIgASgJIsIBCg5Vc2VyRW5nYWdlbWVudBI5Cg5jdXJyZW50X2FjdGlvbhgBIAEoDjIhLnVzZXJfZW5nYWdlbWVudC5FbmdhZ2VtZW50QWN0aW9uEi4KCW5vbmVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ob25lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSABCDQoLYWN0aW9uX2luZm8qWwoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9OT05FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAJiBnByb3RvMw");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIqAECgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgJIAEoCRIwCgxwYXJlbnRfY2xhaW0YBSABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEi4KCnJvb3RfY2xhaW0YAyABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEjMKD2NoaWxkcmVuX2NsYWltcxgEIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SGgoSYWRkaW5nX2NoaWxkX2NsYWltGAYgASgIEh4KFmVkaXRpbmdfY2xhaW1fc2VudGVuY2UYByABKAgSIQoZZWRpdGluZ19jbGFpbV9kZXNjcmlwdGlvbhgKIAEoCBIXCg9yZXBvcnRpbmdfY2xhaW0YCCABKAgSRQoPY29ubmVjdGluZ19pbmZvGAsgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mbxpkCg5Db25uZWN0aW5nSW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgJEhMKC3RvX2NsYWltX2lkGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY29ubmVjdGluZxgEIAEoCCIpCglDbGFpbUluZm8SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * @generated from message user_engagement.NoneInfo
@@ -138,6 +138,13 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
    * @generated from field: bool reporting_claim = 8;
    */
   reportingClaim: boolean;
+
+  /**
+   * info about connecting claims
+   *
+   * @generated from field: user_engagement.DebatingInfo.ConnectingInfo connecting_info = 11;
+   */
+  connectingInfo?: DebatingInfo_ConnectingInfo;
 };
 
 /**
@@ -146,6 +153,38 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
  */
 export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
   messageDesc(file_user_engagement, 3);
+
+/**
+ * @generated from message user_engagement.DebatingInfo.ConnectingInfo
+ */
+export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.ConnectingInfo"> & {
+  /**
+   * @generated from field: string from_claim_id = 1;
+   */
+  fromClaimId: string;
+
+  /**
+   * @generated from field: string to_claim_id = 2;
+   */
+  toClaimId: string;
+
+  /**
+   * @generated from field: string connection = 3;
+   */
+  connection: string;
+
+  /**
+   * @generated from field: bool connecting = 4;
+   */
+  connecting: boolean;
+};
+
+/**
+ * Describes the message user_engagement.DebatingInfo.ConnectingInfo.
+ * Use `create(DebatingInfo_ConnectingInfoSchema)` to create a new message.
+ */
+export const DebatingInfo_ConnectingInfoSchema: GenMessage<DebatingInfo_ConnectingInfo> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 3, 0);
 
 /**
  * @generated from message user_engagement.ClaimInfo

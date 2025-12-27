@@ -84,6 +84,21 @@ message SubmitEditClaim {
 message CancelEditClaim {
 }
 
+message ConnectFromClaim {
+    string from_claim_id = 1;
+}
+
+message ConnectToClaim {
+    string to_claim_id   = 2;
+}
+
+message SubmitConnectClaims {
+    string connection    = 1;
+}
+
+message CancelConnectClaims {
+}
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
@@ -109,6 +124,11 @@ enum EventType {
     START_EDIT_CLAIM = 20;
     SUBMIT_EDIT_CLAIM = 21;
     CANCEL_EDIT_CLAIM = 22;
+    // connecting claims
+    CONNECT_FROM_CLAIM = 23;
+    CONNECT_TO_CLAIM = 24;
+    SUBMIT_CONNECT_CLAIMS = 25;
+    CANCEL_CONNECT_CLAIMS = 26;
 }
 
 // main message
@@ -140,5 +160,9 @@ message DebateEvent {
     StartEditClaim start_edit_claim = 27;
     SubmitEditClaim submit_edit_claim = 28;
     CancelEditClaim cancel_edit_claim = 29;
+    ConnectFromClaim connect_from_claim = 30;
+    ConnectToClaim   connect_to_claim   = 31;
+    SubmitConnectClaims submit_connect_claims = 32;
+    CancelConnectClaims cancel_connect_claims = 33;
   }
 }
