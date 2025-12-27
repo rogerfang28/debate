@@ -66,6 +66,16 @@ message GoToClaim {
     string claim_id      = 2;
 }
 
+message StartEditClaimDescription {
+}
+
+message SubmitEditClaimDescription {
+    string new_description = 1;
+}
+
+message CancelEditClaimDescription {
+}
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
@@ -85,6 +95,9 @@ enum EventType {
     CLOSE_REPORT_CLAIM     = 14;
     SUBMIT_ADD_CHILD_CLAIM = 15;
     DELETE_CHILD_CLAIM     = 16;
+    START_EDIT_CLAIM_DESCRIPTION = 17;
+    SUBMIT_EDIT_CLAIM_DESCRIPTION = 18;
+    CANCEL_EDIT_CLAIM_DESCRIPTION = 19;
 }
 
 // main message
@@ -110,5 +123,8 @@ message DebateEvent {
     GoToParentClaim   go_to_parent    = 19;
     GoToClaim        go_to_claim     = 20;
     DeleteChildClaim delete_child_claim = 23;
+    StartEditClaimDescription start_edit_claim_description = 24;
+    SubmitEditClaimDescription submit_edit_claim_description = 25;
+    CancelEditClaimDescription cancel_edit_claim_description = 26;
   }
 }

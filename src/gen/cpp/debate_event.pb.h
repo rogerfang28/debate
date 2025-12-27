@@ -61,6 +61,9 @@ extern AddChildClaimDefaultTypeInternal _AddChildClaim_default_instance_;
 class AddConnection;
 struct AddConnectionDefaultTypeInternal;
 extern AddConnectionDefaultTypeInternal _AddConnection_default_instance_;
+class CancelEditClaimDescription;
+struct CancelEditClaimDescriptionDefaultTypeInternal;
+extern CancelEditClaimDescriptionDefaultTypeInternal _CancelEditClaimDescription_default_instance_;
 class ClearDebates;
 struct ClearDebatesDefaultTypeInternal;
 extern ClearDebatesDefaultTypeInternal _ClearDebates_default_instance_;
@@ -106,6 +109,12 @@ extern OpenAddChildClaimDefaultTypeInternal _OpenAddChildClaim_default_instance_
 class OpenReportClaim;
 struct OpenReportClaimDefaultTypeInternal;
 extern OpenReportClaimDefaultTypeInternal _OpenReportClaim_default_instance_;
+class StartEditClaimDescription;
+struct StartEditClaimDescriptionDefaultTypeInternal;
+extern StartEditClaimDescriptionDefaultTypeInternal _StartEditClaimDescription_default_instance_;
+class SubmitEditClaimDescription;
+struct SubmitEditClaimDescriptionDefaultTypeInternal;
+extern SubmitEditClaimDescriptionDefaultTypeInternal _SubmitEditClaimDescription_default_instance_;
 }  // namespace debate_event
 namespace google {
 namespace protobuf {
@@ -131,6 +140,9 @@ enum EventType : int {
   CLOSE_REPORT_CLAIM = 14,
   SUBMIT_ADD_CHILD_CLAIM = 15,
   DELETE_CHILD_CLAIM = 16,
+  START_EDIT_CLAIM_DESCRIPTION = 17,
+  SUBMIT_EDIT_CLAIM_DESCRIPTION = 18,
+  CANCEL_EDIT_CLAIM_DESCRIPTION = 19,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -140,8 +152,8 @@ enum EventType : int {
 bool EventType_IsValid(int value);
 extern const uint32_t EventType_internal_data_[];
 constexpr EventType EventType_MIN = static_cast<EventType>(0);
-constexpr EventType EventType_MAX = static_cast<EventType>(16);
-constexpr int EventType_ARRAYSIZE = 16 + 1;
+constexpr EventType EventType_MAX = static_cast<EventType>(19);
+constexpr int EventType_ARRAYSIZE = 19 + 1;
 const ::google::protobuf::EnumDescriptor*
 EventType_descriptor();
 template <typename T>
@@ -154,7 +166,7 @@ const std::string& EventType_Name(T value) {
 template <>
 inline const std::string& EventType_Name(EventType value) {
   return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
-                                                 0, 16>(
+                                                 0, 19>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(absl::string_view name, EventType* value) {
@@ -165,6 +177,347 @@ inline bool EventType_Parse(absl::string_view name, EventType* value) {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class SubmitEditClaimDescription final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.SubmitEditClaimDescription) */ {
+ public:
+  inline SubmitEditClaimDescription() : SubmitEditClaimDescription(nullptr) {}
+  ~SubmitEditClaimDescription() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubmitEditClaimDescription* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubmitEditClaimDescription));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubmitEditClaimDescription(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubmitEditClaimDescription(const SubmitEditClaimDescription& from) : SubmitEditClaimDescription(nullptr, from) {}
+  inline SubmitEditClaimDescription(SubmitEditClaimDescription&& from) noexcept
+      : SubmitEditClaimDescription(nullptr, std::move(from)) {}
+  inline SubmitEditClaimDescription& operator=(const SubmitEditClaimDescription& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubmitEditClaimDescription& operator=(SubmitEditClaimDescription&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubmitEditClaimDescription& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubmitEditClaimDescription* internal_default_instance() {
+    return reinterpret_cast<const SubmitEditClaimDescription*>(
+        &_SubmitEditClaimDescription_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 17;
+  friend void swap(SubmitEditClaimDescription& a, SubmitEditClaimDescription& b) { a.Swap(&b); }
+  inline void Swap(SubmitEditClaimDescription* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubmitEditClaimDescription* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubmitEditClaimDescription* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SubmitEditClaimDescription>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubmitEditClaimDescription& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubmitEditClaimDescription& from) { SubmitEditClaimDescription::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubmitEditClaimDescription* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.SubmitEditClaimDescription"; }
+
+ protected:
+  explicit SubmitEditClaimDescription(::google::protobuf::Arena* arena);
+  SubmitEditClaimDescription(::google::protobuf::Arena* arena, const SubmitEditClaimDescription& from);
+  SubmitEditClaimDescription(::google::protobuf::Arena* arena, SubmitEditClaimDescription&& from) noexcept
+      : SubmitEditClaimDescription(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewDescriptionFieldNumber = 1,
+  };
+  // string new_description = 1 [json_name = "newDescription"];
+  void clear_new_description() ;
+  const std::string& new_description() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_new_description(Arg_&& arg, Args_... args);
+  std::string* mutable_new_description();
+  PROTOBUF_NODISCARD std::string* release_new_description();
+  void set_allocated_new_description(std::string* value);
+
+  private:
+  const std::string& _internal_new_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_new_description(
+      const std::string& value);
+  std::string* _internal_mutable_new_description();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.SubmitEditClaimDescription)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      63, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubmitEditClaimDescription& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr new_description_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
+class StartEditClaimDescription final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:debate_event.StartEditClaimDescription) */ {
+ public:
+  inline StartEditClaimDescription() : StartEditClaimDescription(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(StartEditClaimDescription* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartEditClaimDescription));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartEditClaimDescription(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline StartEditClaimDescription(const StartEditClaimDescription& from) : StartEditClaimDescription(nullptr, from) {}
+  inline StartEditClaimDescription(StartEditClaimDescription&& from) noexcept
+      : StartEditClaimDescription(nullptr, std::move(from)) {}
+  inline StartEditClaimDescription& operator=(const StartEditClaimDescription& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartEditClaimDescription& operator=(StartEditClaimDescription&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartEditClaimDescription& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartEditClaimDescription* internal_default_instance() {
+    return reinterpret_cast<const StartEditClaimDescription*>(
+        &_StartEditClaimDescription_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 16;
+  friend void swap(StartEditClaimDescription& a, StartEditClaimDescription& b) { a.Swap(&b); }
+  inline void Swap(StartEditClaimDescription* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StartEditClaimDescription* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StartEditClaimDescription* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartEditClaimDescription>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const StartEditClaimDescription& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const StartEditClaimDescription& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.StartEditClaimDescription"; }
+
+ protected:
+  explicit StartEditClaimDescription(::google::protobuf::Arena* arena);
+  StartEditClaimDescription(::google::protobuf::Arena* arena, const StartEditClaimDescription& from);
+  StartEditClaimDescription(::google::protobuf::Arena* arena, StartEditClaimDescription&& from) noexcept
+      : StartEditClaimDescription(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:debate_event.StartEditClaimDescription)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartEditClaimDescription& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
 // -------------------------------------------------------------------
 
 class OpenReportClaim final : public ::google::protobuf::internal::ZeroFieldsBase
@@ -2452,6 +2805,151 @@ class ClearDebates final : public ::google::protobuf::internal::ZeroFieldsBase
 };
 // -------------------------------------------------------------------
 
+class CancelEditClaimDescription final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:debate_event.CancelEditClaimDescription) */ {
+ public:
+  inline CancelEditClaimDescription() : CancelEditClaimDescription(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CancelEditClaimDescription* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelEditClaimDescription));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelEditClaimDescription(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline CancelEditClaimDescription(const CancelEditClaimDescription& from) : CancelEditClaimDescription(nullptr, from) {}
+  inline CancelEditClaimDescription(CancelEditClaimDescription&& from) noexcept
+      : CancelEditClaimDescription(nullptr, std::move(from)) {}
+  inline CancelEditClaimDescription& operator=(const CancelEditClaimDescription& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelEditClaimDescription& operator=(CancelEditClaimDescription&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelEditClaimDescription& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelEditClaimDescription* internal_default_instance() {
+    return reinterpret_cast<const CancelEditClaimDescription*>(
+        &_CancelEditClaimDescription_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(CancelEditClaimDescription& a, CancelEditClaimDescription& b) { a.Swap(&b); }
+  inline void Swap(CancelEditClaimDescription* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CancelEditClaimDescription* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CancelEditClaimDescription* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelEditClaimDescription>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const CancelEditClaimDescription& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const CancelEditClaimDescription& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.CancelEditClaimDescription"; }
+
+ protected:
+  explicit CancelEditClaimDescription(::google::protobuf::Arena* arena);
+  CancelEditClaimDescription(::google::protobuf::Arena* arena, const CancelEditClaimDescription& from);
+  CancelEditClaimDescription(::google::protobuf::Arena* arena, CancelEditClaimDescription&& from) noexcept
+      : CancelEditClaimDescription(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:debate_event.CancelEditClaimDescription)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelEditClaimDescription& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
 class AddConnection final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.AddConnection) */ {
  public:
@@ -2986,13 +3484,16 @@ class DebateEvent final : public ::google::protobuf::Message
     kGoToParent = 19,
     kGoToClaim = 20,
     kDeleteChildClaim = 23,
+    kStartEditClaimDescription = 24,
+    kSubmitEditClaimDescription = 25,
+    kCancelEditClaimDescription = 26,
     PAYLOAD_NOT_SET = 0,
   };
   static inline const DebateEvent* internal_default_instance() {
     return reinterpret_cast<const DebateEvent*>(
         &_DebateEvent_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* other) {
     if (other == this) return;
@@ -3097,6 +3598,9 @@ class DebateEvent final : public ::google::protobuf::Message
     kGoToParentFieldNumber = 19,
     kGoToClaimFieldNumber = 20,
     kDeleteChildClaimFieldNumber = 23,
+    kStartEditClaimDescriptionFieldNumber = 24,
+    kSubmitEditClaimDescriptionFieldNumber = 25,
+    kCancelEditClaimDescriptionFieldNumber = 26,
   };
   // string user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
@@ -3421,6 +3925,63 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::DeleteChildClaim* _internal_mutable_delete_child_claim();
 
   public:
+  // .debate_event.StartEditClaimDescription start_edit_claim_description = 24 [json_name = "startEditClaimDescription"];
+  bool has_start_edit_claim_description() const;
+  private:
+  bool _internal_has_start_edit_claim_description() const;
+
+  public:
+  void clear_start_edit_claim_description() ;
+  const ::debate_event::StartEditClaimDescription& start_edit_claim_description() const;
+  PROTOBUF_NODISCARD ::debate_event::StartEditClaimDescription* release_start_edit_claim_description();
+  ::debate_event::StartEditClaimDescription* mutable_start_edit_claim_description();
+  void set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value);
+  void unsafe_arena_set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value);
+  ::debate_event::StartEditClaimDescription* unsafe_arena_release_start_edit_claim_description();
+
+  private:
+  const ::debate_event::StartEditClaimDescription& _internal_start_edit_claim_description() const;
+  ::debate_event::StartEditClaimDescription* _internal_mutable_start_edit_claim_description();
+
+  public:
+  // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
+  bool has_submit_edit_claim_description() const;
+  private:
+  bool _internal_has_submit_edit_claim_description() const;
+
+  public:
+  void clear_submit_edit_claim_description() ;
+  const ::debate_event::SubmitEditClaimDescription& submit_edit_claim_description() const;
+  PROTOBUF_NODISCARD ::debate_event::SubmitEditClaimDescription* release_submit_edit_claim_description();
+  ::debate_event::SubmitEditClaimDescription* mutable_submit_edit_claim_description();
+  void set_allocated_submit_edit_claim_description(::debate_event::SubmitEditClaimDescription* value);
+  void unsafe_arena_set_allocated_submit_edit_claim_description(::debate_event::SubmitEditClaimDescription* value);
+  ::debate_event::SubmitEditClaimDescription* unsafe_arena_release_submit_edit_claim_description();
+
+  private:
+  const ::debate_event::SubmitEditClaimDescription& _internal_submit_edit_claim_description() const;
+  ::debate_event::SubmitEditClaimDescription* _internal_mutable_submit_edit_claim_description();
+
+  public:
+  // .debate_event.CancelEditClaimDescription cancel_edit_claim_description = 26 [json_name = "cancelEditClaimDescription"];
+  bool has_cancel_edit_claim_description() const;
+  private:
+  bool _internal_has_cancel_edit_claim_description() const;
+
+  public:
+  void clear_cancel_edit_claim_description() ;
+  const ::debate_event::CancelEditClaimDescription& cancel_edit_claim_description() const;
+  PROTOBUF_NODISCARD ::debate_event::CancelEditClaimDescription* release_cancel_edit_claim_description();
+  ::debate_event::CancelEditClaimDescription* mutable_cancel_edit_claim_description();
+  void set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value);
+  void unsafe_arena_set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value);
+  ::debate_event::CancelEditClaimDescription* unsafe_arena_release_cancel_edit_claim_description();
+
+  private:
+  const ::debate_event::CancelEditClaimDescription& _internal_cancel_edit_claim_description() const;
+  ::debate_event::CancelEditClaimDescription* _internal_mutable_cancel_edit_claim_description();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -3440,11 +4001,14 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_go_to_parent();
   void set_has_go_to_claim();
   void set_has_delete_child_claim();
+  void set_has_start_edit_claim_description();
+  void set_has_submit_edit_claim_description();
+  void set_has_cancel_edit_claim_description();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 18, 15,
+      2, 21, 18,
       58, 2>
       _table_;
 
@@ -3485,6 +4049,9 @@ class DebateEvent final : public ::google::protobuf::Message
       ::debate_event::GoToParentClaim* go_to_parent_;
       ::debate_event::GoToClaim* go_to_claim_;
       ::debate_event::DeleteChildClaim* delete_child_claim_;
+      ::debate_event::StartEditClaimDescription* start_edit_claim_description_;
+      ::debate_event::SubmitEditClaimDescription* submit_edit_claim_description_;
+      ::debate_event::CancelEditClaimDescription* cancel_edit_claim_description_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4096,6 +4663,66 @@ inline void GoToClaim::set_allocated_claim_id(std::string* value) {
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.GoToClaim.claim_id)
 }
+
+// -------------------------------------------------------------------
+
+// StartEditClaimDescription
+
+// -------------------------------------------------------------------
+
+// SubmitEditClaimDescription
+
+// string new_description = 1 [json_name = "newDescription"];
+inline void SubmitEditClaimDescription::clear_new_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_description_.ClearToEmpty();
+}
+inline const std::string& SubmitEditClaimDescription::new_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitEditClaimDescription.new_description)
+  return _internal_new_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubmitEditClaimDescription::set_new_description(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitEditClaimDescription.new_description)
+}
+inline std::string* SubmitEditClaimDescription::mutable_new_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_new_description();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitEditClaimDescription.new_description)
+  return _s;
+}
+inline const std::string& SubmitEditClaimDescription::_internal_new_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_description_.Get();
+}
+inline void SubmitEditClaimDescription::_internal_set_new_description(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_description_.Set(value, GetArena());
+}
+inline std::string* SubmitEditClaimDescription::_internal_mutable_new_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.new_description_.Mutable( GetArena());
+}
+inline std::string* SubmitEditClaimDescription::release_new_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitEditClaimDescription.new_description)
+  return _impl_.new_description_.Release();
+}
+inline void SubmitEditClaimDescription::set_allocated_new_description(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_description_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.new_description_.IsDefault()) {
+    _impl_.new_description_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitEditClaimDescription.new_description)
+}
+
+// -------------------------------------------------------------------
+
+// CancelEditClaimDescription
 
 // -------------------------------------------------------------------
 
@@ -5413,6 +6040,243 @@ inline ::debate_event::DeleteChildClaim* DebateEvent::_internal_mutable_delete_c
 inline ::debate_event::DeleteChildClaim* DebateEvent::mutable_delete_child_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::DeleteChildClaim* _msg = _internal_mutable_delete_child_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.delete_child_claim)
+  return _msg;
+}
+
+// .debate_event.StartEditClaimDescription start_edit_claim_description = 24 [json_name = "startEditClaimDescription"];
+inline bool DebateEvent::has_start_edit_claim_description() const {
+  return payload_case() == kStartEditClaimDescription;
+}
+inline bool DebateEvent::_internal_has_start_edit_claim_description() const {
+  return payload_case() == kStartEditClaimDescription;
+}
+inline void DebateEvent::set_has_start_edit_claim_description() {
+  _impl_._oneof_case_[0] = kStartEditClaimDescription;
+}
+inline void DebateEvent::clear_start_edit_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kStartEditClaimDescription) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.start_edit_claim_description_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.start_edit_claim_description_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::StartEditClaimDescription* DebateEvent::release_start_edit_claim_description() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.start_edit_claim_description)
+  if (payload_case() == kStartEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.start_edit_claim_description_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.start_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::StartEditClaimDescription& DebateEvent::_internal_start_edit_claim_description() const {
+  return payload_case() == kStartEditClaimDescription ? *_impl_.payload_.start_edit_claim_description_ : reinterpret_cast<::debate_event::StartEditClaimDescription&>(::debate_event::_StartEditClaimDescription_default_instance_);
+}
+inline const ::debate_event::StartEditClaimDescription& DebateEvent::start_edit_claim_description() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.start_edit_claim_description)
+  return _internal_start_edit_claim_description();
+}
+inline ::debate_event::StartEditClaimDescription* DebateEvent::unsafe_arena_release_start_edit_claim_description() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.start_edit_claim_description)
+  if (payload_case() == kStartEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.start_edit_claim_description_;
+    _impl_.payload_.start_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_start_edit_claim_description();
+    _impl_.payload_.start_edit_claim_description_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.start_edit_claim_description)
+}
+inline ::debate_event::StartEditClaimDescription* DebateEvent::_internal_mutable_start_edit_claim_description() {
+  if (payload_case() != kStartEditClaimDescription) {
+    clear_payload();
+    set_has_start_edit_claim_description();
+    _impl_.payload_.start_edit_claim_description_ =
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::StartEditClaimDescription>(GetArena());
+  }
+  return _impl_.payload_.start_edit_claim_description_;
+}
+inline ::debate_event::StartEditClaimDescription* DebateEvent::mutable_start_edit_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::StartEditClaimDescription* _msg = _internal_mutable_start_edit_claim_description();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.start_edit_claim_description)
+  return _msg;
+}
+
+// .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
+inline bool DebateEvent::has_submit_edit_claim_description() const {
+  return payload_case() == kSubmitEditClaimDescription;
+}
+inline bool DebateEvent::_internal_has_submit_edit_claim_description() const {
+  return payload_case() == kSubmitEditClaimDescription;
+}
+inline void DebateEvent::set_has_submit_edit_claim_description() {
+  _impl_._oneof_case_[0] = kSubmitEditClaimDescription;
+}
+inline void DebateEvent::clear_submit_edit_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kSubmitEditClaimDescription) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.submit_edit_claim_description_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.submit_edit_claim_description_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::SubmitEditClaimDescription* DebateEvent::release_submit_edit_claim_description() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.submit_edit_claim_description)
+  if (payload_case() == kSubmitEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.submit_edit_claim_description_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.submit_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::SubmitEditClaimDescription& DebateEvent::_internal_submit_edit_claim_description() const {
+  return payload_case() == kSubmitEditClaimDescription ? *_impl_.payload_.submit_edit_claim_description_ : reinterpret_cast<::debate_event::SubmitEditClaimDescription&>(::debate_event::_SubmitEditClaimDescription_default_instance_);
+}
+inline const ::debate_event::SubmitEditClaimDescription& DebateEvent::submit_edit_claim_description() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.submit_edit_claim_description)
+  return _internal_submit_edit_claim_description();
+}
+inline ::debate_event::SubmitEditClaimDescription* DebateEvent::unsafe_arena_release_submit_edit_claim_description() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.submit_edit_claim_description)
+  if (payload_case() == kSubmitEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.submit_edit_claim_description_;
+    _impl_.payload_.submit_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_submit_edit_claim_description(::debate_event::SubmitEditClaimDescription* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_submit_edit_claim_description();
+    _impl_.payload_.submit_edit_claim_description_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.submit_edit_claim_description)
+}
+inline ::debate_event::SubmitEditClaimDescription* DebateEvent::_internal_mutable_submit_edit_claim_description() {
+  if (payload_case() != kSubmitEditClaimDescription) {
+    clear_payload();
+    set_has_submit_edit_claim_description();
+    _impl_.payload_.submit_edit_claim_description_ =
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::SubmitEditClaimDescription>(GetArena());
+  }
+  return _impl_.payload_.submit_edit_claim_description_;
+}
+inline ::debate_event::SubmitEditClaimDescription* DebateEvent::mutable_submit_edit_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::SubmitEditClaimDescription* _msg = _internal_mutable_submit_edit_claim_description();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.submit_edit_claim_description)
+  return _msg;
+}
+
+// .debate_event.CancelEditClaimDescription cancel_edit_claim_description = 26 [json_name = "cancelEditClaimDescription"];
+inline bool DebateEvent::has_cancel_edit_claim_description() const {
+  return payload_case() == kCancelEditClaimDescription;
+}
+inline bool DebateEvent::_internal_has_cancel_edit_claim_description() const {
+  return payload_case() == kCancelEditClaimDescription;
+}
+inline void DebateEvent::set_has_cancel_edit_claim_description() {
+  _impl_._oneof_case_[0] = kCancelEditClaimDescription;
+}
+inline void DebateEvent::clear_cancel_edit_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kCancelEditClaimDescription) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.cancel_edit_claim_description_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.cancel_edit_claim_description_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::CancelEditClaimDescription* DebateEvent::release_cancel_edit_claim_description() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.cancel_edit_claim_description)
+  if (payload_case() == kCancelEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.cancel_edit_claim_description_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.cancel_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::CancelEditClaimDescription& DebateEvent::_internal_cancel_edit_claim_description() const {
+  return payload_case() == kCancelEditClaimDescription ? *_impl_.payload_.cancel_edit_claim_description_ : reinterpret_cast<::debate_event::CancelEditClaimDescription&>(::debate_event::_CancelEditClaimDescription_default_instance_);
+}
+inline const ::debate_event::CancelEditClaimDescription& DebateEvent::cancel_edit_claim_description() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.cancel_edit_claim_description)
+  return _internal_cancel_edit_claim_description();
+}
+inline ::debate_event::CancelEditClaimDescription* DebateEvent::unsafe_arena_release_cancel_edit_claim_description() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.cancel_edit_claim_description)
+  if (payload_case() == kCancelEditClaimDescription) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.cancel_edit_claim_description_;
+    _impl_.payload_.cancel_edit_claim_description_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_cancel_edit_claim_description();
+    _impl_.payload_.cancel_edit_claim_description_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.cancel_edit_claim_description)
+}
+inline ::debate_event::CancelEditClaimDescription* DebateEvent::_internal_mutable_cancel_edit_claim_description() {
+  if (payload_case() != kCancelEditClaimDescription) {
+    clear_payload();
+    set_has_cancel_edit_claim_description();
+    _impl_.payload_.cancel_edit_claim_description_ =
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::CancelEditClaimDescription>(GetArena());
+  }
+  return _impl_.payload_.cancel_edit_claim_description_;
+}
+inline ::debate_event::CancelEditClaimDescription* DebateEvent::mutable_cancel_edit_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::CancelEditClaimDescription* _msg = _internal_mutable_cancel_edit_claim_description();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.cancel_edit_claim_description)
   return _msg;
 }
 

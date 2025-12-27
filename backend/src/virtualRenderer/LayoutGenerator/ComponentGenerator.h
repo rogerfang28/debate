@@ -40,7 +40,8 @@ public:
         const std::string& borderColor = "border-gray-600",
         const std::string& padding = "p-3",
         const std::string& rounded = "rounded",
-        const std::string& additionalClasses = ""
+        const std::string& additionalClasses = "",
+        const std::string& defaultValue = ""
     );
 
     // Create a CONTAINER component

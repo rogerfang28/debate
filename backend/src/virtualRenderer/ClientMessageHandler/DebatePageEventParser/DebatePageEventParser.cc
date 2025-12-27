@@ -28,8 +28,26 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "reportButton" && eventType == "onClick") {
         Log::debug("  REPORT_CLAIM for user: " + user);
         event.set_type(debate_event::REPORT_CLAIM);
+
+    // edit description
     } else if (componentId == "editDescriptionButton" && eventType == "onClick") {
         Log::debug("  EDIT_DESCRIPTION for user: " + user);
+        event.set_type(debate_event::START_EDIT_CLAIM_DESCRIPTION);
+    } else if (componentId == "saveDescriptionButton" && eventType == "onClick") {
+        Log::debug("  SUBMIT_EDIT_CLAIM_DESCRIPTION for user: " + user);
+        event.set_type(debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION);
+        // find the new description from the message
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            auto* submitEvent = event.mutable_submit_edit_claim_description();
+            if (comp.id() == "editDescriptionInput") {
+                submitEvent->set_new_description(comp.value());
+                Log::debug("  New Description: " + comp.value());
+            }
+        }
+    } else if (componentId == "cancelEditDescriptionButton" && eventType == "onClick") {
+        Log::debug("  CANCEL_EDIT_CLAIM_DESCRIPTION for user: " + user);
+        event.set_type(debate_event::CANCEL_EDIT_CLAIM_DESCRIPTION);
     } else if (componentId.rfind("viewChildNodeButton_", 0) == 0 && eventType == "onClick") {
         std::string claimId = componentId.substr(strlen("viewChildNodeButton_"));
         Log::debug("  GO_TO_CLAIM for user: " + user + " to claim ID: " + claimId);

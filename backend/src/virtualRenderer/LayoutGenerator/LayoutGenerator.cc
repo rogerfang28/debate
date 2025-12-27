@@ -37,10 +37,19 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
                     childClaims.push_back({claim.id(), claim.sentence()});
                 }
                 bool openedAddChildClaimModal = info.engagement().debating_info().adding_child_claim();
+                bool editingClaimDescription = info.engagement().debating_info().editing_claim();
+                std::string currentClaimDescription = info.engagement().debating_info().current_claim_description();
                 Log::debug("[LayoutGenerator] Debate Topic: " + debate_topic);
                 Log::debug("[LayoutGenerator] Current Claim: " + debate_claim_sentence);
                 Log::debug("[LayoutGenerator] Number of Child Claims: " + std::to_string(childClaims.size()));
-                return DebatePageGenerator::GenerateDebatePage(debate_topic, debate_claim_sentence, childClaims, openedAddChildClaimModal);
+
+                return DebatePageGenerator::GenerateDebatePage(
+                    debate_topic, 
+                    debate_claim_sentence, 
+                    currentClaimDescription, 
+                    childClaims, 
+                    openedAddChildClaimModal,
+                    editingClaimDescription);
             } else {
                 Log::debug("[LayoutGenerator] No debate info found, generating Home Page instead.");
                 user_engagement::DebateList emptyList;

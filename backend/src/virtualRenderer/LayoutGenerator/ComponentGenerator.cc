@@ -73,7 +73,9 @@ ui::Component ComponentGenerator::createInput(
     const std::string& borderColor,
     const std::string& padding,
     const std::string& rounded,
-    const std::string& additionalClasses
+    const std::string& additionalClasses,
+    const std::string& defaultValue
+    // optional default value parameter could be added here
 ) {
     ui::Component component;
     component.set_id(id);
@@ -85,6 +87,10 @@ ui::Component ComponentGenerator::createInput(
     
     if (!placeholder.empty()) {
         addAttribute(&component, "placeholder", placeholder);
+    }
+    
+    if (!defaultValue.empty()) {
+        addAttribute(&component, "defaultValue", defaultValue);
     }
     
     std::vector<std::string> classes;

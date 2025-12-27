@@ -693,6 +693,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChildrenClaimsFieldNumber = 4,
+    kCurrentClaimDescriptionFieldNumber = 9,
     kCurrentClaimFieldNumber = 2,
     kRootClaimFieldNumber = 3,
     kParentClaimFieldNumber = 5,
@@ -717,6 +718,22 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::ClaimInfo& children_claims(int index) const;
   ::user_engagement::ClaimInfo* add_children_claims();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ClaimInfo>& children_claims() const;
+  // string current_claim_description = 9 [json_name = "currentClaimDescription"];
+  void clear_current_claim_description() ;
+  const std::string& current_claim_description() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_current_claim_description(Arg_&& arg, Args_... args);
+  std::string* mutable_current_claim_description();
+  PROTOBUF_NODISCARD std::string* release_current_claim_description();
+  void set_allocated_current_claim_description(std::string* value);
+
+  private:
+  const std::string& _internal_current_claim_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_current_claim_description(
+      const std::string& value);
+  std::string* _internal_mutable_current_claim_description();
+
+  public:
   // .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
   bool has_current_claim() const;
   void clear_current_claim() ;
@@ -797,8 +814,8 @@ class DebatingInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 7, 4,
-      0, 2>
+      3, 8, 4,
+      70, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -818,6 +835,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::user_engagement::ClaimInfo > children_claims_;
+    ::google::protobuf::internal::ArenaStringPtr current_claim_description_;
     ::user_engagement::ClaimInfo* current_claim_;
     ::user_engagement::ClaimInfo* root_claim_;
     ::user_engagement::ClaimInfo* parent_claim_;
@@ -1834,6 +1852,54 @@ inline void DebatingInfo::set_allocated_current_claim(::user_engagement::ClaimIn
 
   _impl_.current_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim)
+}
+
+// string current_claim_description = 9 [json_name = "currentClaimDescription"];
+inline void DebatingInfo::clear_current_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_description_.ClearToEmpty();
+}
+inline const std::string& DebatingInfo::current_claim_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.current_claim_description)
+  return _internal_current_claim_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void DebatingInfo::set_current_claim_description(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.current_claim_description)
+}
+inline std::string* DebatingInfo::mutable_current_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_current_claim_description();
+  // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.current_claim_description)
+  return _s;
+}
+inline const std::string& DebatingInfo::_internal_current_claim_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.current_claim_description_.Get();
+}
+inline void DebatingInfo::_internal_set_current_claim_description(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_description_.Set(value, GetArena());
+}
+inline std::string* DebatingInfo::_internal_mutable_current_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.current_claim_description_.Mutable( GetArena());
+}
+inline std::string* DebatingInfo::release_current_claim_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.current_claim_description)
+  return _impl_.current_claim_description_.Release();
+}
+inline void DebatingInfo::set_allocated_current_claim_description(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_claim_description_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.current_claim_description_.IsDefault()) {
+    _impl_.current_claim_description_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim_description)
 }
 
 // .user_engagement.ClaimInfo parent_claim = 5 [json_name = "parentClaim"];

@@ -249,3 +249,11 @@ void DebateWrapper::updateUserProtobuf(const std::string& user, const std::vecto
         Log::error("[DebateWrapper][ERR] Failed to update user protobuf for " + user);
     }
 }
+
+void DebateWrapper::changeDescriptionOfClaim(
+    const std::string& claimId,
+    const std::string& newDescription) {
+    debate::Claim claim = findClaim(claimId);
+    claim.set_description(newDescription);
+    updateClaimInDB(claim);
+}

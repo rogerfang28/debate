@@ -1,7 +1,13 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic, const std::string& claim, std::vector<std::pair<std::string,std::string>> childClaimInfo, bool openedAddChildClaimModal) {
+ui::Page DebatePageGenerator::GenerateDebatePage(
+    const std::string& debateTopic, 
+    const std::string& claim, 
+    const std::string& currentClaimDescription, 
+    std::vector<std::pair<std::string,std::string>> childClaimInfo, 
+    bool openedAddChildClaimModal, 
+    bool editingClaimDescription) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
@@ -264,69 +270,128 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const std::string& debateTopic,
     );
     ComponentGenerator::addChild(&descriptionBox, descriptionTitle);
 
-    ui::Component descriptionContent = ComponentGenerator::createText(
-        "descriptionContent",
-        claim,
-        "",
-        "text-white",
-        "",
-        "leading-relaxed mb-6"
-    );
-    ComponentGenerator::addChild(&descriptionBox, descriptionContent);
+    if (editingClaimDescription) {
+        // Edit mode: show input field
+        ui::Component descriptionInput = ComponentGenerator::createInput(
+            "editDescriptionInput",
+            "Enter the description...",
+            "description",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-6 h-32",
+            currentClaimDescription
+        );
+        // Set the current description as the value (this would need to be handled in the input component)
+        ComponentGenerator::addChild(&descriptionBox, descriptionInput);
 
-    // Description actions
-    ui::Component descriptionActions = ComponentGenerator::createContainer(
-        "descriptionActions",
-        "flex gap-3",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    );
+        // Edit mode actions
+        ui::Component descriptionActions = ComponentGenerator::createContainer(
+            "descriptionActions",
+            "flex gap-3",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
 
-    ui::Component editDescriptionButton = ComponentGenerator::createButton(
-        "editDescriptionButton",
-        "Edit Description",
-        "",
-        "bg-yellow-600",
-        "hover:bg-yellow-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
+        ui::Component cancelEditButton = ComponentGenerator::createButton(
+            "cancelEditDescriptionButton",
+            "Cancel",
+            "",
+            "bg-gray-600",
+            "hover:bg-gray-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&descriptionActions, cancelEditButton);
 
-    ComponentGenerator::addChild(&descriptionActions, editDescriptionButton);
+        ui::Component saveDescriptionButton = ComponentGenerator::createButton(
+            "saveDescriptionButton",
+            "Save",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&descriptionActions, saveDescriptionButton);
 
-    ui::Component addChildClaim = ComponentGenerator::createButton(
-        "addChildClaimButton",
-        "Add Child Claim",
-        "",
-        "bg-green-600",
-        "hover:bg-green-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&descriptionActions, addChildClaim);
+        ComponentGenerator::addChild(&descriptionBox, descriptionActions);
+    } else {
+        // View mode: show text
+        ui::Component descriptionContent = ComponentGenerator::createText(
+            "descriptionContent",
+            currentClaimDescription,
+            "",
+            "text-white",
+            "",
+            "leading-relaxed mb-6"
+        );
+        ComponentGenerator::addChild(&descriptionBox, descriptionContent);
 
-    ui::Component deleteStatementButton = ComponentGenerator::createButton(
-        "deleteStatementButton",
-        "Delete Statement",
-        "",
-        "bg-red-600",
-        "hover:bg-red-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
+        // Description actions
+        ui::Component descriptionActions = ComponentGenerator::createContainer(
+            "descriptionActions",
+            "flex gap-3",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
 
-    ComponentGenerator::addChild(&descriptionBox, descriptionActions);
+        ui::Component editDescriptionButton = ComponentGenerator::createButton(
+            "editDescriptionButton",
+            "Edit Description",
+            "",
+            "bg-yellow-600",
+            "hover:bg-yellow-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+
+        ComponentGenerator::addChild(&descriptionActions, editDescriptionButton);
+
+        ui::Component addChildClaim = ComponentGenerator::createButton(
+            "addChildClaimButton",
+            "Add Child Claim",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&descriptionActions, addChildClaim);
+
+        ui::Component deleteStatementButton = ComponentGenerator::createButton(
+            "deleteStatementButton",
+            "Delete Statement",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
+
+        ComponentGenerator::addChild(&descriptionBox, descriptionActions);
+    }
     ComponentGenerator::addChild(&centerContent, descriptionBox);
 
     // Child arguments section
