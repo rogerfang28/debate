@@ -6,7 +6,7 @@
 
 class HomePageGenerator {
 public:
-    static ui::Page GenerateHomePage(user_engagement::DebateList usersDebates);
+    static ui::Page GenerateHomePage(user_engagement::NoneInfo info);
 };
 
 #endif // HOME_PAGE_GENERATOR_H

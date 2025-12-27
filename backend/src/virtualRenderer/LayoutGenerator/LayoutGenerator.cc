@@ -15,15 +15,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         case user_engagement::ACTION_NONE:
             // generate home page
             Log::debug("[LayoutGenerator] Generating Home Page for user: " + user);
-
-            // get the debate list from info
-            if (info.has_engagement() && info.engagement().has_none_info()) {
-                return HomePageGenerator::GenerateHomePage(info.engagement().none_info().available_debates());
-            } else {
-                Log::debug("[LayoutGenerator] No debate list found, generating empty Home Page.");
-                user_engagement::DebateList emptyList;
-                return HomePageGenerator::GenerateHomePage(emptyList);
-            }
+            return HomePageGenerator::GenerateHomePage(info.engagement().none_info());
         case user_engagement::ACTION_DEBATING:
             // generate debate page
             Log::debug("[LayoutGenerator] Generating Debate Page for user: " + user);
