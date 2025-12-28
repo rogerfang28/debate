@@ -29,5 +29,20 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
         childClaimInfo->set_id(childClaim.id());
         childClaimInfo->set_sentence(childClaim.sentence());
     }
+
+    // find  the links under current claim proof
+    std::vector<int> link_ids = debateWrapper.findLinksUnder(currentClaimId);
+    for (int link_id : link_ids) {
+        Log::debug("[DebatePageResponseGenerator] Processing link ID: " + std::to_string(link_id));
+        debate::Link link = debateWrapper.getLinkById(link_id);
+        user_engagement::LinkInfo* linkInfo = debatingInfo.add_links();
+        linkInfo->set_id(std::to_string(link_id));
+        linkInfo->set_connect_from(link.connect_from());
+        linkInfo->set_connect_to(link.connect_to());
+        linkInfo->set_connection(link.connection());
+        Log::debug("[DebatePageResponseGenerator] Found link from " + link.connect_from()
+            + " to " + link.connect_to()
+            + " with connection: " + link.connection());
+    }
     *responseMessage.mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

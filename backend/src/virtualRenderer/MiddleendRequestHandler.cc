@@ -30,10 +30,10 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     }
 
     Log::debug("ClientMessage received");
-
     // log(user, msg); // detailed logging
 
     if (!validateAuth(msg, res, user)) {
+        Log::debug("[MiddleendRequestHandler] Authentication failed for user: " + user);
         return; // auth failed and response already set
     }
 

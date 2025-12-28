@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIr8ECgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgJIAEoCRIwCgxwYXJlbnRfY2xhaW0YBSABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEi4KCnJvb3RfY2xhaW0YAyABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEjMKD2NoaWxkcmVuX2NsYWltcxgEIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SGgoSYWRkaW5nX2NoaWxkX2NsYWltGAYgASgIEh4KFmVkaXRpbmdfY2xhaW1fc2VudGVuY2UYByABKAgSIQoZZWRpdGluZ19jbGFpbV9kZXNjcmlwdGlvbhgKIAEoCBIXCg9yZXBvcnRpbmdfY2xhaW0YCCABKAgSRQoPY29ubmVjdGluZ19pbmZvGAsgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mbxqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoCRITCgt0b19jbGFpbV9pZBgCIAEoCRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgiKQoJQ2xhaW1JbmZvEgoKAmlkGAEgASgJEhAKCHNlbnRlbmNlGAIgASgJIsIBCg5Vc2VyRW5nYWdlbWVudBI5Cg5jdXJyZW50X2FjdGlvbhgBIAEoDjIhLnVzZXJfZW5nYWdlbWVudC5FbmdhZ2VtZW50QWN0aW9uEi4KCW5vbmVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ob25lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSABCDQoLYWN0aW9uX2luZm8qWwoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9OT05FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAJiBnByb3RvMw");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghOb25lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IigKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIukECgxEZWJhdGluZ0luZm8SMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgJIAEoCRIwCgxwYXJlbnRfY2xhaW0YBSABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEi4KCnJvb3RfY2xhaW0YAyABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEjMKD2NoaWxkcmVuX2NsYWltcxgEIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SKAoFbGlua3MYDCADKAsyGS51c2VyX2VuZ2FnZW1lbnQuTGlua0luZm8SGgoSYWRkaW5nX2NoaWxkX2NsYWltGAYgASgIEh4KFmVkaXRpbmdfY2xhaW1fc2VudGVuY2UYByABKAgSIQoZZWRpdGluZ19jbGFpbV9kZXNjcmlwdGlvbhgKIAEoCBIXCg9yZXBvcnRpbmdfY2xhaW0YCCABKAgSRQoPY29ubmVjdGluZ19pbmZvGAsgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mbxqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoCRITCgt0b19jbGFpbV9pZBgCIAEoCRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgiKQoJQ2xhaW1JbmZvEgoKAmlkGAEgASgJEhAKCHNlbnRlbmNlGAIgASgJIlQKCExpbmtJbmZvEgoKAmlkGAEgASgJEhQKDGNvbm5lY3RfZnJvbRgCIAEoCRISCgpjb25uZWN0X3RvGAMgASgJEhIKCmNvbm5lY3Rpb24YBCABKAkiwgEKDlVzZXJFbmdhZ2VtZW50EjkKDmN1cnJlbnRfYWN0aW9uGAEgASgOMiEudXNlcl9lbmdhZ2VtZW50LkVuZ2FnZW1lbnRBY3Rpb24SLgoJbm9uZV9pbmZvGAIgASgLMhkudXNlcl9lbmdhZ2VtZW50Lk5vbmVJbmZvSAASNgoNZGViYXRpbmdfaW5mbxgDIAEoCzIdLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm9IAEINCgthY3Rpb25faW5mbypbChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX05PTkUQARITCg9BQ1RJT05fREVCQVRJTkcQAmIGcHJvdG8z");
 
 /**
  * @generated from message user_engagement.NoneInfo
@@ -110,6 +110,13 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
    * @generated from field: repeated user_engagement.ClaimInfo children_claims = 4;
    */
   childrenClaims: ClaimInfo[];
+
+  /**
+   * links under the current claim
+   *
+   * @generated from field: repeated user_engagement.LinkInfo links = 12;
+   */
+  links: LinkInfo[];
 
   /**
    * whether the add child claim modal is opened
@@ -214,6 +221,38 @@ export const ClaimInfoSchema: GenMessage<ClaimInfo> = /*@__PURE__*/
   messageDesc(file_user_engagement, 4);
 
 /**
+ * @generated from message user_engagement.LinkInfo
+ */
+export type LinkInfo = Message<"user_engagement.LinkInfo"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string connect_from = 2;
+   */
+  connectFrom: string;
+
+  /**
+   * @generated from field: string connect_to = 3;
+   */
+  connectTo: string;
+
+  /**
+   * @generated from field: string connection = 4;
+   */
+  connection: string;
+};
+
+/**
+ * Describes the message user_engagement.LinkInfo.
+ * Use `create(LinkInfoSchema)` to create a new message.
+ */
+export const LinkInfoSchema: GenMessage<LinkInfo> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 5);
+
+/**
  * @generated from message user_engagement.UserEngagement
  */
 export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
@@ -247,7 +286,7 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
  * Use `create(UserEngagementSchema)` to create a new message.
  */
 export const UserEngagementSchema: GenMessage<UserEngagement> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 5);
+  messageDesc(file_user_engagement, 6);
 
 /**
  * @generated from enum user_engagement.EngagementAction

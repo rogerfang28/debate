@@ -187,6 +187,26 @@ void DebateWrapper::deleteClaim(const std::string& claimId) {
     for (const auto& childId : claim.proof().claim_ids()) {
         deleteClaim(childId);
     }
+    // delete all links in the proof
+    // for (const auto& linkId : claim.proof().link_ids()) {
+    //     deleteLinkById(std::stoi(linkId));
+    // }
+    // delete links that go to and from this claim
+    std::vector<int> linksToDelete = findLinksUnder(claimId);
+    auto linksFromThisClaim = linkDb.getLinksFromClaim(std::stoi(claimId));
+    auto linksToThisClaim =  linkDb.getLinksToClaim(std::stoi(claimId));
+    for (const auto& linkTuple : linksFromThisClaim) {
+        int linkId = std::get<0>(linkTuple);
+        linksToDelete.push_back(linkId);
+    }
+    for (const auto& linkTuple : linksToThisClaim) {
+        int linkId = std::get<0>(linkTuple);
+        linksToDelete.push_back(linkId);
+    }
+    for (const auto& linkId : linksToDelete) {
+        deleteLinkById(linkId);
+    }
+
     statementDb.deleteStatement(std::stoi(claimId));
 }
 
@@ -278,7 +298,51 @@ void DebateWrapper::editClaimText(
     statementDb.updateStatementContent(std::stoi(claimId), newText);
 }
 
-void DebateWrapper::addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username) {
-    linkDb.addLink(std::stoi(fromClaimId), std::stoi(toClaimId), connection, creator_username);
+int DebateWrapper::addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username) {
+    int linkId = linkDb.addLink(std::stoi(fromClaimId), std::stoi(toClaimId), connection, creator_username);
     Log::debug("[DebateWrapper] Added link from claim " + fromClaimId + " to claim " + toClaimId + " by user " + creator_username);
+    return linkId;
+}
+
+std::vector<int> DebateWrapper::findLinksUnder(const std::string& claimId) {
+    // should be in the proof of the claim
+    debate::Claim claim = findClaim(claimId);
+    std::vector<int> linkIds;
+    for (const auto& linkId : claim.proof().link_ids()) {
+        linkIds.push_back(std::stoi(linkId));
+        Log::debug("[IMPROTATN] Found link ID: " + linkId + " under Claim ID: " + claimId);
+    }
+    return linkIds;
+}
+
+debate::Link DebateWrapper::getLinkById(int linkId) {
+    debate::Link linkProto;
+    auto linkData = linkDb.getLinkById(linkId);
+    
+    if (linkData.has_value()) {
+        const auto& link = linkData.value();
+        linkProto.set_connect_from(std::to_string(std::get<1>(link)));
+        linkProto.set_connect_to(std::to_string(std::get<2>(link)));
+        linkProto.set_connection(std::get<3>(link));
+        // linkProto.set_creator(std::get<4>(link));
+        
+        Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
+            + " from Claim ID: " + std::to_string(std::get<1>(link))
+            + " to Claim ID: " + std::to_string(std::get<2>(link))
+            + " with connection: " + std::get<3>(link)
+            + " created by: " + std::get<4>(link));
+    } else {
+        Log::warn("[DebateWrapper] Link with ID " + std::to_string(linkId) + " not found.");
+    }
+    
+    return linkProto;
+}
+
+void DebateWrapper::deleteLinkById(int linkId) {
+    bool success = linkDb.deleteLink(linkId);
+    if (success) {
+        Log::debug("[DebateWrapper] Successfully deleted link with ID " + std::to_string(linkId));
+    } else {
+        Log::error("[DebateWrapper][ERR] Failed to delete link with ID " + std::to_string(linkId));
+    }
 }

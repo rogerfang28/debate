@@ -24,6 +24,7 @@ VirtualRenderer::~VirtualRenderer() {
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message, const std::string& user) {
 
     // translate client_message into debate event
+    Log::debug("[VirtualRenderer] Handling ClientMessage for user: " + user);
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user); // * looks good
 
     // I NEED TO CALL THE DEBATE BACKEND SOMEHOW FROM HERE

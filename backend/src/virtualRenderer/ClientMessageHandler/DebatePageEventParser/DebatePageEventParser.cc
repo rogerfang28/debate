@@ -10,6 +10,7 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
 ) {
     debate_event::DebateEvent event;
     
+    Log::debug("Parsing DebatePageEvent for user: " + user);
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         auto* goHome = event.mutable_go_home();
@@ -115,11 +116,29 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  SUBMIT_CONNECT_CLAIMS for user: " + user);
         event.set_type(debate_event::SUBMIT_CONNECT_CLAIMS);
         // find the connection input from the page
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            auto* submitEvent = event.mutable_submit_connect_claims();
+            if (comp.id() == "connectionInput") {
+                submitEvent->set_connection(comp.value());
+                Log::debug("  Connection: " + comp.value());
+            }
+        } 
     } else if ((componentId.rfind("cancelConnectClaimsButton", 0) == 0 || componentId == "closeConnectModalButton") && eventType == "onClick") {
         Log::debug("  CANCEL_CONNECT_CLAIMS for user: " + user);
         event.set_type(debate_event::CANCEL_CONNECT_CLAIMS);
-    }
-    else {
+    } else if (componentId.rfind("deleteLinkButton_", 0) == 0 && eventType == "onClick") {
+        std::string linkIdStr = componentId.substr(strlen("deleteLinkButton_"));
+        Log::debug("  DELETE_LINK for user: " + user + " link ID string: " + linkIdStr);
+        try {
+            int linkId = std::stoi(linkIdStr);
+            event.set_type(debate_event::DELETE_LINK);
+            event.mutable_delete_link()->set_link_id(linkId);
+        } catch (const std::exception& e) {
+            Log::error("Failed to parse link ID: " + linkIdStr + " - " + e.what());
+            event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
+        }
+    } else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);

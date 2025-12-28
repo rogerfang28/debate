@@ -23,6 +23,15 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     Log::debug("[DebatePageGenerator] Debate Topic: " + debate_topic);
     Log::debug("[DebatePageGenerator] Current Claim: " + claim);
     Log::debug("[DebatePageGenerator] Number of Child Claims: " + std::to_string(childClaimInfo.size()));
+    
+    std::vector<std::tuple<std::string, std::string, std::string, std::string>> linkInfo;
+    for (int i = 0; i < debatingInfo.links_size(); i++) {
+        const user_engagement::LinkInfo& link = debatingInfo.links(i);
+        Log::debug("[DebatePageGenerator] Link from Claim ID: " + link.connect_from()
+            + " to Claim ID: " + link.connect_to()
+            + " with connection: " + link.connection());
+        linkInfo.push_back({link.id(), link.connect_from(), link.connect_to(), link.connection()});
+    }
 
     // connecting info
     bool connecting = debatingInfo.connecting_info().connecting();
@@ -553,6 +562,94 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
             "mb-3"
         );
         ComponentGenerator::addChild(&childNode, childNodeTitle);
+
+        // Display connections from this claim
+        for (const auto& link : linkInfo) {
+            if (std::get<1>(link) == childClaimInfo[i].first) {
+                // This claim has a connection - find the target claim sentence
+                std::string targetSentence = "";
+                std::string linkId = std::get<0>(link);
+                std::string targetId = std::get<2>(link);
+                std::string connection = std::get<3>(link);
+                
+                // Check if target is current claim
+                if (targetId == currentClaimId) {
+                    targetSentence = claim;
+                } else {
+                    // Search in child claims
+                    for (const auto& childClaim : childClaimInfo) {
+                        if (childClaim.first == targetId) {
+                            targetSentence = childClaim.second;
+                            break;
+                        }
+                    }
+                }
+                
+                // Create link container with border and background
+                ui::Component linkContainer = ComponentGenerator::createContainer(
+                    nodeId + "_linkContainer_" + linkId,
+                    "flex justify-between items-start",
+                    "bg-purple-900/30",
+                    "p-2",
+                    "mb-2",
+                    "border border-purple-500",
+                    "rounded",
+                    ""
+                );
+
+                // Text container for the link info
+                ui::Component linkTextContainer = ComponentGenerator::createContainer(
+                    nodeId + "_linkTextContainer_" + linkId,
+                    "flex-1",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+
+                // Create "Connects to:" text
+                ui::Component connectsToLabel = ComponentGenerator::createText(
+                    nodeId + "_connectsToLabel_" + linkId,
+                    "Connects to: " + targetSentence,
+                    "text-xs",
+                    "text-purple-300",
+                    "",
+                    ""
+                );
+                ComponentGenerator::addChild(&linkTextContainer, connectsToLabel);
+
+                // Create "Connection:" text
+                ui::Component connectionLabel = ComponentGenerator::createText(
+                    nodeId + "_connectionLabel_" + linkId,
+                    "Connection: " + connection,
+                    "text-xs",
+                    "text-purple-300",
+                    "",
+                    ""
+                );
+                ComponentGenerator::addChild(&linkTextContainer, connectionLabel);
+
+                ComponentGenerator::addChild(&linkContainer, linkTextContainer);
+
+                // Delete link button
+                ui::Component deleteLinkButton = ComponentGenerator::createButton(
+                    "deleteLinkButton_" + linkId,
+                    "Delete",
+                    "",
+                    "bg-red-600",
+                    "hover:bg-red-700",
+                    "text-white",
+                    "px-2 py-1",
+                    "rounded",
+                    "transition-colors text-xs"
+                );
+                ComponentGenerator::addChild(&linkContainer, deleteLinkButton);
+
+                ComponentGenerator::addChild(&childNode, linkContainer);
+            }
+        }
 
         ui::Component childNodeButtonContainer = ComponentGenerator::createContainer(
             nodeId + "ButtonContainer",

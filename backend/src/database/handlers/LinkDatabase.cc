@@ -121,6 +121,35 @@ std::vector<std::tuple<int, int, int, std::string, std::string>> LinkDatabase::g
     return links;
 }
 
+std::optional<std::tuple<int, int, int, std::string, std::string>> LinkDatabase::getLinkById(int linkId) {
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR FROM LINKS WHERE ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return std::nullopt;
+    }
+
+    sqlite3_bind_int(stmt, 1, linkId);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        int fromId = sqlite3_column_int(stmt, 1);
+        int toId = sqlite3_column_int(stmt, 2);
+        const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        const char* creator = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        
+        // Convert to std::string BEFORE finalizing the statement
+        std::string connectionStr = connection ? std::string(connection) : "";
+        std::string creatorStr = creator ? std::string(creator) : "";
+        
+        sqlite3_finalize(stmt);
+        return std::make_tuple(id, fromId, toId, connectionStr, creatorStr);
+    }
+
+    sqlite3_finalize(stmt);
+    return std::nullopt;
+}
+
 bool LinkDatabase::updateLinkConnection(int linkId, const std::string& newConnection) {
     const char* sql = "UPDATE LINKS SET CONNECTION = ? WHERE ID = ?;";
     

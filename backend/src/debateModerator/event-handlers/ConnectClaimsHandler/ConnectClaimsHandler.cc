@@ -15,9 +15,14 @@ void ConnectClaimsHandler::ConnectClaims(
     user::User userProto = debateWrapper.getUserProtobufByUsername(user);
     std::string fromClaimId = userProto.engagement().debating_info().connecting_info().from_claim_id();
     std::string toClaimId = userProto.engagement().debating_info().connecting_info().to_claim_id();
+    // std::string& connection = userProto.engagement().debating_info().connecting_info().connection();
     // this one should actually update the links database
-    debateWrapper.addLink(fromClaimId, toClaimId, connection, user);
-
+    int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user);
+    // also add it to the claims proof id
+    debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
+    Log::debug("[ConnectClaimsHandler] Adding link ID " + std::to_string(linkId) + " to parent claim ID " + parentClaim.id());
+    parentClaim.mutable_proof()->add_link_ids(std::to_string(linkId));
+    debateWrapper.updateClaimInDB(parentClaim);
     CancelConnectClaims(user, debateWrapper);
     
 }
@@ -62,4 +67,26 @@ void ConnectClaimsHandler::CancelConnectClaims(
 
     debateWrapper.updateUserProtobuf(user, userProto);
 
+}
+
+void ConnectClaimsHandler::DeleteLinkById(
+    const std::string& user,
+    int linkId,
+    DebateWrapper& debateWrapper
+) {
+    // first find the link
+    debate::Link linkProto = debateWrapper.getLinkById(linkId);
+    std::string fromClaimId = linkProto.connect_from();
+    // remove link id from parent claim's proof
+    debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
+    auto* proof = parentClaim.mutable_proof();
+    for (int i = 0; i < proof->link_ids_size(); ++i) {
+        if (proof->link_ids(i) == std::to_string(linkId)) {
+            proof->mutable_link_ids()->DeleteSubrange(i, 1);
+            break;
+        }
+    }
+    debateWrapper.updateClaimInDB(parentClaim);
+    // then delete the link from database
+    debateWrapper.deleteLinkById(linkId);
 }

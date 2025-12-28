@@ -26,4 +26,9 @@ public:
         const std::string& user,
         DebateWrapper& debateWrapper
     );
+    static void DeleteLinkById(
+        const std::string& user,
+        int linkId,
+        DebateWrapper& debateWrapper
+    );
 };

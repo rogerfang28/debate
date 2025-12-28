@@ -30,6 +30,9 @@ public:
     // Get all links involving a specific claim (both from and to)
     std::vector<std::tuple<int, int, int, std::string, std::string>> getLinksForClaim(int claimId); // returns (link_id, claim_id_from, claim_id_to, connection, creator)
     
+    // Get a specific link by its ID
+    std::optional<std::tuple<int, int, int, std::string, std::string>> getLinkById(int linkId); // returns (link_id, claim_id_from, claim_id_to, connection, creator)
+    
     // Update the connection text for a link
     bool updateLinkConnection(int linkId, const std::string& newConnection);
     

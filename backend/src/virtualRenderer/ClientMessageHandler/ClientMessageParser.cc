@@ -34,6 +34,7 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     } else if (pageId == "debate") {
+        Log::debug("  Parsing Debate Page Event for user: " + user);
         event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user, message);
     } else if (pageId == "error") {
         event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user, message);

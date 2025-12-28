@@ -48,7 +48,11 @@ public:
     void updateUserProtobufBinary(const std::string& user, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const std::string& username, const user::User& userProto);
 
-    void addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username);
+    int addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username);
+    std::vector<int> findLinksUnder(const std::string& claimId);
+    debate::Link getLinkById(int linkId);
+    void updateClaimInDB(const debate::Claim& claim);
+    void deleteLinkById(int linkId);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
@@ -58,5 +62,5 @@ private:
     DebateMembersDatabase& debateMembersDb;
     LinkDatabase& linkDb;
     void addClaimToDB(debate::Claim& claim);
-    void updateClaimInDB(const debate::Claim& claim);
+    // void updateClaimInDB(const debate::Claim& claim);
 };

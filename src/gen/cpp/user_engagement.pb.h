@@ -68,6 +68,9 @@ extern DebatingInfoDefaultTypeInternal _DebatingInfo_default_instance_;
 class DebatingInfo_ConnectingInfo;
 struct DebatingInfo_ConnectingInfoDefaultTypeInternal;
 extern DebatingInfo_ConnectingInfoDefaultTypeInternal _DebatingInfo_ConnectingInfo_default_instance_;
+class LinkInfo;
+struct LinkInfoDefaultTypeInternal;
+extern LinkInfoDefaultTypeInternal _LinkInfo_default_instance_;
 class NoneInfo;
 struct NoneInfoDefaultTypeInternal;
 extern NoneInfoDefaultTypeInternal _NoneInfo_default_instance_;
@@ -119,6 +122,256 @@ inline bool EngagementAction_Parse(absl::string_view name, EngagementAction* val
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class LinkInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:user_engagement.LinkInfo) */ {
+ public:
+  inline LinkInfo() : LinkInfo(nullptr) {}
+  ~LinkInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(LinkInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LinkInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR LinkInfo(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline LinkInfo(const LinkInfo& from) : LinkInfo(nullptr, from) {}
+  inline LinkInfo(LinkInfo&& from) noexcept
+      : LinkInfo(nullptr, std::move(from)) {}
+  inline LinkInfo& operator=(const LinkInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LinkInfo& operator=(LinkInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LinkInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const LinkInfo* internal_default_instance() {
+    return reinterpret_cast<const LinkInfo*>(
+        &_LinkInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(LinkInfo& a, LinkInfo& b) { a.Swap(&b); }
+  inline void Swap(LinkInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(LinkInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  LinkInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LinkInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LinkInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LinkInfo& from) { LinkInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LinkInfo* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "user_engagement.LinkInfo"; }
+
+ protected:
+  explicit LinkInfo(::google::protobuf::Arena* arena);
+  LinkInfo(::google::protobuf::Arena* arena, const LinkInfo& from);
+  LinkInfo(::google::protobuf::Arena* arena, LinkInfo&& from) noexcept
+      : LinkInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kIdFieldNumber = 1,
+    kConnectFromFieldNumber = 2,
+    kConnectToFieldNumber = 3,
+    kConnectionFieldNumber = 4,
+  };
+  // string id = 1 [json_name = "id"];
+  void clear_id() ;
+  const std::string& id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_id(Arg_&& arg, Args_... args);
+  std::string* mutable_id();
+  PROTOBUF_NODISCARD std::string* release_id();
+  void set_allocated_id(std::string* value);
+
+  private:
+  const std::string& _internal_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_id(
+      const std::string& value);
+  std::string* _internal_mutable_id();
+
+  public:
+  // string connect_from = 2 [json_name = "connectFrom"];
+  void clear_connect_from() ;
+  const std::string& connect_from() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_connect_from(Arg_&& arg, Args_... args);
+  std::string* mutable_connect_from();
+  PROTOBUF_NODISCARD std::string* release_connect_from();
+  void set_allocated_connect_from(std::string* value);
+
+  private:
+  const std::string& _internal_connect_from() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_connect_from(
+      const std::string& value);
+  std::string* _internal_mutable_connect_from();
+
+  public:
+  // string connect_to = 3 [json_name = "connectTo"];
+  void clear_connect_to() ;
+  const std::string& connect_to() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_connect_to(Arg_&& arg, Args_... args);
+  std::string* mutable_connect_to();
+  PROTOBUF_NODISCARD std::string* release_connect_to();
+  void set_allocated_connect_to(std::string* value);
+
+  private:
+  const std::string& _internal_connect_to() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_connect_to(
+      const std::string& value);
+  std::string* _internal_mutable_connect_to();
+
+  public:
+  // string connection = 4 [json_name = "connection"];
+  void clear_connection() ;
+  const std::string& connection() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_connection(Arg_&& arg, Args_... args);
+  std::string* mutable_connection();
+  PROTOBUF_NODISCARD std::string* release_connection();
+  void set_allocated_connection(std::string* value);
+
+  private:
+  const std::string& _internal_connection() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_connection(
+      const std::string& value);
+  std::string* _internal_mutable_connection();
+
+  public:
+  // @@protoc_insertion_point(class_scope:user_engagement.LinkInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      67, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const LinkInfo& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr id_;
+    ::google::protobuf::internal::ArenaStringPtr connect_from_;
+    ::google::protobuf::internal::ArenaStringPtr connect_to_;
+    ::google::protobuf::internal::ArenaStringPtr connection_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_user_5fengagement_2eproto;
+};
 // -------------------------------------------------------------------
 
 class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
@@ -953,6 +1206,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChildrenClaimsFieldNumber = 4,
+    kLinksFieldNumber = 12,
     kCurrentClaimDescriptionFieldNumber = 9,
     kCurrentClaimFieldNumber = 2,
     kRootClaimFieldNumber = 3,
@@ -980,6 +1234,23 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::ClaimInfo& children_claims(int index) const;
   ::user_engagement::ClaimInfo* add_children_claims();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ClaimInfo>& children_claims() const;
+  // repeated .user_engagement.LinkInfo links = 12 [json_name = "links"];
+  int links_size() const;
+  private:
+  int _internal_links_size() const;
+
+  public:
+  void clear_links() ;
+  ::user_engagement::LinkInfo* mutable_links(int index);
+  ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>* mutable_links();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>& _internal_links() const;
+  ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>* _internal_mutable_links();
+  public:
+  const ::user_engagement::LinkInfo& links(int index) const;
+  ::user_engagement::LinkInfo* add_links();
+  const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>& links() const;
   // string current_claim_description = 9 [json_name = "currentClaimDescription"];
   void clear_current_claim_description() ;
   const std::string& current_claim_description() const;
@@ -1101,7 +1372,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 10, 5,
+      4, 11, 6,
       70, 2>
       _table_;
 
@@ -1122,6 +1393,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::user_engagement::ClaimInfo > children_claims_;
+    ::google::protobuf::RepeatedPtrField< ::user_engagement::LinkInfo > links_;
     ::google::protobuf::internal::ArenaStringPtr current_claim_description_;
     ::user_engagement::ClaimInfo* current_claim_;
     ::user_engagement::ClaimInfo* root_claim_;
@@ -1595,7 +1867,7 @@ class UserEngagement final : public ::google::protobuf::Message
     return reinterpret_cast<const UserEngagement*>(
         &_UserEngagement_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(UserEngagement& a, UserEngagement& b) { a.Swap(&b); }
   inline void Swap(UserEngagement* other) {
     if (other == this) return;
@@ -2624,6 +2896,55 @@ DebatingInfo::_internal_mutable_children_claims() {
   return &_impl_.children_claims_;
 }
 
+// repeated .user_engagement.LinkInfo links = 12 [json_name = "links"];
+inline int DebatingInfo::_internal_links_size() const {
+  return _internal_links().size();
+}
+inline int DebatingInfo::links_size() const {
+  return _internal_links_size();
+}
+inline void DebatingInfo::clear_links() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.links_.Clear();
+}
+inline ::user_engagement::LinkInfo* DebatingInfo::mutable_links(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.links)
+  return _internal_mutable_links()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>* DebatingInfo::mutable_links()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:user_engagement.DebatingInfo.links)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_links();
+}
+inline const ::user_engagement::LinkInfo& DebatingInfo::links(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.links)
+  return _internal_links().Get(index);
+}
+inline ::user_engagement::LinkInfo* DebatingInfo::add_links() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::user_engagement::LinkInfo* _add = _internal_mutable_links()->Add();
+  // @@protoc_insertion_point(field_add:user_engagement.DebatingInfo.links)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>& DebatingInfo::links() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:user_engagement.DebatingInfo.links)
+  return _internal_links();
+}
+inline const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>&
+DebatingInfo::_internal_links() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.links_;
+}
+inline ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>*
+DebatingInfo::_internal_mutable_links() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.links_;
+}
+
 // bool adding_child_claim = 6 [json_name = "addingChildClaim"];
 inline void DebatingInfo::clear_adding_child_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
@@ -2906,6 +3227,202 @@ inline void ClaimInfo::set_allocated_sentence(std::string* value) {
     _impl_.sentence_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user_engagement.ClaimInfo.sentence)
+}
+
+// -------------------------------------------------------------------
+
+// LinkInfo
+
+// string id = 1 [json_name = "id"];
+inline void LinkInfo::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.ClearToEmpty();
+}
+inline const std::string& LinkInfo::id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.LinkInfo.id)
+  return _internal_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LinkInfo::set_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.LinkInfo.id)
+}
+inline std::string* LinkInfo::mutable_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:user_engagement.LinkInfo.id)
+  return _s;
+}
+inline const std::string& LinkInfo::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_.Get();
+}
+inline void LinkInfo::_internal_set_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(value, GetArena());
+}
+inline std::string* LinkInfo::_internal_mutable_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.id_.Mutable( GetArena());
+}
+inline std::string* LinkInfo::release_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.LinkInfo.id)
+  return _impl_.id_.Release();
+}
+inline void LinkInfo::set_allocated_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.LinkInfo.id)
+}
+
+// string connect_from = 2 [json_name = "connectFrom"];
+inline void LinkInfo::clear_connect_from() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_from_.ClearToEmpty();
+}
+inline const std::string& LinkInfo::connect_from() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.LinkInfo.connect_from)
+  return _internal_connect_from();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LinkInfo::set_connect_from(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_from_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.LinkInfo.connect_from)
+}
+inline std::string* LinkInfo::mutable_connect_from() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_connect_from();
+  // @@protoc_insertion_point(field_mutable:user_engagement.LinkInfo.connect_from)
+  return _s;
+}
+inline const std::string& LinkInfo::_internal_connect_from() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.connect_from_.Get();
+}
+inline void LinkInfo::_internal_set_connect_from(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_from_.Set(value, GetArena());
+}
+inline std::string* LinkInfo::_internal_mutable_connect_from() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.connect_from_.Mutable( GetArena());
+}
+inline std::string* LinkInfo::release_connect_from() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.LinkInfo.connect_from)
+  return _impl_.connect_from_.Release();
+}
+inline void LinkInfo::set_allocated_connect_from(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_from_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connect_from_.IsDefault()) {
+    _impl_.connect_from_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.LinkInfo.connect_from)
+}
+
+// string connect_to = 3 [json_name = "connectTo"];
+inline void LinkInfo::clear_connect_to() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_to_.ClearToEmpty();
+}
+inline const std::string& LinkInfo::connect_to() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.LinkInfo.connect_to)
+  return _internal_connect_to();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LinkInfo::set_connect_to(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_to_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.LinkInfo.connect_to)
+}
+inline std::string* LinkInfo::mutable_connect_to() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_connect_to();
+  // @@protoc_insertion_point(field_mutable:user_engagement.LinkInfo.connect_to)
+  return _s;
+}
+inline const std::string& LinkInfo::_internal_connect_to() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.connect_to_.Get();
+}
+inline void LinkInfo::_internal_set_connect_to(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_to_.Set(value, GetArena());
+}
+inline std::string* LinkInfo::_internal_mutable_connect_to() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.connect_to_.Mutable( GetArena());
+}
+inline std::string* LinkInfo::release_connect_to() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.LinkInfo.connect_to)
+  return _impl_.connect_to_.Release();
+}
+inline void LinkInfo::set_allocated_connect_to(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connect_to_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connect_to_.IsDefault()) {
+    _impl_.connect_to_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.LinkInfo.connect_to)
+}
+
+// string connection = 4 [json_name = "connection"];
+inline void LinkInfo::clear_connection() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connection_.ClearToEmpty();
+}
+inline const std::string& LinkInfo::connection() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.LinkInfo.connection)
+  return _internal_connection();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LinkInfo::set_connection(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connection_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.LinkInfo.connection)
+}
+inline std::string* LinkInfo::mutable_connection() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_connection();
+  // @@protoc_insertion_point(field_mutable:user_engagement.LinkInfo.connection)
+  return _s;
+}
+inline const std::string& LinkInfo::_internal_connection() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.connection_.Get();
+}
+inline void LinkInfo::_internal_set_connection(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connection_.Set(value, GetArena());
+}
+inline std::string* LinkInfo::_internal_mutable_connection() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.connection_.Mutable( GetArena());
+}
+inline std::string* LinkInfo::release_connection() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.LinkInfo.connection)
+  return _impl_.connection_.Release();
+}
+inline void LinkInfo::set_allocated_connection(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.connection_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connection_.IsDefault()) {
+    _impl_.connection_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.LinkInfo.connection)
 }
 
 // -------------------------------------------------------------------

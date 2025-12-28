@@ -171,6 +171,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             );
             break;
         case debate_event::SUBMIT_CONNECT_CLAIMS:
+            Log::debug("[DebateModerator] Connection: " + event.submit_connect_claims().connection());
             Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
             ConnectClaimsHandler::ConnectClaims(
                 user,
@@ -181,6 +182,14 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
         case debate_event::CANCEL_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
             ConnectClaimsHandler::CancelConnectClaims(user, debateWrapper);
+            break;
+        case debate_event::DELETE_LINK:
+            Log::debug("[DebateModerator] Event Type: DELETE_LINK");
+            ConnectClaimsHandler::DeleteLinkById(
+                user,
+                event.delete_link().link_id(),
+                debateWrapper
+            );
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
