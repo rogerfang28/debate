@@ -4,12 +4,12 @@
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
 
-DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase)
+DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase)
     : debateDb(debateDatabase),
       statementDb(statementDatabase),
       userDb(userDatabase),
-      debateMembersDb(debateMembersDatabase) {}
-
+      debateMembersDb(debateMembersDatabase),
+      linkDb(linkDatabase) {}
 std::vector<std::string> DebateWrapper::findChildrenIds(
     const std::string& parentId) {
     std::vector<std::string> childrenIds;
@@ -276,4 +276,9 @@ void DebateWrapper::editClaimText(
     updateClaimInDB(claim);
     // also update the actual topic in the statement database
     statementDb.updateStatementContent(std::stoi(claimId), newText);
+}
+
+void DebateWrapper::addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username) {
+    linkDb.addLink(std::stoi(fromClaimId), std::stoi(toClaimId), connection, creator_username);
+    Log::debug("[DebateWrapper] Added link from claim " + fromClaimId + " to claim " + toClaimId + " by user " + creator_username);
 }

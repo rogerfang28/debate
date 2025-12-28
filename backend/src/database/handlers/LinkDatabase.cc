@@ -12,14 +12,15 @@ bool LinkDatabase::ensureTable() {
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
             CLAIM_ID_FROM INTEGER NOT NULL,
             CLAIM_ID_TO INTEGER NOT NULL,
-            CONNECTION TEXT NOT NULL
+            CONNECTION TEXT NOT NULL,
+            CREATOR TEXT NOT NULL
         );
     )";
     return db_.execute(sql);
 }
 
-int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection) {
-    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION) VALUES (?, ?, ?);";
+int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, const std::string& creator) {
+    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR) VALUES (?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -29,6 +30,7 @@ int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& con
     sqlite3_bind_int(stmt, 1, claimIdFrom);
     sqlite3_bind_int(stmt, 2, claimIdTo);
     sqlite3_bind_text(stmt, 3, connection.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, creator.c_str(), -1, SQLITE_TRANSIENT);
 
     int result = sqlite3_step(stmt);
     int linkId = -1;
@@ -36,16 +38,16 @@ int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& con
     if (result == SQLITE_DONE) {
         linkId = static_cast<int>(sqlite3_last_insert_rowid(db_.handle()));
     } else {
-        std::cerr << "Failed to insert link: " << sqlite3_errmsg(db_.handle()) << std::endl;
+        Log::error("Failed to insert link: " + std::string(sqlite3_errmsg(db_.handle())));
     }
 
     sqlite3_finalize(stmt);
     return linkId;
 }
 
-std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksFromClaim(int claimIdFrom) {
-    std::vector<std::tuple<int, int, int, std::string>> links;
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION FROM LINKS WHERE CLAIM_ID_FROM = ?;";
+std::vector<std::tuple<int, int, int, std::string, std::string>> LinkDatabase::getLinksFromClaim(int claimIdFrom) {
+    std::vector<std::tuple<int, int, int, std::string, std::string>> links;
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR FROM LINKS WHERE CLAIM_ID_FROM = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -59,17 +61,18 @@ std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksFromCl
         int fromId = sqlite3_column_int(stmt, 1);
         int toId = sqlite3_column_int(stmt, 2);
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        const char* creator = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
         
-        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : ""));
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creator ? creator : ""));
     }
 
     sqlite3_finalize(stmt);
     return links;
 }
 
-std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksToClaim(int claimIdTo) {
-    std::vector<std::tuple<int, int, int, std::string>> links;
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION FROM LINKS WHERE CLAIM_ID_TO = ?;";
+std::vector<std::tuple<int, int, int, std::string, std::string>> LinkDatabase::getLinksToClaim(int claimIdTo) {
+    std::vector<std::tuple<int, int, int, std::string, std::string>> links;
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR FROM LINKS WHERE CLAIM_ID_TO = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -83,17 +86,18 @@ std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksToClai
         int fromId = sqlite3_column_int(stmt, 1);
         int toId = sqlite3_column_int(stmt, 2);
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        const char* creator = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
         
-        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : ""));
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creator ? creator : ""));
     }
 
     sqlite3_finalize(stmt);
     return links;
 }
 
-std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksForClaim(int claimId) {
-    std::vector<std::tuple<int, int, int, std::string>> links;
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION FROM LINKS WHERE CLAIM_ID_FROM = ? OR CLAIM_ID_TO = ?;";
+std::vector<std::tuple<int, int, int, std::string, std::string>> LinkDatabase::getLinksForClaim(int claimId) {
+    std::vector<std::tuple<int, int, int, std::string, std::string>> links;
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR FROM LINKS WHERE CLAIM_ID_FROM = ? OR CLAIM_ID_TO = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -108,8 +112,9 @@ std::vector<std::tuple<int, int, int, std::string>> LinkDatabase::getLinksForCla
         int fromId = sqlite3_column_int(stmt, 1);
         int toId = sqlite3_column_int(stmt, 2);
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        const char* creator = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
         
-        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : ""));
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creator ? creator : ""));
     }
 
     sqlite3_finalize(stmt);

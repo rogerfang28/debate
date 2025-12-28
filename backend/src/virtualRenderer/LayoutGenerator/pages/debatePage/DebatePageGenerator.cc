@@ -1006,8 +1006,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         );
         ComponentGenerator::addChild(&connectModalActions, connectCancelButton);
 
-        ui::Component connectSubmitButton = ComponentGenerator::createButton(
-            "submitConnectButton",
+        ui::Component submitConnectClaimsButton = ComponentGenerator::createButton(
+            "submitConnectClaimsButton",
             "Submit",
             "",
             "bg-green-600",
@@ -1017,7 +1017,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
             "rounded",
             "transition-colors"
         );
-        ComponentGenerator::addChild(&connectModalActions, connectSubmitButton);
+        ComponentGenerator::addChild(&connectModalActions, submitConnectClaimsButton);
 
         ComponentGenerator::addChild(&connectModalContent, connectModalActions);
         ComponentGenerator::addChild(&connectModalOverlay, connectModalContent);

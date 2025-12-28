@@ -2,15 +2,23 @@
 #include "../../../utils/Log.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../../../src/gen/cpp/user.pb.h"
 
 void ConnectClaimsHandler::ConnectClaims(
     const std::string& user,
-    const std::string& fromClaimId,
-    const std::string& toClaimId,
+    // const std::string& fromClaimId,
+    // const std::string& toClaimId,
     const std::string& connection,
     DebateWrapper& debateWrapper
 ) {
-    // this one should actually update the claim protobuf
+    // find the claims from user engagement
+    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    std::string fromClaimId = userProto.engagement().debating_info().connecting_info().from_claim_id();
+    std::string toClaimId = userProto.engagement().debating_info().connecting_info().to_claim_id();
+    // this one should actually update the links database
+    debateWrapper.addLink(fromClaimId, toClaimId, connection, user);
+
+    CancelConnectClaims(user, debateWrapper);
     
 }
 

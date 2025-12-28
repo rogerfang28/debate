@@ -9,10 +9,11 @@
 #include "../database/handlers/UserDatabase.h"
 #include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/DebateMembersDatabase.h"
+#include "../database/handlers/LinkDatabase.h"
 
 class DebateWrapper {
 public:
-    explicit DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase);
+    explicit DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase);
     // DebateWrapper() = default;
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim findClaim(const std::string& claimId);
@@ -47,12 +48,15 @@ public:
     void updateUserProtobufBinary(const std::string& user, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const std::string& username, const user::User& userProto);
 
+    void addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username);
+
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
     DebateDatabase& debateDb;
     StatementDatabase& statementDb;
     UserDatabase& userDb;
     DebateMembersDatabase& debateMembersDb;
+    LinkDatabase& linkDb;
     void addClaimToDB(debate::Claim& claim);
     void updateClaimInDB(const debate::Claim& claim);
 };

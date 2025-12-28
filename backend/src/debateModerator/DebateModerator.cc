@@ -35,7 +35,8 @@ DebateModerator::DebateModerator()
       debateDb(globalDb),
       statementDb(globalDb),
       debateMembersDb(globalDb),
-      debateWrapper(debateDb, statementDb, userDb, debateMembersDb)
+      linkDb(globalDb),
+      debateWrapper(debateDb, statementDb, userDb, debateMembersDb, linkDb)
 {
     Log::debug("[DebateModerator] Initialized.");
 }
@@ -171,7 +172,11 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::SUBMIT_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
-            // implement later
+            ConnectClaimsHandler::ConnectClaims(
+                user,
+                event.submit_connect_claims().connection(),
+                debateWrapper
+            );
             break; 
         case debate_event::CANCEL_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");

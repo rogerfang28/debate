@@ -19,16 +19,16 @@ public:
     bool ensureTable();
 
     // Create a new link between claims
-    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection); // return link id
+    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, const std::string& creator); // return link id
     
     // Get all links from a specific claim
-    std::vector<std::tuple<int, int, int, std::string>> getLinksFromClaim(int claimIdFrom); // returns (link_id, claim_id_from, claim_id_to, connection)
+    std::vector<std::tuple<int, int, int, std::string, std::string>> getLinksFromClaim(int claimIdFrom); // returns (link_id, claim_id_from, claim_id_to, connection, creator)
     
     // Get all links to a specific claim
-    std::vector<std::tuple<int, int, int, std::string>> getLinksToClaim(int claimIdTo); // returns (link_id, claim_id_from, claim_id_to, connection)
+    std::vector<std::tuple<int, int, int, std::string, std::string>> getLinksToClaim(int claimIdTo); // returns (link_id, claim_id_from, claim_id_to, connection, creator)
     
     // Get all links involving a specific claim (both from and to)
-    std::vector<std::tuple<int, int, int, std::string>> getLinksForClaim(int claimId); // returns (link_id, claim_id_from, claim_id_to, connection)
+    std::vector<std::tuple<int, int, int, std::string, std::string>> getLinksForClaim(int claimId); // returns (link_id, claim_id_from, claim_id_to, connection, creator)
     
     // Update the connection text for a link
     bool updateLinkConnection(int linkId, const std::string& newConnection);

@@ -94,6 +94,8 @@ message ConnectToClaim {
 
 message SubmitConnectClaims {
     string connection    = 1;
+    string from_claim_id = 2;
+    string to_claim_id   = 3;
 }
 
 message CancelConnectClaims {

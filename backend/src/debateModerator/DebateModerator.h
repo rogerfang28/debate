@@ -6,6 +6,11 @@
 
 // database includes
 #include "../database/sqlite/Database.h"
+#include "../database/handlers/UserDatabase.h"
+#include "../database/handlers/DebateDatabase.h"
+#include "../database/handlers/StatementDatabase.h"
+#include "../database/handlers/DebateMembersDatabase.h"
+#include "../database/handlers/LinkDatabase.h"
 
 #include "../utils/DebateWrapper.h"
 class DebateModerator {
@@ -24,5 +29,6 @@ private:
     DebateDatabase debateDb;
     StatementDatabase statementDb;
     DebateMembersDatabase debateMembersDb;
+    LinkDatabase linkDb;
     DebateWrapper debateWrapper;
 };

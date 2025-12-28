@@ -7,8 +7,8 @@ class ConnectClaimsHandler {
 public:
     static void ConnectClaims(
         const std::string& user,
-        const std::string& fromClaimId,
-        const std::string& toClaimId,
+        // const std::string& fromClaimId,
+        // const std::string& toClaimId,
         const std::string& connection,
         DebateWrapper& debateWrapper
     );
