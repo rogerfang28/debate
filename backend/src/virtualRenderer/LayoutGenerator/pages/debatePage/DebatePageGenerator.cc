@@ -297,7 +297,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     }
 
     ComponentGenerator::addChild(&minimap, minimapContent);
-    ComponentGenerator::addChild(&rightTopSection, minimap);
+    // ComponentGenerator::addChild(&rightTopSection, minimap);
     ComponentGenerator::addChild(&topSection, rightTopSection);
     ComponentGenerator::addChild(&mainLayout, topSection);
 
@@ -325,8 +325,9 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         "w-96"
     );
 
-    ui::Component guidanceBox = ComponentGenerator::createContainer(
-        "guidanceBox",
+    // Challenges section
+    ui::Component challengesBox = ComponentGenerator::createContainer(
+        "challengesBox",
         "",
         "bg-gray-800",
         "p-6",
@@ -336,16 +337,16 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         "min-h-64"
     );
 
-    ui::Component guidanceText = ComponentGenerator::createText(
-        "guidanceText",
-        "Guide: ",
-        "",
+    ui::Component challengesText = ComponentGenerator::createText(
+        "challengesText",
+        "Challenges:",
+        "text-lg",
         "text-white",
-        "",
+        "font-semibold",
         ""
     );
-    ComponentGenerator::addChild(&guidanceBox, guidanceText);
-    ComponentGenerator::addChild(&leftContent, guidanceBox);
+    ComponentGenerator::addChild(&challengesBox, challengesText);
+    ComponentGenerator::addChild(&leftContent, challengesBox);
     ComponentGenerator::addChild(&contentArea, leftContent);
 
     // Center content
@@ -520,7 +521,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
     ui::Component childArgumentsTitle = ComponentGenerator::createText(
         "childArgumentsTitle",
-        "Child Arguments:",
+        "Proof:",
         "text-lg",
         "text-white",
         "font-semibold",
@@ -743,7 +744,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     ComponentGenerator::addChild(&centerContent, childArgumentsSection);
     ComponentGenerator::addChild(&contentArea, centerContent);
 
-    // Right content - report section
+    // Right content - guide and report section
     ui::Component rightContent = ComponentGenerator::createContainer(
         "rightContent",
         "",
@@ -755,6 +756,30 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         "w-80"
     );
 
+    // Guide section
+    ui::Component guidanceBox = ComponentGenerator::createContainer(
+        "guidanceBox",
+        "",
+        "bg-gray-800",
+        "p-6",
+        "mb-6",
+        "border-2 border-gray-700",
+        "rounded",
+        "min-h-64"
+    );
+
+    ui::Component guidanceText = ComponentGenerator::createText(
+        "guidanceText",
+        "Guide:",
+        "text-lg",
+        "text-white",
+        "font-semibold",
+        ""
+    );
+    ComponentGenerator::addChild(&guidanceBox, guidanceText);
+    ComponentGenerator::addChild(&rightContent, guidanceBox);
+
+    // Report section
     ui::Component reportSection = ComponentGenerator::createContainer(
         "reportSection",
         "",
