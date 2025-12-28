@@ -16,10 +16,7 @@
 #include "event-handlers/DeleteDebate/DeleteDebateHandler.h"
 
 // move user
-#include "event-handlers/EnterDebate/EnterDebateHandler.h"
-#include "event-handlers/GoToClaim/GoToClaim.h"
-#include "event-handlers/GoHome/GoHomeHandler.h"
-#include "event-handlers/GoToParentClaim/GoToParentClaim.h"
+#include "event-handlers/MoveUserHandler/MoveUserHandler.h"
 // delete claims
 #include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
 #include "event-handlers/DeleteChildClaim/DeleteChildClaim.h"
@@ -82,19 +79,19 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::ENTER_DEBATE:
             Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
-            EnterDebateHandler::EnterDebate(event.enter_debate().debate_id(), user, debateWrapper);
+            MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user, debateWrapper);
             break;
         case debate_event::GO_HOME:
             Log::debug("[DebateModerator] Event Type: GO_HOME");
-            GoHomeHandler::GoHome(user, debateWrapper);
+            MoveUserHandler::GoHome(user, debateWrapper);
             break;
         case debate_event::GO_TO_PARENT:
             Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
-            GoToParentClaimHandler::GoToParentClaim(user, debateWrapper);
+            MoveUserHandler::GoToParentClaim(user, debateWrapper);
             break;
         case debate_event::GO_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
-            GoToClaimHandler::GoToClaim(event.go_to_claim().claim_id(), user, debateWrapper);
+            MoveUserHandler::GoToClaim(event.go_to_claim().claim_id(), user, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");

@@ -45,10 +45,9 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ClearDebates/ClearDebatesHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteDebate/DeleteDebateHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EnterDebate/EnterDebateHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoHome/GoHomeHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToClaim/GoToClaim.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToParentClaim/GoToParentClaim.cc
+
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
+
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteChildClaim/DeleteChildClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
