@@ -12,6 +12,7 @@ message Claim {
   string parent_id = 4;
   repeated string children_ids = 5;
   Proof proof = 7; // proof structure for this claim
+  string creator_id = 8;
 }
 
 message Link {

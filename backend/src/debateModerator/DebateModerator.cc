@@ -56,6 +56,8 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::
 }
 
 void DebateModerator::handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
+    // for now we are going to convert to user_id here
+    int user_id = userDb.getUserId(user);
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
         case debate_event::NONE:

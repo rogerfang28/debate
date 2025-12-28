@@ -8,6 +8,7 @@ UserDatabase::UserDatabase(Database& db) : db_(db) {
 bool UserDatabase::ensureTable() {
     const char* sql = R"(
         CREATE TABLE IF NOT EXISTS USERS (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
             USERNAME TEXT NOT NULL UNIQUE,
             USER_DATA BLOB
         );
@@ -45,10 +46,32 @@ int UserDatabase::createUser(const std::string& username, std::vector<uint8_t> d
 }
 
 
-std::vector<uint8_t> UserDatabase::getUserProtobuf(const std::string& user_id) {
-    // This function is not used with the old schema - redirect to getUserProtobufByUsername
-    return std::vector<uint8_t>();
+std::vector<uint8_t> UserDatabase::getUserProtobuf(int user_id) {
+    std::vector<uint8_t> protobufData;
+    const char* sql = "SELECT USER_DATA FROM USERS WHERE ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return protobufData;
+    }
+
+    sqlite3_bind_int(stmt, 1, user_id);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        const void* blob = sqlite3_column_blob(stmt, 0);
+        int blobSize = sqlite3_column_bytes(stmt, 0);
+        
+        if (blob && blobSize > 0) {
+            const uint8_t* data = static_cast<const uint8_t*>(blob);
+            protobufData.assign(data, data + blobSize);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return protobufData;
 }
+
+
 
 std::vector<uint8_t> UserDatabase::getUserProtobufByUsername(const std::string& username) {
     std::vector<uint8_t> protobufData;
@@ -154,4 +177,45 @@ bool UserDatabase::userExists(const std::string& user_id) {
 
     sqlite3_finalize(stmt);
     return exists;
+}
+
+std::string UserDatabase::getUsername(int id) {
+    std::string username;
+    const char* sql = "SELECT USERNAME FROM USERS WHERE ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return username;
+    }
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        const unsigned char* text = sqlite3_column_text(stmt, 0);
+        if (text) {
+            username = reinterpret_cast<const char*>(text);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return username;
+}
+
+int UserDatabase::getUserId(const std::string& username) {
+    int userId = -1;
+    const char* sql = "SELECT ID FROM USERS WHERE USERNAME = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return userId;
+    }
+
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        userId = sqlite3_column_int(stmt, 0);
+    }
+
+    sqlite3_finalize(stmt);
+    return userId;
 }
