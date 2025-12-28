@@ -41,6 +41,20 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         deleteDebate->set_debate_id(debateID);
         Log::debug("  DELETE_DEBATE: debate_id = " + debateID);
     }
+    // join debate
+    else if (componentId.find("joinDebateButton") == 0 && eventType == "onClick") {
+        event.set_type(debate_event::JOIN_DEBATE);
+        // find the debate id input
+        auto* joinDebate = event.mutable_join_debate();
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "joinDebateInput") {
+                joinDebate->set_debate_id(comp.value());
+                Log::debug("  JOIN_DEBATE: debate_id = " + comp.value());
+                break;
+            }
+        }
+    }
+    
     else {
         Log::error("Unknown component/event combination on home page: " 
                   + componentId + "/" + eventType);

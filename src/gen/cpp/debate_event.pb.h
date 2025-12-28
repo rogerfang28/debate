@@ -115,6 +115,9 @@ extern GoToClaimDefaultTypeInternal _GoToClaim_default_instance_;
 class GoToParentClaim;
 struct GoToParentClaimDefaultTypeInternal;
 extern GoToParentClaimDefaultTypeInternal _GoToParentClaim_default_instance_;
+class JoinDebate;
+struct JoinDebateDefaultTypeInternal;
+extern JoinDebateDefaultTypeInternal _JoinDebate_default_instance_;
 class None;
 struct NoneDefaultTypeInternal;
 extern NoneDefaultTypeInternal _None_default_instance_;
@@ -175,6 +178,7 @@ enum EventType : int {
   SUBMIT_CONNECT_CLAIMS = 25,
   CANCEL_CONNECT_CLAIMS = 26,
   DELETE_LINK = 27,
+  JOIN_DEBATE = 28,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -184,8 +188,8 @@ enum EventType : int {
 bool EventType_IsValid(int value);
 extern const uint32_t EventType_internal_data_[];
 constexpr EventType EventType_MIN = static_cast<EventType>(0);
-constexpr EventType EventType_MAX = static_cast<EventType>(27);
-constexpr int EventType_ARRAYSIZE = 27 + 1;
+constexpr EventType EventType_MAX = static_cast<EventType>(28);
+constexpr int EventType_ARRAYSIZE = 28 + 1;
 const ::google::protobuf::EnumDescriptor*
 EventType_descriptor();
 template <typename T>
@@ -198,7 +202,7 @@ const std::string& EventType_Name(T value) {
 template <>
 inline const std::string& EventType_Name(EventType value) {
   return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
-                                                 0, 27>(
+                                                 0, 28>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(absl::string_view name, EventType* value) {
@@ -1556,6 +1560,202 @@ class None final : public ::google::protobuf::internal::ZeroFieldsBase
                           const None& from_msg);
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
+class JoinDebate final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.JoinDebate) */ {
+ public:
+  inline JoinDebate() : JoinDebate(nullptr) {}
+  ~JoinDebate() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(JoinDebate* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(JoinDebate));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR JoinDebate(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline JoinDebate(const JoinDebate& from) : JoinDebate(nullptr, from) {}
+  inline JoinDebate(JoinDebate&& from) noexcept
+      : JoinDebate(nullptr, std::move(from)) {}
+  inline JoinDebate& operator=(const JoinDebate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline JoinDebate& operator=(JoinDebate&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const JoinDebate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const JoinDebate* internal_default_instance() {
+    return reinterpret_cast<const JoinDebate*>(
+        &_JoinDebate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 27;
+  friend void swap(JoinDebate& a, JoinDebate& b) { a.Swap(&b); }
+  inline void Swap(JoinDebate* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(JoinDebate* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  JoinDebate* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<JoinDebate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const JoinDebate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const JoinDebate& from) { JoinDebate::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(JoinDebate* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.JoinDebate"; }
+
+ protected:
+  explicit JoinDebate(::google::protobuf::Arena* arena);
+  JoinDebate(::google::protobuf::Arena* arena, const JoinDebate& from);
+  JoinDebate(::google::protobuf::Arena* arena, JoinDebate&& from) noexcept
+      : JoinDebate(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDebateIdFieldNumber = 1,
+  };
+  // string debate_id = 1 [json_name = "debateId"];
+  void clear_debate_id() ;
+  const std::string& debate_id() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_debate_id(Arg_&& arg, Args_... args);
+  std::string* mutable_debate_id();
+  PROTOBUF_NODISCARD std::string* release_debate_id();
+  void set_allocated_debate_id(std::string* value);
+
+  private:
+  const std::string& _internal_debate_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
+      const std::string& value);
+  std::string* _internal_mutable_debate_id();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.JoinDebate)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      41, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const JoinDebate& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr debate_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_debate_5fevent_2eproto;
 };
 // -------------------------------------------------------------------
@@ -4972,13 +5172,14 @@ class DebateEvent final : public ::google::protobuf::Message
     kSubmitConnectClaims = 32,
     kCancelConnectClaims = 33,
     kDeleteLink = 34,
+    kJoinDebate = 35,
     PAYLOAD_NOT_SET = 0,
   };
   static inline const DebateEvent* internal_default_instance() {
     return reinterpret_cast<const DebateEvent*>(
         &_DebateEvent_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 28;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* other) {
     if (other == this) return;
@@ -5094,6 +5295,7 @@ class DebateEvent final : public ::google::protobuf::Message
     kSubmitConnectClaimsFieldNumber = 32,
     kCancelConnectClaimsFieldNumber = 33,
     kDeleteLinkFieldNumber = 34,
+    kJoinDebateFieldNumber = 35,
   };
   // string user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
@@ -5627,6 +5829,25 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::DeleteLink* _internal_mutable_delete_link();
 
   public:
+  // .debate_event.JoinDebate join_debate = 35 [json_name = "joinDebate"];
+  bool has_join_debate() const;
+  private:
+  bool _internal_has_join_debate() const;
+
+  public:
+  void clear_join_debate() ;
+  const ::debate_event::JoinDebate& join_debate() const;
+  PROTOBUF_NODISCARD ::debate_event::JoinDebate* release_join_debate();
+  ::debate_event::JoinDebate* mutable_join_debate();
+  void set_allocated_join_debate(::debate_event::JoinDebate* value);
+  void unsafe_arena_set_allocated_join_debate(::debate_event::JoinDebate* value);
+  ::debate_event::JoinDebate* unsafe_arena_release_join_debate();
+
+  private:
+  const ::debate_event::JoinDebate& _internal_join_debate() const;
+  ::debate_event::JoinDebate* _internal_mutable_join_debate();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -5657,11 +5878,12 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_submit_connect_claims();
   void set_has_cancel_connect_claims();
   void set_has_delete_link();
+  void set_has_join_debate();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 29, 26,
+      2, 30, 27,
       66, 7>
       _table_;
 
@@ -5713,6 +5935,7 @@ class DebateEvent final : public ::google::protobuf::Message
       ::debate_event::SubmitConnectClaims* submit_connect_claims_;
       ::debate_event::CancelConnectClaims* cancel_connect_claims_;
       ::debate_event::DeleteLink* delete_link_;
+      ::debate_event::JoinDebate* join_debate_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6725,6 +6948,58 @@ inline ::int32_t DeleteLink::_internal_link_id() const {
 inline void DeleteLink::_internal_set_link_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// JoinDebate
+
+// string debate_id = 1 [json_name = "debateId"];
+inline void JoinDebate::clear_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.ClearToEmpty();
+}
+inline const std::string& JoinDebate::debate_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.JoinDebate.debate_id)
+  return _internal_debate_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void JoinDebate::set_debate_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.JoinDebate.debate_id)
+}
+inline std::string* JoinDebate::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_debate_id();
+  // @@protoc_insertion_point(field_mutable:debate_event.JoinDebate.debate_id)
+  return _s;
+}
+inline const std::string& JoinDebate::_internal_debate_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.debate_id_.Get();
+}
+inline void JoinDebate::_internal_set_debate_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.Set(value, GetArena());
+}
+inline std::string* JoinDebate::_internal_mutable_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.debate_id_.Mutable( GetArena());
+}
+inline std::string* JoinDebate::release_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.JoinDebate.debate_id)
+  return _impl_.debate_id_.Release();
+}
+inline void JoinDebate::set_allocated_debate_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
+    _impl_.debate_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.JoinDebate.debate_id)
 }
 
 // -------------------------------------------------------------------
@@ -8912,6 +9187,85 @@ inline ::debate_event::DeleteLink* DebateEvent::_internal_mutable_delete_link() 
 inline ::debate_event::DeleteLink* DebateEvent::mutable_delete_link() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::DeleteLink* _msg = _internal_mutable_delete_link();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.delete_link)
+  return _msg;
+}
+
+// .debate_event.JoinDebate join_debate = 35 [json_name = "joinDebate"];
+inline bool DebateEvent::has_join_debate() const {
+  return payload_case() == kJoinDebate;
+}
+inline bool DebateEvent::_internal_has_join_debate() const {
+  return payload_case() == kJoinDebate;
+}
+inline void DebateEvent::set_has_join_debate() {
+  _impl_._oneof_case_[0] = kJoinDebate;
+}
+inline void DebateEvent::clear_join_debate() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kJoinDebate) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.join_debate_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.join_debate_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::JoinDebate* DebateEvent::release_join_debate() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.join_debate)
+  if (payload_case() == kJoinDebate) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.join_debate_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.join_debate_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::JoinDebate& DebateEvent::_internal_join_debate() const {
+  return payload_case() == kJoinDebate ? *_impl_.payload_.join_debate_ : reinterpret_cast<::debate_event::JoinDebate&>(::debate_event::_JoinDebate_default_instance_);
+}
+inline const ::debate_event::JoinDebate& DebateEvent::join_debate() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.join_debate)
+  return _internal_join_debate();
+}
+inline ::debate_event::JoinDebate* DebateEvent::unsafe_arena_release_join_debate() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.join_debate)
+  if (payload_case() == kJoinDebate) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.join_debate_;
+    _impl_.payload_.join_debate_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_join_debate(::debate_event::JoinDebate* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_join_debate();
+    _impl_.payload_.join_debate_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.join_debate)
+}
+inline ::debate_event::JoinDebate* DebateEvent::_internal_mutable_join_debate() {
+  if (payload_case() != kJoinDebate) {
+    clear_payload();
+    set_has_join_debate();
+    _impl_.payload_.join_debate_ =
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::JoinDebate>(GetArena());
+  }
+  return _impl_.payload_.join_debate_;
+}
+inline ::debate_event::JoinDebate* DebateEvent::mutable_join_debate() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::JoinDebate* _msg = _internal_mutable_join_debate();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.join_debate)
   return _msg;
 }
 

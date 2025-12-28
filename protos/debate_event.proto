@@ -105,6 +105,11 @@ message DeleteLink {
     int32 link_id = 1;
 }
 
+message JoinDebate {
+    string debate_id = 1;
+}
+
+
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
@@ -136,6 +141,7 @@ enum EventType {
     SUBMIT_CONNECT_CLAIMS = 25;
     CANCEL_CONNECT_CLAIMS = 26;
     DELETE_LINK = 27;
+    JOIN_DEBATE = 28;
 }
 
 // main message
@@ -172,5 +178,6 @@ message DebateEvent {
     SubmitConnectClaims submit_connect_claims = 32;
     CancelConnectClaims cancel_connect_claims = 33;
     DeleteLink delete_link = 34;
+    JoinDebate join_debate = 35;
   }
 }

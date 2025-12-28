@@ -8,18 +8,13 @@
 #include <vector>
 // add claim
 #include "event-handlers/AddClaimHandler/AddClaimHandler.h"
-// add debate
-#include "event-handlers/AddDebate/AddDebateHandler.h"
-
-// delete debate(s)
-#include "event-handlers/ClearDebates/ClearDebatesHandler.h"
-#include "event-handlers/DeleteDebate/DeleteDebateHandler.h"
+// debate management
+#include "event-handlers/DebateHandler/DebateHandler.h"
 
 // move user
 #include "event-handlers/MoveUserHandler/MoveUserHandler.h"
 // delete claims
-#include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
-#include "event-handlers/DeleteChildClaim/DeleteChildClaim.h"
+#include "event-handlers/DeleteClaimHandler/DeleteClaimHandler.h"
 
 // edit claims
 #include "event-handlers/EditClaimHandler/EditClaimHandler.h"
@@ -67,15 +62,19 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CREATE_DEBATE:
             Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
-            AddDebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateWrapper);
+            DebateHandler::AddDebate(event.create_debate().debate_topic(), user, debateWrapper);
             break;
         case debate_event::CLEAR_DEBATES:
             Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
-            ClearDebatesHandler::ClearDebates(user, debateWrapper);
+            DebateHandler::ClearDebates(user, debateWrapper);
             break;
         case debate_event::DELETE_DEBATE:
             Log::debug("[DebateModerator] Event Type: DELETE_DEBATE");
-            DeleteDebateHandler::DeleteDebate(event.delete_debate().debate_id(), user, debateWrapper);
+            DebateHandler::DeleteDebate(event.delete_debate().debate_id(), user, debateWrapper);
+            break;
+        case debate_event::JOIN_DEBATE:
+            Log::debug("[DebateModerator] Event Type: JOIN_DEBATE");
+            DebateHandler::JoinDebateAsMember(event.join_debate().debate_id(), user, debateWrapper);
             break;
         case debate_event::ENTER_DEBATE:
             Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
@@ -116,11 +115,11 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::DELETE_CURRENT_STATEMENT:
             Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
-            DeleteCurrentStatementHandler::DeleteCurrentStatement(user, debateWrapper);
+            DeleteClaimHandler::DeleteCurrentStatement(user, debateWrapper);
             break;
         case debate_event::DELETE_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: DELETE_CHILD_CLAIM");
-            DeleteChildClaimHandler::DeleteChildClaim(
+            DeleteClaimHandler::DeleteChildClaim(
                 event.delete_child_claim().claim_id(),
                 user,
                 debateWrapper

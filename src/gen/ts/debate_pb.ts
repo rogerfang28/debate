@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKBAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZiJECgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoCRISCgpjb25uZWN0X3RvGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygJEhAKCGxpbmtfaWRzGAIgAygJIoUBCgZEZWJhdGUSCgoCaWQYASABKAkSFQoNcm9vdF9jbGFpbV9pZBgCIAEoCRINCgV0b3BpYxgDIAEoCRIQCghkZWJhdGVycxgEIAMoCRINCgVvd25lchgFIAEoCRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKVAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgJIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSIsCgVQcm9vZhIRCgljbGFpbV9pZHMYASADKAkSEAoIbGlua19pZHMYAiADKAkihQEKBkRlYmF0ZRIKCgJpZBgBIAEoCRIVCg1yb290X2NsYWltX2lkGAIgASgJEg0KBXRvcGljGAMgASgJEhAKCGRlYmF0ZXJzGAQgAygJEg0KBW93bmVyGAUgASgJEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzYgZwcm90bzM", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -51,6 +51,11 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: debate.Proof proof = 7;
    */
   proof?: Proof;
+
+  /**
+   * @generated from field: string creator_id = 8;
+   */
+  creatorId: string;
 };
 
 /**

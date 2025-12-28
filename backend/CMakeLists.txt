@@ -41,16 +41,16 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/MiddleendRequestHandler.cc
     
     # event handlers
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddDebate/AddDebateHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ClearDebates/ClearDebatesHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteDebate/DeleteDebateHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
 
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteChildClaim/DeleteChildClaim.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
+    
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
+
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
+
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
 
 

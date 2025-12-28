@@ -36,7 +36,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
     // Title
     ui::Component title = ComponentGenerator::createText(
         "title",
-        "Debate Topics",
+        "Debate Hub",
         "text-3xl",
         "text-blue-400",
         "font-bold",
@@ -47,7 +47,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        "Type a topic and submit. Existing topics appear below.",
+        "Participate in debates by creating your own and proving your point, or joining existing ones.",
         "",
         "text-gray-300",
         "",
@@ -69,6 +69,18 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
     );
     // ComponentGenerator::addChild(&main, clearButton);
 
+    // Submit topic container (inline layout)
+    ui::Component submitTopicContainer = ComponentGenerator::createContainer(
+        "submitTopicContainer",
+        "flex gap-2 w-full max-w-md",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+
     // Input field
     ui::Component topicInput = ComponentGenerator::createInput(
         "topicInput",
@@ -79,14 +91,14 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
         "border-gray-600",
         "p-3",
         "rounded",
-        "w-full max-w-md"
+        "flex-1"
     );
-    ComponentGenerator::addChild(&main, topicInput);
+    ComponentGenerator::addChild(&submitTopicContainer, topicInput);
 
     // Submit button
     ui::Component submitButton = ComponentGenerator::createButton(
         "submitButton",
-        "Submit Topic",
+        "Submit",
         "submit",
         "bg-green-600",
         "hover:bg-green-500",
@@ -95,7 +107,49 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
         "rounded-lg",
         "transition"
     );
-    ComponentGenerator::addChild(&main, submitButton);
+    ComponentGenerator::addChild(&submitTopicContainer, submitButton);
+    ComponentGenerator::addChild(&main, submitTopicContainer);
+
+    // Join debate by ID container (inline layout)
+    ui::Component joinDebateContainer = ComponentGenerator::createContainer(
+        "joinDebateContainer",
+        "flex gap-2 w-full max-w-md",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+
+    // Join debate input field
+    ui::Component joinDebateInput = ComponentGenerator::createInput(
+        "joinDebateInput",
+        "Enter debate ID...",
+        "debateId",
+        "bg-gray-800",
+        "text-white",
+        "border-gray-600",
+        "p-3",
+        "rounded",
+        "flex-1"
+    );
+    ComponentGenerator::addChild(&joinDebateContainer, joinDebateInput);
+
+    // Join button
+    ui::Component joinDebateButton = ComponentGenerator::createButton(
+        "joinDebateButton",
+        "Join",
+        "joinDebate",
+        "bg-blue-600",
+        "hover:bg-blue-500",
+        "text-white",
+        "px-6 py-3",
+        "rounded-lg",
+        "transition"
+    );
+    ComponentGenerator::addChild(&joinDebateContainer, joinDebateButton);
+    ComponentGenerator::addChild(&main, joinDebateContainer);
 
     // Topics card container
     ui::Component topicsCard = ComponentGenerator::createContainer(
@@ -112,7 +166,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::NoneInfo info) {
     // Topics header
     ui::Component topicsHeader = ComponentGenerator::createText(
         "topicsHeader",
-        "Submitted Topics",
+        "Your Debates",
         "text-xl",
         "text-white",
         "font-semibold",
