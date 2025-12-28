@@ -42,23 +42,16 @@ set(SRC_FILES
     
     # event handlers
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddDebate/AddDebateHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ClearDebates/ClearDebatesHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteDebate/DeleteDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EnterDebate/EnterDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoHome/GoHomeHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToClaim/GoToClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/GoToParentClaim/GoToParentClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/OpenAddChildClaim/OpenAddChildClaim.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/CloseAddChildClaim/CloseAddChildClaim.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/DeleteChildClaim/DeleteChildClaim.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/StartEditClaimDescription/StartEditClaimDescription.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SubmitEditClaimDescription/SubmitEditClaimDescription.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/CancelEditClaimDescription/CancelEditClaimDescription.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/StartEditClaim/StartEditClaim.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SubmitEditClaim/SubmitEditClaim.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/CancelEditClaim/CancelEditClaim.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
 
 

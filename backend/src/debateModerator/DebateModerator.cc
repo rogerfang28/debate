@@ -6,25 +6,30 @@
 #include "../utils/pathUtils.h"
 #include <iostream>
 #include <vector>
+// add claim
+#include "event-handlers/AddClaimHandler/AddClaimHandler.h"
+// add debate
 #include "event-handlers/AddDebate/AddDebateHandler.h"
+
+// delete debate(s)
 #include "event-handlers/ClearDebates/ClearDebatesHandler.h"
 #include "event-handlers/DeleteDebate/DeleteDebateHandler.h"
+
+// move user
 #include "event-handlers/EnterDebate/EnterDebateHandler.h"
 #include "event-handlers/GoToClaim/GoToClaim.h"
 #include "event-handlers/GoHome/GoHomeHandler.h"
 #include "event-handlers/GoToParentClaim/GoToParentClaim.h"
-#include "event-handlers/AddClaimUnderClaim/AddClaimUnderClaim.h"
+// delete claims
 #include "event-handlers/DeleteCurrentStatement/DeleteCurrentStatement.h"
-#include "event-handlers/OpenAddChildClaim/OpenAddChildClaim.h"
-#include "event-handlers/CloseAddChildClaim/CloseAddChildClaim.h"
 #include "event-handlers/DeleteChildClaim/DeleteChildClaim.h"
-#include "event-handlers/StartEditClaimDescription/StartEditClaimDescription.h"
-#include "event-handlers/SubmitEditClaimDescription/SubmitEditClaimDescription.h"
-#include "event-handlers/CancelEditClaimDescription/CancelEditClaimDescription.h"
-#include "event-handlers/StartEditClaim/StartEditClaim.h"
-#include "event-handlers/SubmitEditClaim/SubmitEditClaim.h"
-#include "event-handlers/CancelEditClaim/CancelEditClaim.h"
+
+// edit claims
+#include "event-handlers/EditClaimHandler/EditClaimHandler.h"
+
+// connect claims
 #include "event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.h"
+
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "../utils/Log.h"
@@ -93,15 +98,15 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
-            OpenAddChildClaimHandler::OpenAddChildClaim(user, debateWrapper);
+            AddClaimHandler::OpenAddChildClaim(user, debateWrapper);
             break;
         case debate_event::CLOSE_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: CLOSE_ADD_CHILD_CLAIM");
-            CloseAddChildClaimHandler::CloseAddChildClaim(user, debateWrapper);
+            AddClaimHandler::CloseAddChildClaim(user, debateWrapper);
             break;
         case debate_event::ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
-            AddClaimUnderClaimHandler::AddClaimUnderClaim(
+            AddClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().description(),
                 user,
@@ -126,11 +131,11 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::START_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM_DESCRIPTION");
-            StartEditClaimDescriptionHandler::StartEditClaimDescription(user, debateWrapper);
+            EditClaimHandler::StartEditClaimDescription(user, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM_DESCRIPTION");
-            SubmitEditClaimDescriptionHandler::SubmitEditClaimDescription(
+            EditClaimHandler::SubmitEditClaimDescription(
                 user,
                 event.submit_edit_claim_description().new_description(),
                 debateWrapper
@@ -138,15 +143,15 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CANCEL_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM_DESCRIPTION");
-            CancelEditClaimDescriptionHandler::CancelEditClaimDescription(user, debateWrapper);
+            EditClaimHandler::CancelEditClaimDescription(user, debateWrapper);
             break;
         case debate_event::START_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM");
-            StartEditClaim::StartEdit(user, debateWrapper);
+            EditClaimHandler::StartEditClaim(user, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
-            SubmitEditClaim::Submit(
+            EditClaimHandler::SubmitEditClaim(
                 user,
                 event.submit_edit_claim().new_claim(),
                 debateWrapper
@@ -154,7 +159,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CANCEL_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
-            CancelEditClaim::Cancel(user, debateWrapper);
+            EditClaimHandler::CancelEditClaim(user, debateWrapper);
             break;
         case debate_event::CONNECT_FROM_CLAIM:
             Log::debug("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
