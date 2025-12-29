@@ -25,7 +25,7 @@ export default {
     
     // Background with opacity
     'bg-blue-400/10', 'bg-red-500/10', 'bg-white/20', 'bg-gray-800/90', 'bg-black/50',
-    'bg-purple-900/30',
+    'bg-purple-900/30', 'bg-orange-600', 'bg-orange-700', 'hover:bg-orange-800', 'bg-orange-500',
     
     // Text colors
     'text-white', 'text-black', 'text-transparent',
@@ -73,7 +73,7 @@ export default {
     'border', 'border-2', 'border-b',
     'border-gray-300', 'border-gray-600', 'border-gray-700', 'hover:border-gray-600',
     'border-slate-600',
-    'border-purple-500',
+    'border-purple-500', 'border-orange-500',
     'border-white/10', 'border-red-500/30',
     'rounded', 'rounded-lg', 'rounded-md', 'rounded-2xl', 'rounded-full',
     'border-none',
@@ -82,6 +82,7 @@ export default {
     'text-xs', 'text-sm', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-6xl',
     'font-bold', 'font-semibold', 'font-medium',
     'leading-relaxed',
+    'text-left',
     'placeholder-slate-400', 'placeholder-gray-400',
     
     // Effects

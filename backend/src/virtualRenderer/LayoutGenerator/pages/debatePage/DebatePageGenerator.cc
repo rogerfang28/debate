@@ -41,6 +41,14 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     Log::debug("[DebatePageGenerator] From Claim ID: " + fromClaimId
         + ", To Claim ID: " + toClaimId);
 
+    std::vector<std::map<std::string, std::string>> challengesInfo;
+    for (int i = 0; i < debatingInfo.current_challenges_size(); i++) {
+        const user_engagement::ChallengeInfo& challenge = debatingInfo.current_challenges(i);
+        challengesInfo.push_back({{"id", challenge.id()}, {"sentence", challenge.sentence()}, {"creator_id", challenge.creator_id()}});
+    }
+    // hardcode one for testing
+    challengesInfo.push_back({{"id", "1"}, {"sentence", "This is a challenge to the current claim."}, {"creator_id", "1"}});
+
     // Main layout container
     ui::Component mainLayout = ComponentGenerator::createContainer(
         "mainLayout",
@@ -343,9 +351,65 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         "text-lg",
         "text-white",
         "font-semibold",
-        ""
+        "mb-4"
     );
     ComponentGenerator::addChild(&challengesBox, challengesText);
+
+    // Challenges container
+    ui::Component challengesContainer = ComponentGenerator::createContainer(
+        "challengesContainer",
+        "flex flex-col gap-3",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+
+    // Loop through challenges and create components
+    for (const auto& challenge : challengesInfo) {
+        std::string challengeId = challenge.at("id");
+        std::string challengeSentence = challenge.at("sentence");
+        
+        ui::Component challengeNode = ComponentGenerator::createContainer(
+            "challengeNode_" + challengeId,
+            "",
+            "bg-orange-600",
+            "p-4",
+            "",
+            "border-2 border-orange-500",
+            "rounded",
+            ""
+        );
+
+        ui::Component challengeSentenceText = ComponentGenerator::createText(
+            "challengeSentence_" + challengeId,
+            challengeSentence,
+            "",
+            "text-white",
+            "",
+            "mb-3"
+        );
+        ComponentGenerator::addChild(&challengeNode, challengeSentenceText);
+
+        ui::Component viewChallengeButton = ComponentGenerator::createButton(
+            "viewChallengeButton_" + challengeId,
+            "View Challenge",
+            "",
+            "bg-orange-700",
+            "hover:bg-orange-800",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&challengeNode, viewChallengeButton);
+
+        ComponentGenerator::addChild(&challengesContainer, challengeNode);
+    }
+
+    ComponentGenerator::addChild(&challengesBox, challengesContainer);
     ComponentGenerator::addChild(&leftContent, challengesBox);
     ComponentGenerator::addChild(&contentArea, leftContent);
 

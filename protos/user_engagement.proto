@@ -23,16 +23,17 @@ message DebateList {
 
 message DebatingInfo {
   // string debate_id = 1;
-  ClaimInfo current_claim = 2; // current claim being viewed/argued
-  string current_claim_description = 9; // description of the current claim
-  ClaimInfo parent_claim = 5;  // parent claim of the current claim
-  ClaimInfo root_claim = 3;    // root claim of the debate
-  repeated ClaimInfo children_claims = 4; // child claims of the current claim
-  repeated LinkInfo links = 12; // links under the current claim
-  bool adding_child_claim = 6; // whether the add child claim modal is opened
-  bool editing_claim_sentence = 7; // whether the user is editing the current claim
+  ClaimInfo current_claim = 1; // current claim being viewed/argued
+  string current_claim_description = 2; // description of the current claim
+  ClaimInfo parent_claim = 3;  // parent claim of the current claim
+  ClaimInfo root_claim = 4;    // root claim of the debate
+  repeated ClaimInfo children_claims = 5; // child claims of the current claim
+  repeated LinkInfo links = 6; // links under the current claim
+  repeated ChallengeInfo current_challenges = 7; // challenges against the current claim
+  bool adding_child_claim = 8; // whether the add child claim modal is opened
+  bool editing_claim_sentence = 9; // whether the user is editing the current claim
   bool editing_claim_description = 10; // whether the user is editing the current claim description
-  bool reporting_claim = 8; // whether the user is reporting the current claim
+  bool reporting_claim = 11; // whether the user is reporting the current claim
   message ConnectingInfo {
     string from_claim_id = 1;
     string to_claim_id   = 2;
@@ -40,12 +41,13 @@ message DebatingInfo {
     bool connecting = 4;
     bool opened_connect_modal = 5;  
   }
-  ConnectingInfo connecting_info = 11; // info about connecting claims
+  ConnectingInfo connecting_info = 12; // info about connecting claims
 }
 
 message ClaimInfo {
   string id = 1;
   string sentence = 2;
+  string creator_id = 3;
 }
 
 message LinkInfo {
@@ -53,6 +55,12 @@ message LinkInfo {
   string connect_from = 2;
   string connect_to = 3;
   string connection = 4;  
+  string creator_id = 5;
+}
+message ChallengeInfo{
+  string id = 1;
+  string sentence = 2;
+  string creator_id = 3;
 }
 
 message UserEngagement {
