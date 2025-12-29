@@ -5,10 +5,10 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const std::string& user, DebateWrapper& debateWrapper) {
+void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const int& user_id, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     // get user protobuf
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
     // std::string debateID = userProto.engagement().debating_info().debate_id();
     std::string rootClaimID = userProto.engagement().debating_info().root_claim().id();
     user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();
@@ -23,26 +23,25 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
         // user
     );
 
-    CloseAddChildClaim(user, debateWrapper);
+    CloseAddChildClaim(user_id, debateWrapper);
 }
 
-void AddClaimHandler::CloseAddChildClaim(const std::string& user, DebateWrapper& debateWrapper) {
+void AddClaimHandler::CloseAddChildClaim(const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set adding_child_claim to true
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
 
-    debateWrapper.updateUserProtobuf(user, userProto);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void AddClaimHandler::OpenAddChildClaim(const std::string& user, DebateWrapper& debateWrapper) {
+void AddClaimHandler::OpenAddChildClaim(const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set adding_child_claim to true
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(true);
-    Log::debug("[OpenAddChildClaimHandler] Set adding_child_claim to true for user: " + user);
-
-    debateWrapper.updateUserProtobuf(user, userProto);
+    Log::debug("[OpenAddChildClaimHandler] Set adding_child_claim to true for user: " + std::to_string(user_id));
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }

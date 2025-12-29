@@ -5,7 +5,7 @@
 
 class AddClaimHandler {
 public:
-    static void AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const std::string& user, DebateWrapper& debateWrapper);
-    static void CloseAddChildClaim(const std::string& user, DebateWrapper& debateWrapper);
-    static void OpenAddChildClaim(const std::string& user, DebateWrapper& debateWrapper);
+    static void AddClaimUnderClaim(const std::string& claim_text, const std::string& connection_to_parent, const int& user_id, DebateWrapper& debateWrapper);
+    static void CloseAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
+    static void OpenAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
 };

@@ -17,7 +17,7 @@ public:
     // DebateWrapper() = default;
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim findClaim(const std::string& claimId);
-    void initNewDebate(const std::string& topic, const std::string& owner);
+    void initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const std::string& claimId);
     void addClaimUnderParent(
         const std::string& parentId, 
@@ -35,25 +35,25 @@ public:
         const std::string& parentId);
     std::vector<std::pair<std::string,std::string>> findChildrenInfo(
         const std::string& parentId); // returns vector of (id, sentence) pairs
-    void deleteDebate(const std::string& debateId, const std::string& user);
+    void deleteDebate(const std::string& debateId, const int& user_id);
     void deleteClaim(const std::string& claimId);
-    void deleteAllDebates(const std::string& user);
-    void moveUserToClaim(const std::string& user, const std::string& claimId);
-    std::vector<std::string> getUserDebateIds(const std::string& user);
+    void deleteAllDebates(const int& user_id);
+    void moveUserToClaim(const int& user_id, const std::string& claimId);
+    std::vector<std::string> getUserDebateIds(const int& user_id);
     std::vector<uint8_t> getDebateProtobuf(const std::string& debateId);
     // std::vector<uint8_t> getUserProtobufBinary(const std::string& user_id);
-    user::User getUserProtobufByUsername(const std::string& username);
-    std::vector<uint8_t> getUserProtobufBinaryByUsername(const std::string& username);
+    user::User getUserProtobuf(const int& user_id);
+    std::vector<uint8_t> getUserProtobufBinary(const int& user_id);
 
-    void updateUserProtobufBinary(const std::string& user, const std::vector<uint8_t>& protobufData);
-    void updateUserProtobuf(const std::string& username, const user::User& userProto);
+    void updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData);
+    void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
-    int addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, std::string creator_username);
+    int addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, int creator_id);
     std::vector<int> findLinksUnder(const std::string& claimId);
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
-    void addMemberToDebate(const std::string& debateId, const std::string& username);
+    void addMemberToDebate(const std::string& debateId, const int& user_id);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);

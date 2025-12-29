@@ -9,7 +9,7 @@ bool DebateDatabase::ensureTable() {
     const char* sql = R"(
         CREATE TABLE IF NOT EXISTS DEBATE (
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            USER TEXT NOT NULL,
+            USER_ID INTEGER NOT NULL,
             TOPIC TEXT NOT NULL,
             PAGE_DATA BLOB
         );
@@ -17,15 +17,15 @@ bool DebateDatabase::ensureTable() {
     return db_.execute(sql);
 }
 
-int DebateDatabase::addDebate(const std::string& user, const std::string& topic, const std::vector<uint8_t>& protobufData) {
-    const char* sql = "INSERT INTO DEBATE (USER, TOPIC, PAGE_DATA) VALUES (?, ?, ?);";
+int DebateDatabase::addDebate(int userId, const std::string& topic, const std::vector<uint8_t>& protobufData) {
+    const char* sql = "INSERT INTO DEBATE (USER_ID, TOPIC, PAGE_DATA) VALUES (?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return -1;
     }
 
-    sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 1, userId);
     sqlite3_bind_text(stmt, 2, topic.c_str(), -1, SQLITE_TRANSIENT);
     
     if (!protobufData.empty()) {
@@ -72,8 +72,8 @@ std::vector<uint8_t> DebateDatabase::getDebateProtobuf(int debateId) {
     return protobufData;
 }
 
-bool DebateDatabase::updateDebateProtobuf(int debateId, const std::string& user, const std::vector<uint8_t>& protobufData) {
-    const char* sql = "UPDATE DEBATE SET PAGE_DATA = ? WHERE ID = ? AND USER = ?;";
+bool DebateDatabase::updateDebateProtobuf(int debateId, int userId, const std::vector<uint8_t>& protobufData) {
+    const char* sql = "UPDATE DEBATE SET PAGE_DATA = ? WHERE ID = ? AND USER_ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -86,7 +86,7 @@ bool DebateDatabase::updateDebateProtobuf(int debateId, const std::string& user,
         sqlite3_bind_null(stmt, 1);
     }
     sqlite3_bind_int(stmt, 2, debateId);
-    sqlite3_bind_text(stmt, 3, user.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 3, userId);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
@@ -95,8 +95,8 @@ bool DebateDatabase::updateDebateProtobuf(int debateId, const std::string& user,
     return success;
 }
 
-bool DebateDatabase::removeDebate(int debateId, const std::string& user) {
-    const char* sql = "DELETE FROM DEBATE WHERE ID = ? AND USER = ?;";
+bool DebateDatabase::removeDebate(int debateId, int userId) {
+    const char* sql = "DELETE FROM DEBATE WHERE ID = ? AND USER_ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -104,7 +104,7 @@ bool DebateDatabase::removeDebate(int debateId, const std::string& user) {
     }
 
     sqlite3_bind_int(stmt, 1, debateId);
-    sqlite3_bind_text(stmt, 2, user.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, userId);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
@@ -113,15 +113,15 @@ bool DebateDatabase::removeDebate(int debateId, const std::string& user) {
     return success;
 }
 
-bool DebateDatabase::clearUserDebates(const std::string& user) {
-    const char* sql = "DELETE FROM DEBATE WHERE USER = ?;";
+bool DebateDatabase::clearUserDebates(int userId) {
+    const char* sql = "DELETE FROM DEBATE WHERE USER_ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return false;
     }
 
-    sqlite3_bind_text(stmt, 1, user.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 1, userId);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE);

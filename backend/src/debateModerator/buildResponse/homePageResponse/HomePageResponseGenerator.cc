@@ -9,15 +9,15 @@
 
 void HomePageResponseGenerator::BuildHomePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
-    const std::string& user,
+    const int& user_id,
     DebateWrapper& debateWrapper
 ) {
     Log::debug("[HomePageResponseGenerator] Building Home Page response for user: "
-              + user);
+              + std::to_string(user_id));
     
     // find all debates with user
-    std::vector<std::string> debateIds = debateWrapper.getUserDebateIds(user);
-    Log::debug("[HomePageResponseGenerator] User " + user + " is a member of "
+    std::vector<std::string> debateIds = debateWrapper.getUserDebateIds(user_id);
+    Log::debug("[HomePageResponseGenerator] User " + std::to_string(user_id) + " is a member of "
               + std::to_string(debateIds.size()) + " debates.");
 
     user_engagement::DebateList debateListProto;

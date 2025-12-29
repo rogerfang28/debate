@@ -5,10 +5,10 @@
 
 class EditClaimHandler {
 public:
-    static void CancelEditClaim(const std::string& user, DebateWrapper& debateWrapper);
-    static void CancelEditClaimDescription(const std::string& user, DebateWrapper& debateWrapper);
-    static void StartEditClaim(const std::string& user, DebateWrapper& debateWrapper);
-    static void StartEditClaimDescription(const std::string& user, DebateWrapper& debateWrapper);
-    static void SubmitEditClaim(const std::string& user, const std::string& newClaim, DebateWrapper& debateWrapper);
-    static void SubmitEditClaimDescription(const std::string& user, const std::string& newDescription, DebateWrapper& debateWrapper);
+    static void CancelEditClaim(const int& user_id, DebateWrapper& debateWrapper);
+    static void CancelEditClaimDescription(const int& user_id, DebateWrapper& debateWrapper);
+    static void StartEditClaim(const int& user_id, DebateWrapper& debateWrapper);
+    static void StartEditClaimDescription(const int& user_id, DebateWrapper& debateWrapper);
+    static void SubmitEditClaim(const int& user_id, const std::string& newClaim, DebateWrapper& debateWrapper);
+    static void SubmitEditClaimDescription(const int& user_id, const std::string& newDescription, DebateWrapper& debateWrapper);
 };

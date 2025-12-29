@@ -9,7 +9,7 @@ class HomePageResponseGenerator {
 public:
     static void BuildHomePageResponse(
         moderator_to_vr::ModeratorToVRMessage& responseMessage,
-        const std::string& user,
+        const int& user_id,
         DebateWrapper& debateWrapper
     );
 };

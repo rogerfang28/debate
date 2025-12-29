@@ -98,9 +98,8 @@ std::vector<uint8_t> UserDatabase::getUserProtobufByUsername(const std::string& 
     return protobufData;
 }
 
-bool UserDatabase::updateUserProtobuf(const std::string& user_id, const std::vector<uint8_t>& protobufData) {
-    // user_id is actually the username in the old schema
-    const char* sql = "UPDATE USERS SET USER_DATA = ? WHERE USERNAME = ?;";
+bool UserDatabase::updateUserProtobuf(int user_id, const std::vector<uint8_t>& protobufData) {
+    const char* sql = "UPDATE USERS SET USER_DATA = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -112,7 +111,7 @@ bool UserDatabase::updateUserProtobuf(const std::string& user_id, const std::vec
     } else {
         sqlite3_bind_null(stmt, 1);
     }
-    sqlite3_bind_text(stmt, 2, user_id.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, user_id);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
@@ -121,8 +120,8 @@ bool UserDatabase::updateUserProtobuf(const std::string& user_id, const std::vec
     return success;
 }
 
-bool UserDatabase::updateUsername(const std::string& user_id, const std::string& newUsername) {
-    const char* sql = "UPDATE USERS SET USERNAME = ? WHERE USERNAME = ?;";
+bool UserDatabase::updateUsername(int user_id, const std::string& newUsername) {
+    const char* sql = "UPDATE USERS SET USERNAME = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -130,7 +129,7 @@ bool UserDatabase::updateUsername(const std::string& user_id, const std::string&
     }
 
     sqlite3_bind_text(stmt, 1, newUsername.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, user_id.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, user_id);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
@@ -139,22 +138,22 @@ bool UserDatabase::updateUsername(const std::string& user_id, const std::string&
     return success;
 }
 
-bool UserDatabase::updateUserPassword(const std::string& user_id, const std::string& newPasswordHash) {
+bool UserDatabase::updateUserPassword(int user_id, const std::string& newPasswordHash) {
     // Note: Password hash should be stored in protobuf data
     // This is a placeholder implementation
     std::cerr << "updateUserPassword: Password should be managed via protobuf data" << std::endl;
     return false;
 }
 
-bool UserDatabase::deleteUser(const std::string& user_id) {
-    const char* sql = "DELETE FROM USERS WHERE USERNAME = ?;";
+bool UserDatabase::deleteUser(int user_id) {
+    const char* sql = "DELETE FROM USERS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return false;
     }
 
-    sqlite3_bind_text(stmt, 1, user_id.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 1, user_id);
 
     int result = sqlite3_step(stmt);
     bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
@@ -163,15 +162,15 @@ bool UserDatabase::deleteUser(const std::string& user_id) {
     return success;
 }
 
-bool UserDatabase::userExists(const std::string& user_id) {
-    const char* sql = "SELECT 1 FROM USERS WHERE USERNAME = ?;";
+bool UserDatabase::userExists(int user_id) {
+    const char* sql = "SELECT 1 FROM USERS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return false;
     }
 
-    sqlite3_bind_text(stmt, 1, user_id.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 1, user_id);
 
     bool exists = (sqlite3_step(stmt) == SQLITE_ROW);
 

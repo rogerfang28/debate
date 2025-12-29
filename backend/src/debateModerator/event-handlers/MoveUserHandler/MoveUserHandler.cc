@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 
-bool MoveUserHandler::EnterDebate(const std::string& debateId, const std::string& user, DebateWrapper& debateWrapper) {
-    Log::debug("[EnterDebate] User " + user + " entering debate with id: " + debateId);
+bool MoveUserHandler::EnterDebate(const std::string& debateId, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[EnterDebate] User " + std::to_string(user_id) + " entering debate with id: " + debateId);
 
     std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debateId);
     debate::Debate debateProto;
@@ -17,26 +17,26 @@ bool MoveUserHandler::EnterDebate(const std::string& debateId, const std::string
     }
     std::string rootClaimId = debateProto.root_claim_id();
 
-    debateWrapper.moveUserToClaim(user, rootClaimId);
+    debateWrapper.moveUserToClaim(user_id, rootClaimId);
 
     // change some info in the user protobuf
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_sentence(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_reporting_claim(false);
 
-    debateWrapper.updateUserProtobuf(user, userProto);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 
     return true;
 }
 
-bool MoveUserHandler::GoHome(const std::string& user, DebateWrapper& debateWrapper) {
-    Log::debug("[GoHome] User " + user + " going home");
+bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[GoHome] User " + std::to_string(user_id) + " going home");
     
     try { 
         // Get current user protobuf
-        user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+        user::User userProto = debateWrapper.getUserProtobuf(user_id);
         
         // Update user state to NONE and clear debate topic id
         // userProto.set_state(user::NONE);
@@ -45,7 +45,7 @@ bool MoveUserHandler::GoHome(const std::string& user, DebateWrapper& debateWrapp
         userProto.mutable_engagement()->mutable_none_info();
         // userProto.set_debate_topic_id("");
         
-        debateWrapper.updateUserProtobuf(user, userProto);
+        debateWrapper.updateUserProtobuf(user_id, userProto);
         
         return true;
     } catch (const std::exception& e) {
@@ -54,20 +54,20 @@ bool MoveUserHandler::GoHome(const std::string& user, DebateWrapper& debateWrapp
     }
 }
 
-void MoveUserHandler::GoToClaim(const std::string& claim_id, const std::string& user, DebateWrapper& debateWrapper) {
+void MoveUserHandler::GoToClaim(const std::string& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
     // update the current claim id to claim_id
     // save back to database;
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
-    debateWrapper.updateUserProtobuf(user, userProto);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void MoveUserHandler::GoToParentClaim(const std::string& user, DebateWrapper& debateWrapper) {
-    user::User userProto = debateWrapper.getUserProtobufByUsername(user);
+void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
     std::string currentClaimId = userProto.engagement().debating_info().current_claim().id();
     // find parent claim
     debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
     // use go to claim handler to go to parent claim
-    GoToClaim(parentClaim.id(), user, debateWrapper);
+    GoToClaim(parentClaim.id(), user_id, debateWrapper);
 }

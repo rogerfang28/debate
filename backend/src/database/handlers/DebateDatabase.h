@@ -19,13 +19,13 @@ public:
 
     bool ensureTable();
 
-    int addDebate(const std::string& user, const std::string& topic, const std::vector<uint8_t>& protobufData); // return id
+    int addDebate(int userId, const std::string& topic, const std::vector<uint8_t>& protobufData); // return id
 
-    // std::vector<std::map<std::string, std::string>> getDebates(const std::string& user); // not really needed
+    // std::vector<std::map<std::string, std::string>> getDebates(int userId); // not really needed
     std::vector<uint8_t> getDebateProtobuf(int debateId);
-    bool updateDebateProtobuf(int debateId, const std::string& user, const std::vector<uint8_t>& protobufData);
-    bool removeDebate(int debateId, const std::string& user);
-    bool clearUserDebates(const std::string& user);
+    bool updateDebateProtobuf(int debateId, int userId, const std::vector<uint8_t>& protobufData);
+    bool removeDebate(int debateId, int userId);
+    bool clearUserDebates(int userId);
     bool debateExists(int debateId);
 
 private:

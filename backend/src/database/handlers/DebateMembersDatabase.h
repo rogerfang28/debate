@@ -16,13 +16,13 @@ public:
     explicit DebateMembersDatabase(Database& db);
 
     bool ensureTable();
-    bool addMember(const std::string& debateId, const std::string& userId);
-    std::vector<std::string> getDebateIdsForUser(const std::string& userId);
-    std::vector<std::string> getUserIdsForDebate(const std::string& debateId);
-    bool isMember(const std::string& debateId, const std::string& userId);
-    bool removeMember(const std::string& debateId, const std::string& userId);
+    bool addMember(const std::string& debateId, int userId);
+    std::vector<std::string> getDebateIdsForUser(int userId);
+    std::vector<int> getUserIdsForDebate(const std::string& debateId);
+    bool isMember(const std::string& debateId, int userId);
+    bool removeMember(const std::string& debateId, int userId);
     bool removeAllMembersFromDebate(const std::string& debateId);
-    bool removeUserFromAllDebates(const std::string& userId);
+    bool removeUserFromAllDebates(int userId);
 
 private:
     Database& db_;

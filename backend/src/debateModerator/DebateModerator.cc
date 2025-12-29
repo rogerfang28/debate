@@ -66,46 +66,46 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::CLEAR_DEBATES:
             Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
-            DebateHandler::ClearDebates(user, debateWrapper);
+            DebateHandler::ClearDebates(user_id, debateWrapper);
             break;
         case debate_event::DELETE_DEBATE:
             Log::debug("[DebateModerator] Event Type: DELETE_DEBATE");
-            DebateHandler::DeleteDebate(event.delete_debate().debate_id(), user, debateWrapper);
+            DebateHandler::DeleteDebate(event.delete_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::JOIN_DEBATE:
             Log::debug("[DebateModerator] Event Type: JOIN_DEBATE");
-            DebateHandler::JoinDebateAsMember(event.join_debate().debate_id(), user, debateWrapper);
+            DebateHandler::JoinDebateAsMember(event.join_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::ENTER_DEBATE:
             Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
-            MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user, debateWrapper);
+            MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::GO_HOME:
             Log::debug("[DebateModerator] Event Type: GO_HOME");
-            MoveUserHandler::GoHome(user, debateWrapper);
+            MoveUserHandler::GoHome(user_id, debateWrapper);
             break;
         case debate_event::GO_TO_PARENT:
             Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
-            MoveUserHandler::GoToParentClaim(user, debateWrapper);
+            MoveUserHandler::GoToParentClaim(user_id, debateWrapper);
             break;
         case debate_event::GO_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
-            MoveUserHandler::GoToClaim(event.go_to_claim().claim_id(), user, debateWrapper);
+            MoveUserHandler::GoToClaim(event.go_to_claim().claim_id(), user_id, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
-            AddClaimHandler::OpenAddChildClaim(user, debateWrapper);
+            AddClaimHandler::OpenAddChildClaim(user_id, debateWrapper);
             break;
         case debate_event::CLOSE_ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: CLOSE_ADD_CHILD_CLAIM");
-            AddClaimHandler::CloseAddChildClaim(user, debateWrapper);
+            AddClaimHandler::CloseAddChildClaim(user_id, debateWrapper);
             break;
         case debate_event::ADD_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
             AddClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().description(),
-                user,
+                user_id,
                 debateWrapper
             );
             break;
@@ -115,52 +115,52 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             break;
         case debate_event::DELETE_CURRENT_STATEMENT:
             Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
-            DeleteClaimHandler::DeleteCurrentStatement(user, debateWrapper);
+            DeleteClaimHandler::DeleteCurrentStatement(user_id, debateWrapper);
             break;
         case debate_event::DELETE_CHILD_CLAIM:
             Log::debug("[DebateModerator] Event Type: DELETE_CHILD_CLAIM");
             DeleteClaimHandler::DeleteChildClaim(
                 event.delete_child_claim().claim_id(),
-                user,
+                user_id,
                 debateWrapper
             );
             break;
         case debate_event::START_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM_DESCRIPTION");
-            EditClaimHandler::StartEditClaimDescription(user, debateWrapper);
+            EditClaimHandler::StartEditClaimDescription(user_id, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM_DESCRIPTION");
             EditClaimHandler::SubmitEditClaimDescription(
-                user,
+                user_id,
                 event.submit_edit_claim_description().new_description(),
                 debateWrapper
             );
             break;
         case debate_event::CANCEL_EDIT_CLAIM_DESCRIPTION:
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM_DESCRIPTION");
-            EditClaimHandler::CancelEditClaimDescription(user, debateWrapper);
+            EditClaimHandler::CancelEditClaimDescription(user_id, debateWrapper);
             break;
         case debate_event::START_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM");
-            EditClaimHandler::StartEditClaim(user, debateWrapper);
+            EditClaimHandler::StartEditClaim(user_id, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
             EditClaimHandler::SubmitEditClaim(
-                user,
+                user_id,
                 event.submit_edit_claim().new_claim(),
                 debateWrapper
             );
             break;
         case debate_event::CANCEL_EDIT_CLAIM:
             Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
-            EditClaimHandler::CancelEditClaim(user, debateWrapper);
+            EditClaimHandler::CancelEditClaim(user_id, debateWrapper);
             break;
         case debate_event::CONNECT_FROM_CLAIM:
             Log::debug("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
             ConnectClaimsHandler::ConnectFromClaim(
-                user,
+                user_id,
                 event.connect_from_claim().from_claim_id(),
                 debateWrapper
             );
@@ -168,7 +168,7 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
         case debate_event::CONNECT_TO_CLAIM:
             Log::debug("[DebateModerator] Event Type: CONNECT_TO_CLAIM");
             ConnectClaimsHandler::ConnectToClaim(
-                user,
+                user_id,
                 event.connect_to_claim().to_claim_id(),
                 debateWrapper
             );
@@ -177,19 +177,19 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
             Log::debug("[DebateModerator] Connection: " + event.submit_connect_claims().connection());
             Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
             ConnectClaimsHandler::ConnectClaims(
-                user,
+                user_id,
                 event.submit_connect_claims().connection(),
                 debateWrapper
             );
             break; 
         case debate_event::CANCEL_CONNECT_CLAIMS:
             Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
-            ConnectClaimsHandler::CancelConnectClaims(user, debateWrapper);
+            ConnectClaimsHandler::CancelConnectClaims(user_id, debateWrapper);
             break;
         case debate_event::DELETE_LINK:
             Log::debug("[DebateModerator] Event Type: DELETE_LINK");
             ConnectClaimsHandler::DeleteLinkById(
-                user,
+                user_id,
                 event.delete_link().link_id(),
                 debateWrapper
             );
@@ -206,9 +206,11 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
     user::User userProto;
+
+    int user_id = userDb.getUserId(user);
     
     // user doesn't exist yet, make a default user
-    if (!userDb.userExists(user)) {
+    if (!userDb.userExists(user_id)) {
         // debateWrapper.createNewUser(user);
         userProto.set_username(user);
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
@@ -220,19 +222,19 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
         userProto.set_user_id(std::to_string(user_id));
         std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
         userProto.SerializeToArray(updatedData.data(), updatedData.size());
-        userDb.updateUserProtobuf(std::to_string(user_id), updatedData);
+        userDb.updateUserProtobuf(user_id, updatedData);
         Log::debug("[DebateModerator] Created new user with ID: " + std::to_string(user_id));
     }
 
     // now we get info from the database
-    userProto = debateWrapper.getUserProtobufByUsername(user);
+    userProto = debateWrapper.getUserProtobuf(user_id);
     *responseMessage.mutable_engagement() = userProto.engagement();
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_NONE:
             Log::debug("[DebateModerator] Building HOME page response for user: " + user);
-            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user, debateWrapper);
+            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper);
             break;
             
         case user_engagement::ACTION_DEBATING:

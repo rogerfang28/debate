@@ -5,6 +5,6 @@
 
 class DeleteClaimHandler {
 public:
-    static void DeleteCurrentStatement(const std::string& user, DebateWrapper& debateWrapper);
-    static void DeleteChildClaim(const std::string& claimId, const std::string& user, DebateWrapper& debateWrapper);
+    static void DeleteCurrentStatement(const int& user_id, DebateWrapper& debateWrapper);
+    static void DeleteChildClaim(const std::string& claimId, const int& user_id, DebateWrapper& debateWrapper);
 };

@@ -4,36 +4,31 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void DebateHandler::AddDebate(const std::string& debateTopic, const std::string& user, DebateWrapper& debateWrapper) {
+void DebateHandler::AddDebate(const std::string& debateTopic, const int& user_id, DebateWrapper& debateWrapper) {
 
     Log::debug("[AddDebateHandler] AddDebate called for user: "
-              + user + ", topic: " + debateTopic);
+              + std::to_string(user_id) + ", topic: " + debateTopic);
 
-    debateWrapper.initNewDebate(debateTopic, user);
+    debateWrapper.initNewDebate(debateTopic, user_id);
 }
 
-void DebateHandler::AddDebate(const std::string& debate_topic, const int& user_id, DebateWrapper& debateWrapper) {
-    Log::debug("[AddDebateHandler] AddDebate called for user: " + std::to_string(user_id) + ", topic: " + debate_topic);
 
-    debateWrapper.initNewDebate(debate_topic, user_id);
+void DebateHandler::DeleteDebate(const std::string& debate_id, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[DeleteDebateHandler] DeleteDebate called for user: " + std::to_string(user_id) + ", debate ID: " + debate_id);
+
+    debateWrapper.deleteDebate(debate_id, user_id);
 }
 
-void DebateHandler::DeleteDebate(const std::string& debate_id, const std::string& user, DebateWrapper& debateWrapper) {
-    Log::debug("[DeleteDebateHandler] DeleteDebate called for user: " + user + ", debate ID: " + debate_id);
+void DebateHandler::ClearDebates(const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[ClearDebatesHandler] ClearDebates called for user: " + std::to_string(user_id));
 
-    debateWrapper.deleteDebate(debate_id, user);
+    debateWrapper.deleteAllDebates(user_id);
 }
 
-void DebateHandler::ClearDebates(const std::string& user, DebateWrapper& debateWrapper) {
-    Log::debug("[ClearDebatesHandler] ClearDebates called for user: " + user);
-
-    debateWrapper.deleteAllDebates(user);
-}
-
-void DebateHandler::JoinDebateAsMember(const std::string& debate_id, const std::string& user, DebateWrapper& debateWrapper) {
-    Log::debug("[JoinDebateAsMemberHandler] JoinDebateAsMember called for user: " + user + ", debate ID: " + debate_id);
+void DebateHandler::JoinDebateAsMember(const std::string& debate_id, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[JoinDebateAsMemberHandler] JoinDebateAsMember called for user: " + std::to_string(user_id) + ", debate ID: " + debate_id);
 
     // add user as member to debate
     // not implemented yet
-    debateWrapper.addMemberToDebate(debate_id, user);
+    debateWrapper.addMemberToDebate(debate_id, user_id);
 }
