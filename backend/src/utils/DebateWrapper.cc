@@ -346,3 +346,13 @@ void DebateWrapper::deleteLinkById(int linkId) {
         Log::error("[DebateWrapper][ERR] Failed to delete link with ID " + std::to_string(linkId));
     }
 }
+
+void DebateWrapper::addMemberToDebate(const std::string& debateId, const std::string& username) {
+    int userId = userDb.getUserId(username);
+    // check if user already a member
+    if (debateMembersDb.isMember(debateId, username)) {
+        Log::info("[DebateWrapper] User " + username + " is already a member of debate " + debateId);
+        return;
+    }
+    debateMembersDb.addMember(debateId, username); // i lied its not user id its username
+}

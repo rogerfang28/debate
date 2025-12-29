@@ -29,4 +29,5 @@ void DebateHandler::JoinDebateAsMember(const std::string& debate_id, const std::
 
     // add user as member to debate
     // not implemented yet
+    debateWrapper.addMemberToDebate(debate_id, user);
 }

@@ -53,6 +53,7 @@ public:
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
+    void addMemberToDebate(const std::string& debateId, const std::string& username);
 
 private:
     debate::Claim* findClaimProto(const std::string& claimId);
