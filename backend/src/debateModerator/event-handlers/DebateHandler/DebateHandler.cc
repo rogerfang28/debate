@@ -12,6 +12,12 @@ void DebateHandler::AddDebate(const std::string& debateTopic, const std::string&
     debateWrapper.initNewDebate(debateTopic, user);
 }
 
+void DebateHandler::AddDebate(const std::string& debate_topic, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[AddDebateHandler] AddDebate called for user: " + std::to_string(user_id) + ", topic: " + debate_topic);
+
+    debateWrapper.initNewDebate(debate_topic, user_id);
+}
+
 void DebateHandler::DeleteDebate(const std::string& debate_id, const std::string& user, DebateWrapper& debateWrapper) {
     Log::debug("[DeleteDebateHandler] DeleteDebate called for user: " + user + ", debate ID: " + debate_id);
 
