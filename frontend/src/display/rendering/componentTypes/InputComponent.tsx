@@ -39,6 +39,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       className={className}
       style={style}
       onKeyDown={handleKeyDown}
+      autoComplete="off"
       {...component.attributes}
     />
   );
