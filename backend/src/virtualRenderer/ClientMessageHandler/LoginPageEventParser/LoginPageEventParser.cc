@@ -22,9 +22,6 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
                 loginEvent->set_username(comp.value());
                 Log::debug("  Username: " + comp.value());
                 break;
-            // } else if (comp.id() == "passwordInput") {
-                // loginEvent->set_password(comp.value());
-                // Log::debug("  Password received.");
             }
         }
     } else {

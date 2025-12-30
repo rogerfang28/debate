@@ -154,7 +154,7 @@ enum EventType {
 
 message UserAuthInfo {
     string username = 1;
-    string user_id = 2;
+    int32 user_id = 2;
     bool is_logged_in = 3;
     // string password = 2;
 }

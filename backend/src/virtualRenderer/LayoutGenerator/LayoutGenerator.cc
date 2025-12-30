@@ -20,6 +20,10 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             // generate debate page
             Log::debug("[LayoutGenerator] Generating Debate Page");
             return DebatePageGenerator::GenerateDebatePage(info.engagement().debating_info());
+        case user_engagement::ACTION_LOGIN:
+            // generate login page
+            Log::debug("[LayoutGenerator] Generating Login Page");
+            return LoginPageGenerator::GenerateLoginPage();
         default:
             Log::debug("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");
             Log::debug("[LayoutGenerator] engagement action: " + std::to_string(info.engagement().current_action()));

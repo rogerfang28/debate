@@ -19,12 +19,15 @@ public:
     ~DebateModerator();
 
     moderator_to_vr::ModeratorToVRMessage handleRequest(debate_event::DebateEvent& event);
+    int getUserId(const std::string& username) {
+        return userDb.getUserId(username);
+    }
+    int createUserIfNotExist(const std::string& username);
     
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
     moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const int& user_id);
     int validateAuth(debate_event::DebateEvent& event);
-    void createUserIfNotExist(const std::string& username);
     // database classes
     Database globalDb;
     UserDatabase userDb;

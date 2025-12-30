@@ -31,9 +31,7 @@ inline constexpr UserAuthInfo::Impl_::Impl_(
       : username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+        user_id_{0},
         is_logged_in_{false},
         _cached_size_{0} {}
 
@@ -1206,7 +1204,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "d\"\?\n\005Login\022\032\n\010username\030\001 \001(\tR\010username\022\032"
     "\n\010password\030\002 \001(\tR\010password\"e\n\014UserAuthIn"
     "fo\022\032\n\010username\030\001 \001(\tR\010username\022\027\n\007user_i"
-    "d\030\002 \001(\tR\006userId\022 \n\014is_logged_in\030\003 \001(\010R\ni"
+    "d\030\002 \001(\005R\006userId\022 \n\014is_logged_in\030\003 \001(\010R\ni"
     "sLoggedIn\"\314\021\n\013DebateEvent\022.\n\004user\030\001 \001(\0132"
     "\032.debate_event.UserAuthInfoR\004user\022;\n\013occ"
     "urred_at\030\003 \001(\0132\032.google.protobuf.Timesta"
@@ -6417,7 +6415,6 @@ inline PROTOBUF_NDEBUG_INLINE UserAuthInfo::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::UserAuthInfo& from_msg)
       : username_(arena, from.username_),
-        user_id_(arena, from.user_id_),
         _cached_size_{0} {}
 
 UserAuthInfo::UserAuthInfo(
@@ -6433,7 +6430,13 @@ UserAuthInfo::UserAuthInfo(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.is_logged_in_ = from._impl_.is_logged_in_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, user_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, user_id_),
+           offsetof(Impl_, is_logged_in_) -
+               offsetof(Impl_, user_id_) +
+               sizeof(Impl_::is_logged_in_));
 
   // @@protoc_insertion_point(copy_constructor:debate_event.UserAuthInfo)
 }
@@ -6441,12 +6444,16 @@ inline PROTOBUF_NDEBUG_INLINE UserAuthInfo::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : username_(arena),
-        user_id_(arena),
         _cached_size_{0} {}
 
 inline void UserAuthInfo::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.is_logged_in_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, user_id_),
+           0,
+           offsetof(Impl_, is_logged_in_) -
+               offsetof(Impl_, user_id_) +
+               sizeof(Impl_::is_logged_in_));
 }
 UserAuthInfo::~UserAuthInfo() {
   // @@protoc_insertion_point(destructor:debate_event.UserAuthInfo)
@@ -6457,7 +6464,6 @@ inline void UserAuthInfo::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.username_.Destroy();
-  this_._impl_.user_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -6497,7 +6503,7 @@ const ::google::protobuf::internal::ClassData* UserAuthInfo::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 49, 2> UserAuthInfo::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 42, 2> UserAuthInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -6519,9 +6525,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 49, 2> UserAuthInfo::_table_ = {
     // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.username_)}},
-    // string user_id = 2 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_)}},
+    // int32 user_id = 2 [json_name = "userId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserAuthInfo, _impl_.user_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_)}},
     // bool is_logged_in = 3 [json_name = "isLoggedIn"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UserAuthInfo, _impl_.is_logged_in_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.is_logged_in_)}},
@@ -6531,19 +6537,18 @@ const ::_pbi::TcParseTable<2, 3, 0, 49, 2> UserAuthInfo::_table_ = {
     // string username = 1 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.username_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string user_id = 2 [json_name = "userId"];
+    // int32 user_id = 2 [json_name = "userId"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
     // bool is_logged_in = 3 [json_name = "isLoggedIn"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.is_logged_in_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
   {{
-    "\31\10\7\0\0\0\0\0"
+    "\31\10\0\0\0\0\0\0"
     "debate_event.UserAuthInfo"
     "username"
-    "user_id"
   }},
 };
 
@@ -6555,8 +6560,9 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
   (void) cached_has_bits;
 
   _impl_.username_.ClearToEmpty();
-  _impl_.user_id_.ClearToEmpty();
-  _impl_.is_logged_in_ = false;
+  ::memset(&_impl_.user_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.is_logged_in_) -
+      reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.is_logged_in_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -6583,12 +6589,11 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string user_id = 2 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.UserAuthInfo.user_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 user_id = 2 [json_name = "userId"];
+          if (this_._internal_user_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_user_id(), target);
           }
 
           // bool is_logged_in = 3 [json_name = "isLoggedIn"];
@@ -6628,10 +6633,10 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
             }
-            // string user_id = 2 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
+            // int32 user_id = 2 [json_name = "userId"];
+            if (this_._internal_user_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_user_id());
             }
             // bool is_logged_in = 3 [json_name = "isLoggedIn"];
             if (this_._internal_is_logged_in() != 0) {
@@ -6653,8 +6658,8 @@ void UserAuthInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   if (!from._internal_username().empty()) {
     _this->_internal_set_username(from._internal_username());
   }
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
+  if (from._internal_user_id() != 0) {
+    _this->_impl_.user_id_ = from._impl_.user_id_;
   }
   if (from._internal_is_logged_in() != 0) {
     _this->_impl_.is_logged_in_ = from._impl_.is_logged_in_;
@@ -6676,8 +6681,12 @@ void UserAuthInfo::InternalSwap(UserAuthInfo* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
-        swap(_impl_.is_logged_in_, other->_impl_.is_logged_in_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.is_logged_in_)
+      + sizeof(UserAuthInfo::_impl_.is_logged_in_)
+      - PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_)>(
+          reinterpret_cast<char*>(&_impl_.user_id_),
+          reinterpret_cast<char*>(&other->_impl_.user_id_));
 }
 
 ::google::protobuf::Metadata UserAuthInfo::GetMetadata() const {

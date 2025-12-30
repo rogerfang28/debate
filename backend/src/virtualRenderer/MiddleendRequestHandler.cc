@@ -18,7 +18,7 @@ MiddleendRequestHandler::MiddleendRequestHandler() {
 }
 
 void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib::Response& res) {
-    int userId = parseCookie::extractUserIdFromCookies(req.get_header_value("Cookie"));
+    int userId = parseCookie::extractUserIdFromCookies(req);
 
     // Parse ClientMessage protobuf
     client_message::ClientMessage msg;
@@ -32,13 +32,9 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     Log::debug("ClientMessage received");
     // log(userId, msg); // detailed logging
 
-    // find user cookie
-    auto cookie_header = req.get_header_value("Cookie");
-    Log::debug("Cookie header: '" + cookie_header + "'");
-
     // pass to VR
     // VirtualRenderer renderer;
-    ui::Page page = renderer.handleClientMessage(msg, cookie_header);
+    ui::Page page = renderer.handleClientMessage(msg, req, res);
 
     // send proto back in the res
     std::string page_data_serialized;

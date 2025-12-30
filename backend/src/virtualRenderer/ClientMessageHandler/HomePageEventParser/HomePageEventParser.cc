@@ -54,6 +54,11 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
             }
         }
     }
+
+    else if (componentId == "logoutButton"){
+        Log::debug("  LOGOUT event");
+        event.set_type(debate_event::LOGOUT); // backend can't handle logout since it's based on the cookie from the request
+    }
     
     else {
         Log::error("Unknown component/event combination on home page: " 
