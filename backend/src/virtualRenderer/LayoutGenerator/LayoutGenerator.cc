@@ -8,17 +8,17 @@
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
 
-ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, const int& user_id) {
+ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
     switch (info.engagement().current_action()){
-        case user_engagement::ACTION_NONE:
+        case user_engagement::ACTION_HOME:
             // generate home page
-            Log::debug("[LayoutGenerator] Generating Home Page for user: " + std::to_string(user_id));
-            return HomePageGenerator::GenerateHomePage(info.engagement().none_info());
+            Log::debug("[LayoutGenerator] Generating Home Page");
+            return HomePageGenerator::GenerateHomePage(info.engagement().home_info());
         case user_engagement::ACTION_DEBATING:
             // generate debate page
-            Log::debug("[LayoutGenerator] Generating Debate Page for user: " + std::to_string(user_id));
+            Log::debug("[LayoutGenerator] Generating Debate Page");
             return DebatePageGenerator::GenerateDebatePage(info.engagement().debating_info());
         default:
             Log::debug("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");

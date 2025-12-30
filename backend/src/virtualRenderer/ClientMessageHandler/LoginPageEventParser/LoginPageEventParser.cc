@@ -1,0 +1,35 @@
+#include "LoginPageEventParser.h"
+#include "../../../utils/Log.h"
+
+debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
+    const std::string& componentId,
+    const std::string& eventType,
+    // const std::string& user,
+    const client_message::ClientMessage& message
+) {
+    debate_event::DebateEvent event;
+    // Currently, no specific events are handled for the login page.
+    // Future implementation can be added here.
+    Log::debug("[LoginPageEventParser] Received event for component: " + componentId + " with event type: " + eventType);
+    if (componentId == "submitButton" && eventType == "onClick") {
+        Log::debug("  LOGIN event triggered.");
+        event.set_type(debate_event::LOGIN);
+        auto* loginEvent = event.mutable_login();
+        // Extract username and password from message
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            if (comp.id() == "usernameInput") {
+                loginEvent->set_username(comp.value());
+                Log::debug("  Username: " + comp.value());
+                break;
+            // } else if (comp.id() == "passwordInput") {
+                // loginEvent->set_password(comp.value());
+                // Log::debug("  Password received.");
+            }
+        }
+    } else {
+        Log::warn("  Unhandled LoginPage event for component: " + componentId + " with event type: " + eventType);
+        event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
+    }
+    return event;
+}

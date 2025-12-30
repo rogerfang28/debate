@@ -7,5 +7,5 @@
 class LayoutGenerator {
 public:
     // Generate layout based on ModeratorToVRMessage
-    static ui::Page generateLayout(const moderator_to_vr::ModeratorToVRMessage& msg, const int& user_id);
+    static ui::Page generateLayout(const moderator_to_vr::ModeratorToVRMessage& msg);
 };

@@ -3,7 +3,7 @@
 
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
-    page.set_page_id("enter_username");
+    page.set_page_id("login");
     page.set_title("Enter Username");
 
     // Main container

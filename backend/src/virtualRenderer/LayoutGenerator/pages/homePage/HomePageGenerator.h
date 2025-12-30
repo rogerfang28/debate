@@ -6,7 +6,7 @@
 
 class HomePageGenerator {
 public:
-    static ui::Page GenerateHomePage(user_engagement::NoneInfo info);
+    static ui::Page GenerateHomePage(user_engagement::HomeInfo info);
 };
 
 #endif // HOME_PAGE_GENERATOR_H

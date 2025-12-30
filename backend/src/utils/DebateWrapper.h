@@ -22,7 +22,8 @@ public:
     void addClaimUnderParent(
         const std::string& parentId, 
         const std::string& claimText, 
-        const std::string& connectionToParent);
+        const std::string& connectionToParent,
+        const int& user_id);
     void changeDescriptionOfClaim(
         const std::string& claimId,
         const std::string& newDescription);
@@ -62,6 +63,6 @@ private:
     UserDatabase& userDb;
     DebateMembersDatabase& debateMembersDb;
     LinkDatabase& linkDb;
-    void addClaimToDB(debate::Claim& claim);
+    void addClaimToDB(debate::Claim& claim, const int& user_id);
     // void updateClaimInDB(const debate::Claim& claim);
 };

@@ -53,14 +53,16 @@ set(SRC_FILES
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
 
-
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser/LoginPageEventParser.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/loginPageResponse/LoginPageResponseGenerator.cc    
 
     # database communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/parseCookie.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc

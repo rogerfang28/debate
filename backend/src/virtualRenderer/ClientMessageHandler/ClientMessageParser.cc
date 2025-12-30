@@ -8,11 +8,22 @@
 #include "HomePageEventParser/HomePageEventParser.h"
 #include "DebatePageEventParser/DebatePageEventParser.h"
 #include "ErrorPageEventParser/ErrorPageEventParser.h"
+#include "LoginPageEventParser/LoginPageEventParser.h"
 #include "../../utils/Log.h"
+#include "../utils/parseCookie.h"
 
 debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const int& user_id) {
     debate_event::DebateEvent event;
     timestampEvent(event); // set timestamp and id
+    if (user_id != 0) {
+        Log::debug("Extracted user_id from cookies: " + std::to_string(user_id));
+        event.mutable_user()->set_user_id(std::to_string(user_id));
+        event.mutable_user()->set_is_logged_in(true);
+    } else {
+        event.mutable_user()->set_user_id("0");
+        event.mutable_user()->set_is_logged_in(false);
+        Log::debug("No valid user_id found in cookies.");
+    }
 
     // check to see if there is nothing actually happening, like nothing clicked, it's basically no event
     if (message.component_id().empty() && message.event_type().empty()) {
@@ -38,12 +49,16 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
         event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user_id, message);
     } else if (pageId == "error") {
         event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user_id, message);
-    } else {
+    } else if (pageId == "login") {
+        event = LoginPageEventParser::ParseLoginPageEvent(componentId, eventType, message);
+    }
+    else {
         Log::error("Unknown page ID: " + pageId);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     
-    event.set_user_id(user_id);
+    event.mutable_user()->set_user_id(std::to_string(user_id));
+    event.mutable_user()->set_is_logged_in(user_id != 0);
 
     Log::debug("  Event Type: " + std::to_string(event.type()));
     Log::debug("========================================\n");

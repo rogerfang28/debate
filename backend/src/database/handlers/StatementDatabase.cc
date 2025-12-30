@@ -13,14 +13,14 @@ bool StatementDatabase::ensureTable() {
             ROOT_ID TEXT NOT NULL,
             TEXT TEXT NOT NULL,
             STATEMENT_DATA BLOB,
-            CREATOR TEXT
+            CREATOR_ID INTEGER
         );
     )";
     return db_.execute(sql);
 }
 
-int StatementDatabase::addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData, const std::string& creator) {
-    const char* sql = "INSERT INTO STATEMENTS (ROOT_ID, TEXT, STATEMENT_DATA, CREATOR) VALUES (?, ?, ?, ?);";
+int StatementDatabase::addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData, int creatorId) {
+    const char* sql = "INSERT INTO STATEMENTS (ROOT_ID, TEXT, STATEMENT_DATA, CREATOR_ID) VALUES (?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -36,8 +36,8 @@ int StatementDatabase::addStatement(int root_id, const std::string& content, std
         sqlite3_bind_null(stmt, 3);
     }
 
-    if (!creator.empty()) {
-        sqlite3_bind_text(stmt, 4, creator.c_str(), -1, SQLITE_TRANSIENT);
+    if (creatorId != -1) {
+        sqlite3_bind_int(stmt, 4, creatorId);
     } else {
         sqlite3_bind_null(stmt, 4);
     }
@@ -80,26 +80,25 @@ std::vector<uint8_t> StatementDatabase::getStatementProtobuf(int statementId) {
     return protobufData;
 }
 
-std::string StatementDatabase::getStatementCreator(int statementId) {
-    std::string creator;
-    const char* sql = "SELECT CREATOR FROM STATEMENTS WHERE ID = ?;";
+int StatementDatabase::getStatementCreatorId(int statementId) {
+    int creatorId = -1;
+    const char* sql = "SELECT CREATOR_ID FROM STATEMENTS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
-        return creator;
+        return creatorId;
     }
 
     sqlite3_bind_int(stmt, 1, statementId);
 
     if (sqlite3_step(stmt) == SQLITE_ROW) {
-        const unsigned char* text = sqlite3_column_text(stmt, 0);
-        if (text) {
-            creator = reinterpret_cast<const char*>(text);
+        if (sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+            creatorId = sqlite3_column_int(stmt, 0);
         }
     }
 
     sqlite3_finalize(stmt);
-    return creator;
+    return creatorId;
 }
 
 bool StatementDatabase::updateStatementContent(int statementId, const std::string& newContent) {
@@ -160,16 +159,16 @@ bool StatementDatabase::updateStatementRoot(int statementId, int newRootId) {
     return success;
 }
 
-bool StatementDatabase::updateStatementCreator(int statementId, const std::string& creator) {
-    const char* sql = "UPDATE STATEMENTS SET CREATOR = ? WHERE ID = ?;";
+bool StatementDatabase::updateStatementCreatorId(int statementId, int creatorId) {
+    const char* sql = "UPDATE STATEMENTS SET CREATOR_ID = ? WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
         return false;
     }
 
-    if (!creator.empty()) {
-        sqlite3_bind_text(stmt, 1, creator.c_str(), -1, SQLITE_TRANSIENT);
+    if (creatorId != -1) {
+        sqlite3_bind_int(stmt, 1, creatorId);
     } else {
         sqlite3_bind_null(stmt, 1);
     }

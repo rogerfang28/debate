@@ -38,11 +38,9 @@ bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
         // Get current user protobuf
         user::User userProto = debateWrapper.getUserProtobuf(user_id);
         
-        // Update user state to NONE and clear debate topic id
-        // userProto.set_state(user::NONE);
-        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
-        // set none info
-        userProto.mutable_engagement()->mutable_none_info();
+        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        // set home info
+        userProto.mutable_engagement()->mutable_home_info();
         // userProto.set_debate_topic_id("");
         
         debateWrapper.updateUserProtobuf(user_id, userProto);

@@ -24,6 +24,7 @@
 
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
+#include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
 #include "../utils/Log.h"
 
 DebateModerator::DebateModerator()
@@ -43,9 +44,17 @@ DebateModerator::~DebateModerator() {
 }
 
 // * main function to handle debate event requests
-moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const int& user_id, debate_event::DebateEvent& event){
+moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_event::DebateEvent& event){
     // Process the debate event and update the database accordingly
+    int user_id = validateAuth(event);
+    if (user_id == -1) {
+        Log::debug("[DebateModerator] User not authenticated, redirecting to login page.");
+        moderator_to_vr::ModeratorToVRMessage res;
+        LoginPageResponseGenerator::BuildLoginPageResponse(res);
+        return res;
+    }
     Log::debug("[DebateModerator] Handling request for user: " + std::to_string(user_id));
+
     // Example: handle adding a debate topic
     handleDebateEvent(user_id, event);
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
@@ -210,30 +219,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     std::string user = userDb.getUsername(user_id);
     // int user_id = userDb.getUserId(user);
     
-    // user doesn't exist yet, make a default user
-    if (!userDb.userExists(user_id)) {
-        // debateWrapper.createNewUser(user);
-        userProto.set_username(user);
-        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_NONE);
-        userProto.mutable_engagement()->mutable_none_info();
-
-        std::vector<uint8_t> userData(userProto.ByteSizeLong());
-        userProto.SerializeToArray(userData.data(), userData.size());
-        int user_id = userDb.createUser(user, userData);
-        userProto.set_user_id(std::to_string(user_id));
-        std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
-        userProto.SerializeToArray(updatedData.data(), updatedData.size());
-        userDb.updateUserProtobuf(user_id, updatedData);
-        Log::debug("[DebateModerator] Created new user with ID: " + std::to_string(user_id));
-    }
-
     // now we get info from the database
     userProto = debateWrapper.getUserProtobuf(user_id);
     *responseMessage.mutable_engagement() = userProto.engagement();
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
-        case user_engagement::ACTION_NONE:
+        case user_engagement::ACTION_HOME:
             Log::debug("[DebateModerator] Building HOME page response for user: " + user);
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper);
             break;
@@ -249,4 +241,51 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     }
 
     return responseMessage;
+}
+
+int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
+    int user_id = userDb.getUserId(event.user().username());
+    if (!event.user().is_logged_in()) {
+        Log::debug("[DebateModerator] User not authenticated. Check if they are logging in.");
+        if (event.type() == debate_event::LOGIN) {
+            Log::debug("[DebateModerator] Handling LOGIN event.");
+            // check if the user_id is in the database
+            std::string username = event.login().username(); // this means username is unique for now
+            if (user_id != -1) {
+                Log::debug("[DebateModerator] User " + username + " logged in successfully with user_id: " + std::to_string(user_id));
+                event.mutable_user()->set_user_id(std::to_string(user_id));
+                event.mutable_user()->set_is_logged_in(true);
+            } else {
+                createUserIfNotExist(username);
+                user_id = userDb.getUserId(username);
+            }
+        }
+        else{
+            return -1; // not logged in and not trying to log in
+        }
+    }
+    else {
+        // check if that user_id exists in the database
+        int check_user_id = std::stoi(event.user().user_id());
+        std::string username = event.user().username();
+        if (!userDb.userExists(check_user_id)) {
+            Log::debug("[DebateModerator] User ID " + std::to_string(check_user_id) + " not found in database. Redirecting to login page.");
+            createUserIfNotExist(username);
+            user_id = userDb.getUserId(username);
+        }
+    }
+    return user_id;
+}
+
+void DebateModerator::createUserIfNotExist(const std::string& username) {
+    int user_id = userDb.getUserId(username);
+    if (user_id == -1) {
+        user::User newUser;
+        newUser.set_username(username);
+        // serialize
+        std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        user_id = userDb.createUser(username, serializedNewUser);
+        Log::debug("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
+    }
 }

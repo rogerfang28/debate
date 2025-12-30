@@ -109,6 +109,12 @@ message JoinDebate {
     string debate_id = 1;
 }
 
+message Login {
+    string username = 1;
+    string password = 2;
+}
+
+
 
 // enum
 enum EventType {
@@ -142,13 +148,20 @@ enum EventType {
     CANCEL_CONNECT_CLAIMS = 26;
     DELETE_LINK = 27;
     JOIN_DEBATE = 28;
+    LOGIN = 29;
+    LOGOUT = 30;
+}
+
+message UserAuthInfo {
+    string username = 1;
+    string user_id = 2;
+    bool is_logged_in = 3;
+    // string password = 2;
 }
 
 // main message
 message DebateEvent {
-
-  int32 user_id = 1;
-//   string id = 2;
+  UserAuthInfo user = 1;
   google.protobuf.Timestamp occurred_at = 3;
   EventType type = 4; 
 
@@ -179,5 +192,6 @@ message DebateEvent {
     CancelConnectClaims cancel_connect_claims = 33;
     DeleteLink delete_link = 34;
     JoinDebate join_debate = 35;
+    Login login = 36;
   }
 }

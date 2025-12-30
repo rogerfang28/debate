@@ -4,11 +4,12 @@ package user_engagement;
 
 enum EngagementAction {
   ENGAGEMENT_ACTION_UNSPECIFIED = 0;
-  ACTION_NONE     = 1;  // basically home page / idle
+  ACTION_HOME     = 1;  // basically home page / idle
   ACTION_DEBATING = 2;  // currently in a debate
+  ACTION_LOGIN    = 3;  // login page
 }
 
-message NoneInfo {
+message HomeInfo {
   DebateList available_debates = 1; // list of debates user can join
 }
 
@@ -51,6 +52,9 @@ message ClaimInfo {
   string creator_id = 3;
 }
 
+message LoginInfo {
+}
+
 message LinkInfo {
   string id = 1;
   string connect_from = 2;
@@ -68,7 +72,8 @@ message UserEngagement {
   EngagementAction current_action = 1;
 
   oneof action_info { // kind of like information about the current state of the user
-    NoneInfo     none_info     = 2;
+    HomeInfo     home_info     = 2;
     DebatingInfo debating_info = 3;
+    LoginInfo    login_info    = 4;
   }
 }

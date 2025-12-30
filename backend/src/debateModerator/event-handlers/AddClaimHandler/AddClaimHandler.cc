@@ -19,8 +19,8 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
     debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId
         claim_text,
-        description
-        // user
+        description,
+        user_id
     );
 
     CloseAddChildClaim(user_id, debateWrapper);
