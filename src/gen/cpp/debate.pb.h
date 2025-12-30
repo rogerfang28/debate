@@ -979,7 +979,7 @@ class Claim final : public ::google::protobuf::Message
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kParentIdFieldNumber = 4,
-    kConnectionToParentFieldNumber = 6,
+    kCreatorIdFieldNumber = 8,
     kProofFieldNumber = 7,
   };
   // repeated string children_ids = 5 [json_name = "childrenIds"];
@@ -1068,20 +1068,20 @@ class Claim final : public ::google::protobuf::Message
   std::string* _internal_mutable_parent_id();
 
   public:
-  // string connection_to_parent = 6 [json_name = "connectionToParent"];
-  void clear_connection_to_parent() ;
-  const std::string& connection_to_parent() const;
+  // string creator_id = 8 [json_name = "creatorId"];
+  void clear_creator_id() ;
+  const std::string& creator_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_connection_to_parent(Arg_&& arg, Args_... args);
-  std::string* mutable_connection_to_parent();
-  PROTOBUF_NODISCARD std::string* release_connection_to_parent();
-  void set_allocated_connection_to_parent(std::string* value);
+  void set_creator_id(Arg_&& arg, Args_... args);
+  std::string* mutable_creator_id();
+  PROTOBUF_NODISCARD std::string* release_creator_id();
+  void set_allocated_creator_id(std::string* value);
 
   private:
-  const std::string& _internal_connection_to_parent() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_connection_to_parent(
+  const std::string& _internal_creator_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_creator_id(
       const std::string& value);
-  std::string* _internal_mutable_connection_to_parent();
+  std::string* _internal_mutable_creator_id();
 
   public:
   // .debate.Proof proof = 7 [json_name = "proof"];
@@ -1105,7 +1105,7 @@ class Claim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       3, 7, 1,
-      83, 2>
+      73, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1129,7 +1129,7 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr parent_id_;
-    ::google::protobuf::internal::ArenaStringPtr connection_to_parent_;
+    ::google::protobuf::internal::ArenaStringPtr creator_id_;
     ::debate::Proof* proof_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1409,54 +1409,6 @@ Claim::_internal_mutable_children_ids() {
   return &_impl_.children_ids_;
 }
 
-// string connection_to_parent = 6 [json_name = "connectionToParent"];
-inline void Claim::clear_connection_to_parent() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.connection_to_parent_.ClearToEmpty();
-}
-inline const std::string& Claim::connection_to_parent() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Claim.connection_to_parent)
-  return _internal_connection_to_parent();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Claim::set_connection_to_parent(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.connection_to_parent_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.Claim.connection_to_parent)
-}
-inline std::string* Claim::mutable_connection_to_parent() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_connection_to_parent();
-  // @@protoc_insertion_point(field_mutable:debate.Claim.connection_to_parent)
-  return _s;
-}
-inline const std::string& Claim::_internal_connection_to_parent() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.connection_to_parent_.Get();
-}
-inline void Claim::_internal_set_connection_to_parent(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.connection_to_parent_.Set(value, GetArena());
-}
-inline std::string* Claim::_internal_mutable_connection_to_parent() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.connection_to_parent_.Mutable( GetArena());
-}
-inline std::string* Claim::release_connection_to_parent() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.Claim.connection_to_parent)
-  return _impl_.connection_to_parent_.Release();
-}
-inline void Claim::set_allocated_connection_to_parent(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.connection_to_parent_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connection_to_parent_.IsDefault()) {
-    _impl_.connection_to_parent_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.Claim.connection_to_parent)
-}
-
 // .debate.Proof proof = 7 [json_name = "proof"];
 inline bool Claim::has_proof() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
@@ -1551,6 +1503,54 @@ inline void Claim::set_allocated_proof(::debate::Proof* value) {
 
   _impl_.proof_ = reinterpret_cast<::debate::Proof*>(value);
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.proof)
+}
+
+// string creator_id = 8 [json_name = "creatorId"];
+inline void Claim::clear_creator_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_.ClearToEmpty();
+}
+inline const std::string& Claim::creator_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.creator_id)
+  return _internal_creator_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Claim::set_creator_id(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Claim.creator_id)
+}
+inline std::string* Claim::mutable_creator_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_creator_id();
+  // @@protoc_insertion_point(field_mutable:debate.Claim.creator_id)
+  return _s;
+}
+inline const std::string& Claim::_internal_creator_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.creator_id_.Get();
+}
+inline void Claim::_internal_set_creator_id(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_.Set(value, GetArena());
+}
+inline std::string* Claim::_internal_mutable_creator_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.creator_id_.Mutable( GetArena());
+}
+inline std::string* Claim::release_creator_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Claim.creator_id)
+  return _impl_.creator_id_.Release();
+}
+inline void Claim::set_allocated_creator_id(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.creator_id_.IsDefault()) {
+    _impl_.creator_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Claim.creator_id)
 }
 
 // -------------------------------------------------------------------

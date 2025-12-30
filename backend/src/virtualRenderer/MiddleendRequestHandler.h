@@ -16,9 +16,9 @@ public:
     void handleRequest(const httplib::Request& req, httplib::Response& res);
 private:
     // Helper methods can be added here
-    std::string extractUserFromCookies(const httplib::Request& req);
+    int extractUserIdFromCookies(const httplib::Request& req);
     ui::Page createLoginPage();
-    void log(const std::string& user, const client_message::ClientMessage& msg);
-    bool validateAuth(client_message::ClientMessage& msg, httplib::Response& res, const std::string& user);
+    void log(int userId, const client_message::ClientMessage& msg);
+    bool validateAuth(client_message::ClientMessage& msg, httplib::Response& res, int userId);
     VirtualRenderer renderer;
 };

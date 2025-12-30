@@ -8,7 +8,7 @@ public:
     static debate_event::DebateEvent ParseErrorPageEvent(
         const std::string& componentId,
         const std::string& eventType,
-        const std::string& user,
+        const int& user_id,
         const client_message::ClientMessage& message
     );
 };

@@ -147,8 +147,8 @@ enum EventType {
 // main message
 message DebateEvent {
 
-  string user_id = 1;
-  string id = 2;
+  int32 user_id = 1;
+//   string id = 2;
   google.protobuf.Timestamp occurred_at = 3;
   EventType type = 4; 
 

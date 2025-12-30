@@ -10,7 +10,7 @@
 #include "ErrorPageEventParser/ErrorPageEventParser.h"
 #include "../../utils/Log.h"
 
-debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const std::string& user) {
+debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const int& user_id) {
     debate_event::DebateEvent event;
     timestampEvent(event); // set timestamp and id
 
@@ -34,16 +34,16 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     } else if (pageId == "debate") {
-        Log::debug("  Parsing Debate Page Event for user: " + user);
-        event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user, message);
+        Log::debug("  Parsing Debate Page Event for user: " + std::to_string(user_id));
+        event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user_id, message);
     } else if (pageId == "error") {
-        event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user, message);
+        event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user_id, message);
     } else {
         Log::error("Unknown page ID: " + pageId);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     
-    event.set_user_id(user);
+    event.set_user_id(user_id);
 
     Log::debug("  Event Type: " + std::to_string(event.type()));
     Log::debug("========================================\n");
@@ -52,8 +52,6 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
 }
 
 void ClientMessageParser::timestampEvent(debate_event::DebateEvent& event) {
-    // Set common fields
-    event.set_id("evt_" + std::to_string(std::time(nullptr)));
     
     // Set timestamp to current time
     auto* timestamp = event.mutable_occurred_at();

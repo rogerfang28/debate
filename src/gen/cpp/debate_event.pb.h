@@ -5266,9 +5266,8 @@ class DebateEvent final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kUserIdFieldNumber = 1,
-    kIdFieldNumber = 2,
     kOccurredAtFieldNumber = 3,
+    kUserIdFieldNumber = 1,
     kTypeFieldNumber = 4,
     kCreateDebateFieldNumber = 10,
     kClearDebatesFieldNumber = 11,
@@ -5297,38 +5296,6 @@ class DebateEvent final : public ::google::protobuf::Message
     kDeleteLinkFieldNumber = 34,
     kJoinDebateFieldNumber = 35,
   };
-  // string user_id = 1 [json_name = "userId"];
-  void clear_user_id() ;
-  const std::string& user_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_user_id(Arg_&& arg, Args_... args);
-  std::string* mutable_user_id();
-  PROTOBUF_NODISCARD std::string* release_user_id();
-  void set_allocated_user_id(std::string* value);
-
-  private:
-  const std::string& _internal_user_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(
-      const std::string& value);
-  std::string* _internal_mutable_user_id();
-
-  public:
-  // string id = 2 [json_name = "id"];
-  void clear_id() ;
-  const std::string& id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_id(Arg_&& arg, Args_... args);
-  std::string* mutable_id();
-  PROTOBUF_NODISCARD std::string* release_id();
-  void set_allocated_id(std::string* value);
-
-  private:
-  const std::string& _internal_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_id(
-      const std::string& value);
-  std::string* _internal_mutable_id();
-
-  public:
   // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];
   bool has_occurred_at() const;
   void clear_occurred_at() ;
@@ -5342,6 +5309,16 @@ class DebateEvent final : public ::google::protobuf::Message
   private:
   const ::google::protobuf::Timestamp& _internal_occurred_at() const;
   ::google::protobuf::Timestamp* _internal_mutable_occurred_at();
+
+  public:
+  // int32 user_id = 1 [json_name = "userId"];
+  void clear_user_id() ;
+  ::int32_t user_id() const;
+  void set_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_user_id() const;
+  void _internal_set_user_id(::int32_t value);
 
   public:
   // .debate_event.EventType type = 4 [json_name = "type"];
@@ -5883,8 +5860,8 @@ class DebateEvent final : public ::google::protobuf::Message
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 30, 27,
-      66, 7>
+      2, 29, 27,
+      0, 7>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -5903,9 +5880,8 @@ class DebateEvent final : public ::google::protobuf::Message
                           const DebateEvent& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr user_id_;
-    ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::Timestamp* occurred_at_;
+    ::int32_t user_id_;
     int type_;
     union PayloadUnion {
       constexpr PayloadUnion() : _constinit_{} {}
@@ -7006,100 +6982,26 @@ inline void JoinDebate::set_allocated_debate_id(std::string* value) {
 
 // DebateEvent
 
-// string user_id = 1 [json_name = "userId"];
+// int32 user_id = 1 [json_name = "userId"];
 inline void DebateEvent::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.ClearToEmpty();
+  _impl_.user_id_ = 0;
 }
-inline const std::string& DebateEvent::user_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t DebateEvent::user_id() const {
   // @@protoc_insertion_point(field_get:debate_event.DebateEvent.user_id)
   return _internal_user_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void DebateEvent::set_user_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void DebateEvent::set_user_id(::int32_t value) {
+  _internal_set_user_id(value);
   // @@protoc_insertion_point(field_set:debate_event.DebateEvent.user_id)
 }
-inline std::string* DebateEvent::mutable_user_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.user_id)
-  return _s;
-}
-inline const std::string& DebateEvent::_internal_user_id() const {
+inline ::int32_t DebateEvent::_internal_user_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.user_id_.Get();
+  return _impl_.user_id_;
 }
-inline void DebateEvent::_internal_set_user_id(const std::string& value) {
+inline void DebateEvent::_internal_set_user_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(value, GetArena());
-}
-inline std::string* DebateEvent::_internal_mutable_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.user_id_.Mutable( GetArena());
-}
-inline std::string* DebateEvent::release_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.user_id)
-  return _impl_.user_id_.Release();
-}
-inline void DebateEvent::set_allocated_user_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.user_id_.IsDefault()) {
-    _impl_.user_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.user_id)
-}
-
-// string id = 2 [json_name = "id"];
-inline void DebateEvent::clear_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_.ClearToEmpty();
-}
-inline const std::string& DebateEvent::id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.id)
-  return _internal_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void DebateEvent::set_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate_event.DebateEvent.id)
-}
-inline std::string* DebateEvent::mutable_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.id)
-  return _s;
-}
-inline const std::string& DebateEvent::_internal_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.id_.Get();
-}
-inline void DebateEvent::_internal_set_id(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_.Set(value, GetArena());
-}
-inline std::string* DebateEvent::_internal_mutable_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.id_.Mutable( GetArena());
-}
-inline std::string* DebateEvent::release_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.id)
-  return _impl_.id_.Release();
-}
-inline void DebateEvent::set_allocated_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
-    _impl_.id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.id)
+  _impl_.user_id_ = value;
 }
 
 // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];

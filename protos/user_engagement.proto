@@ -15,6 +15,7 @@ message NoneInfo {
 message DebateTopic {
     string id = 1;
     string topic = 2;
+    string creator_id = 3;
 }
 
 message DebateList {

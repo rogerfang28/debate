@@ -18,11 +18,11 @@ public:
     DebateModerator();
     ~DebateModerator();
 
-    moderator_to_vr::ModeratorToVRMessage handleRequest(const std::string& user, debate_event::DebateEvent& event);
+    moderator_to_vr::ModeratorToVRMessage handleRequest(const int& user_id, debate_event::DebateEvent& event);
     
 private:
-    void handleDebateEvent(const std::string& user, debate_event::DebateEvent& event);
-    moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const std::string& user);
+    void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
+    moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const int& user_id);
     // database classes
     Database globalDb;
     UserDatabase userDb;

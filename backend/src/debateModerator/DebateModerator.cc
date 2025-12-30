@@ -43,18 +43,18 @@ DebateModerator::~DebateModerator() {
 }
 
 // * main function to handle debate event requests
-moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const std::string& user, debate_event::DebateEvent& event){
+moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(const int& user_id, debate_event::DebateEvent& event){
     // Process the debate event and update the database accordingly
-    Log::debug("[DebateModerator] Handling request for user: " + user);
+    Log::debug("[DebateModerator] Handling request for user: " + std::to_string(user_id));
     // Example: handle adding a debate topic
-    handleDebateEvent(user, event);
-    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user);
+    handleDebateEvent(user_id, event);
+    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
     return res;
 }
 
-void DebateModerator::handleDebateEvent(const std::string& user, debate_event::DebateEvent& event) {
+void DebateModerator::handleDebateEvent(const int& user_id, debate_event::DebateEvent& event) {
     // for now we are going to convert to user_id here
-    int user_id = userDb.getUserId(user);
+    // int user_id = userDb.getUserId(user);
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
         case debate_event::NONE:
@@ -200,14 +200,15 @@ void DebateModerator::handleDebateEvent(const std::string& user, debate_event::D
     }
 }
 
-moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(const std::string& user) {
+moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(const int& user_id) {
     moderator_to_vr::ModeratorToVRMessage responseMessage;
     // Build the response message based on the current state
     // For example, populate user engagement and debate information
     // so i have to first access the database to get the information about the user engagement
     user::User userProto;
 
-    int user_id = userDb.getUserId(user);
+    std::string user = userDb.getUsername(user_id);
+    // int user_id = userDb.getUserId(user);
     
     // user doesn't exist yet, make a default user
     if (!userDb.userExists(user_id)) {
