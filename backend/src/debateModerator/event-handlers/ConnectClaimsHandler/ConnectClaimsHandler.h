@@ -14,12 +14,12 @@ public:
     );
     static void ConnectFromClaim(
         const int& user_id,
-        const std::string& fromClaimId,
+        int fromClaimId,
         DebateWrapper& debateWrapper
     );
     static void ConnectToClaim(
         const int& user_id,
-        const std::string& toClaimId,
+        int toClaimId,
         DebateWrapper& debateWrapper
     );
     static void CancelConnectClaims(

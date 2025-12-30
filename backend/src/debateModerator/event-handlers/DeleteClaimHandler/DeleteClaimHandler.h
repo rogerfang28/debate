@@ -6,5 +6,5 @@
 class DeleteClaimHandler {
 public:
     static void DeleteCurrentStatement(const int& user_id, DebateWrapper& debateWrapper);
-    static void DeleteChildClaim(const std::string& claimId, const int& user_id, DebateWrapper& debateWrapper);
+    static void DeleteChildClaim(const int& claimId, const int& user_id, DebateWrapper& debateWrapper);
 };

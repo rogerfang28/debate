@@ -6,16 +6,16 @@
 #include <iostream>
 #include <vector>
 
-bool MoveUserHandler::EnterDebate(const std::string& debateId, const int& user_id, DebateWrapper& debateWrapper) {
-    Log::debug("[EnterDebate] User " + std::to_string(user_id) + " entering debate with id: " + debateId);
+bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[EnterDebate] User " + std::to_string(user_id) + " entering debate with id: " + std::to_string(debateId));
 
     std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debateId);
     debate::Debate debateProto;
     if (!debateProto.ParseFromArray(debateData.data(), static_cast<int>(debateData.size()))) {
-        Log::error("[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " + debateId);
+        Log::error("[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " + std::to_string(debateId));
         return false;
     }
-    std::string rootClaimId = debateProto.root_claim_id();
+    int rootClaimId = debateProto.root_claim_id();
 
     debateWrapper.moveUserToClaim(user_id, rootClaimId);
 
@@ -52,7 +52,7 @@ bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
     }
 }
 
-void MoveUserHandler::GoToClaim(const std::string& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
     // update the current claim id to claim_id
     // save back to database;
@@ -63,7 +63,7 @@ void MoveUserHandler::GoToClaim(const std::string& claim_id, const int& user_id,
 
 void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    std::string currentClaimId = userProto.engagement().debating_info().current_claim().id();
+    int currentClaimId = userProto.engagement().debating_info().current_claim().id();
     // find parent claim
     debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
     // use go to claim handler to go to parent claim

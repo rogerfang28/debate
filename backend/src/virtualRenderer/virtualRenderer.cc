@@ -66,7 +66,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // DebateModerator moderator;
     info = moderator.handleRequest(evt);
     // backend.sendEvent(evt, info);
-
+    
     // parse the info and create a page
     ui::Page page = LayoutGenerator::generateLayout(info);
     // send back the page to handler

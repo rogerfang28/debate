@@ -189,7 +189,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::HomeInfo info) {
     // Populate topics list with user's debates
     for (const auto& topic : usersDebates.topics()) {
         ui::Component debateItemContainer = ComponentGenerator::createContainer(
-            "debateItemContainer_" + topic.id(),
+            "debateItemContainer_" + std::to_string(topic.id()),
             "flex gap-2",
             "",
             "",
@@ -200,7 +200,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::HomeInfo info) {
         );
 
         ui::Component debateItem = ComponentGenerator::createButton(
-            "enterDebateTopicButton_" + topic.id(),
+            "enterDebateTopicButton_" + std::to_string(topic.id()),
             topic.topic(),
             "selectDebate",
             "bg-gray-700",
@@ -210,11 +210,11 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::HomeInfo info) {
             "rounded",
             "flex-1 text-left transition border border-gray-600"
         );
-        ComponentGenerator::addAttribute(&debateItem, "data-debate-id", topic.id());
+        ComponentGenerator::addAttribute(&debateItem, "data-debate-id", std::to_string(topic.id()));
         ComponentGenerator::addChild(&debateItemContainer, debateItem);
 
         ui::Component deleteDebateButton = ComponentGenerator::createButton(
-            "deleteDebateButton_" + topic.id(),
+            "deleteDebateButton_" + std::to_string(topic.id()),
             "Delete",
             "",
             "bg-red-600",

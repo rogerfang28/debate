@@ -31,14 +31,14 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         event.set_type(debate_event::ENTER_DEBATE);
         auto* enter = event.mutable_enter_debate();
         std::string debateID = componentId.substr(23); // Extract ID after "enterDebateTopicButton_"
-        enter->set_debate_id(debateID);
+        enter->set_debate_id(std::stoi(debateID));
         Log::debug("  ENTER_DEBATE: debate_id = " + debateID);
     } else if (componentId.find("deleteDebateButton_") == 0 && eventType == "onClick") {
         // Delete a debate
         event.set_type(debate_event::DELETE_DEBATE);
         auto* deleteDebate = event.mutable_delete_debate();
         std::string debateID = componentId.substr(19); // Extract ID after "deleteDebateButton_"
-        deleteDebate->set_debate_id(debateID);
+        deleteDebate->set_debate_id(std::stoi(debateID));
         Log::debug("  DELETE_DEBATE: debate_id = " + debateID);
     }
     // join debate
@@ -48,7 +48,7 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         auto* joinDebate = event.mutable_join_debate();
         for (const auto& comp : message.page_data().components()) {
             if (comp.id() == "joinDebateInput") {
-                joinDebate->set_debate_id(comp.value());
+                joinDebate->set_debate_id(std::stoi(comp.value()));
                 Log::debug("  JOIN_DEBATE: debate_id = " + comp.value());
                 break;
             }

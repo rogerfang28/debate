@@ -6,32 +6,32 @@ import "debate_settings.proto";
 
 // A single claim node in the debate graph
 message Claim {
-  string id = 1;
+  int32 id = 1;
   string sentence = 2;
   string description = 3;
-  string parent_id = 4;
-  repeated string children_ids = 5;
+  int32 parent_id = 4;
+  repeated int32 children_ids = 5;
   Proof proof = 7; // proof structure for this claim
-  string creator_id = 8;
+  int32 creator_id = 8;
 }
 
 message Link {
-  string connect_from = 1;
-  string connect_to = 2;
+  int32 connect_from = 1;
+  int32 connect_to = 2;
   string connection = 3;  
+  int32 creator_id = 4;
 }
 
 message Proof {
-  repeated string claim_ids = 1;
-  repeated string link_ids = 2;
-  
+  repeated int32 claim_ids = 1;
+  repeated int32 link_ids = 2;
 }
 
 message Debate {
-  string id = 1;
-  string root_claim_id = 2;
+  int32 id = 1;
+  int32 root_claim_id = 2;
   string topic = 3;
   repeated string debaters = 4;
-  string owner = 5;
+  int32 creator_id = 5;
   debate.DebateSettings settings = 6;
 }

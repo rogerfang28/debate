@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IjwKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgJEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAkiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC51c2VyX2VuZ2FnZW1lbnQuRGViYXRlVG9waWMipQUKDERlYmF0aW5nSW5mbxIxCg1jdXJyZW50X2NsYWltGAEgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAIgASgJEjAKDHBhcmVudF9jbGFpbRgDIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAUgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgGIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYByADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxIaChJhZGRpbmdfY2hpbGRfY2xhaW0YCCABKAgSHgoWZWRpdGluZ19jbGFpbV9zZW50ZW5jZRgJIAEoCBIhChllZGl0aW5nX2NsYWltX2Rlc2NyaXB0aW9uGAogASgIEhcKD3JlcG9ydGluZ19jbGFpbRgLIAEoCBJFCg9jb25uZWN0aW5nX2luZm8YDCABKAsyLC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNvbm5lY3RpbmdJbmZvGoIBCg5Db25uZWN0aW5nSW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgJEhMKC3RvX2NsYWltX2lkGAIgASgJEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY29ubmVjdGluZxgEIAEoCBIcChRvcGVuZWRfY29ubmVjdF9tb2RhbBgFIAEoCCI9CglDbGFpbUluZm8SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoCSILCglMb2dpbkluZm8iaAoITGlua0luZm8SCgoCaWQYASABKAkSFAoMY29ubmVjdF9mcm9tGAIgASgJEhIKCmNvbm5lY3RfdG8YAyABKAkSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgJIkEKDUNoYWxsZW5nZUluZm8SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoCSL0AQoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEjAKCmxvZ2luX2luZm8YBCABKAsyGi51c2VyX2VuZ2FnZW1lbnQuTG9naW5JbmZvSABCDQoLYWN0aW9uX2luZm8qbQoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9IT01FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAISEAoMQUNUSU9OX0xPR0lOEANiBnByb3RvMw");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IjwKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC51c2VyX2VuZ2FnZW1lbnQuRGViYXRlVG9waWMipQUKDERlYmF0aW5nSW5mbxIxCg1jdXJyZW50X2NsYWltGAEgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAIgASgJEjAKDHBhcmVudF9jbGFpbRgDIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAUgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgGIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYByADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxIaChJhZGRpbmdfY2hpbGRfY2xhaW0YCCABKAgSHgoWZWRpdGluZ19jbGFpbV9zZW50ZW5jZRgJIAEoCBIhChllZGl0aW5nX2NsYWltX2Rlc2NyaXB0aW9uGAogASgIEhcKD3JlcG9ydGluZ19jbGFpbRgLIAEoCBJFCg9jb25uZWN0aW5nX2luZm8YDCABKAsyLC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNvbm5lY3RpbmdJbmZvGoIBCg5Db25uZWN0aW5nSW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY29ubmVjdGluZxgEIAEoCBIcChRvcGVuZWRfY29ubmVjdF9tb2RhbBgFIAEoCCI9CglDbGFpbUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSILCglMb2dpbkluZm8iaAoITGlua0luZm8SCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFIkEKDUNoYWxsZW5nZUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSKXAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIQCgh1c2VybmFtZRgFIAEoCRIPCgd1c2VyX2lkGAYgASgFEi4KCWhvbWVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ib21lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSAASMAoKbG9naW5faW5mbxgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5Mb2dpbkluZm9IAEINCgthY3Rpb25faW5mbyptChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX0hPTUUQARITCg9BQ1RJT05fREVCQVRJTkcQAhIQCgxBQ1RJT05fTE9HSU4QA2IGcHJvdG8z");
 
 /**
  * @generated from message user_engagement.HomeInfo
@@ -36,9 +36,9 @@ export const HomeInfoSchema: GenMessage<HomeInfo> = /*@__PURE__*/
  */
 export type DebateTopic = Message<"user_engagement.DebateTopic"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string topic = 2;
@@ -46,9 +46,9 @@ export type DebateTopic = Message<"user_engagement.DebateTopic"> & {
   topic: string;
 
   /**
-   * @generated from field: string creator_id = 3;
+   * @generated from field: int32 creator_id = 3;
    */
-  creatorId: string;
+  creatorId: number;
 };
 
 /**
@@ -178,14 +178,14 @@ export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
  */
 export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.ConnectingInfo"> & {
   /**
-   * @generated from field: string from_claim_id = 1;
+   * @generated from field: int32 from_claim_id = 1;
    */
-  fromClaimId: string;
+  fromClaimId: number;
 
   /**
-   * @generated from field: string to_claim_id = 2;
+   * @generated from field: int32 to_claim_id = 2;
    */
-  toClaimId: string;
+  toClaimId: number;
 
   /**
    * @generated from field: string connection = 3;
@@ -215,9 +215,9 @@ export const DebatingInfo_ConnectingInfoSchema: GenMessage<DebatingInfo_Connecti
  */
 export type ClaimInfo = Message<"user_engagement.ClaimInfo"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string sentence = 2;
@@ -225,9 +225,9 @@ export type ClaimInfo = Message<"user_engagement.ClaimInfo"> & {
   sentence: string;
 
   /**
-   * @generated from field: string creator_id = 3;
+   * @generated from field: int32 creator_id = 3;
    */
-  creatorId: string;
+  creatorId: number;
 };
 
 /**
@@ -255,19 +255,19 @@ export const LoginInfoSchema: GenMessage<LoginInfo> = /*@__PURE__*/
  */
 export type LinkInfo = Message<"user_engagement.LinkInfo"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
-   * @generated from field: string connect_from = 2;
+   * @generated from field: int32 connect_from = 2;
    */
-  connectFrom: string;
+  connectFrom: number;
 
   /**
-   * @generated from field: string connect_to = 3;
+   * @generated from field: int32 connect_to = 3;
    */
-  connectTo: string;
+  connectTo: number;
 
   /**
    * @generated from field: string connection = 4;
@@ -275,9 +275,9 @@ export type LinkInfo = Message<"user_engagement.LinkInfo"> & {
   connection: string;
 
   /**
-   * @generated from field: string creator_id = 5;
+   * @generated from field: int32 creator_id = 5;
    */
-  creatorId: string;
+  creatorId: number;
 };
 
 /**
@@ -292,9 +292,9 @@ export const LinkInfoSchema: GenMessage<LinkInfo> = /*@__PURE__*/
  */
 export type ChallengeInfo = Message<"user_engagement.ChallengeInfo"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string sentence = 2;
@@ -302,9 +302,9 @@ export type ChallengeInfo = Message<"user_engagement.ChallengeInfo"> & {
   sentence: string;
 
   /**
-   * @generated from field: string creator_id = 3;
+   * @generated from field: int32 creator_id = 3;
    */
-  creatorId: string;
+  creatorId: number;
 };
 
 /**
@@ -324,8 +324,16 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
   currentAction: EngagementAction;
 
   /**
-   * kind of like information about the current state of the user
-   *
+   * @generated from field: string username = 5;
+   */
+  username: string;
+
+  /**
+   * @generated from field: int32 user_id = 6;
+   */
+  userId: number;
+
+  /**
    * @generated from oneof user_engagement.UserEngagement.action_info
    */
   actionInfo: {

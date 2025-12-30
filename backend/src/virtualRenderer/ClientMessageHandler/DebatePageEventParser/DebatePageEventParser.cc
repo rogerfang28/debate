@@ -25,7 +25,7 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         std::string claimId = componentId.substr(strlen("deleteChildClaimButton_"));
         Log::debug("  DELETE_CHILD_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
         event.set_type(debate_event::DELETE_CHILD_CLAIM); // Placeholder, replace with actual DELETE_CHILD_CLAIM type
-        event.mutable_delete_child_claim()->set_claim_id(claimId);
+        event.mutable_delete_child_claim()->set_claim_id(std::stoi(claimId));
     } else if (componentId == "reportButton" && eventType == "onClick") {
         Log::debug("  REPORT_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::REPORT_CLAIM);
@@ -53,7 +53,7 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         std::string claimId = componentId.substr(strlen("viewChildNodeButton_"));
         Log::debug("  GO_TO_CLAIM for user: " + std::to_string(user_id) + " to claim ID: " + claimId);
         event.set_type(debate_event::GO_TO_CLAIM); // Placeholder, replace with actual GO_TO_CLAIM type
-        event.mutable_go_to_claim()->set_claim_id(claimId);
+        event.mutable_go_to_claim()->set_claim_id(std::stoi(claimId));
 
     // add child claim
     } else if (componentId == "addChildClaimButton" && eventType == "onClick") {
@@ -106,12 +106,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  CONNECT_FROM_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::CONNECT_FROM_CLAIM);
         std::string fromClaimId = componentId.substr(strlen("connectFromClaimButton_"));
-        event.mutable_connect_from_claim()->set_from_claim_id(fromClaimId);
+        event.mutable_connect_from_claim()->set_from_claim_id(std::stoi(fromClaimId));
     } else if (componentId.find("connectToClaimButton_") == 0 && eventType == "onClick") {
         Log::debug("  CONNECT_TO_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::CONNECT_TO_CLAIM);
         std::string toClaimId = componentId.substr(strlen("connectToClaimButton_"));
-        event.mutable_connect_to_claim()->set_to_claim_id(toClaimId);
+        event.mutable_connect_to_claim()->set_to_claim_id(std::stoi(toClaimId));
     } else if (componentId == "submitConnectClaimsButton" && eventType == "onClick") {
         Log::debug("  SUBMIT_CONNECT_CLAIMS for user: " + std::to_string(user_id));
         event.set_type(debate_event::SUBMIT_CONNECT_CLAIMS);

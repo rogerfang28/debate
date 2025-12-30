@@ -7,13 +7,13 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     page.set_page_id("debate");
     page.set_title("Debate View");
 
-    std::string currentClaimId = debatingInfo.current_claim().id();
+    int currentClaimId = debatingInfo.current_claim().id();
     std::string debate_topic = debatingInfo.root_claim().sentence();
     std::string claim = debatingInfo.current_claim().sentence();
     std::vector<std::pair<std::string,std::string>> childClaimInfo;
     for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
         const user_engagement::ClaimInfo& claim = debatingInfo.children_claims(i);
-        childClaimInfo.push_back({claim.id(), claim.sentence()});
+        childClaimInfo.push_back({std::to_string(claim.id()), claim.sentence()});
     }
     bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
     bool editingClaimDescription = debatingInfo.editing_claim_description();
@@ -27,16 +27,16 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     std::vector<std::tuple<std::string, std::string, std::string, std::string>> linkInfo;
     for (int i = 0; i < debatingInfo.links_size(); i++) {
         const user_engagement::LinkInfo& link = debatingInfo.links(i);
-        Log::debug("[DebatePageGenerator] Link from Claim ID: " + link.connect_from()
-            + " to Claim ID: " + link.connect_to()
+        Log::debug("[DebatePageGenerator] Link from Claim ID: " + std::to_string(link.connect_from())
+            + " to Claim ID: " + std::to_string(link.connect_to())
             + " with connection: " + link.connection());
-        linkInfo.push_back({link.id(), link.connect_from(), link.connect_to(), link.connection()});
+        linkInfo.push_back({std::to_string(link.id()), std::to_string(link.connect_from()), std::to_string(link.connect_to()), link.connection()});
     }
 
     // connecting info
     bool connecting = debatingInfo.connecting_info().connecting();
-    std::string fromClaimId = debatingInfo.connecting_info().from_claim_id();
-    std::string toClaimId = debatingInfo.connecting_info().to_claim_id();
+    std::string fromClaimId = std::to_string(debatingInfo.connecting_info().from_claim_id());
+    std::string toClaimId = std::to_string(debatingInfo.connecting_info().to_claim_id());
     Log::debug("[DebatePageGenerator] Connecting: " + std::to_string(connecting));
     Log::debug("[DebatePageGenerator] From Claim ID: " + fromClaimId
         + ", To Claim ID: " + toClaimId);
@@ -44,7 +44,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
     std::vector<std::map<std::string, std::string>> challengesInfo;
     for (int i = 0; i < debatingInfo.current_challenges_size(); i++) {
         const user_engagement::ChallengeInfo& challenge = debatingInfo.current_challenges(i);
-        challengesInfo.push_back({{"id", challenge.id()}, {"sentence", challenge.sentence()}, {"creator_id", challenge.creator_id()}});
+        challengesInfo.push_back({{"id", std::to_string(challenge.id())}, {"sentence", challenge.sentence()}, {"creator_id", std::to_string(challenge.creator_id())}});
     }
     // hardcode one for testing
     challengesInfo.push_back({{"id", "1"}, {"sentence", "This is a challenge to the current claim."}, {"creator_id", "1"}});
@@ -638,7 +638,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
                 std::string connection = std::get<3>(link);
                 
                 // Check if target is current claim
-                if (targetId == currentClaimId) {
+                if ((targetId) == std::to_string(currentClaimId)) {
                     targetSentence = claim;
                 } else {
                     // Search in child claims
@@ -1018,7 +1018,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         std::string toClaimSentence = "";
         
         // Check if fromClaimId is the current claim
-        if (fromClaimId == currentClaimId) {
+        if (fromClaimId == std::to_string(currentClaimId)) {
             fromClaimSentence = claim;
         } else {
             // Search in child claims
@@ -1031,7 +1031,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         }
         
         // Check if toClaimId is the current claim
-        if (toClaimId == currentClaimId) {
+        if (toClaimId == std::to_string(currentClaimId)) {
             toClaimSentence = claim;
         } else {
             // Search in child claims

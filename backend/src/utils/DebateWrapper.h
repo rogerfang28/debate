@@ -16,48 +16,47 @@ public:
     explicit DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase);
     // DebateWrapper() = default;
     std::vector<debate::Claim> findChildren(const std::string& parentId);
-    debate::Claim findClaim(const std::string& claimId);
+    debate::Claim findClaim(const int& claimId);
     void initNewDebate(const std::string& topic, const int& owner_id);
-    debate::Claim findClaimParent(const std::string& claimId);
+    debate::Claim findClaimParent(const int& claimId);
     void addClaimUnderParent(
-        const std::string& parentId, 
+        const int& parentId, 
         const std::string& claimText, 
         const std::string& connectionToParent,
         const int& user_id);
     void changeDescriptionOfClaim(
-        const std::string& claimId,
+        const int& claimId,
         const std::string& newDescription);
     void editClaimText(
-        const std::string& claimId,
+        const int& claimId,
         const std::string& newText);
     std::string findClaimSentence(
-        const std::string& claimId);
-    std::vector<std::string> findChildrenIds(
-        const std::string& parentId);
+        const int& claimId);
+    std::vector<int> findChildrenIds(
+        const int& parentId);
     std::vector<std::pair<std::string,std::string>> findChildrenInfo(
-        const std::string& parentId); // returns vector of (id, sentence) pairs
-    void deleteDebate(const std::string& debateId, const int& user_id);
-    void deleteClaim(const std::string& claimId);
+        const int& parentId); // returns vector of (id, sentence) pairs
+    void deleteDebate(const int& debateId, const int& user_id);
+    void deleteClaim(const int& claimId);
     void deleteAllDebates(const int& user_id);
-    void moveUserToClaim(const int& user_id, const std::string& claimId);
-    std::vector<std::string> getUserDebateIds(const int& user_id);
-    std::vector<uint8_t> getDebateProtobuf(const std::string& debateId);
-    // std::vector<uint8_t> getUserProtobufBinary(const std::string& user_id);
+    void moveUserToClaim(const int& user_id, const int& claimId);
+    std::vector<int> getUserDebateIds(const int& user_id);
+    std::vector<uint8_t> getDebateProtobuf(const int& debateId);
     user::User getUserProtobuf(const int& user_id);
     std::vector<uint8_t> getUserProtobufBinary(const int& user_id);
 
     void updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
-    int addLink(std::string fromClaimId, std::string toClaimId, const std::string& connection, int creator_id);
-    std::vector<int> findLinksUnder(const std::string& claimId);
+    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id);
+    std::vector<int> findLinksUnder(const int& claimId);
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
-    void addMemberToDebate(const std::string& debateId, const int& user_id);
+    void addMemberToDebate(const int& debateId, const int& user_id);
 
 private:
-    debate::Claim* findClaimProto(const std::string& claimId);
+    debate::Claim* findClaimProto(const int& claimId);
     DebateDatabase& debateDb;
     StatementDatabase& statementDb;
     UserDatabase& userDb;

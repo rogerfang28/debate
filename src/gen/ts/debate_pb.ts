@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKVAQoFQ2xhaW0SCgoCaWQYASABKAkSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgJEhQKDGNoaWxkcmVuX2lkcxgFIAMoCRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgJIkQKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgJEhIKCmNvbm5lY3RfdG8YAiABKAkSEgoKY29ubmVjdGlvbhgDIAEoCSIsCgVQcm9vZhIRCgljbGFpbV9pZHMYASADKAkSEAoIbGlua19pZHMYAiADKAkihQEKBkRlYmF0ZRIKCgJpZBgBIAEoCRIVCg1yb290X2NsYWltX2lkGAIgASgJEg0KBXRvcGljGAMgASgJEhAKCGRlYmF0ZXJzGAQgAygJEg0KBW93bmVyGAUgASgJEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzYgZwcm90bzM", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKVAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFIlgKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgFEhIKCmNvbm5lY3RfdG8YAiABKAUSEgoKY29ubmVjdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFIiwKBVByb29mEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBSKKAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEAoIZGViYXRlcnMYBCADKAkSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -21,9 +21,9 @@ export const file_debate: GenFile = /*@__PURE__*/
  */
 export type Claim = Message<"debate.Claim"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string sentence = 2;
@@ -36,14 +36,14 @@ export type Claim = Message<"debate.Claim"> & {
   description: string;
 
   /**
-   * @generated from field: string parent_id = 4;
+   * @generated from field: int32 parent_id = 4;
    */
-  parentId: string;
+  parentId: number;
 
   /**
-   * @generated from field: repeated string children_ids = 5;
+   * @generated from field: repeated int32 children_ids = 5;
    */
-  childrenIds: string[];
+  childrenIds: number[];
 
   /**
    * proof structure for this claim
@@ -53,9 +53,9 @@ export type Claim = Message<"debate.Claim"> & {
   proof?: Proof;
 
   /**
-   * @generated from field: string creator_id = 8;
+   * @generated from field: int32 creator_id = 8;
    */
-  creatorId: string;
+  creatorId: number;
 };
 
 /**
@@ -70,19 +70,24 @@ export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
  */
 export type Link = Message<"debate.Link"> & {
   /**
-   * @generated from field: string connect_from = 1;
+   * @generated from field: int32 connect_from = 1;
    */
-  connectFrom: string;
+  connectFrom: number;
 
   /**
-   * @generated from field: string connect_to = 2;
+   * @generated from field: int32 connect_to = 2;
    */
-  connectTo: string;
+  connectTo: number;
 
   /**
    * @generated from field: string connection = 3;
    */
   connection: string;
+
+  /**
+   * @generated from field: int32 creator_id = 4;
+   */
+  creatorId: number;
 };
 
 /**
@@ -97,14 +102,14 @@ export const LinkSchema: GenMessage<Link> = /*@__PURE__*/
  */
 export type Proof = Message<"debate.Proof"> & {
   /**
-   * @generated from field: repeated string claim_ids = 1;
+   * @generated from field: repeated int32 claim_ids = 1;
    */
-  claimIds: string[];
+  claimIds: number[];
 
   /**
-   * @generated from field: repeated string link_ids = 2;
+   * @generated from field: repeated int32 link_ids = 2;
    */
-  linkIds: string[];
+  linkIds: number[];
 };
 
 /**
@@ -119,14 +124,14 @@ export const ProofSchema: GenMessage<Proof> = /*@__PURE__*/
  */
 export type Debate = Message<"debate.Debate"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
-   * @generated from field: string root_claim_id = 2;
+   * @generated from field: int32 root_claim_id = 2;
    */
-  rootClaimId: string;
+  rootClaimId: number;
 
   /**
    * @generated from field: string topic = 3;
@@ -139,9 +144,9 @@ export type Debate = Message<"debate.Debate"> & {
   debaters: string[];
 
   /**
-   * @generated from field: string owner = 5;
+   * @generated from field: int32 creator_id = 5;
    */
-  owner: string;
+  creatorId: number;
 
   /**
    * @generated from field: debate.DebateSettings settings = 6;

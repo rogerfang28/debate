@@ -5,8 +5,8 @@
 
 class MoveUserHandler {
 public:
-    static bool EnterDebate(const std::string& debateId, const int& user_id, DebateWrapper& debateWrapper);
+    static bool EnterDebate(const int& debateId, const int& user_id, DebateWrapper& debateWrapper);
     static bool GoHome(const int& user_id, DebateWrapper& debateWrapper);
-    static void GoToClaim(const std::string& claim_id, const int& user_id, DebateWrapper& debateWrapper);
+    static void GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper);
 };

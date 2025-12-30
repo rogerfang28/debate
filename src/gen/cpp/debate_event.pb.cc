@@ -114,12 +114,8 @@ inline constexpr SubmitConnectClaims::Impl_::Impl_(
       : connection_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        from_claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        to_claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+        from_claim_id_{0},
+        to_claim_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -264,9 +260,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr JoinDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : debate_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : debate_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -309,9 +303,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr GoToClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : claim_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -354,9 +346,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr EnterDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : debate_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : debate_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -406,9 +396,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr DeleteDebate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : debate_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : debate_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -451,9 +439,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr DeleteChildClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : claim_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -505,9 +491,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr ConnectToClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : to_claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : to_claim_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -532,9 +516,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr ConnectFromClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : from_claim_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+      : from_claim_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -667,18 +649,12 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr AddConnection::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : debate_id_(
+      : connection_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        from_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        to_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        connection_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
+        debate_id_{0},
+        from_id_{0},
+        to_id_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -1175,32 +1151,32 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "le/protobuf/timestamp.proto\"\006\n\004None\"1\n\014C"
     "reateDebate\022!\n\014debate_topic\030\002 \001(\tR\013debat"
     "eTopic\"\016\n\014ClearDebates\"+\n\014DeleteDebate\022\033"
-    "\n\tdebate_id\030\001 \001(\tR\010debateId\"*\n\013EnterDeba"
-    "te\022\033\n\tdebate_id\030\001 \001(\tR\010debateId\"\010\n\006GoHom"
+    "\n\tdebate_id\030\001 \001(\005R\010debateId\"*\n\013EnterDeba"
+    "te\022\033\n\tdebate_id\030\001 \001(\005R\010debateId\"\010\n\006GoHom"
     "e\"\023\n\021OpenAddChildClaim\"\024\n\022CloseAddChildC"
     "laim\"G\n\rAddChildClaim\022\024\n\005claim\030\001 \001(\tR\005cl"
     "aim\022 \n\013description\030\002 \001(\tR\013description\"\021\n"
     "\017OpenReportClaim\"\022\n\020CloseReportClaim\"\030\n\026"
     "DeleteCurrentStatement\"-\n\020DeleteChildCla"
-    "im\022\031\n\010claim_id\030\002 \001(\tR\007claimId\"z\n\rAddConn"
-    "ection\022\033\n\tdebate_id\030\002 \001(\tR\010debateId\022\027\n\007f"
-    "rom_id\030\003 \001(\tR\006fromId\022\023\n\005to_id\030\004 \001(\tR\004toI"
+    "im\022\031\n\010claim_id\030\002 \001(\005R\007claimId\"z\n\rAddConn"
+    "ection\022\033\n\tdebate_id\030\002 \001(\005R\010debateId\022\027\n\007f"
+    "rom_id\030\003 \001(\005R\006fromId\022\023\n\005to_id\030\004 \001(\005R\004toI"
     "d\022\036\n\nconnection\030\005 \001(\tR\nconnection\"\021\n\017GoT"
     "oParentClaim\"&\n\tGoToClaim\022\031\n\010claim_id\030\002 "
-    "\001(\tR\007claimId\"\033\n\031StartEditClaimDescriptio"
+    "\001(\005R\007claimId\"\033\n\031StartEditClaimDescriptio"
     "n\"E\n\032SubmitEditClaimDescription\022\'\n\017new_d"
     "escription\030\001 \001(\tR\016newDescription\"\034\n\032Canc"
     "elEditClaimDescription\"\020\n\016StartEditClaim"
     "\".\n\017SubmitEditClaim\022\033\n\tnew_claim\030\001 \001(\tR\010"
     "newClaim\"\021\n\017CancelEditClaim\"6\n\020ConnectFr"
-    "omClaim\022\"\n\rfrom_claim_id\030\001 \001(\tR\013fromClai"
+    "omClaim\022\"\n\rfrom_claim_id\030\001 \001(\005R\013fromClai"
     "mId\"0\n\016ConnectToClaim\022\036\n\013to_claim_id\030\002 \001"
-    "(\tR\ttoClaimId\"y\n\023SubmitConnectClaims\022\036\n\n"
+    "(\005R\ttoClaimId\"y\n\023SubmitConnectClaims\022\036\n\n"
     "connection\030\001 \001(\tR\nconnection\022\"\n\rfrom_cla"
-    "im_id\030\002 \001(\tR\013fromClaimId\022\036\n\013to_claim_id\030"
-    "\003 \001(\tR\ttoClaimId\"\025\n\023CancelConnectClaims\""
+    "im_id\030\002 \001(\005R\013fromClaimId\022\036\n\013to_claim_id\030"
+    "\003 \001(\005R\ttoClaimId\"\025\n\023CancelConnectClaims\""
     "%\n\nDeleteLink\022\027\n\007link_id\030\001 \001(\005R\006linkId\")"
-    "\n\nJoinDebate\022\033\n\tdebate_id\030\001 \001(\tR\010debateI"
+    "\n\nJoinDebate\022\033\n\tdebate_id\030\001 \001(\005R\010debateI"
     "d\"\?\n\005Login\022\032\n\010username\030\001 \001(\tR\010username\022\032"
     "\n\010password\030\002 \001(\tR\010password\"e\n\014UserAuthIn"
     "fo\022\032\n\010username\030\001 \001(\tR\010username\022\027\n\007user_i"
@@ -1764,36 +1740,19 @@ DeleteDebate::DeleteDebate(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.DeleteDebate)
 }
-inline PROTOBUF_NDEBUG_INLINE DeleteDebate::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::DeleteDebate& from_msg)
-      : debate_id_(arena, from.debate_id_),
-        _cached_size_{0} {}
-
 DeleteDebate::DeleteDebate(
-    ::google::protobuf::Arena* arena,
-    const DeleteDebate& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  DeleteDebate* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.DeleteDebate)
+    ::google::protobuf::Arena* arena, const DeleteDebate& from)
+    : DeleteDebate(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE DeleteDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : debate_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void DeleteDebate::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.debate_id_ = {};
 }
 DeleteDebate::~DeleteDebate() {
   // @@protoc_insertion_point(destructor:debate_event.DeleteDebate)
@@ -1803,7 +1762,6 @@ inline void DeleteDebate::SharedDtor(MessageLite& self) {
   DeleteDebate& this_ = static_cast<DeleteDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.debate_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -1812,7 +1770,7 @@ inline void* DeleteDebate::PlacementNew_(const void*, void* mem,
   return ::new (mem) DeleteDebate(arena);
 }
 constexpr auto DeleteDebate::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DeleteDebate),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DeleteDebate),
                                             alignof(DeleteDebate));
 }
 PROTOBUF_CONSTINIT
@@ -1843,7 +1801,7 @@ const ::google::protobuf::internal::ClassData* DeleteDebate::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DeleteDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DeleteDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1861,21 +1819,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 43, 2> DeleteDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_id = 1 [json_name = "debateId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_)}},
+    // int32 debate_id = 1 [json_name = "debateId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteDebate, _impl_.debate_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\31\11\0\0\0\0\0\0"
-    "debate_event.DeleteDebate"
-    "debate_id"
   }},
 };
 
@@ -1886,7 +1841,7 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1905,12 +1860,11 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string debate_id = 1 [json_name = "debateId"];
-          if (!this_._internal_debate_id().empty()) {
-            const std::string& _s = this_._internal_debate_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.DeleteDebate.debate_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // int32 debate_id = 1 [json_name = "debateId"];
+          if (this_._internal_debate_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_debate_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1937,10 +1891,10 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
           (void)cached_has_bits;
 
            {
-            // string debate_id = 1 [json_name = "debateId"];
-            if (!this_._internal_debate_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_id());
+            // int32 debate_id = 1 [json_name = "debateId"];
+            if (this_._internal_debate_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_debate_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -1955,8 +1909,8 @@ void DeleteDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_debate_id().empty()) {
-    _this->_internal_set_debate_id(from._internal_debate_id());
+  if (from._internal_debate_id() != 0) {
+    _this->_impl_.debate_id_ = from._impl_.debate_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1971,10 +1925,8 @@ void DeleteDebate::CopyFrom(const DeleteDebate& from) {
 
 void DeleteDebate::InternalSwap(DeleteDebate* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
+        swap(_impl_.debate_id_, other->_impl_.debate_id_);
 }
 
 ::google::protobuf::Metadata DeleteDebate::GetMetadata() const {
@@ -1995,36 +1947,19 @@ EnterDebate::EnterDebate(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.EnterDebate)
 }
-inline PROTOBUF_NDEBUG_INLINE EnterDebate::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::EnterDebate& from_msg)
-      : debate_id_(arena, from.debate_id_),
-        _cached_size_{0} {}
-
 EnterDebate::EnterDebate(
-    ::google::protobuf::Arena* arena,
-    const EnterDebate& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  EnterDebate* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.EnterDebate)
+    ::google::protobuf::Arena* arena, const EnterDebate& from)
+    : EnterDebate(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE EnterDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : debate_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void EnterDebate::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.debate_id_ = {};
 }
 EnterDebate::~EnterDebate() {
   // @@protoc_insertion_point(destructor:debate_event.EnterDebate)
@@ -2034,7 +1969,6 @@ inline void EnterDebate::SharedDtor(MessageLite& self) {
   EnterDebate& this_ = static_cast<EnterDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.debate_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -2043,7 +1977,7 @@ inline void* EnterDebate::PlacementNew_(const void*, void* mem,
   return ::new (mem) EnterDebate(arena);
 }
 constexpr auto EnterDebate::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(EnterDebate),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(EnterDebate),
                                             alignof(EnterDebate));
 }
 PROTOBUF_CONSTINIT
@@ -2074,7 +2008,7 @@ const ::google::protobuf::internal::ClassData* EnterDebate::GetClassData() const
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 42, 2> EnterDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> EnterDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -2092,21 +2026,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 42, 2> EnterDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::EnterDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_id = 1 [json_name = "debateId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_)}},
+    // int32 debate_id = 1 [json_name = "debateId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(EnterDebate, _impl_.debate_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\30\11\0\0\0\0\0\0"
-    "debate_event.EnterDebate"
-    "debate_id"
   }},
 };
 
@@ -2117,7 +2048,7 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2136,12 +2067,11 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string debate_id = 1 [json_name = "debateId"];
-          if (!this_._internal_debate_id().empty()) {
-            const std::string& _s = this_._internal_debate_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.EnterDebate.debate_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // int32 debate_id = 1 [json_name = "debateId"];
+          if (this_._internal_debate_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_debate_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -2168,10 +2098,10 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
           (void)cached_has_bits;
 
            {
-            // string debate_id = 1 [json_name = "debateId"];
-            if (!this_._internal_debate_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_id());
+            // int32 debate_id = 1 [json_name = "debateId"];
+            if (this_._internal_debate_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_debate_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2186,8 +2116,8 @@ void EnterDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_debate_id().empty()) {
-    _this->_internal_set_debate_id(from._internal_debate_id());
+  if (from._internal_debate_id() != 0) {
+    _this->_impl_.debate_id_ = from._impl_.debate_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2202,10 +2132,8 @@ void EnterDebate::CopyFrom(const EnterDebate& from) {
 
 void EnterDebate::InternalSwap(EnterDebate* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
+        swap(_impl_.debate_id_, other->_impl_.debate_id_);
 }
 
 ::google::protobuf::Metadata EnterDebate::GetMetadata() const {
@@ -3104,36 +3032,19 @@ DeleteChildClaim::DeleteChildClaim(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.DeleteChildClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE DeleteChildClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::DeleteChildClaim& from_msg)
-      : claim_id_(arena, from.claim_id_),
-        _cached_size_{0} {}
-
 DeleteChildClaim::DeleteChildClaim(
-    ::google::protobuf::Arena* arena,
-    const DeleteChildClaim& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  DeleteChildClaim* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.DeleteChildClaim)
+    ::google::protobuf::Arena* arena, const DeleteChildClaim& from)
+    : DeleteChildClaim(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE DeleteChildClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : claim_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void DeleteChildClaim::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.claim_id_ = {};
 }
 DeleteChildClaim::~DeleteChildClaim() {
   // @@protoc_insertion_point(destructor:debate_event.DeleteChildClaim)
@@ -3143,7 +3054,6 @@ inline void DeleteChildClaim::SharedDtor(MessageLite& self) {
   DeleteChildClaim& this_ = static_cast<DeleteChildClaim&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -3152,7 +3062,7 @@ inline void* DeleteChildClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) DeleteChildClaim(arena);
 }
 constexpr auto DeleteChildClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DeleteChildClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DeleteChildClaim),
                                             alignof(DeleteChildClaim));
 }
 PROTOBUF_CONSTINIT
@@ -3183,7 +3093,7 @@ const ::google::protobuf::internal::ClassData* DeleteChildClaim::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 46, 2> DeleteChildClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DeleteChildClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3201,21 +3111,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 46, 2> DeleteChildClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteChildClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string claim_id = 2 [json_name = "claimId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteChildClaim, _impl_.claim_id_)}},
+    // int32 claim_id = 2 [json_name = "claimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteChildClaim, _impl_.claim_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DeleteChildClaim, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string claim_id = 2 [json_name = "claimId"];
+    // int32 claim_id = 2 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(DeleteChildClaim, _impl_.claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\35\10\0\0\0\0\0\0"
-    "debate_event.DeleteChildClaim"
-    "claim_id"
   }},
 };
 
@@ -3226,7 +3133,7 @@ PROTOBUF_NOINLINE void DeleteChildClaim::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.claim_id_.ClearToEmpty();
+  _impl_.claim_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -3245,12 +3152,11 @@ PROTOBUF_NOINLINE void DeleteChildClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string claim_id = 2 [json_name = "claimId"];
-          if (!this_._internal_claim_id().empty()) {
-            const std::string& _s = this_._internal_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.DeleteChildClaim.claim_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 claim_id = 2 [json_name = "claimId"];
+          if (this_._internal_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_claim_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -3277,10 +3183,10 @@ PROTOBUF_NOINLINE void DeleteChildClaim::Clear() {
           (void)cached_has_bits;
 
            {
-            // string claim_id = 2 [json_name = "claimId"];
-            if (!this_._internal_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_claim_id());
+            // int32 claim_id = 2 [json_name = "claimId"];
+            if (this_._internal_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_claim_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -3295,8 +3201,8 @@ void DeleteChildClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_claim_id().empty()) {
-    _this->_internal_set_claim_id(from._internal_claim_id());
+  if (from._internal_claim_id() != 0) {
+    _this->_impl_.claim_id_ = from._impl_.claim_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3311,10 +3217,8 @@ void DeleteChildClaim::CopyFrom(const DeleteChildClaim& from) {
 
 void DeleteChildClaim::InternalSwap(DeleteChildClaim* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.claim_id_, &other->_impl_.claim_id_, arena);
+        swap(_impl_.claim_id_, other->_impl_.claim_id_);
 }
 
 ::google::protobuf::Metadata DeleteChildClaim::GetMetadata() const {
@@ -3338,10 +3242,7 @@ AddConnection::AddConnection(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE AddConnection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::AddConnection& from_msg)
-      : debate_id_(arena, from.debate_id_),
-        from_id_(arena, from.from_id_),
-        to_id_(arena, from.to_id_),
-        connection_(arena, from.connection_),
+      : connection_(arena, from.connection_),
         _cached_size_{0} {}
 
 AddConnection::AddConnection(
@@ -3357,20 +3258,30 @@ AddConnection::AddConnection(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, debate_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, debate_id_),
+           offsetof(Impl_, to_id_) -
+               offsetof(Impl_, debate_id_) +
+               sizeof(Impl_::to_id_));
 
   // @@protoc_insertion_point(copy_constructor:debate_event.AddConnection)
 }
 inline PROTOBUF_NDEBUG_INLINE AddConnection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : debate_id_(arena),
-        from_id_(arena),
-        to_id_(arena),
-        connection_(arena),
+      : connection_(arena),
         _cached_size_{0} {}
 
 inline void AddConnection::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, debate_id_),
+           0,
+           offsetof(Impl_, to_id_) -
+               offsetof(Impl_, debate_id_) +
+               sizeof(Impl_::to_id_));
 }
 AddConnection::~AddConnection() {
   // @@protoc_insertion_point(destructor:debate_event.AddConnection)
@@ -3380,9 +3291,6 @@ inline void AddConnection::SharedDtor(MessageLite& self) {
   AddConnection& this_ = static_cast<AddConnection&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.debate_id_.Destroy();
-  this_._impl_.from_id_.Destroy();
-  this_._impl_.to_id_.Destroy();
   this_._impl_.connection_.Destroy();
   this_._impl_.~Impl_();
 }
@@ -3423,7 +3331,7 @@ const ::google::protobuf::internal::ClassData* AddConnection::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 66, 2> AddConnection::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 45, 2> AddConnection::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3441,41 +3349,38 @@ const ::_pbi::TcParseTable<2, 4, 0, 66, 2> AddConnection::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddConnection>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string to_id = 4 [json_name = "toId"];
-    {::_pbi::TcParser::FastUS1,
-     {34, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_)}},
+    // int32 to_id = 4 [json_name = "toId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.to_id_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_)}},
     // string connection = 5 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.connection_)}},
-    // string debate_id = 2 [json_name = "debateId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)}},
-    // string from_id = 3 [json_name = "fromId"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_)}},
+    // int32 debate_id = 2 [json_name = "debateId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.debate_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)}},
+    // int32 from_id = 3 [json_name = "fromId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.from_id_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string debate_id = 2 [json_name = "debateId"];
+    // int32 debate_id = 2 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string from_id = 3 [json_name = "fromId"];
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 from_id = 3 [json_name = "fromId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string to_id = 4 [json_name = "toId"];
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 to_id = 4 [json_name = "toId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
     // string connection = 5 [json_name = "connection"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.connection_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\32\11\7\5\12\0\0\0"
+    "\32\0\0\0\12\0\0\0"
     "debate_event.AddConnection"
-    "debate_id"
-    "from_id"
-    "to_id"
     "connection"
   }},
 };
@@ -3487,10 +3392,10 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.debate_id_.ClearToEmpty();
-  _impl_.from_id_.ClearToEmpty();
-  _impl_.to_id_.ClearToEmpty();
   _impl_.connection_.ClearToEmpty();
+  ::memset(&_impl_.debate_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.to_id_) -
+      reinterpret_cast<char*>(&_impl_.debate_id_)) + sizeof(_impl_.to_id_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -3509,28 +3414,25 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string debate_id = 2 [json_name = "debateId"];
-          if (!this_._internal_debate_id().empty()) {
-            const std::string& _s = this_._internal_debate_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddConnection.debate_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 debate_id = 2 [json_name = "debateId"];
+          if (this_._internal_debate_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_debate_id(), target);
           }
 
-          // string from_id = 3 [json_name = "fromId"];
-          if (!this_._internal_from_id().empty()) {
-            const std::string& _s = this_._internal_from_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddConnection.from_id");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
+          // int32 from_id = 3 [json_name = "fromId"];
+          if (this_._internal_from_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_from_id(), target);
           }
 
-          // string to_id = 4 [json_name = "toId"];
-          if (!this_._internal_to_id().empty()) {
-            const std::string& _s = this_._internal_to_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.AddConnection.to_id");
-            target = stream->WriteStringMaybeAliased(4, _s, target);
+          // int32 to_id = 4 [json_name = "toId"];
+          if (this_._internal_to_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<4>(
+                    stream, this_._internal_to_id(), target);
           }
 
           // string connection = 5 [json_name = "connection"];
@@ -3566,25 +3468,25 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string debate_id = 2 [json_name = "debateId"];
-            if (!this_._internal_debate_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_id());
-            }
-            // string from_id = 3 [json_name = "fromId"];
-            if (!this_._internal_from_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_from_id());
-            }
-            // string to_id = 4 [json_name = "toId"];
-            if (!this_._internal_to_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_to_id());
-            }
             // string connection = 5 [json_name = "connection"];
             if (!this_._internal_connection().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_connection());
+            }
+            // int32 debate_id = 2 [json_name = "debateId"];
+            if (this_._internal_debate_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_debate_id());
+            }
+            // int32 from_id = 3 [json_name = "fromId"];
+            if (this_._internal_from_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_from_id());
+            }
+            // int32 to_id = 4 [json_name = "toId"];
+            if (this_._internal_to_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_to_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -3599,17 +3501,17 @@ void AddConnection::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_debate_id().empty()) {
-    _this->_internal_set_debate_id(from._internal_debate_id());
-  }
-  if (!from._internal_from_id().empty()) {
-    _this->_internal_set_from_id(from._internal_from_id());
-  }
-  if (!from._internal_to_id().empty()) {
-    _this->_internal_set_to_id(from._internal_to_id());
-  }
   if (!from._internal_connection().empty()) {
     _this->_internal_set_connection(from._internal_connection());
+  }
+  if (from._internal_debate_id() != 0) {
+    _this->_impl_.debate_id_ = from._impl_.debate_id_;
+  }
+  if (from._internal_from_id() != 0) {
+    _this->_impl_.from_id_ = from._impl_.from_id_;
+  }
+  if (from._internal_to_id() != 0) {
+    _this->_impl_.to_id_ = from._impl_.to_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3627,10 +3529,13 @@ void AddConnection::InternalSwap(AddConnection* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_id_, &other->_impl_.from_id_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.to_id_, &other->_impl_.to_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.connection_, &other->_impl_.connection_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_)
+      + sizeof(AddConnection::_impl_.to_id_)
+      - PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)>(
+          reinterpret_cast<char*>(&_impl_.debate_id_),
+          reinterpret_cast<char*>(&other->_impl_.debate_id_));
 }
 
 ::google::protobuf::Metadata AddConnection::GetMetadata() const {
@@ -3754,36 +3659,19 @@ GoToClaim::GoToClaim(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.GoToClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE GoToClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::GoToClaim& from_msg)
-      : claim_id_(arena, from.claim_id_),
-        _cached_size_{0} {}
-
 GoToClaim::GoToClaim(
-    ::google::protobuf::Arena* arena,
-    const GoToClaim& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  GoToClaim* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.GoToClaim)
+    ::google::protobuf::Arena* arena, const GoToClaim& from)
+    : GoToClaim(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE GoToClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : claim_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void GoToClaim::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.claim_id_ = {};
 }
 GoToClaim::~GoToClaim() {
   // @@protoc_insertion_point(destructor:debate_event.GoToClaim)
@@ -3793,7 +3681,6 @@ inline void GoToClaim::SharedDtor(MessageLite& self) {
   GoToClaim& this_ = static_cast<GoToClaim&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -3802,7 +3689,7 @@ inline void* GoToClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) GoToClaim(arena);
 }
 constexpr auto GoToClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GoToClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GoToClaim),
                                             alignof(GoToClaim));
 }
 PROTOBUF_CONSTINIT
@@ -3833,7 +3720,7 @@ const ::google::protobuf::internal::ClassData* GoToClaim::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 39, 2> GoToClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> GoToClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -3851,21 +3738,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 39, 2> GoToClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoToClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string claim_id = 2 [json_name = "claimId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_)}},
+    // int32 claim_id = 2 [json_name = "claimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GoToClaim, _impl_.claim_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string claim_id = 2 [json_name = "claimId"];
+    // int32 claim_id = 2 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\26\10\0\0\0\0\0\0"
-    "debate_event.GoToClaim"
-    "claim_id"
   }},
 };
 
@@ -3876,7 +3760,7 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.claim_id_.ClearToEmpty();
+  _impl_.claim_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -3895,12 +3779,11 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string claim_id = 2 [json_name = "claimId"];
-          if (!this_._internal_claim_id().empty()) {
-            const std::string& _s = this_._internal_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.GoToClaim.claim_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 claim_id = 2 [json_name = "claimId"];
+          if (this_._internal_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_claim_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -3927,10 +3810,10 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
           (void)cached_has_bits;
 
            {
-            // string claim_id = 2 [json_name = "claimId"];
-            if (!this_._internal_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_claim_id());
+            // int32 claim_id = 2 [json_name = "claimId"];
+            if (this_._internal_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_claim_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -3945,8 +3828,8 @@ void GoToClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_claim_id().empty()) {
-    _this->_internal_set_claim_id(from._internal_claim_id());
+  if (from._internal_claim_id() != 0) {
+    _this->_impl_.claim_id_ = from._impl_.claim_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3961,10 +3844,8 @@ void GoToClaim::CopyFrom(const GoToClaim& from) {
 
 void GoToClaim::InternalSwap(GoToClaim* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.claim_id_, &other->_impl_.claim_id_, arena);
+        swap(_impl_.claim_id_, other->_impl_.claim_id_);
 }
 
 ::google::protobuf::Metadata GoToClaim::GetMetadata() const {
@@ -4859,36 +4740,19 @@ ConnectFromClaim::ConnectFromClaim(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.ConnectFromClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE ConnectFromClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::ConnectFromClaim& from_msg)
-      : from_claim_id_(arena, from.from_claim_id_),
-        _cached_size_{0} {}
-
 ConnectFromClaim::ConnectFromClaim(
-    ::google::protobuf::Arena* arena,
-    const ConnectFromClaim& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  ConnectFromClaim* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.ConnectFromClaim)
+    ::google::protobuf::Arena* arena, const ConnectFromClaim& from)
+    : ConnectFromClaim(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE ConnectFromClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : from_claim_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void ConnectFromClaim::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.from_claim_id_ = {};
 }
 ConnectFromClaim::~ConnectFromClaim() {
   // @@protoc_insertion_point(destructor:debate_event.ConnectFromClaim)
@@ -4898,7 +4762,6 @@ inline void ConnectFromClaim::SharedDtor(MessageLite& self) {
   ConnectFromClaim& this_ = static_cast<ConnectFromClaim&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.from_claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -4907,7 +4770,7 @@ inline void* ConnectFromClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) ConnectFromClaim(arena);
 }
 constexpr auto ConnectFromClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ConnectFromClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ConnectFromClaim),
                                             alignof(ConnectFromClaim));
 }
 PROTOBUF_CONSTINIT
@@ -4938,7 +4801,7 @@ const ::google::protobuf::internal::ClassData* ConnectFromClaim::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 51, 2> ConnectFromClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ConnectFromClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -4956,21 +4819,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 51, 2> ConnectFromClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ConnectFromClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string from_claim_id = 1 [json_name = "fromClaimId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ConnectFromClaim, _impl_.from_claim_id_)}},
+    // int32 from_claim_id = 1 [json_name = "fromClaimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConnectFromClaim, _impl_.from_claim_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ConnectFromClaim, _impl_.from_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string from_claim_id = 1 [json_name = "fromClaimId"];
+    // int32 from_claim_id = 1 [json_name = "fromClaimId"];
     {PROTOBUF_FIELD_OFFSET(ConnectFromClaim, _impl_.from_claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\35\15\0\0\0\0\0\0"
-    "debate_event.ConnectFromClaim"
-    "from_claim_id"
   }},
 };
 
@@ -4981,7 +4841,7 @@ PROTOBUF_NOINLINE void ConnectFromClaim::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.from_claim_id_.ClearToEmpty();
+  _impl_.from_claim_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -5000,12 +4860,11 @@ PROTOBUF_NOINLINE void ConnectFromClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string from_claim_id = 1 [json_name = "fromClaimId"];
-          if (!this_._internal_from_claim_id().empty()) {
-            const std::string& _s = this_._internal_from_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.ConnectFromClaim.from_claim_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // int32 from_claim_id = 1 [json_name = "fromClaimId"];
+          if (this_._internal_from_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_from_claim_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5032,10 +4891,10 @@ PROTOBUF_NOINLINE void ConnectFromClaim::Clear() {
           (void)cached_has_bits;
 
            {
-            // string from_claim_id = 1 [json_name = "fromClaimId"];
-            if (!this_._internal_from_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_from_claim_id());
+            // int32 from_claim_id = 1 [json_name = "fromClaimId"];
+            if (this_._internal_from_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_from_claim_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -5050,8 +4909,8 @@ void ConnectFromClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_from_claim_id().empty()) {
-    _this->_internal_set_from_claim_id(from._internal_from_claim_id());
+  if (from._internal_from_claim_id() != 0) {
+    _this->_impl_.from_claim_id_ = from._impl_.from_claim_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5066,10 +4925,8 @@ void ConnectFromClaim::CopyFrom(const ConnectFromClaim& from) {
 
 void ConnectFromClaim::InternalSwap(ConnectFromClaim* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_claim_id_, &other->_impl_.from_claim_id_, arena);
+        swap(_impl_.from_claim_id_, other->_impl_.from_claim_id_);
 }
 
 ::google::protobuf::Metadata ConnectFromClaim::GetMetadata() const {
@@ -5090,36 +4947,19 @@ ConnectToClaim::ConnectToClaim(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.ConnectToClaim)
 }
-inline PROTOBUF_NDEBUG_INLINE ConnectToClaim::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::ConnectToClaim& from_msg)
-      : to_claim_id_(arena, from.to_claim_id_),
-        _cached_size_{0} {}
-
 ConnectToClaim::ConnectToClaim(
-    ::google::protobuf::Arena* arena,
-    const ConnectToClaim& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  ConnectToClaim* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.ConnectToClaim)
+    ::google::protobuf::Arena* arena, const ConnectToClaim& from)
+    : ConnectToClaim(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE ConnectToClaim::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : to_claim_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void ConnectToClaim::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.to_claim_id_ = {};
 }
 ConnectToClaim::~ConnectToClaim() {
   // @@protoc_insertion_point(destructor:debate_event.ConnectToClaim)
@@ -5129,7 +4969,6 @@ inline void ConnectToClaim::SharedDtor(MessageLite& self) {
   ConnectToClaim& this_ = static_cast<ConnectToClaim&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.to_claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -5138,7 +4977,7 @@ inline void* ConnectToClaim::PlacementNew_(const void*, void* mem,
   return ::new (mem) ConnectToClaim(arena);
 }
 constexpr auto ConnectToClaim::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ConnectToClaim),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ConnectToClaim),
                                             alignof(ConnectToClaim));
 }
 PROTOBUF_CONSTINIT
@@ -5169,7 +5008,7 @@ const ::google::protobuf::internal::ClassData* ConnectToClaim::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 47, 2> ConnectToClaim::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ConnectToClaim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -5187,21 +5026,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 47, 2> ConnectToClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ConnectToClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string to_claim_id = 2 [json_name = "toClaimId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ConnectToClaim, _impl_.to_claim_id_)}},
+    // int32 to_claim_id = 2 [json_name = "toClaimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConnectToClaim, _impl_.to_claim_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(ConnectToClaim, _impl_.to_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string to_claim_id = 2 [json_name = "toClaimId"];
+    // int32 to_claim_id = 2 [json_name = "toClaimId"];
     {PROTOBUF_FIELD_OFFSET(ConnectToClaim, _impl_.to_claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\33\13\0\0\0\0\0\0"
-    "debate_event.ConnectToClaim"
-    "to_claim_id"
   }},
 };
 
@@ -5212,7 +5048,7 @@ PROTOBUF_NOINLINE void ConnectToClaim::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.to_claim_id_.ClearToEmpty();
+  _impl_.to_claim_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -5231,12 +5067,11 @@ PROTOBUF_NOINLINE void ConnectToClaim::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string to_claim_id = 2 [json_name = "toClaimId"];
-          if (!this_._internal_to_claim_id().empty()) {
-            const std::string& _s = this_._internal_to_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.ConnectToClaim.to_claim_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 to_claim_id = 2 [json_name = "toClaimId"];
+          if (this_._internal_to_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_to_claim_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5263,10 +5098,10 @@ PROTOBUF_NOINLINE void ConnectToClaim::Clear() {
           (void)cached_has_bits;
 
            {
-            // string to_claim_id = 2 [json_name = "toClaimId"];
-            if (!this_._internal_to_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_to_claim_id());
+            // int32 to_claim_id = 2 [json_name = "toClaimId"];
+            if (this_._internal_to_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_to_claim_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -5281,8 +5116,8 @@ void ConnectToClaim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_to_claim_id().empty()) {
-    _this->_internal_set_to_claim_id(from._internal_to_claim_id());
+  if (from._internal_to_claim_id() != 0) {
+    _this->_impl_.to_claim_id_ = from._impl_.to_claim_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5297,10 +5132,8 @@ void ConnectToClaim::CopyFrom(const ConnectToClaim& from) {
 
 void ConnectToClaim::InternalSwap(ConnectToClaim* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.to_claim_id_, &other->_impl_.to_claim_id_, arena);
+        swap(_impl_.to_claim_id_, other->_impl_.to_claim_id_);
 }
 
 ::google::protobuf::Metadata ConnectToClaim::GetMetadata() const {
@@ -5325,8 +5158,6 @@ inline PROTOBUF_NDEBUG_INLINE SubmitConnectClaims::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate_event::SubmitConnectClaims& from_msg)
       : connection_(arena, from.connection_),
-        from_claim_id_(arena, from.from_claim_id_),
-        to_claim_id_(arena, from.to_claim_id_),
         _cached_size_{0} {}
 
 SubmitConnectClaims::SubmitConnectClaims(
@@ -5342,6 +5173,13 @@ SubmitConnectClaims::SubmitConnectClaims(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, from_claim_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, from_claim_id_),
+           offsetof(Impl_, to_claim_id_) -
+               offsetof(Impl_, from_claim_id_) +
+               sizeof(Impl_::to_claim_id_));
 
   // @@protoc_insertion_point(copy_constructor:debate_event.SubmitConnectClaims)
 }
@@ -5349,12 +5187,16 @@ inline PROTOBUF_NDEBUG_INLINE SubmitConnectClaims::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : connection_(arena),
-        from_claim_id_(arena),
-        to_claim_id_(arena),
         _cached_size_{0} {}
 
 inline void SubmitConnectClaims::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, from_claim_id_),
+           0,
+           offsetof(Impl_, to_claim_id_) -
+               offsetof(Impl_, from_claim_id_) +
+               sizeof(Impl_::to_claim_id_));
 }
 SubmitConnectClaims::~SubmitConnectClaims() {
   // @@protoc_insertion_point(destructor:debate_event.SubmitConnectClaims)
@@ -5365,8 +5207,6 @@ inline void SubmitConnectClaims::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.connection_.Destroy();
-  this_._impl_.from_claim_id_.Destroy();
-  this_._impl_.to_claim_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -5406,7 +5246,7 @@ const ::google::protobuf::internal::ClassData* SubmitConnectClaims::GetClassData
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 75, 2> SubmitConnectClaims::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 51, 2> SubmitConnectClaims::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -5428,32 +5268,30 @@ const ::_pbi::TcParseTable<2, 3, 0, 75, 2> SubmitConnectClaims::_table_ = {
     // string connection = 1 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.connection_)}},
-    // string from_claim_id = 2 [json_name = "fromClaimId"];
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_)}},
-    // string to_claim_id = 3 [json_name = "toClaimId"];
-    {::_pbi::TcParser::FastUS1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_)}},
+    // int32 from_claim_id = 2 [json_name = "fromClaimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SubmitConnectClaims, _impl_.from_claim_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_)}},
+    // int32 to_claim_id = 3 [json_name = "toClaimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SubmitConnectClaims, _impl_.to_claim_id_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string connection = 1 [json_name = "connection"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.connection_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string from_claim_id = 2 [json_name = "fromClaimId"];
+    // int32 from_claim_id = 2 [json_name = "fromClaimId"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string to_claim_id = 3 [json_name = "toClaimId"];
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 to_claim_id = 3 [json_name = "toClaimId"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\40\12\15\13\0\0\0\0"
+    "\40\12\0\0\0\0\0\0"
     "debate_event.SubmitConnectClaims"
     "connection"
-    "from_claim_id"
-    "to_claim_id"
   }},
 };
 
@@ -5465,8 +5303,9 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
   (void) cached_has_bits;
 
   _impl_.connection_.ClearToEmpty();
-  _impl_.from_claim_id_.ClearToEmpty();
-  _impl_.to_claim_id_.ClearToEmpty();
+  ::memset(&_impl_.from_claim_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.to_claim_id_) -
+      reinterpret_cast<char*>(&_impl_.from_claim_id_)) + sizeof(_impl_.to_claim_id_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -5493,20 +5332,18 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string from_claim_id = 2 [json_name = "fromClaimId"];
-          if (!this_._internal_from_claim_id().empty()) {
-            const std::string& _s = this_._internal_from_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.SubmitConnectClaims.from_claim_id");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
+          // int32 from_claim_id = 2 [json_name = "fromClaimId"];
+          if (this_._internal_from_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_from_claim_id(), target);
           }
 
-          // string to_claim_id = 3 [json_name = "toClaimId"];
-          if (!this_._internal_to_claim_id().empty()) {
-            const std::string& _s = this_._internal_to_claim_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.SubmitConnectClaims.to_claim_id");
-            target = stream->WriteStringMaybeAliased(3, _s, target);
+          // int32 to_claim_id = 3 [json_name = "toClaimId"];
+          if (this_._internal_to_claim_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_to_claim_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5539,15 +5376,15 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_connection());
             }
-            // string from_claim_id = 2 [json_name = "fromClaimId"];
-            if (!this_._internal_from_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_from_claim_id());
+            // int32 from_claim_id = 2 [json_name = "fromClaimId"];
+            if (this_._internal_from_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_from_claim_id());
             }
-            // string to_claim_id = 3 [json_name = "toClaimId"];
-            if (!this_._internal_to_claim_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_to_claim_id());
+            // int32 to_claim_id = 3 [json_name = "toClaimId"];
+            if (this_._internal_to_claim_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_to_claim_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -5565,11 +5402,11 @@ void SubmitConnectClaims::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   if (!from._internal_connection().empty()) {
     _this->_internal_set_connection(from._internal_connection());
   }
-  if (!from._internal_from_claim_id().empty()) {
-    _this->_internal_set_from_claim_id(from._internal_from_claim_id());
+  if (from._internal_from_claim_id() != 0) {
+    _this->_impl_.from_claim_id_ = from._impl_.from_claim_id_;
   }
-  if (!from._internal_to_claim_id().empty()) {
-    _this->_internal_set_to_claim_id(from._internal_to_claim_id());
+  if (from._internal_to_claim_id() != 0) {
+    _this->_impl_.to_claim_id_ = from._impl_.to_claim_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5588,8 +5425,12 @@ void SubmitConnectClaims::InternalSwap(SubmitConnectClaims* PROTOBUF_RESTRICT ot
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.connection_, &other->_impl_.connection_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_claim_id_, &other->_impl_.from_claim_id_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.to_claim_id_, &other->_impl_.to_claim_id_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_)
+      + sizeof(SubmitConnectClaims::_impl_.to_claim_id_)
+      - PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_)>(
+          reinterpret_cast<char*>(&_impl_.from_claim_id_),
+          reinterpret_cast<char*>(&other->_impl_.from_claim_id_));
 }
 
 ::google::protobuf::Metadata SubmitConnectClaims::GetMetadata() const {
@@ -5920,36 +5761,19 @@ JoinDebate::JoinDebate(::google::protobuf::Arena* arena)
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:debate_event.JoinDebate)
 }
-inline PROTOBUF_NDEBUG_INLINE JoinDebate::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::debate_event::JoinDebate& from_msg)
-      : debate_id_(arena, from.debate_id_),
-        _cached_size_{0} {}
-
 JoinDebate::JoinDebate(
-    ::google::protobuf::Arena* arena,
-    const JoinDebate& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  JoinDebate* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:debate_event.JoinDebate)
+    ::google::protobuf::Arena* arena, const JoinDebate& from)
+    : JoinDebate(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE JoinDebate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : debate_id_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void JoinDebate::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.debate_id_ = {};
 }
 JoinDebate::~JoinDebate() {
   // @@protoc_insertion_point(destructor:debate_event.JoinDebate)
@@ -5959,7 +5783,6 @@ inline void JoinDebate::SharedDtor(MessageLite& self) {
   JoinDebate& this_ = static_cast<JoinDebate&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.debate_id_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -5968,7 +5791,7 @@ inline void* JoinDebate::PlacementNew_(const void*, void* mem,
   return ::new (mem) JoinDebate(arena);
 }
 constexpr auto JoinDebate::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(JoinDebate),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(JoinDebate),
                                             alignof(JoinDebate));
 }
 PROTOBUF_CONSTINIT
@@ -5999,7 +5822,7 @@ const ::google::protobuf::internal::ClassData* JoinDebate::GetClassData() const 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 41, 2> JoinDebate::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> JoinDebate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -6017,21 +5840,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 41, 2> JoinDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::JoinDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_id = 1 [json_name = "debateId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(JoinDebate, _impl_.debate_id_)}},
+    // int32 debate_id = 1 [json_name = "debateId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(JoinDebate, _impl_.debate_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(JoinDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(JoinDebate, _impl_.debate_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\27\11\0\0\0\0\0\0"
-    "debate_event.JoinDebate"
-    "debate_id"
   }},
 };
 
@@ -6042,7 +5862,7 @@ PROTOBUF_NOINLINE void JoinDebate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -6061,12 +5881,11 @@ PROTOBUF_NOINLINE void JoinDebate::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string debate_id = 1 [json_name = "debateId"];
-          if (!this_._internal_debate_id().empty()) {
-            const std::string& _s = this_._internal_debate_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.JoinDebate.debate_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // int32 debate_id = 1 [json_name = "debateId"];
+          if (this_._internal_debate_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_debate_id(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -6093,10 +5912,10 @@ PROTOBUF_NOINLINE void JoinDebate::Clear() {
           (void)cached_has_bits;
 
            {
-            // string debate_id = 1 [json_name = "debateId"];
-            if (!this_._internal_debate_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_id());
+            // int32 debate_id = 1 [json_name = "debateId"];
+            if (this_._internal_debate_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_debate_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -6111,8 +5930,8 @@ void JoinDebate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goog
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_debate_id().empty()) {
-    _this->_internal_set_debate_id(from._internal_debate_id());
+  if (from._internal_debate_id() != 0) {
+    _this->_impl_.debate_id_ = from._impl_.debate_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -6127,10 +5946,8 @@ void JoinDebate::CopyFrom(const JoinDebate& from) {
 
 void JoinDebate::InternalSwap(JoinDebate* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_id_, &other->_impl_.debate_id_, arena);
+        swap(_impl_.debate_id_, other->_impl_.debate_id_);
 }
 
 ::google::protobuf::Metadata JoinDebate::GetMetadata() const {

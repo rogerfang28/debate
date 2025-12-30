@@ -1001,36 +1001,24 @@ class SubmitConnectClaims final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
-  // string from_claim_id = 2 [json_name = "fromClaimId"];
+  // int32 from_claim_id = 2 [json_name = "fromClaimId"];
   void clear_from_claim_id() ;
-  const std::string& from_claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_from_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_from_claim_id();
-  PROTOBUF_NODISCARD std::string* release_from_claim_id();
-  void set_allocated_from_claim_id(std::string* value);
+  ::int32_t from_claim_id() const;
+  void set_from_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_from_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_from_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_from_claim_id();
+  ::int32_t _internal_from_claim_id() const;
+  void _internal_set_from_claim_id(::int32_t value);
 
   public:
-  // string to_claim_id = 3 [json_name = "toClaimId"];
+  // int32 to_claim_id = 3 [json_name = "toClaimId"];
   void clear_to_claim_id() ;
-  const std::string& to_claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_to_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_to_claim_id();
-  PROTOBUF_NODISCARD std::string* release_to_claim_id();
-  void set_allocated_to_claim_id(std::string* value);
+  ::int32_t to_claim_id() const;
+  void set_to_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_to_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_to_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_to_claim_id();
+  ::int32_t _internal_to_claim_id() const;
+  void _internal_set_to_claim_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.SubmitConnectClaims)
@@ -1039,7 +1027,7 @@ class SubmitConnectClaims final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 3, 0,
-      75, 2>
+      51, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -1057,8 +1045,8 @@ class SubmitConnectClaims final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const SubmitConnectClaims& from_msg);
     ::google::protobuf::internal::ArenaStringPtr connection_;
-    ::google::protobuf::internal::ArenaStringPtr from_claim_id_;
-    ::google::protobuf::internal::ArenaStringPtr to_claim_id_;
+    ::int32_t from_claim_id_;
+    ::int32_t to_claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2154,20 +2142,14 @@ class JoinDebate final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
   };
-  // string debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
-  const std::string& debate_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_id(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_id();
-  PROTOBUF_NODISCARD std::string* release_debate_id();
-  void set_allocated_debate_id(std::string* value);
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
 
   private:
-  const std::string& _internal_debate_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
-      const std::string& value);
-  std::string* _internal_mutable_debate_id();
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.JoinDebate)
@@ -2176,7 +2158,7 @@ class JoinDebate final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      41, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -2193,7 +2175,7 @@ class JoinDebate final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const JoinDebate& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr debate_id_;
+    ::int32_t debate_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2495,20 +2477,14 @@ class GoToClaim final : public ::google::protobuf::Message
   enum : int {
     kClaimIdFieldNumber = 2,
   };
-  // string claim_id = 2 [json_name = "claimId"];
+  // int32 claim_id = 2 [json_name = "claimId"];
   void clear_claim_id() ;
-  const std::string& claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_claim_id();
-  PROTOBUF_NODISCARD std::string* release_claim_id();
-  void set_allocated_claim_id(std::string* value);
+  ::int32_t claim_id() const;
+  void set_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_claim_id();
+  ::int32_t _internal_claim_id() const;
+  void _internal_set_claim_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.GoToClaim)
@@ -2517,7 +2493,7 @@ class GoToClaim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      39, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -2534,7 +2510,7 @@ class GoToClaim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const GoToClaim& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr claim_id_;
+    ::int32_t claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2836,20 +2812,14 @@ class EnterDebate final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
   };
-  // string debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
-  const std::string& debate_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_id(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_id();
-  PROTOBUF_NODISCARD std::string* release_debate_id();
-  void set_allocated_debate_id(std::string* value);
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
 
   private:
-  const std::string& _internal_debate_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
-      const std::string& value);
-  std::string* _internal_mutable_debate_id();
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.EnterDebate)
@@ -2858,7 +2828,7 @@ class EnterDebate final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      42, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -2875,7 +2845,7 @@ class EnterDebate final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const EnterDebate& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr debate_id_;
+    ::int32_t debate_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3222,20 +3192,14 @@ class DeleteDebate final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
   };
-  // string debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
-  const std::string& debate_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_id(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_id();
-  PROTOBUF_NODISCARD std::string* release_debate_id();
-  void set_allocated_debate_id(std::string* value);
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
 
   private:
-  const std::string& _internal_debate_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
-      const std::string& value);
-  std::string* _internal_mutable_debate_id();
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.DeleteDebate)
@@ -3244,7 +3208,7 @@ class DeleteDebate final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      43, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -3261,7 +3225,7 @@ class DeleteDebate final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const DeleteDebate& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr debate_id_;
+    ::int32_t debate_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3563,20 +3527,14 @@ class DeleteChildClaim final : public ::google::protobuf::Message
   enum : int {
     kClaimIdFieldNumber = 2,
   };
-  // string claim_id = 2 [json_name = "claimId"];
+  // int32 claim_id = 2 [json_name = "claimId"];
   void clear_claim_id() ;
-  const std::string& claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_claim_id();
-  PROTOBUF_NODISCARD std::string* release_claim_id();
-  void set_allocated_claim_id(std::string* value);
+  ::int32_t claim_id() const;
+  void set_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_claim_id();
+  ::int32_t _internal_claim_id() const;
+  void _internal_set_claim_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.DeleteChildClaim)
@@ -3585,7 +3543,7 @@ class DeleteChildClaim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      46, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -3602,7 +3560,7 @@ class DeleteChildClaim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const DeleteChildClaim& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr claim_id_;
+    ::int32_t claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3955,20 +3913,14 @@ class ConnectToClaim final : public ::google::protobuf::Message
   enum : int {
     kToClaimIdFieldNumber = 2,
   };
-  // string to_claim_id = 2 [json_name = "toClaimId"];
+  // int32 to_claim_id = 2 [json_name = "toClaimId"];
   void clear_to_claim_id() ;
-  const std::string& to_claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_to_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_to_claim_id();
-  PROTOBUF_NODISCARD std::string* release_to_claim_id();
-  void set_allocated_to_claim_id(std::string* value);
+  ::int32_t to_claim_id() const;
+  void set_to_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_to_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_to_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_to_claim_id();
+  ::int32_t _internal_to_claim_id() const;
+  void _internal_set_to_claim_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.ConnectToClaim)
@@ -3977,7 +3929,7 @@ class ConnectToClaim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      47, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -3994,7 +3946,7 @@ class ConnectToClaim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const ConnectToClaim& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr to_claim_id_;
+    ::int32_t to_claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4151,20 +4103,14 @@ class ConnectFromClaim final : public ::google::protobuf::Message
   enum : int {
     kFromClaimIdFieldNumber = 1,
   };
-  // string from_claim_id = 1 [json_name = "fromClaimId"];
+  // int32 from_claim_id = 1 [json_name = "fromClaimId"];
   void clear_from_claim_id() ;
-  const std::string& from_claim_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_from_claim_id(Arg_&& arg, Args_... args);
-  std::string* mutable_from_claim_id();
-  PROTOBUF_NODISCARD std::string* release_from_claim_id();
-  void set_allocated_from_claim_id(std::string* value);
+  ::int32_t from_claim_id() const;
+  void set_from_claim_id(::int32_t value);
 
   private:
-  const std::string& _internal_from_claim_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_from_claim_id(
-      const std::string& value);
-  std::string* _internal_mutable_from_claim_id();
+  ::int32_t _internal_from_claim_id() const;
+  void _internal_set_from_claim_id(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:debate_event.ConnectFromClaim)
@@ -4173,7 +4119,7 @@ class ConnectFromClaim final : public ::google::protobuf::Message
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      51, 2>
+      0, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -4190,7 +4136,7 @@ class ConnectFromClaim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const ConnectFromClaim& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr from_claim_id_;
+    ::int32_t from_claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -5215,59 +5161,11 @@ class AddConnection final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kConnectionFieldNumber = 5,
     kDebateIdFieldNumber = 2,
     kFromIdFieldNumber = 3,
     kToIdFieldNumber = 4,
-    kConnectionFieldNumber = 5,
   };
-  // string debate_id = 2 [json_name = "debateId"];
-  void clear_debate_id() ;
-  const std::string& debate_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_id(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_id();
-  PROTOBUF_NODISCARD std::string* release_debate_id();
-  void set_allocated_debate_id(std::string* value);
-
-  private:
-  const std::string& _internal_debate_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_id(
-      const std::string& value);
-  std::string* _internal_mutable_debate_id();
-
-  public:
-  // string from_id = 3 [json_name = "fromId"];
-  void clear_from_id() ;
-  const std::string& from_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_from_id(Arg_&& arg, Args_... args);
-  std::string* mutable_from_id();
-  PROTOBUF_NODISCARD std::string* release_from_id();
-  void set_allocated_from_id(std::string* value);
-
-  private:
-  const std::string& _internal_from_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_from_id(
-      const std::string& value);
-  std::string* _internal_mutable_from_id();
-
-  public:
-  // string to_id = 4 [json_name = "toId"];
-  void clear_to_id() ;
-  const std::string& to_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_to_id(Arg_&& arg, Args_... args);
-  std::string* mutable_to_id();
-  PROTOBUF_NODISCARD std::string* release_to_id();
-  void set_allocated_to_id(std::string* value);
-
-  private:
-  const std::string& _internal_to_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_to_id(
-      const std::string& value);
-  std::string* _internal_mutable_to_id();
-
-  public:
   // string connection = 5 [json_name = "connection"];
   void clear_connection() ;
   const std::string& connection() const;
@@ -5284,13 +5182,43 @@ class AddConnection final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
+  // int32 debate_id = 2 [json_name = "debateId"];
+  void clear_debate_id() ;
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
+
+  public:
+  // int32 from_id = 3 [json_name = "fromId"];
+  void clear_from_id() ;
+  ::int32_t from_id() const;
+  void set_from_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_from_id() const;
+  void _internal_set_from_id(::int32_t value);
+
+  public:
+  // int32 to_id = 4 [json_name = "toId"];
+  void clear_to_id() ;
+  ::int32_t to_id() const;
+  void set_to_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_to_id() const;
+  void _internal_set_to_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.AddConnection)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 4, 0,
-      66, 2>
+      45, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -5307,10 +5235,10 @@ class AddConnection final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const AddConnection& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr debate_id_;
-    ::google::protobuf::internal::ArenaStringPtr from_id_;
-    ::google::protobuf::internal::ArenaStringPtr to_id_;
     ::google::protobuf::internal::ArenaStringPtr connection_;
+    ::int32_t debate_id_;
+    ::int32_t from_id_;
+    ::int32_t to_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -6466,104 +6394,52 @@ inline void CreateDebate::set_allocated_debate_topic(std::string* value) {
 
 // DeleteDebate
 
-// string debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void DeleteDebate::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
 }
-inline const std::string& DeleteDebate::debate_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t DeleteDebate::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_event.DeleteDebate.debate_id)
   return _internal_debate_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void DeleteDebate::set_debate_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void DeleteDebate::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
   // @@protoc_insertion_point(field_set:debate_event.DeleteDebate.debate_id)
 }
-inline std::string* DeleteDebate::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.DeleteDebate.debate_id)
-  return _s;
-}
-inline const std::string& DeleteDebate::_internal_debate_id() const {
+inline ::int32_t DeleteDebate::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_id_.Get();
+  return _impl_.debate_id_;
 }
-inline void DeleteDebate::_internal_set_debate_id(const std::string& value) {
+inline void DeleteDebate::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(value, GetArena());
-}
-inline std::string* DeleteDebate::_internal_mutable_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_id_.Mutable( GetArena());
-}
-inline std::string* DeleteDebate::release_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.DeleteDebate.debate_id)
-  return _impl_.debate_id_.Release();
-}
-inline void DeleteDebate::set_allocated_debate_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
-    _impl_.debate_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.DeleteDebate.debate_id)
+  _impl_.debate_id_ = value;
 }
 
 // -------------------------------------------------------------------
 
 // EnterDebate
 
-// string debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void EnterDebate::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
 }
-inline const std::string& EnterDebate::debate_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t EnterDebate::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_event.EnterDebate.debate_id)
   return _internal_debate_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EnterDebate::set_debate_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void EnterDebate::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
   // @@protoc_insertion_point(field_set:debate_event.EnterDebate.debate_id)
 }
-inline std::string* EnterDebate::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.EnterDebate.debate_id)
-  return _s;
-}
-inline const std::string& EnterDebate::_internal_debate_id() const {
+inline ::int32_t EnterDebate::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_id_.Get();
+  return _impl_.debate_id_;
 }
-inline void EnterDebate::_internal_set_debate_id(const std::string& value) {
+inline void EnterDebate::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(value, GetArena());
-}
-inline std::string* EnterDebate::_internal_mutable_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_id_.Mutable( GetArena());
-}
-inline std::string* EnterDebate::release_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.EnterDebate.debate_id)
-  return _impl_.debate_id_.Release();
-}
-inline void EnterDebate::set_allocated_debate_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
-    _impl_.debate_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.EnterDebate.debate_id)
+  _impl_.debate_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -6694,200 +6570,96 @@ inline void AddChildClaim::set_allocated_description(std::string* value) {
 
 // DeleteChildClaim
 
-// string claim_id = 2 [json_name = "claimId"];
+// int32 claim_id = 2 [json_name = "claimId"];
 inline void DeleteChildClaim::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.ClearToEmpty();
+  _impl_.claim_id_ = 0;
 }
-inline const std::string& DeleteChildClaim::claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t DeleteChildClaim::claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.DeleteChildClaim.claim_id)
   return _internal_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void DeleteChildClaim::set_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void DeleteChildClaim::set_claim_id(::int32_t value) {
+  _internal_set_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.DeleteChildClaim.claim_id)
 }
-inline std::string* DeleteChildClaim::mutable_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.DeleteChildClaim.claim_id)
-  return _s;
-}
-inline const std::string& DeleteChildClaim::_internal_claim_id() const {
+inline ::int32_t DeleteChildClaim::_internal_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.claim_id_.Get();
+  return _impl_.claim_id_;
 }
-inline void DeleteChildClaim::_internal_set_claim_id(const std::string& value) {
+inline void DeleteChildClaim::_internal_set_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.Set(value, GetArena());
-}
-inline std::string* DeleteChildClaim::_internal_mutable_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.claim_id_.Mutable( GetArena());
-}
-inline std::string* DeleteChildClaim::release_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.DeleteChildClaim.claim_id)
-  return _impl_.claim_id_.Release();
-}
-inline void DeleteChildClaim::set_allocated_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_id_.IsDefault()) {
-    _impl_.claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.DeleteChildClaim.claim_id)
+  _impl_.claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
 
 // AddConnection
 
-// string debate_id = 2 [json_name = "debateId"];
+// int32 debate_id = 2 [json_name = "debateId"];
 inline void AddConnection::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
 }
-inline const std::string& AddConnection::debate_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t AddConnection::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_event.AddConnection.debate_id)
   return _internal_debate_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void AddConnection::set_debate_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void AddConnection::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
   // @@protoc_insertion_point(field_set:debate_event.AddConnection.debate_id)
 }
-inline std::string* AddConnection::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.AddConnection.debate_id)
-  return _s;
-}
-inline const std::string& AddConnection::_internal_debate_id() const {
+inline ::int32_t AddConnection::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_id_.Get();
+  return _impl_.debate_id_;
 }
-inline void AddConnection::_internal_set_debate_id(const std::string& value) {
+inline void AddConnection::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(value, GetArena());
-}
-inline std::string* AddConnection::_internal_mutable_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_id_.Mutable( GetArena());
-}
-inline std::string* AddConnection::release_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.AddConnection.debate_id)
-  return _impl_.debate_id_.Release();
-}
-inline void AddConnection::set_allocated_debate_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
-    _impl_.debate_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.AddConnection.debate_id)
+  _impl_.debate_id_ = value;
 }
 
-// string from_id = 3 [json_name = "fromId"];
+// int32 from_id = 3 [json_name = "fromId"];
 inline void AddConnection::clear_from_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_id_.ClearToEmpty();
+  _impl_.from_id_ = 0;
 }
-inline const std::string& AddConnection::from_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t AddConnection::from_id() const {
   // @@protoc_insertion_point(field_get:debate_event.AddConnection.from_id)
   return _internal_from_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void AddConnection::set_from_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void AddConnection::set_from_id(::int32_t value) {
+  _internal_set_from_id(value);
   // @@protoc_insertion_point(field_set:debate_event.AddConnection.from_id)
 }
-inline std::string* AddConnection::mutable_from_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_from_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.AddConnection.from_id)
-  return _s;
-}
-inline const std::string& AddConnection::_internal_from_id() const {
+inline ::int32_t AddConnection::_internal_from_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.from_id_.Get();
+  return _impl_.from_id_;
 }
-inline void AddConnection::_internal_set_from_id(const std::string& value) {
+inline void AddConnection::_internal_set_from_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_id_.Set(value, GetArena());
-}
-inline std::string* AddConnection::_internal_mutable_from_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.from_id_.Mutable( GetArena());
-}
-inline std::string* AddConnection::release_from_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.AddConnection.from_id)
-  return _impl_.from_id_.Release();
-}
-inline void AddConnection::set_allocated_from_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.from_id_.IsDefault()) {
-    _impl_.from_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.AddConnection.from_id)
+  _impl_.from_id_ = value;
 }
 
-// string to_id = 4 [json_name = "toId"];
+// int32 to_id = 4 [json_name = "toId"];
 inline void AddConnection::clear_to_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_id_.ClearToEmpty();
+  _impl_.to_id_ = 0;
 }
-inline const std::string& AddConnection::to_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t AddConnection::to_id() const {
   // @@protoc_insertion_point(field_get:debate_event.AddConnection.to_id)
   return _internal_to_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void AddConnection::set_to_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void AddConnection::set_to_id(::int32_t value) {
+  _internal_set_to_id(value);
   // @@protoc_insertion_point(field_set:debate_event.AddConnection.to_id)
 }
-inline std::string* AddConnection::mutable_to_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_to_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.AddConnection.to_id)
-  return _s;
-}
-inline const std::string& AddConnection::_internal_to_id() const {
+inline ::int32_t AddConnection::_internal_to_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.to_id_.Get();
+  return _impl_.to_id_;
 }
-inline void AddConnection::_internal_set_to_id(const std::string& value) {
+inline void AddConnection::_internal_set_to_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_id_.Set(value, GetArena());
-}
-inline std::string* AddConnection::_internal_mutable_to_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.to_id_.Mutable( GetArena());
-}
-inline std::string* AddConnection::release_to_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.AddConnection.to_id)
-  return _impl_.to_id_.Release();
-}
-inline void AddConnection::set_allocated_to_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.to_id_.IsDefault()) {
-    _impl_.to_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.AddConnection.to_id)
+  _impl_.to_id_ = value;
 }
 
 // string connection = 5 [json_name = "connection"];
@@ -6946,52 +6718,26 @@ inline void AddConnection::set_allocated_connection(std::string* value) {
 
 // GoToClaim
 
-// string claim_id = 2 [json_name = "claimId"];
+// int32 claim_id = 2 [json_name = "claimId"];
 inline void GoToClaim::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.ClearToEmpty();
+  _impl_.claim_id_ = 0;
 }
-inline const std::string& GoToClaim::claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t GoToClaim::claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.GoToClaim.claim_id)
   return _internal_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void GoToClaim::set_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void GoToClaim::set_claim_id(::int32_t value) {
+  _internal_set_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.GoToClaim.claim_id)
 }
-inline std::string* GoToClaim::mutable_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.GoToClaim.claim_id)
-  return _s;
-}
-inline const std::string& GoToClaim::_internal_claim_id() const {
+inline ::int32_t GoToClaim::_internal_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.claim_id_.Get();
+  return _impl_.claim_id_;
 }
-inline void GoToClaim::_internal_set_claim_id(const std::string& value) {
+inline void GoToClaim::_internal_set_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.Set(value, GetArena());
-}
-inline std::string* GoToClaim::_internal_mutable_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.claim_id_.Mutable( GetArena());
-}
-inline std::string* GoToClaim::release_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.GoToClaim.claim_id)
-  return _impl_.claim_id_.Release();
-}
-inline void GoToClaim::set_allocated_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_id_.IsDefault()) {
-    _impl_.claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.GoToClaim.claim_id)
+  _impl_.claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7118,104 +6864,52 @@ inline void SubmitEditClaim::set_allocated_new_claim(std::string* value) {
 
 // ConnectFromClaim
 
-// string from_claim_id = 1 [json_name = "fromClaimId"];
+// int32 from_claim_id = 1 [json_name = "fromClaimId"];
 inline void ConnectFromClaim::clear_from_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.ClearToEmpty();
+  _impl_.from_claim_id_ = 0;
 }
-inline const std::string& ConnectFromClaim::from_claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t ConnectFromClaim::from_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.ConnectFromClaim.from_claim_id)
   return _internal_from_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ConnectFromClaim::set_from_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void ConnectFromClaim::set_from_claim_id(::int32_t value) {
+  _internal_set_from_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.ConnectFromClaim.from_claim_id)
 }
-inline std::string* ConnectFromClaim::mutable_from_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_from_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.ConnectFromClaim.from_claim_id)
-  return _s;
-}
-inline const std::string& ConnectFromClaim::_internal_from_claim_id() const {
+inline ::int32_t ConnectFromClaim::_internal_from_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.from_claim_id_.Get();
+  return _impl_.from_claim_id_;
 }
-inline void ConnectFromClaim::_internal_set_from_claim_id(const std::string& value) {
+inline void ConnectFromClaim::_internal_set_from_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.Set(value, GetArena());
-}
-inline std::string* ConnectFromClaim::_internal_mutable_from_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.from_claim_id_.Mutable( GetArena());
-}
-inline std::string* ConnectFromClaim::release_from_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.ConnectFromClaim.from_claim_id)
-  return _impl_.from_claim_id_.Release();
-}
-inline void ConnectFromClaim::set_allocated_from_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.from_claim_id_.IsDefault()) {
-    _impl_.from_claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.ConnectFromClaim.from_claim_id)
+  _impl_.from_claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
 
 // ConnectToClaim
 
-// string to_claim_id = 2 [json_name = "toClaimId"];
+// int32 to_claim_id = 2 [json_name = "toClaimId"];
 inline void ConnectToClaim::clear_to_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.ClearToEmpty();
+  _impl_.to_claim_id_ = 0;
 }
-inline const std::string& ConnectToClaim::to_claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t ConnectToClaim::to_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.ConnectToClaim.to_claim_id)
   return _internal_to_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ConnectToClaim::set_to_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void ConnectToClaim::set_to_claim_id(::int32_t value) {
+  _internal_set_to_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.ConnectToClaim.to_claim_id)
 }
-inline std::string* ConnectToClaim::mutable_to_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_to_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.ConnectToClaim.to_claim_id)
-  return _s;
-}
-inline const std::string& ConnectToClaim::_internal_to_claim_id() const {
+inline ::int32_t ConnectToClaim::_internal_to_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.to_claim_id_.Get();
+  return _impl_.to_claim_id_;
 }
-inline void ConnectToClaim::_internal_set_to_claim_id(const std::string& value) {
+inline void ConnectToClaim::_internal_set_to_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.Set(value, GetArena());
-}
-inline std::string* ConnectToClaim::_internal_mutable_to_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.to_claim_id_.Mutable( GetArena());
-}
-inline std::string* ConnectToClaim::release_to_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.ConnectToClaim.to_claim_id)
-  return _impl_.to_claim_id_.Release();
-}
-inline void ConnectToClaim::set_allocated_to_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.to_claim_id_.IsDefault()) {
-    _impl_.to_claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.ConnectToClaim.to_claim_id)
+  _impl_.to_claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7270,100 +6964,48 @@ inline void SubmitConnectClaims::set_allocated_connection(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitConnectClaims.connection)
 }
 
-// string from_claim_id = 2 [json_name = "fromClaimId"];
+// int32 from_claim_id = 2 [json_name = "fromClaimId"];
 inline void SubmitConnectClaims::clear_from_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.ClearToEmpty();
+  _impl_.from_claim_id_ = 0;
 }
-inline const std::string& SubmitConnectClaims::from_claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t SubmitConnectClaims::from_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.SubmitConnectClaims.from_claim_id)
   return _internal_from_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SubmitConnectClaims::set_from_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void SubmitConnectClaims::set_from_claim_id(::int32_t value) {
+  _internal_set_from_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.SubmitConnectClaims.from_claim_id)
 }
-inline std::string* SubmitConnectClaims::mutable_from_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_from_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.SubmitConnectClaims.from_claim_id)
-  return _s;
-}
-inline const std::string& SubmitConnectClaims::_internal_from_claim_id() const {
+inline ::int32_t SubmitConnectClaims::_internal_from_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.from_claim_id_.Get();
+  return _impl_.from_claim_id_;
 }
-inline void SubmitConnectClaims::_internal_set_from_claim_id(const std::string& value) {
+inline void SubmitConnectClaims::_internal_set_from_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.Set(value, GetArena());
-}
-inline std::string* SubmitConnectClaims::_internal_mutable_from_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.from_claim_id_.Mutable( GetArena());
-}
-inline std::string* SubmitConnectClaims::release_from_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.SubmitConnectClaims.from_claim_id)
-  return _impl_.from_claim_id_.Release();
-}
-inline void SubmitConnectClaims::set_allocated_from_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.from_claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.from_claim_id_.IsDefault()) {
-    _impl_.from_claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitConnectClaims.from_claim_id)
+  _impl_.from_claim_id_ = value;
 }
 
-// string to_claim_id = 3 [json_name = "toClaimId"];
+// int32 to_claim_id = 3 [json_name = "toClaimId"];
 inline void SubmitConnectClaims::clear_to_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.ClearToEmpty();
+  _impl_.to_claim_id_ = 0;
 }
-inline const std::string& SubmitConnectClaims::to_claim_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t SubmitConnectClaims::to_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_event.SubmitConnectClaims.to_claim_id)
   return _internal_to_claim_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SubmitConnectClaims::set_to_claim_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void SubmitConnectClaims::set_to_claim_id(::int32_t value) {
+  _internal_set_to_claim_id(value);
   // @@protoc_insertion_point(field_set:debate_event.SubmitConnectClaims.to_claim_id)
 }
-inline std::string* SubmitConnectClaims::mutable_to_claim_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_to_claim_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.SubmitConnectClaims.to_claim_id)
-  return _s;
-}
-inline const std::string& SubmitConnectClaims::_internal_to_claim_id() const {
+inline ::int32_t SubmitConnectClaims::_internal_to_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.to_claim_id_.Get();
+  return _impl_.to_claim_id_;
 }
-inline void SubmitConnectClaims::_internal_set_to_claim_id(const std::string& value) {
+inline void SubmitConnectClaims::_internal_set_to_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.Set(value, GetArena());
-}
-inline std::string* SubmitConnectClaims::_internal_mutable_to_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.to_claim_id_.Mutable( GetArena());
-}
-inline std::string* SubmitConnectClaims::release_to_claim_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.SubmitConnectClaims.to_claim_id)
-  return _impl_.to_claim_id_.Release();
-}
-inline void SubmitConnectClaims::set_allocated_to_claim_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.to_claim_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.to_claim_id_.IsDefault()) {
-    _impl_.to_claim_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitConnectClaims.to_claim_id)
+  _impl_.to_claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7400,52 +7042,26 @@ inline void DeleteLink::_internal_set_link_id(::int32_t value) {
 
 // JoinDebate
 
-// string debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void JoinDebate::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.ClearToEmpty();
+  _impl_.debate_id_ = 0;
 }
-inline const std::string& JoinDebate::debate_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t JoinDebate::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_event.JoinDebate.debate_id)
   return _internal_debate_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void JoinDebate::set_debate_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void JoinDebate::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
   // @@protoc_insertion_point(field_set:debate_event.JoinDebate.debate_id)
 }
-inline std::string* JoinDebate::mutable_debate_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_id();
-  // @@protoc_insertion_point(field_mutable:debate_event.JoinDebate.debate_id)
-  return _s;
-}
-inline const std::string& JoinDebate::_internal_debate_id() const {
+inline ::int32_t JoinDebate::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_id_.Get();
+  return _impl_.debate_id_;
 }
-inline void JoinDebate::_internal_set_debate_id(const std::string& value) {
+inline void JoinDebate::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.Set(value, GetArena());
-}
-inline std::string* JoinDebate::_internal_mutable_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_id_.Mutable( GetArena());
-}
-inline std::string* JoinDebate::release_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_event.JoinDebate.debate_id)
-  return _impl_.debate_id_.Release();
-}
-inline void JoinDebate::set_allocated_debate_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_id_.IsDefault()) {
-    _impl_.debate_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_event.JoinDebate.debate_id)
+  _impl_.debate_id_ = value;
 }
 
 // -------------------------------------------------------------------

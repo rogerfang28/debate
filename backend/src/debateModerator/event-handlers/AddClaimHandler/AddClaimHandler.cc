@@ -10,9 +10,9 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
     // get user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     // std::string debateID = userProto.engagement().debating_info().debate_id();
-    std::string rootClaimID = userProto.engagement().debating_info().root_claim().id();
+    int rootClaimID = userProto.engagement().debating_info().root_claim().id();
     user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();
-    std::string currentClaimID = currentClaimInfo.id();
+    int currentClaimID = currentClaimInfo.id();
 
     // DebateWrapper debateWrapper;
 

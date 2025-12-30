@@ -46,7 +46,7 @@ void EditClaimHandler::SubmitEditClaim(const int& user_id, const std::string& ne
     // update the claim text in the debate wrapper
     // find current claim
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    std::string currentClaimId = userProto.engagement().debating_info().current_claim().id();
+    int currentClaimId = userProto.engagement().debating_info().current_claim().id();
 
     // change the claim text
     debateWrapper.editClaimText(currentClaimId, newClaim);
@@ -60,7 +60,7 @@ void EditClaimHandler::SubmitEditClaimDescription(const int& user_id, const std:
     // update the claim description in the debate wrapper
     // find current claim
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    std::string currentClaimId = userProto.engagement().debating_info().current_claim().id();
+    int currentClaimId = userProto.engagement().debating_info().current_claim().id();
 
     // change the description
     debateWrapper.changeDescriptionOfClaim(
