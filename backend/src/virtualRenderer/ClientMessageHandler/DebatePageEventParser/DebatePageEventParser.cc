@@ -192,6 +192,29 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::REMOVE_LINK_TO_BE_CHALLENGED);
         event.mutable_remove_link_to_be_challenged()->set_link_id(std::stoi(linkId));
     }
+
+    else if (componentId.find("viewChallengeButton_") == 0 && eventType == "onClick"){
+        std::string challengeId = componentId.substr(strlen("viewChallengeButton_"));
+        Log::debug("  GO_TO_CHALLENGE for user: " + std::to_string(user_id) + " to challenge ID: " + challengeId);
+        event.set_type(debate_event::GO_TO_CHALLENGE);
+        event.mutable_go_to_challenge()->set_challenge_id(std::stoi(challengeId));
+    }
+    else if (componentId.find("deleteChallengeButton_") == 0 && eventType == "onClick"){
+        std::string challengeId = componentId.substr(strlen("deleteChallengeButton_"));
+        Log::debug("  DELETE_CHALLENGE for user: " + std::to_string(user_id) + " challenge ID: " + challengeId);
+        event.set_type(debate_event::DELETE_CHALLENGE);
+        event.mutable_delete_challenge()->set_challenge_id(std::stoi(challengeId));
+    }
+    else if (componentId == "concedeChallengeButton" && eventType == "onClick"){
+        Log::debug("  CONCEDE_CHALLENGE for user: " + std::to_string(user_id));
+        event.set_type(debate_event::CONCEDE_CHALLENGE);
+    }
+
+    else if (componentId == "goToChallengedClaimButton" && eventType == "onClick") {
+        Log::debug("  REFRESH_DEBATE_PAGE for user: " + std::to_string(user_id));
+        event.set_type(debate_event::GO_TO_CHALLENGED_PARENT_CLAIM);
+    }
+
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);

@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKVAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFIlgKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgFEhIKCmNvbm5lY3RfdG8YAiABKAUSEgoKY29ubmVjdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFIp8BCglDaGFsbGVuZ2USHAoUY2hhbGxlbmdlZF9jbGFpbV9pZHMYASADKAUSGwoTY2hhbGxlbmdlZF9saW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSFQoNY2hhbGxlbmdlcl9pZBgEIAEoBRIkCgxwcm9vZl9kZWJhdGUYBSABKAsyDi5kZWJhdGUuRGViYXRlIiwKBVByb29mEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBSKNAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5nc2IGcHJvdG8z", [file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKoAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFEhEKCWRlYmF0ZV9pZBgJIAEoBSJYCgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoBRISCgpjb25uZWN0X3RvGAIgASgFEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgEIAEoBSK2AQoJQ2hhbGxlbmdlEiIKGmNoYWxsZW5nZWRfcGFyZW50X2NsYWltX2lkGAYgASgFEhwKFGNoYWxsZW5nZWRfY2xhaW1faWRzGAEgAygFEhsKE2NoYWxsZW5nZWRfbGlua19pZHMYAiADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAMgASgJEhUKDWNoYWxsZW5nZXJfaWQYBCABKAUSFwoPcHJvb2ZfZGViYXRlX2lkGAUgASgFIiwKBVByb29mEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBSLAAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIUCgxpc19jaGFsbGVuZ2UYByABKAgSGwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBWIGcHJvdG8z", [file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -56,6 +56,11 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: int32 creator_id = 8;
    */
   creatorId: number;
+
+  /**
+   * @generated from field: int32 debate_id = 9;
+   */
+  debateId: number;
 };
 
 /**
@@ -102,6 +107,11 @@ export const LinkSchema: GenMessage<Link> = /*@__PURE__*/
  */
 export type Challenge = Message<"debate.Challenge"> & {
   /**
+   * @generated from field: int32 challenged_parent_claim_id = 6;
+   */
+  challengedParentClaimId: number;
+
+  /**
    * @generated from field: repeated int32 challenged_claim_ids = 1;
    */
   challengedClaimIds: number[];
@@ -117,14 +127,16 @@ export type Challenge = Message<"debate.Challenge"> & {
   challengeSentence: string;
 
   /**
+   * creator id
+   *
    * @generated from field: int32 challenger_id = 4;
    */
   challengerId: number;
 
   /**
-   * @generated from field: debate.Debate proof_debate = 5;
+   * @generated from field: int32 proof_debate_id = 5;
    */
-  proofDebate?: Debate;
+  proofDebateId: number;
 };
 
 /**
@@ -189,6 +201,16 @@ export type Debate = Message<"debate.Debate"> & {
    * @generated from field: debate.DebateSettings settings = 6;
    */
   settings?: DebateSettings;
+
+  /**
+   * @generated from field: bool is_challenge = 7;
+   */
+  isChallenge: boolean;
+
+  /**
+   * @generated from field: int32 parent_challenge_id = 8;
+   */
+  parentChallengeId: number;
 };
 
 /**

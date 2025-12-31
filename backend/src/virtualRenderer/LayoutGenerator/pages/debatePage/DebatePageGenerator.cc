@@ -8,7 +8,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     page.set_title("Debate View");
     int currentUserId = engagement.user_id();
     user_engagement::DebatingInfo debatingInfo = engagement.debating_info();
-
+    bool isChallenge = debatingInfo.is_challenge();
+    int debateId = debatingInfo.debate_id();
     int currentClaimId = debatingInfo.current_claim().id();
     int currentClaimCreatorId = debatingInfo.current_claim().creator_id();
     Log::debug("[DebatePageGenerator] Current User ID: " + std::to_string(currentUserId));
@@ -114,6 +115,22 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
         "transition-colors text-sm"
     );
     ComponentGenerator::addChild(&leftTopSection, goToParentButton);
+
+    if (isChallenge) {
+        ui::Component goToChallengedClaimButton = ComponentGenerator::createButton(
+            "goToChallengedClaimButton",
+            "Go To Challenged Claim",
+            "",
+            "bg-orange-600",
+            "hover:bg-orange-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "transition-colors text-sm"
+        );
+        ComponentGenerator::addChild(&leftTopSection, goToChallengedClaimButton);
+    }
+
     ComponentGenerator::addChild(&topSection, leftTopSection);
 
     // Debate topic title in the center top
@@ -391,6 +408,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     for (const auto& challenge : challengesInfo) {
         std::string challengeId = challenge.at("id");
         std::string challengeSentence = challenge.at("sentence");
+        int challengeCreatorId = std::stoi(challenge.at("creator_id"));
+        bool userOwnsChallenge = (currentUserId == challengeCreatorId);
         
         ui::Component challengeNode = ComponentGenerator::createContainer(
             "challengeNode_" + challengeId,
@@ -413,6 +432,18 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
         );
         ComponentGenerator::addChild(&challengeNode, challengeSentenceText);
 
+        // Button container for challenge actions
+        ui::Component challengeButtonContainer = ComponentGenerator::createContainer(
+            "challengeButtonContainer_" + challengeId,
+            "flex gap-2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
         ui::Component viewChallengeButton = ComponentGenerator::createButton(
             "viewChallengeButton_" + challengeId,
             "View Challenge",
@@ -422,9 +453,27 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
             "text-white",
             "px-4 py-2",
             "rounded",
-            "transition-colors text-sm"
+            "flex-1 transition-colors text-sm"
         );
-        ComponentGenerator::addChild(&challengeNode, viewChallengeButton);
+        ComponentGenerator::addChild(&challengeButtonContainer, viewChallengeButton);
+
+        // Only show delete button if user owns the challenge
+        if (userOwnsChallenge) {
+            ui::Component deleteChallengeButton = ComponentGenerator::createButton(
+                "deleteChallengeButton_" + challengeId,
+                "Delete",
+                "",
+                "bg-red-600",
+                "hover:bg-red-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(&challengeButtonContainer, deleteChallengeButton);
+        }
+
+        ComponentGenerator::addChild(&challengeNode, challengeButtonContainer);
 
         ComponentGenerator::addChild(&challengesContainer, challengeNode);
     }

@@ -15,4 +15,5 @@ public:
     static void ConcedeChallenge(const int& user_id, DebateWrapper& debateWrapper);
     static void OpenAddChallenge(const int& user_id, DebateWrapper& debateWrapper);
     static void CloseAddChallenge(const int& user_id, DebateWrapper& debateWrapper);
+    static void DeleteChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper);
 };

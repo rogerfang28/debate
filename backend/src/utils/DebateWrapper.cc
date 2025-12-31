@@ -52,13 +52,7 @@ debate::Claim DebateWrapper::findClaim(const int& claimId) {
 }
 
 void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id) {
-    debate::Claim rootClaim;
-    rootClaim.set_sentence(topic);
-    rootClaim.set_parent_id(-1); // root claim has no parent
-    rootClaim.set_creator_id(creator_id);
-    addClaimToDB(rootClaim, creator_id);
     debate::Debate debate;
-    debate.set_root_claim_id(rootClaim.id());
     debate.set_topic(topic);
     debate.add_debater_ids(creator_id);
     debate.set_creator_id(creator_id);
@@ -70,13 +64,45 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
         return;
     }
     debate.set_id(newId);
+    debate::Claim rootClaim;
+    rootClaim.set_sentence(topic);
+    rootClaim.set_parent_id(-1); // root claim has no parent
+    rootClaim.set_creator_id(creator_id);
+    addClaimToDB(rootClaim, creator_id, newId);
+    debate.set_root_claim_id(rootClaim.id());
     std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
     debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
     debateDb.updateDebateProtobuf(debate.id(), creator_id, updatedSerializedDebate);
     debateMembersDb.addMember(newId, creator_id);
 }
 
-
+int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, const int& creator_id, const int& parent_challenge_id, debate::Debate& debateProto) {
+    Log::debug("[DebateWrapper] Initializing new proof debate with challenge sentence: " + challenge_sentence);
+    debateProto.set_topic(challenge_sentence);
+    debateProto.add_debater_ids(creator_id);
+    debateProto.set_creator_id(creator_id);
+    debateProto.set_is_challenge(true);
+    debateProto.set_parent_challenge_id(parent_challenge_id);
+    std::vector<uint8_t> serialized_debate(debateProto.ByteSizeLong());
+    debateProto.SerializeToArray(serialized_debate.data(), serialized_debate.size());
+    int newId = debateDb.addDebate(creator_id, debateProto.topic(), serialized_debate);
+    if (newId == -1) {
+        Log::error("[DebateWrapper] Failed to create new debate for topic: " + challenge_sentence);
+        return -1;
+    }
+    debateProto.set_id(newId);
+        debate::Claim rootClaim;
+    rootClaim.set_sentence(challenge_sentence);
+    rootClaim.set_parent_id(-1); // root claim has no parent
+    rootClaim.set_creator_id(creator_id);
+    addClaimToDB(rootClaim, creator_id, newId);
+    debateProto.set_root_claim_id(rootClaim.id());
+    std::vector<uint8_t> updatedSerializedDebate(debateProto.ByteSizeLong());
+    debateProto.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
+    debateDb.updateDebateProtobuf(debateProto.id(), creator_id, updatedSerializedDebate);
+    debateMembersDb.addMember(newId, creator_id);
+    return newId;
+}
 
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     debate::Claim claim = findClaim(claimId);
@@ -91,7 +117,8 @@ void DebateWrapper::addClaimUnderParent(
     const int& parentId, 
     const std::string& claimText, 
     const std::string& description,
-    const int& user_id) {
+    const int& user_id,
+    const int& debate_id) {
 
     debate::Claim parentClaimFromDB = findClaim(parentId);
 
@@ -101,13 +128,15 @@ void DebateWrapper::addClaimUnderParent(
     childClaim.set_parent_id(parentId);
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
-    addClaimToDB(childClaim, user_id);
+    childClaim.set_debate_id(debate_id);
+    addClaimToDB(childClaim, user_id, debate_id);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
 }
 
-void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id) {
+void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id) {
     claim.set_creator_id(user_id);
+    claim.set_debate_id(debate_id);
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
     int newId = statementDb.addStatement(
@@ -398,4 +427,25 @@ debate::Challenge DebateWrapper::getChallengeProtobuf(int challengeId) {
         Log::error("[DebateWrapper][ERR] Challenge with ID " + std::to_string(challengeId) + " not found.");
     }
     return challengeProto;
+}
+
+void DebateWrapper::deleteChallenge(const int& challengeId) {
+    bool success = challengeDb.deleteChallenge(challengeId);
+    if (success) {
+        Log::debug("[DebateWrapper] Successfully deleted challenge with ID " + std::to_string(challengeId));
+    } else {
+        Log::error("[DebateWrapper][ERR] Failed to delete challenge with ID " + std::to_string(challengeId));
+    }
+}
+
+void DebateWrapper::updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto) {
+    std::vector<uint8_t> protobufData(debateProto.ByteSizeLong());
+    debateProto.SerializeToArray(protobufData.data(), protobufData.size());
+    debateDb.updateDebateProtobuf(debateId, debateProto.creator_id(), protobufData);
+}
+
+int DebateWrapper::findDebateId(const int& claimId) {
+    debate::Claim claim = findClaim(claimId);
+    int debate_id = claim.debate_id();
+    return debate_id;
 }

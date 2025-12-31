@@ -232,10 +232,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::debug("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
             ChallengeHandler::SubmitChallengeClaim(event.submit_challenge_claim().challenge_sentence(),user_id, debateWrapper);
             break;
-        case debate_event::GO_TO_CHALLENGE_CLAIM:
-            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGE_CLAIM");
-            MoveUserHandler::GoToChallengeClaim(
-                event.go_to_challenge_claim().challenge_id(),
+        case debate_event::GO_TO_CHALLENGE:
+            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGE");
+            MoveUserHandler::GoToChallenge(
+                event.go_to_challenge().challenge_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
+        case debate_event::DELETE_CHALLENGE:
+            Log::debug("[DebateModerator] Event Type: DELETE_CHALLENGE");
+            ChallengeHandler::DeleteChallenge(
+                event.delete_challenge().challenge_id(),
                 user_id,
                 debateWrapper
             );
@@ -267,6 +275,10 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 user_id,
                 debateWrapper
             );
+            break;
+        case debate_event::GO_TO_CHALLENGED_PARENT_CLAIM:
+            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGED_PARENT_CLAIM");
+            MoveUserHandler::GoToParentClaimOfDebate(user_id, debateWrapper);
             break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");

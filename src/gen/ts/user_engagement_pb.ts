@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0IjwKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC51c2VyX2VuZ2FnZW1lbnQuRGViYXRlVG9waWMi/QYKDERlYmF0aW5nSW5mbxIxCg1jdXJyZW50X2NsYWltGAEgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAIgASgJEjAKDHBhcmVudF9jbGFpbRgDIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAUgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgGIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYByADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxIaChJhZGRpbmdfY2hpbGRfY2xhaW0YCCABKAgSHgoWZWRpdGluZ19jbGFpbV9zZW50ZW5jZRgJIAEoCBIhChllZGl0aW5nX2NsYWltX2Rlc2NyaXB0aW9uGAogASgIEhcKD3JlcG9ydGluZ19jbGFpbRgLIAEoCBJFCg9jb25uZWN0aW5nX2luZm8YDCABKAsyLC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNvbm5lY3RpbmdJbmZvEhkKEWNoYWxsZW5naW5nX2NsYWltGA0gASgIEkcKEGNoYWxsZW5naW5nX2luZm8YDiABKAsyLS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYWxsZW5naW5nSW5mbxqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCCI9CglDbGFpbUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSILCglMb2dpbkluZm8iaAoITGlua0luZm8SCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFIkEKDUNoYWxsZW5nZUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSKXAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIQCgh1c2VybmFtZRgFIAEoCRIPCgd1c2VyX2lkGAYgASgFEi4KCWhvbWVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ib21lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSAASMAoKbG9naW5faW5mbxgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5Mb2dpbkluZm9IAEINCgthY3Rpb25faW5mbyptChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX0hPTUUQARITCg9BQ1RJT05fREVCQVRJTkcQAhIQCgxBQ1RJT05fTE9HSU4QA2IGcHJvdG8z");
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0InEKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSI6CgpEZWJhdGVMaXN0EiwKBnRvcGljcxgBIAMoCzIcLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVUb3BpYyLeBwoMRGViYXRpbmdJbmZvEhEKCWRlYmF0ZV9pZBgBIAEoBRIUCgxpc19jaGFsbGVuZ2UYECABKAgSGgoSY2hhbGxlbmdlZF91c2VyX2lkGBEgASgFEhoKEmNoYWxsZW5nZXJfdXNlcl9pZBgSIAEoBRIxCg1jdXJyZW50X2NsYWltGAIgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAMgASgJEjAKDHBhcmVudF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgFIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAYgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgHIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYCCADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxIaChJhZGRpbmdfY2hpbGRfY2xhaW0YCSABKAgSHgoWZWRpdGluZ19jbGFpbV9zZW50ZW5jZRgKIAEoCBIhChllZGl0aW5nX2NsYWltX2Rlc2NyaXB0aW9uGAsgASgIEhcKD3JlcG9ydGluZ19jbGFpbRgMIAEoCBJFCg9jb25uZWN0aW5nX2luZm8YDSABKAsyLC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNvbm5lY3RpbmdJbmZvEhkKEWNoYWxsZW5naW5nX2NsYWltGA4gASgIEkcKEGNoYWxsZW5naW5nX2luZm8YDyABKAsyLS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYWxsZW5naW5nSW5mbxqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCCI9CglDbGFpbUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSILCglMb2dpbkluZm8iaAoITGlua0luZm8SCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFIkEKDUNoYWxsZW5nZUluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBSKXAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIQCgh1c2VybmFtZRgFIAEoCRIPCgd1c2VyX2lkGAYgASgFEi4KCWhvbWVfaW5mbxgCIAEoCzIZLnVzZXJfZW5nYWdlbWVudC5Ib21lSW5mb0gAEjYKDWRlYmF0aW5nX2luZm8YAyABKAsyHS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvSAASMAoKbG9naW5faW5mbxgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5Mb2dpbkluZm9IAEINCgthY3Rpb25faW5mbyptChBFbmdhZ2VtZW50QWN0aW9uEiEKHUVOR0FHRU1FTlRfQUNUSU9OX1VOU1BFQ0lGSUVEEAASDwoLQUNUSU9OX0hPTUUQARITCg9BQ1RJT05fREVCQVRJTkcQAhIQCgxBQ1RJT05fTE9HSU4QA2IGcHJvdG8z");
 
 /**
  * @generated from message user_engagement.HomeInfo
@@ -49,6 +49,16 @@ export type DebateTopic = Message<"user_engagement.DebateTopic"> & {
    * @generated from field: int32 creator_id = 3;
    */
   creatorId: number;
+
+  /**
+   * @generated from field: bool is_challenge = 4;
+   */
+  isChallenge: boolean;
+
+  /**
+   * @generated from field: string claim_its_challenging = 5;
+   */
+  claimItsChallenging: string;
 };
 
 /**
@@ -80,102 +90,122 @@ export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
  */
 export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   /**
-   * string debate_id = 1;
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+
+  /**
+   * whether the current debate is a challenge debate
    *
+   * @generated from field: bool is_challenge = 16;
+   */
+  isChallenge: boolean;
+
+  /**
+   * @generated from field: int32 challenged_user_id = 17;
+   */
+  challengedUserId: number;
+
+  /**
+   * @generated from field: int32 challenger_user_id = 18;
+   */
+  challengerUserId: number;
+
+  /**
    * current claim being viewed/argued
    *
-   * @generated from field: user_engagement.ClaimInfo current_claim = 1;
+   * @generated from field: user_engagement.ClaimInfo current_claim = 2;
    */
   currentClaim?: ClaimInfo;
 
   /**
    * description of the current claim
    *
-   * @generated from field: string current_claim_description = 2;
+   * @generated from field: string current_claim_description = 3;
    */
   currentClaimDescription: string;
 
   /**
    * parent claim of the current claim
    *
-   * @generated from field: user_engagement.ClaimInfo parent_claim = 3;
+   * @generated from field: user_engagement.ClaimInfo parent_claim = 4;
    */
   parentClaim?: ClaimInfo;
 
   /**
    * root claim of the debate
    *
-   * @generated from field: user_engagement.ClaimInfo root_claim = 4;
+   * @generated from field: user_engagement.ClaimInfo root_claim = 5;
    */
   rootClaim?: ClaimInfo;
 
   /**
    * child claims of the current claim
    *
-   * @generated from field: repeated user_engagement.ClaimInfo children_claims = 5;
+   * @generated from field: repeated user_engagement.ClaimInfo children_claims = 6;
    */
   childrenClaims: ClaimInfo[];
 
   /**
    * links under the current claim
    *
-   * @generated from field: repeated user_engagement.LinkInfo links = 6;
+   * @generated from field: repeated user_engagement.LinkInfo links = 7;
    */
   links: LinkInfo[];
 
   /**
    * challenges against the current claim
    *
-   * @generated from field: repeated user_engagement.ChallengeInfo current_challenges = 7;
+   * @generated from field: repeated user_engagement.ChallengeInfo current_challenges = 8;
    */
   currentChallenges: ChallengeInfo[];
 
   /**
    * whether the add child claim modal is opened
    *
-   * @generated from field: bool adding_child_claim = 8;
+   * @generated from field: bool adding_child_claim = 9;
    */
   addingChildClaim: boolean;
 
   /**
    * whether the user is editing the current claim
    *
-   * @generated from field: bool editing_claim_sentence = 9;
+   * @generated from field: bool editing_claim_sentence = 10;
    */
   editingClaimSentence: boolean;
 
   /**
    * whether the user is editing the current claim description
    *
-   * @generated from field: bool editing_claim_description = 10;
+   * @generated from field: bool editing_claim_description = 11;
    */
   editingClaimDescription: boolean;
 
   /**
    * whether the user is reporting the current claim
    *
-   * @generated from field: bool reporting_claim = 11;
+   * @generated from field: bool reporting_claim = 12;
    */
   reportingClaim: boolean;
 
   /**
    * info about connecting claims
    *
-   * @generated from field: user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12;
+   * @generated from field: user_engagement.DebatingInfo.ConnectingInfo connecting_info = 13;
    */
   connectingInfo?: DebatingInfo_ConnectingInfo;
 
   /**
    * whether the user is trying to challenge the current claim
    *
-   * @generated from field: bool challenging_claim = 13;
+   * @generated from field: bool challenging_claim = 14;
    */
   challengingClaim: boolean;
 
   /**
    * info about challenging claims
    *
-   * @generated from field: user_engagement.DebatingInfo.ChallengingInfo challenging_info = 14;
+   * @generated from field: user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15;
    */
   challengingInfo?: DebatingInfo_ChallengingInfo;
 };

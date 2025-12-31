@@ -9,7 +9,8 @@ public:
     static bool GoHome(const int& user_id, DebateWrapper& debateWrapper);
     static void GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper);
-    static void GoToChallengeClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
+    static void GoToChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper);
+    static void GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper);
 private:
     static void resetOngoingActivities(const int& user_id, DebateWrapper& debateWrapper); // like if connecting a claim, stop
 };

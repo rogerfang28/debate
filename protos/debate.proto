@@ -13,6 +13,7 @@ message Claim {
   repeated int32 children_ids = 5;
   Proof proof = 7; // proof structure for this claim
   int32 creator_id = 8;
+  int32 debate_id = 9;
 }
 
 message Link {
@@ -23,11 +24,12 @@ message Link {
 }
 
 message Challenge {
+  int32 challenged_parent_claim_id = 6;
   repeated int32 challenged_claim_ids = 1;
   repeated int32 challenged_link_ids = 2;
   string challenge_sentence = 3;
-  int32 challenger_id = 4;
-  Debate proof_debate = 5;
+  int32 challenger_id = 4; // creator id
+  int32 proof_debate_id = 5;
 }
 
 message Proof {
@@ -42,4 +44,6 @@ message Debate {
   repeated int32 debater_ids = 4;
   int32 creator_id = 5;
   debate.DebateSettings settings = 6;
+  bool is_challenge = 7;
+  int32 parent_challenge_id = 8;
 }

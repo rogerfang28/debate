@@ -138,11 +138,15 @@ message SubmitChallengeClaim {
     string challenge_sentence = 1;
 }
 
-message GoToChallengeClaim {
+message GoToChallenge {
     int32 challenge_id = 1;
 }
 
 message ConcedeChallenge {
+    int32 challenge_id = 1;
+}
+
+message DeleteChallenge {
     int32 challenge_id = 1;
 }
 
@@ -185,13 +189,15 @@ enum EventType {
     ADD_CLAIM_TO_BE_CHALLENGED = 32;
     ADD_LINK_TO_BE_CHALLENGED = 33;
     SUBMIT_CHALLENGE_CLAIM = 34;
-    GO_TO_CHALLENGE_CLAIM = 35;
+    GO_TO_CHALLENGE = 35;
     CONCEDE_CHALLENGE = 36;
     CANCEL_CHALLENGE_CLAIM = 37;
     OPEN_ADD_CHALLENGE = 38;
     CLOSE_ADD_CHALLENGE = 39;
     REMOVE_CLAIM_TO_BE_CHALLENGED = 40;
     REMOVE_LINK_TO_BE_CHALLENGED = 41;
+    DELETE_CHALLENGE = 42;
+    GO_TO_CHALLENGED_PARENT_CLAIM = 43;
 }
 
 message UserAuthInfo {
@@ -239,9 +245,10 @@ message DebateEvent {
     AddClaimToBeChallenged add_claim_to_be_challenged = 38;
     AddLinkToBeChallenged add_link_to_be_challenged = 39;
     SubmitChallengeClaim submit_challenge_claim = 40;
-    GoToChallengeClaim go_to_challenge_claim = 41;
+    GoToChallenge go_to_challenge = 41;
     ConcedeChallenge concede_challenge = 42;
     RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46;
     RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
+    DeleteChallenge delete_challenge = 48;
   }
 }

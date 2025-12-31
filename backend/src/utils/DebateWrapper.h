@@ -24,7 +24,8 @@ public:
         const int& parentId, 
         const std::string& claimText, 
         const std::string& connectionToParent,
-        const int& user_id);
+        const int& user_id,
+        const int& debate_id);
     void changeDescriptionOfClaim(
         const int& claimId,
         const std::string& newDescription);
@@ -59,8 +60,16 @@ public:
         const int& creator_id,
         const int& challenged_claim_id,
         debate::Challenge challengeProtobuf);
+    void deleteChallenge(const int& challengeId);
     std::vector<int> getChallengesAgainstClaim(const int& claimId);
     debate::Challenge getChallengeProtobuf(int challengeId);
+    int initNewProofDebate(
+        const std::string& challengeSentence,
+        const int& creator_id,
+        const int& parent_challenge_id,
+        debate::Debate& debateProto);
+    void updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto);
+    int findDebateId(const int& claimId);
 
 private:
     debate::Claim* findClaimProto(const int& claimId);
@@ -70,6 +79,6 @@ private:
     DebateMembersDatabase& debateMembersDb;
     LinkDatabase& linkDb;
     ChallengeDatabase& challengeDb;
-    void addClaimToDB(debate::Claim& claim, const int& user_id);
+    void addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id);
     // void updateClaimInDB(const debate::Claim& claim);
 };

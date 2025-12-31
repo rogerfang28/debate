@@ -13,6 +13,7 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
     int rootClaimID = userProto.engagement().debating_info().root_claim().id();
     user_engagement::ClaimInfo currentClaimInfo = userProto.engagement().debating_info().current_claim();
     int currentClaimID = currentClaimInfo.id();
+    int debate_id = userProto.engagement().debating_info().debate_id();
 
     // DebateWrapper debateWrapper;
 
@@ -20,7 +21,8 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
         currentClaimID, // parentId
         claim_text,
         description,
-        user_id
+        user_id,
+        debate_id
     );
 
     CloseAddChildClaim(user_id, debateWrapper);
