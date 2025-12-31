@@ -36,6 +36,7 @@ message DebatingInfo {
   bool editing_claim_sentence = 9; // whether the user is editing the current claim
   bool editing_claim_description = 10; // whether the user is editing the current claim description
   bool reporting_claim = 11; // whether the user is reporting the current claim
+
   message ConnectingInfo {
     int32 from_claim_id = 1;
     int32 to_claim_id   = 2;
@@ -44,6 +45,15 @@ message DebatingInfo {
     bool opened_connect_modal = 5;  
   }
   ConnectingInfo connecting_info = 12; // info about connecting claims
+
+  bool challenging_claim = 13; // whether the user is trying to challenge the current claim
+  message ChallengingInfo {
+    repeated int32 claim_ids = 1; // claim ids to be challenged
+    repeated int32 link_ids = 2; // link ids to be challenged
+    string challenge_sentence = 3; // sentence for the challenge
+    bool opened_challenge_modal = 4;
+  }
+  ChallengingInfo challenging_info = 14; // info about challenging claims
 }
 
 message ClaimInfo {

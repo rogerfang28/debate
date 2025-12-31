@@ -29,6 +29,7 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         user_engagement::DebateTopic* topicProto = debateListProto.add_topics();
         topicProto->set_id(debateProto.id());
         topicProto->set_topic(debateProto.topic());
+        topicProto->set_creator_id(debateProto.creator_id());
         Log::debug("[HomePageResponseGenerator] Added debate to list: ID = "
                   + std::to_string(debateProto.id()) + ", Topic = " + debateProto.topic());
     }

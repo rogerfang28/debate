@@ -138,7 +138,74 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             Log::error("Failed to parse link ID: " + linkIdStr + " - " + e.what());
             event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
         }
-    } else {
+    }
+    else if (componentId == "challengeClaimButton" && eventType == "onClick") {
+        Log::debug("  CHALLENGE_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::START_CHALLENGE_CLAIM);
+    } 
+    else if (componentId == "cancelChallengeButton" && eventType == "onClick") {
+        Log::debug("  CANCEL_CHALLENGE_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::CANCEL_CHALLENGE_CLAIM);
+    }
+    else if (componentId.find("addClaimToChallengeButton_") == 0 && eventType == "onClick") {
+        std::string claimId = componentId.substr(strlen("addClaimToChallengeButton_"));
+        Log::debug("  ADD_CLAIM_TO_BE_CHALLENGED for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+        event.mutable_add_claim_to_be_challenged()->set_claim_id(std::stoi(claimId));
+    } 
+    else if (componentId.find("addLinkToChallengeButton_") == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("addLinkToChallengeButton_"));
+        Log::debug("  ADD_LINK_TO_BE_CHALLENGED for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::ADD_LINK_TO_BE_CHALLENGED);
+        event.mutable_add_link_to_be_challenged()->set_link_id(std::stoi(linkId));
+    }
+    else if (componentId == "openCreateChallengeButton" && eventType == "onClick") {
+        Log::debug("  OPEN_ADD_CHALLENGE for user: " + std::to_string(user_id));
+        event.set_type(debate_event::OPEN_ADD_CHALLENGE);
+    }
+    else if (componentId == "closeCreateChallengeButton" && eventType == "onClick") {
+        Log::debug("  CLOSE_ADD_CHALLENGE for user: " + std::to_string(user_id));
+        event.set_type(debate_event::CANCEL_CHALLENGE_CLAIM);
+    } 
+    else if (componentId == "submitCreateChallengeButton" && eventType == "onClick") {
+        Log::debug("  SUBMIT_CHALLENGE_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
+        // find the challenge claim from the message
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            auto* submitEvent = event.mutable_submit_challenge_claim();
+            if (comp.id() == "challengeClaimInput") {
+                submitEvent->set_challenge_sentence(comp.value());
+                Log::debug("  Challenge sentence: " + comp.value());
+            }
+        }
+    }
+    else if (componentId.find("removeClaimFromChallengeButton_") == 0 && eventType == "onClick") {
+        std::string claimId = componentId.substr(strlen("removeClaimFromChallengeButton_"));
+        Log::debug("  REMOVE_CLAIM_TO_BE_CHALLENGED for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::REMOVE_CLAIM_TO_BE_CHALLENGED);
+        event.mutable_remove_claim_to_be_challenged()->set_claim_id(std::stoi(claimId));
+    } 
+    else if (componentId.find("removeLinkFromChallengeButton_") == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("removeLinkFromChallengeButton_"));
+        Log::debug("  REMOVE_LINK_TO_BE_CHALLENGED for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::REMOVE_LINK_TO_BE_CHALLENGED);
+        event.mutable_remove_link_to_be_challenged()->set_link_id(std::stoi(linkId));
+    }
+    else if (componentId == "submitChallengeButton" && eventType == "onClick") {
+        Log::debug("  SUBMIT_CHALLENGE for user: " + std::to_string(user_id));
+        event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
+        // find the report reason from the message
+        const auto& pageData = message.page_data().components();
+        for (const auto& comp : pageData) { 
+            auto* submitEvent = event.mutable_submit_challenge_claim();
+            if (comp.id() == "challengeClaimInput") {
+                submitEvent->set_challenge_sentence(comp.value());
+                Log::debug("  Challenge sentence: " + comp.value());
+            }
+        }
+    }
+    else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);

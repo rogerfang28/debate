@@ -31,7 +31,7 @@ message Debate {
   int32 id = 1;
   int32 root_claim_id = 2;
   string topic = 3;
-  repeated string debaters = 4;
+  repeated int32 debater_ids = 4;
   int32 creator_id = 5;
   debate.DebateSettings settings = 6;
 }

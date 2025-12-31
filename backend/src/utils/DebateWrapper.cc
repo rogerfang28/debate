@@ -54,11 +54,12 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     rootClaim.set_parent_id(-1); // root claim has no parent
+    rootClaim.set_creator_id(creator_id);
     addClaimToDB(rootClaim, creator_id);
     debate::Debate debate;
     debate.set_root_claim_id(rootClaim.id());
     debate.set_topic(topic);
-    debate.add_debaters(std::to_string(creator_id));
+    debate.add_debater_ids(creator_id);
     debate.set_creator_id(creator_id);
     std::vector<uint8_t> serialized_debate(debate.ByteSizeLong());
     debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
@@ -98,12 +99,14 @@ void DebateWrapper::addClaimUnderParent(
     childClaim.set_sentence(claimText);
     childClaim.set_parent_id(parentId);
     childClaim.set_description(description);
+    childClaim.set_creator_id(user_id);
     addClaimToDB(childClaim, user_id);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
 }
 
 void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id) {
+    claim.set_creator_id(user_id);
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
     int newId = statementDb.addStatement(

@@ -22,6 +22,9 @@
 // connect claims
 #include "event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.h"
 
+// challenge
+#include "event-handlers/ChallengeHandler/ChallengeHandler.h"
+
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
@@ -203,6 +206,67 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 debateWrapper
             );
             break;
+        // challenges
+        case debate_event::START_CHALLENGE_CLAIM:
+            Log::debug("[DebateModerator] Event Type: START_CHALLENGE_CLAIM");
+            ChallengeHandler::StartChallengeClaim(user_id, debateWrapper);
+            break;
+        case debate_event::ADD_CLAIM_TO_BE_CHALLENGED:
+            Log::debug("[DebateModerator] Event Type: ADD_CLAIM_TO_BE_CHALLENGED");
+            ChallengeHandler::AddClaimToBeChallenged(
+                event.add_claim_to_be_challenged().claim_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
+        case debate_event::ADD_LINK_TO_BE_CHALLENGED:
+            Log::debug("[DebateModerator] Event Type: ADD_LINK_TO_BE_CHALLENGED");
+            ChallengeHandler::AddLinkToBeChallenged(
+                event.add_link_to_be_challenged().link_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
+        case debate_event::SUBMIT_CHALLENGE_CLAIM:
+            Log::debug("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
+            ChallengeHandler::SubmitChallengeClaim(event.submit_challenge_claim().challenge_sentence(),user_id, debateWrapper);
+            break;
+        case debate_event::GO_TO_CHALLENGE_CLAIM:
+            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGE_CLAIM");
+            MoveUserHandler::GoToChallengeClaim(
+                event.go_to_challenge_claim().challenge_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
+        case debate_event::CONCEDE_CHALLENGE:
+            Log::debug("[DebateModerator] Event Type: CONCEDE_CHALLENGE");
+            ChallengeHandler::ConcedeChallenge(user_id, debateWrapper);
+            break;
+        case debate_event::CANCEL_CHALLENGE_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CANCEL_CHALLENGE_CLAIM");
+            ChallengeHandler::CancelChallengeClaim(user_id, debateWrapper);
+            break;
+        case debate_event::OPEN_ADD_CHALLENGE:
+            Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHALLENGE");
+            ChallengeHandler::OpenAddChallenge(user_id, debateWrapper);
+            break;
+        case debate_event::REMOVE_CLAIM_TO_BE_CHALLENGED:
+            Log::debug("[DebateModerator] Event Type: REMOVE_CLAIM_TO_BE_CHALLENGED");
+            ChallengeHandler::RemoveClaimToBeChallenged(
+                event.remove_claim_to_be_challenged().claim_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
+        case debate_event::REMOVE_LINK_TO_BE_CHALLENGED:
+            Log::debug("[DebateModerator] Event Type: REMOVE_LINK_TO_BE_CHALLENGED");
+            ChallengeHandler::RemoveLinkToBeChallenged(
+                event.remove_link_to_be_challenged().link_id(),
+                user_id,
+                debateWrapper
+            );
+            break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
@@ -222,6 +286,9 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // now we get info from the database
     userProto = debateWrapper.getUserProtobuf(user_id);
     *responseMessage.mutable_engagement() = userProto.engagement();
+    // set up
+    responseMessage.mutable_engagement()->set_username(user);
+    responseMessage.mutable_engagement()->set_user_id(user_id);
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {

@@ -18,6 +18,18 @@ ui::Page ErrorPageGenerator::GenerateErrorPage() {
         "text-white"
     );
 
+    
+    // Help text
+    ui::Component helpText = ComponentGenerator::createText(
+        "helpText",
+        "If the home button doesn't work, try clearing cookies on the website.",
+        "text-sm",
+        "text-gray-500",
+        "mt-2",
+        "text-center"
+    );
+    ComponentGenerator::addChild(&main, helpText);
+
     // Title
     ui::Component title = ComponentGenerator::createText(
         "title",

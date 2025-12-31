@@ -40,17 +40,6 @@ ui::Page LoginPageGenerator::GenerateLoginPage() {
     );
     ComponentGenerator::addChild(&main, description);
 
-    // Help text
-    ui::Component helpText = ComponentGenerator::createText(
-        "helpText",
-        "If the home button doesn't work, try clearing cookies on the website.",
-        "text-sm",
-        "text-gray-500",
-        "mt-2",
-        "text-center"
-    );
-    ComponentGenerator::addChild(&main, helpText);
-
     // Username input
     ui::Component usernameInput = ComponentGenerator::createInput(
         "usernameInput",

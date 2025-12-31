@@ -53,6 +53,8 @@ set(SRC_FILES
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
 
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser/LoginPageEventParser.cc
 
     # build response

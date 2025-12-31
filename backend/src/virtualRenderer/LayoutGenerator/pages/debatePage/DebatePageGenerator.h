@@ -5,5 +5,5 @@
 
 class DebatePageGenerator {
 public:
-    static ui::Page GenerateDebatePage(user_engagement::DebatingInfo debatingInfo);
+    static ui::Page GenerateDebatePage(user_engagement::UserEngagement engagement);
 };

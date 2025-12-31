@@ -2,23 +2,40 @@
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/Log.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo debatingInfo) {
+ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement engagement) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View");
+    int currentUserId = engagement.user_id();
+    user_engagement::DebatingInfo debatingInfo = engagement.debating_info();
 
     int currentClaimId = debatingInfo.current_claim().id();
+    int currentClaimCreatorId = debatingInfo.current_claim().creator_id();
+    Log::debug("[DebatePageGenerator] Current User ID: " + std::to_string(currentUserId));
+    Log::debug("[DebatePageGenerator] Current Claim ID: " + std::to_string(currentClaimId));
+    Log::debug("[DebatePageGenerator] Current Claim Creator ID: " + std::to_string(currentClaimCreatorId));
     std::string debate_topic = debatingInfo.root_claim().sentence();
     std::string claim = debatingInfo.current_claim().sentence();
-    std::vector<std::pair<std::string,std::string>> childClaimInfo;
+    std::vector<std::tuple<std::string,std::string,int>> childClaimInfo; // id, sentence, creator_id
     for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
         const user_engagement::ClaimInfo& claim = debatingInfo.children_claims(i);
-        childClaimInfo.push_back({std::to_string(claim.id()), claim.sentence()});
+        childClaimInfo.push_back({std::to_string(claim.id()), claim.sentence(), claim.creator_id()});
     }
     bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
     bool editingClaimDescription = debatingInfo.editing_claim_description();
     bool editingClaimSentence = debatingInfo.editing_claim_sentence();
     bool openedConnectModal = debatingInfo.connecting_info().opened_connect_modal();
+    bool challengingClaim = debatingInfo.challenging_claim();
+    bool openedAddChallengeModal = debatingInfo.challenging_info().opened_challenge_modal();
+    std::vector<int> currentChallengedClaimIds;
+    std::vector<int> currentChallengedLinkIds;
+    // std::string currentChallengeSentence = debatingInfo.challenging_info().challenge_sentence();
+    for (int i = 0; i < debatingInfo.challenging_info().claim_ids_size(); i++) {
+        currentChallengedClaimIds.push_back(debatingInfo.challenging_info().claim_ids(i));
+    }
+    for (int i = 0; i < debatingInfo.challenging_info().link_ids_size(); i++) {
+        currentChallengedLinkIds.push_back(debatingInfo.challenging_info().link_ids(i));
+    }
     std::string currentClaimDescription = debatingInfo.current_claim_description();
     Log::debug("[DebatePageGenerator] Debate Topic: " + debate_topic);
     Log::debug("[DebatePageGenerator] Current Claim: " + claim);
@@ -190,7 +207,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
         ComponentGenerator::addChild(&focusingOnClaim, claimEditActions);
     } else {
-        // View mode: show text and edit button
+        // View mode: show text and edit button (only if user owns the claim)
         ui::Component claimTitleContainer = ComponentGenerator::createContainer(
             "claimTitleContainer",
             "flex items-center justify-center gap-3",
@@ -212,18 +229,21 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         );
         ComponentGenerator::addChild(&claimTitleContainer, currentClaimTitle);
 
-        ui::Component editClaimButton = ComponentGenerator::createButton(
-            "editClaimButton",
-            "Edit",
-            "",
-            "bg-yellow-600",
-            "hover:bg-yellow-700",
-            "text-white",
-            "px-3 py-1",
-            "rounded",
-            "transition-colors text-xs"
-        );
-        ComponentGenerator::addChild(&claimTitleContainer, editClaimButton);
+        // Only show edit button if user owns the claim
+        if (currentUserId == currentClaimCreatorId) {
+            ui::Component editClaimButton = ComponentGenerator::createButton(
+                "editClaimButton",
+                "Edit",
+                "",
+                "bg-yellow-600",
+                "hover:bg-yellow-700",
+                "text-white",
+                "px-3 py-1",
+                "rounded",
+                "transition-colors text-xs"
+            );
+            ComponentGenerator::addChild(&claimTitleContainer, editClaimButton);
+        }
 
         ComponentGenerator::addChild(&focusingOnClaim, claimTitleContainer);
     }
@@ -527,45 +547,92 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
             ""
         );
 
-        ui::Component editDescriptionButton = ComponentGenerator::createButton(
-            "editDescriptionButton",
-            "Edit Description",
-            "",
-            "bg-yellow-600",
-            "hover:bg-yellow-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "transition-colors text-sm"
-        );
+        // Check if user owns the current claim
+        if (currentUserId == currentClaimCreatorId) {
+            // User owns the claim - show edit, add, delete buttons
+            ui::Component editDescriptionButton = ComponentGenerator::createButton(
+                "editDescriptionButton",
+                "Edit Description",
+                "",
+                "bg-yellow-600",
+                "hover:bg-yellow-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(&descriptionActions, editDescriptionButton);
 
-        ComponentGenerator::addChild(&descriptionActions, editDescriptionButton);
+            ui::Component addChildClaim = ComponentGenerator::createButton(
+                "addChildClaimButton",
+                "Add Child Claim",
+                "",
+                "bg-green-600",
+                "hover:bg-green-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(&descriptionActions, addChildClaim);
 
-        ui::Component addChildClaim = ComponentGenerator::createButton(
-            "addChildClaimButton",
-            "Add Child Claim",
-            "",
-            "bg-green-600",
-            "hover:bg-green-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "transition-colors text-sm"
-        );
-        ComponentGenerator::addChild(&descriptionActions, addChildClaim);
+            ui::Component deleteStatementButton = ComponentGenerator::createButton(
+                "deleteStatementButton",
+                "Delete Statement",
+                "",
+                "bg-red-600",
+                "hover:bg-red-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition-colors text-sm"
+            );
+            // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
+        } else {
+            // User does NOT own the claim - show Challenge Claim or Cancel/Submit Challenge buttons
+            if (challengingClaim) {
+                // Currently challenging - show Cancel and Submit Challenge buttons
+                ui::Component cancelChallengeButton = ComponentGenerator::createButton(
+                    "cancelChallengeButton",
+                    "Cancel Challenge",
+                    "",
+                    "bg-gray-600",
+                    "hover:bg-gray-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&descriptionActions, cancelChallengeButton);
 
-        ui::Component deleteStatementButton = ComponentGenerator::createButton(
-            "deleteStatementButton",
-            "Delete Statement",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "transition-colors text-sm"
-        );
-        // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
+                ui::Component openCreateChallengeButton = ComponentGenerator::createButton(
+                    "openCreateChallengeButton",
+                    "Create Challenge",
+                    "",
+                    "bg-green-600",
+                    "hover:bg-green-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&descriptionActions, openCreateChallengeButton);
+            } else {
+                // Not challenging - show Challenge Claim button in orange
+                ui::Component challengeClaimButton = ComponentGenerator::createButton(
+                    "challengeClaimButton",
+                    "Challenge Claim",
+                    "",
+                    "bg-orange-600",
+                    "hover:bg-orange-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&descriptionActions, challengeClaimButton);
+            }
+        }
 
         ComponentGenerator::addChild(&descriptionBox, descriptionActions);
     }
@@ -606,7 +673,12 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
     // Use actual child claims from the vector
     for (size_t i = 0; i < childClaimInfo.size(); i++) {
-        std::string nodeId = "childNode_" + childClaimInfo[i].first;
+        std::string claimId = std::get<0>(childClaimInfo[i]);
+        std::string claimSentence = std::get<1>(childClaimInfo[i]);
+        int claimCreatorId = std::get<2>(childClaimInfo[i]);
+        bool userOwnsChildClaim = (currentUserId == claimCreatorId);
+        
+        std::string nodeId = "childNode_" + claimId;
         ui::Component childNode = ComponentGenerator::createContainer(
             nodeId,
             "",
@@ -620,7 +692,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
-            childClaimInfo[i].second,
+            claimSentence,
             "",
             "text-white",
             "",
@@ -630,7 +702,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
         // Display connections from this claim
         for (const auto& link : linkInfo) {
-            if (std::get<1>(link) == childClaimInfo[i].first) {
+            if (std::get<1>(link) == claimId) {
                 // This claim has a connection - find the target claim sentence
                 std::string targetSentence = "";
                 std::string linkId = std::get<0>(link);
@@ -643,8 +715,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
                 } else {
                     // Search in child claims
                     for (const auto& childClaim : childClaimInfo) {
-                        if (childClaim.first == targetId) {
-                            targetSentence = childClaim.second;
+                        if (std::get<0>(childClaim) == targetId) {
+                            targetSentence = std::get<1>(childClaim);
                             break;
                         }
                     }
@@ -698,20 +770,71 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
 
                 ComponentGenerator::addChild(&linkContainer, linkTextContainer);
 
-                // Delete link button
-                ui::Component deleteLinkButton = ComponentGenerator::createButton(
-                    "deleteLinkButton_" + linkId,
-                    "Delete",
+                // Button container for link actions
+                ui::Component linkButtonContainer = ComponentGenerator::createContainer(
+                    nodeId + "_linkButtonContainer_" + linkId,
+                    "flex gap-1",
                     "",
-                    "bg-red-600",
-                    "hover:bg-red-700",
-                    "text-white",
-                    "px-2 py-1",
-                    "rounded",
-                    "transition-colors text-xs"
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
                 );
-                ComponentGenerator::addChild(&linkContainer, deleteLinkButton);
 
+                // Delete link button - only show if user owns the child claim (the "from" claim)
+                if (userOwnsChildClaim) {
+                    ui::Component deleteLinkButton = ComponentGenerator::createButton(
+                        "deleteLinkButton_" + linkId,
+                        "Delete",
+                        "",
+                        "bg-red-600",
+                        "hover:bg-red-700",
+                        "text-white",
+                        "px-2 py-1",
+                        "rounded",
+                        "transition-colors text-xs"
+                    );
+                    ComponentGenerator::addChild(&linkButtonContainer, deleteLinkButton);
+                }
+
+                // Challenge buttons - show if user is challenging claim
+                if (challengingClaim) {
+                    // Check if this link is in the current challenge
+                    bool linkInChallenge = std::find(currentChallengedLinkIds.begin(), 
+                                                     currentChallengedLinkIds.end(), 
+                                                     std::stoi(linkId)) != currentChallengedLinkIds.end();
+                    
+                    if (linkInChallenge) {
+                        ui::Component removeLinkFromChallengeButton = ComponentGenerator::createButton(
+                            "removeLinkFromChallengeButton_" + linkId,
+                            "Remove from Challenge",
+                            "",
+                            "bg-orange-600",
+                            "hover:bg-orange-700",
+                            "text-white",
+                            "px-2 py-1",
+                            "rounded",
+                            "transition-colors text-xs"
+                        );
+                        ComponentGenerator::addChild(&linkButtonContainer, removeLinkFromChallengeButton);
+                    } else {
+                        ui::Component addLinkToChallengeButton = ComponentGenerator::createButton(
+                            "addLinkToChallengeButton_" + linkId,
+                            "Add to Challenge",
+                            "",
+                            "bg-orange-600",
+                            "hover:bg-orange-700",
+                            "text-white",
+                            "px-2 py-1",
+                            "rounded",
+                            "transition-colors text-xs"
+                        );
+                        ComponentGenerator::addChild(&linkButtonContainer, addLinkToChallengeButton);
+                    }
+                }
+
+                ComponentGenerator::addChild(&linkContainer, linkButtonContainer);
                 ComponentGenerator::addChild(&childNode, linkContainer);
             }
         }
@@ -728,7 +851,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         );
 
         ui::Component childNodeButton = ComponentGenerator::createButton(
-            "viewChildNodeButton_" + childClaimInfo[i].first,
+            "viewChildNodeButton_" + claimId,
             "View Claim",
             "",
             "bg-blue-600",
@@ -740,27 +863,80 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         );
         ComponentGenerator::addChild(&childNodeButtonContainer, childNodeButton);
 
-        // Add connection buttons based on connecting state
-        if (connecting) {
-            // If we're connecting and this is the FROM claim, show Cancel button
-            if (childClaimInfo[i].first == fromClaimId) {
-                ui::Component cancelConnectClaimsButton = ComponentGenerator::createButton(
-                    "cancelConnectClaimsButton_" + childClaimInfo[i].first,
-                    "Cancel Connection",
+        // Challenge buttons - show if user is challenging claim
+        if (challengingClaim) {
+            // Check if this claim is in the current challenge
+            bool claimInChallenge = std::find(currentChallengedClaimIds.begin(), 
+                                             currentChallengedClaimIds.end(), 
+                                             std::stoi(claimId)) != currentChallengedClaimIds.end();
+            
+            if (claimInChallenge) {
+                ui::Component removeClaimFromChallengeButton = ComponentGenerator::createButton(
+                    "removeClaimFromChallengeButton_" + claimId,
+                    "Remove from Challenge",
                     "",
-                    "bg-gray-600",
-                    "hover:bg-gray-700",
+                    "bg-orange-600",
+                    "hover:bg-orange-700",
                     "text-white",
                     "px-4 py-2",
                     "rounded",
                     "transition-colors text-sm"
                 );
-                ComponentGenerator::addChild(&childNodeButtonContainer, cancelConnectClaimsButton);
+                ComponentGenerator::addChild(&childNodeButtonContainer, removeClaimFromChallengeButton);
             } else {
-                // For all other claims, show Connect To button
-                ui::Component connectToClaimButton = ComponentGenerator::createButton(
-                    "connectToClaimButton_" + childClaimInfo[i].first,
-                    "Connect To",
+                ui::Component addClaimToChallengeButton = ComponentGenerator::createButton(
+                    "addClaimToChallengeButton_" + claimId,
+                    "Add to Challenge",
+                    "",
+                    "bg-orange-600",
+                    "hover:bg-orange-700",
+                    "text-white",
+                    "px-4 py-2",
+                    "rounded",
+                    "transition-colors text-sm"
+                );
+                ComponentGenerator::addChild(&childNodeButtonContainer, addClaimToChallengeButton);
+            }
+        }
+
+        // Only show connection and delete buttons if user owns the claim
+        if (userOwnsChildClaim) {
+            // Add connection buttons based on connecting state
+            if (connecting) {
+                // If we're connecting and this is the FROM claim, show Cancel button
+                if (claimId == fromClaimId) {
+                    ui::Component cancelConnectClaimsButton = ComponentGenerator::createButton(
+                        "cancelConnectClaimsButton_" + claimId,
+                        "Cancel Connection",
+                        "",
+                        "bg-gray-600",
+                        "hover:bg-gray-700",
+                        "text-white",
+                        "px-4 py-2",
+                        "rounded",
+                        "transition-colors text-sm"
+                    );
+                    ComponentGenerator::addChild(&childNodeButtonContainer, cancelConnectClaimsButton);
+                } else {
+                    // For all other claims, show Connect To button
+                    ui::Component connectToClaimButton = ComponentGenerator::createButton(
+                        "connectToClaimButton_" + claimId,
+                        "Connect To",
+                        "",
+                        "bg-purple-600",
+                        "hover:bg-purple-700",
+                        "text-white",
+                        "px-4 py-2",
+                        "rounded",
+                        "transition-colors text-sm"
+                    );
+                    ComponentGenerator::addChild(&childNodeButtonContainer, connectToClaimButton);
+                }
+            } else {
+                // If we're not connecting, show Connect From button
+                ui::Component connectFromClaimButton = ComponentGenerator::createButton(
+                    "connectFromClaimButton_" + claimId,
+                    "Connect From",
                     "",
                     "bg-purple-600",
                     "hover:bg-purple-700",
@@ -769,36 +945,22 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
                     "rounded",
                     "transition-colors text-sm"
                 );
-                ComponentGenerator::addChild(&childNodeButtonContainer, connectToClaimButton);
+                ComponentGenerator::addChild(&childNodeButtonContainer, connectFromClaimButton);
             }
-        } else {
-            // If we're not connecting, show Connect From button
-            ui::Component connectFromClaimButton = ComponentGenerator::createButton(
-                "connectFromClaimButton_" + childClaimInfo[i].first,
-                "Connect From",
+
+            ui::Component deleteChildClaimButton = ComponentGenerator::createButton(
+                "deleteChildClaimButton_" + claimId,
+                "Delete",
                 "",
-                "bg-purple-600",
-                "hover:bg-purple-700",
+                "bg-red-600",
+                "hover:bg-red-700",
                 "text-white",
                 "px-4 py-2",
                 "rounded",
                 "transition-colors text-sm"
             );
-            ComponentGenerator::addChild(&childNodeButtonContainer, connectFromClaimButton);
+            ComponentGenerator::addChild(&childNodeButtonContainer, deleteChildClaimButton);
         }
-
-        ui::Component deleteChildClaimButton = ComponentGenerator::createButton(
-            "deleteChildClaimButton_" + childClaimInfo[i].first,
-            "Delete",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "transition-colors text-sm"
-        );
-        ComponentGenerator::addChild(&childNodeButtonContainer, deleteChildClaimButton);
 
         ComponentGenerator::addChild(&childNode, childNodeButtonContainer);
         ComponentGenerator::addChild(&childArgumentsGrid, childNode);
@@ -1023,8 +1185,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         } else {
             // Search in child claims
             for (const auto& childClaim : childClaimInfo) {
-                if (childClaim.first == fromClaimId) {
-                    fromClaimSentence = childClaim.second;
+                    if (std::get<0>(childClaim) == fromClaimId) {
+                        fromClaimSentence = std::get<1>(childClaim);
                     break;
                 }
             }
@@ -1036,8 +1198,8 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         } else {
             // Search in child claims
             for (const auto& childClaim : childClaimInfo) {
-                if (childClaim.first == toClaimId) {
-                    toClaimSentence = childClaim.second;
+                if (std::get<0>(childClaim) == toClaimId) {
+                    toClaimSentence = std::get<1>(childClaim);
                     break;
                 }
             }
@@ -1208,6 +1370,111 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::DebatingInfo d
         ComponentGenerator::addChild(&connectModalContent, connectModalActions);
         ComponentGenerator::addChild(&connectModalOverlay, connectModalContent);
         ComponentGenerator::addChild(&mainLayout, connectModalOverlay);
+    }
+
+    // Add Challenge Modal
+    if (openedAddChallengeModal) {
+        // Modal overlay
+        ui::Component addChallengeModalOverlay = ComponentGenerator::createContainer(
+            "addChallengeModalOverlay",
+            "fixed inset-0 flex items-center justify-center",
+            "bg-black/50",
+            "",
+            "",
+            "",
+            "",
+            "z-50"
+        );
+
+        // Modal content
+        ui::Component addChallengeModalContent = ComponentGenerator::createContainer(
+            "addChallengeModalContent",
+            "",
+            "bg-gray-800",
+            "p-8",
+            "",
+            "border-2 border-gray-700",
+            "rounded-lg",
+            "w-full max-w-2xl"
+        );
+
+        // Modal title
+        ui::Component addChallengeModalTitle = ComponentGenerator::createText(
+            "addChallengeModalTitle",
+            "Challenge Sentence:",
+            "text-2xl",
+            "text-white",
+            "font-bold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&addChallengeModalContent, addChallengeModalTitle);
+
+        // Instructions text
+        ui::Component challengeInstructions = ComponentGenerator::createText(
+            "challengeInstructions",
+            "Should contradict or prove the statement you are challenging wrong or faulty",
+            "text-sm",
+            "text-gray-400",
+            "",
+            "mb-6"
+        );
+        ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
+
+        // Challenge sentence input
+        ui::Component challengeSentenceInput = ComponentGenerator::createInput(
+            "challengeSentenceInput",
+            "Enter your challenge sentence...",
+            "challengeSentence",
+            "bg-gray-700",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full mb-6 h-32"
+        );
+        ComponentGenerator::addChild(&addChallengeModalContent, challengeSentenceInput);
+
+        // Modal action buttons
+        ui::Component addChallengeModalActions = ComponentGenerator::createContainer(
+            "addChallengeModalActions",
+            "flex gap-3 justify-end",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
+        ui::Component cancelChallengeModalButton = ComponentGenerator::createButton(
+            "closeChallengeModalButton",
+            "Cancel",
+            "",
+            "bg-gray-600",
+            "hover:bg-gray-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&addChallengeModalActions, cancelChallengeModalButton);
+
+        ui::Component submitChallengeModalButton = ComponentGenerator::createButton(
+            "submitChallengeModalButton",
+            "Submit",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-6 py-2",
+            "rounded",
+            "transition-colors"
+        );
+        ComponentGenerator::addChild(&addChallengeModalActions, submitChallengeModalButton);
+
+        ComponentGenerator::addChild(&addChallengeModalContent, addChallengeModalActions);
+        ComponentGenerator::addChild(&addChallengeModalOverlay, addChallengeModalContent);
+        ComponentGenerator::addChild(&mainLayout, addChallengeModalOverlay);
     }
 
     // Add main layout to page

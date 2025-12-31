@@ -7,6 +7,7 @@
 #include <vector>
 
 bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
     Log::debug("[EnterDebate] User " + std::to_string(user_id) + " entering debate with id: " + std::to_string(debateId));
 
     std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debateId);
@@ -32,6 +33,7 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
 }
 
 bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
     Log::debug("[GoHome] User " + std::to_string(user_id) + " going home");
     
     try { 
@@ -53,6 +55,7 @@ bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
 }
 
 void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
     // get the user from the database
     // update the current claim id to claim_id
     // save back to database;
@@ -62,10 +65,33 @@ void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateW
 }
 
 void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     int currentClaimId = userProto.engagement().debating_info().current_claim().id();
     // find parent claim
     debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
     // use go to claim handler to go to parent claim
     GoToClaim(parentClaim.id(), user_id, debateWrapper);
+}
+
+void MoveUserHandler::GoToChallengeClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
+}
+
+void MoveUserHandler::resetOngoingActivities(const int& user_id, DebateWrapper& debateWrapper) {
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    // reset connecting info
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_connecting(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_from_claim_id(0);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_to_claim_id(0);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(false);
+    
+    // reset challenging info
+    userProto.mutable_engagement()->mutable_debating_info()->set_challenging_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_claim_ids();
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_link_ids();
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_challenge_sentence("");
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_opened_challenge_modal(false);
+    
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }

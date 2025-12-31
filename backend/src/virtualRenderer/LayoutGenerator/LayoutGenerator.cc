@@ -19,7 +19,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         case user_engagement::ACTION_DEBATING:
             // generate debate page
             Log::debug("[LayoutGenerator] Generating Debate Page");
-            return DebatePageGenerator::GenerateDebatePage(info.engagement().debating_info());
+            return DebatePageGenerator::GenerateDebatePage(info.engagement());
         case user_engagement::ACTION_LOGIN:
             // generate login page
             Log::debug("[LayoutGenerator] Generating Login Page");
