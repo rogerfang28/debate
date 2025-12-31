@@ -11,6 +11,7 @@
 #include "../database/handlers/StatementDatabase.h"
 #include "../database/handlers/DebateMembersDatabase.h"
 #include "../database/handlers/LinkDatabase.h"
+#include "../database/handlers/ChallengeDatabase.h"
 
 #include "../utils/DebateWrapper.h"
 class DebateModerator {
@@ -35,5 +36,6 @@ private:
     StatementDatabase statementDb;
     DebateMembersDatabase debateMembersDb;
     LinkDatabase linkDb;
+    ChallengeDatabase challengeDb;
     DebateWrapper debateWrapper;
 };

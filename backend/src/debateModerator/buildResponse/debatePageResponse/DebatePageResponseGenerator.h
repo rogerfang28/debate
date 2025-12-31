@@ -10,7 +10,7 @@ class DebatePageResponseGenerator {
 public:
     static void BuildDebatePageResponse(
         moderator_to_vr::ModeratorToVRMessage& responseMessage,
-        const std::string& user,
+        const int& user_id,
         const user::User& userProto,
         DebateWrapper& debateWrapper
     );

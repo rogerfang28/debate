@@ -4,12 +4,13 @@
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
 
-DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase)
+DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase, ChallengeDatabase& challengeDatabase)
     : debateDb(debateDatabase),
       statementDb(statementDatabase),
       userDb(userDatabase),
       debateMembersDb(debateMembersDatabase),
-      linkDb(linkDatabase) {}
+      linkDb(linkDatabase),
+      challengeDb(challengeDatabase) {}
 std::vector<int> DebateWrapper::findChildrenIds(
     const int& parentId) {
     std::vector<int> childrenIds;
@@ -364,4 +365,37 @@ void DebateWrapper::addMemberToDebate(const int& debateId, const int& user_id) {
         return;
     }
     debateMembersDb.addMember(debateId, user_id);
+}
+
+int DebateWrapper::addChallenge(
+    const int& creator_id,
+    const int& challenged_claim_id,
+    debate::Challenge challengeProtobuf
+) {
+    // serialize challengeProtobuf
+    std::vector<uint8_t> challengeProtobufData(challengeProtobuf.ByteSizeLong());
+    challengeProtobuf.SerializeToArray(challengeProtobufData.data(), challengeProtobufData.size());
+    int challenge_id = challengeDb.addChallenge(
+        challengeProtobufData,
+        creator_id,
+        challenged_claim_id
+    );
+    return challenge_id;
+}
+
+std::vector<int> DebateWrapper::getChallengesAgainstClaim(const int& claimId) {
+    return challengeDb.getChallengesAgainstClaim(claimId);
+}
+
+debate::Challenge DebateWrapper::getChallengeProtobuf(int challengeId) {
+    debate::Challenge challengeProto;
+    std::vector<uint8_t> challengeData = challengeDb.getChallengeProtobuf(challengeId);
+    if (!challengeData.empty()) {
+        if (!challengeProto.ParseFromArray(challengeData.data(), static_cast<int>(challengeData.size()))) {
+            Log::error("[DebateWrapper][ERR] Failed to parse challenge protobuf for challenge ID " + std::to_string(challengeId));
+        }
+    } else {
+        Log::error("[DebateWrapper][ERR] Challenge with ID " + std::to_string(challengeId) + " not found.");
+    }
+    return challengeProto;
 }

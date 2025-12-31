@@ -163,18 +163,18 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  OPEN_ADD_CHALLENGE for user: " + std::to_string(user_id));
         event.set_type(debate_event::OPEN_ADD_CHALLENGE);
     }
-    else if (componentId == "closeCreateChallengeButton" && eventType == "onClick") {
+    else if (componentId == "closeChallengeModalButton" && eventType == "onClick") {
         Log::debug("  CLOSE_ADD_CHALLENGE for user: " + std::to_string(user_id));
         event.set_type(debate_event::CANCEL_CHALLENGE_CLAIM);
     } 
-    else if (componentId == "submitCreateChallengeButton" && eventType == "onClick") {
+    else if (componentId == "submitChallengeModalButton" && eventType == "onClick") {
         Log::debug("  SUBMIT_CHALLENGE_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
         // find the challenge claim from the message
         const auto& pageData = message.page_data().components();
         for (const auto& comp : pageData) { 
             auto* submitEvent = event.mutable_submit_challenge_claim();
-            if (comp.id() == "challengeClaimInput") {
+            if (comp.id() == "challengeSentenceInput") {
                 submitEvent->set_challenge_sentence(comp.value());
                 Log::debug("  Challenge sentence: " + comp.value());
             }
@@ -191,19 +191,6 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  REMOVE_LINK_TO_BE_CHALLENGED for user: " + std::to_string(user_id) + " link ID: " + linkId);
         event.set_type(debate_event::REMOVE_LINK_TO_BE_CHALLENGED);
         event.mutable_remove_link_to_be_challenged()->set_link_id(std::stoi(linkId));
-    }
-    else if (componentId == "submitChallengeButton" && eventType == "onClick") {
-        Log::debug("  SUBMIT_CHALLENGE for user: " + std::to_string(user_id));
-        event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
-        // find the report reason from the message
-        const auto& pageData = message.page_data().components();
-        for (const auto& comp : pageData) { 
-            auto* submitEvent = event.mutable_submit_challenge_claim();
-            if (comp.id() == "challengeClaimInput") {
-                submitEvent->set_challenge_sentence(comp.value());
-                Log::debug("  Challenge sentence: " + comp.value());
-            }
-        }
     }
     else {
         Log::error("Unknown component/event combination on debate page: " 

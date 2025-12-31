@@ -7,13 +7,13 @@
 
 void DebatePageResponseGenerator::BuildDebatePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
-    const std::string& user,
+    const int& user_id,
     const user::User& userProto,
     DebateWrapper& debateWrapper
 ) {
 
     user_engagement::DebatingInfo debatingInfo = userProto.engagement().debating_info();
-    Log::debug("[DebatePageResponseGenerator] Building debate page response for user: " + user);
+    Log::debug("[DebatePageResponseGenerator] Building debate page response for user: " + std::to_string(user_id));
     // based on the current claim id, generate the children claims and sentences and parent claim
     int currentClaimId = debatingInfo.current_claim().id();
     debate::Claim currentClaim = debateWrapper.findClaim(currentClaimId);
@@ -50,5 +50,23 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
             + " to " + std::to_string(link.connect_to())
             + " with connection: " + link.connection());
     }
+    // int currentUserId = std::stoi(userProto.user_id());
+    // find challenges under current claim proof
+    std::vector<int> challenge_ids = debateWrapper.getChallengesAgainstClaim(currentClaimId);
+    for (int challenge_id : challenge_ids) {
+        Log::debug("[DebatePageResponseGenerator] Processing challenge ID: " + std::to_string(challenge_id));
+        debate::Challenge challenge = debateWrapper.getChallengeProtobuf(challenge_id);
+        
+        // Only add challenges created by the current user
+        // if (challenge.challenger_id() == user_id || debatingInfo.creater_id() == user_id) {
+            user_engagement::ChallengeInfo* challengeInfo = debatingInfo.add_current_challenges();
+            challengeInfo->set_id(challenge_id);
+        //     // challengeInfo->set_challenged_claim_id(challenge.challenged_claim_id()); // we know its challenging current claim
+            challengeInfo->set_creator_id(challenge.challenger_id());
+            challengeInfo->set_sentence(challenge.challenge_sentence());
+            Log::debug("[DebatePageResponseGenerator] Found challenge against current claim with sentence: " + challenge.challenge_sentence());
+        // }
+    }
+
     *responseMessage.mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

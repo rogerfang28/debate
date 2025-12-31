@@ -22,6 +22,14 @@ message Link {
   int32 creator_id = 4;
 }
 
+message Challenge {
+  repeated int32 challenged_claim_ids = 1;
+  repeated int32 challenged_link_ids = 2;
+  string challenge_sentence = 3;
+  int32 challenger_id = 4;
+  Debate proof_debate = 5;
+}
+
 message Proof {
   repeated int32 claim_ids = 1;
   repeated int32 link_ids = 2;

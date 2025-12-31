@@ -37,7 +37,8 @@ DebateModerator::DebateModerator()
       statementDb(globalDb),
       debateMembersDb(globalDb),
       linkDb(globalDb),
-      debateWrapper(debateDb, statementDb, userDb, debateMembersDb, linkDb)
+      challengeDb(globalDb),
+      debateWrapper(debateDb, statementDb, userDb, debateMembersDb, linkDb, challengeDb)
 {
     Log::debug("[DebateModerator] Initialized.");
 }
@@ -299,7 +300,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
             
         case user_engagement::ACTION_DEBATING:
             Log::debug("[DebateModerator] Building DEBATE page response for user: " + user);
-            DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user, userProto, debateWrapper);
+            DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user_id, userProto, debateWrapper);
             break;
         case user_engagement::ACTION_LOGIN:
             Log::debug("[DebateModerator] Building LOGIN page response for user: " + user);

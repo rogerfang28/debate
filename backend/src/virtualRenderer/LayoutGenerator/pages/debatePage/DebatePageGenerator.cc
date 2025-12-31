@@ -64,7 +64,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
         challengesInfo.push_back({{"id", std::to_string(challenge.id())}, {"sentence", challenge.sentence()}, {"creator_id", std::to_string(challenge.creator_id())}});
     }
     // hardcode one for testing
-    challengesInfo.push_back({{"id", "1"}, {"sentence", "This is a challenge to the current claim."}, {"creator_id", "1"}});
+    // challengesInfo.push_back({{"id", "1"}, {"sentence", "This is a challenge to the current claim."}, {"creator_id", "1"}});
 
     // Main layout container
     ui::Component mainLayout = ComponentGenerator::createContainer(

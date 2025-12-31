@@ -88,8 +88,30 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
 }
 
 void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const int& user_id, DebateWrapper& debateWrapper) {
-    
-    Log::debug("[SubmitChallengeClaimHandler] SubmitChallengeClaim not implemented yet for user: " + std::to_string(user_id));
+    // add a new challenge
+    debate::Challenge newChallenge;
+    newChallenge.set_challenge_sentence(challenge_sentence);
+    Log::debug("[SubmitChallengeClaimHandler] Creating new challenge with sentence: " + challenge_sentence + " for user: " + std::to_string(user_id));
+    newChallenge.set_challenger_id(user_id);
+    // find the vectors of claim_ids and link_ids from the user protobuf
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    auto challenging_info = userProto.engagement().debating_info().challenging_info();
+    for (int i = 0; i < challenging_info.claim_ids_size(); ++i) {
+        newChallenge.add_challenged_claim_ids(challenging_info.claim_ids(i));
+    }
+    for (int i = 0; i < challenging_info.link_ids_size(); ++i) {
+        newChallenge.add_challenged_link_ids(challenging_info.link_ids(i));
+    }
+
+    // find the current claim (it's challenging that one)
+    int current_claim_id = userProto.engagement().debating_info().current_claim().id();
+
+    // now add to database
+    debateWrapper.addChallenge(user_id, current_claim_id, newChallenge); // for now, just use the first claim id as the challenged_claim_id
+    // close the challenging modal and reset stuff
+    CancelChallengeClaim(user_id, debateWrapper);
+    CloseAddChallenge(user_id, debateWrapper);
+    Log::debug("[SubmitChallengeClaimHandler] Submitted new challenge for user: " + std::to_string(user_id));
 }
 
 void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debateWrapper) {
