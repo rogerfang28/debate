@@ -11,7 +11,7 @@ void ChallengeHandler::StartChallengeClaim(const int& user_id, DebateWrapper& de
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set challenging_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_challenging_claim(true);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
     Log::debug("[StartChallengeClaimHandler] Set challenging_claim to true for user: " + std::to_string(user_id));
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -20,8 +20,8 @@ void ChallengeHandler::CancelChallengeClaim(const int& user_id, DebateWrapper& d
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
-    // set challenging_claim to false
-    userProto.mutable_engagement()->mutable_debating_info()->set_challenging_claim(false);
+    // set current debate action to VIEWING
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);
     // close modal and reset stuff
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_opened_challenge_modal(false);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_claim_ids();

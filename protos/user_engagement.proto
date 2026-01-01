@@ -9,6 +9,16 @@ enum EngagementAction {
   ACTION_LOGIN    = 3;  // login page
 }
 
+message UserEngagement {
+  EngagementAction current_action = 1;
+  string username = 5;
+  int32 user_id = 6;
+  oneof action_info {
+    HomeInfo     home_info     = 2;
+    DebatingInfo debating_info = 3;
+  }
+}
+
 message HomeInfo {
   DebateList available_debates = 1; // list of debates user can join
 }
@@ -37,10 +47,26 @@ message DebatingInfo {
   repeated ClaimInfo children_claims = 6; // child claims of the current claim
   repeated LinkInfo links = 7; // links under the current claim
   repeated ChallengeInfo current_challenges = 8; // challenges against the current claim
-  bool adding_child_claim = 9; // whether the add child claim modal is opened
-  bool editing_claim_sentence = 10; // whether the user is editing the current claim
-  bool editing_claim_description = 11; // whether the user is editing the current claim description
-  bool reporting_claim = 12; // whether the user is reporting the current claim
+  message CurrentDebateAction {
+    enum ActionType {
+      ACTION_TYPE_UNSPECIFIED = 0;
+      VIEWING_CLAIM = 1; // normal state
+      ADDING_CHILD_CLAIM = 2; // user is adding a claim
+      CONNECTING_CLAIMS = 3; // user is connecting claims
+      CHALLENGING_CLAIM = 4; // user is challenging the current claim
+      EDITING_CLAIM_DESCRIPTION = 5; // user is editing the current claim description
+      EDITING_CLAIM = 6; // user is editing the current claim sentence
+      REPORTING_CLAIM = 7; // user is reporting the current claim
+    }
+    ActionType action_type = 1;
+  }
+
+  CurrentDebateAction current_debate_action = 11;
+  oneof additional_info {
+    // could be none
+    ConnectingInfo connecting_info = 12; // info about connecting claims
+    ChallengingInfo challenging_info = 15; // info about challenging claims
+  }
 
   message ConnectingInfo {
     int32 from_claim_id = 1;
@@ -49,25 +75,19 @@ message DebatingInfo {
     bool connecting = 4;
     bool opened_connect_modal = 5;  
   }
-  ConnectingInfo connecting_info = 13; // info about connecting claims
 
-  bool challenging_claim = 14; // whether the user is trying to challenge the current claim
   message ChallengingInfo {
     repeated int32 claim_ids = 1; // claim ids to be challenged
     repeated int32 link_ids = 2; // link ids to be challenged
     string challenge_sentence = 3; // sentence for the challenge
     bool opened_challenge_modal = 4;
   }
-  ChallengingInfo challenging_info = 15; // info about challenging claims
 }
 
 message ClaimInfo {
   int32 id = 1;
   string sentence = 2;
   int32 creator_id = 3;
-}
-
-message LoginInfo {
 }
 
 message LinkInfo {
@@ -81,15 +101,4 @@ message ChallengeInfo{
   int32 id = 1;
   string sentence = 2;
   int32 creator_id = 3;
-}
-
-message UserEngagement {
-  EngagementAction current_action = 1;
-  string username = 5;
-  int32 user_id = 6;
-  oneof action_info {
-    HomeInfo     home_info     = 2;
-    DebatingInfo debating_info = 3;
-    LoginInfo    login_info    = 4;
-  }
 }

@@ -33,7 +33,7 @@ void AddClaimHandler::CloseAddChildClaim(const int& user_id, DebateWrapper& deba
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set adding_child_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo_CurrentDebateAction::VIEWING_CLAIM);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -43,7 +43,7 @@ void AddClaimHandler::OpenAddChildClaim(const int& user_id, DebateWrapper& debat
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set adding_child_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_adding_child_claim(true);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo_CurrentDebateAction::ADDING_CHILD_CLAIM);
     Log::debug("[OpenAddChildClaimHandler] Set adding_child_claim to true for user: " + std::to_string(user_id));
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }

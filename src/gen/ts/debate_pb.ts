@@ -46,8 +46,6 @@ export type Claim = Message<"debate.Claim"> & {
   childrenIds: number[];
 
   /**
-   * proof structure for this claim
-   *
    * @generated from field: debate.Proof proof = 7;
    */
   proof?: Proof;

@@ -22,12 +22,12 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
         const user_engagement::ClaimInfo& claim = debatingInfo.children_claims(i);
         childClaimInfo.push_back({std::to_string(claim.id()), claim.sentence(), claim.creator_id()});
     }
-    bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
-    bool editingClaimDescription = debatingInfo.editing_claim_description();
-    bool editingClaimSentence = debatingInfo.editing_claim_sentence();
-    bool openedConnectModal = debatingInfo.connecting_info().opened_connect_modal();
-    bool challengingClaim = debatingInfo.challenging_claim();
-    bool openedAddChallengeModal = debatingInfo.challenging_info().opened_challenge_modal();
+    // bool openedAddChildClaimModal = debatingInfo.adding_child_claim();
+    // bool editingClaimDescription = debatingInfo.editing_claim_description();
+    // bool editingClaimSentence = debatingInfo.editing_claim_sentence();
+    // bool openedConnectModal = debatingInfo.connecting_info().opened_connect_modal();
+    // bool challengingClaim = debatingInfo.challenging_claim();
+    // bool openedAddChallengeModal = debatingInfo.challenging_info().opened_challenge_modal();
     std::vector<int> currentChallengedClaimIds;
     std::vector<int> currentChallengedLinkIds;
     // std::string currentChallengeSentence = debatingInfo.challenging_info().challenge_sentence();
@@ -169,7 +169,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     );
     ComponentGenerator::addChild(&focusingOnClaim, focusLabel);
 
-    if (editingClaimSentence) {
+    if (false) { // editingClaimSentence
         // Edit mode: show input field and buttons
         ui::Component claimInput = ComponentGenerator::createInput(
             "editClaimInput",
@@ -516,7 +516,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     );
     ComponentGenerator::addChild(&descriptionBox, descriptionTitle);
 
-    if (editingClaimDescription) {
+    if (false) { // editingClaimDescription
         // Edit mode: show input field
         ui::Component descriptionInput = ComponentGenerator::createInput(
             "editDescriptionInput",
@@ -639,7 +639,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
             // ComponentGenerator::addChild(&descriptionActions, deleteStatementButton); // removed for now
         } else {
             // User does NOT own the claim - show Challenge Claim or Cancel/Submit Challenge buttons
-            if (challengingClaim) {
+            if (false) { // challengingClaim
                 // Currently challenging - show Cancel and Submit Challenge buttons
                 ui::Component cancelChallengeButton = ComponentGenerator::createButton(
                     "cancelChallengeButton",
@@ -848,7 +848,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
                 }
 
                 // Challenge buttons - show if user is challenging claim
-                if (challengingClaim) {
+                if (false) { // challengingClaim
                     // Check if this link is in the current challenge
                     bool linkInChallenge = std::find(currentChallengedLinkIds.begin(), 
                                                      currentChallengedLinkIds.end(), 
@@ -913,7 +913,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
         ComponentGenerator::addChild(&childNodeButtonContainer, childNodeButton);
 
         // Challenge buttons - show if user is challenging claim
-        if (challengingClaim) {
+        if (false) { // challengingClaim
             // Check if this claim is in the current challenge
             bool claimInChallenge = std::find(currentChallengedClaimIds.begin(), 
                                              currentChallengedClaimIds.end(), 
@@ -1093,7 +1093,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     ComponentGenerator::addChild(&mainLayout, contentArea);
 
     // Add Child Claim Modal
-    if (openedAddChildClaimModal) {
+    if (false) { // openedAddChildClaimModal
         // Modal overlay
         ui::Component modalOverlay = ComponentGenerator::createContainer(
             "addChildClaimModalOverlay",
@@ -1223,7 +1223,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     }
 
     // Connect Modal
-    if (openedConnectModal) {
+    if (false) { // openedConnectModal
         // Find the sentence for fromClaimId and toClaimId
         std::string fromClaimSentence = "";
         std::string toClaimSentence = "";
@@ -1422,7 +1422,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
     }
 
     // Add Challenge Modal
-    if (openedAddChallengeModal) {
+    if (false) { // openedAddChallengeModal
         // Modal overlay
         ui::Component addChallengeModalOverlay = ComponentGenerator::createContainer(
             "addChallengeModalOverlay",

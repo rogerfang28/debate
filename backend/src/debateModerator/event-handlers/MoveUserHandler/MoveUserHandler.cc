@@ -125,7 +125,7 @@ void MoveUserHandler::resetOngoingActivities(const int& user_id, DebateWrapper& 
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(false);
     
     // reset challenging info
-    userProto.mutable_engagement()->mutable_debating_info()->set_challenging_claim(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_claim_ids();
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_link_ids();
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_challenge_sentence("");

@@ -25,24 +25,6 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace user_engagement {
-              template <typename>
-PROTOBUF_CONSTEXPR LoginInfo::LoginInfo(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
-#endif  // PROTOBUF_CUSTOM_VTABLE
-struct LoginInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoginInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LoginInfoDefaultTypeInternal() {}
-  union {
-    LoginInfo _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoginInfoDefaultTypeInternal _LoginInfo_default_instance_;
 
 inline constexpr LinkInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -74,6 +56,31 @@ struct LinkInfoDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LinkInfoDefaultTypeInternal _LinkInfo_default_instance_;
+
+inline constexpr DebatingInfo_CurrentDebateAction::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : action_type_{static_cast< ::user_engagement::DebatingInfo_CurrentDebateAction_ActionType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DebatingInfo_CurrentDebateAction::DebatingInfo_CurrentDebateAction(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DebatingInfo_CurrentDebateActionDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DebatingInfo_CurrentDebateActionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DebatingInfo_CurrentDebateActionDefaultTypeInternal() {}
+  union {
+    DebatingInfo_CurrentDebateAction _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DebatingInfo_CurrentDebateActionDefaultTypeInternal _DebatingInfo_CurrentDebateAction_default_instance_;
 
 inline constexpr DebatingInfo_ConnectingInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -241,17 +248,13 @@ inline constexpr DebatingInfo::Impl_::Impl_(
         current_claim_{nullptr},
         parent_claim_{nullptr},
         root_claim_{nullptr},
-        connecting_info_{nullptr},
-        challenging_info_{nullptr},
+        current_debate_action_{nullptr},
         debate_id_{0},
         is_challenge_{false},
-        adding_child_claim_{false},
-        editing_claim_sentence_{false},
-        editing_claim_description_{false},
-        reporting_claim_{false},
-        challenging_claim_{false},
         challenged_user_id_{0},
-        challenger_user_id_{0} {}
+        challenger_user_id_{0},
+        additional_info_{},
+        _oneof_case_{} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR DebatingInfo::DebatingInfo(::_pbi::ConstantInitialized)
@@ -354,12 +357,26 @@ struct UserEngagementDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UserEngagementDefaultTypeInternal _UserEngagement_default_instance_;
 }  // namespace user_engagement
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_user_5fengagement_2eproto[1];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_user_5fengagement_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_user_5fengagement_2eproto = nullptr;
 const ::uint32_t
     TableStruct_user_5fengagement_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _internal_metadata_),
+        ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_._oneof_case_[0]),
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.current_action_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.username_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.user_id_),
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
+        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.action_info_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::HomeInfo, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::HomeInfo, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -393,6 +410,15 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebateList, _impl_.topics_),
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_CurrentDebateAction, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_CurrentDebateAction, _impl_.action_type_),
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo_ConnectingInfo, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -420,7 +446,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _internal_metadata_),
         ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_._oneof_case_[0]),
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
@@ -436,13 +462,10 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.children_claims_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.links_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.current_challenges_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.adding_child_claim_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.editing_claim_sentence_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.editing_claim_description_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.reporting_claim_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.connecting_info_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.challenging_claim_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.challenging_info_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.current_debate_action_),
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
+        PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_.additional_info_),
         ~0u,
         ~0u,
         ~0u,
@@ -454,13 +477,9 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
-        ~0u,
         3,
         ~0u,
-        4,
+        ~0u,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::user_engagement::ClaimInfo, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -472,14 +491,6 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::ClaimInfo, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ClaimInfo, _impl_.sentence_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ClaimInfo, _impl_.creator_id_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::user_engagement::LoginInfo, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::user_engagement::LinkInfo, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -504,124 +515,112 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.sentence_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.creator_id_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _internal_metadata_),
-        ~0u,  // no _extensions_
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_._oneof_case_[0]),
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.current_action_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.username_),
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.user_id_),
-        ::_pbi::kInvalidFieldOffsetTag,
-        ::_pbi::kInvalidFieldOffsetTag,
-        ::_pbi::kInvalidFieldOffsetTag,
-        PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_.action_info_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 9, -1, sizeof(::user_engagement::HomeInfo)},
-        {10, -1, -1, sizeof(::user_engagement::DebateTopic)},
-        {23, -1, -1, sizeof(::user_engagement::DebateList)},
-        {32, -1, -1, sizeof(::user_engagement::DebatingInfo_ConnectingInfo)},
-        {45, -1, -1, sizeof(::user_engagement::DebatingInfo_ChallengingInfo)},
-        {57, 83, -1, sizeof(::user_engagement::DebatingInfo)},
-        {101, -1, -1, sizeof(::user_engagement::ClaimInfo)},
-        {112, -1, -1, sizeof(::user_engagement::LoginInfo)},
-        {120, -1, -1, sizeof(::user_engagement::LinkInfo)},
-        {133, -1, -1, sizeof(::user_engagement::ChallengeInfo)},
-        {144, -1, -1, sizeof(::user_engagement::UserEngagement)},
+        {0, -1, -1, sizeof(::user_engagement::UserEngagement)},
+        {14, 23, -1, sizeof(::user_engagement::HomeInfo)},
+        {24, -1, -1, sizeof(::user_engagement::DebateTopic)},
+        {37, -1, -1, sizeof(::user_engagement::DebateList)},
+        {46, -1, -1, sizeof(::user_engagement::DebatingInfo_CurrentDebateAction)},
+        {55, -1, -1, sizeof(::user_engagement::DebatingInfo_ConnectingInfo)},
+        {68, -1, -1, sizeof(::user_engagement::DebatingInfo_ChallengingInfo)},
+        {80, 103, -1, sizeof(::user_engagement::DebatingInfo)},
+        {117, -1, -1, sizeof(::user_engagement::ClaimInfo)},
+        {128, -1, -1, sizeof(::user_engagement::LinkInfo)},
+        {141, -1, -1, sizeof(::user_engagement::ChallengeInfo)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
+    &::user_engagement::_UserEngagement_default_instance_._instance,
     &::user_engagement::_HomeInfo_default_instance_._instance,
     &::user_engagement::_DebateTopic_default_instance_._instance,
     &::user_engagement::_DebateList_default_instance_._instance,
+    &::user_engagement::_DebatingInfo_CurrentDebateAction_default_instance_._instance,
     &::user_engagement::_DebatingInfo_ConnectingInfo_default_instance_._instance,
     &::user_engagement::_DebatingInfo_ChallengingInfo_default_instance_._instance,
     &::user_engagement::_DebatingInfo_default_instance_._instance,
     &::user_engagement::_ClaimInfo_default_instance_._instance,
-    &::user_engagement::_LoginInfo_default_instance_._instance,
     &::user_engagement::_LinkInfo_default_instance_._instance,
     &::user_engagement::_ChallengeInfo_default_instance_._instance,
-    &::user_engagement::_UserEngagement_default_instance_._instance,
 };
 const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025user_engagement.proto\022\017user_engagement"
-    "\"T\n\010HomeInfo\022H\n\021available_debates\030\001 \001(\0132"
-    "\033.user_engagement.DebateListR\020availableD"
-    "ebates\"\251\001\n\013DebateTopic\022\016\n\002id\030\001 \001(\005R\002id\022\024"
-    "\n\005topic\030\002 \001(\tR\005topic\022\035\n\ncreator_id\030\003 \001(\005"
-    "R\tcreatorId\022!\n\014is_challenge\030\004 \001(\010R\013isCha"
-    "llenge\0222\n\025claim_its_challenging\030\005 \001(\tR\023c"
-    "laimItsChallenging\"B\n\nDebateList\0224\n\006topi"
-    "cs\030\001 \003(\0132\034.user_engagement.DebateTopicR\006"
-    "topics\"\207\013\n\014DebatingInfo\022\033\n\tdebate_id\030\001 \001"
-    "(\005R\010debateId\022!\n\014is_challenge\030\020 \001(\010R\013isCh"
-    "allenge\022,\n\022challenged_user_id\030\021 \001(\005R\020cha"
-    "llengedUserId\022,\n\022challenger_user_id\030\022 \001("
-    "\005R\020challengerUserId\022\?\n\rcurrent_claim\030\002 \001"
-    "(\0132\032.user_engagement.ClaimInfoR\014currentC"
-    "laim\022:\n\031current_claim_description\030\003 \001(\tR"
-    "\027currentClaimDescription\022=\n\014parent_claim"
-    "\030\004 \001(\0132\032.user_engagement.ClaimInfoR\013pare"
-    "ntClaim\0229\n\nroot_claim\030\005 \001(\0132\032.user_engag"
-    "ement.ClaimInfoR\trootClaim\022C\n\017children_c"
-    "laims\030\006 \003(\0132\032.user_engagement.ClaimInfoR"
-    "\016childrenClaims\022/\n\005links\030\007 \003(\0132\031.user_en"
-    "gagement.LinkInfoR\005links\022M\n\022current_chal"
-    "lenges\030\010 \003(\0132\036.user_engagement.Challenge"
-    "InfoR\021currentChallenges\022,\n\022adding_child_"
-    "claim\030\t \001(\010R\020addingChildClaim\0224\n\026editing"
-    "_claim_sentence\030\n \001(\010R\024editingClaimSente"
-    "nce\022:\n\031editing_claim_description\030\013 \001(\010R\027"
-    "editingClaimDescription\022\'\n\017reporting_cla"
-    "im\030\014 \001(\010R\016reportingClaim\022U\n\017connecting_i"
-    "nfo\030\r \001(\0132,.user_engagement.DebatingInfo"
-    ".ConnectingInfoR\016connectingInfo\022+\n\021chall"
-    "enging_claim\030\016 \001(\010R\020challengingClaim\022X\n\020"
-    "challenging_info\030\017 \001(\0132-.user_engagement"
-    ".DebatingInfo.ChallengingInfoR\017challengi"
-    "ngInfo\032\306\001\n\016ConnectingInfo\022\"\n\rfrom_claim_"
-    "id\030\001 \001(\005R\013fromClaimId\022\036\n\013to_claim_id\030\002 \001"
-    "(\005R\ttoClaimId\022\036\n\nconnection\030\003 \001(\tR\nconne"
-    "ction\022\036\n\nconnecting\030\004 \001(\010R\nconnecting\0220\n"
-    "\024opened_connect_modal\030\005 \001(\010R\022openedConne"
-    "ctModal\032\256\001\n\017ChallengingInfo\022\033\n\tclaim_ids"
-    "\030\001 \003(\005R\010claimIds\022\031\n\010link_ids\030\002 \003(\005R\007link"
-    "Ids\022-\n\022challenge_sentence\030\003 \001(\tR\021challen"
-    "geSentence\0224\n\026opened_challenge_modal\030\004 \001"
-    "(\010R\024openedChallengeModal\"V\n\tClaimInfo\022\016\n"
-    "\002id\030\001 \001(\005R\002id\022\032\n\010sentence\030\002 \001(\tR\010sentenc"
-    "e\022\035\n\ncreator_id\030\003 \001(\005R\tcreatorId\"\013\n\tLogi"
-    "nInfo\"\233\001\n\010LinkInfo\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014co"
-    "nnect_from\030\002 \001(\005R\013connectFrom\022\035\n\nconnect"
-    "_to\030\003 \001(\005R\tconnectTo\022\036\n\nconnection\030\004 \001(\t"
-    "R\nconnection\022\035\n\ncreator_id\030\005 \001(\005R\tcreato"
-    "rId\"Z\n\rChallengeInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010"
-    "sentence\030\002 \001(\tR\010sentence\022\035\n\ncreator_id\030\003"
-    " \001(\005R\tcreatorId\"\333\002\n\016UserEngagement\022H\n\016cu"
-    "rrent_action\030\001 \001(\0162!.user_engagement.Eng"
-    "agementActionR\rcurrentAction\022\032\n\010username"
-    "\030\005 \001(\tR\010username\022\027\n\007user_id\030\006 \001(\005R\006userI"
-    "d\0228\n\thome_info\030\002 \001(\0132\031.user_engagement.H"
-    "omeInfoH\000R\010homeInfo\022D\n\rdebating_info\030\003 \001"
-    "(\0132\035.user_engagement.DebatingInfoH\000R\014deb"
-    "atingInfo\022;\n\nlogin_info\030\004 \001(\0132\032.user_eng"
-    "agement.LoginInfoH\000R\tloginInfoB\r\n\013action"
-    "_info*m\n\020EngagementAction\022!\n\035ENGAGEMENT_"
-    "ACTION_UNSPECIFIED\020\000\022\017\n\013ACTION_HOME\020\001\022\023\n"
-    "\017ACTION_DEBATING\020\002\022\020\n\014ACTION_LOGIN\020\003b\006pr"
-    "oto3"
+    "\"\236\002\n\016UserEngagement\022H\n\016current_action\030\001 "
+    "\001(\0162!.user_engagement.EngagementActionR\r"
+    "currentAction\022\032\n\010username\030\005 \001(\tR\010usernam"
+    "e\022\027\n\007user_id\030\006 \001(\005R\006userId\0228\n\thome_info\030"
+    "\002 \001(\0132\031.user_engagement.HomeInfoH\000R\010home"
+    "Info\022D\n\rdebating_info\030\003 \001(\0132\035.user_engag"
+    "ement.DebatingInfoH\000R\014debatingInfoB\r\n\013ac"
+    "tion_info\"T\n\010HomeInfo\022H\n\021available_debat"
+    "es\030\001 \001(\0132\033.user_engagement.DebateListR\020a"
+    "vailableDebates\"\251\001\n\013DebateTopic\022\016\n\002id\030\001 "
+    "\001(\005R\002id\022\024\n\005topic\030\002 \001(\tR\005topic\022\035\n\ncreator"
+    "_id\030\003 \001(\005R\tcreatorId\022!\n\014is_challenge\030\004 \001"
+    "(\010R\013isChallenge\0222\n\025claim_its_challenging"
+    "\030\005 \001(\tR\023claimItsChallenging\"B\n\nDebateLis"
+    "t\0224\n\006topics\030\001 \003(\0132\034.user_engagement.Deba"
+    "teTopicR\006topics\"\322\014\n\014DebatingInfo\022\033\n\tdeba"
+    "te_id\030\001 \001(\005R\010debateId\022!\n\014is_challenge\030\020 "
+    "\001(\010R\013isChallenge\022,\n\022challenged_user_id\030\021"
+    " \001(\005R\020challengedUserId\022,\n\022challenger_use"
+    "r_id\030\022 \001(\005R\020challengerUserId\022\?\n\rcurrent_"
+    "claim\030\002 \001(\0132\032.user_engagement.ClaimInfoR"
+    "\014currentClaim\022:\n\031current_claim_descripti"
+    "on\030\003 \001(\tR\027currentClaimDescription\022=\n\014par"
+    "ent_claim\030\004 \001(\0132\032.user_engagement.ClaimI"
+    "nfoR\013parentClaim\0229\n\nroot_claim\030\005 \001(\0132\032.u"
+    "ser_engagement.ClaimInfoR\trootClaim\022C\n\017c"
+    "hildren_claims\030\006 \003(\0132\032.user_engagement.C"
+    "laimInfoR\016childrenClaims\022/\n\005links\030\007 \003(\0132"
+    "\031.user_engagement.LinkInfoR\005links\022M\n\022cur"
+    "rent_challenges\030\010 \003(\0132\036.user_engagement."
+    "ChallengeInfoR\021currentChallenges\022e\n\025curr"
+    "ent_debate_action\030\013 \001(\01321.user_engagemen"
+    "t.DebatingInfo.CurrentDebateActionR\023curr"
+    "entDebateAction\022W\n\017connecting_info\030\014 \001(\013"
+    "2,.user_engagement.DebatingInfo.Connecti"
+    "ngInfoH\000R\016connectingInfo\022Z\n\020challenging_"
+    "info\030\017 \001(\0132-.user_engagement.DebatingInf"
+    "o.ChallengingInfoH\000R\017challengingInfo\032\300\002\n"
+    "\023CurrentDebateAction\022]\n\013action_type\030\001 \001("
+    "\0162<.user_engagement.DebatingInfo.Current"
+    "DebateAction.ActionTypeR\nactionType\"\311\001\n\n"
+    "ActionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022"
+    "\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_CHILD_CLAIM"
+    "\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021CHALLENGING"
+    "_CLAIM\020\004\022\035\n\031EDITING_CLAIM_DESCRIPTION\020\005\022"
+    "\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPORTING_CLAIM\020\007\032"
+    "\306\001\n\016ConnectingInfo\022\"\n\rfrom_claim_id\030\001 \001("
+    "\005R\013fromClaimId\022\036\n\013to_claim_id\030\002 \001(\005R\ttoC"
+    "laimId\022\036\n\nconnection\030\003 \001(\tR\nconnection\022\036"
+    "\n\nconnecting\030\004 \001(\010R\nconnecting\0220\n\024opened"
+    "_connect_modal\030\005 \001(\010R\022openedConnectModal"
+    "\032\256\001\n\017ChallengingInfo\022\033\n\tclaim_ids\030\001 \003(\005R"
+    "\010claimIds\022\031\n\010link_ids\030\002 \003(\005R\007linkIds\022-\n\022"
+    "challenge_sentence\030\003 \001(\tR\021challengeSente"
+    "nce\0224\n\026opened_challenge_modal\030\004 \001(\010R\024ope"
+    "nedChallengeModalB\021\n\017additional_info\"V\n\t"
+    "ClaimInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010sentence\030\002 "
+    "\001(\tR\010sentence\022\035\n\ncreator_id\030\003 \001(\005R\tcreat"
+    "orId\"\233\001\n\010LinkInfo\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014con"
+    "nect_from\030\002 \001(\005R\013connectFrom\022\035\n\nconnect_"
+    "to\030\003 \001(\005R\tconnectTo\022\036\n\nconnection\030\004 \001(\tR"
+    "\nconnection\022\035\n\ncreator_id\030\005 \001(\005R\tcreator"
+    "Id\"Z\n\rChallengeInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010s"
+    "entence\030\002 \001(\tR\010sentence\022\035\n\ncreator_id\030\003 "
+    "\001(\005R\tcreatorId*m\n\020EngagementAction\022!\n\035EN"
+    "GAGEMENT_ACTION_UNSPECIFIED\020\000\022\017\n\013ACTION_"
+    "HOME\020\001\022\023\n\017ACTION_DEBATING\020\002\022\020\n\014ACTION_LO"
+    "GIN\020\003b\006proto3"
 };
 static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    2604,
+    2733,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -635,14 +634,491 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagem
     file_level_service_descriptors_user_5fengagement_2eproto,
 };
 namespace user_engagement {
-const ::google::protobuf::EnumDescriptor* EngagementAction_descriptor() {
+const ::google::protobuf::EnumDescriptor* DebatingInfo_CurrentDebateAction_ActionType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_user_5fengagement_2eproto);
   return file_level_enum_descriptors_user_5fengagement_2eproto[0];
+}
+PROTOBUF_CONSTINIT const uint32_t DebatingInfo_CurrentDebateAction_ActionType_internal_data_[] = {
+    524288u, 0u, };
+bool DebatingInfo_CurrentDebateAction_ActionType_IsValid(int value) {
+  return 0 <= value && value <= 7;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::ACTION_TYPE_UNSPECIFIED;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::VIEWING_CLAIM;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::ADDING_CHILD_CLAIM;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::CONNECTING_CLAIMS;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::CHALLENGING_CLAIM;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::EDITING_CLAIM_DESCRIPTION;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::EDITING_CLAIM;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::REPORTING_CLAIM;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::ActionType_MIN;
+constexpr DebatingInfo_CurrentDebateAction_ActionType DebatingInfo_CurrentDebateAction::ActionType_MAX;
+constexpr int DebatingInfo_CurrentDebateAction::ActionType_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* EngagementAction_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_user_5fengagement_2eproto);
+  return file_level_enum_descriptors_user_5fengagement_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t EngagementAction_internal_data_[] = {
     262144u, 0u, };
 bool EngagementAction_IsValid(int value) {
   return 0 <= value && value <= 3;
+}
+// ===================================================================
+
+class UserEngagement::_Internal {
+ public:
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_._oneof_case_);
+};
+
+void UserEngagement::set_allocated_home_info(::user_engagement::HomeInfo* home_info) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_action_info();
+  if (home_info) {
+    ::google::protobuf::Arena* submessage_arena = home_info->GetArena();
+    if (message_arena != submessage_arena) {
+      home_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, home_info, submessage_arena);
+    }
+    set_has_home_info();
+    _impl_.action_info_.home_info_ = home_info;
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.home_info)
+}
+void UserEngagement::set_allocated_debating_info(::user_engagement::DebatingInfo* debating_info) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_action_info();
+  if (debating_info) {
+    ::google::protobuf::Arena* submessage_arena = debating_info->GetArena();
+    if (message_arena != submessage_arena) {
+      debating_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, debating_info, submessage_arena);
+    }
+    set_has_debating_info();
+    _impl_.action_info_.debating_info_ = debating_info;
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.debating_info)
+}
+UserEngagement::UserEngagement(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:user_engagement.UserEngagement)
+}
+inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::user_engagement::UserEngagement& from_msg)
+      : username_(arena, from.username_),
+        action_info_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
+
+UserEngagement::UserEngagement(
+    ::google::protobuf::Arena* arena,
+    const UserEngagement& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  UserEngagement* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_action_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, current_action_),
+           offsetof(Impl_, user_id_) -
+               offsetof(Impl_, current_action_) +
+               sizeof(Impl_::user_id_));
+  switch (action_info_case()) {
+    case ACTION_INFO_NOT_SET:
+      break;
+      case kHomeInfo:
+        _impl_.action_info_.home_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::HomeInfo>(arena, *from._impl_.action_info_.home_info_);
+        break;
+      case kDebatingInfo:
+        _impl_.action_info_.debating_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo>(arena, *from._impl_.action_info_.debating_info_);
+        break;
+  }
+
+  // @@protoc_insertion_point(copy_constructor:user_engagement.UserEngagement)
+}
+inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : username_(arena),
+        action_info_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+inline void UserEngagement::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, current_action_),
+           0,
+           offsetof(Impl_, user_id_) -
+               offsetof(Impl_, current_action_) +
+               sizeof(Impl_::user_id_));
+}
+UserEngagement::~UserEngagement() {
+  // @@protoc_insertion_point(destructor:user_engagement.UserEngagement)
+  SharedDtor(*this);
+}
+inline void UserEngagement::SharedDtor(MessageLite& self) {
+  UserEngagement& this_ = static_cast<UserEngagement&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.username_.Destroy();
+  if (this_.has_action_info()) {
+    this_.clear_action_info();
+  }
+  this_._impl_.~Impl_();
+}
+
+void UserEngagement::clear_action_info() {
+// @@protoc_insertion_point(one_of_clear_start:user_engagement.UserEngagement)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (action_info_case()) {
+    case kHomeInfo: {
+      if (GetArena() == nullptr) {
+        delete _impl_.action_info_.home_info_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.home_info_);
+      }
+      break;
+    }
+    case kDebatingInfo: {
+      if (GetArena() == nullptr) {
+        delete _impl_.action_info_.debating_info_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.debating_info_);
+      }
+      break;
+    }
+    case ACTION_INFO_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = ACTION_INFO_NOT_SET;
+}
+
+
+inline void* UserEngagement::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) UserEngagement(arena);
+}
+constexpr auto UserEngagement::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(UserEngagement),
+                                            alignof(UserEngagement));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull UserEngagement::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_UserEngagement_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &UserEngagement::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<UserEngagement>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &UserEngagement::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<UserEngagement>(), &UserEngagement::ByteSizeLong,
+            &UserEngagement::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_._cached_size_),
+        false,
+    },
+    &UserEngagement::kDescriptorMethods,
+    &descriptor_table_user_5fengagement_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* UserEngagement::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 2, 47, 2> UserEngagement::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    6, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967240,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserEngagement, _impl_.current_action_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // string username = 5 [json_name = "username"];
+    {::_pbi::TcParser::FastUS1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.username_)}},
+    // int32 user_id = 6 [json_name = "userId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserEngagement, _impl_.user_id_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
+    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.home_info_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
+    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.debating_info_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // string username = 5 [json_name = "username"];
+    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.username_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 user_id = 6 [json_name = "userId"];
+    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::user_engagement::HomeInfo>()},
+    {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>()},
+  }}, {{
+    "\36\0\0\0\10\0\0\0"
+    "user_engagement.UserEngagement"
+    "username"
+  }},
+};
+
+PROTOBUF_NOINLINE void UserEngagement::Clear() {
+// @@protoc_insertion_point(message_clear_start:user_engagement.UserEngagement)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.username_.ClearToEmpty();
+  ::memset(&_impl_.current_action_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.user_id_) -
+      reinterpret_cast<char*>(&_impl_.current_action_)) + sizeof(_impl_.user_id_));
+  clear_action_info();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* UserEngagement::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const UserEngagement& this_ = static_cast<const UserEngagement&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* UserEngagement::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const UserEngagement& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:user_engagement.UserEngagement)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+          if (this_._internal_current_action() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_current_action(), target);
+          }
+
+          switch (this_.action_info_case()) {
+            case kHomeInfo: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  2, *this_._impl_.action_info_.home_info_, this_._impl_.action_info_.home_info_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            case kDebatingInfo: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  3, *this_._impl_.action_info_.debating_info_, this_._impl_.action_info_.debating_info_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            default:
+              break;
+          }
+          // string username = 5 [json_name = "username"];
+          if (!this_._internal_username().empty()) {
+            const std::string& _s = this_._internal_username();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.UserEngagement.username");
+            target = stream->WriteStringMaybeAliased(5, _s, target);
+          }
+
+          // int32 user_id = 6 [json_name = "userId"];
+          if (this_._internal_user_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<6>(
+                    stream, this_._internal_user_id(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:user_engagement.UserEngagement)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t UserEngagement::ByteSizeLong(const MessageLite& base) {
+          const UserEngagement& this_ = static_cast<const UserEngagement&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t UserEngagement::ByteSizeLong() const {
+          const UserEngagement& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:user_engagement.UserEngagement)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string username = 5 [json_name = "username"];
+            if (!this_._internal_username().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_username());
+            }
+            // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+            if (this_._internal_current_action() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_current_action());
+            }
+            // int32 user_id = 6 [json_name = "userId"];
+            if (this_._internal_user_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_user_id());
+            }
+          }
+          switch (this_.action_info_case()) {
+            // .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
+            case kHomeInfo: {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.home_info_);
+              break;
+            }
+            // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
+            case kDebatingInfo: {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.debating_info_);
+              break;
+            }
+            case ACTION_INFO_NOT_SET: {
+              break;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void UserEngagement::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<UserEngagement*>(&to_msg);
+  auto& from = static_cast<const UserEngagement&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:user_engagement.UserEngagement)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_username().empty()) {
+    _this->_internal_set_username(from._internal_username());
+  }
+  if (from._internal_current_action() != 0) {
+    _this->_impl_.current_action_ = from._impl_.current_action_;
+  }
+  if (from._internal_user_id() != 0) {
+    _this->_impl_.user_id_ = from._impl_.user_id_;
+  }
+  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
+    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
+    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
+    if (oneof_needs_init) {
+      if (oneof_to_case != 0) {
+        _this->clear_action_info();
+      }
+      _this->_impl_._oneof_case_[0] = oneof_from_case;
+    }
+
+    switch (oneof_from_case) {
+      case kHomeInfo: {
+        if (oneof_needs_init) {
+          _this->_impl_.action_info_.home_info_ =
+              ::google::protobuf::Message::CopyConstruct<::user_engagement::HomeInfo>(arena, *from._impl_.action_info_.home_info_);
+        } else {
+          _this->_impl_.action_info_.home_info_->MergeFrom(from._internal_home_info());
+        }
+        break;
+      }
+      case kDebatingInfo: {
+        if (oneof_needs_init) {
+          _this->_impl_.action_info_.debating_info_ =
+              ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo>(arena, *from._impl_.action_info_.debating_info_);
+        } else {
+          _this->_impl_.action_info_.debating_info_->MergeFrom(from._internal_debating_info());
+        }
+        break;
+      }
+      case ACTION_INFO_NOT_SET:
+        break;
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void UserEngagement::CopyFrom(const UserEngagement& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:user_engagement.UserEngagement)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void UserEngagement::InternalSwap(UserEngagement* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_)
+      + sizeof(UserEngagement::_impl_.user_id_)
+      - PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)>(
+          reinterpret_cast<char*>(&_impl_.current_action_),
+          reinterpret_cast<char*>(&other->_impl_.current_action_));
+  swap(_impl_.action_info_, other->_impl_.action_info_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
+}
+
+::google::protobuf::Metadata UserEngagement::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -1485,6 +1961,213 @@ void DebateList::InternalSwap(DebateList* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
+class DebatingInfo_CurrentDebateAction::_Internal {
+ public:
+};
+
+DebatingInfo_CurrentDebateAction::DebatingInfo_CurrentDebateAction(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:user_engagement.DebatingInfo.CurrentDebateAction)
+}
+DebatingInfo_CurrentDebateAction::DebatingInfo_CurrentDebateAction(
+    ::google::protobuf::Arena* arena, const DebatingInfo_CurrentDebateAction& from)
+    : DebatingInfo_CurrentDebateAction(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE DebatingInfo_CurrentDebateAction::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void DebatingInfo_CurrentDebateAction::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.action_type_ = {};
+}
+DebatingInfo_CurrentDebateAction::~DebatingInfo_CurrentDebateAction() {
+  // @@protoc_insertion_point(destructor:user_engagement.DebatingInfo.CurrentDebateAction)
+  SharedDtor(*this);
+}
+inline void DebatingInfo_CurrentDebateAction::SharedDtor(MessageLite& self) {
+  DebatingInfo_CurrentDebateAction& this_ = static_cast<DebatingInfo_CurrentDebateAction&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* DebatingInfo_CurrentDebateAction::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) DebatingInfo_CurrentDebateAction(arena);
+}
+constexpr auto DebatingInfo_CurrentDebateAction::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(DebatingInfo_CurrentDebateAction),
+                                            alignof(DebatingInfo_CurrentDebateAction));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull DebatingInfo_CurrentDebateAction::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_DebatingInfo_CurrentDebateAction_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &DebatingInfo_CurrentDebateAction::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<DebatingInfo_CurrentDebateAction>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &DebatingInfo_CurrentDebateAction::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<DebatingInfo_CurrentDebateAction>(), &DebatingInfo_CurrentDebateAction::ByteSizeLong,
+            &DebatingInfo_CurrentDebateAction::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(DebatingInfo_CurrentDebateAction, _impl_._cached_size_),
+        false,
+    },
+    &DebatingInfo_CurrentDebateAction::kDescriptorMethods,
+    &descriptor_table_user_5fengagement_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* DebatingInfo_CurrentDebateAction::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DebatingInfo_CurrentDebateAction::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo_CurrentDebateAction>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebatingInfo_CurrentDebateAction, _impl_.action_type_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo_CurrentDebateAction, _impl_.action_type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo_CurrentDebateAction, _impl_.action_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void DebatingInfo_CurrentDebateAction::Clear() {
+// @@protoc_insertion_point(message_clear_start:user_engagement.DebatingInfo.CurrentDebateAction)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.action_type_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DebatingInfo_CurrentDebateAction::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DebatingInfo_CurrentDebateAction& this_ = static_cast<const DebatingInfo_CurrentDebateAction&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DebatingInfo_CurrentDebateAction::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DebatingInfo_CurrentDebateAction& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:user_engagement.DebatingInfo.CurrentDebateAction)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+          if (this_._internal_action_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_action_type(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:user_engagement.DebatingInfo.CurrentDebateAction)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DebatingInfo_CurrentDebateAction::ByteSizeLong(const MessageLite& base) {
+          const DebatingInfo_CurrentDebateAction& this_ = static_cast<const DebatingInfo_CurrentDebateAction&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DebatingInfo_CurrentDebateAction::ByteSizeLong() const {
+          const DebatingInfo_CurrentDebateAction& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:user_engagement.DebatingInfo.CurrentDebateAction)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+            if (this_._internal_action_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_action_type());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DebatingInfo_CurrentDebateAction::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DebatingInfo_CurrentDebateAction*>(&to_msg);
+  auto& from = static_cast<const DebatingInfo_CurrentDebateAction&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:user_engagement.DebatingInfo.CurrentDebateAction)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_action_type() != 0) {
+    _this->_impl_.action_type_ = from._impl_.action_type_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DebatingInfo_CurrentDebateAction::CopyFrom(const DebatingInfo_CurrentDebateAction& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:user_engagement.DebatingInfo.CurrentDebateAction)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DebatingInfo_CurrentDebateAction::InternalSwap(DebatingInfo_CurrentDebateAction* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.action_type_, other->_impl_.action_type_);
+}
+
+::google::protobuf::Metadata DebatingInfo_CurrentDebateAction::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class DebatingInfo_ConnectingInfo::_Internal {
  public:
 };
@@ -2162,8 +2845,36 @@ class DebatingInfo::_Internal {
       decltype(std::declval<DebatingInfo>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
       8 * PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::user_engagement::DebatingInfo, _impl_._oneof_case_);
 };
 
+void DebatingInfo::set_allocated_connecting_info(::user_engagement::DebatingInfo_ConnectingInfo* connecting_info) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_additional_info();
+  if (connecting_info) {
+    ::google::protobuf::Arena* submessage_arena = connecting_info->GetArena();
+    if (message_arena != submessage_arena) {
+      connecting_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, connecting_info, submessage_arena);
+    }
+    set_has_connecting_info();
+    _impl_.additional_info_.connecting_info_ = connecting_info;
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.connecting_info)
+}
+void DebatingInfo::set_allocated_challenging_info(::user_engagement::DebatingInfo_ChallengingInfo* challenging_info) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_additional_info();
+  if (challenging_info) {
+    ::google::protobuf::Arena* submessage_arena = challenging_info->GetArena();
+    if (message_arena != submessage_arena) {
+      challenging_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, challenging_info, submessage_arena);
+    }
+    set_has_challenging_info();
+    _impl_.additional_info_.challenging_info_ = challenging_info;
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.challenging_info)
+}
 DebatingInfo::DebatingInfo(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
@@ -2181,7 +2892,9 @@ inline PROTOBUF_NDEBUG_INLINE DebatingInfo::Impl_::Impl_(
         children_claims_{visibility, arena, from.children_claims_},
         links_{visibility, arena, from.links_},
         current_challenges_{visibility, arena, from.current_challenges_},
-        current_claim_description_(arena, from.current_claim_description_) {}
+        current_claim_description_(arena, from.current_claim_description_),
+        additional_info_{},
+        _oneof_case_{from._oneof_case_[0]} {}
 
 DebatingInfo::DebatingInfo(
     ::google::protobuf::Arena* arena,
@@ -2206,11 +2919,8 @@ DebatingInfo::DebatingInfo(
   _impl_.root_claim_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::ClaimInfo>(
                               arena, *from._impl_.root_claim_)
                         : nullptr;
-  _impl_.connecting_info_ = (cached_has_bits & 0x00000008u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ConnectingInfo>(
-                              arena, *from._impl_.connecting_info_)
-                        : nullptr;
-  _impl_.challenging_info_ = (cached_has_bits & 0x00000010u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ChallengingInfo>(
-                              arena, *from._impl_.challenging_info_)
+  _impl_.current_debate_action_ = (cached_has_bits & 0x00000008u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_CurrentDebateAction>(
+                              arena, *from._impl_.current_debate_action_)
                         : nullptr;
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, debate_id_),
@@ -2219,6 +2929,16 @@ DebatingInfo::DebatingInfo(
            offsetof(Impl_, challenger_user_id_) -
                offsetof(Impl_, debate_id_) +
                sizeof(Impl_::challenger_user_id_));
+  switch (additional_info_case()) {
+    case ADDITIONAL_INFO_NOT_SET:
+      break;
+      case kConnectingInfo:
+        _impl_.additional_info_.connecting_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ConnectingInfo>(arena, *from._impl_.additional_info_.connecting_info_);
+        break;
+      case kChallengingInfo:
+        _impl_.additional_info_.challenging_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ChallengingInfo>(arena, *from._impl_.additional_info_.challenging_info_);
+        break;
+  }
 
   // @@protoc_insertion_point(copy_constructor:user_engagement.DebatingInfo)
 }
@@ -2229,7 +2949,9 @@ inline PROTOBUF_NDEBUG_INLINE DebatingInfo::Impl_::Impl_(
         children_claims_{visibility, arena},
         links_{visibility, arena},
         current_challenges_{visibility, arena},
-        current_claim_description_(arena) {}
+        current_claim_description_(arena),
+        additional_info_{},
+        _oneof_case_{} {}
 
 inline void DebatingInfo::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -2252,10 +2974,40 @@ inline void DebatingInfo::SharedDtor(MessageLite& self) {
   delete this_._impl_.current_claim_;
   delete this_._impl_.parent_claim_;
   delete this_._impl_.root_claim_;
-  delete this_._impl_.connecting_info_;
-  delete this_._impl_.challenging_info_;
+  delete this_._impl_.current_debate_action_;
+  if (this_.has_additional_info()) {
+    this_.clear_additional_info();
+  }
   this_._impl_.~Impl_();
 }
+
+void DebatingInfo::clear_additional_info() {
+// @@protoc_insertion_point(one_of_clear_start:user_engagement.DebatingInfo)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (additional_info_case()) {
+    case kConnectingInfo: {
+      if (GetArena() == nullptr) {
+        delete _impl_.additional_info_.connecting_info_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.additional_info_.connecting_info_);
+      }
+      break;
+    }
+    case kChallengingInfo: {
+      if (GetArena() == nullptr) {
+        delete _impl_.additional_info_.challenging_info_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.additional_info_.challenging_info_);
+      }
+      break;
+    }
+    case ADDITIONAL_INFO_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = ADDITIONAL_INFO_NOT_SET;
+}
+
 
 inline void* DebatingInfo::PlacementNew_(const void*, void* mem,
                                         ::google::protobuf::Arena* arena) {
@@ -2313,16 +3065,16 @@ const ::google::protobuf::internal::ClassData* DebatingInfo::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<5, 18, 8, 78, 2> DebatingInfo::_table_ = {
+const ::_pbi::TcParseTable<4, 14, 9, 70, 2> DebatingInfo::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_._has_bits_),
     0, // no _extensions_
-    18, 248,  // max_field_number, fast_idx_mask
+    18, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294705152,  // skipmap
+    4294718208,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    18,  // num_field_entries
-    8,  // num_aux_entries
+    14,  // num_field_entries
+    9,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -2331,7 +3083,9 @@ const ::_pbi::TcParseTable<5, 18, 8, 78, 2> DebatingInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // bool is_challenge = 16 [json_name = "isChallenge"];
+    {::_pbi::TcParser::FastV8S2,
+     {384, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.is_challenge_)}},
     // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebatingInfo, _impl_.debate_id_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.debate_id_)}},
@@ -2356,45 +3110,11 @@ const ::_pbi::TcParseTable<5, 18, 8, 78, 2> DebatingInfo::_table_ = {
     // repeated .user_engagement.ChallengeInfo current_challenges = 8 [json_name = "currentChallenges"];
     {::_pbi::TcParser::FastMtR1,
      {66, 63, 5, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_challenges_)}},
-    // bool adding_child_claim = 9 [json_name = "addingChildClaim"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.adding_child_claim_), 63>(),
-     {72, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.adding_child_claim_)}},
-    // bool editing_claim_sentence = 10 [json_name = "editingClaimSentence"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.editing_claim_sentence_), 63>(),
-     {80, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_sentence_)}},
-    // bool editing_claim_description = 11 [json_name = "editingClaimDescription"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.editing_claim_description_), 63>(),
-     {88, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_description_)}},
-    // bool reporting_claim = 12 [json_name = "reportingClaim"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.reporting_claim_), 63>(),
-     {96, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.reporting_claim_)}},
-    // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 13 [json_name = "connectingInfo"];
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
     {::_pbi::TcParser::FastMtS1,
-     {106, 3, 6, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.connecting_info_)}},
-    // bool challenging_claim = 14 [json_name = "challengingClaim"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebatingInfo, _impl_.challenging_claim_), 63>(),
-     {112, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenging_claim_)}},
-    // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
-    {::_pbi::TcParser::FastMtS1,
-     {122, 4, 7, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenging_info_)}},
-    // bool is_challenge = 16 [json_name = "isChallenge"];
-    {::_pbi::TcParser::FastV8S2,
-     {384, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.is_challenge_)}},
-    // int32 challenged_user_id = 17 [json_name = "challengedUserId"];
-    {::_pbi::TcParser::FastV32S2,
-     {392, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenged_user_id_)}},
-    // int32 challenger_user_id = 18 [json_name = "challengerUserId"];
-    {::_pbi::TcParser::FastV32S2,
-     {400, 63, 0, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenger_user_id_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {90, 3, 6, PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_debate_action_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -2426,27 +3146,15 @@ const ::_pbi::TcParseTable<5, 18, 8, 78, 2> DebatingInfo::_table_ = {
     // repeated .user_engagement.ChallengeInfo current_challenges = 8 [json_name = "currentChallenges"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_challenges_), -1, 5,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool adding_child_claim = 9 [json_name = "addingChildClaim"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.adding_child_claim_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool editing_claim_sentence = 10 [json_name = "editingClaimSentence"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_sentence_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool editing_claim_description = 11 [json_name = "editingClaimDescription"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.editing_claim_description_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // bool reporting_claim = 12 [json_name = "reportingClaim"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.reporting_claim_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 13 [json_name = "connectingInfo"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.connecting_info_), _Internal::kHasBitsOffset + 3, 6,
+    // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_debate_action_), _Internal::kHasBitsOffset + 3, 6,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // bool challenging_claim = 14 [json_name = "challengingClaim"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenging_claim_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.additional_info_.connecting_info_), _Internal::kOneofCaseOffset + 0, 7,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
-    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.challenging_info_), _Internal::kHasBitsOffset + 4, 7,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.additional_info_.challenging_info_), _Internal::kOneofCaseOffset + 0, 8,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // bool is_challenge = 16 [json_name = "isChallenge"];
     {PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.is_challenge_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
@@ -2463,10 +3171,11 @@ const ::_pbi::TcParseTable<5, 18, 8, 78, 2> DebatingInfo::_table_ = {
     {::_pbi::TcParser::GetTable<::user_engagement::ClaimInfo>()},
     {::_pbi::TcParser::GetTable<::user_engagement::LinkInfo>()},
     {::_pbi::TcParser::GetTable<::user_engagement::ChallengeInfo>()},
+    {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo_CurrentDebateAction>()},
     {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo_ConnectingInfo>()},
     {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo_ChallengingInfo>()},
   }}, {{
-    "\34\0\0\31\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+    "\34\0\0\31\0\0\0\0\0\0\0\0\0\0\0\0"
     "user_engagement.DebatingInfo"
     "current_claim_description"
   }},
@@ -2484,7 +3193,7 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
   _impl_.current_challenges_.Clear();
   _impl_.current_claim_description_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       ABSL_DCHECK(_impl_.current_claim_ != nullptr);
       _impl_.current_claim_->Clear();
@@ -2498,17 +3207,14 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
       _impl_.root_claim_->Clear();
     }
     if (cached_has_bits & 0x00000008u) {
-      ABSL_DCHECK(_impl_.connecting_info_ != nullptr);
-      _impl_.connecting_info_->Clear();
-    }
-    if (cached_has_bits & 0x00000010u) {
-      ABSL_DCHECK(_impl_.challenging_info_ != nullptr);
-      _impl_.challenging_info_->Clear();
+      ABSL_DCHECK(_impl_.current_debate_action_ != nullptr);
+      _impl_.current_debate_action_->Clear();
     }
   }
   ::memset(&_impl_.debate_id_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.challenger_user_id_) -
       reinterpret_cast<char*>(&_impl_.debate_id_)) + sizeof(_impl_.challenger_user_id_));
+  clear_additional_info();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -2598,55 +3304,29 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
                     target, stream);
           }
 
-          // bool adding_child_claim = 9 [json_name = "addingChildClaim"];
-          if (this_._internal_adding_child_claim() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                9, this_._internal_adding_child_claim(), target);
-          }
-
-          // bool editing_claim_sentence = 10 [json_name = "editingClaimSentence"];
-          if (this_._internal_editing_claim_sentence() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                10, this_._internal_editing_claim_sentence(), target);
-          }
-
-          // bool editing_claim_description = 11 [json_name = "editingClaimDescription"];
-          if (this_._internal_editing_claim_description() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                11, this_._internal_editing_claim_description(), target);
-          }
-
-          // bool reporting_claim = 12 [json_name = "reportingClaim"];
-          if (this_._internal_reporting_claim() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                12, this_._internal_reporting_claim(), target);
-          }
-
-          // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 13 [json_name = "connectingInfo"];
+          // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
           if (cached_has_bits & 0x00000008u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                13, *this_._impl_.connecting_info_, this_._impl_.connecting_info_->GetCachedSize(), target,
+                11, *this_._impl_.current_debate_action_, this_._impl_.current_debate_action_->GetCachedSize(), target,
                 stream);
           }
 
-          // bool challenging_claim = 14 [json_name = "challengingClaim"];
-          if (this_._internal_challenging_claim() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                14, this_._internal_challenging_claim(), target);
+          switch (this_.additional_info_case()) {
+            case kConnectingInfo: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  12, *this_._impl_.additional_info_.connecting_info_, this_._impl_.additional_info_.connecting_info_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            case kChallengingInfo: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  15, *this_._impl_.additional_info_.challenging_info_, this_._impl_.additional_info_.challenging_info_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            default:
+              break;
           }
-
-          // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
-          if (cached_has_bits & 0x00000010u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                15, *this_._impl_.challenging_info_, this_._impl_.challenging_info_->GetCachedSize(), target,
-                stream);
-          }
-
           // bool is_challenge = 16 [json_name = "isChallenge"];
           if (this_._internal_is_challenge() != 0) {
             target = stream->EnsureSpace(target);
@@ -2723,7 +3403,7 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             }
           }
           cached_has_bits = this_._impl_._has_bits_[0];
-          if (cached_has_bits & 0x0000001fu) {
+          if (cached_has_bits & 0x0000000fu) {
             // .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -2739,15 +3419,10 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.root_claim_);
             }
-            // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 13 [json_name = "connectingInfo"];
+            // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
             if (cached_has_bits & 0x00000008u) {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.connecting_info_);
-            }
-            // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
-            if (cached_has_bits & 0x00000010u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.challenging_info_);
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.current_debate_action_);
             }
           }
            {
@@ -2760,26 +3435,6 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             if (this_._internal_is_challenge() != 0) {
               total_size += 3;
             }
-            // bool adding_child_claim = 9 [json_name = "addingChildClaim"];
-            if (this_._internal_adding_child_claim() != 0) {
-              total_size += 2;
-            }
-            // bool editing_claim_sentence = 10 [json_name = "editingClaimSentence"];
-            if (this_._internal_editing_claim_sentence() != 0) {
-              total_size += 2;
-            }
-            // bool editing_claim_description = 11 [json_name = "editingClaimDescription"];
-            if (this_._internal_editing_claim_description() != 0) {
-              total_size += 2;
-            }
-            // bool reporting_claim = 12 [json_name = "reportingClaim"];
-            if (this_._internal_reporting_claim() != 0) {
-              total_size += 2;
-            }
-            // bool challenging_claim = 14 [json_name = "challengingClaim"];
-            if (this_._internal_challenging_claim() != 0) {
-              total_size += 2;
-            }
             // int32 challenged_user_id = 17 [json_name = "challengedUserId"];
             if (this_._internal_challenged_user_id() != 0) {
               total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
@@ -2789,6 +3444,23 @@ PROTOBUF_NOINLINE void DebatingInfo::Clear() {
             if (this_._internal_challenger_user_id() != 0) {
               total_size += 2 + ::_pbi::WireFormatLite::Int32Size(
                                               this_._internal_challenger_user_id());
+            }
+          }
+          switch (this_.additional_info_case()) {
+            // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];
+            case kConnectingInfo: {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.additional_info_.connecting_info_);
+              break;
+            }
+            // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
+            case kChallengingInfo: {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.additional_info_.challenging_info_);
+              break;
+            }
+            case ADDITIONAL_INFO_NOT_SET: {
+              break;
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2814,7 +3486,7 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
     _this->_internal_set_current_claim_description(from._internal_current_claim_description());
   }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
       ABSL_DCHECK(from._impl_.current_claim_ != nullptr);
       if (_this->_impl_.current_claim_ == nullptr) {
@@ -2843,21 +3515,12 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
       }
     }
     if (cached_has_bits & 0x00000008u) {
-      ABSL_DCHECK(from._impl_.connecting_info_ != nullptr);
-      if (_this->_impl_.connecting_info_ == nullptr) {
-        _this->_impl_.connecting_info_ =
-            ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ConnectingInfo>(arena, *from._impl_.connecting_info_);
+      ABSL_DCHECK(from._impl_.current_debate_action_ != nullptr);
+      if (_this->_impl_.current_debate_action_ == nullptr) {
+        _this->_impl_.current_debate_action_ =
+            ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_CurrentDebateAction>(arena, *from._impl_.current_debate_action_);
       } else {
-        _this->_impl_.connecting_info_->MergeFrom(*from._impl_.connecting_info_);
-      }
-    }
-    if (cached_has_bits & 0x00000010u) {
-      ABSL_DCHECK(from._impl_.challenging_info_ != nullptr);
-      if (_this->_impl_.challenging_info_ == nullptr) {
-        _this->_impl_.challenging_info_ =
-            ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ChallengingInfo>(arena, *from._impl_.challenging_info_);
-      } else {
-        _this->_impl_.challenging_info_->MergeFrom(*from._impl_.challenging_info_);
+        _this->_impl_.current_debate_action_->MergeFrom(*from._impl_.current_debate_action_);
       }
     }
   }
@@ -2867,21 +3530,6 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   if (from._internal_is_challenge() != 0) {
     _this->_impl_.is_challenge_ = from._impl_.is_challenge_;
   }
-  if (from._internal_adding_child_claim() != 0) {
-    _this->_impl_.adding_child_claim_ = from._impl_.adding_child_claim_;
-  }
-  if (from._internal_editing_claim_sentence() != 0) {
-    _this->_impl_.editing_claim_sentence_ = from._impl_.editing_claim_sentence_;
-  }
-  if (from._internal_editing_claim_description() != 0) {
-    _this->_impl_.editing_claim_description_ = from._impl_.editing_claim_description_;
-  }
-  if (from._internal_reporting_claim() != 0) {
-    _this->_impl_.reporting_claim_ = from._impl_.reporting_claim_;
-  }
-  if (from._internal_challenging_claim() != 0) {
-    _this->_impl_.challenging_claim_ = from._impl_.challenging_claim_;
-  }
   if (from._internal_challenged_user_id() != 0) {
     _this->_impl_.challenged_user_id_ = from._impl_.challenged_user_id_;
   }
@@ -2889,6 +3537,39 @@ void DebatingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
     _this->_impl_.challenger_user_id_ = from._impl_.challenger_user_id_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
+  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
+    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
+    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
+    if (oneof_needs_init) {
+      if (oneof_to_case != 0) {
+        _this->clear_additional_info();
+      }
+      _this->_impl_._oneof_case_[0] = oneof_from_case;
+    }
+
+    switch (oneof_from_case) {
+      case kConnectingInfo: {
+        if (oneof_needs_init) {
+          _this->_impl_.additional_info_.connecting_info_ =
+              ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ConnectingInfo>(arena, *from._impl_.additional_info_.connecting_info_);
+        } else {
+          _this->_impl_.additional_info_.connecting_info_->MergeFrom(from._internal_connecting_info());
+        }
+        break;
+      }
+      case kChallengingInfo: {
+        if (oneof_needs_init) {
+          _this->_impl_.additional_info_.challenging_info_ =
+              ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo_ChallengingInfo>(arena, *from._impl_.additional_info_.challenging_info_);
+        } else {
+          _this->_impl_.additional_info_.challenging_info_->MergeFrom(from._internal_challenging_info());
+        }
+        break;
+      }
+      case ADDITIONAL_INFO_NOT_SET:
+        break;
+    }
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2916,6 +3597,8 @@ void DebatingInfo::InternalSwap(DebatingInfo* PROTOBUF_RESTRICT other) {
       - PROTOBUF_FIELD_OFFSET(DebatingInfo, _impl_.current_claim_)>(
           reinterpret_cast<char*>(&_impl_.current_claim_),
           reinterpret_cast<char*>(&other->_impl_.current_claim_));
+  swap(_impl_.additional_info_, other->_impl_.additional_info_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata DebatingInfo::GetMetadata() const {
@@ -3217,109 +3900,6 @@ void ClaimInfo::InternalSwap(ClaimInfo* PROTOBUF_RESTRICT other) {
 
 ::google::protobuf::Metadata ClaimInfo::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class LoginInfo::_Internal {
- public:
-};
-
-LoginInfo::LoginInfo(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(arena_constructor:user_engagement.LoginInfo)
-}
-LoginInfo::LoginInfo(
-    ::google::protobuf::Arena* arena,
-    const LoginInfo& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  LoginInfo* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:user_engagement.LoginInfo)
-}
-
-inline void* LoginInfo::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) LoginInfo(arena);
-}
-constexpr auto LoginInfo::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(LoginInfo),
-                                            alignof(LoginInfo));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull LoginInfo::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_LoginInfo_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &LoginInfo::MergeImpl,
-        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<LoginInfo>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &LoginInfo::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<LoginInfo>(), &LoginInfo::ByteSizeLong,
-            &LoginInfo::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(LoginInfo, _impl_._cached_size_),
-        false,
-    },
-    &LoginInfo::kDescriptorMethods,
-    &descriptor_table_user_5fengagement_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* LoginInfo::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> LoginInfo::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::user_engagement::LoginInfo>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }},
-  // no field_entries, or aux_entries
-  {{
-  }},
-};
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata LoginInfo::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -3957,506 +4537,6 @@ void ChallengeInfo::InternalSwap(ChallengeInfo* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata ChallengeInfo::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class UserEngagement::_Internal {
- public:
-  static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::user_engagement::UserEngagement, _impl_._oneof_case_);
-};
-
-void UserEngagement::set_allocated_home_info(::user_engagement::HomeInfo* home_info) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_action_info();
-  if (home_info) {
-    ::google::protobuf::Arena* submessage_arena = home_info->GetArena();
-    if (message_arena != submessage_arena) {
-      home_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, home_info, submessage_arena);
-    }
-    set_has_home_info();
-    _impl_.action_info_.home_info_ = home_info;
-  }
-  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.home_info)
-}
-void UserEngagement::set_allocated_debating_info(::user_engagement::DebatingInfo* debating_info) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_action_info();
-  if (debating_info) {
-    ::google::protobuf::Arena* submessage_arena = debating_info->GetArena();
-    if (message_arena != submessage_arena) {
-      debating_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, debating_info, submessage_arena);
-    }
-    set_has_debating_info();
-    _impl_.action_info_.debating_info_ = debating_info;
-  }
-  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.debating_info)
-}
-void UserEngagement::set_allocated_login_info(::user_engagement::LoginInfo* login_info) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_action_info();
-  if (login_info) {
-    ::google::protobuf::Arena* submessage_arena = login_info->GetArena();
-    if (message_arena != submessage_arena) {
-      login_info = ::google::protobuf::internal::GetOwnedMessage(message_arena, login_info, submessage_arena);
-    }
-    set_has_login_info();
-    _impl_.action_info_.login_info_ = login_info;
-  }
-  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.login_info)
-}
-UserEngagement::UserEngagement(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:user_engagement.UserEngagement)
-}
-inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::user_engagement::UserEngagement& from_msg)
-      : username_(arena, from.username_),
-        action_info_{},
-        _cached_size_{0},
-        _oneof_case_{from._oneof_case_[0]} {}
-
-UserEngagement::UserEngagement(
-    ::google::protobuf::Arena* arena,
-    const UserEngagement& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  UserEngagement* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, current_action_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, current_action_),
-           offsetof(Impl_, user_id_) -
-               offsetof(Impl_, current_action_) +
-               sizeof(Impl_::user_id_));
-  switch (action_info_case()) {
-    case ACTION_INFO_NOT_SET:
-      break;
-      case kHomeInfo:
-        _impl_.action_info_.home_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::HomeInfo>(arena, *from._impl_.action_info_.home_info_);
-        break;
-      case kDebatingInfo:
-        _impl_.action_info_.debating_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo>(arena, *from._impl_.action_info_.debating_info_);
-        break;
-      case kLoginInfo:
-        _impl_.action_info_.login_info_ = ::google::protobuf::Message::CopyConstruct<::user_engagement::LoginInfo>(arena, *from._impl_.action_info_.login_info_);
-        break;
-  }
-
-  // @@protoc_insertion_point(copy_constructor:user_engagement.UserEngagement)
-}
-inline PROTOBUF_NDEBUG_INLINE UserEngagement::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : username_(arena),
-        action_info_{},
-        _cached_size_{0},
-        _oneof_case_{} {}
-
-inline void UserEngagement::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, current_action_),
-           0,
-           offsetof(Impl_, user_id_) -
-               offsetof(Impl_, current_action_) +
-               sizeof(Impl_::user_id_));
-}
-UserEngagement::~UserEngagement() {
-  // @@protoc_insertion_point(destructor:user_engagement.UserEngagement)
-  SharedDtor(*this);
-}
-inline void UserEngagement::SharedDtor(MessageLite& self) {
-  UserEngagement& this_ = static_cast<UserEngagement&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.username_.Destroy();
-  if (this_.has_action_info()) {
-    this_.clear_action_info();
-  }
-  this_._impl_.~Impl_();
-}
-
-void UserEngagement::clear_action_info() {
-// @@protoc_insertion_point(one_of_clear_start:user_engagement.UserEngagement)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  switch (action_info_case()) {
-    case kHomeInfo: {
-      if (GetArena() == nullptr) {
-        delete _impl_.action_info_.home_info_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.home_info_);
-      }
-      break;
-    }
-    case kDebatingInfo: {
-      if (GetArena() == nullptr) {
-        delete _impl_.action_info_.debating_info_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.debating_info_);
-      }
-      break;
-    }
-    case kLoginInfo: {
-      if (GetArena() == nullptr) {
-        delete _impl_.action_info_.login_info_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.action_info_.login_info_);
-      }
-      break;
-    }
-    case ACTION_INFO_NOT_SET: {
-      break;
-    }
-  }
-  _impl_._oneof_case_[0] = ACTION_INFO_NOT_SET;
-}
-
-
-inline void* UserEngagement::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) UserEngagement(arena);
-}
-constexpr auto UserEngagement::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(UserEngagement),
-                                            alignof(UserEngagement));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull UserEngagement::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_UserEngagement_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &UserEngagement::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<UserEngagement>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &UserEngagement::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<UserEngagement>(), &UserEngagement::ByteSizeLong,
-            &UserEngagement::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_._cached_size_),
-        false,
-    },
-    &UserEngagement::kDescriptorMethods,
-    &descriptor_table_user_5fengagement_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* UserEngagement::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 3, 47, 2> UserEngagement::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
-    3,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserEngagement, _impl_.current_action_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    // string username = 5 [json_name = "username"];
-    {::_pbi::TcParser::FastUS1,
-     {42, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.username_)}},
-    // int32 user_id = 6 [json_name = "userId"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserEngagement, _impl_.user_id_), 63>(),
-     {48, 63, 0, PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.home_info_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.debating_info_), _Internal::kOneofCaseOffset + 0, 1,
-    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .user_engagement.LoginInfo login_info = 4 [json_name = "loginInfo"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.action_info_.login_info_), _Internal::kOneofCaseOffset + 0, 2,
-    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // string username = 5 [json_name = "username"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.username_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 user_id = 6 [json_name = "userId"];
-    {PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::user_engagement::HomeInfo>()},
-    {::_pbi::TcParser::GetTable<::user_engagement::DebatingInfo>()},
-    {::_pbi::TcParser::GetTable<::user_engagement::LoginInfo>()},
-  }}, {{
-    "\36\0\0\0\0\10\0\0"
-    "user_engagement.UserEngagement"
-    "username"
-  }},
-};
-
-PROTOBUF_NOINLINE void UserEngagement::Clear() {
-// @@protoc_insertion_point(message_clear_start:user_engagement.UserEngagement)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.username_.ClearToEmpty();
-  ::memset(&_impl_.current_action_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.user_id_) -
-      reinterpret_cast<char*>(&_impl_.current_action_)) + sizeof(_impl_.user_id_));
-  clear_action_info();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* UserEngagement::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const UserEngagement& this_ = static_cast<const UserEngagement&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* UserEngagement::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const UserEngagement& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:user_engagement.UserEngagement)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
-          if (this_._internal_current_action() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                1, this_._internal_current_action(), target);
-          }
-
-          switch (this_.action_info_case()) {
-            case kHomeInfo: {
-              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                  2, *this_._impl_.action_info_.home_info_, this_._impl_.action_info_.home_info_->GetCachedSize(), target,
-                  stream);
-              break;
-            }
-            case kDebatingInfo: {
-              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                  3, *this_._impl_.action_info_.debating_info_, this_._impl_.action_info_.debating_info_->GetCachedSize(), target,
-                  stream);
-              break;
-            }
-            case kLoginInfo: {
-              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                  4, *this_._impl_.action_info_.login_info_, this_._impl_.action_info_.login_info_->GetCachedSize(), target,
-                  stream);
-              break;
-            }
-            default:
-              break;
-          }
-          // string username = 5 [json_name = "username"];
-          if (!this_._internal_username().empty()) {
-            const std::string& _s = this_._internal_username();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user_engagement.UserEngagement.username");
-            target = stream->WriteStringMaybeAliased(5, _s, target);
-          }
-
-          // int32 user_id = 6 [json_name = "userId"];
-          if (this_._internal_user_id() != 0) {
-            target = ::google::protobuf::internal::WireFormatLite::
-                WriteInt32ToArrayWithField<6>(
-                    stream, this_._internal_user_id(), target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:user_engagement.UserEngagement)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t UserEngagement::ByteSizeLong(const MessageLite& base) {
-          const UserEngagement& this_ = static_cast<const UserEngagement&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t UserEngagement::ByteSizeLong() const {
-          const UserEngagement& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:user_engagement.UserEngagement)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // string username = 5 [json_name = "username"];
-            if (!this_._internal_username().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_username());
-            }
-            // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
-            if (this_._internal_current_action() != 0) {
-              total_size += 1 +
-                            ::_pbi::WireFormatLite::EnumSize(this_._internal_current_action());
-            }
-            // int32 user_id = 6 [json_name = "userId"];
-            if (this_._internal_user_id() != 0) {
-              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-                  this_._internal_user_id());
-            }
-          }
-          switch (this_.action_info_case()) {
-            // .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
-            case kHomeInfo: {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.home_info_);
-              break;
-            }
-            // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
-            case kDebatingInfo: {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.debating_info_);
-              break;
-            }
-            // .user_engagement.LoginInfo login_info = 4 [json_name = "loginInfo"];
-            case kLoginInfo: {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_info_.login_info_);
-              break;
-            }
-            case ACTION_INFO_NOT_SET: {
-              break;
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void UserEngagement::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<UserEngagement*>(&to_msg);
-  auto& from = static_cast<const UserEngagement&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:user_engagement.UserEngagement)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_username().empty()) {
-    _this->_internal_set_username(from._internal_username());
-  }
-  if (from._internal_current_action() != 0) {
-    _this->_impl_.current_action_ = from._impl_.current_action_;
-  }
-  if (from._internal_user_id() != 0) {
-    _this->_impl_.user_id_ = from._impl_.user_id_;
-  }
-  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
-    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
-    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
-    if (oneof_needs_init) {
-      if (oneof_to_case != 0) {
-        _this->clear_action_info();
-      }
-      _this->_impl_._oneof_case_[0] = oneof_from_case;
-    }
-
-    switch (oneof_from_case) {
-      case kHomeInfo: {
-        if (oneof_needs_init) {
-          _this->_impl_.action_info_.home_info_ =
-              ::google::protobuf::Message::CopyConstruct<::user_engagement::HomeInfo>(arena, *from._impl_.action_info_.home_info_);
-        } else {
-          _this->_impl_.action_info_.home_info_->MergeFrom(from._internal_home_info());
-        }
-        break;
-      }
-      case kDebatingInfo: {
-        if (oneof_needs_init) {
-          _this->_impl_.action_info_.debating_info_ =
-              ::google::protobuf::Message::CopyConstruct<::user_engagement::DebatingInfo>(arena, *from._impl_.action_info_.debating_info_);
-        } else {
-          _this->_impl_.action_info_.debating_info_->MergeFrom(from._internal_debating_info());
-        }
-        break;
-      }
-      case kLoginInfo: {
-        if (oneof_needs_init) {
-          _this->_impl_.action_info_.login_info_ =
-              ::google::protobuf::Message::CopyConstruct<::user_engagement::LoginInfo>(arena, *from._impl_.action_info_.login_info_);
-        } else {
-          _this->_impl_.action_info_.login_info_->MergeFrom(from._internal_login_info());
-        }
-        break;
-      }
-      case ACTION_INFO_NOT_SET:
-        break;
-    }
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void UserEngagement::CopyFrom(const UserEngagement& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:user_engagement.UserEngagement)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void UserEngagement::InternalSwap(UserEngagement* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.user_id_)
-      + sizeof(UserEngagement::_impl_.user_id_)
-      - PROTOBUF_FIELD_OFFSET(UserEngagement, _impl_.current_action_)>(
-          reinterpret_cast<char*>(&_impl_.current_action_),
-          reinterpret_cast<char*>(&other->_impl_.current_action_));
-  swap(_impl_.action_info_, other->_impl_.action_info_);
-  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
-}
-
-::google::protobuf::Metadata UserEngagement::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

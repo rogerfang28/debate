@@ -7,7 +7,7 @@ void EditClaimHandler::CancelEditClaim(const int& user_id, DebateWrapper& debate
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set editing_claim to false
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_sentence(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -17,7 +17,7 @@ void EditClaimHandler::CancelEditClaimDescription(const int& user_id, DebateWrap
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set editing_claim to false
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -27,7 +27,7 @@ void EditClaimHandler::StartEditClaim(const int& user_id, DebateWrapper& debateW
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set editing_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_sentence(true);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::EDITING_CLAIM);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -38,7 +38,7 @@ void EditClaimHandler::StartEditClaimDescription(const int& user_id, DebateWrapp
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // set editing_claim to true
-    userProto.mutable_engagement()->mutable_debating_info()->set_editing_claim_description(true);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::EDITING_CLAIM_DESCRIPTION);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
