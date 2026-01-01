@@ -7,6 +7,15 @@ ui::Page ErrorPageGenerator::GenerateErrorPage() {
     page.set_title("Error - Page Not Found");
 
     // Main container
+    ui::Component mainLayout = GenerateErrorPageMainLayout();
+    ui::Component* pageLayout = page.add_components();
+    pageLayout->CopyFrom(mainLayout);
+
+    return page;
+}
+
+ui::Component ErrorPageGenerator::GenerateErrorPageMainLayout() {
+    // Main container
     ui::Component main = ComponentGenerator::createContainer(
         "main",
         "min-h-screen flex flex-col items-center justify-center gap-6",
@@ -66,9 +75,5 @@ ui::Page ErrorPageGenerator::GenerateErrorPage() {
     );
     ComponentGenerator::addChild(&main, homeButton);
 
-    // Add main container to page
-    ui::Component* pageMain = page.add_components();
-    pageMain->CopyFrom(main);
-
-    return page;
+    return main;
 }

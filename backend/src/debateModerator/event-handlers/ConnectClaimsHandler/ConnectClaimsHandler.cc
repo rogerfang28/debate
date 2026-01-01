@@ -35,6 +35,7 @@ void ConnectClaimsHandler::ConnectFromClaim(
     // take user proto and put connect from claim);
     user_engagement::UserEngagement userEngagement;
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CONNECTING_CLAIMS);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_from_claim_id(fromClaimId);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_connecting(true);
 
@@ -64,7 +65,7 @@ void ConnectClaimsHandler::CancelConnectClaims(
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(false);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->clear_from_claim_id();
     userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->clear_to_claim_id();
-
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo_CurrentDebateAction_ActionType_VIEWING_CLAIM);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 
 }

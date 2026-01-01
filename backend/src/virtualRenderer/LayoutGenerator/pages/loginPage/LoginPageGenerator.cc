@@ -7,6 +7,23 @@ ui::Page LoginPageGenerator::GenerateLoginPage() {
     page.set_title("Enter Username");
 
     // Main container
+    ui::Component main = GenerateLoginPageMainLayout();
+
+    ui::Component* pageLayout = page.add_components();
+    pageLayout->CopyFrom(main);
+    return page;
+}
+
+
+
+
+
+
+
+
+
+ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
+    // Main container
     ui::Component main = ComponentGenerator::createContainer(
         "main",
         "min-h-screen flex flex-col items-center justify-center gap-6",
@@ -68,9 +85,5 @@ ui::Page LoginPageGenerator::GenerateLoginPage() {
     );
     ComponentGenerator::addChild(&main, submitButton);
 
-    // Add main container to page
-    ui::Component* pageMain = page.add_components();
-    pageMain->CopyFrom(main);
-
-    return page;
+    return main;
 }

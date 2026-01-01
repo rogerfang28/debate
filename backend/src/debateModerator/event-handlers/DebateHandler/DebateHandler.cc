@@ -1,6 +1,7 @@
 #include "DebateHandler.h"
 #include <iostream>
 #include "../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../database/handlers/DatabaseWrapper.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
@@ -31,4 +32,10 @@ void DebateHandler::JoinDebateAsMember(const int& debate_id, const int& user_id,
     // add user as member to debate
     // not implemented yet
     debateWrapper.addMemberToDebate(debate_id, user_id);
+}
+
+void DebateHandler::LeaveDebate(const int& debate_id, const int& user_id, DebateWrapper& debateWrapper, DatabaseWrapper& dbWrapper) {
+    Log::debug("[LeaveDebateHandler] LeaveDebate called for user: " + std::to_string(user_id) + ", debate ID: " + std::to_string(debate_id));
+    // remove user as member of debate
+    dbWrapper.debateMembers.removeMember(debate_id, user_id);
 }

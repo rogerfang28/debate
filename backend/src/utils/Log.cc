@@ -46,6 +46,18 @@ void Log::error(const std::string& msg) {
     std::cerr << oss.str();
 }
 
+void Log::test(const std::string& msg) {
+    if (currentLevel < LogLevel::Test) return;
+
+    std::ostringstream oss;
+    oss << "\033[35m"
+        << "[" << getTimestamp() << "] [TEST ] " << msg
+        << "\033[0m\n";
+
+    std::lock_guard<std::mutex> lock(logMutex);
+    std::cerr << oss.str();
+}
+
 void Log::warn(const std::string& msg) {
     if (currentLevel < LogLevel::Warn) return;
 

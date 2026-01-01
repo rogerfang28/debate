@@ -103,6 +103,10 @@ message DeleteChallenge {
     int32 challenge_id = 1;
 }
 
+message LeaveDebate {
+    int32 debate_id = 1;
+}
+
 
 // enum
 enum EventType {
@@ -151,6 +155,7 @@ enum EventType {
     REMOVE_LINK_TO_BE_CHALLENGED = 41;
     DELETE_CHALLENGE = 42;
     GO_TO_CHALLENGED_PARENT_CLAIM = 43;
+    LEAVE_DEBATE = 44;
 }
 
 message UserAuthInfo {
@@ -189,5 +194,6 @@ message DebateEvent {
     RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46;
     RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
     DeleteChallenge delete_challenge = 48;
+    LeaveDebate leave_debate = 49;
   }
 }

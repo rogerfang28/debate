@@ -15,7 +15,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         case user_engagement::ACTION_HOME:
             // generate home page
             Log::debug("[LayoutGenerator] Generating Home Page");
-            return HomePageGenerator::GenerateHomePage(info.engagement().home_info());
+            return HomePageGenerator::GenerateHomePage(info.engagement());
         case user_engagement::ACTION_DEBATING:
             // generate debate page
             Log::debug("[LayoutGenerator] Generating Debate Page");

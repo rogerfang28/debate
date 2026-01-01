@@ -5,4 +5,5 @@
 class ErrorPageGenerator {
 public:
     static ui::Page GenerateErrorPage();
+    static ui::Component GenerateErrorPageMainLayout();
 };

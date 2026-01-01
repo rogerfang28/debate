@@ -57,6 +57,14 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         }
     }
 
+    else if (componentId.find("leaveDebateButton_") == 0 && eventType == "onClick") {
+        event.set_type(debate_event::LEAVE_DEBATE);
+        auto* leaveDebate = event.mutable_leave_debate();
+        std::string debateID = componentId.substr(std::string("leaveDebateButton_").length());
+        leaveDebate->set_debate_id(std::stoi(debateID));
+        Log::debug("  LEAVE_DEBATE: debate_id = " + debateID);
+    }
+
     // ! Logout event, which won't happen because virtual renderer handleAuthEvents is already doing it
     else if (componentId == "logoutButton"){
         Log::debug("  LOGOUT event");

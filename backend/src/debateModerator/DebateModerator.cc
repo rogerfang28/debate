@@ -275,6 +275,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGED_PARENT_CLAIM");
             MoveUserHandler::GoToParentClaimOfDebate(user_id, debateWrapper);
             break;
+        case debate_event::LEAVE_DEBATE:
+            Log::debug("[DebateModerator] Event Type: LEAVE_DEBATE");
+            DebateHandler::LeaveDebate(
+                event.leave_debate().debate_id(),
+                user_id,
+                debateWrapper,
+                dbWrapper
+            );
+            break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
