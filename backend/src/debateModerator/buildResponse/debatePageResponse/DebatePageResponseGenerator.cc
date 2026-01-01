@@ -15,19 +15,19 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     Log::debug("[DebatePageResponseGenerator] Building debate page response for user: " + std::to_string(user_id));
     // based on the current claim id, generate the children claims and sentences and parent claim
     int currentClaimId = debatingInfo.current_claim().id();
-    debate::Claim currentClaim = debateWrapper.findClaim(currentClaimId);
+    debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
     debatingInfo.mutable_current_claim()->set_sentence(currentClaim.sentence());
     debatingInfo.mutable_current_claim()->set_id(currentClaim.id()); // already there
     debatingInfo.mutable_current_claim()->set_creator_id(currentClaim.creator_id());
 
-    debate::Claim parentClaim = debateWrapper.findClaim(currentClaim.parent_id());
+    debate::Claim parentClaim = debateWrapper.getClaimById(currentClaim.parent_id());
     debatingInfo.mutable_parent_claim()->set_sentence(parentClaim.sentence());
     debatingInfo.set_current_claim_description(currentClaim.description());
     debatingInfo.mutable_parent_claim()->set_id(parentClaim.id());
     debatingInfo.mutable_parent_claim()->set_creator_id(parentClaim.creator_id());
     for (int i = 0; i < currentClaim.proof().claim_ids_size(); i++) {
         int childId = currentClaim.proof().claim_ids(i);
-        debate::Claim childClaim = debateWrapper.findClaim(childId);
+        debate::Claim childClaim = debateWrapper.getClaimById(childId);
         user_engagement::ClaimInfo* childClaimInfo = debatingInfo.add_children_claims();
         childClaimInfo->set_id(childClaim.id());
         childClaimInfo->set_sentence(childClaim.sentence());

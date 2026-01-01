@@ -9,7 +9,7 @@ DebateWrapper::DebateWrapper(DatabaseWrapper& dbWrapper)
 std::vector<int> DebateWrapper::findChildrenIds(
     const int& parentId) {
     std::vector<int> childrenIds;
-    debate::Claim parentClaim = findClaim(parentId);
+    debate::Claim parentClaim = getClaimById(parentId);
     for (const auto& childId : parentClaim.proof().claim_ids()) {
         childrenIds.push_back(childId);
     }
@@ -19,10 +19,10 @@ std::vector<int> DebateWrapper::findChildrenIds(
 std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
     const int& parentId) {
     std::vector<std::pair<std::string,std::string>> childrenInfo;
-    debate::Claim parentClaim = findClaim(parentId);
+    debate::Claim parentClaim = getClaimById(parentId);
 
     for (const auto& claim_id: parentClaim.proof().claim_ids()) {
-        debate::Claim claim = findClaim(claim_id);
+        debate::Claim claim = getClaimById(claim_id);
         childrenInfo.emplace_back(std::to_string(claim.id()), claim.sentence());
     }
     return childrenInfo;
@@ -30,11 +30,11 @@ std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
 
 std::string DebateWrapper::findClaimSentence(
     const int& claimId) {
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     return claim.sentence();
 }
 
-debate::Claim DebateWrapper::findClaim(const int& claimId) {
+debate::Claim DebateWrapper::getClaimById(const int& claimId) {
     std::vector<uint8_t> serializedData = databaseWrapper.statements.getStatementProtobuf(claimId);
     if (!serializedData.empty()) {
         debate::Claim claim;
@@ -100,12 +100,12 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
 }
 
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     int parentId = claim.parent_id();
     if (parentId == -1){
         return claim; // root claim has no parent
     }
-    return findClaim(parentId);
+    return getClaimById(parentId);
 }
 
 void DebateWrapper::addClaimUnderParent(
@@ -115,7 +115,7 @@ void DebateWrapper::addClaimUnderParent(
     const int& user_id,
     const int& debate_id) {
 
-    debate::Claim parentClaimFromDB = findClaim(parentId);
+    debate::Claim parentClaimFromDB = getClaimById(parentId);
 
     // Add new claim
     debate::Claim childClaim;
@@ -175,14 +175,14 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
         // find all debatemembers and delete
         databaseWrapper.debateMembers.removeAllMembersFromDebate(debateProto.root_claim_id());
         // delete all claims associated with the debate
-        debate::Claim rootClaim = findClaim(debateProto.root_claim_id());
+        debate::Claim rootClaim = getClaimById(debateProto.root_claim_id());
         std::vector<int> claimsToDelete;
         claimsToDelete.push_back(debateProto.root_claim_id());
 
         size_t index = 0;
         while (index < claimsToDelete.size()) { // BFS-like traversal
             int currentClaimId = claimsToDelete[index];
-            debate::Claim currentClaim = findClaim(currentClaimId);
+            debate::Claim currentClaim = getClaimById(currentClaimId);
             for (const auto& childId : currentClaim.proof().claim_ids()) {
                 claimsToDelete.push_back(childId);
             }
@@ -201,10 +201,10 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
 
 void DebateWrapper::deleteClaim(const int& claimId) {
     // find the claim parent to remove it's reference and also find it's children to delete them recursively
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     int parentId = claim.parent_id();
     if (parentId != -1) {
-        debate::Claim parentClaim = findClaim(parentId);
+        debate::Claim parentClaim = getClaimById(parentId);
         auto* proof = parentClaim.mutable_proof();
         auto& claimIds = *proof->mutable_claim_ids();
         claimIds.erase(
@@ -313,7 +313,7 @@ void DebateWrapper::updateUserProtobufBinary(const int& user_id, const std::vect
 void DebateWrapper::changeDescriptionOfClaim(
     const int& claimId,
     const std::string& newDescription) {
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     claim.set_description(newDescription);
     updateClaimInDB(claim);
 }
@@ -321,7 +321,7 @@ void DebateWrapper::changeDescriptionOfClaim(
 void DebateWrapper::editClaimText(
     const int& claimId,
     const std::string& newText) {
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     claim.set_sentence(newText);
     updateClaimInDB(claim);
     // also update the actual topic in the statement database
@@ -336,7 +336,7 @@ int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& co
 
 std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {
     // should be in the proof of the claim
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     std::vector<int> linkIds;
     for (const auto& linkId : claim.proof().link_ids()) {
         linkIds.push_back((linkId));
@@ -440,7 +440,7 @@ void DebateWrapper::updateDebateProtobuf(const int& debateId, const debate::Deba
 }
 
 int DebateWrapper::findDebateId(const int& claimId) {
-    debate::Claim claim = findClaim(claimId);
+    debate::Claim claim = getClaimById(claimId);
     int debate_id = claim.debate_id();
     return debate_id;
 }

@@ -24,7 +24,6 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     // * Clear all debates
     else if (componentId == "clearButton" && eventType == "onClick") {
         event.set_type(debate_event::CLEAR_DEBATES);
-        auto* clear = event.mutable_clear_debates();
     } 
 
     // * Enter a debate, moves user to debate page

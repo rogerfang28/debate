@@ -13,7 +13,6 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     Log::debug("Parsing DebatePageEvent for user: " + std::to_string(user_id));
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
-        auto* goHome = event.mutable_go_home();
         Log::debug("  GO_HOME for user: " + std::to_string(user_id));
     } else if (componentId == "goToParentButton" && eventType == "onClick") {
         Log::debug("  GO_TO_PARENT for user: " + std::to_string(user_id));

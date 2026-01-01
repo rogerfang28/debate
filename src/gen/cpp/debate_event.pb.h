@@ -20,7 +20,6 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
-#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -67,24 +66,6 @@ extern AddConnectionDefaultTypeInternal _AddConnection_default_instance_;
 class AddLinkToBeChallenged;
 struct AddLinkToBeChallengedDefaultTypeInternal;
 extern AddLinkToBeChallengedDefaultTypeInternal _AddLinkToBeChallenged_default_instance_;
-class CancelConnectClaims;
-struct CancelConnectClaimsDefaultTypeInternal;
-extern CancelConnectClaimsDefaultTypeInternal _CancelConnectClaims_default_instance_;
-class CancelEditClaim;
-struct CancelEditClaimDefaultTypeInternal;
-extern CancelEditClaimDefaultTypeInternal _CancelEditClaim_default_instance_;
-class CancelEditClaimDescription;
-struct CancelEditClaimDescriptionDefaultTypeInternal;
-extern CancelEditClaimDescriptionDefaultTypeInternal _CancelEditClaimDescription_default_instance_;
-class ClearDebates;
-struct ClearDebatesDefaultTypeInternal;
-extern ClearDebatesDefaultTypeInternal _ClearDebates_default_instance_;
-class CloseAddChildClaim;
-struct CloseAddChildClaimDefaultTypeInternal;
-extern CloseAddChildClaimDefaultTypeInternal _CloseAddChildClaim_default_instance_;
-class CloseReportClaim;
-struct CloseReportClaimDefaultTypeInternal;
-extern CloseReportClaimDefaultTypeInternal _CloseReportClaim_default_instance_;
 class ConcedeChallenge;
 struct ConcedeChallengeDefaultTypeInternal;
 extern ConcedeChallengeDefaultTypeInternal _ConcedeChallenge_default_instance_;
@@ -106,9 +87,6 @@ extern DeleteChallengeDefaultTypeInternal _DeleteChallenge_default_instance_;
 class DeleteChildClaim;
 struct DeleteChildClaimDefaultTypeInternal;
 extern DeleteChildClaimDefaultTypeInternal _DeleteChildClaim_default_instance_;
-class DeleteCurrentStatement;
-struct DeleteCurrentStatementDefaultTypeInternal;
-extern DeleteCurrentStatementDefaultTypeInternal _DeleteCurrentStatement_default_instance_;
 class DeleteDebate;
 struct DeleteDebateDefaultTypeInternal;
 extern DeleteDebateDefaultTypeInternal _DeleteDebate_default_instance_;
@@ -118,48 +96,24 @@ extern DeleteLinkDefaultTypeInternal _DeleteLink_default_instance_;
 class EnterDebate;
 struct EnterDebateDefaultTypeInternal;
 extern EnterDebateDefaultTypeInternal _EnterDebate_default_instance_;
-class GoHome;
-struct GoHomeDefaultTypeInternal;
-extern GoHomeDefaultTypeInternal _GoHome_default_instance_;
 class GoToChallenge;
 struct GoToChallengeDefaultTypeInternal;
 extern GoToChallengeDefaultTypeInternal _GoToChallenge_default_instance_;
 class GoToClaim;
 struct GoToClaimDefaultTypeInternal;
 extern GoToClaimDefaultTypeInternal _GoToClaim_default_instance_;
-class GoToParentClaim;
-struct GoToParentClaimDefaultTypeInternal;
-extern GoToParentClaimDefaultTypeInternal _GoToParentClaim_default_instance_;
 class JoinDebate;
 struct JoinDebateDefaultTypeInternal;
 extern JoinDebateDefaultTypeInternal _JoinDebate_default_instance_;
 class Login;
 struct LoginDefaultTypeInternal;
 extern LoginDefaultTypeInternal _Login_default_instance_;
-class None;
-struct NoneDefaultTypeInternal;
-extern NoneDefaultTypeInternal _None_default_instance_;
-class OpenAddChildClaim;
-struct OpenAddChildClaimDefaultTypeInternal;
-extern OpenAddChildClaimDefaultTypeInternal _OpenAddChildClaim_default_instance_;
-class OpenReportClaim;
-struct OpenReportClaimDefaultTypeInternal;
-extern OpenReportClaimDefaultTypeInternal _OpenReportClaim_default_instance_;
 class RemoveClaimToBeChallenged;
 struct RemoveClaimToBeChallengedDefaultTypeInternal;
 extern RemoveClaimToBeChallengedDefaultTypeInternal _RemoveClaimToBeChallenged_default_instance_;
 class RemoveLinkToBeChallenged;
 struct RemoveLinkToBeChallengedDefaultTypeInternal;
 extern RemoveLinkToBeChallengedDefaultTypeInternal _RemoveLinkToBeChallenged_default_instance_;
-class StartChallengeClaim;
-struct StartChallengeClaimDefaultTypeInternal;
-extern StartChallengeClaimDefaultTypeInternal _StartChallengeClaim_default_instance_;
-class StartEditClaim;
-struct StartEditClaimDefaultTypeInternal;
-extern StartEditClaimDefaultTypeInternal _StartEditClaim_default_instance_;
-class StartEditClaimDescription;
-struct StartEditClaimDescriptionDefaultTypeInternal;
-extern StartEditClaimDescriptionDefaultTypeInternal _StartEditClaimDescription_default_instance_;
 class SubmitChallengeClaim;
 struct SubmitChallengeClaimDefaultTypeInternal;
 extern SubmitChallengeClaimDefaultTypeInternal _SubmitChallengeClaim_default_instance_;
@@ -322,7 +276,7 @@ class UserAuthInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const UserAuthInfo*>(
         &_UserAuthInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 38;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(UserAuthInfo& a, UserAuthInfo& b) { a.Swap(&b); }
   inline void Swap(UserAuthInfo* other) {
     if (other == this) return;
@@ -542,7 +496,7 @@ class SubmitEditClaimDescription final : public ::google::protobuf::Message
     return reinterpret_cast<const SubmitEditClaimDescription*>(
         &_SubmitEditClaimDescription_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 17;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(SubmitEditClaimDescription& a, SubmitEditClaimDescription& b) { a.Swap(&b); }
   inline void Swap(SubmitEditClaimDescription* other) {
     if (other == this) return;
@@ -738,7 +692,7 @@ class SubmitEditClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const SubmitEditClaim*>(
         &_SubmitEditClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 20;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(SubmitEditClaim& a, SubmitEditClaim& b) { a.Swap(&b); }
   inline void Swap(SubmitEditClaim* other) {
     if (other == this) return;
@@ -934,7 +888,7 @@ class SubmitConnectClaims final : public ::google::protobuf::Message
     return reinterpret_cast<const SubmitConnectClaims*>(
         &_SubmitConnectClaims_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(SubmitConnectClaims& a, SubmitConnectClaims& b) { a.Swap(&b); }
   inline void Swap(SubmitConnectClaims* other) {
     if (other == this) return;
@@ -1154,7 +1108,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const SubmitChallengeClaim*>(
         &_SubmitChallengeClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 34;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(SubmitChallengeClaim& a, SubmitChallengeClaim& b) { a.Swap(&b); }
   inline void Swap(SubmitChallengeClaim* other) {
     if (other == this) return;
@@ -1291,441 +1245,6 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class StartEditClaimDescription final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.StartEditClaimDescription) */ {
- public:
-  inline StartEditClaimDescription() : StartEditClaimDescription(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(StartEditClaimDescription* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartEditClaimDescription));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR StartEditClaimDescription(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline StartEditClaimDescription(const StartEditClaimDescription& from) : StartEditClaimDescription(nullptr, from) {}
-  inline StartEditClaimDescription(StartEditClaimDescription&& from) noexcept
-      : StartEditClaimDescription(nullptr, std::move(from)) {}
-  inline StartEditClaimDescription& operator=(const StartEditClaimDescription& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline StartEditClaimDescription& operator=(StartEditClaimDescription&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const StartEditClaimDescription& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const StartEditClaimDescription* internal_default_instance() {
-    return reinterpret_cast<const StartEditClaimDescription*>(
-        &_StartEditClaimDescription_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 16;
-  friend void swap(StartEditClaimDescription& a, StartEditClaimDescription& b) { a.Swap(&b); }
-  inline void Swap(StartEditClaimDescription* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(StartEditClaimDescription* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  StartEditClaimDescription* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartEditClaimDescription>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StartEditClaimDescription& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StartEditClaimDescription& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.StartEditClaimDescription"; }
-
- protected:
-  explicit StartEditClaimDescription(::google::protobuf::Arena* arena);
-  StartEditClaimDescription(::google::protobuf::Arena* arena, const StartEditClaimDescription& from);
-  StartEditClaimDescription(::google::protobuf::Arena* arena, StartEditClaimDescription&& from) noexcept
-      : StartEditClaimDescription(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.StartEditClaimDescription)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const StartEditClaimDescription& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class StartEditClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.StartEditClaim) */ {
- public:
-  inline StartEditClaim() : StartEditClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(StartEditClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartEditClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR StartEditClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline StartEditClaim(const StartEditClaim& from) : StartEditClaim(nullptr, from) {}
-  inline StartEditClaim(StartEditClaim&& from) noexcept
-      : StartEditClaim(nullptr, std::move(from)) {}
-  inline StartEditClaim& operator=(const StartEditClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline StartEditClaim& operator=(StartEditClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const StartEditClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const StartEditClaim* internal_default_instance() {
-    return reinterpret_cast<const StartEditClaim*>(
-        &_StartEditClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 19;
-  friend void swap(StartEditClaim& a, StartEditClaim& b) { a.Swap(&b); }
-  inline void Swap(StartEditClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(StartEditClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  StartEditClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartEditClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StartEditClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StartEditClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.StartEditClaim"; }
-
- protected:
-  explicit StartEditClaim(::google::protobuf::Arena* arena);
-  StartEditClaim(::google::protobuf::Arena* arena, const StartEditClaim& from);
-  StartEditClaim(::google::protobuf::Arena* arena, StartEditClaim&& from) noexcept
-      : StartEditClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.StartEditClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const StartEditClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class StartChallengeClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.StartChallengeClaim) */ {
- public:
-  inline StartChallengeClaim() : StartChallengeClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(StartChallengeClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartChallengeClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR StartChallengeClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline StartChallengeClaim(const StartChallengeClaim& from) : StartChallengeClaim(nullptr, from) {}
-  inline StartChallengeClaim(StartChallengeClaim&& from) noexcept
-      : StartChallengeClaim(nullptr, std::move(from)) {}
-  inline StartChallengeClaim& operator=(const StartChallengeClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline StartChallengeClaim& operator=(StartChallengeClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const StartChallengeClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const StartChallengeClaim* internal_default_instance() {
-    return reinterpret_cast<const StartChallengeClaim*>(
-        &_StartChallengeClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 29;
-  friend void swap(StartChallengeClaim& a, StartChallengeClaim& b) { a.Swap(&b); }
-  inline void Swap(StartChallengeClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(StartChallengeClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  StartChallengeClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartChallengeClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StartChallengeClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StartChallengeClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.StartChallengeClaim"; }
-
- protected:
-  explicit StartChallengeClaim(::google::protobuf::Arena* arena);
-  StartChallengeClaim(::google::protobuf::Arena* arena, const StartChallengeClaim& from);
-  StartChallengeClaim(::google::protobuf::Arena* arena, StartChallengeClaim&& from) noexcept
-      : StartChallengeClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.StartChallengeClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const StartChallengeClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class RemoveLinkToBeChallenged final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.RemoveLinkToBeChallenged) */ {
  public:
@@ -1785,7 +1304,7 @@ class RemoveLinkToBeChallenged final : public ::google::protobuf::Message
     return reinterpret_cast<const RemoveLinkToBeChallenged*>(
         &_RemoveLinkToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 18;
   friend void swap(RemoveLinkToBeChallenged& a, RemoveLinkToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(RemoveLinkToBeChallenged* other) {
     if (other == this) return;
@@ -1975,7 +1494,7 @@ class RemoveClaimToBeChallenged final : public ::google::protobuf::Message
     return reinterpret_cast<const RemoveClaimToBeChallenged*>(
         &_RemoveClaimToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 31;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(RemoveClaimToBeChallenged& a, RemoveClaimToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(RemoveClaimToBeChallenged* other) {
     if (other == this) return;
@@ -2106,441 +1625,6 @@ class RemoveClaimToBeChallenged final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class OpenReportClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.OpenReportClaim) */ {
- public:
-  inline OpenReportClaim() : OpenReportClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(OpenReportClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(OpenReportClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR OpenReportClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline OpenReportClaim(const OpenReportClaim& from) : OpenReportClaim(nullptr, from) {}
-  inline OpenReportClaim(OpenReportClaim&& from) noexcept
-      : OpenReportClaim(nullptr, std::move(from)) {}
-  inline OpenReportClaim& operator=(const OpenReportClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline OpenReportClaim& operator=(OpenReportClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const OpenReportClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const OpenReportClaim* internal_default_instance() {
-    return reinterpret_cast<const OpenReportClaim*>(
-        &_OpenReportClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 9;
-  friend void swap(OpenReportClaim& a, OpenReportClaim& b) { a.Swap(&b); }
-  inline void Swap(OpenReportClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(OpenReportClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  OpenReportClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<OpenReportClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const OpenReportClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const OpenReportClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.OpenReportClaim"; }
-
- protected:
-  explicit OpenReportClaim(::google::protobuf::Arena* arena);
-  OpenReportClaim(::google::protobuf::Arena* arena, const OpenReportClaim& from);
-  OpenReportClaim(::google::protobuf::Arena* arena, OpenReportClaim&& from) noexcept
-      : OpenReportClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.OpenReportClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const OpenReportClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class OpenAddChildClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.OpenAddChildClaim) */ {
- public:
-  inline OpenAddChildClaim() : OpenAddChildClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(OpenAddChildClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(OpenAddChildClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR OpenAddChildClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline OpenAddChildClaim(const OpenAddChildClaim& from) : OpenAddChildClaim(nullptr, from) {}
-  inline OpenAddChildClaim(OpenAddChildClaim&& from) noexcept
-      : OpenAddChildClaim(nullptr, std::move(from)) {}
-  inline OpenAddChildClaim& operator=(const OpenAddChildClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline OpenAddChildClaim& operator=(OpenAddChildClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const OpenAddChildClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const OpenAddChildClaim* internal_default_instance() {
-    return reinterpret_cast<const OpenAddChildClaim*>(
-        &_OpenAddChildClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 6;
-  friend void swap(OpenAddChildClaim& a, OpenAddChildClaim& b) { a.Swap(&b); }
-  inline void Swap(OpenAddChildClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(OpenAddChildClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  OpenAddChildClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<OpenAddChildClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const OpenAddChildClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const OpenAddChildClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.OpenAddChildClaim"; }
-
- protected:
-  explicit OpenAddChildClaim(::google::protobuf::Arena* arena);
-  OpenAddChildClaim(::google::protobuf::Arena* arena, const OpenAddChildClaim& from);
-  OpenAddChildClaim(::google::protobuf::Arena* arena, OpenAddChildClaim&& from) noexcept
-      : OpenAddChildClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.OpenAddChildClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const OpenAddChildClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class None final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.None) */ {
- public:
-  inline None() : None(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(None* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(None));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR None(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline None(const None& from) : None(nullptr, from) {}
-  inline None(None&& from) noexcept
-      : None(nullptr, std::move(from)) {}
-  inline None& operator=(const None& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline None& operator=(None&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const None& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const None* internal_default_instance() {
-    return reinterpret_cast<const None*>(
-        &_None_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(None& a, None& b) { a.Swap(&b); }
-  inline void Swap(None* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(None* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  None* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<None>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const None& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const None& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.None"; }
-
- protected:
-  explicit None(::google::protobuf::Arena* arena);
-  None(::google::protobuf::Arena* arena, const None& from);
-  None(::google::protobuf::Arena* arena, None&& from) noexcept
-      : None(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.None)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const None& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Login final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.Login) */ {
  public:
@@ -2600,7 +1684,7 @@ class Login final : public ::google::protobuf::Message
     return reinterpret_cast<const Login*>(
         &_Login_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 28;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(Login& a, Login& b) { a.Swap(&b); }
   inline void Swap(Login* other) {
     if (other == this) return;
@@ -2814,7 +1898,7 @@ class JoinDebate final : public ::google::protobuf::Message
     return reinterpret_cast<const JoinDebate*>(
         &_JoinDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(JoinDebate& a, JoinDebate& b) { a.Swap(&b); }
   inline void Swap(JoinDebate* other) {
     if (other == this) return;
@@ -2945,151 +2029,6 @@ class JoinDebate final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class GoToParentClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.GoToParentClaim) */ {
- public:
-  inline GoToParentClaim() : GoToParentClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(GoToParentClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(GoToParentClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GoToParentClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline GoToParentClaim(const GoToParentClaim& from) : GoToParentClaim(nullptr, from) {}
-  inline GoToParentClaim(GoToParentClaim&& from) noexcept
-      : GoToParentClaim(nullptr, std::move(from)) {}
-  inline GoToParentClaim& operator=(const GoToParentClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GoToParentClaim& operator=(GoToParentClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GoToParentClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GoToParentClaim* internal_default_instance() {
-    return reinterpret_cast<const GoToParentClaim*>(
-        &_GoToParentClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 14;
-  friend void swap(GoToParentClaim& a, GoToParentClaim& b) { a.Swap(&b); }
-  inline void Swap(GoToParentClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GoToParentClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GoToParentClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GoToParentClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const GoToParentClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const GoToParentClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.GoToParentClaim"; }
-
- protected:
-  explicit GoToParentClaim(::google::protobuf::Arena* arena);
-  GoToParentClaim(::google::protobuf::Arena* arena, const GoToParentClaim& from);
-  GoToParentClaim(::google::protobuf::Arena* arena, GoToParentClaim&& from) noexcept
-      : GoToParentClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.GoToParentClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GoToParentClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class GoToClaim final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.GoToClaim) */ {
  public:
@@ -3149,7 +2088,7 @@ class GoToClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const GoToClaim*>(
         &_GoToClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(GoToClaim& a, GoToClaim& b) { a.Swap(&b); }
   inline void Swap(GoToClaim* other) {
     if (other == this) return;
@@ -3339,7 +2278,7 @@ class GoToChallenge final : public ::google::protobuf::Message
     return reinterpret_cast<const GoToChallenge*>(
         &_GoToChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(GoToChallenge& a, GoToChallenge& b) { a.Swap(&b); }
   inline void Swap(GoToChallenge* other) {
     if (other == this) return;
@@ -3470,151 +2409,6 @@ class GoToChallenge final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class GoHome final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.GoHome) */ {
- public:
-  inline GoHome() : GoHome(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(GoHome* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(GoHome));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GoHome(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline GoHome(const GoHome& from) : GoHome(nullptr, from) {}
-  inline GoHome(GoHome&& from) noexcept
-      : GoHome(nullptr, std::move(from)) {}
-  inline GoHome& operator=(const GoHome& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GoHome& operator=(GoHome&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GoHome& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GoHome* internal_default_instance() {
-    return reinterpret_cast<const GoHome*>(
-        &_GoHome_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 5;
-  friend void swap(GoHome& a, GoHome& b) { a.Swap(&b); }
-  inline void Swap(GoHome* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GoHome* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GoHome* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GoHome>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const GoHome& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const GoHome& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.GoHome"; }
-
- protected:
-  explicit GoHome(::google::protobuf::Arena* arena);
-  GoHome(::google::protobuf::Arena* arena, const GoHome& from);
-  GoHome(::google::protobuf::Arena* arena, GoHome&& from) noexcept
-      : GoHome(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.GoHome)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GoHome& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class EnterDebate final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.EnterDebate) */ {
  public:
@@ -3674,7 +2468,7 @@ class EnterDebate final : public ::google::protobuf::Message
     return reinterpret_cast<const EnterDebate*>(
         &_EnterDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(EnterDebate& a, EnterDebate& b) { a.Swap(&b); }
   inline void Swap(EnterDebate* other) {
     if (other == this) return;
@@ -3864,7 +2658,7 @@ class DeleteLink final : public ::google::protobuf::Message
     return reinterpret_cast<const DeleteLink*>(
         &_DeleteLink_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(DeleteLink& a, DeleteLink& b) { a.Swap(&b); }
   inline void Swap(DeleteLink* other) {
     if (other == this) return;
@@ -4054,7 +2848,7 @@ class DeleteDebate final : public ::google::protobuf::Message
     return reinterpret_cast<const DeleteDebate*>(
         &_DeleteDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(DeleteDebate& a, DeleteDebate& b) { a.Swap(&b); }
   inline void Swap(DeleteDebate* other) {
     if (other == this) return;
@@ -4185,151 +2979,6 @@ class DeleteDebate final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class DeleteCurrentStatement final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.DeleteCurrentStatement) */ {
- public:
-  inline DeleteCurrentStatement() : DeleteCurrentStatement(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(DeleteCurrentStatement* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(DeleteCurrentStatement));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR DeleteCurrentStatement(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline DeleteCurrentStatement(const DeleteCurrentStatement& from) : DeleteCurrentStatement(nullptr, from) {}
-  inline DeleteCurrentStatement(DeleteCurrentStatement&& from) noexcept
-      : DeleteCurrentStatement(nullptr, std::move(from)) {}
-  inline DeleteCurrentStatement& operator=(const DeleteCurrentStatement& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline DeleteCurrentStatement& operator=(DeleteCurrentStatement&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const DeleteCurrentStatement& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const DeleteCurrentStatement* internal_default_instance() {
-    return reinterpret_cast<const DeleteCurrentStatement*>(
-        &_DeleteCurrentStatement_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 11;
-  friend void swap(DeleteCurrentStatement& a, DeleteCurrentStatement& b) { a.Swap(&b); }
-  inline void Swap(DeleteCurrentStatement* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(DeleteCurrentStatement* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  DeleteCurrentStatement* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<DeleteCurrentStatement>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const DeleteCurrentStatement& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const DeleteCurrentStatement& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.DeleteCurrentStatement"; }
-
- protected:
-  explicit DeleteCurrentStatement(::google::protobuf::Arena* arena);
-  DeleteCurrentStatement(::google::protobuf::Arena* arena, const DeleteCurrentStatement& from);
-  DeleteCurrentStatement(::google::protobuf::Arena* arena, DeleteCurrentStatement&& from) noexcept
-      : DeleteCurrentStatement(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.DeleteCurrentStatement)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const DeleteCurrentStatement& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class DeleteChildClaim final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.DeleteChildClaim) */ {
  public:
@@ -4389,7 +3038,7 @@ class DeleteChildClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const DeleteChildClaim*>(
         &_DeleteChildClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(DeleteChildClaim& a, DeleteChildClaim& b) { a.Swap(&b); }
   inline void Swap(DeleteChildClaim* other) {
     if (other == this) return;
@@ -4579,7 +3228,7 @@ class DeleteChallenge final : public ::google::protobuf::Message
     return reinterpret_cast<const DeleteChallenge*>(
         &_DeleteChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 37;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(DeleteChallenge& a, DeleteChallenge& b) { a.Swap(&b); }
   inline void Swap(DeleteChallenge* other) {
     if (other == this) return;
@@ -4769,7 +3418,7 @@ class CreateDebate final : public ::google::protobuf::Message
     return reinterpret_cast<const CreateDebate*>(
         &_CreateDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 0;
   friend void swap(CreateDebate& a, CreateDebate& b) { a.Swap(&b); }
   inline void Swap(CreateDebate* other) {
     if (other == this) return;
@@ -4965,7 +3614,7 @@ class ConnectToClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const ConnectToClaim*>(
         &_ConnectToClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(ConnectToClaim& a, ConnectToClaim& b) { a.Swap(&b); }
   inline void Swap(ConnectToClaim* other) {
     if (other == this) return;
@@ -5155,7 +3804,7 @@ class ConnectFromClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const ConnectFromClaim*>(
         &_ConnectFromClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(ConnectFromClaim& a, ConnectFromClaim& b) { a.Swap(&b); }
   inline void Swap(ConnectFromClaim* other) {
     if (other == this) return;
@@ -5345,7 +3994,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
     return reinterpret_cast<const ConcedeChallenge*>(
         &_ConcedeChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 36;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(ConcedeChallenge& a, ConcedeChallenge& b) { a.Swap(&b); }
   inline void Swap(ConcedeChallenge* other) {
     if (other == this) return;
@@ -5476,876 +4125,6 @@ class ConcedeChallenge final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class CloseReportClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.CloseReportClaim) */ {
- public:
-  inline CloseReportClaim() : CloseReportClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CloseReportClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CloseReportClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CloseReportClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline CloseReportClaim(const CloseReportClaim& from) : CloseReportClaim(nullptr, from) {}
-  inline CloseReportClaim(CloseReportClaim&& from) noexcept
-      : CloseReportClaim(nullptr, std::move(from)) {}
-  inline CloseReportClaim& operator=(const CloseReportClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CloseReportClaim& operator=(CloseReportClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CloseReportClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CloseReportClaim* internal_default_instance() {
-    return reinterpret_cast<const CloseReportClaim*>(
-        &_CloseReportClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 10;
-  friend void swap(CloseReportClaim& a, CloseReportClaim& b) { a.Swap(&b); }
-  inline void Swap(CloseReportClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CloseReportClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CloseReportClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CloseReportClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const CloseReportClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const CloseReportClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.CloseReportClaim"; }
-
- protected:
-  explicit CloseReportClaim(::google::protobuf::Arena* arena);
-  CloseReportClaim(::google::protobuf::Arena* arena, const CloseReportClaim& from);
-  CloseReportClaim(::google::protobuf::Arena* arena, CloseReportClaim&& from) noexcept
-      : CloseReportClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.CloseReportClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const CloseReportClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class CloseAddChildClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.CloseAddChildClaim) */ {
- public:
-  inline CloseAddChildClaim() : CloseAddChildClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CloseAddChildClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CloseAddChildClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CloseAddChildClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline CloseAddChildClaim(const CloseAddChildClaim& from) : CloseAddChildClaim(nullptr, from) {}
-  inline CloseAddChildClaim(CloseAddChildClaim&& from) noexcept
-      : CloseAddChildClaim(nullptr, std::move(from)) {}
-  inline CloseAddChildClaim& operator=(const CloseAddChildClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CloseAddChildClaim& operator=(CloseAddChildClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CloseAddChildClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CloseAddChildClaim* internal_default_instance() {
-    return reinterpret_cast<const CloseAddChildClaim*>(
-        &_CloseAddChildClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 7;
-  friend void swap(CloseAddChildClaim& a, CloseAddChildClaim& b) { a.Swap(&b); }
-  inline void Swap(CloseAddChildClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CloseAddChildClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CloseAddChildClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CloseAddChildClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const CloseAddChildClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const CloseAddChildClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.CloseAddChildClaim"; }
-
- protected:
-  explicit CloseAddChildClaim(::google::protobuf::Arena* arena);
-  CloseAddChildClaim(::google::protobuf::Arena* arena, const CloseAddChildClaim& from);
-  CloseAddChildClaim(::google::protobuf::Arena* arena, CloseAddChildClaim&& from) noexcept
-      : CloseAddChildClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.CloseAddChildClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const CloseAddChildClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class ClearDebates final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.ClearDebates) */ {
- public:
-  inline ClearDebates() : ClearDebates(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ClearDebates* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ClearDebates));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ClearDebates(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline ClearDebates(const ClearDebates& from) : ClearDebates(nullptr, from) {}
-  inline ClearDebates(ClearDebates&& from) noexcept
-      : ClearDebates(nullptr, std::move(from)) {}
-  inline ClearDebates& operator=(const ClearDebates& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ClearDebates& operator=(ClearDebates&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ClearDebates& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ClearDebates* internal_default_instance() {
-    return reinterpret_cast<const ClearDebates*>(
-        &_ClearDebates_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 2;
-  friend void swap(ClearDebates& a, ClearDebates& b) { a.Swap(&b); }
-  inline void Swap(ClearDebates* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ClearDebates* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ClearDebates* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<ClearDebates>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ClearDebates& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ClearDebates& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.ClearDebates"; }
-
- protected:
-  explicit ClearDebates(::google::protobuf::Arena* arena);
-  ClearDebates(::google::protobuf::Arena* arena, const ClearDebates& from);
-  ClearDebates(::google::protobuf::Arena* arena, ClearDebates&& from) noexcept
-      : ClearDebates(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.ClearDebates)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const ClearDebates& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class CancelEditClaimDescription final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.CancelEditClaimDescription) */ {
- public:
-  inline CancelEditClaimDescription() : CancelEditClaimDescription(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CancelEditClaimDescription* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelEditClaimDescription));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CancelEditClaimDescription(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline CancelEditClaimDescription(const CancelEditClaimDescription& from) : CancelEditClaimDescription(nullptr, from) {}
-  inline CancelEditClaimDescription(CancelEditClaimDescription&& from) noexcept
-      : CancelEditClaimDescription(nullptr, std::move(from)) {}
-  inline CancelEditClaimDescription& operator=(const CancelEditClaimDescription& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CancelEditClaimDescription& operator=(CancelEditClaimDescription&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CancelEditClaimDescription& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CancelEditClaimDescription* internal_default_instance() {
-    return reinterpret_cast<const CancelEditClaimDescription*>(
-        &_CancelEditClaimDescription_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 18;
-  friend void swap(CancelEditClaimDescription& a, CancelEditClaimDescription& b) { a.Swap(&b); }
-  inline void Swap(CancelEditClaimDescription* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CancelEditClaimDescription* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CancelEditClaimDescription* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelEditClaimDescription>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const CancelEditClaimDescription& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const CancelEditClaimDescription& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.CancelEditClaimDescription"; }
-
- protected:
-  explicit CancelEditClaimDescription(::google::protobuf::Arena* arena);
-  CancelEditClaimDescription(::google::protobuf::Arena* arena, const CancelEditClaimDescription& from);
-  CancelEditClaimDescription(::google::protobuf::Arena* arena, CancelEditClaimDescription&& from) noexcept
-      : CancelEditClaimDescription(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.CancelEditClaimDescription)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const CancelEditClaimDescription& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class CancelEditClaim final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.CancelEditClaim) */ {
- public:
-  inline CancelEditClaim() : CancelEditClaim(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CancelEditClaim* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelEditClaim));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CancelEditClaim(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline CancelEditClaim(const CancelEditClaim& from) : CancelEditClaim(nullptr, from) {}
-  inline CancelEditClaim(CancelEditClaim&& from) noexcept
-      : CancelEditClaim(nullptr, std::move(from)) {}
-  inline CancelEditClaim& operator=(const CancelEditClaim& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CancelEditClaim& operator=(CancelEditClaim&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CancelEditClaim& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CancelEditClaim* internal_default_instance() {
-    return reinterpret_cast<const CancelEditClaim*>(
-        &_CancelEditClaim_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 21;
-  friend void swap(CancelEditClaim& a, CancelEditClaim& b) { a.Swap(&b); }
-  inline void Swap(CancelEditClaim* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CancelEditClaim* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CancelEditClaim* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelEditClaim>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const CancelEditClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const CancelEditClaim& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.CancelEditClaim"; }
-
- protected:
-  explicit CancelEditClaim(::google::protobuf::Arena* arena);
-  CancelEditClaim(::google::protobuf::Arena* arena, const CancelEditClaim& from);
-  CancelEditClaim(::google::protobuf::Arena* arena, CancelEditClaim&& from) noexcept
-      : CancelEditClaim(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.CancelEditClaim)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const CancelEditClaim& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
-class CancelConnectClaims final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:debate_event.CancelConnectClaims) */ {
- public:
-  inline CancelConnectClaims() : CancelConnectClaims(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(CancelConnectClaims* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelConnectClaims));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR CancelConnectClaims(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline CancelConnectClaims(const CancelConnectClaims& from) : CancelConnectClaims(nullptr, from) {}
-  inline CancelConnectClaims(CancelConnectClaims&& from) noexcept
-      : CancelConnectClaims(nullptr, std::move(from)) {}
-  inline CancelConnectClaims& operator=(const CancelConnectClaims& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CancelConnectClaims& operator=(CancelConnectClaims&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CancelConnectClaims& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CancelConnectClaims* internal_default_instance() {
-    return reinterpret_cast<const CancelConnectClaims*>(
-        &_CancelConnectClaims_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 25;
-  friend void swap(CancelConnectClaims& a, CancelConnectClaims& b) { a.Swap(&b); }
-  inline void Swap(CancelConnectClaims* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CancelConnectClaims* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CancelConnectClaims* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelConnectClaims>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const CancelConnectClaims& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const CancelConnectClaims& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate_event.CancelConnectClaims"; }
-
- protected:
-  explicit CancelConnectClaims(::google::protobuf::Arena* arena);
-  CancelConnectClaims(::google::protobuf::Arena* arena, const CancelConnectClaims& from);
-  CancelConnectClaims(::google::protobuf::Arena* arena, CancelConnectClaims&& from) noexcept
-      : CancelConnectClaims(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:debate_event.CancelConnectClaims)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const CancelConnectClaims& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_debate_5fevent_2eproto;
-};
-// -------------------------------------------------------------------
-
 class AddLinkToBeChallenged final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.AddLinkToBeChallenged) */ {
  public:
@@ -6405,7 +4184,7 @@ class AddLinkToBeChallenged final : public ::google::protobuf::Message
     return reinterpret_cast<const AddLinkToBeChallenged*>(
         &_AddLinkToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(AddLinkToBeChallenged& a, AddLinkToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(AddLinkToBeChallenged* other) {
     if (other == this) return;
@@ -6595,7 +4374,7 @@ class AddConnection final : public ::google::protobuf::Message
     return reinterpret_cast<const AddConnection*>(
         &_AddConnection_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(AddConnection& a, AddConnection& b) { a.Swap(&b); }
   inline void Swap(AddConnection* other) {
     if (other == this) return;
@@ -6827,7 +4606,7 @@ class AddClaimToBeChallenged final : public ::google::protobuf::Message
     return reinterpret_cast<const AddClaimToBeChallenged*>(
         &_AddClaimToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 30;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(AddClaimToBeChallenged& a, AddClaimToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(AddClaimToBeChallenged* other) {
     if (other == this) return;
@@ -7017,7 +4796,7 @@ class AddChildClaim final : public ::google::protobuf::Message
     return reinterpret_cast<const AddChildClaim*>(
         &_AddChildClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(AddChildClaim& a, AddChildClaim& b) { a.Swap(&b); }
   inline void Swap(AddChildClaim* other) {
     if (other == this) return;
@@ -7229,33 +5008,19 @@ class DebateEvent final : public ::google::protobuf::Message
   }
   enum PayloadCase {
     kCreateDebate = 10,
-    kClearDebates = 11,
     kDeleteDebate = 12,
     kEnterDebate = 13,
-    kGoHome = 14,
-    kOpenAddChildClaim = 15,
-    kCloseAddChildClaim = 21,
     kAddChildClaim = 16,
-    kOpenReportClaim = 17,
-    kCloseReportClaim = 22,
-    kDeleteCurrentStatement = 18,
-    kGoToParent = 19,
     kGoToClaim = 20,
     kDeleteChildClaim = 23,
-    kStartEditClaimDescription = 24,
     kSubmitEditClaimDescription = 25,
-    kCancelEditClaimDescription = 26,
-    kStartEditClaim = 27,
     kSubmitEditClaim = 28,
-    kCancelEditClaim = 29,
     kConnectFromClaim = 30,
     kConnectToClaim = 31,
     kSubmitConnectClaims = 32,
-    kCancelConnectClaims = 33,
     kDeleteLink = 34,
     kJoinDebate = 35,
     kLogin = 36,
-    kStartChallengeClaim = 37,
     kAddClaimToBeChallenged = 38,
     kAddLinkToBeChallenged = 39,
     kSubmitChallengeClaim = 40,
@@ -7270,7 +5035,7 @@ class DebateEvent final : public ::google::protobuf::Message
     return reinterpret_cast<const DebateEvent*>(
         &_DebateEvent_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 39;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* other) {
     if (other == this) return;
@@ -7361,33 +5126,19 @@ class DebateEvent final : public ::google::protobuf::Message
     kOccurredAtFieldNumber = 3,
     kTypeFieldNumber = 4,
     kCreateDebateFieldNumber = 10,
-    kClearDebatesFieldNumber = 11,
     kDeleteDebateFieldNumber = 12,
     kEnterDebateFieldNumber = 13,
-    kGoHomeFieldNumber = 14,
-    kOpenAddChildClaimFieldNumber = 15,
-    kCloseAddChildClaimFieldNumber = 21,
     kAddChildClaimFieldNumber = 16,
-    kOpenReportClaimFieldNumber = 17,
-    kCloseReportClaimFieldNumber = 22,
-    kDeleteCurrentStatementFieldNumber = 18,
-    kGoToParentFieldNumber = 19,
     kGoToClaimFieldNumber = 20,
     kDeleteChildClaimFieldNumber = 23,
-    kStartEditClaimDescriptionFieldNumber = 24,
     kSubmitEditClaimDescriptionFieldNumber = 25,
-    kCancelEditClaimDescriptionFieldNumber = 26,
-    kStartEditClaimFieldNumber = 27,
     kSubmitEditClaimFieldNumber = 28,
-    kCancelEditClaimFieldNumber = 29,
     kConnectFromClaimFieldNumber = 30,
     kConnectToClaimFieldNumber = 31,
     kSubmitConnectClaimsFieldNumber = 32,
-    kCancelConnectClaimsFieldNumber = 33,
     kDeleteLinkFieldNumber = 34,
     kJoinDebateFieldNumber = 35,
     kLoginFieldNumber = 36,
-    kStartChallengeClaimFieldNumber = 37,
     kAddClaimToBeChallengedFieldNumber = 38,
     kAddLinkToBeChallengedFieldNumber = 39,
     kSubmitChallengeClaimFieldNumber = 40,
@@ -7456,25 +5207,6 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::CreateDebate* _internal_mutable_create_debate();
 
   public:
-  // .debate_event.ClearDebates clear_debates = 11 [json_name = "clearDebates"];
-  bool has_clear_debates() const;
-  private:
-  bool _internal_has_clear_debates() const;
-
-  public:
-  void clear_clear_debates() ;
-  const ::debate_event::ClearDebates& clear_debates() const;
-  PROTOBUF_NODISCARD ::debate_event::ClearDebates* release_clear_debates();
-  ::debate_event::ClearDebates* mutable_clear_debates();
-  void set_allocated_clear_debates(::debate_event::ClearDebates* value);
-  void unsafe_arena_set_allocated_clear_debates(::debate_event::ClearDebates* value);
-  ::debate_event::ClearDebates* unsafe_arena_release_clear_debates();
-
-  private:
-  const ::debate_event::ClearDebates& _internal_clear_debates() const;
-  ::debate_event::ClearDebates* _internal_mutable_clear_debates();
-
-  public:
   // .debate_event.DeleteDebate delete_debate = 12 [json_name = "deleteDebate"];
   bool has_delete_debate() const;
   private:
@@ -7513,63 +5245,6 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::EnterDebate* _internal_mutable_enter_debate();
 
   public:
-  // .debate_event.GoHome go_home = 14 [json_name = "goHome"];
-  bool has_go_home() const;
-  private:
-  bool _internal_has_go_home() const;
-
-  public:
-  void clear_go_home() ;
-  const ::debate_event::GoHome& go_home() const;
-  PROTOBUF_NODISCARD ::debate_event::GoHome* release_go_home();
-  ::debate_event::GoHome* mutable_go_home();
-  void set_allocated_go_home(::debate_event::GoHome* value);
-  void unsafe_arena_set_allocated_go_home(::debate_event::GoHome* value);
-  ::debate_event::GoHome* unsafe_arena_release_go_home();
-
-  private:
-  const ::debate_event::GoHome& _internal_go_home() const;
-  ::debate_event::GoHome* _internal_mutable_go_home();
-
-  public:
-  // .debate_event.OpenAddChildClaim open_add_child_claim = 15 [json_name = "openAddChildClaim"];
-  bool has_open_add_child_claim() const;
-  private:
-  bool _internal_has_open_add_child_claim() const;
-
-  public:
-  void clear_open_add_child_claim() ;
-  const ::debate_event::OpenAddChildClaim& open_add_child_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::OpenAddChildClaim* release_open_add_child_claim();
-  ::debate_event::OpenAddChildClaim* mutable_open_add_child_claim();
-  void set_allocated_open_add_child_claim(::debate_event::OpenAddChildClaim* value);
-  void unsafe_arena_set_allocated_open_add_child_claim(::debate_event::OpenAddChildClaim* value);
-  ::debate_event::OpenAddChildClaim* unsafe_arena_release_open_add_child_claim();
-
-  private:
-  const ::debate_event::OpenAddChildClaim& _internal_open_add_child_claim() const;
-  ::debate_event::OpenAddChildClaim* _internal_mutable_open_add_child_claim();
-
-  public:
-  // .debate_event.CloseAddChildClaim close_add_child_claim = 21 [json_name = "closeAddChildClaim"];
-  bool has_close_add_child_claim() const;
-  private:
-  bool _internal_has_close_add_child_claim() const;
-
-  public:
-  void clear_close_add_child_claim() ;
-  const ::debate_event::CloseAddChildClaim& close_add_child_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::CloseAddChildClaim* release_close_add_child_claim();
-  ::debate_event::CloseAddChildClaim* mutable_close_add_child_claim();
-  void set_allocated_close_add_child_claim(::debate_event::CloseAddChildClaim* value);
-  void unsafe_arena_set_allocated_close_add_child_claim(::debate_event::CloseAddChildClaim* value);
-  ::debate_event::CloseAddChildClaim* unsafe_arena_release_close_add_child_claim();
-
-  private:
-  const ::debate_event::CloseAddChildClaim& _internal_close_add_child_claim() const;
-  ::debate_event::CloseAddChildClaim* _internal_mutable_close_add_child_claim();
-
-  public:
   // .debate_event.AddChildClaim add_child_claim = 16 [json_name = "addChildClaim"];
   bool has_add_child_claim() const;
   private:
@@ -7587,82 +5262,6 @@ class DebateEvent final : public ::google::protobuf::Message
   private:
   const ::debate_event::AddChildClaim& _internal_add_child_claim() const;
   ::debate_event::AddChildClaim* _internal_mutable_add_child_claim();
-
-  public:
-  // .debate_event.OpenReportClaim open_report_claim = 17 [json_name = "openReportClaim"];
-  bool has_open_report_claim() const;
-  private:
-  bool _internal_has_open_report_claim() const;
-
-  public:
-  void clear_open_report_claim() ;
-  const ::debate_event::OpenReportClaim& open_report_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::OpenReportClaim* release_open_report_claim();
-  ::debate_event::OpenReportClaim* mutable_open_report_claim();
-  void set_allocated_open_report_claim(::debate_event::OpenReportClaim* value);
-  void unsafe_arena_set_allocated_open_report_claim(::debate_event::OpenReportClaim* value);
-  ::debate_event::OpenReportClaim* unsafe_arena_release_open_report_claim();
-
-  private:
-  const ::debate_event::OpenReportClaim& _internal_open_report_claim() const;
-  ::debate_event::OpenReportClaim* _internal_mutable_open_report_claim();
-
-  public:
-  // .debate_event.CloseReportClaim close_report_claim = 22 [json_name = "closeReportClaim"];
-  bool has_close_report_claim() const;
-  private:
-  bool _internal_has_close_report_claim() const;
-
-  public:
-  void clear_close_report_claim() ;
-  const ::debate_event::CloseReportClaim& close_report_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::CloseReportClaim* release_close_report_claim();
-  ::debate_event::CloseReportClaim* mutable_close_report_claim();
-  void set_allocated_close_report_claim(::debate_event::CloseReportClaim* value);
-  void unsafe_arena_set_allocated_close_report_claim(::debate_event::CloseReportClaim* value);
-  ::debate_event::CloseReportClaim* unsafe_arena_release_close_report_claim();
-
-  private:
-  const ::debate_event::CloseReportClaim& _internal_close_report_claim() const;
-  ::debate_event::CloseReportClaim* _internal_mutable_close_report_claim();
-
-  public:
-  // .debate_event.DeleteCurrentStatement delete_current_statement = 18 [json_name = "deleteCurrentStatement"];
-  bool has_delete_current_statement() const;
-  private:
-  bool _internal_has_delete_current_statement() const;
-
-  public:
-  void clear_delete_current_statement() ;
-  const ::debate_event::DeleteCurrentStatement& delete_current_statement() const;
-  PROTOBUF_NODISCARD ::debate_event::DeleteCurrentStatement* release_delete_current_statement();
-  ::debate_event::DeleteCurrentStatement* mutable_delete_current_statement();
-  void set_allocated_delete_current_statement(::debate_event::DeleteCurrentStatement* value);
-  void unsafe_arena_set_allocated_delete_current_statement(::debate_event::DeleteCurrentStatement* value);
-  ::debate_event::DeleteCurrentStatement* unsafe_arena_release_delete_current_statement();
-
-  private:
-  const ::debate_event::DeleteCurrentStatement& _internal_delete_current_statement() const;
-  ::debate_event::DeleteCurrentStatement* _internal_mutable_delete_current_statement();
-
-  public:
-  // .debate_event.GoToParentClaim go_to_parent = 19 [json_name = "goToParent"];
-  bool has_go_to_parent() const;
-  private:
-  bool _internal_has_go_to_parent() const;
-
-  public:
-  void clear_go_to_parent() ;
-  const ::debate_event::GoToParentClaim& go_to_parent() const;
-  PROTOBUF_NODISCARD ::debate_event::GoToParentClaim* release_go_to_parent();
-  ::debate_event::GoToParentClaim* mutable_go_to_parent();
-  void set_allocated_go_to_parent(::debate_event::GoToParentClaim* value);
-  void unsafe_arena_set_allocated_go_to_parent(::debate_event::GoToParentClaim* value);
-  ::debate_event::GoToParentClaim* unsafe_arena_release_go_to_parent();
-
-  private:
-  const ::debate_event::GoToParentClaim& _internal_go_to_parent() const;
-  ::debate_event::GoToParentClaim* _internal_mutable_go_to_parent();
 
   public:
   // .debate_event.GoToClaim go_to_claim = 20 [json_name = "goToClaim"];
@@ -7703,25 +5302,6 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::DeleteChildClaim* _internal_mutable_delete_child_claim();
 
   public:
-  // .debate_event.StartEditClaimDescription start_edit_claim_description = 24 [json_name = "startEditClaimDescription"];
-  bool has_start_edit_claim_description() const;
-  private:
-  bool _internal_has_start_edit_claim_description() const;
-
-  public:
-  void clear_start_edit_claim_description() ;
-  const ::debate_event::StartEditClaimDescription& start_edit_claim_description() const;
-  PROTOBUF_NODISCARD ::debate_event::StartEditClaimDescription* release_start_edit_claim_description();
-  ::debate_event::StartEditClaimDescription* mutable_start_edit_claim_description();
-  void set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value);
-  void unsafe_arena_set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value);
-  ::debate_event::StartEditClaimDescription* unsafe_arena_release_start_edit_claim_description();
-
-  private:
-  const ::debate_event::StartEditClaimDescription& _internal_start_edit_claim_description() const;
-  ::debate_event::StartEditClaimDescription* _internal_mutable_start_edit_claim_description();
-
-  public:
   // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
   bool has_submit_edit_claim_description() const;
   private:
@@ -7741,44 +5321,6 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::SubmitEditClaimDescription* _internal_mutable_submit_edit_claim_description();
 
   public:
-  // .debate_event.CancelEditClaimDescription cancel_edit_claim_description = 26 [json_name = "cancelEditClaimDescription"];
-  bool has_cancel_edit_claim_description() const;
-  private:
-  bool _internal_has_cancel_edit_claim_description() const;
-
-  public:
-  void clear_cancel_edit_claim_description() ;
-  const ::debate_event::CancelEditClaimDescription& cancel_edit_claim_description() const;
-  PROTOBUF_NODISCARD ::debate_event::CancelEditClaimDescription* release_cancel_edit_claim_description();
-  ::debate_event::CancelEditClaimDescription* mutable_cancel_edit_claim_description();
-  void set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value);
-  void unsafe_arena_set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value);
-  ::debate_event::CancelEditClaimDescription* unsafe_arena_release_cancel_edit_claim_description();
-
-  private:
-  const ::debate_event::CancelEditClaimDescription& _internal_cancel_edit_claim_description() const;
-  ::debate_event::CancelEditClaimDescription* _internal_mutable_cancel_edit_claim_description();
-
-  public:
-  // .debate_event.StartEditClaim start_edit_claim = 27 [json_name = "startEditClaim"];
-  bool has_start_edit_claim() const;
-  private:
-  bool _internal_has_start_edit_claim() const;
-
-  public:
-  void clear_start_edit_claim() ;
-  const ::debate_event::StartEditClaim& start_edit_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::StartEditClaim* release_start_edit_claim();
-  ::debate_event::StartEditClaim* mutable_start_edit_claim();
-  void set_allocated_start_edit_claim(::debate_event::StartEditClaim* value);
-  void unsafe_arena_set_allocated_start_edit_claim(::debate_event::StartEditClaim* value);
-  ::debate_event::StartEditClaim* unsafe_arena_release_start_edit_claim();
-
-  private:
-  const ::debate_event::StartEditClaim& _internal_start_edit_claim() const;
-  ::debate_event::StartEditClaim* _internal_mutable_start_edit_claim();
-
-  public:
   // .debate_event.SubmitEditClaim submit_edit_claim = 28 [json_name = "submitEditClaim"];
   bool has_submit_edit_claim() const;
   private:
@@ -7796,25 +5338,6 @@ class DebateEvent final : public ::google::protobuf::Message
   private:
   const ::debate_event::SubmitEditClaim& _internal_submit_edit_claim() const;
   ::debate_event::SubmitEditClaim* _internal_mutable_submit_edit_claim();
-
-  public:
-  // .debate_event.CancelEditClaim cancel_edit_claim = 29 [json_name = "cancelEditClaim"];
-  bool has_cancel_edit_claim() const;
-  private:
-  bool _internal_has_cancel_edit_claim() const;
-
-  public:
-  void clear_cancel_edit_claim() ;
-  const ::debate_event::CancelEditClaim& cancel_edit_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::CancelEditClaim* release_cancel_edit_claim();
-  ::debate_event::CancelEditClaim* mutable_cancel_edit_claim();
-  void set_allocated_cancel_edit_claim(::debate_event::CancelEditClaim* value);
-  void unsafe_arena_set_allocated_cancel_edit_claim(::debate_event::CancelEditClaim* value);
-  ::debate_event::CancelEditClaim* unsafe_arena_release_cancel_edit_claim();
-
-  private:
-  const ::debate_event::CancelEditClaim& _internal_cancel_edit_claim() const;
-  ::debate_event::CancelEditClaim* _internal_mutable_cancel_edit_claim();
 
   public:
   // .debate_event.ConnectFromClaim connect_from_claim = 30 [json_name = "connectFromClaim"];
@@ -7874,25 +5397,6 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::SubmitConnectClaims* _internal_mutable_submit_connect_claims();
 
   public:
-  // .debate_event.CancelConnectClaims cancel_connect_claims = 33 [json_name = "cancelConnectClaims"];
-  bool has_cancel_connect_claims() const;
-  private:
-  bool _internal_has_cancel_connect_claims() const;
-
-  public:
-  void clear_cancel_connect_claims() ;
-  const ::debate_event::CancelConnectClaims& cancel_connect_claims() const;
-  PROTOBUF_NODISCARD ::debate_event::CancelConnectClaims* release_cancel_connect_claims();
-  ::debate_event::CancelConnectClaims* mutable_cancel_connect_claims();
-  void set_allocated_cancel_connect_claims(::debate_event::CancelConnectClaims* value);
-  void unsafe_arena_set_allocated_cancel_connect_claims(::debate_event::CancelConnectClaims* value);
-  ::debate_event::CancelConnectClaims* unsafe_arena_release_cancel_connect_claims();
-
-  private:
-  const ::debate_event::CancelConnectClaims& _internal_cancel_connect_claims() const;
-  ::debate_event::CancelConnectClaims* _internal_mutable_cancel_connect_claims();
-
-  public:
   // .debate_event.DeleteLink delete_link = 34 [json_name = "deleteLink"];
   bool has_delete_link() const;
   private:
@@ -7948,25 +5452,6 @@ class DebateEvent final : public ::google::protobuf::Message
   private:
   const ::debate_event::Login& _internal_login() const;
   ::debate_event::Login* _internal_mutable_login();
-
-  public:
-  // .debate_event.StartChallengeClaim start_challenge_claim = 37 [json_name = "startChallengeClaim"];
-  bool has_start_challenge_claim() const;
-  private:
-  bool _internal_has_start_challenge_claim() const;
-
-  public:
-  void clear_start_challenge_claim() ;
-  const ::debate_event::StartChallengeClaim& start_challenge_claim() const;
-  PROTOBUF_NODISCARD ::debate_event::StartChallengeClaim* release_start_challenge_claim();
-  ::debate_event::StartChallengeClaim* mutable_start_challenge_claim();
-  void set_allocated_start_challenge_claim(::debate_event::StartChallengeClaim* value);
-  void unsafe_arena_set_allocated_start_challenge_claim(::debate_event::StartChallengeClaim* value);
-  ::debate_event::StartChallengeClaim* unsafe_arena_release_start_challenge_claim();
-
-  private:
-  const ::debate_event::StartChallengeClaim& _internal_start_challenge_claim() const;
-  ::debate_event::StartChallengeClaim* _internal_mutable_start_challenge_claim();
 
   public:
   // .debate_event.AddClaimToBeChallenged add_claim_to_be_challenged = 38 [json_name = "addClaimToBeChallenged"];
@@ -8127,33 +5612,19 @@ class DebateEvent final : public ::google::protobuf::Message
  private:
   class _Internal;
   void set_has_create_debate();
-  void set_has_clear_debates();
   void set_has_delete_debate();
   void set_has_enter_debate();
-  void set_has_go_home();
-  void set_has_open_add_child_claim();
-  void set_has_close_add_child_claim();
   void set_has_add_child_claim();
-  void set_has_open_report_claim();
-  void set_has_close_report_claim();
-  void set_has_delete_current_statement();
-  void set_has_go_to_parent();
   void set_has_go_to_claim();
   void set_has_delete_child_claim();
-  void set_has_start_edit_claim_description();
   void set_has_submit_edit_claim_description();
-  void set_has_cancel_edit_claim_description();
-  void set_has_start_edit_claim();
   void set_has_submit_edit_claim();
-  void set_has_cancel_edit_claim();
   void set_has_connect_from_claim();
   void set_has_connect_to_claim();
   void set_has_submit_connect_claims();
-  void set_has_cancel_connect_claims();
   void set_has_delete_link();
   void set_has_join_debate();
   void set_has_login();
-  void set_has_start_challenge_claim();
   void set_has_add_claim_to_be_challenged();
   void set_has_add_link_to_be_challenged();
   void set_has_submit_challenge_claim();
@@ -8166,7 +5637,7 @@ class DebateEvent final : public ::google::protobuf::Message
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 39, 38,
+      2, 25, 24,
       0, 7>
       _table_;
 
@@ -8193,33 +5664,19 @@ class DebateEvent final : public ::google::protobuf::Message
       constexpr PayloadUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::debate_event::CreateDebate* create_debate_;
-      ::debate_event::ClearDebates* clear_debates_;
       ::debate_event::DeleteDebate* delete_debate_;
       ::debate_event::EnterDebate* enter_debate_;
-      ::debate_event::GoHome* go_home_;
-      ::debate_event::OpenAddChildClaim* open_add_child_claim_;
-      ::debate_event::CloseAddChildClaim* close_add_child_claim_;
       ::debate_event::AddChildClaim* add_child_claim_;
-      ::debate_event::OpenReportClaim* open_report_claim_;
-      ::debate_event::CloseReportClaim* close_report_claim_;
-      ::debate_event::DeleteCurrentStatement* delete_current_statement_;
-      ::debate_event::GoToParentClaim* go_to_parent_;
       ::debate_event::GoToClaim* go_to_claim_;
       ::debate_event::DeleteChildClaim* delete_child_claim_;
-      ::debate_event::StartEditClaimDescription* start_edit_claim_description_;
       ::debate_event::SubmitEditClaimDescription* submit_edit_claim_description_;
-      ::debate_event::CancelEditClaimDescription* cancel_edit_claim_description_;
-      ::debate_event::StartEditClaim* start_edit_claim_;
       ::debate_event::SubmitEditClaim* submit_edit_claim_;
-      ::debate_event::CancelEditClaim* cancel_edit_claim_;
       ::debate_event::ConnectFromClaim* connect_from_claim_;
       ::debate_event::ConnectToClaim* connect_to_claim_;
       ::debate_event::SubmitConnectClaims* submit_connect_claims_;
-      ::debate_event::CancelConnectClaims* cancel_connect_claims_;
       ::debate_event::DeleteLink* delete_link_;
       ::debate_event::JoinDebate* join_debate_;
       ::debate_event::Login* login_;
-      ::debate_event::StartChallengeClaim* start_challenge_claim_;
       ::debate_event::AddClaimToBeChallenged* add_claim_to_be_challenged_;
       ::debate_event::AddLinkToBeChallenged* add_link_to_be_challenged_;
       ::debate_event::SubmitChallengeClaim* submit_challenge_claim_;
@@ -8248,10 +5705,6 @@ class DebateEvent final : public ::google::protobuf::Message
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// None
-
 // -------------------------------------------------------------------
 
 // CreateDebate
@@ -8306,10 +5759,6 @@ inline void CreateDebate::set_allocated_debate_topic(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// ClearDebates
-
-// -------------------------------------------------------------------
-
 // DeleteDebate
 
 // int32 debate_id = 1 [json_name = "debateId"];
@@ -8359,18 +5808,6 @@ inline void EnterDebate::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
 }
-
-// -------------------------------------------------------------------
-
-// GoHome
-
-// -------------------------------------------------------------------
-
-// OpenAddChildClaim
-
-// -------------------------------------------------------------------
-
-// CloseAddChildClaim
 
 // -------------------------------------------------------------------
 
@@ -8471,18 +5908,6 @@ inline void AddChildClaim::set_allocated_description(std::string* value) {
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.description)
 }
-
-// -------------------------------------------------------------------
-
-// OpenReportClaim
-
-// -------------------------------------------------------------------
-
-// CloseReportClaim
-
-// -------------------------------------------------------------------
-
-// DeleteCurrentStatement
 
 // -------------------------------------------------------------------
 
@@ -8630,10 +6055,6 @@ inline void AddConnection::set_allocated_connection(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// GoToParentClaim
-
-// -------------------------------------------------------------------
-
 // GoToClaim
 
 // int32 claim_id = 2 [json_name = "claimId"];
@@ -8657,10 +6078,6 @@ inline void GoToClaim::_internal_set_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = value;
 }
-
-// -------------------------------------------------------------------
-
-// StartEditClaimDescription
 
 // -------------------------------------------------------------------
 
@@ -8716,14 +6133,6 @@ inline void SubmitEditClaimDescription::set_allocated_new_description(std::strin
 
 // -------------------------------------------------------------------
 
-// CancelEditClaimDescription
-
-// -------------------------------------------------------------------
-
-// StartEditClaim
-
-// -------------------------------------------------------------------
-
 // SubmitEditClaim
 
 // string new_claim = 1 [json_name = "newClaim"];
@@ -8773,10 +6182,6 @@ inline void SubmitEditClaim::set_allocated_new_claim(std::string* value) {
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitEditClaim.new_claim)
 }
-
-// -------------------------------------------------------------------
-
-// CancelEditClaim
 
 // -------------------------------------------------------------------
 
@@ -8925,10 +6330,6 @@ inline void SubmitConnectClaims::_internal_set_to_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.to_claim_id_ = value;
 }
-
-// -------------------------------------------------------------------
-
-// CancelConnectClaims
 
 // -------------------------------------------------------------------
 
@@ -9081,10 +6482,6 @@ inline void Login::set_allocated_password(std::string* value) {
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.Login.password)
 }
-
-// -------------------------------------------------------------------
-
-// StartChallengeClaim
 
 // -------------------------------------------------------------------
 
@@ -9708,85 +7105,6 @@ inline ::debate_event::CreateDebate* DebateEvent::mutable_create_debate() ABSL_A
   return _msg;
 }
 
-// .debate_event.ClearDebates clear_debates = 11 [json_name = "clearDebates"];
-inline bool DebateEvent::has_clear_debates() const {
-  return payload_case() == kClearDebates;
-}
-inline bool DebateEvent::_internal_has_clear_debates() const {
-  return payload_case() == kClearDebates;
-}
-inline void DebateEvent::set_has_clear_debates() {
-  _impl_._oneof_case_[0] = kClearDebates;
-}
-inline void DebateEvent::clear_clear_debates() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kClearDebates) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.clear_debates_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.clear_debates_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::ClearDebates* DebateEvent::release_clear_debates() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.clear_debates)
-  if (payload_case() == kClearDebates) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.clear_debates_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.clear_debates_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::ClearDebates& DebateEvent::_internal_clear_debates() const {
-  return payload_case() == kClearDebates ? *_impl_.payload_.clear_debates_ : reinterpret_cast<::debate_event::ClearDebates&>(::debate_event::_ClearDebates_default_instance_);
-}
-inline const ::debate_event::ClearDebates& DebateEvent::clear_debates() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.clear_debates)
-  return _internal_clear_debates();
-}
-inline ::debate_event::ClearDebates* DebateEvent::unsafe_arena_release_clear_debates() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.clear_debates)
-  if (payload_case() == kClearDebates) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.clear_debates_;
-    _impl_.payload_.clear_debates_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_clear_debates(::debate_event::ClearDebates* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_clear_debates();
-    _impl_.payload_.clear_debates_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.clear_debates)
-}
-inline ::debate_event::ClearDebates* DebateEvent::_internal_mutable_clear_debates() {
-  if (payload_case() != kClearDebates) {
-    clear_payload();
-    set_has_clear_debates();
-    _impl_.payload_.clear_debates_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::ClearDebates>(GetArena());
-  }
-  return _impl_.payload_.clear_debates_;
-}
-inline ::debate_event::ClearDebates* DebateEvent::mutable_clear_debates() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::ClearDebates* _msg = _internal_mutable_clear_debates();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.clear_debates)
-  return _msg;
-}
-
 // .debate_event.DeleteDebate delete_debate = 12 [json_name = "deleteDebate"];
 inline bool DebateEvent::has_delete_debate() const {
   return payload_case() == kDeleteDebate;
@@ -9945,243 +7263,6 @@ inline ::debate_event::EnterDebate* DebateEvent::mutable_enter_debate() ABSL_ATT
   return _msg;
 }
 
-// .debate_event.GoHome go_home = 14 [json_name = "goHome"];
-inline bool DebateEvent::has_go_home() const {
-  return payload_case() == kGoHome;
-}
-inline bool DebateEvent::_internal_has_go_home() const {
-  return payload_case() == kGoHome;
-}
-inline void DebateEvent::set_has_go_home() {
-  _impl_._oneof_case_[0] = kGoHome;
-}
-inline void DebateEvent::clear_go_home() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kGoHome) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.go_home_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.go_home_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::GoHome* DebateEvent::release_go_home() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.go_home)
-  if (payload_case() == kGoHome) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.go_home_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.go_home_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::GoHome& DebateEvent::_internal_go_home() const {
-  return payload_case() == kGoHome ? *_impl_.payload_.go_home_ : reinterpret_cast<::debate_event::GoHome&>(::debate_event::_GoHome_default_instance_);
-}
-inline const ::debate_event::GoHome& DebateEvent::go_home() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.go_home)
-  return _internal_go_home();
-}
-inline ::debate_event::GoHome* DebateEvent::unsafe_arena_release_go_home() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.go_home)
-  if (payload_case() == kGoHome) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.go_home_;
-    _impl_.payload_.go_home_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_go_home(::debate_event::GoHome* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_go_home();
-    _impl_.payload_.go_home_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.go_home)
-}
-inline ::debate_event::GoHome* DebateEvent::_internal_mutable_go_home() {
-  if (payload_case() != kGoHome) {
-    clear_payload();
-    set_has_go_home();
-    _impl_.payload_.go_home_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::GoHome>(GetArena());
-  }
-  return _impl_.payload_.go_home_;
-}
-inline ::debate_event::GoHome* DebateEvent::mutable_go_home() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::GoHome* _msg = _internal_mutable_go_home();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.go_home)
-  return _msg;
-}
-
-// .debate_event.OpenAddChildClaim open_add_child_claim = 15 [json_name = "openAddChildClaim"];
-inline bool DebateEvent::has_open_add_child_claim() const {
-  return payload_case() == kOpenAddChildClaim;
-}
-inline bool DebateEvent::_internal_has_open_add_child_claim() const {
-  return payload_case() == kOpenAddChildClaim;
-}
-inline void DebateEvent::set_has_open_add_child_claim() {
-  _impl_._oneof_case_[0] = kOpenAddChildClaim;
-}
-inline void DebateEvent::clear_open_add_child_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kOpenAddChildClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.open_add_child_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.open_add_child_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::OpenAddChildClaim* DebateEvent::release_open_add_child_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.open_add_child_claim)
-  if (payload_case() == kOpenAddChildClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.open_add_child_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.open_add_child_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::OpenAddChildClaim& DebateEvent::_internal_open_add_child_claim() const {
-  return payload_case() == kOpenAddChildClaim ? *_impl_.payload_.open_add_child_claim_ : reinterpret_cast<::debate_event::OpenAddChildClaim&>(::debate_event::_OpenAddChildClaim_default_instance_);
-}
-inline const ::debate_event::OpenAddChildClaim& DebateEvent::open_add_child_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.open_add_child_claim)
-  return _internal_open_add_child_claim();
-}
-inline ::debate_event::OpenAddChildClaim* DebateEvent::unsafe_arena_release_open_add_child_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.open_add_child_claim)
-  if (payload_case() == kOpenAddChildClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.open_add_child_claim_;
-    _impl_.payload_.open_add_child_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_open_add_child_claim(::debate_event::OpenAddChildClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_open_add_child_claim();
-    _impl_.payload_.open_add_child_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.open_add_child_claim)
-}
-inline ::debate_event::OpenAddChildClaim* DebateEvent::_internal_mutable_open_add_child_claim() {
-  if (payload_case() != kOpenAddChildClaim) {
-    clear_payload();
-    set_has_open_add_child_claim();
-    _impl_.payload_.open_add_child_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::OpenAddChildClaim>(GetArena());
-  }
-  return _impl_.payload_.open_add_child_claim_;
-}
-inline ::debate_event::OpenAddChildClaim* DebateEvent::mutable_open_add_child_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::OpenAddChildClaim* _msg = _internal_mutable_open_add_child_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.open_add_child_claim)
-  return _msg;
-}
-
-// .debate_event.CloseAddChildClaim close_add_child_claim = 21 [json_name = "closeAddChildClaim"];
-inline bool DebateEvent::has_close_add_child_claim() const {
-  return payload_case() == kCloseAddChildClaim;
-}
-inline bool DebateEvent::_internal_has_close_add_child_claim() const {
-  return payload_case() == kCloseAddChildClaim;
-}
-inline void DebateEvent::set_has_close_add_child_claim() {
-  _impl_._oneof_case_[0] = kCloseAddChildClaim;
-}
-inline void DebateEvent::clear_close_add_child_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kCloseAddChildClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.close_add_child_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.close_add_child_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::CloseAddChildClaim* DebateEvent::release_close_add_child_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.close_add_child_claim)
-  if (payload_case() == kCloseAddChildClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.close_add_child_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.close_add_child_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::CloseAddChildClaim& DebateEvent::_internal_close_add_child_claim() const {
-  return payload_case() == kCloseAddChildClaim ? *_impl_.payload_.close_add_child_claim_ : reinterpret_cast<::debate_event::CloseAddChildClaim&>(::debate_event::_CloseAddChildClaim_default_instance_);
-}
-inline const ::debate_event::CloseAddChildClaim& DebateEvent::close_add_child_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.close_add_child_claim)
-  return _internal_close_add_child_claim();
-}
-inline ::debate_event::CloseAddChildClaim* DebateEvent::unsafe_arena_release_close_add_child_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.close_add_child_claim)
-  if (payload_case() == kCloseAddChildClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.close_add_child_claim_;
-    _impl_.payload_.close_add_child_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_close_add_child_claim(::debate_event::CloseAddChildClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_close_add_child_claim();
-    _impl_.payload_.close_add_child_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.close_add_child_claim)
-}
-inline ::debate_event::CloseAddChildClaim* DebateEvent::_internal_mutable_close_add_child_claim() {
-  if (payload_case() != kCloseAddChildClaim) {
-    clear_payload();
-    set_has_close_add_child_claim();
-    _impl_.payload_.close_add_child_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::CloseAddChildClaim>(GetArena());
-  }
-  return _impl_.payload_.close_add_child_claim_;
-}
-inline ::debate_event::CloseAddChildClaim* DebateEvent::mutable_close_add_child_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::CloseAddChildClaim* _msg = _internal_mutable_close_add_child_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.close_add_child_claim)
-  return _msg;
-}
-
 // .debate_event.AddChildClaim add_child_claim = 16 [json_name = "addChildClaim"];
 inline bool DebateEvent::has_add_child_claim() const {
   return payload_case() == kAddChildClaim;
@@ -10258,322 +7339,6 @@ inline ::debate_event::AddChildClaim* DebateEvent::_internal_mutable_add_child_c
 inline ::debate_event::AddChildClaim* DebateEvent::mutable_add_child_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::AddChildClaim* _msg = _internal_mutable_add_child_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.add_child_claim)
-  return _msg;
-}
-
-// .debate_event.OpenReportClaim open_report_claim = 17 [json_name = "openReportClaim"];
-inline bool DebateEvent::has_open_report_claim() const {
-  return payload_case() == kOpenReportClaim;
-}
-inline bool DebateEvent::_internal_has_open_report_claim() const {
-  return payload_case() == kOpenReportClaim;
-}
-inline void DebateEvent::set_has_open_report_claim() {
-  _impl_._oneof_case_[0] = kOpenReportClaim;
-}
-inline void DebateEvent::clear_open_report_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kOpenReportClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.open_report_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.open_report_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::OpenReportClaim* DebateEvent::release_open_report_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.open_report_claim)
-  if (payload_case() == kOpenReportClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.open_report_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.open_report_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::OpenReportClaim& DebateEvent::_internal_open_report_claim() const {
-  return payload_case() == kOpenReportClaim ? *_impl_.payload_.open_report_claim_ : reinterpret_cast<::debate_event::OpenReportClaim&>(::debate_event::_OpenReportClaim_default_instance_);
-}
-inline const ::debate_event::OpenReportClaim& DebateEvent::open_report_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.open_report_claim)
-  return _internal_open_report_claim();
-}
-inline ::debate_event::OpenReportClaim* DebateEvent::unsafe_arena_release_open_report_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.open_report_claim)
-  if (payload_case() == kOpenReportClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.open_report_claim_;
-    _impl_.payload_.open_report_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_open_report_claim(::debate_event::OpenReportClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_open_report_claim();
-    _impl_.payload_.open_report_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.open_report_claim)
-}
-inline ::debate_event::OpenReportClaim* DebateEvent::_internal_mutable_open_report_claim() {
-  if (payload_case() != kOpenReportClaim) {
-    clear_payload();
-    set_has_open_report_claim();
-    _impl_.payload_.open_report_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::OpenReportClaim>(GetArena());
-  }
-  return _impl_.payload_.open_report_claim_;
-}
-inline ::debate_event::OpenReportClaim* DebateEvent::mutable_open_report_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::OpenReportClaim* _msg = _internal_mutable_open_report_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.open_report_claim)
-  return _msg;
-}
-
-// .debate_event.CloseReportClaim close_report_claim = 22 [json_name = "closeReportClaim"];
-inline bool DebateEvent::has_close_report_claim() const {
-  return payload_case() == kCloseReportClaim;
-}
-inline bool DebateEvent::_internal_has_close_report_claim() const {
-  return payload_case() == kCloseReportClaim;
-}
-inline void DebateEvent::set_has_close_report_claim() {
-  _impl_._oneof_case_[0] = kCloseReportClaim;
-}
-inline void DebateEvent::clear_close_report_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kCloseReportClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.close_report_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.close_report_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::CloseReportClaim* DebateEvent::release_close_report_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.close_report_claim)
-  if (payload_case() == kCloseReportClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.close_report_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.close_report_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::CloseReportClaim& DebateEvent::_internal_close_report_claim() const {
-  return payload_case() == kCloseReportClaim ? *_impl_.payload_.close_report_claim_ : reinterpret_cast<::debate_event::CloseReportClaim&>(::debate_event::_CloseReportClaim_default_instance_);
-}
-inline const ::debate_event::CloseReportClaim& DebateEvent::close_report_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.close_report_claim)
-  return _internal_close_report_claim();
-}
-inline ::debate_event::CloseReportClaim* DebateEvent::unsafe_arena_release_close_report_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.close_report_claim)
-  if (payload_case() == kCloseReportClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.close_report_claim_;
-    _impl_.payload_.close_report_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_close_report_claim(::debate_event::CloseReportClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_close_report_claim();
-    _impl_.payload_.close_report_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.close_report_claim)
-}
-inline ::debate_event::CloseReportClaim* DebateEvent::_internal_mutable_close_report_claim() {
-  if (payload_case() != kCloseReportClaim) {
-    clear_payload();
-    set_has_close_report_claim();
-    _impl_.payload_.close_report_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::CloseReportClaim>(GetArena());
-  }
-  return _impl_.payload_.close_report_claim_;
-}
-inline ::debate_event::CloseReportClaim* DebateEvent::mutable_close_report_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::CloseReportClaim* _msg = _internal_mutable_close_report_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.close_report_claim)
-  return _msg;
-}
-
-// .debate_event.DeleteCurrentStatement delete_current_statement = 18 [json_name = "deleteCurrentStatement"];
-inline bool DebateEvent::has_delete_current_statement() const {
-  return payload_case() == kDeleteCurrentStatement;
-}
-inline bool DebateEvent::_internal_has_delete_current_statement() const {
-  return payload_case() == kDeleteCurrentStatement;
-}
-inline void DebateEvent::set_has_delete_current_statement() {
-  _impl_._oneof_case_[0] = kDeleteCurrentStatement;
-}
-inline void DebateEvent::clear_delete_current_statement() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kDeleteCurrentStatement) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.delete_current_statement_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.delete_current_statement_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::DeleteCurrentStatement* DebateEvent::release_delete_current_statement() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.delete_current_statement)
-  if (payload_case() == kDeleteCurrentStatement) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.delete_current_statement_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.delete_current_statement_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::DeleteCurrentStatement& DebateEvent::_internal_delete_current_statement() const {
-  return payload_case() == kDeleteCurrentStatement ? *_impl_.payload_.delete_current_statement_ : reinterpret_cast<::debate_event::DeleteCurrentStatement&>(::debate_event::_DeleteCurrentStatement_default_instance_);
-}
-inline const ::debate_event::DeleteCurrentStatement& DebateEvent::delete_current_statement() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.delete_current_statement)
-  return _internal_delete_current_statement();
-}
-inline ::debate_event::DeleteCurrentStatement* DebateEvent::unsafe_arena_release_delete_current_statement() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.delete_current_statement)
-  if (payload_case() == kDeleteCurrentStatement) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.delete_current_statement_;
-    _impl_.payload_.delete_current_statement_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_delete_current_statement(::debate_event::DeleteCurrentStatement* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_delete_current_statement();
-    _impl_.payload_.delete_current_statement_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.delete_current_statement)
-}
-inline ::debate_event::DeleteCurrentStatement* DebateEvent::_internal_mutable_delete_current_statement() {
-  if (payload_case() != kDeleteCurrentStatement) {
-    clear_payload();
-    set_has_delete_current_statement();
-    _impl_.payload_.delete_current_statement_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::DeleteCurrentStatement>(GetArena());
-  }
-  return _impl_.payload_.delete_current_statement_;
-}
-inline ::debate_event::DeleteCurrentStatement* DebateEvent::mutable_delete_current_statement() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::DeleteCurrentStatement* _msg = _internal_mutable_delete_current_statement();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.delete_current_statement)
-  return _msg;
-}
-
-// .debate_event.GoToParentClaim go_to_parent = 19 [json_name = "goToParent"];
-inline bool DebateEvent::has_go_to_parent() const {
-  return payload_case() == kGoToParent;
-}
-inline bool DebateEvent::_internal_has_go_to_parent() const {
-  return payload_case() == kGoToParent;
-}
-inline void DebateEvent::set_has_go_to_parent() {
-  _impl_._oneof_case_[0] = kGoToParent;
-}
-inline void DebateEvent::clear_go_to_parent() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kGoToParent) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.go_to_parent_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.go_to_parent_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::GoToParentClaim* DebateEvent::release_go_to_parent() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.go_to_parent)
-  if (payload_case() == kGoToParent) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.go_to_parent_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.go_to_parent_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::GoToParentClaim& DebateEvent::_internal_go_to_parent() const {
-  return payload_case() == kGoToParent ? *_impl_.payload_.go_to_parent_ : reinterpret_cast<::debate_event::GoToParentClaim&>(::debate_event::_GoToParentClaim_default_instance_);
-}
-inline const ::debate_event::GoToParentClaim& DebateEvent::go_to_parent() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.go_to_parent)
-  return _internal_go_to_parent();
-}
-inline ::debate_event::GoToParentClaim* DebateEvent::unsafe_arena_release_go_to_parent() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.go_to_parent)
-  if (payload_case() == kGoToParent) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.go_to_parent_;
-    _impl_.payload_.go_to_parent_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_go_to_parent(::debate_event::GoToParentClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_go_to_parent();
-    _impl_.payload_.go_to_parent_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.go_to_parent)
-}
-inline ::debate_event::GoToParentClaim* DebateEvent::_internal_mutable_go_to_parent() {
-  if (payload_case() != kGoToParent) {
-    clear_payload();
-    set_has_go_to_parent();
-    _impl_.payload_.go_to_parent_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::GoToParentClaim>(GetArena());
-  }
-  return _impl_.payload_.go_to_parent_;
-}
-inline ::debate_event::GoToParentClaim* DebateEvent::mutable_go_to_parent() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::GoToParentClaim* _msg = _internal_mutable_go_to_parent();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.go_to_parent)
   return _msg;
 }
 
@@ -10735,85 +7500,6 @@ inline ::debate_event::DeleteChildClaim* DebateEvent::mutable_delete_child_claim
   return _msg;
 }
 
-// .debate_event.StartEditClaimDescription start_edit_claim_description = 24 [json_name = "startEditClaimDescription"];
-inline bool DebateEvent::has_start_edit_claim_description() const {
-  return payload_case() == kStartEditClaimDescription;
-}
-inline bool DebateEvent::_internal_has_start_edit_claim_description() const {
-  return payload_case() == kStartEditClaimDescription;
-}
-inline void DebateEvent::set_has_start_edit_claim_description() {
-  _impl_._oneof_case_[0] = kStartEditClaimDescription;
-}
-inline void DebateEvent::clear_start_edit_claim_description() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kStartEditClaimDescription) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.start_edit_claim_description_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.start_edit_claim_description_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::StartEditClaimDescription* DebateEvent::release_start_edit_claim_description() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.start_edit_claim_description)
-  if (payload_case() == kStartEditClaimDescription) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_edit_claim_description_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.start_edit_claim_description_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::StartEditClaimDescription& DebateEvent::_internal_start_edit_claim_description() const {
-  return payload_case() == kStartEditClaimDescription ? *_impl_.payload_.start_edit_claim_description_ : reinterpret_cast<::debate_event::StartEditClaimDescription&>(::debate_event::_StartEditClaimDescription_default_instance_);
-}
-inline const ::debate_event::StartEditClaimDescription& DebateEvent::start_edit_claim_description() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.start_edit_claim_description)
-  return _internal_start_edit_claim_description();
-}
-inline ::debate_event::StartEditClaimDescription* DebateEvent::unsafe_arena_release_start_edit_claim_description() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.start_edit_claim_description)
-  if (payload_case() == kStartEditClaimDescription) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_edit_claim_description_;
-    _impl_.payload_.start_edit_claim_description_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_start_edit_claim_description(::debate_event::StartEditClaimDescription* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_start_edit_claim_description();
-    _impl_.payload_.start_edit_claim_description_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.start_edit_claim_description)
-}
-inline ::debate_event::StartEditClaimDescription* DebateEvent::_internal_mutable_start_edit_claim_description() {
-  if (payload_case() != kStartEditClaimDescription) {
-    clear_payload();
-    set_has_start_edit_claim_description();
-    _impl_.payload_.start_edit_claim_description_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::StartEditClaimDescription>(GetArena());
-  }
-  return _impl_.payload_.start_edit_claim_description_;
-}
-inline ::debate_event::StartEditClaimDescription* DebateEvent::mutable_start_edit_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::StartEditClaimDescription* _msg = _internal_mutable_start_edit_claim_description();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.start_edit_claim_description)
-  return _msg;
-}
-
 // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
 inline bool DebateEvent::has_submit_edit_claim_description() const {
   return payload_case() == kSubmitEditClaimDescription;
@@ -10893,164 +7579,6 @@ inline ::debate_event::SubmitEditClaimDescription* DebateEvent::mutable_submit_e
   return _msg;
 }
 
-// .debate_event.CancelEditClaimDescription cancel_edit_claim_description = 26 [json_name = "cancelEditClaimDescription"];
-inline bool DebateEvent::has_cancel_edit_claim_description() const {
-  return payload_case() == kCancelEditClaimDescription;
-}
-inline bool DebateEvent::_internal_has_cancel_edit_claim_description() const {
-  return payload_case() == kCancelEditClaimDescription;
-}
-inline void DebateEvent::set_has_cancel_edit_claim_description() {
-  _impl_._oneof_case_[0] = kCancelEditClaimDescription;
-}
-inline void DebateEvent::clear_cancel_edit_claim_description() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kCancelEditClaimDescription) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.cancel_edit_claim_description_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.cancel_edit_claim_description_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::CancelEditClaimDescription* DebateEvent::release_cancel_edit_claim_description() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.cancel_edit_claim_description)
-  if (payload_case() == kCancelEditClaimDescription) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_edit_claim_description_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.cancel_edit_claim_description_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::CancelEditClaimDescription& DebateEvent::_internal_cancel_edit_claim_description() const {
-  return payload_case() == kCancelEditClaimDescription ? *_impl_.payload_.cancel_edit_claim_description_ : reinterpret_cast<::debate_event::CancelEditClaimDescription&>(::debate_event::_CancelEditClaimDescription_default_instance_);
-}
-inline const ::debate_event::CancelEditClaimDescription& DebateEvent::cancel_edit_claim_description() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.cancel_edit_claim_description)
-  return _internal_cancel_edit_claim_description();
-}
-inline ::debate_event::CancelEditClaimDescription* DebateEvent::unsafe_arena_release_cancel_edit_claim_description() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.cancel_edit_claim_description)
-  if (payload_case() == kCancelEditClaimDescription) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_edit_claim_description_;
-    _impl_.payload_.cancel_edit_claim_description_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_cancel_edit_claim_description(::debate_event::CancelEditClaimDescription* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_cancel_edit_claim_description();
-    _impl_.payload_.cancel_edit_claim_description_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.cancel_edit_claim_description)
-}
-inline ::debate_event::CancelEditClaimDescription* DebateEvent::_internal_mutable_cancel_edit_claim_description() {
-  if (payload_case() != kCancelEditClaimDescription) {
-    clear_payload();
-    set_has_cancel_edit_claim_description();
-    _impl_.payload_.cancel_edit_claim_description_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::CancelEditClaimDescription>(GetArena());
-  }
-  return _impl_.payload_.cancel_edit_claim_description_;
-}
-inline ::debate_event::CancelEditClaimDescription* DebateEvent::mutable_cancel_edit_claim_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::CancelEditClaimDescription* _msg = _internal_mutable_cancel_edit_claim_description();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.cancel_edit_claim_description)
-  return _msg;
-}
-
-// .debate_event.StartEditClaim start_edit_claim = 27 [json_name = "startEditClaim"];
-inline bool DebateEvent::has_start_edit_claim() const {
-  return payload_case() == kStartEditClaim;
-}
-inline bool DebateEvent::_internal_has_start_edit_claim() const {
-  return payload_case() == kStartEditClaim;
-}
-inline void DebateEvent::set_has_start_edit_claim() {
-  _impl_._oneof_case_[0] = kStartEditClaim;
-}
-inline void DebateEvent::clear_start_edit_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kStartEditClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.start_edit_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.start_edit_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::StartEditClaim* DebateEvent::release_start_edit_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.start_edit_claim)
-  if (payload_case() == kStartEditClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_edit_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.start_edit_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::StartEditClaim& DebateEvent::_internal_start_edit_claim() const {
-  return payload_case() == kStartEditClaim ? *_impl_.payload_.start_edit_claim_ : reinterpret_cast<::debate_event::StartEditClaim&>(::debate_event::_StartEditClaim_default_instance_);
-}
-inline const ::debate_event::StartEditClaim& DebateEvent::start_edit_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.start_edit_claim)
-  return _internal_start_edit_claim();
-}
-inline ::debate_event::StartEditClaim* DebateEvent::unsafe_arena_release_start_edit_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.start_edit_claim)
-  if (payload_case() == kStartEditClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_edit_claim_;
-    _impl_.payload_.start_edit_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_start_edit_claim(::debate_event::StartEditClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_start_edit_claim();
-    _impl_.payload_.start_edit_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.start_edit_claim)
-}
-inline ::debate_event::StartEditClaim* DebateEvent::_internal_mutable_start_edit_claim() {
-  if (payload_case() != kStartEditClaim) {
-    clear_payload();
-    set_has_start_edit_claim();
-    _impl_.payload_.start_edit_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::StartEditClaim>(GetArena());
-  }
-  return _impl_.payload_.start_edit_claim_;
-}
-inline ::debate_event::StartEditClaim* DebateEvent::mutable_start_edit_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::StartEditClaim* _msg = _internal_mutable_start_edit_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.start_edit_claim)
-  return _msg;
-}
-
 // .debate_event.SubmitEditClaim submit_edit_claim = 28 [json_name = "submitEditClaim"];
 inline bool DebateEvent::has_submit_edit_claim() const {
   return payload_case() == kSubmitEditClaim;
@@ -11127,85 +7655,6 @@ inline ::debate_event::SubmitEditClaim* DebateEvent::_internal_mutable_submit_ed
 inline ::debate_event::SubmitEditClaim* DebateEvent::mutable_submit_edit_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::SubmitEditClaim* _msg = _internal_mutable_submit_edit_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.submit_edit_claim)
-  return _msg;
-}
-
-// .debate_event.CancelEditClaim cancel_edit_claim = 29 [json_name = "cancelEditClaim"];
-inline bool DebateEvent::has_cancel_edit_claim() const {
-  return payload_case() == kCancelEditClaim;
-}
-inline bool DebateEvent::_internal_has_cancel_edit_claim() const {
-  return payload_case() == kCancelEditClaim;
-}
-inline void DebateEvent::set_has_cancel_edit_claim() {
-  _impl_._oneof_case_[0] = kCancelEditClaim;
-}
-inline void DebateEvent::clear_cancel_edit_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kCancelEditClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.cancel_edit_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.cancel_edit_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::CancelEditClaim* DebateEvent::release_cancel_edit_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.cancel_edit_claim)
-  if (payload_case() == kCancelEditClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_edit_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.cancel_edit_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::CancelEditClaim& DebateEvent::_internal_cancel_edit_claim() const {
-  return payload_case() == kCancelEditClaim ? *_impl_.payload_.cancel_edit_claim_ : reinterpret_cast<::debate_event::CancelEditClaim&>(::debate_event::_CancelEditClaim_default_instance_);
-}
-inline const ::debate_event::CancelEditClaim& DebateEvent::cancel_edit_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.cancel_edit_claim)
-  return _internal_cancel_edit_claim();
-}
-inline ::debate_event::CancelEditClaim* DebateEvent::unsafe_arena_release_cancel_edit_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.cancel_edit_claim)
-  if (payload_case() == kCancelEditClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_edit_claim_;
-    _impl_.payload_.cancel_edit_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_cancel_edit_claim(::debate_event::CancelEditClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_cancel_edit_claim();
-    _impl_.payload_.cancel_edit_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.cancel_edit_claim)
-}
-inline ::debate_event::CancelEditClaim* DebateEvent::_internal_mutable_cancel_edit_claim() {
-  if (payload_case() != kCancelEditClaim) {
-    clear_payload();
-    set_has_cancel_edit_claim();
-    _impl_.payload_.cancel_edit_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::CancelEditClaim>(GetArena());
-  }
-  return _impl_.payload_.cancel_edit_claim_;
-}
-inline ::debate_event::CancelEditClaim* DebateEvent::mutable_cancel_edit_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::CancelEditClaim* _msg = _internal_mutable_cancel_edit_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.cancel_edit_claim)
   return _msg;
 }
 
@@ -11446,85 +7895,6 @@ inline ::debate_event::SubmitConnectClaims* DebateEvent::mutable_submit_connect_
   return _msg;
 }
 
-// .debate_event.CancelConnectClaims cancel_connect_claims = 33 [json_name = "cancelConnectClaims"];
-inline bool DebateEvent::has_cancel_connect_claims() const {
-  return payload_case() == kCancelConnectClaims;
-}
-inline bool DebateEvent::_internal_has_cancel_connect_claims() const {
-  return payload_case() == kCancelConnectClaims;
-}
-inline void DebateEvent::set_has_cancel_connect_claims() {
-  _impl_._oneof_case_[0] = kCancelConnectClaims;
-}
-inline void DebateEvent::clear_cancel_connect_claims() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kCancelConnectClaims) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.cancel_connect_claims_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.cancel_connect_claims_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::CancelConnectClaims* DebateEvent::release_cancel_connect_claims() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.cancel_connect_claims)
-  if (payload_case() == kCancelConnectClaims) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_connect_claims_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.cancel_connect_claims_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::CancelConnectClaims& DebateEvent::_internal_cancel_connect_claims() const {
-  return payload_case() == kCancelConnectClaims ? *_impl_.payload_.cancel_connect_claims_ : reinterpret_cast<::debate_event::CancelConnectClaims&>(::debate_event::_CancelConnectClaims_default_instance_);
-}
-inline const ::debate_event::CancelConnectClaims& DebateEvent::cancel_connect_claims() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.cancel_connect_claims)
-  return _internal_cancel_connect_claims();
-}
-inline ::debate_event::CancelConnectClaims* DebateEvent::unsafe_arena_release_cancel_connect_claims() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.cancel_connect_claims)
-  if (payload_case() == kCancelConnectClaims) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.cancel_connect_claims_;
-    _impl_.payload_.cancel_connect_claims_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_cancel_connect_claims(::debate_event::CancelConnectClaims* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_cancel_connect_claims();
-    _impl_.payload_.cancel_connect_claims_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.cancel_connect_claims)
-}
-inline ::debate_event::CancelConnectClaims* DebateEvent::_internal_mutable_cancel_connect_claims() {
-  if (payload_case() != kCancelConnectClaims) {
-    clear_payload();
-    set_has_cancel_connect_claims();
-    _impl_.payload_.cancel_connect_claims_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::CancelConnectClaims>(GetArena());
-  }
-  return _impl_.payload_.cancel_connect_claims_;
-}
-inline ::debate_event::CancelConnectClaims* DebateEvent::mutable_cancel_connect_claims() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::CancelConnectClaims* _msg = _internal_mutable_cancel_connect_claims();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.cancel_connect_claims)
-  return _msg;
-}
-
 // .debate_event.DeleteLink delete_link = 34 [json_name = "deleteLink"];
 inline bool DebateEvent::has_delete_link() const {
   return payload_case() == kDeleteLink;
@@ -11759,85 +8129,6 @@ inline ::debate_event::Login* DebateEvent::_internal_mutable_login() {
 inline ::debate_event::Login* DebateEvent::mutable_login() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::Login* _msg = _internal_mutable_login();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.login)
-  return _msg;
-}
-
-// .debate_event.StartChallengeClaim start_challenge_claim = 37 [json_name = "startChallengeClaim"];
-inline bool DebateEvent::has_start_challenge_claim() const {
-  return payload_case() == kStartChallengeClaim;
-}
-inline bool DebateEvent::_internal_has_start_challenge_claim() const {
-  return payload_case() == kStartChallengeClaim;
-}
-inline void DebateEvent::set_has_start_challenge_claim() {
-  _impl_._oneof_case_[0] = kStartChallengeClaim;
-}
-inline void DebateEvent::clear_start_challenge_claim() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (payload_case() == kStartChallengeClaim) {
-    if (GetArena() == nullptr) {
-      delete _impl_.payload_.start_challenge_claim_;
-    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.start_challenge_claim_);
-    }
-    clear_has_payload();
-  }
-}
-inline ::debate_event::StartChallengeClaim* DebateEvent::release_start_challenge_claim() {
-  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.start_challenge_claim)
-  if (payload_case() == kStartChallengeClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_challenge_claim_;
-    if (GetArena() != nullptr) {
-      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
-    }
-    _impl_.payload_.start_challenge_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline const ::debate_event::StartChallengeClaim& DebateEvent::_internal_start_challenge_claim() const {
-  return payload_case() == kStartChallengeClaim ? *_impl_.payload_.start_challenge_claim_ : reinterpret_cast<::debate_event::StartChallengeClaim&>(::debate_event::_StartChallengeClaim_default_instance_);
-}
-inline const ::debate_event::StartChallengeClaim& DebateEvent::start_challenge_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.start_challenge_claim)
-  return _internal_start_challenge_claim();
-}
-inline ::debate_event::StartChallengeClaim* DebateEvent::unsafe_arena_release_start_challenge_claim() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.start_challenge_claim)
-  if (payload_case() == kStartChallengeClaim) {
-    clear_has_payload();
-    auto* temp = _impl_.payload_.start_challenge_claim_;
-    _impl_.payload_.start_challenge_claim_ = nullptr;
-    return temp;
-  } else {
-    return nullptr;
-  }
-}
-inline void DebateEvent::unsafe_arena_set_allocated_start_challenge_claim(::debate_event::StartChallengeClaim* value) {
-  // We rely on the oneof clear method to free the earlier contents
-  // of this oneof. We can directly use the pointer we're given to
-  // set the new value.
-  clear_payload();
-  if (value) {
-    set_has_start_challenge_claim();
-    _impl_.payload_.start_challenge_claim_ = value;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.start_challenge_claim)
-}
-inline ::debate_event::StartChallengeClaim* DebateEvent::_internal_mutable_start_challenge_claim() {
-  if (payload_case() != kStartChallengeClaim) {
-    clear_payload();
-    set_has_start_challenge_claim();
-    _impl_.payload_.start_challenge_claim_ =
-        ::google::protobuf::Message::DefaultConstruct<::debate_event::StartChallengeClaim>(GetArena());
-  }
-  return _impl_.payload_.start_challenge_claim_;
-}
-inline ::debate_event::StartChallengeClaim* DebateEvent::mutable_start_challenge_claim() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::debate_event::StartChallengeClaim* _msg = _internal_mutable_start_challenge_claim();
-  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.start_challenge_claim)
   return _msg;
 }
 

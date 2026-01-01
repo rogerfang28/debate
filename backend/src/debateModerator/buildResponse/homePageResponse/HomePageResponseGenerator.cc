@@ -32,10 +32,10 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         topicProto->set_creator_id(debateProto.creator_id());
         topicProto->set_is_challenge(debateProto.is_challenge());
         // find the claim debateProto is challenging
-        debateWrapper.findClaim(debateProto.id());
+        debateWrapper.getClaimById(debateProto.id());
         if (debateProto.is_challenge()){
             debate::Challenge challenge = debateWrapper.getChallengeProtobuf(debateProto.parent_challenge_id());
-            debate::Claim challengedClaim = debateWrapper.findClaim(challenge.challenged_parent_claim_id());
+            debate::Claim challengedClaim = debateWrapper.getClaimById(challenge.challenged_parent_claim_id());
             topicProto->set_claim_its_challenging(challengedClaim.sentence());
         }
         Log::debug("[HomePageResponseGenerator] Added debate to list: ID = "

@@ -22,7 +22,7 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     int challenged_id;
     // find the challenged id, it will be the owner of the debate being challenged
     int challenged_parent_claim_id = debateProto.parent_challenge_id();
-    debate::Claim challengedParentClaim = debateWrapper.findClaim(challenged_parent_claim_id);
+    debate::Claim challengedParentClaim = debateWrapper.getClaimById(challenged_parent_claim_id);
     challenged_id = challengedParentClaim.creator_id();
 
     debateWrapper.moveUserToClaim(user_id, rootClaimId);
@@ -108,7 +108,7 @@ void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper&
     // get challenge id, find the parent claim of the challenge, go to that claim
     debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
     int parentClaim = challengeProto.challenged_parent_claim_id();
-    debate::Claim claimProto = debateWrapper.findClaim(parentClaim);
+    debate::Claim claimProto = debateWrapper.getClaimById(parentClaim);
     int new_debate_id = claimProto.debate_id();
     EnterDebate(new_debate_id, user_id, debateWrapper);
     Log::debug("[GoToParentClaimOfDebate] Now going to parent claim id: " + std::to_string(parentClaim));

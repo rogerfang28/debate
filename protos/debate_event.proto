@@ -4,16 +4,8 @@ package debate_event;
 
 import "google/protobuf/timestamp.proto";
 
-// Individual event payloads
-message None{
-}
-
 message CreateDebate {
     string debate_topic = 2;
-}
-
-message ClearDebates {
-
 }
 
 message DeleteDebate {
@@ -24,28 +16,9 @@ message EnterDebate {
     int32 debate_id = 1;
 }
 
-message GoHome {
-}
-
-message OpenAddChildClaim {
-}
-
-message CloseAddChildClaim {
-}
-
 message AddChildClaim {
     string claim         = 1;
     string description   = 2;
-}
-
-message OpenReportClaim {
-}
-
-message CloseReportClaim {
-}
-
-message DeleteCurrentStatement {
-
 }
 
 message DeleteChildClaim {
@@ -59,29 +32,16 @@ message AddConnection {
     string connection    = 5;
 }
 
-message GoToParentClaim {
-}
-
 message GoToClaim {
     int32 claim_id      = 2;
-}
-
-message StartEditClaimDescription {
 }
 
 message SubmitEditClaimDescription {
     string new_description = 1;
 }
 
-message CancelEditClaimDescription {
-}
-
-message StartEditClaim {
-}
 message SubmitEditClaim {
     string new_claim = 1;
-}
-message CancelEditClaim {
 }
 
 message ConnectFromClaim {
@@ -98,9 +58,6 @@ message SubmitConnectClaims {
     int32 to_claim_id   = 3;
 }
 
-message CancelConnectClaims {
-}
-
 message DeleteLink {
     int32 link_id = 1;
 }
@@ -112,10 +69,6 @@ message JoinDebate {
 message Login {
     string username = 1;
     string password = 2;
-}
-
-message StartChallengeClaim {
-    // int32 claim_id = 1;
 }
 
 message AddClaimToBeChallenged {
@@ -215,33 +168,19 @@ message DebateEvent {
 
   oneof payload {
     CreateDebate    create_debate    = 10;
-    ClearDebates    clear_debates    = 11;
     DeleteDebate    delete_debate    = 12;
     EnterDebate     enter_debate     = 13;
-    GoHome          go_home          = 14;
-    OpenAddChildClaim open_add_child_claim = 15;
-    CloseAddChildClaim close_add_child_claim = 21;
     AddChildClaim   add_child_claim  = 16;
-    OpenReportClaim    open_report_claim    = 17;
-    CloseReportClaim   close_report_claim   = 22;
-    DeleteCurrentStatement delete_current_statement = 18;
-    GoToParentClaim   go_to_parent    = 19;
     GoToClaim        go_to_claim     = 20;
     DeleteChildClaim delete_child_claim = 23;
-    StartEditClaimDescription start_edit_claim_description = 24;
     SubmitEditClaimDescription submit_edit_claim_description = 25;
-    CancelEditClaimDescription cancel_edit_claim_description = 26;
-    StartEditClaim start_edit_claim = 27;
     SubmitEditClaim submit_edit_claim = 28;
-    CancelEditClaim cancel_edit_claim = 29;
     ConnectFromClaim connect_from_claim = 30;
     ConnectToClaim   connect_to_claim   = 31;
     SubmitConnectClaims submit_connect_claims = 32;
-    CancelConnectClaims cancel_connect_claims = 33;
     DeleteLink delete_link = 34;
     JoinDebate join_debate = 35;
     Login login = 36;
-    StartChallengeClaim start_challenge_claim = 37;
     AddClaimToBeChallenged add_claim_to_be_challenged = 38;
     AddLinkToBeChallenged add_link_to_be_challenged = 39;
     SubmitChallengeClaim submit_challenge_claim = 40;

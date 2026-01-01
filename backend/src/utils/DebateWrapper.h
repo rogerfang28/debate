@@ -11,7 +11,7 @@ class DebateWrapper {
 public:
     explicit DebateWrapper(DatabaseWrapper& databaseWrapper);
     std::vector<debate::Claim> findChildren(const std::string& parentId);
-    debate::Claim findClaim(const int& claimId);
+    debate::Claim getClaimById(const int& claimId);
     void initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const int& claimId);
     void addClaimUnderParent(
@@ -66,7 +66,6 @@ public:
     int findDebateId(const int& claimId);
 
 private:
-    debate::Claim* findClaimProto(const int& claimId);
     DatabaseWrapper& databaseWrapper;
     void addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id);
     // void updateClaimInDB(const debate::Claim& claim);
