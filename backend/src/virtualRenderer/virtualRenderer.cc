@@ -26,14 +26,27 @@ VirtualRenderer::~VirtualRenderer() {
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message,const httplib::Request& req, httplib::Response& res) {
     
     // translate client_message into debate event
-    std::string cookie_header = req.get_header_value("Cookie");
-    Log::debug("[VirtualRenderer] Handling ClientMessage, cookie: " + cookie_header);
     int user_id = parseCookie::extractUserIdFromCookies(req);
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     // I NEED TO CALL THE DEBATE BACKEND SOMEHOW FROM HERE
     // BackendCommunicator backend("localhost", 8080);
 
-    // check if logout event
+    // handle auth
+    handleAuthEvents(evt, req, res);
+    // ! no server call for now, backend and virtual renderer are on the same backend
+    
+    moderator_to_vr::ModeratorToVRMessage info;
+    // DebateModerator moderator;
+    info = moderator.handleRequest(evt);
+    // backend.sendEvent(evt, info);
+    
+    // parse the info and create a page
+    ui::Page page = LayoutGenerator::generateLayout(info);
+    // send back the page to handler
+    return page;
+}
+
+void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
     if (evt.type() == debate_event::LOGOUT) {
         Log::debug("[VirtualRenderer] Logout event detected, clearing req cookies.");
         parseCookie::clearAuthCookies(res);
@@ -60,15 +73,4 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     } else {
         evt.mutable_user()->set_is_logged_in(false);
     }
-    // ! no server call for now, backend and virtual renderer are on the same backend
-    
-    moderator_to_vr::ModeratorToVRMessage info;
-    // DebateModerator moderator;
-    info = moderator.handleRequest(evt);
-    // backend.sendEvent(evt, info);
-    
-    // parse the info and create a page
-    ui::Page page = LayoutGenerator::generateLayout(info);
-    // send back the page to handler
-    return page;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <mutex>
 
 enum class LogLevel {
     None = -1,
@@ -23,4 +24,5 @@ public:
 
 private:
     static LogLevel currentLevel;
+    static std::mutex logMutex;   // NEW: synchronize all log output
 };

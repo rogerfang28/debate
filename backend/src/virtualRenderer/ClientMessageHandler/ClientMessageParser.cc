@@ -14,23 +14,20 @@
 
 debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message::ClientMessage& message, const int& user_id) {
     debate_event::DebateEvent event;
-    timestampEvent(event); // set timestamp and id
-    // if (user_id != 0) {
-    //     Log::debug("Extracted user_id from cookies: " + std::to_string(user_id));
-    //     event.mutable_user()->set_user_id(user_id);
-    //     event.mutable_user()->set_is_logged_in(true);
-    // } else {
-    //     event.mutable_user()->set_user_id(0);
-    //     event.mutable_user()->set_is_logged_in(false);
-    //     Log::debug("No valid user_id found in cookies.");
-    // }
+    timestampEvent(event);
 
     // check to see if there is nothing actually happening, like nothing clicked, it's basically no event
+    // this happens when they are just loading the page, not clicking and stuff
     if (message.component_id().empty() && message.event_type().empty()) {
-        Log::debug("No action in ClientMessage, returning empty DebateEvent.");
         event.set_type(debate_event::NONE);
         return event;
     }
+
+    event.mutable_user()->set_user_id(user_id); 
+    // This should work even though the event for login wouldn't be able 
+    // to process the event yet, because the frontened sends 2 separate messages
+    // one for the login event, and one none event to load the page after login
+    event.mutable_user()->set_is_logged_in(user_id != 0); // 0 is not logged in
 
     const std::string& componentId = message.component_id();
     const std::string& eventType = message.event_type();
@@ -45,7 +42,6 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     } else if (pageId == "debate") {
-        Log::debug("  Parsing Debate Page Event for user: " + std::to_string(user_id));
         event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user_id, message);
     } else if (pageId == "error") {
         event = ErrorPageEventParser::ParseErrorPageEvent(componentId, eventType, user_id, message);
@@ -57,20 +53,13 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
     }
     
-    event.mutable_user()->set_user_id(user_id);
-    event.mutable_user()->set_is_logged_in(user_id != 0);
-
-    Log::debug("  Event Type: " + std::to_string(event.type()));
-    Log::debug("========================================\n");
-    
     return event;
 }
 
 void ClientMessageParser::timestampEvent(debate_event::DebateEvent& event) {
-    
-    // Set timestamp to current time
     auto* timestamp = event.mutable_occurred_at();
     auto now = std::chrono::system_clock::now();
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
     timestamp->set_seconds(seconds);
 }
+

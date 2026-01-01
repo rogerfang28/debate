@@ -32,7 +32,7 @@ public:
     // void handleGetRequest(const httplib::Request& req, httplib::Response& res);
     // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
     ui::Page handleClientMessage(const client_message::ClientMessage& client_message, const httplib::Request& req, httplib::Response& res);
-
+    void handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
     DebateModerator moderator;
