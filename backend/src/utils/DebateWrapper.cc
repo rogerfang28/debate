@@ -4,13 +4,8 @@
 #include "../../../src/gen/cpp/debate.pb.h"
 #include "../../../src/gen/cpp/user.pb.h"
 
-DebateWrapper::DebateWrapper(DebateDatabase& debateDatabase, StatementDatabase& statementDatabase, UserDatabase& userDatabase, DebateMembersDatabase& debateMembersDatabase, LinkDatabase& linkDatabase, ChallengeDatabase& challengeDatabase)
-    : debateDb(debateDatabase),
-      statementDb(statementDatabase),
-      userDb(userDatabase),
-      debateMembersDb(debateMembersDatabase),
-      linkDb(linkDatabase),
-      challengeDb(challengeDatabase) {}
+DebateWrapper::DebateWrapper(DatabaseWrapper& dbWrapper)
+    : databaseWrapper(dbWrapper) {}
 std::vector<int> DebateWrapper::findChildrenIds(
     const int& parentId) {
     std::vector<int> childrenIds;
@@ -40,7 +35,7 @@ std::string DebateWrapper::findClaimSentence(
 }
 
 debate::Claim DebateWrapper::findClaim(const int& claimId) {
-    std::vector<uint8_t> serializedData = statementDb.getStatementProtobuf(claimId);
+    std::vector<uint8_t> serializedData = databaseWrapper.statements.getStatementProtobuf(claimId);
     if (!serializedData.empty()) {
         debate::Claim claim;
         claim.ParseFromArray(serializedData.data(), serializedData.size());
@@ -58,7 +53,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate.set_creator_id(creator_id);
     std::vector<uint8_t> serialized_debate(debate.ByteSizeLong());
     debate.SerializeToArray(serialized_debate.data(), serialized_debate.size());
-    int newId = debateDb.addDebate(creator_id, topic, serialized_debate);
+    int newId = databaseWrapper.debates.addDebate(creator_id, topic, serialized_debate);
     if (newId == -1) {
         Log::error("[DebateWrapper] Failed to create new debate for topic: " + topic);
         return;
@@ -72,8 +67,8 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate.set_root_claim_id(rootClaim.id());
     std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
     debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
-    debateDb.updateDebateProtobuf(debate.id(), creator_id, updatedSerializedDebate);
-    debateMembersDb.addMember(newId, creator_id);
+    databaseWrapper.debates.updateDebateProtobuf(debate.id(), creator_id, updatedSerializedDebate);
+    databaseWrapper.debateMembers.addMember(newId, creator_id);
 }
 
 int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, const int& creator_id, const int& parent_challenge_id, debate::Debate& debateProto) {
@@ -85,7 +80,7 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
     debateProto.set_parent_challenge_id(parent_challenge_id);
     std::vector<uint8_t> serialized_debate(debateProto.ByteSizeLong());
     debateProto.SerializeToArray(serialized_debate.data(), serialized_debate.size());
-    int newId = debateDb.addDebate(creator_id, debateProto.topic(), serialized_debate);
+    int newId = databaseWrapper.debates.addDebate(creator_id, debateProto.topic(), serialized_debate);
     if (newId == -1) {
         Log::error("[DebateWrapper] Failed to create new debate for topic: " + challenge_sentence);
         return -1;
@@ -99,8 +94,8 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
     debateProto.set_root_claim_id(rootClaim.id());
     std::vector<uint8_t> updatedSerializedDebate(debateProto.ByteSizeLong());
     debateProto.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
-    debateDb.updateDebateProtobuf(debateProto.id(), creator_id, updatedSerializedDebate);
-    debateMembersDb.addMember(newId, creator_id);
+    databaseWrapper.debates.updateDebateProtobuf(debateProto.id(), creator_id, updatedSerializedDebate);
+    databaseWrapper.debateMembers.addMember(newId, creator_id);
     return newId;
 }
 
@@ -139,7 +134,7 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
     claim.set_debate_id(debate_id);
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
-    int newId = statementDb.addStatement(
+    int newId = databaseWrapper.statements.addStatement(
         -1, 
         claim.sentence(), 
         serializedData,
@@ -148,11 +143,11 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
     claim.set_id(newId);
     std::vector<uint8_t> updatedSerializedData(claim.ByteSizeLong());
     claim.SerializeToArray(updatedSerializedData.data(), updatedSerializedData.size());
-    statementDb.updateStatementProtobuf(
+    databaseWrapper.statements.updateStatementProtobuf(
         claim.id(), 
         updatedSerializedData
     );
-    statementDb.updateStatementRoot(
+    databaseWrapper.statements.updateStatementRoot(
         claim.id(), 
         claim.id()
     );
@@ -161,7 +156,7 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
 void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
-    statementDb.updateStatementProtobuf(
+    databaseWrapper.statements.updateStatementProtobuf(
         claim.id(), 
         serializedData
     );
@@ -169,7 +164,7 @@ void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
 
 void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
     // find the debate protobuf
-    std::vector<uint8_t> debateData = debateDb.getDebateProtobuf(debateId);
+    std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debateId);
     if (debateData.empty()) {
         Log::error("[DebateWrapper] Debate with ID " + std::to_string(debateId) + " not found.");
     }
@@ -178,7 +173,7 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
         debateProto.ParseFromArray(debateData.data(), debateData.size());
         
         // find all debatemembers and delete
-        debateMembersDb.removeAllMembersFromDebate(debateProto.root_claim_id());
+        databaseWrapper.debateMembers.removeAllMembersFromDebate(debateProto.root_claim_id());
         // delete all claims associated with the debate
         debate::Claim rootClaim = findClaim(debateProto.root_claim_id());
         std::vector<int> claimsToDelete;
@@ -200,7 +195,7 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
 
         // Delete the debate entry from the DEBATE table
         // debateDb.removeDebate(std::stoi(debateId), user);
-        debateMembersDb.removeMember(debateId, user_id);
+        databaseWrapper.debateMembers.removeMember(debateId, user_id);
     }
 }
 
@@ -228,8 +223,8 @@ void DebateWrapper::deleteClaim(const int& claimId) {
     // }
     // delete links that go to and from this claim
     std::vector<int> linksToDelete = findLinksUnder(claimId);
-    auto linksFromThisClaim = linkDb.getLinksFromClaim(claimId);
-    auto linksToThisClaim =  linkDb.getLinksToClaim(claimId);
+    auto linksFromThisClaim = databaseWrapper.links.getLinksFromClaim(claimId);
+    auto linksToThisClaim =  databaseWrapper.links.getLinksToClaim(claimId);
     for (const auto& linkTuple : linksFromThisClaim) {
         int linkId = std::get<0>(linkTuple);
         linksToDelete.push_back(linkId);
@@ -242,11 +237,11 @@ void DebateWrapper::deleteClaim(const int& claimId) {
         deleteLinkById(linkId);
     }
 
-    statementDb.deleteStatement(claimId);
+    databaseWrapper.statements.deleteStatement(claimId);
 }
 
 void DebateWrapper::deleteAllDebates(const int& user_id) {
-    std::vector<int> allDebates = debateMembersDb.getDebateIdsForUser(user_id);
+    std::vector<int> allDebates = databaseWrapper.debateMembers.getDebateIdsForUser(user_id);
     for (const auto& debateId : allDebates) {
         deleteDebate(debateId, user_id);
     }
@@ -262,7 +257,7 @@ void DebateWrapper::moveUserToClaim(const int& user_id, const int& claimId) {
     std::vector<uint8_t> updatedData(userProto.ByteSizeLong());
     userProto.SerializeToArray(updatedData.data(), updatedData.size());
     
-    bool success = userDb.updateUserProtobuf(user_id, updatedData);
+    bool success = databaseWrapper.users.updateUserProtobuf(user_id, updatedData);
     
     if (success) {
         Log::debug("[DebateWrapper] Successfully moved user " + std::to_string(user_id) + " to claim id " + std::to_string(claimId) 
@@ -275,19 +270,19 @@ void DebateWrapper::moveUserToClaim(const int& user_id, const int& claimId) {
 }
 
 std::vector<int> DebateWrapper::getUserDebateIds(const int& user_id) {
-    return debateMembersDb.getDebateIdsForUser(user_id);
+    return databaseWrapper.debateMembers.getDebateIdsForUser(user_id);
 }
 
 std::vector<uint8_t> DebateWrapper::getDebateProtobuf(const int& debateId) {
-    return debateDb.getDebateProtobuf(debateId);
+    return databaseWrapper.debates.getDebateProtobuf(debateId);
 }
 
 std::vector<uint8_t> DebateWrapper::getUserProtobufBinary(const int& user_id) {
-    return userDb.getUserProtobuf(user_id);
+    return databaseWrapper.users.getUserProtobuf(user_id);
 }
 
 user::User DebateWrapper::getUserProtobuf(const int& user_id) {
-    std::vector<uint8_t> userData = userDb.getUserProtobuf(user_id);
+    std::vector<uint8_t> userData = databaseWrapper.users.getUserProtobuf(user_id);
     user::User userProto;
     if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
         Log::error("[DebateWrapper][ERR] Failed to parse user protobuf for " + std::to_string(user_id));
@@ -298,7 +293,7 @@ user::User DebateWrapper::getUserProtobuf(const int& user_id) {
 void DebateWrapper::updateUserProtobuf(const int& user_id, const user::User& userProto) {
     std::vector<uint8_t> protobufData(userProto.ByteSizeLong());
     userProto.SerializeToArray(protobufData.data(), protobufData.size());
-    bool success = userDb.updateUserProtobuf(user_id, protobufData);
+    bool success = databaseWrapper.users.updateUserProtobuf(user_id, protobufData);
     if (success) {
         Log::debug("[DebateWrapper] Successfully updated user protobuf for " + std::to_string(user_id));
     } else {
@@ -307,7 +302,7 @@ void DebateWrapper::updateUserProtobuf(const int& user_id, const user::User& use
 }
 
 void DebateWrapper::updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData) {
-    bool success = userDb.updateUserProtobuf(user_id, protobufData);
+    bool success = databaseWrapper.users.updateUserProtobuf(user_id, protobufData);
     if (success) {
         Log::debug("[DebateWrapper] Successfully updated user protobuf for " + std::to_string(user_id));
     } else {
@@ -330,11 +325,11 @@ void DebateWrapper::editClaimText(
     claim.set_sentence(newText);
     updateClaimInDB(claim);
     // also update the actual topic in the statement database
-    statementDb.updateStatementContent(claimId, newText);
+    databaseWrapper.statements.updateStatementContent(claimId, newText);
 }
 
 int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id) {
-    int linkId = linkDb.addLink(fromClaimId, toClaimId, connection, creator_id);
+    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id);
     Log::debug("[DebateWrapper] Added link from claim " + std::to_string(fromClaimId) + " to claim " + std::to_string(toClaimId) + " by user " + std::to_string(creator_id));
     return linkId;
 }
@@ -352,7 +347,7 @@ std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {
 
 debate::Link DebateWrapper::getLinkById(int linkId) {
     debate::Link linkProto;
-    auto linkData = linkDb.getLinkById(linkId);
+    auto linkData = databaseWrapper.links.getLinkById(linkId);
     
     if (linkData.has_value()) {
         const auto& link = linkData.value();
@@ -374,7 +369,7 @@ debate::Link DebateWrapper::getLinkById(int linkId) {
 }
 
 void DebateWrapper::deleteLinkById(int linkId) {
-    bool success = linkDb.deleteLink(linkId);
+    bool success = databaseWrapper.links.deleteLink(linkId);
     if (success) {
         Log::debug("[DebateWrapper] Successfully deleted link with ID " + std::to_string(linkId));
     } else {
@@ -384,16 +379,16 @@ void DebateWrapper::deleteLinkById(int linkId) {
 
 void DebateWrapper::addMemberToDebate(const int& debateId, const int& user_id) {
     // check if user already a member
-    if (debateMembersDb.isMember(debateId, user_id)) {
+    if (databaseWrapper.debateMembers.isMember(debateId, user_id)) {
         Log::info("[DebateWrapper] User " + std::to_string(user_id) + " is already a member of debate " + std::to_string(debateId));
         return;
     }
     // check if debate exists
-    if (debateDb.debateExists(debateId) == false) {
+    if (databaseWrapper.debates.debateExists(debateId) == false) {
         Log::error("[DebateWrapper][ERR] Debate with ID " + std::to_string(debateId) + " does not exist. Cannot add member.");
         return;
     }
-    debateMembersDb.addMember(debateId, user_id);
+    databaseWrapper.debateMembers.addMember(debateId, user_id);
 }
 
 int DebateWrapper::addChallenge(
@@ -404,7 +399,7 @@ int DebateWrapper::addChallenge(
     // serialize challengeProtobuf
     std::vector<uint8_t> challengeProtobufData(challengeProtobuf.ByteSizeLong());
     challengeProtobuf.SerializeToArray(challengeProtobufData.data(), challengeProtobufData.size());
-    int challenge_id = challengeDb.addChallenge(
+    int challenge_id = databaseWrapper.challenges.addChallenge(
         challengeProtobufData,
         creator_id,
         challenged_claim_id
@@ -413,12 +408,12 @@ int DebateWrapper::addChallenge(
 }
 
 std::vector<int> DebateWrapper::getChallengesAgainstClaim(const int& claimId) {
-    return challengeDb.getChallengesAgainstClaim(claimId);
+    return databaseWrapper.challenges.getChallengesAgainstClaim(claimId);
 }
 
 debate::Challenge DebateWrapper::getChallengeProtobuf(int challengeId) {
     debate::Challenge challengeProto;
-    std::vector<uint8_t> challengeData = challengeDb.getChallengeProtobuf(challengeId);
+    std::vector<uint8_t> challengeData = databaseWrapper.challenges.getChallengeProtobuf(challengeId);
     if (!challengeData.empty()) {
         if (!challengeProto.ParseFromArray(challengeData.data(), static_cast<int>(challengeData.size()))) {
             Log::error("[DebateWrapper][ERR] Failed to parse challenge protobuf for challenge ID " + std::to_string(challengeId));
@@ -430,7 +425,7 @@ debate::Challenge DebateWrapper::getChallengeProtobuf(int challengeId) {
 }
 
 void DebateWrapper::deleteChallenge(const int& challengeId) {
-    bool success = challengeDb.deleteChallenge(challengeId);
+    bool success = databaseWrapper.challenges.deleteChallenge(challengeId);
     if (success) {
         Log::debug("[DebateWrapper] Successfully deleted challenge with ID " + std::to_string(challengeId));
     } else {
@@ -441,7 +436,7 @@ void DebateWrapper::deleteChallenge(const int& challengeId) {
 void DebateWrapper::updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto) {
     std::vector<uint8_t> protobufData(debateProto.ByteSizeLong());
     debateProto.SerializeToArray(protobufData.data(), protobufData.size());
-    debateDb.updateDebateProtobuf(debateId, debateProto.creator_id(), protobufData);
+    databaseWrapper.debates.updateDebateProtobuf(debateId, debateProto.creator_id(), protobufData);
 }
 
 int DebateWrapper::findDebateId(const int& claimId) {

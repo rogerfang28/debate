@@ -32,14 +32,10 @@
 
 DebateModerator::DebateModerator()
     : globalDb(utils::getDatabasePath()),
-      userDb(globalDb),
-      debateDb(globalDb),
-      statementDb(globalDb),
-      debateMembersDb(globalDb),
-      linkDb(globalDb),
-      challengeDb(globalDb),
-      debateWrapper(debateDb, statementDb, userDb, debateMembersDb, linkDb, challengeDb)
+      dbWrapper(globalDb),
+      debateWrapper(dbWrapper)
 {
+    dbWrapper.ensureAllTables();
     Log::debug("[DebateModerator] Initialized.");
 }
 
@@ -50,7 +46,7 @@ DebateModerator::~DebateModerator() {
 // * main function to handle debate event requests
 moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_event::DebateEvent& event){
     // Process the debate event and update the database accordingly
-    int user_id = event.user().user_id(); //validateAuth(event);
+    int user_id = event.user().user_id();
     if (!event.user().is_logged_in()) {
         Log::debug("[DebateModerator] User not authenticated, redirecting to login page.");
         moderator_to_vr::ModeratorToVRMessage res;
@@ -59,7 +55,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     }
     Log::debug("[DebateModerator] Handling request for user: " + std::to_string(user_id));
 
-    // Example: handle adding a debate topic
     handleDebateEvent(user_id, event);
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
     return res;
@@ -293,7 +288,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // so i have to first access the database to get the information about the user engagement
     user::User userProto;
 
-    std::string user = userDb.getUsername(user_id);
+    std::string user = dbWrapper.users.getUsername(user_id);
     // int user_id = userDb.getUserId(user);
     
     // now we get info from the database
@@ -328,7 +323,7 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
 }
 
 int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
-    int user_id = userDb.getUserId(event.user().username());
+    int user_id = dbWrapper.users.getUserId(event.user().username());
     if (!event.user().is_logged_in()) {
         Log::debug("[DebateModerator] User not authenticated. Check if they are logging in.");
         if (event.type() == debate_event::LOGIN) {
@@ -341,7 +336,7 @@ int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
                 event.mutable_user()->set_is_logged_in(true);
             } else {
                 createUserIfNotExist(username);
-                user_id = userDb.getUserId(username);
+                user_id = dbWrapper.users.getUserId(username);
             }
         }
         else{
@@ -352,17 +347,17 @@ int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
         // check if that user_id exists in the database
         int check_user_id = event.user().user_id();
         std::string username = event.user().username();
-        if (!userDb.userExists(check_user_id)) {
+        if (!dbWrapper.users.userExists(check_user_id)) {
             Log::debug("[DebateModerator] User ID " + std::to_string(check_user_id) + " not found in database. Redirecting to login page.");
             createUserIfNotExist(username);
-            user_id = userDb.getUserId(username);
+            user_id = dbWrapper.users.getUserId(username);
         }
     }
     return user_id;
 }
 
 int DebateModerator::createUserIfNotExist(const std::string& username) {
-    int user_id = userDb.getUserId(username);
+    int user_id = dbWrapper.users.getUserId(username);
     if (user_id == -1) {
         user::User newUser;
         newUser.set_username(username);
@@ -370,7 +365,7 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         // serialize
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
-        user_id = userDb.createUser(username, serializedNewUser);
+        user_id = dbWrapper.users.createUser(username, serializedNewUser);
         Log::debug("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
     }
     return user_id;

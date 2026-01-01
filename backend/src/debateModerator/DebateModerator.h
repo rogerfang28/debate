@@ -6,12 +6,7 @@
 
 // database includes
 #include "../database/sqlite/Database.h"
-#include "../database/handlers/UserDatabase.h"
-#include "../database/handlers/DebateDatabase.h"
-#include "../database/handlers/StatementDatabase.h"
-#include "../database/handlers/DebateMembersDatabase.h"
-#include "../database/handlers/LinkDatabase.h"
-#include "../database/handlers/ChallengeDatabase.h"
+#include "../database/handlers/DatabaseWrapper.h"
 
 #include "../utils/DebateWrapper.h"
 class DebateModerator {
@@ -21,7 +16,7 @@ public:
 
     moderator_to_vr::ModeratorToVRMessage handleRequest(debate_event::DebateEvent& event);
     int getUserId(const std::string& username) {
-        return userDb.getUserId(username);
+        return dbWrapper.users.getUserId(username);
     }
     int createUserIfNotExist(const std::string& username);
     
@@ -31,11 +26,6 @@ private:
     int validateAuth(debate_event::DebateEvent& event);
     // database classes
     Database globalDb;
-    UserDatabase userDb;
-    DebateDatabase debateDb;
-    StatementDatabase statementDb;
-    DebateMembersDatabase debateMembersDb;
-    LinkDatabase linkDb;
-    ChallengeDatabase challengeDb;
+    DatabaseWrapper dbWrapper;
     DebateWrapper debateWrapper;
 };

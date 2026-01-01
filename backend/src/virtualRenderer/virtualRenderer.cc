@@ -46,6 +46,8 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     return page;
 }
 
+
+
 void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
     if (evt.type() == debate_event::LOGOUT) {
         Log::debug("[VirtualRenderer] Logout event detected, clearing req cookies.");
