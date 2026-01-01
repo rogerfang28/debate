@@ -470,7 +470,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user_engagement::UserEngagement
                 "rounded",
                 "transition-colors text-sm"
             );
-            ComponentGenerator::addChild(&challengeButtonContainer, deleteChallengeButton);
+            // ComponentGenerator::addChild(&challengeButtonContainer, deleteChallengeButton);
         }
 
         ComponentGenerator::addChild(&challengeNode, challengeButtonContainer);

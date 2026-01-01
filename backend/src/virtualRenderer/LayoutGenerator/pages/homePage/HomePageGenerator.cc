@@ -199,32 +199,59 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::HomeInfo info) {
             ""
         );
 
+        ui::Component debateItemWrapper = ComponentGenerator::createContainer(
+            "debateItemWrapper_" + std::to_string(topic.id()),
+            "flex flex-col flex-1",
+            "bg-gray-700",
+            "p-4",
+            "",
+            "border border-gray-600",
+            "rounded",
+            "transition hover:bg-gray-600"
+        );
+
         ui::Component debateItem = ComponentGenerator::createButton(
             "enterDebateTopicButton_" + std::to_string(topic.id()),
             topic.topic(),
             "selectDebate",
-            "bg-gray-700",
-            "hover:bg-gray-600",
+            "",
+            "",
             "text-white",
-            "px-4 py-2",
-            "rounded",
-            "flex-1 text-left transition border border-gray-600"
+            "",
+            "",
+            "text-left"
         );
         ComponentGenerator::addAttribute(&debateItem, "data-debate-id", std::to_string(topic.id()));
-        ComponentGenerator::addChild(&debateItemContainer, debateItem);
+        ComponentGenerator::addChild(&debateItemWrapper, debateItem);
 
-        ui::Component deleteDebateButton = ComponentGenerator::createButton(
-            "deleteDebateButton_" + std::to_string(topic.id()),
-            "Delete",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "transition border border-red-500"
-        );
-        ComponentGenerator::addChild(&debateItemContainer, deleteDebateButton);
+        if (topic.is_challenge()) {
+            ui::Component challengeInfo = ComponentGenerator::createText(
+                "challengeInfo_" + std::to_string(topic.id()),
+                "This is a challenge to claim: " + topic.claim_its_challenging(),
+                "text-xs",
+                "text-yellow-400",
+                "italic",
+                "px-2 pt-1"
+            );
+            ComponentGenerator::addChild(&debateItemWrapper, challengeInfo);
+        }
+
+        ComponentGenerator::addChild(&debateItemContainer, debateItemWrapper);
+
+        if (!topic.is_challenge()) {
+            ui::Component deleteDebateButton = ComponentGenerator::createButton(
+                "deleteDebateButton_" + std::to_string(topic.id()),
+                "Delete",
+                "",
+                "bg-red-600",
+                "hover:bg-red-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "transition border border-red-500"
+            );
+            // ComponentGenerator::addChild(&debateItemContainer, deleteDebateButton);
+        }
 
         ComponentGenerator::addChild(&topicsList, debateItemContainer);
     }

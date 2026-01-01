@@ -30,7 +30,7 @@ export default {
     // Text colors
     'text-white', 'text-black', 'text-transparent',
     'text-gray-300', 'text-gray-400', 'text-gray-500', 'text-gray-600', 'text-gray-700', 'text-gray-800',
-    'text-blue-400', 'text-red-300',
+    'text-blue-400', 'text-red-300', 'text-yellow-400',
     'text-purple-300', 'text-purple-400',
     'text-slate-200', 'text-slate-300', 'text-slate-400',
     'text-white/80', 'hover:text-white',
