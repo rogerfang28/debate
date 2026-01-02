@@ -11,8 +11,6 @@ enum EngagementAction {
 
 message UserEngagement {
   EngagementAction current_action = 1;
-  string username = 5;
-  int32 user_id = 6;
   oneof action_info {
     HomeInfo     home_info     = 2;
     DebatingInfo debating_info = 3;

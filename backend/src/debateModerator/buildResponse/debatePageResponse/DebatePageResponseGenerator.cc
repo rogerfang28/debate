@@ -67,5 +67,5 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
         // }
     }
 
-    *responseMessage.mutable_engagement()->mutable_debating_info() = debatingInfo;
+    *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

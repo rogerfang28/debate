@@ -43,5 +43,5 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     }
 
 
-    *responseMessage.mutable_engagement()->mutable_home_info()->mutable_available_debates() = debateListProto;
+    *responseMessage.mutable_user()->mutable_engagement()->mutable_home_info()->mutable_available_debates() = debateListProto;
 }

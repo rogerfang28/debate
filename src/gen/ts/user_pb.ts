@@ -12,29 +12,23 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIl4KBFVzZXISDwoHdXNlcl9pZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIzCgplbmdhZ2VtZW50GAMgASgLMh8udXNlcl9lbmdhZ2VtZW50LlVzZXJFbmdhZ2VtZW50YgZwcm90bzM", [file_user_engagement]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIl4KBFVzZXISDwoHdXNlcl9pZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRIzCgplbmdhZ2VtZW50GAMgASgLMh8udXNlcl9lbmdhZ2VtZW50LlVzZXJFbmdhZ2VtZW50YgZwcm90bzM", [file_user_engagement]);
 
 /**
  * @generated from message user.User
  */
 export type User = Message<"user.User"> & {
   /**
-   * unique user ID
-   *
-   * @generated from field: string user_id = 1;
+   * @generated from field: int32 user_id = 1;
    */
-  userId: string;
+  userId: number;
 
   /**
-   * unique username
-   *
    * @generated from field: string username = 2;
    */
   username: string;
 
   /**
-   * current user state
-   *
    * @generated from field: user_engagement.UserEngagement engagement = 3;
    */
   engagement?: UserEngagement;

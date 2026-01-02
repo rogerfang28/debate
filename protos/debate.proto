@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package debate;
 
+import "google/protobuf/timestamp.proto";
 import "debate_settings.proto";
 
 // A single claim node in the debate graph
@@ -14,6 +15,11 @@ message Claim {
   Proof proof = 7;
   int32 creator_id = 8;
   int32 debate_id = 9;
+}
+
+message ClaimState {
+  google.protobuf.Timestamp timestamp = 2;
+  Claim claim = 1;
 }
 
 message Link {

@@ -215,26 +215,10 @@ class User final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kUserIdFieldNumber = 1,
     kUsernameFieldNumber = 2,
     kEngagementFieldNumber = 3,
+    kUserIdFieldNumber = 1,
   };
-  // string user_id = 1 [json_name = "userId"];
-  void clear_user_id() ;
-  const std::string& user_id() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_user_id(Arg_&& arg, Args_... args);
-  std::string* mutable_user_id();
-  PROTOBUF_NODISCARD std::string* release_user_id();
-  void set_allocated_user_id(std::string* value);
-
-  private:
-  const std::string& _internal_user_id() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_user_id(
-      const std::string& value);
-  std::string* _internal_mutable_user_id();
-
-  public:
   // string username = 2 [json_name = "username"];
   void clear_username() ;
   const std::string& username() const;
@@ -266,13 +250,23 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* _internal_mutable_engagement();
 
   public:
+  // int32 user_id = 1 [json_name = "userId"];
+  void clear_user_id() ;
+  ::int32_t user_id() const;
+  void set_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_user_id() const;
+  void _internal_set_user_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user.User)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       2, 3, 1,
-      33, 2>
+      26, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -291,9 +285,9 @@ class User final : public ::google::protobuf::Message
                           const User& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::ArenaStringPtr user_id_;
     ::google::protobuf::internal::ArenaStringPtr username_;
     ::user_engagement::UserEngagement* engagement_;
+    ::int32_t user_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -316,52 +310,26 @@ class User final : public ::google::protobuf::Message
 
 // User
 
-// string user_id = 1 [json_name = "userId"];
+// int32 user_id = 1 [json_name = "userId"];
 inline void User::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.ClearToEmpty();
+  _impl_.user_id_ = 0;
 }
-inline const std::string& User::user_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::int32_t User::user_id() const {
   // @@protoc_insertion_point(field_get:user.User.user_id)
   return _internal_user_id();
 }
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void User::set_user_id(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+inline void User::set_user_id(::int32_t value) {
+  _internal_set_user_id(value);
   // @@protoc_insertion_point(field_set:user.User.user_id)
 }
-inline std::string* User::mutable_user_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_user_id();
-  // @@protoc_insertion_point(field_mutable:user.User.user_id)
-  return _s;
-}
-inline const std::string& User::_internal_user_id() const {
+inline ::int32_t User::_internal_user_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.user_id_.Get();
+  return _impl_.user_id_;
 }
-inline void User::_internal_set_user_id(const std::string& value) {
+inline void User::_internal_set_user_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.Set(value, GetArena());
-}
-inline std::string* User::_internal_mutable_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.user_id_.Mutable( GetArena());
-}
-inline std::string* User::release_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:user.User.user_id)
-  return _impl_.user_id_.Release();
-}
-inline void User::set_allocated_user_id(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.user_id_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.user_id_.IsDefault()) {
-    _impl_.user_id_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:user.User.user_id)
+  _impl_.user_id_ = value;
 }
 
 // string username = 2 [json_name = "username"];

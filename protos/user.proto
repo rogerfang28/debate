@@ -7,8 +7,7 @@ import "user_engagement.proto";
 
 
 message User {
-  string user_id = 1;       // unique user ID
-  string username = 2;      // unique username
-  user_engagement.UserEngagement engagement = 3;      // current user state
-  // Add more fields as needed from user_engagement.proto later
+  int32 user_id = 1;
+  string username = 2;
+  user_engagement.UserEngagement engagement = 3;
 }

@@ -4,10 +4,9 @@ syntax = "proto3";
 package moderator_to_vr;
 
 // import "debate.proto";
-import "user_engagement.proto";
+import "user.proto";
 
 message ModeratorToVRMessage {
-    user_engagement.UserEngagement engagement = 1;
-    // debate.DebateList users_debates = 3;
+    user.User user = 1;
 }
 

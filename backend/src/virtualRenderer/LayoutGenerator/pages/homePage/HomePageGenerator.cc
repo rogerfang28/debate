@@ -1,8 +1,8 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 
-ui::Page HomePageGenerator::GenerateHomePage(user_engagement::UserEngagement userEngagement) {
-    user_engagement::DebateList usersDebates = userEngagement.home_info().available_debates();
+ui::Page HomePageGenerator::GenerateHomePage(user::User user) {
+    user_engagement::DebateList usersDebates = user.engagement().home_info().available_debates();
     ui::Page page;
     page.set_page_id("home");
     page.set_title("Debate Topic Entry");
@@ -10,7 +10,7 @@ ui::Page HomePageGenerator::GenerateHomePage(user_engagement::UserEngagement use
     // Main container
     ui::Component main = GenerateHomePageMainLayout();
 
-    main = FillDebateTopics(userEngagement, main);
+    main = FillDebateTopics(user, main);
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(main);
 
@@ -437,9 +437,9 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout() {
     return main;
 }
 
-ui::Component HomePageGenerator::FillDebateTopics(user_engagement::UserEngagement userEngagement, ui::Component mainLayout) {
-    user_engagement::DebateList usersDebates = userEngagement.home_info().available_debates();
-    int currentUserId = userEngagement.user_id();
+ui::Component HomePageGenerator::FillDebateTopics(user::User user, ui::Component mainLayout) {
+    user_engagement::DebateList usersDebates = user.engagement().home_info().available_debates();
+    int currentUserId = user.user_id();
 
     // Find the topicsList container within mainLayout
     ui::Component* topicsList = nullptr;

@@ -302,10 +302,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     
     // now we get info from the database
     userProto = debateWrapper.getUserProtobuf(user_id);
-    *responseMessage.mutable_engagement() = userProto.engagement();
-    // set up
-    responseMessage.mutable_engagement()->set_username(user);
-    responseMessage.mutable_engagement()->set_user_id(user_id);
+    
+    // Set the user data (user_id and username)
+    responseMessage.mutable_user()->set_user_id(user_id);
+    responseMessage.mutable_user()->set_username(user);
+    
+    // Copy the engagement data
+    *responseMessage.mutable_user()->mutable_engagement() = userProto.engagement();
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
@@ -375,6 +378,10 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         user_id = dbWrapper.users.createUser(username, serializedNewUser);
+        newUser.set_user_id(user_id);
+        serializedNewUser.resize(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        dbWrapper.users.updateUserProtobuf(user_id, serializedNewUser);
         Log::debug("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
     }
     return user_id;

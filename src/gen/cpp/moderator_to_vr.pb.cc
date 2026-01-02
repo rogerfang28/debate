@@ -29,7 +29,7 @@ namespace moderator_to_vr {
 inline constexpr ModeratorToVRMessage::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        engagement_{nullptr} {}
+        user_{nullptr} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR ModeratorToVRMessage::ModeratorToVRMessage(::_pbi::ConstantInitialized)
@@ -66,7 +66,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.engagement_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::ModeratorToVRMessage, _impl_.user_),
         0,
 };
 
@@ -80,19 +80,18 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
-    "\032\025user_engagement.proto\"W\n\024ModeratorToVR"
-    "Message\022\?\n\nengagement\030\001 \001(\0132\037.user_engag"
-    "ement.UserEngagementR\nengagementb\006proto3"
+    "\032\nuser.proto\"6\n\024ModeratorToVRMessage\022\036\n\004"
+    "user\030\001 \001(\0132\n.user.UserR\004userb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[1] =
     {
-        &::descriptor_table_user_5fengagement_2eproto,
+        &::descriptor_table_user_2eproto,
 };
 static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    160,
+    116,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
@@ -116,9 +115,9 @@ class ModeratorToVRMessage::_Internal {
       8 * PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_._has_bits_);
 };
 
-void ModeratorToVRMessage::clear_engagement() {
+void ModeratorToVRMessage::clear_user() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.engagement_ != nullptr) _impl_.engagement_->Clear();
+  if (_impl_.user_ != nullptr) _impl_.user_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
 ModeratorToVRMessage::ModeratorToVRMessage(::google::protobuf::Arena* arena)
@@ -150,8 +149,8 @@ ModeratorToVRMessage::ModeratorToVRMessage(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(
-                              arena, *from._impl_.engagement_)
+  _impl_.user_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user::User>(
+                              arena, *from._impl_.user_)
                         : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:moderator_to_vr.ModeratorToVRMessage)
@@ -163,7 +162,7 @@ inline PROTOBUF_NDEBUG_INLINE ModeratorToVRMessage::Impl_::Impl_(
 
 inline void ModeratorToVRMessage::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.engagement_ = {};
+  _impl_.user_ = {};
 }
 ModeratorToVRMessage::~ModeratorToVRMessage() {
   // @@protoc_insertion_point(destructor:moderator_to_vr.ModeratorToVRMessage)
@@ -173,7 +172,7 @@ inline void ModeratorToVRMessage::SharedDtor(MessageLite& self) {
   ModeratorToVRMessage& this_ = static_cast<ModeratorToVRMessage&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.engagement_;
+  delete this_._impl_.user_;
   this_._impl_.~Impl_();
 }
 
@@ -231,17 +230,17 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ModeratorToVRMessage::_table_ = {
     ::_pbi::TcParser::GetTable<::moderator_to_vr::ModeratorToVRMessage>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
+    // .user.User user = 1 [json_name = "user"];
     {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.engagement_)}},
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
-    {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
+    // .user.User user = 1 [json_name = "user"];
+    {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
+    {::_pbi::TcParser::GetTable<::user::User>()},
   }}, {{
   }},
 };
@@ -255,8 +254,8 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
 
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.engagement_ != nullptr);
-    _impl_.engagement_->Clear();
+    ABSL_DCHECK(_impl_.user_ != nullptr);
+    _impl_.user_->Clear();
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -278,10 +277,10 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           (void)cached_has_bits;
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
+          // .user.User user = 1 [json_name = "user"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                1, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
+                1, *this_._impl_.user_, this_._impl_.user_->GetCachedSize(), target,
                 stream);
           }
 
@@ -309,11 +308,11 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           (void)cached_has_bits;
 
            {
-            // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
+            // .user.User user = 1 [json_name = "user"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.user_);
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -331,12 +330,12 @@ void ModeratorToVRMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, co
 
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.engagement_ != nullptr);
-    if (_this->_impl_.engagement_ == nullptr) {
-      _this->_impl_.engagement_ =
-          ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(arena, *from._impl_.engagement_);
+    ABSL_DCHECK(from._impl_.user_ != nullptr);
+    if (_this->_impl_.user_ == nullptr) {
+      _this->_impl_.user_ =
+          ::google::protobuf::Message::CopyConstruct<::user::User>(arena, *from._impl_.user_);
     } else {
-      _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
+      _this->_impl_.user_->MergeFrom(*from._impl_.user_);
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -355,7 +354,7 @@ void ModeratorToVRMessage::InternalSwap(ModeratorToVRMessage* PROTOBUF_RESTRICT 
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.engagement_, other->_impl_.engagement_);
+  swap(_impl_.user_, other->_impl_.user_);
 }
 
 ::google::protobuf::Metadata ModeratorToVRMessage::GetMetadata() const {

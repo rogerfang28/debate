@@ -29,7 +29,7 @@
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
-#include "user_engagement.pb.h"
+#include "user.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -215,21 +215,21 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kEngagementFieldNumber = 1,
+    kUserFieldNumber = 1,
   };
-  // .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
-  bool has_engagement() const;
-  void clear_engagement() ;
-  const ::user_engagement::UserEngagement& engagement() const;
-  PROTOBUF_NODISCARD ::user_engagement::UserEngagement* release_engagement();
-  ::user_engagement::UserEngagement* mutable_engagement();
-  void set_allocated_engagement(::user_engagement::UserEngagement* value);
-  void unsafe_arena_set_allocated_engagement(::user_engagement::UserEngagement* value);
-  ::user_engagement::UserEngagement* unsafe_arena_release_engagement();
+  // .user.User user = 1 [json_name = "user"];
+  bool has_user() const;
+  void clear_user() ;
+  const ::user::User& user() const;
+  PROTOBUF_NODISCARD ::user::User* release_user();
+  ::user::User* mutable_user();
+  void set_allocated_user(::user::User* value);
+  void unsafe_arena_set_allocated_user(::user::User* value);
+  ::user::User* unsafe_arena_release_user();
 
   private:
-  const ::user_engagement::UserEngagement& _internal_engagement() const;
-  ::user_engagement::UserEngagement* _internal_mutable_engagement();
+  const ::user::User& _internal_user() const;
+  ::user::User* _internal_mutable_user();
 
   public:
   // @@protoc_insertion_point(class_scope:moderator_to_vr.ModeratorToVRMessage)
@@ -257,7 +257,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
                           const ModeratorToVRMessage& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::user_engagement::UserEngagement* engagement_;
+    ::user::User* user_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -280,40 +280,40 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
 
 // ModeratorToVRMessage
 
-// .user_engagement.UserEngagement engagement = 1 [json_name = "engagement"];
-inline bool ModeratorToVRMessage::has_engagement() const {
+// .user.User user = 1 [json_name = "user"];
+inline bool ModeratorToVRMessage::has_user() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.user_ != nullptr);
   return value;
 }
-inline const ::user_engagement::UserEngagement& ModeratorToVRMessage::_internal_engagement() const {
+inline const ::user::User& ModeratorToVRMessage::_internal_user() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::user_engagement::UserEngagement* p = _impl_.engagement_;
-  return p != nullptr ? *p : reinterpret_cast<const ::user_engagement::UserEngagement&>(::user_engagement::_UserEngagement_default_instance_);
+  const ::user::User* p = _impl_.user_;
+  return p != nullptr ? *p : reinterpret_cast<const ::user::User&>(::user::_User_default_instance_);
 }
-inline const ::user_engagement::UserEngagement& ModeratorToVRMessage::engagement() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.engagement)
-  return _internal_engagement();
+inline const ::user::User& ModeratorToVRMessage::user() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.user)
+  return _internal_user();
 }
-inline void ModeratorToVRMessage::unsafe_arena_set_allocated_engagement(::user_engagement::UserEngagement* value) {
+inline void ModeratorToVRMessage::unsafe_arena_set_allocated_user(::user::User* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.engagement_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.user_);
   }
-  _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
+  _impl_.user_ = reinterpret_cast<::user::User*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.engagement)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.user)
 }
-inline ::user_engagement::UserEngagement* ModeratorToVRMessage::release_engagement() {
+inline ::user::User* ModeratorToVRMessage::release_user() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::user_engagement::UserEngagement* released = _impl_.engagement_;
-  _impl_.engagement_ = nullptr;
+  ::user::User* released = _impl_.user_;
+  _impl_.user_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
     auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
     released = ::google::protobuf::internal::DuplicateIfNonNull(released);
@@ -327,34 +327,34 @@ inline ::user_engagement::UserEngagement* ModeratorToVRMessage::release_engageme
   }
   return released;
 }
-inline ::user_engagement::UserEngagement* ModeratorToVRMessage::unsafe_arena_release_engagement() {
+inline ::user::User* ModeratorToVRMessage::unsafe_arena_release_user() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.engagement)
+  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.user)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::user_engagement::UserEngagement* temp = _impl_.engagement_;
-  _impl_.engagement_ = nullptr;
+  ::user::User* temp = _impl_.user_;
+  _impl_.user_ = nullptr;
   return temp;
 }
-inline ::user_engagement::UserEngagement* ModeratorToVRMessage::_internal_mutable_engagement() {
+inline ::user::User* ModeratorToVRMessage::_internal_mutable_user() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.engagement_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::user_engagement::UserEngagement>(GetArena());
-    _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(p);
+  if (_impl_.user_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::user::User>(GetArena());
+    _impl_.user_ = reinterpret_cast<::user::User*>(p);
   }
-  return _impl_.engagement_;
+  return _impl_.user_;
 }
-inline ::user_engagement::UserEngagement* ModeratorToVRMessage::mutable_engagement() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::user::User* ModeratorToVRMessage::mutable_user() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   _impl_._has_bits_[0] |= 0x00000001u;
-  ::user_engagement::UserEngagement* _msg = _internal_mutable_engagement();
-  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.engagement)
+  ::user::User* _msg = _internal_mutable_user();
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.user)
   return _msg;
 }
-inline void ModeratorToVRMessage::set_allocated_engagement(::user_engagement::UserEngagement* value) {
+inline void ModeratorToVRMessage::set_allocated_user(::user::User* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.engagement_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.user_);
   }
 
   if (value != nullptr) {
@@ -367,8 +367,8 @@ inline void ModeratorToVRMessage::set_allocated_engagement(::user_engagement::Us
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
-  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.engagement)
+  _impl_.user_ = reinterpret_cast<::user::User*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.user)
 }
 
 #ifdef __GNUC__

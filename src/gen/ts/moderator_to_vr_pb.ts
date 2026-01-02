@@ -6,26 +6,24 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { UserEngagement } from "./user_engagement_pb";
-import { file_user_engagement } from "./user_engagement_pb";
+import type { User } from "./user_pb";
+import { file_user } from "./user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciJLChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIzCgplbmdhZ2VtZW50GAEgASgLMh8udXNlcl9lbmdhZ2VtZW50LlVzZXJFbmdhZ2VtZW50YgZwcm90bzM", [file_user_engagement]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciIwChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIYCgR1c2VyGAEgASgLMgoudXNlci5Vc2VyYgZwcm90bzM", [file_user]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
  */
 export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage"> & {
   /**
-   * debate.DebateList users_debates = 3;
-   *
-   * @generated from field: user_engagement.UserEngagement engagement = 1;
+   * @generated from field: user.User user = 1;
    */
-  engagement?: UserEngagement;
+  user?: User;
 };
 
 /**

@@ -107,6 +107,10 @@ message LeaveDebate {
     int32 debate_id = 1;
 }
 
+message MoveUserToTimestamp {
+    int32 claim_id = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
 
 // enum
 enum EventType {
@@ -156,6 +160,13 @@ enum EventType {
     DELETE_CHALLENGE = 42;
     GO_TO_CHALLENGED_PARENT_CLAIM = 43;
     LEAVE_DEBATE = 44;
+    GO_TO_HISTORY_OF_CURRENT_CLAIM = 45;
+    MOVE_USER_TO_TIMESTAMP = 46;
+    MOVE_USER_TO_PRESENT = 47;
+    START_MODIFICATION_OF_CLAIM = 48;
+    SUBMIT_MODIFICATION_OF_CLAIM = 49;
+    CANCEL_MODIFICATION_OF_CLAIM = 50;
+
 }
 
 message UserAuthInfo {
@@ -195,5 +206,6 @@ message DebateEvent {
     RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
     DeleteChallenge delete_challenge = 48;
     LeaveDebate leave_debate = 49;
+    MoveUserToTimestamp move_user_to_timestamp = 50;
   }
 }

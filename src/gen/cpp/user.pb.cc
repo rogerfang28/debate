@@ -29,13 +29,11 @@ namespace user {
 inline constexpr User::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        user_id_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
         username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        engagement_{nullptr} {}
+        engagement_{nullptr},
+        user_id_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR User::User(::_pbi::ConstantInitialized)
@@ -90,7 +88,7 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\"|\n\004User\022\027\n\007user_id\030\001 \001(\tR\006userId\022\032\n\010us"
+    "o\"|\n\004User\022\027\n\007user_id\030\001 \001(\005R\006userId\022\032\n\010us"
     "ername\030\002 \001(\tR\010username\022\?\n\nengagement\030\003 \001"
     "(\0132\037.user_engagement.UserEngagementR\neng"
     "agementb\006proto3"
@@ -146,7 +144,6 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     const Impl_& from, const ::user::User& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        user_id_(arena, from.user_id_),
         username_(arena, from.username_) {}
 
 User::User(
@@ -166,6 +163,7 @@ User::User(
   _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(
                               arena, *from._impl_.engagement_)
                         : nullptr;
+  _impl_.user_id_ = from._impl_.user_id_;
 
   // @@protoc_insertion_point(copy_constructor:user.User)
 }
@@ -173,12 +171,16 @@ inline PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0},
-        user_id_(arena),
         username_(arena) {}
 
 inline void User::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.engagement_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, engagement_),
+           0,
+           offsetof(Impl_, user_id_) -
+               offsetof(Impl_, engagement_) +
+               sizeof(Impl_::user_id_));
 }
 User::~User() {
   // @@protoc_insertion_point(destructor:user.User)
@@ -188,7 +190,6 @@ inline void User::SharedDtor(MessageLite& self) {
   User& this_ = static_cast<User&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.user_id_.Destroy();
   this_._impl_.username_.Destroy();
   delete this_._impl_.engagement_;
   this_._impl_.~Impl_();
@@ -230,7 +231,7 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 1, 33, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 1, 26, 2> User::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
@@ -249,9 +250,9 @@ const ::_pbi::TcParseTable<2, 3, 1, 33, 2> User::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string user_id = 1 [json_name = "userId"];
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
+    // int32 user_id = 1 [json_name = "userId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.user_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
     // string username = 2 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
@@ -261,9 +262,9 @@ const ::_pbi::TcParseTable<2, 3, 1, 33, 2> User::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string user_id = 1 [json_name = "userId"];
+    // int32 user_id = 1 [json_name = "userId"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
     // string username = 2 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
@@ -273,9 +274,8 @@ const ::_pbi::TcParseTable<2, 3, 1, 33, 2> User::_table_ = {
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
   }}, {{
-    "\11\7\10\0\0\0\0\0"
+    "\11\0\10\0\0\0\0\0"
     "user.User"
-    "user_id"
     "username"
   }},
 };
@@ -287,13 +287,13 @@ PROTOBUF_NOINLINE void User::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.user_id_.ClearToEmpty();
   _impl_.username_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(_impl_.engagement_ != nullptr);
     _impl_.engagement_->Clear();
   }
+  _impl_.user_id_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -313,12 +313,11 @@ PROTOBUF_NOINLINE void User::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string user_id = 1 [json_name = "userId"];
-          if (!this_._internal_user_id().empty()) {
-            const std::string& _s = this_._internal_user_id();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.user_id");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          // int32 user_id = 1 [json_name = "userId"];
+          if (this_._internal_user_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_user_id(), target);
           }
 
           // string username = 2 [json_name = "username"];
@@ -362,11 +361,6 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string user_id = 1 [json_name = "userId"];
-            if (!this_._internal_user_id().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_user_id());
-            }
             // string username = 2 [json_name = "username"];
             if (!this_._internal_username().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -379,6 +373,13 @@ PROTOBUF_NOINLINE void User::Clear() {
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
+            }
+          }
+           {
+            // int32 user_id = 1 [json_name = "userId"];
+            if (this_._internal_user_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_user_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -394,9 +395,6 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_user_id().empty()) {
-    _this->_internal_set_user_id(from._internal_user_id());
-  }
   if (!from._internal_username().empty()) {
     _this->_internal_set_username(from._internal_username());
   }
@@ -409,6 +407,9 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
     } else {
       _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
     }
+  }
+  if (from._internal_user_id() != 0) {
+    _this->_impl_.user_id_ = from._impl_.user_id_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -428,9 +429,13 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.user_id_, &other->_impl_.user_id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
-  swap(_impl_.engagement_, other->_impl_.engagement_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)
+      + sizeof(User::_impl_.user_id_)
+      - PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)>(
+          reinterpret_cast<char*>(&_impl_.engagement_),
+          reinterpret_cast<char*>(&other->_impl_.engagement_));
 }
 
 ::google::protobuf::Metadata User::GetMetadata() const {

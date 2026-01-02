@@ -111,6 +111,9 @@ extern LeaveDebateDefaultTypeInternal _LeaveDebate_default_instance_;
 class Login;
 struct LoginDefaultTypeInternal;
 extern LoginDefaultTypeInternal _Login_default_instance_;
+class MoveUserToTimestamp;
+struct MoveUserToTimestampDefaultTypeInternal;
+extern MoveUserToTimestampDefaultTypeInternal _MoveUserToTimestamp_default_instance_;
 class RemoveClaimToBeChallenged;
 struct RemoveClaimToBeChallengedDefaultTypeInternal;
 extern RemoveClaimToBeChallengedDefaultTypeInternal _RemoveClaimToBeChallenged_default_instance_;
@@ -185,6 +188,12 @@ enum EventType : int {
   DELETE_CHALLENGE = 42,
   GO_TO_CHALLENGED_PARENT_CLAIM = 43,
   LEAVE_DEBATE = 44,
+  GO_TO_HISTORY_OF_CURRENT_CLAIM = 45,
+  MOVE_USER_TO_TIMESTAMP = 46,
+  MOVE_USER_TO_PRESENT = 47,
+  START_MODIFICATION_OF_CLAIM = 48,
+  SUBMIT_MODIFICATION_OF_CLAIM = 49,
+  CANCEL_MODIFICATION_OF_CLAIM = 50,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -194,8 +203,8 @@ enum EventType : int {
 bool EventType_IsValid(int value);
 extern const uint32_t EventType_internal_data_[];
 constexpr EventType EventType_MIN = static_cast<EventType>(0);
-constexpr EventType EventType_MAX = static_cast<EventType>(44);
-constexpr int EventType_ARRAYSIZE = 44 + 1;
+constexpr EventType EventType_MAX = static_cast<EventType>(50);
+constexpr int EventType_ARRAYSIZE = 50 + 1;
 const ::google::protobuf::EnumDescriptor*
 EventType_descriptor();
 template <typename T>
@@ -208,7 +217,7 @@ const std::string& EventType_Name(T value) {
 template <>
 inline const std::string& EventType_Name(EventType value) {
   return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor,
-                                                 0, 44>(
+                                                 0, 50>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(absl::string_view name, EventType* value) {
@@ -280,7 +289,7 @@ class UserAuthInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const UserAuthInfo*>(
         &_UserAuthInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(UserAuthInfo& a, UserAuthInfo& b) { a.Swap(&b); }
   inline void Swap(UserAuthInfo* other) {
     if (other == this) return;
@@ -5145,6 +5154,214 @@ class AddChildClaim final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class MoveUserToTimestamp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.MoveUserToTimestamp) */ {
+ public:
+  inline MoveUserToTimestamp() : MoveUserToTimestamp(nullptr) {}
+  ~MoveUserToTimestamp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(MoveUserToTimestamp* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MoveUserToTimestamp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MoveUserToTimestamp(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline MoveUserToTimestamp(const MoveUserToTimestamp& from) : MoveUserToTimestamp(nullptr, from) {}
+  inline MoveUserToTimestamp(MoveUserToTimestamp&& from) noexcept
+      : MoveUserToTimestamp(nullptr, std::move(from)) {}
+  inline MoveUserToTimestamp& operator=(const MoveUserToTimestamp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MoveUserToTimestamp& operator=(MoveUserToTimestamp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MoveUserToTimestamp& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MoveUserToTimestamp* internal_default_instance() {
+    return reinterpret_cast<const MoveUserToTimestamp*>(
+        &_MoveUserToTimestamp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 24;
+  friend void swap(MoveUserToTimestamp& a, MoveUserToTimestamp& b) { a.Swap(&b); }
+  inline void Swap(MoveUserToTimestamp* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(MoveUserToTimestamp* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  MoveUserToTimestamp* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MoveUserToTimestamp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MoveUserToTimestamp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MoveUserToTimestamp& from) { MoveUserToTimestamp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MoveUserToTimestamp* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.MoveUserToTimestamp"; }
+
+ protected:
+  explicit MoveUserToTimestamp(::google::protobuf::Arena* arena);
+  MoveUserToTimestamp(::google::protobuf::Arena* arena, const MoveUserToTimestamp& from);
+  MoveUserToTimestamp(::google::protobuf::Arena* arena, MoveUserToTimestamp&& from) noexcept
+      : MoveUserToTimestamp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTimestampFieldNumber = 2,
+    kClaimIdFieldNumber = 1,
+  };
+  // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
+  bool has_timestamp() const;
+  void clear_timestamp() ;
+  const ::google::protobuf::Timestamp& timestamp() const;
+  PROTOBUF_NODISCARD ::google::protobuf::Timestamp* release_timestamp();
+  ::google::protobuf::Timestamp* mutable_timestamp();
+  void set_allocated_timestamp(::google::protobuf::Timestamp* value);
+  void unsafe_arena_set_allocated_timestamp(::google::protobuf::Timestamp* value);
+  ::google::protobuf::Timestamp* unsafe_arena_release_timestamp();
+
+  private:
+  const ::google::protobuf::Timestamp& _internal_timestamp() const;
+  ::google::protobuf::Timestamp* _internal_mutable_timestamp();
+
+  public:
+  // int32 claim_id = 1 [json_name = "claimId"];
+  void clear_claim_id() ;
+  ::int32_t claim_id() const;
+  void set_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_claim_id() const;
+  void _internal_set_claim_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.MoveUserToTimestamp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MoveUserToTimestamp& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::Timestamp* timestamp_;
+    ::int32_t claim_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+// -------------------------------------------------------------------
+
 class DebateEvent final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.DebateEvent) */ {
  public:
@@ -5224,13 +5441,14 @@ class DebateEvent final : public ::google::protobuf::Message
     kRemoveLinkToBeChallenged = 47,
     kDeleteChallenge = 48,
     kLeaveDebate = 49,
+    kMoveUserToTimestamp = 50,
     PAYLOAD_NOT_SET = 0,
   };
   static inline const DebateEvent* internal_default_instance() {
     return reinterpret_cast<const DebateEvent*>(
         &_DebateEvent_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* other) {
     if (other == this) return;
@@ -5343,6 +5561,7 @@ class DebateEvent final : public ::google::protobuf::Message
     kRemoveLinkToBeChallengedFieldNumber = 47,
     kDeleteChallengeFieldNumber = 48,
     kLeaveDebateFieldNumber = 49,
+    kMoveUserToTimestampFieldNumber = 50,
   };
   // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
   bool has_user() const;
@@ -5821,6 +6040,25 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::LeaveDebate* _internal_mutable_leave_debate();
 
   public:
+  // .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50 [json_name = "moveUserToTimestamp"];
+  bool has_move_user_to_timestamp() const;
+  private:
+  bool _internal_has_move_user_to_timestamp() const;
+
+  public:
+  void clear_move_user_to_timestamp() ;
+  const ::debate_event::MoveUserToTimestamp& move_user_to_timestamp() const;
+  PROTOBUF_NODISCARD ::debate_event::MoveUserToTimestamp* release_move_user_to_timestamp();
+  ::debate_event::MoveUserToTimestamp* mutable_move_user_to_timestamp();
+  void set_allocated_move_user_to_timestamp(::debate_event::MoveUserToTimestamp* value);
+  void unsafe_arena_set_allocated_move_user_to_timestamp(::debate_event::MoveUserToTimestamp* value);
+  ::debate_event::MoveUserToTimestamp* unsafe_arena_release_move_user_to_timestamp();
+
+  private:
+  const ::debate_event::MoveUserToTimestamp& _internal_move_user_to_timestamp() const;
+  ::debate_event::MoveUserToTimestamp* _internal_mutable_move_user_to_timestamp();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -5849,12 +6087,13 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_remove_link_to_be_challenged();
   void set_has_delete_challenge();
   void set_has_leave_debate();
+  void set_has_move_user_to_timestamp();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 26, 25,
-      0, 7>
+      2, 27, 26,
+      0, 9>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -5902,6 +6141,7 @@ class DebateEvent final : public ::google::protobuf::Message
       ::debate_event::RemoveLinkToBeChallenged* remove_link_to_be_challenged_;
       ::debate_event::DeleteChallenge* delete_challenge_;
       ::debate_event::LeaveDebate* leave_debate_;
+      ::debate_event::MoveUserToTimestamp* move_user_to_timestamp_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6958,6 +7198,123 @@ inline ::int32_t LeaveDebate::_internal_debate_id() const {
 inline void LeaveDebate::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// MoveUserToTimestamp
+
+// int32 claim_id = 1 [json_name = "claimId"];
+inline void MoveUserToTimestamp::clear_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = 0;
+}
+inline ::int32_t MoveUserToTimestamp::claim_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.MoveUserToTimestamp.claim_id)
+  return _internal_claim_id();
+}
+inline void MoveUserToTimestamp::set_claim_id(::int32_t value) {
+  _internal_set_claim_id(value);
+  // @@protoc_insertion_point(field_set:debate_event.MoveUserToTimestamp.claim_id)
+}
+inline ::int32_t MoveUserToTimestamp::_internal_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claim_id_;
+}
+inline void MoveUserToTimestamp::_internal_set_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = value;
+}
+
+// .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
+inline bool MoveUserToTimestamp::has_timestamp() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.timestamp_ != nullptr);
+  return value;
+}
+inline const ::google::protobuf::Timestamp& MoveUserToTimestamp::_internal_timestamp() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::google::protobuf::Timestamp* p = _impl_.timestamp_;
+  return p != nullptr ? *p : reinterpret_cast<const ::google::protobuf::Timestamp&>(::google::protobuf::_Timestamp_default_instance_);
+}
+inline const ::google::protobuf::Timestamp& MoveUserToTimestamp::timestamp() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.MoveUserToTimestamp.timestamp)
+  return _internal_timestamp();
+}
+inline void MoveUserToTimestamp::unsafe_arena_set_allocated_timestamp(::google::protobuf::Timestamp* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.timestamp_);
+  }
+  _impl_.timestamp_ = reinterpret_cast<::google::protobuf::Timestamp*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.MoveUserToTimestamp.timestamp)
+}
+inline ::google::protobuf::Timestamp* MoveUserToTimestamp::release_timestamp() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::google::protobuf::Timestamp* released = _impl_.timestamp_;
+  _impl_.timestamp_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::google::protobuf::Timestamp* MoveUserToTimestamp::unsafe_arena_release_timestamp() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.MoveUserToTimestamp.timestamp)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::google::protobuf::Timestamp* temp = _impl_.timestamp_;
+  _impl_.timestamp_ = nullptr;
+  return temp;
+}
+inline ::google::protobuf::Timestamp* MoveUserToTimestamp::_internal_mutable_timestamp() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.timestamp_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::google::protobuf::Timestamp>(GetArena());
+    _impl_.timestamp_ = reinterpret_cast<::google::protobuf::Timestamp*>(p);
+  }
+  return _impl_.timestamp_;
+}
+inline ::google::protobuf::Timestamp* MoveUserToTimestamp::mutable_timestamp() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::google::protobuf::Timestamp* _msg = _internal_mutable_timestamp();
+  // @@protoc_insertion_point(field_mutable:debate_event.MoveUserToTimestamp.timestamp)
+  return _msg;
+}
+inline void MoveUserToTimestamp::set_allocated_timestamp(::google::protobuf::Timestamp* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.timestamp_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.timestamp_ = reinterpret_cast<::google::protobuf::Timestamp*>(value);
+  // @@protoc_insertion_point(field_set_allocated:debate_event.MoveUserToTimestamp.timestamp)
 }
 
 // -------------------------------------------------------------------
@@ -9083,6 +9440,85 @@ inline ::debate_event::LeaveDebate* DebateEvent::_internal_mutable_leave_debate(
 inline ::debate_event::LeaveDebate* DebateEvent::mutable_leave_debate() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::LeaveDebate* _msg = _internal_mutable_leave_debate();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.leave_debate)
+  return _msg;
+}
+
+// .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50 [json_name = "moveUserToTimestamp"];
+inline bool DebateEvent::has_move_user_to_timestamp() const {
+  return payload_case() == kMoveUserToTimestamp;
+}
+inline bool DebateEvent::_internal_has_move_user_to_timestamp() const {
+  return payload_case() == kMoveUserToTimestamp;
+}
+inline void DebateEvent::set_has_move_user_to_timestamp() {
+  _impl_._oneof_case_[0] = kMoveUserToTimestamp;
+}
+inline void DebateEvent::clear_move_user_to_timestamp() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kMoveUserToTimestamp) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.move_user_to_timestamp_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.move_user_to_timestamp_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::MoveUserToTimestamp* DebateEvent::release_move_user_to_timestamp() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.move_user_to_timestamp)
+  if (payload_case() == kMoveUserToTimestamp) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.move_user_to_timestamp_;
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.move_user_to_timestamp_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::MoveUserToTimestamp& DebateEvent::_internal_move_user_to_timestamp() const {
+  return payload_case() == kMoveUserToTimestamp ? *_impl_.payload_.move_user_to_timestamp_ : reinterpret_cast<::debate_event::MoveUserToTimestamp&>(::debate_event::_MoveUserToTimestamp_default_instance_);
+}
+inline const ::debate_event::MoveUserToTimestamp& DebateEvent::move_user_to_timestamp() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.move_user_to_timestamp)
+  return _internal_move_user_to_timestamp();
+}
+inline ::debate_event::MoveUserToTimestamp* DebateEvent::unsafe_arena_release_move_user_to_timestamp() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.move_user_to_timestamp)
+  if (payload_case() == kMoveUserToTimestamp) {
+    clear_has_payload();
+    auto* temp = _impl_.payload_.move_user_to_timestamp_;
+    _impl_.payload_.move_user_to_timestamp_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_move_user_to_timestamp(::debate_event::MoveUserToTimestamp* value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_move_user_to_timestamp();
+    _impl_.payload_.move_user_to_timestamp_ = value;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.move_user_to_timestamp)
+}
+inline ::debate_event::MoveUserToTimestamp* DebateEvent::_internal_mutable_move_user_to_timestamp() {
+  if (payload_case() != kMoveUserToTimestamp) {
+    clear_payload();
+    set_has_move_user_to_timestamp();
+    _impl_.payload_.move_user_to_timestamp_ =
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::MoveUserToTimestamp>(GetArena());
+  }
+  return _impl_.payload_.move_user_to_timestamp_;
+}
+inline ::debate_event::MoveUserToTimestamp* DebateEvent::mutable_move_user_to_timestamp() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::MoveUserToTimestamp* _msg = _internal_mutable_move_user_to_timestamp();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.move_user_to_timestamp)
   return _msg;
 }
 
