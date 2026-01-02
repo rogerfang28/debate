@@ -51,8 +51,10 @@ bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
         userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
         // set home info
         userProto.mutable_engagement()->mutable_home_info();
-        // userProto.set_debate_topic_id("");
         
+        // fill info for home page engagement
+        // user_engagement::DebateList debate_list = debateWrapper.FillUserDebateList(user_id);
+
         debateWrapper.updateUserProtobuf(user_id, userProto);
         
         return true;

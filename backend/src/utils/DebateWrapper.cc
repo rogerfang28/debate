@@ -444,3 +444,30 @@ int DebateWrapper::findDebateId(const int& claimId) {
     int debate_id = claim.debate_id();
     return debate_id;
 }
+
+user_engagement::DebateList DebateWrapper::FillUserDebateList(const int& user_id) {
+    std::vector<int> debateIds = getUserDebateIds(user_id);
+
+    user_engagement::DebateList debateListProto;
+
+    for (const int& debateId : debateIds) {
+        std::vector<uint8_t> debateBytes = getDebateProtobuf(debateId);
+        debate::Debate debateProto;
+        debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
+        user_engagement::DebateTopic* topicProto = debateListProto.add_topics();
+        topicProto->set_id(debateProto.id());
+        topicProto->set_topic(debateProto.topic());
+        topicProto->set_creator_id(debateProto.creator_id());
+        topicProto->set_is_challenge(debateProto.is_challenge());
+        // find the claim debateProto is challenging
+        getClaimById(debateProto.id());
+        if (debateProto.is_challenge()){
+            debate::Challenge challenge = getChallengeProtobuf(debateProto.parent_challenge_id());
+            debate::Claim challengedClaim = getClaimById(challenge.challenged_parent_claim_id());
+            topicProto->set_claim_its_challenging(challengedClaim.sentence());
+        }
+        Log::test("[DebateWrapper] Added debate to list: ID = "
+                + std::to_string(debateProto.id()) + ", Topic = " + debateProto.topic());
+    }
+    return debateListProto;
+}

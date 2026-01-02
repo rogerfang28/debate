@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "../database/handlers/DatabaseWrapper.h"
+#include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
 class DebateWrapper {
 public:
@@ -64,6 +65,7 @@ public:
         debate::Debate& debateProto);
     void updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto);
     int findDebateId(const int& claimId);
+    user_engagement::DebateList FillUserDebateList(const int& user_id);
 
 private:
     DatabaseWrapper& databaseWrapper;

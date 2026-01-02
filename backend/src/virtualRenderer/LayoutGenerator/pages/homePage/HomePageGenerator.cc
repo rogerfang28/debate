@@ -467,7 +467,7 @@ ui::Component HomePageGenerator::FillDebateTopics(user::User user, ui::Component
     for (const auto& topic : usersDebates.topics()) {
         ui::Component debateItemContainer = ComponentGenerator::createContainer(
             "debateItemContainer_" + std::to_string(topic.id()),
-            "flex gap-2",
+            "flex gap-2 items-center",
             "",
             "",
             "",
@@ -484,21 +484,18 @@ ui::Component HomePageGenerator::FillDebateTopics(user::User user, ui::Component
             "",
             "border border-gray-600",
             "rounded",
-            "transition hover:bg-gray-600"
+            ""
         );
 
-        ui::Component debateItem = ComponentGenerator::createButton(
-            "enterDebateTopicButton_" + std::to_string(topic.id()),
+        // Change from button to text for the debate topic
+        ui::Component debateItem = ComponentGenerator::createText(
+            "debateTopicText_" + std::to_string(topic.id()),
             topic.topic(),
-            "selectDebate",
-            "",
-            "",
+            "text-base",
             "text-white",
-            "",
-            "",
-            "text-left"
+            "font-medium",
+            ""
         );
-        ComponentGenerator::addAttribute(&debateItem, "data-debate-id", std::to_string(topic.id()));
         ComponentGenerator::addChild(&debateItemWrapper, debateItem);
 
         if (topic.is_challenge()) {
@@ -508,12 +505,27 @@ ui::Component HomePageGenerator::FillDebateTopics(user::User user, ui::Component
                 "text-xs",
                 "text-yellow-400",
                 "italic",
-                "px-2 pt-1"
+                "pt-1"
             );
             ComponentGenerator::addChild(&debateItemWrapper, challengeInfo);
         }
 
         ComponentGenerator::addChild(&debateItemContainer, debateItemWrapper);
+
+        // Add Enter button
+        ui::Component enterButton = ComponentGenerator::createButton(
+            "enterDebateTopicButton_" + std::to_string(topic.id()),
+            "Enter",
+            "selectDebate",
+            "bg-blue-600",
+            "hover:bg-blue-500",
+            "text-white",
+            "px-6 py-2",
+            "rounded-lg",
+            "transition border border-blue-500 font-medium"
+        );
+        ComponentGenerator::addAttribute(&enterButton, "data-debate-id", std::to_string(topic.id()));
+        ComponentGenerator::addChild(&debateItemContainer, enterButton);
 
         // Show delete button if user owns the debate and it's not a challenge
         // Show leave button if user doesn't own the debate

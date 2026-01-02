@@ -28,21 +28,18 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // translate client_message into debate event
     int user_id = parseCookie::extractUserIdFromCookies(req);
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
-    // I NEED TO CALL THE DEBATE BACKEND SOMEHOW FROM HERE
     // BackendCommunicator backend("localhost", 8080);
-
-    // handle auth
-    handleAuthEvents(evt, req, res);
     // ! no server call for now, backend and virtual renderer are on the same backend
     
+    // change cookies accordingly
+    handleAuthEvents(evt, req, res);
+    
     moderator_to_vr::ModeratorToVRMessage info;
-    // DebateModerator moderator;
     info = moderator.handleRequest(evt);
     // backend.sendEvent(evt, info);
-    
-    // parse the info and create a page
+
+    // parse user info to create layout based on it
     ui::Page page = LayoutGenerator::generateLayout(info);
-    // send back the page to handler
     return page;
 }
 

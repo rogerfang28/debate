@@ -36,6 +36,14 @@ message DebateList {
 message DebatingInfo {
   int32 debate_id = 1;
   bool is_challenge = 16; // whether the current debate is a challenge debate
+  bool modifying_current_claim = 9;
+  message ModificationInfo {
+    repeated ClaimInfo new_claims = 1;
+    repeated LinkInfo new_links = 2;
+    repeated int32 deleted_claim_ids = 3;
+    repeated int32 deleted_link_ids = 4;
+    
+  }
   int32 challenged_user_id = 17;
   int32 challenger_user_id = 18;
   ClaimInfo current_claim = 2; // current claim being viewed/argued

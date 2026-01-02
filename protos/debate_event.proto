@@ -115,7 +115,7 @@ message MoveUserToTimestamp {
 // enum
 enum EventType {
     EVENT_KIND_UNSPECIFIED = 0;
-    NONE                   = 1;
+    NONE                   = 1; // just send back user info
     CREATE_DEBATE          = 2;
     CLEAR_DEBATES          = 3;
     DELETE_DEBATE          = 4;

@@ -298,14 +298,8 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     user::User userProto;
 
     std::string user = dbWrapper.users.getUsername(user_id);
-    // int user_id = userDb.getUserId(user);
-    
-    // now we get info from the database
+
     userProto = debateWrapper.getUserProtobuf(user_id);
-    
-    // Set the user data (user_id and username)
-    responseMessage.mutable_user()->set_user_id(user_id);
-    responseMessage.mutable_user()->set_username(user);
     
     // Copy the engagement data
     *responseMessage.mutable_user()->mutable_engagement() = userProto.engagement();
@@ -320,10 +314,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
         case user_engagement::ACTION_DEBATING:
             Log::debug("[DebateModerator] Building DEBATE page response for user: " + user);
             DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user_id, userProto, debateWrapper);
-            break;
-        case user_engagement::ACTION_LOGIN:
-            Log::debug("[DebateModerator] Building LOGIN page response for user: " + user);
-            LoginPageResponseGenerator::BuildLoginPageResponse(responseMessage);
             break;
         default:
             // unknown action
