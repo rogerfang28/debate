@@ -898,6 +898,7 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(user::User user, ui::
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     int currentClaimCreatorId = debatingInfo.current_claim().creator_id();
+    bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
     std::string claim = debatingInfo.current_claim().sentence();
     std::string currentClaimDescription = debatingInfo.current_claim_description();
     
@@ -975,8 +976,8 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(user::User user, ui::
                                         );
                                         ComponentGenerator::addChild(claimTitleContainer, currentClaimTitle);
                                         
-                                        // Add edit button if user owns the claim
-                                        if (currentUserId == currentClaimCreatorId) {
+                                        // Add edit button if user owns the claim and is in modify mode
+                                        if (currentUserId == currentClaimCreatorId && modifyingCurrentClaim) {
                                             ui::Component editClaimButton = ComponentGenerator::createButton(
                                                 "editClaimButton",
                                                 "Edit",
@@ -1186,8 +1187,8 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
                                     ui::Component* descriptionActions = descriptionBox->mutable_children(l);
                                     if (descriptionActions->id() == "descriptionActions") {
                                         // Add buttons based on ownership
-                                        if (currentUserId == currentClaimCreatorId) {
-                                            // User owns the claim
+                                        if (currentUserId == currentClaimCreatorId && modifyingCurrentClaim) {
+                                            // User owns the claim and is in modify mode
                                             ui::Component editDescriptionButton = ComponentGenerator::createButton(
                                                 "editDescriptionButton",
                                                 "Edit Description",
@@ -1213,7 +1214,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
                                                 "transition-colors text-sm"
                                             );
                                             ComponentGenerator::addChild(descriptionActions, addChildClaim);
-                                        } else {
+                                        } else if (currentUserId != currentClaimCreatorId) {
                                             // User does not own the claim
                                             if (challengingClaim) {
                                                 // Currently challenging - show Cancel and Create Challenge buttons
