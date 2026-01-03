@@ -200,7 +200,7 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
 }
 
 void DebateWrapper::deleteClaim(const int& claimId) {
-    // find the claim parent to remove it's reference and also find it's children to delete them recursively
+    // find the claim parent to remove it's reference, dont actually delete the claim
     debate::Claim claim = getClaimById(claimId);
     int parentId = claim.parent_id();
     if (parentId != -1) {
@@ -213,31 +213,8 @@ void DebateWrapper::deleteClaim(const int& claimId) {
         );
         updateClaimInDB(parentClaim);
     }
-    // delete all children recursively
-    for (const auto& childId : claim.proof().claim_ids()) {
-        deleteClaim(childId);
-    }
-    // delete all links in the proof
-    // for (const auto& linkId : claim.proof().link_ids()) {
-    //     deleteLinkById(std::stoi(linkId));
-    // }
-    // delete links that go to and from this claim
-    std::vector<int> linksToDelete = findLinksUnder(claimId);
-    auto linksFromThisClaim = databaseWrapper.links.getLinksFromClaim(claimId);
-    auto linksToThisClaim =  databaseWrapper.links.getLinksToClaim(claimId);
-    for (const auto& linkTuple : linksFromThisClaim) {
-        int linkId = std::get<0>(linkTuple);
-        linksToDelete.push_back(linkId);
-    }
-    for (const auto& linkTuple : linksToThisClaim) {
-        int linkId = std::get<0>(linkTuple);
-        linksToDelete.push_back(linkId);
-    }
-    for (const auto& linkId : linksToDelete) {
-        deleteLinkById(linkId);
-    }
 
-    databaseWrapper.statements.deleteStatement(claimId);
+    // databaseWrapper.statements.deleteStatement(claimId);
 }
 
 void DebateWrapper::deleteAllDebates(const int& user_id) {
@@ -468,4 +445,53 @@ user_engagement::DebateList DebateWrapper::FillUserDebateList(const int& user_id
         }
     }
     return debateListProto;
+}
+
+void DebateWrapper::SaveVersionOfClaim(const int& claim_id) {
+    // find the claim proto
+    debate::Claim claimProto = getClaimById(claim_id);
+    // make a version to put in history, basically copy the current claim proto
+    debate::ClaimState claimStateProto;
+    // copy the proto
+    claimStateProto.mutable_claim()->CopyFrom(claimProto);
+    // get a timestamp
+    int64_t timestamp = static_cast<int64_t>(time(nullptr));
+    claimStateProto.mutable_timestamp()->set_seconds(timestamp);
+    claimStateProto.mutable_timestamp()->set_nanos(0);
+    claimProto.add_history()->CopyFrom(claimStateProto);
+    // update the claim in DB
+    updateClaimInDB(claimProto);
+    // done
+}
+
+void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
+    // find the most recent version from history
+    debate::Claim claimProto = getClaimById(claim_id);
+    if (claimProto.history_size() == 0) {
+        Log::warn("[DebateWrapper] No previous versions found for claim ID " + std::to_string(claim_id));
+        return;
+    }
+    debate::ClaimState lastVersion = claimProto.history(claimProto.history_size() - 1);
+    
+    // Save the current history before restoring
+    auto savedHistory = claimProto.history();
+    
+    // restore the claim proto (this will overwrite history too)
+    claimProto.CopyFrom(lastVersion.claim());
+    
+    // restore the history and remove the last entry
+    *claimProto.mutable_history() = savedHistory;
+    claimProto.mutable_history()->RemoveLast();
+    
+    // update the claim in DB
+    updateClaimInDB(claimProto);
+    // done
+    // check child claims to see if correct
+    for (const auto& childId : claimProto.proof().claim_ids()) {
+        debate::Claim childClaim = getClaimById(childId);
+        Log::test("[DebateWrapper] Claim Id: " + std::to_string(claim_id) + " Child Claim ID: " + std::to_string(childId) + " Parent ID after restoring: " + std::to_string(childClaim.parent_id()));
+        if (childClaim.parent_id() != claim_id) {
+            Log::warn("[DebateWrapper] Child claim ID " + std::to_string(childId) + " has incorrect parent ID " + std::to_string(childClaim.parent_id()) + " after restoring claim ID " + std::to_string(claim_id));
+        }
+    }
 }

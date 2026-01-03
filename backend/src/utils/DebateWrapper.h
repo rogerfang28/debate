@@ -67,6 +67,9 @@ public:
     int findDebateId(const int& claimId);
     user_engagement::DebateList FillUserDebateList(const int& user_id);
 
+    void SaveVersionOfClaim(const int& claim_id);
+    void RestorePreviousVersionOfClaim(const int& claim_id);
+
 private:
     DatabaseWrapper& databaseWrapper;
     void addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id);

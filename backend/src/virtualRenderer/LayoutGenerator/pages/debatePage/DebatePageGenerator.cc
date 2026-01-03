@@ -446,6 +446,9 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
     // Check if we're in challenging mode
     bool challengingClaim = (debatingInfo.current_debate_action().action_type() == 
                             user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CHALLENGING_CLAIM);
+    
+    // Check if user is in modify mode
+    bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
 
     // Find the childArgumentsGrid container within mainLayout
     ui::Component* childArgumentsGrid = nullptr;
@@ -592,8 +595,8 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
                     ""
                 );
 
-                // Delete link button - only show if user owns the child claim (the "from" claim)
-                if (userOwnsChildClaim) {
+                // Delete link button - only show if user owns the child claim (the "from" claim) and is modifying
+                if (userOwnsChildClaim && modifyingCurrentClaim) {
                     ui::Component deleteLinkButton = ComponentGenerator::createButton(
                         "deleteLinkButton_" + linkId,
                         "Delete",
@@ -709,8 +712,8 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
             }
         }
 
-        // Only show connection and delete buttons if user owns the claim
-        if (userOwnsChildClaim) {
+        // Only show connection and delete buttons if user owns the claim and is modifying
+        if (userOwnsChildClaim && modifyingCurrentClaim) {
             // Add connection buttons based on connecting state
             if (connecting) {
                 // If we're connecting and this is the FROM claim, show Cancel button

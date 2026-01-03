@@ -1253,6 +1253,7 @@ class Claim final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChildrenIdsFieldNumber = 5,
+    kHistoryFieldNumber = 10,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kProofFieldNumber = 7,
@@ -1279,6 +1280,23 @@ class Claim final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_children_ids();
 
   public:
+  // repeated .debate.ClaimState history = 10 [json_name = "history"];
+  int history_size() const;
+  private:
+  int _internal_history_size() const;
+
+  public:
+  void clear_history() ;
+  ::debate::ClaimState* mutable_history(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::ClaimState>* mutable_history();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& _internal_history() const;
+  ::google::protobuf::RepeatedPtrField<::debate::ClaimState>* _internal_mutable_history();
+  public:
+  const ::debate::ClaimState& history(int index) const;
+  ::debate::ClaimState* add_history();
+  const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& history() const;
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
   const std::string& sentence() const;
@@ -1371,7 +1389,7 @@ class Claim final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 8, 1,
+      4, 9, 2,
       48, 2>
       _table_;
 
@@ -1393,6 +1411,7 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedField<::int32_t> children_ids_;
     ::google::protobuf::internal::CachedSize _children_ids_cached_byte_size_;
+    ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::debate::Proof* proof_;
@@ -1958,6 +1977,55 @@ inline ::int32_t Claim::_internal_debate_id() const {
 inline void Claim::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
+}
+
+// repeated .debate.ClaimState history = 10 [json_name = "history"];
+inline int Claim::_internal_history_size() const {
+  return _internal_history().size();
+}
+inline int Claim::history_size() const {
+  return _internal_history_size();
+}
+inline void Claim::clear_history() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.history_.Clear();
+}
+inline ::debate::ClaimState* Claim::mutable_history(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Claim.history)
+  return _internal_mutable_history()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::ClaimState>* Claim::mutable_history()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Claim.history)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_history();
+}
+inline const ::debate::ClaimState& Claim::history(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.history)
+  return _internal_history().Get(index);
+}
+inline ::debate::ClaimState* Claim::add_history() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::debate::ClaimState* _add = _internal_mutable_history()->Add();
+  // @@protoc_insertion_point(field_add:debate.Claim.history)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& Claim::history() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Claim.history)
+  return _internal_history();
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>&
+Claim::_internal_history() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.history_;
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::ClaimState>*
+Claim::_internal_mutable_history() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.history_;
 }
 
 // -------------------------------------------------------------------

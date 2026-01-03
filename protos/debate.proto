@@ -15,6 +15,7 @@ message Claim {
   Proof proof = 7;
   int32 creator_id = 8;
   int32 debate_id = 9;
+  repeated ClaimState history = 10;
 }
 
 message ClaimState {

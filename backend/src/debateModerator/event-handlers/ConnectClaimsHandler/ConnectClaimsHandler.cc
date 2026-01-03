@@ -90,5 +90,5 @@ void ConnectClaimsHandler::DeleteLinkById(
     }
     debateWrapper.updateClaimInDB(parentClaim);
     // then delete the link from database
-    debateWrapper.deleteLinkById(linkId);
+    // debateWrapper.deleteLinkById(linkId);
 }
