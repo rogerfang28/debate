@@ -466,8 +466,6 @@ user_engagement::DebateList DebateWrapper::FillUserDebateList(const int& user_id
             debate::Claim challengedClaim = getClaimById(challenge.challenged_parent_claim_id());
             topicProto->set_claim_its_challenging(challengedClaim.sentence());
         }
-        Log::test("[DebateWrapper] Added debate to list: ID = "
-                + std::to_string(debateProto.id()) + ", Topic = " + debateProto.topic());
     }
     return debateListProto;
 }

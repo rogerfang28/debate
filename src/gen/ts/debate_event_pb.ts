@@ -698,6 +698,8 @@ export enum EventType {
   EVENT_KIND_UNSPECIFIED = 0,
 
   /**
+   * just send back user info
+   *
    * @generated from enum value: NONE = 1;
    */
   NONE = 1,

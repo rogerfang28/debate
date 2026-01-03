@@ -25,6 +25,9 @@
 // challenge
 #include "event-handlers/ChallengeHandler/ChallengeHandler.h"
 
+// modify claim
+#include "event-handlers/ModifyClaimHandler/ModifyClaimHandler.h"
+
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
@@ -284,6 +287,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 dbWrapper
             );
             break;
+        case debate_event::START_MODIFICATION_OF_CLAIM:
+            Log::debug("[DebateModerator] Event Type: START_MODIFICATION_OF_CLAIM");
+            ModifyClaimHandler::StartModifyClaim(debateWrapper, user_id);
+            break;
+        case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
+            Log::debug("[DebateModerator] Event Type: SUBMIT_MODIFICATION_OF_CLAIM");
+            ModifyClaimHandler::SubmitModifyClaim(debateWrapper, user_id);
+            break;
+        case debate_event::CANCEL_MODIFICATION_OF_CLAIM:
+            Log::debug("[DebateModerator] Event Type: CANCEL_MODIFICATION_OF_CLAIM");
+            ModifyClaimHandler::CancelModifyClaim(debateWrapper, user_id);
+            break;
         default:
             Log::debug("[DebateModerator] Event Type: UNKNOWN");
             break;
@@ -297,22 +312,22 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // so i have to first access the database to get the information about the user engagement
     user::User userProto;
 
-    std::string user = dbWrapper.users.getUsername(user_id);
+    // std::string user = dbWrapper.users.getUsername(user_id);
 
     userProto = debateWrapper.getUserProtobuf(user_id);
     
     // Copy the engagement data
-    *responseMessage.mutable_user()->mutable_engagement() = userProto.engagement();
+    *responseMessage.mutable_user() = userProto;
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_HOME:
-            Log::debug("[DebateModerator] Building HOME page response for user: " + user);
+            Log::debug("[DebateModerator] Building HOME page response for user: " + std::to_string(user_id));
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper);
             break;
             
         case user_engagement::ACTION_DEBATING:
-            Log::debug("[DebateModerator] Building DEBATE page response for user: " + user);
+            Log::debug("[DebateModerator] Building DEBATE page response for user: " + std::to_string(user_id));
             DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user_id, userProto, debateWrapper);
             break;
         default:
@@ -324,39 +339,39 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     return responseMessage;
 }
 
-int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
-    int user_id = dbWrapper.users.getUserId(event.user().username());
-    if (!event.user().is_logged_in()) {
-        Log::debug("[DebateModerator] User not authenticated. Check if they are logging in.");
-        if (event.type() == debate_event::LOGIN) {
-            Log::debug("[DebateModerator] Handling LOGIN event.");
-            // check if the user_id is in the database
-            std::string username = event.login().username(); // this means username is unique for now
-            if (user_id != -1) {
-                Log::debug("[DebateModerator] User " + username + " logged in successfully with user_id: " + std::to_string(user_id));
-                event.mutable_user()->set_user_id(user_id);
-                event.mutable_user()->set_is_logged_in(true);
-            } else {
-                createUserIfNotExist(username);
-                user_id = dbWrapper.users.getUserId(username);
-            }
-        }
-        else{
-            return -1; // not logged in and not trying to log in
-        }
-    }
-    else {
-        // check if that user_id exists in the database
-        int check_user_id = event.user().user_id();
-        std::string username = event.user().username();
-        if (!dbWrapper.users.userExists(check_user_id)) {
-            Log::debug("[DebateModerator] User ID " + std::to_string(check_user_id) + " not found in database. Redirecting to login page.");
-            createUserIfNotExist(username);
-            user_id = dbWrapper.users.getUserId(username);
-        }
-    }
-    return user_id;
-}
+// int DebateModerator::validateAuth(debate_event::DebateEvent& event) {
+//     int user_id = dbWrapper.users.getUserId(event.user().username());
+//     if (!event.user().is_logged_in()) {
+//         Log::debug("[DebateModerator] User not authenticated. Check if they are logging in.");
+//         if (event.type() == debate_event::LOGIN) {
+//             Log::debug("[DebateModerator] Handling LOGIN event.");
+//             // check if the user_id is in the database
+//             std::string username = event.login().username(); // this means username is unique for now
+//             if (user_id != -1) {
+//                 Log::debug("[DebateModerator] User " + username + " logged in successfully with user_id: " + std::to_string(user_id));
+//                 event.mutable_user()->set_user_id(user_id);
+//                 event.mutable_user()->set_is_logged_in(true);
+//             } else {
+//                 createUserIfNotExist(username);
+//                 user_id = dbWrapper.users.getUserId(username);
+//             }
+//         }
+//         else{
+//             return -1; // not logged in and not trying to log in
+//         }
+//     }
+//     else {
+//         // check if that user_id exists in the database
+//         int check_user_id = event.user().user_id();
+//         std::string username = event.user().username();
+//         if (!dbWrapper.users.userExists(check_user_id)) {
+//             Log::debug("[DebateModerator] User ID " + std::to_string(check_user_id) + " not found in database. Redirecting to login page.");
+//             createUserIfNotExist(username);
+//             user_id = dbWrapper.users.getUserId(username);
+//         }
+//     }
+//     return user_id;
+// }
 
 int DebateModerator::createUserIfNotExist(const std::string& username) {
     int user_id = dbWrapper.users.getUserId(username);

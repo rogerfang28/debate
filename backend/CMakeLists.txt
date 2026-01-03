@@ -57,6 +57,8 @@ set(SRC_FILES
 
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser/LoginPageEventParser.cc
 
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc

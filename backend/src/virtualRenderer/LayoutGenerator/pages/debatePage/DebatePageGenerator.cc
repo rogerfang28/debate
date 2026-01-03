@@ -323,19 +323,18 @@ ui::Component DebatePageGenerator::GenerateDebatePageMainLayout() {
         "w-80"
     );
 
-    // Modify Claim Button
-    ui::Component modifyClaimButton = ComponentGenerator::createButton(
-        "modifyClaimButton",
-        "Modify Claim",
+    // Container for modify actions (will be filled by AddAppropriateButtons)
+    ui::Component modifyActionsContainer = ComponentGenerator::createContainer(
+        "modifyActionsContainer",
+        "mb-4",
         "",
-        "bg-blue-600",
-        "hover:bg-blue-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "w-full transition-colors mb-4"
+        "",
+        "",
+        "",
+        "",
+        ""
     );
-    ComponentGenerator::addChild(&rightContent, modifyClaimButton);
+    ComponentGenerator::addChild(&rightContent, modifyActionsContainer);
 
     // Claim History Button
     ui::Component claimHistoryButton = ComponentGenerator::createButton(
@@ -1097,6 +1096,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     int currentClaimCreatorId = debatingInfo.current_claim().creator_id();
     bool isChallenge = debatingInfo.is_challenge();
+    bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
     
     // Check if we're in editing mode - if so, buttons are already added by FillCurrentClaimSection
     bool editingDescription = (debatingInfo.current_debate_action().action_type() == 
@@ -1107,6 +1107,68 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
     // Check if user is challenging (action type is CHALLENGING_CLAIM)
     bool challengingClaim = (debatingInfo.current_debate_action().action_type() == 
                             user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CHALLENGING_CLAIM);
+
+    // Add Modify Claim buttons to rightContent
+    for (int i = 0; i < mainLayout.children_size(); i++) {
+        ui::Component* contentArea = mainLayout.mutable_children(i);
+        if (contentArea->id() == "contentArea") {
+            for (int j = 0; j < contentArea->children_size(); j++) {
+                ui::Component* rightContent = contentArea->mutable_children(j);
+                if (rightContent->id() == "rightContent") {
+                    for (int k = 0; k < rightContent->children_size(); k++) {
+                        ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
+                        if (modifyActionsContainer->id() == "modifyActionsContainer") {
+                            if (modifyingCurrentClaim) {
+                                // Show Cancel and Submit buttons
+                                ui::Component cancelModifyButton = ComponentGenerator::createButton(
+                                    "cancelModifyClaimButton",
+                                    "Cancel",
+                                    "",
+                                    "bg-gray-600",
+                                    "hover:bg-gray-700",
+                                    "text-white",
+                                    "px-4 py-2",
+                                    "rounded",
+                                    "w-full transition-colors mb-2"
+                                );
+                                ComponentGenerator::addChild(modifyActionsContainer, cancelModifyButton);
+
+                                ui::Component submitModifyButton = ComponentGenerator::createButton(
+                                    "submitModifyClaimButton",
+                                    "Submit",
+                                    "",
+                                    "bg-green-600",
+                                    "hover:bg-green-700",
+                                    "text-white",
+                                    "px-4 py-2",
+                                    "rounded",
+                                    "w-full transition-colors"
+                                );
+                                ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
+                            } else {
+                                // Show Modify Claim button
+                                ui::Component modifyClaimButton = ComponentGenerator::createButton(
+                                    "modifyClaimButton",
+                                    "Modify Claim",
+                                    "",
+                                    "bg-blue-600",
+                                    "hover:bg-blue-700",
+                                    "text-white",
+                                    "px-4 py-2",
+                                    "rounded",
+                                    "w-full transition-colors"
+                                );
+                                ComponentGenerator::addChild(modifyActionsContainer, modifyClaimButton);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+    }
 
     // Only add buttons if not in editing mode
     if (!editingDescription && !editingClaim) {

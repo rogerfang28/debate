@@ -66,6 +66,5 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
             Log::debug("[DebatePageResponseGenerator] Found challenge against current claim with sentence: " + challenge.challenge_sentence());
         // }
     }
-
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

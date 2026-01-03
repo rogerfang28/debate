@@ -214,6 +214,19 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::GO_TO_CHALLENGED_PARENT_CLAIM);
     }
 
+    else if (componentId == "modifyClaimButton" && eventType == "onClick") {
+        Log::debug(" START_MODIFICATION_OF_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::START_MODIFICATION_OF_CLAIM);
+    }
+
+    else if (componentId == "submitModifyClaimButton" && eventType == "onClick") {
+        Log::debug(" SUBMIT_MODIFICATION_OF_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::SUBMIT_MODIFICATION_OF_CLAIM);
+    }
+    else if (componentId == "cancelModifyClaimButton" && eventType == "onClick") {
+        Log::debug(" CANCEL_MODIFICATION_OF_CLAIM for user: " + std::to_string(user_id));
+        event.set_type(debate_event::CANCEL_MODIFICATION_OF_CLAIM);
+    }
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);
