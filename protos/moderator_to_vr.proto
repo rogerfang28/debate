@@ -1,0 +1,12 @@
+// so I can't come up with a name for this, it should be like a proto that is sent from the debate moderator to the client
+syntax = "proto3";
+
+package moderator_to_vr;
+
+// import "debate.proto";
+import "user.proto";
+
+message ModeratorToVRMessage {
+    user.User user = 1;
+}
+

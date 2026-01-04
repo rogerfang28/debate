@@ -1,16 +1,16 @@
 import React from "react";
-import { ComponentType } from "../../../../src/gen/js/page_pb.js";
-import buildClassName, { ComponentStyle } from "./buildClassName.js";
-import bindEvents, { ComponentEvent } from "./bindEvents.ts";
+// @ts-ignore - Generated protobuf file
+import { ComponentType } from "../../../../src/gen/ts/layout_pb.ts";
+import buildClassName, { ComponentStyle } from "./buildClassName.ts";
 
-import TextComponent from "./componentTypes/TextComponent.js";
-import ButtonComponent from "./componentTypes/ButtonComponent.js";
-import ImageComponent from "./componentTypes/ImageComponent.js";
-import ListComponent from "./componentTypes/ListComponent.js";
-import ContainerComponent from "./componentTypes/ContainerComponent.js";
-import CardComponent from "./componentTypes/CardComponent.js";
-import InputComponent from "./componentTypes/InputComponent.js";
-import GraphComponent from "./componentTypes/GraphComponent.js";
+import TextComponent from "./componentTypes/TextComponent.tsx";
+import ButtonComponent from "./componentTypes/ButtonComponent.tsx";
+import ImageComponent from "./componentTypes/ImageComponent.tsx";
+import ListComponent from "./componentTypes/ListComponent.tsx";
+import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
+import CardComponent from "./componentTypes/CardComponent.tsx";
+import InputComponent from "./componentTypes/InputComponent.tsx";
+import GraphComponent from "./componentTypes/GraphComponent.tsx";
 
 // TypeScript interfaces
 interface ComponentProps {
@@ -18,7 +18,6 @@ interface ComponentProps {
   type: ComponentType;
   style?: ComponentStyle;
   css?: React.CSSProperties;
-  events?: ComponentEvent;
   [key: string]: any;
 }
 
@@ -29,12 +28,12 @@ interface ComponentRendererProps {
 const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.TEXT]: TextComponent,
   [ComponentType.BUTTON]: ButtonComponent,
-  [ComponentType.IMAGE]: ImageComponent,
-  [ComponentType.LIST]: ListComponent,
+  // [ComponentType.IMAGE]: ImageComponent,
+  // [ComponentType.LIST]: ListComponent,
   [ComponentType.CONTAINER]: ContainerComponent,
-  [ComponentType.CARD]: CardComponent,
+  // [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
-  [ComponentType.GRAPH]: GraphComponent,
+  // [ComponentType.GRAPH]: GraphComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
@@ -42,7 +41,15 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
 
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
-  const boundEvents = bindEvents(component);
+
+  // Debug logging for button components
+  if (component.type === ComponentType.BUTTON) {
+    console.log("Button component:", {
+      id: component.id,
+      style: component.style,
+      className: className
+    });
+  }
 
   const Component = componentMap[component.type] || ContainerComponent;
 
@@ -51,7 +58,6 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
       component={component}
       className={className}
       style={inlineStyle}
-      events={boundEvents}
     />
   );
 };

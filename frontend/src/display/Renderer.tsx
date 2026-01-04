@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import getPageFromBackend from "../backendCommunicator/getPageFromBackend.ts";
 // @ts-ignore - PageRenderer not fully converted yet
-import { PageRenderer } from "./rendering/PageRenderer.js";
+import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
-import test from "../backendCommunicator/test.ts";
+import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
 
 // TypeScript interfaces
 interface PageData {
@@ -26,7 +25,7 @@ const Renderer: React.FC = () => {
     try {
       setLoading(true); // show spinner
       // test();
-      const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+      const info: PageData | null = await postClientMessageToCPP({});//getPageFromBackend("/api/data");
       if (info) {
         setData(info);
       } else {
@@ -45,7 +44,7 @@ const Renderer: React.FC = () => {
     async function fetchData(): Promise<void> {
       try {
         setLoading(true);
-        const info: PageData | null = await getPageFromCPP();//getPageFromBackend("/api/data");
+        const info: PageData | null = await postClientMessageToCPP({}); // initial empty event
         if (info) {
           setData(info);
           if (intervalId) clearInterval(intervalId); // stop retry loop
@@ -68,7 +67,7 @@ const Renderer: React.FC = () => {
   }, []);
 
   // 🔹 Loading spinner (Tailwind styled)
-  if (loading && !data) {
+  if (loading && !data && false) { // temporary disable loading spinner
     return (
       <div className="flex flex-col items-center justify-center h-screen text-gray-300">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
@@ -79,11 +78,11 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      {loading && (
+      {/*loading && (
         <div className="absolute top-4 right-4 bg-gray-800 px-4 py-2 rounded shadow text-sm text-gray-200">
           Loading new page...
         </div>
-      )}
+      )*/}
       {data ? <PageRenderer page={data} /> : <div className="p-6">Loading...</div>}
     </div>
   );

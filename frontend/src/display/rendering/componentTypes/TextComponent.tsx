@@ -1,7 +1,10 @@
 import React from "react";
+// @ts-ignore - Generated protobuf file
+import { ComponentType } from "../../../../../src/gen/ts/layout_pb.ts";
 
 // Shared TypeScript interfaces for all components
 export interface ComponentProps {
+  type: ComponentType;
   text?: string;
   value?: string | number | boolean;
   placeholder?: string;
@@ -17,12 +20,11 @@ export interface BaseComponentProps {
   component: ComponentProps;
   className?: string;
   style?: React.CSSProperties;
-  events?: { [key: string]: (e: React.SyntheticEvent) => void };
 }
 
-const TextComponent: React.FC<BaseComponentProps> = ({ component, className, style, events }) => {
+const TextComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   return (
-    <p className={className} style={style} {...events}>
+    <p id={component.id} className={className} style={style}>
       {component.text}
     </p>
   );

@@ -1,0 +1,152 @@
+#include "DebateMembersDatabase.h"
+#include <iostream>
+
+DebateMembersDatabase::DebateMembersDatabase(Database& db) : db_(db) {
+    ensureTable();
+}
+
+bool DebateMembersDatabase::ensureTable() {
+    const char* sql = R"(
+        CREATE TABLE IF NOT EXISTS DEBATE_MEMBERS (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            DEBATE_ID INTEGER NOT NULL,
+            USER_ID INTEGER NOT NULL
+        );
+    )";
+    return db_.execute(sql);
+}
+
+bool DebateMembersDatabase::addMember(int debateId, int userId) {
+    const char* sql = "INSERT INTO DEBATE_MEMBERS (DEBATE_ID, USER_ID) VALUES (?, ?);";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+    sqlite3_bind_int(stmt, 2, userId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE);
+
+    if (!success) {
+        std::cerr << "Failed to add member: " << sqlite3_errmsg(db_.handle()) << std::endl;
+    }
+
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+std::vector<int> DebateMembersDatabase::getDebateIdsForUser(int userId) {
+    std::vector<int> debateIds;
+    const char* sql = "SELECT DEBATE_ID FROM DEBATE_MEMBERS WHERE USER_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return debateIds;
+    }
+
+    sqlite3_bind_int(stmt, 1, userId);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int debateId = sqlite3_column_int(stmt, 0);
+        debateIds.push_back(debateId);
+    }
+
+    sqlite3_finalize(stmt);
+    return debateIds;
+}
+
+std::vector<int> DebateMembersDatabase::getUserIdsForDebate(int debateId) {
+    std::vector<int> userIds;
+    const char* sql = "SELECT USER_ID FROM DEBATE_MEMBERS WHERE DEBATE_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return userIds;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int userId = sqlite3_column_int(stmt, 0);
+        userIds.push_back(userId);
+    }
+
+    sqlite3_finalize(stmt);
+    return userIds;
+}
+
+bool DebateMembersDatabase::isMember(int debateId, int userId) {
+    const char* sql = "SELECT COUNT(*) FROM DEBATE_MEMBERS WHERE DEBATE_ID = ? AND USER_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+    sqlite3_bind_int(stmt, 2, userId);
+
+    bool exists = false;
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        int count = sqlite3_column_int(stmt, 0);
+        exists = (count > 0);
+    }
+
+    sqlite3_finalize(stmt);
+    return exists;
+}
+
+bool DebateMembersDatabase::removeMember(int debateId, int userId) {
+    const char* sql = "DELETE FROM DEBATE_MEMBERS WHERE DEBATE_ID = ? AND USER_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+    sqlite3_bind_int(stmt, 2, userId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
+
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool DebateMembersDatabase::removeAllMembersFromDebate(int debateId) {
+    const char* sql = "DELETE FROM DEBATE_MEMBERS WHERE DEBATE_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE);
+
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool DebateMembersDatabase::removeUserFromAllDebates(int userId) {
+    const char* sql = "DELETE FROM DEBATE_MEMBERS WHERE USER_ID = ?;";
+    
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, userId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE);
+
+    sqlite3_finalize(stmt);
+    return success;
+}

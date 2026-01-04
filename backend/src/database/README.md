@@ -1,1 +1,0 @@
-should do all database operations, changing, fetching, etc, and others can just call a function here for whats in database at specific spots

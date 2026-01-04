@@ -1,6 +1,5 @@
-import sendDataToCPP from "../../backendCommunicator/postEventToCPP.ts";
-import { EventType } from "../../../../src/gen/js/event_pb.js";
-import getInfoFromPage from "../../utils/getInfoFromPage.js";
+import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
+import getEntirePage from "../getEntirePage.ts";
 
 // TypeScript interfaces
 interface ComponentProps {
@@ -26,59 +25,40 @@ interface CustomEvent {
 
 type EventName = 'onClick' | 'onChange' | 'onSubmit';
 
-const eventTypeMap: Record<EventName, EventType> = {
-  onClick: EventType.CLICK,
-  onChange: EventType.INPUT_CHANGE,
-  onSubmit: EventType.FORM_SUBMIT,
-};
-
 export default async function handleEvent(
   e: CustomEvent | null,
   component: ComponentProps,
   eventName: EventName | string,
   actionId: string | number,
-  collectFrom?: string[]
+  // collectFrom?: string[]
 ): Promise<void> {
   try {
     console.log(
-      "📤 handleEvent got actionId:",
+      "handleEvent got actionId:",
       actionId,
       "for event:",
       eventName,
       "on component:",
-      component.id,
-      "collectFrom:",
-      collectFrom
+      component.id
+      // "collectFrom:",
+      // collectFrom
     );
 
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();
     }
 
-    // Collect additional data from specified components if collectFrom is provided
-    let additionalData: { [key: string]: string | null } = {};
-    if (collectFrom && collectFrom.length > 0) {
-      for (const componentId of collectFrom) {
-        const value = getInfoFromPage(componentId);
-        additionalData[componentId] = value;
-        console.log(`📋 Collected from ${componentId}:`, value);
-      }
-    }
+    // Collect ALL input data from the entire page
+    const entirePageData = getEntirePage(component.id);
+    console.log(`Collected ${Object.keys(entirePageData).length} components from entire page`);
+    console.log('Full page data:', entirePageData);
 
-    await sendDataToCPP({
+    await postClientMessageToCPP({
       componentId: component.id || "unknown",
-      eventType: eventTypeMap[eventName as EventName] || EventType.UNKNOWN,
+      eventType: eventName,
       actionId,
       eventName,
-      data: {
-        value: e?.target?.value,
-        checked: e?.target?.checked,
-        type: e?.target?.type,
-        name: e?.target?.name || component.name,
-        text: component.text,
-        componentValue: component.value,
-        ...additionalData, // Include collected data
-      },
+      data: entirePageData, // Send complete page data
       timestamp: Date.now(),
     });
 

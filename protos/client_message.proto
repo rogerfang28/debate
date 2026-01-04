@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package client_message;
+
+enum EventType {
+  UNKNOWN = 0;
+  NONE = 1;
+  CLICK = 2;
+  CHANGE = 3;
+  SUBMIT = 4;
+}
+
+// Simple message sent from client to server
+// Contains what was clicked + all component values on the page
+message ClientMessage {
+  string component_id = 1; // component that triggered the event, e.g., "btnSubmit", "usernameInput"
+  string event_type = 2; // e.g., "click", "change", "submit"
+  PageData page_data = 3;
+}
+
+// Represents all components on the page and their current state
+message PageData {
+  string page_id = 1; // Which page is this from
+  repeated ComponentData components = 2; // All components with values
+}
+
+// A single component and its current value
+message ComponentData {
+  string id = 1; // Component ID (e.g., "usernameInput", "roomNameField")
+  string value = 2; // Current value as string (empty string if no value)
+  string type = 3; // Optional: "input", "textarea", "select", "checkbox", etc.
+}

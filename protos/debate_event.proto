@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package debate_event;
+
+import "google/protobuf/timestamp.proto";
+
+message CreateDebate {
+    string debate_topic = 2;
+}
+
+message DeleteDebate {
+    int32 debate_id = 1;
+}
+
+message EnterDebate {
+    int32 debate_id = 1;
+}
+
+message AddChildClaim {
+    string claim         = 1;
+    string description   = 2;
+}
+
+message DeleteChildClaim {
+    int32 claim_id      = 2;
+}
+
+message AddConnection {
+    int32 debate_id     = 2;
+    int32 from_id       = 3;
+    int32 to_id         = 4;
+    string connection    = 5;
+}
+
+message GoToClaim {
+    int32 claim_id      = 2;
+}
+
+message SubmitEditClaimDescription {
+    string new_description = 1;
+}
+
+message SubmitEditClaim {
+    string new_claim = 1;
+}
+
+message ConnectFromClaim {
+    int32 from_claim_id = 1;
+}
+
+message ConnectToClaim {
+    int32 to_claim_id   = 2;
+}
+
+message SubmitConnectClaims {
+    string connection    = 1;
+    int32 from_claim_id = 2;
+    int32 to_claim_id   = 3;
+}
+
+message DeleteLink {
+    int32 link_id = 1;
+}
+
+message JoinDebate {
+    int32 debate_id = 1;
+}
+
+message Login {
+    string username = 1;
+    string password = 2;
+}
+
+message AddClaimToBeChallenged {
+    int32 claim_id = 1;
+}
+
+message RemoveClaimToBeChallenged {
+    int32 claim_id = 1;
+}
+
+message AddLinkToBeChallenged {
+    int32 link_id = 1;
+}
+
+message RemoveLinkToBeChallenged {
+    int32 link_id = 1;
+}
+
+message SubmitChallengeClaim {
+    string challenge_sentence = 1;
+}
+
+message GoToChallenge {
+    int32 challenge_id = 1;
+}
+
+message ConcedeChallenge {
+    int32 challenge_id = 1;
+}
+
+message DeleteChallenge {
+    int32 challenge_id = 1;
+}
+
+message LeaveDebate {
+    int32 debate_id = 1;
+}
+
+message MoveUserToTimestamp {
+    int32 claim_id = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}
+
+// enum
+enum EventType {
+    EVENT_KIND_UNSPECIFIED = 0;
+    NONE                   = 1; // just send back user info
+    CREATE_DEBATE          = 2;
+    CLEAR_DEBATES          = 3;
+    DELETE_DEBATE          = 4;
+    ENTER_DEBATE           = 5;
+    GO_HOME                = 6;
+    GO_TO_PARENT          = 7;
+    OPEN_ADD_CHILD_CLAIM   = 8;
+    ADD_CHILD_CLAIM        = 9;
+    DELETE_CURRENT_STATEMENT = 10;
+    REPORT_CLAIM           = 11;
+    GO_TO_CLAIM            = 12;
+    CLOSE_ADD_CHILD_CLAIM  = 13;
+    CLOSE_REPORT_CLAIM     = 14;
+    SUBMIT_ADD_CHILD_CLAIM = 15;
+    DELETE_CHILD_CLAIM     = 16;
+    START_EDIT_CLAIM_DESCRIPTION = 17;
+    SUBMIT_EDIT_CLAIM_DESCRIPTION = 18;
+    CANCEL_EDIT_CLAIM_DESCRIPTION = 19;
+    START_EDIT_CLAIM = 20;
+    SUBMIT_EDIT_CLAIM = 21;
+    CANCEL_EDIT_CLAIM = 22;
+    // connecting claims
+    CONNECT_FROM_CLAIM = 23;
+    CONNECT_TO_CLAIM = 24;
+    SUBMIT_CONNECT_CLAIMS = 25;
+    CANCEL_CONNECT_CLAIMS = 26;
+    DELETE_LINK = 27;
+    JOIN_DEBATE = 28;
+    LOGIN = 29;
+    LOGOUT = 30;
+    START_CHALLENGE_CLAIM = 31;
+    ADD_CLAIM_TO_BE_CHALLENGED = 32;
+    ADD_LINK_TO_BE_CHALLENGED = 33;
+    SUBMIT_CHALLENGE_CLAIM = 34;
+    GO_TO_CHALLENGE = 35;
+    CONCEDE_CHALLENGE = 36;
+    CANCEL_CHALLENGE_CLAIM = 37;
+    OPEN_ADD_CHALLENGE = 38;
+    CLOSE_ADD_CHALLENGE = 39;
+    REMOVE_CLAIM_TO_BE_CHALLENGED = 40;
+    REMOVE_LINK_TO_BE_CHALLENGED = 41;
+    DELETE_CHALLENGE = 42;
+    GO_TO_CHALLENGED_PARENT_CLAIM = 43;
+    LEAVE_DEBATE = 44;
+    GO_TO_HISTORY_OF_CURRENT_CLAIM = 45;
+    MOVE_USER_TO_TIMESTAMP = 46;
+    MOVE_USER_TO_PRESENT = 47;
+    START_MODIFICATION_OF_CLAIM = 48;
+    SUBMIT_MODIFICATION_OF_CLAIM = 49;
+    CANCEL_MODIFICATION_OF_CLAIM = 50;
+
+}
+
+message UserAuthInfo {
+    string username = 1;
+    int32 user_id = 2;
+    bool is_logged_in = 3;
+    // string password = 2;
+}
+
+// main message
+message DebateEvent {
+  UserAuthInfo user = 1;
+  google.protobuf.Timestamp occurred_at = 3;
+  EventType type = 4; 
+
+  oneof payload {
+    CreateDebate    create_debate    = 10;
+    DeleteDebate    delete_debate    = 12;
+    EnterDebate     enter_debate     = 13;
+    AddChildClaim   add_child_claim  = 16;
+    GoToClaim        go_to_claim     = 20;
+    DeleteChildClaim delete_child_claim = 23;
+    SubmitEditClaimDescription submit_edit_claim_description = 25;
+    SubmitEditClaim submit_edit_claim = 28;
+    ConnectFromClaim connect_from_claim = 30;
+    ConnectToClaim   connect_to_claim   = 31;
+    SubmitConnectClaims submit_connect_claims = 32;
+    DeleteLink delete_link = 34;
+    JoinDebate join_debate = 35;
+    Login login = 36;
+    AddClaimToBeChallenged add_claim_to_be_challenged = 38;
+    AddLinkToBeChallenged add_link_to_be_challenged = 39;
+    SubmitChallengeClaim submit_challenge_claim = 40;
+    GoToChallenge go_to_challenge = 41;
+    ConcedeChallenge concede_challenge = 42;
+    RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46;
+    RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
+    DeleteChallenge delete_challenge = 48;
+    LeaveDebate leave_debate = 49;
+    MoveUserToTimestamp move_user_to_timestamp = 50;
+  }
+}

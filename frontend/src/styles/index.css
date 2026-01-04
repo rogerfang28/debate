@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Force include all utilities since classes come from backend at runtime */
+@layer utilities {
+  /* This wildcard ensures all utilities are generated */
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
+import handleEvent from "../../events/handleEvent";
 
 interface InputAttributes {
   type?: string;
@@ -13,7 +14,21 @@ interface InputComponentProps extends BaseComponentProps {
   };
 }
 
-const InputComponent: React.FC<InputComponentProps> = ({ component, className, style, events }) => {
+const InputComponent: React.FC<InputComponentProps> = ({ component, className, style }) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log(`⏎ Input "${component.id}" submitted with value:`, e.currentTarget.value);
+      
+      // Send event to backend on Enter key
+      handleEvent(
+        e as any,
+        component,
+        'onSubmit',
+        component.id || 'unknown-input'
+      );
+    }
+  };
+
   return (
     <input
       id={component.id}
@@ -23,7 +38,8 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       placeholder={component.text || ""}
       className={className}
       style={style}
-      {...events}
+      onKeyDown={handleKeyDown}
+      autoComplete="off"
       {...component.attributes}
     />
   );

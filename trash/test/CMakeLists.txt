@@ -17,7 +17,7 @@ endif()
 
 add_executable(server
   main.cpp
-  "${GEN_CPP_DIR}/page.pb.cc"
+  "${GEN_CPP_DIR}/layout.pb.cc"
   "${GEN_CPP_DIR}/event.pb.cc"
 )
 

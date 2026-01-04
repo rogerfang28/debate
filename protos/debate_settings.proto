@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package debate;
+
+message DebateSettings {
+    int32 max_participants = 1;
+}

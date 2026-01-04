@@ -2,26 +2,55 @@ syntax = "proto3";
 
 package debate;
 
+import "google/protobuf/timestamp.proto";
+import "debate_settings.proto";
+
 // A single claim node in the debate graph
 message Claim {
-  // The main sentence or statement of the claim
-  string sentence = 1;
-
-  // Optional description or elaboration
-  string description = 2;
-
-  // Reference to the parent claim (by ID or sentence)
-  string parent = 3;
-
-  // References to child claims (by ID or sentence)
-  repeated string children = 4;
+  int32 id = 1;
+  string sentence = 2;
+  string description = 3;
+  int32 parent_id = 4;
+  repeated int32 children_ids = 5;
+  Proof proof = 7;
+  int32 creator_id = 8;
+  int32 debate_id = 9;
+  repeated ClaimState history = 10;
 }
 
-// Represents a single debate, which contains a topic and a claim graph
-message Debate {
-  // The debate topic
-  string topic = 1;
+message ClaimState {
+  google.protobuf.Timestamp timestamp = 2;
+  Claim claim = 1;
+}
 
-  // A list of all claims belonging to this debate (the graph)
-  repeated Claim claims = 2;
+message Link {
+  int32 connect_from = 1;
+  int32 connect_to = 2;
+  string connection = 3;  
+  int32 creator_id = 4;
+}
+
+message Challenge {
+  int32 challenged_parent_claim_id = 6;
+  repeated int32 challenged_claim_ids = 1;
+  repeated int32 challenged_link_ids = 2;
+  string challenge_sentence = 3;
+  int32 challenger_id = 4; // creator id
+  int32 proof_debate_id = 5;
+}
+
+message Proof {
+  repeated int32 claim_ids = 1;
+  repeated int32 link_ids = 2;
+}
+
+message Debate {
+  int32 id = 1;
+  int32 root_claim_id = 2;
+  string topic = 3;
+  repeated int32 debater_ids = 4;
+  int32 creator_id = 5;
+  debate.DebateSettings settings = 6;
+  bool is_challenge = 7;
+  int32 parent_challenge_id = 8;
 }

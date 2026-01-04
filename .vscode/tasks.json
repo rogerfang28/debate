@@ -6,12 +6,12 @@
       "type": "shell",
       "command": "cmake",
       "args": [
-        "-S", "${workspaceFolder}/cppserver",
-        "-B", "${workspaceFolder}/cppserver/build",
+        "-S", "${workspaceFolder}/backend",
+        "-B", "${workspaceFolder}/backend/build",
         "-DCMAKE_BUILD_TYPE=Debug"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/cppserver"
+        "cwd": "${workspaceFolder}/backend"
       },
       "problemMatcher": []
     },
@@ -20,12 +20,12 @@
       "type": "shell",
       "command": "cmake",
       "args": [
-        "--build", "${workspaceFolder}/cppserver/build",
+        "--build", "${workspaceFolder}/backend/build",
         "--config", "Debug",
-        "-j"
+        "-j8"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/cppserver"
+        "cwd": "${workspaceFolder}/backend"
       },
       "dependsOn": "CMake Configure (Debug)",
       "group": {
