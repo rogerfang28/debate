@@ -22,7 +22,6 @@ Online debates today may:
 - Debates as graphs (somewhat like trees, with child claims helping to prove the parent claim)
 - Challenges create sub-debates  
 - Claims, proofs, and links  
-- Truth-seeking instead of shouting  
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
 
 ## Author / Why I Built This
