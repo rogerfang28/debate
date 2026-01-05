@@ -1,46 +1,29 @@
-Debate — Structured Logical Debate Platform
+DebateTool (placeholder name) — Structured Logical Debate Platform
 
 ## What This Is
-Debate is a platform for structured, truth-seeking debates between users. Instead of chaotic threads or shouting matches, arguments are built as logical graphs made of claims, supporting evidence, and connections. Users can challenge specific points, prove them wrong, and create sub-debates to resolve disagreements — all transparently and logically.
+DebateTool is a work in progress project, a platform for structured debates between users. It is designed with the purpose of representing debates and information, in a way that is easiest to digest and figure out the truth.
 
 ## Demo
 Example UI:
 <img width="1905" height="904" alt="image" src="https://github.com/user-attachments/assets/fd395a0f-8d28-4ee5-b857-50cbaf657e41" />
 
-## Why It Matters
-Online debates today:
+## The Problem
+It's hard to get accurate information with people making many different claims, and it's hard to figure out who is correct, when both sides seem set in stone.
+Online debates today may:
 - Reward loudness instead of accuracy  
 - Mix emotional arguments with misinformation  
-- Make it hard to understand why something is true or false  
+- Make it hard to understand why something is true or false: it's hard to figure out the other sides view in comparison to yours
 
-## Debate fixes this by:
-- Structuring arguments into clear logical trees  
-- Allowing users to challenge specific claims directly  
-- Making reasoning transparent and traceable  
-- Encouraging collaboration toward truth instead of argument winning  
-
-## Who it’s for:
-- Students learning critical thinking  
-- Researchers and analysts  
-- Educators  
-- Anyone who wants debates to actually make people smarter  
+## DebateTool fixes this by:
+- Structuring arguments into clear logical trees, allowing for a better representation of both sides 
+- Allowing users to challenge specific claims directly, pointing out weak points in the other's debate
 
 ## Key Ideas
-- Debates as graphs  
+- Debates as graphs (somewhat like trees, with child claims helping to prove the parent claim)
 - Challenges create sub-debates  
 - Claims, proofs, and links  
 - Truth-seeking instead of shouting  
-
-## Architecture Overview
-Debate is a full-stack platform with a custom logic engine, database layer, and renderer.
-
-## High-level flow:
-1. Frontend renders interactive debate graphs  
-2. Virtual Renderer determines what the user sees based on engagement state  
-3. Backend manages debate logic, validation, and storage  
-4. Database stores debates, claims, links, users, and challenges  
-
-More details are available in the docs.
+- New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
 
 ## Author / Why I Built This
-I built this project because I believe debates should help people find truth, not just argue louder. This platform is my attempt to design a system where logic wins, reasoning is visible, and discussions genuinely move knowledge forward.
+I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulates a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.

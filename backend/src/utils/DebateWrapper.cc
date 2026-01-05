@@ -494,4 +494,6 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
             Log::warn("[DebateWrapper] Child claim ID " + std::to_string(childId) + " has incorrect parent ID " + std::to_string(childClaim.parent_id()) + " after restoring claim ID " + std::to_string(claim_id));
         }
     }
-}
+    // test 
+    
+} 
