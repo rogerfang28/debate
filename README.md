@@ -6,6 +6,7 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 - [The Problem](#the-problem)
 - [DebateTool fixes this by](#debatetool-fixes-this-by)
 - [Key Ideas](#key-ideas)
+- [Demo](#demo)
 - [Author / Why I Built This](#author--why-i-built-this)
 
 ## What This Is
@@ -35,6 +36,9 @@ Online debates today may:
 - Claims, proofs, and links  
     - Recursive claims, so that each claim has other claims that prove it underneath it
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
+
+## Demo
+insert video showing how it's used
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulates a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
