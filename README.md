@@ -1,5 +1,13 @@
 DebateTool (placeholder name) — Structured Logical Debate Platform
 
+## Table of Contents
+- [What This Is](#what-this-is)
+- [Example Usage](#example-usage)
+- [The Problem](#the-problem)
+- [DebateTool fixes this by](#debatetool-fixes-this-by)
+- [Key Ideas](#key-ideas)
+- [Author / Why I Built This](#author--why-i-built-this)
+
 ## What This Is
 DebateTool is a work in progress project, a platform for structured debates between users. It is designed with the purpose of representing debates and information, in a way that is easiest to digest and figure out the truth.
 
