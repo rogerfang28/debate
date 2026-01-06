@@ -3,7 +3,7 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 ## What This Is
 DebateTool is a work in progress project, a platform for structured debates between users. It is designed with the purpose of representing debates and information, in a way that is easiest to digest and figure out the truth.
 
-## Demo
+## Example Usage
 Example UI:
 <img width="1905" height="904" alt="image" src="https://github.com/user-attachments/assets/fd395a0f-8d28-4ee5-b857-50cbaf657e41" />
 
@@ -17,11 +17,15 @@ Online debates today may:
 ## DebateTool fixes this by:
 - Structuring arguments into clear logical trees, allowing for a better representation of both sides 
 - Allowing users to challenge specific claims directly, pointing out weak points in the other's debate
+    - This will allow people to see where they are wrong, or point out where their opponent is wrong, so that they don't waste time on points they both agree on.
+- Making it easy to see where misinformation starts, so that it's possible to fix it and find the truth
+    - **If a false claim is made, there HAS TO BE something wrong with it's proof. If you can point it out, challenge it, so that your opponent has to defend that part which you belive is wrong. If they can't defend it, they concede that statement, which would make their false claim invalid unless they fix it.**
 
 ## Key Ideas
 - Debates as graphs (somewhat like trees, with child claims helping to prove the parent claim)
 - Challenges create sub-debates  
 - Claims, proofs, and links  
+    - Recursive claims, so that each claim has other claims that prove it underneath it
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
 
 ## Author / Why I Built This
