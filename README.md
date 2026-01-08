@@ -13,8 +13,17 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 DebateTool is a work in progress project, a platform for structured debates between users. It is designed with the purpose of representing debates and information, in a way that is easiest to digest and figure out the truth.
 
 ## Example Usage
-Example UI:
-<img width="1905" height="904" alt="image" src="https://github.com/user-attachments/assets/fd395a0f-8d28-4ee5-b857-50cbaf657e41" />
+The tool will allow users to challenge illogical parts of a narrative
+- Making the claim “vaccines cause autism” with no proof
+    - Challenge this to force opponent to provide proof, and they must respond to this challenge (very simple)
+Allows opponent to change someone's argument into an equivalent one that is easier to challenge 
+- Opponent claims “natural immunity is better than vaccines, so you shouldn’t vaccinate your children”
+    - Challenge it and change it to a more scientific form so it is objective and can be proven true or false
+        - “If this claim is true, then that means that children who take vaccines are more likely to die than children who don’t take it, correct?”
+Allows viewers to easily see where the weakness in a flawed narrative is
+- Opponent claims “do not use vaccines because they contain mercury”
+    - Point out the main flaw to be “the thimerosal in vaccines has been researched to not cause side effects like autism or any other serious effect”
+
 
 ## The Problem
 It's hard to get accurate information with people making many different claims, and it's hard to figure out who is correct, when both sides seem set in stone.
