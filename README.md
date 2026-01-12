@@ -59,6 +59,8 @@ Online debates today may:
 
 ## Demo
 insert video showing how it's used
+Image of Debate Claim:
+<img width="1905" height="904" alt="Screenshot 2026-01-04 201211" src="https://github.com/user-attachments/assets/66909909-d4ae-4fa2-9a7e-55cd10e6143d" />
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulates a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
