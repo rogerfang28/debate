@@ -31,7 +31,8 @@ export default {
     'text-white', 'text-black', 'text-transparent',
     'text-gray-300', 'text-gray-400', 'text-gray-500', 'text-gray-600', 'text-gray-700', 'text-gray-800',
     'text-blue-400', 'text-red-300', 'text-yellow-400',
-    'text-purple-300', 'text-purple-400',
+    'text-purple-300', 'text-purple-400', 'text-purple-500',
+    'text-orange-500', 'text-red-500', 'text-green-500',
     'text-slate-200', 'text-slate-300', 'text-slate-400',
     'text-white/80', 'hover:text-white',
     
@@ -73,7 +74,7 @@ export default {
     'border', 'border-2', 'border-b',
     'border-gray-300', 'border-gray-600', 'border-gray-700', 'hover:border-gray-600',
     'border-slate-600',
-    'border-purple-500', 'border-orange-500',
+    'border-purple-500', 'border-purple-700', 'border-orange-500', 'border-red-500', 'border-green-500',
     'border-white/10', 'border-red-500/30',
     'rounded', 'rounded-lg', 'rounded-md', 'rounded-2xl', 'rounded-full',
     'border-none',

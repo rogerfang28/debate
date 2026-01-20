@@ -32,6 +32,7 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
         childClaimInfo->set_id(childClaim.id());
         childClaimInfo->set_sentence(childClaim.sentence());
         childClaimInfo->set_creator_id(childClaim.creator_id());
+        childClaimInfo->set_status(childClaim.status());
     }
 
     // find  the links under current claim proof

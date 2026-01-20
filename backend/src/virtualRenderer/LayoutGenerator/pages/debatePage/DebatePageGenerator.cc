@@ -419,10 +419,10 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
     int currentClaimId = debatingInfo.current_claim().id();
     std::string claim = debatingInfo.current_claim().sentence();
     
-    std::vector<std::tuple<std::string,std::string,int>> childClaimInfo; // id, sentence, creator_id
+    std::vector<std::tuple<std::string,std::string,int,debate::ClaimStatus>> childClaimInfo; // id, sentence, creator_id, status
     for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
         const user_engagement::ClaimInfo& childClaim = debatingInfo.children_claims(i);
-        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id()});
+        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status()});
     }
     
     std::vector<std::tuple<std::string, std::string, std::string, std::string>> linkInfo;
@@ -489,7 +489,54 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
         std::string claimId = std::get<0>(childClaimInfo[i]);
         std::string claimSentence = std::get<1>(childClaimInfo[i]);
         int claimCreatorId = std::get<2>(childClaimInfo[i]);
+        debate::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
         bool userOwnsChildClaim = (currentUserId == claimCreatorId);
+        
+        // Determine border color based on status
+        std::string borderColor;
+        switch (claimStatus) {
+            case debate::ClaimStatus::CHALLENGED:
+                borderColor = "border-2 border-orange-500";
+                break;
+            case debate::ClaimStatus::CONCEDED:
+                borderColor = "border-2 border-red-500";
+                break;
+            case debate::ClaimStatus::DEFENDED:
+                borderColor = "border-2 border-green-500";
+                break;
+            case debate::ClaimStatus::NEUTRAL:
+                borderColor = "border-2 border-gray-600";
+                break;
+            default:
+                borderColor = "border-2 border-purple-700"; // unknown status
+                break;
+        }
+
+        // Determine status label text and matching text color
+        std::string statusText;
+        std::string statusTextColor;
+        switch (claimStatus) {
+            case debate::ClaimStatus::CHALLENGED:
+                statusText = "Challenged";
+                statusTextColor = "text-orange-500";
+                break;
+            case debate::ClaimStatus::CONCEDED:
+                statusText = "Conceded";
+                statusTextColor = "text-red-500";
+                break;
+            case debate::ClaimStatus::DEFENDED:
+                statusText = "Defended";
+                statusTextColor = "text-green-500";
+                break;
+            case debate::ClaimStatus::NEUTRAL:
+                statusText = "Neutral";
+                statusTextColor = "text-gray-400";
+                break;
+            default:
+                statusText = "Unknown";
+                statusTextColor = "text-purple-500";
+                break;
+        }
         
         std::string nodeId = "childNode_" + claimId;
         ui::Component childNode = ComponentGenerator::createContainer(
@@ -498,10 +545,21 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
             "bg-gray-700",
             "p-4",
             "",
-            "border border-gray-700",
+            borderColor,
             "rounded",
             ""
         );
+
+        // Status label above the claim sentence
+        ui::Component statusLabel = ComponentGenerator::createText(
+            nodeId + "Status",
+            "Status: " + statusText,
+            "text-xs",
+            statusTextColor,
+            "font-semibold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&childNode, statusLabel);
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",

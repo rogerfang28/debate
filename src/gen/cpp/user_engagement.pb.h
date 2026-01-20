@@ -30,6 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
+#include "debate.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -1528,6 +1529,7 @@ class ClaimInfo final : public ::google::protobuf::Message
     kSentenceFieldNumber = 2,
     kIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
+    kStatusFieldNumber = 4,
   };
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
@@ -1565,12 +1567,22 @@ class ClaimInfo final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // .debate.ClaimStatus status = 4 [json_name = "status"];
+  void clear_status() ;
+  ::debate::ClaimStatus status() const;
+  void set_status(::debate::ClaimStatus value);
+
+  private:
+  ::debate::ClaimStatus _internal_status() const;
+  void _internal_set_status(::debate::ClaimStatus value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.ClaimInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       42, 2>
       _table_;
 
@@ -1591,6 +1603,7 @@ class ClaimInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::int32_t id_;
     ::int32_t creator_id_;
+    int status_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -5161,6 +5174,28 @@ inline ::int32_t ClaimInfo::_internal_creator_id() const {
 inline void ClaimInfo::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
+}
+
+// .debate.ClaimStatus status = 4 [json_name = "status"];
+inline void ClaimInfo::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::debate::ClaimStatus ClaimInfo::status() const {
+  // @@protoc_insertion_point(field_get:user_engagement.ClaimInfo.status)
+  return _internal_status();
+}
+inline void ClaimInfo::set_status(::debate::ClaimStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:user_engagement.ClaimInfo.status)
+}
+inline ::debate::ClaimStatus ClaimInfo::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::ClaimStatus>(_impl_.status_);
+}
+inline void ClaimInfo::_internal_set_status(::debate::ClaimStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
 }
 
 // -------------------------------------------------------------------
