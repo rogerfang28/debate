@@ -2,8 +2,8 @@
 // @generated from file debate.proto (package debate, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { DebateSettings } from "./debate_settings_pb";
@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSLNAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFEhEKCWRlYmF0ZV9pZBgJIAEoBRIjCgdoaXN0b3J5GAogAygLMhIuZGViYXRlLkNsYWltU3RhdGUiWQoKQ2xhaW1TdGF0ZRItCgl0aW1lc3RhbXAYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhwKBWNsYWltGAEgASgLMg0uZGViYXRlLkNsYWltIlgKBExpbmsSFAoMY29ubmVjdF9mcm9tGAEgASgFEhIKCmNvbm5lY3RfdG8YAiABKAUSEgoKY29ubmVjdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFIrYBCglDaGFsbGVuZ2USIgoaY2hhbGxlbmdlZF9wYXJlbnRfY2xhaW1faWQYBiABKAUSHAoUY2hhbGxlbmdlZF9jbGFpbV9pZHMYASADKAUSGwoTY2hhbGxlbmdlZF9saW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSFQoNY2hhbGxlbmdlcl9pZBgEIAEoBRIXCg9wcm9vZl9kZWJhdGVfaWQYBSABKAUiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygFEhAKCGxpbmtfaWRzGAIgAygFIsABCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhQKDGlzX2NoYWxsZW5nZRgHIAEoCBIbChNwYXJlbnRfY2hhbGxlbmdlX2lkGAggASgFYgZwcm90bzM", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSLyAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFEhEKCWRlYmF0ZV9pZBgJIAEoBRIjCgdoaXN0b3J5GAogAygLMhIuZGViYXRlLkNsYWltU3RhdGUSIwoGc3RhdHVzGAsgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzIlkKCkNsYWltU3RhdGUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIcCgVjbGFpbRgBIAEoCzINLmRlYmF0ZS5DbGFpbSJYCgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoBRISCgpjb25uZWN0X3RvGAIgASgFEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgEIAEoBSK2AQoJQ2hhbGxlbmdlEiIKGmNoYWxsZW5nZWRfcGFyZW50X2NsYWltX2lkGAYgASgFEhwKFGNoYWxsZW5nZWRfY2xhaW1faWRzGAEgAygFEhsKE2NoYWxsZW5nZWRfbGlua19pZHMYAiADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAMgASgJEhUKDWNoYWxsZW5nZXJfaWQYBCABKAUSFwoPcHJvb2ZfZGViYXRlX2lkGAUgASgFIiwKBVByb29mEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBSLAAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIUCgxpc19jaGFsbGVuZ2UYByABKAgSGwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBSpGCgtDbGFpbVN0YXR1cxILCgdORVVUUkFMEAASDgoKQ0hBTExFTkdFRBABEgwKCERFRkVOREVEEAISDAoIQ09OQ0VERUQQA2IGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -66,6 +66,11 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: repeated debate.ClaimState history = 10;
    */
   history: ClaimState[];
+
+  /**
+   * @generated from field: debate.ClaimStatus status = 11;
+   */
+  status: ClaimStatus;
 };
 
 /**
@@ -246,4 +251,43 @@ export type Debate = Message<"debate.Debate"> & {
  */
 export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
   messageDesc(file_debate, 5);
+
+/**
+ * @generated from enum debate.ClaimStatus
+ */
+export enum ClaimStatus {
+  /**
+   * unchallenged, default
+   *
+   * @generated from enum value: NEUTRAL = 0;
+   */
+  NEUTRAL = 0,
+
+  /**
+   * currently challenged
+   *
+   * @generated from enum value: CHALLENGED = 1;
+   */
+  CHALLENGED = 1,
+
+  /**
+   * successfully defended against a challenge
+   *
+   * @generated from enum value: DEFENDED = 2;
+   */
+  DEFENDED = 2,
+
+  /**
+   * conceded to a challenge
+   *
+   * @generated from enum value: CONCEDED = 3;
+   */
+  CONCEDED = 3,
+}
+
+/**
+ * Describes the enum debate.ClaimStatus.
+ */
+export const ClaimStatusSchema: GenEnum<ClaimStatus> = /*@__PURE__*/
+  enumDesc(file_debate, 0);
 

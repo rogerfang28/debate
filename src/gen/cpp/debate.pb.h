@@ -28,6 +28,7 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
+#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "google/protobuf/timestamp.pb.h"
 #include "debate_settings.pb.h"
@@ -79,6 +80,41 @@ namespace protobuf {
 }  // namespace google
 
 namespace debate {
+enum ClaimStatus : int {
+  NEUTRAL = 0,
+  CHALLENGED = 1,
+  DEFENDED = 2,
+  CONCEDED = 3,
+  ClaimStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ClaimStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ClaimStatus_IsValid(int value);
+extern const uint32_t ClaimStatus_internal_data_[];
+constexpr ClaimStatus ClaimStatus_MIN = static_cast<ClaimStatus>(0);
+constexpr ClaimStatus ClaimStatus_MAX = static_cast<ClaimStatus>(3);
+constexpr int ClaimStatus_ARRAYSIZE = 3 + 1;
+const ::google::protobuf::EnumDescriptor*
+ClaimStatus_descriptor();
+template <typename T>
+const std::string& ClaimStatus_Name(T value) {
+  static_assert(std::is_same<T, ClaimStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ClaimStatus_Name().");
+  return ClaimStatus_Name(static_cast<ClaimStatus>(value));
+}
+template <>
+inline const std::string& ClaimStatus_Name(ClaimStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ClaimStatus_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool ClaimStatus_Parse(absl::string_view name, ClaimStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ClaimStatus>(
+      ClaimStatus_descriptor(), name, value);
+}
 
 // ===================================================================
 
@@ -1261,6 +1297,7 @@ class Claim final : public ::google::protobuf::Message
     kParentIdFieldNumber = 4,
     kCreatorIdFieldNumber = 8,
     kDebateIdFieldNumber = 9,
+    kStatusFieldNumber = 11,
   };
   // repeated int32 children_ids = 5 [json_name = "childrenIds"];
   int children_ids_size() const;
@@ -1384,12 +1421,22 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
+  // .debate.ClaimStatus status = 11 [json_name = "status"];
+  void clear_status() ;
+  ::debate::ClaimStatus status() const;
+  void set_status(::debate::ClaimStatus value);
+
+  private:
+  ::debate::ClaimStatus _internal_status() const;
+  void _internal_set_status(::debate::ClaimStatus value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.Claim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 9, 2,
+      4, 10, 2,
       48, 2>
       _table_;
 
@@ -1419,6 +1466,7 @@ class Claim final : public ::google::protobuf::Message
     ::int32_t parent_id_;
     ::int32_t creator_id_;
     ::int32_t debate_id_;
+    int status_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2026,6 +2074,28 @@ inline ::google::protobuf::RepeatedPtrField<::debate::ClaimState>*
 Claim::_internal_mutable_history() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.history_;
+}
+
+// .debate.ClaimStatus status = 11 [json_name = "status"];
+inline void Claim::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::debate::ClaimStatus Claim::status() const {
+  // @@protoc_insertion_point(field_get:debate.Claim.status)
+  return _internal_status();
+}
+inline void Claim::set_status(::debate::ClaimStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:debate.Claim.status)
+}
+inline ::debate::ClaimStatus Claim::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::ClaimStatus>(_impl_.status_);
+}
+inline void Claim::_internal_set_status(::debate::ClaimStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2944,6 +3014,19 @@ inline void Debate::_internal_set_parent_challenge_id(::int32_t value) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace debate
 
+
+namespace google {
+namespace protobuf {
+
+template <>
+struct is_proto_enum<::debate::ClaimStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::ClaimStatus>() {
+  return ::debate::ClaimStatus_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

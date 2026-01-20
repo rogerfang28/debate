@@ -16,6 +16,14 @@ message Claim {
   int32 creator_id = 8;
   int32 debate_id = 9;
   repeated ClaimState history = 10;
+  ClaimStatus status = 11;
+}
+
+enum ClaimStatus {
+  NEUTRAL = 0; // unchallenged, default
+  CHALLENGED = 1; // currently challenged
+  DEFENDED = 2; // successfully defended against a challenge
+  CONCEDED = 3; // conceded to a challenge
 }
 
 message ClaimState {

@@ -124,6 +124,7 @@ void DebateWrapper::addClaimUnderParent(
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
+    childClaim.set_status(debate::ClaimStatus::NEUTRAL);
     addClaimToDB(childClaim, user_id, debate_id);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
