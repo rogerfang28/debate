@@ -57,10 +57,11 @@ Online debates today may:
     - Recursive claims, so that each claim has other claims that prove it underneath it
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
 
-## Demo
-insert video showing how it's used
-Image of Debate Claim:
-<img width="1905" height="904" alt="Screenshot 2026-01-04 201211" src="https://github.com/user-attachments/assets/66909909-d4ae-4fa2-9a7e-55cd10e6143d" />
+## Demo (video may be provided later when tool is at MVP)
+Images taken from testing of the tool:
+<img width="1903" height="902" alt="image" src="https://github.com/user-attachments/assets/51b76535-c8eb-4ee3-92cd-84c457e1f2c0" />
+<img width="1899" height="895" alt="image" src="https://github.com/user-attachments/assets/bd832b5b-7e78-4618-9bfd-8a0eb752dfe1" />
+
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulates a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
