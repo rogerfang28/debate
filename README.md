@@ -5,6 +5,7 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 - [Demo (video may be provided later when tool is at MVP)](#demo-video-may-be-provided-later-when-tool-is-at-mvp)
 - [Example Usage (WIP)](#example-usage-wip)
 - [Technical Details](#technical-details)
+- [Live Server](#live-server)
 - [Author / Why I Built This](#author--why-i-built-this)
 
 ### The Core Problem: Misinformation
@@ -52,6 +53,9 @@ Allows viewers to easily see where the weakness in a flawed narrative is
 - Claims, proofs, and links  
     - Recursive claims, so that each claim has other claims that prove it underneath it
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
+
+### Live Server
+Coming soon (hopefully)
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulate a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
