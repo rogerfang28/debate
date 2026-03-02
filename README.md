@@ -24,7 +24,7 @@ Over time, the tool becomes a hub of verified information. The next time that in
 <img width="1903" height="937" alt="Screenshot 2026-03-01 193838" src="https://github.com/user-attachments/assets/2f6cf379-0be1-4607-9e58-bc0945df63a8" />
 
 ### Creating A Claim:
-Menu:
+Menu:\n
 <img width="1901" height="937" alt="Screenshot 2026-03-01 194205" src="https://github.com/user-attachments/assets/3737f9e7-62a1-42e3-a8e9-d2c9c4766d59" />
 Result:
 <img width="1035" height="299" alt="Screenshot 2026-03-01 194237" src="https://github.com/user-attachments/assets/229a56ef-cc35-4818-8b20-683fb8dae5af" />
