@@ -47,9 +47,11 @@ Result:
 Menu:
 
 <img width="1896" height="940" alt="image" src="https://github.com/user-attachments/assets/b7138776-0264-4ba4-8cc1-8c7ef9193187" />
+
 Result:
 
 <img width="449" height="321" alt="image" src="https://github.com/user-attachments/assets/74e5b7ba-af65-45cb-bfcd-aa1d81cc7d7b" />
+
 New Challenge Debate Created:
 
 <img width="1900" height="937" alt="image" src="https://github.com/user-attachments/assets/d67bc0d7-7801-43c3-87f0-7c1830694bda" />
