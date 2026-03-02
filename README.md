@@ -19,6 +19,18 @@ An influencer might talk for hours to build a complex story. My tool cuts throug
 Over time, the tool becomes a hub of verified information. The next time that influencer gives a long speech, the audience can simply search the tool to find the exact rebuttal and the evidence proving them wrong.
 
 ## Demo (video may be provided later when tool is at MVP)
+
+### Creating A Debate
+<img width="1903" height="937" alt="Screenshot 2026-03-01 193838" src="https://github.com/user-attachments/assets/2f6cf379-0be1-4607-9e58-bc0945df63a8" />
+<img width="1903" height="937" alt="Screenshot 2026-03-01 193838" src="https://github.com/user-attachments/assets/2f6cf379-0be1-4607-9e58-bc0945df63a8" />
+
+
+### Creating A Claim:
+
+### Linking Claims:
+
+### Challenging A Claim:
+
 Images taken from testing of the tool:
 <img width="1903" height="902" alt="image" src="https://github.com/user-attachments/assets/51b76535-c8eb-4ee3-92cd-84c457e1f2c0" />
 <img width="1899" height="895" alt="image" src="https://github.com/user-attachments/assets/bd832b5b-7e78-4618-9bfd-8a0eb752dfe1" />
