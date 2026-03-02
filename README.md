@@ -55,7 +55,7 @@ Allows viewers to easily see where the weakness in a flawed narrative is
 - New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
 
 ### Live Server
-Coming soon (hopefully)
+work in progress
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulate a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
