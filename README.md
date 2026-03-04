@@ -22,7 +22,7 @@ Over time, the tool becomes a hub of verified information. The next time that in
 [View Debate Tool Demo](./demo.md)
 
 ## Live Server
-### work in progress
+### (work in progress)
 
 ## Example Usage (WIP)
 Example Topic: Should you vaccinate your children?
