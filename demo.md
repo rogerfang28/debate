@@ -1,6 +1,6 @@
 # Demo Page:
 
-# Simple Case Example Narrative: Do not vaccinate your children, the mercury in vaccines cause harmful effects.
+# Simple Case Example Narrative: Child Vaccination and Mercury
 <img width="1904" height="934" alt="Screenshot 2026-03-03 181252" src="https://github.com/user-attachments/assets/b3a1a0de-2706-4ff6-9e55-a949e3c16be6" />
 
 # Here is the debate page representation of this simple mock debate.
