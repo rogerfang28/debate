@@ -8,7 +8,7 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 - [Live Server](#live-server)
 - [Author / Why I Built This](#author--why-i-built-this)
 
-### The Core Problem: Misinformation
+## The Core Problem: Misinformation
 Misinformation is a prominent problem in the world today. For example, there are people advising against vaccination, which could lead to kids dying, yet current fact-checking tools fail by forcing blind trust in conflicting sources.
 My tool addresses the spread of misinformation by mapping debates onto a 2D graph, creating a system of structural accountability that prevents users from dodging difficult facts.
 By enforcing strict challenge rules that require debaters to directly answer counter-evidence or admit defeat, the platform cuts through manipulation to provide audiences with a clear, verified map of the truth.
@@ -18,42 +18,13 @@ My tool guarantees a fair debate where every claim is tested for the truth. By b
 An influencer might talk for hours to build a complex story. My tool cuts through the chaos to pinpoint the core truth for users: "Mercury might be harmful, but there is no mercury in vaccines." 
 Over time, the tool becomes a hub of verified information. The next time that influencer gives a long speech, the audience can simply search the tool to find the exact rebuttal and the evidence proving them wrong.
 
-## Demo (images)
-[View Debate Tool Demo](./demo.md)
+# Demo (images)
+#[View Debate Tool Demo](./demo.md)
 
-## Live Server
+# Live Server
 ### (work in progress)
 
-## Example Usage (WIP)
-Example Topic: Should you vaccinate your children?
-
-The tool will allow users to challenge illogical parts of a narrative
-- RFK Jr makes the claim “vaccines cause autism” and doesn't provide proof
-    - Challenge the claim to force opponent to provide proof, and they must respond to this challenge (very simple)
-        - You are able to explain how this statement is not logical as there is no reason why it would be correct. If they provide evidence, it's even possible to break down and show exactly why it doesn't stand.
-        - This is a simple case, which can be disproven quite easily by many tools including mine
-
-Allows user to change opponent's argument into an equivalent one that is easier to challenge 
-- Opponent claims “natural immunity is better than vaccines, so you shouldn’t vaccinate your children”
-    - Challenge it and change it to a more scientific form so it is objective and can be proven true or false
-        - “If this claim is true, then that means that children who take vaccines are more likely to die than children who don’t take it, correct?”
-        - This can be easily proven by comparing data
-            - Now what if they think the data is false? Then continue the debate on that point, because if it's false you lose, if it's true, you win. The debate has shrunk to a smaller form to prove one point which will logically conclude the argument.
-
-Allows viewers to easily see where the weakness in a flawed narrative is
-- Opponent claims “do not use vaccines because they contain mercury, which causes autism”
-    - This claim I believe is false, so I must be able to prove some substatement is false
-        - Substatements are like: Mercury causes autism. Vaccines have mercury.
-        - I can disprove vaccines having mercury or at least enough to harm people.
-    - Point out the main flaw of this claim to be “the thimerosal in vaccines has been researched to not cause side effects like autism or any other serious effect”
-    - It's easier to see the proof of one smaller claim that breaks down the larger claim, than to address the larger claim immediately
-
-## Technical Details
-- Debates as graphs (somewhat like trees, with child claims helping to prove the parent claim)
-- Challenges create sub-debates  
-- Claims, proofs, and links  
-    - Recursive claims, so that each claim has other claims that prove it underneath it
-- New features in the future, ai incorporation, summaries of debates, more limitations to make sure people have to address points made
+#[More Detailed Overview](.details.md)
 
 ## Author / Why I Built This
 I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulate a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
