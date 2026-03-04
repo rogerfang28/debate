@@ -2,7 +2,7 @@ DebateTool (placeholder name) — Structured Logical Debate Platform
 
 ## Table of Contents
 - [The Core Problem: Misinformation](#the-core-problem-misinformation)
-- [Demo](#demo-(images))
+- [Demo](#demo-images)
 - [Live Server](#live-server)
 - [Author / Why I Built This](#author--why-i-built-this)
 
