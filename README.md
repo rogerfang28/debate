@@ -18,7 +18,7 @@ My tool guarantees a fair debate where every claim is tested for the truth. By b
 An influencer might talk for hours to build a complex story. My tool cuts through the chaos to pinpoint the core truth for users: "Mercury might be harmful, but there is no mercury in vaccines." 
 Over time, the tool becomes a hub of verified information. The next time that influencer gives a long speech, the audience can simply search the tool to find the exact rebuttal and the evidence proving them wrong.
 
-## Demo (video may be provided later when tool is at MVP)
+## Demo (images)
 [View Debate Tool Demo](./demo.md)
 
 ## Example Usage (WIP)
