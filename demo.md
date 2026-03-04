@@ -1,28 +1,23 @@
-### Creating A Debate
-Home Page:
+# Demo Page:
 
-<img width="1903" height="937" alt="Screenshot 2026-03-01 193838" src="https://github.com/user-attachments/assets/2f6cf379-0be1-4607-9e58-bc0945df63a8" />
+## Simple Case Example Narrative: Do not vaccinate your children, the mercury in vaccines cause harmful effects.
+<img width="1904" height="934" alt="Screenshot 2026-03-03 181252" src="https://github.com/user-attachments/assets/b3a1a0de-2706-4ff6-9e55-a949e3c16be6" />
 
-### Creating A Claim:
-Menu:
-
-<img width="1901" height="937" alt="Screenshot 2026-03-01 194205" src="https://github.com/user-attachments/assets/3737f9e7-62a1-42e3-a8e9-d2c9c4766d59" />
-
-### Linking Claims:
-Menu:
-
-<img width="789" height="584" alt="Screenshot 2026-03-01 194351" src="https://github.com/user-attachments/assets/bb51cd41-eb97-4eea-8c9c-f0a8c5a30dca" />
+## Here is the debate page representation of this simple mock debate.
+<img width="1897" height="942" alt="Screenshot 2026-03-03 181519" src="https://github.com/user-attachments/assets/1898a09e-c530-4dd9-acea-3a131b1f24cb" />
 
 
-### Challenging A Claim:
-Menu:
+## Someone sees this and challenges the claim that vaccines contain mercury, and provides proof inside the challenge (shown later)
+<img width="1901" height="940" alt="Screenshot 2026-03-03 181606" src="https://github.com/user-attachments/assets/815b979b-19bb-4126-98c2-66d1facf3fbf" />
 
-<img width="1896" height="940" alt="image" src="https://github.com/user-attachments/assets/b7138776-0264-4ba4-8cc1-8c7ef9193187" />
 
-New Challenge Debate Created:
+## In this image, is the challenge’s debate, which is a new proof to validate the challenge. The opposing side counter-challenged this challenge, making the other person defend the new challenge. 
+<img width="1895" height="931" alt="Screenshot 2026-03-03 181908" src="https://github.com/user-attachments/assets/11dc62c1-4107-4c3a-9d61-42ffbc84133b" />
 
-<img width="1900" height="937" alt="image" src="https://github.com/user-attachments/assets/d67bc0d7-7801-43c3-87f0-7c1830694bda" />
 
-### Example Debate Page
+## However, in this case the challenge is not valid and the opponent would have to withdraw the claim and rebuild their narrative without the false claim:
+<img width="1898" height="944" alt="Screenshot 2026-03-03 182022" src="https://github.com/user-attachments/assets/78a768f0-4c7e-4bfa-8613-e75004668675" />
 
-<img width="1897" height="902" alt="image" src="https://github.com/user-attachments/assets/9ce2f64e-4465-4716-b415-379a04c8ebf1" />
+## The top claim is not proven, and the debate can continue from there until one side wins.
+<img width="1898" height="935" alt="Screenshot 2026-03-03 182209" src="https://github.com/user-attachments/assets/49e6ab66-6f66-4fb7-a11f-7cb006e4e08b" />
+<img width="1903" height="939" alt="Screenshot 2026-03-03 182241" src="https://github.com/user-attachments/assets/3de88ea2-ec09-416c-900e-7d8ca3d0e764" />
