@@ -25,4 +25,4 @@ Over time, the tool becomes a hub of verified information. The next time that in
 [More Detailed Overview](.details.md)
 
 ## Author / Why I Built This
-I built this project to solve a real world problem; in politics today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulate a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
+I built this project to solve a real world problem; in the world today, many figures make false claims, take actions to benefit themselves while pretending it benefits everyone, and manipulate a group of people to support them. The goal of this tool is to make it the easiest to see the TRUTH, and hardest for people to spread lies, as the holes in those lies can be pointed out and debunked.
