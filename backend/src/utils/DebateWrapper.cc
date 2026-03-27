@@ -554,9 +554,9 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
                 
                 for (const auto& challengeId : challenges) {
                     debate::Challenge challenge = getChallengeProtobuf(challengeId);
-                    if (challenge.status() == debate::ChallengeStatus::UNRESOLVED) {
+                    if (challenge.status() == debate::ChallengeStatus::ONGOING) {
                         hasUnresolved = true;
-                    } else if (challenge.status() == debate::ChallengeStatus::SUCCESSFUL) {
+                    } else if (challenge.status() == debate::ChallengeStatus::PROVEN) {
                         hasSuccessful = true;
                     }
                 }

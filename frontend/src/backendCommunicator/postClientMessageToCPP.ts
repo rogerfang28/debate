@@ -7,6 +7,8 @@ import {
 } from "../../../src/gen/ts/client_message_pb";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 export interface EventData {
   componentId?: string;
   eventType?: string;
@@ -70,16 +72,15 @@ export default async function postClientMessageToCPP(
     // Encode protobuf
     const bytes = toBinary(ClientMessageSchema, clientMessage);
 
-    // POST to C++ server root (default http(s)://<host>:8080/)
-    const endpoint =
-      opts?.endpoint ?? `${location.protocol}//${location.hostname}:8080/clientmessage`;
+    // POST to C++ server using configured API base
+    const endpoint = opts?.endpoint ?? `${API_BASE}/clientmessage`;
 
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/x-protobuf" },
       body: bytes as BodyInit,
       cache: "no-store",
-      credentials: "include", // Always include cookies
+      credentials: opts?.withCredentials === false ? "omit" : "include",
     });
 
     if (!res.ok) {

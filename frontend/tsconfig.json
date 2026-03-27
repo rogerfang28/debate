@@ -9,6 +9,7 @@
     /* Modules */
     "module": "ESNext",                                  /* Use modern ES modules */
     "moduleResolution": "bundler",                       /* Use Vite's bundler resolution */
+    "types": ["vite/client"],                            /* Add Vite import.meta.env typings */
     "allowImportingTsExtensions": true,                  /* Allow .ts/.tsx imports */
     "resolveJsonModule": true,                           /* Allow importing JSON files */
 
