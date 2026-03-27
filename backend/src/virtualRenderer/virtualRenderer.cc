@@ -46,9 +46,14 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
 
 void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
+    int resolvedUserId = parseCookie::extractUserIdFromCookies(req);
+    std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
+
     if (evt.type() == debate_event::LOGOUT) {
         Log::debug("[VirtualRenderer] Logout event detected, clearing req cookies.");
         parseCookie::clearAuthCookies(res);
+        resolvedUserId = 0;
+        resolvedUsername = "";
     }
     else if (evt.type() == debate_event::LOGIN) {
         Log::debug("[VirtualRenderer] Login event detected, login the user with cookies.");
@@ -61,15 +66,14 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
         // this ensures a user exists
         parseCookie::setCookieUserId(res, userId);
         parseCookie::setCookieUsername(res, evt.login().username());
+
+        // Apply authenticated identity for this same request, not only future requests.
+        resolvedUserId = userId;
+        resolvedUsername = evt.login().username();
     }
 
     // add login info to the event
-    evt.mutable_user()->set_user_id(parseCookie::extractUserIdFromCookies(req));
-    evt.mutable_user()->set_username(parseCookie::extractUsernameFromCookies(req));
-    if (evt.mutable_user()->username() != "" && evt.mutable_user()->user_id() != -1 && evt.mutable_user()->user_id() != 0)  { 
-        // scuffed hardcode
-        evt.mutable_user()->set_is_logged_in(true);
-    } else {
-        evt.mutable_user()->set_is_logged_in(false);
-    }
+    evt.mutable_user()->set_user_id(resolvedUserId);
+    evt.mutable_user()->set_username(resolvedUsername);
+    evt.mutable_user()->set_is_logged_in(!resolvedUsername.empty() && resolvedUserId > 0);
 }

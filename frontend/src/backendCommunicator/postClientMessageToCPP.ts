@@ -37,7 +37,7 @@ export default async function postClientMessageToCPP(
     console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
 
     // Extract page ID (stored with special _pageId key)
-    const pageId = eventData.data?._pageId as string || "unknown-page";
+    const pageId = eventData.data?._pageId as string || "login";
     
     // Build list of ComponentData from the page data (excluding _pageId)
     const components = Object.entries(eventData.data || {})
@@ -58,8 +58,9 @@ export default async function postClientMessageToCPP(
 
     // Build ClientMessage with event + page state
     const clientMessage = create(ClientMessageSchema, {
-      componentId: eventData.componentId || "unknown",
-      eventType: eventData.eventName || "click",
+      // Empty defaults intentionally encode a no-op message for initial polling.
+      componentId: eventData.componentId ?? "",
+      eventType: eventData.eventType ?? eventData.eventName ?? "",
       pageData,
     });
 
