@@ -23,7 +23,7 @@ enum ClaimStatus {
   NEUTRAL = 0; // unchallenged, default
   CHALLENGED = 1; // currently challenged
   DEFENDED = 2; // successfully defended against a challenge
-  CONCEDED = 3; // conceded to a challenge
+  DISPROVEN = 3; // disproven by a challenge
 }
 
 message ClaimState {
@@ -39,12 +39,20 @@ message Link {
 }
 
 message Challenge {
-  int32 challenged_parent_claim_id = 6;
-  repeated int32 challenged_claim_ids = 1;
-  repeated int32 challenged_link_ids = 2;
-  string challenge_sentence = 3;
-  int32 challenger_id = 4; // creator id
-  int32 proof_debate_id = 5;
+  int32 id = 1;
+  ChallengeStatus status = 2;
+  int32 challenged_parent_claim_id = 3;
+  repeated int32 challenged_claim_ids = 4;
+  repeated int32 challenged_link_ids = 5;
+  string challenge_sentence = 6;
+  int32 challenger_id = 7; // creator id
+  int32 proof_debate_id = 8;
+}
+
+enum ChallengeStatus {
+  ONGOING = 0; // challenge is ongoing
+  CONCEDED = 1; // challenge has been conceded
+  PROVEN = 2; // challenge successfully defended
 }
 
 message Proof {

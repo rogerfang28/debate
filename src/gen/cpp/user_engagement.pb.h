@@ -1761,6 +1761,7 @@ class ChallengeInfo final : public ::google::protobuf::Message
     kSentenceFieldNumber = 2,
     kIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
+    kStatusFieldNumber = 4,
   };
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
@@ -1798,12 +1799,22 @@ class ChallengeInfo final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // .debate.ChallengeStatus status = 4 [json_name = "status"];
+  void clear_status() ;
+  ::debate::ChallengeStatus status() const;
+  void set_status(::debate::ChallengeStatus value);
+
+  private:
+  ::debate::ChallengeStatus _internal_status() const;
+  void _internal_set_status(::debate::ChallengeStatus value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.ChallengeInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       46, 2>
       _table_;
 
@@ -1824,6 +1835,7 @@ class ChallengeInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::int32_t id_;
     ::int32_t creator_id_;
+    int status_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -5432,6 +5444,28 @@ inline ::int32_t ChallengeInfo::_internal_creator_id() const {
 inline void ChallengeInfo::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
+}
+
+// .debate.ChallengeStatus status = 4 [json_name = "status"];
+inline void ChallengeInfo::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::debate::ChallengeStatus ChallengeInfo::status() const {
+  // @@protoc_insertion_point(field_get:user_engagement.ChallengeInfo.status)
+  return _internal_status();
+}
+inline void ChallengeInfo::set_status(::debate::ChallengeStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:user_engagement.ChallengeInfo.status)
+}
+inline ::debate::ChallengeStatus ChallengeInfo::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::ChallengeStatus>(_impl_.status_);
+}
+inline void ChallengeInfo::_internal_set_status(::debate::ChallengeStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
 }
 
 #ifdef __GNUC__

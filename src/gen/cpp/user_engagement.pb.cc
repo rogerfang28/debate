@@ -215,6 +215,7 @@ inline constexpr ChallengeInfo::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         id_{0},
         creator_id_{0},
+        status_{static_cast< ::debate::ChallengeStatus >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -556,6 +557,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.sentence_),
         PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.creator_id_),
+        PROTOBUF_FIELD_OFFSET(::user_engagement::ChallengeInfo, _impl_.status_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -659,12 +661,13 @@ const char descriptor_table_protodef_user_5fengagement_2eproto[] ABSL_ATTRIBUTE_
     "\n\014connect_from\030\002 \001(\005R\013connectFrom\022\035\n\ncon"
     "nect_to\030\003 \001(\005R\tconnectTo\022\036\n\nconnection\030\004"
     " \001(\tR\nconnection\022\035\n\ncreator_id\030\005 \001(\005R\tcr"
-    "eatorId\"Z\n\rChallengeInfo\022\016\n\002id\030\001 \001(\005R\002id"
-    "\022\032\n\010sentence\030\002 \001(\tR\010sentence\022\035\n\ncreator_"
-    "id\030\003 \001(\005R\tcreatorId*m\n\020EngagementAction\022"
-    "!\n\035ENGAGEMENT_ACTION_UNSPECIFIED\020\000\022\017\n\013AC"
-    "TION_HOME\020\001\022\023\n\017ACTION_DEBATING\020\002\022\020\n\014ACTI"
-    "ON_LOGIN\020\003b\006proto3"
+    "eatorId\"\213\001\n\rChallengeInfo\022\016\n\002id\030\001 \001(\005R\002i"
+    "d\022\032\n\010sentence\030\002 \001(\tR\010sentence\022\035\n\ncreator"
+    "_id\030\003 \001(\005R\tcreatorId\022/\n\006status\030\004 \001(\0162\027.d"
+    "ebate.ChallengeStatusR\006status*m\n\020Engagem"
+    "entAction\022!\n\035ENGAGEMENT_ACTION_UNSPECIFI"
+    "ED\020\000\022\017\n\013ACTION_HOME\020\001\022\023\n\017ACTION_DEBATING"
+    "\020\002\022\020\n\014ACTION_LOGIN\020\003b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_user_5fengagement_2eproto_deps[1] =
     {
@@ -674,7 +677,7 @@ static ::absl::once_flag descriptor_table_user_5fengagement_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_5fengagement_2eproto = {
     false,
     false,
-    3018,
+    3068,
     descriptor_table_protodef_user_5fengagement_2eproto,
     "user_engagement.proto",
     &descriptor_table_user_5fengagement_2eproto_once,
@@ -4639,9 +4642,9 @@ ChallengeInfo::ChallengeInfo(
                offsetof(Impl_, id_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, id_),
-           offsetof(Impl_, creator_id_) -
+           offsetof(Impl_, status_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::creator_id_));
+               sizeof(Impl_::status_));
 
   // @@protoc_insertion_point(copy_constructor:user_engagement.ChallengeInfo)
 }
@@ -4656,9 +4659,9 @@ inline void ChallengeInfo::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, id_),
            0,
-           offsetof(Impl_, creator_id_) -
+           offsetof(Impl_, status_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::creator_id_));
+               sizeof(Impl_::status_));
 }
 ChallengeInfo::~ChallengeInfo() {
   // @@protoc_insertion_point(destructor:user_engagement.ChallengeInfo)
@@ -4708,15 +4711,15 @@ const ::google::protobuf::internal::ClassData* ChallengeInfo::GetClassData() con
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 46, 2> ChallengeInfo::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 46, 2> ChallengeInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -4726,7 +4729,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 46, 2> ChallengeInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::user_engagement::ChallengeInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // .debate.ChallengeStatus status = 4 [json_name = "status"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeInfo, _impl_.status_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.status_)}},
     // int32 id = 1 [json_name = "id"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeInfo, _impl_.id_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.id_)}},
@@ -4748,6 +4753,9 @@ const ::_pbi::TcParseTable<2, 3, 0, 46, 2> ChallengeInfo::_table_ = {
     // int32 creator_id = 3 [json_name = "creatorId"];
     {PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.creator_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // .debate.ChallengeStatus status = 4 [json_name = "status"];
+    {PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.status_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -4766,8 +4774,8 @@ PROTOBUF_NOINLINE void ChallengeInfo::Clear() {
 
   _impl_.sentence_.ClearToEmpty();
   ::memset(&_impl_.id_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.creator_id_) -
-      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.creator_id_));
+      reinterpret_cast<char*>(&_impl_.status_) -
+      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.status_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -4806,6 +4814,13 @@ PROTOBUF_NOINLINE void ChallengeInfo::Clear() {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<3>(
                     stream, this_._internal_creator_id(), target);
+          }
+
+          // .debate.ChallengeStatus status = 4 [json_name = "status"];
+          if (this_._internal_status() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                4, this_._internal_status(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -4848,6 +4863,11 @@ PROTOBUF_NOINLINE void ChallengeInfo::Clear() {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_creator_id());
             }
+            // .debate.ChallengeStatus status = 4 [json_name = "status"];
+            if (this_._internal_status() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_status());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -4870,6 +4890,9 @@ void ChallengeInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::g
   if (from._internal_creator_id() != 0) {
     _this->_impl_.creator_id_ = from._impl_.creator_id_;
   }
+  if (from._internal_status() != 0) {
+    _this->_impl_.status_ = from._impl_.status_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4888,8 +4911,8 @@ void ChallengeInfo::InternalSwap(ChallengeInfo* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sentence_, &other->_impl_.sentence_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.creator_id_)
-      + sizeof(ChallengeInfo::_impl_.creator_id_)
+      PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.status_)
+      + sizeof(ChallengeInfo::_impl_.status_)
       - PROTOBUF_FIELD_OFFSET(ChallengeInfo, _impl_.id_)>(
           reinterpret_cast<char*>(&_impl_.id_),
           reinterpret_cast<char*>(&other->_impl_.id_));

@@ -84,7 +84,7 @@ enum ClaimStatus : int {
   NEUTRAL = 0,
   CHALLENGED = 1,
   DEFENDED = 2,
-  CONCEDED = 3,
+  DISPROVEN = 3,
   ClaimStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ClaimStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -114,6 +114,40 @@ inline const std::string& ClaimStatus_Name(ClaimStatus value) {
 inline bool ClaimStatus_Parse(absl::string_view name, ClaimStatus* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ClaimStatus>(
       ClaimStatus_descriptor(), name, value);
+}
+enum ChallengeStatus : int {
+  ONGOING = 0,
+  CONCEDED = 1,
+  PROVEN = 2,
+  ChallengeStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ChallengeStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ChallengeStatus_IsValid(int value);
+extern const uint32_t ChallengeStatus_internal_data_[];
+constexpr ChallengeStatus ChallengeStatus_MIN = static_cast<ChallengeStatus>(0);
+constexpr ChallengeStatus ChallengeStatus_MAX = static_cast<ChallengeStatus>(2);
+constexpr int ChallengeStatus_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+ChallengeStatus_descriptor();
+template <typename T>
+const std::string& ChallengeStatus_Name(T value) {
+  static_assert(std::is_same<T, ChallengeStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ChallengeStatus_Name().");
+  return ChallengeStatus_Name(static_cast<ChallengeStatus>(value));
+}
+template <>
+inline const std::string& ChallengeStatus_Name(ChallengeStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ChallengeStatus_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool ChallengeStatus_Parse(absl::string_view name, ChallengeStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ChallengeStatus>(
+      ChallengeStatus_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -719,14 +753,16 @@ class Challenge final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChallengedClaimIdsFieldNumber = 1,
-    kChallengedLinkIdsFieldNumber = 2,
-    kChallengeSentenceFieldNumber = 3,
-    kChallengerIdFieldNumber = 4,
-    kProofDebateIdFieldNumber = 5,
-    kChallengedParentClaimIdFieldNumber = 6,
+    kChallengedClaimIdsFieldNumber = 4,
+    kChallengedLinkIdsFieldNumber = 5,
+    kChallengeSentenceFieldNumber = 6,
+    kIdFieldNumber = 1,
+    kStatusFieldNumber = 2,
+    kChallengedParentClaimIdFieldNumber = 3,
+    kChallengerIdFieldNumber = 7,
+    kProofDebateIdFieldNumber = 8,
   };
-  // repeated int32 challenged_claim_ids = 1 [json_name = "challengedClaimIds"];
+  // repeated int32 challenged_claim_ids = 4 [json_name = "challengedClaimIds"];
   int challenged_claim_ids_size() const;
   private:
   int _internal_challenged_claim_ids_size() const;
@@ -744,7 +780,7 @@ class Challenge final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_challenged_claim_ids();
 
   public:
-  // repeated int32 challenged_link_ids = 2 [json_name = "challengedLinkIds"];
+  // repeated int32 challenged_link_ids = 5 [json_name = "challengedLinkIds"];
   int challenged_link_ids_size() const;
   private:
   int _internal_challenged_link_ids_size() const;
@@ -762,7 +798,7 @@ class Challenge final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_challenged_link_ids();
 
   public:
-  // string challenge_sentence = 3 [json_name = "challengeSentence"];
+  // string challenge_sentence = 6 [json_name = "challengeSentence"];
   void clear_challenge_sentence() ;
   const std::string& challenge_sentence() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -778,27 +814,27 @@ class Challenge final : public ::google::protobuf::Message
   std::string* _internal_mutable_challenge_sentence();
 
   public:
-  // int32 challenger_id = 4 [json_name = "challengerId"];
-  void clear_challenger_id() ;
-  ::int32_t challenger_id() const;
-  void set_challenger_id(::int32_t value);
+  // int32 id = 1 [json_name = "id"];
+  void clear_id() ;
+  ::int32_t id() const;
+  void set_id(::int32_t value);
 
   private:
-  ::int32_t _internal_challenger_id() const;
-  void _internal_set_challenger_id(::int32_t value);
+  ::int32_t _internal_id() const;
+  void _internal_set_id(::int32_t value);
 
   public:
-  // int32 proof_debate_id = 5 [json_name = "proofDebateId"];
-  void clear_proof_debate_id() ;
-  ::int32_t proof_debate_id() const;
-  void set_proof_debate_id(::int32_t value);
+  // .debate.ChallengeStatus status = 2 [json_name = "status"];
+  void clear_status() ;
+  ::debate::ChallengeStatus status() const;
+  void set_status(::debate::ChallengeStatus value);
 
   private:
-  ::int32_t _internal_proof_debate_id() const;
-  void _internal_set_proof_debate_id(::int32_t value);
+  ::debate::ChallengeStatus _internal_status() const;
+  void _internal_set_status(::debate::ChallengeStatus value);
 
   public:
-  // int32 challenged_parent_claim_id = 6 [json_name = "challengedParentClaimId"];
+  // int32 challenged_parent_claim_id = 3 [json_name = "challengedParentClaimId"];
   void clear_challenged_parent_claim_id() ;
   ::int32_t challenged_parent_claim_id() const;
   void set_challenged_parent_claim_id(::int32_t value);
@@ -808,13 +844,33 @@ class Challenge final : public ::google::protobuf::Message
   void _internal_set_challenged_parent_claim_id(::int32_t value);
 
   public:
+  // int32 challenger_id = 7 [json_name = "challengerId"];
+  void clear_challenger_id() ;
+  ::int32_t challenger_id() const;
+  void set_challenger_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_challenger_id() const;
+  void _internal_set_challenger_id(::int32_t value);
+
+  public:
+  // int32 proof_debate_id = 8 [json_name = "proofDebateId"];
+  void clear_proof_debate_id() ;
+  ::int32_t proof_debate_id() const;
+  void set_proof_debate_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_proof_debate_id() const;
+  void _internal_set_proof_debate_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.Challenge)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 0,
-      43, 2>
+      3, 8, 0,
+      51, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -836,9 +892,11 @@ class Challenge final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedField<::int32_t> challenged_link_ids_;
     ::google::protobuf::internal::CachedSize _challenged_link_ids_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr challenge_sentence_;
+    ::int32_t id_;
+    int status_;
+    ::int32_t challenged_parent_claim_id_;
     ::int32_t challenger_id_;
     ::int32_t proof_debate_id_;
-    ::int32_t challenged_parent_claim_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2411,7 +2469,51 @@ inline void Link::_internal_set_creator_id(::int32_t value) {
 
 // Challenge
 
-// int32 challenged_parent_claim_id = 6 [json_name = "challengedParentClaimId"];
+// int32 id = 1 [json_name = "id"];
+inline void Challenge::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = 0;
+}
+inline ::int32_t Challenge::id() const {
+  // @@protoc_insertion_point(field_get:debate.Challenge.id)
+  return _internal_id();
+}
+inline void Challenge::set_id(::int32_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:debate.Challenge.id)
+}
+inline ::int32_t Challenge::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_;
+}
+inline void Challenge::_internal_set_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = value;
+}
+
+// .debate.ChallengeStatus status = 2 [json_name = "status"];
+inline void Challenge::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::debate::ChallengeStatus Challenge::status() const {
+  // @@protoc_insertion_point(field_get:debate.Challenge.status)
+  return _internal_status();
+}
+inline void Challenge::set_status(::debate::ChallengeStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:debate.Challenge.status)
+}
+inline ::debate::ChallengeStatus Challenge::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::ChallengeStatus>(_impl_.status_);
+}
+inline void Challenge::_internal_set_status(::debate::ChallengeStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// int32 challenged_parent_claim_id = 3 [json_name = "challengedParentClaimId"];
 inline void Challenge::clear_challenged_parent_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenged_parent_claim_id_ = 0;
@@ -2433,7 +2535,7 @@ inline void Challenge::_internal_set_challenged_parent_claim_id(::int32_t value)
   _impl_.challenged_parent_claim_id_ = value;
 }
 
-// repeated int32 challenged_claim_ids = 1 [json_name = "challengedClaimIds"];
+// repeated int32 challenged_claim_ids = 4 [json_name = "challengedClaimIds"];
 inline int Challenge::_internal_challenged_claim_ids_size() const {
   return _internal_challenged_claim_ids().size();
 }
@@ -2478,7 +2580,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::_internal_mutabl
   return &_impl_.challenged_claim_ids_;
 }
 
-// repeated int32 challenged_link_ids = 2 [json_name = "challengedLinkIds"];
+// repeated int32 challenged_link_ids = 5 [json_name = "challengedLinkIds"];
 inline int Challenge::_internal_challenged_link_ids_size() const {
   return _internal_challenged_link_ids().size();
 }
@@ -2523,7 +2625,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::_internal_mutabl
   return &_impl_.challenged_link_ids_;
 }
 
-// string challenge_sentence = 3 [json_name = "challengeSentence"];
+// string challenge_sentence = 6 [json_name = "challengeSentence"];
 inline void Challenge::clear_challenge_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenge_sentence_.ClearToEmpty();
@@ -2571,7 +2673,7 @@ inline void Challenge::set_allocated_challenge_sentence(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Challenge.challenge_sentence)
 }
 
-// int32 challenger_id = 4 [json_name = "challengerId"];
+// int32 challenger_id = 7 [json_name = "challengerId"];
 inline void Challenge::clear_challenger_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenger_id_ = 0;
@@ -2593,7 +2695,7 @@ inline void Challenge::_internal_set_challenger_id(::int32_t value) {
   _impl_.challenger_id_ = value;
 }
 
-// int32 proof_debate_id = 5 [json_name = "proofDebateId"];
+// int32 proof_debate_id = 8 [json_name = "proofDebateId"];
 inline void Challenge::clear_proof_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.proof_debate_id_ = 0;
@@ -3023,6 +3125,12 @@ struct is_proto_enum<::debate::ClaimStatus> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::debate::ClaimStatus>() {
   return ::debate::ClaimStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::debate::ChallengeStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::ChallengeStatus>() {
+  return ::debate::ChallengeStatus_descriptor();
 }
 
 }  // namespace protobuf

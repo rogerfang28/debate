@@ -58,6 +58,7 @@ public:
     void deleteChallenge(const int& challengeId);
     std::vector<int> getChallengesAgainstClaim(const int& claimId);
     debate::Challenge getChallengeProtobuf(int challengeId);
+    void updateChallengeProtobuf(const int& challengeId, const debate::Challenge& challengeProto);
     int initNewProofDebate(
         const std::string& challengeSentence,
         const int& creator_id,
@@ -69,6 +70,7 @@ public:
 
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
+    void UpdateStatusOfAllClaimsInDebate(const int& debate_id);
 
 private:
     DatabaseWrapper& databaseWrapper;

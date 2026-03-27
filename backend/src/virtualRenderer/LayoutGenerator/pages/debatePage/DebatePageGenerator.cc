@@ -5,7 +5,7 @@
 ui::Page DebatePageGenerator::GenerateDebatePage(user::User user) {
     ui::Page page;
     page.set_page_id("debate");
-    page.set_title("Debate View");
+    page.set_title("Debate View: Debate ID " + std::to_string(user.engagement().debating_info().debate_id()));
 
     // Main layout container
     ui::Component mainLayout = GenerateDebatePageMainLayout();
@@ -498,7 +498,7 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
             case debate::ClaimStatus::CHALLENGED:
                 borderColor = "border-2 border-orange-500";
                 break;
-            case debate::ClaimStatus::CONCEDED:
+            case debate::ClaimStatus::DISPROVEN:
                 borderColor = "border-2 border-red-500";
                 break;
             case debate::ClaimStatus::DEFENDED:
@@ -520,8 +520,8 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
                 statusText = "Challenged";
                 statusTextColor = "text-orange-500";
                 break;
-            case debate::ClaimStatus::CONCEDED:
-                statusText = "Conceded";
+            case debate::ClaimStatus::DISPROVEN:
+                statusText = "Disproven";
                 statusTextColor = "text-red-500";
                 break;
             case debate::ClaimStatus::DEFENDED:
@@ -844,10 +844,10 @@ ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     
-    std::vector<std::map<std::string, std::string>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int, debate::ChallengeStatus>> challengesInfo;
     for (int i = 0; i < debatingInfo.current_challenges_size(); i++) {
         const user_engagement::ChallengeInfo& challenge = debatingInfo.current_challenges(i);
-        challengesInfo.push_back({{"id", std::to_string(challenge.id())}, {"sentence", challenge.sentence()}, {"creator_id", std::to_string(challenge.creator_id())}});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.status()});
     }
 
     // Find challengesContainer
@@ -884,20 +884,70 @@ ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component
 
     // Populate challenges
     for (const auto& challenge : challengesInfo) {
-        std::string challengeId = challenge.at("id");
-        std::string challengeSentence = challenge.at("sentence");
-        int challengeCreatorId = std::stoi(challenge.at("creator_id"));
-        bool userOwnsChallenge = (currentUserId == challengeCreatorId);        
+        std::string challengeId = std::get<0>(challenge);
+        std::string challengeSentence = std::get<1>(challenge);
+        int challengeCreatorId = std::get<2>(challenge);
+        debate::ChallengeStatus challengeStatus = std::get<3>(challenge);
+        bool userOwnsChallenge = (currentUserId == challengeCreatorId);
+        
+        // Determine colors based on status
+        std::string bgColor, borderColor, buttonBgColor, buttonHoverColor, statusText, statusTextColor;
+        switch (challengeStatus) {
+            case debate::ChallengeStatus::ONGOING:
+                bgColor = "bg-orange-600";
+                borderColor = "border-2 border-orange-500";
+                buttonBgColor = "bg-orange-700";
+                buttonHoverColor = "hover:bg-orange-800";
+                statusText = "Ongoing";
+                statusTextColor = "text-orange-300";
+                break;
+            case debate::ChallengeStatus::CONCEDED:
+                bgColor = "bg-gray-600";
+                borderColor = "border-2 border-gray-500";
+                buttonBgColor = "bg-gray-700";
+                buttonHoverColor = "hover:bg-gray-800";
+                statusText = "Conceded";
+                statusTextColor = "text-gray-300";
+                break;
+            case debate::ChallengeStatus::PROVEN:
+                bgColor = "bg-green-600";
+                borderColor = "border-2 border-green-500";
+                buttonBgColor = "bg-green-700";
+                buttonHoverColor = "hover:bg-green-800";
+                statusText = "Proven";
+                statusTextColor = "text-green-300";
+                break;
+            default:
+                bgColor = "bg-purple-600";
+                borderColor = "border-2 border-purple-500";
+                buttonBgColor = "bg-purple-700";
+                buttonHoverColor = "hover:bg-purple-800";
+                statusText = "Unknown";
+                statusTextColor = "text-purple-300";
+                break;
+        }
+        
         ui::Component challengeNode = ComponentGenerator::createContainer(
             "challengeNode_" + challengeId,
             "",
-            "bg-orange-600",
+            bgColor,
             "p-4",
             "",
-            "border-2 border-orange-500",
+            borderColor,
             "rounded",
             ""
         );
+
+        // Status label above the challenge sentence
+        ui::Component statusLabel = ComponentGenerator::createText(
+            "challengeStatus_" + challengeId,
+            "Status: " + statusText,
+            "text-xs",
+            statusTextColor,
+            "font-semibold",
+            "mb-2"
+        );
+        ComponentGenerator::addChild(&challengeNode, statusLabel);
 
         ui::Component challengeSentenceText = ComponentGenerator::createText(
             "challengeSentence_" + challengeId,
@@ -924,8 +974,8 @@ ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component
             "viewChallengeButton_" + challengeId,
             "View Challenge",
             "",
-            "bg-orange-700",
-            "hover:bg-orange-800",
+            buttonBgColor,
+            buttonHoverColor,
             "text-white",
             "px-4 py-2",
             "rounded",

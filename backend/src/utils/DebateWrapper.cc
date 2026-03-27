@@ -417,6 +417,12 @@ void DebateWrapper::updateDebateProtobuf(const int& debateId, const debate::Deba
     databaseWrapper.debates.updateDebateProtobuf(debateId, debateProto.creator_id(), protobufData);
 }
 
+void DebateWrapper::updateChallengeProtobuf(const int& challengeId, const debate::Challenge& challengeProto) {
+    std::vector<uint8_t> protobufData(challengeProto.ByteSizeLong());
+    challengeProto.SerializeToArray(protobufData.data(), protobufData.size());
+    databaseWrapper.challenges.updateChallengeProtobuf(challengeId, protobufData);
+}
+
 int DebateWrapper::findDebateId(const int& claimId) {
     debate::Claim claim = getClaimById(claimId);
     int debate_id = claim.debate_id();
@@ -497,4 +503,108 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
     }
     // test 
     
-} 
+}
+
+void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
+    // ok the plan is, go dfs down nodes and update status based on current node
+    // for each node, find it's challenges, if all of them are resolved, mark it as DEFENDED or something
+    // if any are unresolved, mark it as CHALLENGED
+    // if any are successfully challenged, mark it as DISPROVEN
+    // then if a claim is challenged or disproven, all of it's ancestors should be marked as CHALLENGED too
+    debate::Debate debateProto;
+    std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
+    if (!debateData.empty()) {
+        debateProto.ParseFromArray(debateData.data(), debateData.size());
+    } else {
+        Log::error("[DebateWrapper][ERR] Debate with ID " + std::to_string(debate_id) + " not found.");
+        return;
+    }
+
+    // First pass: DFS to calculate status for all claims based on their challenges
+    std::vector<int> stack;
+    std::set<int> visited;
+    stack.push_back(debateProto.root_claim_id());
+    
+    while (!stack.empty()) {
+        int currentClaimId = stack.back();
+        
+        if (visited.find(currentClaimId) == visited.end()) {
+            visited.insert(currentClaimId);
+            debate::Claim currentClaim = getClaimById(currentClaimId);
+            
+            // Push all children onto stack for processing
+            for (const auto& childId : findChildrenIds(currentClaimId)) {
+                if (visited.find(childId) == visited.end()) {
+                    stack.push_back(childId);
+                }
+            }
+        } else {
+            // Post-order processing: handle this node after all children
+            debate::Claim currentClaim = getClaimById(currentClaimId);
+            
+            // Get all challenges against this claim
+            std::vector<int> challenges = getChallengesAgainstClaim(currentClaimId);
+            
+            // Determine status based on challenges
+            debate::ClaimStatus newStatus = debate::ClaimStatus::NEUTRAL;
+            
+            if (!challenges.empty()) {
+                bool hasUnresolved = false;
+                bool hasSuccessful = false;
+                
+                for (const auto& challengeId : challenges) {
+                    debate::Challenge challenge = getChallengeProtobuf(challengeId);
+                    if (challenge.status() == debate::ChallengeStatus::UNRESOLVED) {
+                        hasUnresolved = true;
+                    } else if (challenge.status() == debate::ChallengeStatus::SUCCESSFUL) {
+                        hasSuccessful = true;
+                    }
+                }
+                
+                if (hasSuccessful) {
+                    newStatus = debate::ClaimStatus::DISPROVEN;
+                } else if (hasUnresolved) {
+                    newStatus = debate::ClaimStatus::CHALLENGED;
+                } else {
+                    newStatus = debate::ClaimStatus::DEFENDED;
+                }
+            }
+            
+            currentClaim.set_status(newStatus);
+            updateClaimInDB(currentClaim);
+            stack.pop_back();
+        }
+    }
+    
+    // Second pass: Propagate CHALLENGED status up to ancestors
+    std::vector<int> toProcess;
+    toProcess.push_back(debateProto.root_claim_id());
+    
+    for (size_t i = 0; i < toProcess.size(); ++i) {
+        int currentClaimId = toProcess[i];
+        debate::Claim currentClaim = getClaimById(currentClaimId);
+        std::vector<int> childrenIds = findChildrenIds(currentClaimId);
+        
+        // Add children to process list
+        for (const auto& childId : childrenIds) {
+            toProcess.push_back(childId);
+        }
+        
+        // Check if any child is challenged or disproven
+        bool hasChildChallenged = false;
+        for (const auto& childId : childrenIds) {
+            debate::Claim childClaim = getClaimById(childId);
+            if (childClaim.status() == debate::ClaimStatus::CHALLENGED || 
+                childClaim.status() == debate::ClaimStatus::DISPROVEN) {
+                hasChildChallenged = true;
+                break;
+            }
+        }
+        
+        // Propagate CHALLENGED status to parent if needed
+        if (hasChildChallenged && currentClaim.status() != debate::ClaimStatus::DISPROVEN) {
+            currentClaim.set_status(debate::ClaimStatus::CHALLENGED);
+            updateClaimInDB(currentClaim);
+        }
+    }
+}
