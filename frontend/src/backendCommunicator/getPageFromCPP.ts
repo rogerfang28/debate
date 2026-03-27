@@ -1,7 +1,7 @@
 import { fromBinary } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_URL;// || "http://localhost:8080";
 
 export interface PageData {
   [key: string]: any;

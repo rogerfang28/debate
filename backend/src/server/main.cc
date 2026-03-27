@@ -41,6 +41,22 @@ int main() {
   });
 
   // ---------- Start server ----------
-  Log::info("Serving server on http://0.0.0.0:8080");
-  svr.listen("0.0.0.0", 8080);
+  const char* HOST = "127.0.0.1";  // Explicit IPv4 localhost for Cloudflare Tunnel
+  const int PORT = 8080;
+
+  Log::info(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
+
+  if (svr.bind_to_port(HOST, PORT) < 0) {
+    Log::error(std::string("Failed to bind ") + HOST + ":" + std::to_string(PORT) +
+               " - port may be in use or blocked");
+    return 1;
+  }
+
+  Log::info(std::string("Server is listening on http://") + HOST + ":" + std::to_string(PORT));
+  if (!svr.listen_after_bind()) {
+    Log::error("Server stopped unexpectedly.");
+    return 1;
+  }
+
+  return 0;
 }
