@@ -1,6 +1,7 @@
 #include "DebatePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/Log.h"
+#include "../../../../utils/DemoMode.h"
 
 ui::Page DebatePageGenerator::GenerateDebatePage(user::User user) {
     ui::Page page;
@@ -449,6 +450,11 @@ ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Componen
     
     // Check if user is in modify mode
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
+
+    if (demo_mode::kViewerModeEnabled) {
+        challengingClaim = false;
+        modifyingCurrentClaim = false;
+    }
 
     // Find the childArgumentsGrid container within mainLayout
     ui::Component* childArgumentsGrid = nullptr;
@@ -983,7 +989,7 @@ ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component
         );
         ComponentGenerator::addChild(&challengeButtonContainer, viewChallengeButton);
 
-        if (userOwnsChallenge) {
+        if (userOwnsChallenge && !demo_mode::kViewerModeEnabled) {
             ui::Component deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengeId,
                 "Delete",
@@ -1017,6 +1023,12 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(user::User user, ui::
                                user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM_DESCRIPTION);
     bool editingClaim = (debatingInfo.current_debate_action().action_type() == 
                          user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM);
+
+    if (demo_mode::kViewerModeEnabled) {
+        modifyingCurrentClaim = false;
+        editingDescription = false;
+        editingClaim = false;
+    }
 
     // Update the current claim title in focusingOnClaim
     for (int i = 0; i < mainLayout.children_size(); i++) {
@@ -1230,7 +1242,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
                     for (int k = 0; k < rightContent->children_size(); k++) {
                         ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
                         if (modifyActionsContainer->id() == "modifyActionsContainer") {
-                            if (modifyingCurrentClaim) {
+                            if (modifyingCurrentClaim && !demo_mode::kViewerModeEnabled) {
                                 // Show Cancel and Submit buttons
                                 ui::Component cancelModifyButton = ComponentGenerator::createButton(
                                     "cancelModifyClaimButton",
@@ -1257,7 +1269,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
                                     "w-full transition-colors"
                                 );
                                 ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
-                            } else {
+                            } else if (!demo_mode::kViewerModeEnabled) {
                                 // Show Modify Claim button
                                 ui::Component modifyClaimButton = ComponentGenerator::createButton(
                                     "modifyClaimButton",
@@ -1283,7 +1295,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Co
     }
 
     // Only add buttons if not in editing mode
-    if (!editingDescription && !editingClaim) {
+    if (!editingDescription && !editingClaim && !demo_mode::kViewerModeEnabled) {
         // Find descriptionActions container and add appropriate buttons
         for (int i = 0; i < mainLayout.children_size(); i++) {
             ui::Component* contentArea = mainLayout.mutable_children(i);

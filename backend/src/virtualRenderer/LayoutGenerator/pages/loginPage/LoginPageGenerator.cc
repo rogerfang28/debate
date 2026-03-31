@@ -1,10 +1,11 @@
 #include "LoginPageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
+#include "../../../../utils/DemoMode.h"
 
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
     page.set_page_id("login");
-    page.set_title("Enter Username");
+    page.set_title(demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username");
 
     // Main container
     ui::Component main = GenerateLoginPageMainLayout();
@@ -49,7 +50,7 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        "Please enter your username to continue.",
+        demo_mode::kDemoEnabled ? "Click Demo to continue." : "Please enter your username to continue.",
         "",
         "text-gray-300",
         "",
@@ -57,33 +58,49 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     );
     ComponentGenerator::addChild(&main, description);
 
-    // Username input
-    ui::Component usernameInput = ComponentGenerator::createInput(
-        "usernameInput",
-        "Enter your username...",
-        "username",
-        "bg-gray-800",
-        "text-white",
-        "border-gray-600",
-        "p-3",
-        "rounded",
-        "w-full max-w-sm"
-    );
-    ComponentGenerator::addChild(&main, usernameInput);
+    if (demo_mode::kDemoEnabled) {
+        ui::Component demoButton = ComponentGenerator::createButton(
+            "demoButton",
+            "Demo",
+            "demo",
+            "bg-blue-600",
+            "hover:bg-blue-500",
+            "text-white",
+            "px-6 py-3",
+            "rounded-lg",
+            "transition"
+        );
+        ComponentGenerator::addChild(&main, demoButton);
+    }
+    else {
+        // Username input
+        ui::Component usernameInput = ComponentGenerator::createInput(
+            "usernameInput",
+            "Enter your username...",
+            "username",
+            "bg-gray-800",
+            "text-white",
+            "border-gray-600",
+            "p-3",
+            "rounded",
+            "w-full max-w-sm"
+        );
+        ComponentGenerator::addChild(&main, usernameInput);
 
-    // Submit button
-    ui::Component submitButton = ComponentGenerator::createButton(
-        "submitButton",
-        "Submit",
-        "submit",
-        "bg-green-600",
-        "hover:bg-green-500",
-        "text-white",
-        "px-6 py-3",
-        "rounded-lg",
-        "transition"
-    );
-    ComponentGenerator::addChild(&main, submitButton);
+        // Submit button
+        ui::Component submitButton = ComponentGenerator::createButton(
+            "submitButton",
+            "Submit",
+            "submit",
+            "bg-green-600",
+            "hover:bg-green-500",
+            "text-white",
+            "px-6 py-3",
+            "rounded-lg",
+            "transition"
+        );
+        ComponentGenerator::addChild(&main, submitButton);
+    }
 
     return main;
 }

@@ -32,6 +32,52 @@
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
 #include "../utils/Log.h"
+#include "../utils/DemoMode.h"
+
+namespace {
+bool isViewerBlockedEvent(debate_event::EventType type) {
+    switch (type) {
+        case debate_event::CREATE_DEBATE:
+        case debate_event::CLEAR_DEBATES:
+        case debate_event::DELETE_DEBATE:
+        case debate_event::JOIN_DEBATE:
+        case debate_event::LEAVE_DEBATE:
+        case debate_event::OPEN_ADD_CHILD_CLAIM:
+        case debate_event::CLOSE_ADD_CHILD_CLAIM:
+        case debate_event::ADD_CHILD_CLAIM:
+        case debate_event::DELETE_CURRENT_STATEMENT:
+        case debate_event::DELETE_CHILD_CLAIM:
+        case debate_event::START_EDIT_CLAIM_DESCRIPTION:
+        case debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION:
+        case debate_event::CANCEL_EDIT_CLAIM_DESCRIPTION:
+        case debate_event::START_EDIT_CLAIM:
+        case debate_event::SUBMIT_EDIT_CLAIM:
+        case debate_event::CANCEL_EDIT_CLAIM:
+        case debate_event::CONNECT_FROM_CLAIM:
+        case debate_event::CONNECT_TO_CLAIM:
+        case debate_event::SUBMIT_CONNECT_CLAIMS:
+        case debate_event::CANCEL_CONNECT_CLAIMS:
+        case debate_event::DELETE_LINK:
+        case debate_event::START_CHALLENGE_CLAIM:
+        case debate_event::ADD_CLAIM_TO_BE_CHALLENGED:
+        case debate_event::ADD_LINK_TO_BE_CHALLENGED:
+        case debate_event::SUBMIT_CHALLENGE_CLAIM:
+        case debate_event::CONCEDE_CHALLENGE:
+        case debate_event::CANCEL_CHALLENGE_CLAIM:
+        case debate_event::OPEN_ADD_CHALLENGE:
+        case debate_event::CLOSE_ADD_CHALLENGE:
+        case debate_event::REMOVE_CLAIM_TO_BE_CHALLENGED:
+        case debate_event::REMOVE_LINK_TO_BE_CHALLENGED:
+        case debate_event::DELETE_CHALLENGE:
+        case debate_event::START_MODIFICATION_OF_CLAIM:
+        case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
+        case debate_event::CANCEL_MODIFICATION_OF_CLAIM:
+            return true;
+        default:
+            return false;
+    }
+}
+}
 
 DebateModerator::DebateModerator()
     : globalDb(utils::getDatabasePath()),
@@ -57,6 +103,11 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
         return res;
     }
     Log::debug("[DebateModerator] Handling request for user: " + std::to_string(user_id));
+
+    if (demo_mode::kViewerModeEnabled && isViewerBlockedEvent(event.type())) {
+        Log::debug("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
+        event.set_type(debate_event::NONE);
+    }
 
     handleDebateEvent(user_id, event);
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
