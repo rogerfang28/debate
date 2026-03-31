@@ -13,7 +13,7 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ page }) => {
     <div className="page-root" data-page-id={page.pageId}>
       {page.title && (
         <div className="page-title" role="heading" aria-level={1}>
-          {page.title}
+          {"github.com/rogerfang28/debate"}
         </div>
       )}
       {page.components.map((component: Component, idx: number) => (
