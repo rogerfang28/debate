@@ -20,7 +20,8 @@ Over time, the tool becomes a hub of verified information. The next time that in
 ## [View Debate Tool Demo](./demo.md)
 
 # Live Server
-### (work in progress)
+### (work in progress, may be down at times)
+https://debate-spxg.onrender.com/
 
 [More Detailed Overview](.details.md)
 
