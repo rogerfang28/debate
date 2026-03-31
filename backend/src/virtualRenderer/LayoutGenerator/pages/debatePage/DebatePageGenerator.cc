@@ -989,6 +989,17 @@ ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component
         );
         ComponentGenerator::addChild(&challengeButtonContainer, viewChallengeButton);
 
+        // WIP placeholder: intentionally non-interactive.
+        ui::Component concedeWipButton = ComponentGenerator::createText(
+            "concedeWipButton_" + challengeId,
+            "Concede (WIP)",
+            "text-sm",
+            "text-gray-200",
+            "font-medium",
+            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
+        );
+        ComponentGenerator::addChild(&challengeButtonContainer, concedeWipButton);
+
         if (userOwnsChallenge && !demo_mode::kViewerModeEnabled) {
             ui::Component deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengeId,
