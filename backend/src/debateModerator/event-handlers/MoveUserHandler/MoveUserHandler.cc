@@ -34,6 +34,7 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     userProto.mutable_engagement()->mutable_debating_info()->set_challenged_user_id(challenged_id);
     userProto.mutable_engagement()->mutable_debating_info()->set_challenger_user_id(challenger_id);
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
+    userProto.mutable_current_scope()->set_scopetype(debate::SINGLE_CLAIM);
     resetOngoingActivities(user_id, debateWrapper);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 
