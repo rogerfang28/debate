@@ -42,7 +42,7 @@ int main() {
 
   // ---------- Start server ----------
   const char* HOST = "127.0.0.1";  // Explicit IPv4 localhost for Cloudflare Tunnel
-  const int PORT = 8080;
+  const int PORT = 3000;
 
   Log::info(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
 

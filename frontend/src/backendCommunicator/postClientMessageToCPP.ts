@@ -7,7 +7,7 @@ import {
 } from "../../../src/gen/ts/client_message_pb";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL;// || "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export interface EventData {
   componentId?: string;
@@ -21,7 +21,7 @@ export interface EventData {
 }
 
 /**
- * Send a ClientMessage protobuf to your C++ server (POST / on :8080).
+ * Send a ClientMessage protobuf to your C++ server (POST / on :3000).
  * Contains the event info + complete page state with all component values.
  * Returns the Page protobuf response from the server.
  */

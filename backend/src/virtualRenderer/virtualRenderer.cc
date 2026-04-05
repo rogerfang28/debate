@@ -28,7 +28,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // translate client_message into debate event
     int user_id = parseCookie::extractUserIdFromCookies(req);
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
-    // BackendCommunicator backend("localhost", 8080);
+    // BackendCommunicator backend("localhost", 3000);
     // ! no server call for now, backend and virtual renderer are on the same backend
     
     // change cookies accordingly
