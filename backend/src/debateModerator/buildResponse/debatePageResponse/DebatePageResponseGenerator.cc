@@ -67,5 +67,35 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
             Log::debug("[DebatePageResponseGenerator] Found challenge against current claim with sentence: " + challenge.challenge_sentence());
         // }
     }
+
+    // set the statement selection
+    debate::Selection selection = responseMessage.selection();
+    // whats the scope of the selection? if its single claim, then we only send the current claim and its children. if its full debate, then we send all claims under the debate
+        if (userProto.current_scope().scopetype() == debate::SINGLE_CLAIM) {
+            // only send current claim and its children
+            for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
+                user_engagement::ClaimInfo childClaimInfo = debatingInfo.children_claims(i);
+                debate::Claim* claim = selection.add_claims();
+                claim->set_id(childClaimInfo.id());
+                claim->set_sentence(childClaimInfo.sentence());
+                claim->set_creator_id(childClaimInfo.creator_id());
+                claim->set_status(childClaimInfo.status());
+            }
+        } else if (userProto.current_scope().scopetype() == debate::FULL_DEBATE) {
+            // send all claims under the debate
+            // break for now
+        }
+        else {
+            // default to single claim scope?
+            for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
+                user_engagement::ClaimInfo childClaimInfo = debatingInfo.children_claims(i);
+                debate::Claim* claim = selection.add_claims();
+                claim->set_id(childClaimInfo.id());
+                claim->set_sentence(childClaimInfo.sentence());
+                claim->set_creator_id(childClaimInfo.creator_id());
+                claim->set_status(childClaimInfo.status());
+            }
+        }
+
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
 }
