@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package debate;
+
+enum ScopeType {
+	SINGLE_CLAIM = 0;
+    FULL_DEBATE = 1;
+	// More scope types can be added here in the future
+}
+
+message Scope {
+	ScopeType scopetype = 1;
+}

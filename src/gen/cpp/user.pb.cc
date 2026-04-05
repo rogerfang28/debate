@@ -33,6 +33,7 @@ inline constexpr User::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         engagement_{nullptr},
+        current_scope_{nullptr},
         user_id_{0} {}
 
 template <typename>
@@ -73,14 +74,16 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.engagement_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.current_scope_),
         ~0u,
         ~0u,
         0,
+        1,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 11, -1, sizeof(::user::User)},
+        {0, 12, -1, sizeof(::user::User)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::user::_User_default_instance_._instance,
@@ -88,25 +91,28 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\"|\n\004User\022\027\n\007user_id\030\001 \001(\005R\006userId\022\032\n\010us"
-    "ername\030\002 \001(\tR\010username\022\?\n\nengagement\030\003 \001"
-    "(\0132\037.user_engagement.UserEngagementR\neng"
-    "agementb\006proto3"
+    "o\032\013scope.proto\"\260\001\n\004User\022\027\n\007user_id\030\001 \001(\005"
+    "R\006userId\022\032\n\010username\030\002 \001(\tR\010username\022\?\n\n"
+    "engagement\030\003 \001(\0132\037.user_engagement.UserE"
+    "ngagementR\nengagement\0222\n\rcurrent_scope\030\004"
+    " \001(\0132\r.debate.ScopeR\014currentScopeb\006proto"
+    "3"
 };
-static const ::_pbi::DescriptorTable* const descriptor_table_user_2eproto_deps[1] =
+static const ::_pbi::DescriptorTable* const descriptor_table_user_2eproto_deps[2] =
     {
+        &::descriptor_table_scope_2eproto,
         &::descriptor_table_user_5fengagement_2eproto,
 };
 static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    175,
+    241,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
     descriptor_table_user_2eproto_deps,
-    1,
+    2,
     1,
     schemas,
     file_default_instances,
@@ -129,6 +135,11 @@ void User::clear_engagement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.engagement_ != nullptr) _impl_.engagement_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
+}
+void User::clear_current_scope() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.current_scope_ != nullptr) _impl_.current_scope_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
 User::User(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -163,6 +174,9 @@ User::User(
   _impl_.engagement_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(
                               arena, *from._impl_.engagement_)
                         : nullptr;
+  _impl_.current_scope_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::debate::Scope>(
+                              arena, *from._impl_.current_scope_)
+                        : nullptr;
   _impl_.user_id_ = from._impl_.user_id_;
 
   // @@protoc_insertion_point(copy_constructor:user.User)
@@ -192,6 +206,7 @@ inline void User::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.username_.Destroy();
   delete this_._impl_.engagement_;
+  delete this_._impl_.current_scope_;
   this_._impl_.~Impl_();
 }
 
@@ -231,16 +246,16 @@ const ::google::protobuf::internal::ClassData* User::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 1, 26, 2> User::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 2, 26, 2> User::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    1,  // num_aux_entries
+    4,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -249,7 +264,9 @@ const ::_pbi::TcParseTable<2, 3, 1, 26, 2> User::_table_ = {
     ::_pbi::TcParser::GetTable<::user::User>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    {::_pbi::TcParser::FastMtS1,
+     {34, 1, 1, PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_)}},
     // int32 user_id = 1 [json_name = "userId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.user_id_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
@@ -271,8 +288,12 @@ const ::_pbi::TcParseTable<2, 3, 1, 26, 2> User::_table_ = {
     // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
+    {::_pbi::TcParser::GetTable<::debate::Scope>()},
   }}, {{
     "\11\0\10\0\0\0\0\0"
     "user.User"
@@ -289,9 +310,15 @@ PROTOBUF_NOINLINE void User::Clear() {
 
   _impl_.username_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.engagement_ != nullptr);
-    _impl_.engagement_->Clear();
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.engagement_ != nullptr);
+      _impl_.engagement_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.current_scope_ != nullptr);
+      _impl_.current_scope_->Clear();
+    }
   }
   _impl_.user_id_ = 0;
   _impl_._has_bits_.Clear();
@@ -336,6 +363,13 @@ PROTOBUF_NOINLINE void User::Clear() {
                 stream);
           }
 
+          // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+          if (cached_has_bits & 0x00000002u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                4, *this_._impl_.current_scope_, this_._impl_.current_scope_->GetCachedSize(), target,
+                stream);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -367,12 +401,17 @@ PROTOBUF_NOINLINE void User::Clear() {
                                               this_._internal_username());
             }
           }
-           {
+          cached_has_bits = this_._impl_._has_bits_[0];
+          if (cached_has_bits & 0x00000003u) {
             // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
-            cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
+            }
+            // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+            if (cached_has_bits & 0x00000002u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.current_scope_);
             }
           }
            {
@@ -399,13 +438,24 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
     _this->_internal_set_username(from._internal_username());
   }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.engagement_ != nullptr);
-    if (_this->_impl_.engagement_ == nullptr) {
-      _this->_impl_.engagement_ =
-          ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(arena, *from._impl_.engagement_);
-    } else {
-      _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(from._impl_.engagement_ != nullptr);
+      if (_this->_impl_.engagement_ == nullptr) {
+        _this->_impl_.engagement_ =
+            ::google::protobuf::Message::CopyConstruct<::user_engagement::UserEngagement>(arena, *from._impl_.engagement_);
+      } else {
+        _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
+      }
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(from._impl_.current_scope_ != nullptr);
+      if (_this->_impl_.current_scope_ == nullptr) {
+        _this->_impl_.current_scope_ =
+            ::google::protobuf::Message::CopyConstruct<::debate::Scope>(arena, *from._impl_.current_scope_);
+      } else {
+        _this->_impl_.current_scope_->MergeFrom(*from._impl_.current_scope_);
+      }
     }
   }
   if (from._internal_user_id() != 0) {
