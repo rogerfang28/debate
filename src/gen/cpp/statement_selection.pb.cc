@@ -29,6 +29,8 @@ namespace debate {
 inline constexpr Selection::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : claims_{},
+        links_{},
+        challenges_{},
         _cached_size_{0} {}
 
 template <typename>
@@ -67,6 +69,8 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate::Selection, _impl_.claims_),
+        PROTOBUF_FIELD_OFFSET(::debate::Selection, _impl_.links_),
+        PROTOBUF_FIELD_OFFSET(::debate::Selection, _impl_.challenges_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -79,8 +83,10 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_statement_5fselection_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\031statement_selection.proto\022\006debate\032\014deb"
-    "ate.proto\"2\n\tSelection\022%\n\006claims\030\001 \003(\0132\r"
-    ".debate.ClaimR\006claimsb\006proto3"
+    "ate.proto\"\211\001\n\tSelection\022%\n\006claims\030\001 \003(\0132"
+    "\r.debate.ClaimR\006claims\022\"\n\005links\030\002 \003(\0132\014."
+    "debate.LinkR\005links\0221\n\nchallenges\030\003 \003(\0132\021"
+    ".debate.ChallengeR\nchallengesb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_statement_5fselection_2eproto_deps[1] =
     {
@@ -90,7 +96,7 @@ static ::absl::once_flag descriptor_table_statement_5fselection_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_statement_5fselection_2eproto = {
     false,
     false,
-    109,
+    197,
     descriptor_table_protodef_statement_5fselection_2eproto,
     "statement_selection.proto",
     &descriptor_table_statement_5fselection_2eproto_once,
@@ -114,6 +120,14 @@ void Selection::clear_claims() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claims_.Clear();
 }
+void Selection::clear_links() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.links_.Clear();
+}
+void Selection::clear_challenges() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenges_.Clear();
+}
 Selection::Selection(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
@@ -127,6 +141,8 @@ inline PROTOBUF_NDEBUG_INLINE Selection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::debate::Selection& from_msg)
       : claims_{visibility, arena, from.claims_},
+        links_{visibility, arena, from.links_},
+        challenges_{visibility, arena, from.challenges_},
         _cached_size_{0} {}
 
 Selection::Selection(
@@ -149,6 +165,8 @@ inline PROTOBUF_NDEBUG_INLINE Selection::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : claims_{visibility, arena},
+        links_{visibility, arena},
+        challenges_{visibility, arena},
         _cached_size_{0} {}
 
 inline void Selection::SharedCtor(::_pb::Arena* arena) {
@@ -173,6 +191,14 @@ constexpr auto Selection::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
       PROTOBUF_FIELD_OFFSET(Selection, _impl_.claims_) +
           decltype(Selection::_impl_.claims_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Selection, _impl_.links_) +
+          decltype(Selection::_impl_.links_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Selection, _impl_.challenges_) +
+          decltype(Selection::_impl_.challenges_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
   });
@@ -213,16 +239,16 @@ const ::google::protobuf::internal::ClassData* Selection::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> Selection::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 3, 0, 2> Selection::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
+    3,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -231,17 +257,32 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> Selection::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Selection>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // repeated .debate.Claim claims = 1 [json_name = "claims"];
     {::_pbi::TcParser::FastMtR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Selection, _impl_.claims_)}},
+    // repeated .debate.Link links = 2 [json_name = "links"];
+    {::_pbi::TcParser::FastMtR1,
+     {18, 63, 1, PROTOBUF_FIELD_OFFSET(Selection, _impl_.links_)}},
+    // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+    {::_pbi::TcParser::FastMtR1,
+     {26, 63, 2, PROTOBUF_FIELD_OFFSET(Selection, _impl_.challenges_)}},
   }}, {{
     65535, 65535
   }}, {{
     // repeated .debate.Claim claims = 1 [json_name = "claims"];
     {PROTOBUF_FIELD_OFFSET(Selection, _impl_.claims_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .debate.Link links = 2 [json_name = "links"];
+    {PROTOBUF_FIELD_OFFSET(Selection, _impl_.links_), 0, 1,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+    {PROTOBUF_FIELD_OFFSET(Selection, _impl_.challenges_), 0, 2,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::debate::Claim>()},
+    {::_pbi::TcParser::GetTable<::debate::Link>()},
+    {::_pbi::TcParser::GetTable<::debate::Challenge>()},
   }}, {{
   }},
 };
@@ -254,6 +295,8 @@ PROTOBUF_NOINLINE void Selection::Clear() {
   (void) cached_has_bits;
 
   _impl_.claims_.Clear();
+  _impl_.links_.Clear();
+  _impl_.challenges_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -280,6 +323,28 @@ PROTOBUF_NOINLINE void Selection::Clear() {
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                     1, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          // repeated .debate.Link links = 2 [json_name = "links"];
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_links_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_links().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    2, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_challenges_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_challenges().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    3, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
@@ -315,6 +380,20 @@ PROTOBUF_NOINLINE void Selection::Clear() {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
+            // repeated .debate.Link links = 2 [json_name = "links"];
+            {
+              total_size += 1UL * this_._internal_links_size();
+              for (const auto& msg : this_._internal_links()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+            // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+            {
+              total_size += 1UL * this_._internal_challenges_size();
+              for (const auto& msg : this_._internal_challenges()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -330,6 +409,10 @@ void Selection::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
 
   _this->_internal_mutable_claims()->MergeFrom(
       from._internal_claims());
+  _this->_internal_mutable_links()->MergeFrom(
+      from._internal_links());
+  _this->_internal_mutable_challenges()->MergeFrom(
+      from._internal_challenges());
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -345,6 +428,8 @@ void Selection::InternalSwap(Selection* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.claims_.InternalSwap(&other->_impl_.claims_);
+  _impl_.links_.InternalSwap(&other->_impl_.links_);
+  _impl_.challenges_.InternalSwap(&other->_impl_.challenges_);
 }
 
 ::google::protobuf::Metadata Selection::GetMetadata() const {

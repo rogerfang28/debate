@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Claim } from "./debate_pb";
+import type { Challenge, Claim, Link } from "./debate_pb";
 import { file_debate } from "./debate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file statement_selection.proto.
  */
 export const file_statement_selection: GenFile = /*@__PURE__*/
-  fileDesc("ChlzdGF0ZW1lbnRfc2VsZWN0aW9uLnByb3RvEgZkZWJhdGUiKgoJU2VsZWN0aW9uEh0KBmNsYWltcxgBIAMoCzINLmRlYmF0ZS5DbGFpbWIGcHJvdG8z", [file_debate]);
+  fileDesc("ChlzdGF0ZW1lbnRfc2VsZWN0aW9uLnByb3RvEgZkZWJhdGUibgoJU2VsZWN0aW9uEh0KBmNsYWltcxgBIAMoCzINLmRlYmF0ZS5DbGFpbRIbCgVsaW5rcxgCIAMoCzIMLmRlYmF0ZS5MaW5rEiUKCmNoYWxsZW5nZXMYAyADKAsyES5kZWJhdGUuQ2hhbGxlbmdlYgZwcm90bzM", [file_debate]);
 
 /**
  * @generated from message debate.Selection
@@ -22,6 +22,16 @@ export type Selection = Message<"debate.Selection"> & {
    * @generated from field: repeated debate.Claim claims = 1;
    */
   claims: Claim[];
+
+  /**
+   * @generated from field: repeated debate.Link links = 2;
+   */
+  links: Link[];
+
+  /**
+   * @generated from field: repeated debate.Challenge challenges = 3;
+   */
+  challenges: Challenge[];
 };
 
 /**

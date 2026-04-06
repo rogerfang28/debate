@@ -69,33 +69,75 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     }
 
     // set the statement selection
-    debate::Selection selection = responseMessage.selection();
+    debate::Selection* selection = responseMessage.mutable_selection();
+    selection->clear_claims();
+    selection->clear_links();
+    selection->clear_challenges();
+
+    auto addClaimToSelection = [selection](const debate::Claim& claim) {
+        debate::Claim* selectedClaim = selection->add_claims();
+        selectedClaim->set_id(claim.id());
+        selectedClaim->set_sentence(claim.sentence());
+        selectedClaim->set_creator_id(claim.creator_id());
+        selectedClaim->set_status(claim.status());
+    };
+
+    auto addLinkToSelection = [selection](const debate::Link& link) {
+        debate::Link* selectedLink = selection->add_links();
+        selectedLink->set_connect_from(link.connect_from());
+        selectedLink->set_connect_to(link.connect_to());
+        selectedLink->set_connection(link.connection());
+        selectedLink->set_creator_id(link.creator_id());
+    };
+
+    auto addChallengeToSelection = [selection](const debate::Challenge& challenge) {
+        debate::Challenge* selectedChallenge = selection->add_challenges();
+        selectedChallenge->set_id(challenge.id());
+        selectedChallenge->set_challenge_sentence(challenge.challenge_sentence());
+        selectedChallenge->set_challenger_id(challenge.challenger_id());
+        selectedChallenge->set_status(challenge.status());
+    };
+
     // whats the scope of the selection? if its single claim, then we only send the current claim and its children. if its full debate, then we send all claims under the debate
-        if (userProto.current_scope().scopetype() == debate::SINGLE_CLAIM) {
-            // only send current claim and its children
-            for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
-                user_engagement::ClaimInfo childClaimInfo = debatingInfo.children_claims(i);
-                debate::Claim* claim = selection.add_claims();
-                claim->set_id(childClaimInfo.id());
-                claim->set_sentence(childClaimInfo.sentence());
-                claim->set_creator_id(childClaimInfo.creator_id());
-                claim->set_status(childClaimInfo.status());
-            }
-        } else if (userProto.current_scope().scopetype() == debate::FULL_DEBATE) {
-            // send all claims under the debate
-            // break for now
+    if (userProto.current_scope().scopetype() == debate::SINGLE_CLAIM) {
+        addClaimToSelection(currentClaim);
+        for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
+            const user_engagement::ClaimInfo& childClaimInfo = debatingInfo.children_claims(i);
+            debate::Claim childClaim;
+            childClaim.set_id(childClaimInfo.id());
+            childClaim.set_sentence(childClaimInfo.sentence());
+            childClaim.set_creator_id(childClaimInfo.creator_id());
+            childClaim.set_status(childClaimInfo.status());
+            addClaimToSelection(childClaim);
         }
-        else {
-            // default to single claim scope?
-            for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
-                user_engagement::ClaimInfo childClaimInfo = debatingInfo.children_claims(i);
-                debate::Claim* claim = selection.add_claims();
-                claim->set_id(childClaimInfo.id());
-                claim->set_sentence(childClaimInfo.sentence());
-                claim->set_creator_id(childClaimInfo.creator_id());
-                claim->set_status(childClaimInfo.status());
-            }
+        for (int link_id : link_ids) {
+            addLinkToSelection(debateWrapper.getLinkById(link_id));
         }
+        for (int challenge_id : challenge_ids) {
+            addChallengeToSelection(debateWrapper.getChallengeProtobuf(challenge_id));
+        }
+    } else if (userProto.current_scope().scopetype() == debate::FULL_DEBATE) {
+        // send all claims under the debate
+        // break for now
+    } else {
+        // default to single claim scope
+        addClaimToSelection(currentClaim);
+        for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
+            const user_engagement::ClaimInfo& childClaimInfo = debatingInfo.children_claims(i);
+            debate::Claim childClaim;
+            childClaim.set_id(childClaimInfo.id());
+            childClaim.set_sentence(childClaimInfo.sentence());
+            childClaim.set_creator_id(childClaimInfo.creator_id());
+            childClaim.set_status(childClaimInfo.status());
+            addClaimToSelection(childClaim);
+        }
+        for (int link_id : link_ids) {
+            addLinkToSelection(debateWrapper.getLinkById(link_id));
+        }
+        for (int challenge_id : challenge_ids) {
+            addChallengeToSelection(debateWrapper.getChallengeProtobuf(challenge_id));
+        }
+    }
 
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

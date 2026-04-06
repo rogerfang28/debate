@@ -6,7 +6,7 @@
 class DebatePageGenerator {
 public:
     static ui::Page GenerateDebatePage(user::User user);
-    static ui::Component GenerateDebatePageMainLayout();
+    static ui::Component GenerateSingleClaimLayout();
     static ui::Component FillChildClaims(user::User user, ui::Component mainLayout);
     static ui::Component FillChallenges(user::User user, ui::Component mainLayout);
     static ui::Component FillCurrentClaimSection(user::User user, ui::Component mainLayout);

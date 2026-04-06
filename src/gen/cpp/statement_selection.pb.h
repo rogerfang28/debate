@@ -216,6 +216,8 @@ class Selection final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kClaimsFieldNumber = 1,
+    kLinksFieldNumber = 2,
+    kChallengesFieldNumber = 3,
   };
   // repeated .debate.Claim claims = 1 [json_name = "claims"];
   int claims_size() const;
@@ -234,12 +236,46 @@ class Selection final : public ::google::protobuf::Message
   const ::debate::Claim& claims(int index) const;
   ::debate::Claim* add_claims();
   const ::google::protobuf::RepeatedPtrField<::debate::Claim>& claims() const;
+  // repeated .debate.Link links = 2 [json_name = "links"];
+  int links_size() const;
+  private:
+  int _internal_links_size() const;
+
+  public:
+  void clear_links() ;
+  ::debate::Link* mutable_links(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::Link>* mutable_links();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::debate::Link>& _internal_links() const;
+  ::google::protobuf::RepeatedPtrField<::debate::Link>* _internal_mutable_links();
+  public:
+  const ::debate::Link& links(int index) const;
+  ::debate::Link* add_links();
+  const ::google::protobuf::RepeatedPtrField<::debate::Link>& links() const;
+  // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+  int challenges_size() const;
+  private:
+  int _internal_challenges_size() const;
+
+  public:
+  void clear_challenges() ;
+  ::debate::Challenge* mutable_challenges(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* mutable_challenges();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& _internal_challenges() const;
+  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* _internal_mutable_challenges();
+  public:
+  const ::debate::Challenge& challenges(int index) const;
+  ::debate::Challenge* add_challenges();
+  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& challenges() const;
   // @@protoc_insertion_point(class_scope:debate.Selection)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      2, 3, 3,
       0, 2>
       _table_;
 
@@ -258,6 +294,8 @@ class Selection final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Selection& from_msg);
     ::google::protobuf::RepeatedPtrField< ::debate::Claim > claims_;
+    ::google::protobuf::RepeatedPtrField< ::debate::Link > links_;
+    ::google::protobuf::RepeatedPtrField< ::debate::Challenge > challenges_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -324,6 +362,96 @@ inline ::google::protobuf::RepeatedPtrField<::debate::Claim>*
 Selection::_internal_mutable_claims() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.claims_;
+}
+
+// repeated .debate.Link links = 2 [json_name = "links"];
+inline int Selection::_internal_links_size() const {
+  return _internal_links().size();
+}
+inline int Selection::links_size() const {
+  return _internal_links_size();
+}
+inline ::debate::Link* Selection::mutable_links(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Selection.links)
+  return _internal_mutable_links()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Link>* Selection::mutable_links()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Selection.links)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_links();
+}
+inline const ::debate::Link& Selection::links(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Selection.links)
+  return _internal_links().Get(index);
+}
+inline ::debate::Link* Selection::add_links() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::debate::Link* _add = _internal_mutable_links()->Add();
+  // @@protoc_insertion_point(field_add:debate.Selection.links)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Link>& Selection::links() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Selection.links)
+  return _internal_links();
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Link>&
+Selection::_internal_links() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.links_;
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Link>*
+Selection::_internal_mutable_links() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.links_;
+}
+
+// repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+inline int Selection::_internal_challenges_size() const {
+  return _internal_challenges().size();
+}
+inline int Selection::challenges_size() const {
+  return _internal_challenges_size();
+}
+inline ::debate::Challenge* Selection::mutable_challenges(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Selection.challenges)
+  return _internal_mutable_challenges()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>* Selection::mutable_challenges()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Selection.challenges)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_challenges();
+}
+inline const ::debate::Challenge& Selection::challenges(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Selection.challenges)
+  return _internal_challenges().Get(index);
+}
+inline ::debate::Challenge* Selection::add_challenges() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::debate::Challenge* _add = _internal_mutable_challenges()->Add();
+  // @@protoc_insertion_point(field_add:debate.Selection.challenges)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& Selection::challenges() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Selection.challenges)
+  return _internal_challenges();
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>&
+Selection::_internal_challenges() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.challenges_;
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>*
+Selection::_internal_mutable_challenges() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.challenges_;
 }
 
 #ifdef __GNUC__

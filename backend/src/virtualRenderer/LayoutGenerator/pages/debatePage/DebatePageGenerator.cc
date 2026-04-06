@@ -3,27 +3,34 @@
 #include "../../../../utils/Log.h"
 #include "../../../../utils/DemoMode.h"
 
-ui::Page DebatePageGenerator::GenerateDebatePage(user::User user) {
+ui::Page DebatePageGenerator::GenerateDebatePage(user::User userProto) {
     ui::Page page;
     page.set_page_id("debate");
-    page.set_title("Debate View: Debate ID " + std::to_string(user.engagement().debating_info().debate_id()));
+    page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()));
+    ui::Component mainLayout;
 
-    // Main layout container
-    ui::Component mainLayout = GenerateDebatePageMainLayout();
+    const auto scopeType = userProto.current_scope().scopetype();
+    if (scopeType == debate::SINGLE_CLAIM) {
+        mainLayout = GenerateSingleClaimLayout();
+        Log::test("Generating single claim layout for user " + userProto.username() + " with scope type: " + std::to_string(scopeType));
+    } else {
+        mainLayout = GenerateSingleClaimLayout();
+        Log::warn("Unknown scope type for user " + userProto.username() + ": " + std::to_string(scopeType) + ". Defaulting to single claim layout.");
+    }
 
     // more individual functions for each part
-    mainLayout = FillChildClaims(user, mainLayout);
-    mainLayout = FillChallenges(user, mainLayout);
-    mainLayout = FillCurrentClaimSection(user, mainLayout);
-    mainLayout = AddAppropriateButtons(user, mainLayout);
-    mainLayout = AddAppropriateOverlays(user, mainLayout);    
+    mainLayout = FillChildClaims(userProto, mainLayout);
+    mainLayout = FillChallenges(userProto, mainLayout);
+    mainLayout = FillCurrentClaimSection(userProto, mainLayout);
+    mainLayout = AddAppropriateButtons(userProto, mainLayout);
+    mainLayout = AddAppropriateOverlays(userProto, mainLayout);    
 
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(mainLayout);
     return page; // test
 }
 
-ui::Component DebatePageGenerator::GenerateDebatePageMainLayout() {
+ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
     // Main layout container
     ui::Component mainLayout = ComponentGenerator::createContainer(
         "mainLayout",
