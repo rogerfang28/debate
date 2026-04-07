@@ -5,10 +5,10 @@ package moderator_to_vr;
 
 // import "debate.proto";
 import "user.proto";
-import "statement_selection.proto";
+import "collection.proto";
 
 message ModeratorToVRMessage {
     user.User user = 1;
-    debate.Selection selection = 2;
+    debate.Collection collection = 2;
 }
 

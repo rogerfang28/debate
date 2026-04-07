@@ -68,37 +68,37 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
         // }
     }
 
-    // set the statement selection
-    debate::Selection* selection = responseMessage.mutable_selection();
-    selection->clear_claims();
-    selection->clear_links();
-    selection->clear_challenges();
+    // set the statement collection
+    debate::Collection* collection = responseMessage.mutable_collection();
+    collection->clear_claims();
+    collection->clear_links();
+    collection->clear_challenges();
 
-    auto addClaimToSelection = [selection](const debate::Claim& claim) {
-        debate::Claim* selectedClaim = selection->add_claims();
+    auto addClaimToSelection = [collection](const debate::Claim& claim) {
+        debate::Claim* selectedClaim = collection->add_claims();
         selectedClaim->set_id(claim.id());
         selectedClaim->set_sentence(claim.sentence());
         selectedClaim->set_creator_id(claim.creator_id());
         selectedClaim->set_status(claim.status());
     };
 
-    auto addLinkToSelection = [selection](const debate::Link& link) {
-        debate::Link* selectedLink = selection->add_links();
+    auto addLinkToSelection = [collection](const debate::Link& link) {
+        debate::Link* selectedLink = collection->add_links();
         selectedLink->set_connect_from(link.connect_from());
         selectedLink->set_connect_to(link.connect_to());
         selectedLink->set_connection(link.connection());
         selectedLink->set_creator_id(link.creator_id());
     };
 
-    auto addChallengeToSelection = [selection](const debate::Challenge& challenge) {
-        debate::Challenge* selectedChallenge = selection->add_challenges();
+    auto addChallengeToSelection = [collection](const debate::Challenge& challenge) {
+        debate::Challenge* selectedChallenge = collection->add_challenges();
         selectedChallenge->set_id(challenge.id());
         selectedChallenge->set_challenge_sentence(challenge.challenge_sentence());
         selectedChallenge->set_challenger_id(challenge.challenger_id());
         selectedChallenge->set_status(challenge.status());
     };
 
-    // whats the scope of the selection? if its single claim, then we only send the current claim and its children. if its full debate, then we send all claims under the debate
+    // whats the scope of the collection? if its single claim, then we only send the current claim and its children. if its full debate, then we send all claims under the debate
     if (userProto.current_scope().scopetype() == debate::SINGLE_CLAIM) {
         addClaimToSelection(currentClaim);
         for (int i = 0; i < debatingInfo.children_claims_size(); i++) {

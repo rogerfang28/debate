@@ -36,8 +36,6 @@ export type User = Message<"user.User"> & {
   engagement?: UserEngagement;
 
   /**
-   * user's current scope (e.g., single claim, full debate, etc.)
-   *
    * @generated from field: debate.Scope current_scope = 4;
    */
   currentScope?: Scope;

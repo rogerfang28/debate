@@ -4,7 +4,7 @@ package debate;
 
 import "debate.proto";
 
-message Selection {
+message Collection {
 	repeated Claim claims = 1;
     repeated Link links = 2;
     repeated Challenge challenges = 3;

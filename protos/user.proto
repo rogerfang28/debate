@@ -10,5 +10,5 @@ message User {
   int32 user_id = 1;
   string username = 2;
   user_engagement.UserEngagement engagement = 3;
-  debate.Scope current_scope = 4; // user's current scope (e.g., single claim, full debate, etc.)
+  debate.Scope current_scope = 4;
 }

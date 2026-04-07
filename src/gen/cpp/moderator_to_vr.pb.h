@@ -30,7 +30,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
 #include "user.pb.h"
-#include "statement_selection.pb.h"
+#include "collection.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -217,7 +217,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kUserFieldNumber = 1,
-    kSelectionFieldNumber = 2,
+    kCollectionFieldNumber = 2,
   };
   // .user.User user = 1 [json_name = "user"];
   bool has_user() const;
@@ -234,19 +234,19 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   ::user::User* _internal_mutable_user();
 
   public:
-  // .debate.Selection selection = 2 [json_name = "selection"];
-  bool has_selection() const;
-  void clear_selection() ;
-  const ::debate::Selection& selection() const;
-  PROTOBUF_NODISCARD ::debate::Selection* release_selection();
-  ::debate::Selection* mutable_selection();
-  void set_allocated_selection(::debate::Selection* value);
-  void unsafe_arena_set_allocated_selection(::debate::Selection* value);
-  ::debate::Selection* unsafe_arena_release_selection();
+  // .debate.Collection collection = 2 [json_name = "collection"];
+  bool has_collection() const;
+  void clear_collection() ;
+  const ::debate::Collection& collection() const;
+  PROTOBUF_NODISCARD ::debate::Collection* release_collection();
+  ::debate::Collection* mutable_collection();
+  void set_allocated_collection(::debate::Collection* value);
+  void unsafe_arena_set_allocated_collection(::debate::Collection* value);
+  ::debate::Collection* unsafe_arena_release_collection();
 
   private:
-  const ::debate::Selection& _internal_selection() const;
-  ::debate::Selection* _internal_mutable_selection();
+  const ::debate::Collection& _internal_collection() const;
+  ::debate::Collection* _internal_mutable_collection();
 
   public:
   // @@protoc_insertion_point(class_scope:moderator_to_vr.ModeratorToVRMessage)
@@ -275,7 +275,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::user::User* user_;
-    ::debate::Selection* selection_;
+    ::debate::Collection* collection_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -389,40 +389,40 @@ inline void ModeratorToVRMessage::set_allocated_user(::user::User* value) {
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.user)
 }
 
-// .debate.Selection selection = 2 [json_name = "selection"];
-inline bool ModeratorToVRMessage::has_selection() const {
+// .debate.Collection collection = 2 [json_name = "collection"];
+inline bool ModeratorToVRMessage::has_collection() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.selection_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.collection_ != nullptr);
   return value;
 }
-inline const ::debate::Selection& ModeratorToVRMessage::_internal_selection() const {
+inline const ::debate::Collection& ModeratorToVRMessage::_internal_collection() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::Selection* p = _impl_.selection_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::Selection&>(::debate::_Selection_default_instance_);
+  const ::debate::Collection* p = _impl_.collection_;
+  return p != nullptr ? *p : reinterpret_cast<const ::debate::Collection&>(::debate::_Collection_default_instance_);
 }
-inline const ::debate::Selection& ModeratorToVRMessage::selection() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.selection)
-  return _internal_selection();
+inline const ::debate::Collection& ModeratorToVRMessage::collection() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.ModeratorToVRMessage.collection)
+  return _internal_collection();
 }
-inline void ModeratorToVRMessage::unsafe_arena_set_allocated_selection(::debate::Selection* value) {
+inline void ModeratorToVRMessage::unsafe_arena_set_allocated_collection(::debate::Collection* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.selection_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.collection_);
   }
-  _impl_.selection_ = reinterpret_cast<::debate::Selection*>(value);
+  _impl_.collection_ = reinterpret_cast<::debate::Collection*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000002u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.selection)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:moderator_to_vr.ModeratorToVRMessage.collection)
 }
-inline ::debate::Selection* ModeratorToVRMessage::release_selection() {
+inline ::debate::Collection* ModeratorToVRMessage::release_collection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
   _impl_._has_bits_[0] &= ~0x00000002u;
-  ::debate::Selection* released = _impl_.selection_;
-  _impl_.selection_ = nullptr;
+  ::debate::Collection* released = _impl_.collection_;
+  _impl_.collection_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
     auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
     released = ::google::protobuf::internal::DuplicateIfNonNull(released);
@@ -436,34 +436,34 @@ inline ::debate::Selection* ModeratorToVRMessage::release_selection() {
   }
   return released;
 }
-inline ::debate::Selection* ModeratorToVRMessage::unsafe_arena_release_selection() {
+inline ::debate::Collection* ModeratorToVRMessage::unsafe_arena_release_collection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.selection)
+  // @@protoc_insertion_point(field_release:moderator_to_vr.ModeratorToVRMessage.collection)
 
   _impl_._has_bits_[0] &= ~0x00000002u;
-  ::debate::Selection* temp = _impl_.selection_;
-  _impl_.selection_ = nullptr;
+  ::debate::Collection* temp = _impl_.collection_;
+  _impl_.collection_ = nullptr;
   return temp;
 }
-inline ::debate::Selection* ModeratorToVRMessage::_internal_mutable_selection() {
+inline ::debate::Collection* ModeratorToVRMessage::_internal_mutable_collection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.selection_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Selection>(GetArena());
-    _impl_.selection_ = reinterpret_cast<::debate::Selection*>(p);
+  if (_impl_.collection_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Collection>(GetArena());
+    _impl_.collection_ = reinterpret_cast<::debate::Collection*>(p);
   }
-  return _impl_.selection_;
+  return _impl_.collection_;
 }
-inline ::debate::Selection* ModeratorToVRMessage::mutable_selection() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::debate::Collection* ModeratorToVRMessage::mutable_collection() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   _impl_._has_bits_[0] |= 0x00000002u;
-  ::debate::Selection* _msg = _internal_mutable_selection();
-  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.selection)
+  ::debate::Collection* _msg = _internal_mutable_collection();
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.ModeratorToVRMessage.collection)
   return _msg;
 }
-inline void ModeratorToVRMessage::set_allocated_selection(::debate::Selection* value) {
+inline void ModeratorToVRMessage::set_allocated_collection(::debate::Collection* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.selection_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.collection_);
   }
 
   if (value != nullptr) {
@@ -476,8 +476,8 @@ inline void ModeratorToVRMessage::set_allocated_selection(::debate::Selection* v
     _impl_._has_bits_[0] &= ~0x00000002u;
   }
 
-  _impl_.selection_ = reinterpret_cast<::debate::Selection*>(value);
-  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.selection)
+  _impl_.collection_ = reinterpret_cast<::debate::Collection*>(value);
+  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.collection)
 }
 
 #ifdef __GNUC__

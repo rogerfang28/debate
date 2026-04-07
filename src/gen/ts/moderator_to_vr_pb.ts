@@ -8,15 +8,15 @@ import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { User } from "./user_pb";
 import { file_user } from "./user_pb";
-import type { Selection } from "./statement_selection_pb";
-import { file_statement_selection } from "./statement_selection_pb";
+import type { Collection } from "./collection_pb";
+import { file_collection } from "./collection_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciJWChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIYCgR1c2VyGAEgASgLMgoudXNlci5Vc2VyEiQKCXNlbGVjdGlvbhgCIAEoCzIRLmRlYmF0ZS5TZWxlY3Rpb25iBnByb3RvMw", [file_user, file_statement_selection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciJYChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIYCgR1c2VyGAEgASgLMgoudXNlci5Vc2VyEiYKCmNvbGxlY3Rpb24YAiABKAsyEi5kZWJhdGUuQ29sbGVjdGlvbmIGcHJvdG8z", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -28,9 +28,9 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
   user?: User;
 
   /**
-   * @generated from field: debate.Selection selection = 2;
+   * @generated from field: debate.Collection collection = 2;
    */
-  selection?: Selection;
+  collection?: Collection;
 };
 
 /**
