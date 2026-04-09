@@ -315,6 +315,14 @@ int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& co
     return linkId;
 }
 
+std::vector<std::vector<uint8_t>> DebateWrapper::getStatementsForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
+    return databaseWrapper.statements.getStatementsForDebateAndCreators(debate_id, creator_ids);
+}
+
+std::vector<std::tuple<int, int, int, std::string, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
+    return databaseWrapper.links.getLinksForDebateAndCreators(debate_id, creator_ids);
+}
+
 std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {
     // should be in the proof of the claim
     debate::Claim claim = getClaimById(claimId);

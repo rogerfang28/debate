@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <tuple>
 #include "../sqlite/Database.h"
 
 // ---------------------------------------
@@ -29,6 +30,8 @@ public:
     
     // Get all links involving a specific claim (both from and to)
     std::vector<std::tuple<int, int, int, std::string, int>> getLinksForClaim(int claimId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)
+
+    std::vector<std::tuple<int, int, int, std::string, int>> getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds);
     
     // Get a specific link by its ID
     std::optional<std::tuple<int, int, int, std::string, int>> getLinkById(int linkId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)

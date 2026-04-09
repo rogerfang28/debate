@@ -2,7 +2,7 @@
 #include "../../../utils/Log.h"
 #include "../../../../../src/gen/cpp/debate.pb.h"
 
-#include <unordered_set>
+#include <tuple>
 #include <vector>
 
 debate::Collection BuildCollection::BuildForDebateAndUsers(
@@ -16,52 +16,42 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 		return collection;
 	}
 
-	std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debate_id);
-	if (debateData.empty()) {
-		Log::warn("[BuildCollection] Debate with ID " + std::to_string(debate_id) + " not found.");
-		return collection;
-	}
-
-	debate::Debate debateProto;
-	if (!debateProto.ParseFromArray(debateData.data(), static_cast<int>(debateData.size()))) {
-		Log::error("[BuildCollection] Failed to parse debate protobuf for debate ID " + std::to_string(debate_id));
-		return collection;
-	}
-
-	std::unordered_set<int> allowedUsers(users_involved_ids.begin(), users_involved_ids.end());
-	std::unordered_set<int> visitedClaims;
-	std::unordered_set<int> visitedLinks;
-	std::vector<int> stack;
-	stack.push_back(debateProto.root_claim_id());
-
-	while (!stack.empty()) {
-		int claimId = stack.back();
-		stack.pop_back();
-
-		if (!visitedClaims.insert(claimId).second) {
-			continue;
-		}
-
-		debate::Claim claim = debateWrapper.getClaimById(claimId);
-		if (allowedUsers.find(claim.creator_id()) != allowedUsers.end()) {
+	const std::vector<std::vector<uint8_t>> statementBlobs = debateWrapper.getStatementsForDebateAndCreators(debate_id, users_involved_ids);
+	for (const auto& statementBlob : statementBlobs) {
+		debate::Claim claim;
+		if (claim.ParseFromArray(statementBlob.data(), static_cast<int>(statementBlob.size()))) {
 			collection.add_claims()->CopyFrom(claim);
 		}
-
-		for (const int childId : claim.proof().claim_ids()) {
-			stack.push_back(childId);
-		}
-
-		for (const int linkId : claim.proof().link_ids()) {
-			if (!visitedLinks.insert(linkId).second) {
-				continue;
-			}
-
-			debate::Link link = debateWrapper.getLinkById(linkId);
-			if (allowedUsers.find(link.creator_id()) != allowedUsers.end()) {
-				collection.add_links()->CopyFrom(link);
-			}
-		}
 	}
 
+	const std::vector<std::tuple<int, int, int, std::string, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
+	for (const auto& linkRow : linkRows) {
+		debate::Link* link = collection.add_links();
+		link->set_connect_from(std::get<1>(linkRow));
+		link->set_connect_to(std::get<2>(linkRow));
+		link->set_connection(std::get<3>(linkRow));
+		link->set_creator_id(std::get<4>(linkRow));
+		link->set_link_type(debate::LinkType::NORMAL);
+	}
+
+	Log::test("[BuildCollection] Final collection for debate " + std::to_string(debate_id)
+		+ ": claims=" + std::to_string(collection.claims_size())
+		+ ", links=" + std::to_string(collection.links_size()));
+
+	for (int i = 0; i < collection.claims_size(); ++i) {
+		const debate::Claim& claim = collection.claims(i);
+		Log::test("[BuildCollection] claim id=" + std::to_string(claim.id())
+			+ ", creator_id=" + std::to_string(claim.creator_id())
+			+ ", sentence=\"" + claim.sentence() + "\"");
+	}
+
+	for (int i = 0; i < collection.links_size(); ++i) {
+		const debate::Link& link = collection.links(i);
+		Log::test("[BuildCollection] link from=" + std::to_string(link.connect_from())
+			+ ", to=" + std::to_string(link.connect_to())
+			+ ", creator_id=" + std::to_string(link.creator_id())
+			+ ", connection=\"" + link.connection() + "\"");
+	}
+    
 	return collection;
 }

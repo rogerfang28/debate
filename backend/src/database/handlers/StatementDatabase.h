@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <optional>
+#include <tuple>
 #include "../sqlite/Database.h"
 
 // ---------------------------------------
@@ -20,6 +21,7 @@ public:
     bool ensureTable();
 
     int addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData, int creatorId = -1, int debateId = -1); // return statement id
+    std::vector<std::vector<uint8_t>> getStatementsForDebateAndCreators(int debateId, const std::vector<int>& creatorIds);
     std::vector<uint8_t> getStatementProtobuf(int statementId);
     int getStatementCreatorId(int statementId);
     int getStatementDebateId(int statementId);

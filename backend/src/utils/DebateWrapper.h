@@ -5,6 +5,7 @@
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
+#include <tuple>
 #include "../database/handlers/DatabaseWrapper.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
@@ -46,6 +47,8 @@ public:
     void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
     int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id);
+    std::vector<std::vector<uint8_t>> getStatementsForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
+    std::vector<std::tuple<int, int, int, std::string, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);

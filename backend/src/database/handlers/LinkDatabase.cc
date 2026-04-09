@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../../utils/Log.h"
 
+#include <sstream>
+
 namespace {
 bool linkTableHasColumn(Database& db, const char* columnName) {
     const char* sql = "PRAGMA table_info(LINKS);";
@@ -152,6 +154,46 @@ std::vector<std::tuple<int, int, int, std::string, int>> LinkDatabase::getLinksF
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
         int creatorId = sqlite3_column_int(stmt, 4);
         
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId));
+    }
+
+    sqlite3_finalize(stmt);
+    return links;
+}
+
+std::vector<std::tuple<int, int, int, std::string, int>> LinkDatabase::getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds) {
+    std::vector<std::tuple<int, int, int, std::string, int>> links;
+    if (creatorIds.empty()) {
+        return links;
+    }
+
+    std::ostringstream sql;
+    sql << "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID FROM LINKS WHERE DEBATE_ID = ? AND CREATOR_ID IN (";
+    for (size_t i = 0; i < creatorIds.size(); ++i) {
+        if (i > 0) {
+            sql << ", ";
+        }
+        sql << "?";
+    }
+    sql << ");";
+
+    sqlite3_stmt* stmt = db_.prepare(sql.str());
+    if (!stmt) {
+        return links;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+    for (size_t i = 0; i < creatorIds.size(); ++i) {
+        sqlite3_bind_int(stmt, static_cast<int>(i + 2), creatorIds[i]);
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        int fromId = sqlite3_column_int(stmt, 1);
+        int toId = sqlite3_column_int(stmt, 2);
+        const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        int creatorId = sqlite3_column_int(stmt, 4);
+
         links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId));
     }
 

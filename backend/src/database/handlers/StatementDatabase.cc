@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../../utils/Log.h"
 
+#include <sstream>
+
 namespace {
 bool statementTableHasColumn(Database& db, const char* columnName) {
     const char* sql = "PRAGMA table_info(STATEMENTS);";
@@ -92,6 +94,45 @@ int StatementDatabase::addStatement(int root_id, const std::string& content, std
 
     sqlite3_finalize(stmt);
     return statementId;
+}
+
+std::vector<std::vector<uint8_t>> StatementDatabase::getStatementsForDebateAndCreators(int debateId, const std::vector<int>& creatorIds) {
+    std::vector<std::vector<uint8_t>> statements;
+    if (creatorIds.empty()) {
+        return statements;
+    }
+
+    std::ostringstream sql;
+    sql << "SELECT STATEMENT_DATA FROM STATEMENTS WHERE DEBATE_ID = ? AND CREATOR_ID IN (";
+    for (size_t i = 0; i < creatorIds.size(); ++i) {
+        if (i > 0) {
+            sql << ", ";
+        }
+        sql << "?";
+    }
+    sql << ");";
+
+    sqlite3_stmt* stmt = db_.prepare(sql.str());
+    if (!stmt) {
+        return statements;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+    for (size_t i = 0; i < creatorIds.size(); ++i) {
+        sqlite3_bind_int(stmt, static_cast<int>(i + 2), creatorIds[i]);
+    }
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const void* blob = sqlite3_column_blob(stmt, 0);
+        int blobSize = sqlite3_column_bytes(stmt, 0);
+        if (blob != nullptr && blobSize > 0) {
+            const uint8_t* data = static_cast<const uint8_t*>(blob);
+            statements.emplace_back(data, data + blobSize);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return statements;
 }
 
 std::vector<uint8_t> StatementDatabase::getStatementProtobuf(int statementId) {
