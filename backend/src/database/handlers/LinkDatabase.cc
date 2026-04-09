@@ -2,6 +2,28 @@
 #include <iostream>
 #include "../../utils/Log.h"
 
+namespace {
+bool linkTableHasColumn(Database& db, const char* columnName) {
+    const char* sql = "PRAGMA table_info(LINKS);";
+    sqlite3_stmt* stmt = db.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    bool found = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        if (name != nullptr && std::string(name) == columnName) {
+            found = true;
+            break;
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return found;
+}
+}
+
 LinkDatabase::LinkDatabase(Database& db) : db_(db) {
     ensureTable();
 }
@@ -13,14 +35,25 @@ bool LinkDatabase::ensureTable() {
             CLAIM_ID_FROM INTEGER NOT NULL,
             CLAIM_ID_TO INTEGER NOT NULL,
             CONNECTION TEXT NOT NULL,
-            CREATOR_ID INTEGER NOT NULL
+            CREATOR_ID INTEGER NOT NULL,
+            DEBATE_ID INTEGER
         );
     )";
-    return db_.execute(sql);
+    if (!db_.execute(sql)) {
+        return false;
+    }
+
+    if (!linkTableHasColumn(db_, "DEBATE_ID")) {
+        if (!db_.execute("ALTER TABLE LINKS ADD COLUMN DEBATE_ID INTEGER;")) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId) {
-    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID) VALUES (?, ?, ?, ?);";
+int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId) {
+    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, DEBATE_ID) VALUES (?, ?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -31,6 +64,11 @@ int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& con
     sqlite3_bind_int(stmt, 2, claimIdTo);
     sqlite3_bind_text(stmt, 3, connection.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 4, creatorId);
+    if (debateId != -1) {
+        sqlite3_bind_int(stmt, 5, debateId);
+    } else {
+        sqlite3_bind_null(stmt, 5);
+    }
 
     int result = sqlite3_step(stmt);
     int linkId = -1;
@@ -149,6 +187,27 @@ std::optional<std::tuple<int, int, int, std::string, int>> LinkDatabase::getLink
     return std::nullopt;
 }
 
+int LinkDatabase::getLinkDebateId(int linkId) {
+    int debateId = -1;
+    const char* sql = "SELECT DEBATE_ID FROM LINKS WHERE ID = ?;";
+
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return debateId;
+    }
+
+    sqlite3_bind_int(stmt, 1, linkId);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        if (sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+            debateId = sqlite3_column_int(stmt, 0);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return debateId;
+}
+
 bool LinkDatabase::updateLinkConnection(int linkId, const std::string& newConnection) {
     const char* sql = "UPDATE LINKS SET CONNECTION = ? WHERE ID = ?;";
     
@@ -158,6 +217,24 @@ bool LinkDatabase::updateLinkConnection(int linkId, const std::string& newConnec
     }
 
     sqlite3_bind_text(stmt, 1, newConnection.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, linkId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
+
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool LinkDatabase::updateLinkDebateId(int linkId, int debateId) {
+    const char* sql = "UPDATE LINKS SET DEBATE_ID = ? WHERE ID = ?;";
+
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
     sqlite3_bind_int(stmt, 2, linkId);
 
     int result = sqlite3_step(stmt);

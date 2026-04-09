@@ -30,7 +30,6 @@ inline constexpr Collection::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : claims_{},
         links_{},
-        challenges_{},
         _cached_size_{0} {}
 
 template <typename>
@@ -70,7 +69,6 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate::Collection, _impl_.claims_),
         PROTOBUF_FIELD_OFFSET(::debate::Collection, _impl_.links_),
-        PROTOBUF_FIELD_OFFSET(::debate::Collection, _impl_.challenges_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -83,10 +81,9 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_collection_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\020collection.proto\022\006debate\032\014debate.proto"
-    "\"\212\001\n\nCollection\022%\n\006claims\030\001 \003(\0132\r.debate"
-    ".ClaimR\006claims\022\"\n\005links\030\002 \003(\0132\014.debate.L"
-    "inkR\005links\0221\n\nchallenges\030\003 \003(\0132\021.debate."
-    "ChallengeR\nchallengesb\006proto3"
+    "\"W\n\nCollection\022%\n\006claims\030\001 \003(\0132\r.debate."
+    "ClaimR\006claims\022\"\n\005links\030\002 \003(\0132\014.debate.Li"
+    "nkR\005linksb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_collection_2eproto_deps[1] =
     {
@@ -96,7 +93,7 @@ static ::absl::once_flag descriptor_table_collection_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_collection_2eproto = {
     false,
     false,
-    189,
+    137,
     descriptor_table_protodef_collection_2eproto,
     "collection.proto",
     &descriptor_table_collection_2eproto_once,
@@ -124,10 +121,6 @@ void Collection::clear_links() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.links_.Clear();
 }
-void Collection::clear_challenges() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenges_.Clear();
-}
 Collection::Collection(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
@@ -142,7 +135,6 @@ inline PROTOBUF_NDEBUG_INLINE Collection::Impl_::Impl_(
     const Impl_& from, const ::debate::Collection& from_msg)
       : claims_{visibility, arena, from.claims_},
         links_{visibility, arena, from.links_},
-        challenges_{visibility, arena, from.challenges_},
         _cached_size_{0} {}
 
 Collection::Collection(
@@ -166,7 +158,6 @@ inline PROTOBUF_NDEBUG_INLINE Collection::Impl_::Impl_(
     ::google::protobuf::Arena* arena)
       : claims_{visibility, arena},
         links_{visibility, arena},
-        challenges_{visibility, arena},
         _cached_size_{0} {}
 
 inline void Collection::SharedCtor(::_pb::Arena* arena) {
@@ -195,10 +186,6 @@ constexpr auto Collection::InternalNewImpl_() {
                   ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(Collection, _impl_.links_) +
           decltype(Collection::_impl_.links_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(Collection, _impl_.challenges_) +
-          decltype(Collection::_impl_.challenges_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
   });
@@ -239,16 +226,16 @@ const ::google::protobuf::internal::ClassData* Collection::GetClassData() const 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 3, 0, 2> Collection::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> Collection::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    3,  // num_aux_entries
+    2,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -257,16 +244,12 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> Collection::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Collection>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // repeated .debate.Claim claims = 1 [json_name = "claims"];
-    {::_pbi::TcParser::FastMtR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Collection, _impl_.claims_)}},
     // repeated .debate.Link links = 2 [json_name = "links"];
     {::_pbi::TcParser::FastMtR1,
      {18, 63, 1, PROTOBUF_FIELD_OFFSET(Collection, _impl_.links_)}},
-    // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
+    // repeated .debate.Claim claims = 1 [json_name = "claims"];
     {::_pbi::TcParser::FastMtR1,
-     {26, 63, 2, PROTOBUF_FIELD_OFFSET(Collection, _impl_.challenges_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Collection, _impl_.claims_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -276,13 +259,9 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> Collection::_table_ = {
     // repeated .debate.Link links = 2 [json_name = "links"];
     {PROTOBUF_FIELD_OFFSET(Collection, _impl_.links_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-    {PROTOBUF_FIELD_OFFSET(Collection, _impl_.challenges_), 0, 2,
-    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::debate::Claim>()},
     {::_pbi::TcParser::GetTable<::debate::Link>()},
-    {::_pbi::TcParser::GetTable<::debate::Challenge>()},
   }}, {{
   }},
 };
@@ -296,7 +275,6 @@ PROTOBUF_NOINLINE void Collection::Clear() {
 
   _impl_.claims_.Clear();
   _impl_.links_.Clear();
-  _impl_.challenges_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -334,17 +312,6 @@ PROTOBUF_NOINLINE void Collection::Clear() {
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                     2, repfield, repfield.GetCachedSize(),
-                    target, stream);
-          }
-
-          // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-          for (unsigned i = 0, n = static_cast<unsigned>(
-                                   this_._internal_challenges_size());
-               i < n; i++) {
-            const auto& repfield = this_._internal_challenges().Get(i);
-            target =
-                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    3, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
@@ -387,13 +354,6 @@ PROTOBUF_NOINLINE void Collection::Clear() {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-            {
-              total_size += 1UL * this_._internal_challenges_size();
-              for (const auto& msg : this_._internal_challenges()) {
-                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
-              }
-            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -411,8 +371,6 @@ void Collection::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goog
       from._internal_claims());
   _this->_internal_mutable_links()->MergeFrom(
       from._internal_links());
-  _this->_internal_mutable_challenges()->MergeFrom(
-      from._internal_challenges());
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -429,7 +387,6 @@ void Collection::InternalSwap(Collection* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.claims_.InternalSwap(&other->_impl_.claims_);
   _impl_.links_.InternalSwap(&other->_impl_.links_);
-  _impl_.challenges_.InternalSwap(&other->_impl_.challenges_);
 }
 
 ::google::protobuf::Metadata Collection::GetMetadata() const {

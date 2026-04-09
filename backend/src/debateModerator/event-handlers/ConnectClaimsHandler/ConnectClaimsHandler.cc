@@ -15,9 +15,10 @@ void ConnectClaimsHandler::ConnectClaims(
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     int fromClaimId = userProto.engagement().debating_info().connecting_info().from_claim_id();
     int toClaimId = userProto.engagement().debating_info().connecting_info().to_claim_id();
+    int debateId = debateWrapper.findDebateId(fromClaimId);
     // std::string& connection = userProto.engagement().debating_info().connecting_info().connection();
     // this one should actually update the links database
-    int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user_id);
+    int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user_id, debateId);
     // also add it to the claims proof id
     debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
     Log::debug("[ConnectClaimsHandler] Adding link ID " + std::to_string(linkId) + " to parent claim ID " + std::to_string(parentClaim.id()));

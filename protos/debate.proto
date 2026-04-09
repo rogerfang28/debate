@@ -39,6 +39,7 @@ message Link {
   int32 creator_id = 5;
   // add a type, normal, parent child, or challenge connection
   LinkType link_type = 6;
+  int32 debate_id = 7;
 }
 
 enum LinkType {

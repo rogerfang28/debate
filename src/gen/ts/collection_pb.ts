@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Challenge, Claim, Link } from "./debate_pb";
+import type { Claim, Link } from "./debate_pb";
 import { file_debate } from "./debate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file collection.proto.
  */
 export const file_collection: GenFile = /*@__PURE__*/
-  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUibwoKQ29sbGVjdGlvbhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGluaxIlCgpjaGFsbGVuZ2VzGAMgAygLMhEuZGViYXRlLkNoYWxsZW5nZWIGcHJvdG8z", [file_debate]);
+  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUiSAoKQ29sbGVjdGlvbhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGlua2IGcHJvdG8z", [file_debate]);
 
 /**
  * @generated from message debate.Collection
@@ -27,11 +27,6 @@ export type Collection = Message<"debate.Collection"> & {
    * @generated from field: repeated debate.Link links = 2;
    */
   links: Link[];
-
-  /**
-   * @generated from field: repeated debate.Challenge challenges = 3;
-   */
-  challenges: Challenge[];
 };
 
 /**

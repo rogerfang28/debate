@@ -140,7 +140,8 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
         -1, 
         claim.sentence(), 
         serializedData,
-        user_id
+        user_id,
+        debate_id
     );
     claim.set_id(newId);
     std::vector<uint8_t> updatedSerializedData(claim.ByteSizeLong());
@@ -149,6 +150,7 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
         claim.id(), 
         updatedSerializedData
     );
+    databaseWrapper.statements.updateStatementDebateId(claim.id(), debate_id);
     databaseWrapper.statements.updateStatementRoot(
         claim.id(), 
         claim.id()
@@ -307,8 +309,8 @@ void DebateWrapper::editClaimText(
     databaseWrapper.statements.updateStatementContent(claimId, newText);
 }
 
-int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id) {
-    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id);
+int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id) {
+    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id);
     Log::debug("[DebateWrapper] Added link from claim " + std::to_string(fromClaimId) + " to claim " + std::to_string(toClaimId) + " by user " + std::to_string(creator_id));
     return linkId;
 }
@@ -333,7 +335,7 @@ debate::Link DebateWrapper::getLinkById(int linkId) {
         linkProto.set_connect_from(std::get<1>(link));
         linkProto.set_connect_to(std::get<2>(link));
         linkProto.set_connection(std::get<3>(link));
-        // linkProto.set_creator(std::get<4>(link));
+        linkProto.set_creator_id(std::get<4>(link));
         
         Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
             + " from Claim ID: " + std::to_string(std::get<1>(link))

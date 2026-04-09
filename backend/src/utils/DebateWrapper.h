@@ -45,7 +45,7 @@ public:
     void updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
-    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id);
+    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id);
     std::vector<int> findLinksUnder(const int& claimId);
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);

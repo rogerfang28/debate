@@ -217,7 +217,6 @@ class Collection final : public ::google::protobuf::Message
   enum : int {
     kClaimsFieldNumber = 1,
     kLinksFieldNumber = 2,
-    kChallengesFieldNumber = 3,
   };
   // repeated .debate.Claim claims = 1 [json_name = "claims"];
   int claims_size() const;
@@ -253,29 +252,12 @@ class Collection final : public ::google::protobuf::Message
   const ::debate::Link& links(int index) const;
   ::debate::Link* add_links();
   const ::google::protobuf::RepeatedPtrField<::debate::Link>& links() const;
-  // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-  int challenges_size() const;
-  private:
-  int _internal_challenges_size() const;
-
-  public:
-  void clear_challenges() ;
-  ::debate::Challenge* mutable_challenges(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* mutable_challenges();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& _internal_challenges() const;
-  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* _internal_mutable_challenges();
-  public:
-  const ::debate::Challenge& challenges(int index) const;
-  ::debate::Challenge* add_challenges();
-  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& challenges() const;
   // @@protoc_insertion_point(class_scope:debate.Collection)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 3,
+      1, 2, 2,
       0, 2>
       _table_;
 
@@ -295,7 +277,6 @@ class Collection final : public ::google::protobuf::Message
                           const Collection& from_msg);
     ::google::protobuf::RepeatedPtrField< ::debate::Claim > claims_;
     ::google::protobuf::RepeatedPtrField< ::debate::Link > links_;
-    ::google::protobuf::RepeatedPtrField< ::debate::Challenge > challenges_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -407,51 +388,6 @@ inline ::google::protobuf::RepeatedPtrField<::debate::Link>*
 Collection::_internal_mutable_links() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.links_;
-}
-
-// repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-inline int Collection::_internal_challenges_size() const {
-  return _internal_challenges().size();
-}
-inline int Collection::challenges_size() const {
-  return _internal_challenges_size();
-}
-inline ::debate::Challenge* Collection::mutable_challenges(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.Collection.challenges)
-  return _internal_mutable_challenges()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>* Collection::mutable_challenges()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Collection.challenges)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_challenges();
-}
-inline const ::debate::Challenge& Collection::challenges(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Collection.challenges)
-  return _internal_challenges().Get(index);
-}
-inline ::debate::Challenge* Collection::add_challenges() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::Challenge* _add = _internal_mutable_challenges()->Add();
-  // @@protoc_insertion_point(field_add:debate.Collection.challenges)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& Collection::challenges() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Collection.challenges)
-  return _internal_challenges();
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>&
-Collection::_internal_challenges() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenges_;
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>*
-Collection::_internal_mutable_challenges() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.challenges_;
 }
 
 #ifdef __GNUC__

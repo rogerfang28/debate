@@ -19,7 +19,7 @@ public:
     bool ensureTable();
 
     // Create a new link between claims
-    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId); // return link id
+    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId = -1); // return link id
     
     // Get all links from a specific claim
     std::vector<std::tuple<int, int, int, std::string, int>> getLinksFromClaim(int claimIdFrom); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)
@@ -32,9 +32,12 @@ public:
     
     // Get a specific link by its ID
     std::optional<std::tuple<int, int, int, std::string, int>> getLinkById(int linkId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)
+
+    int getLinkDebateId(int linkId);
     
     // Update the connection text for a link
     bool updateLinkConnection(int linkId, const std::string& newConnection);
+    bool updateLinkDebateId(int linkId, int debateId);
     
     // Delete a link
     bool deleteLink(int linkId);

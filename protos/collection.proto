@@ -7,5 +7,4 @@ import "debate.proto";
 message Collection {
 	repeated Claim claims = 1;
     repeated Link links = 2;
-    repeated Challenge challenges = 3;
 }

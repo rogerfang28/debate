@@ -2,6 +2,28 @@
 #include <iostream>
 #include "../../utils/Log.h"
 
+namespace {
+bool statementTableHasColumn(Database& db, const char* columnName) {
+    const char* sql = "PRAGMA table_info(STATEMENTS);";
+    sqlite3_stmt* stmt = db.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    bool found = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        if (name != nullptr && std::string(name) == columnName) {
+            found = true;
+            break;
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return found;
+}
+}
+
 StatementDatabase::StatementDatabase(Database& db) : db_(db) {
     ensureTable();
 }
@@ -13,14 +35,25 @@ bool StatementDatabase::ensureTable() {
             ROOT_ID TEXT NOT NULL,
             TEXT TEXT NOT NULL,
             STATEMENT_DATA BLOB,
-            CREATOR_ID INTEGER
+            CREATOR_ID INTEGER,
+            DEBATE_ID INTEGER
         );
     )";
-    return db_.execute(sql);
+    if (!db_.execute(sql)) {
+        return false;
+    }
+
+    if (!statementTableHasColumn(db_, "DEBATE_ID")) {
+        if (!db_.execute("ALTER TABLE STATEMENTS ADD COLUMN DEBATE_ID INTEGER;")) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-int StatementDatabase::addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData, int creatorId) {
-    const char* sql = "INSERT INTO STATEMENTS (ROOT_ID, TEXT, STATEMENT_DATA, CREATOR_ID) VALUES (?, ?, ?, ?);";
+int StatementDatabase::addStatement(int root_id, const std::string& content, std::vector<uint8_t> protobufData, int creatorId, int debateId) {
+    const char* sql = "INSERT INTO STATEMENTS (ROOT_ID, TEXT, STATEMENT_DATA, CREATOR_ID, DEBATE_ID) VALUES (?, ?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -40,6 +73,12 @@ int StatementDatabase::addStatement(int root_id, const std::string& content, std
         sqlite3_bind_int(stmt, 4, creatorId);
     } else {
         sqlite3_bind_null(stmt, 4);
+    }
+
+    if (debateId != -1) {
+        sqlite3_bind_int(stmt, 5, debateId);
+    } else {
+        sqlite3_bind_null(stmt, 5);
     }
 
     int result = sqlite3_step(stmt);
@@ -101,6 +140,27 @@ int StatementDatabase::getStatementCreatorId(int statementId) {
     return creatorId;
 }
 
+int StatementDatabase::getStatementDebateId(int statementId) {
+    int debateId = -1;
+    const char* sql = "SELECT DEBATE_ID FROM STATEMENTS WHERE ID = ?;";
+
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return debateId;
+    }
+
+    sqlite3_bind_int(stmt, 1, statementId);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        if (sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+            debateId = sqlite3_column_int(stmt, 0);
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return debateId;
+}
+
 bool StatementDatabase::updateStatementContent(int statementId, const std::string& newContent) {
     const char* sql = "UPDATE STATEMENTS SET TEXT = ? WHERE ID = ?;";
     
@@ -150,6 +210,24 @@ bool StatementDatabase::updateStatementRoot(int statementId, int newRootId) {
     }
 
     sqlite3_bind_text(stmt, 1, std::to_string(newRootId).c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, statementId);
+
+    int result = sqlite3_step(stmt);
+    bool success = (result == SQLITE_DONE && sqlite3_changes(db_.handle()) > 0);
+
+    sqlite3_finalize(stmt);
+    return success;
+}
+
+bool StatementDatabase::updateStatementDebateId(int statementId, int debateId) {
+    const char* sql = "UPDATE STATEMENTS SET DEBATE_ID = ? WHERE ID = ?;";
+
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return false;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
     sqlite3_bind_int(stmt, 2, statementId);
 
     int result = sqlite3_step(stmt);
