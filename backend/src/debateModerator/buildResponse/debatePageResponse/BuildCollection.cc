@@ -24,7 +24,7 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 		}
 	}
 
-	const std::vector<std::tuple<int, int, int, std::string, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
+	const std::vector<std::tuple<int, int, int, std::string, int, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
 	for (const auto& linkRow : linkRows) {
 		const int linkId = std::get<0>(linkRow);
 		debate::Link* link = &(*collection.mutable_links_by_id())[linkId];
@@ -33,7 +33,7 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 		link->set_connect_to(std::get<2>(linkRow));
 		link->set_connection(std::get<3>(linkRow));
 		link->set_creator_id(std::get<4>(linkRow));
-		link->set_link_type(debate::LinkType::NORMAL);
+		link->set_link_type(static_cast<debate::LinkType>(std::get<5>(linkRow)));
 	}
 
 	Log::debug("[BuildCollection] Final collection for debate " + std::to_string(debate_id)

@@ -18,7 +18,7 @@ void ConnectClaimsHandler::ConnectClaims(
     int debateId = debateWrapper.findDebateId(fromClaimId);
     // std::string& connection = userProto.engagement().debating_info().connecting_info().connection();
     // this one should actually update the links database
-    int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user_id, debateId);
+    int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user_id, debateId, debate::LinkType::NORMAL);
     CancelConnectClaims(user_id, debateWrapper);
     
 }

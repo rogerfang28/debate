@@ -128,6 +128,9 @@ int DebateWrapper::addClaimUnderParent(
     addClaimToDB(childClaim, user_id, debate_id);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
+    // also add a link between the new claim and the parent claim, which would be a parent connection
+    addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
+    Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");
     return childClaim.id();
 }
 
@@ -309,8 +312,8 @@ void DebateWrapper::editClaimText(
     databaseWrapper.statements.updateStatementContent(claimId, newText);
 }
 
-int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id) {
-    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id);
+int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type) {
+    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id, static_cast<int>(link_type));
     if (linkId == -1) {
         Log::error("[DebateWrapper][ERR] Failed to add link from claim " + std::to_string(fromClaimId)
             + " to claim " + std::to_string(toClaimId));
@@ -355,7 +358,7 @@ std::vector<std::vector<uint8_t>> DebateWrapper::getStatementsForDebateAndCreato
     return databaseWrapper.statements.getStatementsForDebateAndCreators(debate_id, creator_ids);
 }
 
-std::vector<std::tuple<int, int, int, std::string, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
+std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
     return databaseWrapper.links.getLinksForDebateAndCreators(debate_id, creator_ids);
 }
 
@@ -386,6 +389,7 @@ debate::Link DebateWrapper::getLinkById(int linkId) {
         linkProto.set_connect_to(std::get<2>(link));
         linkProto.set_connection(std::get<3>(link));
         linkProto.set_creator_id(std::get<4>(link));
+        linkProto.set_link_type(static_cast<debate::LinkType>(std::get<5>(link)));
         
         Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
             + " from Claim ID: " + std::to_string(std::get<1>(link))
