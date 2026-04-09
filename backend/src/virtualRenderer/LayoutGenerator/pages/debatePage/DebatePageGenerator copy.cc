@@ -2,136 +2,8 @@
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/Log.h"
 #include "../../../../utils/DemoMode.h"
-#include "../../../../../../src/gen/cpp/user.pb.h"
-#include "../../../../../../src/gen/cpp/user_engagement.pb.h"
 
-namespace {
-debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {
-    switch (scopeType) {
-        case rendering_info::SINGLE_CLAIM:
-            return debate::SINGLE_CLAIM;
-        case rendering_info::FULL_DEBATE:
-            return debate::FULL_DEBATE;
-        default:
-            return debate::SINGLE_CLAIM;
-    }
-}
-
-debate::ClaimStatus MapClaimStatus(rendering_info::ClaimStatus status) {
-    switch (status) {
-        case rendering_info::CLAIM_STATUS_NEUTRAL:
-            return debate::ClaimStatus::NEUTRAL;
-        case rendering_info::CLAIM_STATUS_CHALLENGED:
-            return debate::ClaimStatus::CHALLENGED;
-        case rendering_info::CLAIM_STATUS_DEFENDED:
-            return debate::ClaimStatus::DEFENDED;
-        case rendering_info::CLAIM_STATUS_DISPROVEN:
-            return debate::ClaimStatus::DISPROVEN;
-        default:
-            return debate::ClaimStatus::NEUTRAL;
-    }
-}
-
-debate::ChallengeStatus MapChallengeStatus(rendering_info::ChallengeStatus status) {
-    switch (status) {
-        case rendering_info::CHALLENGE_STATUS_ONGOING:
-            return debate::ChallengeStatus::ONGOING;
-        case rendering_info::CHALLENGE_STATUS_CONCEDED:
-            return debate::ChallengeStatus::CONCEDED;
-        case rendering_info::CHALLENGE_STATUS_PROVEN:
-            return debate::ChallengeStatus::PROVEN;
-        default:
-            return debate::ChallengeStatus::ONGOING;
-    }
-}
-
-user_engagement::DebatingInfo_CurrentDebateAction_ActionType MapDebateAction(rendering_info::DebateActionType actionType) {
-    switch (actionType) {
-        case rendering_info::VIEWING_CLAIM:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_VIEWING_CLAIM;
-        case rendering_info::ADDING_CHILD_CLAIM:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_ADDING_CHILD_CLAIM;
-        case rendering_info::CONNECTING_CLAIMS:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CONNECTING_CLAIMS;
-        case rendering_info::CHALLENGING_CLAIM:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CHALLENGING_CLAIM;
-        case rendering_info::EDITING_CLAIM_DESCRIPTION:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM_DESCRIPTION;
-        case rendering_info::EDITING_CLAIM:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM;
-        case rendering_info::REPORTING_CLAIM:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_REPORTING_CLAIM;
-        default:
-            return user_engagement::DebatingInfo_CurrentDebateAction_ActionType_VIEWING_CLAIM;
-    }
-}
-
-user::User BuildUserFromRenderingInfo(const rendering_info::DebatePageRenderingInfo& info) {
-    user::User userProto;
-    userProto.set_user_id(info.viewer_user_id());
-    userProto.set_username(info.viewer_username());
-    userProto.mutable_current_scope()->set_scopetype(MapScopeType(info.scope_type()));
-    userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
-
-    user_engagement::DebatingInfo* debatingInfo = userProto.mutable_engagement()->mutable_debating_info();
-    debatingInfo->set_debate_id(info.debate_id());
-    debatingInfo->set_is_challenge(info.is_challenge_debate());
-    debatingInfo->set_current_claim_description(info.current_claim_description());
-    debatingInfo->set_modifying_current_claim(info.modifying_current_claim());
-    debatingInfo->mutable_current_debate_action()->set_action_type(MapDebateAction(info.current_action()));
-
-    debatingInfo->mutable_current_claim()->set_id(info.current_claim().id());
-    debatingInfo->mutable_current_claim()->set_sentence(info.current_claim().sentence());
-    debatingInfo->mutable_current_claim()->set_creator_id(info.current_claim().creator_id());
-    debatingInfo->mutable_current_claim()->set_status(MapClaimStatus(info.current_claim().status()));
-
-    for (int i = 0; i < info.children_claims_size(); ++i) {
-        const rendering_info::ClaimRenderInfo& child = info.children_claims(i);
-        user_engagement::ClaimInfo* dst = debatingInfo->add_children_claims();
-        dst->set_id(child.id());
-        dst->set_sentence(child.sentence());
-        dst->set_creator_id(child.creator_id());
-        dst->set_status(MapClaimStatus(child.status()));
-    }
-
-    for (int i = 0; i < info.links_size(); ++i) {
-        const rendering_info::LinkRenderInfo& link = info.links(i);
-        user_engagement::LinkInfo* dst = debatingInfo->add_links();
-        dst->set_id(link.id());
-        dst->set_connect_from(link.connect_from());
-        dst->set_connect_to(link.connect_to());
-        dst->set_connection(link.connection());
-        dst->set_creator_id(link.creator_id());
-    }
-
-    for (int i = 0; i < info.current_challenges_size(); ++i) {
-        const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        user_engagement::ChallengeInfo* dst = debatingInfo->add_current_challenges();
-        dst->set_id(challenge.id());
-        dst->set_sentence(challenge.sentence());
-        dst->set_creator_id(challenge.creator_id());
-        dst->set_status(MapChallengeStatus(challenge.status()));
-    }
-
-    debatingInfo->mutable_connecting_info()->set_from_claim_id(info.connecting_info().from_claim_id());
-    debatingInfo->mutable_connecting_info()->set_to_claim_id(info.connecting_info().to_claim_id());
-    debatingInfo->mutable_connecting_info()->set_connecting(info.connecting_info().connecting());
-    debatingInfo->mutable_connecting_info()->set_opened_connect_modal(info.connecting_info().opened_connect_modal());
-
-    for (int i = 0; i < info.challenging_info().claim_ids_size(); ++i) {
-        debatingInfo->mutable_challenging_info()->add_claim_ids(info.challenging_info().claim_ids(i));
-    }
-    for (int i = 0; i < info.challenging_info().link_ids_size(); ++i) {
-        debatingInfo->mutable_challenging_info()->add_link_ids(info.challenging_info().link_ids(i));
-    }
-    debatingInfo->mutable_challenging_info()->set_opened_challenge_modal(info.challenging_info().opened_challenge_modal());
-
-    return userProto;
-}
-}
-
-ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePageRenderingInfo& info) {
-    user::User userProto = BuildUserFromRenderingInfo(info);
+ui::Page DebatePageGenerator::GenerateDebatePage(user::User userProto) {
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()));
@@ -147,11 +19,11 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePag
     }
 
     // more individual functions for each part
-    mainLayout = FillChildClaims(info, mainLayout);
-    mainLayout = FillChallenges(info, mainLayout);
-    mainLayout = FillCurrentClaimSection(info, mainLayout);
-    mainLayout = AddAppropriateButtons(info, mainLayout);
-    mainLayout = AddAppropriateOverlays(info, mainLayout);    
+    mainLayout = FillChildClaims(userProto, mainLayout);
+    mainLayout = FillChallenges(userProto, mainLayout);
+    mainLayout = FillCurrentClaimSection(userProto, mainLayout);
+    mainLayout = AddAppropriateButtons(userProto, mainLayout);
+    mainLayout = AddAppropriateOverlays(userProto, mainLayout);    
 
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(mainLayout);
@@ -548,8 +420,7 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
     return mainLayout;
 }
 
-ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout) {
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillChildClaims(user::User user, ui::Component mainLayout) {
     // Extract data from user
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -981,8 +852,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillChallenges(user::User user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1158,8 +1028,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillCurrentClaimSection(user::User user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1363,8 +1232,7 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info:
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::AddAppropriateButtons(user::User user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1576,8 +1444,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::AddAppropriateOverlays(user::User user, ui::Component mainLayout){
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     
     switch(debatingInfo.current_debate_action().action_type()) {
