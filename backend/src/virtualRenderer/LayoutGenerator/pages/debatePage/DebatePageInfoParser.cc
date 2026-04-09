@@ -2,6 +2,7 @@
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 #include "../../../../../src/gen/cpp/collection.pb.h"
 #include "../../../../utils/Log.h"
+#include <unordered_set>
 
 namespace {
 rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
@@ -90,6 +91,9 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	currentClaim->set_creator_id(debatingInfo.current_claim().creator_id());
 	currentClaim->set_status(MapClaimStatus(debatingInfo.current_claim().status()));
 
+	std::unordered_set<int> visibleClaimIds;
+	visibleClaimIds.insert(currentClaim->id());
+
 	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(debatingInfo.current_claim().id());
 	Log::debug("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
 	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
@@ -109,21 +113,55 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 				outChild->set_sentence(childClaim.sentence());
 				outChild->set_creator_id(childClaim.creator_id());
 				outChild->set_status(MapClaimStatus(childClaim.status()));
+				visibleClaimIds.insert(childClaim.id());
 			} else {
 				Log::debug("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
 			}
 		}
 	}
 
-	for (int i = 0; i < debatingInfo.links_size(); ++i) {
-		const user_engagement::LinkInfo& link = debatingInfo.links(i);
+	Log::debug(
+		"[DebatePageInfoParser] Copying collection links into rendering_info.links: links_by_id_count=" +
+		std::to_string(collectionProto.links_by_id_size()) +
+		", visible_claim_count=" + std::to_string(visibleClaimIds.size())
+	);
+	int outputLinkIndex = 0;
+	for (const auto& entry : collectionProto.links_by_id()) {
+		const int linkId = entry.first;
+		const debate::Link& link = entry.second;
+		const bool fromVisible = visibleClaimIds.count(link.connect_from()) > 0;
+		const bool toVisible = visibleClaimIds.count(link.connect_to()) > 0;
+		const bool isParentChild = (link.link_type() == debate::LinkType::PARENT_CHILD);
+
+		if (!fromVisible || !toVisible || isParentChild) {
+			continue;
+		}
+
+		Log::debug(
+			"[DebatePageInfoParser] Source collection link id=" + std::to_string(linkId) +
+			", from=" + std::to_string(link.connect_from()) +
+			", to=" + std::to_string(link.connect_to()) +
+			", creator_id=" + std::to_string(link.creator_id()) +
+			", connection=\"" + link.connection() + "\""
+		);
 		rendering_info::LinkRenderInfo* outLink = info.add_links();
-		outLink->set_id(link.id());
+		outLink->set_id(linkId);
 		outLink->set_connect_from(link.connect_from());
 		outLink->set_connect_to(link.connect_to());
 		outLink->set_connection(link.connection());
 		outLink->set_creator_id(link.creator_id());
+		Log::debug(
+			"[DebatePageInfoParser] Output link[" + std::to_string(outputLinkIndex) + "] id=" + std::to_string(outLink->id()) +
+			", from=" + std::to_string(outLink->connect_from()) +
+			", to=" + std::to_string(outLink->connect_to()) +
+			", creator_id=" + std::to_string(outLink->creator_id()) +
+			", connection=\"" + outLink->connection() + "\""
+		);
+		++outputLinkIndex;
 	}
+	Log::debug(
+		"[DebatePageInfoParser] Finished copying links: output_count=" + std::to_string(info.links_size())
+	);
 
 	for (int i = 0; i < debatingInfo.current_challenges_size(); ++i) {
 		const user_engagement::ChallengeInfo& challenge = debatingInfo.current_challenges(i);

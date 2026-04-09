@@ -6,7 +6,7 @@
 #include <sstream>
 
 // Initialize static members
-LogLevel Log::currentLevel = LogLevel::Debug;
+LogLevel Log::currentLevel = LogLevel::Test;
 std::mutex Log::logMutex;  // define the mutex
 
 void Log::init(LogLevel level) {

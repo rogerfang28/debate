@@ -490,6 +490,30 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
     // Extract data from user
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
+    Log::test(
+        "[DebatePageGenerator] FillChildClaims received: user_links_count=" + std::to_string(debatingInfo.links_size()) +
+        ", rendering_links_count=" + std::to_string(info.links_size())
+    );
+    for (int i = 0; i < debatingInfo.links_size(); ++i) {
+        const user_engagement::LinkInfo& link = debatingInfo.links(i);
+        Log::test(
+            "[DebatePageGenerator] user link[" + std::to_string(i) + "] id=" + std::to_string(link.id()) +
+            ", from=" + std::to_string(link.connect_from()) +
+            ", to=" + std::to_string(link.connect_to()) +
+            ", creator_id=" + std::to_string(link.creator_id()) +
+            ", connection=\"" + link.connection() + "\""
+        );
+    }
+    for (int i = 0; i < info.links_size(); ++i) {
+        const rendering_info::LinkRenderInfo& link = info.links(i);
+        Log::test(
+            "[DebatePageGenerator] rendering_info link[" + std::to_string(i) + "] id=" + std::to_string(link.id()) +
+            ", from=" + std::to_string(link.connect_from()) +
+            ", to=" + std::to_string(link.connect_to()) +
+            ", creator_id=" + std::to_string(link.creator_id()) +
+            ", connection=\"" + link.connection() + "\""
+        );
+    }
     Log::debug("[DebatePageGenerator] Connecting Info: " + std::string(debatingInfo.connecting_info().connecting() ? "true" : "false") + 
               ", fromClaimId=" + std::to_string(debatingInfo.connecting_info().from_claim_id()) + 
               ", toClaimId=" + std::to_string(debatingInfo.connecting_info().to_claim_id()) + 
@@ -514,8 +538,8 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
     }
     
     std::vector<std::tuple<std::string, std::string, std::string, std::string>> linkInfo;
-    for (int i = 0; i < debatingInfo.links_size(); i++) {
-        const user_engagement::LinkInfo& link = debatingInfo.links(i);
+    for (int i = 0; i < info.links_size(); i++) {
+        const rendering_info::LinkRenderInfo& link = info.links(i);
         linkInfo.push_back({std::to_string(link.id()), std::to_string(link.connect_from()), std::to_string(link.connect_to()), link.connection()});
     }
     
