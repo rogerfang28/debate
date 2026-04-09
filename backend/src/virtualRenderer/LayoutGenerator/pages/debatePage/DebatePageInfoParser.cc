@@ -94,12 +94,30 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	std::unordered_set<int> visibleClaimIds;
 	visibleClaimIds.insert(currentClaim->id());
 
-	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(debatingInfo.current_claim().id());
+	int currentClaimId = debatingInfo.current_claim().id();
+	Log::test("[DebatePageInfoParser] Looking up current_claim_id=" + std::to_string(currentClaimId) + " in collection.claims_by_id (size=" + std::to_string(collectionProto.claims_by_id_size()) + ")");
+	
+	auto currentClaimIt = collectionProto.claims_by_id().find(currentClaimId);
+	if (currentClaimIt == collectionProto.claims_by_id().end()) {
+		Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(currentClaimId) + " NOT FOUND in collection!");
+		Log::info("[DebatePageInfoParser] Finished copying links: output_count=" + std::to_string(info.links_size()));
+		return info;
+	}
+
+	debate::Claim currentClaimProto = currentClaimIt->second;
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
+	if (currentClaimProto.link_ids_size() == 0) {
+		Log::warn("[DebatePageInfoParser] Current claim has NO link_ids - no parent-child relationships defined!");
+	}
 	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
 		int linkId = currentClaimProto.link_ids(i);
 		Log::debug("[DebatePageInfoParser] Processing link ID: " + std::to_string(linkId));
-		debate::Link linkProto = collectionProto.links_by_id().at(linkId);
+		auto linkIt = collectionProto.links_by_id().find(linkId);
+		if (linkIt == collectionProto.links_by_id().end()) {
+			Log::warn("[DebatePageInfoParser] Link ID " + std::to_string(linkId) + " not found in collection!");
+			continue;
+		}
+		debate::Link linkProto = linkIt->second;
 		Log::debug("[DebatePageInfoParser] Link from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()));
 		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
 			int childClaimId = linkProto.connect_to();
