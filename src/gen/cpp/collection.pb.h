@@ -28,6 +28,9 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
+#include "google/protobuf/map.h"  // IWYU pragma: export
+#include "google/protobuf/map_entry.h"
+#include "google/protobuf/map_field_inl.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "debate.pb.h"
 // @@protoc_insertion_point(includes)
@@ -56,6 +59,12 @@ namespace debate {
 class Collection;
 struct CollectionDefaultTypeInternal;
 extern CollectionDefaultTypeInternal _Collection_default_instance_;
+class Collection_ClaimsByIdEntry_DoNotUse;
+struct Collection_ClaimsByIdEntry_DoNotUseDefaultTypeInternal;
+extern Collection_ClaimsByIdEntry_DoNotUseDefaultTypeInternal _Collection_ClaimsByIdEntry_DoNotUse_default_instance_;
+class Collection_LinksByIdEntry_DoNotUse;
+struct Collection_LinksByIdEntry_DoNotUseDefaultTypeInternal;
+extern Collection_LinksByIdEntry_DoNotUseDefaultTypeInternal _Collection_LinksByIdEntry_DoNotUse_default_instance_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -67,6 +76,84 @@ namespace debate {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class Collection_LinksByIdEntry_DoNotUse final
+    : public ::google::protobuf::internal::MapEntry<
+          ::int32_t, ::google::protobuf::Message,
+          ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+          ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE> {
+ public:
+  using SuperType = ::google::protobuf::internal::MapEntry<
+      ::int32_t, ::google::protobuf::Message,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>;
+  Collection_LinksByIdEntry_DoNotUse();
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Collection_LinksByIdEntry_DoNotUse(
+      ::google::protobuf::internal::ConstantInitialized);
+  explicit Collection_LinksByIdEntry_DoNotUse(::google::protobuf::Arena* arena);
+  static const Collection_LinksByIdEntry_DoNotUse* internal_default_instance() {
+    return reinterpret_cast<const Collection_LinksByIdEntry_DoNotUse*>(
+        &_Collection_LinksByIdEntry_DoNotUse_default_instance_);
+  }
+
+
+ private:
+  friend class ::google::protobuf::MessageLite;
+  friend struct ::TableStruct_collection_2eproto;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+};
+// -------------------------------------------------------------------
+
+class Collection_ClaimsByIdEntry_DoNotUse final
+    : public ::google::protobuf::internal::MapEntry<
+          ::int32_t, ::google::protobuf::Message,
+          ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+          ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE> {
+ public:
+  using SuperType = ::google::protobuf::internal::MapEntry<
+      ::int32_t, ::google::protobuf::Message,
+      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>;
+  Collection_ClaimsByIdEntry_DoNotUse();
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Collection_ClaimsByIdEntry_DoNotUse(
+      ::google::protobuf::internal::ConstantInitialized);
+  explicit Collection_ClaimsByIdEntry_DoNotUse(::google::protobuf::Arena* arena);
+  static const Collection_ClaimsByIdEntry_DoNotUse* internal_default_instance() {
+    return reinterpret_cast<const Collection_ClaimsByIdEntry_DoNotUse*>(
+        &_Collection_ClaimsByIdEntry_DoNotUse_default_instance_);
+  }
+
+
+ private:
+  friend class ::google::protobuf::MessageLite;
+  friend struct ::TableStruct_collection_2eproto;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+};
 // -------------------------------------------------------------------
 
 class Collection final : public ::google::protobuf::Message
@@ -128,7 +215,7 @@ class Collection final : public ::google::protobuf::Message
     return reinterpret_cast<const Collection*>(
         &_Collection_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 0;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(Collection& a, Collection& b) { a.Swap(&b); }
   inline void Swap(Collection* other) {
     if (other == this) return;
@@ -215,67 +302,45 @@ class Collection final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kClaimsFieldNumber = 1,
-    kLinksFieldNumber = 2,
-    kChallengesFieldNumber = 3,
+    kClaimsByIdFieldNumber = 1,
+    kLinksByIdFieldNumber = 2,
   };
-  // repeated .debate.Claim claims = 1 [json_name = "claims"];
-  int claims_size() const;
+  // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
+  int claims_by_id_size() const;
   private:
-  int _internal_claims_size() const;
+  int _internal_claims_by_id_size() const;
 
   public:
-  void clear_claims() ;
-  ::debate::Claim* mutable_claims(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::Claim>* mutable_claims();
+  void clear_claims_by_id() ;
+  const ::google::protobuf::Map<::int32_t, ::debate::Claim>& claims_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Claim>* mutable_claims_by_id();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::debate::Claim>& _internal_claims() const;
-  ::google::protobuf::RepeatedPtrField<::debate::Claim>* _internal_mutable_claims();
-  public:
-  const ::debate::Claim& claims(int index) const;
-  ::debate::Claim* add_claims();
-  const ::google::protobuf::RepeatedPtrField<::debate::Claim>& claims() const;
-  // repeated .debate.Link links = 2 [json_name = "links"];
-  int links_size() const;
-  private:
-  int _internal_links_size() const;
+  const ::google::protobuf::Map<::int32_t, ::debate::Claim>& _internal_claims_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Claim>* _internal_mutable_claims_by_id();
 
   public:
-  void clear_links() ;
-  ::debate::Link* mutable_links(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::Link>* mutable_links();
-
+  // map<int32, .debate.Link> links_by_id = 2 [json_name = "linksById"];
+  int links_by_id_size() const;
   private:
-  const ::google::protobuf::RepeatedPtrField<::debate::Link>& _internal_links() const;
-  ::google::protobuf::RepeatedPtrField<::debate::Link>* _internal_mutable_links();
-  public:
-  const ::debate::Link& links(int index) const;
-  ::debate::Link* add_links();
-  const ::google::protobuf::RepeatedPtrField<::debate::Link>& links() const;
-  // repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-  int challenges_size() const;
-  private:
-  int _internal_challenges_size() const;
+  int _internal_links_by_id_size() const;
 
   public:
-  void clear_challenges() ;
-  ::debate::Challenge* mutable_challenges(int index);
-  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* mutable_challenges();
+  void clear_links_by_id() ;
+  const ::google::protobuf::Map<::int32_t, ::debate::Link>& links_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Link>* mutable_links_by_id();
 
   private:
-  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& _internal_challenges() const;
-  ::google::protobuf::RepeatedPtrField<::debate::Challenge>* _internal_mutable_challenges();
+  const ::google::protobuf::Map<::int32_t, ::debate::Link>& _internal_links_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Link>* _internal_mutable_links_by_id();
+
   public:
-  const ::debate::Challenge& challenges(int index) const;
-  ::debate::Challenge* add_challenges();
-  const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& challenges() const;
   // @@protoc_insertion_point(class_scope:debate.Collection)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 3,
+      0, 2, 4,
       0, 2>
       _table_;
 
@@ -293,9 +358,14 @@ class Collection final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Collection& from_msg);
-    ::google::protobuf::RepeatedPtrField< ::debate::Claim > claims_;
-    ::google::protobuf::RepeatedPtrField< ::debate::Link > links_;
-    ::google::protobuf::RepeatedPtrField< ::debate::Challenge > challenges_;
+    ::google::protobuf::internal::MapField<Collection_ClaimsByIdEntry_DoNotUse, ::int32_t, ::debate::Claim,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>
+        claims_by_id_;
+    ::google::protobuf::internal::MapField<Collection_LinksByIdEntry_DoNotUse, ::int32_t, ::debate::Link,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>
+        links_by_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -317,141 +387,58 @@ class Collection final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // Collection
 
-// repeated .debate.Claim claims = 1 [json_name = "claims"];
-inline int Collection::_internal_claims_size() const {
-  return _internal_claims().size();
+// map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
+inline int Collection::_internal_claims_by_id_size() const {
+  return _internal_claims_by_id().size();
 }
-inline int Collection::claims_size() const {
-  return _internal_claims_size();
+inline int Collection::claims_by_id_size() const {
+  return _internal_claims_by_id_size();
 }
-inline ::debate::Claim* Collection::mutable_claims(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.Collection.claims)
-  return _internal_mutable_claims()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Claim>* Collection::mutable_claims()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Collection.claims)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_claims();
-}
-inline const ::debate::Claim& Collection::claims(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Collection.claims)
-  return _internal_claims().Get(index);
-}
-inline ::debate::Claim* Collection::add_claims() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::Claim* _add = _internal_mutable_claims()->Add();
-  // @@protoc_insertion_point(field_add:debate.Collection.claims)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Claim>& Collection::claims() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Collection.claims)
-  return _internal_claims();
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Claim>&
-Collection::_internal_claims() const {
+inline const ::google::protobuf::Map<::int32_t, ::debate::Claim>& Collection::_internal_claims_by_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.claims_;
+  return _impl_.claims_by_id_.GetMap();
 }
-inline ::google::protobuf::RepeatedPtrField<::debate::Claim>*
-Collection::_internal_mutable_claims() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.claims_;
+inline const ::google::protobuf::Map<::int32_t, ::debate::Claim>& Collection::claims_by_id() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_map:debate.Collection.claims_by_id)
+  return _internal_claims_by_id();
+}
+inline ::google::protobuf::Map<::int32_t, ::debate::Claim>* Collection::_internal_mutable_claims_by_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.claims_by_id_.MutableMap();
+}
+inline ::google::protobuf::Map<::int32_t, ::debate::Claim>* Collection::mutable_claims_by_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_map:debate.Collection.claims_by_id)
+  return _internal_mutable_claims_by_id();
 }
 
-// repeated .debate.Link links = 2 [json_name = "links"];
-inline int Collection::_internal_links_size() const {
-  return _internal_links().size();
+// map<int32, .debate.Link> links_by_id = 2 [json_name = "linksById"];
+inline int Collection::_internal_links_by_id_size() const {
+  return _internal_links_by_id().size();
 }
-inline int Collection::links_size() const {
-  return _internal_links_size();
+inline int Collection::links_by_id_size() const {
+  return _internal_links_by_id_size();
 }
-inline ::debate::Link* Collection::mutable_links(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.Collection.links)
-  return _internal_mutable_links()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Link>* Collection::mutable_links()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Collection.links)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_links();
-}
-inline const ::debate::Link& Collection::links(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Collection.links)
-  return _internal_links().Get(index);
-}
-inline ::debate::Link* Collection::add_links() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::Link* _add = _internal_mutable_links()->Add();
-  // @@protoc_insertion_point(field_add:debate.Collection.links)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Link>& Collection::links() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Collection.links)
-  return _internal_links();
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Link>&
-Collection::_internal_links() const {
+inline const ::google::protobuf::Map<::int32_t, ::debate::Link>& Collection::_internal_links_by_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.links_;
+  return _impl_.links_by_id_.GetMap();
 }
-inline ::google::protobuf::RepeatedPtrField<::debate::Link>*
-Collection::_internal_mutable_links() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.links_;
+inline const ::google::protobuf::Map<::int32_t, ::debate::Link>& Collection::links_by_id() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_map:debate.Collection.links_by_id)
+  return _internal_links_by_id();
 }
-
-// repeated .debate.Challenge challenges = 3 [json_name = "challenges"];
-inline int Collection::_internal_challenges_size() const {
-  return _internal_challenges().size();
-}
-inline int Collection::challenges_size() const {
-  return _internal_challenges_size();
-}
-inline ::debate::Challenge* Collection::mutable_challenges(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:debate.Collection.challenges)
-  return _internal_mutable_challenges()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>* Collection::mutable_challenges()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Collection.challenges)
+inline ::google::protobuf::Map<::int32_t, ::debate::Link>* Collection::_internal_mutable_links_by_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_challenges();
+  return _impl_.links_by_id_.MutableMap();
 }
-inline const ::debate::Challenge& Collection::challenges(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Collection.challenges)
-  return _internal_challenges().Get(index);
-}
-inline ::debate::Challenge* Collection::add_challenges() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::debate::Challenge* _add = _internal_mutable_challenges()->Add();
-  // @@protoc_insertion_point(field_add:debate.Collection.challenges)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>& Collection::challenges() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Collection.challenges)
-  return _internal_challenges();
-}
-inline const ::google::protobuf::RepeatedPtrField<::debate::Challenge>&
-Collection::_internal_challenges() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenges_;
-}
-inline ::google::protobuf::RepeatedPtrField<::debate::Challenge>*
-Collection::_internal_mutable_challenges() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.challenges_;
+inline ::google::protobuf::Map<::int32_t, ::debate::Link>* Collection::mutable_links_by_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_map:debate.Collection.links_by_id)
+  return _internal_mutable_links_by_id();
 }
 
 #ifdef __GNUC__

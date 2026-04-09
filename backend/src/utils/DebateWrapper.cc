@@ -311,6 +311,31 @@ void DebateWrapper::editClaimText(
 
 int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id) {
     int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id);
+    if (linkId == -1) {
+        Log::error("[DebateWrapper][ERR] Failed to add link from claim " + std::to_string(fromClaimId)
+            + " to claim " + std::to_string(toClaimId));
+        return -1;
+    }
+
+    auto addLinkIdIfMissing = [linkId](debate::Claim& claim) {
+        for (const auto& existingLinkId : claim.proof().link_ids()) {
+            if (existingLinkId == linkId) {
+                return;
+            }
+        }
+        claim.mutable_proof()->add_link_ids(linkId);
+    };
+
+    debate::Claim fromClaim = getClaimById(fromClaimId);
+    addLinkIdIfMissing(fromClaim);
+    updateClaimInDB(fromClaim);
+
+    if (toClaimId != fromClaimId) {
+        debate::Claim toClaim = getClaimById(toClaimId);
+        addLinkIdIfMissing(toClaim);
+        updateClaimInDB(toClaim);
+    }
+
     Log::debug("[DebateWrapper] Added link from claim " + std::to_string(fromClaimId) + " to claim " + std::to_string(toClaimId) + " by user " + std::to_string(creator_id));
     return linkId;
 }
@@ -369,7 +394,7 @@ void DebateWrapper::deleteLinkById(int linkId) {
 void DebateWrapper::addMemberToDebate(const int& debateId, const int& user_id) {
     // check if user already a member
     if (databaseWrapper.debateMembers.isMember(debateId, user_id)) {
-        Log::info("[DebateWrapper] User " + std::to_string(user_id) + " is already a member of debate " + std::to_string(debateId));
+        Log::debug("[DebateWrapper] User " + std::to_string(user_id) + " is already a member of debate " + std::to_string(debateId));
         return;
     }
     // check if debate exists
@@ -507,7 +532,7 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
     // check child claims to see if correct
     for (const auto& childId : claimProto.proof().claim_ids()) {
         debate::Claim childClaim = getClaimById(childId);
-        Log::test("[DebateWrapper] Claim Id: " + std::to_string(claim_id) + " Child Claim ID: " + std::to_string(childId) + " Parent ID after restoring: " + std::to_string(childClaim.parent_id()));
+        Log::debug("[DebateWrapper] Claim Id: " + std::to_string(claim_id) + " Child Claim ID: " + std::to_string(childId) + " Parent ID after restoring: " + std::to_string(childClaim.parent_id()));
         if (childClaim.parent_id() != claim_id) {
             Log::warn("[DebateWrapper] Child claim ID " + std::to_string(childId) + " has incorrect parent ID " + std::to_string(childClaim.parent_id()) + " after restoring claim ID " + std::to_string(claim_id));
         }

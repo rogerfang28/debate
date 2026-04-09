@@ -5,6 +5,6 @@ package debate;
 import "debate.proto";
 
 message Collection {
-	repeated Claim claims = 1;
-    repeated Link links = 2;
+	map<int32, Claim> claims_by_id = 1;
+	map<int32, Link> links_by_id = 2;
 }

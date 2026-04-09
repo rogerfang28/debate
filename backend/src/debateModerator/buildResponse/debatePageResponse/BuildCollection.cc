@@ -20,13 +20,15 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 	for (const auto& statementBlob : statementBlobs) {
 		debate::Claim claim;
 		if (claim.ParseFromArray(statementBlob.data(), static_cast<int>(statementBlob.size()))) {
-			collection.add_claims()->CopyFrom(claim);
+			(*collection.mutable_claims_by_id())[claim.id()] = claim;
 		}
 	}
 
 	const std::vector<std::tuple<int, int, int, std::string, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
 	for (const auto& linkRow : linkRows) {
-		debate::Link* link = collection.add_links();
+		const int linkId = std::get<0>(linkRow);
+		debate::Link* link = &(*collection.mutable_links_by_id())[linkId];
+		link->set_id(linkId);
 		link->set_connect_from(std::get<1>(linkRow));
 		link->set_connect_to(std::get<2>(linkRow));
 		link->set_connection(std::get<3>(linkRow));
@@ -34,20 +36,20 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 		link->set_link_type(debate::LinkType::NORMAL);
 	}
 
-	Log::test("[BuildCollection] Final collection for debate " + std::to_string(debate_id)
-		+ ": claims=" + std::to_string(collection.claims_size())
-		+ ", links=" + std::to_string(collection.links_size()));
+	Log::debug("[BuildCollection] Final collection for debate " + std::to_string(debate_id)
+		+ ": claims=" + std::to_string(collection.claims_by_id().size())
+		+ ", links=" + std::to_string(collection.links_by_id().size()));
 
-	for (int i = 0; i < collection.claims_size(); ++i) {
-		const debate::Claim& claim = collection.claims(i);
-		Log::test("[BuildCollection] claim id=" + std::to_string(claim.id())
+	for (const auto& claimEntry : collection.claims_by_id()) {
+		const debate::Claim& claim = claimEntry.second;
+		Log::debug("[BuildCollection] claim id=" + std::to_string(claim.id())
 			+ ", creator_id=" + std::to_string(claim.creator_id())
 			+ ", sentence=\"" + claim.sentence() + "\"");
 	}
 
-	for (int i = 0; i < collection.links_size(); ++i) {
-		const debate::Link& link = collection.links(i);
-		Log::test("[BuildCollection] link from=" + std::to_string(link.connect_from())
+	for (const auto& linkEntry : collection.links_by_id()) {
+		const debate::Link& link = linkEntry.second;
+		Log::debug("[BuildCollection] link from=" + std::to_string(link.connect_from())
 			+ ", to=" + std::to_string(link.connect_to())
 			+ ", creator_id=" + std::to_string(link.creator_id())
 			+ ", connection=\"" + link.connection() + "\"");

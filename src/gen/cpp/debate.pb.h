@@ -1418,6 +1418,7 @@ class Claim final : public ::google::protobuf::Message
   enum : int {
     kChildrenIdsFieldNumber = 5,
     kHistoryFieldNumber = 10,
+    kLinkIdsFieldNumber = 12,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kProofFieldNumber = 7,
@@ -1462,6 +1463,24 @@ class Claim final : public ::google::protobuf::Message
   const ::debate::ClaimState& history(int index) const;
   ::debate::ClaimState* add_history();
   const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& history() const;
+  // repeated int32 link_ids = 12 [json_name = "linkIds"];
+  int link_ids_size() const;
+  private:
+  int _internal_link_ids_size() const;
+
+  public:
+  void clear_link_ids() ;
+  ::int32_t link_ids(int index) const;
+  void set_link_ids(int index, ::int32_t value);
+  void add_link_ids(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& link_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* mutable_link_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_link_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_link_ids();
+
+  public:
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
   const std::string& sentence() const;
@@ -1564,7 +1583,7 @@ class Claim final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 10, 2,
+      4, 11, 2,
       48, 2>
       _table_;
 
@@ -1587,6 +1606,8 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedField<::int32_t> children_ids_;
     ::google::protobuf::internal::CachedSize _children_ids_cached_byte_size_;
     ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
+    ::google::protobuf::RepeatedField<::int32_t> link_ids_;
+    ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::debate::Proof* proof_;
@@ -2224,6 +2245,51 @@ inline ::debate::ClaimStatus Claim::_internal_status() const {
 inline void Claim::_internal_set_status(::debate::ClaimStatus value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_ = value;
+}
+
+// repeated int32 link_ids = 12 [json_name = "linkIds"];
+inline int Claim::_internal_link_ids_size() const {
+  return _internal_link_ids().size();
+}
+inline int Claim::link_ids_size() const {
+  return _internal_link_ids_size();
+}
+inline void Claim::clear_link_ids() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_ids_.Clear();
+}
+inline ::int32_t Claim::link_ids(int index) const {
+  // @@protoc_insertion_point(field_get:debate.Claim.link_ids)
+  return _internal_link_ids().Get(index);
+}
+inline void Claim::set_link_ids(int index, ::int32_t value) {
+  _internal_mutable_link_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:debate.Claim.link_ids)
+}
+inline void Claim::add_link_ids(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_link_ids()->Add(value);
+  // @@protoc_insertion_point(field_add:debate.Claim.link_ids)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& Claim::link_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Claim.link_ids)
+  return _internal_link_ids();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* Claim::mutable_link_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Claim.link_ids)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_link_ids();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+Claim::_internal_link_ids() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.link_ids_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* Claim::_internal_mutable_link_ids() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.link_ids_;
 }
 
 // -------------------------------------------------------------------

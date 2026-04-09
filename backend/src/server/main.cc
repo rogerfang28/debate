@@ -44,7 +44,7 @@ int main() {
   const char* HOST = "127.0.0.1";  // Explicit IPv4 localhost for Cloudflare Tunnel
   const int PORT = 3000;
 
-  Log::info(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
+  Log::debug(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
 
   if (svr.bind_to_port(HOST, PORT) < 0) {
     Log::error(std::string("Failed to bind ") + HOST + ":" + std::to_string(PORT) +
@@ -52,7 +52,7 @@ int main() {
     return 1;
   }
 
-  Log::info(std::string("Server is listening on http://") + HOST + ":" + std::to_string(PORT));
+  Log::debug(std::string("Server is listening on http://") + HOST + ":" + std::to_string(PORT));
   if (!svr.listen_after_bind()) {
     Log::error("Server stopped unexpectedly.");
     return 1;

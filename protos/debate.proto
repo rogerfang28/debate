@@ -17,6 +17,7 @@ message Claim {
   int32 debate_id = 9;
   repeated ClaimState history = 10;
   ClaimStatus status = 11;
+  repeated int32 link_ids = 12;
 }
 
 enum ClaimStatus {

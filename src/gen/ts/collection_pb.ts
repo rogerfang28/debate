@@ -12,21 +12,21 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file collection.proto.
  */
 export const file_collection: GenFile = /*@__PURE__*/
-  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUiSAoKQ29sbGVjdGlvbhIdCgZjbGFpbXMYASADKAsyDS5kZWJhdGUuQ2xhaW0SGwoFbGlua3MYAiADKAsyDC5kZWJhdGUuTGlua2IGcHJvdG8z", [file_debate]);
+  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUigAIKCkNvbGxlY3Rpb24SOAoMY2xhaW1zX2J5X2lkGAEgAygLMiIuZGViYXRlLkNvbGxlY3Rpb24uQ2xhaW1zQnlJZEVudHJ5EjYKC2xpbmtzX2J5X2lkGAIgAygLMiEuZGViYXRlLkNvbGxlY3Rpb24uTGlua3NCeUlkRW50cnkaQAoPQ2xhaW1zQnlJZEVudHJ5EgsKA2tleRgBIAEoBRIcCgV2YWx1ZRgCIAEoCzINLmRlYmF0ZS5DbGFpbToCOAEaPgoOTGlua3NCeUlkRW50cnkSCwoDa2V5GAEgASgFEhsKBXZhbHVlGAIgASgLMgwuZGViYXRlLkxpbms6AjgBYgZwcm90bzM", [file_debate]);
 
 /**
  * @generated from message debate.Collection
  */
 export type Collection = Message<"debate.Collection"> & {
   /**
-   * @generated from field: repeated debate.Claim claims = 1;
+   * @generated from field: map<int32, debate.Claim> claims_by_id = 1;
    */
-  claims: Claim[];
+  claimsById: { [key: number]: Claim };
 
   /**
-   * @generated from field: repeated debate.Link links = 2;
+   * @generated from field: map<int32, debate.Link> links_by_id = 2;
    */
-  links: Link[];
+  linksById: { [key: number]: Link };
 };
 
 /**

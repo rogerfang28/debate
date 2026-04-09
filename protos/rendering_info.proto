@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package rendering_info;
 
+import "debate.proto";
+
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
 	// Viewer metadata used for ownership checks and logging.

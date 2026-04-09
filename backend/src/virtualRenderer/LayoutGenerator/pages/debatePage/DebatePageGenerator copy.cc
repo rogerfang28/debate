@@ -12,7 +12,7 @@ ui::Page DebatePageGenerator::GenerateDebatePage(user::User userProto) {
     const auto scopeType = userProto.current_scope().scopetype();
     if (scopeType == debate::SINGLE_CLAIM) {
         mainLayout = GenerateSingleClaimLayout();
-        Log::test("Generating single claim layout for user " + userProto.username() + " with scope type: " + std::to_string(scopeType));
+        Log::debug("Generating single claim layout for user " + userProto.username() + " with scope type: " + std::to_string(scopeType));
     } else {
         mainLayout = GenerateSingleClaimLayout();
         Log::warn("Unknown scope type for user " + userProto.username() + ": " + std::to_string(scopeType) + ". Defaulting to single claim layout.");

@@ -1,4 +1,7 @@
 #include "DebatePageInfoParser.h"
+#include "../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "../../../../../src/gen/cpp/collection.pb.h"
+#include "../../../../utils/Log.h"
 
 namespace {
 rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
@@ -64,8 +67,9 @@ rendering_info::DebateActionType MapDebateAction(
 }
 }
 
-rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(const user::User& userProto) {
+rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(const user::User& userProto, const debate::Collection& collectionProto) {
 	rendering_info::DebatePageRenderingInfo info;
+	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
 	info.set_viewer_user_id(userProto.user_id());
 	info.set_viewer_username(userProto.username());
