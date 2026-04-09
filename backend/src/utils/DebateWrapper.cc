@@ -212,16 +212,65 @@ void DebateWrapper::deleteClaim(const int& claimId) {
     int parentId = claim.parent_id();
     if (parentId != -1) {
         debate::Claim parentClaim = getClaimById(parentId);
+
+        int parentChildLinkId = -1;
+        const auto links = databaseWrapper.links.getLinksForClaim(parentId);
+        for (const auto& linkRow : links) {
+            const int linkId = std::get<0>(linkRow);
+            const int linkFrom = std::get<1>(linkRow);
+            const int linkTo = std::get<2>(linkRow);
+            if (linkFrom == parentId && linkTo == claimId) {
+                parentChildLinkId = linkId;
+                break;
+            }
+        }
+
         auto* proof = parentClaim.mutable_proof();
         auto& claimIds = *proof->mutable_claim_ids();
         claimIds.erase(
             std::remove(claimIds.begin(), claimIds.end(), claimId),
             claimIds.end()
         );
+
+        if (parentChildLinkId != -1) {
+            auto& parentProofLinkIds = *proof->mutable_link_ids();
+            parentProofLinkIds.erase(
+                std::remove(parentProofLinkIds.begin(), parentProofLinkIds.end(), parentChildLinkId),
+                parentProofLinkIds.end()
+            );
+
+            auto& parentLinkIds = *parentClaim.mutable_link_ids();
+            parentLinkIds.erase(
+                std::remove(parentLinkIds.begin(), parentLinkIds.end(), parentChildLinkId),
+                parentLinkIds.end()
+            );
+        }
+
         updateClaimInDB(parentClaim);
+
+        if (parentChildLinkId != -1) {
+            auto* childProof = claim.mutable_proof();
+            auto& childProofLinkIds = *childProof->mutable_link_ids();
+            childProofLinkIds.erase(
+                std::remove(childProofLinkIds.begin(), childProofLinkIds.end(), parentChildLinkId),
+                childProofLinkIds.end()
+            );
+
+            auto& childLinkIds = *claim.mutable_link_ids();
+            childLinkIds.erase(
+                std::remove(childLinkIds.begin(), childLinkIds.end(), parentChildLinkId),
+                childLinkIds.end()
+            );
+
+            updateClaimInDB(claim);
+            deleteLinkById(parentChildLinkId);
+        }
     }
 
-    // databaseWrapper.statements.deleteStatement(claimId);
+    // databaseWrapper.statements.deleteStatement(claimId); 
+    // this line was commented out because we dont actually want to delete from the database, just make it so its no longer accessible
+    // this also means we need to remove the new link of parent child for this as well
+    
 }
 
 void DebateWrapper::deleteAllDebates(const int& user_id) {
