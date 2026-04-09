@@ -32,10 +32,19 @@ message ClaimState {
 }
 
 message Link {
-  int32 connect_from = 1;
-  int32 connect_to = 2;
-  string connection = 3;  
-  int32 creator_id = 4;
+  int32 id = 1;
+  int32 connect_from = 2;
+  int32 connect_to = 3;
+  string connection = 4;  
+  int32 creator_id = 5;
+  // add a type, normal, parent child, or challenge connection
+  LinkType link_type = 6;
+}
+
+enum LinkType {
+  NORMAL = 0;
+  PARENT_CHILD = 1;
+  CHALLENGE = 2;
 }
 
 message Challenge {

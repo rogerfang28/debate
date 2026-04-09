@@ -115,6 +115,40 @@ inline bool ClaimStatus_Parse(absl::string_view name, ClaimStatus* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ClaimStatus>(
       ClaimStatus_descriptor(), name, value);
 }
+enum LinkType : int {
+  NORMAL = 0,
+  PARENT_CHILD = 1,
+  CHALLENGE = 2,
+  LinkType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  LinkType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool LinkType_IsValid(int value);
+extern const uint32_t LinkType_internal_data_[];
+constexpr LinkType LinkType_MIN = static_cast<LinkType>(0);
+constexpr LinkType LinkType_MAX = static_cast<LinkType>(2);
+constexpr int LinkType_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+LinkType_descriptor();
+template <typename T>
+const std::string& LinkType_Name(T value) {
+  static_assert(std::is_same<T, LinkType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to LinkType_Name().");
+  return LinkType_Name(static_cast<LinkType>(value));
+}
+template <>
+inline const std::string& LinkType_Name(LinkType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<LinkType_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool LinkType_Parse(absl::string_view name, LinkType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LinkType>(
+      LinkType_descriptor(), name, value);
+}
 enum ChallengeStatus : int {
   ONGOING = 0,
   CONCEDED = 1,
@@ -521,12 +555,14 @@ class Link final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kConnectionFieldNumber = 3,
-    kConnectFromFieldNumber = 1,
-    kConnectToFieldNumber = 2,
-    kCreatorIdFieldNumber = 4,
+    kConnectionFieldNumber = 4,
+    kIdFieldNumber = 1,
+    kConnectFromFieldNumber = 2,
+    kConnectToFieldNumber = 3,
+    kCreatorIdFieldNumber = 5,
+    kLinkTypeFieldNumber = 6,
   };
-  // string connection = 3 [json_name = "connection"];
+  // string connection = 4 [json_name = "connection"];
   void clear_connection() ;
   const std::string& connection() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -542,7 +578,17 @@ class Link final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
-  // int32 connect_from = 1 [json_name = "connectFrom"];
+  // int32 id = 1 [json_name = "id"];
+  void clear_id() ;
+  ::int32_t id() const;
+  void set_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_id() const;
+  void _internal_set_id(::int32_t value);
+
+  public:
+  // int32 connect_from = 2 [json_name = "connectFrom"];
   void clear_connect_from() ;
   ::int32_t connect_from() const;
   void set_connect_from(::int32_t value);
@@ -552,7 +598,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_from(::int32_t value);
 
   public:
-  // int32 connect_to = 2 [json_name = "connectTo"];
+  // int32 connect_to = 3 [json_name = "connectTo"];
   void clear_connect_to() ;
   ::int32_t connect_to() const;
   void set_connect_to(::int32_t value);
@@ -562,7 +608,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_to(::int32_t value);
 
   public:
-  // int32 creator_id = 4 [json_name = "creatorId"];
+  // int32 creator_id = 5 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -572,12 +618,22 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // .debate.LinkType link_type = 6 [json_name = "linkType"];
+  void clear_link_type() ;
+  ::debate::LinkType link_type() const;
+  void set_link_type(::debate::LinkType value);
+
+  private:
+  ::debate::LinkType _internal_link_type() const;
+  void _internal_set_link_type(::debate::LinkType value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.Link)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      3, 6, 0,
       30, 2>
       _table_;
 
@@ -596,9 +652,11 @@ class Link final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Link& from_msg);
     ::google::protobuf::internal::ArenaStringPtr connection_;
+    ::int32_t id_;
     ::int32_t connect_from_;
     ::int32_t connect_to_;
     ::int32_t creator_id_;
+    int link_type_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2351,7 +2409,29 @@ inline void ClaimState::set_allocated_claim(::debate::Claim* value) {
 
 // Link
 
-// int32 connect_from = 1 [json_name = "connectFrom"];
+// int32 id = 1 [json_name = "id"];
+inline void Link::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = 0;
+}
+inline ::int32_t Link::id() const {
+  // @@protoc_insertion_point(field_get:debate.Link.id)
+  return _internal_id();
+}
+inline void Link::set_id(::int32_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:debate.Link.id)
+}
+inline ::int32_t Link::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_;
+}
+inline void Link::_internal_set_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = value;
+}
+
+// int32 connect_from = 2 [json_name = "connectFrom"];
 inline void Link::clear_connect_from() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = 0;
@@ -2373,7 +2453,7 @@ inline void Link::_internal_set_connect_from(::int32_t value) {
   _impl_.connect_from_ = value;
 }
 
-// int32 connect_to = 2 [json_name = "connectTo"];
+// int32 connect_to = 3 [json_name = "connectTo"];
 inline void Link::clear_connect_to() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = 0;
@@ -2395,7 +2475,7 @@ inline void Link::_internal_set_connect_to(::int32_t value) {
   _impl_.connect_to_ = value;
 }
 
-// string connection = 3 [json_name = "connection"];
+// string connection = 4 [json_name = "connection"];
 inline void Link::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
@@ -2443,7 +2523,7 @@ inline void Link::set_allocated_connection(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Link.connection)
 }
 
-// int32 creator_id = 4 [json_name = "creatorId"];
+// int32 creator_id = 5 [json_name = "creatorId"];
 inline void Link::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -2463,6 +2543,28 @@ inline ::int32_t Link::_internal_creator_id() const {
 inline void Link::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
+}
+
+// .debate.LinkType link_type = 6 [json_name = "linkType"];
+inline void Link::clear_link_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_type_ = 0;
+}
+inline ::debate::LinkType Link::link_type() const {
+  // @@protoc_insertion_point(field_get:debate.Link.link_type)
+  return _internal_link_type();
+}
+inline void Link::set_link_type(::debate::LinkType value) {
+  _internal_set_link_type(value);
+  // @@protoc_insertion_point(field_set:debate.Link.link_type)
+}
+inline ::debate::LinkType Link::_internal_link_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::LinkType>(_impl_.link_type_);
+}
+inline void Link::_internal_set_link_type(::debate::LinkType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_type_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -3125,6 +3227,12 @@ struct is_proto_enum<::debate::ClaimStatus> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::debate::ClaimStatus>() {
   return ::debate::ClaimStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::debate::LinkType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::LinkType>() {
+  return ::debate::LinkType_descriptor();
 }
 template <>
 struct is_proto_enum<::debate::ChallengeStatus> : std::true_type {};

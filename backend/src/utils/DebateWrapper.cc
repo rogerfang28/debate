@@ -108,7 +108,7 @@ debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     return getClaimById(parentId);
 }
 
-void DebateWrapper::addClaimUnderParent(
+int DebateWrapper::addClaimUnderParent(
     const int& parentId, 
     const std::string& claimText, 
     const std::string& description,
@@ -128,6 +128,7 @@ void DebateWrapper::addClaimUnderParent(
     addClaimToDB(childClaim, user_id, debate_id);
     parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
     updateClaimInDB(parentClaimFromDB);
+    return childClaim.id();
 }
 
 void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id) {

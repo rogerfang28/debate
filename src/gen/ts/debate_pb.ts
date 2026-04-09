@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSLyAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFEhEKCWRlYmF0ZV9pZBgJIAEoBRIjCgdoaXN0b3J5GAogAygLMhIuZGViYXRlLkNsYWltU3RhdGUSIwoGc3RhdHVzGAsgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzIlkKCkNsYWltU3RhdGUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIcCgVjbGFpbRgBIAEoCzINLmRlYmF0ZS5DbGFpbSJYCgRMaW5rEhQKDGNvbm5lY3RfZnJvbRgBIAEoBRISCgpjb25uZWN0X3RvGAIgASgFEhIKCmNvbm5lY3Rpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgEIAEoBSLrAQoJQ2hhbGxlbmdlEgoKAmlkGAEgASgFEicKBnN0YXR1cxgCIAEoDjIXLmRlYmF0ZS5DaGFsbGVuZ2VTdGF0dXMSIgoaY2hhbGxlbmdlZF9wYXJlbnRfY2xhaW1faWQYAyABKAUSHAoUY2hhbGxlbmdlZF9jbGFpbV9pZHMYBCADKAUSGwoTY2hhbGxlbmdlZF9saW5rX2lkcxgFIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYBiABKAkSFQoNY2hhbGxlbmdlcl9pZBgHIAEoBRIXCg9wcm9vZl9kZWJhdGVfaWQYCCABKAUiLAoFUHJvb2YSEQoJY2xhaW1faWRzGAEgAygFEhAKCGxpbmtfaWRzGAIgAygFIsABCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhQKDGlzX2NoYWxsZW5nZRgHIAEoCBIbChNwYXJlbnRfY2hhbGxlbmdlX2lkGAggASgFKkcKC0NsYWltU3RhdHVzEgsKB05FVVRSQUwQABIOCgpDSEFMTEVOR0VEEAESDAoIREVGRU5ERUQQAhINCglESVNQUk9WRU4QAyo4Cg9DaGFsbGVuZ2VTdGF0dXMSCwoHT05HT0lORxAAEgwKCENPTkNFREVEEAESCgoGUFJPVkVOEAJiBnByb3RvMw", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSLyAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEQoJcGFyZW50X2lkGAQgASgFEhQKDGNoaWxkcmVuX2lkcxgFIAMoBRIcCgVwcm9vZhgHIAEoCzINLmRlYmF0ZS5Qcm9vZhISCgpjcmVhdG9yX2lkGAggASgFEhEKCWRlYmF0ZV9pZBgJIAEoBRIjCgdoaXN0b3J5GAogAygLMhIuZGViYXRlLkNsYWltU3RhdGUSIwoGc3RhdHVzGAsgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzIlkKCkNsYWltU3RhdGUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIcCgVjbGFpbRgBIAEoCzINLmRlYmF0ZS5DbGFpbSKJAQoETGluaxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUSIwoJbGlua190eXBlGAYgASgOMhAuZGViYXRlLkxpbmtUeXBlIusBCglDaGFsbGVuZ2USCgoCaWQYASABKAUSJwoGc3RhdHVzGAIgASgOMhcuZGViYXRlLkNoYWxsZW5nZVN0YXR1cxIiChpjaGFsbGVuZ2VkX3BhcmVudF9jbGFpbV9pZBgDIAEoBRIcChRjaGFsbGVuZ2VkX2NsYWltX2lkcxgEIAMoBRIbChNjaGFsbGVuZ2VkX2xpbmtfaWRzGAUgAygFEhoKEmNoYWxsZW5nZV9zZW50ZW5jZRgGIAEoCRIVCg1jaGFsbGVuZ2VyX2lkGAcgASgFEhcKD3Byb29mX2RlYmF0ZV9pZBgIIAEoBSIsCgVQcm9vZhIRCgljbGFpbV9pZHMYASADKAUSEAoIbGlua19pZHMYAiADKAUiwAEKBkRlYmF0ZRIKCgJpZBgBIAEoBRIVCg1yb290X2NsYWltX2lkGAIgASgFEg0KBXRvcGljGAMgASgJEhMKC2RlYmF0ZXJfaWRzGAQgAygFEhIKCmNyZWF0b3JfaWQYBSABKAUSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3MSFAoMaXNfY2hhbGxlbmdlGAcgASgIEhsKE3BhcmVudF9jaGFsbGVuZ2VfaWQYCCABKAUqRwoLQ2xhaW1TdGF0dXMSCwoHTkVVVFJBTBAAEg4KCkNIQUxMRU5HRUQQARIMCghERUZFTkRFRBACEg0KCURJU1BST1ZFThADKjcKCExpbmtUeXBlEgoKBk5PUk1BTBAAEhAKDFBBUkVOVF9DSElMRBABEg0KCUNIQUxMRU5HRRACKjgKD0NoYWxsZW5nZVN0YXR1cxILCgdPTkdPSU5HEAASDAoIQ09OQ0VERUQQARIKCgZQUk9WRU4QAmIGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -107,24 +107,36 @@ export const ClaimStateSchema: GenMessage<ClaimState> = /*@__PURE__*/
  */
 export type Link = Message<"debate.Link"> & {
   /**
-   * @generated from field: int32 connect_from = 1;
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: int32 connect_from = 2;
    */
   connectFrom: number;
 
   /**
-   * @generated from field: int32 connect_to = 2;
+   * @generated from field: int32 connect_to = 3;
    */
   connectTo: number;
 
   /**
-   * @generated from field: string connection = 3;
+   * @generated from field: string connection = 4;
    */
   connection: string;
 
   /**
-   * @generated from field: int32 creator_id = 4;
+   * @generated from field: int32 creator_id = 5;
    */
   creatorId: number;
+
+  /**
+   * add a type, normal, parent child, or challenge connection
+   *
+   * @generated from field: debate.LinkType link_type = 6;
+   */
+  linkType: LinkType;
 };
 
 /**
@@ -302,6 +314,32 @@ export const ClaimStatusSchema: GenEnum<ClaimStatus> = /*@__PURE__*/
   enumDesc(file_debate, 0);
 
 /**
+ * @generated from enum debate.LinkType
+ */
+export enum LinkType {
+  /**
+   * @generated from enum value: NORMAL = 0;
+   */
+  NORMAL = 0,
+
+  /**
+   * @generated from enum value: PARENT_CHILD = 1;
+   */
+  PARENT_CHILD = 1,
+
+  /**
+   * @generated from enum value: CHALLENGE = 2;
+   */
+  CHALLENGE = 2,
+}
+
+/**
+ * Describes the enum debate.LinkType.
+ */
+export const LinkTypeSchema: GenEnum<LinkType> = /*@__PURE__*/
+  enumDesc(file_debate, 1);
+
+/**
  * @generated from enum debate.ChallengeStatus
  */
 export enum ChallengeStatus {
@@ -331,5 +369,5 @@ export enum ChallengeStatus {
  * Describes the enum debate.ChallengeStatus.
  */
 export const ChallengeStatusSchema: GenEnum<ChallengeStatus> = /*@__PURE__*/
-  enumDesc(file_debate, 1);
+  enumDesc(file_debate, 2);
 

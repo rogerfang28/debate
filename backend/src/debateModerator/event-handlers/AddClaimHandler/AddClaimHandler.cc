@@ -17,14 +17,22 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
 
     // DebateWrapper debateWrapper;
 
-    debateWrapper.addClaimUnderParent(
+    int newClaimID = debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId
         claim_text,
         description,
         user_id,
         debate_id
     );
-
+    // also add a link between the new claim and the parent claim, which would be a parent connection
+    debate::Link newLink;
+    newLink.set_connect_from(currentClaimID);
+    newLink.set_connect_to(newClaimID);
+    newLink.set_connection("parent child connection");
+    newLink.set_creator_id(user_id);
+    newLink.set_link_type(debate::LinkType::PARENT_CHILD);
+    debateWrapper.addLink(currentClaimID, newClaimID, "parent child connection", user_id);
+    Log::test("Added link between claim " + std::to_string(currentClaimID) + " and new claim " + std::to_string(newClaimID) + " with description: " + "parent child connection");
     CloseAddChildClaim(user_id, debateWrapper);
 }
 
