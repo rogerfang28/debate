@@ -71,6 +71,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	rendering_info::DebatePageRenderingInfo info;
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
+	
 	info.set_viewer_user_id(userProto.user_id());
 	info.set_viewer_username(userProto.username());
 	info.set_scope_type(MapScopeType(userProto.current_scope().scopetype()));
@@ -89,13 +90,29 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	currentClaim->set_creator_id(debatingInfo.current_claim().creator_id());
 	currentClaim->set_status(MapClaimStatus(debatingInfo.current_claim().status()));
 
-	for (int i = 0; i < debatingInfo.children_claims_size(); ++i) {
-		const user_engagement::ClaimInfo& childClaim = debatingInfo.children_claims(i);
-		rendering_info::ClaimRenderInfo* outChild = info.add_children_claims();
-		outChild->set_id(childClaim.id());
-		outChild->set_sentence(childClaim.sentence());
-		outChild->set_creator_id(childClaim.creator_id());
-		outChild->set_status(MapClaimStatus(childClaim.status()));
+	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(debatingInfo.current_claim().id());
+	Log::test("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
+	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
+		int linkId = currentClaimProto.link_ids(i);
+		Log::test("[DebatePageInfoParser] Processing link ID: " + std::to_string(linkId));
+		debate::Link linkProto = collectionProto.links_by_id().at(linkId);
+		Log::test("[DebatePageInfoParser] Link from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()));
+		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
+			int childClaimId = linkProto.connect_to();
+			Log::test("[DebatePageInfoParser] Found parent-child link, child claim ID: " + std::to_string(childClaimId));
+			auto childIt = collectionProto.claims_by_id().find(childClaimId);
+			if (childIt != collectionProto.claims_by_id().end()) {
+				const debate::Claim& childClaim = childIt->second;
+				Log::test("[DebatePageInfoParser] Found child claim " + std::to_string(childClaim.id()) + ": \"" + childClaim.sentence() + "\"");
+				rendering_info::ClaimRenderInfo* outChild = info.add_children_claims();
+				outChild->set_id(childClaim.id());
+				outChild->set_sentence(childClaim.sentence());
+				outChild->set_creator_id(childClaim.creator_id());
+				outChild->set_status(MapClaimStatus(childClaim.status()));
+			} else {
+				Log::test("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
+			}
+		}
 	}
 
 	for (int i = 0; i < debatingInfo.links_size(); ++i) {

@@ -19,11 +19,6 @@ void ConnectClaimsHandler::ConnectClaims(
     // std::string& connection = userProto.engagement().debating_info().connecting_info().connection();
     // this one should actually update the links database
     int linkId = debateWrapper.addLink(fromClaimId, toClaimId, connection, user_id, debateId);
-    // also add it to the claims proof id
-    debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
-    Log::debug("[ConnectClaimsHandler] Adding link ID " + std::to_string(linkId) + " to parent claim ID " + std::to_string(parentClaim.id()));
-    parentClaim.mutable_proof()->add_link_ids(linkId);
-    debateWrapper.updateClaimInDB(parentClaim);
     CancelConnectClaims(user_id, debateWrapper);
     
 }
@@ -79,17 +74,44 @@ void ConnectClaimsHandler::DeleteLinkById(
     // first find the link
     debate::Link linkProto = debateWrapper.getLinkById(linkId);
     int fromClaimId = linkProto.connect_from();
-    // remove link id from parent claim's proof
+    int toClaimId = linkProto.connect_to();
+
+    // remove link id from both the parent claim and top-level link list
     debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
-    auto* proof = parentClaim.mutable_proof();
-    for (int i = 0; i < proof->link_ids_size(); ++i) {
-        if (proof->link_ids(i) == linkId) {
-            proof->mutable_link_ids()->SwapElements(i, proof->link_ids_size() - 1);
-            proof->mutable_link_ids()->RemoveLast();
-            break;
+    auto removeLinkId = [linkId](debate::Claim& claim) {
+        auto* proof = claim.mutable_proof();
+        for (int i = 0; i < proof->link_ids_size(); ++i) {
+            if (proof->link_ids(i) == linkId) {
+                proof->mutable_link_ids()->SwapElements(i, proof->link_ids_size() - 1);
+                proof->mutable_link_ids()->RemoveLast();
+                break;
+            }
         }
+
+        auto& linkIds = *claim.mutable_link_ids();
+        for (int i = 0; i < linkIds.size(); ++i) {
+            if (linkIds[i] == linkId) {
+                linkIds.erase(linkIds.begin() + i);
+                break;
+            }
+        }
+    };
+
+    debate::Claim fromClaim = debateWrapper.getClaimById(fromClaimId);
+    removeLinkId(fromClaim);
+    debateWrapper.updateClaimInDB(fromClaim);
+
+    if (toClaimId != fromClaimId) {
+        debate::Claim toClaim = debateWrapper.getClaimById(toClaimId);
+        removeLinkId(toClaim);
+        debateWrapper.updateClaimInDB(toClaim);
     }
-    debateWrapper.updateClaimInDB(parentClaim);
+
+    if (parentClaim.id() != fromClaim.id()) {
+        // keep the legacy parent lookup path in sync too
+        removeLinkId(parentClaim);
+        debateWrapper.updateClaimInDB(parentClaim);
+    }
     // then delete the link from database
     // debateWrapper.deleteLinkById(linkId);
 }
