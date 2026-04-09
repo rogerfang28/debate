@@ -16,24 +16,24 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     const auto action = info.user().engagement().current_action();
     if (action == user_engagement::ACTION_HOME) {
         // generate home page
-        Log::debug("[LayoutGenerator] Generating Home Page");
+        Log::info("[LayoutGenerator] Generating Home Page");
         return HomePageGenerator::GenerateHomePage(info.user());
     }
 
     if (action == user_engagement::ACTION_DEBATING) {
         // generate debate page
-        Log::debug("[LayoutGenerator] Generating Debate Page");
+        Log::info("[LayoutGenerator] Generating Debate Page");
         rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
         return DebatePageGenerator::GenerateDebatePage(debatePageInfo, info.user());
     }
 
     if (action == user_engagement::ACTION_LOGIN) {
         // generate login page
-        Log::debug("[LayoutGenerator] Generating Login Page");
+        Log::info("[LayoutGenerator] Generating Login Page");
         return LoginPageGenerator::GenerateLoginPage();
     }
 
-    Log::debug("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");
-    Log::debug("[LayoutGenerator] engagement action: " + std::to_string(action));
+    Log::info("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");
+    Log::info("[LayoutGenerator] engagement action: " + std::to_string(action));
     return ErrorPageGenerator::GenerateErrorPage();
 }

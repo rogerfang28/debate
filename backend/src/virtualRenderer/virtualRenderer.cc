@@ -15,12 +15,12 @@
 
 // Constructor
 VirtualRenderer::VirtualRenderer() {
-    Log::debug("VirtualRenderer initialized.");
+    Log::info("VirtualRenderer initialized.");
 }
 
 // Destructor
 VirtualRenderer::~VirtualRenderer() {
-    Log::debug("VirtualRenderer destroyed."); // probably never called
+    Log::info("VirtualRenderer destroyed."); // probably never called
 }
 
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message,const httplib::Request& req, httplib::Response& res) {
@@ -50,17 +50,17 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
     std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
 
     if (evt.type() == debate_event::LOGOUT) {
-        Log::debug("[VirtualRenderer] Logout event detected, clearing req cookies.");
+        Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
         parseCookie::clearAuthCookies(res);
         resolvedUserId = 0;
         resolvedUsername = "";
     }
     else if (evt.type() == debate_event::LOGIN) {
-        Log::debug("[VirtualRenderer] Login event detected, login the user with cookies.");
+        Log::info("[VirtualRenderer] Login event detected, login the user with cookies.");
         int userId = moderator.getUserId(evt.login().username());
         // could return -1 for no user
         if (userId == -1) {
-            Log::debug("[VirtualRenderer] User not found during login, creating new user.");
+            Log::info("[VirtualRenderer] User not found during login, creating new user.");
             userId = moderator.createUserIfNotExist(evt.login().username());
         }
         // this ensures a user exists

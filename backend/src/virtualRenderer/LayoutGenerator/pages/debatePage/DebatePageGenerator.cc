@@ -490,13 +490,13 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
     // Extract data from user
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
-    Log::test(
+    Log::debug(
         "[DebatePageGenerator] FillChildClaims received: user_links_count=" + std::to_string(debatingInfo.links_size()) +
         ", rendering_links_count=" + std::to_string(info.links_size())
     );
     for (int i = 0; i < debatingInfo.links_size(); ++i) {
         const user_engagement::LinkInfo& link = debatingInfo.links(i);
-        Log::test(
+        Log::debug(
             "[DebatePageGenerator] user link[" + std::to_string(i) + "] id=" + std::to_string(link.id()) +
             ", from=" + std::to_string(link.connect_from()) +
             ", to=" + std::to_string(link.connect_to()) +
@@ -506,7 +506,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
     }
     for (int i = 0; i < info.links_size(); ++i) {
         const rendering_info::LinkRenderInfo& link = info.links(i);
-        Log::test(
+        Log::debug(
             "[DebatePageGenerator] rendering_info link[" + std::to_string(i) + "] id=" + std::to_string(link.id()) +
             ", from=" + std::to_string(link.connect_from()) +
             ", to=" + std::to_string(link.connect_to()) +
@@ -514,13 +514,13 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
             ", connection=\"" + link.connection() + "\""
         );
     }
-    Log::debug("[DebatePageGenerator] Connecting Info: " + std::string(debatingInfo.connecting_info().connecting() ? "true" : "false") + 
+    Log::info("[DebatePageGenerator] Connecting Info: " + std::string(debatingInfo.connecting_info().connecting() ? "true" : "false") + 
               ", fromClaimId=" + std::to_string(debatingInfo.connecting_info().from_claim_id()) + 
               ", toClaimId=" + std::to_string(debatingInfo.connecting_info().to_claim_id()) + 
               ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false"));
     int currentClaimId = debatingInfo.current_claim().id();
     std::string claim = debatingInfo.current_claim().sentence();
-    Log::debug(
+    Log::info(
         "[DebatePageGenerator] FillChildClaims state: currentUserId=" + std::to_string(currentUserId) +
         ", currentClaimId=" + std::to_string(currentClaimId) +
         ", currentAction=" + std::to_string(debatingInfo.current_debate_action().action_type()) +

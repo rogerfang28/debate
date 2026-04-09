@@ -85,11 +85,11 @@ DebateModerator::DebateModerator()
       debateWrapper(dbWrapper)
 {
     dbWrapper.ensureAllTables();
-    Log::debug("[DebateModerator] Initialized.");
+    Log::info("[DebateModerator] Initialized.");
 }
 
 DebateModerator::~DebateModerator() {
-    Log::debug("[DebateModerator] Destroyed.");
+    Log::info("[DebateModerator] Destroyed.");
 }
 
 // * main function to handle debate event requests
@@ -97,15 +97,15 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     // Process the debate event and update the database accordingly
     int user_id = event.user().user_id();
     if (!event.user().is_logged_in()) {
-        Log::debug("[DebateModerator] User not authenticated, redirecting to login page.");
+        Log::info("[DebateModerator] User not authenticated, redirecting to login page.");
         moderator_to_vr::ModeratorToVRMessage res;
         LoginPageResponseGenerator::BuildLoginPageResponse(res);
         return res;
     }
-    Log::debug("[DebateModerator] Handling request for user: " + std::to_string(user_id));
+    Log::info("[DebateModerator] Handling request for user: " + std::to_string(user_id));
 
     if (demo_mode::kViewerModeEnabled && isViewerBlockedEvent(event.type())) {
-        Log::debug("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
+        Log::info("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
         event.set_type(debate_event::NONE);
     }
 
@@ -120,50 +120,50 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
     // Determine the type of event and call the appropriate handler
     switch (event.type()) {
         case debate_event::NONE:
-            Log::debug("[DebateModerator] Event Type: NONE");
+            Log::info("[DebateModerator] Event Type: NONE");
             break;
         case debate_event::CREATE_DEBATE:
-            Log::debug("[DebateModerator] Event Type: CREATE_DEBATE");
+            Log::info("[DebateModerator] Event Type: CREATE_DEBATE");
             DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper);
             break;
         case debate_event::CLEAR_DEBATES:
-            Log::debug("[DebateModerator] Event Type: CLEAR_DEBATES");
+            Log::info("[DebateModerator] Event Type: CLEAR_DEBATES");
             DebateHandler::ClearDebates(user_id, debateWrapper);
             break;
         case debate_event::DELETE_DEBATE:
-            Log::debug("[DebateModerator] Event Type: DELETE_DEBATE");
+            Log::info("[DebateModerator] Event Type: DELETE_DEBATE");
             DebateHandler::DeleteDebate(event.delete_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::JOIN_DEBATE:
-            Log::debug("[DebateModerator] Event Type: JOIN_DEBATE");
+            Log::info("[DebateModerator] Event Type: JOIN_DEBATE");
             DebateHandler::JoinDebateAsMember(event.join_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::ENTER_DEBATE:
-            Log::debug("[DebateModerator] Event Type: ENTER_DEBATE");
+            Log::info("[DebateModerator] Event Type: ENTER_DEBATE");
             MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user_id, debateWrapper);
             break;
         case debate_event::GO_HOME:
-            Log::debug("[DebateModerator] Event Type: GO_HOME");
+            Log::info("[DebateModerator] Event Type: GO_HOME");
             MoveUserHandler::GoHome(user_id, debateWrapper);
             break;
         case debate_event::GO_TO_PARENT:
-            Log::debug("[DebateModerator] Event Type: GO_TO_PARENT");
+            Log::info("[DebateModerator] Event Type: GO_TO_PARENT");
             MoveUserHandler::GoToParentClaim(user_id, debateWrapper);
             break;
         case debate_event::GO_TO_CLAIM:
-            Log::debug("[DebateModerator] Event Type: GO_TO_CLAIM");
+            Log::info("[DebateModerator] Event Type: GO_TO_CLAIM");
             MoveUserHandler::GoToClaim(event.go_to_claim().claim_id(), user_id, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
-            Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
+            Log::info("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
             AddClaimHandler::OpenAddChildClaim(user_id, debateWrapper);
             break;
         case debate_event::CLOSE_ADD_CHILD_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CLOSE_ADD_CHILD_CLAIM");
+            Log::info("[DebateModerator] Event Type: CLOSE_ADD_CHILD_CLAIM");
             AddClaimHandler::CloseAddChildClaim(user_id, debateWrapper);
             break;
         case debate_event::ADD_CHILD_CLAIM:
-            Log::debug("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
+            Log::info("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
             AddClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().description(),
@@ -172,15 +172,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::REPORT_CLAIM:
-            Log::debug("[DebateModerator] Event Type: REPORT_CLAIM");
+            Log::info("[DebateModerator] Event Type: REPORT_CLAIM");
             // implement later
             break;
         case debate_event::DELETE_CURRENT_STATEMENT:
-            Log::debug("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
+            Log::info("[DebateModerator] Event Type: DELETE_CURRENT_STATEMENT");
             DeleteClaimHandler::DeleteCurrentStatement(user_id, debateWrapper);
             break;
         case debate_event::DELETE_CHILD_CLAIM:
-            Log::debug("[DebateModerator] Event Type: DELETE_CHILD_CLAIM");
+            Log::info("[DebateModerator] Event Type: DELETE_CHILD_CLAIM");
             DeleteClaimHandler::DeleteChildClaim(
                 event.delete_child_claim().claim_id(),
                 user_id,
@@ -188,11 +188,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::START_EDIT_CLAIM_DESCRIPTION:
-            Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM_DESCRIPTION");
+            Log::info("[DebateModerator] Event Type: START_EDIT_CLAIM_DESCRIPTION");
             EditClaimHandler::StartEditClaimDescription(user_id, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION:
-            Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM_DESCRIPTION");
+            Log::info("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM_DESCRIPTION");
             EditClaimHandler::SubmitEditClaimDescription(
                 user_id,
                 event.submit_edit_claim_description().new_description(),
@@ -200,15 +200,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::CANCEL_EDIT_CLAIM_DESCRIPTION:
-            Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM_DESCRIPTION");
+            Log::info("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM_DESCRIPTION");
             EditClaimHandler::CancelEditClaimDescription(user_id, debateWrapper);
             break;
         case debate_event::START_EDIT_CLAIM:
-            Log::debug("[DebateModerator] Event Type: START_EDIT_CLAIM");
+            Log::info("[DebateModerator] Event Type: START_EDIT_CLAIM");
             EditClaimHandler::StartEditClaim(user_id, debateWrapper);
             break;
         case debate_event::SUBMIT_EDIT_CLAIM:
-            Log::debug("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
+            Log::info("[DebateModerator] Event Type: SUBMIT_EDIT_CLAIM");
             EditClaimHandler::SubmitEditClaim(
                 user_id,
                 event.submit_edit_claim().new_claim(),
@@ -216,11 +216,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::CANCEL_EDIT_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
+            Log::info("[DebateModerator] Event Type: CANCEL_EDIT_CLAIM");
             EditClaimHandler::CancelEditClaim(user_id, debateWrapper);
             break;
         case debate_event::CONNECT_FROM_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
+            Log::info("[DebateModerator] Event Type: CONNECT_FROM_CLAIM");
             ConnectClaimsHandler::ConnectFromClaim(
                 user_id,
                 event.connect_from_claim().from_claim_id(),
@@ -228,7 +228,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::CONNECT_TO_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CONNECT_TO_CLAIM");
+            Log::info("[DebateModerator] Event Type: CONNECT_TO_CLAIM");
             ConnectClaimsHandler::ConnectToClaim(
                 user_id,
                 event.connect_to_claim().to_claim_id(),
@@ -236,8 +236,8 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::SUBMIT_CONNECT_CLAIMS:
-            Log::debug("[DebateModerator] Connection: " + event.submit_connect_claims().connection());
-            Log::debug("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
+            Log::info("[DebateModerator] Connection: " + event.submit_connect_claims().connection());
+            Log::info("[DebateModerator] Event Type: SUBMIT_CONNECT_CLAIMS");
             ConnectClaimsHandler::ConnectClaims(
                 user_id,
                 event.submit_connect_claims().connection(),
@@ -245,11 +245,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break; 
         case debate_event::CANCEL_CONNECT_CLAIMS:
-            Log::debug("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
+            Log::info("[DebateModerator] Event Type: CANCEL_CONNECT_CLAIMS");
             ConnectClaimsHandler::CancelConnectClaims(user_id, debateWrapper);
             break;
         case debate_event::DELETE_LINK:
-            Log::debug("[DebateModerator] Event Type: DELETE_LINK");
+            Log::info("[DebateModerator] Event Type: DELETE_LINK");
             ConnectClaimsHandler::DeleteLinkById(
                 user_id,
                 event.delete_link().link_id(),
@@ -258,11 +258,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         // challenges
         case debate_event::START_CHALLENGE_CLAIM:
-            Log::debug("[DebateModerator] Event Type: START_CHALLENGE_CLAIM");
+            Log::info("[DebateModerator] Event Type: START_CHALLENGE_CLAIM");
             ChallengeHandler::StartChallengeClaim(user_id, debateWrapper);
             break;
         case debate_event::ADD_CLAIM_TO_BE_CHALLENGED:
-            Log::debug("[DebateModerator] Event Type: ADD_CLAIM_TO_BE_CHALLENGED");
+            Log::info("[DebateModerator] Event Type: ADD_CLAIM_TO_BE_CHALLENGED");
             ChallengeHandler::AddClaimToBeChallenged(
                 event.add_claim_to_be_challenged().claim_id(),
                 user_id,
@@ -270,7 +270,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::ADD_LINK_TO_BE_CHALLENGED:
-            Log::debug("[DebateModerator] Event Type: ADD_LINK_TO_BE_CHALLENGED");
+            Log::info("[DebateModerator] Event Type: ADD_LINK_TO_BE_CHALLENGED");
             ChallengeHandler::AddLinkToBeChallenged(
                 event.add_link_to_be_challenged().link_id(),
                 user_id,
@@ -278,11 +278,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::SUBMIT_CHALLENGE_CLAIM:
-            Log::debug("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
+            Log::info("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
             ChallengeHandler::SubmitChallengeClaim(event.submit_challenge_claim().challenge_sentence(),user_id, debateWrapper);
             break;
         case debate_event::GO_TO_CHALLENGE:
-            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGE");
+            Log::info("[DebateModerator] Event Type: GO_TO_CHALLENGE");
             MoveUserHandler::GoToChallenge(
                 event.go_to_challenge().challenge_id(),
                 user_id,
@@ -290,7 +290,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::DELETE_CHALLENGE:
-            Log::debug("[DebateModerator] Event Type: DELETE_CHALLENGE");
+            Log::info("[DebateModerator] Event Type: DELETE_CHALLENGE");
             ChallengeHandler::DeleteChallenge(
                 event.delete_challenge().challenge_id(),
                 user_id,
@@ -298,19 +298,19 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::CONCEDE_CHALLENGE:
-            Log::debug("[DebateModerator] Event Type: CONCEDE_CHALLENGE");
+            Log::info("[DebateModerator] Event Type: CONCEDE_CHALLENGE");
             ChallengeHandler::ConcedeChallenge(user_id, debateWrapper);
             break;
         case debate_event::CANCEL_CHALLENGE_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CANCEL_CHALLENGE_CLAIM");
+            Log::info("[DebateModerator] Event Type: CANCEL_CHALLENGE_CLAIM");
             ChallengeHandler::CancelChallengeClaim(user_id, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHALLENGE:
-            Log::debug("[DebateModerator] Event Type: OPEN_ADD_CHALLENGE");
+            Log::info("[DebateModerator] Event Type: OPEN_ADD_CHALLENGE");
             ChallengeHandler::OpenAddChallenge(user_id, debateWrapper);
             break;
         case debate_event::REMOVE_CLAIM_TO_BE_CHALLENGED:
-            Log::debug("[DebateModerator] Event Type: REMOVE_CLAIM_TO_BE_CHALLENGED");
+            Log::info("[DebateModerator] Event Type: REMOVE_CLAIM_TO_BE_CHALLENGED");
             ChallengeHandler::RemoveClaimToBeChallenged(
                 event.remove_claim_to_be_challenged().claim_id(),
                 user_id,
@@ -318,7 +318,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::REMOVE_LINK_TO_BE_CHALLENGED:
-            Log::debug("[DebateModerator] Event Type: REMOVE_LINK_TO_BE_CHALLENGED");
+            Log::info("[DebateModerator] Event Type: REMOVE_LINK_TO_BE_CHALLENGED");
             ChallengeHandler::RemoveLinkToBeChallenged(
                 event.remove_link_to_be_challenged().link_id(),
                 user_id,
@@ -326,11 +326,11 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::GO_TO_CHALLENGED_PARENT_CLAIM:
-            Log::debug("[DebateModerator] Event Type: GO_TO_CHALLENGED_PARENT_CLAIM");
+            Log::info("[DebateModerator] Event Type: GO_TO_CHALLENGED_PARENT_CLAIM");
             MoveUserHandler::GoToParentClaimOfDebate(user_id, debateWrapper);
             break;
         case debate_event::LEAVE_DEBATE:
-            Log::debug("[DebateModerator] Event Type: LEAVE_DEBATE");
+            Log::info("[DebateModerator] Event Type: LEAVE_DEBATE");
             DebateHandler::LeaveDebate(
                 event.leave_debate().debate_id(),
                 user_id,
@@ -339,19 +339,19 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             );
             break;
         case debate_event::START_MODIFICATION_OF_CLAIM:
-            Log::debug("[DebateModerator] Event Type: START_MODIFICATION_OF_CLAIM");
+            Log::info("[DebateModerator] Event Type: START_MODIFICATION_OF_CLAIM");
             ModifyClaimHandler::StartModifyClaim(debateWrapper, user_id);
             break;
         case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
-            Log::debug("[DebateModerator] Event Type: SUBMIT_MODIFICATION_OF_CLAIM");
+            Log::info("[DebateModerator] Event Type: SUBMIT_MODIFICATION_OF_CLAIM");
             ModifyClaimHandler::SubmitModifyClaim(debateWrapper, user_id);
             break;
         case debate_event::CANCEL_MODIFICATION_OF_CLAIM:
-            Log::debug("[DebateModerator] Event Type: CANCEL_MODIFICATION_OF_CLAIM");
+            Log::info("[DebateModerator] Event Type: CANCEL_MODIFICATION_OF_CLAIM");
             ModifyClaimHandler::CancelModifyClaim(debateWrapper, user_id);
             break;
         default:
-            Log::debug("[DebateModerator] Event Type: UNKNOWN");
+            Log::info("[DebateModerator] Event Type: UNKNOWN");
             break;
     }
 }
@@ -373,17 +373,17 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_HOME:
-            Log::debug("[DebateModerator] Building HOME page response for user: " + std::to_string(user_id));
+            Log::info("[DebateModerator] Building HOME page response for user: " + std::to_string(user_id));
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper);
             break;
             
         case user_engagement::ACTION_DEBATING:
-            Log::debug("[DebateModerator] Building DEBATE page response for user: " + std::to_string(user_id));
+            Log::info("[DebateModerator] Building DEBATE page response for user: " + std::to_string(user_id));
             DebatePageResponseGenerator::BuildDebatePageResponse(responseMessage, user_id, userProto, debateWrapper);
             break;
         default:
             // unknown action
-            Log::debug("[DebateModerator] Unknown user engagement action: " + std::to_string(userProto.engagement().current_action()));
+            Log::info("[DebateModerator] Unknown user engagement action: " + std::to_string(userProto.engagement().current_action()));
             break;
     }
 
@@ -438,7 +438,7 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         serializedNewUser.resize(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         dbWrapper.users.updateUserProtobuf(user_id, serializedNewUser);
-        Log::debug("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
+        Log::info("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
     }
     return user_id;
 }

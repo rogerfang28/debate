@@ -95,7 +95,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	visibleClaimIds.insert(currentClaim->id());
 
 	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(debatingInfo.current_claim().id());
-	Log::debug("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
+	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
 	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
 		int linkId = currentClaimProto.link_ids(i);
 		Log::debug("[DebatePageInfoParser] Processing link ID: " + std::to_string(linkId));
@@ -120,7 +120,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 		}
 	}
 
-	Log::debug(
+	Log::info(
 		"[DebatePageInfoParser] Copying collection links into rendering_info.links: links_by_id_count=" +
 		std::to_string(collectionProto.links_by_id_size()) +
 		", visible_claim_count=" + std::to_string(visibleClaimIds.size())
@@ -159,7 +159,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 		);
 		++outputLinkIndex;
 	}
-	Log::debug(
+	Log::info(
 		"[DebatePageInfoParser] Finished copying links: output_count=" + std::to_string(info.links_size())
 	);
 
@@ -174,7 +174,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 
 	if (debatingInfo.has_connecting_info()) {
 		const user_engagement::DebatingInfo_ConnectingInfo& srcConnecting = debatingInfo.connecting_info();
-		Log::debug(
+		Log::info(
 			"[DebatePageInfoParser] connecting_info present: from_claim_id=" + std::to_string(srcConnecting.from_claim_id()) +
 			", to_claim_id=" + std::to_string(srcConnecting.to_claim_id()) +
 			", connecting=" + std::string(srcConnecting.connecting() ? "true" : "false") +
@@ -185,14 +185,14 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 		dstConnecting->set_to_claim_id(srcConnecting.to_claim_id());
 		dstConnecting->set_connecting(srcConnecting.connecting());
 		dstConnecting->set_opened_connect_modal(srcConnecting.opened_connect_modal());
-		Log::debug(
+		Log::info(
 			"[DebatePageInfoParser] connecting_info copied: from_claim_id=" + std::to_string(dstConnecting->from_claim_id()) +
 			", to_claim_id=" + std::to_string(dstConnecting->to_claim_id()) +
 			", connecting=" + std::string(dstConnecting->connecting() ? "true" : "false") +
 			", opened_connect_modal=" + std::string(dstConnecting->opened_connect_modal() ? "true" : "false")
 		);
 	} else {
-		Log::debug("[DebatePageInfoParser] connecting_info missing");
+		Log::info("[DebatePageInfoParser] connecting_info missing");
 	}
 
 	if (debatingInfo.has_challenging_info()) {

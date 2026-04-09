@@ -76,6 +76,8 @@ void ConnectClaimsHandler::DeleteLinkById(
     int fromClaimId = linkProto.connect_from();
     int toClaimId = linkProto.connect_to();
 
+    Log::debug("[ConnectClaimsHandler] Deleting link id=" + std::to_string(linkId) + ", from claim id=" + std::to_string(fromClaimId) + ", to claim id=" + std::to_string(toClaimId));
+
     // remove link id from both the parent claim and top-level link list
     debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
     auto removeLinkId = [linkId](debate::Claim& claim) {
@@ -113,5 +115,5 @@ void ConnectClaimsHandler::DeleteLinkById(
         debateWrapper.updateClaimInDB(parentClaim);
     }
     // then delete the link from database
-    // debateWrapper.deleteLinkById(linkId);
+    debateWrapper.deleteLinkById(linkId);
 }

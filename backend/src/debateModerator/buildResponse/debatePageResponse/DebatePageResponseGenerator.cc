@@ -13,7 +13,7 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     DebateWrapper& debateWrapper
 ) {
     user_engagement::DebatingInfo debatingInfo = userProto.engagement().debating_info();
-    Log::debug("[DebatePageResponseGenerator] Building debate page response for user: " + std::to_string(user_id));
+    Log::info("[DebatePageResponseGenerator] Building debate page response for user: " + std::to_string(user_id));
     // based on the current claim id, generate the children claims and sentences and parent claim
     int currentClaimId = debatingInfo.current_claim().id();
     debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
