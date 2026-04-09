@@ -22,7 +22,7 @@
       "args": [
         "--build", "${workspaceFolder}/backend/build",
         "--config", "Debug",
-        "-j4"
+        "-j8"
       ],
       "options": {
         "cwd": "${workspaceFolder}/backend"

@@ -91,26 +91,26 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	currentClaim->set_status(MapClaimStatus(debatingInfo.current_claim().status()));
 
 	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(debatingInfo.current_claim().id());
-	Log::test("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
+	Log::debug("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
 	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
 		int linkId = currentClaimProto.link_ids(i);
-		Log::test("[DebatePageInfoParser] Processing link ID: " + std::to_string(linkId));
+		Log::debug("[DebatePageInfoParser] Processing link ID: " + std::to_string(linkId));
 		debate::Link linkProto = collectionProto.links_by_id().at(linkId);
-		Log::test("[DebatePageInfoParser] Link from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()));
+		Log::debug("[DebatePageInfoParser] Link from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()));
 		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
 			int childClaimId = linkProto.connect_to();
-			Log::test("[DebatePageInfoParser] Found parent-child link, child claim ID: " + std::to_string(childClaimId));
+			Log::debug("[DebatePageInfoParser] Found parent-child link, child claim ID: " + std::to_string(childClaimId));
 			auto childIt = collectionProto.claims_by_id().find(childClaimId);
 			if (childIt != collectionProto.claims_by_id().end()) {
 				const debate::Claim& childClaim = childIt->second;
-				Log::test("[DebatePageInfoParser] Found child claim " + std::to_string(childClaim.id()) + ": \"" + childClaim.sentence() + "\"");
+				Log::debug("[DebatePageInfoParser] Found child claim " + std::to_string(childClaim.id()) + ": \"" + childClaim.sentence() + "\"");
 				rendering_info::ClaimRenderInfo* outChild = info.add_children_claims();
 				outChild->set_id(childClaim.id());
 				outChild->set_sentence(childClaim.sentence());
 				outChild->set_creator_id(childClaim.creator_id());
 				outChild->set_status(MapClaimStatus(childClaim.status()));
 			} else {
-				Log::test("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
+				Log::debug("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
 			}
 		}
 	}
@@ -136,11 +136,25 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 
 	if (debatingInfo.has_connecting_info()) {
 		const user_engagement::DebatingInfo_ConnectingInfo& srcConnecting = debatingInfo.connecting_info();
+		Log::debug(
+			"[DebatePageInfoParser] connecting_info present: from_claim_id=" + std::to_string(srcConnecting.from_claim_id()) +
+			", to_claim_id=" + std::to_string(srcConnecting.to_claim_id()) +
+			", connecting=" + std::string(srcConnecting.connecting() ? "true" : "false") +
+			", opened_connect_modal=" + std::string(srcConnecting.opened_connect_modal() ? "true" : "false")
+		);
 		rendering_info::ConnectingRenderInfo* dstConnecting = info.mutable_connecting_info();
 		dstConnecting->set_from_claim_id(srcConnecting.from_claim_id());
 		dstConnecting->set_to_claim_id(srcConnecting.to_claim_id());
 		dstConnecting->set_connecting(srcConnecting.connecting());
 		dstConnecting->set_opened_connect_modal(srcConnecting.opened_connect_modal());
+		Log::debug(
+			"[DebatePageInfoParser] connecting_info copied: from_claim_id=" + std::to_string(dstConnecting->from_claim_id()) +
+			", to_claim_id=" + std::to_string(dstConnecting->to_claim_id()) +
+			", connecting=" + std::string(dstConnecting->connecting() ? "true" : "false") +
+			", opened_connect_modal=" + std::string(dstConnecting->opened_connect_modal() ? "true" : "false")
+		);
+	} else {
+		Log::debug("[DebatePageInfoParser] connecting_info missing");
 	}
 
 	if (debatingInfo.has_challenging_info()) {

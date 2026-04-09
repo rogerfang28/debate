@@ -44,6 +44,7 @@ debate::ChallengeStatus MapChallengeStatus(rendering_info::ChallengeStatus statu
             return debate::ChallengeStatus::ONGOING;
     }
 }
+}
 
 user_engagement::DebatingInfo_CurrentDebateAction_ActionType MapDebateAction(rendering_info::DebateActionType actionType) {
     switch (actionType) {
@@ -66,72 +67,9 @@ user_engagement::DebatingInfo_CurrentDebateAction_ActionType MapDebateAction(ren
     }
 }
 
-user::User BuildUserFromRenderingInfo(const rendering_info::DebatePageRenderingInfo& info) {
-    user::User userProto;
-    userProto.set_user_id(info.viewer_user_id());
-    userProto.set_username(info.viewer_username());
-    userProto.mutable_current_scope()->set_scopetype(MapScopeType(info.scope_type()));
-    userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
 
-    user_engagement::DebatingInfo* debatingInfo = userProto.mutable_engagement()->mutable_debating_info();
-    debatingInfo->set_debate_id(info.debate_id());
-    debatingInfo->set_is_challenge(info.is_challenge_debate());
-    debatingInfo->set_current_claim_description(info.current_claim_description());
-    debatingInfo->set_modifying_current_claim(info.modifying_current_claim());
-    debatingInfo->mutable_current_debate_action()->set_action_type(MapDebateAction(info.current_action()));
-
-    debatingInfo->mutable_current_claim()->set_id(info.current_claim().id());
-    debatingInfo->mutable_current_claim()->set_sentence(info.current_claim().sentence());
-    debatingInfo->mutable_current_claim()->set_creator_id(info.current_claim().creator_id());
-    debatingInfo->mutable_current_claim()->set_status(MapClaimStatus(info.current_claim().status()));
-
-    for (int i = 0; i < info.children_claims_size(); ++i) {
-        const rendering_info::ClaimRenderInfo& child = info.children_claims(i);
-        user_engagement::ClaimInfo* dst = debatingInfo->add_children_claims();
-        dst->set_id(child.id());
-        dst->set_sentence(child.sentence());
-        dst->set_creator_id(child.creator_id());
-        dst->set_status(MapClaimStatus(child.status()));
-    }
-
-    for (int i = 0; i < info.links_size(); ++i) {
-        const rendering_info::LinkRenderInfo& link = info.links(i);
-        user_engagement::LinkInfo* dst = debatingInfo->add_links();
-        dst->set_id(link.id());
-        dst->set_connect_from(link.connect_from());
-        dst->set_connect_to(link.connect_to());
-        dst->set_connection(link.connection());
-        dst->set_creator_id(link.creator_id());
-    }
-
-    for (int i = 0; i < info.current_challenges_size(); ++i) {
-        const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        user_engagement::ChallengeInfo* dst = debatingInfo->add_current_challenges();
-        dst->set_id(challenge.id());
-        dst->set_sentence(challenge.sentence());
-        dst->set_creator_id(challenge.creator_id());
-        dst->set_status(MapChallengeStatus(challenge.status()));
-    }
-
-    debatingInfo->mutable_connecting_info()->set_from_claim_id(info.connecting_info().from_claim_id());
-    debatingInfo->mutable_connecting_info()->set_to_claim_id(info.connecting_info().to_claim_id());
-    debatingInfo->mutable_connecting_info()->set_connecting(info.connecting_info().connecting());
-    debatingInfo->mutable_connecting_info()->set_opened_connect_modal(info.connecting_info().opened_connect_modal());
-
-    for (int i = 0; i < info.challenging_info().claim_ids_size(); ++i) {
-        debatingInfo->mutable_challenging_info()->add_claim_ids(info.challenging_info().claim_ids(i));
-    }
-    for (int i = 0; i < info.challenging_info().link_ids_size(); ++i) {
-        debatingInfo->mutable_challenging_info()->add_link_ids(info.challenging_info().link_ids(i));
-    }
-    debatingInfo->mutable_challenging_info()->set_opened_challenge_modal(info.challenging_info().opened_challenge_modal());
-
-    return userProto;
-}
-}
-
-ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePageRenderingInfo& info) {
-    user::User userProto = BuildUserFromRenderingInfo(info);
+ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto) {
+    // later get user proto from database, for now just get from args
     ui::Page page;
     page.set_page_id("debate");
     page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()));
@@ -147,11 +85,11 @@ ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePag
     }
 
     // more individual functions for each part
-    mainLayout = FillChildClaims(info, mainLayout);
-    mainLayout = FillChallenges(info, mainLayout);
-    mainLayout = FillCurrentClaimSection(info, mainLayout);
-    mainLayout = AddAppropriateButtons(info, mainLayout);
-    mainLayout = AddAppropriateOverlays(info, mainLayout);    
+    mainLayout = FillChildClaims(info, userProto, mainLayout);
+    mainLayout = FillChallenges(info, userProto, mainLayout);
+    mainLayout = FillCurrentClaimSection(info, userProto, mainLayout);
+    mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
+    mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);    
 
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(mainLayout);
@@ -548,13 +486,26 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
     return mainLayout;
 }
 
-ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout) {
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout) {
     // Extract data from user
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
+    Log::debug("[DebatePageGenerator] Connecting Info: " + std::string(debatingInfo.connecting_info().connecting() ? "true" : "false") + 
+              ", fromClaimId=" + std::to_string(debatingInfo.connecting_info().from_claim_id()) + 
+              ", toClaimId=" + std::to_string(debatingInfo.connecting_info().to_claim_id()) + 
+              ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false"));
     int currentClaimId = debatingInfo.current_claim().id();
     std::string claim = debatingInfo.current_claim().sentence();
+    Log::debug(
+        "[DebatePageGenerator] FillChildClaims state: currentUserId=" + std::to_string(currentUserId) +
+        ", currentClaimId=" + std::to_string(currentClaimId) +
+        ", currentAction=" + std::to_string(debatingInfo.current_debate_action().action_type()) +
+        ", modifyingCurrentClaim=" + std::string(debatingInfo.modifying_current_claim() ? "true" : "false") +
+        ", connecting=" + std::string(debatingInfo.connecting_info().connecting() ? "true" : "false") +
+        ", fromClaimId=" + std::to_string(debatingInfo.connecting_info().from_claim_id()) +
+        ", toClaimId=" + std::to_string(debatingInfo.connecting_info().to_claim_id()) +
+        ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false")
+    );
     
     std::vector<std::tuple<std::string,std::string,int,debate::ClaimStatus>> childClaimInfo; // id, sentence, creator_id, status
     for (int i = 0; i < debatingInfo.children_claims_size(); i++) {
@@ -633,6 +584,14 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         int claimCreatorId = std::get<2>(childClaimInfo[i]);
         debate::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
         bool userOwnsChildClaim = (currentUserId == claimCreatorId);
+        Log::debug(
+            "[DebatePageGenerator] Rendering child claim: id=" + claimId +
+            ", creatorId=" + std::to_string(claimCreatorId) +
+            ", userOwnsChildClaim=" + std::string(userOwnsChildClaim ? "true" : "false") +
+            ", modifyingCurrentClaim=" + std::string(modifyingCurrentClaim ? "true" : "false") +
+            ", connecting=" + std::string(connecting ? "true" : "false") +
+            ", fromClaimId=" + fromClaimId
+        );
         
         // Determine border color based on status
         std::string borderColor;
@@ -913,11 +872,14 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         }
 
         // Only show connection and delete buttons if user owns the claim and is modifying
+        Log::debug("[DebatePageGenerator] userOwnsChildClaim=" + std::string(userOwnsChildClaim ? "true" : "false") + ", modifyingCurrentClaim=" + std::string(modifyingCurrentClaim ? "true" : "false") + ", connecting=" + std::string(connecting ? "true" : "false"));
         if (userOwnsChildClaim && modifyingCurrentClaim) {
             // Add connection buttons based on connecting state
             if (connecting) {
                 // If we're connecting and this is the FROM claim, show Cancel button
+                Log::info("[DebatePageGenerator] Currently connecting claims. fromClaimId=" + fromClaimId + ", child claimId=" + claimId);
                 if (claimId == fromClaimId) {
+                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is the from claim; rendering Cancel Connection button");
                     ui::Component cancelConnectClaimsButton = ComponentGenerator::createButton(
                         "cancelConnectClaimsButton_" + claimId,
                         "Cancel Connection",
@@ -932,6 +894,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
                     ComponentGenerator::addChild(&childNodeButtonContainer, cancelConnectClaimsButton);
                 } else {
                     // For all other claims, show Connect To button
+                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not the from claim; rendering Connect To button");
                     ui::Component connectToClaimButton = ComponentGenerator::createButton(
                         "connectToClaimButton_" + claimId,
                         "Connect To",
@@ -947,6 +910,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
                 }
             } else {
                 // If we're not connecting, show Connect From button
+                Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not connecting; rendering Connect From button");
                 ui::Component connectFromClaimButton = ComponentGenerator::createButton(
                     "connectFromClaimButton_" + claimId,
                     "Connect From",
@@ -961,6 +925,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
                 ComponentGenerator::addChild(&childNodeButtonContainer, connectFromClaimButton);
             }
 
+            Log::debug("[DebatePageGenerator] Child claim " + claimId + " rendering Delete button alongside connection controls");
             ui::Component deleteChildClaimButton = ComponentGenerator::createButton(
                 "deleteChildClaimButton_" + claimId,
                 "Delete",
@@ -981,8 +946,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1158,8 +1122,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1363,8 +1326,7 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info:
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
@@ -1576,8 +1538,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
 
     return mainLayout;
 }
-ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::DebatePageRenderingInfo& info, ui::Component mainLayout){
-    user::User user = BuildUserFromRenderingInfo(info);
+ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     
     switch(debatingInfo.current_debate_action().action_type()) {
