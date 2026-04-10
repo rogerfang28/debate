@@ -10,7 +10,6 @@ message Claim {
   int32 id = 1;
   string sentence = 2;
   string description = 3;
-  Proof proof = 7;
   int32 creator_id = 8;
   int32 debate_id = 9;
   repeated ClaimState history = 10;
@@ -62,11 +61,6 @@ enum ChallengeStatus {
   ONGOING = 0; // challenge is ongoing
   CONCEDED = 1; // challenge has been conceded
   PROVEN = 2; // challenge successfully defended
-}
-
-message Proof {
-  repeated int32 claim_ids = 1;
-  repeated int32 link_ids = 2;
 }
 
 message Debate {

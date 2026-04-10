@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSLbAQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSHAoFcHJvb2YYByABKAsyDS5kZWJhdGUuUHJvb2YSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBSJZCgpDbGFpbVN0YXRlEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHAoFY2xhaW0YASABKAsyDS5kZWJhdGUuQ2xhaW0inAEKBExpbmsSCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFEiMKCWxpbmtfdHlwZRgGIAEoDjIQLmRlYmF0ZS5MaW5rVHlwZRIRCglkZWJhdGVfaWQYByABKAUi6wEKCUNoYWxsZW5nZRIKCgJpZBgBIAEoBRInCgZzdGF0dXMYAiABKA4yFy5kZWJhdGUuQ2hhbGxlbmdlU3RhdHVzEiIKGmNoYWxsZW5nZWRfcGFyZW50X2NsYWltX2lkGAMgASgFEhwKFGNoYWxsZW5nZWRfY2xhaW1faWRzGAQgAygFEhsKE2NoYWxsZW5nZWRfbGlua19pZHMYBSADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAYgASgJEhUKDWNoYWxsZW5nZXJfaWQYByABKAUSFwoPcHJvb2ZfZGViYXRlX2lkGAggASgFIiwKBVByb29mEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBSLAAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIUCgxpc19jaGFsbGVuZ2UYByABKAgSGwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBSpHCgtDbGFpbVN0YXR1cxILCgdORVVUUkFMEAASDgoKQ0hBTExFTkdFRBABEgwKCERFRkVOREVEEAISDQoJRElTUFJPVkVOEAMqNwoITGlua1R5cGUSCgoGTk9STUFMEAASEAoMUEFSRU5UX0NISUxEEAESDQoJQ0hBTExFTkdFEAIqOAoPQ2hhbGxlbmdlU3RhdHVzEgsKB09OR09JTkcQABIMCghDT05DRURFRBABEgoKBlBST1ZFThACYgZwcm90bzM", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK9AQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBSJZCgpDbGFpbVN0YXRlEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHAoFY2xhaW0YASABKAsyDS5kZWJhdGUuQ2xhaW0inAEKBExpbmsSCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFEiMKCWxpbmtfdHlwZRgGIAEoDjIQLmRlYmF0ZS5MaW5rVHlwZRIRCglkZWJhdGVfaWQYByABKAUi6wEKCUNoYWxsZW5nZRIKCgJpZBgBIAEoBRInCgZzdGF0dXMYAiABKA4yFy5kZWJhdGUuQ2hhbGxlbmdlU3RhdHVzEiIKGmNoYWxsZW5nZWRfcGFyZW50X2NsYWltX2lkGAMgASgFEhwKFGNoYWxsZW5nZWRfY2xhaW1faWRzGAQgAygFEhsKE2NoYWxsZW5nZWRfbGlua19pZHMYBSADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAYgASgJEhUKDWNoYWxsZW5nZXJfaWQYByABKAUSFwoPcHJvb2ZfZGViYXRlX2lkGAggASgFIsABCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhQKDGlzX2NoYWxsZW5nZRgHIAEoCBIbChNwYXJlbnRfY2hhbGxlbmdlX2lkGAggASgFKkcKC0NsYWltU3RhdHVzEgsKB05FVVRSQUwQABIOCgpDSEFMTEVOR0VEEAESDAoIREVGRU5ERUQQAhINCglESVNQUk9WRU4QAyo3CghMaW5rVHlwZRIKCgZOT1JNQUwQABIQCgxQQVJFTlRfQ0hJTEQQARINCglDSEFMTEVOR0UQAio4Cg9DaGFsbGVuZ2VTdGF0dXMSCwoHT05HT0lORxAAEgwKCENPTkNFREVEEAESCgoGUFJPVkVOEAJiBnByb3RvMw", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -36,11 +36,6 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: string description = 3;
    */
   description: string;
-
-  /**
-   * @generated from field: debate.Proof proof = 7;
-   */
-  proof?: Proof;
 
   /**
    * @generated from field: int32 creator_id = 8;
@@ -201,28 +196,6 @@ export const ChallengeSchema: GenMessage<Challenge> = /*@__PURE__*/
   messageDesc(file_debate, 3);
 
 /**
- * @generated from message debate.Proof
- */
-export type Proof = Message<"debate.Proof"> & {
-  /**
-   * @generated from field: repeated int32 claim_ids = 1;
-   */
-  claimIds: number[];
-
-  /**
-   * @generated from field: repeated int32 link_ids = 2;
-   */
-  linkIds: number[];
-};
-
-/**
- * Describes the message debate.Proof.
- * Use `create(ProofSchema)` to create a new message.
- */
-export const ProofSchema: GenMessage<Proof> = /*@__PURE__*/
-  messageDesc(file_debate, 4);
-
-/**
  * @generated from message debate.Debate
  */
 export type Debate = Message<"debate.Debate"> & {
@@ -272,7 +245,7 @@ export type Debate = Message<"debate.Debate"> & {
  * Use `create(DebateSchema)` to create a new message.
  */
 export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
-  messageDesc(file_debate, 5);
+  messageDesc(file_debate, 4);
 
 /**
  * @generated from enum debate.ClaimStatus

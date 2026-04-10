@@ -165,9 +165,6 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_debate_id(debate_id);
     childClaim.set_status(debate::ClaimStatus::NEUTRAL);
     addClaimToDB(childClaim, user_id, debate_id);
-    // parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
-    // updateClaimInDB(parentClaimFromDB);
-    // also add a link between the new claim and the parent claim, which would be a parent connection
     addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
     Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");
     return childClaim.id();
@@ -388,15 +385,6 @@ int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& co
         return -1;
     }
 
-    auto addLinkIdIfMissing = [linkId](debate::Claim& claim) {
-        for (const auto& existingLinkId : claim.proof().link_ids()) {
-            if (existingLinkId == linkId) {
-                return;
-            }
-        }
-        claim.mutable_proof()->add_link_ids(linkId);
-    };
-
     auto addTopLevelLinkIdIfMissing = [linkId](debate::Claim& claim) {
         for (const auto& existingLinkId : claim.link_ids()) {
             if (existingLinkId == linkId) {
@@ -407,13 +395,11 @@ int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& co
     };
 
     debate::Claim fromClaim = getClaimById(fromClaimId);
-    addLinkIdIfMissing(fromClaim);
     addTopLevelLinkIdIfMissing(fromClaim);
     updateClaimInDB(fromClaim);
 
     if (toClaimId != fromClaimId) {
         debate::Claim toClaim = getClaimById(toClaimId);
-        addLinkIdIfMissing(toClaim);
         addTopLevelLinkIdIfMissing(toClaim);
         updateClaimInDB(toClaim);
     }
@@ -431,18 +417,11 @@ std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::get
 }
 
 std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {
-    // prefer the claim's direct link list; keep proof fallback for older data
     debate::Claim claim = getClaimById(claimId);
     std::vector<int> linkIds;
     for (const auto& linkId : claim.link_ids()) {
         linkIds.push_back((linkId));
         Log::debug("[IMPROTATN] Found link ID: " + std::to_string(linkId) + " under Claim ID: " + std::to_string(claimId));
-    }
-    if (linkIds.empty()) {
-        for (const auto& linkId : claim.proof().link_ids()) {
-            linkIds.push_back(linkId);
-            Log::debug("[IMPROTATN] Found proof link ID: " + std::to_string(linkId) + " under Claim ID: " + std::to_string(claimId));
-        }
     }
     return linkIds;
 }

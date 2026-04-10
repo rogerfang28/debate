@@ -81,15 +81,6 @@ void ConnectClaimsHandler::DeleteLinkById(
     // remove link id from both the parent claim and top-level link list
     debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
     auto removeLinkId = [linkId](debate::Claim& claim) {
-        auto* proof = claim.mutable_proof();
-        for (int i = 0; i < proof->link_ids_size(); ++i) {
-            if (proof->link_ids(i) == linkId) {
-                proof->mutable_link_ids()->SwapElements(i, proof->link_ids_size() - 1);
-                proof->mutable_link_ids()->RemoveLast();
-                break;
-            }
-        }
-
         auto& linkIds = *claim.mutable_link_ids();
         for (int i = 0; i < linkIds.size(); ++i) {
             if (linkIds[i] == linkId) {
