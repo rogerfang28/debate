@@ -30,14 +30,8 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         topicProto->set_id(debateProto.id());
         topicProto->set_topic(debateProto.topic());
         topicProto->set_creator_id(debateProto.creator_id());
-        topicProto->set_is_challenge(debateProto.is_challenge());
-        // find the claim debateProto is challenging
-        debateWrapper.getClaimById(debateProto.id());
-        if (debateProto.is_challenge()){
-            debate::Challenge challenge = debateWrapper.getChallengeProtobuf(debateProto.parent_challenge_id());
-            debate::Claim challengedClaim = debateWrapper.getClaimById(challenge.challenged_parent_claim_id());
-            topicProto->set_claim_its_challenging(challengedClaim.sentence());
-        }
+        topicProto->set_is_challenge(false);
+        topicProto->set_claim_its_challenging("");
         Log::debug("[HomePageResponseGenerator] Added debate to list: ID = "
                   + std::to_string(debateProto.id()) + ", Topic = " + debateProto.topic());
     }
