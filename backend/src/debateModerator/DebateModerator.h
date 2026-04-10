@@ -6,7 +6,7 @@
 
 // database includes
 #include "../database/sqlite/Database.h"
-#include "../database/handlers/DatabaseWrapper.h"
+#include "../database/debate/DatabaseWrapper.h"
 
 #include "../utils/DebateWrapper.h"
 class DebateModerator {

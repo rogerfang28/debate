@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
-#include "../database/handlers/DatabaseWrapper.h"
+#include "../database/debate/DatabaseWrapper.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
 class DebateWrapper {

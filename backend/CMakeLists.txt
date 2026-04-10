@@ -71,12 +71,12 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/StatementDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateMembersDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/LinkDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DatabaseWrapper.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DebateDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/StatementDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DatabaseWrapper.cc
 
     # layout generators
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc
