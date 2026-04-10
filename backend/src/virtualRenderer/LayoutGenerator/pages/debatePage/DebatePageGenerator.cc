@@ -494,14 +494,14 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         "[DebatePageGenerator] FillChildClaims received: user_links_count=" + std::to_string(debatingInfo.links_size()) +
         ", rendering_links_count=" + std::to_string(info.links_size())
     );
-    Log::test(
+    Log::debug(
         "[DebatePageGenerator] child_claims received=" + std::to_string(info.children_claims_size()) +
         ", current_claim_id=" + std::to_string(debatingInfo.current_claim().id()) +
         ", current_claim_sentence=\"" + debatingInfo.current_claim().sentence() + "\""
     );
     for (int i = 0; i < info.children_claims_size(); i++) {
         const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-        Log::test(
+        Log::debug(
             "[DebatePageGenerator] child_claim[" + std::to_string(i) + "] id=" + std::to_string(childClaim.id()) +
             ", sentence=\"" + childClaim.sentence() + "\"" +
             ", creator_id=" + std::to_string(childClaim.creator_id()) +
@@ -550,9 +550,9 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
         childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status()});
     }
-    Log::test("[DebatePageGenerator] prepared childClaimInfo count=" + std::to_string(childClaimInfo.size()));
+    Log::debug("[DebatePageGenerator] prepared childClaimInfo count=" + std::to_string(childClaimInfo.size()));
     for (size_t i = 0; i < childClaimInfo.size(); i++) {
-        Log::test(
+        Log::debug(
             "[DebatePageGenerator] prepared childClaimInfo[" + std::to_string(i) + "] id=" + std::get<0>(childClaimInfo[i]) +
             ", sentence=\"" + std::get<1>(childClaimInfo[i]) + "\"" +
             ", creator_id=" + std::to_string(std::get<2>(childClaimInfo[i])) +
@@ -565,7 +565,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         const rendering_info::LinkRenderInfo& link = info.links(i);
         linkInfo.push_back({std::to_string(link.id()), std::to_string(link.connect_from()), std::to_string(link.connect_to()), link.connection()});
     }
-    Log::test("[DebatePageGenerator] prepared linkInfo count=" + std::to_string(linkInfo.size()));
+    Log::debug("[DebatePageGenerator] prepared linkInfo count=" + std::to_string(linkInfo.size()));
     
     bool connecting = debatingInfo.connecting_info().connecting();
     std::string fromClaimId = std::to_string(debatingInfo.connecting_info().from_claim_id());
@@ -997,11 +997,10 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
 ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
-    user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     
-    std::vector<std::tuple<std::string, std::string, int, debate::ChallengeStatus>> challengesInfo;
-    for (int i = 0; i < debatingInfo.current_challenges_size(); i++) {
-        const user_engagement::ChallengeInfo& challenge = debatingInfo.current_challenges(i);
+    std::vector<std::tuple<std::string, std::string, int, rendering_info::ChallengeStatus>> challengesInfo;
+    for (int i = 0; i < info.current_challenges_size(); i++) {
+        const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
         challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.status()});
     }
 
@@ -1042,13 +1041,13 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         std::string challengeId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
-        debate::ChallengeStatus challengeStatus = std::get<3>(challenge);
+        rendering_info::ChallengeStatus challengeStatus = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
         
         // Determine colors based on status
         std::string bgColor, borderColor, buttonBgColor, buttonHoverColor, statusText, statusTextColor;
         switch (challengeStatus) {
-            case debate::ChallengeStatus::ONGOING:
+            case rendering_info::CHALLENGE_STATUS_ONGOING:
                 bgColor = "bg-orange-600";
                 borderColor = "border-2 border-orange-500";
                 buttonBgColor = "bg-orange-700";
@@ -1056,7 +1055,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
                 statusText = "Ongoing";
                 statusTextColor = "text-orange-300";
                 break;
-            case debate::ChallengeStatus::CONCEDED:
+            case rendering_info::CHALLENGE_STATUS_CONCEDED:
                 bgColor = "bg-gray-600";
                 borderColor = "border-2 border-gray-500";
                 buttonBgColor = "bg-gray-700";
@@ -1064,7 +1063,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
                 statusText = "Conceded";
                 statusTextColor = "text-gray-300";
                 break;
-            case debate::ChallengeStatus::PROVEN:
+            case rendering_info::CHALLENGE_STATUS_PROVEN:
                 bgColor = "bg-green-600";
                 borderColor = "border-2 border-green-500";
                 buttonBgColor = "bg-green-700";

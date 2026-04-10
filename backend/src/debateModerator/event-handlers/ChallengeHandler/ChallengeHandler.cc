@@ -107,6 +107,39 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
 
     // find the current claim (it's challenging that one)
     int current_claim_id = userProto.engagement().debating_info().current_claim().id();
+    int current_debate_id = userProto.engagement().debating_info().debate_id();
+
+    // NEW FLOW: also create a challenge claim in the same debate and connect it
+    // to the challenged claim with a CHALLENGE link.
+    int same_debate_challenge_claim_id = debateWrapper.createClaim(
+        challenge_sentence,
+        "challenge claim",
+        user_id,
+        current_debate_id
+    );
+    int same_debate_challenge_link_id = -1;
+
+    if (same_debate_challenge_claim_id != -1) {
+        same_debate_challenge_link_id = debateWrapper.addLink(
+            same_debate_challenge_claim_id,
+            current_claim_id,
+            "challenge link",
+            user_id,
+            current_debate_id,
+            debate::LinkType::CHALLENGE
+        );
+        Log::debug(
+            "[SubmitChallengeClaimHandler] Added same-debate challenge claim id=" +
+            std::to_string(same_debate_challenge_claim_id) +
+            " and challenge link id=" + std::to_string(same_debate_challenge_link_id) +
+            " for challenged claim id=" + std::to_string(current_claim_id)
+        );
+    } else {
+        Log::warn(
+            "[SubmitChallengeClaimHandler] Failed to create same-debate challenge claim for challenged claim id=" +
+            std::to_string(current_claim_id)
+        );
+    }
 
     // make a debate proto with the new root claim as the challenge sentence
     debate::Debate proofDebate;
@@ -139,15 +172,17 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
         currentClaim = debateWrapper.findClaimParent(currentClaim.id());
     }
 
-    // add a new link called "challenge link" that connects the new challenge claim to the challenged claim
-    debateWrapper.addLink(
-        proofDebate.root_claim_id(), // from the challenge claim
-        current_claim_id, // to the challenged claim
-        "challenge link",
-        user_id,
-        proof_debate_id,
-        debate::LinkType::CHALLENGE
-    );
+    // legacy fallback: keep the proof-debate link path available if the same-debate link could not be created
+    if (same_debate_challenge_link_id == -1) {
+        debateWrapper.addLink(
+            proofDebate.root_claim_id(), // from the challenge claim
+            current_claim_id, // to the challenged claim
+            "challenge link",
+            user_id,
+            proof_debate_id,
+            debate::LinkType::CHALLENGE
+        );
+    }
 
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);

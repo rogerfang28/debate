@@ -152,6 +152,21 @@ bool DebateWrapper::isRoot(const int& claimId) {
     return findClaimParent(claimId).id() == claimId;
 }
 
+int DebateWrapper::createClaim(
+    const std::string& claimText,
+    const std::string& description,
+    const int& user_id,
+    const int& debate_id) {
+    debate::Claim claim;
+    claim.set_sentence(claimText);
+    claim.set_description(description);
+    claim.set_creator_id(user_id);
+    claim.set_debate_id(debate_id);
+    claim.set_status(debate::ClaimStatus::NEUTRAL);
+    addClaimToDB(claim, user_id, debate_id);
+    return claim.id();
+}
+
 int DebateWrapper::addClaimUnderParent(
     const int& parentId, 
     const std::string& claimText, 

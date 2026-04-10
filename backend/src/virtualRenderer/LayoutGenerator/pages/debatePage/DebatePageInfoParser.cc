@@ -95,7 +95,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	visibleClaimIds.insert(currentClaim->id());
 
 	int currentClaimId = debatingInfo.current_claim().id();
-	Log::test("[DebatePageInfoParser] Looking up current_claim_id=" + std::to_string(currentClaimId) + " in collection.claims_by_id (size=" + std::to_string(collectionProto.claims_by_id_size()) + ")");
+	Log::debug("[DebatePageInfoParser] Looking up current_claim_id=" + std::to_string(currentClaimId) + " in collection.claims_by_id (size=" + std::to_string(collectionProto.claims_by_id_size()) + ")");
 	
 	auto currentClaimIt = collectionProto.claims_by_id().find(currentClaimId);
 	if (currentClaimIt == collectionProto.claims_by_id().end()) {
@@ -111,21 +111,21 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	}
 	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
 		int linkId = currentClaimProto.link_ids(i);
-		Log::test("[DebatePageInfoParser] Processing current claim link_id=" + std::to_string(linkId));
+		Log::debug("[DebatePageInfoParser] Processing current claim link_id=" + std::to_string(linkId));
 		auto linkIt = collectionProto.links_by_id().find(linkId);
 		if (linkIt == collectionProto.links_by_id().end()) {
 			Log::warn("[DebatePageInfoParser] Link ID " + std::to_string(linkId) + " not found in collection!");
 			continue;
 		}
 		debate::Link linkProto = linkIt->second;
-		Log::test("[DebatePageInfoParser] link snapshot from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()) + ", connection=\"" + linkProto.connection() + "\"");
+		Log::debug("[DebatePageInfoParser] link snapshot from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()) + ", connection=\"" + linkProto.connection() + "\"");
 		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
 			int childClaimId = linkProto.connect_to();
-			Log::test("[DebatePageInfoParser] Found parent-child link, child_claim_id=" + std::to_string(childClaimId));
+			Log::debug("[DebatePageInfoParser] Found parent-child link, child_claim_id=" + std::to_string(childClaimId));
 			auto childIt = collectionProto.claims_by_id().find(childClaimId);
 			if (childIt != collectionProto.claims_by_id().end()) {
 				const debate::Claim& childClaim = childIt->second;
-				Log::test("[DebatePageInfoParser] Adding child claim id=" + std::to_string(childClaim.id()) + ", sentence=\"" + childClaim.sentence() + "\", creator_id=" + std::to_string(childClaim.creator_id()) + ", status=" + std::to_string(childClaim.status()));
+				Log::debug("[DebatePageInfoParser] Adding child claim id=" + std::to_string(childClaim.id()) + ", sentence=\"" + childClaim.sentence() + "\", creator_id=" + std::to_string(childClaim.creator_id()) + ", status=" + std::to_string(childClaim.status()));
 				rendering_info::ClaimRenderInfo* outChild = info.add_children_claims();
 				outChild->set_id(childClaim.id());
 				outChild->set_sentence(childClaim.sentence());
@@ -137,10 +137,10 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 			}
 		}
 	}
-	Log::test("[DebatePageInfoParser] children_claims copied=" + std::to_string(info.children_claims_size()));
+	Log::debug("[DebatePageInfoParser] children_claims copied=" + std::to_string(info.children_claims_size()));
 	for (int i = 0; i < info.children_claims_size(); ++i) {
 		const rendering_info::ClaimRenderInfo& child = info.children_claims(i);
-		Log::test("[DebatePageInfoParser] output child[" + std::to_string(i) + "] id=" + std::to_string(child.id()) + ", sentence=\"" + child.sentence() + "\", creator_id=" + std::to_string(child.creator_id()) + ", status=" + std::to_string(child.status()));
+		Log::debug("[DebatePageInfoParser] output child[" + std::to_string(i) + "] id=" + std::to_string(child.id()) + ", sentence=\"" + child.sentence() + "\", creator_id=" + std::to_string(child.creator_id()) + ", status=" + std::to_string(child.status()));
 	}
 
 	Log::info(
