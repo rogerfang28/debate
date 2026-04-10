@@ -4,7 +4,6 @@
 #include "UserDatabase.h"
 #include "DebateDatabase.h"
 #include "StatementDatabase.h"
-#include "ChallengeDatabase.h"
 #include "DebateMembersDatabase.h"
 #include "LinkDatabase.h"
 
@@ -21,7 +20,6 @@ public:
         : users(db),
           debates(db),
           statements(db),
-          challenges(db),
           debateMembers(db),
           links(db) {}
 
@@ -30,7 +28,6 @@ public:
         return users.ensureTable() &&
                debates.ensureTable() &&
                statements.ensureTable() &&
-               challenges.ensureTable() &&
                debateMembers.ensureTable() &&
                links.ensureTable();
     }
@@ -39,7 +36,6 @@ public:
     UserDatabase users;
     DebateDatabase debates;
     StatementDatabase statements;
-    ChallengeDatabase challenges;
     DebateMembersDatabase debateMembers;
     LinkDatabase links;
 };

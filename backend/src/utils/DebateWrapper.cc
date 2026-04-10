@@ -84,33 +84,6 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     databaseWrapper.debateMembers.addMember(newId, creator_id);
 }
 
-int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, const int& creator_id, const int& parent_challenge_id, debate::Debate& debateProto) {
-    Log::debug("[DebateWrapper] Initializing new proof debate with challenge sentence: " + challenge_sentence);
-    debateProto.set_topic(challenge_sentence);
-    debateProto.add_debater_ids(creator_id);
-    debateProto.set_creator_id(creator_id);
-    debateProto.set_is_challenge(true);
-    debateProto.set_parent_challenge_id(parent_challenge_id);
-    std::vector<uint8_t> serialized_debate(debateProto.ByteSizeLong());
-    debateProto.SerializeToArray(serialized_debate.data(), serialized_debate.size());
-    int newId = databaseWrapper.debates.addDebate(creator_id, debateProto.topic(), serialized_debate);
-    if (newId == -1) {
-        Log::error("[DebateWrapper] Failed to create new debate for topic: " + challenge_sentence);
-        return -1;
-    }
-    debateProto.set_id(newId);
-        debate::Claim rootClaim;
-    rootClaim.set_sentence(challenge_sentence);
-    rootClaim.set_creator_id(creator_id);
-    addClaimToDB(rootClaim, creator_id, newId);
-    debateProto.set_root_claim_id(rootClaim.id());
-    std::vector<uint8_t> updatedSerializedDebate(debateProto.ByteSizeLong());
-    debateProto.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
-    databaseWrapper.debates.updateDebateProtobuf(debateProto.id(), creator_id, updatedSerializedDebate);
-    databaseWrapper.debateMembers.addMember(newId, creator_id);
-    return newId;
-}
-
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     debate::Claim claim = getClaimById(claimId);
     // Resolve parent by finding an incoming parent-child link.
@@ -482,58 +455,10 @@ void DebateWrapper::addMemberToDebate(const int& debateId, const int& user_id) {
     databaseWrapper.debateMembers.addMember(debateId, user_id);
 }
 
-int DebateWrapper::addChallenge(
-    const int& creator_id,
-    const int& challenged_claim_id,
-    debate::Challenge challengeProtobuf
-) {
-    // serialize challengeProtobuf
-    std::vector<uint8_t> challengeProtobufData(challengeProtobuf.ByteSizeLong());
-    challengeProtobuf.SerializeToArray(challengeProtobufData.data(), challengeProtobufData.size());
-    int challenge_id = databaseWrapper.challenges.addChallenge(
-        challengeProtobufData,
-        creator_id,
-        challenged_claim_id
-    );
-    return challenge_id;
-}
-
-std::vector<int> DebateWrapper::getChallengesAgainstClaim(const int& claimId) {
-    return databaseWrapper.challenges.getChallengesAgainstClaim(claimId);
-}
-
-debate::Challenge DebateWrapper::getChallengeProtobuf(int challengeId) {
-    debate::Challenge challengeProto;
-    std::vector<uint8_t> challengeData = databaseWrapper.challenges.getChallengeProtobuf(challengeId);
-    if (!challengeData.empty()) {
-        if (!challengeProto.ParseFromArray(challengeData.data(), static_cast<int>(challengeData.size()))) {
-            Log::error("[DebateWrapper][ERR] Failed to parse challenge protobuf for challenge ID " + std::to_string(challengeId));
-        }
-    } else {
-        Log::error("[DebateWrapper][ERR] Challenge with ID " + std::to_string(challengeId) + " not found.");
-    }
-    return challengeProto;
-}
-
-void DebateWrapper::deleteChallenge(const int& challengeId) {
-    bool success = databaseWrapper.challenges.deleteChallenge(challengeId);
-    if (success) {
-        Log::debug("[DebateWrapper] Successfully deleted challenge with ID " + std::to_string(challengeId));
-    } else {
-        Log::error("[DebateWrapper][ERR] Failed to delete challenge with ID " + std::to_string(challengeId));
-    }
-}
-
 void DebateWrapper::updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto) {
     std::vector<uint8_t> protobufData(debateProto.ByteSizeLong());
     debateProto.SerializeToArray(protobufData.data(), protobufData.size());
     databaseWrapper.debates.updateDebateProtobuf(debateId, debateProto.creator_id(), protobufData);
-}
-
-void DebateWrapper::updateChallengeProtobuf(const int& challengeId, const debate::Challenge& challengeProto) {
-    std::vector<uint8_t> protobufData(challengeProto.ByteSizeLong());
-    challengeProto.SerializeToArray(protobufData.data(), protobufData.size());
-    databaseWrapper.challenges.updateChallengeProtobuf(challengeId, protobufData);
 }
 
 int DebateWrapper::findDebateId(const int& claimId) {
@@ -555,14 +480,8 @@ user_engagement::DebateList DebateWrapper::FillUserDebateList(const int& user_id
         topicProto->set_id(debateProto.id());
         topicProto->set_topic(debateProto.topic());
         topicProto->set_creator_id(debateProto.creator_id());
-        topicProto->set_is_challenge(debateProto.is_challenge());
-        // find the claim debateProto is challenging
-        getClaimById(debateProto.id());
-        if (debateProto.is_challenge()){
-            debate::Challenge challenge = getChallengeProtobuf(debateProto.parent_challenge_id());
-            debate::Claim challengedClaim = getClaimById(challenge.challenged_parent_claim_id());
-            topicProto->set_claim_its_challenging(challengedClaim.sentence());
-        }
+        topicProto->set_is_challenge(false);
+        topicProto->set_claim_its_challenging("");
     }
     return debateListProto;
 }
@@ -634,59 +553,50 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         return;
     }
 
-    // First pass: DFS to calculate status for all claims based on their challenges
+    // First pass: mark claims challenged if they have incoming CHALLENGE links.
     std::vector<int> stack;
     std::set<int> visited;
     stack.push_back(debateProto.root_claim_id());
     
     while (!stack.empty()) {
         int currentClaimId = stack.back();
-        
-        if (visited.find(currentClaimId) == visited.end()) {
-            visited.insert(currentClaimId);
-            debate::Claim currentClaim = getClaimById(currentClaimId);
-            
-            // Push all children onto stack for processing
-            for (const auto& childId : findChildrenIds(currentClaimId)) {
-                if (visited.find(childId) == visited.end()) {
-                    stack.push_back(childId);
-                }
+        stack.pop_back();
+
+        if (visited.find(currentClaimId) != visited.end()) {
+            continue;
+        }
+
+        visited.insert(currentClaimId);
+        debate::Claim currentClaim = getClaimById(currentClaimId);
+
+        bool hasIncomingChallenge = false;
+        const auto links = databaseWrapper.links.getLinksForClaim(currentClaimId);
+        for (const auto& linkRow : links) {
+            const int linkTo = std::get<2>(linkRow);
+            if (linkTo != currentClaimId) {
+                continue;
             }
-        } else {
-            // Post-order processing: handle this node after all children
-            debate::Claim currentClaim = getClaimById(currentClaimId);
-            
-            // Get all challenges against this claim
-            std::vector<int> challenges = getChallengesAgainstClaim(currentClaimId);
-            
-            // Determine status based on challenges
-            debate::ClaimStatus newStatus = debate::ClaimStatus::NEUTRAL;
-            
-            if (!challenges.empty()) {
-                bool hasUnresolved = false;
-                bool hasSuccessful = false;
-                
-                for (const auto& challengeId : challenges) {
-                    debate::Challenge challenge = getChallengeProtobuf(challengeId);
-                    if (challenge.status() == debate::ChallengeStatus::ONGOING) {
-                        hasUnresolved = true;
-                    } else if (challenge.status() == debate::ChallengeStatus::PROVEN) {
-                        hasSuccessful = true;
-                    }
-                }
-                
-                if (hasSuccessful) {
-                    newStatus = debate::ClaimStatus::DISPROVEN;
-                } else if (hasUnresolved) {
-                    newStatus = debate::ClaimStatus::CHALLENGED;
-                } else {
-                    newStatus = debate::ClaimStatus::DEFENDED;
-                }
+
+            const int linkId = std::get<0>(linkRow);
+            auto linkData = databaseWrapper.links.getLinkById(linkId);
+            if (!linkData.has_value()) {
+                continue;
             }
-            
-            currentClaim.set_status(newStatus);
-            updateClaimInDB(currentClaim);
-            stack.pop_back();
+
+            const int linkType = std::get<5>(linkData.value());
+            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
+                hasIncomingChallenge = true;
+                break;
+            }
+        }
+
+        currentClaim.set_status(hasIncomingChallenge ? debate::ClaimStatus::CHALLENGED : debate::ClaimStatus::NEUTRAL);
+        updateClaimInDB(currentClaim);
+
+        for (const auto& childId : findChildrenIds(currentClaimId)) {
+            if (visited.find(childId) == visited.end()) {
+                stack.push_back(childId);
+            }
         }
     }
     

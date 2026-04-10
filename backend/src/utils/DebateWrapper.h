@@ -60,19 +60,6 @@ public:
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
     void addMemberToDebate(const int& debateId, const int& user_id);
-    int addChallenge(
-        const int& creator_id,
-        const int& challenged_claim_id,
-        debate::Challenge challengeProtobuf);
-    void deleteChallenge(const int& challengeId);
-    std::vector<int> getChallengesAgainstClaim(const int& claimId);
-    debate::Challenge getChallengeProtobuf(int challengeId);
-    void updateChallengeProtobuf(const int& challengeId, const debate::Challenge& challengeProto);
-    int initNewProofDebate(
-        const std::string& challengeSentence,
-        const int& creator_id,
-        const int& parent_challenge_id,
-        debate::Debate& debateProto);
     void updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto);
     int findDebateId(const int& claimId);
     user_engagement::DebateList FillUserDebateList(const int& user_id);
