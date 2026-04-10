@@ -101,11 +101,40 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
 
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     debate::Claim claim = getClaimById(claimId);
-    int parentId = claim.parent_id();
-    if (parentId == -1){
-        return claim; // root claim has no parent
+    // The claim no longer stores parent_id directly, so resolve the parent
+    // by looking for an incoming PARENT_CHILD link.
+    const auto links = databaseWrapper.links.getLinksForClaim(claimId);
+    for (const auto& linkRow : links) {
+        const int linkId = std::get<0>(linkRow);
+        const int linkFrom = std::get<1>(linkRow);
+        const int linkTo = std::get<2>(linkRow);
+
+        if (linkTo != claimId) {
+            continue;
+        }
+
+        auto linkData = databaseWrapper.links.getLinkById(linkId);
+        if (!linkData.has_value()) {
+            continue;
+        }
+
+        const int linkType = std::get<5>(linkData.value());
+        if (linkType != 1) {
+            // In the current schema, 1 is the parent-child link type.
+            continue;
+        }
+
+        debate::Claim parentClaim = getClaimById(linkFrom);
+        if (parentClaim.id() == 0) {
+            Log::warn("[DebateWrapper] Parent claim " + std::to_string(linkFrom) + " not found while resolving parent of claim " + std::to_string(claimId));
+            return claim;
+        }
+
+        return parentClaim;
     }
-    return getClaimById(parentId);
+
+    // Root claim or stale data with no parent-child link.
+    return claim;
 }
 
 int DebateWrapper::addClaimUnderParent(
