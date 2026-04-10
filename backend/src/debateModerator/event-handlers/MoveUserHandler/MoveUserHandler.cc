@@ -16,23 +16,16 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
         Log::error("[EnterDebate][ERR] Failed to parse debate protobuf for debate ID " + std::to_string(debateId));
         return false;
     }
-    bool isChallenge = debateProto.is_challenge();
     int rootClaimId = debateProto.root_claim_id();
-    int challenger_id = debateProto.creator_id();
-    int challenged_id;
-    // find the challenged id, it will be the owner of the debate being challenged
-    int challenged_parent_claim_id = debateProto.parent_challenge_id();
-    debate::Claim challengedParentClaim = debateWrapper.getClaimById(challenged_parent_claim_id);
-    challenged_id = challengedParentClaim.creator_id();
 
     debateWrapper.moveUserToClaim(user_id, rootClaimId);
 
     // change some info in the user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    userProto.mutable_engagement()->mutable_debating_info()->set_is_challenge(isChallenge);
+    userProto.mutable_engagement()->mutable_debating_info()->set_is_challenge(false);
     userProto.mutable_engagement()->mutable_debating_info()->set_debate_id(debateId);
-    userProto.mutable_engagement()->mutable_debating_info()->set_challenged_user_id(challenged_id);
-    userProto.mutable_engagement()->mutable_debating_info()->set_challenger_user_id(challenger_id);
+    userProto.mutable_engagement()->mutable_debating_info()->set_challenged_user_id(0);
+    userProto.mutable_engagement()->mutable_debating_info()->set_challenger_user_id(0);
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
     userProto.mutable_current_scope()->set_scopetype(debate::SINGLE_CLAIM);
     resetOngoingActivities(user_id, debateWrapper);
@@ -116,22 +109,7 @@ void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper&
         resetOngoingActivities(user_id, debateWrapper);
         return;
     }
-
-    // legacy fallback: use the old proof-debate parent challenge linkage
-    int debate_id = userProto.engagement().debating_info().debate_id();
-    Log::debug("[GoToParentClaimOfDebate] No CHALLENGE link found; falling back to legacy proof-debate path for debate id: " + std::to_string(debate_id));
-    debate::Debate debateProto;
-    std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debate_id);
-    debateProto.ParseFromArray(debateData.data(), debateData.size());
-    int challenge_id = debateProto.parent_challenge_id();
-
-    debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
-    int parentClaim = challengeProto.challenged_parent_claim_id();
-    debate::Claim claimProto = debateWrapper.getClaimById(parentClaim);
-    int new_debate_id = claimProto.debate_id();
-    EnterDebate(new_debate_id, user_id, debateWrapper);
-    Log::debug("[GoToParentClaimOfDebate] Now going to parent claim id: " + std::to_string(parentClaim));
-    GoToClaim(parentClaim, user_id, debateWrapper);
+    Log::warn("[GoToParentClaimOfDebate] No outgoing CHALLENGE link found from current claim id: " + std::to_string(currentClaimId));
     resetOngoingActivities(user_id, debateWrapper);
 }
 

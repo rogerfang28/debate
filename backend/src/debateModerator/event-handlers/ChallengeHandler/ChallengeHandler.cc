@@ -141,25 +141,10 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
         );
     }
 
-    // make a debate proto with the new root claim as the challenge sentence
-    debate::Debate proofDebate;
-    int proof_debate_id = debateWrapper.initNewProofDebate(
-        challenge_sentence,
-        user_id,
-        0, // to be set after we have the challenge id
-        proofDebate
-    );
-
-    // now update the challenge to point to it
-    newChallenge.set_proof_debate_id(proof_debate_id);
-
     // now add to database
     int challenge_id = debateWrapper.addChallenge(user_id, current_claim_id, newChallenge);
     newChallenge.set_id(challenge_id); // set the id now that we have it
     debateWrapper.updateChallengeProtobuf(challenge_id, newChallenge); // update with id
-    // update the proofDebate to have the parent_challenge_id
-    proofDebate.set_parent_challenge_id(challenge_id);
-    debateWrapper.updateDebateProtobuf(proof_debate_id, proofDebate);
 
     // update current claim and all parents to be CHALLENGED
     debate::Claim currentClaim = debateWrapper.getClaimById(current_claim_id);
@@ -170,18 +155,6 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
             break; // reached root
         }
         currentClaim = debateWrapper.findClaimParent(currentClaim.id());
-    }
-
-    // legacy fallback: keep the proof-debate link path available if the same-debate link could not be created
-    if (same_debate_challenge_link_id == -1) {
-        debateWrapper.addLink(
-            proofDebate.root_claim_id(), // from the challenge claim
-            current_claim_id, // to the challenged claim
-            "challenge link",
-            user_id,
-            proof_debate_id,
-            debate::LinkType::CHALLENGE
-        );
     }
 
     // close the challenging modal and reset stuff
