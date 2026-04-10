@@ -71,7 +71,6 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate.set_id(newId);
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
-    rootClaim.set_parent_id(-1); // root claim has no parent
     rootClaim.set_creator_id(creator_id);
     addClaimToDB(rootClaim, creator_id, newId);
     debate.set_root_claim_id(rootClaim.id());
@@ -98,7 +97,6 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
     debateProto.set_id(newId);
         debate::Claim rootClaim;
     rootClaim.set_sentence(challenge_sentence);
-    rootClaim.set_parent_id(-1); // root claim has no parent
     rootClaim.set_creator_id(creator_id);
     addClaimToDB(rootClaim, creator_id, newId);
     debateProto.set_root_claim_id(rootClaim.id());
@@ -111,8 +109,7 @@ int DebateWrapper::initNewProofDebate(const std::string& challenge_sentence, con
 
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     debate::Claim claim = getClaimById(claimId);
-    // The claim no longer stores parent_id directly, so resolve the parent
-    // by looking for an incoming PARENT_CHILD link.
+    // Resolve parent by finding an incoming parent-child link.
     const auto links = databaseWrapper.links.getLinksForClaim(claimId);
     for (const auto& linkRow : links) {
         const int linkId = std::get<0>(linkRow);
@@ -163,7 +160,6 @@ int DebateWrapper::addClaimUnderParent(
     // Add new claim
     debate::Claim childClaim;
     childClaim.set_sentence(claimText);
-    // childClaim.set_parent_id(parentId);
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
