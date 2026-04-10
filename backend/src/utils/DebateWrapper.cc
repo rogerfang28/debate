@@ -137,6 +137,10 @@ debate::Claim DebateWrapper::findClaimParent(const int& claimId) {
     return claim;
 }
 
+bool DebateWrapper::isRoot(const int& claimId) {
+    return findClaimParent(claimId).id() == claimId;
+}
+
 int DebateWrapper::addClaimUnderParent(
     const int& parentId, 
     const std::string& claimText, 

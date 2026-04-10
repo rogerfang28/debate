@@ -133,7 +133,7 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     while (true) {
         currentClaim.set_status(debate::ClaimStatus::CHALLENGED);
         debateWrapper.updateClaimInDB(currentClaim);
-        if (currentClaim.parent_id() == 0 || currentClaim.id() == currentClaim.parent_id() || currentClaim.parent_id() == -1) {
+        if (debateWrapper.isRoot(currentClaim.id())) {
             break; // reached root
         }
         currentClaim = debateWrapper.findClaimParent(currentClaim.id());

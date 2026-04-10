@@ -16,6 +16,7 @@ public:
     debate::Claim getClaimById(const int& claimId);
     void initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const int& claimId);
+    bool isRoot(const int& claimId);
     int addClaimUnderParent(
         const int& parentId, 
         const std::string& claimText, 
