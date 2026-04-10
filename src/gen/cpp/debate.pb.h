@@ -1416,36 +1416,16 @@ class Claim final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChildrenIdsFieldNumber = 5,
     kHistoryFieldNumber = 10,
     kLinkIdsFieldNumber = 12,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kProofFieldNumber = 7,
     kIdFieldNumber = 1,
-    kParentIdFieldNumber = 4,
     kCreatorIdFieldNumber = 8,
     kDebateIdFieldNumber = 9,
     kStatusFieldNumber = 11,
   };
-  // repeated int32 children_ids = 5 [json_name = "childrenIds"];
-  int children_ids_size() const;
-  private:
-  int _internal_children_ids_size() const;
-
-  public:
-  void clear_children_ids() ;
-  ::int32_t children_ids(int index) const;
-  void set_children_ids(int index, ::int32_t value);
-  void add_children_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& children_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_children_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_children_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_children_ids();
-
-  public:
   // repeated .debate.ClaimState history = 10 [json_name = "history"];
   int history_size() const;
   private:
@@ -1538,16 +1518,6 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 parent_id = 4 [json_name = "parentId"];
-  void clear_parent_id() ;
-  ::int32_t parent_id() const;
-  void set_parent_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_parent_id() const;
-  void _internal_set_parent_id(::int32_t value);
-
-  public:
   // int32 creator_id = 8 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
@@ -1583,7 +1553,7 @@ class Claim final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 11, 2,
+      4, 9, 2,
       48, 2>
       _table_;
 
@@ -1603,8 +1573,6 @@ class Claim final : public ::google::protobuf::Message
                           const Claim& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedField<::int32_t> children_ids_;
-    ::google::protobuf::internal::CachedSize _children_ids_cached_byte_size_;
     ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
     ::google::protobuf::RepeatedField<::int32_t> link_ids_;
     ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
@@ -1612,7 +1580,6 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::debate::Proof* proof_;
     ::int32_t id_;
-    ::int32_t parent_id_;
     ::int32_t creator_id_;
     ::int32_t debate_id_;
     int status_;
@@ -1967,73 +1934,6 @@ inline void Claim::set_allocated_description(std::string* value) {
     _impl_.description_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.description)
-}
-
-// int32 parent_id = 4 [json_name = "parentId"];
-inline void Claim::clear_parent_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.parent_id_ = 0;
-}
-inline ::int32_t Claim::parent_id() const {
-  // @@protoc_insertion_point(field_get:debate.Claim.parent_id)
-  return _internal_parent_id();
-}
-inline void Claim::set_parent_id(::int32_t value) {
-  _internal_set_parent_id(value);
-  // @@protoc_insertion_point(field_set:debate.Claim.parent_id)
-}
-inline ::int32_t Claim::_internal_parent_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.parent_id_;
-}
-inline void Claim::_internal_set_parent_id(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.parent_id_ = value;
-}
-
-// repeated int32 children_ids = 5 [json_name = "childrenIds"];
-inline int Claim::_internal_children_ids_size() const {
-  return _internal_children_ids().size();
-}
-inline int Claim::children_ids_size() const {
-  return _internal_children_ids_size();
-}
-inline void Claim::clear_children_ids() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.children_ids_.Clear();
-}
-inline ::int32_t Claim::children_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Claim.children_ids)
-  return _internal_children_ids().Get(index);
-}
-inline void Claim::set_children_ids(int index, ::int32_t value) {
-  _internal_mutable_children_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Claim.children_ids)
-}
-inline void Claim::add_children_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_children_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Claim.children_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Claim::children_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Claim.children_ids)
-  return _internal_children_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Claim::mutable_children_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Claim.children_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_children_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Claim::_internal_children_ids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.children_ids_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Claim::_internal_mutable_children_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.children_ids_;
 }
 
 // .debate.Proof proof = 7 [json_name = "proof"];

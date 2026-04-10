@@ -26,15 +26,15 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     debatingInfo.set_current_claim_description(currentClaim.description());
     debatingInfo.mutable_parent_claim()->set_id(parentClaim.id());
     debatingInfo.mutable_parent_claim()->set_creator_id(parentClaim.creator_id());
-    for (int i = 0; i < currentClaim.proof().claim_ids_size(); i++) {
-        int childId = currentClaim.proof().claim_ids(i);
-        debate::Claim childClaim = debateWrapper.getClaimById(childId);
-        user_engagement::ClaimInfo* childClaimInfo = debatingInfo.add_children_claims();
-        childClaimInfo->set_id(childClaim.id());
-        childClaimInfo->set_sentence(childClaim.sentence());
-        childClaimInfo->set_creator_id(childClaim.creator_id());
-        childClaimInfo->set_status(childClaim.status());
-    }
+    // for (int i = 0; i < currentClaim.proof().claim_ids_size(); i++) {
+    //     int childId = currentClaim.proof().claim_ids(i);
+    //     debate::Claim childClaim = debateWrapper.getClaimById(childId);
+    //     user_engagement::ClaimInfo* childClaimInfo = debatingInfo.add_children_claims();
+    //     childClaimInfo->set_id(childClaim.id());
+    //     childClaimInfo->set_sentence(childClaim.sentence());
+    //     childClaimInfo->set_creator_id(childClaim.creator_id());
+    //     childClaimInfo->set_status(childClaim.status());
+    // }
 
     // find  the links under current claim proof
     std::vector<int> link_ids = debateWrapper.findLinksUnder(currentClaimId);
