@@ -62,7 +62,9 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
 
     // set the statement collection
     debate::Collection* collection = responseMessage.mutable_collection();
-    *collection = BuildCollection::BuildForDebateAndUsers(debatingInfo.debate_id(), {user_id}, debateWrapper);
+    // find all the users in the debate
+    std::vector<int> user_ids = debateWrapper.findUsersInDebate(debatingInfo.debate_id());
+    *collection = BuildCollection::BuildForDebateAndUsers(debatingInfo.debate_id(), user_ids, debateWrapper);
 
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
 }

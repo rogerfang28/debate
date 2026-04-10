@@ -56,6 +56,10 @@ debate::Claim DebateWrapper::getClaimById(const int& claimId) {
     return debate::Claim();
 }
 
+std::vector<int> DebateWrapper::findUsersInDebate(const int& debate_id) {
+    return databaseWrapper.debateMembers.getUserIdsForDebate(debate_id);
+}
+
 void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id) {
     debate::Debate debate;
     debate.set_topic(topic);

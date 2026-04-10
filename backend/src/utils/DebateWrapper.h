@@ -75,6 +75,7 @@ public:
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
     void UpdateStatusOfAllClaimsInDebate(const int& debate_id);
+    std::vector<int> findUsersInDebate(const int& debate_id);
 
 private:
     DatabaseWrapper& databaseWrapper;
