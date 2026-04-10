@@ -46,17 +46,6 @@ enum LinkType {
   CHALLENGE = 2;
 }
 
-message Challenge {
-  int32 id = 1;
-  ChallengeStatus status = 2;
-  int32 challenged_parent_claim_id = 3;
-  repeated int32 challenged_claim_ids = 4;
-  repeated int32 challenged_link_ids = 5;
-  string challenge_sentence = 6;
-  int32 challenger_id = 7; // creator id
-  int32 proof_debate_id = 8;
-}
-
 enum ChallengeStatus {
   ONGOING = 0; // challenge is ongoing
   CONCEDED = 1; // challenge has been conceded
