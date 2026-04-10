@@ -215,8 +215,9 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
 
     // Populate topics list with user's debates
     for (const auto& topic : info.available_debates()) {
+        const int debateRootClaimId = topic.debate_root_claim_id();
         ui::Component debateItemContainer = ComponentGenerator::createContainer(
-            "debateItemContainer_" + std::to_string(topic.id()),
+            "debateItemContainer_" + std::to_string(debateRootClaimId),
             "flex gap-2 items-center",
             "",
             "",
@@ -227,7 +228,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
         );
 
         ui::Component debateItemWrapper = ComponentGenerator::createContainer(
-            "debateItemWrapper_" + std::to_string(topic.id()),
+            "debateItemWrapper_" + std::to_string(debateRootClaimId),
             "flex flex-col flex-1",
             "bg-gray-700",
             "p-4",
@@ -239,7 +240,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
 
         // Change from button to text for the debate topic
         ui::Component debateItem = ComponentGenerator::createText(
-            "debateTopicText_" + std::to_string(topic.id()),
+            "debateTopicText_" + std::to_string(debateRootClaimId),
             topic.topic(),
             "text-base",
             "text-white",
@@ -250,7 +251,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
 
         if (topic.is_challenge()) {
             ui::Component challengeInfo = ComponentGenerator::createText(
-                "challengeInfo_" + std::to_string(topic.id()),
+                "challengeInfo_" + std::to_string(debateRootClaimId),
                 "This is a challenge to claim: " + topic.claim_its_challenging(),
                 "text-xs",
                 "text-yellow-400",
@@ -264,7 +265,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
 
         // Add Enter button
         ui::Component enterButton = ComponentGenerator::createButton(
-            "enterDebateTopicButton_" + std::to_string(topic.id()),
+            "enterDebateTopicButton_" + std::to_string(debateRootClaimId),
             "Enter",
             "selectDebate",
             "bg-blue-600",
@@ -274,7 +275,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
             "rounded-lg",
             "transition border border-blue-500 font-medium"
         );
-        ComponentGenerator::addAttribute(&enterButton, "data-debate-id", std::to_string(topic.id()));
+        ComponentGenerator::addAttribute(&enterButton, "data-debate-id", std::to_string(debateRootClaimId));
         ComponentGenerator::addChild(&debateItemContainer, enterButton);
 
         // Show delete button if user owns the debate and it's not a challenge
@@ -284,7 +285,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
             
             if (userOwnsDebate) {
                 ui::Component deleteDebateButton = ComponentGenerator::createButton(
-                    "deleteDebateButton_" + std::to_string(topic.id()),
+                    "deleteDebateButton_" + std::to_string(debateRootClaimId),
                     "Delete",
                     "",
                     "bg-red-600",
@@ -297,7 +298,7 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
                 ComponentGenerator::addChild(&debateItemContainer, deleteDebateButton);
             } else {
                 ui::Component leaveDebateButton = ComponentGenerator::createButton(
-                    "leaveDebateButton_" + std::to_string(topic.id()),
+                    "leaveDebateButton_" + std::to_string(debateRootClaimId),
                     "Leave",
                     "",
                     "bg-orange-600",

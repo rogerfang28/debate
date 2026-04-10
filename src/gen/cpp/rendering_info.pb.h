@@ -627,7 +627,7 @@ class HomeDebateTopicRenderInfo final : public ::google::protobuf::Message
   enum : int {
     kTopicFieldNumber = 2,
     kClaimItsChallengingFieldNumber = 5,
-    kIdFieldNumber = 1,
+    kDebateRootClaimIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
     kIsChallengeFieldNumber = 4,
   };
@@ -663,14 +663,14 @@ class HomeDebateTopicRenderInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_claim_its_challenging();
 
   public:
-  // int32 id = 1 [json_name = "id"];
-  void clear_id() ;
-  ::int32_t id() const;
-  void set_id(::int32_t value);
+  // int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+  void clear_debate_root_claim_id() ;
+  ::int32_t debate_root_claim_id() const;
+  void set_debate_root_claim_id(::int32_t value);
 
   private:
-  ::int32_t _internal_id() const;
-  void _internal_set_id(::int32_t value);
+  ::int32_t _internal_debate_root_claim_id() const;
+  void _internal_set_debate_root_claim_id(::int32_t value);
 
   public:
   // int32 creator_id = 3 [json_name = "creatorId"];
@@ -718,7 +718,7 @@ class HomeDebateTopicRenderInfo final : public ::google::protobuf::Message
                           const HomeDebateTopicRenderInfo& from_msg);
     ::google::protobuf::internal::ArenaStringPtr topic_;
     ::google::protobuf::internal::ArenaStringPtr claim_its_challenging_;
-    ::int32_t id_;
+    ::int32_t debate_root_claim_id_;
     ::int32_t creator_id_;
     bool is_challenge_;
     ::google::protobuf::internal::CachedSize _cached_size_;
@@ -3112,26 +3112,26 @@ inline void HomePageRenderingInfo::_internal_set_can_create_or_join_debates(bool
 
 // HomeDebateTopicRenderInfo
 
-// int32 id = 1 [json_name = "id"];
-inline void HomeDebateTopicRenderInfo::clear_id() {
+// int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+inline void HomeDebateTopicRenderInfo::clear_debate_root_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_ = 0;
+  _impl_.debate_root_claim_id_ = 0;
 }
-inline ::int32_t HomeDebateTopicRenderInfo::id() const {
-  // @@protoc_insertion_point(field_get:rendering_info.HomeDebateTopicRenderInfo.id)
-  return _internal_id();
+inline ::int32_t HomeDebateTopicRenderInfo::debate_root_claim_id() const {
+  // @@protoc_insertion_point(field_get:rendering_info.HomeDebateTopicRenderInfo.debate_root_claim_id)
+  return _internal_debate_root_claim_id();
 }
-inline void HomeDebateTopicRenderInfo::set_id(::int32_t value) {
-  _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:rendering_info.HomeDebateTopicRenderInfo.id)
+inline void HomeDebateTopicRenderInfo::set_debate_root_claim_id(::int32_t value) {
+  _internal_set_debate_root_claim_id(value);
+  // @@protoc_insertion_point(field_set:rendering_info.HomeDebateTopicRenderInfo.debate_root_claim_id)
 }
-inline ::int32_t HomeDebateTopicRenderInfo::_internal_id() const {
+inline ::int32_t HomeDebateTopicRenderInfo::_internal_debate_root_claim_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.id_;
+  return _impl_.debate_root_claim_id_;
 }
-inline void HomeDebateTopicRenderInfo::_internal_set_id(::int32_t value) {
+inline void HomeDebateTopicRenderInfo::_internal_set_debate_root_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.id_ = value;
+  _impl_.debate_root_claim_id_ = value;
 }
 
 // string topic = 2 [json_name = "topic"];

@@ -19,7 +19,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     if (action == user_engagement::ACTION_HOME) {
         // generate home page
         Log::info("[LayoutGenerator] Generating Home Page");
-        rendering_info::HomePageRenderingInfo homePageInfo = HomePageInfoParser::ParseFromUser(info.user());
+        rendering_info::HomePageRenderingInfo homePageInfo = HomePageInfoParser::ParseFromResponse(info);
         return HomePageGenerator::GenerateHomePage(homePageInfo);
     }
 

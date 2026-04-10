@@ -27,13 +27,13 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         debate::Debate debateProto;
         debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
         moderator_to_vr::DebateTopic* topicProto = debateListProto.add_topics();
-        topicProto->set_id(debateProto.id());
+        topicProto->set_id(debateProto.root_claim_id());
         topicProto->set_topic(debateProto.topic());
         topicProto->set_creator_id(debateProto.creator_id());
         topicProto->set_is_challenge(false);
         topicProto->set_claim_its_challenging("");
-        Log::debug("[HomePageResponseGenerator] Added debate to list: ID = "
-                  + std::to_string(debateProto.id()) + ", Topic = " + debateProto.topic());
+        Log::debug("[HomePageResponseGenerator] Added debate to list: root_claim_id = "
+              + std::to_string(debateProto.root_claim_id()) + ", Topic = " + debateProto.topic());
     }
 
 

@@ -65,7 +65,7 @@ inline constexpr HomeDebateTopicRenderInfo::Impl_::Impl_(
         claim_its_challenging_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        id_{0},
+        debate_root_claim_id_{0},
         creator_id_{0},
         is_challenge_{false},
         _cached_size_{0} {}
@@ -341,7 +341,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::rendering_info::HomeDebateTopicRenderInfo, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::rendering_info::HomeDebateTopicRenderInfo, _impl_.debate_root_claim_id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::HomeDebateTopicRenderInfo, _impl_.topic_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::HomeDebateTopicRenderInfo, _impl_.creator_id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::HomeDebateTopicRenderInfo, _impl_.is_challenge_),
@@ -460,46 +460,47 @@ const char descriptor_table_protodef_rendering_5finfo_2eproto[] ABSL_ATTRIBUTE_S
     "able_debates\030\003 \003(\0132).rendering_info.Home"
     "DebateTopicRenderInfoR\020availableDebates\022"
     ":\n\032can_create_or_join_debates\030\004 \001(\010R\026can"
-    "CreateOrJoinDebates\"\267\001\n\031HomeDebateTopicR"
-    "enderInfo\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005topic\030\002 \001(\t"
-    "R\005topic\022\035\n\ncreator_id\030\003 \001(\005R\tcreatorId\022!"
-    "\n\014is_challenge\030\004 \001(\010R\013isChallenge\0222\n\025cla"
-    "im_its_challenging\030\005 \001(\tR\023claimItsChalle"
-    "nging\"\221\001\n\017ClaimRenderInfo\022\016\n\002id\030\001 \001(\005R\002i"
-    "d\022\032\n\010sentence\030\002 \001(\tR\010sentence\022\035\n\ncreator"
-    "_id\030\003 \001(\005R\tcreatorId\0223\n\006status\030\004 \001(\0162\033.r"
-    "endering_info.ClaimStatusR\006status\"\241\001\n\016Li"
-    "nkRenderInfo\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014connect_"
-    "from\030\002 \001(\005R\013connectFrom\022\035\n\nconnect_to\030\003 "
-    "\001(\005R\tconnectTo\022\036\n\nconnection\030\004 \001(\tR\nconn"
-    "ection\022\035\n\ncreator_id\030\005 \001(\005R\tcreatorId\"\231\001"
-    "\n\023ChallengeRenderInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n"
-    "\010sentence\030\002 \001(\tR\010sentence\022\035\n\ncreator_id\030"
-    "\003 \001(\005R\tcreatorId\0227\n\006status\030\004 \001(\0162\037.rende"
-    "ring_info.ChallengeStatusR\006status\"\254\001\n\024Co"
-    "nnectingRenderInfo\022\"\n\rfrom_claim_id\030\001 \001("
-    "\005R\013fromClaimId\022\036\n\013to_claim_id\030\002 \001(\005R\ttoC"
-    "laimId\022\036\n\nconnecting\030\003 \001(\010R\nconnecting\0220"
-    "\n\024opened_connect_modal\030\004 \001(\010R\022openedConn"
-    "ectModal\"\205\001\n\025ChallengingRenderInfo\022\033\n\tcl"
-    "aim_ids\030\001 \003(\005R\010claimIds\022\031\n\010link_ids\030\002 \003("
-    "\005R\007linkIds\0224\n\026opened_challenge_modal\030\003 \001"
-    "(\010R\024openedChallengeModal*J\n\tScopeType\022\032\n"
-    "\026SCOPE_TYPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_CLAI"
-    "M\020\001\022\017\n\013FULL_DEBATE\020\002*\231\001\n\013ClaimStatus\022\034\n\030"
-    "CLAIM_STATUS_UNSPECIFIED\020\000\022\030\n\024CLAIM_STAT"
-    "US_NEUTRAL\020\001\022\033\n\027CLAIM_STATUS_CHALLENGED\020"
-    "\002\022\031\n\025CLAIM_STATUS_DEFENDED\020\003\022\032\n\026CLAIM_ST"
-    "ATUS_DISPROVEN\020\004*\215\001\n\017ChallengeStatus\022 \n\034"
-    "CHALLENGE_STATUS_UNSPECIFIED\020\000\022\034\n\030CHALLE"
-    "NGE_STATUS_ONGOING\020\001\022\035\n\031CHALLENGE_STATUS"
-    "_CONCEDED\020\002\022\033\n\027CHALLENGE_STATUS_PROVEN\020\003"
-    "*\317\001\n\020DebateActionType\022\033\n\027ACTION_TYPE_UNS"
-    "PECIFIED\020\000\022\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_"
-    "CHILD_CLAIM\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021"
-    "CHALLENGING_CLAIM\020\004\022\035\n\031EDITING_CLAIM_DES"
-    "CRIPTION\020\005\022\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPORTI"
-    "NG_CLAIM\020\007b\006proto3"
+    "CreateOrJoinDebates\"\330\001\n\031HomeDebateTopicR"
+    "enderInfo\022/\n\024debate_root_claim_id\030\001 \001(\005R"
+    "\021debateRootClaimId\022\024\n\005topic\030\002 \001(\tR\005topic"
+    "\022\035\n\ncreator_id\030\003 \001(\005R\tcreatorId\022!\n\014is_ch"
+    "allenge\030\004 \001(\010R\013isChallenge\0222\n\025claim_its_"
+    "challenging\030\005 \001(\tR\023claimItsChallenging\"\221"
+    "\001\n\017ClaimRenderInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010se"
+    "ntence\030\002 \001(\tR\010sentence\022\035\n\ncreator_id\030\003 \001"
+    "(\005R\tcreatorId\0223\n\006status\030\004 \001(\0162\033.renderin"
+    "g_info.ClaimStatusR\006status\"\241\001\n\016LinkRende"
+    "rInfo\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014connect_from\030\002 "
+    "\001(\005R\013connectFrom\022\035\n\nconnect_to\030\003 \001(\005R\tco"
+    "nnectTo\022\036\n\nconnection\030\004 \001(\tR\nconnection\022"
+    "\035\n\ncreator_id\030\005 \001(\005R\tcreatorId\"\231\001\n\023Chall"
+    "engeRenderInfo\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010senten"
+    "ce\030\002 \001(\tR\010sentence\022\035\n\ncreator_id\030\003 \001(\005R\t"
+    "creatorId\0227\n\006status\030\004 \001(\0162\037.rendering_in"
+    "fo.ChallengeStatusR\006status\"\254\001\n\024Connectin"
+    "gRenderInfo\022\"\n\rfrom_claim_id\030\001 \001(\005R\013from"
+    "ClaimId\022\036\n\013to_claim_id\030\002 \001(\005R\ttoClaimId\022"
+    "\036\n\nconnecting\030\003 \001(\010R\nconnecting\0220\n\024opene"
+    "d_connect_modal\030\004 \001(\010R\022openedConnectModa"
+    "l\"\205\001\n\025ChallengingRenderInfo\022\033\n\tclaim_ids"
+    "\030\001 \003(\005R\010claimIds\022\031\n\010link_ids\030\002 \003(\005R\007link"
+    "Ids\0224\n\026opened_challenge_modal\030\003 \001(\010R\024ope"
+    "nedChallengeModal*J\n\tScopeType\022\032\n\026SCOPE_"
+    "TYPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013"
+    "FULL_DEBATE\020\002*\231\001\n\013ClaimStatus\022\034\n\030CLAIM_S"
+    "TATUS_UNSPECIFIED\020\000\022\030\n\024CLAIM_STATUS_NEUT"
+    "RAL\020\001\022\033\n\027CLAIM_STATUS_CHALLENGED\020\002\022\031\n\025CL"
+    "AIM_STATUS_DEFENDED\020\003\022\032\n\026CLAIM_STATUS_DI"
+    "SPROVEN\020\004*\215\001\n\017ChallengeStatus\022 \n\034CHALLEN"
+    "GE_STATUS_UNSPECIFIED\020\000\022\034\n\030CHALLENGE_STA"
+    "TUS_ONGOING\020\001\022\035\n\031CHALLENGE_STATUS_CONCED"
+    "ED\020\002\022\033\n\027CHALLENGE_STATUS_PROVEN\020\003*\317\001\n\020De"
+    "bateActionType\022\033\n\027ACTION_TYPE_UNSPECIFIE"
+    "D\020\000\022\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_CHILD_C"
+    "LAIM\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021CHALLEN"
+    "GING_CLAIM\020\004\022\035\n\031EDITING_CLAIM_DESCRIPTIO"
+    "N\020\005\022\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPORTING_CLAI"
+    "M\020\007b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_rendering_5finfo_2eproto_deps[1] =
     {
@@ -509,7 +510,7 @@ static ::absl::once_flag descriptor_table_rendering_5finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_rendering_5finfo_2eproto = {
     false,
     false,
-    2738,
+    2771,
     descriptor_table_protodef_rendering_5finfo_2eproto,
     "rendering_info.proto",
     &descriptor_table_rendering_5finfo_2eproto_once,
@@ -1586,11 +1587,11 @@ HomeDebateTopicRenderInfo::HomeDebateTopicRenderInfo(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, id_),
+               offsetof(Impl_, debate_root_claim_id_),
            reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, id_),
+               offsetof(Impl_, debate_root_claim_id_),
            offsetof(Impl_, is_challenge_) -
-               offsetof(Impl_, id_) +
+               offsetof(Impl_, debate_root_claim_id_) +
                sizeof(Impl_::is_challenge_));
 
   // @@protoc_insertion_point(copy_constructor:rendering_info.HomeDebateTopicRenderInfo)
@@ -1605,10 +1606,10 @@ inline PROTOBUF_NDEBUG_INLINE HomeDebateTopicRenderInfo::Impl_::Impl_(
 inline void HomeDebateTopicRenderInfo::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, id_),
+               offsetof(Impl_, debate_root_claim_id_),
            0,
            offsetof(Impl_, is_challenge_) -
-               offsetof(Impl_, id_) +
+               offsetof(Impl_, debate_root_claim_id_) +
                sizeof(Impl_::is_challenge_));
 }
 HomeDebateTopicRenderInfo::~HomeDebateTopicRenderInfo() {
@@ -1679,9 +1680,9 @@ const ::_pbi::TcParseTable<3, 5, 0, 75, 2> HomeDebateTopicRenderInfo::_table_ = 
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // int32 id = 1 [json_name = "id"];
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(HomeDebateTopicRenderInfo, _impl_.id_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.id_)}},
+    // int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(HomeDebateTopicRenderInfo, _impl_.debate_root_claim_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.debate_root_claim_id_)}},
     // string topic = 2 [json_name = "topic"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.topic_)}},
@@ -1699,8 +1700,8 @@ const ::_pbi::TcParseTable<3, 5, 0, 75, 2> HomeDebateTopicRenderInfo::_table_ = 
   }}, {{
     65535, 65535
   }}, {{
-    // int32 id = 1 [json_name = "id"];
-    {PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.id_), 0, 0,
+    // int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+    {PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.debate_root_claim_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
     // string topic = 2 [json_name = "topic"];
     {PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.topic_), 0, 0,
@@ -1733,9 +1734,9 @@ PROTOBUF_NOINLINE void HomeDebateTopicRenderInfo::Clear() {
 
   _impl_.topic_.ClearToEmpty();
   _impl_.claim_its_challenging_.ClearToEmpty();
-  ::memset(&_impl_.id_, 0, static_cast<::size_t>(
+  ::memset(&_impl_.debate_root_claim_id_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.is_challenge_) -
-      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.is_challenge_));
+      reinterpret_cast<char*>(&_impl_.debate_root_claim_id_)) + sizeof(_impl_.is_challenge_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1754,11 +1755,11 @@ PROTOBUF_NOINLINE void HomeDebateTopicRenderInfo::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // int32 id = 1 [json_name = "id"];
-          if (this_._internal_id() != 0) {
+          // int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+          if (this_._internal_debate_root_claim_id() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<1>(
-                    stream, this_._internal_id(), target);
+                    stream, this_._internal_debate_root_claim_id(), target);
           }
 
           // string topic = 2 [json_name = "topic"];
@@ -1826,10 +1827,10 @@ PROTOBUF_NOINLINE void HomeDebateTopicRenderInfo::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_claim_its_challenging());
             }
-            // int32 id = 1 [json_name = "id"];
-            if (this_._internal_id() != 0) {
+            // int32 debate_root_claim_id = 1 [json_name = "debateRootClaimId"];
+            if (this_._internal_debate_root_claim_id() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-                  this_._internal_id());
+                  this_._internal_debate_root_claim_id());
             }
             // int32 creator_id = 3 [json_name = "creatorId"];
             if (this_._internal_creator_id() != 0) {
@@ -1859,8 +1860,8 @@ void HomeDebateTopicRenderInfo::MergeImpl(::google::protobuf::MessageLite& to_ms
   if (!from._internal_claim_its_challenging().empty()) {
     _this->_internal_set_claim_its_challenging(from._internal_claim_its_challenging());
   }
-  if (from._internal_id() != 0) {
-    _this->_impl_.id_ = from._impl_.id_;
+  if (from._internal_debate_root_claim_id() != 0) {
+    _this->_impl_.debate_root_claim_id_ = from._impl_.debate_root_claim_id_;
   }
   if (from._internal_creator_id() != 0) {
     _this->_impl_.creator_id_ = from._impl_.creator_id_;
@@ -1889,9 +1890,9 @@ void HomeDebateTopicRenderInfo::InternalSwap(HomeDebateTopicRenderInfo* PROTOBUF
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.is_challenge_)
       + sizeof(HomeDebateTopicRenderInfo::_impl_.is_challenge_)
-      - PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.id_)>(
-          reinterpret_cast<char*>(&_impl_.id_),
-          reinterpret_cast<char*>(&other->_impl_.id_));
+      - PROTOBUF_FIELD_OFFSET(HomeDebateTopicRenderInfo, _impl_.debate_root_claim_id_)>(
+          reinterpret_cast<char*>(&_impl_.debate_root_claim_id_),
+          reinterpret_cast<char*>(&other->_impl_.debate_root_claim_id_));
 }
 
 ::google::protobuf::Metadata HomeDebateTopicRenderInfo::GetMetadata() const {
