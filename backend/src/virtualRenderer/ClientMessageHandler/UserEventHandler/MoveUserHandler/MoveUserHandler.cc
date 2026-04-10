@@ -6,6 +6,30 @@
 #include <iostream>
 #include <vector>
 
+namespace {
+bool loadUserFromDb(const int user_id, UserDatabase& userDb, user::User& userProto) {
+    std::vector<uint8_t> userData = userDb.getUserProtobuf(user_id);
+    if (userData.empty()) {
+        Log::error("[MoveUserHandler][ERR] User protobuf missing for user id: " + std::to_string(user_id));
+        return false;
+    }
+    if (!userProto.ParseFromArray(userData.data(), static_cast<int>(userData.size()))) {
+        Log::error("[MoveUserHandler][ERR] Failed to parse user protobuf for user id: " + std::to_string(user_id));
+        return false;
+    }
+    return true;
+}
+
+bool saveUserToDb(const int user_id, UserDatabase& userDb, const user::User& userProto) {
+    std::vector<uint8_t> serialized(userProto.ByteSizeLong());
+    if (!userProto.SerializeToArray(serialized.data(), static_cast<int>(serialized.size()))) {
+        Log::error("[MoveUserHandler][ERR] Failed to serialize user protobuf for user id: " + std::to_string(user_id));
+        return false;
+    }
+    return userDb.updateUserProtobuf(user_id, serialized);
+}
+}
+
 bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, DebateWrapper& debateWrapper) {
     resetOngoingActivities(user_id, debateWrapper);
     Log::debug("[EnterDebate] User " + std::to_string(user_id) + " entering debate with id: " + std::to_string(debateId));
@@ -28,47 +52,47 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     userProto.mutable_engagement()->mutable_debating_info()->set_challenger_user_id(0);
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
     userProto.mutable_current_scope()->set_scopetype(debate::SINGLE_CLAIM);
-    userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
+    userProto.mutable_current_scope()->mutable_single_claim()->set_claim_id(-1); // will be set by backend
     resetOngoingActivities(user_id, debateWrapper);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 
     return true;
 }
 
-bool MoveUserHandler::GoHome(const int& user_id, DebateWrapper& debateWrapper) {
-    resetOngoingActivities(user_id, debateWrapper);
+bool MoveUserHandler::GoHome(const int& user_id, UserDatabase& userDb) {
+    resetOngoingActivities(user_id, userDb);
     Log::debug("[GoHome] User " + std::to_string(user_id) + " going home");
     
-    try { 
-        // Get current user protobuf
-        user::User userProto = debateWrapper.getUserProtobuf(user_id);
-        
-        userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
-        // set home info
-        userProto.mutable_engagement()->mutable_home_info();
-        
-        // fill info for home page engagement
-        // user_engagement::DebateList debate_list = debateWrapper.FillUserDebateList(user_id);
-
-        debateWrapper.updateUserProtobuf(user_id, userProto);
-        
-        return true;
-    } catch (const std::exception& e) {
-        Log::error("[GoHome][ERR] Exception: " + std::string(e.what()));
+    user::User userProto;
+    if (!loadUserFromDb(user_id, userDb, userProto)) {
         return false;
     }
+
+    userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+    userProto.mutable_engagement()->mutable_home_info();
+
+    return saveUserToDb(user_id, userDb, userProto);
 }
 
 void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
     resetOngoingActivities(user_id, debateWrapper);
     Log::debug("[GoToClaim] User " + std::to_string(user_id) + " going to claim with id: " + std::to_string(claim_id));
-    // update information based on the claim
-    // get the user from the database
-    // update the current claim id to claim_id
-    // save back to database;
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
     debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
+void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, UserDatabase& userDb) {
+    resetOngoingActivities(user_id, userDb);
+    Log::debug("[GoToClaim] User " + std::to_string(user_id) + " going to claim with id: " + std::to_string(claim_id));
+
+    user::User userProto;
+    if (!loadUserFromDb(user_id, userDb, userProto)) {
+        return;
+    }
+
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
+    saveUserToDb(user_id, userDb, userProto);
 }
 
 void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
@@ -81,9 +105,29 @@ void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateW
     GoToClaim(parentClaim.id(), user_id, debateWrapper);
 }
 
-void MoveUserHandler::GoToChallenge(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+void MoveUserHandler::GoToChallenge(const int& claim_id, const int& user_id, UserDatabase& userDb) {
     Log::debug("[GoToChallenge] User " + std::to_string(user_id) + " going to claim id: " + std::to_string(claim_id));
-    GoToClaim(claim_id, user_id, debateWrapper);
+    GoToClaim(claim_id, user_id, userDb);
+}
+
+void MoveUserHandler::resetOngoingActivities(const int& user_id, UserDatabase& userDb) {
+    user::User userProto;
+    if (!loadUserFromDb(user_id, userDb, userProto)) {
+        return;
+    }
+
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_connecting(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_from_claim_id(0);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_to_claim_id(0);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_connecting_info()->set_opened_connect_modal(false);
+
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_claim_ids();
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->clear_link_ids();
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_challenge_sentence("");
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_opened_challenge_modal(false);
+
+    saveUserToDb(user_id, userDb, userProto);
 }
 
 void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper) {

@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file rendering_info.proto.
  */
 export const file_rendering_info: GenFile = /*@__PURE__*/
-  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8iiQUKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRIRCglkZWJhdGVfaWQYAyABKAUSLQoKc2NvcGVfdHlwZRgEIAEoDjIZLnJlbmRlcmluZ19pbmZvLlNjb3BlVHlwZRIbChNpc19jaGFsbGVuZ2VfZGViYXRlGAUgASgIEjYKDWN1cnJlbnRfY2xhaW0YBiABKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgHIAEoCRI4Cg9jaGlsZHJlbl9jbGFpbXMYCCADKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SLQoFbGlua3MYCSADKAsyHi5yZW5kZXJpbmdfaW5mby5MaW5rUmVuZGVySW5mbxI/ChJjdXJyZW50X2NoYWxsZW5nZXMYCiADKAsyIy5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2VSZW5kZXJJbmZvEh8KF21vZGlmeWluZ19jdXJyZW50X2NsYWltGAsgASgIEjgKDmN1cnJlbnRfYWN0aW9uGAwgASgOMiAucmVuZGVyaW5nX2luZm8uRGViYXRlQWN0aW9uVHlwZRI9Cg9jb25uZWN0aW5nX2luZm8YDSABKAsyJC5yZW5kZXJpbmdfaW5mby5Db25uZWN0aW5nUmVuZGVySW5mbxI/ChBjaGFsbGVuZ2luZ19pbmZvGA4gASgLMiUucmVuZGVyaW5nX2luZm8uQ2hhbGxlbmdpbmdSZW5kZXJJbmZvInAKD0NsYWltUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEisKBnN0YXR1cxgEIAEoDjIbLnJlbmRlcmluZ19pbmZvLkNsYWltU3RhdHVzIm4KDkxpbmtSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJ4ChNDaGFsbGVuZ2VSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSLwoGc3RhdHVzGAQgASgOMh8ucmVuZGVyaW5nX2luZm8uQ2hhbGxlbmdlU3RhdHVzInQKFENvbm5lY3RpbmdSZW5kZXJJbmZvEhUKDWZyb21fY2xhaW1faWQYASABKAUSEwoLdG9fY2xhaW1faWQYAiABKAUSEgoKY29ubmVjdGluZxgDIAEoCBIcChRvcGVuZWRfY29ubmVjdF9tb2RhbBgEIAEoCCJcChVDaGFsbGVuZ2luZ1JlbmRlckluZm8SEQoJY2xhaW1faWRzGAEgAygFEhAKCGxpbmtfaWRzGAIgAygFEh4KFm9wZW5lZF9jaGFsbGVuZ2VfbW9kYWwYAyABKAgqSgoJU2NvcGVUeXBlEhoKFlNDT1BFX1RZUEVfVU5TUEVDSUZJRUQQABIQCgxTSU5HTEVfQ0xBSU0QARIPCgtGVUxMX0RFQkFURRACKpkBCgtDbGFpbVN0YXR1cxIcChhDTEFJTV9TVEFUVVNfVU5TUEVDSUZJRUQQABIYChRDTEFJTV9TVEFUVVNfTkVVVFJBTBABEhsKF0NMQUlNX1NUQVRVU19DSEFMTEVOR0VEEAISGQoVQ0xBSU1fU1RBVFVTX0RFRkVOREVEEAMSGgoWQ0xBSU1fU1RBVFVTX0RJU1BST1ZFThAEKo0BCg9DaGFsbGVuZ2VTdGF0dXMSIAocQ0hBTExFTkdFX1NUQVRVU19VTlNQRUNJRklFRBAAEhwKGENIQUxMRU5HRV9TVEFUVVNfT05HT0lORxABEh0KGUNIQUxMRU5HRV9TVEFUVVNfQ09OQ0VERUQQAhIbChdDSEFMTEVOR0VfU1RBVFVTX1BST1ZFThADKs8BChBEZWJhdGVBY3Rpb25UeXBlEhsKF0FDVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASEQoNVklFV0lOR19DTEFJTRABEhYKEkFERElOR19DSElMRF9DTEFJTRACEhUKEUNPTk5FQ1RJTkdfQ0xBSU1TEAMSFQoRQ0hBTExFTkdJTkdfQ0xBSU0QBBIdChlFRElUSU5HX0NMQUlNX0RFU0NSSVBUSU9OEAUSEQoNRURJVElOR19DTEFJTRAGEhMKD1JFUE9SVElOR19DTEFJTRAHYgZwcm90bzM", [file_debate]);
+  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8iiQUKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRIRCglkZWJhdGVfaWQYAyABKAUSLQoKc2NvcGVfdHlwZRgEIAEoDjIZLnJlbmRlcmluZ19pbmZvLlNjb3BlVHlwZRIbChNpc19jaGFsbGVuZ2VfZGViYXRlGAUgASgIEjYKDWN1cnJlbnRfY2xhaW0YBiABKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgHIAEoCRI4Cg9jaGlsZHJlbl9jbGFpbXMYCCADKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SLQoFbGlua3MYCSADKAsyHi5yZW5kZXJpbmdfaW5mby5MaW5rUmVuZGVySW5mbxI/ChJjdXJyZW50X2NoYWxsZW5nZXMYCiADKAsyIy5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2VSZW5kZXJJbmZvEh8KF21vZGlmeWluZ19jdXJyZW50X2NsYWltGAsgASgIEjgKDmN1cnJlbnRfYWN0aW9uGAwgASgOMiAucmVuZGVyaW5nX2luZm8uRGViYXRlQWN0aW9uVHlwZRI9Cg9jb25uZWN0aW5nX2luZm8YDSABKAsyJC5yZW5kZXJpbmdfaW5mby5Db25uZWN0aW5nUmVuZGVySW5mbxI/ChBjaGFsbGVuZ2luZ19pbmZvGA4gASgLMiUucmVuZGVyaW5nX2luZm8uQ2hhbGxlbmdpbmdSZW5kZXJJbmZvIrIBChVIb21lUGFnZVJlbmRlcmluZ0luZm8SFgoOdmlld2VyX3VzZXJfaWQYASABKAUSFwoPdmlld2VyX3VzZXJuYW1lGAIgASgJEkQKEWF2YWlsYWJsZV9kZWJhdGVzGAMgAygLMikucmVuZGVyaW5nX2luZm8uSG9tZURlYmF0ZVRvcGljUmVuZGVySW5mbxIiChpjYW5fY3JlYXRlX29yX2pvaW5fZGViYXRlcxgEIAEoCCJ/ChlIb21lRGViYXRlVG9waWNSZW5kZXJJbmZvEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSJwCg9DbGFpbVJlbmRlckluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIrCgZzdGF0dXMYBCABKA4yGy5yZW5kZXJpbmdfaW5mby5DbGFpbVN0YXR1cyJuCg5MaW5rUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUieAoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEi8KBnN0YXR1cxgEIAEoDjIfLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVN0YXR1cyJ0ChRDb25uZWN0aW5nUmVuZGVySW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3RpbmcYAyABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBCABKAgiXAoVQ2hhbGxlbmdpbmdSZW5kZXJJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIeChZvcGVuZWRfY2hhbGxlbmdlX21vZGFsGAMgASgIKkoKCVNjb3BlVHlwZRIaChZTQ09QRV9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMU0lOR0xFX0NMQUlNEAESDwoLRlVMTF9ERUJBVEUQAiqZAQoLQ2xhaW1TdGF0dXMSHAoYQ0xBSU1fU1RBVFVTX1VOU1BFQ0lGSUVEEAASGAoUQ0xBSU1fU1RBVFVTX05FVVRSQUwQARIbChdDTEFJTV9TVEFUVVNfQ0hBTExFTkdFRBACEhkKFUNMQUlNX1NUQVRVU19ERUZFTkRFRBADEhoKFkNMQUlNX1NUQVRVU19ESVNQUk9WRU4QBCqNAQoPQ2hhbGxlbmdlU3RhdHVzEiAKHENIQUxMRU5HRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIcChhDSEFMTEVOR0VfU1RBVFVTX09OR09JTkcQARIdChlDSEFMTEVOR0VfU1RBVFVTX0NPTkNFREVEEAISGwoXQ0hBTExFTkdFX1NUQVRVU19QUk9WRU4QAyrPAQoQRGViYXRlQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QB2IGcHJvdG8z", [file_debate]);
 
 /**
  * The exact input needed to build the debate page UI.
@@ -110,6 +110,83 @@ export const DebatePageRenderingInfoSchema: GenMessage<DebatePageRenderingInfo> 
   messageDesc(file_rendering_info, 0);
 
 /**
+ * The exact input needed to build the home page UI.
+ *
+ * @generated from message rendering_info.HomePageRenderingInfo
+ */
+export type HomePageRenderingInfo = Message<"rendering_info.HomePageRenderingInfo"> & {
+  /**
+   * Viewer metadata used for ownership checks and logging.
+   *
+   * @generated from field: int32 viewer_user_id = 1;
+   */
+  viewerUserId: number;
+
+  /**
+   * @generated from field: string viewer_username = 2;
+   */
+  viewerUsername: string;
+
+  /**
+   * Debate topics shown on the home page.
+   *
+   * @generated from field: repeated rendering_info.HomeDebateTopicRenderInfo available_debates = 3;
+   */
+  availableDebates: HomeDebateTopicRenderInfo[];
+
+  /**
+   * Controls visibility of submit/join controls in viewer mode.
+   *
+   * @generated from field: bool can_create_or_join_debates = 4;
+   */
+  canCreateOrJoinDebates: boolean;
+};
+
+/**
+ * Describes the message rendering_info.HomePageRenderingInfo.
+ * Use `create(HomePageRenderingInfoSchema)` to create a new message.
+ */
+export const HomePageRenderingInfoSchema: GenMessage<HomePageRenderingInfo> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 1);
+
+/**
+ * @generated from message rendering_info.HomeDebateTopicRenderInfo
+ */
+export type HomeDebateTopicRenderInfo = Message<"rendering_info.HomeDebateTopicRenderInfo"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string topic = 2;
+   */
+  topic: string;
+
+  /**
+   * @generated from field: int32 creator_id = 3;
+   */
+  creatorId: number;
+
+  /**
+   * @generated from field: bool is_challenge = 4;
+   */
+  isChallenge: boolean;
+
+  /**
+   * @generated from field: string claim_its_challenging = 5;
+   */
+  claimItsChallenging: string;
+};
+
+/**
+ * Describes the message rendering_info.HomeDebateTopicRenderInfo.
+ * Use `create(HomeDebateTopicRenderInfoSchema)` to create a new message.
+ */
+export const HomeDebateTopicRenderInfoSchema: GenMessage<HomeDebateTopicRenderInfo> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 2);
+
+/**
  * @generated from message rendering_info.ClaimRenderInfo
  */
 export type ClaimRenderInfo = Message<"rendering_info.ClaimRenderInfo"> & {
@@ -139,7 +216,7 @@ export type ClaimRenderInfo = Message<"rendering_info.ClaimRenderInfo"> & {
  * Use `create(ClaimRenderInfoSchema)` to create a new message.
  */
 export const ClaimRenderInfoSchema: GenMessage<ClaimRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 1);
+  messageDesc(file_rendering_info, 3);
 
 /**
  * @generated from message rendering_info.LinkRenderInfo
@@ -176,7 +253,7 @@ export type LinkRenderInfo = Message<"rendering_info.LinkRenderInfo"> & {
  * Use `create(LinkRenderInfoSchema)` to create a new message.
  */
 export const LinkRenderInfoSchema: GenMessage<LinkRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 2);
+  messageDesc(file_rendering_info, 4);
 
 /**
  * @generated from message rendering_info.ChallengeRenderInfo
@@ -208,7 +285,7 @@ export type ChallengeRenderInfo = Message<"rendering_info.ChallengeRenderInfo"> 
  * Use `create(ChallengeRenderInfoSchema)` to create a new message.
  */
 export const ChallengeRenderInfoSchema: GenMessage<ChallengeRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 3);
+  messageDesc(file_rendering_info, 5);
 
 /**
  * @generated from message rendering_info.ConnectingRenderInfo
@@ -240,7 +317,7 @@ export type ConnectingRenderInfo = Message<"rendering_info.ConnectingRenderInfo"
  * Use `create(ConnectingRenderInfoSchema)` to create a new message.
  */
 export const ConnectingRenderInfoSchema: GenMessage<ConnectingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 4);
+  messageDesc(file_rendering_info, 6);
 
 /**
  * @generated from message rendering_info.ChallengingRenderInfo
@@ -267,7 +344,7 @@ export type ChallengingRenderInfo = Message<"rendering_info.ChallengingRenderInf
  * Use `create(ChallengingRenderInfoSchema)` to create a new message.
  */
 export const ChallengingRenderInfoSchema: GenMessage<ChallengingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 5);
+  messageDesc(file_rendering_info, 7);
 
 /**
  * @generated from enum rendering_info.ScopeType

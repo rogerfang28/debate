@@ -4,6 +4,7 @@
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/rendering_info.pb.h"
 #include "./pages/homePage/HomePageGenerator.h"
+#include "./pages/homePage/HomePageInfoParser.h"
 #include "./pages/debatePage/DebatePageGenerator.h"
 #include "./pages/debatePage/DebatePageInfoParser.h"
 #include "./pages/loginPage/LoginPageGenerator.h"
@@ -18,7 +19,8 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     if (action == user_engagement::ACTION_HOME) {
         // generate home page
         Log::info("[LayoutGenerator] Generating Home Page");
-        return HomePageGenerator::GenerateHomePage(info.user());
+        rendering_info::HomePageRenderingInfo homePageInfo = HomePageInfoParser::ParseFromUser(info.user());
+        return HomePageGenerator::GenerateHomePage(homePageInfo);
     }
 
     if (action == user_engagement::ACTION_DEBATING) {

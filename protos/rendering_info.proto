@@ -33,6 +33,27 @@ message DebatePageRenderingInfo {
 	ChallengingRenderInfo challenging_info = 14;
 }
 
+// The exact input needed to build the home page UI.
+message HomePageRenderingInfo {
+	// Viewer metadata used for ownership checks and logging.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
+
+	// Debate topics shown on the home page.
+	repeated HomeDebateTopicRenderInfo available_debates = 3;
+
+	// Controls visibility of submit/join controls in viewer mode.
+	bool can_create_or_join_debates = 4;
+}
+
+message HomeDebateTopicRenderInfo {
+	int32 id = 1;
+	string topic = 2;
+	int32 creator_id = 3;
+	bool is_challenge = 4;
+	string claim_its_challenging = 5;
+}
+
 message ClaimRenderInfo {
 	int32 id = 1;
 	string sentence = 2;
@@ -99,3 +120,5 @@ message ChallengingRenderInfo {
 	repeated int32 link_ids = 2;
 	bool opened_challenge_modal = 3;
 }
+
+

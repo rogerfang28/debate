@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciJYChRNb2RlcmF0b3JUb1ZSTWVzc2FnZRIYCgR1c2VyGAEgASgLMgoudXNlci5Vc2VyEiYKCmNvbGxlY3Rpb24YAiABKAsyEi5kZWJhdGUuQ29sbGVjdGlvbmIGcHJvdG8z", [file_user, file_collection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCJxCgtEZWJhdGVUb3BpYxIKCgJpZBgBIAEoBRINCgV0b3BpYxgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEhQKDGlzX2NoYWxsZW5nZRgEIAEoCBIdChVjbGFpbV9pdHNfY2hhbGxlbmdpbmcYBSABKAkiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC5tb2RlcmF0b3JfdG9fdnIuRGViYXRlVG9waWNiBnByb3RvMw", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -31,6 +31,13 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
    * @generated from field: debate.Collection collection = 2;
    */
   collection?: Collection;
+
+  /**
+   * specifically for home page
+   *
+   * @generated from field: moderator_to_vr.DebateList debate_list = 3;
+   */
+  debateList?: DebateList;
 };
 
 /**
@@ -39,4 +46,58 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
  */
 export const ModeratorToVRMessageSchema: GenMessage<ModeratorToVRMessage> = /*@__PURE__*/
   messageDesc(file_moderator_to_vr, 0);
+
+/**
+ * @generated from message moderator_to_vr.DebateTopic
+ */
+export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string topic = 2;
+   */
+  topic: string;
+
+  /**
+   * @generated from field: int32 creator_id = 3;
+   */
+  creatorId: number;
+
+  /**
+   * @generated from field: bool is_challenge = 4;
+   */
+  isChallenge: boolean;
+
+  /**
+   * @generated from field: string claim_its_challenging = 5;
+   */
+  claimItsChallenging: string;
+};
+
+/**
+ * Describes the message moderator_to_vr.DebateTopic.
+ * Use `create(DebateTopicSchema)` to create a new message.
+ */
+export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 1);
+
+/**
+ * @generated from message moderator_to_vr.DebateList
+ */
+export type DebateList = Message<"moderator_to_vr.DebateList"> & {
+  /**
+   * @generated from field: repeated moderator_to_vr.DebateTopic topics = 1;
+   */
+  topics: DebateTopic[];
+};
+
+/**
+ * Describes the message moderator_to_vr.DebateList.
+ * Use `create(DebateListSchema)` to create a new message.
+ */
+export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 2);
 

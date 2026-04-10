@@ -20,13 +20,13 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     Log::debug("[HomePageResponseGenerator] User " + std::to_string(user_id) + " is a member of "
               + std::to_string(debateIds.size()) + " debates.");
 
-    user_engagement::DebateList debateListProto;
+    moderator_to_vr::DebateList debateListProto;
 
     for (const int& debateId : debateIds) {
         std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobuf(debateId);
         debate::Debate debateProto;
         debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
-        user_engagement::DebateTopic* topicProto = debateListProto.add_topics();
+        moderator_to_vr::DebateTopic* topicProto = debateListProto.add_topics();
         topicProto->set_id(debateProto.id());
         topicProto->set_topic(debateProto.topic());
         topicProto->set_creator_id(debateProto.creator_id());
@@ -37,5 +37,5 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     }
 
 
-    *responseMessage.mutable_user()->mutable_engagement()->mutable_home_info()->mutable_available_debates() = debateListProto;
+    *responseMessage.mutable_debate_list() = debateListProto;
 }

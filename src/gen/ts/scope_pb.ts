@@ -10,16 +10,78 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file scope.proto.
  */
 export const file_scope: GenFile = /*@__PURE__*/
-  fileDesc("CgtzY29wZS5wcm90bxIGZGViYXRlIi0KBVNjb3BlEiQKCXNjb3BldHlwZRgBIAEoDjIRLmRlYmF0ZS5TY29wZVR5cGUqLgoJU2NvcGVUeXBlEhAKDFNJTkdMRV9DTEFJTRAAEg8KC0ZVTExfREVCQVRFEAFiBnByb3RvMw");
+  fileDesc("CgtzY29wZS5wcm90bxIGZGViYXRlIj8KEFNpbmdsZUNsYWltU2NvcGUSEQoJZGViYXRlX2lkGAEgASgFEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAUiJAoPRnVsbERlYmF0ZVNjb3BlEhEKCWRlYmF0ZV9pZBgBIAEoBSKdAQoFU2NvcGUSJAoJc2NvcGV0eXBlGAEgASgOMhEuZGViYXRlLlNjb3BlVHlwZRIwCgxzaW5nbGVfY2xhaW0YAiABKAsyGC5kZWJhdGUuU2luZ2xlQ2xhaW1TY29wZUgAEi4KC2Z1bGxfZGViYXRlGAMgASgLMhcuZGViYXRlLkZ1bGxEZWJhdGVTY29wZUgAQgwKCnNjb3BlX2luZm8qLgoJU2NvcGVUeXBlEhAKDFNJTkdMRV9DTEFJTRAAEg8KC0ZVTExfREVCQVRFEAFiBnByb3RvMw");
+
+/**
+ * @generated from message debate.SingleClaimScope
+ */
+export type SingleClaimScope = Message<"debate.SingleClaimScope"> & {
+  /**
+   * The claim currently in focus.
+   *
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: int32 current_claim_id = 2;
+   */
+  currentClaimId: number;
+};
+
+/**
+ * Describes the message debate.SingleClaimScope.
+ * Use `create(SingleClaimScopeSchema)` to create a new message.
+ */
+export const SingleClaimScopeSchema: GenMessage<SingleClaimScope> = /*@__PURE__*/
+  messageDesc(file_scope, 0);
+
+/**
+ * @generated from message debate.FullDebateScope
+ */
+export type FullDebateScope = Message<"debate.FullDebateScope"> & {
+  /**
+   * The debate currently in focus.
+   *
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+};
+
+/**
+ * Describes the message debate.FullDebateScope.
+ * Use `create(FullDebateScopeSchema)` to create a new message.
+ */
+export const FullDebateScopeSchema: GenMessage<FullDebateScope> = /*@__PURE__*/
+  messageDesc(file_scope, 1);
 
 /**
  * @generated from message debate.Scope
  */
 export type Scope = Message<"debate.Scope"> & {
   /**
+   * Kept for backward compatibility with existing reads/switches.
+   *
    * @generated from field: debate.ScopeType scopetype = 1;
    */
   scopetype: ScopeType;
+
+  /**
+   * @generated from oneof debate.Scope.scope_info
+   */
+  scopeInfo: {
+    /**
+     * @generated from field: debate.SingleClaimScope single_claim = 2;
+     */
+    value: SingleClaimScope;
+    case: "singleClaim";
+  } | {
+    /**
+     * @generated from field: debate.FullDebateScope full_debate = 3;
+     */
+    value: FullDebateScope;
+    case: "fullDebate";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
@@ -27,7 +89,7 @@ export type Scope = Message<"debate.Scope"> & {
  * Use `create(ScopeSchema)` to create a new message.
  */
 export const ScopeSchema: GenMessage<Scope> = /*@__PURE__*/
-  messageDesc(file_scope, 0);
+  messageDesc(file_scope, 2);
 
 /**
  * @generated from enum debate.ScopeType
