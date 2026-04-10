@@ -244,14 +244,6 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
 void DebateWrapper::deleteClaim(const int& claimId) {
     debate::Claim claim = getClaimById(claimId);
     const auto links = databaseWrapper.links.getLinksForClaim(claimId);
-    auto removeLinkIdFromClaim = [](debate::Claim& targetClaim, int linkId) {
-        auto* proof = targetClaim.mutable_proof();
-        auto& proofLinkIds = *proof->mutable_link_ids();
-        proofLinkIds.erase(
-            std::remove(proofLinkIds.begin(), proofLinkIds.end(), linkId),
-            proofLinkIds.end()
-        );
-    };
 
     for (const auto& linkRow : links) {
         const int linkId = std::get<0>(linkRow);
@@ -270,13 +262,11 @@ void DebateWrapper::deleteClaim(const int& claimId) {
 
         if (linkTo == claimId) {
             debate::Claim parentClaim = getClaimById(linkFrom);
-            removeLinkIdFromClaim(parentClaim, linkId);
             updateClaimInDB(parentClaim);
         }
 
         if (linkFrom == claimId) {
             debate::Claim childClaim = getClaimById(linkTo);
-            removeLinkIdFromClaim(childClaim, linkId);
             updateClaimInDB(childClaim);
         }
 
