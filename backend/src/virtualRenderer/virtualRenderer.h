@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include "../database/sqlite/Database.h"
+#include "../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../src/gen/cpp/layout.pb.h"
 #include "../../../src/gen/cpp/client_message.pb.h"
 #include "../debateModerator/DebateModerator.h"
@@ -35,5 +37,9 @@ public:
     void handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
+    int createUserIfNotExist(const std::string& username);
+    std::string getUsersDatabasePath() const;
+    Database usersDb;
+    VRUserDatabase userDb;
     DebateModerator moderator;
 };

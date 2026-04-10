@@ -77,6 +77,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DatabaseWrapper.cc
+    ${CMAKE_SOURCE_DIR}/src/database/virtualrenderer/VRUserDatabase.cc
 
     # layout generators
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc
