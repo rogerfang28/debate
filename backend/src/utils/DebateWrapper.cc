@@ -115,19 +115,19 @@ int DebateWrapper::addClaimUnderParent(
     const int& user_id,
     const int& debate_id) {
 
-    debate::Claim parentClaimFromDB = getClaimById(parentId);
+    // debate::Claim parentClaimFromDB = getClaimById(parentId);
 
     // Add new claim
     debate::Claim childClaim;
     childClaim.set_sentence(claimText);
-    childClaim.set_parent_id(parentId);
+    // childClaim.set_parent_id(parentId);
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
     childClaim.set_status(debate::ClaimStatus::NEUTRAL);
     addClaimToDB(childClaim, user_id, debate_id);
-    parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
-    updateClaimInDB(parentClaimFromDB);
+    // parentClaimFromDB.mutable_proof()->add_claim_ids(childClaim.id());
+    // updateClaimInDB(parentClaimFromDB);
     // also add a link between the new claim and the parent claim, which would be a parent connection
     addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
     Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");
