@@ -21,7 +21,7 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     debatingInfo.mutable_current_claim()->set_id(currentClaim.id()); // already there
     debatingInfo.mutable_current_claim()->set_creator_id(currentClaim.creator_id());
 
-    debate::Claim parentClaim = debateWrapper.getClaimById(currentClaim.parent_id());
+    debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
     debatingInfo.mutable_parent_claim()->set_sentence(parentClaim.sentence());
     debatingInfo.set_current_claim_description(currentClaim.description());
     debatingInfo.mutable_parent_claim()->set_id(parentClaim.id());
