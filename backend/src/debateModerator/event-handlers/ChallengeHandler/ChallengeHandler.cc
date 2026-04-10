@@ -139,6 +139,16 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
         currentClaim = debateWrapper.findClaimParent(currentClaim.id());
     }
 
+    // add a new link called "challenge link" that connects the new challenge claim to the challenged claim
+    debateWrapper.addLink(
+        proofDebate.root_claim_id(), // from the challenge claim
+        current_claim_id, // to the challenged claim
+        "challenge link",
+        user_id,
+        proof_debate_id,
+        debate::LinkType::CHALLENGE
+    );
+
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
