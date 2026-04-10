@@ -9,9 +9,21 @@ DebateWrapper::DebateWrapper(DatabaseWrapper& dbWrapper)
 std::vector<int> DebateWrapper::findChildrenIds(
     const int& parentId) {
     std::vector<int> childrenIds;
-    debate::Claim parentClaim = getClaimById(parentId);
-    for (const auto& childId : parentClaim.proof().claim_ids()) {
-        childrenIds.push_back(childId);
+    const auto links = databaseWrapper.links.getLinksFromClaim(parentId);
+    for (const auto& linkRow : links) {
+        const int linkId = std::get<0>(linkRow);
+        const int linkTo = std::get<2>(linkRow);
+        auto linkData = databaseWrapper.links.getLinkById(linkId);
+        if (!linkData.has_value()) {
+            continue;
+        }
+
+        const int linkType = std::get<5>(linkData.value());
+        if (linkType != 1) {
+            continue;
+        }
+
+        childrenIds.push_back(linkTo);
     }
     return childrenIds;
 }
@@ -19,9 +31,7 @@ std::vector<int> DebateWrapper::findChildrenIds(
 std::vector<std::pair<std::string,std::string>> DebateWrapper::findChildrenInfo(
     const int& parentId) {
     std::vector<std::pair<std::string,std::string>> childrenInfo;
-    debate::Claim parentClaim = getClaimById(parentId);
-
-    for (const auto& claim_id: parentClaim.proof().claim_ids()) {
+    for (const auto& claim_id : findChildrenIds(parentId)) {
         debate::Claim claim = getClaimById(claim_id);
         childrenInfo.emplace_back(std::to_string(claim.id()), claim.sentence());
     }
@@ -222,8 +232,7 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
         size_t index = 0;
         while (index < claimsToDelete.size()) { // BFS-like traversal
             int currentClaimId = claimsToDelete[index];
-            debate::Claim currentClaim = getClaimById(currentClaimId);
-            for (const auto& childId : currentClaim.proof().claim_ids()) {
+            for (const auto& childId : findChildrenIds(currentClaimId)) {
                 claimsToDelete.push_back(childId);
             }
             index++;
@@ -614,11 +623,12 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
     updateClaimInDB(claimProto);
     // done
     // check child claims to see if correct
-    for (const auto& childId : claimProto.proof().claim_ids()) {
+    for (const auto& childId : findChildrenIds(claim_id)) {
         debate::Claim childClaim = getClaimById(childId);
-        Log::debug("[DebateWrapper] Claim Id: " + std::to_string(claim_id) + " Child Claim ID: " + std::to_string(childId) + " Parent ID after restoring: " + std::to_string(childClaim.parent_id()));
-        if (childClaim.parent_id() != claim_id) {
-            Log::warn("[DebateWrapper] Child claim ID " + std::to_string(childId) + " has incorrect parent ID " + std::to_string(childClaim.parent_id()) + " after restoring claim ID " + std::to_string(claim_id));
+        debate::Claim resolvedParent = findClaimParent(childId);
+        Log::debug("[DebateWrapper] Claim Id: " + std::to_string(claim_id) + " Child Claim ID: " + std::to_string(childId) + " resolved parent after restoring: " + std::to_string(resolvedParent.id()));
+        if (resolvedParent.id() != claim_id) {
+            Log::warn("[DebateWrapper] Child claim ID " + std::to_string(childId) + " has incorrect resolved parent " + std::to_string(resolvedParent.id()) + " after restoring claim ID " + std::to_string(claim_id));
         }
     }
     // test 
