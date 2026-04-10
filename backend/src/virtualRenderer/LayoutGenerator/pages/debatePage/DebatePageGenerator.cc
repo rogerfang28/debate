@@ -1038,7 +1038,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
     // Populate challenges
     for (const auto& challenge : challengesInfo) {
-        std::string challengeId = std::get<0>(challenge);
+        std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
         rendering_info::ChallengeStatus challengeStatus = std::get<3>(challenge);
@@ -1082,7 +1082,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         }
         
         ui::Component challengeNode = ComponentGenerator::createContainer(
-            "challengeNode_" + challengeId,
+            "challengeNode_" + challengedClaimId,
             "",
             bgColor,
             "p-4",
@@ -1094,7 +1094,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
         // Status label above the challenge sentence
         ui::Component statusLabel = ComponentGenerator::createText(
-            "challengeStatus_" + challengeId,
+            "challengeStatus_" + challengedClaimId,
             "Status: " + statusText,
             "text-xs",
             statusTextColor,
@@ -1104,7 +1104,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         ComponentGenerator::addChild(&challengeNode, statusLabel);
 
         ui::Component challengeSentenceText = ComponentGenerator::createText(
-            "challengeSentence_" + challengeId,
+            "challengeSentence_" + challengedClaimId,
             challengeSentence,
             "",
             "text-white",
@@ -1114,7 +1114,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         ComponentGenerator::addChild(&challengeNode, challengeSentenceText);
 
         ui::Component challengeButtonContainer = ComponentGenerator::createContainer(
-            "challengeButtonContainer_" + challengeId,
+            "challengeButtonContainer_" + challengedClaimId,
             "flex flex-wrap gap-2",
             "",
             "",
@@ -1125,8 +1125,8 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         );
 
         ui::Component viewChallengeButton = ComponentGenerator::createButton(
-            "viewChallengeButton_" + challengeId,
-            "View Challenge",
+            "viewChallengeButton_" + challengedClaimId,
+            "View Challenged Claim",
             "",
             buttonBgColor,
             buttonHoverColor,
@@ -1139,7 +1139,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
         // WIP placeholder: intentionally non-interactive.
         ui::Component concedeWipButton = ComponentGenerator::createText(
-            "concedeWipButton_" + challengeId,
+            "concedeWipButton_" + challengedClaimId,
             "Concede (WIP)",
             "text-sm",
             "text-gray-200",
@@ -1150,7 +1150,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
 
         if (userOwnsChallenge && !demo_mode::kViewerModeEnabled) {
             ui::Component deleteChallengeButton = ComponentGenerator::createButton(
-                "deleteChallengeButton_" + challengeId,
+                "deleteChallengeButton_" + challengedClaimId,
                 "Delete",
                 "",
                 "bg-red-600",
@@ -1378,7 +1378,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
     int currentUserId = user.user_id();
     user_engagement::DebatingInfo debatingInfo = user.engagement().debating_info();
     int currentClaimCreatorId = debatingInfo.current_claim().creator_id();
-    bool isChallenge = debatingInfo.is_challenge();
+    bool isChallenge = info.is_challenge_debate();
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
     
     // Check if we're in editing mode - if so, buttons are already added by FillCurrentClaimSection
@@ -1563,6 +1563,8 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
                 for (int j = 0; j < topSection->children_size(); j++) {
                     ui::Component* leftTopSection = topSection->mutable_children(j);
                     if (leftTopSection->id() == "leftTopSection") {
+                        // In challenge mode, replace default parent navigation with challenge-specific navigation.
+                        leftTopSection->clear_children();
                         ui::Component goToChallengedClaimButton = ComponentGenerator::createButton(
                             "goToChallengedClaimButton",
                             "Go To Challenged Claim",

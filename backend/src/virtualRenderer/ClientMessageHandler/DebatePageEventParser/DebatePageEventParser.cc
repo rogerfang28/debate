@@ -193,10 +193,10 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     }
 
     else if (componentId.find("viewChallengeButton_") == 0 && eventType == "onClick"){
-        std::string challengeId = componentId.substr(strlen("viewChallengeButton_"));
-        Log::debug("  GO_TO_CHALLENGE for user: " + std::to_string(user_id) + " to challenge ID: " + challengeId);
+        std::string challengedClaimId = componentId.substr(strlen("viewChallengeButton_"));
+        Log::debug("  GO_TO_CHALLENGE for user: " + std::to_string(user_id) + " to challenged claim ID: " + challengedClaimId);
         event.set_type(debate_event::GO_TO_CHALLENGE);
-        event.mutable_go_to_challenge()->set_challenge_id(std::stoi(challengeId));
+        event.mutable_go_to_challenge()->set_challenge_id(std::stoi(challengedClaimId));
     }
     else if (componentId.find("deleteChallengeButton_") == 0 && eventType == "onClick"){
         std::string challengeId = componentId.substr(strlen("deleteChallengeButton_"));

@@ -80,7 +80,6 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
 
 	info.set_debate_id(debatingInfo.debate_id());
-	info.set_is_challenge_debate(debatingInfo.is_challenge());
 	info.set_current_claim_description(debatingInfo.current_claim_description());
 	info.set_modifying_current_claim(debatingInfo.modifying_current_claim());
 	info.set_current_action(MapDebateAction(debatingInfo.current_debate_action().action_type()));
@@ -90,6 +89,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	currentClaim->set_sentence(debatingInfo.current_claim().sentence());
 	currentClaim->set_creator_id(debatingInfo.current_claim().creator_id());
 	currentClaim->set_status(MapClaimStatus(debatingInfo.current_claim().status()));
+	info.set_is_challenge_debate(false);
 
 	std::unordered_set<int> visibleClaimIds;
 	visibleClaimIds.insert(currentClaim->id());
@@ -119,6 +119,10 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 		}
 		debate::Link linkProto = linkIt->second;
 		Log::debug("[DebatePageInfoParser] link snapshot from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()) + ", connection=\"" + linkProto.connection() + "\"");
+		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::CHALLENGE) {
+			info.set_is_challenge_debate(true);
+			Log::debug("[DebatePageInfoParser] Current claim is part of a challenge debate because it has an outgoing CHALLENGE link to claim_id=" + std::to_string(linkProto.connect_to()));
+		}
 		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
 			int childClaimId = linkProto.connect_to();
 			Log::debug("[DebatePageInfoParser] Found parent-child link, child_claim_id=" + std::to_string(childClaimId));

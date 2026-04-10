@@ -234,14 +234,59 @@ void ChallengeHandler::CloseAddChallenge(const int& user_id, DebateWrapper& deba
 }
 
 void ChallengeHandler::DeleteChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper) {
-    // precaution check if person is owner of challenge
-    debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
-    if (challengeProto.challenger_id() != user_id) {
-        Log::warn("[DeleteChallengeHandler] User: " + std::to_string(user_id) + " attempted to delete challenge ID: " + std::to_string(challenge_id) + " but is not the creator.");
-        return; // not the owner, do nothing
+    // challenge_id now refers to challenge claim id
+    const int challenge_claim_id = challenge_id;
+    debate::Claim challengeClaim = debateWrapper.getClaimById(challenge_claim_id);
+    if (challengeClaim.id() == 0) {
+        Log::warn("[DeleteChallengeHandler] Challenge claim ID " + std::to_string(challenge_claim_id) + " not found.");
+        return;
     }
-    // delete challenge from database
-    debateWrapper.deleteChallenge(challenge_id);
-    Log::debug("[DeleteChallengeHandler] Deleted challenge ID: " + std::to_string(challenge_id) + " for user: " + std::to_string(user_id));
+
+    if (challengeClaim.creator_id() != user_id) {
+        Log::warn("[DeleteChallengeHandler] User: " + std::to_string(user_id) + " attempted to delete challenge claim ID: " + std::to_string(challenge_claim_id) + " but is not the creator.");
+        return;
+    }
+
+    int challengeLinkId = -1;
+    int challengedClaimId = -1;
+    for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
+        const int linkId = challengeClaim.link_ids(i);
+        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == challenge_claim_id) {
+            challengeLinkId = linkId;
+            challengedClaimId = linkProto.connect_to();
+            break;
+        }
+    }
+
+    if (challengeLinkId != -1) {
+        debateWrapper.deleteLinkById(challengeLinkId);
+        Log::debug("[DeleteChallengeHandler] Removed challenge link ID: " + std::to_string(challengeLinkId) + " from challenge claim ID: " + std::to_string(challenge_claim_id));
+    } else {
+        Log::warn("[DeleteChallengeHandler] No CHALLENGE link found from challenge claim ID: " + std::to_string(challenge_claim_id));
+    }
+
+    if (challengedClaimId != -1) {
+        const auto challengeIds = debateWrapper.getChallengesAgainstClaim(challengedClaimId);
+        int matchedChallengeProtoId = -1;
+        for (const int candidateId : challengeIds) {
+            debate::Challenge candidate = debateWrapper.getChallengeProtobuf(candidateId);
+            if (candidate.challenger_id() == user_id &&
+                candidate.challenged_parent_claim_id() == challengedClaimId &&
+                candidate.challenge_sentence() == challengeClaim.sentence()) {
+                matchedChallengeProtoId = candidateId;
+                break;
+            }
+        }
+
+        if (matchedChallengeProtoId != -1) {
+            debateWrapper.deleteChallenge(matchedChallengeProtoId);
+            Log::debug("[DeleteChallengeHandler] Deleted challenge protobuf ID: " + std::to_string(matchedChallengeProtoId));
+        } else {
+            Log::warn("[DeleteChallengeHandler] No matching challenge protobuf found for challenge claim ID: " + std::to_string(challenge_claim_id));
+        }
+    }
+
+    Log::debug("[DeleteChallengeHandler] Deleted challenge claim ID: " + std::to_string(challenge_claim_id) + " for user: " + std::to_string(user_id));
 }
 

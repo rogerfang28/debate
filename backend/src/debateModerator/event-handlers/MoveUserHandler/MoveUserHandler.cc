@@ -87,28 +87,44 @@ void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateW
     GoToClaim(parentClaim.id(), user_id, debateWrapper);
 }
 
-void MoveUserHandler::GoToChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper) {
-    // get challenge id, find the debate, enterdebate debateid
-    debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
-    int debateId = challengeProto.proof_debate_id();
-    Log::debug("[GoToChallenge] User " + std::to_string(user_id) + " going to challenge with proof debate id: " + std::to_string(debateId));
-    EnterDebate(debateId, user_id, debateWrapper);
-    resetOngoingActivities(user_id, debateWrapper);
+void MoveUserHandler::GoToChallenge(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[GoToChallenge] User " + std::to_string(user_id) + " going to claim id: " + std::to_string(claim_id));
+    GoToClaim(claim_id, user_id, debateWrapper);
 }
 
 void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper) {
-    // find debate_id
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    int debate_id = userProto.engagement().debating_info().debate_id();
+    int currentClaimId = userProto.engagement().debating_info().current_claim().id();
 
-    // find debate and find parent challenge id
-    Log::debug("[GoToParentClaimOfDebate] User " + std::to_string(user_id) + " going to parent claim of debate id: " + std::to_string(debate_id));
+    Log::debug("[GoToParentClaimOfDebate] User " + std::to_string(user_id) + " going to parent claim from current claim id: " + std::to_string(currentClaimId));
+
+    debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
+    int challengedClaimId = -1;
+    for (int i = 0; i < currentClaim.link_ids_size(); ++i) {
+        int linkId = currentClaim.link_ids(i);
+        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == currentClaimId) {
+            challengedClaimId = linkProto.connect_to();
+            Log::debug("[GoToParentClaimOfDebate] Found CHALLENGE link id: " + std::to_string(linkId) + " from claim " + std::to_string(currentClaimId) + " to challenged claim " + std::to_string(challengedClaimId));
+            break;
+        }
+    }
+
+    if (challengedClaimId != -1) {
+        GoToClaim(challengedClaimId, user_id, debateWrapper);
+        Log::debug("[GoToParentClaimOfDebate] Now going to challenged claim id: " + std::to_string(challengedClaimId));
+        resetOngoingActivities(user_id, debateWrapper);
+        return;
+    }
+
+    // legacy fallback: use the old proof-debate parent challenge linkage
+    int debate_id = userProto.engagement().debating_info().debate_id();
+    Log::debug("[GoToParentClaimOfDebate] No CHALLENGE link found; falling back to legacy proof-debate path for debate id: " + std::to_string(debate_id));
     debate::Debate debateProto;
     std::vector<uint8_t> debateData = debateWrapper.getDebateProtobuf(debate_id);
     debateProto.ParseFromArray(debateData.data(), debateData.size());
     int challenge_id = debateProto.parent_challenge_id();
-    
-    // get challenge id, find the parent claim of the challenge, go to that claim
+
     debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
     int parentClaim = challengeProto.challenged_parent_claim_id();
     debate::Claim claimProto = debateWrapper.getClaimById(parentClaim);
