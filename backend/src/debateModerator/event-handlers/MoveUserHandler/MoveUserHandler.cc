@@ -71,6 +71,8 @@ void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateW
     // save back to database;
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
+    // change scope
+    userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(claim_id);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
