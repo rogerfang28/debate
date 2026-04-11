@@ -111,17 +111,16 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 		userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(rootClaimId);
 	}
 	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(currentClaimId);
-	// int currentClaimId = debatingInfo.current_claim().id();
 
-	info.set_current_claim_description(debatingInfo.current_claim_description());
+	info.set_current_claim_description(currentClaimProto.description());
 	info.set_modifying_current_claim(debatingInfo.modifying_current_claim());
 	info.set_current_action(MapDebateAction(debatingInfo.current_debate_action().action_type()));
 
 	rendering_info::ClaimRenderInfo* currentClaim = info.mutable_current_claim();
-	currentClaim->set_id(debatingInfo.current_claim().id());
-	currentClaim->set_sentence(debatingInfo.current_claim().sentence());
-	currentClaim->set_creator_id(debatingInfo.current_claim().creator_id());
-	currentClaim->set_status(MapClaimStatus(debatingInfo.current_claim().status()));
+	currentClaim->set_id(currentClaimProto.id());
+	currentClaim->set_sentence(currentClaimProto.sentence());
+	currentClaim->set_creator_id(currentClaimProto.creator_id());
+	currentClaim->set_status(MapClaimStatus(currentClaimProto.status()));
 	info.set_is_challenge_debate(false);
 
 	std::unordered_set<int> visibleClaimIds;
@@ -223,18 +222,18 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	);
 
 	// Find challenge links pointing to current claim from collection
-	Log::test("[DebatePageInfoParser] Scanning for CHALLENGE links pointing to current_claim_id=" + std::to_string(currentClaimId) + ", total_links_in_collection=" + std::to_string(collectionProto.links_by_id_size()));
+	Log::debug("[DebatePageInfoParser] Scanning for CHALLENGE links pointing to current_claim_id=" + std::to_string(currentClaimId) + ", total_links_in_collection=" + std::to_string(collectionProto.links_by_id_size()));
 	int challengeLinkCount = 0;
 	for (const auto& entry : collectionProto.links_by_id()) {
 		challengeLinkCount++;
 		const debate::Link& link = entry.second;
-		Log::test("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));
+		Log::debug("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));
 		
 		// Look for challenge links pointing to current claim
 		if (link.link_type() == debate::LinkType::CHALLENGE && 
 			link.connect_to() == currentClaimId) {
 			
-			Log::test("[DebatePageInfoParser] Found CHALLENGE link pointing to current claim! link_id=" + std::to_string(entry.first) + ", from_claim_id=" + std::to_string(link.connect_from()));
+			Log::debug("[DebatePageInfoParser] Found CHALLENGE link pointing to current claim! link_id=" + std::to_string(entry.first) + ", from_claim_id=" + std::to_string(link.connect_from()));
 			int challengeClaimId = link.connect_from();
 			
 			// Find the challenge claim in collection
@@ -247,13 +246,13 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 				outChallenge->set_sentence(challengeClaim.sentence());
 				outChallenge->set_creator_id(challengeClaim.creator_id());
 				outChallenge->set_status(rendering_info::CHALLENGE_STATUS_ONGOING);
-				Log::test("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
+				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
 			} else {
 				Log::warn("[DebatePageInfoParser] Challenge claim id=" + std::to_string(challengeClaimId) + " NOT FOUND in collection!");
 			}
 		}
 	}
-	Log::test("[DebatePageInfoParser] Finished scanning challenges: looped_" + std::to_string(challengeLinkCount) + "_times, total_challenges_added=" + std::to_string(info.current_challenges_size()));
+	Log::debug("[DebatePageInfoParser] Finished scanning challenges: looped_" + std::to_string(challengeLinkCount) + "_times, total_challenges_added=" + std::to_string(info.current_challenges_size()));
 
 	if (debatingInfo.has_connecting_info()) {
 		const user_engagement::DebatingInfo_ConnectingInfo& srcConnecting = debatingInfo.connecting_info();

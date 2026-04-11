@@ -11,13 +11,13 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
     info.set_viewer_username(userProto.username());
     info.set_can_create_or_join_debates(!demo_mode::kViewerModeEnabled);
 
-    Log::test(
+    Log::debug(
         "[HomePageInfoParser] Parsing home debate list for user_id=" + std::to_string(userProto.user_id()) +
         ", topic_count=" + std::to_string(debateList.topics_size())
     );
 
     for (const auto& topic : debateList.topics()) {
-        Log::test(
+        Log::debug(
             "[HomePageInfoParser] topic root_claim_id=" + std::to_string(topic.id()) +
             ", topic=\"" + topic.topic() + "\"" +
             ", creator_id=" + std::to_string(topic.creator_id()) +

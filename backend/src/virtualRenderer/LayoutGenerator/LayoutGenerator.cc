@@ -15,7 +15,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
     const auto action = info.user().engagement().current_action();
-    Log::test("[LayoutGenerator] Collection - " + std::to_string(info.collection().claims_by_id_size()) + " claims, " + std::to_string(info.collection().links_by_id_size()) + " links");
+    Log::debug("[LayoutGenerator] Collection - " + std::to_string(info.collection().claims_by_id_size()) + " claims, " + std::to_string(info.collection().links_by_id_size()) + " links");
     if (action == user_engagement::ACTION_HOME) {
         // generate home page
         Log::info("[LayoutGenerator] Generating Home Page");
