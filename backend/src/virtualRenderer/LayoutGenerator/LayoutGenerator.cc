@@ -26,9 +26,22 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     if (action == user_engagement::ACTION_DEBATING) {
         // generate debate page
         Log::info("[LayoutGenerator] Generating Debate Page");
-        
-        rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
-        return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
+        debate::ScopeType scopeType = info.user().current_scope().scopetype();
+        if (scopeType == debate::SINGLE_CLAIM) {
+            Log::info("[LayoutGenerator] Generating Single Claim Debate Page");
+            rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
+            return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
+        } else if (scopeType == debate::FULL_DEBATE) {
+            Log::info("[LayoutGenerator] Generating Full Debate Page");
+            // to do
+            rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
+            return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
+        }
+        else {
+            Log::warn("[LayoutGenerator] Unknown scope type, defaulting to generating Single Claim Debate Page");
+            rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
+            return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
+        }
     }
 
     if (action == user_engagement::ACTION_LOGIN) {
