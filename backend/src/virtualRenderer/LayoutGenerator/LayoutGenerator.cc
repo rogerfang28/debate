@@ -28,7 +28,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         Log::info("[LayoutGenerator] Generating Debate Page");
         
         rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
-        return DebatePageGenerator::GenerateDebatePage(debatePageInfo, info.user());
+        return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
     }
 
     if (action == user_engagement::ACTION_LOGIN) {

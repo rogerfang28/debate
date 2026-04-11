@@ -68,7 +68,7 @@ user_engagement::DebatingInfo_CurrentDebateAction_ActionType MapDebateAction(ren
 }
 
 
-ui::Page DebatePageGenerator::GenerateDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto) {
+ui::Page DebatePageGenerator::GenerateSingleDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto) {
     // later get user proto from database, for now just get from args
     ui::Page page;
     page.set_page_id("debate");

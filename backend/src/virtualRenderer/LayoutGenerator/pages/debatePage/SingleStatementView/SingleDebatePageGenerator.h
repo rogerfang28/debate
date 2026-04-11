@@ -6,7 +6,7 @@
 
 class DebatePageGenerator {
 public:
-    static ui::Page GenerateDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto);
+    static ui::Page GenerateSingleDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto);
     static ui::Component GenerateSingleClaimLayout();
     static ui::Component FillChildClaims(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component FillChallenges(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
