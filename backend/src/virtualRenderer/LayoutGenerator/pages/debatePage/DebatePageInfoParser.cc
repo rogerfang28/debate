@@ -81,32 +81,44 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 
 	info.set_debate_id(userProto.collection_spec().debate_id());
 
-	// what is the current claim id?
+	// Resolve current claim id deterministically to avoid flicker when stored scope is stale.
 	int currentClaimId = userProto.current_scope().single_claim().current_claim_id();
-	if (collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
-		// change the current scope to the root claim single view
-		// find the root claim (no parent child link where current claim is the child)
+	auto hasClaim = [&collectionProto](int claimId) {
+		return claimId > 0 && collectionProto.claims_by_id().find(claimId) != collectionProto.claims_by_id().end();
+	};
+
+	if (!hasClaim(currentClaimId) && hasClaim(debatingInfo.current_claim().id())) {
+		currentClaimId = debatingInfo.current_claim().id();
+	}
+	if (!hasClaim(currentClaimId) && hasClaim(debatingInfo.root_claim().id())) {
+		currentClaimId = debatingInfo.root_claim().id();
+	}
+	if (!hasClaim(currentClaimId)) {
 		int rootClaimId = -1;
 		for (const auto& claimEntry : collectionProto.claims_by_id()) {
-			const debate::Claim& claim = claimEntry.second;
-			bool isRoot = true;
-			for (int i = 0; i < claim.link_ids_size(); ++i) {
-				int linkId = claim.link_ids(i);
-				auto linkIt = collectionProto.links_by_id().find(linkId);
-				if (linkIt != collectionProto.links_by_id().end()) {
-					const debate::Link& link = linkIt->second;
-					if (link.connect_to() == claim.id() && link.link_type() == debate::LinkType::PARENT_CHILD) {
-						isRoot = false;
-						break;
-					}
+			const int candidateId = claimEntry.first;
+			bool hasIncomingParentChild = false;
+			for (const auto& linkEntry : collectionProto.links_by_id()) {
+				const debate::Link& link = linkEntry.second;
+				if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_to() == candidateId) {
+					hasIncomingParentChild = true;
+					break;
 				}
 			}
-			if (isRoot) {
-				rootClaimId = claim.id();
-				Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(currentClaimId) + " not found in collection! Setting current claim to root claim ID " + std::to_string(rootClaimId));
-				break;
+			if (!hasIncomingParentChild) {
+				if (rootClaimId == -1 || candidateId < rootClaimId) {
+					rootClaimId = candidateId;
+				}
 			}
 		}
+		if (rootClaimId == -1) {
+			for (const auto& claimEntry : collectionProto.claims_by_id()) {
+				if (rootClaimId == -1 || claimEntry.first < rootClaimId) {
+					rootClaimId = claimEntry.first;
+				}
+			}
+		}
+		Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(userProto.current_scope().single_claim().current_claim_id()) + " not found in collection! Setting current claim to root claim ID " + std::to_string(rootClaimId));
 		currentClaimId = rootClaimId;
 		userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(rootClaimId);
 	}
@@ -136,26 +148,20 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	// }
 
 	// debate::Claim currentClaimProto = currentClaimIt->second;
-	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
-	if (currentClaimProto.link_ids_size() == 0) {
-		Log::warn("[DebatePageInfoParser] Current claim has NO link_ids - no parent-child relationships defined!");
-	}
-	for (int i = 0; i < currentClaimProto.link_ids_size(); ++i) {
-		int linkId = currentClaimProto.link_ids(i);
-		Log::debug("[DebatePageInfoParser] Processing current claim link_id=" + std::to_string(linkId));
-		auto linkIt = collectionProto.links_by_id().find(linkId);
-		if (linkIt == collectionProto.links_by_id().end()) {
-			Log::warn("[DebatePageInfoParser] Link ID " + std::to_string(linkId) + " not found in collection!");
+	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()));
+	for (const auto& linkEntry : collectionProto.links_by_id()) {
+		const int linkId = linkEntry.first;
+		const debate::Link& linkProto = linkEntry.second;
+		if (linkProto.connect_from() != currentClaimProto.id()) {
 			continue;
 		}
-		debate::Link linkProto = linkIt->second;
-		Log::debug("[DebatePageInfoParser] link snapshot from=" + std::to_string(linkProto.connect_from()) + ", to=" + std::to_string(linkProto.connect_to()) + ", type=" + std::to_string(linkProto.link_type()) + ", connection=\"" + linkProto.connection() + "\"");
-		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::CHALLENGE) {
+		Log::debug("[DebatePageInfoParser] Processing link_id=" + std::to_string(linkId) + " from current claim");
+		if (linkProto.link_type() == debate::LinkType::CHALLENGE) {
 			info.set_is_challenge_debate(true);
 			Log::debug("[DebatePageInfoParser] Current claim is part of a challenge debate because it has an outgoing CHALLENGE link to claim_id=" + std::to_string(linkProto.connect_to()));
 		}
-		if (linkProto.connect_from() == currentClaimProto.id() && linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
-			int childClaimId = linkProto.connect_to();
+		if (linkProto.link_type() == debate::LinkType::PARENT_CHILD) {
+			const int childClaimId = linkProto.connect_to();
 			Log::debug("[DebatePageInfoParser] Found parent-child link, child_claim_id=" + std::to_string(childClaimId));
 			auto childIt = collectionProto.claims_by_id().find(childClaimId);
 			if (childIt != collectionProto.claims_by_id().end()) {
