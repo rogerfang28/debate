@@ -394,8 +394,16 @@ std::vector<std::vector<uint8_t>> DebateWrapper::getStatementsForDebateAndCreato
     return databaseWrapper.statements.getStatementsForDebateAndCreators(debate_id, creator_ids);
 }
 
+std::vector<std::vector<uint8_t>> DebateWrapper::getStatementsForDebate(const int& debate_id) {
+    return databaseWrapper.statements.getStatementsForDebate(debate_id);
+}
+
 std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
     return databaseWrapper.links.getLinksForDebateAndCreators(debate_id, creator_ids);
+}
+
+std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::getLinksForDebate(const int& debate_id) {
+    return databaseWrapper.links.getLinksForDebate(debate_id);
 }
 
 std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {

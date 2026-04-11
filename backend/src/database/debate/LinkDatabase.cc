@@ -210,6 +210,32 @@ std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getL
     return links;
 }
 
+std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getLinksForDebate(int debateId) {
+    std::vector<std::tuple<int, int, int, std::string, int, int>> links;
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE FROM LINKS WHERE DEBATE_ID = ?;";
+
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return links;
+    }
+
+    sqlite3_bind_int(stmt, 1, debateId);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        int fromId = sqlite3_column_int(stmt, 1);
+        int toId = sqlite3_column_int(stmt, 2);
+        const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        int creatorId = sqlite3_column_int(stmt, 4);
+        int linkType = sqlite3_column_int(stmt, 5);
+
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId, linkType));
+    }
+
+    sqlite3_finalize(stmt);
+    return links;
+}
+
 std::optional<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getLinkById(int linkId) {
     const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE FROM LINKS WHERE ID = ?;";
     
