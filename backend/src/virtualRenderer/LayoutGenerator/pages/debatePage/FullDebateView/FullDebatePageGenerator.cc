@@ -110,7 +110,7 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     for (int i = 0; i < fullDebateInfo.steps_size(); ++i) {
         const rendering_info::Steps& step = fullDebateInfo.steps(i);
         const std::string stepLabel = "Step " + std::to_string(i + 1) + ": " + step.summary();
-        const std::string stepButtonId = "fullDebateStepButton_(" + std::to_string(step.claim_id()) + ")";
+        const std::string stepButtonId = "fullDebateStepButton_" + std::to_string(step.claim_id());
         ui::Component stepButton = ComponentGenerator::createButton(
             stepButtonId,
             stepLabel,
