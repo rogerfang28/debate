@@ -74,6 +74,10 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	rendering_info::DebatePageRenderingInfo info;
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
+	// Ensure full-debate timeline steps are computed during full parser flow.
+	const rendering_info::FullDebateViewInfo fullDebateInfo = ParseFullDebateViewInfo(collectionProto);
+	Log::test("[DebatePageInfoParser] ParseFullDebateViewInfo invoked from ParseFromUser; steps_count=" + std::to_string(fullDebateInfo.steps_size()));
+
 	
 	// info.set_viewer_user_id(userProto.user_id());
 	// info.set_viewer_username(userProto.username());
