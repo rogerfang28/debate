@@ -73,8 +73,9 @@ message LinkRenderInfo {
 message ChallengeRenderInfo {
 	int32 id = 1;
 	string sentence = 2;
-	int32 creator_id = 3;
-	ChallengeStatus status = 4;
+	string description = 3;
+	int32 creator_id = 4;
+	ChallengeStatus status = 5;
 }
 
 enum ScopeType {

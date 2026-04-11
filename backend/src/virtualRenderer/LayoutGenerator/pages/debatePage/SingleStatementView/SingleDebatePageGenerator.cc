@@ -1,9 +1,9 @@
-#include "DebatePageGenerator.h"
-#include "../../../LayoutGenerator/ComponentGenerator.h"
-#include "../../../../utils/Log.h"
-#include "../../../../utils/DemoMode.h"
-#include "../../../../../../src/gen/cpp/user.pb.h"
-#include "../../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "SingleDebatePageGenerator.h"
+#include "../../../../LayoutGenerator/ComponentGenerator.h"
+#include "../../../../../utils/Log.h"
+#include "../../../../../utils/DemoMode.h"
+#include "../../../../../../../src/gen/cpp/user.pb.h"
+#include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
 
 namespace {
 debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {

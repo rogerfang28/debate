@@ -1,8 +1,8 @@
 #pragma once
-#include "../../../../../src/gen/cpp/layout.pb.h"
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/rendering_info.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "../../../../../../../src/gen/cpp/layout.pb.h"
+#include "../../../../../../../src/gen/cpp/debate.pb.h"
+#include "../../../../../../../src/gen/cpp/rendering_info.pb.h"
+#include "../../../../../../../src/gen/cpp/user.pb.h"
 
 class DebatePageGenerator {
 public:

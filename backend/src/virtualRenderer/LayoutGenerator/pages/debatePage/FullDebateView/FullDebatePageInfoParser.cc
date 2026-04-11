@@ -1,7 +1,7 @@
-#include "DebatePageInfoParser.h"
-#include "../../../../../src/gen/cpp/user_engagement.pb.h"
-#include "../../../../../src/gen/cpp/collection.pb.h"
-#include "../../../../utils/Log.h"
+#include "FullDebatePageInfoParser.h"
+#include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "../../../../../../../src/gen/cpp/collection.pb.h"
+#include "../../../../../utils/Log.h"
 #include <unordered_set>
 
 namespace {

@@ -86,8 +86,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/homePage/HomePageGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/homePage/HomePageInfoParser.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/loginPage/LoginPageGenerator.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/DebatePageGenerator.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/DebatePageInfoParser.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/SingleStatementView/SingleDebatePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/SingleStatementView/SingleDebatePageInfoParser.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/errorPage/ErrorPageGenerator.cc
 
     # event parsers
