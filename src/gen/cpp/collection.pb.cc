@@ -25,6 +25,33 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace debate {
+
+inline constexpr CollectionSpecification::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : claim_ids_{},
+        _claim_ids_cached_byte_size_{0},
+        debate_id_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CollectionSpecification::CollectionSpecification(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CollectionSpecificationDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CollectionSpecificationDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CollectionSpecificationDefaultTypeInternal() {}
+  union {
+    CollectionSpecification _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CollectionSpecificationDefaultTypeInternal _CollectionSpecification_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR Collection_LinksByIdEntry_DoNotUse::Collection_LinksByIdEntry_DoNotUse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -129,6 +156,16 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate::Collection, _impl_.claims_by_id_),
         PROTOBUF_FIELD_OFFSET(::debate::Collection, _impl_.links_by_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::debate::CollectionSpecification, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::debate::CollectionSpecification, _impl_.debate_id_),
+        PROTOBUF_FIELD_OFFSET(::debate::CollectionSpecification, _impl_.claim_ids_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -136,11 +173,13 @@ static const ::_pbi::MigrationSchema
         {0, 10, -1, sizeof(::debate::Collection_ClaimsByIdEntry_DoNotUse)},
         {12, 22, -1, sizeof(::debate::Collection_LinksByIdEntry_DoNotUse)},
         {24, -1, -1, sizeof(::debate::Collection)},
+        {34, -1, -1, sizeof(::debate::CollectionSpecification)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::debate::_Collection_ClaimsByIdEntry_DoNotUse_default_instance_._instance,
     &::debate::_Collection_LinksByIdEntry_DoNotUse_default_instance_._instance,
     &::debate::_Collection_default_instance_._instance,
+    &::debate::_CollectionSpecification_default_instance_._instance,
 };
 const char descriptor_table_protodef_collection_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -152,7 +191,9 @@ const char descriptor_table_protodef_collection_2eproto[] ABSL_ATTRIBUTE_SECTION
     "msByIdEntry\022\020\n\003key\030\001 \001(\005R\003key\022#\n\005value\030\002"
     " \001(\0132\r.debate.ClaimR\005value:\0028\001\032J\n\016LinksB"
     "yIdEntry\022\020\n\003key\030\001 \001(\005R\003key\022\"\n\005value\030\002 \001("
-    "\0132\014.debate.LinkR\005value:\0028\001b\006proto3"
+    "\0132\014.debate.LinkR\005value:\0028\001\"S\n\027Collection"
+    "Specification\022\033\n\tdebate_id\030\001 \001(\005R\010debate"
+    "Id\022\033\n\tclaim_ids\030\002 \003(\005R\010claimIdsb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_collection_2eproto_deps[1] =
     {
@@ -162,13 +203,13 @@ static ::absl::once_flag descriptor_table_collection_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_collection_2eproto = {
     false,
     false,
-    354,
+    439,
     descriptor_table_protodef_collection_2eproto,
     "collection.proto",
     &descriptor_table_collection_2eproto_once,
     descriptor_table_collection_2eproto_deps,
     1,
-    3,
+    4,
     schemas,
     file_default_instances,
     TableStruct_collection_2eproto::offsets,
@@ -668,6 +709,274 @@ void Collection::InternalSwap(Collection* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata Collection::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CollectionSpecification::_Internal {
+ public:
+};
+
+CollectionSpecification::CollectionSpecification(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate.CollectionSpecification)
+}
+inline PROTOBUF_NDEBUG_INLINE CollectionSpecification::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::debate::CollectionSpecification& from_msg)
+      : claim_ids_{visibility, arena, from.claim_ids_},
+        _claim_ids_cached_byte_size_{0},
+        _cached_size_{0} {}
+
+CollectionSpecification::CollectionSpecification(
+    ::google::protobuf::Arena* arena,
+    const CollectionSpecification& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CollectionSpecification* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.debate_id_ = from._impl_.debate_id_;
+
+  // @@protoc_insertion_point(copy_constructor:debate.CollectionSpecification)
+}
+inline PROTOBUF_NDEBUG_INLINE CollectionSpecification::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : claim_ids_{visibility, arena},
+        _claim_ids_cached_byte_size_{0},
+        _cached_size_{0} {}
+
+inline void CollectionSpecification::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.debate_id_ = {};
+}
+CollectionSpecification::~CollectionSpecification() {
+  // @@protoc_insertion_point(destructor:debate.CollectionSpecification)
+  SharedDtor(*this);
+}
+inline void CollectionSpecification::SharedDtor(MessageLite& self) {
+  CollectionSpecification& this_ = static_cast<CollectionSpecification&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* CollectionSpecification::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CollectionSpecification(arena);
+}
+constexpr auto CollectionSpecification::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.claim_ids_) +
+          decltype(CollectionSpecification::_impl_.claim_ids_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(CollectionSpecification), alignof(CollectionSpecification), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&CollectionSpecification::PlacementNew_,
+                                 sizeof(CollectionSpecification),
+                                 alignof(CollectionSpecification));
+  }
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CollectionSpecification::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CollectionSpecification_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CollectionSpecification::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CollectionSpecification>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CollectionSpecification::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CollectionSpecification>(), &CollectionSpecification::ByteSizeLong,
+            &CollectionSpecification::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_._cached_size_),
+        false,
+    },
+    &CollectionSpecification::kDescriptorMethods,
+    &descriptor_table_collection_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CollectionSpecification::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> CollectionSpecification::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate::CollectionSpecification>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+    {::_pbi::TcParser::FastV32P1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.claim_ids_)}},
+    // int32 debate_id = 1 [json_name = "debateId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CollectionSpecification, _impl_.debate_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.debate_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 debate_id = 1 [json_name = "debateId"];
+    {PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.debate_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+    {PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.claim_ids_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void CollectionSpecification::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate.CollectionSpecification)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.claim_ids_.Clear();
+  _impl_.debate_id_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CollectionSpecification::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CollectionSpecification& this_ = static_cast<const CollectionSpecification&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CollectionSpecification::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CollectionSpecification& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:debate.CollectionSpecification)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 debate_id = 1 [json_name = "debateId"];
+          if (this_._internal_debate_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_debate_id(), target);
+          }
+
+          // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+          {
+            int byte_size = this_._impl_._claim_ids_cached_byte_size_.Get();
+            if (byte_size > 0) {
+              target = stream->WriteInt32Packed(
+                  2, this_._internal_claim_ids(), byte_size, target);
+            }
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:debate.CollectionSpecification)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CollectionSpecification::ByteSizeLong(const MessageLite& base) {
+          const CollectionSpecification& this_ = static_cast<const CollectionSpecification&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CollectionSpecification::ByteSizeLong() const {
+          const CollectionSpecification& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:debate.CollectionSpecification)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+            {
+              total_size +=
+                  ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
+                      this_._internal_claim_ids(), 1,
+                      this_._impl_._claim_ids_cached_byte_size_);
+            }
+          }
+           {
+            // int32 debate_id = 1 [json_name = "debateId"];
+            if (this_._internal_debate_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_debate_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CollectionSpecification::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CollectionSpecification*>(&to_msg);
+  auto& from = static_cast<const CollectionSpecification&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate.CollectionSpecification)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_claim_ids()->MergeFrom(from._internal_claim_ids());
+  if (from._internal_debate_id() != 0) {
+    _this->_impl_.debate_id_ = from._impl_.debate_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CollectionSpecification::CopyFrom(const CollectionSpecification& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:debate.CollectionSpecification)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CollectionSpecification::InternalSwap(CollectionSpecification* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.claim_ids_.InternalSwap(&other->_impl_.claim_ids_);
+        swap(_impl_.debate_id_, other->_impl_.debate_id_);
+}
+
+::google::protobuf::Metadata CollectionSpecification::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

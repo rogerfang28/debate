@@ -8,13 +8,15 @@ import type { UserEngagement } from "./user_engagement_pb";
 import { file_user_engagement } from "./user_engagement_pb";
 import type { Scope } from "./scope_pb";
 import { file_scope } from "./scope_pb";
+import type { CollectionSpecification } from "./collection_pb";
+import { file_collection } from "./collection_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIoQBCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlYgZwcm90bzM", [file_user_engagement, file_scope]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIr4BCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbmIGcHJvdG8z", [file_user_engagement, file_scope, file_collection]);
 
 /**
  * @generated from message user.User
@@ -39,6 +41,11 @@ export type User = Message<"user.User"> & {
    * @generated from field: debate.Scope current_scope = 4;
    */
   currentScope?: Scope;
+
+  /**
+   * @generated from field: debate.CollectionSpecification collection_spec = 5;
+   */
+  collectionSpec?: CollectionSpecification;
 };
 
 /**

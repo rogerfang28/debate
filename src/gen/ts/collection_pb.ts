@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file collection.proto.
  */
 export const file_collection: GenFile = /*@__PURE__*/
-  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUigAIKCkNvbGxlY3Rpb24SOAoMY2xhaW1zX2J5X2lkGAEgAygLMiIuZGViYXRlLkNvbGxlY3Rpb24uQ2xhaW1zQnlJZEVudHJ5EjYKC2xpbmtzX2J5X2lkGAIgAygLMiEuZGViYXRlLkNvbGxlY3Rpb24uTGlua3NCeUlkRW50cnkaQAoPQ2xhaW1zQnlJZEVudHJ5EgsKA2tleRgBIAEoBRIcCgV2YWx1ZRgCIAEoCzINLmRlYmF0ZS5DbGFpbToCOAEaPgoOTGlua3NCeUlkRW50cnkSCwoDa2V5GAEgASgFEhsKBXZhbHVlGAIgASgLMgwuZGViYXRlLkxpbms6AjgBYgZwcm90bzM", [file_debate]);
+  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUigAIKCkNvbGxlY3Rpb24SOAoMY2xhaW1zX2J5X2lkGAEgAygLMiIuZGViYXRlLkNvbGxlY3Rpb24uQ2xhaW1zQnlJZEVudHJ5EjYKC2xpbmtzX2J5X2lkGAIgAygLMiEuZGViYXRlLkNvbGxlY3Rpb24uTGlua3NCeUlkRW50cnkaQAoPQ2xhaW1zQnlJZEVudHJ5EgsKA2tleRgBIAEoBRIcCgV2YWx1ZRgCIAEoCzINLmRlYmF0ZS5DbGFpbToCOAEaPgoOTGlua3NCeUlkRW50cnkSCwoDa2V5GAEgASgFEhsKBXZhbHVlGAIgASgLMgwuZGViYXRlLkxpbms6AjgBIj8KF0NvbGxlY3Rpb25TcGVjaWZpY2F0aW9uEhEKCWRlYmF0ZV9pZBgBIAEoBRIRCgljbGFpbV9pZHMYAiADKAViBnByb3RvMw", [file_debate]);
 
 /**
  * @generated from message debate.Collection
@@ -35,4 +35,26 @@ export type Collection = Message<"debate.Collection"> & {
  */
 export const CollectionSchema: GenMessage<Collection> = /*@__PURE__*/
   messageDesc(file_collection, 0);
+
+/**
+ * @generated from message debate.CollectionSpecification
+ */
+export type CollectionSpecification = Message<"debate.CollectionSpecification"> & {
+  /**
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: repeated int32 claim_ids = 2;
+   */
+  claimIds: number[];
+};
+
+/**
+ * Describes the message debate.CollectionSpecification.
+ * Use `create(CollectionSpecificationSchema)` to create a new message.
+ */
+export const CollectionSpecificationSchema: GenMessage<CollectionSpecification> = /*@__PURE__*/
+  messageDesc(file_collection, 1);
 

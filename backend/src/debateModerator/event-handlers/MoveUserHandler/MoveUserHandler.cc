@@ -30,6 +30,9 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     userProto.mutable_current_scope()->set_scopetype(debate::SINGLE_CLAIM);
     userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
     resetOngoingActivities(user_id, debateWrapper);
+
+    // change the collection spec to be the current debate
+    userProto.mutable_collection_spec()->set_debate_id(debateId);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 
     return true;

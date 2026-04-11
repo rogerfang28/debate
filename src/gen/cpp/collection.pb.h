@@ -59,6 +59,9 @@ namespace debate {
 class Collection;
 struct CollectionDefaultTypeInternal;
 extern CollectionDefaultTypeInternal _Collection_default_instance_;
+class CollectionSpecification;
+struct CollectionSpecificationDefaultTypeInternal;
+extern CollectionSpecificationDefaultTypeInternal _CollectionSpecification_default_instance_;
 class Collection_ClaimsByIdEntry_DoNotUse;
 struct Collection_ClaimsByIdEntry_DoNotUseDefaultTypeInternal;
 extern Collection_ClaimsByIdEntry_DoNotUseDefaultTypeInternal _Collection_ClaimsByIdEntry_DoNotUse_default_instance_;
@@ -76,6 +79,217 @@ namespace debate {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class CollectionSpecification final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.CollectionSpecification) */ {
+ public:
+  inline CollectionSpecification() : CollectionSpecification(nullptr) {}
+  ~CollectionSpecification() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CollectionSpecification* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CollectionSpecification));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CollectionSpecification(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline CollectionSpecification(const CollectionSpecification& from) : CollectionSpecification(nullptr, from) {}
+  inline CollectionSpecification(CollectionSpecification&& from) noexcept
+      : CollectionSpecification(nullptr, std::move(from)) {}
+  inline CollectionSpecification& operator=(const CollectionSpecification& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CollectionSpecification& operator=(CollectionSpecification&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CollectionSpecification& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CollectionSpecification* internal_default_instance() {
+    return reinterpret_cast<const CollectionSpecification*>(
+        &_CollectionSpecification_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(CollectionSpecification& a, CollectionSpecification& b) { a.Swap(&b); }
+  inline void Swap(CollectionSpecification* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CollectionSpecification* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CollectionSpecification* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CollectionSpecification>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CollectionSpecification& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CollectionSpecification& from) { CollectionSpecification::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CollectionSpecification* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate.CollectionSpecification"; }
+
+ protected:
+  explicit CollectionSpecification(::google::protobuf::Arena* arena);
+  CollectionSpecification(::google::protobuf::Arena* arena, const CollectionSpecification& from);
+  CollectionSpecification(::google::protobuf::Arena* arena, CollectionSpecification&& from) noexcept
+      : CollectionSpecification(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kClaimIdsFieldNumber = 2,
+    kDebateIdFieldNumber = 1,
+  };
+  // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+  int claim_ids_size() const;
+  private:
+  int _internal_claim_ids_size() const;
+
+  public:
+  void clear_claim_ids() ;
+  ::int32_t claim_ids(int index) const;
+  void set_claim_ids(int index, ::int32_t value);
+  void add_claim_ids(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* mutable_claim_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_claim_ids();
+
+  public:
+  // int32 debate_id = 1 [json_name = "debateId"];
+  void clear_debate_id() ;
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate.CollectionSpecification)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CollectionSpecification& from_msg);
+    ::google::protobuf::RepeatedField<::int32_t> claim_ids_;
+    ::google::protobuf::internal::CachedSize _claim_ids_cached_byte_size_;
+    ::int32_t debate_id_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_collection_2eproto;
+};
 // -------------------------------------------------------------------
 
 class Collection_LinksByIdEntry_DoNotUse final
@@ -439,6 +653,77 @@ inline ::google::protobuf::Map<::int32_t, ::debate::Link>* Collection::_internal
 inline ::google::protobuf::Map<::int32_t, ::debate::Link>* Collection::mutable_links_by_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_mutable_map:debate.Collection.links_by_id)
   return _internal_mutable_links_by_id();
+}
+
+// -------------------------------------------------------------------
+
+// CollectionSpecification
+
+// int32 debate_id = 1 [json_name = "debateId"];
+inline void CollectionSpecification::clear_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_ = 0;
+}
+inline ::int32_t CollectionSpecification::debate_id() const {
+  // @@protoc_insertion_point(field_get:debate.CollectionSpecification.debate_id)
+  return _internal_debate_id();
+}
+inline void CollectionSpecification::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
+  // @@protoc_insertion_point(field_set:debate.CollectionSpecification.debate_id)
+}
+inline ::int32_t CollectionSpecification::_internal_debate_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.debate_id_;
+}
+inline void CollectionSpecification::_internal_set_debate_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.debate_id_ = value;
+}
+
+// repeated int32 claim_ids = 2 [json_name = "claimIds"];
+inline int CollectionSpecification::_internal_claim_ids_size() const {
+  return _internal_claim_ids().size();
+}
+inline int CollectionSpecification::claim_ids_size() const {
+  return _internal_claim_ids_size();
+}
+inline void CollectionSpecification::clear_claim_ids() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_ids_.Clear();
+}
+inline ::int32_t CollectionSpecification::claim_ids(int index) const {
+  // @@protoc_insertion_point(field_get:debate.CollectionSpecification.claim_ids)
+  return _internal_claim_ids().Get(index);
+}
+inline void CollectionSpecification::set_claim_ids(int index, ::int32_t value) {
+  _internal_mutable_claim_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:debate.CollectionSpecification.claim_ids)
+}
+inline void CollectionSpecification::add_claim_ids(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_claim_ids()->Add(value);
+  // @@protoc_insertion_point(field_add:debate.CollectionSpecification.claim_ids)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& CollectionSpecification::claim_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.CollectionSpecification.claim_ids)
+  return _internal_claim_ids();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* CollectionSpecification::mutable_claim_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.CollectionSpecification.claim_ids)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_claim_ids();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+CollectionSpecification::_internal_claim_ids() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claim_ids_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* CollectionSpecification::_internal_mutable_claim_ids() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.claim_ids_;
 }
 
 #ifdef __GNUC__

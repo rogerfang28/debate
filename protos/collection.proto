@@ -8,3 +8,8 @@ message Collection {
 	map<int32, Claim> claims_by_id = 1;
 	map<int32, Link> links_by_id = 2;
 }
+
+message CollectionSpecification{
+	int32 debate_id = 1;
+	repeated int32 claim_ids = 2;
+}

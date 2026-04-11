@@ -4,11 +4,12 @@ package user;
 
 import "user_engagement.proto";
 import "scope.proto";
-
+import "collection.proto";
 
 message User {
   int32 user_id = 1;
   string username = 2;
   user_engagement.UserEngagement engagement = 3;
   debate.Scope current_scope = 4;
+  debate.CollectionSpecification collection_spec = 5;
 }
