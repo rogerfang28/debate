@@ -28,7 +28,6 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "reportButton" && eventType == "onClick") {
         Log::debug("  REPORT_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::REPORT_CLAIM);
-
     // edit description
     } else if (componentId == "editDescriptionButton" && eventType == "onClick") {
         Log::debug("  EDIT_DESCRIPTION for user: " + std::to_string(user_id));
@@ -226,6 +225,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     else if (componentId == "cancelModifyClaimButton" && eventType == "onClick") {
         Log::debug(" CANCEL_MODIFICATION_OF_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::CANCEL_MODIFICATION_OF_CLAIM);
+    }
+    else if (componentId.rfind("fullDebateStepButton_", 0) == 0 && eventType == "onClick") {
+        std::string stepId = componentId.substr(strlen("fullDebateStepButton_"));
+        Log::debug("  GO_TO_STEP for user: " + std::to_string(user_id) + " step ID: " + stepId);
+        event.set_type(debate_event::GO_TO_CLAIM);
+        event.mutable_go_to_claim()->set_claim_id(std::stoi(stepId));
     }
     else {
         Log::error("Unknown component/event combination on debate page: " 
