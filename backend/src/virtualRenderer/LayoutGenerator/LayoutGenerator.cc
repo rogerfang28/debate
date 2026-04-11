@@ -36,7 +36,8 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
         } else if (scopeType == debate::FULL_DEBATE) {
             Log::info("[LayoutGenerator] Generating Full Debate Page");
             rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(info.user(), info.collection());
-            return FullDebatePageGenerator::GenerateFullDebatePage(debatePageInfo, info.user());
+            rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection());
+            return FullDebatePageGenerator::GenerateFullDebatePage(debatePageInfo, fullDebateInfo, info.user());
         }
         else {
             Log::warn("[LayoutGenerator] Unknown scope type, defaulting to generating Single Claim Debate Page");

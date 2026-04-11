@@ -68,7 +68,11 @@ static user_engagement::DebatingInfo_CurrentDebateAction_ActionType MapDebateAct
 }
 
 
-ui::Page FullDebatePageGenerator::GenerateFullDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto) {
+ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
+    const rendering_info::DebatePageRenderingInfo& info,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const user::User& userProto
+) {
     // later get user proto from database, for now just get from args
     ui::Page page;
     page.set_page_id("debate");
@@ -89,7 +93,38 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(const rendering_info::D
     mainLayout = FillChallenges(info, userProto, mainLayout);
     mainLayout = FillCurrentClaimSection(info, userProto, mainLayout);
     mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
-    mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);    
+    mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);
+
+    // Bottom step menu for full debate flow.
+    ui::Component stepsMenu = ComponentGenerator::createContainer(
+        "fullDebateStepsMenu",
+        "fixed bottom-0 left-0 right-0 flex gap-2 overflow-x-auto",
+        "bg-gray-900",
+        "p-3",
+        "",
+        "border-t border-gray-700",
+        "",
+        "z-40"
+    );
+
+    for (int i = 0; i < fullDebateInfo.steps_size(); ++i) {
+        const rendering_info::Steps& step = fullDebateInfo.steps(i);
+        const std::string stepLabel = "Step " + std::to_string(i + 1) + ": " + step.summary();
+        const std::string stepButtonId = "fullDebateStepButton_(" + std::to_string(step.claim_id()) + ")";
+        ui::Component stepButton = ComponentGenerator::createButton(
+            stepButtonId,
+            stepLabel,
+            "",
+            "bg-gray-700",
+            "hover:bg-gray-600",
+            "text-white",
+            "px-3 py-2",
+            "rounded",
+            "whitespace-nowrap text-sm"
+        );
+        ComponentGenerator::addChild(&stepsMenu, stepButton);
+    }
+    ComponentGenerator::addChild(&mainLayout, stepsMenu);
 
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(mainLayout);

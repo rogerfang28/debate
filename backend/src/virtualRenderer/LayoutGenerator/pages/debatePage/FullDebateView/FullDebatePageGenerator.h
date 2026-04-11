@@ -6,7 +6,11 @@
 
 class FullDebatePageGenerator {
 public:
-    static ui::Page GenerateFullDebatePage(const rendering_info::DebatePageRenderingInfo& info, const user::User& userProto);
+    static ui::Page GenerateFullDebatePage(
+        const rendering_info::DebatePageRenderingInfo& info,
+        const rendering_info::FullDebateViewInfo& fullDebateInfo,
+        const user::User& userProto
+    );
     static ui::Component GenerateSingleClaimLayout();
     static ui::Component FillChildClaims(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component FillChallenges(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
