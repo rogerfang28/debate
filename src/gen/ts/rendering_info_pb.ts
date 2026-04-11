@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file rendering_info.proto.
  */
 export const file_rendering_info: GenFile = /*@__PURE__*/
-  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8i2AQKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhEKCWRlYmF0ZV9pZBgDIAEoBRItCgpzY29wZV90eXBlGAQgASgOMhkucmVuZGVyaW5nX2luZm8uU2NvcGVUeXBlEhsKE2lzX2NoYWxsZW5nZV9kZWJhdGUYBSABKAgSNgoNY3VycmVudF9jbGFpbRgGIAEoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAcgASgJEjgKD2NoaWxkcmVuX2NsYWltcxgIIAMoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxItCgVsaW5rcxgJIAMoCzIeLnJlbmRlcmluZ19pbmZvLkxpbmtSZW5kZXJJbmZvEj8KEmN1cnJlbnRfY2hhbGxlbmdlcxgKIAMoCzIjLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVJlbmRlckluZm8SHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCyABKAgSOAoOY3VycmVudF9hY3Rpb24YDCABKA4yIC5yZW5kZXJpbmdfaW5mby5EZWJhdGVBY3Rpb25UeXBlEj0KD2Nvbm5lY3RpbmdfaW5mbxgNIAEoCzIkLnJlbmRlcmluZ19pbmZvLkNvbm5lY3RpbmdSZW5kZXJJbmZvEj8KEGNoYWxsZW5naW5nX2luZm8YDiABKAsyJS5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2luZ1JlbmRlckluZm8isgEKFUhvbWVQYWdlUmVuZGVyaW5nSW5mbxIWCg52aWV3ZXJfdXNlcl9pZBgBIAEoBRIXCg92aWV3ZXJfdXNlcm5hbWUYAiABKAkSRAoRYXZhaWxhYmxlX2RlYmF0ZXMYAyADKAsyKS5yZW5kZXJpbmdfaW5mby5Ib21lRGViYXRlVG9waWNSZW5kZXJJbmZvEiIKGmNhbl9jcmVhdGVfb3Jfam9pbl9kZWJhdGVzGAQgASgIIpEBChlIb21lRGViYXRlVG9waWNSZW5kZXJJbmZvEhwKFGRlYmF0ZV9yb290X2NsYWltX2lkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSJwCg9DbGFpbVJlbmRlckluZm8SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIrCgZzdGF0dXMYBCABKA4yGy5yZW5kZXJpbmdfaW5mby5DbGFpbVN0YXR1cyJuCg5MaW5rUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUieAoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEi8KBnN0YXR1cxgEIAEoDjIfLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVN0YXR1cyJ0ChRDb25uZWN0aW5nUmVuZGVySW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3RpbmcYAyABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBCABKAgiXAoVQ2hhbGxlbmdpbmdSZW5kZXJJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIeChZvcGVuZWRfY2hhbGxlbmdlX21vZGFsGAMgASgIKkoKCVNjb3BlVHlwZRIaChZTQ09QRV9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMU0lOR0xFX0NMQUlNEAESDwoLRlVMTF9ERUJBVEUQAiqZAQoLQ2xhaW1TdGF0dXMSHAoYQ0xBSU1fU1RBVFVTX1VOU1BFQ0lGSUVEEAASGAoUQ0xBSU1fU1RBVFVTX05FVVRSQUwQARIbChdDTEFJTV9TVEFUVVNfQ0hBTExFTkdFRBACEhkKFUNMQUlNX1NUQVRVU19ERUZFTkRFRBADEhoKFkNMQUlNX1NUQVRVU19ESVNQUk9WRU4QBCqNAQoPQ2hhbGxlbmdlU3RhdHVzEiAKHENIQUxMRU5HRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIcChhDSEFMTEVOR0VfU1RBVFVTX09OR09JTkcQARIdChlDSEFMTEVOR0VfU1RBVFVTX0NPTkNFREVEEAISGwoXQ0hBTExFTkdFX1NUQVRVU19QUk9WRU4QAyrPAQoQRGViYXRlQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QB2IGcHJvdG8z", [file_debate]);
+  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8i2AQKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhEKCWRlYmF0ZV9pZBgDIAEoBRItCgpzY29wZV90eXBlGAQgASgOMhkucmVuZGVyaW5nX2luZm8uU2NvcGVUeXBlEhsKE2lzX2NoYWxsZW5nZV9kZWJhdGUYBSABKAgSNgoNY3VycmVudF9jbGFpbRgGIAEoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAcgASgJEjgKD2NoaWxkcmVuX2NsYWltcxgIIAMoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxItCgVsaW5rcxgJIAMoCzIeLnJlbmRlcmluZ19pbmZvLkxpbmtSZW5kZXJJbmZvEj8KEmN1cnJlbnRfY2hhbGxlbmdlcxgKIAMoCzIjLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVJlbmRlckluZm8SHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCyABKAgSOAoOY3VycmVudF9hY3Rpb24YDCABKA4yIC5yZW5kZXJpbmdfaW5mby5EZWJhdGVBY3Rpb25UeXBlEj0KD2Nvbm5lY3RpbmdfaW5mbxgNIAEoCzIkLnJlbmRlcmluZ19pbmZvLkNvbm5lY3RpbmdSZW5kZXJJbmZvEj8KEGNoYWxsZW5naW5nX2luZm8YDiABKAsyJS5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2luZ1JlbmRlckluZm8iOgoSRnVsbERlYmF0ZVZpZXdJbmZvEiQKBXN0ZXBzGAEgAygLMhUucmVuZGVyaW5nX2luZm8uU3RlcHMiKgoFU3RlcHMSEAoIY2xhaW1faWQYASABKAUSDwoHc3VtbWFyeRgCIAEoCSKyAQoVSG9tZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRJEChFhdmFpbGFibGVfZGViYXRlcxgDIAMoCzIpLnJlbmRlcmluZ19pbmZvLkhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SIgoaY2FuX2NyZWF0ZV9vcl9qb2luX2RlYmF0ZXMYBCABKAgikQEKGUhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SHAoUZGViYXRlX3Jvb3RfY2xhaW1faWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJInAKD0NsYWltUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEisKBnN0YXR1cxgEIAEoDjIbLnJlbmRlcmluZ19pbmZvLkNsYWltU3RhdHVzIm4KDkxpbmtSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSKNAQoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFEi8KBnN0YXR1cxgFIAEoDjIfLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVN0YXR1cyJ0ChRDb25uZWN0aW5nUmVuZGVySW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3RpbmcYAyABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBCABKAgiXAoVQ2hhbGxlbmdpbmdSZW5kZXJJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIeChZvcGVuZWRfY2hhbGxlbmdlX21vZGFsGAMgASgIKkoKCVNjb3BlVHlwZRIaChZTQ09QRV9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMU0lOR0xFX0NMQUlNEAESDwoLRlVMTF9ERUJBVEUQAiqZAQoLQ2xhaW1TdGF0dXMSHAoYQ0xBSU1fU1RBVFVTX1VOU1BFQ0lGSUVEEAASGAoUQ0xBSU1fU1RBVFVTX05FVVRSQUwQARIbChdDTEFJTV9TVEFUVVNfQ0hBTExFTkdFRBACEhkKFUNMQUlNX1NUQVRVU19ERUZFTkRFRBADEhoKFkNMQUlNX1NUQVRVU19ESVNQUk9WRU4QBCqNAQoPQ2hhbGxlbmdlU3RhdHVzEiAKHENIQUxMRU5HRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIcChhDSEFMTEVOR0VfU1RBVFVTX09OR09JTkcQARIdChlDSEFMTEVOR0VfU1RBVFVTX0NPTkNFREVEEAISGwoXQ0hBTExFTkdFX1NUQVRVU19QUk9WRU4QAyrPAQoQRGViYXRlQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QB2IGcHJvdG8z", [file_debate]);
 
 /**
  * The exact input needed to build the debate page UI.
@@ -103,6 +103,52 @@ export const DebatePageRenderingInfoSchema: GenMessage<DebatePageRenderingInfo> 
   messageDesc(file_rendering_info, 0);
 
 /**
+ * Extra rendering payload for full-debate view.
+ *
+ * @generated from message rendering_info.FullDebateViewInfo
+ */
+export type FullDebateViewInfo = Message<"rendering_info.FullDebateViewInfo"> & {
+  /**
+   * Chronological list of summarized steps. The order in this repeated field
+   * is the timeline order (earliest to latest).
+   *
+   * @generated from field: repeated rendering_info.Steps steps = 1;
+   */
+  steps: Steps[];
+};
+
+/**
+ * Describes the message rendering_info.FullDebateViewInfo.
+ * Use `create(FullDebateViewInfoSchema)` to create a new message.
+ */
+export const FullDebateViewInfoSchema: GenMessage<FullDebateViewInfo> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 1);
+
+/**
+ * One timeline step in the full-debate view.
+ *
+ * @generated from message rendering_info.Steps
+ */
+export type Steps = Message<"rendering_info.Steps"> & {
+  /**
+   * @generated from field: int32 claim_id = 1;
+   */
+  claimId: number;
+
+  /**
+   * @generated from field: string summary = 2;
+   */
+  summary: string;
+};
+
+/**
+ * Describes the message rendering_info.Steps.
+ * Use `create(StepsSchema)` to create a new message.
+ */
+export const StepsSchema: GenMessage<Steps> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 2);
+
+/**
  * The exact input needed to build the home page UI.
  *
  * @generated from message rendering_info.HomePageRenderingInfo
@@ -140,7 +186,7 @@ export type HomePageRenderingInfo = Message<"rendering_info.HomePageRenderingInf
  * Use `create(HomePageRenderingInfoSchema)` to create a new message.
  */
 export const HomePageRenderingInfoSchema: GenMessage<HomePageRenderingInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 1);
+  messageDesc(file_rendering_info, 3);
 
 /**
  * @generated from message rendering_info.HomeDebateTopicRenderInfo
@@ -177,7 +223,7 @@ export type HomeDebateTopicRenderInfo = Message<"rendering_info.HomeDebateTopicR
  * Use `create(HomeDebateTopicRenderInfoSchema)` to create a new message.
  */
 export const HomeDebateTopicRenderInfoSchema: GenMessage<HomeDebateTopicRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 2);
+  messageDesc(file_rendering_info, 4);
 
 /**
  * @generated from message rendering_info.ClaimRenderInfo
@@ -209,7 +255,7 @@ export type ClaimRenderInfo = Message<"rendering_info.ClaimRenderInfo"> & {
  * Use `create(ClaimRenderInfoSchema)` to create a new message.
  */
 export const ClaimRenderInfoSchema: GenMessage<ClaimRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 3);
+  messageDesc(file_rendering_info, 5);
 
 /**
  * @generated from message rendering_info.LinkRenderInfo
@@ -246,7 +292,7 @@ export type LinkRenderInfo = Message<"rendering_info.LinkRenderInfo"> & {
  * Use `create(LinkRenderInfoSchema)` to create a new message.
  */
 export const LinkRenderInfoSchema: GenMessage<LinkRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 4);
+  messageDesc(file_rendering_info, 6);
 
 /**
  * @generated from message rendering_info.ChallengeRenderInfo
@@ -263,12 +309,17 @@ export type ChallengeRenderInfo = Message<"rendering_info.ChallengeRenderInfo"> 
   sentence: string;
 
   /**
-   * @generated from field: int32 creator_id = 3;
+   * @generated from field: string description = 3;
+   */
+  description: string;
+
+  /**
+   * @generated from field: int32 creator_id = 4;
    */
   creatorId: number;
 
   /**
-   * @generated from field: rendering_info.ChallengeStatus status = 4;
+   * @generated from field: rendering_info.ChallengeStatus status = 5;
    */
   status: ChallengeStatus;
 };
@@ -278,7 +329,7 @@ export type ChallengeRenderInfo = Message<"rendering_info.ChallengeRenderInfo"> 
  * Use `create(ChallengeRenderInfoSchema)` to create a new message.
  */
 export const ChallengeRenderInfoSchema: GenMessage<ChallengeRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 5);
+  messageDesc(file_rendering_info, 7);
 
 /**
  * @generated from message rendering_info.ConnectingRenderInfo
@@ -310,7 +361,7 @@ export type ConnectingRenderInfo = Message<"rendering_info.ConnectingRenderInfo"
  * Use `create(ConnectingRenderInfoSchema)` to create a new message.
  */
 export const ConnectingRenderInfoSchema: GenMessage<ConnectingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 6);
+  messageDesc(file_rendering_info, 8);
 
 /**
  * @generated from message rendering_info.ChallengingRenderInfo
@@ -337,7 +388,7 @@ export type ChallengingRenderInfo = Message<"rendering_info.ChallengingRenderInf
  * Use `create(ChallengingRenderInfoSchema)` to create a new message.
  */
 export const ChallengingRenderInfoSchema: GenMessage<ChallengingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 7);
+  messageDesc(file_rendering_info, 9);
 
 /**
  * @generated from enum rendering_info.ScopeType

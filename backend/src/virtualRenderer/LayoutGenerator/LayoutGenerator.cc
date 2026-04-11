@@ -7,6 +7,8 @@
 #include "./pages/homePage/HomePageInfoParser.h"
 #include "./pages/debatePage/SingleStatementView/SingleDebatePageGenerator.h"
 #include "./pages/debatePage/SingleStatementView/SingleDebatePageInfoParser.h"
+#include "./pages/debatePage/FullDebateView/FullDebatePageGenerator.h"
+#include "./pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
 #include "./pages/loginPage/LoginPageGenerator.h"
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
@@ -33,9 +35,8 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
         } else if (scopeType == debate::FULL_DEBATE) {
             Log::info("[LayoutGenerator] Generating Full Debate Page");
-            // to do
-            rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
-            return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
+            rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(info.user(), info.collection());
+            return FullDebatePageGenerator::GenerateFullDebatePage(debatePageInfo, info.user());
         }
         else {
             Log::warn("[LayoutGenerator] Unknown scope type, defaulting to generating Single Claim Debate Page");

@@ -34,6 +34,19 @@ message DebatePageRenderingInfo {
 	ChallengingRenderInfo challenging_info = 14;
 }
 
+// Extra rendering payload for full-debate view.
+message FullDebateViewInfo {
+	// Chronological list of summarized steps. The order in this repeated field
+	// is the timeline order (earliest to latest).
+	repeated Steps steps = 1;
+}
+
+// One timeline step in the full-debate view.
+message Steps {
+	int32 claim_id = 1;
+	string summary = 2;
+}
+
 // The exact input needed to build the home page UI.
 message HomePageRenderingInfo {
 	// Viewer metadata used for ownership checks and logging.
