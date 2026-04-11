@@ -68,7 +68,7 @@ rendering_info::DebateActionType MapDebateAction(
 }
 }
 
-rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(const user::User& userProto, const debate::Collection& collectionProto) {
+rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user::User userProto, const debate::Collection& collectionProto) {
 	rendering_info::DebatePageRenderingInfo info;
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
@@ -79,7 +79,40 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
 
-	info.set_debate_id(debatingInfo.debate_id());
+	info.set_debate_id(userProto.collection_spec().debate_id());
+
+	// what is the current claim id?
+	int currentClaimId = userProto.current_scope().single_claim().current_claim_id();
+	if (collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
+		// change the current scope to the root claim single view
+		// find the root claim (no parent child link where current claim is the child)
+		int rootClaimId = -1;
+		for (const auto& claimEntry : collectionProto.claims_by_id()) {
+			const debate::Claim& claim = claimEntry.second;
+			bool isRoot = true;
+			for (int i = 0; i < claim.link_ids_size(); ++i) {
+				int linkId = claim.link_ids(i);
+				auto linkIt = collectionProto.links_by_id().find(linkId);
+				if (linkIt != collectionProto.links_by_id().end()) {
+					const debate::Link& link = linkIt->second;
+					if (link.connect_to() == claim.id() && link.link_type() == debate::LinkType::PARENT_CHILD) {
+						isRoot = false;
+						break;
+					}
+				}
+			}
+			if (isRoot) {
+				rootClaimId = claim.id();
+				Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(currentClaimId) + " not found in collection! Setting current claim to root claim ID " + std::to_string(rootClaimId));
+				break;
+			}
+		}
+		currentClaimId = rootClaimId;
+		userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(rootClaimId);
+	}
+	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(currentClaimId);
+	// int currentClaimId = debatingInfo.current_claim().id();
+
 	info.set_current_claim_description(debatingInfo.current_claim_description());
 	info.set_modifying_current_claim(debatingInfo.modifying_current_claim());
 	info.set_current_action(MapDebateAction(debatingInfo.current_debate_action().action_type()));
@@ -94,17 +127,16 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(cons
 	std::unordered_set<int> visibleClaimIds;
 	visibleClaimIds.insert(currentClaim->id());
 
-	int currentClaimId = debatingInfo.current_claim().id();
 	Log::debug("[DebatePageInfoParser] Looking up current_claim_id=" + std::to_string(currentClaimId) + " in collection.claims_by_id (size=" + std::to_string(collectionProto.claims_by_id_size()) + ")");
 	
-	auto currentClaimIt = collectionProto.claims_by_id().find(currentClaimId);
-	if (currentClaimIt == collectionProto.claims_by_id().end()) {
-		Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(currentClaimId) + " NOT FOUND in collection!");
-		Log::info("[DebatePageInfoParser] Finished copying links: output_count=" + std::to_string(info.links_size()));
-		return info;
-	}
+	// auto currentClaimIt = collectionProto.claims_by_id().find(currentClaimId);
+	// if (currentClaimIt == collectionProto.claims_by_id().end()) {
+	// 	Log::warn("[DebatePageInfoParser] Current claim ID " + std::to_string(currentClaimId) + " NOT FOUND in collection!");
+	// 	Log::info("[DebatePageInfoParser] Finished copying links: output_count=" + std::to_string(info.links_size()));
+	// 	return info;
+	// }
 
-	debate::Claim currentClaimProto = currentClaimIt->second;
+	// debate::Claim currentClaimProto = currentClaimIt->second;
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()) + ", has " + std::to_string(currentClaimProto.link_ids_size()) + " links");
 	if (currentClaimProto.link_ids_size() == 0) {
 		Log::warn("[DebatePageInfoParser] Current claim has NO link_ids - no parent-child relationships defined!");

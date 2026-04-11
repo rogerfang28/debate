@@ -6,5 +6,5 @@
 
 class DebatePageInfoParser {
 public:
-	static rendering_info::DebatePageRenderingInfo ParseFromUser(const user::User& userProto, const debate::Collection& collectionProto);
+	static rendering_info::DebatePageRenderingInfo ParseFromUser(user::User userProto, const debate::Collection& collectionProto);
 };
