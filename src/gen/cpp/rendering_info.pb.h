@@ -2039,12 +2039,10 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
     kChildrenClaimsFieldNumber = 8,
     kLinksFieldNumber = 9,
     kCurrentChallengesFieldNumber = 10,
-    kViewerUsernameFieldNumber = 2,
     kCurrentClaimDescriptionFieldNumber = 7,
     kCurrentClaimFieldNumber = 6,
     kConnectingInfoFieldNumber = 13,
     kChallengingInfoFieldNumber = 14,
-    kViewerUserIdFieldNumber = 1,
     kDebateIdFieldNumber = 3,
     kScopeTypeFieldNumber = 4,
     kIsChallengeDebateFieldNumber = 5,
@@ -2102,22 +2100,6 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
   const ::rendering_info::ChallengeRenderInfo& current_challenges(int index) const;
   ::rendering_info::ChallengeRenderInfo* add_current_challenges();
   const ::google::protobuf::RepeatedPtrField<::rendering_info::ChallengeRenderInfo>& current_challenges() const;
-  // string viewer_username = 2 [json_name = "viewerUsername"];
-  void clear_viewer_username() ;
-  const std::string& viewer_username() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_viewer_username(Arg_&& arg, Args_... args);
-  std::string* mutable_viewer_username();
-  PROTOBUF_NODISCARD std::string* release_viewer_username();
-  void set_allocated_viewer_username(std::string* value);
-
-  private:
-  const std::string& _internal_viewer_username() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_viewer_username(
-      const std::string& value);
-  std::string* _internal_mutable_viewer_username();
-
-  public:
   // string current_claim_description = 7 [json_name = "currentClaimDescription"];
   void clear_current_claim_description() ;
   const std::string& current_claim_description() const;
@@ -2179,16 +2161,6 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
   ::rendering_info::ChallengingRenderInfo* _internal_mutable_challenging_info();
 
   public:
-  // int32 viewer_user_id = 1 [json_name = "viewerUserId"];
-  void clear_viewer_user_id() ;
-  ::int32_t viewer_user_id() const;
-  void set_viewer_user_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_viewer_user_id() const;
-  void _internal_set_viewer_user_id(::int32_t value);
-
-  public:
   // int32 debate_id = 3 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
@@ -2244,8 +2216,8 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 14, 6,
-      95, 2>
+      4, 12, 6,
+      80, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -2267,12 +2239,10 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::rendering_info::ClaimRenderInfo > children_claims_;
     ::google::protobuf::RepeatedPtrField< ::rendering_info::LinkRenderInfo > links_;
     ::google::protobuf::RepeatedPtrField< ::rendering_info::ChallengeRenderInfo > current_challenges_;
-    ::google::protobuf::internal::ArenaStringPtr viewer_username_;
     ::google::protobuf::internal::ArenaStringPtr current_claim_description_;
     ::rendering_info::ClaimRenderInfo* current_claim_;
     ::rendering_info::ConnectingRenderInfo* connecting_info_;
     ::rendering_info::ChallengingRenderInfo* challenging_info_;
-    ::int32_t viewer_user_id_;
     ::int32_t debate_id_;
     int scope_type_;
     bool is_challenge_debate_;
@@ -2299,76 +2269,6 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
 // -------------------------------------------------------------------
 
 // DebatePageRenderingInfo
-
-// int32 viewer_user_id = 1 [json_name = "viewerUserId"];
-inline void DebatePageRenderingInfo::clear_viewer_user_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_user_id_ = 0;
-}
-inline ::int32_t DebatePageRenderingInfo::viewer_user_id() const {
-  // @@protoc_insertion_point(field_get:rendering_info.DebatePageRenderingInfo.viewer_user_id)
-  return _internal_viewer_user_id();
-}
-inline void DebatePageRenderingInfo::set_viewer_user_id(::int32_t value) {
-  _internal_set_viewer_user_id(value);
-  // @@protoc_insertion_point(field_set:rendering_info.DebatePageRenderingInfo.viewer_user_id)
-}
-inline ::int32_t DebatePageRenderingInfo::_internal_viewer_user_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.viewer_user_id_;
-}
-inline void DebatePageRenderingInfo::_internal_set_viewer_user_id(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_user_id_ = value;
-}
-
-// string viewer_username = 2 [json_name = "viewerUsername"];
-inline void DebatePageRenderingInfo::clear_viewer_username() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_username_.ClearToEmpty();
-}
-inline const std::string& DebatePageRenderingInfo::viewer_username() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:rendering_info.DebatePageRenderingInfo.viewer_username)
-  return _internal_viewer_username();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void DebatePageRenderingInfo::set_viewer_username(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:rendering_info.DebatePageRenderingInfo.viewer_username)
-}
-inline std::string* DebatePageRenderingInfo::mutable_viewer_username() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_viewer_username();
-  // @@protoc_insertion_point(field_mutable:rendering_info.DebatePageRenderingInfo.viewer_username)
-  return _s;
-}
-inline const std::string& DebatePageRenderingInfo::_internal_viewer_username() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.viewer_username_.Get();
-}
-inline void DebatePageRenderingInfo::_internal_set_viewer_username(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_username_.Set(value, GetArena());
-}
-inline std::string* DebatePageRenderingInfo::_internal_mutable_viewer_username() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.viewer_username_.Mutable( GetArena());
-}
-inline std::string* DebatePageRenderingInfo::release_viewer_username() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:rendering_info.DebatePageRenderingInfo.viewer_username)
-  return _impl_.viewer_username_.Release();
-}
-inline void DebatePageRenderingInfo::set_allocated_viewer_username(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.viewer_username_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.viewer_username_.IsDefault()) {
-    _impl_.viewer_username_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:rendering_info.DebatePageRenderingInfo.viewer_username)
-}
 
 // int32 debate_id = 3 [json_name = "debateId"];
 inline void DebatePageRenderingInfo::clear_debate_id() {

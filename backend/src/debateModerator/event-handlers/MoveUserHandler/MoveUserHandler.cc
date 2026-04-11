@@ -76,6 +76,7 @@ void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateW
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
+// this function should be not called later, since vr can just call go to claim with claim id
 void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
     resetOngoingActivities(user_id, debateWrapper);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);

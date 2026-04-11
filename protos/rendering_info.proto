@@ -7,8 +7,9 @@ import "debate.proto";
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
 	// Viewer metadata used for ownership checks and logging.
-	int32 viewer_user_id = 1;
-	string viewer_username = 2;
+	// not needed currently
+	// int32 viewer_user_id = 1;
+	// string viewer_username = 2;
 
 	// Top-level page routing/context.
 	int32 debate_id = 3;

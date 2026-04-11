@@ -73,8 +73,8 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
 	
-	info.set_viewer_user_id(userProto.user_id());
-	info.set_viewer_username(userProto.username());
+	// info.set_viewer_user_id(userProto.user_id());
+	// info.set_viewer_username(userProto.username());
 	info.set_scope_type(MapScopeType(userProto.current_scope().scopetype()));
 
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
