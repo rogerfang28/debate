@@ -39,6 +39,58 @@ message FullDebateViewInfo {
 	// Chronological list of summarized steps. The order in this repeated field
 	// is the timeline order (earliest to latest).
 	repeated Steps steps = 1;
+
+	// Tree-structured data used by the full-debate map renderer.
+	FullDebateTree full_debate_tree = 2;
+}
+
+// Map-friendly full debate graph (claims as nodes and typed edges).
+message FullDebateTree {
+	// Usually the topic/root claim for this debate.
+	int32 root_claim_id = 1;
+
+	// All claim nodes in this debate.
+	repeated FullDebateTreeNode nodes = 2;
+
+	// Directed links between claims. Includes parent/child and challenge links.
+	repeated FullDebateTreeLink links = 3;
+}
+
+// One claim node in the full debate tree.
+message FullDebateTreeNode {
+	int32 claim_id = 1;
+	string sentence = 2;
+	int32 creator_id = 3;
+	ClaimStatus status = 4;
+
+	// Convenience adjacency to simplify map rendering without extra joins.
+	repeated int32 parent_claim_ids = 5;
+	repeated int32 child_claim_ids = 6;
+}
+
+enum FullDebateTreeLinkType {
+	FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED = 0;
+	FULL_DEBATE_TREE_PARENT_CHILD = 1;
+	FULL_DEBATE_TREE_CHALLENGE = 2;
+}
+
+// One directed relationship in the map tree.
+message FullDebateTreeLink {
+	int32 from_claim_id = 1;
+	int32 to_claim_id = 2;
+	FullDebateTreeLinkType link_type = 3;
+
+	// Explicit convenience flag for UI code that only needs a boolean check.
+	bool is_challenge = 4;
+
+	// Back references to source entities when available.
+	int32 link_id = 5;
+	int32 challenge_id = 6;
+
+	// Optional metadata copied from domain link/challenge rows.
+	string connection = 7;
+	int32 creator_id = 8;
+	ChallengeStatus challenge_status = 9;
 }
 
 // One timeline step in the full-debate view.

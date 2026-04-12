@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file rendering_info.proto.
  */
 export const file_rendering_info: GenFile = /*@__PURE__*/
-  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8i2AQKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhEKCWRlYmF0ZV9pZBgDIAEoBRItCgpzY29wZV90eXBlGAQgASgOMhkucmVuZGVyaW5nX2luZm8uU2NvcGVUeXBlEhsKE2lzX2NoYWxsZW5nZV9kZWJhdGUYBSABKAgSNgoNY3VycmVudF9jbGFpbRgGIAEoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAcgASgJEjgKD2NoaWxkcmVuX2NsYWltcxgIIAMoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxItCgVsaW5rcxgJIAMoCzIeLnJlbmRlcmluZ19pbmZvLkxpbmtSZW5kZXJJbmZvEj8KEmN1cnJlbnRfY2hhbGxlbmdlcxgKIAMoCzIjLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVJlbmRlckluZm8SHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCyABKAgSOAoOY3VycmVudF9hY3Rpb24YDCABKA4yIC5yZW5kZXJpbmdfaW5mby5EZWJhdGVBY3Rpb25UeXBlEj0KD2Nvbm5lY3RpbmdfaW5mbxgNIAEoCzIkLnJlbmRlcmluZ19pbmZvLkNvbm5lY3RpbmdSZW5kZXJJbmZvEj8KEGNoYWxsZW5naW5nX2luZm8YDiABKAsyJS5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2luZ1JlbmRlckluZm8iOgoSRnVsbERlYmF0ZVZpZXdJbmZvEiQKBXN0ZXBzGAEgAygLMhUucmVuZGVyaW5nX2luZm8uU3RlcHMiKgoFU3RlcHMSEAoIY2xhaW1faWQYASABKAUSDwoHc3VtbWFyeRgCIAEoCSKyAQoVSG9tZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRJEChFhdmFpbGFibGVfZGViYXRlcxgDIAMoCzIpLnJlbmRlcmluZ19pbmZvLkhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SIgoaY2FuX2NyZWF0ZV9vcl9qb2luX2RlYmF0ZXMYBCABKAgikQEKGUhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SHAoUZGViYXRlX3Jvb3RfY2xhaW1faWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJInAKD0NsYWltUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEisKBnN0YXR1cxgEIAEoDjIbLnJlbmRlcmluZ19pbmZvLkNsYWltU3RhdHVzIm4KDkxpbmtSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSKNAQoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFEi8KBnN0YXR1cxgFIAEoDjIfLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVN0YXR1cyJ0ChRDb25uZWN0aW5nUmVuZGVySW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3RpbmcYAyABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBCABKAgiXAoVQ2hhbGxlbmdpbmdSZW5kZXJJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIeChZvcGVuZWRfY2hhbGxlbmdlX21vZGFsGAMgASgIKkoKCVNjb3BlVHlwZRIaChZTQ09QRV9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMU0lOR0xFX0NMQUlNEAESDwoLRlVMTF9ERUJBVEUQAiqZAQoLQ2xhaW1TdGF0dXMSHAoYQ0xBSU1fU1RBVFVTX1VOU1BFQ0lGSUVEEAASGAoUQ0xBSU1fU1RBVFVTX05FVVRSQUwQARIbChdDTEFJTV9TVEFUVVNfQ0hBTExFTkdFRBACEhkKFUNMQUlNX1NUQVRVU19ERUZFTkRFRBADEhoKFkNMQUlNX1NUQVRVU19ESVNQUk9WRU4QBCqNAQoPQ2hhbGxlbmdlU3RhdHVzEiAKHENIQUxMRU5HRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIcChhDSEFMTEVOR0VfU1RBVFVTX09OR09JTkcQARIdChlDSEFMTEVOR0VfU1RBVFVTX0NPTkNFREVEEAISGwoXQ0hBTExFTkdFX1NUQVRVU19QUk9WRU4QAyrPAQoQRGViYXRlQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QB2IGcHJvdG8z", [file_debate]);
+  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8i2AQKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhEKCWRlYmF0ZV9pZBgDIAEoBRItCgpzY29wZV90eXBlGAQgASgOMhkucmVuZGVyaW5nX2luZm8uU2NvcGVUeXBlEhsKE2lzX2NoYWxsZW5nZV9kZWJhdGUYBSABKAgSNgoNY3VycmVudF9jbGFpbRgGIAEoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAcgASgJEjgKD2NoaWxkcmVuX2NsYWltcxgIIAMoCzIfLnJlbmRlcmluZ19pbmZvLkNsYWltUmVuZGVySW5mbxItCgVsaW5rcxgJIAMoCzIeLnJlbmRlcmluZ19pbmZvLkxpbmtSZW5kZXJJbmZvEj8KEmN1cnJlbnRfY2hhbGxlbmdlcxgKIAMoCzIjLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVJlbmRlckluZm8SHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCyABKAgSOAoOY3VycmVudF9hY3Rpb24YDCABKA4yIC5yZW5kZXJpbmdfaW5mby5EZWJhdGVBY3Rpb25UeXBlEj0KD2Nvbm5lY3RpbmdfaW5mbxgNIAEoCzIkLnJlbmRlcmluZ19pbmZvLkNvbm5lY3RpbmdSZW5kZXJJbmZvEj8KEGNoYWxsZW5naW5nX2luZm8YDiABKAsyJS5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2luZ1JlbmRlckluZm8idAoSRnVsbERlYmF0ZVZpZXdJbmZvEiQKBXN0ZXBzGAEgAygLMhUucmVuZGVyaW5nX2luZm8uU3RlcHMSOAoQZnVsbF9kZWJhdGVfdHJlZRgCIAEoCzIeLnJlbmRlcmluZ19pbmZvLkZ1bGxEZWJhdGVUcmVlIo0BCg5GdWxsRGViYXRlVHJlZRIVCg1yb290X2NsYWltX2lkGAEgASgFEjEKBW5vZGVzGAIgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVOb2RlEjEKBWxpbmtzGAMgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVMaW5rIqwBChJGdWxsRGViYXRlVHJlZU5vZGUSEAoIY2xhaW1faWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIrCgZzdGF0dXMYBCABKA4yGy5yZW5kZXJpbmdfaW5mby5DbGFpbVN0YXR1cxIYChBwYXJlbnRfY2xhaW1faWRzGAUgAygFEhcKD2NoaWxkX2NsYWltX2lkcxgGIAMoBSKbAgoSRnVsbERlYmF0ZVRyZWVMaW5rEhUKDWZyb21fY2xhaW1faWQYASABKAUSEwoLdG9fY2xhaW1faWQYAiABKAUSOQoJbGlua190eXBlGAMgASgOMiYucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVMaW5rVHlwZRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSDwoHbGlua19pZBgFIAEoBRIUCgxjaGFsbGVuZ2VfaWQYBiABKAUSEgoKY29ubmVjdGlvbhgHIAEoCRISCgpjcmVhdG9yX2lkGAggASgFEjkKEGNoYWxsZW5nZV9zdGF0dXMYCSABKA4yHy5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2VTdGF0dXMiKgoFU3RlcHMSEAoIY2xhaW1faWQYASABKAUSDwoHc3VtbWFyeRgCIAEoCSKyAQoVSG9tZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRJEChFhdmFpbGFibGVfZGViYXRlcxgDIAMoCzIpLnJlbmRlcmluZ19pbmZvLkhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SIgoaY2FuX2NyZWF0ZV9vcl9qb2luX2RlYmF0ZXMYBCABKAgikQEKGUhvbWVEZWJhdGVUb3BpY1JlbmRlckluZm8SHAoUZGViYXRlX3Jvb3RfY2xhaW1faWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJInAKD0NsYWltUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEisKBnN0YXR1cxgEIAEoDjIbLnJlbmRlcmluZ19pbmZvLkNsYWltU3RhdHVzIm4KDkxpbmtSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSKNAQoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFEi8KBnN0YXR1cxgFIAEoDjIfLnJlbmRlcmluZ19pbmZvLkNoYWxsZW5nZVN0YXR1cyJ0ChRDb25uZWN0aW5nUmVuZGVySW5mbxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEhIKCmNvbm5lY3RpbmcYAyABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBCABKAgiXAoVQ2hhbGxlbmdpbmdSZW5kZXJJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIeChZvcGVuZWRfY2hhbGxlbmdlX21vZGFsGAMgASgIKocBChZGdWxsRGViYXRlVHJlZUxpbmtUeXBlEioKJkZVTExfREVCQVRFX1RSRUVfTElOS19UWVBFX1VOU1BFQ0lGSUVEEAASIQodRlVMTF9ERUJBVEVfVFJFRV9QQVJFTlRfQ0hJTEQQARIeChpGVUxMX0RFQkFURV9UUkVFX0NIQUxMRU5HRRACKkoKCVNjb3BlVHlwZRIaChZTQ09QRV9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMU0lOR0xFX0NMQUlNEAESDwoLRlVMTF9ERUJBVEUQAiqZAQoLQ2xhaW1TdGF0dXMSHAoYQ0xBSU1fU1RBVFVTX1VOU1BFQ0lGSUVEEAASGAoUQ0xBSU1fU1RBVFVTX05FVVRSQUwQARIbChdDTEFJTV9TVEFUVVNfQ0hBTExFTkdFRBACEhkKFUNMQUlNX1NUQVRVU19ERUZFTkRFRBADEhoKFkNMQUlNX1NUQVRVU19ESVNQUk9WRU4QBCqNAQoPQ2hhbGxlbmdlU3RhdHVzEiAKHENIQUxMRU5HRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIcChhDSEFMTEVOR0VfU1RBVFVTX09OR09JTkcQARIdChlDSEFMTEVOR0VfU1RBVFVTX0NPTkNFREVEEAISGwoXQ0hBTExFTkdFX1NUQVRVU19QUk9WRU4QAyrPAQoQRGViYXRlQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QB2IGcHJvdG8z", [file_debate]);
 
 /**
  * The exact input needed to build the debate page UI.
@@ -115,6 +115,13 @@ export type FullDebateViewInfo = Message<"rendering_info.FullDebateViewInfo"> & 
    * @generated from field: repeated rendering_info.Steps steps = 1;
    */
   steps: Steps[];
+
+  /**
+   * Tree-structured data used by the full-debate map renderer.
+   *
+   * @generated from field: rendering_info.FullDebateTree full_debate_tree = 2;
+   */
+  fullDebateTree?: FullDebateTree;
 };
 
 /**
@@ -123,6 +130,152 @@ export type FullDebateViewInfo = Message<"rendering_info.FullDebateViewInfo"> & 
  */
 export const FullDebateViewInfoSchema: GenMessage<FullDebateViewInfo> = /*@__PURE__*/
   messageDesc(file_rendering_info, 1);
+
+/**
+ * Map-friendly full debate graph (claims as nodes and typed edges).
+ *
+ * @generated from message rendering_info.FullDebateTree
+ */
+export type FullDebateTree = Message<"rendering_info.FullDebateTree"> & {
+  /**
+   * Usually the topic/root claim for this debate.
+   *
+   * @generated from field: int32 root_claim_id = 1;
+   */
+  rootClaimId: number;
+
+  /**
+   * All claim nodes in this debate.
+   *
+   * @generated from field: repeated rendering_info.FullDebateTreeNode nodes = 2;
+   */
+  nodes: FullDebateTreeNode[];
+
+  /**
+   * Directed links between claims. Includes parent/child and challenge links.
+   *
+   * @generated from field: repeated rendering_info.FullDebateTreeLink links = 3;
+   */
+  links: FullDebateTreeLink[];
+};
+
+/**
+ * Describes the message rendering_info.FullDebateTree.
+ * Use `create(FullDebateTreeSchema)` to create a new message.
+ */
+export const FullDebateTreeSchema: GenMessage<FullDebateTree> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 2);
+
+/**
+ * One claim node in the full debate tree.
+ *
+ * @generated from message rendering_info.FullDebateTreeNode
+ */
+export type FullDebateTreeNode = Message<"rendering_info.FullDebateTreeNode"> & {
+  /**
+   * @generated from field: int32 claim_id = 1;
+   */
+  claimId: number;
+
+  /**
+   * @generated from field: string sentence = 2;
+   */
+  sentence: string;
+
+  /**
+   * @generated from field: int32 creator_id = 3;
+   */
+  creatorId: number;
+
+  /**
+   * @generated from field: rendering_info.ClaimStatus status = 4;
+   */
+  status: ClaimStatus;
+
+  /**
+   * Convenience adjacency to simplify map rendering without extra joins.
+   *
+   * @generated from field: repeated int32 parent_claim_ids = 5;
+   */
+  parentClaimIds: number[];
+
+  /**
+   * @generated from field: repeated int32 child_claim_ids = 6;
+   */
+  childClaimIds: number[];
+};
+
+/**
+ * Describes the message rendering_info.FullDebateTreeNode.
+ * Use `create(FullDebateTreeNodeSchema)` to create a new message.
+ */
+export const FullDebateTreeNodeSchema: GenMessage<FullDebateTreeNode> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 3);
+
+/**
+ * One directed relationship in the map tree.
+ *
+ * @generated from message rendering_info.FullDebateTreeLink
+ */
+export type FullDebateTreeLink = Message<"rendering_info.FullDebateTreeLink"> & {
+  /**
+   * @generated from field: int32 from_claim_id = 1;
+   */
+  fromClaimId: number;
+
+  /**
+   * @generated from field: int32 to_claim_id = 2;
+   */
+  toClaimId: number;
+
+  /**
+   * @generated from field: rendering_info.FullDebateTreeLinkType link_type = 3;
+   */
+  linkType: FullDebateTreeLinkType;
+
+  /**
+   * Explicit convenience flag for UI code that only needs a boolean check.
+   *
+   * @generated from field: bool is_challenge = 4;
+   */
+  isChallenge: boolean;
+
+  /**
+   * Back references to source entities when available.
+   *
+   * @generated from field: int32 link_id = 5;
+   */
+  linkId: number;
+
+  /**
+   * @generated from field: int32 challenge_id = 6;
+   */
+  challengeId: number;
+
+  /**
+   * Optional metadata copied from domain link/challenge rows.
+   *
+   * @generated from field: string connection = 7;
+   */
+  connection: string;
+
+  /**
+   * @generated from field: int32 creator_id = 8;
+   */
+  creatorId: number;
+
+  /**
+   * @generated from field: rendering_info.ChallengeStatus challenge_status = 9;
+   */
+  challengeStatus: ChallengeStatus;
+};
+
+/**
+ * Describes the message rendering_info.FullDebateTreeLink.
+ * Use `create(FullDebateTreeLinkSchema)` to create a new message.
+ */
+export const FullDebateTreeLinkSchema: GenMessage<FullDebateTreeLink> = /*@__PURE__*/
+  messageDesc(file_rendering_info, 4);
 
 /**
  * One timeline step in the full-debate view.
@@ -146,7 +299,7 @@ export type Steps = Message<"rendering_info.Steps"> & {
  * Use `create(StepsSchema)` to create a new message.
  */
 export const StepsSchema: GenMessage<Steps> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 2);
+  messageDesc(file_rendering_info, 5);
 
 /**
  * The exact input needed to build the home page UI.
@@ -186,7 +339,7 @@ export type HomePageRenderingInfo = Message<"rendering_info.HomePageRenderingInf
  * Use `create(HomePageRenderingInfoSchema)` to create a new message.
  */
 export const HomePageRenderingInfoSchema: GenMessage<HomePageRenderingInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 3);
+  messageDesc(file_rendering_info, 6);
 
 /**
  * @generated from message rendering_info.HomeDebateTopicRenderInfo
@@ -223,7 +376,7 @@ export type HomeDebateTopicRenderInfo = Message<"rendering_info.HomeDebateTopicR
  * Use `create(HomeDebateTopicRenderInfoSchema)` to create a new message.
  */
 export const HomeDebateTopicRenderInfoSchema: GenMessage<HomeDebateTopicRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 4);
+  messageDesc(file_rendering_info, 7);
 
 /**
  * @generated from message rendering_info.ClaimRenderInfo
@@ -255,7 +408,7 @@ export type ClaimRenderInfo = Message<"rendering_info.ClaimRenderInfo"> & {
  * Use `create(ClaimRenderInfoSchema)` to create a new message.
  */
 export const ClaimRenderInfoSchema: GenMessage<ClaimRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 5);
+  messageDesc(file_rendering_info, 8);
 
 /**
  * @generated from message rendering_info.LinkRenderInfo
@@ -292,7 +445,7 @@ export type LinkRenderInfo = Message<"rendering_info.LinkRenderInfo"> & {
  * Use `create(LinkRenderInfoSchema)` to create a new message.
  */
 export const LinkRenderInfoSchema: GenMessage<LinkRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 6);
+  messageDesc(file_rendering_info, 9);
 
 /**
  * @generated from message rendering_info.ChallengeRenderInfo
@@ -329,7 +482,7 @@ export type ChallengeRenderInfo = Message<"rendering_info.ChallengeRenderInfo"> 
  * Use `create(ChallengeRenderInfoSchema)` to create a new message.
  */
 export const ChallengeRenderInfoSchema: GenMessage<ChallengeRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 7);
+  messageDesc(file_rendering_info, 10);
 
 /**
  * @generated from message rendering_info.ConnectingRenderInfo
@@ -361,7 +514,7 @@ export type ConnectingRenderInfo = Message<"rendering_info.ConnectingRenderInfo"
  * Use `create(ConnectingRenderInfoSchema)` to create a new message.
  */
 export const ConnectingRenderInfoSchema: GenMessage<ConnectingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 8);
+  messageDesc(file_rendering_info, 11);
 
 /**
  * @generated from message rendering_info.ChallengingRenderInfo
@@ -388,7 +541,33 @@ export type ChallengingRenderInfo = Message<"rendering_info.ChallengingRenderInf
  * Use `create(ChallengingRenderInfoSchema)` to create a new message.
  */
 export const ChallengingRenderInfoSchema: GenMessage<ChallengingRenderInfo> = /*@__PURE__*/
-  messageDesc(file_rendering_info, 9);
+  messageDesc(file_rendering_info, 12);
+
+/**
+ * @generated from enum rendering_info.FullDebateTreeLinkType
+ */
+export enum FullDebateTreeLinkType {
+  /**
+   * @generated from enum value: FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED = 0;
+   */
+  FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: FULL_DEBATE_TREE_PARENT_CHILD = 1;
+   */
+  FULL_DEBATE_TREE_PARENT_CHILD = 1,
+
+  /**
+   * @generated from enum value: FULL_DEBATE_TREE_CHALLENGE = 2;
+   */
+  FULL_DEBATE_TREE_CHALLENGE = 2,
+}
+
+/**
+ * Describes the enum rendering_info.FullDebateTreeLinkType.
+ */
+export const FullDebateTreeLinkTypeSchema: GenEnum<FullDebateTreeLinkType> = /*@__PURE__*/
+  enumDesc(file_rendering_info, 0);
 
 /**
  * @generated from enum rendering_info.ScopeType
@@ -414,7 +593,7 @@ export enum ScopeType {
  * Describes the enum rendering_info.ScopeType.
  */
 export const ScopeTypeSchema: GenEnum<ScopeType> = /*@__PURE__*/
-  enumDesc(file_rendering_info, 0);
+  enumDesc(file_rendering_info, 1);
 
 /**
  * @generated from enum rendering_info.ClaimStatus
@@ -450,7 +629,7 @@ export enum ClaimStatus {
  * Describes the enum rendering_info.ClaimStatus.
  */
 export const ClaimStatusSchema: GenEnum<ClaimStatus> = /*@__PURE__*/
-  enumDesc(file_rendering_info, 1);
+  enumDesc(file_rendering_info, 2);
 
 /**
  * @generated from enum rendering_info.ChallengeStatus
@@ -481,7 +660,7 @@ export enum ChallengeStatus {
  * Describes the enum rendering_info.ChallengeStatus.
  */
 export const ChallengeStatusSchema: GenEnum<ChallengeStatus> = /*@__PURE__*/
-  enumDesc(file_rendering_info, 2);
+  enumDesc(file_rendering_info, 3);
 
 /**
  * @generated from enum rendering_info.DebateActionType
@@ -532,5 +711,5 @@ export enum DebateActionType {
  * Describes the enum rendering_info.DebateActionType.
  */
 export const DebateActionTypeSchema: GenEnum<DebateActionType> = /*@__PURE__*/
-  enumDesc(file_rendering_info, 3);
+  enumDesc(file_rendering_info, 4);
 

@@ -4,6 +4,11 @@
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../../../src/gen/cpp/user.pb.h"
 #include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
+#include <algorithm>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 namespace {
 debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {
@@ -42,6 +47,21 @@ debate::ChallengeStatus MapChallengeStatus(rendering_info::ChallengeStatus statu
             return debate::ChallengeStatus::PROVEN;
         default:
             return debate::ChallengeStatus::ONGOING;
+    }
+}
+
+std::string ClaimStatusToLabel(rendering_info::ClaimStatus status) {
+    switch (status) {
+        case rendering_info::CLAIM_STATUS_NEUTRAL:
+            return "Neutral";
+        case rendering_info::CLAIM_STATUS_CHALLENGED:
+            return "Challenged";
+        case rendering_info::CLAIM_STATUS_DEFENDED:
+            return "Defended";
+        case rendering_info::CLAIM_STATUS_DISPROVEN:
+            return "Disproven";
+        default:
+            return "Unknown";
     }
 }
 }
@@ -94,6 +114,9 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     mainLayout = FillCurrentClaimSection(info, userProto, mainLayout);
     mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
     mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);
+
+    ui::Component mapSection = GenerateMapSection(fullDebateInfo);
+    ComponentGenerator::addChild(&mainLayout, mapSection);
 
     // Bottom step menu for full debate flow.
     ui::Component stepsMenu = ComponentGenerator::createContainer(
@@ -517,9 +540,6 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&rightContent, reportSection);
     ComponentGenerator::addChild(&contentArea, rightContent);
     ComponentGenerator::addChild(&mainLayout, contentArea);
-
-    ui::Component mapSection = GenerateMapSection();
-    ComponentGenerator::addChild(&mainLayout, mapSection);
 
     return mainLayout;
 }
@@ -2086,8 +2106,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection() {
-    // Temporary full-width map placeholder at the bottom of the page.
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo) {
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
         "w-full",
@@ -2096,18 +2115,148 @@ ui::Component FullDebatePageGenerator::GenerateMapSection() {
         "mt-10",
         "border-2 border-gray-700",
         "rounded",
-        "h-[32rem] flex items-center justify-center"
+        "min-h-[32rem]"
     );
 
-    ui::Component mapPlaceholderText = ComponentGenerator::createText(
-        "mapPlaceholderText",
+    ui::Component mapTitle = ComponentGenerator::createText(
+        "mapTitle",
         "Map",
-        "text-4xl",
+        "text-2xl",
         "text-white",
         "font-semibold",
-        ""
+        "mb-4"
     );
-    ComponentGenerator::addChild(&mapSection, mapPlaceholderText);
+    ComponentGenerator::addChild(&mapSection, mapTitle);
+
+    ui::Component treeContainer = ComponentGenerator::createContainer(
+        "mapTreeContainer",
+        "flex flex-col gap-1 overflow-auto",
+        "bg-gray-900/40",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded",
+        "max-h-[28rem]"
+    );
+
+    if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
+        ui::Component emptyText = ComponentGenerator::createText(
+            "mapEmptyText",
+            "No map data yet.",
+            "text-sm",
+            "text-gray-300",
+            "",
+            ""
+        );
+        ComponentGenerator::addChild(&treeContainer, emptyText);
+        ComponentGenerator::addChild(&mapSection, treeContainer);
+        return mapSection;
+    }
+
+    const rendering_info::FullDebateTree& tree = fullDebateInfo.full_debate_tree();
+    std::unordered_map<int, const rendering_info::FullDebateTreeNode*> nodeById;
+    std::vector<int> claimIds;
+    claimIds.reserve(tree.nodes_size());
+    for (int i = 0; i < tree.nodes_size(); ++i) {
+        const rendering_info::FullDebateTreeNode& node = tree.nodes(i);
+        nodeById[node.claim_id()] = &node;
+        claimIds.push_back(node.claim_id());
+    }
+    std::sort(claimIds.begin(), claimIds.end());
+
+    std::unordered_map<int, std::vector<int>> childrenById;
+    std::unordered_set<int> hasIncoming;
+    for (int i = 0; i < tree.links_size(); ++i) {
+        const rendering_info::FullDebateTreeLink& link = tree.links(i);
+        if (nodeById.count(link.from_claim_id()) == 0 || nodeById.count(link.to_claim_id()) == 0) {
+            continue;
+        }
+        childrenById[link.from_claim_id()].push_back(link.to_claim_id());
+        hasIncoming.insert(link.to_claim_id());
+    }
+    for (auto& entry : childrenById) {
+        std::vector<int>& children = entry.second;
+        std::sort(children.begin(), children.end());
+        children.erase(std::unique(children.begin(), children.end()), children.end());
+    }
+
+    std::vector<int> roots;
+    if (tree.root_claim_id() != 0 && nodeById.count(tree.root_claim_id()) > 0) {
+        roots.push_back(tree.root_claim_id());
+    }
+    for (int claimId : claimIds) {
+        if (hasIncoming.count(claimId) == 0 &&
+            std::find(roots.begin(), roots.end(), claimId) == roots.end()) {
+            roots.push_back(claimId);
+        }
+    }
+    if (roots.empty() && !claimIds.empty()) {
+        roots.push_back(claimIds.front());
+    }
+
+    int lineIndex = 0;
+    std::unordered_set<int> globalVisited;
+    auto appendTreeFromRoot = [&](int rootId) {
+        if (globalVisited.count(rootId) > 0 || nodeById.count(rootId) == 0) {
+            return;
+        }
+
+        std::vector<std::pair<int, int>> stack;
+        std::unordered_set<int> branchVisited;
+        stack.push_back({rootId, 0});
+
+        while (!stack.empty()) {
+            const int claimId = stack.back().first;
+            const int depth = stack.back().second;
+            stack.pop_back();
+
+            if (branchVisited.count(claimId) > 0 || globalVisited.count(claimId) > 0 || nodeById.count(claimId) == 0) {
+                continue;
+            }
+            branchVisited.insert(claimId);
+            globalVisited.insert(claimId);
+
+            const rendering_info::FullDebateTreeNode* node = nodeById.at(claimId);
+            std::string prefix;
+            if (depth > 0) {
+                for (int i = 0; i < depth; ++i) {
+                    prefix += (i == depth - 1) ? "|-- " : "|   ";
+                }
+            }
+            std::string lineText = prefix + "- [" + std::to_string(node->claim_id()) + "] " +
+                node->sentence() + " (" + ClaimStatusToLabel(node->status()) + ")";
+
+            ui::Component line = ComponentGenerator::createText(
+                "mapTreeLine_" + std::to_string(lineIndex++),
+                lineText,
+                "text-sm font-mono",
+                "text-gray-100",
+                "",
+                ""
+            );
+            ComponentGenerator::addChild(&treeContainer, line);
+
+            const auto childIt = childrenById.find(claimId);
+            if (childIt != childrenById.end()) {
+                // Reverse push keeps visual order ascending while using stack DFS.
+                for (auto it = childIt->second.rbegin(); it != childIt->second.rend(); ++it) {
+                    stack.push_back({*it, depth + 1});
+                }
+            }
+        }
+    };
+
+    for (int rootId : roots) {
+        appendTreeFromRoot(rootId);
+    }
+
+    for (int claimId : claimIds) {
+        if (globalVisited.count(claimId) == 0) {
+            appendTreeFromRoot(claimId);
+        }
+    }
+
+    ComponentGenerator::addChild(&mapSection, treeContainer);
 
     return mapSection;
 }

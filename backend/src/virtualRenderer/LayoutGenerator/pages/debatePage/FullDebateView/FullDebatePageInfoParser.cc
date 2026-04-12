@@ -311,6 +311,16 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		", links_by_id=" + std::to_string(collectionProto.links_by_id_size())
 	);
 
+	// Chronological order is inferred by link id ascending.
+	std::vector<std::pair<int, debate::Link>> linksById;
+	linksById.reserve(collectionProto.links_by_id_size());
+	for (const auto& entry : collectionProto.links_by_id()) {
+		linksById.push_back({entry.first, entry.second});
+	}
+	std::sort(linksById.begin(), linksById.end(), [](const auto& a, const auto& b) {
+		return a.first < b.first;
+	});
+
 	// Find a root claim deterministically: no incoming PARENT_CHILD, then lowest id fallback.
 	int rootClaimId = -1;
 	for (const auto& claimEntry : collectionProto.claims_by_id()) {
@@ -336,6 +346,92 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	}
 	Log::test("[ParseFullDebateViewInfo] Resolved rootClaimId=" + std::to_string(rootClaimId));
 
+	// Build full debate tree payload for map rendering.
+	rendering_info::FullDebateTree* tree = info.mutable_full_debate_tree();
+	if (rootClaimId != -1) {
+		tree->set_root_claim_id(rootClaimId);
+	}
+
+	std::vector<int> claimIds;
+	claimIds.reserve(collectionProto.claims_by_id_size());
+	for (const auto& claimEntry : collectionProto.claims_by_id()) {
+		claimIds.push_back(claimEntry.first);
+	}
+	std::sort(claimIds.begin(), claimIds.end());
+
+	std::unordered_set<int> claimIdSet(claimIds.begin(), claimIds.end());
+	std::unordered_map<int, std::unordered_set<int>> parentIdsByClaim;
+	std::unordered_map<int, std::unordered_set<int>> childIdsByClaim;
+
+	for (const auto& entry : linksById) {
+		const int linkId = entry.first;
+		const debate::Link& link = entry.second;
+
+		if (claimIdSet.count(link.connect_from()) == 0 || claimIdSet.count(link.connect_to()) == 0) {
+			Log::warn(
+				"[ParseFullDebateViewInfo] Skipping tree link_id=" + std::to_string(linkId) +
+				" because endpoint claim is missing"
+			);
+			continue;
+		}
+
+		rendering_info::FullDebateTreeLinkType outType = rendering_info::FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED;
+		bool isChallenge = false;
+		if (link.link_type() == debate::LinkType::PARENT_CHILD) {
+			outType = rendering_info::FULL_DEBATE_TREE_PARENT_CHILD;
+			childIdsByClaim[link.connect_from()].insert(link.connect_to());
+			parentIdsByClaim[link.connect_to()].insert(link.connect_from());
+		} else if (link.link_type() == debate::LinkType::CHALLENGE) {
+			outType = rendering_info::FULL_DEBATE_TREE_CHALLENGE;
+			isChallenge = true;
+		} else {
+			continue;
+		}
+
+		rendering_info::FullDebateTreeLink* outLink = tree->add_links();
+		outLink->set_from_claim_id(link.connect_from());
+		outLink->set_to_claim_id(link.connect_to());
+		outLink->set_link_type(outType);
+		outLink->set_is_challenge(isChallenge);
+		outLink->set_link_id(linkId);
+		outLink->set_connection(link.connection());
+		outLink->set_creator_id(link.creator_id());
+		outLink->set_challenge_status(rendering_info::CHALLENGE_STATUS_UNSPECIFIED);
+	}
+
+	for (int claimId : claimIds) {
+		const debate::Claim& claim = collectionProto.claims_by_id().at(claimId);
+		rendering_info::FullDebateTreeNode* outNode = tree->add_nodes();
+		outNode->set_claim_id(claim.id());
+		outNode->set_sentence(claim.sentence());
+		outNode->set_creator_id(claim.creator_id());
+		outNode->set_status(MapClaimStatus(claim.status()));
+
+		auto parentIt = parentIdsByClaim.find(claimId);
+		if (parentIt != parentIdsByClaim.end()) {
+			std::vector<int> parentIds(parentIt->second.begin(), parentIt->second.end());
+			std::sort(parentIds.begin(), parentIds.end());
+			for (int parentId : parentIds) {
+				outNode->add_parent_claim_ids(parentId);
+			}
+		}
+
+		auto childIt = childIdsByClaim.find(claimId);
+		if (childIt != childIdsByClaim.end()) {
+			std::vector<int> childIds(childIt->second.begin(), childIt->second.end());
+			std::sort(childIds.begin(), childIds.end());
+			for (int childId : childIds) {
+				outNode->add_child_claim_ids(childId);
+			}
+		}
+	}
+
+	Log::test(
+		"[ParseFullDebateViewInfo] Built full_debate_tree: root_claim_id=" + std::to_string(tree->root_claim_id()) +
+		", nodes=" + std::to_string(tree->nodes_size()) +
+		", links=" + std::to_string(tree->links_size())
+	);
+
 	std::unordered_set<int> addedClaimIds;
 	if (rootClaimId != -1) {
 		auto rootIt = collectionProto.claims_by_id().find(rootClaimId);
@@ -350,16 +446,6 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 			);
 		}
 	}
-
-	// Chronological order is inferred by link id ascending.
-	std::vector<std::pair<int, debate::Link>> linksById;
-	linksById.reserve(collectionProto.links_by_id_size());
-	for (const auto& entry : collectionProto.links_by_id()) {
-		linksById.push_back({entry.first, entry.second});
-	}
-	std::sort(linksById.begin(), linksById.end(), [](const auto& a, const auto& b) {
-		return a.first < b.first;
-	});
 
 	for (const auto& entry : linksById) {
 		Log::test("[ParseFullDebateViewInfo] Inspecting link_id=" + std::to_string(entry.first));
