@@ -2169,8 +2169,11 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ", proto_root_claim_id=" + std::to_string(tree.root_claim_id())
     );
 
-    std::unordered_map<int, std::vector<int>> structuralChildrenById;
+    std::unordered_map<int, std::vector<int>> traversalChildrenById;
     std::unordered_set<int> hasIncoming;
+    std::vector<std::pair<int, int>> challengeEdges;
+    std::unordered_set<int> challengingClaimIds;
+    std::unordered_set<int> challengedClaimIds;
 
     // Prefer explicit structural adjacency embedded on nodes.
     for (int i = 0; i < tree.nodes_size(); ++i) {
@@ -2182,7 +2185,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             if (nodeById.count(childId) == 0) {
                 continue;
             }
-            structuralChildrenById[claimId].push_back(childId);
+            traversalChildrenById[claimId].push_back(childId);
             hasIncoming.insert(childId);
             Log::test(
                 "[MapLayout] Node adjacency child edge: " +
@@ -2195,7 +2198,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             if (nodeById.count(parentId) == 0) {
                 continue;
             }
-            structuralChildrenById[parentId].push_back(claimId);
+            traversalChildrenById[parentId].push_back(claimId);
             hasIncoming.insert(claimId);
             Log::test(
                 "[MapLayout] Node adjacency parent edge: " +
@@ -2207,13 +2210,26 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     // Fallback: parent-child links from the link list if node-level adjacency is missing.
     for (int i = 0; i < tree.links_size(); ++i) {
         const rendering_info::FullDebateTreeLink& link = tree.links(i);
-        if (link.link_type() != rendering_info::FULL_DEBATE_TREE_PARENT_CHILD) {
-            continue;
-        }
         if (nodeById.count(link.from_claim_id()) == 0 || nodeById.count(link.to_claim_id()) == 0) {
             continue;
         }
-        structuralChildrenById[link.from_claim_id()].push_back(link.to_claim_id());
+
+        if (link.link_type() == rendering_info::FULL_DEBATE_TREE_CHALLENGE) {
+            challengeEdges.push_back({link.from_claim_id(), link.to_claim_id()});
+            challengingClaimIds.insert(link.from_claim_id());
+            challengedClaimIds.insert(link.to_claim_id());
+            traversalChildrenById[link.to_claim_id()].push_back(link.from_claim_id());
+            Log::test(
+                "[MapLayout] Traversal challenge edge: " +
+                std::to_string(link.to_claim_id()) + " -> " + std::to_string(link.from_claim_id()) +
+                " (challenge link_id=" + std::to_string(link.link_id()) + ")"
+            );
+        }
+
+        if (link.link_type() != rendering_info::FULL_DEBATE_TREE_PARENT_CHILD) {
+            continue;
+        }
+        traversalChildrenById[link.from_claim_id()].push_back(link.to_claim_id());
         hasIncoming.insert(link.to_claim_id());
         Log::test(
             "[MapLayout] Link fallback parent-child edge: " +
@@ -2222,7 +2238,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
     }
 
-    for (auto& entry : structuralChildrenById) {
+    for (auto& entry : traversalChildrenById) {
         std::vector<int>& children = entry.second;
         std::sort(children.begin(), children.end());
         children.erase(std::unique(children.begin(), children.end()), children.end());
@@ -2234,7 +2250,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             childrenList += std::to_string(children[i]);
         }
         Log::test(
-            "[MapLayout] Structural children parent=" + std::to_string(entry.first) +
+            "[MapLayout] Traversal children parent=" + std::to_string(entry.first) +
             " -> [" + childrenList + "]"
         );
     }
@@ -2271,8 +2287,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         const int current = q.front();
         q.pop();
 
-        const auto childIt = structuralChildrenById.find(current);
-        if (childIt == structuralChildrenById.end()) {
+        const auto childIt = traversalChildrenById.find(current);
+        if (childIt == traversalChildrenById.end()) {
             continue;
         }
 
@@ -2414,7 +2430,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     Log::test(
         "[MapLayout] Final tree summary: root=" + std::to_string(rootClaimId) +
         ", placed_nodes=" + std::to_string(nodeTopLeftById.size()) +
-        ", tree_edges=" + std::to_string(treeEdges.size())
+        ", tree_edges=" + std::to_string(treeEdges.size()) +
+        ", challenge_edges=" + std::to_string(challengeEdges.size())
     );
 
     int maxBottom = canvasPadding + nodeHeight;
@@ -2500,6 +2517,68 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ComponentGenerator::addChild(&mapCanvas, v2);
     }
 
+    for (const auto& edge : challengeEdges) {
+        const int fromId = edge.first;
+        const int toId = edge.second;
+        if (nodeTopLeftById.count(fromId) == 0 || nodeTopLeftById.count(toId) == 0) {
+            continue;
+        }
+
+        const int fromX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
+        const int fromY = nodeTopLeftById[fromId].second + nodeHeight;
+        const int toX = nodeTopLeftById[toId].first + (nodeWidth / 2);
+        const int toY = nodeTopLeftById[toId].second;
+        const int midY = (fromY + toY) / 2;
+
+        ui::Component v1 = ComponentGenerator::createContainer(
+            "mapChallengeEdgeV1_" + std::to_string(lineIndex++),
+            "absolute bg-orange-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*v1.mutable_css())["left"] = std::to_string(fromX - 1) + "px";
+        (*v1.mutable_css())["top"] = std::to_string(std::min(fromY, midY)) + "px";
+        (*v1.mutable_css())["width"] = "2px";
+        (*v1.mutable_css())["height"] = std::to_string(std::max(1, std::abs(midY - fromY))) + "px";
+        ComponentGenerator::addChild(&mapCanvas, v1);
+
+        ui::Component h = ComponentGenerator::createContainer(
+            "mapChallengeEdgeH_" + std::to_string(lineIndex++),
+            "absolute bg-orange-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*h.mutable_css())["left"] = std::to_string(std::min(fromX, toX)) + "px";
+        (*h.mutable_css())["top"] = std::to_string(midY - 1) + "px";
+        (*h.mutable_css())["width"] = std::to_string(std::max(2, std::abs(toX - fromX))) + "px";
+        (*h.mutable_css())["height"] = "2px";
+        ComponentGenerator::addChild(&mapCanvas, h);
+
+        ui::Component v2 = ComponentGenerator::createContainer(
+            "mapChallengeEdgeV2_" + std::to_string(lineIndex++),
+            "absolute bg-orange-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*v2.mutable_css())["left"] = std::to_string(toX - 1) + "px";
+        (*v2.mutable_css())["top"] = std::to_string(std::min(midY, toY)) + "px";
+        (*v2.mutable_css())["width"] = "2px";
+        (*v2.mutable_css())["height"] = std::to_string(std::max(1, std::abs(toY - midY))) + "px";
+        ComponentGenerator::addChild(&mapCanvas, v2);
+    }
+
     int nodeIndex = 0;
     for (int claimId : claimIds) {
         if (nodeTopLeftById.count(claimId) == 0) {
@@ -2509,13 +2588,18 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         const int x = nodeTopLeftById[claimId].first;
         const int y = nodeTopLeftById[claimId].second;
 
+        const bool isChallengingClaim = (challengingClaimIds.count(claimId) > 0);
+        const bool isChallengedClaim = (challengedClaimIds.count(claimId) > 0);
+        const std::string nodeBg = isChallengingClaim ? "bg-orange-600" : "bg-gray-700";
+        const std::string nodeBorder = isChallengedClaim ? "border-2 border-orange-500" : "border border-gray-500";
+
         ui::Component nodeCard = ComponentGenerator::createContainer(
             "mapNode_" + std::to_string(nodeIndex++),
             "absolute z-10 flex flex-col",
-            "bg-gray-700",
+            nodeBg,
             "p-2",
             "",
-            "border border-gray-500",
+            nodeBorder,
             "rounded",
             "shadow"
         );
