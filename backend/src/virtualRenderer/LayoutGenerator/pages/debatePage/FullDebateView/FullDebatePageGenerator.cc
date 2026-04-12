@@ -518,27 +518,7 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&contentArea, rightContent);
     ComponentGenerator::addChild(&mainLayout, contentArea);
 
-    // Temporary full-width map placeholder at the bottom of the page.
-    ui::Component mapSection = ComponentGenerator::createContainer(
-        "mapSection",
-        "w-full",
-        "bg-gray-800",
-        "p-6",
-        "mt-10",
-        "border-2 border-gray-700",
-        "rounded",
-        "h-[32rem] flex items-center justify-center"
-    );
-
-    ui::Component mapPlaceholderText = ComponentGenerator::createText(
-        "mapPlaceholderText",
-        "Map",
-        "text-4xl",
-        "text-white",
-        "font-semibold",
-        ""
-    );
-    ComponentGenerator::addChild(&mapSection, mapPlaceholderText);
+    ui::Component mapSection = GenerateMapSection();
     ComponentGenerator::addChild(&mainLayout, mapSection);
 
     return mainLayout;
@@ -2104,5 +2084,31 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     }
     
     return mainLayout;
+}
+
+ui::Component FullDebatePageGenerator::GenerateMapSection() {
+    // Temporary full-width map placeholder at the bottom of the page.
+    ui::Component mapSection = ComponentGenerator::createContainer(
+        "mapSection",
+        "w-full",
+        "bg-gray-800",
+        "p-6",
+        "mt-10",
+        "border-2 border-gray-700",
+        "rounded",
+        "h-[32rem] flex items-center justify-center"
+    );
+
+    ui::Component mapPlaceholderText = ComponentGenerator::createText(
+        "mapPlaceholderText",
+        "Map",
+        "text-4xl",
+        "text-white",
+        "font-semibold",
+        ""
+    );
+    ComponentGenerator::addChild(&mapSection, mapPlaceholderText);
+
+    return mapSection;
 }
 
