@@ -115,7 +115,7 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
     mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);
 
-    ui::Component mapSection = GenerateMapSection(fullDebateInfo);
+    ui::Component mapSection = GenerateMapSection(fullDebateInfo, info.current_claim().id());
     ComponentGenerator::addChild(&mainLayout, mapSection);
 
     // Bottom step menu for full debate flow.
@@ -2106,7 +2106,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId) {
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
         "w-full",
@@ -2127,6 +2127,62 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         "mb-4"
     );
     ComponentGenerator::addChild(&mapSection, mapTitle);
+
+    ui::Component legend = ComponentGenerator::createContainer(
+        "mapLegend",
+        "flex flex-wrap gap-3",
+        "bg-gray-900/60",
+        "p-3",
+        "mb-4",
+        "border border-gray-700",
+        "rounded",
+        "text-sm text-gray-200"
+    );
+
+    auto addLegendItem = [&](const std::string& id, const std::string& colorClass, const std::string& label) {
+        ui::Component item = ComponentGenerator::createContainer(
+            id,
+            "flex items-center gap-2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+
+        ui::Component swatch = ComponentGenerator::createContainer(
+            id + "Swatch",
+            "",
+            colorClass,
+            "",
+            "",
+            "",
+            "rounded",
+            "w-4 h-4"
+        );
+        ComponentGenerator::addChild(&item, swatch);
+
+        ui::Component text = ComponentGenerator::createText(
+            id + "Text",
+            label,
+            "text-sm",
+            "text-gray-200",
+            "",
+            ""
+        );
+        ComponentGenerator::addChild(&item, text);
+        ComponentGenerator::addChild(&legend, item);
+    };
+
+    addLegendItem("legendRoot", "bg-gray-700", "Root claim");
+    addLegendItem("legendClaim", "bg-gray-700 border border-gray-500", "Normal claim");
+    addLegendItem("legendChallengeClaim", "bg-orange-600", "Challenge claim");
+    addLegendItem("legendChallengedClaim", "bg-gray-700 border-2 border-orange-500", "Challenged claim");
+    addLegendItem("legendCurrentClaim", "bg-gray-700 border-4 border-yellow-400", "Your current claim");
+    addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link");
+
+    ComponentGenerator::addChild(&mapSection, legend);
 
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
@@ -2603,6 +2659,11 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "rounded",
             "shadow"
         );
+        if (claimId == currentClaimId) {
+            (*nodeCard.mutable_css())["border-width"] = "4px";
+            (*nodeCard.mutable_css())["border-style"] = "solid";
+            (*nodeCard.mutable_css())["border-color"] = "#fde047";
+        }
         (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
         (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
         (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
@@ -2610,7 +2671,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
         ui::Component nodeTitle = ComponentGenerator::createText(
             "mapNodeTitle_" + std::to_string(claimId),
-            "[" + std::to_string(node->claim_id()) + "] " + ClaimStatusToLabel(node->status()),
+            std::string(claimId == currentClaimId ? "CURRENT CLAIM - " : "") +
+                "[" + std::to_string(node->claim_id()) + "] " + ClaimStatusToLabel(node->status()),
             "text-xs",
             "text-gray-300",
             "font-semibold",
