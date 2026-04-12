@@ -2130,7 +2130,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
     ui::Component legend = ComponentGenerator::createContainer(
         "mapLegend",
-        "flex flex-wrap gap-3",
+        "grid grid-cols-2 md:grid-cols-3 gap-3",
         "bg-gray-900/60",
         "p-3",
         "mb-4",
@@ -2139,27 +2139,27 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         "text-sm text-gray-200"
     );
 
-    auto addLegendItem = [&](const std::string& id, const std::string& colorClass, const std::string& label) {
+    auto addLegendItem = [&](const std::string& id, const std::string& sampleClass, const std::string& label, bool isLineSample = false) {
         ui::Component item = ComponentGenerator::createContainer(
             id,
-            "flex items-center gap-2",
+            "flex items-center gap-3",
+            "bg-gray-800/80",
+            "px-3 py-2",
             "",
-            "",
-            "",
-            "",
-            "",
-            ""
+            "border border-gray-700",
+            "rounded",
+            "min-w-0"
         );
 
         ui::Component swatch = ComponentGenerator::createContainer(
             id + "Swatch",
             "",
-            colorClass,
+            sampleClass,
             "",
             "",
             "",
-            "rounded",
-            "w-4 h-4"
+            isLineSample ? "rounded-full" : "rounded",
+            isLineSample ? "w-10 h-1.5 flex-shrink-0" : "w-4 h-4 flex-shrink-0"
         );
         ComponentGenerator::addChild(&item, swatch);
 
@@ -2167,20 +2167,20 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             id + "Text",
             label,
             "text-sm",
-            "text-gray-200",
+            "text-white",
             "",
-            ""
+            "truncate"
         );
         ComponentGenerator::addChild(&item, text);
         ComponentGenerator::addChild(&legend, item);
     };
 
-    addLegendItem("legendRoot", "bg-gray-700", "Root claim");
-    addLegendItem("legendClaim", "bg-gray-700 border border-gray-500", "Normal claim");
-    addLegendItem("legendChallengeClaim", "bg-orange-600", "Challenge claim");
+    addLegendItem("legendNormalClaim", "bg-gray-700", "Normal claim");
     addLegendItem("legendChallengedClaim", "bg-gray-700 border-2 border-orange-500", "Challenged claim");
-    addLegendItem("legendCurrentClaim", "bg-gray-700 border-4 border-yellow-400", "Your current claim");
-    addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link");
+    addLegendItem("legendChallengeClaim", "bg-orange-600", "Challenge claim");
+    addLegendItem("legendNormalLink", "bg-gray-500", "Normal link", true);
+    addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link", true);
+    addLegendItem("legendCurrentClaim", "bg-transparent border-4 border-yellow-400", "Current claim");
 
     ComponentGenerator::addChild(&mapSection, legend);
 
@@ -2374,7 +2374,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         children.erase(std::unique(children.begin(), children.end()), children.end());
     }
 
-    const int nodeWidth = 220;
+    const int nodeWidth = 180;
     const int nodeHeight = 84;
     const int horizontalGap = 40;
     const int verticalGap = 120;

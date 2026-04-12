@@ -25,6 +25,7 @@ export default {
     
     // Background with opacity
     'bg-blue-400/10', 'bg-red-500/10', 'bg-white/20', 'bg-gray-800/90', 'bg-black/50',
+    'bg-gray-900/60', 'bg-gray-900/40', 'bg-gray-800/80',
     'bg-purple-900/30', 'bg-orange-600', 'bg-orange-700', 'hover:bg-orange-800', 'bg-orange-500',
     
     // Text colors
@@ -40,10 +41,13 @@ export default {
     'bg-clip-text',
     
     // Sizing
-    'w-full', 'w-20', 'w-64', 'w-80', 'w-96',
-    'h-20', 'h-48', 'h-full',
+    'w-full', 'w-4', 'w-10', 'w-20', 'w-64', 'w-80', 'w-96',
+    'h-1.5', 'h-4', 'h-20', 'h-48', 'h-full',
     'min-h-screen', 'min-h-64',
+    'min-h-[32rem]',
     'min-w-64',
+    'min-w-0',
+    'max-h-[32rem]',
     'max-w-sm', 'max-w-md', 'max-w-2xl', 'max-w-4xl', 'max-w-7xl',
     'flex-1',
     
@@ -51,17 +55,17 @@ export default {
     'p-1', 'p-2', 'p-3', 'p-4', 'p-6', 'p-8',
     'px-3', 'px-4', 'px-6', 'py-1.5', 'py-2', 'py-3', 'py-4',
     'pt-3', 'pb-3',
-    'm-2', 'mx-auto', 'mx-4', 'mx-8', 'mb-2', 'mb-3', 'mb-4', 'mb-6', 'mb-8', 'mt-4', 'mt-8', 'mt-16',
+    'm-2', 'mx-auto', 'mx-4', 'mx-8', 'mb-2', 'mb-3', 'mb-4', 'mb-6', 'mb-8', 'mt-4', 'mt-8', 'mt-10', 'mt-16',
     'gap-1', 'gap-2', 'gap-3', 'gap-4', 'gap-6', 'gap-8',
     'space-y-4',
     
     // Layout
-    'flex', 'flex-col',
+    'flex', 'flex-col', 'flex-wrap', 'flex-shrink-0',
     'grid', 'grid-cols-1', 'grid-cols-2', 'grid-cols-4',
     'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4',
     'justify-between', 'justify-center', 'items-start', 'items-center',
     'text-center',
-    'overflow-hidden',
+    'overflow-hidden', 'overflow-auto',
     'hidden',
     
     // Positioning
@@ -71,10 +75,10 @@ export default {
     'z-50',
     
     // Borders
-    'border', 'border-2', 'border-b',
+    'border', 'border-2', 'border-4', 'border-b',
     'border-gray-300', 'border-gray-600', 'border-gray-700', 'hover:border-gray-600',
     'border-slate-600',
-    'border-purple-500', 'border-purple-700', 'border-orange-500', 'border-red-500', 'border-green-500',
+    'border-purple-500', 'border-purple-700', 'border-orange-500', 'border-red-500', 'border-green-500', 'border-yellow-400',
     'border-white/10', 'border-red-500/30',
     'rounded', 'rounded-lg', 'rounded-md', 'rounded-2xl', 'rounded-full',
     'border-none',
@@ -82,7 +86,8 @@ export default {
     // Text
     'text-xs', 'text-sm', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-6xl',
     'font-bold', 'font-semibold', 'font-medium',
-    'leading-relaxed',
+    'leading-relaxed', 'leading-tight',
+    'truncate',
     'text-left',
     'placeholder-slate-400', 'placeholder-gray-400',
     
