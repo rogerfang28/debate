@@ -86,6 +86,21 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
 
 	info.set_debate_id(userProto.collection_spec().debate_id());
+	info.set_is_challenge_debate(false);
+	info.set_modifying_current_claim(debatingInfo.modifying_current_claim());
+	info.set_current_action(MapDebateAction(debatingInfo.current_debate_action().action_type()));
+
+	// Guard: empty collection can happen after debate/claim deletion flows.
+	if (collectionProto.claims_by_id_size() == 0) {
+		Log::warn("[DebatePageInfoParser] Collection has no claims. Returning empty debate page rendering info.");
+		rendering_info::ClaimRenderInfo* currentClaim = info.mutable_current_claim();
+		currentClaim->set_id(0);
+		currentClaim->set_sentence("No claim available");
+		currentClaim->set_creator_id(0);
+		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		info.set_current_claim_description("No claim available.");
+		return info;
+	}
 
 	// Resolve current claim id deterministically to avoid flicker when stored scope is stale.
 	int currentClaimId = userProto.current_scope().single_claim().current_claim_id();
@@ -128,19 +143,29 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		currentClaimId = rootClaimId;
 		userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(rootClaimId);
 	}
+	if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
+		Log::warn(
+			"[DebatePageInfoParser] No valid current claim could be resolved (currentClaimId=" +
+			std::to_string(currentClaimId) + "). Returning empty-safe rendering info."
+		);
+		rendering_info::ClaimRenderInfo* currentClaim = info.mutable_current_claim();
+		currentClaim->set_id(0);
+		currentClaim->set_sentence("No claim available");
+		currentClaim->set_creator_id(0);
+		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		info.set_current_claim_description("No claim available.");
+		return info;
+	}
+
 	debate::Claim currentClaimProto = collectionProto.claims_by_id().at(currentClaimId);
 
 	info.set_current_claim_description(currentClaimProto.description());
-	info.set_modifying_current_claim(debatingInfo.modifying_current_claim());
-	info.set_current_action(MapDebateAction(debatingInfo.current_debate_action().action_type()));
 
 	rendering_info::ClaimRenderInfo* currentClaim = info.mutable_current_claim();
 	currentClaim->set_id(currentClaimProto.id());
 	currentClaim->set_sentence(currentClaimProto.sentence());
 	currentClaim->set_creator_id(currentClaimProto.creator_id());
 	currentClaim->set_status(MapClaimStatus(currentClaimProto.status()));
-	info.set_is_challenge_debate(false);
-
 	std::unordered_set<int> visibleClaimIds;
 	visibleClaimIds.insert(currentClaim->id());
 
