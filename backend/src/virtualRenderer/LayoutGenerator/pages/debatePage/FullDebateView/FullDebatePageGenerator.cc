@@ -98,12 +98,12 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     // Bottom step menu for full debate flow.
     ui::Component stepsMenu = ComponentGenerator::createContainer(
         "fullDebateStepsMenu",
-        "fixed bottom-0 left-0 right-0 flex gap-2 overflow-x-auto",
+            "fixed bottom-4 left-1/2 flex w-[min(90vw,72rem)] -translate-x-1/2 gap-2 overflow-x-auto justify-center",
         "bg-gray-900",
-        "p-3",
+            "p-3 shadow-2xl",
         "",
         "border-t border-gray-700",
-        "",
+            "rounded-t-lg",
         "z-40"
     );
 
@@ -141,7 +141,7 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
         "",
         "",
         "",
-        "min-h-screen"
+            "min-h-screen pb-28"
     );
 
     // Top section container
@@ -517,6 +517,29 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&rightContent, reportSection);
     ComponentGenerator::addChild(&contentArea, rightContent);
     ComponentGenerator::addChild(&mainLayout, contentArea);
+
+    // Temporary full-width map placeholder at the bottom of the page.
+    ui::Component mapSection = ComponentGenerator::createContainer(
+        "mapSection",
+        "w-full",
+        "bg-gray-800",
+        "p-6",
+        "mt-10",
+        "border-2 border-gray-700",
+        "rounded",
+        "h-[32rem] flex items-center justify-center"
+    );
+
+    ui::Component mapPlaceholderText = ComponentGenerator::createText(
+        "mapPlaceholderText",
+        "Map",
+        "text-4xl",
+        "text-white",
+        "font-semibold",
+        ""
+    );
+    ComponentGenerator::addChild(&mapSection, mapPlaceholderText);
+    ComponentGenerator::addChild(&mainLayout, mapSection);
 
     return mainLayout;
 }
