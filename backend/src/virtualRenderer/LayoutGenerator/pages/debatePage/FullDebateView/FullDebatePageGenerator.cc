@@ -2130,13 +2130,13 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
-        "flex flex-col gap-1 overflow-auto",
+        "overflow-auto",
         "bg-gray-900/40",
         "p-4",
         "",
         "border border-gray-700",
         "rounded",
-        "max-h-[28rem]"
+        "max-h-[32rem]"
     );
 
     if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
@@ -2163,99 +2163,472 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         claimIds.push_back(node.claim_id());
     }
     std::sort(claimIds.begin(), claimIds.end());
+    Log::test(
+        "[MapLayout] Start: nodes=" + std::to_string(tree.nodes_size()) +
+        ", links=" + std::to_string(tree.links_size()) +
+        ", proto_root_claim_id=" + std::to_string(tree.root_claim_id())
+    );
 
-    std::unordered_map<int, std::vector<int>> childrenById;
+    std::unordered_map<int, std::vector<int>> structuralChildrenById;
     std::unordered_set<int> hasIncoming;
+
+    // Prefer explicit structural adjacency embedded on nodes.
+    for (int i = 0; i < tree.nodes_size(); ++i) {
+        const rendering_info::FullDebateTreeNode& node = tree.nodes(i);
+        const int claimId = node.claim_id();
+
+        for (int j = 0; j < node.child_claim_ids_size(); ++j) {
+            const int childId = node.child_claim_ids(j);
+            if (nodeById.count(childId) == 0) {
+                continue;
+            }
+            structuralChildrenById[claimId].push_back(childId);
+            hasIncoming.insert(childId);
+            Log::test(
+                "[MapLayout] Node adjacency child edge: " +
+                std::to_string(claimId) + " -> " + std::to_string(childId)
+            );
+        }
+
+        for (int j = 0; j < node.parent_claim_ids_size(); ++j) {
+            const int parentId = node.parent_claim_ids(j);
+            if (nodeById.count(parentId) == 0) {
+                continue;
+            }
+            structuralChildrenById[parentId].push_back(claimId);
+            hasIncoming.insert(claimId);
+            Log::test(
+                "[MapLayout] Node adjacency parent edge: " +
+                std::to_string(parentId) + " -> " + std::to_string(claimId)
+            );
+        }
+    }
+
+    // Fallback: parent-child links from the link list if node-level adjacency is missing.
     for (int i = 0; i < tree.links_size(); ++i) {
         const rendering_info::FullDebateTreeLink& link = tree.links(i);
+        if (link.link_type() != rendering_info::FULL_DEBATE_TREE_PARENT_CHILD) {
+            continue;
+        }
         if (nodeById.count(link.from_claim_id()) == 0 || nodeById.count(link.to_claim_id()) == 0) {
             continue;
         }
-        childrenById[link.from_claim_id()].push_back(link.to_claim_id());
+        structuralChildrenById[link.from_claim_id()].push_back(link.to_claim_id());
         hasIncoming.insert(link.to_claim_id());
+        Log::test(
+            "[MapLayout] Link fallback parent-child edge: " +
+            std::to_string(link.from_claim_id()) + " -> " + std::to_string(link.to_claim_id()) +
+            " (link_id=" + std::to_string(link.link_id()) + ")"
+        );
     }
-    for (auto& entry : childrenById) {
+
+    for (auto& entry : structuralChildrenById) {
+        std::vector<int>& children = entry.second;
+        std::sort(children.begin(), children.end());
+        children.erase(std::unique(children.begin(), children.end()), children.end());
+        std::string childrenList;
+        for (size_t i = 0; i < children.size(); ++i) {
+            if (i > 0) {
+                childrenList += ",";
+            }
+            childrenList += std::to_string(children[i]);
+        }
+        Log::test(
+            "[MapLayout] Structural children parent=" + std::to_string(entry.first) +
+            " -> [" + childrenList + "]"
+        );
+    }
+
+    int rootClaimId = 0;
+    if (tree.root_claim_id() != 0 && nodeById.count(tree.root_claim_id()) > 0) {
+        rootClaimId = tree.root_claim_id();
+        Log::test("[MapLayout] Using proto root_claim_id=" + std::to_string(rootClaimId));
+    } else {
+        for (int claimId : claimIds) {
+            if (hasIncoming.count(claimId) == 0) {
+                rootClaimId = claimId;
+                Log::test("[MapLayout] Root selected by no-incoming rule=" + std::to_string(rootClaimId));
+                break;
+            }
+        }
+        if (rootClaimId == 0 && !claimIds.empty()) {
+            rootClaimId = claimIds.front();
+            Log::test("[MapLayout] Root selected by fallback smallest id=" + std::to_string(rootClaimId));
+        }
+    }
+
+    // Build one layered tree by assigning a single parent to each node in BFS order.
+    std::unordered_map<int, std::vector<int>> treeChildren;
+    std::unordered_set<int> visited;
+    std::queue<int> q;
+
+    if (rootClaimId != 0) {
+        visited.insert(rootClaimId);
+        q.push(rootClaimId);
+    }
+
+    while (!q.empty()) {
+        const int current = q.front();
+        q.pop();
+
+        const auto childIt = structuralChildrenById.find(current);
+        if (childIt == structuralChildrenById.end()) {
+            continue;
+        }
+
+        for (int childId : childIt->second) {
+            if (visited.count(childId) > 0) {
+                Log::test(
+                    "[MapLayout] BFS skip already visited child=" + std::to_string(childId) +
+                    " from parent=" + std::to_string(current)
+                );
+                continue;
+            }
+            visited.insert(childId);
+            treeChildren[current].push_back(childId);
+            q.push(childId);
+            Log::test(
+                "[MapLayout] BFS assign parent: " +
+                std::to_string(current) + " -> " + std::to_string(childId)
+            );
+        }
+    }
+
+    // Attach disconnected components under root while preserving each component's hierarchy.
+    if (rootClaimId != 0) {
+        std::unordered_set<int> disconnected;
+        for (int claimId : claimIds) {
+            if (claimId != rootClaimId && visited.count(claimId) == 0) {
+                disconnected.insert(claimId);
+            }
+        }
+
+        if (!disconnected.empty()) {
+            std::unordered_set<int> disconnectedHasIncoming;
+            for (const auto& entry : structuralChildrenById) {
+                const int parentId = entry.first;
+                if (disconnected.count(parentId) == 0) {
+                    continue;
+                }
+                for (int childId : entry.second) {
+                    if (disconnected.count(childId) > 0) {
+                        disconnectedHasIncoming.insert(childId);
+                    }
+                }
+            }
+
+            std::vector<int> componentRoots;
+            for (int claimId : claimIds) {
+                if (disconnected.count(claimId) == 0) {
+                    continue;
+                }
+                if (disconnectedHasIncoming.count(claimId) == 0) {
+                    componentRoots.push_back(claimId);
+                }
+            }
+
+            // Cyclic disconnected component fallback.
+            if (componentRoots.empty()) {
+                for (int claimId : claimIds) {
+                    if (disconnected.count(claimId) > 0) {
+                        componentRoots.push_back(claimId);
+                        break;
+                    }
+                }
+            }
+
+            for (int componentRoot : componentRoots) {
+                if (visited.count(componentRoot) > 0) {
+                    continue;
+                }
+
+                treeChildren[rootClaimId].push_back(componentRoot);
+                visited.insert(componentRoot);
+                Log::test(
+                    "[MapLayout] Attach disconnected component root under root: " +
+                    std::to_string(rootClaimId) + " -> " + std::to_string(componentRoot)
+                );
+
+                std::queue<int> dq;
+                dq.push(componentRoot);
+                while (!dq.empty()) {
+                    const int current = dq.front();
+                    dq.pop();
+
+                    const auto childIt = structuralChildrenById.find(current);
+                    if (childIt == structuralChildrenById.end()) {
+                        continue;
+                    }
+
+                    for (int childId : childIt->second) {
+                        if (visited.count(childId) > 0) {
+                            continue;
+                        }
+                        treeChildren[current].push_back(childId);
+                        visited.insert(childId);
+                        dq.push(childId);
+                        Log::test(
+                            "[MapLayout] Disconnected BFS assign parent: " +
+                            std::to_string(current) + " -> " + std::to_string(childId)
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    for (auto& entry : treeChildren) {
         std::vector<int>& children = entry.second;
         std::sort(children.begin(), children.end());
         children.erase(std::unique(children.begin(), children.end()), children.end());
     }
 
-    std::vector<int> roots;
-    if (tree.root_claim_id() != 0 && nodeById.count(tree.root_claim_id()) > 0) {
-        roots.push_back(tree.root_claim_id());
-    }
-    for (int claimId : claimIds) {
-        if (hasIncoming.count(claimId) == 0 &&
-            std::find(roots.begin(), roots.end(), claimId) == roots.end()) {
-            roots.push_back(claimId);
-        }
-    }
-    if (roots.empty() && !claimIds.empty()) {
-        roots.push_back(claimIds.front());
-    }
+    const int nodeWidth = 220;
+    const int nodeHeight = 84;
+    const int horizontalGap = 40;
+    const int verticalGap = 120;
+    const int canvasPadding = 40;
 
-    int lineIndex = 0;
-    std::unordered_set<int> globalVisited;
-    auto appendTreeFromRoot = [&](int rootId) {
-        if (globalVisited.count(rootId) > 0 || nodeById.count(rootId) == 0) {
+    std::unordered_map<int, int> subtreeWidth;
+    std::unordered_map<int, std::pair<int, int>> nodeTopLeftById;
+
+    std::function<int(int, std::unordered_set<int>&)> computeWidth = [&](int claimId, std::unordered_set<int>& path) -> int {
+        if (nodeById.count(claimId) == 0 || path.count(claimId) > 0) {
+            return 0;
+        }
+        if (subtreeWidth.count(claimId) > 0) {
+            return subtreeWidth[claimId];
+        }
+
+        path.insert(claimId);
+        int childrenTotalWidth = 0;
+        int renderedChildrenCount = 0;
+
+        const auto childIt = treeChildren.find(claimId);
+        if (childIt != treeChildren.end()) {
+            for (int childId : childIt->second) {
+                if (path.count(childId) > 0) {
+                    continue;
+                }
+                const int childWidth = computeWidth(childId, path);
+                if (childWidth <= 0) {
+                    continue;
+                }
+                childrenTotalWidth += childWidth;
+                ++renderedChildrenCount;
+            }
+        }
+
+        path.erase(claimId);
+
+        if (renderedChildrenCount > 1) {
+            childrenTotalWidth += horizontalGap * (renderedChildrenCount - 1);
+        }
+        const int width = std::max(nodeWidth, childrenTotalWidth);
+        subtreeWidth[claimId] = width;
+        return width;
+    };
+
+    std::function<void(int, int, int, std::unordered_set<int>&)> placeSubtree = [&](int claimId, int centerX, int depth, std::unordered_set<int>& path) {
+        if (nodeById.count(claimId) == 0 || path.count(claimId) > 0) {
             return;
         }
 
-        std::vector<std::pair<int, int>> stack;
-        std::unordered_set<int> branchVisited;
-        stack.push_back({rootId, 0});
+        path.insert(claimId);
+        const int topLeftX = centerX - (nodeWidth / 2);
+        const int topLeftY = canvasPadding + depth * verticalGap;
+        nodeTopLeftById[claimId] = {topLeftX, topLeftY};
+        Log::test(
+            "[MapLayout] Place node id=" + std::to_string(claimId) +
+            ", depth=" + std::to_string(depth) +
+            ", x=" + std::to_string(topLeftX) +
+            ", y=" + std::to_string(topLeftY)
+        );
 
-        while (!stack.empty()) {
-            const int claimId = stack.back().first;
-            const int depth = stack.back().second;
-            stack.pop_back();
-
-            if (branchVisited.count(claimId) > 0 || globalVisited.count(claimId) > 0 || nodeById.count(claimId) == 0) {
-                continue;
-            }
-            branchVisited.insert(claimId);
-            globalVisited.insert(claimId);
-
-            const rendering_info::FullDebateTreeNode* node = nodeById.at(claimId);
-            std::string prefix;
-            if (depth > 0) {
-                for (int i = 0; i < depth; ++i) {
-                    prefix += (i == depth - 1) ? "|-- " : "|   ";
-                }
-            }
-            std::string lineText = prefix + "- [" + std::to_string(node->claim_id()) + "] " +
-                node->sentence() + " (" + ClaimStatusToLabel(node->status()) + ")";
-
-            ui::Component line = ComponentGenerator::createText(
-                "mapTreeLine_" + std::to_string(lineIndex++),
-                lineText,
-                "text-sm font-mono",
-                "text-gray-100",
-                "",
-                ""
-            );
-            ComponentGenerator::addChild(&treeContainer, line);
-
-            const auto childIt = childrenById.find(claimId);
-            if (childIt != childrenById.end()) {
-                // Reverse push keeps visual order ascending while using stack DFS.
-                for (auto it = childIt->second.rbegin(); it != childIt->second.rend(); ++it) {
-                    stack.push_back({*it, depth + 1});
+        std::vector<int> childrenToPlace;
+        const auto childIt = treeChildren.find(claimId);
+        if (childIt != treeChildren.end()) {
+            for (int childId : childIt->second) {
+                if (path.count(childId) == 0) {
+                    childrenToPlace.push_back(childId);
                 }
             }
         }
+
+        int totalChildrenWidth = 0;
+        for (int childId : childrenToPlace) {
+            std::unordered_set<int> widthPath = path;
+            totalChildrenWidth += computeWidth(childId, widthPath);
+        }
+        if (childrenToPlace.size() > 1) {
+            totalChildrenWidth += static_cast<int>(childrenToPlace.size() - 1) * horizontalGap;
+        }
+
+        int cursorX = centerX - (totalChildrenWidth / 2);
+        for (int childId : childrenToPlace) {
+            std::unordered_set<int> widthPath = path;
+            const int childSubtreeWidth = computeWidth(childId, widthPath);
+            const int childCenterX = cursorX + (childSubtreeWidth / 2);
+            placeSubtree(childId, childCenterX, depth + 1, path);
+            cursorX += childSubtreeWidth + horizontalGap;
+        }
+
+        path.erase(claimId);
     };
 
-    for (int rootId : roots) {
-        appendTreeFromRoot(rootId);
+    int rootWidth = nodeWidth;
+    if (rootClaimId != 0) {
+        subtreeWidth.clear();
+        std::unordered_set<int> widthPath;
+        rootWidth = std::max(nodeWidth, computeWidth(rootClaimId, widthPath));
+        const int rootCenterX = canvasPadding + (rootWidth / 2);
+        std::unordered_set<int> placePath;
+        placeSubtree(rootClaimId, rootCenterX, 0, placePath);
     }
 
-    for (int claimId : claimIds) {
-        if (globalVisited.count(claimId) == 0) {
-            appendTreeFromRoot(claimId);
+    std::vector<std::pair<int, int>> treeEdges;
+    for (const auto& entry : treeChildren) {
+        for (int childId : entry.second) {
+            treeEdges.push_back({entry.first, childId});
         }
     }
+    Log::test(
+        "[MapLayout] Final tree summary: root=" + std::to_string(rootClaimId) +
+        ", placed_nodes=" + std::to_string(nodeTopLeftById.size()) +
+        ", tree_edges=" + std::to_string(treeEdges.size())
+    );
 
+    int maxBottom = canvasPadding + nodeHeight;
+    for (const auto& entry : nodeTopLeftById) {
+        maxBottom = std::max(maxBottom, entry.second.second + nodeHeight + canvasPadding);
+    }
+    const int canvasWidth = std::max(1000, rootWidth + (2 * canvasPadding));
+    const int canvasHeight = std::max(500, maxBottom);
+
+    ui::Component mapCanvas = ComponentGenerator::createContainer(
+        "mapCanvas",
+        "relative",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    (*mapCanvas.mutable_css())["width"] = std::to_string(canvasWidth) + "px";
+    (*mapCanvas.mutable_css())["height"] = std::to_string(canvasHeight) + "px";
+
+    int lineIndex = 0;
+    for (const auto& edge : treeEdges) {
+        const int fromId = edge.first;
+        const int toId = edge.second;
+        if (nodeTopLeftById.count(fromId) == 0 || nodeTopLeftById.count(toId) == 0) {
+            continue;
+        }
+
+        const int parentX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
+        const int parentY = nodeTopLeftById[fromId].second + nodeHeight;
+        const int childX = nodeTopLeftById[toId].first + (nodeWidth / 2);
+        const int childY = nodeTopLeftById[toId].second;
+        const int midY = (parentY + childY) / 2;
+
+        ui::Component v1 = ComponentGenerator::createContainer(
+            "mapEdgeV1_" + std::to_string(lineIndex++),
+            "absolute bg-gray-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*v1.mutable_css())["left"] = std::to_string(parentX - 1) + "px";
+        (*v1.mutable_css())["top"] = std::to_string(parentY) + "px";
+        (*v1.mutable_css())["width"] = "2px";
+        (*v1.mutable_css())["height"] = std::to_string(std::max(1, midY - parentY)) + "px";
+        ComponentGenerator::addChild(&mapCanvas, v1);
+
+        ui::Component h = ComponentGenerator::createContainer(
+            "mapEdgeH_" + std::to_string(lineIndex++),
+            "absolute bg-gray-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*h.mutable_css())["left"] = std::to_string(std::min(parentX, childX)) + "px";
+        (*h.mutable_css())["top"] = std::to_string(midY - 1) + "px";
+        (*h.mutable_css())["width"] = std::to_string(std::max(2, std::abs(childX - parentX))) + "px";
+        (*h.mutable_css())["height"] = "2px";
+        ComponentGenerator::addChild(&mapCanvas, h);
+
+        ui::Component v2 = ComponentGenerator::createContainer(
+            "mapEdgeV2_" + std::to_string(lineIndex++),
+            "absolute bg-gray-500",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*v2.mutable_css())["left"] = std::to_string(childX - 1) + "px";
+        (*v2.mutable_css())["top"] = std::to_string(midY) + "px";
+        (*v2.mutable_css())["width"] = "2px";
+        (*v2.mutable_css())["height"] = std::to_string(std::max(1, childY - midY)) + "px";
+        ComponentGenerator::addChild(&mapCanvas, v2);
+    }
+
+    int nodeIndex = 0;
+    for (int claimId : claimIds) {
+        if (nodeTopLeftById.count(claimId) == 0) {
+            continue;
+        }
+        const rendering_info::FullDebateTreeNode* node = nodeById.at(claimId);
+        const int x = nodeTopLeftById[claimId].first;
+        const int y = nodeTopLeftById[claimId].second;
+
+        ui::Component nodeCard = ComponentGenerator::createContainer(
+            "mapNode_" + std::to_string(nodeIndex++),
+            "absolute z-10 flex flex-col",
+            "bg-gray-700",
+            "p-2",
+            "",
+            "border border-gray-500",
+            "rounded",
+            "shadow"
+        );
+        (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
+        (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
+        (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
+        (*nodeCard.mutable_css())["height"] = std::to_string(nodeHeight) + "px";
+
+        ui::Component nodeTitle = ComponentGenerator::createText(
+            "mapNodeTitle_" + std::to_string(claimId),
+            "[" + std::to_string(node->claim_id()) + "] " + ClaimStatusToLabel(node->status()),
+            "text-xs",
+            "text-gray-300",
+            "font-semibold",
+            "mb-1"
+        );
+        ComponentGenerator::addChild(&nodeCard, nodeTitle);
+
+        ui::Component nodeSentence = ComponentGenerator::createText(
+            "mapNodeSentence_" + std::to_string(claimId),
+            node->sentence(),
+            "text-sm",
+            "text-white",
+            "",
+            "leading-tight"
+        );
+        ComponentGenerator::addChild(&nodeCard, nodeSentence);
+
+        ComponentGenerator::addChild(&mapCanvas, nodeCard);
+    }
+
+    ComponentGenerator::addChild(&treeContainer, mapCanvas);
     ComponentGenerator::addChild(&mapSection, treeContainer);
 
     return mapSection;
