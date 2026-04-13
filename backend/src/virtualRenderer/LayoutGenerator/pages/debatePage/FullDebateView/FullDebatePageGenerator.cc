@@ -154,7 +154,8 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
     mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);
 
-    ui::Component mapSection = GenerateMapSection(fullDebateInfo, info.current_claim().id());
+    const float mapScale = 1.0f;
+    ui::Component mapSection = GenerateMapSection(fullDebateInfo, info.current_claim().id(), mapScale);
     ComponentGenerator::addChild(&mainLayout, mapSection);
 
     // Bottom step menu for full debate flow.
@@ -2240,7 +2241,9 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale) {
+    const float normalizedScale = mapScale > 0.0f ? mapScale : 1.0f;
+
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
         "w-full",
@@ -2647,6 +2650,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     );
     (*mapCanvas.mutable_css())["width"] = std::to_string(canvasWidth) + "px";
     (*mapCanvas.mutable_css())["height"] = std::to_string(canvasHeight) + "px";
+    (*mapCanvas.mutable_css())["transform"] = "scale(" + std::to_string(normalizedScale) + ")";
+    (*mapCanvas.mutable_css())["transform-origin"] = "top left";
 
     int lineIndex = 0;
     for (const auto& edge : treeEdges) {
@@ -2849,7 +2854,21 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ComponentGenerator::addChild(&mapCanvas, nodeCard);
     }
 
-    ComponentGenerator::addChild(&treeContainer, mapCanvas);
+    ui::Component mapScaledViewport = ComponentGenerator::createContainer(
+        "mapScaledViewport",
+        "relative",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    (*mapScaledViewport.mutable_css())["width"] = std::to_string(static_cast<int>(canvasWidth * normalizedScale)) + "px";
+    (*mapScaledViewport.mutable_css())["height"] = std::to_string(static_cast<int>(canvasHeight * normalizedScale)) + "px";
+
+    ComponentGenerator::addChild(&mapScaledViewport, mapCanvas);
+    ComponentGenerator::addChild(&treeContainer, mapScaledViewport);
     ComponentGenerator::addChild(&mapSection, treeContainer);
 
     return mapSection;

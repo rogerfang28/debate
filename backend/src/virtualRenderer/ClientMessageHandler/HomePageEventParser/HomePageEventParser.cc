@@ -28,11 +28,11 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
 
     // * Enter a debate, moves user to debate page
     else if (componentId.find("enterDebateTopicButton_") == 0 && eventType == "onClick") {
-        event.set_type(debate_event::ENTER_DEBATE);
-        auto* enter = event.mutable_enter_debate();
-        std::string debateID = componentId.substr(23);
-        enter->set_debate_id(std::stoi(debateID));
-        Log::debug("  ENTER_DEBATE: debate_id = " + debateID);
+        event.set_type(debate_event::GO_TO_CLAIM);
+        debate_event::GoToClaim goToClaim = event.go_to_claim();
+        std::string claimId = componentId.substr(23);
+        goToClaim.set_claim_id(std::stoi(claimId));
+        Log::debug("  ENTER_DEBATE: debate_id = " + claimId);
     } 
     
     // * Delete a debate with id

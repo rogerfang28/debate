@@ -17,5 +17,5 @@ public:
     static ui::Component FillCurrentClaimSection(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component AddAppropriateButtons(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component AddAppropriateOverlays(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
-    static ui::Component GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId);
+    static ui::Component GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale);
 };
