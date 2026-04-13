@@ -14,6 +14,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         Log::debug("  GO_HOME for user: " + std::to_string(user_id));
+    } else if (componentId == "seeOverviewButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_OVERVIEW);
+        Log::debug("  GO_TO_OVERVIEW for user: " + std::to_string(user_id));
+    } else if (componentId == "stepViewTestButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_FULL_DEBATE_VIEW);
+        Log::debug("  GO_TO_FULL_DEBATE_VIEW for user: " + std::to_string(user_id));
     } else if (componentId == "goToParentButton" && eventType == "onClick") {
         Log::debug("  GO_TO_PARENT for user: " + std::to_string(user_id));
         event.set_type(debate_event::GO_TO_PARENT);

@@ -9,6 +9,7 @@
 #include "./pages/debatePage/SingleStatementView/SingleDebatePageInfoParser.h"
 #include "./pages/debatePage/FullDebateView/FullDebatePageGenerator.h"
 #include "./pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
+#include "./pages/debatePage/StepView/StepView.h"
 #include "./pages/loginPage/LoginPageGenerator.h"
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
@@ -35,6 +36,11 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
         } else if (scopeType == debate::FULL_DEBATE) {
             Log::info("[LayoutGenerator] Generating Full Debate Page");
+            if (info.user().current_scope().has_full_debate() &&
+                info.user().current_scope().full_debate().top_view()) {
+                Log::info("[LayoutGenerator] top_view=true, generating Step View page");
+                return StepView::GenerateStepViewPage();
+            }
             rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(info.user(), info.collection());
             rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection());
             return FullDebatePageGenerator::GenerateFullDebatePage(debatePageInfo, fullDebateInfo, info.user());

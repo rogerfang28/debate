@@ -17,6 +17,7 @@ message SingleClaimScope {
 message FullDebateScope {
 	// The debate currently in focus.
 	int32 debate_id = 1;
+	bool top_view = 2;
 }
 
 message Scope {

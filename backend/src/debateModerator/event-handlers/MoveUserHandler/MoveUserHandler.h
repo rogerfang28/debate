@@ -11,6 +11,8 @@ public:
     static void GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper);
     static void GoToChallenge(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper);
+    static void GoToOverview(const int& user_id, DebateWrapper& debateWrapper);
+    static void GoToFullDebateView(const int& user_id, DebateWrapper& debateWrapper);
 private:
     static void resetOngoingActivities(const int& user_id, DebateWrapper& debateWrapper); // like if connecting a claim, stop
 };

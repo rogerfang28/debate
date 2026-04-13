@@ -29,6 +29,7 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
     userProto.mutable_current_scope()->set_scopetype(debate::FULL_DEBATE);
     userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
+    userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(false);
     resetOngoingActivities(user_id, debateWrapper);
 
     // change the collection spec to be the current debate
@@ -118,6 +119,40 @@ void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper&
     }
     Log::warn("[GoToParentClaimOfDebate] No outgoing CHALLENGE link found from current claim id: " + std::to_string(currentClaimId));
     resetOngoingActivities(user_id, debateWrapper);
+}
+
+void MoveUserHandler::GoToOverview(const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
+    Log::debug("[GoToOverview] User " + std::to_string(user_id) + " switching to debate overview");
+
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
+    userProto.mutable_current_scope()->set_scopetype(debate::FULL_DEBATE);
+
+    const int debateId = userProto.engagement().debating_info().debate_id();
+    if (debateId > 0) {
+        userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
+    }
+    userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(true);
+
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
+void MoveUserHandler::GoToFullDebateView(const int& user_id, DebateWrapper& debateWrapper) {
+    resetOngoingActivities(user_id, debateWrapper);
+    Log::debug("[GoToFullDebateView] User " + std::to_string(user_id) + " returning to full debate view");
+
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    userProto.mutable_engagement()->set_current_action(user_engagement::ACTION_DEBATING);
+    userProto.mutable_current_scope()->set_scopetype(debate::FULL_DEBATE);
+
+    const int debateId = userProto.engagement().debating_info().debate_id();
+    if (debateId > 0) {
+        userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
+    }
+    userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(false);
+
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
 void MoveUserHandler::resetOngoingActivities(const int& user_id, DebateWrapper& debateWrapper) {

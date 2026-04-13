@@ -457,6 +457,7 @@ class FullDebateScope final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kDebateIdFieldNumber = 1,
+    kTopViewFieldNumber = 2,
   };
   // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
@@ -468,12 +469,22 @@ class FullDebateScope final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
+  // bool top_view = 2 [json_name = "topView"];
+  void clear_top_view() ;
+  bool top_view() const;
+  void set_top_view(bool value);
+
+  private:
+  bool _internal_top_view() const;
+  void _internal_set_top_view(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.FullDebateScope)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
 
@@ -492,6 +503,7 @@ class FullDebateScope final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const FullDebateScope& from_msg);
     ::int32_t debate_id_;
+    bool top_view_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -831,6 +843,28 @@ inline ::int32_t FullDebateScope::_internal_debate_id() const {
 inline void FullDebateScope::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
+}
+
+// bool top_view = 2 [json_name = "topView"];
+inline void FullDebateScope::clear_top_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.top_view_ = false;
+}
+inline bool FullDebateScope::top_view() const {
+  // @@protoc_insertion_point(field_get:debate.FullDebateScope.top_view)
+  return _internal_top_view();
+}
+inline void FullDebateScope::set_top_view(bool value) {
+  _internal_set_top_view(value);
+  // @@protoc_insertion_point(field_set:debate.FullDebateScope.top_view)
+}
+inline bool FullDebateScope::_internal_top_view() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.top_view_;
+}
+inline void FullDebateScope::_internal_set_top_view(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.top_view_ = value;
 }
 
 // -------------------------------------------------------------------

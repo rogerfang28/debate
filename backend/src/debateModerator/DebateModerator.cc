@@ -329,6 +329,14 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: GO_TO_CHALLENGED_PARENT_CLAIM");
             MoveUserHandler::GoToParentClaimOfDebate(user_id, debateWrapper);
             break;
+        case debate_event::GO_TO_OVERVIEW:
+            Log::info("[DebateModerator] Event Type: GO_TO_OVERVIEW");
+            MoveUserHandler::GoToOverview(user_id, debateWrapper);
+            break;
+        case debate_event::GO_TO_FULL_DEBATE_VIEW:
+            Log::info("[DebateModerator] Event Type: GO_TO_FULL_DEBATE_VIEW");
+            MoveUserHandler::GoToFullDebateView(user_id, debateWrapper);
+            break;
         case debate_event::LEAVE_DEBATE:
             Log::info("[DebateModerator] Event Type: LEAVE_DEBATE");
             DebateHandler::LeaveDebate(

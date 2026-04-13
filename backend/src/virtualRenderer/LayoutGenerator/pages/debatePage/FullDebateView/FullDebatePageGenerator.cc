@@ -231,6 +231,19 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
         ""
     );
 
+    ui::Component seeOverviewButton = ComponentGenerator::createButton(
+        "seeOverviewButton",
+        "See Overview",
+        "",
+        "bg-gray-600",
+        "hover:bg-gray-700",
+        "text-white",
+        "px-4 py-2",
+        "rounded",
+        "transition-colors text-sm"
+    );
+    ComponentGenerator::addChild(&leftTopSection, seeOverviewButton);
+
     ui::Component goToParentButton = ComponentGenerator::createButton(
         "goToParentButton",
         "Go to Parent",
@@ -1758,6 +1771,18 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                     if (leftTopSection->id() == "leftTopSection") {
                         // In challenge mode, replace default parent navigation with challenge-specific navigation.
                         leftTopSection->clear_children();
+                        ui::Component seeOverviewButton = ComponentGenerator::createButton(
+                            "seeOverviewButton",
+                            "See Overview",
+                            "",
+                            "bg-gray-600",
+                            "hover:bg-gray-700",
+                            "text-white",
+                            "px-4 py-2",
+                            "rounded",
+                            "transition-colors text-sm"
+                        );
+                        ComponentGenerator::addChild(leftTopSection, seeOverviewButton);
                         ui::Component goToChallengedClaimButton = ComponentGenerator::createButton(
                             "goToChallengedClaimButton",
                             "Go To Challenged Claim",
