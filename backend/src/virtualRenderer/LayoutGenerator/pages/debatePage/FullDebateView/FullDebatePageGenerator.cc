@@ -2320,14 +2320,18 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
-        "overflow-auto",
+        "w-full",
         "bg-gray-900/40",
         "p-4",
         "",
         "border border-gray-700",
         "rounded",
-        "max-h-[32rem]"
+        ""
     );
+    (*treeContainer.mutable_css())["overflow-x"] = "auto";
+    (*treeContainer.mutable_css())["overflow-y"] = "hidden";
+    (*treeContainer.mutable_css())["width"] = "100%";
+    (*treeContainer.mutable_css())["max-width"] = "100%";
 
     if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
         ui::Component emptyText = ComponentGenerator::createText(
