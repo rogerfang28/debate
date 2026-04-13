@@ -105,9 +105,11 @@ ui::Page StepView::GenerateStepViewPage(
 		const std::string sentence = step.summary();
 
 		std::string description;
+		int creatorId = 0;
 		auto claimIt = collectionProto.claims_by_id().find(claimId);
 		if (claimIt != collectionProto.claims_by_id().end()) {
 			description = claimIt->second.description();
+			creatorId = claimIt->second.creator_id();
 		}
 
 		ui::Component stepCard = ComponentGenerator::createContainer(
@@ -145,10 +147,30 @@ ui::Page StepView::GenerateStepViewPage(
 			"font-medium",
 			""
 		);
+		ui::Component creatorText = ComponentGenerator::createText(
+			"stepCreator_" + std::to_string(claimId),
+			"Created by user " + std::to_string(creatorId),
+			"text-xs",
+			"text-gray-400",
+			"",
+			""
+		);
+		ui::Component goToStepButton = ComponentGenerator::createButton(
+			"fullDebateStepButton_" + std::to_string(claimId),
+			"Go to Step",
+			"",
+			"bg-gray-600",
+			"hover:bg-gray-700",
+			"text-white",
+			"px-3 py-2",
+			"rounded",
+			"text-sm w-fit"
+		);
 
 		ComponentGenerator::addChild(&stepCard, claimIdText);
 		ComponentGenerator::addChild(&stepCard, stepNumberText);
 		ComponentGenerator::addChild(&stepCard, sentenceText);
+		ComponentGenerator::addChild(&stepCard, creatorText);
 
 		if (!description.empty()) {
 			ui::Component descriptionText = ComponentGenerator::createText(
@@ -161,6 +183,7 @@ ui::Page StepView::GenerateStepViewPage(
 			);
 			ComponentGenerator::addChild(&stepCard, descriptionText);
 		}
+		ComponentGenerator::addChild(&stepCard, goToStepButton);
 
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
 	}
