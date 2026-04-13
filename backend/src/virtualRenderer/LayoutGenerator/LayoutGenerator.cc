@@ -14,7 +14,7 @@
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
 
-ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info) {
+ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
     const auto action = info.user().engagement().current_action();
@@ -40,7 +40,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             if (info.user().current_scope().has_full_debate() &&
                 info.user().current_scope().full_debate().top_view()) {
                 Log::info("[LayoutGenerator] top_view=true, generating Step View page");
-                return StepView::GenerateStepViewPage(fullDebateInfo, info.collection());
+                return StepView::GenerateStepViewPage(fullDebateInfo, info.collection(), userDb);
             }
             rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(info.user(), info.collection());
             return FullDebatePageGenerator::GenerateFullDebatePage(debatePageInfo, fullDebateInfo, info.user());

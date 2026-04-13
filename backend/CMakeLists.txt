@@ -68,6 +68,7 @@ set(SRC_FILES
     # database communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/parseCookie.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/UserNameResolver.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc

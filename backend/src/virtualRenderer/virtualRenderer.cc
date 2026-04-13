@@ -61,7 +61,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     // backend.sendEvent(evt, info);
 
     // parse user info to create layout based on it
-    ui::Page page = LayoutGenerator::generateLayout(info);
+    ui::Page page = LayoutGenerator::generateLayout(info, userDb);
     return page;
 }
 

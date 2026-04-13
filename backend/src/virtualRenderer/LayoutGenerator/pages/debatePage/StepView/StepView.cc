@@ -1,10 +1,12 @@
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
+#include "../../../../utils/UserNameResolver.h"
 #include <string>
 
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
-	const debate::Collection& collectionProto
+	const debate::Collection& collectionProto,
+	VRUserDatabase& userDb
 ) {
 	ui::Page page;
 	page.set_page_id("debate");
@@ -106,10 +108,12 @@ ui::Page StepView::GenerateStepViewPage(
 
 		std::string description;
 		int creatorId = 0;
+		std::string creatorUsername;
 		auto claimIt = collectionProto.claims_by_id().find(claimId);
 		if (claimIt != collectionProto.claims_by_id().end()) {
 			description = claimIt->second.description();
 			creatorId = claimIt->second.creator_id();
+			creatorUsername = UserNameResolver::ResolveUsername(creatorId, userDb);
 		}
 
 		ui::Component stepCard = ComponentGenerator::createContainer(
@@ -123,14 +127,6 @@ ui::Page StepView::GenerateStepViewPage(
 			""
 		);
 
-		ui::Component claimIdText = ComponentGenerator::createText(
-			"stepClaimId_" + std::to_string(claimId),
-			"Claim ID: " + std::to_string(claimId),
-			"text-xs",
-			"text-gray-400",
-			"font-semibold",
-			""
-		);
 		ui::Component stepNumberText = ComponentGenerator::createText(
 			"stepNumber_" + std::to_string(claimId),
 			"Step " + std::to_string(i + 1),
@@ -149,7 +145,7 @@ ui::Page StepView::GenerateStepViewPage(
 		);
 		ui::Component creatorText = ComponentGenerator::createText(
 			"stepCreator_" + std::to_string(claimId),
-			"Created by user " + std::to_string(creatorId),
+			"Created by " + (creatorUsername.empty() ? ("user " + std::to_string(creatorId)) : creatorUsername),
 			"text-xs",
 			"text-gray-400",
 			"",
@@ -167,7 +163,6 @@ ui::Page StepView::GenerateStepViewPage(
 			"text-sm w-fit"
 		);
 
-		ComponentGenerator::addChild(&stepCard, claimIdText);
 		ComponentGenerator::addChild(&stepCard, stepNumberText);
 		ComponentGenerator::addChild(&stepCard, sentenceText);
 		ComponentGenerator::addChild(&stepCard, creatorText);
