@@ -63,18 +63,18 @@ std::string parseCookie::extractUsernameFromCookies(const httplib::Request& req)
 }
 
 void parseCookie::setCookieUsername(httplib::Response& res, std::string username) {
-    std::string cookie_value = "username=" + username + "; Path=/; HttpOnly; SameSite=None; Secure";
+    std::string cookie_value = "username=" + username + "; Path=/; HttpOnly; SameSite=Lax";
     res.set_header("Set-Cookie", cookie_value);
 }
 
 void parseCookie::setCookieUserId(httplib::Response& res, int user_id) {
-    std::string cookie_value = "user_id=" + std::to_string(user_id) + "; Path=/; HttpOnly; SameSite=None; Secure";
+    std::string cookie_value = "user_id=" + std::to_string(user_id) + "; Path=/; HttpOnly; SameSite=Lax";
     res.set_header("Set-Cookie", cookie_value);
 }
 
 void parseCookie::clearAuthCookies(httplib::Response& res) {
-    std::string expired_cookie = "user_id=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=None; Secure";
+    std::string expired_cookie = "user_id=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax";
     res.set_header("Set-Cookie", expired_cookie);
-    expired_cookie = "username=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=None; Secure";
+    expired_cookie = "username=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax";
     res.set_header("Set-Cookie", expired_cookie);
 }

@@ -1,8 +1,6 @@
 import { fromBinary } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://192.168.86.22:3000";
-
 export interface PageData {
   [key: string]: any;
 }
@@ -20,10 +18,10 @@ export default async function getPageFromCPP(opts?: {
   withCredentials?: boolean;  // send cookies if needed
 }): Promise<PageData | null> {
   try {
-    const defaultEndpoint = `${API_BASE}/`;
+    const defaultEndpoint = "/api/";
     const endpoint = opts?.endpoint ?? defaultEndpoint;
 
-    const url = new URL(endpoint);
+    const url = new URL(endpoint, window.location.origin);
     if (opts?.pageId) url.searchParams.set("id", opts.pageId);
 
     console.log("▶️ GET", url.toString(), "(expecting protobuf Page)");

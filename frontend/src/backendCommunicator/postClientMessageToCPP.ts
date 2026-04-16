@@ -7,8 +7,6 @@ import {
 } from "../../../src/gen/ts/client_message_pb";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://192.168.86.22:3000";
-
 export interface EventData {
   componentId?: string;
   eventType?: string;
@@ -74,7 +72,7 @@ export default async function postClientMessageToCPP(
     const bytes = toBinary(ClientMessageSchema, clientMessage);
 
     // POST to C++ server using configured API base
-    const endpoint = opts?.endpoint ?? `${API_BASE}/clientmessage`;
+    const endpoint = opts?.endpoint ?? "/api/clientmessage";
 
     const res = await fetch(endpoint, {
       method: "POST",
