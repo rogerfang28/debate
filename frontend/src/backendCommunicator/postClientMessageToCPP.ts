@@ -7,7 +7,7 @@ import {
 } from "../../../src/gen/ts/client_message_pb";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL || "http://192.168.86.22:3000";
 
 export interface EventData {
   componentId?: string;

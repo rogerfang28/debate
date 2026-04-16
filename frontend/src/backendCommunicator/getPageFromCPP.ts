@@ -1,7 +1,7 @@
 import { fromBinary } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL || "http://192.168.86.22:3000";
 
 export interface PageData {
   [key: string]: any;
@@ -9,7 +9,7 @@ export interface PageData {
 
 /**
  * Fetch a protobuf Page from your C++ server.
- * - Defaults to http://localhost:3000/
+ * - Defaults to the configured backend URL
  * - Validates Content-Type
  * - Supports optional ?id=<pageId>
  * - Keeps no-store to avoid caching during dev

@@ -9,6 +9,7 @@
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>
+#include <cstdlib>
 #include <iostream>
 #include "../utils/Log.h"
 
@@ -41,8 +42,13 @@ int main() {
   });
 
   // ---------- Start server ----------
-  const char* HOST = "127.0.0.1";  // Explicit IPv4 localhost for Cloudflare Tunnel
-  const int PORT = 3000;
+  const char* HOST = std::getenv("DEBATE_SERVER_HOST");
+  if (HOST == nullptr || HOST[0] == '\0') {
+    HOST = "0.0.0.0";
+  }
+
+  const char* portEnv = std::getenv("DEBATE_SERVER_PORT");
+  const int PORT = (portEnv != nullptr && portEnv[0] != '\0') ? std::atoi(portEnv) : 3000;
 
   Log::info(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
 

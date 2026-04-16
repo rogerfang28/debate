@@ -5,6 +5,14 @@ std::string UserNameResolver::ResolveUsername(int userId, VRUserDatabase& userDb
 		return "Unknown user";
 	}
 
+	if (userId == 1) {
+		return "Anti-Vax Influencer";
+	}
+
+	if (userId == 2) {
+		return "Challenger";
+	}
+
 	std::string username = userDb.getUsername(userId);
 	if (username.empty()) {
 		return "User " + std::to_string(userId);
