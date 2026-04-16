@@ -156,41 +156,59 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
 
     const float mapScale = 1.0f;
     ui::Component mapSection = GenerateMapSection(fullDebateInfo, info.current_claim().id(), mapScale);
-    ComponentGenerator::addChild(&mainLayout, mapSection);
 
-    // Bottom step menu for full debate flow.
-    ui::Component stepsMenu = ComponentGenerator::createContainer(
-        "fullDebateStepsMenu",
-            "fixed bottom-4 left-1/2 flex w-[min(90vw,72rem)] -translate-x-1/2 gap-2 overflow-x-auto justify-center",
-        "bg-gray-900",
-            "p-3 shadow-2xl",
-        "",
-        "border-t border-gray-700",
-            "rounded-t-lg",
-        "z-40"
-    );
-
-    for (int i = 0; i < fullDebateInfo.steps_size(); ++i) {
-        const rendering_info::Steps& step = fullDebateInfo.steps(i);
-        const std::string stepLabel = "Step " + std::to_string(i + 1) + ": " + step.summary();
-        const std::string stepButtonId = "fullDebateStepButton_" + std::to_string(step.claim_id());
-        ui::Component stepButton = ComponentGenerator::createButton(
-            stepButtonId,
-            stepLabel,
-            "",
-            "bg-gray-700",
-            "hover:bg-gray-600",
-            "text-white",
-            "px-3 py-2",
-            "rounded",
-            "whitespace-nowrap text-sm"
-        );
-        ComponentGenerator::addChild(&stepsMenu, stepButton);
+    std::string debateTopicSentence = info.current_claim().sentence();
+    if (fullDebateInfo.has_full_debate_tree()) {
+        const rendering_info::FullDebateTree& tree = fullDebateInfo.full_debate_tree();
+        const int rootClaimId = tree.root_claim_id();
+        for (int i = 0; i < tree.nodes_size(); ++i) {
+            const rendering_info::FullDebateTreeNode& node = tree.nodes(i);
+            if (node.claim_id() == rootClaimId && !node.sentence().empty()) {
+                debateTopicSentence = node.sentence();
+                break;
+            }
+        }
     }
-    ComponentGenerator::addChild(&mainLayout, stepsMenu);
+    if (debateTopicSentence.empty()) {
+        debateTopicSentence = "No debate topic available";
+    }
+
+    ui::Component debateTopicBox = ComponentGenerator::createContainer(
+        "debateTopicBox",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        "max-w-5xl mx-auto"
+    );
+    ui::Component debateTopicText = ComponentGenerator::createText(
+        "debateTopicText",
+        "Debate Topic: " + debateTopicSentence,
+        "text-base",
+        "text-white",
+        "font-semibold",
+        ""
+    );
+    ComponentGenerator::addChild(&debateTopicBox, debateTopicText);
+
+    ui::Component pageRoot = ComponentGenerator::createContainer(
+        "fullDebateRootLayout",
+        "flex flex-col gap-4",
+        "bg-gray-900",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    ComponentGenerator::addChild(&pageRoot, debateTopicBox);
+    ComponentGenerator::addChild(&pageRoot, mapSection);
+    ComponentGenerator::addChild(&pageRoot, mainLayout);
 
     ui::Component* pageLayout = page.add_components();
-    pageLayout->CopyFrom(mainLayout);
+    pageLayout->CopyFrom(pageRoot);
     return page; // test
 }
 
