@@ -127,28 +127,15 @@ ui::Page StepView::GenerateStepViewPage(
 			""
 		);
 
-		ui::Component stepNumberText = ComponentGenerator::createText(
-			"stepNumber_" + std::to_string(claimId),
-			"Step " + std::to_string(i + 1),
-			"text-base",
-			"text-blue-300",
-			"font-semibold",
-			""
-		);
+		std::string creatorDisplay = creatorUsername.empty()
+			? ("user " + std::to_string(creatorId))
+			: creatorUsername;
 		ui::Component sentenceText = ComponentGenerator::createText(
 			"stepSentence_" + std::to_string(claimId),
-			sentence,
+			creatorDisplay + " states: " + sentence,
 			"text-base",
 			"text-white",
 			"font-medium",
-			""
-		);
-		ui::Component creatorText = ComponentGenerator::createText(
-			"stepCreator_" + std::to_string(claimId),
-			"Created by " + (creatorUsername.empty() ? ("user " + std::to_string(creatorId)) : creatorUsername),
-			"text-xs",
-			"text-gray-400",
-			"",
 			""
 		);
 		ui::Component goToStepButton = ComponentGenerator::createButton(
@@ -163,9 +150,7 @@ ui::Page StepView::GenerateStepViewPage(
 			"text-sm w-fit"
 		);
 
-		ComponentGenerator::addChild(&stepCard, stepNumberText);
 		ComponentGenerator::addChild(&stepCard, sentenceText);
-		ComponentGenerator::addChild(&stepCard, creatorText);
 
 		if (!description.empty()) {
 			ui::Component descriptionText = ComponentGenerator::createText(
