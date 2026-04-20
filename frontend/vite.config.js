@@ -4,13 +4,30 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiUrl = env.VITE_API_URL || 'http://localhost:3000'
+  const apiUrl = env.VITE_API_URL?.trim()
+  const devHost = env.VITE_DEV_HOST?.trim()
+  const devPortRaw = env.VITE_DEV_PORT?.trim()
+
+  if (!apiUrl) {
+    throw new Error('VITE_API_URL must be set')
+  }
+  if (!devHost) {
+    throw new Error('VITE_DEV_HOST must be set')
+  }
+  if (!devPortRaw) {
+    throw new Error('VITE_DEV_PORT must be set')
+  }
+
+  const devPort = Number(devPortRaw)
+  if (!Number.isInteger(devPort) || devPort < 1 || devPort > 65535) {
+    throw new Error(`VITE_DEV_PORT is invalid: ${devPortRaw}`)
+  }
 
   return {
     plugins: [react()],
     server: {
-      host: "0.0.0.0",
-      port: 5173,
+      host: devHost,
+      port: devPort,
       strictPort: true,
       proxy: {
         '/api': {
