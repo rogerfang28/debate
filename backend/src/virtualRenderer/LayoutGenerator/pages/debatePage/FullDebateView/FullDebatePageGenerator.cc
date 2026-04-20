@@ -247,14 +247,14 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
 
     ui::Component seeOverviewButton = ComponentGenerator::createButton(
         "seeOverviewButton",
-        "See Overview",
+        "Back to Overview",
         "",
-        "bg-gray-600",
-        "hover:bg-gray-700",
+        "bg-emerald-500",
+        "hover:bg-emerald-600",
         "text-white",
         "px-4 py-2",
         "rounded",
-        "transition-colors text-sm"
+        "transition-colors text-sm font-semibold ring-2 ring-emerald-300 shadow-lg"
     );
     ComponentGenerator::addChild(&leftTopSection, seeOverviewButton);
 
@@ -1789,14 +1789,14 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                         leftTopSection->clear_children();
                         ui::Component seeOverviewButton = ComponentGenerator::createButton(
                             "seeOverviewButton",
-                            "See Overview",
+                            "Back to Overview",
                             "",
-                            "bg-gray-600",
-                            "hover:bg-gray-700",
+                            "bg-emerald-500",
+                            "hover:bg-emerald-600",
                             "text-white",
                             "px-4 py-2",
                             "rounded",
-                            "transition-colors text-sm"
+                            "transition-colors text-sm font-semibold ring-2 ring-emerald-300 shadow-lg"
                         );
                         ComponentGenerator::addChild(leftTopSection, seeOverviewButton);
                         ui::Component goToChallengedClaimButton = ComponentGenerator::createButton(
@@ -2311,7 +2311,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         "grid grid-cols-2 md:grid-cols-3 gap-3",
         "bg-gray-900/60",
         "p-3",
-        "mb-4",
+        "mt-4",
         "border border-gray-700",
         "rounded",
         "text-sm text-gray-200"
@@ -2360,8 +2360,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link", true);
     addLegendItem("legendCurrentClaim", "bg-transparent border-4 border-yellow-400", "Current claim");
 
-    ComponentGenerator::addChild(&mapSection, legend);
-
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
         "w-full",
@@ -2388,6 +2386,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&treeContainer, emptyText);
         ComponentGenerator::addChild(&mapSection, treeContainer);
+        ComponentGenerator::addChild(&mapSection, legend);
         return mapSection;
     }
 
@@ -2911,6 +2910,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     ComponentGenerator::addChild(&mapScaledViewport, mapCanvas);
     ComponentGenerator::addChild(&treeContainer, mapScaledViewport);
     ComponentGenerator::addChild(&mapSection, treeContainer);
+    ComponentGenerator::addChild(&mapSection, legend);
 
     return mapSection;
 }

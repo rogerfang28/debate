@@ -11,7 +11,7 @@ ui::Page StepView::GenerateStepViewPage(
 ) {
 	ui::Page page;
 	page.set_page_id("debate");
-	page.set_title("Debate Overview");
+	page.set_title("");
 
 	int rootClaimId = -1;
 	std::string rootSentence = "Debate overview";
@@ -27,7 +27,7 @@ ui::Page StepView::GenerateStepViewPage(
 
 	ui::Component container = ComponentGenerator::createContainer(
 		"stepViewMain",
-		"min-h-screen flex flex-col items-center",
+		"min-h-screen flex flex-col items-stretch",
 		"bg-gray-900",
 		"p-6",
 		"",
@@ -38,7 +38,7 @@ ui::Page StepView::GenerateStepViewPage(
 
 	ui::Component topBar = ComponentGenerator::createContainer(
 		"stepViewTopBar",
-		"w-full max-w-5xl flex items-start justify-between gap-4",
+		"w-full flex items-start justify-between gap-4",
 		"",
 		"",
 		"",
@@ -73,9 +73,9 @@ ui::Page StepView::GenerateStepViewPage(
 		"font-bold",
 		""
 	);
-	ComponentGenerator::addChild(&titleBlock, titleLabel);
-	ComponentGenerator::addChild(&titleBlock, titleText);
-	ComponentGenerator::addChild(&topBar, titleBlock);
+	// ComponentGenerator::addChild(&titleBlock, titleLabel);
+	// ComponentGenerator::addChild(&titleBlock, titleText);
+	// ComponentGenerator::addChild(&topBar, titleBlock);
 
 	ui::Component testButton = ComponentGenerator::createButton(
 		"stepViewTestButton",
@@ -91,9 +91,55 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&topBar, testButton);
 	ComponentGenerator::addChild(&container, topBar);
 
+	ui::Component contentRow = ComponentGenerator::createContainer(
+		"stepViewContentRow",
+		"w-full",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	);
+    (*contentRow.mutable_css())["display"] = "flex";
+    (*contentRow.mutable_css())["flex-direction"] = "row";
+    (*contentRow.mutable_css())["align-items"] = "flex-start";
+    (*contentRow.mutable_css())["gap"] = "1rem";
+
+	ui::Component leftColumn = ComponentGenerator::createContainer(
+		"stepViewLeftColumn",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	);
+    (*leftColumn.mutable_css())["display"] = "flex";
+    (*leftColumn.mutable_css())["flex-direction"] = "column";
+    (*leftColumn.mutable_css())["gap"] = "1rem";
+	(*leftColumn.mutable_css())["flex"] = "1 1 auto";
+	(*leftColumn.mutable_css())["min-width"] = "0";
+
+	ui::Component rightColumn = ComponentGenerator::createContainer(
+		"stepViewRightColumn",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	);
+	(*rightColumn.mutable_css())["display"] = "flex";
+	(*rightColumn.mutable_css())["justify-content"] = "flex-end";
+	(*rightColumn.mutable_css())["flex"] = "0 0 34%";
+	(*rightColumn.mutable_css())["min-width"] = "320px";
+
 	ui::Component guideBox = ComponentGenerator::createContainer(
 		"stepViewGuideBox",
-		"w-full max-w-5xl",
+		"w-full",
 		"bg-blue-900/30",
 		"p-4",
 		"",
@@ -101,6 +147,7 @@ ui::Page StepView::GenerateStepViewPage(
 		"rounded-lg",
 		""
 	);
+	(*guideBox.mutable_css())["max-width"] = "100%";
 	ui::Component guideTitle = ComponentGenerator::createText(
 		"stepViewGuideTitle",
 		"Guide",
@@ -111,19 +158,22 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	ui::Component guideParagraph = ComponentGenerator::createText(
 		"stepViewGuideParagraph",
-		"This is a hardcoded guide paragraph for Step View. Replace this sentence with your own instructions for how users should read and navigate the step sequence.",
-		"text-sm",
+		"This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt’s work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
+		"text-base",
 		"text-blue-100",
 		"",
-		"leading-relaxed"
+		"leading-snug"
 	);
+	(*guideParagraph.mutable_css())["white-space"] = "pre-line";
+	(*guideParagraph.mutable_css())["overflow-wrap"] = "break-word";
+	(*guideParagraph.mutable_css())["text-align"] = "left";
+	(*guideParagraph.mutable_css())["font-style"] = "italic";
 	ComponentGenerator::addChild(&guideBox, guideTitle);
 	ComponentGenerator::addChild(&guideBox, guideParagraph);
-	ComponentGenerator::addChild(&container, guideBox);
 
 	ui::Component stepsContainer = ComponentGenerator::createContainer(
 		"stepCardsContainer",
-		"w-full max-w-5xl grid grid-cols-1 gap-4",
+		"w-full grid grid-cols-1 gap-4",
 		"",
 		"",
 		"",
@@ -161,7 +211,7 @@ ui::Page StepView::GenerateStepViewPage(
 			: creatorUsername;
 		ui::Component sentenceText = ComponentGenerator::createText(
 			"stepSentence_" + std::to_string(claimId),
-			creatorDisplay + " says: " + sentence,
+			sentence,
 			"text-base",
 			"text-white",
 			"font-medium",
@@ -185,14 +235,22 @@ ui::Page StepView::GenerateStepViewPage(
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
 	}
 
-	ComponentGenerator::addChild(&container, stepsContainer);
+	ComponentGenerator::addChild(&leftColumn, guideBox);
+	ComponentGenerator::addChild(&leftColumn, stepsContainer);
 
 	const int mapFocusClaimId = rootClaimId > 0
 		? rootClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
-	const float mapScale = 1.0f;
+	const float mapScale = 0.82f;
 	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
-	ComponentGenerator::addChild(&container, mapSection);
+	(*mapSection.mutable_css())["margin-top"] = "0";
+	(*mapSection.mutable_css())["max-width"] = "760px";
+	(*mapSection.mutable_css())["width"] = "100%";
+	ComponentGenerator::addChild(&rightColumn, mapSection);
+
+	ComponentGenerator::addChild(&contentRow, leftColumn);
+	ComponentGenerator::addChild(&contentRow, rightColumn);
+	ComponentGenerator::addChild(&container, contentRow);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);

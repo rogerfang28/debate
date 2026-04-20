@@ -11,6 +11,7 @@ export default {
     'bg-blue-600', 'hover:bg-blue-700', 'bg-blue-500', 'hover:bg-blue-500',
     'bg-yellow-200', 'bg-yellow-600', 'hover:bg-yellow-700',
     'bg-green-400', 'bg-green-600', 'hover:bg-green-700', 'bg-green-500', 'hover:bg-green-500',
+    'bg-emerald-500', 'hover:bg-emerald-600',
     'bg-purple-600', 'hover:bg-purple-700', 'bg-purple-500', 'hover:bg-purple-500',
     'bg-slate-600', 'bg-slate-700', 'bg-slate-800', 'hover:bg-slate-500', 'hover:bg-slate-600',
     
@@ -93,11 +94,12 @@ export default {
     
     // Effects
     'transition-colors', 'transition-all', 'transition',
-    'shadow-2xl', 'shadow',
+    'shadow-2xl', 'shadow', 'shadow-lg',
     'backdrop-blur-sm',
     
     // Hover/Focus/Disabled states
     'hover:transform', 'hover:-translate-y-0.5', 'hover:scale-105',
+    'ring-2', 'ring-emerald-300',
     'focus:ring-2', 'focus:ring-blue-500', 'focus:border-transparent',
     'disabled:opacity-50',
     'cursor-pointer',
