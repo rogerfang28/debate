@@ -13,10 +13,20 @@
 #include <iostream>
 #include <cstdlib>
 #include <filesystem>
+#include <chrono>
 #include <vector>
 #include "../utils/Log.h"
+#include "../utils/DemoMode.h"
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
+
+namespace {
+std::string buildAutoGuestUsername() {
+    using namespace std::chrono;
+    const auto timestampMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    return "guest_" + std::to_string(timestampMs);
+}
+}
 
 std::string VirtualRenderer::getUsersDatabasePath() const {
     if (const char* envPath = std::getenv("USER_DB_PATH"); envPath && envPath[0] != '\0') {
@@ -49,6 +59,34 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     
     // translate client_message into debate event
     int user_id = parseCookie::extractUserIdFromCookies(req);
+    const bool autoLogin = demo_mode::autoLogin;
+    if (autoLogin && user_id <= 0) {
+        std::string username = parseCookie::extractUsernameFromCookies(req);
+        if (username.empty()) {
+            username = buildAutoGuestUsername();
+        }
+
+        int moderatorUserId = moderator.createUserIfNotExist(username);
+        if (userDb.getUserId(username) == -1) {
+            createUserIfNotExist(username);
+        }
+
+        parseCookie::setCookieUserId(res, moderatorUserId);
+        parseCookie::setCookieUsername(res, username);
+        user_id = moderatorUserId;
+
+        debate_event::DebateEvent autoJoinEvent;
+        autoJoinEvent.set_type(debate_event::JOIN_DEBATE);
+        autoJoinEvent.mutable_join_debate()->set_debate_id(3);
+        autoJoinEvent.mutable_user()->set_user_id(moderatorUserId);
+        autoJoinEvent.mutable_user()->set_username(username);
+        autoJoinEvent.mutable_user()->set_is_logged_in(true);
+        moderator.handleRequest(autoJoinEvent);
+
+        Log::info("[VirtualRenderer] Auto-created user for missing cookie user_id. username=" + username + " user_id=" + std::to_string(user_id));
+        Log::info("[VirtualRenderer] Auto-joined user " + username + " to debate_id=1.");
+    }
+
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     // BackendCommunicator backend("localhost", 3000);
     // ! no server call for now, backend and virtual renderer are on the same backend

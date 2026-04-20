@@ -1,5 +1,6 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
+#include "../../../../utils/DemoMode.h"
 
 ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRenderingInfo& info) {
     ui::Page page;
@@ -29,19 +30,22 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         "text-white"
     );
 
-    // Logout button in top right
-    ui::Component logoutButton = ComponentGenerator::createButton(
-        "logoutButton",
-        "Logout",
-        "logout",
-        "bg-gray-700",
-        "hover:bg-gray-600",
-        "text-white",
-        "px-4 py-2",
-        "rounded-lg",
-        "absolute top-4 right-4 transition border border-gray-600"
-    );
-    ComponentGenerator::addChild(&main, logoutButton);
+    const bool autoLogin = demo_mode::autoLogin;
+    if (!autoLogin) {
+        // Logout button in top right
+        ui::Component logoutButton = ComponentGenerator::createButton(
+            "logoutButton",
+            "Logout",
+            "logout",
+            "bg-gray-700",
+            "hover:bg-gray-600",
+            "text-white",
+            "px-4 py-2",
+            "rounded-lg",
+            "absolute top-4 right-4 transition border border-gray-600"
+        );
+        ComponentGenerator::addChild(&main, logoutButton);
+    }
 
     // Title
     ui::Component title = ComponentGenerator::createText(
