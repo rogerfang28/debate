@@ -539,76 +539,78 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
     );
     ComponentGenerator::addChild(&rightContent, modifyActionsContainer);
 
-    // Claim History Button
-    ui::Component claimHistoryButton = ComponentGenerator::createButton(
-        "claimHistoryButton",
-        "See Claim History",
-        "",
-        "bg-purple-600",
-        "hover:bg-purple-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "w-full transition-colors mb-6"
-    );
-    ComponentGenerator::addChild(&rightContent, claimHistoryButton);
+    if (!demo_mode::disableClaimHistoryGuideAndReport) {
+        // Claim History Button
+        ui::Component claimHistoryButton = ComponentGenerator::createButton(
+            "claimHistoryButton",
+            "See Claim History",
+            "",
+            "bg-purple-600",
+            "hover:bg-purple-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "w-full transition-colors mb-6"
+        );
+        ComponentGenerator::addChild(&rightContent, claimHistoryButton);
 
-    ui::Component guidanceBox = ComponentGenerator::createContainer(
-        "guidanceBox",
-        "",
-        "bg-gray-800",
-        "p-6",
-        "mb-6",
-        "border-2 border-gray-700",
-        "rounded",
-        "min-h-64"
-    );
+        ui::Component guidanceBox = ComponentGenerator::createContainer(
+            "guidanceBox",
+            "",
+            "bg-gray-800",
+            "p-6",
+            "mb-6",
+            "border-2 border-gray-700",
+            "rounded",
+            "min-h-64"
+        );
 
-    ui::Component guidanceText = ComponentGenerator::createText(
-        "guidanceText",
-        "Guide:",
-        "text-lg",
-        "text-white",
-        "font-semibold",
-        ""
-    );
-    ComponentGenerator::addChild(&guidanceBox, guidanceText);
-    ComponentGenerator::addChild(&rightContent, guidanceBox);
+        ui::Component guidanceText = ComponentGenerator::createText(
+            "guidanceText",
+            "Guide:",
+            "text-lg",
+            "text-white",
+            "font-semibold",
+            ""
+        );
+        ComponentGenerator::addChild(&guidanceBox, guidanceText);
+        ComponentGenerator::addChild(&rightContent, guidanceBox);
 
-    ui::Component reportSection = ComponentGenerator::createContainer(
-        "reportSection",
-        "",
-        "bg-gray-800",
-        "p-6",
-        "",
-        "border-2 border-gray-700",
-        "rounded",
-        ""
-    );
+        ui::Component reportSection = ComponentGenerator::createContainer(
+            "reportSection",
+            "",
+            "bg-gray-800",
+            "p-6",
+            "",
+            "border-2 border-gray-700",
+            "rounded",
+            ""
+        );
 
-    ui::Component reportTitle = ComponentGenerator::createText(
-        "reportTitle",
-        "Think this is wrong? File a claim report.",
-        "text-sm",
-        "text-white",
-        "",
-        "mb-6"
-    );
-    ComponentGenerator::addChild(&reportSection, reportTitle);
+        ui::Component reportTitle = ComponentGenerator::createText(
+            "reportTitle",
+            "Think this is wrong? File a claim report.",
+            "text-sm",
+            "text-white",
+            "",
+            "mb-6"
+        );
+        ComponentGenerator::addChild(&reportSection, reportTitle);
 
-    ui::Component reportButton = ComponentGenerator::createButton(
-        "reportButton",
-        "Report Claim",
-        "",
-        "bg-red-600",
-        "hover:bg-red-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "w-full transition-colors"
-    );
-    ComponentGenerator::addChild(&reportSection, reportButton);
-    ComponentGenerator::addChild(&rightContent, reportSection);
+        ui::Component reportButton = ComponentGenerator::createButton(
+            "reportButton",
+            "Report Claim",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "w-full transition-colors"
+        );
+        ComponentGenerator::addChild(&reportSection, reportButton);
+        ComponentGenerator::addChild(&rightContent, reportSection);
+    }
     ComponentGenerator::addChild(&contentArea, rightContent);
     ComponentGenerator::addChild(&mainLayout, contentArea);
 
@@ -715,7 +717,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
     // Check if user is in modify mode
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
 
-    if (demo_mode::kViewerModeEnabled) {
+    if (demo_mode::kReadOnlyMode) {
         challengingClaim = false;
         modifyingCurrentClaim = false;
     }
@@ -1354,7 +1356,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
 
-        if (userOwnsChallenge && !demo_mode::kViewerModeEnabled) {
+        if (userOwnsChallenge && !demo_mode::kReadOnlyMode) {
             deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengedClaimId,
                 "Delete",
@@ -1407,7 +1409,7 @@ ui::Component FullDebatePageGenerator::FillCurrentClaimSection(const rendering_i
     bool editingClaim = (debatingInfo.current_debate_action().action_type() == 
                          user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM);
 
-    if (demo_mode::kViewerModeEnabled) {
+    if (demo_mode::kReadOnlyMode) {
         modifyingCurrentClaim = false;
         editingDescription = false;
         editingClaim = false;
@@ -1625,7 +1627,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                     for (int k = 0; k < rightContent->children_size(); k++) {
                         ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
                         if (modifyActionsContainer->id() == "modifyActionsContainer") {
-                            if (modifyingCurrentClaim && !demo_mode::kViewerModeEnabled) {
+                            if (modifyingCurrentClaim && !demo_mode::kReadOnlyMode) {
                                 // Show Cancel and Submit buttons
                                 ui::Component cancelModifyButton = ComponentGenerator::createButton(
                                     "cancelModifyClaimButton",
@@ -1652,7 +1654,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                                     "w-full transition-colors"
                                 );
                                 ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
-                            } else if (!demo_mode::kViewerModeEnabled) {
+                            } else if (!demo_mode::kReadOnlyMode) {
                                 // Show Modify Claim button
                                 ui::Component modifyClaimButton = ComponentGenerator::createButton(
                                     "modifyClaimButton",
@@ -1678,7 +1680,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
     }
 
     // Only add buttons if not in editing mode
-    if (!editingDescription && !editingClaim && !demo_mode::kViewerModeEnabled) {
+    if (!editingDescription && !editingClaim && !demo_mode::kReadOnlyMode) {
         // Find descriptionActions container and add appropriate buttons
         for (int i = 0; i < mainLayout.children_size(); i++) {
             ui::Component* contentArea = mainLayout.mutable_children(i);

@@ -9,7 +9,7 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
 
     // info.set_viewer_user_id(userProto.user_id());
     // info.set_viewer_username(userProto.username());
-    info.set_can_create_or_join_debates(!demo_mode::kViewerModeEnabled);
+    info.set_can_create_or_join_debates(!demo_mode::kReadOnlyMode);
 
     Log::debug(
         "[HomePageInfoParser] Parsing home debate list for user_id=" + std::to_string(userProto.user_id()) +

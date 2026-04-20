@@ -40,7 +40,6 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
         case debate_event::CREATE_DEBATE:
         case debate_event::CLEAR_DEBATES:
         case debate_event::DELETE_DEBATE:
-        case debate_event::JOIN_DEBATE:
         case debate_event::LEAVE_DEBATE:
         case debate_event::OPEN_ADD_CHILD_CLAIM:
         case debate_event::CLOSE_ADD_CHILD_CLAIM:
@@ -77,6 +76,16 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
             return false;
     }
 }
+
+bool isClaimMetaSectionBlockedEvent(debate_event::EventType type) {
+    switch (type) {
+        case debate_event::REPORT_CLAIM:
+        case debate_event::GO_TO_HISTORY_OF_CURRENT_CLAIM:
+            return true;
+        default:
+            return false;
+    }
+}
 }
 
 DebateModerator::DebateModerator()
@@ -104,8 +113,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     }
     Log::info("[DebateModerator] Handling request for user: " + std::to_string(user_id));
 
-    if (demo_mode::kViewerModeEnabled && isViewerBlockedEvent(event.type())) {
+    if (demo_mode::kReadOnlyMode && isViewerBlockedEvent(event.type())) {
         Log::info("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
+        event.set_type(debate_event::NONE);
+    }
+
+    if (demo_mode::disableClaimHistoryGuideAndReport && isClaimMetaSectionBlockedEvent(event.type())) {
+        Log::info("[DebateModerator] Claim meta UI blocked event type: " + std::to_string(event.type()));
         event.set_type(debate_event::NONE);
     }
 
