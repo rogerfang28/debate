@@ -154,9 +154,6 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     mainLayout = AddAppropriateButtons(info, userProto, mainLayout);
     mainLayout = AddAppropriateOverlays(info, userProto, mainLayout);
 
-    const float mapScale = 1.0f;
-    ui::Component mapSection = GenerateMapSection(fullDebateInfo, info.current_claim().id(), mapScale);
-
     std::string debateTopicSentence = info.current_claim().sentence();
     if (fullDebateInfo.has_full_debate_tree()) {
         const rendering_info::FullDebateTree& tree = fullDebateInfo.full_debate_tree();
@@ -204,7 +201,6 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
         ""
     );
     ComponentGenerator::addChild(&pageRoot, debateTopicBox);
-    ComponentGenerator::addChild(&pageRoot, mapSection);
     ComponentGenerator::addChild(&pageRoot, mainLayout);
 
     ui::Component* pageLayout = page.add_components();
@@ -2294,7 +2290,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         "w-full",
         "bg-gray-800",
         "p-6",
-        "mt-10",
+        "mt-6",
         "border-2 border-gray-700",
         "rounded",
         "min-h-[32rem]"

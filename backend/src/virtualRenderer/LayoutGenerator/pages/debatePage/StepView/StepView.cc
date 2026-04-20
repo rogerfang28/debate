@@ -1,5 +1,6 @@
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
+#include "../FullDebateView/FullDebatePageGenerator.h"
 #include "../../../../utils/UserNameResolver.h"
 #include <string>
 
@@ -90,6 +91,36 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&topBar, testButton);
 	ComponentGenerator::addChild(&container, topBar);
 
+	ui::Component guideBox = ComponentGenerator::createContainer(
+		"stepViewGuideBox",
+		"w-full max-w-5xl",
+		"bg-blue-900/30",
+		"p-4",
+		"",
+		"border border-blue-700",
+		"rounded-lg",
+		""
+	);
+	ui::Component guideTitle = ComponentGenerator::createText(
+		"stepViewGuideTitle",
+		"Guide",
+		"text-sm",
+		"text-blue-200",
+		"font-semibold uppercase tracking-wide",
+		"mb-2"
+	);
+	ui::Component guideParagraph = ComponentGenerator::createText(
+		"stepViewGuideParagraph",
+		"This is a hardcoded guide paragraph for Step View. Replace this sentence with your own instructions for how users should read and navigate the step sequence.",
+		"text-sm",
+		"text-blue-100",
+		"",
+		"leading-relaxed"
+	);
+	ComponentGenerator::addChild(&guideBox, guideTitle);
+	ComponentGenerator::addChild(&guideBox, guideParagraph);
+	ComponentGenerator::addChild(&container, guideBox);
+
 	ui::Component stepsContainer = ComponentGenerator::createContainer(
 		"stepCardsContainer",
 		"w-full max-w-5xl grid grid-cols-1 gap-4",
@@ -155,6 +186,13 @@ ui::Page StepView::GenerateStepViewPage(
 	}
 
 	ComponentGenerator::addChild(&container, stepsContainer);
+
+	const int mapFocusClaimId = rootClaimId > 0
+		? rootClaimId
+		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
+	const float mapScale = 1.0f;
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
+	ComponentGenerator::addChild(&container, mapSection);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);
