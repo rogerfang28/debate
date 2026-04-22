@@ -73,8 +73,8 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
             createUserIfNotExist(username);
         }
 
-        parseCookie::setCookieUserId(res, moderatorUserId);
-        parseCookie::setCookieUsername(res, username);
+        parseCookie::setCookieUserId(req, res, moderatorUserId);
+        parseCookie::setCookieUsername(req, res, username);
         user_id = moderatorUserId;
         autoLoginResolvedUserId = moderatorUserId;
         autoLoginResolvedUsername = username;
@@ -123,7 +123,7 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
 
     if (evt.type() == debate_event::LOGOUT) {
         Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
-        parseCookie::clearAuthCookies(res);
+        parseCookie::clearAuthCookies(req, res);
         resolvedUserId = 0;
         resolvedUsername = "";
     }
@@ -137,8 +137,8 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
             userId = userDb.getUserId(evt.login().username());
         }
         // this ensures a user exists
-        parseCookie::setCookieUserId(res, moderatorUserId);
-        parseCookie::setCookieUsername(res, evt.login().username());
+        parseCookie::setCookieUserId(req, res, moderatorUserId);
+        parseCookie::setCookieUsername(req, res, evt.login().username());
 
         // Apply authenticated identity for this same request, not only future requests.
         resolvedUserId = moderatorUserId;

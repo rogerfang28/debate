@@ -1,5 +1,78 @@
 #include "parseCookie.h"
 #include "../../utils/Log.h"
+#include <algorithm>
+#include <cctype>
+#include <cstdlib>
+#include <string>
+
+namespace {
+bool envFlagEnabled(const char* name) {
+    const char* value = std::getenv(name);
+    if (value == nullptr || value[0] == '\0') {
+        return false;
+    }
+
+    std::string normalized(value);
+    std::transform(normalized.begin(), normalized.end(), normalized.begin(), [](unsigned char ch) {
+        return static_cast<char>(std::tolower(ch));
+    });
+
+    return normalized == "1" || normalized == "true" || normalized == "yes" || normalized == "on";
+}
+
+bool isLocalOrigin(const std::string& value) {
+    return value.find("localhost") != std::string::npos || value.find("127.0.0.1") != std::string::npos;
+}
+
+std::string cookieAttributesFromRequest(const httplib::Request& req) {
+    std::string sameSite = "Lax";
+    bool secure = false;
+
+    if (const char* mode = std::getenv("DEBATE_COOKIE_MODE"); mode != nullptr && mode[0] != '\0') {
+        std::string normalized(mode);
+        std::transform(normalized.begin(), normalized.end(), normalized.begin(), [](unsigned char ch) {
+            return static_cast<char>(std::tolower(ch));
+        });
+
+        if (normalized == "hosted" || normalized == "production" || normalized == "https") {
+            sameSite = "None";
+            secure = true;
+        }
+    }
+    else {
+        const std::string origin = req.get_header_value("Origin");
+        const std::string host = req.get_header_value("Host");
+        const bool hostedRequest = (!origin.empty() && !isLocalOrigin(origin)) || (!host.empty() && !isLocalOrigin(host));
+
+        if (hostedRequest) {
+            sameSite = "None";
+            secure = true;
+        }
+    }
+
+    if (const char* sameSiteEnv = std::getenv("DEBATE_COOKIE_SAMESITE"); sameSiteEnv != nullptr && sameSiteEnv[0] != '\0') {
+        sameSite = sameSiteEnv;
+    }
+
+    if (std::getenv("DEBATE_COOKIE_SECURE") != nullptr) {
+        secure = envFlagEnabled("DEBATE_COOKIE_SECURE");
+    }
+
+    std::string attributes = "; Path=/; HttpOnly";
+    if (!sameSite.empty()) {
+        attributes += "; SameSite=" + sameSite;
+    }
+    if (secure) {
+        attributes += "; Secure";
+    }
+
+    if (sameSite == "None" && !secure) {
+        Log::info("[Auth] Cookie policy uses SameSite=None without Secure; browsers may reject it on modern builds.");
+    }
+
+    return attributes;
+}
+}
 
 // Helper to extract user_id from cookies
 int parseCookie::extractUserIdFromCookies(const httplib::Request& req) {
@@ -62,19 +135,22 @@ std::string parseCookie::extractUsernameFromCookies(const httplib::Request& req)
     return username;
 }
 
-void parseCookie::setCookieUsername(httplib::Response& res, std::string username) {
-    std::string cookie_value = "username=" + username + "; Path=/; HttpOnly";
+void parseCookie::setCookieUsername(const httplib::Request& req, httplib::Response& res, std::string username) {
+    std::string cookie_value = "username=" + username + cookieAttributesFromRequest(req);
     res.set_header("Set-Cookie", cookie_value);
 }
 
-void parseCookie::setCookieUserId(httplib::Response& res, int user_id) {
-    std::string cookie_value = "user_id=" + std::to_string(user_id) + "; Path=/; HttpOnly";
+void parseCookie::setCookieUserId(const httplib::Request& req, httplib::Response& res, int user_id) {
+    std::string cookie_value = "user_id=" + std::to_string(user_id) + cookieAttributesFromRequest(req);
     res.set_header("Set-Cookie", cookie_value);
 }
 
-void parseCookie::clearAuthCookies(httplib::Response& res) {
+void parseCookie::clearAuthCookies(const httplib::Request& req, httplib::Response& res) {
+    const std::string attributes = cookieAttributesFromRequest(req);
     std::string expired_cookie = "user_id=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly";
+    expired_cookie += attributes;
     res.set_header("Set-Cookie", expired_cookie);
     expired_cookie = "username=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly";
+    expired_cookie += attributes;
     res.set_header("Set-Cookie", expired_cookie);
 }
