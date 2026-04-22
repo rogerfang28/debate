@@ -5,7 +5,7 @@
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
     page.set_page_id("login");
-    page.set_title(demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username");
+    page.set_title(demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username"));
 
     // Main container
     ui::Component main = GenerateLoginPageMainLayout();
@@ -39,7 +39,7 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     // Title
     ui::Component title = ComponentGenerator::createText(
         "title",
-        "Welcome!",
+        demo_mode::autoLogin ? "Please Reload" : "Welcome!",
         "text-3xl",
         "text-blue-400",
         "font-bold",
@@ -50,13 +50,17 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        demo_mode::kDemoEnabled ? "Click Demo to continue." : "Please enter your username to continue.",
+        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Please enter your username to continue."),
         "",
         "text-gray-300",
         "",
         "text-center"
     );
     ComponentGenerator::addChild(&main, description);
+
+    if (demo_mode::autoLogin) {
+        return main;
+    }
 
     if (demo_mode::kDemoEnabled) {
         ui::Component demoButton = ComponentGenerator::createButton(

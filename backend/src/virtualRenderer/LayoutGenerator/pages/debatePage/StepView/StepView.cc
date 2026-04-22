@@ -36,60 +36,7 @@ ui::Page StepView::GenerateStepViewPage(
 		"gap-4"
 	);
 
-	ui::Component topBar = ComponentGenerator::createContainer(
-		"stepViewTopBar",
-		"w-full flex items-start justify-between gap-4",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	);
-
-	ui::Component titleBlock = ComponentGenerator::createContainer(
-		"stepViewTitleBlock",
-		"flex flex-col gap-1",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	);
-	ui::Component titleLabel = ComponentGenerator::createText(
-		"stepViewTitleLabel",
-		"Debate Root Claim",
-		"text-sm",
-		"text-gray-300",
-		"font-semibold",
-		"uppercase tracking-wide"
-	);
-	ui::Component titleText = ComponentGenerator::createText(
-		"stepViewTitleText",
-		rootSentence,
-		"text-xl",
-		"text-white",
-		"font-bold",
-		""
-	);
-	// ComponentGenerator::addChild(&titleBlock, titleLabel);
-	// ComponentGenerator::addChild(&titleBlock, titleText);
-	// ComponentGenerator::addChild(&topBar, titleBlock);
-
-	ui::Component testButton = ComponentGenerator::createButton(
-		"stepViewTestButton",
-		"Back to Full Debate",
-		"",
-		"bg-blue-600",
-		"hover:bg-blue-700",
-		"text-white",
-		"px-4 py-2",
-		"rounded",
-		"text-sm"
-	);
-	ComponentGenerator::addChild(&topBar, testButton);
-	ComponentGenerator::addChild(&container, topBar);
+	// Intentionally no top bar action button in Step View.
 
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",
@@ -235,6 +182,27 @@ ui::Page StepView::GenerateStepViewPage(
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
 	}
 
+	ui::Component influencerNoteCard = ComponentGenerator::createContainer(
+		"stepCard_influencerConcedeNote",
+		"flex items-start justify-between gap-3",
+		"bg-gray-800",
+		"p-4",
+		"",
+		"border border-gray-700",
+		"rounded-lg",
+		""
+	);
+	ui::Component influencerNoteText = ComponentGenerator::createText(
+		"stepViewInfluencerConcedeNote",
+		"Now influencer has to concede (to be implemented)",
+		"text-base",
+		"text-white",
+		"font-medium",
+		"flex-1"
+	);
+	ComponentGenerator::addChild(&influencerNoteCard, influencerNoteText);
+	ComponentGenerator::addChild(&stepsContainer, influencerNoteCard);
+
 	ComponentGenerator::addChild(&leftColumn, guideBox);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
 
@@ -243,6 +211,11 @@ ui::Page StepView::GenerateStepViewPage(
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
 	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
+	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
+		if (mapSection.children(childIndex).id() == "mapTitle") {
+			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
+		}
+	}
 	(*mapSection.mutable_css())["margin-top"] = "0";
 	(*mapSection.mutable_css())["max-width"] = "760px";
 	(*mapSection.mutable_css())["width"] = "100%";

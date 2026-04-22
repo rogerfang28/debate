@@ -59,6 +59,8 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     
     // translate client_message into debate event
     int user_id = parseCookie::extractUserIdFromCookies(req);
+    int autoLoginResolvedUserId = 0;
+    std::string autoLoginResolvedUsername;
     const bool autoLogin = demo_mode::autoLogin;
     if (autoLogin && user_id <= 0) {
         std::string username = parseCookie::extractUsernameFromCookies(req);
@@ -74,6 +76,8 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         parseCookie::setCookieUserId(res, moderatorUserId);
         parseCookie::setCookieUsername(res, username);
         user_id = moderatorUserId;
+        autoLoginResolvedUserId = moderatorUserId;
+        autoLoginResolvedUsername = username;
 
         debate_event::DebateEvent autoJoinEvent;
         autoJoinEvent.set_type(debate_event::JOIN_DEBATE);
@@ -93,6 +97,14 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     
     // change cookies accordingly
     handleAuthEvents(evt, req, res);
+
+    // Auto-login sets response cookies, but request cookies are still empty on first load.
+    // Keep this request authenticated by applying the resolved auto-login identity directly.
+    if (autoLoginResolvedUserId > 0 && !autoLoginResolvedUsername.empty() && !evt.user().is_logged_in()) {
+        evt.mutable_user()->set_user_id(autoLoginResolvedUserId);
+        evt.mutable_user()->set_username(autoLoginResolvedUsername);
+        evt.mutable_user()->set_is_logged_in(true);
+    }
     
     moderator_to_vr::ModeratorToVRMessage info;
     info = moderator.handleRequest(evt);
