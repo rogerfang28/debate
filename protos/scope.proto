@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package debate;
+
+enum ScopeType {
+	SINGLE_CLAIM = 0;
+    FULL_DEBATE = 1;
+	// More scope types can be added here in the future
+}
+
+message SingleClaimScope {
+	// The claim currently in focus.
+	int32 debate_id = 1;
+	int32 current_claim_id = 2;
+}
+
+message FullDebateScope {
+	// The debate currently in focus.
+	int32 debate_id = 1;
+	bool top_view = 2;
+}
+
+message Scope {
+	// Kept for backward compatibility with existing reads/switches.
+	ScopeType scopetype = 1;
+
+	oneof scope_info {
+		SingleClaimScope single_claim = 2;
+		FullDebateScope full_debate = 3;
+	}
+}

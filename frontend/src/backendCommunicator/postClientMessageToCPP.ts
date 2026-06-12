@@ -19,7 +19,7 @@ export interface EventData {
 }
 
 /**
- * Send a ClientMessage protobuf to your C++ server (POST / on :8080).
+ * Send a ClientMessage protobuf to your C++ server (POST / on :3000).
  * Contains the event info + complete page state with all component values.
  * Returns the Page protobuf response from the server.
  */
@@ -35,7 +35,7 @@ export default async function postClientMessageToCPP(
     console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
 
     // Extract page ID (stored with special _pageId key)
-    const pageId = eventData.data?._pageId as string || "unknown-page";
+    const pageId = eventData.data?._pageId as string || "login";
     
     // Build list of ComponentData from the page data (excluding _pageId)
     const components = Object.entries(eventData.data || {})
@@ -56,8 +56,9 @@ export default async function postClientMessageToCPP(
 
     // Build ClientMessage with event + page state
     const clientMessage = create(ClientMessageSchema, {
-      componentId: eventData.componentId || "unknown",
-      eventType: eventData.eventName || "click",
+      // Empty defaults intentionally encode a no-op message for initial polling.
+      componentId: eventData.componentId ?? "",
+      eventType: eventData.eventType ?? eventData.eventName ?? "",
       pageData,
     });
 
@@ -70,16 +71,15 @@ export default async function postClientMessageToCPP(
     // Encode protobuf
     const bytes = toBinary(ClientMessageSchema, clientMessage);
 
-    // POST to C++ server root (default http(s)://<host>:8080/)
-    const endpoint =
-      opts?.endpoint ?? `${location.protocol}//${location.hostname}:8080/clientmessage`;
+    // POST to C++ server using configured API base
+    const endpoint = opts?.endpoint ?? "/api/clientmessage";
 
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/x-protobuf" },
       body: bytes as BodyInit,
       cache: "no-store",
-      credentials: "include", // Always include cookies
+      credentials: opts?.withCredentials === false ? "omit" : "include",
     });
 
     if (!res.ok) {

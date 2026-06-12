@@ -17,14 +17,13 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
 
     // DebateWrapper debateWrapper;
 
-    debateWrapper.addClaimUnderParent(
+    int newClaimID = debateWrapper.addClaimUnderParent(
         currentClaimID, // parentId
         claim_text,
         description,
         user_id,
         debate_id
     );
-
     CloseAddChildClaim(user_id, debateWrapper);
 }
 

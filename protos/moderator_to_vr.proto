@@ -5,8 +5,22 @@ package moderator_to_vr;
 
 // import "debate.proto";
 import "user.proto";
+import "collection.proto";
 
 message ModeratorToVRMessage {
     user.User user = 1;
+    debate.Collection collection = 2;
+    DebateList debate_list = 3; // specifically for home page
 }
 
+message DebateTopic {
+    int32 id = 1;
+    string topic = 2;
+    int32 creator_id = 3;
+    bool is_challenge = 4;
+    string claim_its_challenging = 5;
+}
+
+message DebateList {
+    repeated DebateTopic topics = 1;
+}

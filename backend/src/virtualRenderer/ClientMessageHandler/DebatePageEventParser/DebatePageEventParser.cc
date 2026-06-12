@@ -14,6 +14,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         Log::debug("  GO_HOME for user: " + std::to_string(user_id));
+    } else if (componentId == "seeOverviewButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_OVERVIEW);
+        Log::debug("  GO_TO_OVERVIEW for user: " + std::to_string(user_id));
+    } else if (componentId == "stepViewTestButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_FULL_DEBATE_VIEW);
+        Log::debug("  GO_TO_FULL_DEBATE_VIEW for user: " + std::to_string(user_id));
     } else if (componentId == "goToParentButton" && eventType == "onClick") {
         Log::debug("  GO_TO_PARENT for user: " + std::to_string(user_id));
         event.set_type(debate_event::GO_TO_PARENT);
@@ -28,7 +34,6 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "reportButton" && eventType == "onClick") {
         Log::debug("  REPORT_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::REPORT_CLAIM);
-
     // edit description
     } else if (componentId == "editDescriptionButton" && eventType == "onClick") {
         Log::debug("  EDIT_DESCRIPTION for user: " + std::to_string(user_id));
@@ -193,10 +198,10 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     }
 
     else if (componentId.find("viewChallengeButton_") == 0 && eventType == "onClick"){
-        std::string challengeId = componentId.substr(strlen("viewChallengeButton_"));
-        Log::debug("  GO_TO_CHALLENGE for user: " + std::to_string(user_id) + " to challenge ID: " + challengeId);
+        std::string challengedClaimId = componentId.substr(strlen("viewChallengeButton_"));
+        Log::debug("  GO_TO_CHALLENGE for user: " + std::to_string(user_id) + " to challenged claim ID: " + challengedClaimId);
         event.set_type(debate_event::GO_TO_CHALLENGE);
-        event.mutable_go_to_challenge()->set_challenge_id(std::stoi(challengeId));
+        event.mutable_go_to_challenge()->set_challenge_id(std::stoi(challengedClaimId));
     }
     else if (componentId.find("deleteChallengeButton_") == 0 && eventType == "onClick"){
         std::string challengeId = componentId.substr(strlen("deleteChallengeButton_"));
@@ -226,6 +231,18 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     else if (componentId == "cancelModifyClaimButton" && eventType == "onClick") {
         Log::debug(" CANCEL_MODIFICATION_OF_CLAIM for user: " + std::to_string(user_id));
         event.set_type(debate_event::CANCEL_MODIFICATION_OF_CLAIM);
+    }
+    else if (componentId.rfind("fullDebateStepButton_", 0) == 0 && eventType == "onClick") {
+        std::string stepId = componentId.substr(strlen("fullDebateStepButton_"));
+        Log::debug("  GO_TO_STEP for user: " + std::to_string(user_id) + " step ID: " + stepId);
+        event.set_type(debate_event::GO_TO_CLAIM);
+        event.mutable_go_to_claim()->set_claim_id(std::stoi(stepId));
+    }
+    else if (componentId.find("goToClaim_") == 0 && eventType == "onClick") {
+        std::string claimId = componentId.substr(strlen("goToClaim_"));
+        Log::debug("  GO_TO_CLAIM (map) for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::GO_TO_CLAIM);
+        event.mutable_go_to_claim()->set_claim_id(std::stoi(claimId));
     }
     else {
         Log::error("Unknown component/event combination on debate page: " 

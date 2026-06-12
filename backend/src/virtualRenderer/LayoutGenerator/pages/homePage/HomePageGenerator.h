@@ -2,13 +2,13 @@
 #define HOME_PAGE_GENERATOR_H
 
 #include "../../../../../src/gen/cpp/layout.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "../../../../../src/gen/cpp/rendering_info.pb.h"
 
 class HomePageGenerator {
 public:
-    static ui::Page GenerateHomePage(user::User user);
-    static ui::Component GenerateHomePageMainLayout();
-    static ui::Component FillDebateTopics(user::User user, ui::Component mainLayout);
+    static ui::Page GenerateHomePage(const rendering_info::HomePageRenderingInfo& info);
+    static ui::Component GenerateHomePageMainLayout(const rendering_info::HomePageRenderingInfo& info);
+    static ui::Component FillDebateTopics(const rendering_info::HomePageRenderingInfo& info, ui::Component mainLayout);
 };
 
 #endif // HOME_PAGE_GENERATOR_H

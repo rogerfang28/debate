@@ -88,52 +88,50 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
 }
 
 void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const int& user_id, DebateWrapper& debateWrapper) {
-    // add a new challenge
-    debate::Challenge newChallenge;
-    newChallenge.set_challenge_sentence(challenge_sentence);
-    newChallenge.set_status(debate::ChallengeStatus::ONGOING);
-    Log::debug("[SubmitChallengeClaimHandler] Creating new challenge with sentence: " + challenge_sentence + " for user: " + std::to_string(user_id));
-    newChallenge.set_challenger_id(user_id);
-    newChallenge.set_challenged_parent_claim_id(debateWrapper.getUserProtobuf(user_id).engagement().debating_info().current_claim().id());
-    // find the vectors of claim_ids and link_ids from the user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    auto challenging_info = userProto.engagement().debating_info().challenging_info();
-    for (int i = 0; i < challenging_info.claim_ids_size(); ++i) {
-        newChallenge.add_challenged_claim_ids(challenging_info.claim_ids(i));
-    }
-    for (int i = 0; i < challenging_info.link_ids_size(); ++i) {
-        newChallenge.add_challenged_link_ids(challenging_info.link_ids(i));
-    }
 
     // find the current claim (it's challenging that one)
     int current_claim_id = userProto.engagement().debating_info().current_claim().id();
+    int current_debate_id = userProto.engagement().debating_info().debate_id();
 
-    // make a debate proto with the new root claim as the challenge sentence
-    debate::Debate proofDebate;
-    int proof_debate_id = debateWrapper.initNewProofDebate(
+    // NEW FLOW: also create a challenge claim in the same debate and connect it
+    // to the challenged claim with a CHALLENGE link.
+    int same_debate_challenge_claim_id = debateWrapper.createClaim(
         challenge_sentence,
+        "challenge claim",
         user_id,
-        0, // to be set after we have the challenge id
-        proofDebate
+        current_debate_id
     );
+    int same_debate_challenge_link_id = -1;
 
-    // now update the challenge to point to it
-    newChallenge.set_proof_debate_id(proof_debate_id);
-
-    // now add to database
-    int challenge_id = debateWrapper.addChallenge(user_id, current_claim_id, newChallenge);
-    newChallenge.set_id(challenge_id); // set the id now that we have it
-    debateWrapper.updateChallengeProtobuf(challenge_id, newChallenge); // update with id
-    // update the proofDebate to have the parent_challenge_id
-    proofDebate.set_parent_challenge_id(challenge_id);
-    debateWrapper.updateDebateProtobuf(proof_debate_id, proofDebate);
+    if (same_debate_challenge_claim_id != -1) {
+        same_debate_challenge_link_id = debateWrapper.addLink(
+            same_debate_challenge_claim_id,
+            current_claim_id,
+            "challenge link",
+            user_id,
+            current_debate_id,
+            debate::LinkType::CHALLENGE
+        );
+        Log::debug(
+            "[SubmitChallengeClaimHandler] Added same-debate challenge claim id=" +
+            std::to_string(same_debate_challenge_claim_id) +
+            " and challenge link id=" + std::to_string(same_debate_challenge_link_id) +
+            " for challenged claim id=" + std::to_string(current_claim_id)
+        );
+    } else {
+        Log::warn(
+            "[SubmitChallengeClaimHandler] Failed to create same-debate challenge claim for challenged claim id=" +
+            std::to_string(current_claim_id)
+        );
+    }
 
     // update current claim and all parents to be CHALLENGED
     debate::Claim currentClaim = debateWrapper.getClaimById(current_claim_id);
     while (true) {
         currentClaim.set_status(debate::ClaimStatus::CHALLENGED);
         debateWrapper.updateClaimInDB(currentClaim);
-        if (currentClaim.parent_id() == 0 || currentClaim.id() == currentClaim.parent_id() || currentClaim.parent_id() == -1) {
+        if (debateWrapper.isRoot(currentClaim.id())) {
             break; // reached root
         }
         currentClaim = debateWrapper.findClaimParent(currentClaim.id());
@@ -149,21 +147,8 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debat
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
-    // get the current claim being challenged
-    int current_claim_id = userProto.engagement().debating_info().current_claim().id();
-    
-    // get the current challenge on this claim
-    debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(current_claim_id);
-    
-    // set challenge status to PROVEN
-    challengeProto.set_status(debate::ChallengeStatus::PROVEN);
-    debateWrapper.updateChallengeProtobuf(challengeProto.id(), challengeProto);
-    
-    // revert the claim status from CHALLENGED back to UNCHALLENGED
-    // debate::Claim currentClaim = debateWrapper.getClaimById(current_claim_id);
-    // currentClaim.set_status(debate::ClaimStatus::NEUTRAL);
-    // debateWrapper.updateClaimInDB(currentClaim);
-    // this doesnt work if multiple challenges exist, so we need to check all challenges on this claim
+    // Legacy challenge protobuf records are deprecated. Concede now only
+    // clears the in-progress challenge interaction state for the user.
     
     // clear the user's challenging state
     CancelChallengeClaim(user_id, debateWrapper);
@@ -189,14 +174,38 @@ void ChallengeHandler::CloseAddChallenge(const int& user_id, DebateWrapper& deba
 }
 
 void ChallengeHandler::DeleteChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper) {
-    // precaution check if person is owner of challenge
-    debate::Challenge challengeProto = debateWrapper.getChallengeProtobuf(challenge_id);
-    if (challengeProto.challenger_id() != user_id) {
-        Log::warn("[DeleteChallengeHandler] User: " + std::to_string(user_id) + " attempted to delete challenge ID: " + std::to_string(challenge_id) + " but is not the creator.");
-        return; // not the owner, do nothing
+    // challenge_id now refers to challenge claim id
+    const int challenge_claim_id = challenge_id;
+    debate::Claim challengeClaim = debateWrapper.getClaimById(challenge_claim_id);
+    if (challengeClaim.id() == 0) {
+        Log::warn("[DeleteChallengeHandler] Challenge claim ID " + std::to_string(challenge_claim_id) + " not found.");
+        return;
     }
-    // delete challenge from database
-    debateWrapper.deleteChallenge(challenge_id);
-    Log::debug("[DeleteChallengeHandler] Deleted challenge ID: " + std::to_string(challenge_id) + " for user: " + std::to_string(user_id));
+
+    if (challengeClaim.creator_id() != user_id) {
+        Log::warn("[DeleteChallengeHandler] User: " + std::to_string(user_id) + " attempted to delete challenge claim ID: " + std::to_string(challenge_claim_id) + " but is not the creator.");
+        return;
+    }
+
+    int challengeLinkId = -1;
+    int challengedClaimId = -1;
+    for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
+        const int linkId = challengeClaim.link_ids(i);
+        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == challenge_claim_id) {
+            challengeLinkId = linkId;
+            challengedClaimId = linkProto.connect_to();
+            break;
+        }
+    }
+
+    if (challengeLinkId != -1) {
+        debateWrapper.deleteLinkById(challengeLinkId);
+        Log::debug("[DeleteChallengeHandler] Removed challenge link ID: " + std::to_string(challengeLinkId) + " from challenge claim ID: " + std::to_string(challenge_claim_id));
+    } else {
+        Log::warn("[DeleteChallengeHandler] No CHALLENGE link found from challenge claim ID: " + std::to_string(challenge_claim_id));
+    }
+
+    Log::debug("[DeleteChallengeHandler] Deleted challenge claim ID: " + std::to_string(challenge_claim_id) + " for user: " + std::to_string(user_id));
 }
 

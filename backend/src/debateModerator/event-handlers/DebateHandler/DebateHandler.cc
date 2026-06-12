@@ -1,7 +1,7 @@
 #include "DebateHandler.h"
 #include <iostream>
 #include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../database/handlers/DatabaseWrapper.h"
+#include "../../../database/debate/DatabaseWrapper.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 

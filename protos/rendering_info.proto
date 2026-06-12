@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+package rendering_info;
+
+import "debate.proto";
+
+// The exact input needed to build the debate page UI.
+message DebatePageRenderingInfo {
+	// Viewer metadata used for ownership checks and logging.
+	// not needed currently
+	// int32 viewer_user_id = 1;
+	// string viewer_username = 2;
+
+	// Top-level page routing/context.
+	int32 debate_id = 3;
+	ScopeType scope_type = 4;
+	bool is_challenge_debate = 5;
+
+	// Current claim section.
+	ClaimRenderInfo current_claim = 6;
+	string current_claim_description = 7;
+
+	// Data shown in the main sections.
+	repeated ClaimRenderInfo children_claims = 8;
+	repeated LinkRenderInfo links = 9;
+	repeated ChallengeRenderInfo current_challenges = 10;
+
+	// UI state flags that control which buttons/overlays are shown.
+	bool modifying_current_claim = 11;
+	DebateActionType current_action = 12;
+
+	// Optional action-specific context.
+	ConnectingRenderInfo connecting_info = 13;
+	ChallengingRenderInfo challenging_info = 14;
+}
+
+// Extra rendering payload for full-debate view.
+message FullDebateViewInfo {
+	// Chronological list of summarized steps. The order in this repeated field
+	// is the timeline order (earliest to latest).
+	repeated Steps steps = 1;
+
+	// Tree-structured data used by the full-debate map renderer.
+	FullDebateTree full_debate_tree = 2;
+}
+
+// Map-friendly full debate graph (claims as nodes and typed edges).
+message FullDebateTree {
+	// Usually the topic/root claim for this debate.
+	int32 root_claim_id = 1;
+
+	// All claim nodes in this debate.
+	repeated FullDebateTreeNode nodes = 2;
+
+	// Directed links between claims. Includes parent/child and challenge links.
+	repeated FullDebateTreeLink links = 3;
+}
+
+// One claim node in the full debate tree.
+message FullDebateTreeNode {
+	int32 claim_id = 1;
+	string sentence = 2;
+	int32 creator_id = 3;
+	ClaimStatus status = 4;
+
+	// Convenience adjacency to simplify map rendering without extra joins.
+	repeated int32 parent_claim_ids = 5;
+	repeated int32 child_claim_ids = 6;
+}
+
+enum FullDebateTreeLinkType {
+	FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED = 0;
+	FULL_DEBATE_TREE_PARENT_CHILD = 1;
+	FULL_DEBATE_TREE_CHALLENGE = 2;
+}
+
+// One directed relationship in the map tree.
+message FullDebateTreeLink {
+	int32 from_claim_id = 1;
+	int32 to_claim_id = 2;
+	FullDebateTreeLinkType link_type = 3;
+
+	// Explicit convenience flag for UI code that only needs a boolean check.
+	bool is_challenge = 4;
+
+	// Back references to source entities when available.
+	int32 link_id = 5;
+	int32 challenge_id = 6;
+
+	// Optional metadata copied from domain link/challenge rows.
+	string connection = 7;
+	int32 creator_id = 8;
+	ChallengeStatus challenge_status = 9;
+}
+
+// One timeline step in the full-debate view.
+message Steps {
+	int32 claim_id = 1;
+	string summary = 2;
+}
+
+// The exact input needed to build the home page UI.
+message HomePageRenderingInfo {
+	// Viewer metadata used for ownership checks and logging.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
+
+	// Debate topics shown on the home page.
+	repeated HomeDebateTopicRenderInfo available_debates = 3;
+
+	// Controls visibility of submit/join controls in viewer mode.
+	bool can_create_or_join_debates = 4;
+}
+
+message HomeDebateTopicRenderInfo {
+	int32 debate_root_claim_id = 1;
+	string topic = 2;
+	int32 creator_id = 3;
+	bool is_challenge = 4;
+	string claim_its_challenging = 5;
+}
+
+message ClaimRenderInfo {
+	int32 id = 1;
+	string sentence = 2;
+	int32 creator_id = 3;
+	ClaimStatus status = 4;
+}
+
+message LinkRenderInfo {
+	int32 id = 1;
+	int32 connect_from = 2;
+	int32 connect_to = 3;
+	string connection = 4;
+	int32 creator_id = 5;
+}
+
+message ChallengeRenderInfo {
+	int32 id = 1;
+	string sentence = 2;
+	string description = 3;
+	int32 creator_id = 4;
+	ChallengeStatus status = 5;
+}
+
+enum ScopeType {
+	SCOPE_TYPE_UNSPECIFIED = 0;
+	SINGLE_CLAIM = 1;
+	FULL_DEBATE = 2;
+}
+
+enum ClaimStatus {
+	CLAIM_STATUS_UNSPECIFIED = 0;
+	CLAIM_STATUS_NEUTRAL = 1;
+	CLAIM_STATUS_CHALLENGED = 2;
+	CLAIM_STATUS_DEFENDED = 3;
+	CLAIM_STATUS_DISPROVEN = 4;
+}
+
+enum ChallengeStatus {
+	CHALLENGE_STATUS_UNSPECIFIED = 0;
+	CHALLENGE_STATUS_ONGOING = 1;
+	CHALLENGE_STATUS_CONCEDED = 2;
+	CHALLENGE_STATUS_PROVEN = 3;
+}
+
+enum DebateActionType {
+	ACTION_TYPE_UNSPECIFIED = 0;
+	VIEWING_CLAIM = 1;
+	ADDING_CHILD_CLAIM = 2;
+	CONNECTING_CLAIMS = 3;
+	CHALLENGING_CLAIM = 4;
+	EDITING_CLAIM_DESCRIPTION = 5;
+	EDITING_CLAIM = 6;
+	REPORTING_CLAIM = 7;
+}
+
+message ConnectingRenderInfo {
+	int32 from_claim_id = 1;
+	int32 to_claim_id = 2;
+	bool connecting = 3;
+	bool opened_connect_modal = 4;
+}
+
+message ChallengingRenderInfo {
+	repeated int32 claim_ids = 1;
+	repeated int32 link_ids = 2;
+	bool opened_challenge_modal = 3;
+}
+
+

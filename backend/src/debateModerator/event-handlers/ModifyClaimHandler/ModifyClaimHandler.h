@@ -2,7 +2,7 @@
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include "../../../utils/DebateWrapper.h"
-#include "../../../database/handlers/DatabaseWrapper.h"
+#include "../../../database/debate/DatabaseWrapper.h"
 
 class ModifyClaimHandler {
 public:

@@ -61,30 +61,37 @@ set(SRC_FILES
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/BuildCollection.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/loginPageResponse/LoginPageResponseGenerator.cc    
 
     # database communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/parseCookie.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/UserNameResolver.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/UserDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/StatementDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DebateMembersDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/LinkDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/ChallengeDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/handlers/DatabaseWrapper.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DebateDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/StatementDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/DatabaseWrapper.cc
+    ${CMAKE_SOURCE_DIR}/src/database/virtualrenderer/VRUserDatabase.cc
 
     # layout generators
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/LayoutGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/ComponentGenerator.cc
     # page generators
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/homePage/HomePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/homePage/HomePageInfoParser.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/loginPage/LoginPageGenerator.cc
-    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/DebatePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/SingleStatementView/SingleDebatePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/SingleStatementView/SingleDebatePageInfoParser.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/errorPage/ErrorPageGenerator.cc
 
     # event parsers
