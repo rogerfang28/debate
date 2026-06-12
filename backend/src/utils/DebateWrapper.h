@@ -5,7 +5,8 @@
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
-#include "../database/handlers/DatabaseWrapper.h"
+#include <tuple>
+#include "../database/debate/DatabaseWrapper.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
 class DebateWrapper {
@@ -15,7 +16,13 @@ public:
     debate::Claim getClaimById(const int& claimId);
     void initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const int& claimId);
-    void addClaimUnderParent(
+    bool isRoot(const int& claimId);
+    int createClaim(
+        const std::string& claimText,
+        const std::string& description,
+        const int& user_id,
+        const int& debate_id);
+    int addClaimUnderParent(
         const int& parentId, 
         const std::string& claimText, 
         const std::string& connectionToParent,
@@ -45,30 +52,24 @@ public:
     void updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
-    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id);
+    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type = debate::LinkType::NORMAL);
+    std::vector<std::vector<uint8_t>> getStatementsForDebate(const int& debate_id);
+    std::vector<std::vector<uint8_t>> getStatementsForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
+    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebate(const int& debate_id);
+    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
     debate::Link getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
     void addMemberToDebate(const int& debateId, const int& user_id);
-    int addChallenge(
-        const int& creator_id,
-        const int& challenged_claim_id,
-        debate::Challenge challengeProtobuf);
-    void deleteChallenge(const int& challengeId);
-    std::vector<int> getChallengesAgainstClaim(const int& claimId);
-    debate::Challenge getChallengeProtobuf(int challengeId);
-    int initNewProofDebate(
-        const std::string& challengeSentence,
-        const int& creator_id,
-        const int& parent_challenge_id,
-        debate::Debate& debateProto);
     void updateDebateProtobuf(const int& debateId, const debate::Debate& debateProto);
     int findDebateId(const int& claimId);
     user_engagement::DebateList FillUserDebateList(const int& user_id);
 
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
+    void UpdateStatusOfAllClaimsInDebate(const int& debate_id);
+    std::vector<int> findUsersInDebate(const int& debate_id);
 
 private:
     DatabaseWrapper& databaseWrapper;

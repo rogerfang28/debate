@@ -6,7 +6,7 @@
 #include <sstream>
 
 // Initialize static members
-LogLevel Log::currentLevel = LogLevel::Debug;
+LogLevel Log::currentLevel = LogLevel::Info;
 std::mutex Log::logMutex;  // define the mutex
 
 void Log::init(LogLevel level) {
@@ -51,7 +51,7 @@ void Log::test(const std::string& msg) {
 
     std::ostringstream oss;
     oss << "\033[35m"
-        << "[" << getTimestamp() << "] [TEST ] " << msg
+        << "[" << getTimestamp() << "] [TEST] " << msg
         << "\033[0m\n";
 
     std::lock_guard<std::mutex> lock(logMutex);
@@ -63,7 +63,7 @@ void Log::warn(const std::string& msg) {
 
     std::ostringstream oss;
     oss << "\033[33m"
-        << "[" << getTimestamp() << "] [WARN ] " << msg
+        << "[" << getTimestamp() << "] [WARN] " << msg
         << "\033[0m\n";
 
     std::lock_guard<std::mutex> lock(logMutex);
@@ -75,7 +75,7 @@ void Log::info(const std::string& msg) {
 
     std::ostringstream oss;
     oss << "\033[36m"
-        << "[" << getTimestamp() << "] [INFO ] " << msg
+        << "[" << getTimestamp() << "] [INFO] " << msg
         << "\033[0m\n";
 
     std::lock_guard<std::mutex> lock(logMutex);

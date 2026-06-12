@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package user_engagement;
+import "debate.proto";
 
 enum EngagementAction {
   ENGAGEMENT_ACTION_UNSPECIFIED = 0;
@@ -94,6 +95,7 @@ message ClaimInfo {
   int32 id = 1;
   string sentence = 2;
   int32 creator_id = 3;
+  debate.ClaimStatus status = 4;
 }
 
 message LinkInfo {
@@ -107,4 +109,5 @@ message ChallengeInfo{
   int32 id = 1;
   string sentence = 2;
   int32 creator_id = 3;
+  debate.ChallengeStatus status = 4;
 }

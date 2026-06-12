@@ -59,7 +59,7 @@ const Renderer: React.FC = () => {
     }
 
     fetchData(); // first try
-    intervalId = setInterval(fetchData, 8080); // retry every 3s until successful
+    intervalId = setInterval(fetchData, 3000); // retry every 3s until successful
 
     return () => {
       if (intervalId) clearInterval(intervalId);

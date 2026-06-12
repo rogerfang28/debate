@@ -7,7 +7,7 @@ export interface PageData {
 
 /**
  * Fetch a protobuf Page from your C++ server.
- * - Defaults to http(s)://<current-host>:8080/
+ * - Defaults to the configured backend URL
  * - Validates Content-Type
  * - Supports optional ?id=<pageId>
  * - Keeps no-store to avoid caching during dev
@@ -18,10 +18,10 @@ export default async function getPageFromCPP(opts?: {
   withCredentials?: boolean;  // send cookies if needed
 }): Promise<PageData | null> {
   try {
-    const defaultEndpoint = `${location.protocol}//${location.hostname}:8080/`;
+    const defaultEndpoint = "/api/";
     const endpoint = opts?.endpoint ?? defaultEndpoint;
 
-    const url = new URL(endpoint);
+    const url = new URL(endpoint, window.location.origin);
     if (opts?.pageId) url.searchParams.set("id", opts.pageId);
 
     console.log("▶️ GET", url.toString(), "(expecting protobuf Page)");
@@ -30,7 +30,7 @@ export default async function getPageFromCPP(opts?: {
       method: "GET",
       headers: { Accept: "application/x-protobuf" },
       cache: "no-store",
-      credentials: "include", // Always include cookies for authentication
+      credentials: opts?.withCredentials === false ? "omit" : "include",
     });
 
     if (!res.ok) {

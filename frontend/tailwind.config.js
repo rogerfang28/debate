@@ -11,6 +11,7 @@ export default {
     'bg-blue-600', 'hover:bg-blue-700', 'bg-blue-500', 'hover:bg-blue-500',
     'bg-yellow-200', 'bg-yellow-600', 'hover:bg-yellow-700',
     'bg-green-400', 'bg-green-600', 'hover:bg-green-700', 'bg-green-500', 'hover:bg-green-500',
+    'bg-emerald-500', 'hover:bg-emerald-600',
     'bg-purple-600', 'hover:bg-purple-700', 'bg-purple-500', 'hover:bg-purple-500',
     'bg-slate-600', 'bg-slate-700', 'bg-slate-800', 'hover:bg-slate-500', 'hover:bg-slate-600',
     
@@ -25,13 +26,15 @@ export default {
     
     // Background with opacity
     'bg-blue-400/10', 'bg-red-500/10', 'bg-white/20', 'bg-gray-800/90', 'bg-black/50',
+    'bg-gray-900/60', 'bg-gray-900/40', 'bg-gray-800/80',
     'bg-purple-900/30', 'bg-orange-600', 'bg-orange-700', 'hover:bg-orange-800', 'bg-orange-500',
     
     // Text colors
     'text-white', 'text-black', 'text-transparent',
     'text-gray-300', 'text-gray-400', 'text-gray-500', 'text-gray-600', 'text-gray-700', 'text-gray-800',
     'text-blue-400', 'text-red-300', 'text-yellow-400',
-    'text-purple-300', 'text-purple-400',
+    'text-purple-300', 'text-purple-400', 'text-purple-500',
+    'text-orange-500', 'text-red-500', 'text-green-500',
     'text-slate-200', 'text-slate-300', 'text-slate-400',
     'text-white/80', 'hover:text-white',
     
@@ -39,10 +42,13 @@ export default {
     'bg-clip-text',
     
     // Sizing
-    'w-full', 'w-20', 'w-64', 'w-80', 'w-96',
-    'h-20', 'h-48', 'h-full',
+    'w-full', 'w-4', 'w-10', 'w-20', 'w-64', 'w-80', 'w-96',
+    'h-1.5', 'h-4', 'h-20', 'h-48', 'h-full',
     'min-h-screen', 'min-h-64',
+    'min-h-[32rem]',
     'min-w-64',
+    'min-w-0',
+    'max-h-[32rem]',
     'max-w-sm', 'max-w-md', 'max-w-2xl', 'max-w-4xl', 'max-w-7xl',
     'flex-1',
     
@@ -50,17 +56,17 @@ export default {
     'p-1', 'p-2', 'p-3', 'p-4', 'p-6', 'p-8',
     'px-3', 'px-4', 'px-6', 'py-1.5', 'py-2', 'py-3', 'py-4',
     'pt-3', 'pb-3',
-    'm-2', 'mx-auto', 'mx-4', 'mx-8', 'mb-2', 'mb-3', 'mb-4', 'mb-6', 'mb-8', 'mt-4', 'mt-8', 'mt-16',
+    'm-2', 'mx-auto', 'mx-4', 'mx-8', 'mb-2', 'mb-3', 'mb-4', 'mb-6', 'mb-8', 'mt-4', 'mt-8', 'mt-10', 'mt-16',
     'gap-1', 'gap-2', 'gap-3', 'gap-4', 'gap-6', 'gap-8',
     'space-y-4',
     
     // Layout
-    'flex', 'flex-col',
+    'flex', 'flex-col', 'flex-wrap', 'flex-shrink-0',
     'grid', 'grid-cols-1', 'grid-cols-2', 'grid-cols-4',
     'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4',
     'justify-between', 'justify-center', 'items-start', 'items-center',
     'text-center',
-    'overflow-hidden',
+    'overflow-hidden', 'overflow-auto',
     'hidden',
     
     // Positioning
@@ -70,10 +76,10 @@ export default {
     'z-50',
     
     // Borders
-    'border', 'border-2', 'border-b',
+    'border', 'border-2', 'border-4', 'border-b',
     'border-gray-300', 'border-gray-600', 'border-gray-700', 'hover:border-gray-600',
     'border-slate-600',
-    'border-purple-500', 'border-orange-500',
+    'border-purple-500', 'border-purple-700', 'border-orange-500', 'border-red-500', 'border-green-500', 'border-yellow-400',
     'border-white/10', 'border-red-500/30',
     'rounded', 'rounded-lg', 'rounded-md', 'rounded-2xl', 'rounded-full',
     'border-none',
@@ -81,17 +87,19 @@ export default {
     // Text
     'text-xs', 'text-sm', 'text-lg', 'text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-6xl',
     'font-bold', 'font-semibold', 'font-medium',
-    'leading-relaxed',
+    'leading-relaxed', 'leading-tight',
+    'truncate',
     'text-left',
     'placeholder-slate-400', 'placeholder-gray-400',
     
     // Effects
     'transition-colors', 'transition-all', 'transition',
-    'shadow-2xl', 'shadow',
+    'shadow-2xl', 'shadow', 'shadow-lg',
     'backdrop-blur-sm',
     
     // Hover/Focus/Disabled states
     'hover:transform', 'hover:-translate-y-0.5', 'hover:scale-105',
+    'ring-2', 'ring-emerald-300',
     'focus:ring-2', 'focus:ring-blue-500', 'focus:border-transparent',
     'disabled:opacity-50',
     'cursor-pointer',

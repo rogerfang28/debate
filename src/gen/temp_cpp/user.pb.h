@@ -30,6 +30,8 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/unknown_field_set.h"
 #include "user_engagement.pb.h"
+#include "scope.pb.h"
+#include "collection.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -217,6 +219,8 @@ class User final : public ::google::protobuf::Message
   enum : int {
     kUsernameFieldNumber = 2,
     kEngagementFieldNumber = 3,
+    kCurrentScopeFieldNumber = 4,
+    kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
   };
   // string username = 2 [json_name = "username"];
@@ -250,6 +254,36 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* _internal_mutable_engagement();
 
   public:
+  // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+  bool has_current_scope() const;
+  void clear_current_scope() ;
+  const ::debate::Scope& current_scope() const;
+  PROTOBUF_NODISCARD ::debate::Scope* release_current_scope();
+  ::debate::Scope* mutable_current_scope();
+  void set_allocated_current_scope(::debate::Scope* value);
+  void unsafe_arena_set_allocated_current_scope(::debate::Scope* value);
+  ::debate::Scope* unsafe_arena_release_current_scope();
+
+  private:
+  const ::debate::Scope& _internal_current_scope() const;
+  ::debate::Scope* _internal_mutable_current_scope();
+
+  public:
+  // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+  bool has_collection_spec() const;
+  void clear_collection_spec() ;
+  const ::debate::CollectionSpecification& collection_spec() const;
+  PROTOBUF_NODISCARD ::debate::CollectionSpecification* release_collection_spec();
+  ::debate::CollectionSpecification* mutable_collection_spec();
+  void set_allocated_collection_spec(::debate::CollectionSpecification* value);
+  void unsafe_arena_set_allocated_collection_spec(::debate::CollectionSpecification* value);
+  ::debate::CollectionSpecification* unsafe_arena_release_collection_spec();
+
+  private:
+  const ::debate::CollectionSpecification& _internal_collection_spec() const;
+  ::debate::CollectionSpecification* _internal_mutable_collection_spec();
+
+  public:
   // int32 user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
   ::int32_t user_id() const;
@@ -265,7 +299,7 @@ class User final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 1,
+      3, 5, 3,
       26, 2>
       _table_;
 
@@ -287,6 +321,8 @@ class User final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr username_;
     ::user_engagement::UserEngagement* engagement_;
+    ::debate::Scope* current_scope_;
+    ::debate::CollectionSpecification* collection_spec_;
     ::int32_t user_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -469,6 +505,188 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* va
 
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
   // @@protoc_insertion_point(field_set_allocated:user.User.engagement)
+}
+
+// .debate.Scope current_scope = 4 [json_name = "currentScope"];
+inline bool User::has_current_scope() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.current_scope_ != nullptr);
+  return value;
+}
+inline const ::debate::Scope& User::_internal_current_scope() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::debate::Scope* p = _impl_.current_scope_;
+  return p != nullptr ? *p : reinterpret_cast<const ::debate::Scope&>(::debate::_Scope_default_instance_);
+}
+inline const ::debate::Scope& User::current_scope() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.current_scope)
+  return _internal_current_scope();
+}
+inline void User::unsafe_arena_set_allocated_current_scope(::debate::Scope* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.current_scope_);
+  }
+  _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.current_scope)
+}
+inline ::debate::Scope* User::release_current_scope() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::debate::Scope* released = _impl_.current_scope_;
+  _impl_.current_scope_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::debate::Scope* User::unsafe_arena_release_current_scope() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.current_scope)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::debate::Scope* temp = _impl_.current_scope_;
+  _impl_.current_scope_ = nullptr;
+  return temp;
+}
+inline ::debate::Scope* User::_internal_mutable_current_scope() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.current_scope_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Scope>(GetArena());
+    _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(p);
+  }
+  return _impl_.current_scope_;
+}
+inline ::debate::Scope* User::mutable_current_scope() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::debate::Scope* _msg = _internal_mutable_current_scope();
+  // @@protoc_insertion_point(field_mutable:user.User.current_scope)
+  return _msg;
+}
+inline void User::set_allocated_current_scope(::debate::Scope* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.current_scope_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
+  // @@protoc_insertion_point(field_set_allocated:user.User.current_scope)
+}
+
+// .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+inline bool User::has_collection_spec() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.collection_spec_ != nullptr);
+  return value;
+}
+inline const ::debate::CollectionSpecification& User::_internal_collection_spec() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::debate::CollectionSpecification* p = _impl_.collection_spec_;
+  return p != nullptr ? *p : reinterpret_cast<const ::debate::CollectionSpecification&>(::debate::_CollectionSpecification_default_instance_);
+}
+inline const ::debate::CollectionSpecification& User::collection_spec() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.collection_spec)
+  return _internal_collection_spec();
+}
+inline void User::unsafe_arena_set_allocated_collection_spec(::debate::CollectionSpecification* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.collection_spec_);
+  }
+  _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.collection_spec)
+}
+inline ::debate::CollectionSpecification* User::release_collection_spec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::debate::CollectionSpecification* released = _impl_.collection_spec_;
+  _impl_.collection_spec_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::debate::CollectionSpecification* User::unsafe_arena_release_collection_spec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.collection_spec)
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::debate::CollectionSpecification* temp = _impl_.collection_spec_;
+  _impl_.collection_spec_ = nullptr;
+  return temp;
+}
+inline ::debate::CollectionSpecification* User::_internal_mutable_collection_spec() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.collection_spec_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::CollectionSpecification>(GetArena());
+    _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(p);
+  }
+  return _impl_.collection_spec_;
+}
+inline ::debate::CollectionSpecification* User::mutable_collection_spec() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000004u;
+  ::debate::CollectionSpecification* _msg = _internal_mutable_collection_spec();
+  // @@protoc_insertion_point(field_mutable:user.User.collection_spec)
+  return _msg;
+}
+inline void User::set_allocated_collection_spec(::debate::CollectionSpecification* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.collection_spec_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::MessageLite*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+
+  _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
+  // @@protoc_insertion_point(field_set_allocated:user.User.collection_spec)
 }
 
 #ifdef __GNUC__

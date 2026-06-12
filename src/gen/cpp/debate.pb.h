@@ -28,6 +28,7 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
+#include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "google/protobuf/timestamp.pb.h"
 #include "debate_settings.pb.h"
@@ -54,9 +55,6 @@ struct TableStruct_debate_2eproto {
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_debate_2eproto;
 namespace debate {
-class Challenge;
-struct ChallengeDefaultTypeInternal;
-extern ChallengeDefaultTypeInternal _Challenge_default_instance_;
 class Claim;
 struct ClaimDefaultTypeInternal;
 extern ClaimDefaultTypeInternal _Claim_default_instance_;
@@ -69,9 +67,6 @@ extern DebateDefaultTypeInternal _Debate_default_instance_;
 class Link;
 struct LinkDefaultTypeInternal;
 extern LinkDefaultTypeInternal _Link_default_instance_;
-class Proof;
-struct ProofDefaultTypeInternal;
-extern ProofDefaultTypeInternal _Proof_default_instance_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -79,230 +74,113 @@ namespace protobuf {
 }  // namespace google
 
 namespace debate {
+enum ClaimStatus : int {
+  NEUTRAL = 0,
+  CHALLENGED = 1,
+  DEFENDED = 2,
+  DISPROVEN = 3,
+  ClaimStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ClaimStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ClaimStatus_IsValid(int value);
+extern const uint32_t ClaimStatus_internal_data_[];
+constexpr ClaimStatus ClaimStatus_MIN = static_cast<ClaimStatus>(0);
+constexpr ClaimStatus ClaimStatus_MAX = static_cast<ClaimStatus>(3);
+constexpr int ClaimStatus_ARRAYSIZE = 3 + 1;
+const ::google::protobuf::EnumDescriptor*
+ClaimStatus_descriptor();
+template <typename T>
+const std::string& ClaimStatus_Name(T value) {
+  static_assert(std::is_same<T, ClaimStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ClaimStatus_Name().");
+  return ClaimStatus_Name(static_cast<ClaimStatus>(value));
+}
+template <>
+inline const std::string& ClaimStatus_Name(ClaimStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ClaimStatus_descriptor,
+                                                 0, 3>(
+      static_cast<int>(value));
+}
+inline bool ClaimStatus_Parse(absl::string_view name, ClaimStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ClaimStatus>(
+      ClaimStatus_descriptor(), name, value);
+}
+enum LinkType : int {
+  NORMAL = 0,
+  PARENT_CHILD = 1,
+  CHALLENGE = 2,
+  LinkType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  LinkType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool LinkType_IsValid(int value);
+extern const uint32_t LinkType_internal_data_[];
+constexpr LinkType LinkType_MIN = static_cast<LinkType>(0);
+constexpr LinkType LinkType_MAX = static_cast<LinkType>(2);
+constexpr int LinkType_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+LinkType_descriptor();
+template <typename T>
+const std::string& LinkType_Name(T value) {
+  static_assert(std::is_same<T, LinkType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to LinkType_Name().");
+  return LinkType_Name(static_cast<LinkType>(value));
+}
+template <>
+inline const std::string& LinkType_Name(LinkType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<LinkType_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool LinkType_Parse(absl::string_view name, LinkType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LinkType>(
+      LinkType_descriptor(), name, value);
+}
+enum ChallengeStatus : int {
+  ONGOING = 0,
+  CONCEDED = 1,
+  PROVEN = 2,
+  ChallengeStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ChallengeStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ChallengeStatus_IsValid(int value);
+extern const uint32_t ChallengeStatus_internal_data_[];
+constexpr ChallengeStatus ChallengeStatus_MIN = static_cast<ChallengeStatus>(0);
+constexpr ChallengeStatus ChallengeStatus_MAX = static_cast<ChallengeStatus>(2);
+constexpr int ChallengeStatus_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+ChallengeStatus_descriptor();
+template <typename T>
+const std::string& ChallengeStatus_Name(T value) {
+  static_assert(std::is_same<T, ChallengeStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ChallengeStatus_Name().");
+  return ChallengeStatus_Name(static_cast<ChallengeStatus>(value));
+}
+template <>
+inline const std::string& ChallengeStatus_Name(ChallengeStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ChallengeStatus_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool ChallengeStatus_Parse(absl::string_view name, ChallengeStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ChallengeStatus>(
+      ChallengeStatus_descriptor(), name, value);
+}
 
 // ===================================================================
 
 
-// -------------------------------------------------------------------
-
-class Proof final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.Proof) */ {
- public:
-  inline Proof() : Proof(nullptr) {}
-  ~Proof() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(Proof* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(Proof));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR Proof(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline Proof(const Proof& from) : Proof(nullptr, from) {}
-  inline Proof(Proof&& from) noexcept
-      : Proof(nullptr, std::move(from)) {}
-  inline Proof& operator=(const Proof& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Proof& operator=(Proof&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const Proof& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const Proof* internal_default_instance() {
-    return reinterpret_cast<const Proof*>(
-        &_Proof_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 4;
-  friend void swap(Proof& a, Proof& b) { a.Swap(&b); }
-  inline void Swap(Proof* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(Proof* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  Proof* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<Proof>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Proof& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const Proof& from) { Proof::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(Proof* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.Proof"; }
-
- protected:
-  explicit Proof(::google::protobuf::Arena* arena);
-  Proof(::google::protobuf::Arena* arena, const Proof& from);
-  Proof(::google::protobuf::Arena* arena, Proof&& from) noexcept
-      : Proof(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kClaimIdsFieldNumber = 1,
-    kLinkIdsFieldNumber = 2,
-  };
-  // repeated int32 claim_ids = 1 [json_name = "claimIds"];
-  int claim_ids_size() const;
-  private:
-  int _internal_claim_ids_size() const;
-
-  public:
-  void clear_claim_ids() ;
-  ::int32_t claim_ids(int index) const;
-  void set_claim_ids(int index, ::int32_t value);
-  void add_claim_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& claim_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_claim_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_claim_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_claim_ids();
-
-  public:
-  // repeated int32 link_ids = 2 [json_name = "linkIds"];
-  int link_ids_size() const;
-  private:
-  int _internal_link_ids_size() const;
-
-  public:
-  void clear_link_ids() ;
-  ::int32_t link_ids(int index) const;
-  void set_link_ids(int index, ::int32_t value);
-  void add_link_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& link_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_link_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_link_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_link_ids();
-
-  public:
-  // @@protoc_insertion_point(class_scope:debate.Proof)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const Proof& from_msg);
-    ::google::protobuf::RepeatedField<::int32_t> claim_ids_;
-    ::google::protobuf::internal::CachedSize _claim_ids_cached_byte_size_;
-    ::google::protobuf::RepeatedField<::int32_t> link_ids_;
-    ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_debate_2eproto;
-};
 // -------------------------------------------------------------------
 
 class Link final : public ::google::protobuf::Message
@@ -451,12 +329,15 @@ class Link final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kConnectionFieldNumber = 3,
-    kConnectFromFieldNumber = 1,
-    kConnectToFieldNumber = 2,
-    kCreatorIdFieldNumber = 4,
+    kConnectionFieldNumber = 4,
+    kIdFieldNumber = 1,
+    kConnectFromFieldNumber = 2,
+    kConnectToFieldNumber = 3,
+    kCreatorIdFieldNumber = 5,
+    kLinkTypeFieldNumber = 6,
+    kDebateIdFieldNumber = 7,
   };
-  // string connection = 3 [json_name = "connection"];
+  // string connection = 4 [json_name = "connection"];
   void clear_connection() ;
   const std::string& connection() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -472,7 +353,17 @@ class Link final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
-  // int32 connect_from = 1 [json_name = "connectFrom"];
+  // int32 id = 1 [json_name = "id"];
+  void clear_id() ;
+  ::int32_t id() const;
+  void set_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_id() const;
+  void _internal_set_id(::int32_t value);
+
+  public:
+  // int32 connect_from = 2 [json_name = "connectFrom"];
   void clear_connect_from() ;
   ::int32_t connect_from() const;
   void set_connect_from(::int32_t value);
@@ -482,7 +373,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_from(::int32_t value);
 
   public:
-  // int32 connect_to = 2 [json_name = "connectTo"];
+  // int32 connect_to = 3 [json_name = "connectTo"];
   void clear_connect_to() ;
   ::int32_t connect_to() const;
   void set_connect_to(::int32_t value);
@@ -492,7 +383,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_to(::int32_t value);
 
   public:
-  // int32 creator_id = 4 [json_name = "creatorId"];
+  // int32 creator_id = 5 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -502,12 +393,32 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // .debate.LinkType link_type = 6 [json_name = "linkType"];
+  void clear_link_type() ;
+  ::debate::LinkType link_type() const;
+  void set_link_type(::debate::LinkType value);
+
+  private:
+  ::debate::LinkType _internal_link_type() const;
+  void _internal_set_link_type(::debate::LinkType value);
+
+  public:
+  // int32 debate_id = 7 [json_name = "debateId"];
+  void clear_debate_id() ;
+  ::int32_t debate_id() const;
+  void set_debate_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_debate_id() const;
+  void _internal_set_debate_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.Link)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      3, 7, 0,
       30, 2>
       _table_;
 
@@ -526,283 +437,12 @@ class Link final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Link& from_msg);
     ::google::protobuf::internal::ArenaStringPtr connection_;
+    ::int32_t id_;
     ::int32_t connect_from_;
     ::int32_t connect_to_;
     ::int32_t creator_id_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_debate_2eproto;
-};
-// -------------------------------------------------------------------
-
-class Challenge final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.Challenge) */ {
- public:
-  inline Challenge() : Challenge(nullptr) {}
-  ~Challenge() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(Challenge* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(Challenge));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR Challenge(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline Challenge(const Challenge& from) : Challenge(nullptr, from) {}
-  inline Challenge(Challenge&& from) noexcept
-      : Challenge(nullptr, std::move(from)) {}
-  inline Challenge& operator=(const Challenge& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Challenge& operator=(Challenge&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const Challenge& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const Challenge* internal_default_instance() {
-    return reinterpret_cast<const Challenge*>(
-        &_Challenge_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 3;
-  friend void swap(Challenge& a, Challenge& b) { a.Swap(&b); }
-  inline void Swap(Challenge* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(Challenge* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  Challenge* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<Challenge>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Challenge& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const Challenge& from) { Challenge::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(Challenge* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.Challenge"; }
-
- protected:
-  explicit Challenge(::google::protobuf::Arena* arena);
-  Challenge(::google::protobuf::Arena* arena, const Challenge& from);
-  Challenge(::google::protobuf::Arena* arena, Challenge&& from) noexcept
-      : Challenge(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kChallengedClaimIdsFieldNumber = 1,
-    kChallengedLinkIdsFieldNumber = 2,
-    kChallengeSentenceFieldNumber = 3,
-    kChallengerIdFieldNumber = 4,
-    kProofDebateIdFieldNumber = 5,
-    kChallengedParentClaimIdFieldNumber = 6,
-  };
-  // repeated int32 challenged_claim_ids = 1 [json_name = "challengedClaimIds"];
-  int challenged_claim_ids_size() const;
-  private:
-  int _internal_challenged_claim_ids_size() const;
-
-  public:
-  void clear_challenged_claim_ids() ;
-  ::int32_t challenged_claim_ids(int index) const;
-  void set_challenged_claim_ids(int index, ::int32_t value);
-  void add_challenged_claim_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& challenged_claim_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_challenged_claim_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_challenged_claim_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_challenged_claim_ids();
-
-  public:
-  // repeated int32 challenged_link_ids = 2 [json_name = "challengedLinkIds"];
-  int challenged_link_ids_size() const;
-  private:
-  int _internal_challenged_link_ids_size() const;
-
-  public:
-  void clear_challenged_link_ids() ;
-  ::int32_t challenged_link_ids(int index) const;
-  void set_challenged_link_ids(int index, ::int32_t value);
-  void add_challenged_link_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& challenged_link_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_challenged_link_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_challenged_link_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_challenged_link_ids();
-
-  public:
-  // string challenge_sentence = 3 [json_name = "challengeSentence"];
-  void clear_challenge_sentence() ;
-  const std::string& challenge_sentence() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_challenge_sentence(Arg_&& arg, Args_... args);
-  std::string* mutable_challenge_sentence();
-  PROTOBUF_NODISCARD std::string* release_challenge_sentence();
-  void set_allocated_challenge_sentence(std::string* value);
-
-  private:
-  const std::string& _internal_challenge_sentence() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_challenge_sentence(
-      const std::string& value);
-  std::string* _internal_mutable_challenge_sentence();
-
-  public:
-  // int32 challenger_id = 4 [json_name = "challengerId"];
-  void clear_challenger_id() ;
-  ::int32_t challenger_id() const;
-  void set_challenger_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_challenger_id() const;
-  void _internal_set_challenger_id(::int32_t value);
-
-  public:
-  // int32 proof_debate_id = 5 [json_name = "proofDebateId"];
-  void clear_proof_debate_id() ;
-  ::int32_t proof_debate_id() const;
-  void set_proof_debate_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_proof_debate_id() const;
-  void _internal_set_proof_debate_id(::int32_t value);
-
-  public:
-  // int32 challenged_parent_claim_id = 6 [json_name = "challengedParentClaimId"];
-  void clear_challenged_parent_claim_id() ;
-  ::int32_t challenged_parent_claim_id() const;
-  void set_challenged_parent_claim_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_challenged_parent_claim_id() const;
-  void _internal_set_challenged_parent_claim_id(::int32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:debate.Challenge)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 0,
-      43, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const Challenge& from_msg);
-    ::google::protobuf::RepeatedField<::int32_t> challenged_claim_ids_;
-    ::google::protobuf::internal::CachedSize _challenged_claim_ids_cached_byte_size_;
-    ::google::protobuf::RepeatedField<::int32_t> challenged_link_ids_;
-    ::google::protobuf::internal::CachedSize _challenged_link_ids_cached_byte_size_;
-    ::google::protobuf::internal::ArenaStringPtr challenge_sentence_;
-    ::int32_t challenger_id_;
-    ::int32_t proof_debate_id_;
-    ::int32_t challenged_parent_claim_id_;
+    int link_type_;
+    ::int32_t debate_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -870,7 +510,7 @@ class Debate final : public ::google::protobuf::Message
     return reinterpret_cast<const Debate*>(
         &_Debate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
   inline void Swap(Debate* other) {
     if (other == this) return;
@@ -1252,34 +892,15 @@ class Claim final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kChildrenIdsFieldNumber = 5,
     kHistoryFieldNumber = 10,
+    kLinkIdsFieldNumber = 12,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
-    kProofFieldNumber = 7,
     kIdFieldNumber = 1,
-    kParentIdFieldNumber = 4,
     kCreatorIdFieldNumber = 8,
     kDebateIdFieldNumber = 9,
+    kStatusFieldNumber = 11,
   };
-  // repeated int32 children_ids = 5 [json_name = "childrenIds"];
-  int children_ids_size() const;
-  private:
-  int _internal_children_ids_size() const;
-
-  public:
-  void clear_children_ids() ;
-  ::int32_t children_ids(int index) const;
-  void set_children_ids(int index, ::int32_t value);
-  void add_children_ids(::int32_t value);
-  const ::google::protobuf::RepeatedField<::int32_t>& children_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* mutable_children_ids();
-
-  private:
-  const ::google::protobuf::RepeatedField<::int32_t>& _internal_children_ids() const;
-  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_children_ids();
-
-  public:
   // repeated .debate.ClaimState history = 10 [json_name = "history"];
   int history_size() const;
   private:
@@ -1297,6 +918,24 @@ class Claim final : public ::google::protobuf::Message
   const ::debate::ClaimState& history(int index) const;
   ::debate::ClaimState* add_history();
   const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& history() const;
+  // repeated int32 link_ids = 12 [json_name = "linkIds"];
+  int link_ids_size() const;
+  private:
+  int _internal_link_ids_size() const;
+
+  public:
+  void clear_link_ids() ;
+  ::int32_t link_ids(int index) const;
+  void set_link_ids(int index, ::int32_t value);
+  void add_link_ids(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& link_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* mutable_link_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_link_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_link_ids();
+
+  public:
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
   const std::string& sentence() const;
@@ -1329,21 +968,6 @@ class Claim final : public ::google::protobuf::Message
   std::string* _internal_mutable_description();
 
   public:
-  // .debate.Proof proof = 7 [json_name = "proof"];
-  bool has_proof() const;
-  void clear_proof() ;
-  const ::debate::Proof& proof() const;
-  PROTOBUF_NODISCARD ::debate::Proof* release_proof();
-  ::debate::Proof* mutable_proof();
-  void set_allocated_proof(::debate::Proof* value);
-  void unsafe_arena_set_allocated_proof(::debate::Proof* value);
-  ::debate::Proof* unsafe_arena_release_proof();
-
-  private:
-  const ::debate::Proof& _internal_proof() const;
-  ::debate::Proof* _internal_mutable_proof();
-
-  public:
   // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
@@ -1352,16 +976,6 @@ class Claim final : public ::google::protobuf::Message
   private:
   ::int32_t _internal_id() const;
   void _internal_set_id(::int32_t value);
-
-  public:
-  // int32 parent_id = 4 [json_name = "parentId"];
-  void clear_parent_id() ;
-  ::int32_t parent_id() const;
-  void set_parent_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_parent_id() const;
-  void _internal_set_parent_id(::int32_t value);
 
   public:
   // int32 creator_id = 8 [json_name = "creatorId"];
@@ -1384,12 +998,22 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
+  // .debate.ClaimStatus status = 11 [json_name = "status"];
+  void clear_status() ;
+  ::debate::ClaimStatus status() const;
+  void set_status(::debate::ClaimStatus value);
+
+  private:
+  ::debate::ClaimStatus _internal_status() const;
+  void _internal_set_status(::debate::ClaimStatus value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.Claim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 9, 2,
+      4, 8, 1,
       48, 2>
       _table_;
 
@@ -1407,18 +1031,16 @@ class Claim final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const Claim& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedField<::int32_t> children_ids_;
-    ::google::protobuf::internal::CachedSize _children_ids_cached_byte_size_;
     ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
+    ::google::protobuf::RepeatedField<::int32_t> link_ids_;
+    ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
-    ::debate::Proof* proof_;
     ::int32_t id_;
-    ::int32_t parent_id_;
     ::int32_t creator_id_;
     ::int32_t debate_id_;
+    int status_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1772,169 +1394,6 @@ inline void Claim::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.description)
 }
 
-// int32 parent_id = 4 [json_name = "parentId"];
-inline void Claim::clear_parent_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.parent_id_ = 0;
-}
-inline ::int32_t Claim::parent_id() const {
-  // @@protoc_insertion_point(field_get:debate.Claim.parent_id)
-  return _internal_parent_id();
-}
-inline void Claim::set_parent_id(::int32_t value) {
-  _internal_set_parent_id(value);
-  // @@protoc_insertion_point(field_set:debate.Claim.parent_id)
-}
-inline ::int32_t Claim::_internal_parent_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.parent_id_;
-}
-inline void Claim::_internal_set_parent_id(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.parent_id_ = value;
-}
-
-// repeated int32 children_ids = 5 [json_name = "childrenIds"];
-inline int Claim::_internal_children_ids_size() const {
-  return _internal_children_ids().size();
-}
-inline int Claim::children_ids_size() const {
-  return _internal_children_ids_size();
-}
-inline void Claim::clear_children_ids() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.children_ids_.Clear();
-}
-inline ::int32_t Claim::children_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Claim.children_ids)
-  return _internal_children_ids().Get(index);
-}
-inline void Claim::set_children_ids(int index, ::int32_t value) {
-  _internal_mutable_children_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Claim.children_ids)
-}
-inline void Claim::add_children_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_children_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Claim.children_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Claim::children_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Claim.children_ids)
-  return _internal_children_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Claim::mutable_children_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Claim.children_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_children_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Claim::_internal_children_ids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.children_ids_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Claim::_internal_mutable_children_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.children_ids_;
-}
-
-// .debate.Proof proof = 7 [json_name = "proof"];
-inline bool Claim::has_proof() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.proof_ != nullptr);
-  return value;
-}
-inline void Claim::clear_proof() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.proof_ != nullptr) _impl_.proof_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::debate::Proof& Claim::_internal_proof() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::debate::Proof* p = _impl_.proof_;
-  return p != nullptr ? *p : reinterpret_cast<const ::debate::Proof&>(::debate::_Proof_default_instance_);
-}
-inline const ::debate::Proof& Claim::proof() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Claim.proof)
-  return _internal_proof();
-}
-inline void Claim::unsafe_arena_set_allocated_proof(::debate::Proof* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.proof_);
-  }
-  _impl_.proof_ = reinterpret_cast<::debate::Proof*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.Claim.proof)
-}
-inline ::debate::Proof* Claim::release_proof() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::Proof* released = _impl_.proof_;
-  _impl_.proof_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::debate::Proof* Claim::unsafe_arena_release_proof() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.Claim.proof)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::debate::Proof* temp = _impl_.proof_;
-  _impl_.proof_ = nullptr;
-  return temp;
-}
-inline ::debate::Proof* Claim::_internal_mutable_proof() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.proof_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Proof>(GetArena());
-    _impl_.proof_ = reinterpret_cast<::debate::Proof*>(p);
-  }
-  return _impl_.proof_;
-}
-inline ::debate::Proof* Claim::mutable_proof() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::debate::Proof* _msg = _internal_mutable_proof();
-  // @@protoc_insertion_point(field_mutable:debate.Claim.proof)
-  return _msg;
-}
-inline void Claim::set_allocated_proof(::debate::Proof* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete (_impl_.proof_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.proof_ = reinterpret_cast<::debate::Proof*>(value);
-  // @@protoc_insertion_point(field_set_allocated:debate.Claim.proof)
-}
-
 // int32 creator_id = 8 [json_name = "creatorId"];
 inline void Claim::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
@@ -2026,6 +1485,73 @@ inline ::google::protobuf::RepeatedPtrField<::debate::ClaimState>*
 Claim::_internal_mutable_history() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.history_;
+}
+
+// .debate.ClaimStatus status = 11 [json_name = "status"];
+inline void Claim::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::debate::ClaimStatus Claim::status() const {
+  // @@protoc_insertion_point(field_get:debate.Claim.status)
+  return _internal_status();
+}
+inline void Claim::set_status(::debate::ClaimStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:debate.Claim.status)
+}
+inline ::debate::ClaimStatus Claim::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::debate::ClaimStatus>(_impl_.status_);
+}
+inline void Claim::_internal_set_status(::debate::ClaimStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// repeated int32 link_ids = 12 [json_name = "linkIds"];
+inline int Claim::_internal_link_ids_size() const {
+  return _internal_link_ids().size();
+}
+inline int Claim::link_ids_size() const {
+  return _internal_link_ids_size();
+}
+inline void Claim::clear_link_ids() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_ids_.Clear();
+}
+inline ::int32_t Claim::link_ids(int index) const {
+  // @@protoc_insertion_point(field_get:debate.Claim.link_ids)
+  return _internal_link_ids().Get(index);
+}
+inline void Claim::set_link_ids(int index, ::int32_t value) {
+  _internal_mutable_link_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:debate.Claim.link_ids)
+}
+inline void Claim::add_link_ids(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_link_ids()->Add(value);
+  // @@protoc_insertion_point(field_add:debate.Claim.link_ids)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& Claim::link_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Claim.link_ids)
+  return _internal_link_ids();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* Claim::mutable_link_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:debate.Claim.link_ids)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_link_ids();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+Claim::_internal_link_ids() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.link_ids_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* Claim::_internal_mutable_link_ids() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.link_ids_;
 }
 
 // -------------------------------------------------------------------
@@ -2223,7 +1749,29 @@ inline void ClaimState::set_allocated_claim(::debate::Claim* value) {
 
 // Link
 
-// int32 connect_from = 1 [json_name = "connectFrom"];
+// int32 id = 1 [json_name = "id"];
+inline void Link::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = 0;
+}
+inline ::int32_t Link::id() const {
+  // @@protoc_insertion_point(field_get:debate.Link.id)
+  return _internal_id();
+}
+inline void Link::set_id(::int32_t value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:debate.Link.id)
+}
+inline ::int32_t Link::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_;
+}
+inline void Link::_internal_set_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_ = value;
+}
+
+// int32 connect_from = 2 [json_name = "connectFrom"];
 inline void Link::clear_connect_from() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = 0;
@@ -2245,7 +1793,7 @@ inline void Link::_internal_set_connect_from(::int32_t value) {
   _impl_.connect_from_ = value;
 }
 
-// int32 connect_to = 2 [json_name = "connectTo"];
+// int32 connect_to = 3 [json_name = "connectTo"];
 inline void Link::clear_connect_to() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = 0;
@@ -2267,7 +1815,7 @@ inline void Link::_internal_set_connect_to(::int32_t value) {
   _impl_.connect_to_ = value;
 }
 
-// string connection = 3 [json_name = "connection"];
+// string connection = 4 [json_name = "connection"];
 inline void Link::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
@@ -2315,7 +1863,7 @@ inline void Link::set_allocated_connection(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate.Link.connection)
 }
 
-// int32 creator_id = 4 [json_name = "creatorId"];
+// int32 creator_id = 5 [json_name = "creatorId"];
 inline void Link::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -2337,306 +1885,48 @@ inline void Link::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// -------------------------------------------------------------------
-
-// Challenge
-
-// int32 challenged_parent_claim_id = 6 [json_name = "challengedParentClaimId"];
-inline void Challenge::clear_challenged_parent_claim_id() {
+// .debate.LinkType link_type = 6 [json_name = "linkType"];
+inline void Link::clear_link_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenged_parent_claim_id_ = 0;
+  _impl_.link_type_ = 0;
 }
-inline ::int32_t Challenge::challenged_parent_claim_id() const {
-  // @@protoc_insertion_point(field_get:debate.Challenge.challenged_parent_claim_id)
-  return _internal_challenged_parent_claim_id();
+inline ::debate::LinkType Link::link_type() const {
+  // @@protoc_insertion_point(field_get:debate.Link.link_type)
+  return _internal_link_type();
 }
-inline void Challenge::set_challenged_parent_claim_id(::int32_t value) {
-  _internal_set_challenged_parent_claim_id(value);
-  // @@protoc_insertion_point(field_set:debate.Challenge.challenged_parent_claim_id)
+inline void Link::set_link_type(::debate::LinkType value) {
+  _internal_set_link_type(value);
+  // @@protoc_insertion_point(field_set:debate.Link.link_type)
 }
-inline ::int32_t Challenge::_internal_challenged_parent_claim_id() const {
+inline ::debate::LinkType Link::_internal_link_type() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenged_parent_claim_id_;
+  return static_cast<::debate::LinkType>(_impl_.link_type_);
 }
-inline void Challenge::_internal_set_challenged_parent_claim_id(::int32_t value) {
+inline void Link::_internal_set_link_type(::debate::LinkType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenged_parent_claim_id_ = value;
+  _impl_.link_type_ = value;
 }
 
-// repeated int32 challenged_claim_ids = 1 [json_name = "challengedClaimIds"];
-inline int Challenge::_internal_challenged_claim_ids_size() const {
-  return _internal_challenged_claim_ids().size();
-}
-inline int Challenge::challenged_claim_ids_size() const {
-  return _internal_challenged_claim_ids_size();
-}
-inline void Challenge::clear_challenged_claim_ids() {
+// int32 debate_id = 7 [json_name = "debateId"];
+inline void Link::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenged_claim_ids_.Clear();
+  _impl_.debate_id_ = 0;
 }
-inline ::int32_t Challenge::challenged_claim_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Challenge.challenged_claim_ids)
-  return _internal_challenged_claim_ids().Get(index);
+inline ::int32_t Link::debate_id() const {
+  // @@protoc_insertion_point(field_get:debate.Link.debate_id)
+  return _internal_debate_id();
 }
-inline void Challenge::set_challenged_claim_ids(int index, ::int32_t value) {
-  _internal_mutable_challenged_claim_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Challenge.challenged_claim_ids)
+inline void Link::set_debate_id(::int32_t value) {
+  _internal_set_debate_id(value);
+  // @@protoc_insertion_point(field_set:debate.Link.debate_id)
 }
-inline void Challenge::add_challenged_claim_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_challenged_claim_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Challenge.challenged_claim_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Challenge::challenged_claim_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Challenge.challenged_claim_ids)
-  return _internal_challenged_claim_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::mutable_challenged_claim_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Challenge.challenged_claim_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_challenged_claim_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Challenge::_internal_challenged_claim_ids() const {
+inline ::int32_t Link::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenged_claim_ids_;
+  return _impl_.debate_id_;
 }
-inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::_internal_mutable_challenged_claim_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.challenged_claim_ids_;
-}
-
-// repeated int32 challenged_link_ids = 2 [json_name = "challengedLinkIds"];
-inline int Challenge::_internal_challenged_link_ids_size() const {
-  return _internal_challenged_link_ids().size();
-}
-inline int Challenge::challenged_link_ids_size() const {
-  return _internal_challenged_link_ids_size();
-}
-inline void Challenge::clear_challenged_link_ids() {
+inline void Link::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenged_link_ids_.Clear();
-}
-inline ::int32_t Challenge::challenged_link_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Challenge.challenged_link_ids)
-  return _internal_challenged_link_ids().Get(index);
-}
-inline void Challenge::set_challenged_link_ids(int index, ::int32_t value) {
-  _internal_mutable_challenged_link_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Challenge.challenged_link_ids)
-}
-inline void Challenge::add_challenged_link_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_challenged_link_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Challenge.challenged_link_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Challenge::challenged_link_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Challenge.challenged_link_ids)
-  return _internal_challenged_link_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::mutable_challenged_link_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Challenge.challenged_link_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_challenged_link_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Challenge::_internal_challenged_link_ids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenged_link_ids_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Challenge::_internal_mutable_challenged_link_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.challenged_link_ids_;
-}
-
-// string challenge_sentence = 3 [json_name = "challengeSentence"];
-inline void Challenge::clear_challenge_sentence() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenge_sentence_.ClearToEmpty();
-}
-inline const std::string& Challenge::challenge_sentence() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Challenge.challenge_sentence)
-  return _internal_challenge_sentence();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Challenge::set_challenge_sentence(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenge_sentence_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.Challenge.challenge_sentence)
-}
-inline std::string* Challenge::mutable_challenge_sentence() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_challenge_sentence();
-  // @@protoc_insertion_point(field_mutable:debate.Challenge.challenge_sentence)
-  return _s;
-}
-inline const std::string& Challenge::_internal_challenge_sentence() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenge_sentence_.Get();
-}
-inline void Challenge::_internal_set_challenge_sentence(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenge_sentence_.Set(value, GetArena());
-}
-inline std::string* Challenge::_internal_mutable_challenge_sentence() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.challenge_sentence_.Mutable( GetArena());
-}
-inline std::string* Challenge::release_challenge_sentence() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.Challenge.challenge_sentence)
-  return _impl_.challenge_sentence_.Release();
-}
-inline void Challenge::set_allocated_challenge_sentence(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenge_sentence_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.challenge_sentence_.IsDefault()) {
-    _impl_.challenge_sentence_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate.Challenge.challenge_sentence)
-}
-
-// int32 challenger_id = 4 [json_name = "challengerId"];
-inline void Challenge::clear_challenger_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenger_id_ = 0;
-}
-inline ::int32_t Challenge::challenger_id() const {
-  // @@protoc_insertion_point(field_get:debate.Challenge.challenger_id)
-  return _internal_challenger_id();
-}
-inline void Challenge::set_challenger_id(::int32_t value) {
-  _internal_set_challenger_id(value);
-  // @@protoc_insertion_point(field_set:debate.Challenge.challenger_id)
-}
-inline ::int32_t Challenge::_internal_challenger_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.challenger_id_;
-}
-inline void Challenge::_internal_set_challenger_id(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.challenger_id_ = value;
-}
-
-// int32 proof_debate_id = 5 [json_name = "proofDebateId"];
-inline void Challenge::clear_proof_debate_id() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.proof_debate_id_ = 0;
-}
-inline ::int32_t Challenge::proof_debate_id() const {
-  // @@protoc_insertion_point(field_get:debate.Challenge.proof_debate_id)
-  return _internal_proof_debate_id();
-}
-inline void Challenge::set_proof_debate_id(::int32_t value) {
-  _internal_set_proof_debate_id(value);
-  // @@protoc_insertion_point(field_set:debate.Challenge.proof_debate_id)
-}
-inline ::int32_t Challenge::_internal_proof_debate_id() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.proof_debate_id_;
-}
-inline void Challenge::_internal_set_proof_debate_id(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.proof_debate_id_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// Proof
-
-// repeated int32 claim_ids = 1 [json_name = "claimIds"];
-inline int Proof::_internal_claim_ids_size() const {
-  return _internal_claim_ids().size();
-}
-inline int Proof::claim_ids_size() const {
-  return _internal_claim_ids_size();
-}
-inline void Proof::clear_claim_ids() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.claim_ids_.Clear();
-}
-inline ::int32_t Proof::claim_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Proof.claim_ids)
-  return _internal_claim_ids().Get(index);
-}
-inline void Proof::set_claim_ids(int index, ::int32_t value) {
-  _internal_mutable_claim_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Proof.claim_ids)
-}
-inline void Proof::add_claim_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_claim_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Proof.claim_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Proof::claim_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Proof.claim_ids)
-  return _internal_claim_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Proof::mutable_claim_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Proof.claim_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_claim_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Proof::_internal_claim_ids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.claim_ids_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Proof::_internal_mutable_claim_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.claim_ids_;
-}
-
-// repeated int32 link_ids = 2 [json_name = "linkIds"];
-inline int Proof::_internal_link_ids_size() const {
-  return _internal_link_ids().size();
-}
-inline int Proof::link_ids_size() const {
-  return _internal_link_ids_size();
-}
-inline void Proof::clear_link_ids() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.link_ids_.Clear();
-}
-inline ::int32_t Proof::link_ids(int index) const {
-  // @@protoc_insertion_point(field_get:debate.Proof.link_ids)
-  return _internal_link_ids().Get(index);
-}
-inline void Proof::set_link_ids(int index, ::int32_t value) {
-  _internal_mutable_link_ids()->Set(index, value);
-  // @@protoc_insertion_point(field_set:debate.Proof.link_ids)
-}
-inline void Proof::add_link_ids(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_link_ids()->Add(value);
-  // @@protoc_insertion_point(field_add:debate.Proof.link_ids)
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>& Proof::link_ids() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:debate.Proof.link_ids)
-  return _internal_link_ids();
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Proof::mutable_link_ids()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:debate.Proof.link_ids)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_link_ids();
-}
-inline const ::google::protobuf::RepeatedField<::int32_t>&
-Proof::_internal_link_ids() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.link_ids_;
-}
-inline ::google::protobuf::RepeatedField<::int32_t>* Proof::_internal_mutable_link_ids() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.link_ids_;
+  _impl_.debate_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2944,6 +2234,31 @@ inline void Debate::_internal_set_parent_challenge_id(::int32_t value) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace debate
 
+
+namespace google {
+namespace protobuf {
+
+template <>
+struct is_proto_enum<::debate::ClaimStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::ClaimStatus>() {
+  return ::debate::ClaimStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::debate::LinkType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::LinkType>() {
+  return ::debate::LinkType_descriptor();
+}
+template <>
+struct is_proto_enum<::debate::ChallengeStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::debate::ChallengeStatus>() {
+  return ::debate::ChallengeStatus_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

@@ -1,3 +1,4 @@
 .env
 include
 build
+debates.sqlite3*

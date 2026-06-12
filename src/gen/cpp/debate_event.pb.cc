@@ -1208,7 +1208,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "_debate\0301 \001(\0132\031.debate_event.LeaveDebate"
     "H\000R\013leaveDebate\022X\n\026move_user_to_timestam"
     "p\0302 \001(\0132!.debate_event.MoveUserToTimesta"
-    "mpH\000R\023moveUserToTimestampB\t\n\007payload*\371\t\n"
+    "mpH\000R\023moveUserToTimestampB\t\n\007payload*\251\n\n"
     "\tEventType\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010"
     "\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEB"
     "ATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBAT"
@@ -1240,7 +1240,9 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "\026MOVE_USER_TO_TIMESTAMP\020.\022\030\n\024MOVE_USER_T"
     "O_PRESENT\020/\022\037\n\033START_MODIFICATION_OF_CLA"
     "IM\0200\022 \n\034SUBMIT_MODIFICATION_OF_CLAIM\0201\022 "
-    "\n\034CANCEL_MODIFICATION_OF_CLAIM\0202b\006proto3"
+    "\n\034CANCEL_MODIFICATION_OF_CLAIM\0202\022\022\n\016GO_T"
+    "O_OVERVIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VIEW\0204"
+    "b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_5fevent_2eproto_deps[1] =
     {
@@ -1250,7 +1252,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    5040,
+    5088,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1269,9 +1271,9 @@ const ::google::protobuf::EnumDescriptor* EventType_descriptor() {
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3342336u, 0u, };
+    3473408u, 0u, };
 bool EventType_IsValid(int value) {
-  return 0 <= value && value <= 50;
+  return 0 <= value && value <= 52;
 }
 // ===================================================================
 

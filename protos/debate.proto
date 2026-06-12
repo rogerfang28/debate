@@ -10,12 +10,18 @@ message Claim {
   int32 id = 1;
   string sentence = 2;
   string description = 3;
-  int32 parent_id = 4;
-  repeated int32 children_ids = 5;
-  Proof proof = 7;
   int32 creator_id = 8;
   int32 debate_id = 9;
   repeated ClaimState history = 10;
+  ClaimStatus status = 11;
+  repeated int32 link_ids = 12;
+}
+
+enum ClaimStatus {
+  NEUTRAL = 0; // unchallenged, default
+  CHALLENGED = 1; // currently challenged
+  DEFENDED = 2; // successfully defended against a challenge
+  DISPROVEN = 3; // disproven by a challenge
 }
 
 message ClaimState {
@@ -24,24 +30,26 @@ message ClaimState {
 }
 
 message Link {
-  int32 connect_from = 1;
-  int32 connect_to = 2;
-  string connection = 3;  
-  int32 creator_id = 4;
+  int32 id = 1;
+  int32 connect_from = 2;
+  int32 connect_to = 3;
+  string connection = 4;  
+  int32 creator_id = 5;
+  // add a type, normal, parent child, or challenge connection
+  LinkType link_type = 6;
+  int32 debate_id = 7;
 }
 
-message Challenge {
-  int32 challenged_parent_claim_id = 6;
-  repeated int32 challenged_claim_ids = 1;
-  repeated int32 challenged_link_ids = 2;
-  string challenge_sentence = 3;
-  int32 challenger_id = 4; // creator id
-  int32 proof_debate_id = 5;
+enum LinkType {
+  NORMAL = 0;
+  PARENT_CHILD = 1;
+  CHALLENGE = 2;
 }
 
-message Proof {
-  repeated int32 claim_ids = 1;
-  repeated int32 link_ids = 2;
+enum ChallengeStatus {
+  ONGOING = 0; // challenge is ongoing
+  CONCEDED = 1; // challenge has been conceded
+  PROVEN = 2; // challenge successfully defended
 }
 
 message Debate {
