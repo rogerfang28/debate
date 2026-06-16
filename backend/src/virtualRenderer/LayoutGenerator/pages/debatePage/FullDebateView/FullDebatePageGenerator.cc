@@ -1331,20 +1331,23 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // WIP placeholder: intentionally non-interactive.
-        ui::Component concedeWipButton = ComponentGenerator::createText(
+        // Concede button: allows the challenged user to concede this challenge.
+        ui::Component concedeButton = ComponentGenerator::createButton(
             "concedeWipButton_" + challengedClaimId,
-            "Concede (WIP)",
-            "text-sm",
-            "text-gray-200",
-            "font-medium",
-            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
+            "Concede",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-4 py-2",
+            "rounded",
+            "w-full transition-colors text-sm"
         );
         ComponentGenerator::addChild(
             &challengeButtonContainer,
             CreateStableActionSlot(
                 "challengeConcedeSlot_" + challengedClaimId,
-                &concedeWipButton,
+                &concedeButton,
                 "challengeConcedeSlotPlaceholder_" + challengedClaimId
             )
         );
