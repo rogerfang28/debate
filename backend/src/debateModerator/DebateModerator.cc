@@ -313,11 +313,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::CONCEDE_CHALLENGE:
             Log::info("[DebateModerator] Event Type: CONCEDE_CHALLENGE");
-            ChallengeHandler::ConcedeChallenge(
-                event.concede_challenge().challenge_id(),
-                user_id,
-                debateWrapper
-            );
+            ChallengeHandler::ConcedeChallenge(user_id, debateWrapper);
             break;
         case debate_event::CANCEL_CHALLENGE_CLAIM:
             Log::info("[DebateModerator] Event Type: CANCEL_CHALLENGE_CLAIM");
