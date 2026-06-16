@@ -48,7 +48,7 @@ int main() {
   }
 
   const char* portEnv = std::getenv("DEBATE_SERVER_PORT");
-  const int PORT = (portEnv != nullptr && portEnv[0] != '\0') ? std::atoi(portEnv) : 8080;
+  const int PORT = (portEnv != nullptr && portEnv[0] != '\0') ? std::atoi(portEnv) : 5000;
 
   Log::info(std::string("Attempting to bind server to http://") + HOST + ":" + std::to_string(PORT));
 
