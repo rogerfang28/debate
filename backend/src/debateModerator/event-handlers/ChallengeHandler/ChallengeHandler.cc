@@ -143,18 +143,72 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     Log::debug("[SubmitChallengeClaimHandler] Submitted new challenge for user: " + std::to_string(user_id));
 }
 
-void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debateWrapper) {
-    // get the user from the database
-    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+void ChallengeHandler::ConcedeChallenge(const int& challenge_id, const int& user_id, DebateWrapper& debateWrapper) {
+    // challenge_id refers to the challenge claim (the claim created by the challenger)
+    debate::Claim challengeClaim = debateWrapper.getClaimById(challenge_id);
+    if (challengeClaim.id() == 0) {
+        Log::warn("[ConcedeChallengeHandler] Challenge claim ID " + std::to_string(challenge_id) + " not found.");
+        return;
+    }
 
-    // Legacy challenge protobuf records are deprecated. Concede now only
-    // clears the in-progress challenge interaction state for the user.
-    
-    // clear the user's challenging state
+    // Find the CHALLENGE link from the challenge claim to the challenged claim
+    int challengedClaimId = -1;
+    int challengeLinkId = -1;
+    for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
+        const int linkId = challengeClaim.link_ids(i);
+        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == challenge_id) {
+            challengeLinkId = linkId;
+            challengedClaimId = linkProto.connect_to();
+            break;
+        }
+    }
+
+    if (challengedClaimId == -1) {
+        Log::warn("[ConcedeChallengeHandler] No CHALLENGE link found from challenge claim ID: " + std::to_string(challenge_id));
+        // Still clear UI state even if we couldn't find the link
+        CancelChallengeClaim(user_id, debateWrapper);
+        CloseAddChallenge(user_id, debateWrapper);
+        return;
+    }
+
+    // Mark the challenged claim as DISPROVEN (conceded)
+    debate::Claim challengedClaim = debateWrapper.getClaimById(challengedClaimId);
+    if (challengedClaim.id() != 0) {
+        challengedClaim.set_status(debate::ClaimStatus::DISPROVEN);
+        debateWrapper.updateClaimInDB(challengedClaim);
+        Log::debug("[ConcedeChallengeHandler] Marked claim ID " + std::to_string(challengedClaimId) + " as DISPROVEN");
+
+        // Propagate upward: mark all ancestors as CHALLENGED since a disproven child
+        // invalidates the parent's proof chain
+        debate::Claim ancestor = debateWrapper.findClaimParent(challengedClaimId);
+        while (ancestor.id() != challengedClaimId && ancestor.id() != 0) {
+            if (ancestor.status() != debate::ClaimStatus::DISPROVEN) {
+                ancestor.set_status(debate::ClaimStatus::CHALLENGED);
+                debateWrapper.updateClaimInDB(ancestor);
+                Log::debug("[ConcedeChallengeHandler] Marked ancestor claim ID " + std::to_string(ancestor.id()) + " as CHALLENGED");
+            }
+            // Check if we've reached the root (parent of self means root)
+            debate::Claim nextAncestor = debateWrapper.findClaimParent(ancestor.id());
+            if (nextAncestor.id() == ancestor.id()) {
+                break; // reached root
+            }
+            ancestor = nextAncestor;
+        }
+    }
+
+    // Run full status recalculation to handle recursive cascade effects
+    // (e.g., if the disproven claim was itself a challenge proof, freeing parent challenges)
+    int debateId = debateWrapper.findDebateId(challengedClaimId);
+    if (debateId != -1) {
+        debateWrapper.UpdateStatusOfAllClaimsInDebate(debateId);
+    }
+
+    // Clear the user's challenging UI state
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
-    
-    Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge");
+
+    Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge claim ID: " + std::to_string(challenge_id) + ", challenged claim ID: " + std::to_string(challengedClaimId));
 }
 
 void ChallengeHandler::OpenAddChallenge(const int& user_id, DebateWrapper& debateWrapper) {

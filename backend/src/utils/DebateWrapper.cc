@@ -547,11 +547,12 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
 }
 
 void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
-    // ok the plan is, go dfs down nodes and update status based on current node
-    // for each node, find it's challenges, if all of them are resolved, mark it as DEFENDED or something
-    // if any are unresolved, mark it as CHALLENGED
-    // if any are successfully challenged, mark it as DISPROVEN
-    // then if a claim is challenged or disproven, all of it's ancestors should be marked as CHALLENGED too
+    // DFS-based status propagation:
+    // First pass (top-down): mark claims as CHALLENGED if they have incoming CHALLENGE links.
+    //   Preserve DISPROVEN status (already conceded).
+    // Second pass (bottom-up): propagate CHALLENGED/DISPROVEN status to ancestors.
+    //   If any child is DISPROVEN, the parent's proof is broken → parent becomes CHALLENGED.
+    //   If a claim has no unresolved challenges and no disproven children, it's NEUTRAL.
     debate::Debate debateProto;
     std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
     if (!debateData.empty()) {
@@ -561,7 +562,8 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         return;
     }
 
-    // First pass: mark claims challenged if they have incoming CHALLENGE links.
+    // First pass: top-down DFS to set initial status based on incoming CHALLENGE links.
+    // Preserve existing DISPROVEN status.
     std::vector<int> stack;
     std::set<int> visited;
     stack.push_back(debateProto.root_claim_id());
@@ -576,6 +578,17 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
 
         visited.insert(currentClaimId);
         debate::Claim currentClaim = getClaimById(currentClaimId);
+
+        // Preserve DISPROVEN — once conceded, always disproven
+        if (currentClaim.status() == debate::ClaimStatus::DISPROVEN) {
+            // Still visit children
+            for (const auto& childId : findChildrenIds(currentClaimId)) {
+                if (visited.find(childId) == visited.end()) {
+                    stack.push_back(childId);
+                }
+            }
+            continue;
+        }
 
         bool hasIncomingChallenge = false;
         const auto links = databaseWrapper.links.getLinksForClaim(currentClaimId);
@@ -608,7 +621,9 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         }
     }
     
-    // Second pass: Propagate CHALLENGED status up to ancestors
+    // Second pass: bottom-up propagation — if any child is CHALLENGED or DISPROVEN,
+    // the parent is also CHALLENGED (its proof chain is broken).
+    // Skip DISPROVEN claims — they stay disproven.
     std::vector<int> toProcess;
     toProcess.push_back(debateProto.root_claim_id());
     
@@ -620,6 +635,11 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         // Add children to process list
         for (const auto& childId : childrenIds) {
             toProcess.push_back(childId);
+        }
+        
+        // Skip DISPROVEN claims — they stay as-is
+        if (currentClaim.status() == debate::ClaimStatus::DISPROVEN) {
+            continue;
         }
         
         // Check if any child is challenged or disproven
