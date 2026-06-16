@@ -1245,23 +1245,20 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
             )
         );
 
-        // Concede button: allows the challenged user to concede this challenge.
-        ui::Component concedeButton = ComponentGenerator::createButton(
+        // WIP placeholder: intentionally non-interactive.
+        ui::Component concedeWipButton = ComponentGenerator::createText(
             "concedeWipButton_" + challengedClaimId,
-            "Concede",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "w-full transition-colors text-sm"
+            "Concede (WIP)",
+            "text-sm",
+            "text-gray-200",
+            "font-medium",
+            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
         );
         ComponentGenerator::addChild(
             &challengeButtonContainer,
             CreateStableActionSlot(
                 "challengeConcedeSlot_" + challengedClaimId,
-                &concedeButton,
+                &concedeWipButton,
                 "challengeConcedeSlotPlaceholder_" + challengedClaimId
             )
         );
