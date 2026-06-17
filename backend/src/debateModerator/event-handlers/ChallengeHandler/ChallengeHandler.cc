@@ -172,9 +172,20 @@ void ChallengeHandler::ConcedeChallenge(const int& challenge_id, const int& user
         return;
     }
 
-    // Mark the challenged claim as DISPROVEN (conceded)
     debate::Claim challengedClaim = debateWrapper.getClaimById(challengedClaimId);
-    if (challengedClaim.id() != 0) {
+    if (challengedClaim.id() == 0) {
+        Log::warn("[ConcedeChallengeHandler] Challenged claim ID " + std::to_string(challengedClaimId) + " not found.");
+        CancelChallengeClaim(user_id, debateWrapper);
+        CloseAddChallenge(user_id, debateWrapper);
+        return;
+    }
+
+    // Toggle: if already DISPROVEN (conceded), reopen the challenge; otherwise concede
+    bool isReopen = (challengedClaim.status() == debate::ClaimStatus::DISPROVEN);
+
+    if (!isReopen) {
+        // --- CONCEDE flow ---
+        // Mark the challenged claim as DISPROVEN (conceded)
         challengedClaim.set_status(debate::ClaimStatus::DISPROVEN);
         debateWrapper.updateClaimInDB(challengedClaim);
         Log::debug("[ConcedeChallengeHandler] Marked claim ID " + std::to_string(challengedClaimId) + " as DISPROVEN");
@@ -203,10 +214,40 @@ void ChallengeHandler::ConcedeChallenge(const int& challenge_id, const int& user
             }
             ancestor = nextAncestor;
         }
+    } else {
+        // --- REOPEN flow ---
+        // Restore the challenged claim to CHALLENGED (reopen the debate)
+        challengedClaim.set_status(debate::ClaimStatus::CHALLENGED);
+        debateWrapper.updateClaimInDB(challengedClaim);
+        Log::debug("[ConcedeChallengeHandler] Reopened: marked claim ID " + std::to_string(challengedClaimId) + " as CHALLENGED");
+
+        // Mark the challenge claim back to NEUTRAL (challenge is ongoing again)
+        debate::Claim updatedChallengeClaim = debateWrapper.getClaimById(challenge_id);
+        if (updatedChallengeClaim.id() != 0) {
+            updatedChallengeClaim.set_status(debate::ClaimStatus::NEUTRAL);
+            debateWrapper.updateClaimInDB(updatedChallengeClaim);
+            Log::debug("[ConcedeChallengeHandler] Reopened: marked challenge claim ID " + std::to_string(challenge_id) + " as NEUTRAL");
+        }
+
+        // Propagate upward: restore ancestors that were CHALLENGED due to this concession
+        // back to CHALLENGED (they're still challenged, just no longer disproven)
+        debate::Claim ancestor = debateWrapper.findClaimParent(challengedClaimId);
+        while (ancestor.id() != challengedClaimId && ancestor.id() != 0) {
+            if (ancestor.status() == debate::ClaimStatus::DISPROVEN) {
+                // Only restore ancestors that were marked DISPROVEN as part of this cascade
+                ancestor.set_status(debate::ClaimStatus::CHALLENGED);
+                debateWrapper.updateClaimInDB(ancestor);
+                Log::debug("[ConcedeChallengeHandler] Reopened: restored ancestor claim ID " + std::to_string(ancestor.id()) + " to CHALLENGED");
+            }
+            debate::Claim nextAncestor = debateWrapper.findClaimParent(ancestor.id());
+            if (nextAncestor.id() == ancestor.id()) {
+                break;
+            }
+            ancestor = nextAncestor;
+        }
     }
 
     // Run full status recalculation to handle recursive cascade effects
-    // (e.g., if the disproven claim was itself a challenge proof, freeing parent challenges)
     int debateId = debateWrapper.findDebateId(challengedClaimId);
     if (debateId != -1) {
         debateWrapper.UpdateStatusOfAllClaimsInDebate(debateId);
@@ -216,7 +257,11 @@ void ChallengeHandler::ConcedeChallenge(const int& challenge_id, const int& user
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
 
-    Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge claim ID: " + std::to_string(challenge_id) + ", challenged claim ID: " + std::to_string(challengedClaimId));
+    if (isReopen) {
+        Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " REOPENED challenge claim ID: " + std::to_string(challenge_id) + ", challenged claim ID: " + std::to_string(challengedClaimId));
+    } else {
+        Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge claim ID: " + std::to_string(challenge_id) + ", challenged claim ID: " + std::to_string(challengedClaimId));
+    }
 }
 
 void ChallengeHandler::OpenAddChallenge(const int& user_id, DebateWrapper& debateWrapper) {

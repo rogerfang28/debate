@@ -1333,14 +1333,19 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // Concede button: only visible to the owner of the challenged claim, and only while ongoing.
-        if (userOwnsChallengedClaim && challengeStatus == rendering_info::CHALLENGE_STATUS_ONGOING) {
+        // Concede / Reopen button: only visible to the owner of the challenged claim.
+        // When ongoing: shows "Concede". When conceded: shows "Reopen Challenge" (toggle back).
+        if (userOwnsChallengedClaim && !demo_mode::kReadOnlyMode) {
+            bool isConceded = (challengeStatus == rendering_info::CHALLENGE_STATUS_CONCEDED);
+            std::string btnLabel = isConceded ? "Reopen Challenge" : "Concede";
+            std::string btnBg = isConceded ? "bg-yellow-600" : "bg-red-600";
+            std::string btnHover = isConceded ? "hover:bg-yellow-700" : "hover:bg-red-700";
             ui::Component concedeButton = ComponentGenerator::createButton(
                 "concedeWipButton_" + challengedClaimId,
-                "Concede",
+                btnLabel,
                 "",
-                "bg-red-600",
-                "hover:bg-red-700",
+                btnBg,
+                btnHover,
                 "text-white",
                 "px-4 py-2",
                 "rounded",
