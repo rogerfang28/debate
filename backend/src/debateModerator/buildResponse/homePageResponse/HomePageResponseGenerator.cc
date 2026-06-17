@@ -27,7 +27,7 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         debate::Debate debateProto;
         debateProto.ParseFromArray(debateBytes.data(), debateBytes.size());
         moderator_to_vr::DebateTopic* topicProto = debateListProto.add_topics();
-        topicProto->set_id(debateProto.root_claim_id());
+        topicProto->set_id(debateId);
         topicProto->set_topic(debateProto.topic());
         topicProto->set_creator_id(debateProto.creator_id());
         topicProto->set_is_challenge(false);

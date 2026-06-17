@@ -5,12 +5,12 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void DebateHandler::AddDebate(const std::string& debateTopic, const int& user_id, DebateWrapper& debateWrapper) {
+int DebateHandler::AddDebate(const std::string& debateTopic, const int& user_id, DebateWrapper& debateWrapper) {
 
     Log::debug("[AddDebateHandler] AddDebate called for user: "
               + std::to_string(user_id) + ", topic: " + debateTopic);
 
-    debateWrapper.initNewDebate(debateTopic, user_id);
+    return debateWrapper.initNewDebate(debateTopic, user_id);
 }
 
 

@@ -14,7 +14,7 @@ public:
     explicit DebateWrapper(DatabaseWrapper& databaseWrapper);
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim getClaimById(const int& claimId);
-    void initNewDebate(const std::string& topic, const int& owner_id);
+    int initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const int& claimId);
     bool isRoot(const int& claimId);
     int createClaim(

@@ -60,7 +60,7 @@ std::vector<int> DebateWrapper::findUsersInDebate(const int& debate_id) {
     return databaseWrapper.debateMembers.getUserIdsForDebate(debate_id);
 }
 
-void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id) {
+int DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id) {
     debate::Debate debate;
     debate.set_topic(topic);
     debate.add_debater_ids(creator_id);
@@ -70,7 +70,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     int newId = databaseWrapper.debates.addDebate(creator_id, topic, serialized_debate);
     if (newId == -1) {
         Log::error("[DebateWrapper] Failed to create new debate for topic: " + topic);
-        return;
+        return -1;
     }
     debate.set_id(newId);
     debate::Claim rootClaim;
@@ -82,6 +82,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate.SerializeToArray(updatedSerializedDebate.data(), updatedSerializedDebate.size());
     databaseWrapper.debates.updateDebateProtobuf(debate.id(), creator_id, updatedSerializedDebate);
     databaseWrapper.debateMembers.addMember(newId, creator_id);
+    return newId;
 }
 
 debate::Claim DebateWrapper::findClaimParent(const int& claimId) {

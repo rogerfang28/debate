@@ -46,8 +46,15 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     debate::Collection* collection = responseMessage.mutable_collection();
     // find all the users in the debate
     std::vector<int> user_ids = debateWrapper.findUsersInDebate(debatingInfo.debate_id());
+    Log::info("[DebatePageResponseGenerator] debate_id=" + std::to_string(debatingInfo.debate_id())
+        + " user_ids_count=" + std::to_string(user_ids.size())
+        + " current_claim_id=" + std::to_string(currentClaimId)
+    );
     debate::CollectionSpecification collectionSpec = userProto.collection_spec();
     *collection = BuildCollection::BuildForDebateAndUsers(collectionSpec.debate_id(), user_ids, debateWrapper);
+    Log::info("[DebatePageResponseGenerator] collection built: claims=" + std::to_string(collection->claims_by_id_size())
+        + " links=" + std::to_string(collection->links_by_id_size())
+    );
     // user_ids for now is still all users
 
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;

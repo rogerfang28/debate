@@ -138,7 +138,14 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::CREATE_DEBATE:
             Log::info("[DebateModerator] Event Type: CREATE_DEBATE");
-            DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper);
+            {
+                int newDebateId = DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper);
+                Log::info("[DebateModerator] CREATE_DEBATE: newDebateId=" + std::to_string(newDebateId));
+                if (newDebateId > 0) {
+                    bool enterOk = MoveUserHandler::EnterDebate(newDebateId, user_id, debateWrapper);
+                    Log::info("[DebateModerator] CREATE_DEBATE: EnterDebate returned " + std::string(enterOk ? "true" : "false"));
+                }
+            }
             break;
         case debate_event::CLEAR_DEBATES:
             Log::info("[DebateModerator] Event Type: CLEAR_DEBATES");
@@ -384,16 +391,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
 
 moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(const int& user_id) {
     moderator_to_vr::ModeratorToVRMessage responseMessage;
-    // Build the response message based on the current state
-    // For example, populate user engagement and debate information
-    // so i have to first access the database to get the information about the user engagement
     user::User userProto;
-
-    // std::string user = dbWrapper.users.getUsername(user_id);
 
     userProto = debateWrapper.getUserProtobuf(user_id);
     
-    // Copy the engagement data
+    Log::info("[DebateModerator] buildResponseMessage: user_id=" + std::to_string(user_id)
+        + " action=" + std::to_string(userProto.engagement().current_action())
+        + " scopeType=" + std::to_string(userProto.current_scope().scopetype())
+        + " debate_id=" + std::to_string(userProto.engagement().debating_info().debate_id())
+        + " current_claim_id=" + std::to_string(userProto.engagement().debating_info().current_claim().id())
+        + " top_view=" + std::string(userProto.current_scope().has_full_debate() && userProto.current_scope().full_debate().top_view() ? "true" : "false")
+    );
+    
     *responseMessage.mutable_user() = userProto;
 
     // switch statement for different engagement states
