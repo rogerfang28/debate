@@ -1184,6 +1184,8 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
 ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout){
     // Extract data
     int currentUserId = user.user_id();
+    int currentClaimCreatorId = info.current_claim().creator_id();
+    bool userOwnsChallengedClaim = (currentUserId == currentClaimCreatorId);
     
     std::vector<std::tuple<std::string, std::string, int, rendering_info::ChallengeStatus>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
@@ -1331,26 +1333,28 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // Concede button: allows the challenged user to concede this challenge.
-        ui::Component concedeButton = ComponentGenerator::createButton(
-            "concedeWipButton_" + challengedClaimId,
-            "Concede",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-4 py-2",
-            "rounded",
-            "w-full transition-colors text-sm"
-        );
-        ComponentGenerator::addChild(
-            &challengeButtonContainer,
-            CreateStableActionSlot(
-                "challengeConcedeSlot_" + challengedClaimId,
-                &concedeButton,
-                "challengeConcedeSlotPlaceholder_" + challengedClaimId
-            )
-        );
+        // Concede button: only visible to the owner of the challenged claim.
+        if (userOwnsChallengedClaim) {
+            ui::Component concedeButton = ComponentGenerator::createButton(
+                "concedeWipButton_" + challengedClaimId,
+                "Concede",
+                "",
+                "bg-red-600",
+                "hover:bg-red-700",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "w-full transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeButton,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        }
 
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
