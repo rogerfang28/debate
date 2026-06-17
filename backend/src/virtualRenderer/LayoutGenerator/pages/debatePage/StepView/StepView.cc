@@ -38,6 +38,37 @@ ui::Page StepView::GenerateStepViewPage(
 
 	// Intentionally no top bar action button in Step View.
 
+	// Root claim / debate topic section
+	ui::Component rootClaimBox = ComponentGenerator::createContainer(
+		"stepViewRootClaimBox",
+		"w-full",
+		"bg-gray-800",
+		"p-4",
+		"",
+		"border border-gray-700",
+		"rounded-lg",
+		""
+	);
+	ui::Component rootClaimLabel = ComponentGenerator::createText(
+		"stepViewRootClaimLabel",
+		"Root Claim:",
+		"text-sm",
+		"text-gray-400",
+		"font-semibold uppercase tracking-wide",
+		"mb-2"
+	);
+	ui::Component rootClaimText = ComponentGenerator::createText(
+		"stepViewRootClaimText",
+		rootSentence,
+		"text-lg",
+		"text-white",
+		"font-semibold",
+		""
+	);
+	ComponentGenerator::addChild(&rootClaimBox, rootClaimLabel);
+	ComponentGenerator::addChild(&rootClaimBox, rootClaimText);
+	ComponentGenerator::addChild(&container, rootClaimBox);
+
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",
 		"w-full",
