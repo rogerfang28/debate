@@ -1245,12 +1245,12 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
                 statusTextColor = "text-orange-300";
                 break;
             case rendering_info::CHALLENGE_STATUS_CONCEDED:
-                bgColor = "bg-gray-600";
-                borderColor = "border-2 border-gray-500";
-                buttonBgColor = "bg-gray-700";
-                buttonHoverColor = "hover:bg-gray-800";
-                statusText = "Conceded";
-                statusTextColor = "text-gray-300";
+                bgColor = "bg-green-600";
+                borderColor = "border-2 border-green-500";
+                buttonBgColor = "bg-green-700";
+                buttonHoverColor = "hover:bg-green-800";
+                statusText = "Challenge Successful";
+                statusTextColor = "text-green-300";
                 break;
             case rendering_info::CHALLENGE_STATUS_PROVEN:
                 bgColor = "bg-green-600";
