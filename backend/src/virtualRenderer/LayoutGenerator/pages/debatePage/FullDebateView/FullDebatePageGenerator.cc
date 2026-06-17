@@ -1333,8 +1333,8 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // Concede button: only visible to the owner of the challenged claim.
-        if (userOwnsChallengedClaim) {
+        // Concede button: only visible to the owner of the challenged claim, and only while ongoing.
+        if (userOwnsChallengedClaim && challengeStatus == rendering_info::CHALLENGE_STATUS_ONGOING) {
             ui::Component concedeButton = ComponentGenerator::createButton(
                 "concedeWipButton_" + challengedClaimId,
                 "Concede",

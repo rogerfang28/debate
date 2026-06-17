@@ -179,6 +179,14 @@ void ChallengeHandler::ConcedeChallenge(const int& challenge_id, const int& user
         debateWrapper.updateClaimInDB(challengedClaim);
         Log::debug("[ConcedeChallengeHandler] Marked claim ID " + std::to_string(challengedClaimId) + " as DISPROVEN");
 
+        // Mark the challenge claim as DEFENDED (challenge succeeded)
+        debate::Claim updatedChallengeClaim = debateWrapper.getClaimById(challenge_id);
+        if (updatedChallengeClaim.id() != 0) {
+            updatedChallengeClaim.set_status(debate::ClaimStatus::DEFENDED);
+            debateWrapper.updateClaimInDB(updatedChallengeClaim);
+            Log::debug("[ConcedeChallengeHandler] Marked challenge claim ID " + std::to_string(challenge_id) + " as DEFENDED");
+        }
+
         // Propagate upward: mark all ancestors as CHALLENGED since a disproven child
         // invalidates the parent's proof chain
         debate::Claim ancestor = debateWrapper.findClaimParent(challengedClaimId);

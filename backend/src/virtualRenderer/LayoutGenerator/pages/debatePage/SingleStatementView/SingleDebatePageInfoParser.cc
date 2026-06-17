@@ -246,13 +246,27 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 			auto challengeClaimIt = collectionProto.claims_by_id().find(challengeClaimId);
 			if (challengeClaimIt != collectionProto.claims_by_id().end()) {
 				const debate::Claim& challengeClaim = challengeClaimIt->second;
-				
+
+				// Derive challenge status from the challenge claim's own status
+				rendering_info::ChallengeStatus cStatus = rendering_info::CHALLENGE_STATUS_ONGOING;
+				switch (challengeClaim.status()) {
+					case debate::ClaimStatus::DEFENDED:
+						cStatus = rendering_info::CHALLENGE_STATUS_CONCEDED;
+						break;
+					case debate::ClaimStatus::DISPROVEN:
+						cStatus = rendering_info::CHALLENGE_STATUS_PROVEN;
+						break;
+					default:
+						cStatus = rendering_info::CHALLENGE_STATUS_ONGOING;
+						break;
+				}
+
 				rendering_info::ChallengeRenderInfo* outChallenge = info.add_current_challenges();
 				outChallenge->set_id(challengeClaimId);
 				outChallenge->set_sentence(challengeClaim.sentence());
 				outChallenge->set_creator_id(challengeClaim.creator_id());
-				outChallenge->set_status(rendering_info::CHALLENGE_STATUS_ONGOING);
-				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
+				outChallenge->set_status(cStatus);
+				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()) + ", status=" + std::to_string(cStatus));
 			} else {
 				Log::warn("[DebatePageInfoParser] Challenge claim id=" + std::to_string(challengeClaimId) + " NOT FOUND in collection!");
 			}
