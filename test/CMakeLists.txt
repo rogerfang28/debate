@@ -55,19 +55,24 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
 )
 
-# --- Add handler include path ---
+# --- Add handler include paths ---
 include_directories(
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler
     ${REPO_ROOT}/backend/src/debateModerator
 )
 
 # --- Test sources ---
 set(TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
 )
 
 # --- Shared link libraries ---
