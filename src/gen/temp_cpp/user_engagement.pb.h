@@ -329,7 +329,7 @@ class LinkInfo final : public ::google::protobuf::Message
     kConnectToFieldNumber = 3,
     kCreatorIdFieldNumber = 5,
   };
-  // string connection = 4 [json_name = "connection"];
+  // string connection = 4;
   void clear_connection() ;
   const std::string& connection() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -345,7 +345,7 @@ class LinkInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
-  // int32 id = 1 [json_name = "id"];
+  // int32 id = 1;
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -355,7 +355,7 @@ class LinkInfo final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 connect_from = 2 [json_name = "connectFrom"];
+  // int32 connect_from = 2;
   void clear_connect_from() ;
   ::int32_t connect_from() const;
   void set_connect_from(::int32_t value);
@@ -365,7 +365,7 @@ class LinkInfo final : public ::google::protobuf::Message
   void _internal_set_connect_from(::int32_t value);
 
   public:
-  // int32 connect_to = 3 [json_name = "connectTo"];
+  // int32 connect_to = 3;
   void clear_connect_to() ;
   ::int32_t connect_to() const;
   void set_connect_to(::int32_t value);
@@ -375,7 +375,7 @@ class LinkInfo final : public ::google::protobuf::Message
   void _internal_set_connect_to(::int32_t value);
 
   public:
-  // int32 creator_id = 5 [json_name = "creatorId"];
+  // int32 creator_id = 5;
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -594,7 +594,7 @@ class DebatingInfo_CurrentDebateAction final : public ::google::protobuf::Messag
   enum : int {
     kActionTypeFieldNumber = 1,
   };
-  // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+  // .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1;
   void clear_action_type() ;
   ::user_engagement::DebatingInfo_CurrentDebateAction_ActionType action_type() const;
   void set_action_type(::user_engagement::DebatingInfo_CurrentDebateAction_ActionType value);
@@ -788,7 +788,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
     kConnectingFieldNumber = 4,
     kOpenedConnectModalFieldNumber = 5,
   };
-  // string connection = 3 [json_name = "connection"];
+  // string connection = 3;
   void clear_connection() ;
   const std::string& connection() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -804,7 +804,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_connection();
 
   public:
-  // int32 from_claim_id = 1 [json_name = "fromClaimId"];
+  // int32 from_claim_id = 1;
   void clear_from_claim_id() ;
   ::int32_t from_claim_id() const;
   void set_from_claim_id(::int32_t value);
@@ -814,7 +814,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
   void _internal_set_from_claim_id(::int32_t value);
 
   public:
-  // int32 to_claim_id = 2 [json_name = "toClaimId"];
+  // int32 to_claim_id = 2;
   void clear_to_claim_id() ;
   ::int32_t to_claim_id() const;
   void set_to_claim_id(::int32_t value);
@@ -824,7 +824,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
   void _internal_set_to_claim_id(::int32_t value);
 
   public:
-  // bool connecting = 4 [json_name = "connecting"];
+  // bool connecting = 4;
   void clear_connecting() ;
   bool connecting() const;
   void set_connecting(bool value);
@@ -834,7 +834,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
   void _internal_set_connecting(bool value);
 
   public:
-  // bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+  // bool opened_connect_modal = 5;
   void clear_opened_connect_modal() ;
   bool opened_connect_modal() const;
   void set_opened_connect_modal(bool value);
@@ -1031,7 +1031,7 @@ class DebatingInfo_ChallengingInfo final : public ::google::protobuf::Message
     kChallengeSentenceFieldNumber = 3,
     kOpenedChallengeModalFieldNumber = 4,
   };
-  // repeated int32 claim_ids = 1 [json_name = "claimIds"];
+  // repeated int32 claim_ids = 1;
   int claim_ids_size() const;
   private:
   int _internal_claim_ids_size() const;
@@ -1049,7 +1049,7 @@ class DebatingInfo_ChallengingInfo final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_claim_ids();
 
   public:
-  // repeated int32 link_ids = 2 [json_name = "linkIds"];
+  // repeated int32 link_ids = 2;
   int link_ids_size() const;
   private:
   int _internal_link_ids_size() const;
@@ -1067,7 +1067,7 @@ class DebatingInfo_ChallengingInfo final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_link_ids();
 
   public:
-  // string challenge_sentence = 3 [json_name = "challengeSentence"];
+  // string challenge_sentence = 3;
   void clear_challenge_sentence() ;
   const std::string& challenge_sentence() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1083,7 +1083,7 @@ class DebatingInfo_ChallengingInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_challenge_sentence();
 
   public:
-  // bool opened_challenge_modal = 4 [json_name = "openedChallengeModal"];
+  // bool opened_challenge_modal = 4;
   void clear_opened_challenge_modal() ;
   bool opened_challenge_modal() const;
   void set_opened_challenge_modal(bool value);
@@ -1282,7 +1282,7 @@ class DebateTopic final : public ::google::protobuf::Message
     kCreatorIdFieldNumber = 3,
     kIsChallengeFieldNumber = 4,
   };
-  // string topic = 2 [json_name = "topic"];
+  // string topic = 2;
   void clear_topic() ;
   const std::string& topic() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1298,7 +1298,7 @@ class DebateTopic final : public ::google::protobuf::Message
   std::string* _internal_mutable_topic();
 
   public:
-  // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+  // string claim_its_challenging = 5;
   void clear_claim_its_challenging() ;
   const std::string& claim_its_challenging() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1314,7 +1314,7 @@ class DebateTopic final : public ::google::protobuf::Message
   std::string* _internal_mutable_claim_its_challenging();
 
   public:
-  // int32 id = 1 [json_name = "id"];
+  // int32 id = 1;
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1324,7 +1324,7 @@ class DebateTopic final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 creator_id = 3 [json_name = "creatorId"];
+  // int32 creator_id = 3;
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1334,7 +1334,7 @@ class DebateTopic final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // bool is_challenge = 4 [json_name = "isChallenge"];
+  // bool is_challenge = 4;
   void clear_is_challenge() ;
   bool is_challenge() const;
   void set_is_challenge(bool value);
@@ -1531,7 +1531,7 @@ class ClaimInfo final : public ::google::protobuf::Message
     kCreatorIdFieldNumber = 3,
     kStatusFieldNumber = 4,
   };
-  // string sentence = 2 [json_name = "sentence"];
+  // string sentence = 2;
   void clear_sentence() ;
   const std::string& sentence() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1547,7 +1547,7 @@ class ClaimInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_sentence();
 
   public:
-  // int32 id = 1 [json_name = "id"];
+  // int32 id = 1;
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1557,7 +1557,7 @@ class ClaimInfo final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 creator_id = 3 [json_name = "creatorId"];
+  // int32 creator_id = 3;
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1567,7 +1567,7 @@ class ClaimInfo final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // .debate.ClaimStatus status = 4 [json_name = "status"];
+  // .debate.ClaimStatus status = 4;
   void clear_status() ;
   ::debate::ClaimStatus status() const;
   void set_status(::debate::ClaimStatus value);
@@ -1761,9 +1761,8 @@ class ChallengeInfo final : public ::google::protobuf::Message
     kSentenceFieldNumber = 2,
     kIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
-    kStatusFieldNumber = 4,
   };
-  // string sentence = 2 [json_name = "sentence"];
+  // string sentence = 2;
   void clear_sentence() ;
   const std::string& sentence() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1779,7 +1778,7 @@ class ChallengeInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_sentence();
 
   public:
-  // int32 id = 1 [json_name = "id"];
+  // int32 id = 1;
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1789,7 +1788,7 @@ class ChallengeInfo final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 creator_id = 3 [json_name = "creatorId"];
+  // int32 creator_id = 3;
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1799,22 +1798,12 @@ class ChallengeInfo final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // .debate.ChallengeStatus status = 4 [json_name = "status"];
-  void clear_status() ;
-  ::debate::ChallengeStatus status() const;
-  void set_status(::debate::ChallengeStatus value);
-
-  private:
-  ::debate::ChallengeStatus _internal_status() const;
-  void _internal_set_status(::debate::ChallengeStatus value);
-
-  public:
   // @@protoc_insertion_point(class_scope:user_engagement.ChallengeInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      2, 3, 0,
       46, 2>
       _table_;
 
@@ -1835,7 +1824,6 @@ class ChallengeInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::int32_t id_;
     ::int32_t creator_id_;
-    int status_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1995,7 +1983,7 @@ class DebatingInfo_ModificationInfo final : public ::google::protobuf::Message
     kDeletedClaimIdsFieldNumber = 3,
     kDeletedLinkIdsFieldNumber = 4,
   };
-  // repeated .user_engagement.ClaimInfo new_claims = 1 [json_name = "newClaims"];
+  // repeated .user_engagement.ClaimInfo new_claims = 1;
   int new_claims_size() const;
   private:
   int _internal_new_claims_size() const;
@@ -2012,7 +2000,7 @@ class DebatingInfo_ModificationInfo final : public ::google::protobuf::Message
   const ::user_engagement::ClaimInfo& new_claims(int index) const;
   ::user_engagement::ClaimInfo* add_new_claims();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ClaimInfo>& new_claims() const;
-  // repeated .user_engagement.LinkInfo new_links = 2 [json_name = "newLinks"];
+  // repeated .user_engagement.LinkInfo new_links = 2;
   int new_links_size() const;
   private:
   int _internal_new_links_size() const;
@@ -2029,7 +2017,7 @@ class DebatingInfo_ModificationInfo final : public ::google::protobuf::Message
   const ::user_engagement::LinkInfo& new_links(int index) const;
   ::user_engagement::LinkInfo* add_new_links();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>& new_links() const;
-  // repeated int32 deleted_claim_ids = 3 [json_name = "deletedClaimIds"];
+  // repeated int32 deleted_claim_ids = 3;
   int deleted_claim_ids_size() const;
   private:
   int _internal_deleted_claim_ids_size() const;
@@ -2047,7 +2035,7 @@ class DebatingInfo_ModificationInfo final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_deleted_claim_ids();
 
   public:
-  // repeated int32 deleted_link_ids = 4 [json_name = "deletedLinkIds"];
+  // repeated int32 deleted_link_ids = 4;
   int deleted_link_ids_size() const;
   private:
   int _internal_deleted_link_ids_size() const;
@@ -2273,7 +2261,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     kConnectingInfoFieldNumber = 12,
     kChallengingInfoFieldNumber = 15,
   };
-  // repeated .user_engagement.ClaimInfo children_claims = 6 [json_name = "childrenClaims"];
+  // repeated .user_engagement.ClaimInfo children_claims = 6;
   int children_claims_size() const;
   private:
   int _internal_children_claims_size() const;
@@ -2290,7 +2278,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::ClaimInfo& children_claims(int index) const;
   ::user_engagement::ClaimInfo* add_children_claims();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ClaimInfo>& children_claims() const;
-  // repeated .user_engagement.LinkInfo links = 7 [json_name = "links"];
+  // repeated .user_engagement.LinkInfo links = 7;
   int links_size() const;
   private:
   int _internal_links_size() const;
@@ -2307,7 +2295,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::LinkInfo& links(int index) const;
   ::user_engagement::LinkInfo* add_links();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::LinkInfo>& links() const;
-  // repeated .user_engagement.ChallengeInfo current_challenges = 8 [json_name = "currentChallenges"];
+  // repeated .user_engagement.ChallengeInfo current_challenges = 8;
   int current_challenges_size() const;
   private:
   int _internal_current_challenges_size() const;
@@ -2324,7 +2312,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::ChallengeInfo& current_challenges(int index) const;
   ::user_engagement::ChallengeInfo* add_current_challenges();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ChallengeInfo>& current_challenges() const;
-  // string current_claim_description = 3 [json_name = "currentClaimDescription"];
+  // string current_claim_description = 3;
   void clear_current_claim_description() ;
   const std::string& current_claim_description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2340,7 +2328,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   std::string* _internal_mutable_current_claim_description();
 
   public:
-  // .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
+  // .user_engagement.ClaimInfo current_claim = 2;
   bool has_current_claim() const;
   void clear_current_claim() ;
   const ::user_engagement::ClaimInfo& current_claim() const;
@@ -2355,7 +2343,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   ::user_engagement::ClaimInfo* _internal_mutable_current_claim();
 
   public:
-  // .user_engagement.ClaimInfo parent_claim = 4 [json_name = "parentClaim"];
+  // .user_engagement.ClaimInfo parent_claim = 4;
   bool has_parent_claim() const;
   void clear_parent_claim() ;
   const ::user_engagement::ClaimInfo& parent_claim() const;
@@ -2370,7 +2358,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   ::user_engagement::ClaimInfo* _internal_mutable_parent_claim();
 
   public:
-  // .user_engagement.ClaimInfo root_claim = 5 [json_name = "rootClaim"];
+  // .user_engagement.ClaimInfo root_claim = 5;
   bool has_root_claim() const;
   void clear_root_claim() ;
   const ::user_engagement::ClaimInfo& root_claim() const;
@@ -2385,7 +2373,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   ::user_engagement::ClaimInfo* _internal_mutable_root_claim();
 
   public:
-  // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
+  // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11;
   bool has_current_debate_action() const;
   void clear_current_debate_action() ;
   const ::user_engagement::DebatingInfo_CurrentDebateAction& current_debate_action() const;
@@ -2400,7 +2388,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   ::user_engagement::DebatingInfo_CurrentDebateAction* _internal_mutable_current_debate_action();
 
   public:
-  // int32 debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1;
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -2410,7 +2398,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // bool is_challenge = 16 [json_name = "isChallenge"];
+  // bool is_challenge = 16;
   void clear_is_challenge() ;
   bool is_challenge() const;
   void set_is_challenge(bool value);
@@ -2420,7 +2408,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_is_challenge(bool value);
 
   public:
-  // bool modifying_current_claim = 9 [json_name = "modifyingCurrentClaim"];
+  // bool modifying_current_claim = 9;
   void clear_modifying_current_claim() ;
   bool modifying_current_claim() const;
   void set_modifying_current_claim(bool value);
@@ -2430,7 +2418,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_modifying_current_claim(bool value);
 
   public:
-  // int32 challenged_user_id = 17 [json_name = "challengedUserId"];
+  // int32 challenged_user_id = 17;
   void clear_challenged_user_id() ;
   ::int32_t challenged_user_id() const;
   void set_challenged_user_id(::int32_t value);
@@ -2440,7 +2428,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_challenged_user_id(::int32_t value);
 
   public:
-  // int32 challenger_user_id = 18 [json_name = "challengerUserId"];
+  // int32 challenger_user_id = 18;
   void clear_challenger_user_id() ;
   ::int32_t challenger_user_id() const;
   void set_challenger_user_id(::int32_t value);
@@ -2450,7 +2438,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_challenger_user_id(::int32_t value);
 
   public:
-  // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];
+  // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12;
   bool has_connecting_info() const;
   private:
   bool _internal_has_connecting_info() const;
@@ -2469,7 +2457,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   ::user_engagement::DebatingInfo_ConnectingInfo* _internal_mutable_connecting_info();
 
   public:
-  // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
+  // .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15;
   bool has_challenging_info() const;
   private:
   bool _internal_has_challenging_info() const;
@@ -2694,7 +2682,7 @@ class DebateList final : public ::google::protobuf::Message
   enum : int {
     kTopicsFieldNumber = 1,
   };
-  // repeated .user_engagement.DebateTopic topics = 1 [json_name = "topics"];
+  // repeated .user_engagement.DebateTopic topics = 1;
   int topics_size() const;
   private:
   int _internal_topics_size() const;
@@ -2891,7 +2879,7 @@ class HomeInfo final : public ::google::protobuf::Message
   enum : int {
     kAvailableDebatesFieldNumber = 1,
   };
-  // .user_engagement.DebateList available_debates = 1 [json_name = "availableDebates"];
+  // .user_engagement.DebateList available_debates = 1;
   bool has_available_debates() const;
   void clear_available_debates() ;
   const ::user_engagement::DebateList& available_debates() const;
@@ -3094,7 +3082,7 @@ class UserEngagement final : public ::google::protobuf::Message
     kHomeInfoFieldNumber = 2,
     kDebatingInfoFieldNumber = 3,
   };
-  // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+  // .user_engagement.EngagementAction current_action = 1;
   void clear_current_action() ;
   ::user_engagement::EngagementAction current_action() const;
   void set_current_action(::user_engagement::EngagementAction value);
@@ -3104,7 +3092,7 @@ class UserEngagement final : public ::google::protobuf::Message
   void _internal_set_current_action(::user_engagement::EngagementAction value);
 
   public:
-  // .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
+  // .user_engagement.HomeInfo home_info = 2;
   bool has_home_info() const;
   private:
   bool _internal_has_home_info() const;
@@ -3123,7 +3111,7 @@ class UserEngagement final : public ::google::protobuf::Message
   ::user_engagement::HomeInfo* _internal_mutable_home_info();
 
   public:
-  // .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
+  // .user_engagement.DebatingInfo debating_info = 3;
   bool has_debating_info() const;
   private:
   bool _internal_has_debating_info() const;
@@ -3202,7 +3190,7 @@ class UserEngagement final : public ::google::protobuf::Message
 
 // UserEngagement
 
-// .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
+// .user_engagement.EngagementAction current_action = 1;
 inline void UserEngagement::clear_current_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_action_ = 0;
@@ -3224,7 +3212,7 @@ inline void UserEngagement::_internal_set_current_action(::user_engagement::Enga
   _impl_.current_action_ = value;
 }
 
-// .user_engagement.HomeInfo home_info = 2 [json_name = "homeInfo"];
+// .user_engagement.HomeInfo home_info = 2;
 inline bool UserEngagement::has_home_info() const {
   return action_info_case() == kHomeInfo;
 }
@@ -3303,7 +3291,7 @@ inline ::user_engagement::HomeInfo* UserEngagement::mutable_home_info() ABSL_ATT
   return _msg;
 }
 
-// .user_engagement.DebatingInfo debating_info = 3 [json_name = "debatingInfo"];
+// .user_engagement.DebatingInfo debating_info = 3;
 inline bool UserEngagement::has_debating_info() const {
   return action_info_case() == kDebatingInfo;
 }
@@ -3395,7 +3383,7 @@ inline UserEngagement::ActionInfoCase UserEngagement::action_info_case() const {
 
 // HomeInfo
 
-// .user_engagement.DebateList available_debates = 1 [json_name = "availableDebates"];
+// .user_engagement.DebateList available_debates = 1;
 inline bool HomeInfo::has_available_debates() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.available_debates_ != nullptr);
@@ -3495,7 +3483,7 @@ inline void HomeInfo::set_allocated_available_debates(::user_engagement::DebateL
 
 // DebateTopic
 
-// int32 id = 1 [json_name = "id"];
+// int32 id = 1;
 inline void DebateTopic::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -3517,7 +3505,7 @@ inline void DebateTopic::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string topic = 2 [json_name = "topic"];
+// string topic = 2;
 inline void DebateTopic::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
@@ -3565,7 +3553,7 @@ inline void DebateTopic::set_allocated_topic(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebateTopic.topic)
 }
 
-// int32 creator_id = 3 [json_name = "creatorId"];
+// int32 creator_id = 3;
 inline void DebateTopic::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -3587,7 +3575,7 @@ inline void DebateTopic::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// bool is_challenge = 4 [json_name = "isChallenge"];
+// bool is_challenge = 4;
 inline void DebateTopic::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
@@ -3609,7 +3597,7 @@ inline void DebateTopic::_internal_set_is_challenge(bool value) {
   _impl_.is_challenge_ = value;
 }
 
-// string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+// string claim_its_challenging = 5;
 inline void DebateTopic::clear_claim_its_challenging() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_its_challenging_.ClearToEmpty();
@@ -3661,7 +3649,7 @@ inline void DebateTopic::set_allocated_claim_its_challenging(std::string* value)
 
 // DebateList
 
-// repeated .user_engagement.DebateTopic topics = 1 [json_name = "topics"];
+// repeated .user_engagement.DebateTopic topics = 1;
 inline int DebateList::_internal_topics_size() const {
   return _internal_topics().size();
 }
@@ -3714,7 +3702,7 @@ DebateList::_internal_mutable_topics() {
 
 // DebatingInfo_ModificationInfo
 
-// repeated .user_engagement.ClaimInfo new_claims = 1 [json_name = "newClaims"];
+// repeated .user_engagement.ClaimInfo new_claims = 1;
 inline int DebatingInfo_ModificationInfo::_internal_new_claims_size() const {
   return _internal_new_claims().size();
 }
@@ -3763,7 +3751,7 @@ DebatingInfo_ModificationInfo::_internal_mutable_new_claims() {
   return &_impl_.new_claims_;
 }
 
-// repeated .user_engagement.LinkInfo new_links = 2 [json_name = "newLinks"];
+// repeated .user_engagement.LinkInfo new_links = 2;
 inline int DebatingInfo_ModificationInfo::_internal_new_links_size() const {
   return _internal_new_links().size();
 }
@@ -3812,7 +3800,7 @@ DebatingInfo_ModificationInfo::_internal_mutable_new_links() {
   return &_impl_.new_links_;
 }
 
-// repeated int32 deleted_claim_ids = 3 [json_name = "deletedClaimIds"];
+// repeated int32 deleted_claim_ids = 3;
 inline int DebatingInfo_ModificationInfo::_internal_deleted_claim_ids_size() const {
   return _internal_deleted_claim_ids().size();
 }
@@ -3857,7 +3845,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* DebatingInfo_ModificationIn
   return &_impl_.deleted_claim_ids_;
 }
 
-// repeated int32 deleted_link_ids = 4 [json_name = "deletedLinkIds"];
+// repeated int32 deleted_link_ids = 4;
 inline int DebatingInfo_ModificationInfo::_internal_deleted_link_ids_size() const {
   return _internal_deleted_link_ids().size();
 }
@@ -3906,7 +3894,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* DebatingInfo_ModificationIn
 
 // DebatingInfo_CurrentDebateAction
 
-// .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1 [json_name = "actionType"];
+// .user_engagement.DebatingInfo.CurrentDebateAction.ActionType action_type = 1;
 inline void DebatingInfo_CurrentDebateAction::clear_action_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.action_type_ = 0;
@@ -3932,7 +3920,7 @@ inline void DebatingInfo_CurrentDebateAction::_internal_set_action_type(::user_e
 
 // DebatingInfo_ConnectingInfo
 
-// int32 from_claim_id = 1 [json_name = "fromClaimId"];
+// int32 from_claim_id = 1;
 inline void DebatingInfo_ConnectingInfo::clear_from_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.from_claim_id_ = 0;
@@ -3954,7 +3942,7 @@ inline void DebatingInfo_ConnectingInfo::_internal_set_from_claim_id(::int32_t v
   _impl_.from_claim_id_ = value;
 }
 
-// int32 to_claim_id = 2 [json_name = "toClaimId"];
+// int32 to_claim_id = 2;
 inline void DebatingInfo_ConnectingInfo::clear_to_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.to_claim_id_ = 0;
@@ -3976,7 +3964,7 @@ inline void DebatingInfo_ConnectingInfo::_internal_set_to_claim_id(::int32_t val
   _impl_.to_claim_id_ = value;
 }
 
-// string connection = 3 [json_name = "connection"];
+// string connection = 3;
 inline void DebatingInfo_ConnectingInfo::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
@@ -4024,7 +4012,7 @@ inline void DebatingInfo_ConnectingInfo::set_allocated_connection(std::string* v
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.ConnectingInfo.connection)
 }
 
-// bool connecting = 4 [json_name = "connecting"];
+// bool connecting = 4;
 inline void DebatingInfo_ConnectingInfo::clear_connecting() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connecting_ = false;
@@ -4046,7 +4034,7 @@ inline void DebatingInfo_ConnectingInfo::_internal_set_connecting(bool value) {
   _impl_.connecting_ = value;
 }
 
-// bool opened_connect_modal = 5 [json_name = "openedConnectModal"];
+// bool opened_connect_modal = 5;
 inline void DebatingInfo_ConnectingInfo::clear_opened_connect_modal() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.opened_connect_modal_ = false;
@@ -4072,7 +4060,7 @@ inline void DebatingInfo_ConnectingInfo::_internal_set_opened_connect_modal(bool
 
 // DebatingInfo_ChallengingInfo
 
-// repeated int32 claim_ids = 1 [json_name = "claimIds"];
+// repeated int32 claim_ids = 1;
 inline int DebatingInfo_ChallengingInfo::_internal_claim_ids_size() const {
   return _internal_claim_ids().size();
 }
@@ -4117,7 +4105,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* DebatingInfo_ChallengingInf
   return &_impl_.claim_ids_;
 }
 
-// repeated int32 link_ids = 2 [json_name = "linkIds"];
+// repeated int32 link_ids = 2;
 inline int DebatingInfo_ChallengingInfo::_internal_link_ids_size() const {
   return _internal_link_ids().size();
 }
@@ -4162,7 +4150,7 @@ inline ::google::protobuf::RepeatedField<::int32_t>* DebatingInfo_ChallengingInf
   return &_impl_.link_ids_;
 }
 
-// string challenge_sentence = 3 [json_name = "challengeSentence"];
+// string challenge_sentence = 3;
 inline void DebatingInfo_ChallengingInfo::clear_challenge_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenge_sentence_.ClearToEmpty();
@@ -4210,7 +4198,7 @@ inline void DebatingInfo_ChallengingInfo::set_allocated_challenge_sentence(std::
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.ChallengingInfo.challenge_sentence)
 }
 
-// bool opened_challenge_modal = 4 [json_name = "openedChallengeModal"];
+// bool opened_challenge_modal = 4;
 inline void DebatingInfo_ChallengingInfo::clear_opened_challenge_modal() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.opened_challenge_modal_ = false;
@@ -4236,7 +4224,7 @@ inline void DebatingInfo_ChallengingInfo::_internal_set_opened_challenge_modal(b
 
 // DebatingInfo
 
-// int32 debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1;
 inline void DebatingInfo::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -4258,7 +4246,7 @@ inline void DebatingInfo::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// bool is_challenge = 16 [json_name = "isChallenge"];
+// bool is_challenge = 16;
 inline void DebatingInfo::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
@@ -4280,7 +4268,7 @@ inline void DebatingInfo::_internal_set_is_challenge(bool value) {
   _impl_.is_challenge_ = value;
 }
 
-// bool modifying_current_claim = 9 [json_name = "modifyingCurrentClaim"];
+// bool modifying_current_claim = 9;
 inline void DebatingInfo::clear_modifying_current_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.modifying_current_claim_ = false;
@@ -4302,7 +4290,7 @@ inline void DebatingInfo::_internal_set_modifying_current_claim(bool value) {
   _impl_.modifying_current_claim_ = value;
 }
 
-// int32 challenged_user_id = 17 [json_name = "challengedUserId"];
+// int32 challenged_user_id = 17;
 inline void DebatingInfo::clear_challenged_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenged_user_id_ = 0;
@@ -4324,7 +4312,7 @@ inline void DebatingInfo::_internal_set_challenged_user_id(::int32_t value) {
   _impl_.challenged_user_id_ = value;
 }
 
-// int32 challenger_user_id = 18 [json_name = "challengerUserId"];
+// int32 challenger_user_id = 18;
 inline void DebatingInfo::clear_challenger_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenger_user_id_ = 0;
@@ -4346,7 +4334,7 @@ inline void DebatingInfo::_internal_set_challenger_user_id(::int32_t value) {
   _impl_.challenger_user_id_ = value;
 }
 
-// .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
+// .user_engagement.ClaimInfo current_claim = 2;
 inline bool DebatingInfo::has_current_claim() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.current_claim_ != nullptr);
@@ -4442,7 +4430,7 @@ inline void DebatingInfo::set_allocated_current_claim(::user_engagement::ClaimIn
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim)
 }
 
-// string current_claim_description = 3 [json_name = "currentClaimDescription"];
+// string current_claim_description = 3;
 inline void DebatingInfo::clear_current_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_claim_description_.ClearToEmpty();
@@ -4490,7 +4478,7 @@ inline void DebatingInfo::set_allocated_current_claim_description(std::string* v
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_claim_description)
 }
 
-// .user_engagement.ClaimInfo parent_claim = 4 [json_name = "parentClaim"];
+// .user_engagement.ClaimInfo parent_claim = 4;
 inline bool DebatingInfo::has_parent_claim() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.parent_claim_ != nullptr);
@@ -4586,7 +4574,7 @@ inline void DebatingInfo::set_allocated_parent_claim(::user_engagement::ClaimInf
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.parent_claim)
 }
 
-// .user_engagement.ClaimInfo root_claim = 5 [json_name = "rootClaim"];
+// .user_engagement.ClaimInfo root_claim = 5;
 inline bool DebatingInfo::has_root_claim() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.root_claim_ != nullptr);
@@ -4682,7 +4670,7 @@ inline void DebatingInfo::set_allocated_root_claim(::user_engagement::ClaimInfo*
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.root_claim)
 }
 
-// repeated .user_engagement.ClaimInfo children_claims = 6 [json_name = "childrenClaims"];
+// repeated .user_engagement.ClaimInfo children_claims = 6;
 inline int DebatingInfo::_internal_children_claims_size() const {
   return _internal_children_claims().size();
 }
@@ -4731,7 +4719,7 @@ DebatingInfo::_internal_mutable_children_claims() {
   return &_impl_.children_claims_;
 }
 
-// repeated .user_engagement.LinkInfo links = 7 [json_name = "links"];
+// repeated .user_engagement.LinkInfo links = 7;
 inline int DebatingInfo::_internal_links_size() const {
   return _internal_links().size();
 }
@@ -4780,7 +4768,7 @@ DebatingInfo::_internal_mutable_links() {
   return &_impl_.links_;
 }
 
-// repeated .user_engagement.ChallengeInfo current_challenges = 8 [json_name = "currentChallenges"];
+// repeated .user_engagement.ChallengeInfo current_challenges = 8;
 inline int DebatingInfo::_internal_current_challenges_size() const {
   return _internal_current_challenges().size();
 }
@@ -4829,7 +4817,7 @@ DebatingInfo::_internal_mutable_current_challenges() {
   return &_impl_.current_challenges_;
 }
 
-// .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
+// .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11;
 inline bool DebatingInfo::has_current_debate_action() const {
   bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.current_debate_action_ != nullptr);
@@ -4925,7 +4913,7 @@ inline void DebatingInfo::set_allocated_current_debate_action(::user_engagement:
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.current_debate_action)
 }
 
-// .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];
+// .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12;
 inline bool DebatingInfo::has_connecting_info() const {
   return additional_info_case() == kConnectingInfo;
 }
@@ -5004,7 +4992,7 @@ inline ::user_engagement::DebatingInfo_ConnectingInfo* DebatingInfo::mutable_con
   return _msg;
 }
 
-// .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15 [json_name = "challengingInfo"];
+// .user_engagement.DebatingInfo.ChallengingInfo challenging_info = 15;
 inline bool DebatingInfo::has_challenging_info() const {
   return additional_info_case() == kChallengingInfo;
 }
@@ -5096,7 +5084,7 @@ inline DebatingInfo::AdditionalInfoCase DebatingInfo::additional_info_case() con
 
 // ClaimInfo
 
-// int32 id = 1 [json_name = "id"];
+// int32 id = 1;
 inline void ClaimInfo::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -5118,7 +5106,7 @@ inline void ClaimInfo::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string sentence = 2 [json_name = "sentence"];
+// string sentence = 2;
 inline void ClaimInfo::clear_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sentence_.ClearToEmpty();
@@ -5166,7 +5154,7 @@ inline void ClaimInfo::set_allocated_sentence(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user_engagement.ClaimInfo.sentence)
 }
 
-// int32 creator_id = 3 [json_name = "creatorId"];
+// int32 creator_id = 3;
 inline void ClaimInfo::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -5188,7 +5176,7 @@ inline void ClaimInfo::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// .debate.ClaimStatus status = 4 [json_name = "status"];
+// .debate.ClaimStatus status = 4;
 inline void ClaimInfo::clear_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_ = 0;
@@ -5214,7 +5202,7 @@ inline void ClaimInfo::_internal_set_status(::debate::ClaimStatus value) {
 
 // LinkInfo
 
-// int32 id = 1 [json_name = "id"];
+// int32 id = 1;
 inline void LinkInfo::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -5236,7 +5224,7 @@ inline void LinkInfo::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// int32 connect_from = 2 [json_name = "connectFrom"];
+// int32 connect_from = 2;
 inline void LinkInfo::clear_connect_from() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = 0;
@@ -5258,7 +5246,7 @@ inline void LinkInfo::_internal_set_connect_from(::int32_t value) {
   _impl_.connect_from_ = value;
 }
 
-// int32 connect_to = 3 [json_name = "connectTo"];
+// int32 connect_to = 3;
 inline void LinkInfo::clear_connect_to() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = 0;
@@ -5280,7 +5268,7 @@ inline void LinkInfo::_internal_set_connect_to(::int32_t value) {
   _impl_.connect_to_ = value;
 }
 
-// string connection = 4 [json_name = "connection"];
+// string connection = 4;
 inline void LinkInfo::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
@@ -5328,7 +5316,7 @@ inline void LinkInfo::set_allocated_connection(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user_engagement.LinkInfo.connection)
 }
 
-// int32 creator_id = 5 [json_name = "creatorId"];
+// int32 creator_id = 5;
 inline void LinkInfo::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -5354,7 +5342,7 @@ inline void LinkInfo::_internal_set_creator_id(::int32_t value) {
 
 // ChallengeInfo
 
-// int32 id = 1 [json_name = "id"];
+// int32 id = 1;
 inline void ChallengeInfo::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -5376,7 +5364,7 @@ inline void ChallengeInfo::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string sentence = 2 [json_name = "sentence"];
+// string sentence = 2;
 inline void ChallengeInfo::clear_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sentence_.ClearToEmpty();
@@ -5424,7 +5412,7 @@ inline void ChallengeInfo::set_allocated_sentence(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user_engagement.ChallengeInfo.sentence)
 }
 
-// int32 creator_id = 3 [json_name = "creatorId"];
+// int32 creator_id = 3;
 inline void ChallengeInfo::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -5444,28 +5432,6 @@ inline ::int32_t ChallengeInfo::_internal_creator_id() const {
 inline void ChallengeInfo::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
-}
-
-// .debate.ChallengeStatus status = 4 [json_name = "status"];
-inline void ChallengeInfo::clear_status() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.status_ = 0;
-}
-inline ::debate::ChallengeStatus ChallengeInfo::status() const {
-  // @@protoc_insertion_point(field_get:user_engagement.ChallengeInfo.status)
-  return _internal_status();
-}
-inline void ChallengeInfo::set_status(::debate::ChallengeStatus value) {
-  _internal_set_status(value);
-  // @@protoc_insertion_point(field_set:user_engagement.ChallengeInfo.status)
-}
-inline ::debate::ChallengeStatus ChallengeInfo::_internal_status() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return static_cast<::debate::ChallengeStatus>(_impl_.status_);
-}
-inline void ChallengeInfo::_internal_set_status(::debate::ChallengeStatus value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.status_ = value;
 }
 
 #ifdef __GNUC__

@@ -19,29 +19,14 @@ debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {
 
 debate::ClaimStatus MapClaimStatus(rendering_info::ClaimStatus status) {
     switch (status) {
-        case rendering_info::CLAIM_STATUS_NEUTRAL:
-            return debate::ClaimStatus::NEUTRAL;
-        case rendering_info::CLAIM_STATUS_CHALLENGED:
-            return debate::ClaimStatus::CHALLENGED;
-        case rendering_info::CLAIM_STATUS_DEFENDED:
-            return debate::ClaimStatus::DEFENDED;
+        case rendering_info::CLAIM_STATUS_UNDETERMINED:
+            return debate::ClaimStatus::UNDETERMINED;
+        case rendering_info::CLAIM_STATUS_UPHELD:
+            return debate::ClaimStatus::UPHELD;
         case rendering_info::CLAIM_STATUS_DISPROVEN:
             return debate::ClaimStatus::DISPROVEN;
         default:
-            return debate::ClaimStatus::NEUTRAL;
-    }
-}
-
-debate::ChallengeStatus MapChallengeStatus(rendering_info::ChallengeStatus status) {
-    switch (status) {
-        case rendering_info::CHALLENGE_STATUS_ONGOING:
-            return debate::ChallengeStatus::ONGOING;
-        case rendering_info::CHALLENGE_STATUS_CONCEDED:
-            return debate::ChallengeStatus::CONCEDED;
-        case rendering_info::CHALLENGE_STATUS_PROVEN:
-            return debate::ChallengeStatus::PROVEN;
-        default:
-            return debate::ChallengeStatus::ONGOING;
+            return debate::ClaimStatus::UNDETERMINED;
     }
 }
 
@@ -685,16 +670,13 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         // Determine border color based on status
         std::string borderColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_CHALLENGED:
-                borderColor = "border-2 border-orange-500";
-                break;
             case rendering_info::CLAIM_STATUS_DISPROVEN:
                 borderColor = "border-2 border-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_DEFENDED:
+            case rendering_info::CLAIM_STATUS_UPHELD:
                 borderColor = "border-2 border-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_NEUTRAL:
+            case rendering_info::CLAIM_STATUS_UNDETERMINED:
                 borderColor = "border-2 border-gray-600";
                 break;
             default:
@@ -706,20 +688,16 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         std::string statusText;
         std::string statusTextColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_CHALLENGED:
-                statusText = "Challenged";
-                statusTextColor = "text-orange-500";
-                break;
             case rendering_info::CLAIM_STATUS_DISPROVEN:
-                statusText = "Disproven";
+                statusText = "False";
                 statusTextColor = "text-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_DEFENDED:
-                statusText = "Defended";
+            case rendering_info::CLAIM_STATUS_UPHELD:
+                statusText = "True";
                 statusTextColor = "text-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_NEUTRAL:
-                statusText = "Neutral";
+            case rendering_info::CLAIM_STATUS_UNDETERMINED:
+                statusText = "Undetermined";
                 statusTextColor = "text-gray-400";
                 break;
             default:
@@ -1099,10 +1077,10 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
     // Extract data
     int currentUserId = user.user_id();
     
-    std::vector<std::tuple<std::string, std::string, int, rendering_info::ChallengeStatus>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
         const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.status()});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id()});
     }
 
     // Find challengesContainer
@@ -1142,45 +1120,15 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
-        rendering_info::ChallengeStatus challengeStatus = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
-        
-        // Determine colors based on status
-        std::string bgColor, borderColor, buttonBgColor, buttonHoverColor, statusText, statusTextColor;
-        switch (challengeStatus) {
-            case rendering_info::CHALLENGE_STATUS_ONGOING:
-                bgColor = "bg-orange-600";
-                borderColor = "border-2 border-orange-500";
-                buttonBgColor = "bg-orange-700";
-                buttonHoverColor = "hover:bg-orange-800";
-                statusText = "Ongoing";
-                statusTextColor = "text-orange-300";
-                break;
-            case rendering_info::CHALLENGE_STATUS_CONCEDED:
-                bgColor = "bg-gray-600";
-                borderColor = "border-2 border-gray-500";
-                buttonBgColor = "bg-gray-700";
-                buttonHoverColor = "hover:bg-gray-800";
-                statusText = "Conceded";
-                statusTextColor = "text-gray-300";
-                break;
-            case rendering_info::CHALLENGE_STATUS_PROVEN:
-                bgColor = "bg-green-600";
-                borderColor = "border-2 border-green-500";
-                buttonBgColor = "bg-green-700";
-                buttonHoverColor = "hover:bg-green-800";
-                statusText = "Proven";
-                statusTextColor = "text-green-300";
-                break;
-            default:
-                bgColor = "bg-purple-600";
-                borderColor = "border-2 border-purple-500";
-                buttonBgColor = "bg-purple-700";
-                buttonHoverColor = "hover:bg-purple-800";
-                statusText = "Unknown";
-                statusTextColor = "text-purple-300";
-                break;
-        }
+
+        // Challenges no longer have their own status — use default styling.
+        std::string bgColor = "bg-blue-600";
+        std::string borderColor = "border-2 border-blue-500";
+        std::string buttonBgColor = "bg-blue-700";
+        std::string buttonHoverColor = "hover:bg-blue-800";
+        std::string statusText = "Active";
+        std::string statusTextColor = "text-blue-300";
         
         ui::Component challengeNode = ComponentGenerator::createContainer(
             "challengeNode_" + challengedClaimId,

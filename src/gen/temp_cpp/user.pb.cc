@@ -94,14 +94,12 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\032\013scope.proto\032\020collection.proto\"\372\001\n\004Use"
-    "r\022\027\n\007user_id\030\001 \001(\005R\006userId\022\032\n\010username\030\002"
-    " \001(\tR\010username\022\?\n\nengagement\030\003 \001(\0132\037.use"
-    "r_engagement.UserEngagementR\nengagement\022"
-    "2\n\rcurrent_scope\030\004 \001(\0132\r.debate.ScopeR\014c"
-    "urrentScope\022H\n\017collection_spec\030\005 \001(\0132\037.d"
-    "ebate.CollectionSpecificationR\016collectio"
-    "nSpecb\006proto3"
+    "o\032\013scope.proto\032\020collection.proto\"\276\001\n\004Use"
+    "r\022\017\n\007user_id\030\001 \001(\005\022\020\n\010username\030\002 \001(\t\0223\n\n"
+    "engagement\030\003 \001(\0132\037.user_engagement.UserE"
+    "ngagement\022$\n\rcurrent_scope\030\004 \001(\0132\r.debat"
+    "e.Scope\0228\n\017collection_spec\030\005 \001(\0132\037.debat"
+    "e.CollectionSpecificationb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_user_2eproto_deps[3] =
     {
@@ -113,7 +111,7 @@ static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    333,
+    273,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -280,19 +278,19 @@ const ::_pbi::TcParseTable<3, 5, 3, 26, 2> User::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // int32 user_id = 1 [json_name = "userId"];
+    // int32 user_id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.user_id_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
-    // string username = 2 [json_name = "username"];
+    // string username = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
-    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+    // .user_engagement.UserEngagement engagement = 3;
     {::_pbi::TcParser::FastMtS1,
      {26, 0, 0, PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)}},
-    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    // .debate.Scope current_scope = 4;
     {::_pbi::TcParser::FastMtS1,
      {34, 1, 1, PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_)}},
-    // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+    // .debate.CollectionSpecification collection_spec = 5;
     {::_pbi::TcParser::FastMtS1,
      {42, 2, 2, PROTOBUF_FIELD_OFFSET(User, _impl_.collection_spec_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -300,19 +298,19 @@ const ::_pbi::TcParseTable<3, 5, 3, 26, 2> User::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // int32 user_id = 1 [json_name = "userId"];
+    // int32 user_id = 1;
     {PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-    // string username = 2 [json_name = "username"];
+    // string username = 2;
     {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+    // .user_engagement.UserEngagement engagement = 3;
     {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    // .debate.Scope current_scope = 4;
     {PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+    // .debate.CollectionSpecification collection_spec = 5;
     {PROTOBUF_FIELD_OFFSET(User, _impl_.collection_spec_), _Internal::kHasBitsOffset + 2, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -369,14 +367,14 @@ PROTOBUF_NOINLINE void User::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // int32 user_id = 1 [json_name = "userId"];
+          // int32 user_id = 1;
           if (this_._internal_user_id() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<1>(
                     stream, this_._internal_user_id(), target);
           }
 
-          // string username = 2 [json_name = "username"];
+          // string username = 2;
           if (!this_._internal_username().empty()) {
             const std::string& _s = this_._internal_username();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -385,21 +383,21 @@ PROTOBUF_NOINLINE void User::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+          // .user_engagement.UserEngagement engagement = 3;
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
                 stream);
           }
 
-          // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+          // .debate.Scope current_scope = 4;
           if (cached_has_bits & 0x00000002u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 4, *this_._impl_.current_scope_, this_._impl_.current_scope_->GetCachedSize(), target,
                 stream);
           }
 
-          // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+          // .debate.CollectionSpecification collection_spec = 5;
           if (cached_has_bits & 0x00000004u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 5, *this_._impl_.collection_spec_, this_._impl_.collection_spec_->GetCachedSize(), target,
@@ -431,7 +429,7 @@ PROTOBUF_NOINLINE void User::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string username = 2 [json_name = "username"];
+            // string username = 2;
             if (!this_._internal_username().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
@@ -439,24 +437,24 @@ PROTOBUF_NOINLINE void User::Clear() {
           }
           cached_has_bits = this_._impl_._has_bits_[0];
           if (cached_has_bits & 0x00000007u) {
-            // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+            // .user_engagement.UserEngagement engagement = 3;
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
             }
-            // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+            // .debate.Scope current_scope = 4;
             if (cached_has_bits & 0x00000002u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.current_scope_);
             }
-            // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+            // .debate.CollectionSpecification collection_spec = 5;
             if (cached_has_bits & 0x00000004u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.collection_spec_);
             }
           }
            {
-            // int32 user_id = 1 [json_name = "userId"];
+            // int32 user_id = 1;
             if (this_._internal_user_id() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_user_id());

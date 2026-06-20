@@ -18,29 +18,14 @@ rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
 
 rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
 	switch (status) {
-		case debate::ClaimStatus::NEUTRAL:
-			return rendering_info::CLAIM_STATUS_NEUTRAL;
-		case debate::ClaimStatus::CHALLENGED:
-			return rendering_info::CLAIM_STATUS_CHALLENGED;
-		case debate::ClaimStatus::DEFENDED:
-			return rendering_info::CLAIM_STATUS_DEFENDED;
+		case debate::ClaimStatus::UNDETERMINED:
+			return rendering_info::CLAIM_STATUS_UNDETERMINED;
+		case debate::ClaimStatus::UPHELD:
+			return rendering_info::CLAIM_STATUS_UPHELD;
 		case debate::ClaimStatus::DISPROVEN:
 			return rendering_info::CLAIM_STATUS_DISPROVEN;
 		default:
 			return rendering_info::CLAIM_STATUS_UNSPECIFIED;
-	}
-}
-
-rendering_info::ChallengeStatus MapChallengeStatus(debate::ChallengeStatus status) {
-	switch (status) {
-		case debate::ChallengeStatus::ONGOING:
-			return rendering_info::CHALLENGE_STATUS_ONGOING;
-		case debate::ChallengeStatus::CONCEDED:
-			return rendering_info::CHALLENGE_STATUS_CONCEDED;
-		case debate::ChallengeStatus::PROVEN:
-			return rendering_info::CHALLENGE_STATUS_PROVEN;
-		default:
-			return rendering_info::CHALLENGE_STATUS_UNSPECIFIED;
 	}
 }
 
@@ -251,7 +236,6 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 				outChallenge->set_id(challengeClaimId);
 				outChallenge->set_sentence(challengeClaim.sentence());
 				outChallenge->set_creator_id(challengeClaim.creator_id());
-				outChallenge->set_status(rendering_info::CHALLENGE_STATUS_ONGOING);
 				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
 			} else {
 				Log::warn("[DebatePageInfoParser] Challenge claim id=" + std::to_string(challengeClaimId) + " NOT FOUND in collection!");

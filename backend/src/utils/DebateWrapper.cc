@@ -135,7 +135,7 @@ int DebateWrapper::createClaim(
     claim.set_description(description);
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
-    claim.set_status(debate::ClaimStatus::NEUTRAL);
+    claim.set_status(debate::ClaimStatus::UNDETERMINED);
     addClaimToDB(claim, user_id, debate_id);
     return claim.id();
 }
@@ -155,7 +155,7 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
-    childClaim.set_status(debate::ClaimStatus::NEUTRAL);
+    childClaim.set_status(debate::ClaimStatus::UNDETERMINED);
     addClaimToDB(childClaim, user_id, debate_id);
     addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
     Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");
@@ -547,11 +547,14 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
 }
 
 void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
-    // ok the plan is, go dfs down nodes and update status based on current node
-    // for each node, find it's challenges, if all of them are resolved, mark it as DEFENDED or something
-    // if any are unresolved, mark it as CHALLENGED
-    // if any are successfully challenged, mark it as DISPROVEN
-    // then if a claim is challenged or disproven, all of it's ancestors should be marked as CHALLENGED too
+    // New model: UNDETERMINED (default), TRUE (defended), FALSE (disproven).
+    // No CHALLENGED status — challenge resolution is determined by
+    // the challenge claim's own status.
+    // For each claim with incoming CHALLENGE links:
+    //   - If any challenge claim is FALSE → target is FALSE (disproven)
+    //   - If any challenge claim is TRUE → target is TRUE (defended)
+    //   - If all challenge claims are UNDETERMINED → target stays UNDETERMINED
+    // Propagate FALSE up to ancestors.
     debate::Debate debateProto;
     std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
     if (!debateData.empty()) {
@@ -561,11 +564,11 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         return;
     }
 
-    // First pass: mark claims challenged if they have incoming CHALLENGE links.
+    // First pass: determine each claim's status based on incoming challenges.
     std::vector<int> stack;
     std::set<int> visited;
     stack.push_back(debateProto.root_claim_id());
-    
+
     while (!stack.empty()) {
         int currentClaimId = stack.back();
         stack.pop_back();
@@ -577,7 +580,10 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         visited.insert(currentClaimId);
         debate::Claim currentClaim = getClaimById(currentClaimId);
 
+        // Check incoming CHALLENGE links to determine status.
         bool hasIncomingChallenge = false;
+        bool anyChallengeFalse = false;
+        bool anyChallengeTrue = false;
         const auto links = databaseWrapper.links.getLinksForClaim(currentClaimId);
         for (const auto& linkRow : links) {
             const int linkTo = std::get<2>(linkRow);
@@ -594,11 +600,26 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
             const int linkType = std::get<5>(linkData.value());
             if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
                 hasIncomingChallenge = true;
-                break;
+                // The challenge claim is the connect_from side.
+                const int challengeClaimId = std::get<1>(linkRow);
+                debate::Claim challengeClaim = getClaimById(challengeClaimId);
+                if (challengeClaim.status() == debate::ClaimStatus::DISPROVEN) {
+                    anyChallengeFalse = true;
+                } else if (challengeClaim.status() == debate::ClaimStatus::UPHELD) {
+                    anyChallengeTrue = true;
+                }
             }
         }
 
-        currentClaim.set_status(hasIncomingChallenge ? debate::ClaimStatus::CHALLENGED : debate::ClaimStatus::NEUTRAL);
+        if (hasIncomingChallenge) {
+            if (anyChallengeFalse) {
+                currentClaim.set_status(debate::ClaimStatus::DISPROVEN);
+            } else if (anyChallengeTrue) {
+                currentClaim.set_status(debate::ClaimStatus::UPHELD);
+            }
+            // If all challenges are UNDETERMINED, leave as UNDETERMINED.
+        }
+        // If no incoming challenges, leave as-is (UNDETERMINED default).
         updateClaimInDB(currentClaim);
 
         for (const auto& childId : findChildrenIds(currentClaimId)) {
@@ -607,35 +628,32 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
             }
         }
     }
-    
-    // Second pass: Propagate CHALLENGED status up to ancestors
+
+    // Second pass: propagate FALSE up to ancestors.
+    // If any child is FALSE, parent becomes FALSE too.
     std::vector<int> toProcess;
     toProcess.push_back(debateProto.root_claim_id());
-    
+
     for (size_t i = 0; i < toProcess.size(); ++i) {
         int currentClaimId = toProcess[i];
         debate::Claim currentClaim = getClaimById(currentClaimId);
         std::vector<int> childrenIds = findChildrenIds(currentClaimId);
-        
-        // Add children to process list
+
         for (const auto& childId : childrenIds) {
             toProcess.push_back(childId);
         }
-        
-        // Check if any child is challenged or disproven
-        bool hasChildChallenged = false;
+
+        bool hasChildFalse = false;
         for (const auto& childId : childrenIds) {
             debate::Claim childClaim = getClaimById(childId);
-            if (childClaim.status() == debate::ClaimStatus::CHALLENGED || 
-                childClaim.status() == debate::ClaimStatus::DISPROVEN) {
-                hasChildChallenged = true;
+            if (childClaim.status() == debate::ClaimStatus::DISPROVEN) {
+                hasChildFalse = true;
                 break;
             }
         }
-        
-        // Propagate CHALLENGED status to parent if needed
-        if (hasChildChallenged && currentClaim.status() != debate::ClaimStatus::DISPROVEN) {
-            currentClaim.set_status(debate::ClaimStatus::CHALLENGED);
+
+        if (hasChildFalse && currentClaim.status() != debate::ClaimStatus::DISPROVEN) {
+            currentClaim.set_status(debate::ClaimStatus::DISPROVEN);
             updateClaimInDB(currentClaim);
         }
     }

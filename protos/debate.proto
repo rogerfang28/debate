@@ -18,10 +18,9 @@ message Claim {
 }
 
 enum ClaimStatus {
-  NEUTRAL = 0; // unchallenged, default
-  CHALLENGED = 1; // currently challenged
-  DEFENDED = 2; // successfully defended against a challenge
-  DISPROVEN = 3; // disproven by a challenge
+  UNDETERMINED = 0; // default, no resolution yet
+  UPHELD = 1; // claim defended against challenge
+  DISPROVEN = 2; // claim disproven by challenge
 }
 
 message ClaimState {
@@ -44,12 +43,6 @@ enum LinkType {
   NORMAL = 0;
   PARENT_CHILD = 1;
   CHALLENGE = 2;
-}
-
-enum ChallengeStatus {
-  ONGOING = 0; // challenge is ongoing
-  CONCEDED = 1; // challenge has been conceded
-  PROVEN = 2; // challenge successfully defended
 }
 
 message Debate {

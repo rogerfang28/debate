@@ -126,16 +126,8 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
         );
     }
 
-    // update current claim and all parents to be CHALLENGED
-    debate::Claim currentClaim = debateWrapper.getClaimById(current_claim_id);
-    while (true) {
-        currentClaim.set_status(debate::ClaimStatus::CHALLENGED);
-        debateWrapper.updateClaimInDB(currentClaim);
-        if (debateWrapper.isRoot(currentClaim.id())) {
-            break; // reached root
-        }
-        currentClaim = debateWrapper.findClaimParent(currentClaim.id());
-    }
+    // No status updates needed here — the cascade in UpdateStatusOfAllClaimsInDebate
+    // handles status based on challenge claim status.
 
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);
