@@ -170,8 +170,8 @@ inline bool ScopeType_Parse(absl::string_view name, ScopeType* value) {
 enum ClaimStatus : int {
   CLAIM_STATUS_UNSPECIFIED = 0,
   CLAIM_STATUS_UNDETERMINED = 1,
-  CLAIM_STATUS_UPHELD = 2,
-  CLAIM_STATUS_DISPROVEN = 3,
+  CLAIM_STATUS_TRUE_CLAIM = 2,
+  CLAIM_STATUS_FALSE_CLAIM = 3,
   ClaimStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ClaimStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =

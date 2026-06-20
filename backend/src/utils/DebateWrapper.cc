@@ -603,9 +603,9 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
                 // The challenge claim is the connect_from side.
                 const int challengeClaimId = std::get<1>(linkRow);
                 debate::Claim challengeClaim = getClaimById(challengeClaimId);
-                if (challengeClaim.status() == debate::ClaimStatus::DISPROVEN) {
+                if (challengeClaim.status() == debate::ClaimStatus::FALSE_CLAIM) {
                     anyChallengeFalse = true;
-                } else if (challengeClaim.status() == debate::ClaimStatus::UPHELD) {
+                } else if (challengeClaim.status() == debate::ClaimStatus::TRUE_CLAIM) {
                     anyChallengeTrue = true;
                 }
             }
@@ -613,9 +613,9 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
 
         if (hasIncomingChallenge) {
             if (anyChallengeFalse) {
-                currentClaim.set_status(debate::ClaimStatus::DISPROVEN);
+                currentClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
             } else if (anyChallengeTrue) {
-                currentClaim.set_status(debate::ClaimStatus::UPHELD);
+                currentClaim.set_status(debate::ClaimStatus::TRUE_CLAIM);
             }
             // If all challenges are UNDETERMINED, leave as UNDETERMINED.
         }
@@ -646,14 +646,14 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
         bool hasChildFalse = false;
         for (const auto& childId : childrenIds) {
             debate::Claim childClaim = getClaimById(childId);
-            if (childClaim.status() == debate::ClaimStatus::DISPROVEN) {
+            if (childClaim.status() == debate::ClaimStatus::FALSE_CLAIM) {
                 hasChildFalse = true;
                 break;
             }
         }
 
-        if (hasChildFalse && currentClaim.status() != debate::ClaimStatus::DISPROVEN) {
-            currentClaim.set_status(debate::ClaimStatus::DISPROVEN);
+        if (hasChildFalse && currentClaim.status() != debate::ClaimStatus::FALSE_CLAIM) {
+            currentClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
             updateClaimInDB(currentClaim);
         }
     }

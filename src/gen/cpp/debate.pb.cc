@@ -264,10 +264,11 @@ const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\030\002 \001(\005\022\r\n\005topic\030\003 \001(\t\022\023\n\013debater_ids\030\004 \003"
     "(\005\022\022\n\ncreator_id\030\005 \001(\005\022(\n\010settings\030\006 \001(\013"
     "2\026.debate.DebateSettings\022\024\n\014is_challenge"
-    "\030\007 \001(\010\022\033\n\023parent_challenge_id\030\010 \001(\005*:\n\013C"
-    "laimStatus\022\020\n\014UNDETERMINED\020\000\022\n\n\006UPHELD\020\001"
-    "\022\r\n\tDISPROVEN\020\002*7\n\010LinkType\022\n\n\006NORMAL\020\000\022"
-    "\020\n\014PARENT_CHILD\020\001\022\r\n\tCHALLENGE\020\002b\006proto3"
+    "\030\007 \001(\010\022\033\n\023parent_challenge_id\030\010 \001(\005*@\n\013C"
+    "laimStatus\022\020\n\014UNDETERMINED\020\000\022\016\n\nTRUE_CLA"
+    "IM\020\001\022\017\n\013FALSE_CLAIM\020\002*7\n\010LinkType\022\n\n\006NOR"
+    "MAL\020\000\022\020\n\014PARENT_CHILD\020\001\022\r\n\tCHALLENGE\020\002b\006"
+    "proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_2eproto_deps[2] =
     {
@@ -278,7 +279,7 @@ static ::absl::once_flag descriptor_table_debate_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_2eproto = {
     false,
     false,
-    840,
+    846,
     descriptor_table_protodef_debate_2eproto,
     "debate.proto",
     &descriptor_table_debate_2eproto_once,

@@ -26,10 +26,10 @@ debate::ClaimStatus MapClaimStatus(rendering_info::ClaimStatus status) {
     switch (status) {
         case rendering_info::CLAIM_STATUS_UNDETERMINED:
             return debate::ClaimStatus::UNDETERMINED;
-        case rendering_info::CLAIM_STATUS_UPHELD:
-            return debate::ClaimStatus::UPHELD;
-        case rendering_info::CLAIM_STATUS_DISPROVEN:
-            return debate::ClaimStatus::DISPROVEN;
+        case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+            return debate::ClaimStatus::TRUE_CLAIM;
+        case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+            return debate::ClaimStatus::FALSE_CLAIM;
         default:
             return debate::ClaimStatus::UNDETERMINED;
     }
@@ -39,9 +39,9 @@ std::string ClaimStatusToLabel(rendering_info::ClaimStatus status) {
     switch (status) {
         case rendering_info::CLAIM_STATUS_UNDETERMINED:
             return "Undetermined";
-        case rendering_info::CLAIM_STATUS_UPHELD:
+        case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
             return "True";
-        case rendering_info::CLAIM_STATUS_DISPROVEN:
+        case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
             return "False";
         default:
             return "Unknown";
@@ -754,10 +754,10 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         // Determine border color based on status
         std::string borderColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_DISPROVEN:
+            case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
                 borderColor = "border-2 border-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_UPHELD:
+            case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
                 borderColor = "border-2 border-green-500";
                 break;
             case rendering_info::CLAIM_STATUS_UNDETERMINED:
@@ -772,11 +772,11 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         std::string statusText;
         std::string statusTextColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_DISPROVEN:
+            case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
                 statusText = "False";
                 statusTextColor = "text-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_UPHELD:
+            case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
                 statusText = "True";
                 statusTextColor = "text-green-500";
                 break;

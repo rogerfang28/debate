@@ -76,8 +76,8 @@ namespace protobuf {
 namespace debate {
 enum ClaimStatus : int {
   UNDETERMINED = 0,
-  UPHELD = 1,
-  DISPROVEN = 2,
+  TRUE_CLAIM = 1,
+  FALSE_CLAIM = 2,
   ClaimStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ClaimStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =

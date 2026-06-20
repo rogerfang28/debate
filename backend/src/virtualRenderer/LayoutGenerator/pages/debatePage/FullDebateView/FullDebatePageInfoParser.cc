@@ -22,10 +22,10 @@ rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
 	switch (status) {
 		case debate::ClaimStatus::UNDETERMINED:
 			return rendering_info::CLAIM_STATUS_UNDETERMINED;
-		case debate::ClaimStatus::UPHELD:
-			return rendering_info::CLAIM_STATUS_UPHELD;
-		case debate::ClaimStatus::DISPROVEN:
-			return rendering_info::CLAIM_STATUS_DISPROVEN;
+		case debate::ClaimStatus::TRUE_CLAIM:
+			return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
+		case debate::ClaimStatus::FALSE_CLAIM:
+			return rendering_info::CLAIM_STATUS_FALSE_CLAIM;
 		default:
 			return rendering_info::CLAIM_STATUS_UNSPECIFIED;
 	}

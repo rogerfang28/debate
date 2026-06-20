@@ -19,8 +19,8 @@ message Claim {
 
 enum ClaimStatus {
   UNDETERMINED = 0; // default, no resolution yet
-  UPHELD = 1; // claim defended against challenge
-  DISPROVEN = 2; // claim disproven by challenge
+  TRUE_CLAIM = 1; // claim upheld / defended against challenge
+  FALSE_CLAIM = 2; // claim disproven by challenge
 }
 
 message ClaimState {
