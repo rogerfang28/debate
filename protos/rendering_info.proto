@@ -125,6 +125,12 @@ message ClaimRenderInfo {
 	string sentence = 2;
 	int32 creator_id = 3;
 	ClaimStatus status = 4;
+	repeated UserStatus user_statuses = 5;
+}
+
+message UserStatus {
+	string username = 1;
+	ClaimStatus status = 2;
 }
 
 message LinkRenderInfo {

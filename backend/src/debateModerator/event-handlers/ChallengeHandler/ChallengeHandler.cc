@@ -129,6 +129,12 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     // No status updates needed here — the cascade in UpdateStatusOfAllClaimsInDebate
     // handles status based on challenge claim status.
 
+    // Record the challenger's view: they think the challenged claim is FALSE
+    debate::Claim challengedClaim = debateWrapper.getClaimById(current_claim_id);
+    user::User challengerProto = debateWrapper.getUserProtobuf(user_id);
+    (*challengedClaim.mutable_user_statuses())[challengerProto.username()] = debate::ClaimStatus::FALSE_CLAIM;
+    debateWrapper.updateClaimInDB(challengedClaim);
+
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);

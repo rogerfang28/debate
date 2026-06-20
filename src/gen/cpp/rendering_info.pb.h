@@ -92,6 +92,9 @@ extern LinkRenderInfoDefaultTypeInternal _LinkRenderInfo_default_instance_;
 class Steps;
 struct StepsDefaultTypeInternal;
 extern StepsDefaultTypeInternal _Steps_default_instance_;
+class UserStatus;
+struct UserStatusDefaultTypeInternal;
+extern UserStatusDefaultTypeInternal _UserStatus_default_instance_;
 }  // namespace rendering_info
 namespace google {
 namespace protobuf {
@@ -245,6 +248,214 @@ inline bool DebateActionType_Parse(absl::string_view name, DebateActionType* val
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class UserStatus final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:rendering_info.UserStatus) */ {
+ public:
+  inline UserStatus() : UserStatus(nullptr) {}
+  ~UserStatus() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(UserStatus* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UserStatus));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UserStatus(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline UserStatus(const UserStatus& from) : UserStatus(nullptr, from) {}
+  inline UserStatus(UserStatus&& from) noexcept
+      : UserStatus(nullptr, std::move(from)) {}
+  inline UserStatus& operator=(const UserStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UserStatus& operator=(UserStatus&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UserStatus& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UserStatus* internal_default_instance() {
+    return reinterpret_cast<const UserStatus*>(
+        &_UserStatus_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(UserStatus& a, UserStatus& b) { a.Swap(&b); }
+  inline void Swap(UserStatus* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(UserStatus* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  UserStatus* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UserStatus>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UserStatus& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UserStatus& from) { UserStatus::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UserStatus* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "rendering_info.UserStatus"; }
+
+ protected:
+  explicit UserStatus(::google::protobuf::Arena* arena);
+  UserStatus(::google::protobuf::Arena* arena, const UserStatus& from);
+  UserStatus(::google::protobuf::Arena* arena, UserStatus&& from) noexcept
+      : UserStatus(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUsernameFieldNumber = 1,
+    kStatusFieldNumber = 2,
+  };
+  // string username = 1;
+  void clear_username() ;
+  const std::string& username() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_username(Arg_&& arg, Args_... args);
+  std::string* mutable_username();
+  PROTOBUF_NODISCARD std::string* release_username();
+  void set_allocated_username(std::string* value);
+
+  private:
+  const std::string& _internal_username() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_username(
+      const std::string& value);
+  std::string* _internal_mutable_username();
+
+  public:
+  // .rendering_info.ClaimStatus status = 2;
+  void clear_status() ;
+  ::rendering_info::ClaimStatus status() const;
+  void set_status(::rendering_info::ClaimStatus value);
+
+  private:
+  ::rendering_info::ClaimStatus _internal_status() const;
+  void _internal_set_status(::rendering_info::ClaimStatus value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:rendering_info.UserStatus)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      42, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UserStatus& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr username_;
+    int status_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rendering_5finfo_2eproto;
+};
 // -------------------------------------------------------------------
 
 class Steps final : public ::google::protobuf::Message
@@ -514,7 +725,7 @@ class LinkRenderInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const LinkRenderInfo*>(
         &_LinkRenderInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(LinkRenderInfo& a, LinkRenderInfo& b) { a.Swap(&b); }
   inline void Swap(LinkRenderInfo* other) {
     if (other == this) return;
@@ -1562,7 +1773,7 @@ class ConnectingRenderInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const ConnectingRenderInfo*>(
         &_ConnectingRenderInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(ConnectingRenderInfo& a, ConnectingRenderInfo& b) { a.Swap(&b); }
   inline void Swap(ConnectingRenderInfo* other) {
     if (other == this) return;
@@ -1729,238 +1940,6 @@ class ConnectingRenderInfo final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class ClaimRenderInfo final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:rendering_info.ClaimRenderInfo) */ {
- public:
-  inline ClaimRenderInfo() : ClaimRenderInfo(nullptr) {}
-  ~ClaimRenderInfo() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ClaimRenderInfo* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ClaimRenderInfo));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ClaimRenderInfo(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline ClaimRenderInfo(const ClaimRenderInfo& from) : ClaimRenderInfo(nullptr, from) {}
-  inline ClaimRenderInfo(ClaimRenderInfo&& from) noexcept
-      : ClaimRenderInfo(nullptr, std::move(from)) {}
-  inline ClaimRenderInfo& operator=(const ClaimRenderInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ClaimRenderInfo& operator=(ClaimRenderInfo&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ClaimRenderInfo& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ClaimRenderInfo* internal_default_instance() {
-    return reinterpret_cast<const ClaimRenderInfo*>(
-        &_ClaimRenderInfo_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 8;
-  friend void swap(ClaimRenderInfo& a, ClaimRenderInfo& b) { a.Swap(&b); }
-  inline void Swap(ClaimRenderInfo* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ClaimRenderInfo* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ClaimRenderInfo* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ClaimRenderInfo>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ClaimRenderInfo& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ClaimRenderInfo& from) { ClaimRenderInfo::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(ClaimRenderInfo* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "rendering_info.ClaimRenderInfo"; }
-
- protected:
-  explicit ClaimRenderInfo(::google::protobuf::Arena* arena);
-  ClaimRenderInfo(::google::protobuf::Arena* arena, const ClaimRenderInfo& from);
-  ClaimRenderInfo(::google::protobuf::Arena* arena, ClaimRenderInfo&& from) noexcept
-      : ClaimRenderInfo(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kSentenceFieldNumber = 2,
-    kIdFieldNumber = 1,
-    kCreatorIdFieldNumber = 3,
-    kStatusFieldNumber = 4,
-  };
-  // string sentence = 2;
-  void clear_sentence() ;
-  const std::string& sentence() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_sentence(Arg_&& arg, Args_... args);
-  std::string* mutable_sentence();
-  PROTOBUF_NODISCARD std::string* release_sentence();
-  void set_allocated_sentence(std::string* value);
-
-  private:
-  const std::string& _internal_sentence() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_sentence(
-      const std::string& value);
-  std::string* _internal_mutable_sentence();
-
-  public:
-  // int32 id = 1;
-  void clear_id() ;
-  ::int32_t id() const;
-  void set_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_id() const;
-  void _internal_set_id(::int32_t value);
-
-  public:
-  // int32 creator_id = 3;
-  void clear_creator_id() ;
-  ::int32_t creator_id() const;
-  void set_creator_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_creator_id() const;
-  void _internal_set_creator_id(::int32_t value);
-
-  public:
-  // .rendering_info.ClaimStatus status = 4;
-  void clear_status() ;
-  ::rendering_info::ClaimStatus status() const;
-  void set_status(::rendering_info::ClaimStatus value);
-
-  private:
-  ::rendering_info::ClaimStatus _internal_status() const;
-  void _internal_set_status(::rendering_info::ClaimStatus value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:rendering_info.ClaimRenderInfo)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
-      47, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const ClaimRenderInfo& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr sentence_;
-    ::int32_t id_;
-    ::int32_t creator_id_;
-    int status_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_rendering_5finfo_2eproto;
-};
-// -------------------------------------------------------------------
-
 class ChallengingRenderInfo final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:rendering_info.ChallengingRenderInfo) */ {
  public:
@@ -2020,7 +1999,7 @@ class ChallengingRenderInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const ChallengingRenderInfo*>(
         &_ChallengingRenderInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(ChallengingRenderInfo& a, ChallengingRenderInfo& b) { a.Swap(&b); }
   inline void Swap(ChallengingRenderInfo* other) {
     if (other == this) return;
@@ -2252,7 +2231,7 @@ class ChallengeRenderInfo final : public ::google::protobuf::Message
     return reinterpret_cast<const ChallengeRenderInfo*>(
         &_ChallengeRenderInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(ChallengeRenderInfo& a, ChallengeRenderInfo& b) { a.Swap(&b); }
   inline void Swap(ChallengeRenderInfo* other) {
     if (other == this) return;
@@ -2898,6 +2877,502 @@ class FullDebateTree final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class ClaimRenderInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:rendering_info.ClaimRenderInfo) */ {
+ public:
+  inline ClaimRenderInfo() : ClaimRenderInfo(nullptr) {}
+  ~ClaimRenderInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ClaimRenderInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ClaimRenderInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ClaimRenderInfo(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ClaimRenderInfo(const ClaimRenderInfo& from) : ClaimRenderInfo(nullptr, from) {}
+  inline ClaimRenderInfo(ClaimRenderInfo&& from) noexcept
+      : ClaimRenderInfo(nullptr, std::move(from)) {}
+  inline ClaimRenderInfo& operator=(const ClaimRenderInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ClaimRenderInfo& operator=(ClaimRenderInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ClaimRenderInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ClaimRenderInfo* internal_default_instance() {
+    return reinterpret_cast<const ClaimRenderInfo*>(
+        &_ClaimRenderInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(ClaimRenderInfo& a, ClaimRenderInfo& b) { a.Swap(&b); }
+  inline void Swap(ClaimRenderInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ClaimRenderInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ClaimRenderInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ClaimRenderInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ClaimRenderInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ClaimRenderInfo& from) { ClaimRenderInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ClaimRenderInfo* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "rendering_info.ClaimRenderInfo"; }
+
+ protected:
+  explicit ClaimRenderInfo(::google::protobuf::Arena* arena);
+  ClaimRenderInfo(::google::protobuf::Arena* arena, const ClaimRenderInfo& from);
+  ClaimRenderInfo(::google::protobuf::Arena* arena, ClaimRenderInfo&& from) noexcept
+      : ClaimRenderInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUserStatusesFieldNumber = 5,
+    kSentenceFieldNumber = 2,
+    kIdFieldNumber = 1,
+    kCreatorIdFieldNumber = 3,
+    kStatusFieldNumber = 4,
+  };
+  // repeated .rendering_info.UserStatus user_statuses = 5;
+  int user_statuses_size() const;
+  private:
+  int _internal_user_statuses_size() const;
+
+  public:
+  void clear_user_statuses() ;
+  ::rendering_info::UserStatus* mutable_user_statuses(int index);
+  ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>* mutable_user_statuses();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>& _internal_user_statuses() const;
+  ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>* _internal_mutable_user_statuses();
+  public:
+  const ::rendering_info::UserStatus& user_statuses(int index) const;
+  ::rendering_info::UserStatus* add_user_statuses();
+  const ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>& user_statuses() const;
+  // string sentence = 2;
+  void clear_sentence() ;
+  const std::string& sentence() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_sentence(Arg_&& arg, Args_... args);
+  std::string* mutable_sentence();
+  PROTOBUF_NODISCARD std::string* release_sentence();
+  void set_allocated_sentence(std::string* value);
+
+  private:
+  const std::string& _internal_sentence() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_sentence(
+      const std::string& value);
+  std::string* _internal_mutable_sentence();
+
+  public:
+  // int32 id = 1;
+  void clear_id() ;
+  ::int32_t id() const;
+  void set_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_id() const;
+  void _internal_set_id(::int32_t value);
+
+  public:
+  // int32 creator_id = 3;
+  void clear_creator_id() ;
+  ::int32_t creator_id() const;
+  void set_creator_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_creator_id() const;
+  void _internal_set_creator_id(::int32_t value);
+
+  public:
+  // .rendering_info.ClaimStatus status = 4;
+  void clear_status() ;
+  ::rendering_info::ClaimStatus status() const;
+  void set_status(::rendering_info::ClaimStatus value);
+
+  private:
+  ::rendering_info::ClaimStatus _internal_status() const;
+  void _internal_set_status(::rendering_info::ClaimStatus value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:rendering_info.ClaimRenderInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 5, 1,
+      47, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ClaimRenderInfo& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::rendering_info::UserStatus > user_statuses_;
+    ::google::protobuf::internal::ArenaStringPtr sentence_;
+    ::int32_t id_;
+    ::int32_t creator_id_;
+    int status_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rendering_5finfo_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FullDebateViewInfo final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:rendering_info.FullDebateViewInfo) */ {
+ public:
+  inline FullDebateViewInfo() : FullDebateViewInfo(nullptr) {}
+  ~FullDebateViewInfo() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FullDebateViewInfo* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FullDebateViewInfo));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FullDebateViewInfo(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FullDebateViewInfo(const FullDebateViewInfo& from) : FullDebateViewInfo(nullptr, from) {}
+  inline FullDebateViewInfo(FullDebateViewInfo&& from) noexcept
+      : FullDebateViewInfo(nullptr, std::move(from)) {}
+  inline FullDebateViewInfo& operator=(const FullDebateViewInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FullDebateViewInfo& operator=(FullDebateViewInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FullDebateViewInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FullDebateViewInfo* internal_default_instance() {
+    return reinterpret_cast<const FullDebateViewInfo*>(
+        &_FullDebateViewInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(FullDebateViewInfo& a, FullDebateViewInfo& b) { a.Swap(&b); }
+  inline void Swap(FullDebateViewInfo* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FullDebateViewInfo* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FullDebateViewInfo* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FullDebateViewInfo>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FullDebateViewInfo& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FullDebateViewInfo& from) { FullDebateViewInfo::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FullDebateViewInfo* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "rendering_info.FullDebateViewInfo"; }
+
+ protected:
+  explicit FullDebateViewInfo(::google::protobuf::Arena* arena);
+  FullDebateViewInfo(::google::protobuf::Arena* arena, const FullDebateViewInfo& from);
+  FullDebateViewInfo(::google::protobuf::Arena* arena, FullDebateViewInfo&& from) noexcept
+      : FullDebateViewInfo(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kStepsFieldNumber = 3,
+    kViewerUsernameFieldNumber = 2,
+    kFullDebateTreeFieldNumber = 4,
+    kViewerUserIdFieldNumber = 1,
+  };
+  // repeated .rendering_info.Steps steps = 3;
+  int steps_size() const;
+  private:
+  int _internal_steps_size() const;
+
+  public:
+  void clear_steps() ;
+  ::rendering_info::Steps* mutable_steps(int index);
+  ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>* mutable_steps();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>& _internal_steps() const;
+  ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>* _internal_mutable_steps();
+  public:
+  const ::rendering_info::Steps& steps(int index) const;
+  ::rendering_info::Steps* add_steps();
+  const ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>& steps() const;
+  // string viewer_username = 2;
+  void clear_viewer_username() ;
+  const std::string& viewer_username() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_viewer_username(Arg_&& arg, Args_... args);
+  std::string* mutable_viewer_username();
+  PROTOBUF_NODISCARD std::string* release_viewer_username();
+  void set_allocated_viewer_username(std::string* value);
+
+  private:
+  const std::string& _internal_viewer_username() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_viewer_username(
+      const std::string& value);
+  std::string* _internal_mutable_viewer_username();
+
+  public:
+  // .rendering_info.FullDebateTree full_debate_tree = 4;
+  bool has_full_debate_tree() const;
+  void clear_full_debate_tree() ;
+  const ::rendering_info::FullDebateTree& full_debate_tree() const;
+  PROTOBUF_NODISCARD ::rendering_info::FullDebateTree* release_full_debate_tree();
+  ::rendering_info::FullDebateTree* mutable_full_debate_tree();
+  void set_allocated_full_debate_tree(::rendering_info::FullDebateTree* value);
+  void unsafe_arena_set_allocated_full_debate_tree(::rendering_info::FullDebateTree* value);
+  ::rendering_info::FullDebateTree* unsafe_arena_release_full_debate_tree();
+
+  private:
+  const ::rendering_info::FullDebateTree& _internal_full_debate_tree() const;
+  ::rendering_info::FullDebateTree* _internal_mutable_full_debate_tree();
+
+  public:
+  // int32 viewer_user_id = 1;
+  void clear_viewer_user_id() ;
+  ::int32_t viewer_user_id() const;
+  void set_viewer_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_viewer_user_id() const;
+  void _internal_set_viewer_user_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:rendering_info.FullDebateViewInfo)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 2,
+      57, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FullDebateViewInfo& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::rendering_info::Steps > steps_;
+    ::google::protobuf::internal::ArenaStringPtr viewer_username_;
+    ::rendering_info::FullDebateTree* full_debate_tree_;
+    ::int32_t viewer_user_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rendering_5finfo_2eproto;
+};
+// -------------------------------------------------------------------
+
 class DebatePageRenderingInfo final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:rendering_info.DebatePageRenderingInfo) */ {
  public:
@@ -3286,251 +3761,6 @@ class DebatePageRenderingInfo final : public ::google::protobuf::Message
     bool is_challenge_debate_;
     bool modifying_current_claim_;
     int current_action_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_rendering_5finfo_2eproto;
-};
-// -------------------------------------------------------------------
-
-class FullDebateViewInfo final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:rendering_info.FullDebateViewInfo) */ {
- public:
-  inline FullDebateViewInfo() : FullDebateViewInfo(nullptr) {}
-  ~FullDebateViewInfo() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(FullDebateViewInfo* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(FullDebateViewInfo));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR FullDebateViewInfo(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline FullDebateViewInfo(const FullDebateViewInfo& from) : FullDebateViewInfo(nullptr, from) {}
-  inline FullDebateViewInfo(FullDebateViewInfo&& from) noexcept
-      : FullDebateViewInfo(nullptr, std::move(from)) {}
-  inline FullDebateViewInfo& operator=(const FullDebateViewInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline FullDebateViewInfo& operator=(FullDebateViewInfo&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const FullDebateViewInfo& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const FullDebateViewInfo* internal_default_instance() {
-    return reinterpret_cast<const FullDebateViewInfo*>(
-        &_FullDebateViewInfo_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 1;
-  friend void swap(FullDebateViewInfo& a, FullDebateViewInfo& b) { a.Swap(&b); }
-  inline void Swap(FullDebateViewInfo* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(FullDebateViewInfo* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  FullDebateViewInfo* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<FullDebateViewInfo>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const FullDebateViewInfo& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const FullDebateViewInfo& from) { FullDebateViewInfo::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(FullDebateViewInfo* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "rendering_info.FullDebateViewInfo"; }
-
- protected:
-  explicit FullDebateViewInfo(::google::protobuf::Arena* arena);
-  FullDebateViewInfo(::google::protobuf::Arena* arena, const FullDebateViewInfo& from);
-  FullDebateViewInfo(::google::protobuf::Arena* arena, FullDebateViewInfo&& from) noexcept
-      : FullDebateViewInfo(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kStepsFieldNumber = 3,
-    kViewerUsernameFieldNumber = 2,
-    kFullDebateTreeFieldNumber = 4,
-    kViewerUserIdFieldNumber = 1,
-  };
-  // repeated .rendering_info.Steps steps = 3;
-  int steps_size() const;
-  private:
-  int _internal_steps_size() const;
-
-  public:
-  void clear_steps() ;
-  ::rendering_info::Steps* mutable_steps(int index);
-  ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>* mutable_steps();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>& _internal_steps() const;
-  ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>* _internal_mutable_steps();
-  public:
-  const ::rendering_info::Steps& steps(int index) const;
-  ::rendering_info::Steps* add_steps();
-  const ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>& steps() const;
-  // string viewer_username = 2;
-  void clear_viewer_username() ;
-  const std::string& viewer_username() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_viewer_username(Arg_&& arg, Args_... args);
-  std::string* mutable_viewer_username();
-  PROTOBUF_NODISCARD std::string* release_viewer_username();
-  void set_allocated_viewer_username(std::string* value);
-
-  private:
-  const std::string& _internal_viewer_username() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_viewer_username(
-      const std::string& value);
-  std::string* _internal_mutable_viewer_username();
-
-  public:
-  // .rendering_info.FullDebateTree full_debate_tree = 4;
-  bool has_full_debate_tree() const;
-  void clear_full_debate_tree() ;
-  const ::rendering_info::FullDebateTree& full_debate_tree() const;
-  PROTOBUF_NODISCARD ::rendering_info::FullDebateTree* release_full_debate_tree();
-  ::rendering_info::FullDebateTree* mutable_full_debate_tree();
-  void set_allocated_full_debate_tree(::rendering_info::FullDebateTree* value);
-  void unsafe_arena_set_allocated_full_debate_tree(::rendering_info::FullDebateTree* value);
-  ::rendering_info::FullDebateTree* unsafe_arena_release_full_debate_tree();
-
-  private:
-  const ::rendering_info::FullDebateTree& _internal_full_debate_tree() const;
-  ::rendering_info::FullDebateTree* _internal_mutable_full_debate_tree();
-
-  public:
-  // int32 viewer_user_id = 1;
-  void clear_viewer_user_id() ;
-  ::int32_t viewer_user_id() const;
-  void set_viewer_user_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_viewer_user_id() const;
-  void _internal_set_viewer_user_id(::int32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:rendering_info.FullDebateViewInfo)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 2,
-      57, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const FullDebateViewInfo& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField< ::rendering_info::Steps > steps_;
-    ::google::protobuf::internal::ArenaStringPtr viewer_username_;
-    ::rendering_info::FullDebateTree* full_debate_tree_;
-    ::int32_t viewer_user_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -5472,6 +5702,129 @@ inline ::rendering_info::ClaimStatus ClaimRenderInfo::_internal_status() const {
   return static_cast<::rendering_info::ClaimStatus>(_impl_.status_);
 }
 inline void ClaimRenderInfo::_internal_set_status(::rendering_info::ClaimStatus value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// repeated .rendering_info.UserStatus user_statuses = 5;
+inline int ClaimRenderInfo::_internal_user_statuses_size() const {
+  return _internal_user_statuses().size();
+}
+inline int ClaimRenderInfo::user_statuses_size() const {
+  return _internal_user_statuses_size();
+}
+inline void ClaimRenderInfo::clear_user_statuses() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_statuses_.Clear();
+}
+inline ::rendering_info::UserStatus* ClaimRenderInfo::mutable_user_statuses(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:rendering_info.ClaimRenderInfo.user_statuses)
+  return _internal_mutable_user_statuses()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>* ClaimRenderInfo::mutable_user_statuses()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:rendering_info.ClaimRenderInfo.user_statuses)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_user_statuses();
+}
+inline const ::rendering_info::UserStatus& ClaimRenderInfo::user_statuses(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.ClaimRenderInfo.user_statuses)
+  return _internal_user_statuses().Get(index);
+}
+inline ::rendering_info::UserStatus* ClaimRenderInfo::add_user_statuses() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::rendering_info::UserStatus* _add = _internal_mutable_user_statuses()->Add();
+  // @@protoc_insertion_point(field_add:rendering_info.ClaimRenderInfo.user_statuses)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>& ClaimRenderInfo::user_statuses() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:rendering_info.ClaimRenderInfo.user_statuses)
+  return _internal_user_statuses();
+}
+inline const ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>&
+ClaimRenderInfo::_internal_user_statuses() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.user_statuses_;
+}
+inline ::google::protobuf::RepeatedPtrField<::rendering_info::UserStatus>*
+ClaimRenderInfo::_internal_mutable_user_statuses() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.user_statuses_;
+}
+
+// -------------------------------------------------------------------
+
+// UserStatus
+
+// string username = 1;
+inline void UserStatus::clear_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.ClearToEmpty();
+}
+inline const std::string& UserStatus::username() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.UserStatus.username)
+  return _internal_username();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void UserStatus::set_username(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:rendering_info.UserStatus.username)
+}
+inline std::string* UserStatus::mutable_username() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_username();
+  // @@protoc_insertion_point(field_mutable:rendering_info.UserStatus.username)
+  return _s;
+}
+inline const std::string& UserStatus::_internal_username() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.username_.Get();
+}
+inline void UserStatus::_internal_set_username(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.Set(value, GetArena());
+}
+inline std::string* UserStatus::_internal_mutable_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.username_.Mutable( GetArena());
+}
+inline std::string* UserStatus::release_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:rendering_info.UserStatus.username)
+  return _impl_.username_.Release();
+}
+inline void UserStatus::set_allocated_username(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.username_.IsDefault()) {
+    _impl_.username_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:rendering_info.UserStatus.username)
+}
+
+// .rendering_info.ClaimStatus status = 2;
+inline void UserStatus::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+}
+inline ::rendering_info::ClaimStatus UserStatus::status() const {
+  // @@protoc_insertion_point(field_get:rendering_info.UserStatus.status)
+  return _internal_status();
+}
+inline void UserStatus::set_status(::rendering_info::ClaimStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:rendering_info.UserStatus.status)
+}
+inline ::rendering_info::ClaimStatus UserStatus::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::rendering_info::ClaimStatus>(_impl_.status_);
+}
+inline void UserStatus::_internal_set_status(::rendering_info::ClaimStatus value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_ = value;
 }

@@ -655,10 +655,14 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false")
     );
     
-    std::vector<std::tuple<std::string,std::string,int,rendering_info::ClaimStatus>> childClaimInfo; // id, sentence, creator_id, status
+    std::vector<std::tuple<std::string,std::string,int,rendering_info::ClaimStatus,std::vector<rendering_info::UserStatus>>> childClaimInfo; // id, sentence, creator_id, status, user_statuses
     for (int i = 0; i < info.children_claims_size(); i++) {
         const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status()});
+        std::vector<rendering_info::UserStatus> userStatuses;
+        for (int j = 0; j < childClaim.user_statuses_size(); j++) {
+            userStatuses.push_back(childClaim.user_statuses(j));
+        }
+        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status(), userStatuses});
     }
     Log::debug("[DebatePageGenerator] prepared childClaimInfo count=" + std::to_string(childClaimInfo.size()));
     for (size_t i = 0; i < childClaimInfo.size(); i++) {
@@ -802,16 +806,83 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             "w-80 flex-shrink-0"
         );
 
-        // Status label above the claim sentence
-        ui::Component statusLabel = ComponentGenerator::createText(
-            nodeId + "Status",
-            "Status: " + statusText,
-            "text-xs",
-            statusTextColor,
-            "font-semibold",
-            "mb-2"
-        );
-        ComponentGenerator::addChild(&childNode, statusLabel);
+        // Per-user status rectangles above the claim sentence
+        if (claimStatus != rendering_info::CLAIM_STATUS_UNSPECIFIED) {
+            ui::Component statusLabel = ComponentGenerator::createText(
+                nodeId + "Status",
+                "Status: " + statusText,
+                "text-xs",
+                statusTextColor,
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&childNode, statusLabel);
+        }
+
+        // Show each user's status as a colored rectangle (username: [color])
+        if (std::get<4>(childClaimInfo[i]).size() > 0) {
+            std::string userStatusCss = "flex flex-wrap gap-1 mb-2";
+            ui::Component userStatusRow = ComponentGenerator::createContainer(
+                nodeId + "UserStatusRow",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                userStatusCss
+            );
+            for (const auto& us : std::get<4>(childClaimInfo[i])) {
+                std::string rectColor;
+                switch (us.status()) {
+                    case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+                        rectColor = "bg-green-500";
+                        break;
+                    case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+                        rectColor = "bg-red-500";
+                        break;
+                    case rendering_info::CLAIM_STATUS_UNDETERMINED:
+                        rectColor = "bg-gray-500";
+                        break;
+                    default:
+                        rectColor = "bg-purple-500";
+                        break;
+                }
+                std::string userLabel = us.username() + ": ";
+                ui::Component userBadge = ComponentGenerator::createContainer(
+                    nodeId + "_" + us.username() + "_badge",
+                    "flex items-center",
+                    "",
+                    "px-1 py-0.5",
+                    "",
+                    "rounded",
+                    "",
+                    "mr-1"
+                );
+                ui::Component colorRect = ComponentGenerator::createContainer(
+                    nodeId + "_" + us.username() + "_rect",
+                    "w-3 h-3 rounded-sm " + rectColor,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "mr-1"
+                );
+                ComponentGenerator::addChild(&userBadge, colorRect);
+                ui::Component nameText = ComponentGenerator::createText(
+                    nodeId + "_" + us.username() + "_name",
+                    us.username() + ": ",
+                    "text-xs",
+                    "text-gray-300",
+                    "",
+                    ""
+                );
+                ComponentGenerator::addChild(&userBadge, nameText);
+                ComponentGenerator::addChild(&userStatusRow, userBadge);
+            }
+            ComponentGenerator::addChild(&childNode, userStatusRow);
+        }
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
