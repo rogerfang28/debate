@@ -58,6 +58,24 @@ struct LinkDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LinkDefaultTypeInternal _Link_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR Claim_UserStatusesEntry_DoNotUse::Claim_UserStatusesEntry_DoNotUse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : Claim_UserStatusesEntry_DoNotUse::MapEntry(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : Claim_UserStatusesEntry_DoNotUse::MapEntry() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal() {}
+  union {
+    Claim_UserStatusesEntry_DoNotUse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal _Claim_UserStatusesEntry_DoNotUse_default_instance_;
 
 inline constexpr Debate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -99,6 +117,7 @@ inline constexpr Claim::Impl_::Impl_(
       : history_{},
         link_ids_{},
         _link_ids_cached_byte_size_{0},
+        user_statuses_{},
         sentence_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -163,6 +182,18 @@ static constexpr const ::_pb::ServiceDescriptor**
 const ::uint32_t
     TableStruct_debate_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
+        PROTOBUF_FIELD_OFFSET(::debate::Claim_UserStatusesEntry_DoNotUse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::debate::Claim_UserStatusesEntry_DoNotUse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::debate::Claim_UserStatusesEntry_DoNotUse, _impl_.key_),
+        PROTOBUF_FIELD_OFFSET(::debate::Claim_UserStatusesEntry_DoNotUse, _impl_.value_),
+        0,
+        1,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::debate::Claim, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -179,6 +210,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::debate::Claim, _impl_.history_),
         PROTOBUF_FIELD_OFFSET(::debate::Claim, _impl_.status_),
         PROTOBUF_FIELD_OFFSET(::debate::Claim, _impl_.link_ids_),
+        PROTOBUF_FIELD_OFFSET(::debate::Claim, _impl_.user_statuses_),
         PROTOBUF_FIELD_OFFSET(::debate::ClaimState, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::debate::ClaimState, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -234,12 +266,14 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::debate::Claim)},
-        {16, 26, -1, sizeof(::debate::ClaimState)},
-        {28, -1, -1, sizeof(::debate::Link)},
-        {43, 59, -1, sizeof(::debate::Debate)},
+        {0, 10, -1, sizeof(::debate::Claim_UserStatusesEntry_DoNotUse)},
+        {12, -1, -1, sizeof(::debate::Claim)},
+        {29, 39, -1, sizeof(::debate::ClaimState)},
+        {41, -1, -1, sizeof(::debate::Link)},
+        {56, 72, -1, sizeof(::debate::Debate)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
+    &::debate::_Claim_UserStatusesEntry_DoNotUse_default_instance_._instance,
     &::debate::_Claim_default_instance_._instance,
     &::debate::_ClaimState_default_instance_._instance,
     &::debate::_Link_default_instance_._instance,
@@ -248,27 +282,30 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\014debate.proto\022\006debate\032\037google/protobuf/"
-    "timestamp.proto\032\025debate_settings.proto\"\275"
-    "\001\n\005Claim\022\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023"
+    "timestamp.proto\032\025debate_settings.proto\"\277"
+    "\002\n\005Claim\022\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023"
     "\n\013description\030\003 \001(\t\022\022\n\ncreator_id\030\010 \001(\005\022"
     "\021\n\tdebate_id\030\t \001(\005\022#\n\007history\030\n \003(\0132\022.de"
     "bate.ClaimState\022#\n\006status\030\013 \001(\0162\023.debate"
-    ".ClaimStatus\022\020\n\010link_ids\030\014 \003(\005\"Y\n\nClaimS"
-    "tate\022-\n\ttimestamp\030\002 \001(\0132\032.google.protobu"
-    "f.Timestamp\022\034\n\005claim\030\001 \001(\0132\r.debate.Clai"
-    "m\"\234\001\n\004Link\022\n\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002"
-    " \001(\005\022\022\n\nconnect_to\030\003 \001(\005\022\022\n\nconnection\030\004"
-    " \001(\t\022\022\n\ncreator_id\030\005 \001(\005\022#\n\tlink_type\030\006 "
-    "\001(\0162\020.debate.LinkType\022\021\n\tdebate_id\030\007 \001(\005"
-    "\"\300\001\n\006Debate\022\n\n\002id\030\001 \001(\005\022\025\n\rroot_claim_id"
-    "\030\002 \001(\005\022\r\n\005topic\030\003 \001(\t\022\023\n\013debater_ids\030\004 \003"
-    "(\005\022\022\n\ncreator_id\030\005 \001(\005\022(\n\010settings\030\006 \001(\013"
-    "2\026.debate.DebateSettings\022\024\n\014is_challenge"
-    "\030\007 \001(\010\022\033\n\023parent_challenge_id\030\010 \001(\005*@\n\013C"
-    "laimStatus\022\020\n\014UNDETERMINED\020\000\022\016\n\nTRUE_CLA"
-    "IM\020\001\022\017\n\013FALSE_CLAIM\020\002*7\n\010LinkType\022\n\n\006NOR"
-    "MAL\020\000\022\020\n\014PARENT_CHILD\020\001\022\r\n\tCHALLENGE\020\002b\006"
-    "proto3"
+    ".ClaimStatus\022\020\n\010link_ids\030\014 \003(\005\0226\n\ruser_s"
+    "tatuses\030\r \003(\0132\037.debate.Claim.UserStatuse"
+    "sEntry\032H\n\021UserStatusesEntry\022\013\n\003key\030\001 \001(\t"
+    "\022\"\n\005value\030\002 \001(\0162\023.debate.ClaimStatus:\0028\001"
+    "\"Y\n\nClaimState\022-\n\ttimestamp\030\002 \001(\0132\032.goog"
+    "le.protobuf.Timestamp\022\034\n\005claim\030\001 \001(\0132\r.d"
+    "ebate.Claim\"\234\001\n\004Link\022\n\n\002id\030\001 \001(\005\022\024\n\014conn"
+    "ect_from\030\002 \001(\005\022\022\n\nconnect_to\030\003 \001(\005\022\022\n\nco"
+    "nnection\030\004 \001(\t\022\022\n\ncreator_id\030\005 \001(\005\022#\n\tli"
+    "nk_type\030\006 \001(\0162\020.debate.LinkType\022\021\n\tdebat"
+    "e_id\030\007 \001(\005\"\300\001\n\006Debate\022\n\n\002id\030\001 \001(\005\022\025\n\rroo"
+    "t_claim_id\030\002 \001(\005\022\r\n\005topic\030\003 \001(\t\022\023\n\013debat"
+    "er_ids\030\004 \003(\005\022\022\n\ncreator_id\030\005 \001(\005\022(\n\010sett"
+    "ings\030\006 \001(\0132\026.debate.DebateSettings\022\024\n\014is"
+    "_challenge\030\007 \001(\010\022\033\n\023parent_challenge_id\030"
+    "\010 \001(\005*@\n\013ClaimStatus\022\020\n\014UNDETERMINED\020\000\022\016"
+    "\n\nTRUE_CLAIM\020\001\022\017\n\013FALSE_CLAIM\020\002*7\n\010LinkT"
+    "ype\022\n\n\006NORMAL\020\000\022\020\n\014PARENT_CHILD\020\001\022\r\n\tCHA"
+    "LLENGE\020\002b\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_debate_2eproto_deps[2] =
     {
@@ -279,13 +316,13 @@ static ::absl::once_flag descriptor_table_debate_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_2eproto = {
     false,
     false,
-    846,
+    976,
     descriptor_table_protodef_debate_2eproto,
     "debate.proto",
     &descriptor_table_debate_2eproto_once,
     descriptor_table_debate_2eproto_deps,
     2,
-    4,
+    5,
     schemas,
     file_default_instances,
     TableStruct_debate_2eproto::offsets,
@@ -313,6 +350,96 @@ bool LinkType_IsValid(int value) {
 }
 // ===================================================================
 
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+              Claim_UserStatusesEntry_DoNotUse::Claim_UserStatusesEntry_DoNotUse() : SuperType(_class_data_.base()) {}
+              Claim_UserStatusesEntry_DoNotUse::Claim_UserStatusesEntry_DoNotUse(::google::protobuf::Arena* arena)
+                  : SuperType(arena, _class_data_.base()) {}
+#else   // PROTOBUF_CUSTOM_VTABLE
+              Claim_UserStatusesEntry_DoNotUse::Claim_UserStatusesEntry_DoNotUse() : SuperType() {}
+              Claim_UserStatusesEntry_DoNotUse::Claim_UserStatusesEntry_DoNotUse(::google::protobuf::Arena* arena) : SuperType(arena) {}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+              inline void* Claim_UserStatusesEntry_DoNotUse::PlacementNew_(const void*, void* mem,
+                                                      ::google::protobuf::Arena* arena) {
+                return ::new (mem) Claim_UserStatusesEntry_DoNotUse(arena);
+              }
+              constexpr auto Claim_UserStatusesEntry_DoNotUse::InternalNewImpl_() {
+                return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Claim_UserStatusesEntry_DoNotUse),
+                                                          alignof(Claim_UserStatusesEntry_DoNotUse));
+              }
+              PROTOBUF_CONSTINIT
+              PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+              const ::google::protobuf::internal::ClassDataFull Claim_UserStatusesEntry_DoNotUse::_class_data_ = {
+                  ::google::protobuf::internal::ClassData{
+                      &_Claim_UserStatusesEntry_DoNotUse_default_instance_._instance,
+                      &_table_.header,
+                      nullptr,  // OnDemandRegisterArenaDtor
+                      nullptr,  // IsInitialized
+                      &Claim_UserStatusesEntry_DoNotUse::MergeImpl,
+                      ::google::protobuf::Message::GetNewImpl<Claim_UserStatusesEntry_DoNotUse>(),
+              #if defined(PROTOBUF_CUSTOM_VTABLE)
+                      &Claim_UserStatusesEntry_DoNotUse::SharedDtor,
+                      static_cast<void (::google::protobuf::MessageLite::*)()>(
+                          &Claim_UserStatusesEntry_DoNotUse::ClearImpl),
+                          ::google::protobuf::Message::ByteSizeLongImpl, ::google::protobuf::Message::_InternalSerializeImpl
+                          ,
+              #endif  // PROTOBUF_CUSTOM_VTABLE
+                      PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_._cached_size_),
+                      false,
+                  },
+                  &Claim_UserStatusesEntry_DoNotUse::kDescriptorMethods,
+                  &descriptor_table_debate_2eproto,
+                  nullptr,  // tracker
+              };
+              const ::google::protobuf::internal::ClassData* Claim_UserStatusesEntry_DoNotUse::GetClassData() const {
+                ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+                ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+                return _class_data_.base();
+              }
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 42, 2> Claim_UserStatusesEntry_DoNotUse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::DiscardEverythingFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate::Claim_UserStatusesEntry_DoNotUse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .debate.ClaimStatus value = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Claim_UserStatusesEntry_DoNotUse, _impl_.value_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_.value_)}},
+    // string key = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_.key_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string key = 1;
+    {PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_.key_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .debate.ClaimStatus value = 2;
+    {PROTOBUF_FIELD_OFFSET(Claim_UserStatusesEntry_DoNotUse, _impl_.value_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+    "\36\3\0\0\0\0\0\0"
+    "debate.Claim.UserStatusesEntry"
+    "key"
+  }},
+};
+
+// ===================================================================
+
 class Claim::_Internal {
  public:
 };
@@ -332,6 +459,7 @@ inline PROTOBUF_NDEBUG_INLINE Claim::Impl_::Impl_(
       : history_{visibility, arena, from.history_},
         link_ids_{visibility, arena, from.link_ids_},
         _link_ids_cached_byte_size_{0},
+        user_statuses_{visibility, arena, from.user_statuses_},
         sentence_(arena, from.sentence_),
         description_(arena, from.description_),
         _cached_size_{0} {}
@@ -365,6 +493,7 @@ inline PROTOBUF_NDEBUG_INLINE Claim::Impl_::Impl_(
       : history_{visibility, arena},
         link_ids_{visibility, arena},
         _link_ids_cached_byte_size_{0},
+        user_statuses_{visibility, arena},
         sentence_(arena),
         description_(arena),
         _cached_size_{0} {}
@@ -405,6 +534,14 @@ constexpr auto Claim::InternalNewImpl_() {
           decltype(Claim::_impl_.link_ids_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Claim, _impl_.user_statuses_) +
+          decltype(Claim::_impl_.user_statuses_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Claim, _impl_.user_statuses_) +
+          decltype(Claim::_impl_.user_statuses_)::
+              InternalGetArenaOffsetAlt(
+                  ::google::protobuf::Message::internal_visibility()),
   });
   if (arena_bits.has_value()) {
     return ::google::protobuf::internal::MessageCreator::CopyInit(
@@ -443,16 +580,16 @@ const ::google::protobuf::internal::ClassData* Claim::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 8, 1, 48, 2> Claim::_table_ = {
+const ::_pbi::TcParseTable<4, 9, 2, 61, 2> Claim::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    12, 120,  // max_field_number, fast_idx_mask
+    13, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294963320,  // skipmap
+    4294959224,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    8,  // num_field_entries
-    1,  // num_aux_entries
+    9,  // num_field_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -520,13 +657,21 @@ const ::_pbi::TcParseTable<4, 8, 1, 48, 2> Claim::_table_ = {
     // repeated int32 link_ids = 12;
     {PROTOBUF_FIELD_OFFSET(Claim, _impl_.link_ids_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
+    // map<string, .debate.ClaimStatus> user_statuses = 13;
+    {PROTOBUF_FIELD_OFFSET(Claim, _impl_.user_statuses_), 0, 1,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
     {::_pbi::TcParser::GetTable<::debate::ClaimState>()},
+    {::_pbi::TcParser::GetMapAuxInfo<
+        decltype(Claim()._impl_.user_statuses_)>(
+        1, 0, 0, 9,
+        14)},
   }}, {{
-    "\14\0\10\13\0\0\0\0\0\0\0\0\0\0\0\0"
+    "\14\0\10\13\0\0\0\0\0\15\0\0\0\0\0\0"
     "debate.Claim"
     "sentence"
     "description"
+    "user_statuses"
   }},
 };
 
@@ -539,6 +684,7 @@ PROTOBUF_NOINLINE void Claim::Clear() {
 
   _impl_.history_.Clear();
   _impl_.link_ids_.Clear();
+  _impl_.user_statuses_.Clear();
   _impl_.sentence_.ClearToEmpty();
   _impl_.description_.ClearToEmpty();
   ::memset(&_impl_.id_, 0, static_cast<::size_t>(
@@ -626,6 +772,33 @@ PROTOBUF_NOINLINE void Claim::Clear() {
             }
           }
 
+          // map<string, .debate.ClaimStatus> user_statuses = 13;
+          if (!this_._internal_user_statuses().empty()) {
+            using MapType = ::google::protobuf::Map<std::string, ::debate::ClaimStatus>;
+            using WireHelper = _pbi::MapEntryFuncs<std::string, ::debate::ClaimStatus,
+                                           _pbi::WireFormatLite::TYPE_STRING,
+                                           _pbi::WireFormatLite::TYPE_ENUM>;
+            const auto& field = this_._internal_user_statuses();
+
+            if (stream->IsSerializationDeterministic() && field.size() > 1) {
+              for (const auto& entry : ::google::protobuf::internal::MapSorterPtr<MapType>(field)) {
+                target = WireHelper::InternalSerialize(
+                    13, entry.first, entry.second, target, stream);
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.first.data(), static_cast<int>(entry.first.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.Claim.user_statuses");
+              }
+            } else {
+              for (const auto& entry : field) {
+                target = WireHelper::InternalSerialize(
+                    13, entry.first, entry.second, target, stream);
+                ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                    entry.first.data(), static_cast<int>(entry.first.length()),
+ ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.Claim.user_statuses");
+              }
+            }
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -664,6 +837,16 @@ PROTOBUF_NOINLINE void Claim::Clear() {
                   ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
                       this_._internal_link_ids(), 1,
                       this_._impl_._link_ids_cached_byte_size_);
+            }
+            // map<string, .debate.ClaimStatus> user_statuses = 13;
+            {
+              total_size +=
+                  1 * ::google::protobuf::internal::FromIntSize(this_._internal_user_statuses_size());
+              for (const auto& entry : this_._internal_user_statuses()) {
+                total_size += _pbi::MapEntryFuncs<std::string, ::debate::ClaimStatus,
+                                               _pbi::WireFormatLite::TYPE_STRING,
+                                               _pbi::WireFormatLite::TYPE_ENUM>::ByteSizeLong(entry.first, entry.second);
+              }
             }
           }
            {
@@ -713,6 +896,7 @@ void Claim::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::p
   _this->_internal_mutable_history()->MergeFrom(
       from._internal_history());
   _this->_internal_mutable_link_ids()->MergeFrom(from._internal_link_ids());
+  _this->_impl_.user_statuses_.MergeFrom(from._impl_.user_statuses_);
   if (!from._internal_sentence().empty()) {
     _this->_internal_set_sentence(from._internal_sentence());
   }
@@ -749,6 +933,7 @@ void Claim::InternalSwap(Claim* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.history_.InternalSwap(&other->_impl_.history_);
   _impl_.link_ids_.InternalSwap(&other->_impl_.link_ids_);
+  _impl_.user_statuses_.InternalSwap(&other->_impl_.user_statuses_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sentence_, &other->_impl_.sentence_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, &other->_impl_.description_, arena);
   ::google::protobuf::internal::memswap<

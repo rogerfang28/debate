@@ -28,6 +28,9 @@
 #include "google/protobuf/message_lite.h"
 #include "google/protobuf/repeated_field.h"  // IWYU pragma: export
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
+#include "google/protobuf/map.h"  // IWYU pragma: export
+#include "google/protobuf/map_entry.h"
+#include "google/protobuf/map_field_inl.h"
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "google/protobuf/timestamp.pb.h"
@@ -61,6 +64,9 @@ extern ClaimDefaultTypeInternal _Claim_default_instance_;
 class ClaimState;
 struct ClaimStateDefaultTypeInternal;
 extern ClaimStateDefaultTypeInternal _ClaimState_default_instance_;
+class Claim_UserStatusesEntry_DoNotUse;
+struct Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal;
+extern Claim_UserStatusesEntry_DoNotUseDefaultTypeInternal _Claim_UserStatusesEntry_DoNotUse_default_instance_;
 class Debate;
 struct DebateDefaultTypeInternal;
 extern DebateDefaultTypeInternal _Debate_default_instance_;
@@ -207,7 +213,7 @@ class Link final : public ::google::protobuf::Message
     return reinterpret_cast<const Link*>(
         &_Link_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(Link& a, Link& b) { a.Swap(&b); }
   inline void Swap(Link* other) {
     if (other == this) return;
@@ -416,6 +422,45 @@ class Link final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
+class Claim_UserStatusesEntry_DoNotUse final
+    : public ::google::protobuf::internal::MapEntry<
+          std::string, ::debate::ClaimStatus,
+          ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+          ::google::protobuf::internal::WireFormatLite::TYPE_ENUM> {
+ public:
+  using SuperType = ::google::protobuf::internal::MapEntry<
+      std::string, ::debate::ClaimStatus,
+      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+      ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>;
+  Claim_UserStatusesEntry_DoNotUse();
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Claim_UserStatusesEntry_DoNotUse(
+      ::google::protobuf::internal::ConstantInitialized);
+  explicit Claim_UserStatusesEntry_DoNotUse(::google::protobuf::Arena* arena);
+  static const Claim_UserStatusesEntry_DoNotUse* internal_default_instance() {
+    return reinterpret_cast<const Claim_UserStatusesEntry_DoNotUse*>(
+        &_Claim_UserStatusesEntry_DoNotUse_default_instance_);
+  }
+
+
+ private:
+  friend class ::google::protobuf::MessageLite;
+  friend struct ::TableStruct_debate_2eproto;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      42, 2>
+      _table_;
+
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+};
+// -------------------------------------------------------------------
+
 class Debate final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate.Debate) */ {
  public:
@@ -475,7 +520,7 @@ class Debate final : public ::google::protobuf::Message
     return reinterpret_cast<const Debate*>(
         &_Debate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
   inline void Swap(Debate* other) {
     if (other == this) return;
@@ -770,7 +815,7 @@ class Claim final : public ::google::protobuf::Message
     return reinterpret_cast<const Claim*>(
         &_Claim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 0;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(Claim& a, Claim& b) { a.Swap(&b); }
   inline void Swap(Claim* other) {
     if (other == this) return;
@@ -859,6 +904,7 @@ class Claim final : public ::google::protobuf::Message
   enum : int {
     kHistoryFieldNumber = 10,
     kLinkIdsFieldNumber = 12,
+    kUserStatusesFieldNumber = 13,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kIdFieldNumber = 1,
@@ -899,6 +945,21 @@ class Claim final : public ::google::protobuf::Message
   private:
   const ::google::protobuf::RepeatedField<::int32_t>& _internal_link_ids() const;
   ::google::protobuf::RepeatedField<::int32_t>* _internal_mutable_link_ids();
+
+  public:
+  // map<string, .debate.ClaimStatus> user_statuses = 13;
+  int user_statuses_size() const;
+  private:
+  int _internal_user_statuses_size() const;
+
+  public:
+  void clear_user_statuses() ;
+  const ::google::protobuf::Map<std::string, ::debate::ClaimStatus>& user_statuses() const;
+  ::google::protobuf::Map<std::string, ::debate::ClaimStatus>* mutable_user_statuses();
+
+  private:
+  const ::google::protobuf::Map<std::string, ::debate::ClaimStatus>& _internal_user_statuses() const;
+  ::google::protobuf::Map<std::string, ::debate::ClaimStatus>* _internal_mutable_user_statuses();
 
   public:
   // string sentence = 2;
@@ -978,8 +1039,8 @@ class Claim final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 8, 1,
-      48, 2>
+      4, 9, 2,
+      61, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -999,6 +1060,10 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
     ::google::protobuf::RepeatedField<::int32_t> link_ids_;
     ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
+    ::google::protobuf::internal::MapField<Claim_UserStatusesEntry_DoNotUse, std::string, ::debate::ClaimStatus,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
+                      ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>
+        user_statuses_;
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::int32_t id_;
@@ -1072,7 +1137,7 @@ class ClaimState final : public ::google::protobuf::Message
     return reinterpret_cast<const ClaimState*>(
         &_ClaimState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(ClaimState& a, ClaimState& b) { a.Swap(&b); }
   inline void Swap(ClaimState* other) {
     if (other == this) return;
@@ -1237,6 +1302,8 @@ class ClaimState final : public ::google::protobuf::Message
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // Claim
@@ -1517,6 +1584,34 @@ Claim::_internal_link_ids() const {
 inline ::google::protobuf::RepeatedField<::int32_t>* Claim::_internal_mutable_link_ids() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.link_ids_;
+}
+
+// map<string, .debate.ClaimStatus> user_statuses = 13;
+inline int Claim::_internal_user_statuses_size() const {
+  return _internal_user_statuses().size();
+}
+inline int Claim::user_statuses_size() const {
+  return _internal_user_statuses_size();
+}
+inline void Claim::clear_user_statuses() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_statuses_.Clear();
+}
+inline const ::google::protobuf::Map<std::string, ::debate::ClaimStatus>& Claim::_internal_user_statuses() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.user_statuses_.GetMap();
+}
+inline const ::google::protobuf::Map<std::string, ::debate::ClaimStatus>& Claim::user_statuses() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_map:debate.Claim.user_statuses)
+  return _internal_user_statuses();
+}
+inline ::google::protobuf::Map<std::string, ::debate::ClaimStatus>* Claim::_internal_mutable_user_statuses() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.user_statuses_.MutableMap();
+}
+inline ::google::protobuf::Map<std::string, ::debate::ClaimStatus>* Claim::mutable_user_statuses() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_map:debate.Claim.user_statuses)
+  return _internal_mutable_user_statuses();
 }
 
 // -------------------------------------------------------------------

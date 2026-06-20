@@ -29,6 +29,24 @@ rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
 	}
 }
 
+// Look up the per-user claim status from the user_statuses map.
+// If the viewer has no entry, default to UNDETERMINED.
+// If the viewer IS the creator and has no entry, default to TRUE_CLAIM.
+rendering_info::ClaimStatus MapClaimStatusForUser(
+		const debate::Claim& claim,
+		int viewer_user_id,
+		const std::string& viewer_username) {
+	const auto& user_statuses = claim.user_statuses();
+	auto it = user_statuses.find(viewer_username);
+	if (it != user_statuses.end()) {
+		return MapClaimStatus(it->second);
+	}
+	if (viewer_user_id == claim.creator_id()) {
+		return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
+	}
+	return rendering_info::CLAIM_STATUS_UNDETERMINED;
+}
+
 rendering_info::DebateActionType MapDebateAction(
 	user_engagement::DebatingInfo_CurrentDebateAction_ActionType actionType
 ) {
@@ -58,8 +76,9 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
 	
-	// info.set_viewer_user_id(userProto.user_id());
-	// info.set_viewer_username(userProto.username());
+	// Set viewer metadata for per-user claim status lookup
+	info.set_viewer_user_id(userProto.user_id());
+	info.set_viewer_username(userProto.username());
 	info.set_scope_type(MapScopeType(userProto.current_scope().scopetype()));
 
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
@@ -117,7 +136,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	currentClaim->set_id(currentClaimProto.id());
 	currentClaim->set_sentence(currentClaimProto.sentence());
 	currentClaim->set_creator_id(currentClaimProto.creator_id());
-	currentClaim->set_status(MapClaimStatus(currentClaimProto.status()));
+	currentClaim->set_status(MapClaimStatusForUser(currentClaimProto, userProto.user_id(), userProto.username()));
 	info.set_is_challenge_debate(false);
 
 	std::unordered_set<int> visibleClaimIds;
@@ -156,7 +175,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 				outChild->set_id(childClaim.id());
 				outChild->set_sentence(childClaim.sentence());
 				outChild->set_creator_id(childClaim.creator_id());
-				outChild->set_status(MapClaimStatus(childClaim.status()));
+				outChild->set_status(MapClaimStatusForUser(childClaim, userProto.user_id(), userProto.username()));
 				visibleClaimIds.insert(childClaim.id());
 			} else {
 				Log::warn("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");

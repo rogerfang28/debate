@@ -76,6 +76,12 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     rootClaim.set_creator_id(creator_id);
+    rootClaim.set_status(debate::ClaimStatus::UNDETERMINED);
+
+    // Creator sees their own claim as TRUE_CLAIM
+    user::User creatorProto = getUserProtobuf(creator_id);
+    (*rootClaim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
+
     addClaimToDB(rootClaim, creator_id, newId);
     debate.set_root_claim_id(rootClaim.id());
     std::vector<uint8_t> updatedSerializedDebate(debate.ByteSizeLong());
@@ -136,6 +142,11 @@ int DebateWrapper::createClaim(
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
     claim.set_status(debate::ClaimStatus::UNDETERMINED);
+
+    // Creator sees their own claim as TRUE_CLAIM
+    user::User creatorProto = getUserProtobuf(user_id);
+    (*claim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
+
     addClaimToDB(claim, user_id, debate_id);
     return claim.id();
 }
@@ -156,6 +167,11 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
     childClaim.set_status(debate::ClaimStatus::UNDETERMINED);
+
+    // Creator sees their own claim as TRUE_CLAIM
+    user::User creatorProto = getUserProtobuf(user_id);
+    (*childClaim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
+
     addClaimToDB(childClaim, user_id, debate_id);
     addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
     Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");

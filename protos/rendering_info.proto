@@ -4,10 +4,9 @@ package rendering_info;
 
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
-	// Viewer metadata used for ownership checks and logging.
-	// not needed currently
-	// int32 viewer_user_id = 1;
-	// string viewer_username = 2;
+	// Viewer metadata — used for ownership checks and per-user claim status.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
 
 	// Top-level page routing/context.
 	int32 debate_id = 3;
@@ -34,12 +33,16 @@ message DebatePageRenderingInfo {
 
 // Extra rendering payload for full-debate view.
 message FullDebateViewInfo {
+	// Viewer metadata — used for per-user claim status lookup.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
+
 	// Chronological list of summarized steps. The order in this repeated field
 	// is the timeline order (earliest to latest).
-	repeated Steps steps = 1;
+	repeated Steps steps = 3;
 
 	// Tree-structured data used by the full-debate map renderer.
-	FullDebateTree full_debate_tree = 2;
+	FullDebateTree full_debate_tree = 4;
 }
 
 // Map-friendly full debate graph (claims as nodes and typed edges).

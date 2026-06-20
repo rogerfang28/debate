@@ -368,12 +368,16 @@ inline constexpr DebatePageRenderingInfo::Impl_::Impl_(
         children_claims_{},
         links_{},
         current_challenges_{},
+        viewer_username_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         current_claim_description_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         current_claim_{nullptr},
         connecting_info_{nullptr},
         challenging_info_{nullptr},
+        viewer_user_id_{0},
         debate_id_{0},
         scope_type_{static_cast< ::rendering_info::ScopeType >(0)},
         is_challenge_debate_{false},
@@ -404,7 +408,11 @@ inline constexpr FullDebateViewInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         steps_{},
-        full_debate_tree_{nullptr} {}
+        viewer_username_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        full_debate_tree_{nullptr},
+        viewer_user_id_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR FullDebateViewInfo::FullDebateViewInfo(::_pbi::ConstantInitialized)
@@ -440,6 +448,8 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.viewer_user_id_),
+        PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.viewer_username_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.debate_id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.scope_type_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.is_challenge_debate_),
@@ -452,6 +462,8 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.current_action_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.connecting_info_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::DebatePageRenderingInfo, _impl_.challenging_info_),
+        ~0u,
+        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -472,8 +484,12 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateViewInfo, _impl_.viewer_user_id_),
+        PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateViewInfo, _impl_.viewer_username_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateViewInfo, _impl_.steps_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateViewInfo, _impl_.full_debate_tree_),
+        ~0u,
+        ~0u,
         ~0u,
         0,
         ~0u,  // no _has_bits_
@@ -616,19 +632,19 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 20, -1, sizeof(::rendering_info::DebatePageRenderingInfo)},
-        {32, 42, -1, sizeof(::rendering_info::FullDebateViewInfo)},
-        {44, -1, -1, sizeof(::rendering_info::FullDebateTree)},
-        {55, -1, -1, sizeof(::rendering_info::FullDebateTreeNode)},
-        {69, -1, -1, sizeof(::rendering_info::FullDebateTreeLink)},
-        {85, -1, -1, sizeof(::rendering_info::Steps)},
-        {95, -1, -1, sizeof(::rendering_info::HomePageRenderingInfo)},
-        {107, -1, -1, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
-        {120, -1, -1, sizeof(::rendering_info::ClaimRenderInfo)},
-        {132, -1, -1, sizeof(::rendering_info::LinkRenderInfo)},
-        {145, -1, -1, sizeof(::rendering_info::ChallengeRenderInfo)},
-        {157, -1, -1, sizeof(::rendering_info::ConnectingRenderInfo)},
-        {169, -1, -1, sizeof(::rendering_info::ChallengingRenderInfo)},
+        {0, 22, -1, sizeof(::rendering_info::DebatePageRenderingInfo)},
+        {36, 48, -1, sizeof(::rendering_info::FullDebateViewInfo)},
+        {52, -1, -1, sizeof(::rendering_info::FullDebateTree)},
+        {63, -1, -1, sizeof(::rendering_info::FullDebateTreeNode)},
+        {77, -1, -1, sizeof(::rendering_info::FullDebateTreeLink)},
+        {93, -1, -1, sizeof(::rendering_info::Steps)},
+        {103, -1, -1, sizeof(::rendering_info::HomePageRenderingInfo)},
+        {115, -1, -1, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
+        {128, -1, -1, sizeof(::rendering_info::ClaimRenderInfo)},
+        {140, -1, -1, sizeof(::rendering_info::LinkRenderInfo)},
+        {153, -1, -1, sizeof(::rendering_info::ChallengeRenderInfo)},
+        {165, -1, -1, sizeof(::rendering_info::ConnectingRenderInfo)},
+        {177, -1, -1, sizeof(::rendering_info::ChallengingRenderInfo)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::rendering_info::_DebatePageRenderingInfo_default_instance_._instance,
@@ -647,82 +663,84 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_rendering_5finfo_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\024rendering_info.proto\022\016rendering_info\"\330"
-    "\004\n\027DebatePageRenderingInfo\022\021\n\tdebate_id\030"
-    "\003 \001(\005\022-\n\nscope_type\030\004 \001(\0162\031.rendering_in"
-    "fo.ScopeType\022\033\n\023is_challenge_debate\030\005 \001("
-    "\010\0226\n\rcurrent_claim\030\006 \001(\0132\037.rendering_inf"
-    "o.ClaimRenderInfo\022!\n\031current_claim_descr"
-    "iption\030\007 \001(\t\0228\n\017children_claims\030\010 \003(\0132\037."
-    "rendering_info.ClaimRenderInfo\022-\n\005links\030"
-    "\t \003(\0132\036.rendering_info.LinkRenderInfo\022\?\n"
-    "\022current_challenges\030\n \003(\0132#.rendering_in"
-    "fo.ChallengeRenderInfo\022\037\n\027modifying_curr"
-    "ent_claim\030\013 \001(\010\0228\n\016current_action\030\014 \001(\0162"
-    " .rendering_info.DebateActionType\022=\n\017con"
-    "necting_info\030\r \001(\0132$.rendering_info.Conn"
-    "ectingRenderInfo\022\?\n\020challenging_info\030\016 \001"
-    "(\0132%.rendering_info.ChallengingRenderInf"
-    "o\"t\n\022FullDebateViewInfo\022$\n\005steps\030\001 \003(\0132\025"
-    ".rendering_info.Steps\0228\n\020full_debate_tre"
-    "e\030\002 \001(\0132\036.rendering_info.FullDebateTree\""
-    "\215\001\n\016FullDebateTree\022\025\n\rroot_claim_id\030\001 \001("
-    "\005\0221\n\005nodes\030\002 \003(\0132\".rendering_info.FullDe"
-    "bateTreeNode\0221\n\005links\030\003 \003(\0132\".rendering_"
-    "info.FullDebateTreeLink\"\254\001\n\022FullDebateTr"
-    "eeNode\022\020\n\010claim_id\030\001 \001(\005\022\020\n\010sentence\030\002 \001"
-    "(\t\022\022\n\ncreator_id\030\003 \001(\005\022+\n\006status\030\004 \001(\0162\033"
-    ".rendering_info.ClaimStatus\022\030\n\020parent_cl"
-    "aim_ids\030\005 \003(\005\022\027\n\017child_claim_ids\030\006 \003(\005\"\340"
-    "\001\n\022FullDebateTreeLink\022\025\n\rfrom_claim_id\030\001"
-    " \001(\005\022\023\n\013to_claim_id\030\002 \001(\005\0229\n\tlink_type\030\003"
-    " \001(\0162&.rendering_info.FullDebateTreeLink"
-    "Type\022\024\n\014is_challenge\030\004 \001(\010\022\017\n\007link_id\030\005 "
-    "\001(\005\022\024\n\014challenge_id\030\006 \001(\005\022\022\n\nconnection\030"
-    "\007 \001(\t\022\022\n\ncreator_id\030\010 \001(\005\"*\n\005Steps\022\020\n\010cl"
-    "aim_id\030\001 \001(\005\022\017\n\007summary\030\002 \001(\t\"\262\001\n\025HomePa"
-    "geRenderingInfo\022\026\n\016viewer_user_id\030\001 \001(\005\022"
-    "\027\n\017viewer_username\030\002 \001(\t\022D\n\021available_de"
-    "bates\030\003 \003(\0132).rendering_info.HomeDebateT"
-    "opicRenderInfo\022\"\n\032can_create_or_join_deb"
-    "ates\030\004 \001(\010\"\221\001\n\031HomeDebateTopicRenderInfo"
-    "\022\034\n\024debate_root_claim_id\030\001 \001(\005\022\r\n\005topic\030"
-    "\002 \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022\024\n\014is_challeng"
-    "e\030\004 \001(\010\022\035\n\025claim_its_challenging\030\005 \001(\t\"p"
-    "\n\017ClaimRenderInfo\022\n\n\002id\030\001 \001(\005\022\020\n\010sentenc"
-    "e\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022+\n\006status\030\004 "
-    "\001(\0162\033.rendering_info.ClaimStatus\"n\n\016Link"
-    "RenderInfo\022\n\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002"
-    " \001(\005\022\022\n\nconnect_to\030\003 \001(\005\022\022\n\nconnection\030\004"
-    " \001(\t\022\022\n\ncreator_id\030\005 \001(\005\"\\\n\023ChallengeRen"
-    "derInfo\022\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023\n"
-    "\013description\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\"t"
-    "\n\024ConnectingRenderInfo\022\025\n\rfrom_claim_id\030"
-    "\001 \001(\005\022\023\n\013to_claim_id\030\002 \001(\005\022\022\n\nconnecting"
-    "\030\003 \001(\010\022\034\n\024opened_connect_modal\030\004 \001(\010\"\\\n\025"
-    "ChallengingRenderInfo\022\021\n\tclaim_ids\030\001 \003(\005"
-    "\022\020\n\010link_ids\030\002 \003(\005\022\036\n\026opened_challenge_m"
-    "odal\030\003 \001(\010*\207\001\n\026FullDebateTreeLinkType\022*\n"
-    "&FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED\020"
-    "\000\022!\n\035FULL_DEBATE_TREE_PARENT_CHILD\020\001\022\036\n\032"
-    "FULL_DEBATE_TREE_CHALLENGE\020\002*J\n\tScopeTyp"
-    "e\022\032\n\026SCOPE_TYPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_"
-    "CLAIM\020\001\022\017\n\013FULL_DEBATE\020\002*\205\001\n\013ClaimStatus"
-    "\022\034\n\030CLAIM_STATUS_UNSPECIFIED\020\000\022\035\n\031CLAIM_"
-    "STATUS_UNDETERMINED\020\001\022\033\n\027CLAIM_STATUS_TR"
-    "UE_CLAIM\020\002\022\034\n\030CLAIM_STATUS_FALSE_CLAIM\020\003"
-    "*\317\001\n\020DebateActionType\022\033\n\027ACTION_TYPE_UNS"
-    "PECIFIED\020\000\022\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_"
-    "CHILD_CLAIM\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021"
-    "CHALLENGING_CLAIM\020\004\022\035\n\031EDITING_CLAIM_DES"
-    "CRIPTION\020\005\022\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPORTI"
-    "NG_CLAIM\020\007b\006proto3"
+    "\n\024rendering_info.proto\022\016rendering_info\"\211"
+    "\005\n\027DebatePageRenderingInfo\022\026\n\016viewer_use"
+    "r_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 \001(\t\022\021\n\td"
+    "ebate_id\030\003 \001(\005\022-\n\nscope_type\030\004 \001(\0162\031.ren"
+    "dering_info.ScopeType\022\033\n\023is_challenge_de"
+    "bate\030\005 \001(\010\0226\n\rcurrent_claim\030\006 \001(\0132\037.rend"
+    "ering_info.ClaimRenderInfo\022!\n\031current_cl"
+    "aim_description\030\007 \001(\t\0228\n\017children_claims"
+    "\030\010 \003(\0132\037.rendering_info.ClaimRenderInfo\022"
+    "-\n\005links\030\t \003(\0132\036.rendering_info.LinkRend"
+    "erInfo\022\?\n\022current_challenges\030\n \003(\0132#.ren"
+    "dering_info.ChallengeRenderInfo\022\037\n\027modif"
+    "ying_current_claim\030\013 \001(\010\0228\n\016current_acti"
+    "on\030\014 \001(\0162 .rendering_info.DebateActionTy"
+    "pe\022=\n\017connecting_info\030\r \001(\0132$.rendering_"
+    "info.ConnectingRenderInfo\022\?\n\020challenging"
+    "_info\030\016 \001(\0132%.rendering_info.Challenging"
+    "RenderInfo\"\245\001\n\022FullDebateViewInfo\022\026\n\016vie"
+    "wer_user_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 \001"
+    "(\t\022$\n\005steps\030\003 \003(\0132\025.rendering_info.Steps"
+    "\0228\n\020full_debate_tree\030\004 \001(\0132\036.rendering_i"
+    "nfo.FullDebateTree\"\215\001\n\016FullDebateTree\022\025\n"
+    "\rroot_claim_id\030\001 \001(\005\0221\n\005nodes\030\002 \003(\0132\".re"
+    "ndering_info.FullDebateTreeNode\0221\n\005links"
+    "\030\003 \003(\0132\".rendering_info.FullDebateTreeLi"
+    "nk\"\254\001\n\022FullDebateTreeNode\022\020\n\010claim_id\030\001 "
+    "\001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001("
+    "\005\022+\n\006status\030\004 \001(\0162\033.rendering_info.Claim"
+    "Status\022\030\n\020parent_claim_ids\030\005 \003(\005\022\027\n\017chil"
+    "d_claim_ids\030\006 \003(\005\"\340\001\n\022FullDebateTreeLink"
+    "\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_claim_id\030\002"
+    " \001(\005\0229\n\tlink_type\030\003 \001(\0162&.rendering_info"
+    ".FullDebateTreeLinkType\022\024\n\014is_challenge\030"
+    "\004 \001(\010\022\017\n\007link_id\030\005 \001(\005\022\024\n\014challenge_id\030\006"
+    " \001(\005\022\022\n\nconnection\030\007 \001(\t\022\022\n\ncreator_id\030\010"
+    " \001(\005\"*\n\005Steps\022\020\n\010claim_id\030\001 \001(\005\022\017\n\007summa"
+    "ry\030\002 \001(\t\"\262\001\n\025HomePageRenderingInfo\022\026\n\016vi"
+    "ewer_user_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 "
+    "\001(\t\022D\n\021available_debates\030\003 \003(\0132).renderi"
+    "ng_info.HomeDebateTopicRenderInfo\022\"\n\032can"
+    "_create_or_join_debates\030\004 \001(\010\"\221\001\n\031HomeDe"
+    "bateTopicRenderInfo\022\034\n\024debate_root_claim"
+    "_id\030\001 \001(\005\022\r\n\005topic\030\002 \001(\t\022\022\n\ncreator_id\030\003"
+    " \001(\005\022\024\n\014is_challenge\030\004 \001(\010\022\035\n\025claim_its_"
+    "challenging\030\005 \001(\t\"p\n\017ClaimRenderInfo\022\n\n\002"
+    "id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\ncreator_id"
+    "\030\003 \001(\005\022+\n\006status\030\004 \001(\0162\033.rendering_info."
+    "ClaimStatus\"n\n\016LinkRenderInfo\022\n\n\002id\030\001 \001("
+    "\005\022\024\n\014connect_from\030\002 \001(\005\022\022\n\nconnect_to\030\003 "
+    "\001(\005\022\022\n\nconnection\030\004 \001(\t\022\022\n\ncreator_id\030\005 "
+    "\001(\005\"\\\n\023ChallengeRenderInfo\022\n\n\002id\030\001 \001(\005\022\020"
+    "\n\010sentence\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\022\n"
+    "\ncreator_id\030\004 \001(\005\"t\n\024ConnectingRenderInf"
+    "o\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_claim_id\030"
+    "\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034\n\024opened_conn"
+    "ect_modal\030\004 \001(\010\"\\\n\025ChallengingRenderInfo"
+    "\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link_ids\030\002 \003(\005\022\036\n"
+    "\026opened_challenge_modal\030\003 \001(\010*\207\001\n\026FullDe"
+    "bateTreeLinkType\022*\n&FULL_DEBATE_TREE_LIN"
+    "K_TYPE_UNSPECIFIED\020\000\022!\n\035FULL_DEBATE_TREE"
+    "_PARENT_CHILD\020\001\022\036\n\032FULL_DEBATE_TREE_CHAL"
+    "LENGE\020\002*J\n\tScopeType\022\032\n\026SCOPE_TYPE_UNSPE"
+    "CIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013FULL_DEBAT"
+    "E\020\002*\205\001\n\013ClaimStatus\022\034\n\030CLAIM_STATUS_UNSP"
+    "ECIFIED\020\000\022\035\n\031CLAIM_STATUS_UNDETERMINED\020\001"
+    "\022\033\n\027CLAIM_STATUS_TRUE_CLAIM\020\002\022\034\n\030CLAIM_S"
+    "TATUS_FALSE_CLAIM\020\003*\317\001\n\020DebateActionType"
+    "\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022\021\n\rVIEWING"
+    "_CLAIM\020\001\022\026\n\022ADDING_CHILD_CLAIM\020\002\022\025\n\021CONN"
+    "ECTING_CLAIMS\020\003\022\025\n\021CHALLENGING_CLAIM\020\004\022\035"
+    "\n\031EDITING_CLAIM_DESCRIPTION\020\005\022\021\n\rEDITING"
+    "_CLAIM\020\006\022\023\n\017REPORTING_CLAIM\020\007b\006proto3"
 };
 static ::absl::once_flag descriptor_table_rendering_5finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_rendering_5finfo_2eproto = {
     false,
     false,
-    2778,
+    2877,
     descriptor_table_protodef_rendering_5finfo_2eproto,
     "rendering_info.proto",
     &descriptor_table_rendering_5finfo_2eproto_once,
@@ -799,6 +817,7 @@ inline PROTOBUF_NDEBUG_INLINE DebatePageRenderingInfo::Impl_::Impl_(
         children_claims_{visibility, arena, from.children_claims_},
         links_{visibility, arena, from.links_},
         current_challenges_{visibility, arena, from.current_challenges_},
+        viewer_username_(arena, from.viewer_username_),
         current_claim_description_(arena, from.current_claim_description_) {}
 
 DebatePageRenderingInfo::DebatePageRenderingInfo(
@@ -825,11 +844,11 @@ DebatePageRenderingInfo::DebatePageRenderingInfo(
                               arena, *from._impl_.challenging_info_)
                         : nullptr;
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, debate_id_),
+               offsetof(Impl_, viewer_user_id_),
            reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, debate_id_),
+               offsetof(Impl_, viewer_user_id_),
            offsetof(Impl_, current_action_) -
-               offsetof(Impl_, debate_id_) +
+               offsetof(Impl_, viewer_user_id_) +
                sizeof(Impl_::current_action_));
 
   // @@protoc_insertion_point(copy_constructor:rendering_info.DebatePageRenderingInfo)
@@ -841,6 +860,7 @@ inline PROTOBUF_NDEBUG_INLINE DebatePageRenderingInfo::Impl_::Impl_(
         children_claims_{visibility, arena},
         links_{visibility, arena},
         current_challenges_{visibility, arena},
+        viewer_username_(arena),
         current_claim_description_(arena) {}
 
 inline void DebatePageRenderingInfo::SharedCtor(::_pb::Arena* arena) {
@@ -860,6 +880,7 @@ inline void DebatePageRenderingInfo::SharedDtor(MessageLite& self) {
   DebatePageRenderingInfo& this_ = static_cast<DebatePageRenderingInfo&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.viewer_username_.Destroy();
   this_._impl_.current_claim_description_.Destroy();
   delete this_._impl_.current_claim_;
   delete this_._impl_.connecting_info_;
@@ -923,15 +944,15 @@ const ::google::protobuf::internal::ClassData* DebatePageRenderingInfo::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 12, 6, 80, 2> DebatePageRenderingInfo::_table_ = {
+const ::_pbi::TcParseTable<4, 14, 6, 95, 2> DebatePageRenderingInfo::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_._has_bits_),
     0, // no _extensions_
     14, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294950915,  // skipmap
+    4294950912,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    12,  // num_field_entries
+    14,  // num_field_entries
     6,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -942,8 +963,12 @@ const ::_pbi::TcParseTable<4, 12, 6, 80, 2> DebatePageRenderingInfo::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // int32 viewer_user_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebatePageRenderingInfo, _impl_.viewer_user_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.viewer_user_id_)}},
+    // string viewer_username = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.viewer_username_)}},
     // int32 debate_id = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebatePageRenderingInfo, _impl_.debate_id_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.debate_id_)}},
@@ -984,6 +1009,12 @@ const ::_pbi::TcParseTable<4, 12, 6, 80, 2> DebatePageRenderingInfo::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
+    // int32 viewer_user_id = 1;
+    {PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.viewer_user_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string viewer_username = 2;
+    {PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.viewer_username_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 debate_id = 3;
     {PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.debate_id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
@@ -1028,8 +1059,9 @@ const ::_pbi::TcParseTable<4, 12, 6, 80, 2> DebatePageRenderingInfo::_table_ = {
     {::_pbi::TcParser::GetTable<::rendering_info::ConnectingRenderInfo>()},
     {::_pbi::TcParser::GetTable<::rendering_info::ChallengingRenderInfo>()},
   }}, {{
-    "\46\0\0\0\0\31\0\0\0\0\0\0\0\0\0\0"
+    "\46\0\17\0\0\0\0\31\0\0\0\0\0\0\0\0"
     "rendering_info.DebatePageRenderingInfo"
+    "viewer_username"
     "current_claim_description"
   }},
 };
@@ -1044,6 +1076,7 @@ PROTOBUF_NOINLINE void DebatePageRenderingInfo::Clear() {
   _impl_.children_claims_.Clear();
   _impl_.links_.Clear();
   _impl_.current_challenges_.Clear();
+  _impl_.viewer_username_.ClearToEmpty();
   _impl_.current_claim_description_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
@@ -1060,9 +1093,9 @@ PROTOBUF_NOINLINE void DebatePageRenderingInfo::Clear() {
       _impl_.challenging_info_->Clear();
     }
   }
-  ::memset(&_impl_.debate_id_, 0, static_cast<::size_t>(
+  ::memset(&_impl_.viewer_user_id_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.current_action_) -
-      reinterpret_cast<char*>(&_impl_.debate_id_)) + sizeof(_impl_.current_action_));
+      reinterpret_cast<char*>(&_impl_.viewer_user_id_)) + sizeof(_impl_.current_action_));
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1081,6 +1114,21 @@ PROTOBUF_NOINLINE void DebatePageRenderingInfo::Clear() {
           // @@protoc_insertion_point(serialize_to_array_start:rendering_info.DebatePageRenderingInfo)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
+
+          // int32 viewer_user_id = 1;
+          if (this_._internal_viewer_user_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_viewer_user_id(), target);
+          }
+
+          // string viewer_username = 2;
+          if (!this_._internal_viewer_username().empty()) {
+            const std::string& _s = this_._internal_viewer_username();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "rendering_info.DebatePageRenderingInfo.viewer_username");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
 
           // int32 debate_id = 3;
           if (this_._internal_debate_id() != 0) {
@@ -1228,6 +1276,11 @@ PROTOBUF_NOINLINE void DebatePageRenderingInfo::Clear() {
             }
           }
            {
+            // string viewer_username = 2;
+            if (!this_._internal_viewer_username().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_viewer_username());
+            }
             // string current_claim_description = 7;
             if (!this_._internal_current_claim_description().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1253,6 +1306,11 @@ PROTOBUF_NOINLINE void DebatePageRenderingInfo::Clear() {
             }
           }
            {
+            // int32 viewer_user_id = 1;
+            if (this_._internal_viewer_user_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_viewer_user_id());
+            }
             // int32 debate_id = 3;
             if (this_._internal_debate_id() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -1296,6 +1354,9 @@ void DebatePageRenderingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg,
       from._internal_links());
   _this->_internal_mutable_current_challenges()->MergeFrom(
       from._internal_current_challenges());
+  if (!from._internal_viewer_username().empty()) {
+    _this->_internal_set_viewer_username(from._internal_viewer_username());
+  }
   if (!from._internal_current_claim_description().empty()) {
     _this->_internal_set_current_claim_description(from._internal_current_claim_description());
   }
@@ -1328,6 +1389,9 @@ void DebatePageRenderingInfo::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.challenging_info_->MergeFrom(*from._impl_.challenging_info_);
       }
     }
+  }
+  if (from._internal_viewer_user_id() != 0) {
+    _this->_impl_.viewer_user_id_ = from._impl_.viewer_user_id_;
   }
   if (from._internal_debate_id() != 0) {
     _this->_impl_.debate_id_ = from._impl_.debate_id_;
@@ -1365,6 +1429,7 @@ void DebatePageRenderingInfo::InternalSwap(DebatePageRenderingInfo* PROTOBUF_RES
   _impl_.children_claims_.InternalSwap(&other->_impl_.children_claims_);
   _impl_.links_.InternalSwap(&other->_impl_.links_);
   _impl_.current_challenges_.InternalSwap(&other->_impl_.current_challenges_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.viewer_username_, &other->_impl_.viewer_username_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.current_claim_description_, &other->_impl_.current_claim_description_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(DebatePageRenderingInfo, _impl_.current_action_)
@@ -1401,7 +1466,8 @@ inline PROTOBUF_NDEBUG_INLINE FullDebateViewInfo::Impl_::Impl_(
     const Impl_& from, const ::rendering_info::FullDebateViewInfo& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        steps_{visibility, arena, from.steps_} {}
+        steps_{visibility, arena, from.steps_},
+        viewer_username_(arena, from.viewer_username_) {}
 
 FullDebateViewInfo::FullDebateViewInfo(
     ::google::protobuf::Arena* arena,
@@ -1420,6 +1486,7 @@ FullDebateViewInfo::FullDebateViewInfo(
   _impl_.full_debate_tree_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::rendering_info::FullDebateTree>(
                               arena, *from._impl_.full_debate_tree_)
                         : nullptr;
+  _impl_.viewer_user_id_ = from._impl_.viewer_user_id_;
 
   // @@protoc_insertion_point(copy_constructor:rendering_info.FullDebateViewInfo)
 }
@@ -1427,11 +1494,17 @@ inline PROTOBUF_NDEBUG_INLINE FullDebateViewInfo::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0},
-        steps_{visibility, arena} {}
+        steps_{visibility, arena},
+        viewer_username_(arena) {}
 
 inline void FullDebateViewInfo::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.full_debate_tree_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, full_debate_tree_),
+           0,
+           offsetof(Impl_, viewer_user_id_) -
+               offsetof(Impl_, full_debate_tree_) +
+               sizeof(Impl_::viewer_user_id_));
 }
 FullDebateViewInfo::~FullDebateViewInfo() {
   // @@protoc_insertion_point(destructor:rendering_info.FullDebateViewInfo)
@@ -1441,6 +1514,7 @@ inline void FullDebateViewInfo::SharedDtor(MessageLite& self) {
   FullDebateViewInfo& this_ = static_cast<FullDebateViewInfo&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.viewer_username_.Destroy();
   delete this_._impl_.full_debate_tree_;
   this_._impl_.~Impl_();
 }
@@ -1457,7 +1531,7 @@ constexpr auto FullDebateViewInfo::InternalNewImpl_() {
                   ::google::protobuf::Message::internal_visibility()),
   });
   if (arena_bits.has_value()) {
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
         sizeof(FullDebateViewInfo), alignof(FullDebateViewInfo), *arena_bits);
   } else {
     return ::google::protobuf::internal::MessageCreator(&FullDebateViewInfo::PlacementNew_,
@@ -1493,15 +1567,15 @@ const ::google::protobuf::internal::ClassData* FullDebateViewInfo::GetClassData(
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 2, 0, 2> FullDebateViewInfo::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 2, 57, 2> FullDebateViewInfo::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    4,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -1511,25 +1585,40 @@ const ::_pbi::TcParseTable<1, 2, 2, 0, 2> FullDebateViewInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::rendering_info::FullDebateViewInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .rendering_info.FullDebateTree full_debate_tree = 2;
+    // .rendering_info.FullDebateTree full_debate_tree = 4;
     {::_pbi::TcParser::FastMtS1,
-     {18, 0, 1, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.full_debate_tree_)}},
-    // repeated .rendering_info.Steps steps = 1;
+     {34, 0, 1, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.full_debate_tree_)}},
+    // int32 viewer_user_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FullDebateViewInfo, _impl_.viewer_user_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.viewer_user_id_)}},
+    // string viewer_username = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.viewer_username_)}},
+    // repeated .rendering_info.Steps steps = 3;
     {::_pbi::TcParser::FastMtR1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.steps_)}},
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.steps_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .rendering_info.Steps steps = 1;
+    // int32 viewer_user_id = 1;
+    {PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.viewer_user_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // string viewer_username = 2;
+    {PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.viewer_username_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .rendering_info.Steps steps = 3;
     {PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.steps_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .rendering_info.FullDebateTree full_debate_tree = 2;
+    // .rendering_info.FullDebateTree full_debate_tree = 4;
     {PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.full_debate_tree_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::rendering_info::Steps>()},
     {::_pbi::TcParser::GetTable<::rendering_info::FullDebateTree>()},
   }}, {{
+    "\41\0\17\0\0\0\0\0"
+    "rendering_info.FullDebateViewInfo"
+    "viewer_username"
   }},
 };
 
@@ -1541,11 +1630,13 @@ PROTOBUF_NOINLINE void FullDebateViewInfo::Clear() {
   (void) cached_has_bits;
 
   _impl_.steps_.Clear();
+  _impl_.viewer_username_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(_impl_.full_debate_tree_ != nullptr);
     _impl_.full_debate_tree_->Clear();
   }
+  _impl_.viewer_user_id_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1565,22 +1656,37 @@ PROTOBUF_NOINLINE void FullDebateViewInfo::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated .rendering_info.Steps steps = 1;
+          // int32 viewer_user_id = 1;
+          if (this_._internal_viewer_user_id() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_viewer_user_id(), target);
+          }
+
+          // string viewer_username = 2;
+          if (!this_._internal_viewer_username().empty()) {
+            const std::string& _s = this_._internal_viewer_username();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "rendering_info.FullDebateViewInfo.viewer_username");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          // repeated .rendering_info.Steps steps = 3;
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_steps_size());
                i < n; i++) {
             const auto& repfield = this_._internal_steps().Get(i);
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    1, repfield, repfield.GetCachedSize(),
+                    3, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .rendering_info.FullDebateTree full_debate_tree = 2;
+          // .rendering_info.FullDebateTree full_debate_tree = 4;
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                2, *this_._impl_.full_debate_tree_, this_._impl_.full_debate_tree_->GetCachedSize(), target,
+                4, *this_._impl_.full_debate_tree_, this_._impl_.full_debate_tree_->GetCachedSize(), target,
                 stream);
           }
 
@@ -1609,7 +1715,7 @@ PROTOBUF_NOINLINE void FullDebateViewInfo::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .rendering_info.Steps steps = 1;
+            // repeated .rendering_info.Steps steps = 3;
             {
               total_size += 1UL * this_._internal_steps_size();
               for (const auto& msg : this_._internal_steps()) {
@@ -1618,11 +1724,25 @@ PROTOBUF_NOINLINE void FullDebateViewInfo::Clear() {
             }
           }
            {
-            // .rendering_info.FullDebateTree full_debate_tree = 2;
+            // string viewer_username = 2;
+            if (!this_._internal_viewer_username().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_viewer_username());
+            }
+          }
+           {
+            // .rendering_info.FullDebateTree full_debate_tree = 4;
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.full_debate_tree_);
+            }
+          }
+           {
+            // int32 viewer_user_id = 1;
+            if (this_._internal_viewer_user_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_viewer_user_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -1640,6 +1760,9 @@ void FullDebateViewInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, cons
 
   _this->_internal_mutable_steps()->MergeFrom(
       from._internal_steps());
+  if (!from._internal_viewer_username().empty()) {
+    _this->_internal_set_viewer_username(from._internal_viewer_username());
+  }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     ABSL_DCHECK(from._impl_.full_debate_tree_ != nullptr);
@@ -1649,6 +1772,9 @@ void FullDebateViewInfo::MergeImpl(::google::protobuf::MessageLite& to_msg, cons
     } else {
       _this->_impl_.full_debate_tree_->MergeFrom(*from._impl_.full_debate_tree_);
     }
+  }
+  if (from._internal_viewer_user_id() != 0) {
+    _this->_impl_.viewer_user_id_ = from._impl_.viewer_user_id_;
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
@@ -1664,10 +1790,18 @@ void FullDebateViewInfo::CopyFrom(const FullDebateViewInfo& from) {
 
 void FullDebateViewInfo::InternalSwap(FullDebateViewInfo* PROTOBUF_RESTRICT other) {
   using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.steps_.InternalSwap(&other->_impl_.steps_);
-  swap(_impl_.full_debate_tree_, other->_impl_.full_debate_tree_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.viewer_username_, &other->_impl_.viewer_username_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.viewer_user_id_)
+      + sizeof(FullDebateViewInfo::_impl_.viewer_user_id_)
+      - PROTOBUF_FIELD_OFFSET(FullDebateViewInfo, _impl_.full_debate_tree_)>(
+          reinterpret_cast<char*>(&_impl_.full_debate_tree_),
+          reinterpret_cast<char*>(&other->_impl_.full_debate_tree_));
 }
 
 ::google::protobuf::Metadata FullDebateViewInfo::GetMetadata() const {
