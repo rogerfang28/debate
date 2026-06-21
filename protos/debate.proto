@@ -15,7 +15,7 @@ message Claim {
   repeated ClaimState history = 10;
   ClaimStatus status = 11;
   repeated int32 link_ids = 12;
-  map<string, ClaimStatus> user_statuses = 13;  // username -> their view of this claim's status
+  map<string, ClaimStatus> user_statuses = 13;
 }
 
 enum ClaimStatus {

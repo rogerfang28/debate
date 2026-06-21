@@ -181,6 +181,11 @@ int DebateWrapper::addClaimUnderParent(
 void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id) {
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
+    // Creator sees their own claims as TRUE_CLAIM by default
+    std::string username = databaseWrapper.users.getUsername(user_id);
+    if (!username.empty()) {
+        (*claim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
+    }
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
     int newId = databaseWrapper.statements.addStatement(
