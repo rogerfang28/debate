@@ -11,6 +11,9 @@ export const PageRenderer: React.FC<PageRendererProps> = ({ page }) => {
 
   return (
     <div className="page-root fade-in" data-page-id={page.pageId}>
+      {page.title && (
+        <h1 className="page-title">{page.title}</h1>
+      )}
       {page.components.map((component: Component, idx: number) => (
         <ComponentRenderer key={component.id || idx} component={component} />
       ))}

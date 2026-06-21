@@ -8,11 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiUrl = env.VITE_API_URL?.trim()
-
-  if (!apiUrl) {
-    throw new Error('VITE_API_URL must be set')
-  }
+  const apiUrl = env.VITE_API_URL?.trim() || 'http://localhost:8080'
 
   return {
     root: __dirname,
