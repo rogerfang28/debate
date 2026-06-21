@@ -26,56 +26,140 @@ interface GraphComponentProps extends BaseComponentProps {
 }
 
 const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, style }) => {
-  const { nodes = [], edges = [] } = component;
+  const { nodes = [], edges = [], selectedNodeId } = component;
+
+  // Color mapping for node types
+  const getNodeColor = (type?: string, isSelected?: boolean) => {
+    if (isSelected) return { fill: 'var(--accent-indigo)', stroke: 'var(--accent-indigo-hover)' };
+    switch (type) {
+      case 'claim': return { fill: '#1e293b', stroke: 'var(--accent-blue)' };
+      case 'evidence': return { fill: '#1e293b', stroke: 'var(--accent-green)' };
+      case 'challenge': return { fill: '#1e293b', stroke: 'var(--accent-red)' };
+      case 'counter': return { fill: '#1e293b', stroke: 'var(--accent-orange)' };
+      default: return { fill: '#1e293b', stroke: 'var(--border-strong)' };
+    }
+  };
+
+  const getEdgeColor = (type?: string) => {
+    switch (type) {
+      case 'supports': return 'var(--accent-green)';
+      case 'challenges': return 'var(--accent-red)';
+      case 'counters': return 'var(--accent-orange)';
+      default: return 'var(--border-strong)';
+    }
+  };
 
   return (
-    <div id={component.id} className={className} style={style}>
-      <svg width="100%" height="100%" viewBox="0 0 800 600">
+    <div
+      id={component.id}
+      className={`node-graph ${className || ''}`}
+      style={{
+        ...style,
+        background: 'var(--surface-card)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 'var(--radius-lg)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <marker
+            id="arrowhead"
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-strong)" />
+          </marker>
+        </defs>
+
         {/* Render edges */}
         {edges.map((edge) => {
           const sourceNode = nodes.find(n => n.id === edge.source);
           const targetNode = nodes.find(n => n.id === edge.target);
-          
           if (!sourceNode || !targetNode) return null;
-          
+
+          const sx = sourceNode.x || 100;
+          const sy = sourceNode.y || 100;
+          const tx = targetNode.x || 200;
+          const ty = targetNode.y || 200;
+          const color = getEdgeColor(edge.type);
+
           return (
-            <line
-              key={edge.id}
-              x1={sourceNode.x || 100}
-              y1={sourceNode.y || 100}
-              x2={targetNode.x || 200}
-              y2={targetNode.y || 200}
-              stroke="#4b5563"
-              strokeWidth="2"
-              className="hover:stroke-blue-400 cursor-pointer"
-            />
+            <g key={edge.id}>
+              <line
+                x1={sx}
+                y1={sy}
+                x2={tx}
+                y2={ty}
+                stroke={color}
+                strokeWidth="2"
+                strokeOpacity="0.6"
+                markerEnd="url(#arrowhead)"
+                className="transition-all"
+              />
+            </g>
           );
         })}
-        
+
         {/* Render nodes */}
-        {nodes.map((node) => (
-          <g key={node.id}>
-            <circle
-              cx={node.x || Math.random() * 700 + 50}
-              cy={node.y || Math.random() * 500 + 50}
-              r="30"
-              fill="#1f2937"
-              stroke="#4b5563"
-              strokeWidth="2"
-              className="hover:fill-blue-600 cursor-pointer transition-colors"
-            />
-            <text
-              x={node.x || Math.random() * 700 + 50}
-              y={node.y || Math.random() * 500 + 55}
-              textAnchor="middle"
-              fill="white"
-              fontSize="12"
-              className="pointer-events-none"
-            >
-              {node.text.slice(0, 10)}...
-            </text>
-          </g>
-        ))}
+        {nodes.map((node) => {
+          const isSelected = node.id === selectedNodeId;
+          const { fill, stroke } = getNodeColor(node.type, isSelected);
+          const cx = node.x || Math.random() * 700 + 50;
+          const cy = node.y || Math.random() * 500 + 50;
+          const r = isSelected ? 34 : 28;
+
+          return (
+            <g key={node.id} className="cursor-pointer">
+              {/* Glow ring for selected */}
+              {isSelected && (
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={r + 6}
+                  fill="none"
+                  stroke={stroke}
+                  strokeWidth="2"
+                  strokeOpacity="0.3"
+                  filter="url(#glow)"
+                />
+              )}
+              {/* Node circle */}
+              <circle
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={fill}
+                stroke={stroke}
+                strokeWidth={isSelected ? 3 : 2}
+                className="transition-all"
+              />
+              {/* Node label */}
+              <text
+                x={cx}
+                y={cy + 4}
+                textAnchor="middle"
+                fill="var(--text-primary)"
+                fontSize="11"
+                fontWeight="500"
+                className="pointer-events-none"
+              >
+                {node.text.length > 12 ? node.text.slice(0, 12) + '…' : node.text}
+              </text>
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

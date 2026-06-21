@@ -1,5 +1,4 @@
 import React from "react";
-// @ts-ignore - Generated protobuf file
 import { ComponentType } from "../../../../src/gen/ts/layout_pb.ts";
 import buildClassName, { ComponentStyle } from "./buildClassName.ts";
 
@@ -11,8 +10,14 @@ import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
 import CardComponent from "./componentTypes/CardComponent.tsx";
 import InputComponent from "./componentTypes/InputComponent.tsx";
 import GraphComponent from "./componentTypes/GraphComponent.tsx";
+import FormComponent from "./componentTypes/FormComponent.tsx";
+import TableComponent from "./componentTypes/TableComponent.tsx";
+import ModalComponent from "./componentTypes/ModalComponent.tsx";
+import ChatComponent from "./componentTypes/ChatComponent.tsx";
+import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
+import IconComponent from "./componentTypes/IconComponent.tsx";
+import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
 
-// TypeScript interfaces
 interface ComponentProps {
   id?: string;
   type: ComponentType;
@@ -28,12 +33,19 @@ interface ComponentRendererProps {
 const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.TEXT]: TextComponent,
   [ComponentType.BUTTON]: ButtonComponent,
-  // [ComponentType.IMAGE]: ImageComponent,
-  // [ComponentType.LIST]: ListComponent,
+  [ComponentType.IMAGE]: ImageComponent,
+  [ComponentType.LIST]: ListComponent,
   [ComponentType.CONTAINER]: ContainerComponent,
-  // [ComponentType.CARD]: CardComponent,
+  [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
-  // [ComponentType.GRAPH]: GraphComponent,
+  [ComponentType.GRAPH]: GraphComponent,
+  [ComponentType.FORM]: FormComponent,
+  [ComponentType.TABLE]: TableComponent,
+  [ComponentType.MODAL]: ModalComponent,
+  [ComponentType.CHAT]: ChatComponent,
+  [ComponentType.TEXTAREA]: TextareaComponent,
+  [ComponentType.ICON]: IconComponent,
+  [ComponentType.NODE_GRAPH]: NodeGraphComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
@@ -42,16 +54,16 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
 
-  // Debug logging for button components
-  if (component.type === ComponentType.BUTTON) {
-    console.log("Button component:", {
-      id: component.id,
-      style: component.style,
-      className: className
-    });
-  }
+  const Component = componentMap[component.type];
 
-  const Component = componentMap[component.type] || ContainerComponent;
+  if (!Component) {
+    // Fallback: render as container with raw text
+    return (
+      <div id={component.id} className={className} style={inlineStyle}>
+        {component.text || ''}
+      </div>
+    );
+  }
 
   return (
     <Component
