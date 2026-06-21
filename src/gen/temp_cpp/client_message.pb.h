@@ -261,7 +261,7 @@ class ComponentData final : public ::google::protobuf::Message
     kValueFieldNumber = 2,
     kTypeFieldNumber = 3,
   };
-  // string id = 1 [json_name = "id"];
+  // string id = 1;
   void clear_id() ;
   const std::string& id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -277,7 +277,7 @@ class ComponentData final : public ::google::protobuf::Message
   std::string* _internal_mutable_id();
 
   public:
-  // string value = 2 [json_name = "value"];
+  // string value = 2;
   void clear_value() ;
   const std::string& value() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -293,7 +293,7 @@ class ComponentData final : public ::google::protobuf::Message
   std::string* _internal_mutable_value();
 
   public:
-  // string type = 3 [json_name = "type"];
+  // string type = 3;
   void clear_type() ;
   const std::string& type() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -492,7 +492,7 @@ class PageData final : public ::google::protobuf::Message
     kComponentsFieldNumber = 2,
     kPageIdFieldNumber = 1,
   };
-  // repeated .client_message.ComponentData components = 2 [json_name = "components"];
+  // repeated .client_message.ComponentData components = 2;
   int components_size() const;
   private:
   int _internal_components_size() const;
@@ -509,7 +509,7 @@ class PageData final : public ::google::protobuf::Message
   const ::client_message::ComponentData& components(int index) const;
   ::client_message::ComponentData* add_components();
   const ::google::protobuf::RepeatedPtrField<::client_message::ComponentData>& components() const;
-  // string page_id = 1 [json_name = "pageId"];
+  // string page_id = 1;
   void clear_page_id() ;
   const std::string& page_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -708,7 +708,7 @@ class ClientMessage final : public ::google::protobuf::Message
     kEventTypeFieldNumber = 2,
     kPageDataFieldNumber = 3,
   };
-  // string component_id = 1 [json_name = "componentId"];
+  // string component_id = 1;
   void clear_component_id() ;
   const std::string& component_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -724,7 +724,7 @@ class ClientMessage final : public ::google::protobuf::Message
   std::string* _internal_mutable_component_id();
 
   public:
-  // string event_type = 2 [json_name = "eventType"];
+  // string event_type = 2;
   void clear_event_type() ;
   const std::string& event_type() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -740,7 +740,7 @@ class ClientMessage final : public ::google::protobuf::Message
   std::string* _internal_mutable_event_type();
 
   public:
-  // .client_message.PageData page_data = 3 [json_name = "pageData"];
+  // .client_message.PageData page_data = 3;
   bool has_page_data() const;
   void clear_page_data() ;
   const ::client_message::PageData& page_data() const;
@@ -805,7 +805,7 @@ class ClientMessage final : public ::google::protobuf::Message
 
 // ClientMessage
 
-// string component_id = 1 [json_name = "componentId"];
+// string component_id = 1;
 inline void ClientMessage::clear_component_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.component_id_.ClearToEmpty();
@@ -853,7 +853,7 @@ inline void ClientMessage::set_allocated_component_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:client_message.ClientMessage.component_id)
 }
 
-// string event_type = 2 [json_name = "eventType"];
+// string event_type = 2;
 inline void ClientMessage::clear_event_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.event_type_.ClearToEmpty();
@@ -901,7 +901,7 @@ inline void ClientMessage::set_allocated_event_type(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:client_message.ClientMessage.event_type)
 }
 
-// .client_message.PageData page_data = 3 [json_name = "pageData"];
+// .client_message.PageData page_data = 3;
 inline bool ClientMessage::has_page_data() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.page_data_ != nullptr);
@@ -1001,7 +1001,7 @@ inline void ClientMessage::set_allocated_page_data(::client_message::PageData* v
 
 // PageData
 
-// string page_id = 1 [json_name = "pageId"];
+// string page_id = 1;
 inline void PageData::clear_page_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_id_.ClearToEmpty();
@@ -1049,7 +1049,7 @@ inline void PageData::set_allocated_page_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:client_message.PageData.page_id)
 }
 
-// repeated .client_message.ComponentData components = 2 [json_name = "components"];
+// repeated .client_message.ComponentData components = 2;
 inline int PageData::_internal_components_size() const {
   return _internal_components().size();
 }
@@ -1102,7 +1102,7 @@ PageData::_internal_mutable_components() {
 
 // ComponentData
 
-// string id = 1 [json_name = "id"];
+// string id = 1;
 inline void ComponentData::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -1150,7 +1150,7 @@ inline void ComponentData::set_allocated_id(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:client_message.ComponentData.id)
 }
 
-// string value = 2 [json_name = "value"];
+// string value = 2;
 inline void ComponentData::clear_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.value_.ClearToEmpty();
@@ -1198,7 +1198,7 @@ inline void ComponentData::set_allocated_value(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:client_message.ComponentData.value)
 }
 
-// string type = 3 [json_name = "type"];
+// string type = 3;
 inline void ComponentData::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_.ClearToEmpty();

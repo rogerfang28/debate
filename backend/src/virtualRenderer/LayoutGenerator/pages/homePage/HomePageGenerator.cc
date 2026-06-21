@@ -5,7 +5,7 @@
 ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRenderingInfo& info) {
     ui::Page page;
     page.set_page_id("home");
-    page.set_title("Debate Topic Entry");
+    page.set_title("Debate Topic Entry | commit: " GIT_COMMIT_HASH);
 
     // Main container
     ui::Component main = GenerateHomePageMainLayout(info);

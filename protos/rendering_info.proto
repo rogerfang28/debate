@@ -6,10 +6,9 @@ import "debate.proto";
 
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
-	// Viewer metadata used for ownership checks and logging.
-	// not needed currently
-	// int32 viewer_user_id = 1;
-	// string viewer_username = 2;
+	// Viewer metadata — used for ownership checks and per-user claim status.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
 
 	// Top-level page routing/context.
 	int32 debate_id = 3;
@@ -36,12 +35,32 @@ message DebatePageRenderingInfo {
 
 // Extra rendering payload for full-debate view.
 message FullDebateViewInfo {
+	// Viewer metadata — used for per-user claim status lookup.
+	int32 viewer_user_id = 1;
+	string viewer_username = 2;
+
 	// Chronological list of summarized steps. The order in this repeated field
 	// is the timeline order (earliest to latest).
-	repeated Steps steps = 1;
+	repeated Steps steps = 3;
 
 	// Tree-structured data used by the full-debate map renderer.
-	FullDebateTree full_debate_tree = 2;
+	FullDebateTree full_debate_tree = 4;
+
+	// Per-user claim status matrix for visualization.
+	// Each entry represents one user's view of every claim in the debate.
+	// This is separate from the per-claim user_statuses and can be removed
+	// when no longer needed.
+	PerUserClaimStatuses per_user_statuses = 5;
+}
+
+// A per-user matrix of claim statuses — used for visualization only.
+// Each UserClaimView maps one username to their view of every claim.
+message PerUserClaimStatuses {
+	message UserClaimView {
+		string username = 1;
+		map<int32, debate.ClaimStatus> claim_statuses = 2;  // claim_id -> status
+	}
+	repeated UserClaimView users = 1;
 }
 
 // Map-friendly full debate graph (claims as nodes and typed edges).
@@ -61,11 +80,12 @@ message FullDebateTreeNode {
 	int32 claim_id = 1;
 	string sentence = 2;
 	int32 creator_id = 3;
-	ClaimStatus status = 4;
+	debate.ClaimStatus status = 4;
+	repeated UserStatus user_statuses = 5;
 
 	// Convenience adjacency to simplify map rendering without extra joins.
-	repeated int32 parent_claim_ids = 5;
-	repeated int32 child_claim_ids = 6;
+	repeated int32 parent_claim_ids = 6;
+	repeated int32 child_claim_ids = 7;
 }
 
 enum FullDebateTreeLinkType {
@@ -90,7 +110,6 @@ message FullDebateTreeLink {
 	// Optional metadata copied from domain link/challenge rows.
 	string connection = 7;
 	int32 creator_id = 8;
-	ChallengeStatus challenge_status = 9;
 }
 
 // One timeline step in the full-debate view.
@@ -124,7 +143,13 @@ message ClaimRenderInfo {
 	int32 id = 1;
 	string sentence = 2;
 	int32 creator_id = 3;
-	ClaimStatus status = 4;
+	debate.ClaimStatus status = 4;
+	repeated UserStatus user_statuses = 5;
+}
+
+message UserStatus {
+	string username = 1;
+	debate.ClaimStatus status = 2;
 }
 
 message LinkRenderInfo {
@@ -140,7 +165,6 @@ message ChallengeRenderInfo {
 	string sentence = 2;
 	string description = 3;
 	int32 creator_id = 4;
-	ChallengeStatus status = 5;
 }
 
 enum ScopeType {
@@ -149,20 +173,6 @@ enum ScopeType {
 	FULL_DEBATE = 2;
 }
 
-enum ClaimStatus {
-	CLAIM_STATUS_UNSPECIFIED = 0;
-	CLAIM_STATUS_NEUTRAL = 1;
-	CLAIM_STATUS_CHALLENGED = 2;
-	CLAIM_STATUS_DEFENDED = 3;
-	CLAIM_STATUS_DISPROVEN = 4;
-}
-
-enum ChallengeStatus {
-	CHALLENGE_STATUS_UNSPECIFIED = 0;
-	CHALLENGE_STATUS_ONGOING = 1;
-	CHALLENGE_STATUS_CONCEDED = 2;
-	CHALLENGE_STATUS_PROVEN = 3;
-}
 
 enum DebateActionType {
 	ACTION_TYPE_UNSPECIFIED = 0;

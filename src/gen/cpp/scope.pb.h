@@ -257,7 +257,7 @@ class SingleClaimScope final : public ::google::protobuf::Message
     kDebateIdFieldNumber = 1,
     kCurrentClaimIdFieldNumber = 2,
   };
-  // int32 debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1;
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -267,7 +267,7 @@ class SingleClaimScope final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // int32 current_claim_id = 2 [json_name = "currentClaimId"];
+  // int32 current_claim_id = 2;
   void clear_current_claim_id() ;
   ::int32_t current_claim_id() const;
   void set_current_claim_id(::int32_t value);
@@ -459,7 +459,7 @@ class FullDebateScope final : public ::google::protobuf::Message
     kDebateIdFieldNumber = 1,
     kTopViewFieldNumber = 2,
   };
-  // int32 debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1;
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -469,7 +469,7 @@ class FullDebateScope final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // bool top_view = 2 [json_name = "topView"];
+  // bool top_view = 2;
   void clear_top_view() ;
   bool top_view() const;
   void set_top_view(bool value);
@@ -667,7 +667,7 @@ class Scope final : public ::google::protobuf::Message
     kSingleClaimFieldNumber = 2,
     kFullDebateFieldNumber = 3,
   };
-  // .debate.ScopeType scopetype = 1 [json_name = "scopetype"];
+  // .debate.ScopeType scopetype = 1;
   void clear_scopetype() ;
   ::debate::ScopeType scopetype() const;
   void set_scopetype(::debate::ScopeType value);
@@ -677,7 +677,7 @@ class Scope final : public ::google::protobuf::Message
   void _internal_set_scopetype(::debate::ScopeType value);
 
   public:
-  // .debate.SingleClaimScope single_claim = 2 [json_name = "singleClaim"];
+  // .debate.SingleClaimScope single_claim = 2;
   bool has_single_claim() const;
   private:
   bool _internal_has_single_claim() const;
@@ -696,7 +696,7 @@ class Scope final : public ::google::protobuf::Message
   ::debate::SingleClaimScope* _internal_mutable_single_claim();
 
   public:
-  // .debate.FullDebateScope full_debate = 3 [json_name = "fullDebate"];
+  // .debate.FullDebateScope full_debate = 3;
   bool has_full_debate() const;
   private:
   bool _internal_has_full_debate() const;
@@ -775,7 +775,7 @@ class Scope final : public ::google::protobuf::Message
 
 // SingleClaimScope
 
-// int32 debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1;
 inline void SingleClaimScope::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -797,7 +797,7 @@ inline void SingleClaimScope::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// int32 current_claim_id = 2 [json_name = "currentClaimId"];
+// int32 current_claim_id = 2;
 inline void SingleClaimScope::clear_current_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_claim_id_ = 0;
@@ -823,7 +823,7 @@ inline void SingleClaimScope::_internal_set_current_claim_id(::int32_t value) {
 
 // FullDebateScope
 
-// int32 debate_id = 1 [json_name = "debateId"];
+// int32 debate_id = 1;
 inline void FullDebateScope::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -845,7 +845,7 @@ inline void FullDebateScope::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// bool top_view = 2 [json_name = "topView"];
+// bool top_view = 2;
 inline void FullDebateScope::clear_top_view() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.top_view_ = false;
@@ -871,7 +871,7 @@ inline void FullDebateScope::_internal_set_top_view(bool value) {
 
 // Scope
 
-// .debate.ScopeType scopetype = 1 [json_name = "scopetype"];
+// .debate.ScopeType scopetype = 1;
 inline void Scope::clear_scopetype() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.scopetype_ = 0;
@@ -893,7 +893,7 @@ inline void Scope::_internal_set_scopetype(::debate::ScopeType value) {
   _impl_.scopetype_ = value;
 }
 
-// .debate.SingleClaimScope single_claim = 2 [json_name = "singleClaim"];
+// .debate.SingleClaimScope single_claim = 2;
 inline bool Scope::has_single_claim() const {
   return scope_info_case() == kSingleClaim;
 }
@@ -972,7 +972,7 @@ inline ::debate::SingleClaimScope* Scope::mutable_single_claim() ABSL_ATTRIBUTE_
   return _msg;
 }
 
-// .debate.FullDebateScope full_debate = 3 [json_name = "fullDebate"];
+// .debate.FullDebateScope full_debate = 3;
 inline bool Scope::has_full_debate() const {
   return scope_info_case() == kFullDebate;
 }

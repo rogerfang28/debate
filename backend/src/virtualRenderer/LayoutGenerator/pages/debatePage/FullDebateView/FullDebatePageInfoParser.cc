@@ -3,6 +3,8 @@
 #include "../../../../../../../src/gen/cpp/collection.pb.h"
 #include "../../../../../utils/Log.h"
 #include <algorithm>
+#include <map>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -18,32 +20,33 @@ rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
 	}
 }
 
-rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
-	switch (status) {
-		case debate::ClaimStatus::NEUTRAL:
-			return rendering_info::CLAIM_STATUS_NEUTRAL;
-		case debate::ClaimStatus::CHALLENGED:
-			return rendering_info::CLAIM_STATUS_CHALLENGED;
-		case debate::ClaimStatus::DEFENDED:
-			return rendering_info::CLAIM_STATUS_DEFENDED;
-		case debate::ClaimStatus::DISPROVEN:
-			return rendering_info::CLAIM_STATUS_DISPROVEN;
-		default:
-			return rendering_info::CLAIM_STATUS_UNSPECIFIED;
-	}
+// ClaimStatus is now a single enum (debate::ClaimStatus) shared between
+// debate.proto and rendering_info.proto — no translation needed.
+// MapClaimStatus is kept as a pass-through for source compatibility.
+debate::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
+	return status;
 }
 
-rendering_info::ChallengeStatus MapChallengeStatus(debate::ChallengeStatus status) {
-	switch (status) {
-		case debate::ChallengeStatus::ONGOING:
-			return rendering_info::CHALLENGE_STATUS_ONGOING;
-		case debate::ChallengeStatus::CONCEDED:
-			return rendering_info::CHALLENGE_STATUS_CONCEDED;
-		case debate::ChallengeStatus::PROVEN:
-			return rendering_info::CHALLENGE_STATUS_PROVEN;
-		default:
-			return rendering_info::CHALLENGE_STATUS_UNSPECIFIED;
+// Look up the per-user claim status from the user_statuses map.
+// If the viewer has no entry, default to UNDETERMINED.
+// If the viewer IS the creator and has no entry, default to TRUE_CLAIM
+// (creator believes their own claim).
+debate::ClaimStatus MapClaimStatusForUser(
+		const debate::Claim& claim,
+		int viewer_user_id,
+		const std::string& viewer_username) {
+	// Check if viewer has a per-user status entry
+	const auto& user_statuses = claim.user_statuses();
+	auto it = user_statuses.find(viewer_username);
+	if (it != user_statuses.end()) {
+		return it->second;
 	}
+	// No per-user entry: if viewer is the creator, they see TRUE_CLAIM
+	if (viewer_user_id == claim.creator_id()) {
+		return debate::ClaimStatus::TRUE_CLAIM;
+	}
+	// Otherwise default to UNDETERMINED
+	return debate::ClaimStatus::UNDETERMINED;
 }
 
 rendering_info::DebateActionType MapDebateAction(
@@ -74,13 +77,14 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	rendering_info::DebatePageRenderingInfo info;
 	Log::info("[DebatePageInfoParser] collection received: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) + ", links_by_id=" + std::to_string(collectionProto.links_by_id_size()));
 
-	// Ensure full-debate timeline steps are computed during full parser flow.
-	const rendering_info::FullDebateViewInfo fullDebateInfo = ParseFullDebateViewInfo(collectionProto);
+	// Pass viewer info so tree nodes can show per-user status
+	const rendering_info::FullDebateViewInfo fullDebateInfo = ParseFullDebateViewInfo(collectionProto, userProto.user_id(), userProto.username());
 	Log::test("[DebatePageInfoParser] ParseFullDebateViewInfo invoked from ParseFromUser; steps_count=" + std::to_string(fullDebateInfo.steps_size()));
 
 	
-	// info.set_viewer_user_id(userProto.user_id());
-	// info.set_viewer_username(userProto.username());
+	// Set viewer metadata for per-user claim status lookup
+	info.set_viewer_user_id(userProto.user_id());
+	info.set_viewer_username(userProto.username());
 	info.set_scope_type(MapScopeType(userProto.current_scope().scopetype()));
 
 	const user_engagement::DebatingInfo& debatingInfo = userProto.engagement().debating_info();
@@ -97,7 +101,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		currentClaim->set_id(0);
 		currentClaim->set_sentence("No claim available");
 		currentClaim->set_creator_id(0);
-		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		currentClaim->set_status(debate::ClaimStatus::UNDETERMINED);
 		info.set_current_claim_description("No claim available.");
 		return info;
 	}
@@ -152,7 +156,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		currentClaim->set_id(0);
 		currentClaim->set_sentence("No claim available");
 		currentClaim->set_creator_id(0);
-		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		currentClaim->set_status(debate::ClaimStatus::UNDETERMINED);
 		info.set_current_claim_description("No claim available.");
 		return info;
 	}
@@ -165,7 +169,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	currentClaim->set_id(currentClaimProto.id());
 	currentClaim->set_sentence(currentClaimProto.sentence());
 	currentClaim->set_creator_id(currentClaimProto.creator_id());
-	currentClaim->set_status(MapClaimStatus(currentClaimProto.status()));
+	currentClaim->set_status(MapClaimStatusForUser(currentClaimProto, userProto.user_id(), userProto.username()));
 	std::unordered_set<int> visibleClaimIds;
 	visibleClaimIds.insert(currentClaim->id());
 
@@ -202,7 +206,13 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				outChild->set_id(childClaim.id());
 				outChild->set_sentence(childClaim.sentence());
 				outChild->set_creator_id(childClaim.creator_id());
-				outChild->set_status(MapClaimStatus(childClaim.status()));
+				outChild->set_status(MapClaimStatusForUser(childClaim, userProto.user_id(), userProto.username()));
+				// Populate per-user status rectangles on child claim
+				for (const auto& s : childClaim.user_statuses()) {
+					rendering_info::UserStatus* us = outChild->add_user_statuses();
+					us->set_username(s.first);
+					us->set_status(s.second);
+				}
 				visibleClaimIds.insert(childClaim.id());
 			} else {
 				Log::warn("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
@@ -282,7 +292,6 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				outChallenge->set_id(challengeClaimId);
 				outChallenge->set_sentence(challengeClaim.sentence());
 				outChallenge->set_creator_id(challengeClaim.creator_id());
-				outChallenge->set_status(rendering_info::CHALLENGE_STATUS_ONGOING);
 				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
 			} else {
 				Log::warn("[DebatePageInfoParser] Challenge claim id=" + std::to_string(challengeClaimId) + " NOT FOUND in collection!");
@@ -329,7 +338,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	return info;
 }
 
-rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateViewInfo(const debate::Collection& collectionProto) {
+rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateViewInfo(const debate::Collection& collectionProto, int viewer_user_id, const std::string& viewer_username) {
 	rendering_info::FullDebateViewInfo info;
 	Log::test(
 		"[ParseFullDebateViewInfo] Start: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) +
@@ -421,7 +430,6 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outLink->set_link_id(linkId);
 		outLink->set_connection(link.connection());
 		outLink->set_creator_id(link.creator_id());
-		outLink->set_challenge_status(rendering_info::CHALLENGE_STATUS_UNSPECIFIED);
 	}
 
 	for (int claimId : claimIds) {
@@ -430,7 +438,15 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outNode->set_claim_id(claim.id());
 		outNode->set_sentence(claim.sentence());
 		outNode->set_creator_id(claim.creator_id());
-		outNode->set_status(MapClaimStatus(claim.status()));
+		// Use per-user status for tree nodes
+		outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
+
+		// Populate per-user status rectangles on tree node
+		for (const auto& s : claim.user_statuses()) {
+			rendering_info::UserStatus* us = outNode->add_user_statuses();
+			us->set_username(s.first);
+			us->set_status(s.second);
+		}
 
 		auto parentIt = parentIdsByClaim.find(claimId);
 		if (parentIt != parentIdsByClaim.end()) {
@@ -511,5 +527,27 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		);
 	}
 
+	// Build per-user claim status matrix for visualization.
+	{
+		rendering_info::PerUserClaimStatuses* perUser = info.mutable_per_user_statuses();
+		std::unordered_map<std::string, std::map<int, debate::ClaimStatus>> userMap;
+		for (const auto& claimEntry : collectionProto.claims_by_id()) {
+			const int claimId = claimEntry.first;
+			const debate::Claim& claim = claimEntry.second;
+			const auto& statuses = claim.user_statuses();
+			for (const auto& s : statuses) {
+				userMap[s.first][claimId] = s.second;
+			}
+		}
+		for (const auto& u : userMap) {
+			rendering_info::PerUserClaimStatuses::UserClaimView* view = perUser->add_users();
+			view->set_username(u.first);
+			for (const auto& cs : u.second) {
+				(*view->mutable_claim_statuses())[cs.first] = cs.second;
+			}
+		}
+		Log::test("[ParseFullDebateViewInfo] per_user_statuses: users=" + std::to_string(perUser->users_size()));
+	}
+
 	return info;
-}
+	}

@@ -228,7 +228,7 @@ class DebateTopic final : public ::google::protobuf::Message
     kCreatorIdFieldNumber = 3,
     kIsChallengeFieldNumber = 4,
   };
-  // string topic = 2 [json_name = "topic"];
+  // string topic = 2;
   void clear_topic() ;
   const std::string& topic() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -244,7 +244,7 @@ class DebateTopic final : public ::google::protobuf::Message
   std::string* _internal_mutable_topic();
 
   public:
-  // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+  // string claim_its_challenging = 5;
   void clear_claim_its_challenging() ;
   const std::string& claim_its_challenging() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -260,7 +260,7 @@ class DebateTopic final : public ::google::protobuf::Message
   std::string* _internal_mutable_claim_its_challenging();
 
   public:
-  // int32 id = 1 [json_name = "id"];
+  // int32 id = 1;
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -270,7 +270,7 @@ class DebateTopic final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 creator_id = 3 [json_name = "creatorId"];
+  // int32 creator_id = 3;
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -280,7 +280,7 @@ class DebateTopic final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // bool is_challenge = 4 [json_name = "isChallenge"];
+  // bool is_challenge = 4;
   void clear_is_challenge() ;
   bool is_challenge() const;
   void set_is_challenge(bool value);
@@ -474,7 +474,7 @@ class DebateList final : public ::google::protobuf::Message
   enum : int {
     kTopicsFieldNumber = 1,
   };
-  // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
+  // repeated .moderator_to_vr.DebateTopic topics = 1;
   int topics_size() const;
   private:
   int _internal_topics_size() const;
@@ -673,7 +673,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
     kCollectionFieldNumber = 2,
     kDebateListFieldNumber = 3,
   };
-  // .user.User user = 1 [json_name = "user"];
+  // .user.User user = 1;
   bool has_user() const;
   void clear_user() ;
   const ::user::User& user() const;
@@ -688,7 +688,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   ::user::User* _internal_mutable_user();
 
   public:
-  // .debate.Collection collection = 2 [json_name = "collection"];
+  // .debate.Collection collection = 2;
   bool has_collection() const;
   void clear_collection() ;
   const ::debate::Collection& collection() const;
@@ -703,7 +703,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
   ::debate::Collection* _internal_mutable_collection();
 
   public:
-  // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
+  // .moderator_to_vr.DebateList debate_list = 3;
   bool has_debate_list() const;
   void clear_debate_list() ;
   const ::moderator_to_vr::DebateList& debate_list() const;
@@ -768,7 +768,7 @@ class ModeratorToVRMessage final : public ::google::protobuf::Message
 
 // ModeratorToVRMessage
 
-// .user.User user = 1 [json_name = "user"];
+// .user.User user = 1;
 inline bool ModeratorToVRMessage::has_user() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.user_ != nullptr);
@@ -859,7 +859,7 @@ inline void ModeratorToVRMessage::set_allocated_user(::user::User* value) {
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.user)
 }
 
-// .debate.Collection collection = 2 [json_name = "collection"];
+// .debate.Collection collection = 2;
 inline bool ModeratorToVRMessage::has_collection() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.collection_ != nullptr);
@@ -950,7 +950,7 @@ inline void ModeratorToVRMessage::set_allocated_collection(::debate::Collection*
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.ModeratorToVRMessage.collection)
 }
 
-// .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
+// .moderator_to_vr.DebateList debate_list = 3;
 inline bool ModeratorToVRMessage::has_debate_list() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.debate_list_ != nullptr);
@@ -1050,7 +1050,7 @@ inline void ModeratorToVRMessage::set_allocated_debate_list(::moderator_to_vr::D
 
 // DebateTopic
 
-// int32 id = 1 [json_name = "id"];
+// int32 id = 1;
 inline void DebateTopic::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -1072,7 +1072,7 @@ inline void DebateTopic::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string topic = 2 [json_name = "topic"];
+// string topic = 2;
 inline void DebateTopic::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
@@ -1120,7 +1120,7 @@ inline void DebateTopic::set_allocated_topic(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.DebateTopic.topic)
 }
 
-// int32 creator_id = 3 [json_name = "creatorId"];
+// int32 creator_id = 3;
 inline void DebateTopic::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -1142,7 +1142,7 @@ inline void DebateTopic::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// bool is_challenge = 4 [json_name = "isChallenge"];
+// bool is_challenge = 4;
 inline void DebateTopic::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
@@ -1164,7 +1164,7 @@ inline void DebateTopic::_internal_set_is_challenge(bool value) {
   _impl_.is_challenge_ = value;
 }
 
-// string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+// string claim_its_challenging = 5;
 inline void DebateTopic::clear_claim_its_challenging() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_its_challenging_.ClearToEmpty();
@@ -1216,7 +1216,7 @@ inline void DebateTopic::set_allocated_claim_its_challenging(std::string* value)
 
 // DebateList
 
-// repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
+// repeated .moderator_to_vr.DebateTopic topics = 1;
 inline int DebateList::_internal_topics_size() const {
   return _internal_topics().size();
 }

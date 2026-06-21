@@ -78,15 +78,15 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_debate_5fsettings_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\025debate_settings.proto\022\006debate\";\n\016Debat"
-    "eSettings\022)\n\020max_participants\030\001 \001(\005R\017max"
-    "Participantsb\006proto3"
+    "\n\025debate_settings.proto\022\006debate\"*\n\016Debat"
+    "eSettings\022\030\n\020max_participants\030\001 \001(\005b\006pro"
+    "to3"
 };
 static ::absl::once_flag descriptor_table_debate_5fsettings_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fsettings_2eproto = {
     false,
     false,
-    100,
+    83,
     descriptor_table_protodef_debate_5fsettings_2eproto,
     "debate_settings.proto",
     &descriptor_table_debate_5fsettings_2eproto_once,
@@ -194,13 +194,13 @@ const ::_pbi::TcParseTable<0, 1, 0, 0, 2> DebateSettings::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::DebateSettings>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 max_participants = 1 [json_name = "maxParticipants"];
+    // int32 max_participants = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateSettings, _impl_.max_participants_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(DebateSettings, _impl_.max_participants_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 max_participants = 1 [json_name = "maxParticipants"];
+    // int32 max_participants = 1;
     {PROTOBUF_FIELD_OFFSET(DebateSettings, _impl_.max_participants_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }},
@@ -235,7 +235,7 @@ PROTOBUF_NOINLINE void DebateSettings::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // int32 max_participants = 1 [json_name = "maxParticipants"];
+          // int32 max_participants = 1;
           if (this_._internal_max_participants() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<1>(
@@ -266,7 +266,7 @@ PROTOBUF_NOINLINE void DebateSettings::Clear() {
           (void)cached_has_bits;
 
            {
-            // int32 max_participants = 1 [json_name = "maxParticipants"];
+            // int32 max_participants = 1;
             if (this_._internal_max_participants() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_max_participants());

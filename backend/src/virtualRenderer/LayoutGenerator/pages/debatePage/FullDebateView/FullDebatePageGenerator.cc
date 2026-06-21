@@ -22,44 +22,17 @@ debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {
     }
 }
 
-debate::ClaimStatus MapClaimStatus(rendering_info::ClaimStatus status) {
-    switch (status) {
-        case rendering_info::CLAIM_STATUS_NEUTRAL:
-            return debate::ClaimStatus::NEUTRAL;
-        case rendering_info::CLAIM_STATUS_CHALLENGED:
-            return debate::ClaimStatus::CHALLENGED;
-        case rendering_info::CLAIM_STATUS_DEFENDED:
-            return debate::ClaimStatus::DEFENDED;
-        case rendering_info::CLAIM_STATUS_DISPROVEN:
-            return debate::ClaimStatus::DISPROVEN;
-        default:
-            return debate::ClaimStatus::NEUTRAL;
-    }
-}
+// ClaimStatus is now shared — these are pass-through since both sides use debate::ClaimStatus.
+debate::ClaimStatus MapClaimStatus(debate::ClaimStatus status) { return status; }
 
-debate::ChallengeStatus MapChallengeStatus(rendering_info::ChallengeStatus status) {
+std::string ClaimStatusToLabel(debate::ClaimStatus status) {
     switch (status) {
-        case rendering_info::CHALLENGE_STATUS_ONGOING:
-            return debate::ChallengeStatus::ONGOING;
-        case rendering_info::CHALLENGE_STATUS_CONCEDED:
-            return debate::ChallengeStatus::CONCEDED;
-        case rendering_info::CHALLENGE_STATUS_PROVEN:
-            return debate::ChallengeStatus::PROVEN;
-        default:
-            return debate::ChallengeStatus::ONGOING;
-    }
-}
-
-std::string ClaimStatusToLabel(rendering_info::ClaimStatus status) {
-    switch (status) {
-        case rendering_info::CLAIM_STATUS_NEUTRAL:
-            return "Neutral";
-        case rendering_info::CLAIM_STATUS_CHALLENGED:
-            return "Challenged";
-        case rendering_info::CLAIM_STATUS_DEFENDED:
-            return "Defended";
-        case rendering_info::CLAIM_STATUS_DISPROVEN:
-            return "Disproven";
+        case debate::ClaimStatus::UNDETERMINED:
+            return "Undetermined";
+        case debate::ClaimStatus::TRUE_CLAIM:
+            return "True";
+        case debate::ClaimStatus::FALSE_CLAIM:
+            return "False";
         default:
             return "Unknown";
     }
@@ -135,7 +108,7 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     // later get user proto from database, for now just get from args
     ui::Page page;
     page.set_page_id("debate");
-    page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()));
+    page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()) + " | commit: " GIT_COMMIT_HASH);
     ui::Component mainLayout;
 
     const auto scopeType = userProto.current_scope().scopetype();
@@ -672,10 +645,14 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false")
     );
     
-    std::vector<std::tuple<std::string,std::string,int,rendering_info::ClaimStatus>> childClaimInfo; // id, sentence, creator_id, status
+    std::vector<std::tuple<std::string,std::string,int,debate::ClaimStatus,std::vector<rendering_info::UserStatus>>> childClaimInfo; // id, sentence, creator_id, status, user_statuses
     for (int i = 0; i < info.children_claims_size(); i++) {
         const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status()});
+        std::vector<rendering_info::UserStatus> userStatuses;
+        for (int j = 0; j < childClaim.user_statuses_size(); j++) {
+            userStatuses.push_back(childClaim.user_statuses(j));
+        }
+        childClaimInfo.push_back({std::to_string(childClaim.id()), childClaim.sentence(), childClaim.creator_id(), childClaim.status(), userStatuses});
     }
     Log::debug("[DebatePageGenerator] prepared childClaimInfo count=" + std::to_string(childClaimInfo.size()));
     for (size_t i = 0; i < childClaimInfo.size(); i++) {
@@ -757,7 +734,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         std::string claimId = std::get<0>(childClaimInfo[i]);
         std::string claimSentence = std::get<1>(childClaimInfo[i]);
         int claimCreatorId = std::get<2>(childClaimInfo[i]);
-        rendering_info::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
+        debate::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
         bool userOwnsChildClaim = (currentUserId == claimCreatorId);
         Log::debug(
             "[DebatePageGenerator] Rendering child claim: id=" + claimId +
@@ -771,16 +748,13 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         // Determine border color based on status
         std::string borderColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_CHALLENGED:
-                borderColor = "border-2 border-orange-500";
-                break;
-            case rendering_info::CLAIM_STATUS_DISPROVEN:
+            case debate::ClaimStatus::FALSE_CLAIM:
                 borderColor = "border-2 border-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_DEFENDED:
+            case debate::ClaimStatus::TRUE_CLAIM:
                 borderColor = "border-2 border-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_NEUTRAL:
+            case debate::ClaimStatus::UNDETERMINED:
                 borderColor = "border-2 border-gray-600";
                 break;
             default:
@@ -792,20 +766,16 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         std::string statusText;
         std::string statusTextColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_CHALLENGED:
-                statusText = "Challenged";
-                statusTextColor = "text-orange-500";
-                break;
-            case rendering_info::CLAIM_STATUS_DISPROVEN:
-                statusText = "Disproven";
+            case debate::ClaimStatus::FALSE_CLAIM:
+                statusText = "False";
                 statusTextColor = "text-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_DEFENDED:
-                statusText = "Defended";
+            case debate::ClaimStatus::TRUE_CLAIM:
+                statusText = "True";
                 statusTextColor = "text-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_NEUTRAL:
-                statusText = "Neutral";
+            case debate::ClaimStatus::UNDETERMINED:
+                statusText = "Undetermined";
                 statusTextColor = "text-gray-400";
                 break;
             default:
@@ -826,16 +796,39 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             "w-80 flex-shrink-0"
         );
 
-        // Status label above the claim sentence
-        ui::Component statusLabel = ComponentGenerator::createText(
-            nodeId + "Status",
-            "Status: " + statusText,
-            "text-xs",
-            statusTextColor,
-            "font-semibold",
-            "mb-2"
-        );
-        ComponentGenerator::addChild(&childNode, statusLabel);
+        // Per-user status rectangles above the claim sentence
+        if (claimStatus != debate::ClaimStatus::UNDETERMINED) {
+            ui::Component statusLabel = ComponentGenerator::createText(
+                nodeId + "Status",
+                "Status: " + statusText,
+                "text-xs",
+                statusTextColor,
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&childNode, statusLabel);
+        }
+
+        // Debug: show raw user_statuses data as text
+        {
+            const auto& statuses = std::get<4>(childClaimInfo[i]);
+            std::string debugText = "user_statuses[" + std::to_string(statuses.size()) + "]: ";
+            for (const auto& us : statuses) {
+                debugText += us.username() + "=" + std::to_string(us.status()) + " ";
+            }
+            if (statuses.empty()) {
+                debugText += "(empty)";
+            }
+            ui::Component debugLabel = ComponentGenerator::createText(
+                nodeId + "UserStatusDebug",
+                debugText,
+                "text-xs",
+                "text-yellow-400",
+                "",
+                "mb-1"
+            );
+            ComponentGenerator::addChild(&childNode, debugLabel);
+        }
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
@@ -1185,10 +1178,10 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
     // Extract data
     int currentUserId = user.user_id();
     
-    std::vector<std::tuple<std::string, std::string, int, rendering_info::ChallengeStatus>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
         const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.status()});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id()});
     }
 
     // Find challengesContainer
@@ -1228,45 +1221,15 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
-        rendering_info::ChallengeStatus challengeStatus = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
         
-        // Determine colors based on status
-        std::string bgColor, borderColor, buttonBgColor, buttonHoverColor, statusText, statusTextColor;
-        switch (challengeStatus) {
-            case rendering_info::CHALLENGE_STATUS_ONGOING:
-                bgColor = "bg-orange-600";
-                borderColor = "border-2 border-orange-500";
-                buttonBgColor = "bg-orange-700";
-                buttonHoverColor = "hover:bg-orange-800";
-                statusText = "Ongoing";
-                statusTextColor = "text-orange-300";
-                break;
-            case rendering_info::CHALLENGE_STATUS_CONCEDED:
-                bgColor = "bg-gray-600";
-                borderColor = "border-2 border-gray-500";
-                buttonBgColor = "bg-gray-700";
-                buttonHoverColor = "hover:bg-gray-800";
-                statusText = "Conceded";
-                statusTextColor = "text-gray-300";
-                break;
-            case rendering_info::CHALLENGE_STATUS_PROVEN:
-                bgColor = "bg-green-600";
-                borderColor = "border-2 border-green-500";
-                buttonBgColor = "bg-green-700";
-                buttonHoverColor = "hover:bg-green-800";
-                statusText = "Proven";
-                statusTextColor = "text-green-300";
-                break;
-            default:
-                bgColor = "bg-purple-600";
-                borderColor = "border-2 border-purple-500";
-                buttonBgColor = "bg-purple-700";
-                buttonHoverColor = "hover:bg-purple-800";
-                statusText = "Unknown";
-                statusTextColor = "text-purple-300";
-                break;
-        }
+        // Determine colors — challenges no longer have their own status.
+        std::string bgColor = "bg-blue-600";
+        std::string borderColor = "border-2 border-blue-500";
+        std::string buttonBgColor = "bg-blue-700";
+        std::string buttonHoverColor = "hover:bg-blue-800";
+        std::string statusText = "Active";
+        std::string statusTextColor = "text-blue-300";
         
         ui::Component challengeNode = ComponentGenerator::createContainer(
             "challengeNode_" + challengedClaimId,
@@ -2862,6 +2825,69 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "mb-1"
         );
         ComponentGenerator::addChild(&nodeCard, nodeTitle);
+
+        // Per-user status rectangles: "username: [color]"
+        if (node->user_statuses_size() > 0) {
+            ui::Component userStatusRow = ComponentGenerator::createContainer(
+                "mapNodeUsers_" + std::to_string(claimId),
+                "flex flex-wrap gap-1 mb-1",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            );
+            for (const auto& us : node->user_statuses()) {
+                std::string rectColor;
+                switch (us.status()) {
+                    case debate::ClaimStatus::TRUE_CLAIM:
+                        rectColor = "bg-green-500";
+                        break;
+                    case debate::ClaimStatus::FALSE_CLAIM:
+                        rectColor = "bg-red-500";
+                        break;
+                    case debate::ClaimStatus::UNDETERMINED:
+                        rectColor = "bg-gray-500";
+                        break;
+                    default:
+                        rectColor = "bg-purple-500";
+                        break;
+                }
+                ui::Component userBadge = ComponentGenerator::createContainer(
+                    "mapNodeUser_" + std::to_string(claimId) + "_" + us.username(),
+                    "flex items-center",
+                    "",
+                    "px-1 py-0.5",
+                    "",
+                    "rounded",
+                    "",
+                    "mr-1"
+                );
+                ui::Component colorRect = ComponentGenerator::createContainer(
+                    "mapNodeRect_" + std::to_string(claimId) + "_" + us.username(),
+                    "w-3 h-3 rounded-sm " + rectColor,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+                ui::Component userLabel = ComponentGenerator::createText(
+                    "mapNodeLabel_" + std::to_string(claimId) + "_" + us.username(),
+                    us.username(),
+                    "text-xs",
+                    "text-gray-300",
+                    "",
+                    ""
+                );
+                ComponentGenerator::addChild(&userBadge, colorRect);
+                ComponentGenerator::addChild(&userBadge, userLabel);
+                ComponentGenerator::addChild(&userStatusRow, userBadge);
+            }
+            ComponentGenerator::addChild(&nodeCard, userStatusRow);
+        }
 
         ui::Component nodeSentence = ComponentGenerator::createText(
             "mapNodeSentence_" + std::to_string(claimId),
