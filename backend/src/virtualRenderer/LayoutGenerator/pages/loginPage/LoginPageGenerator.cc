@@ -5,7 +5,7 @@
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
     page.set_page_id("login");
-    page.set_title(demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username"));
+    page.set_title((demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username")) + std::string(" | commit: ") + GIT_COMMIT_HASH);
 
     // Main container
     ui::Component main = GenerateLoginPageMainLayout();

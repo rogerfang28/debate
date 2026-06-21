@@ -5,7 +5,7 @@ ui::Page HistoryPageGenerator::GenerateHistoryPage(user::User user) {
     user_engagement::DebateList usersDebates = user.engagement().home_info().available_debates();
     ui::Page page;
     page.set_page_id("history");
-    page.set_title("History of Claim");
+    page.set_title("History of Claim | commit: " GIT_COMMIT_HASH);
 
     // Main container
     ui::Component main = GenerateHistoryPageMainLayout();

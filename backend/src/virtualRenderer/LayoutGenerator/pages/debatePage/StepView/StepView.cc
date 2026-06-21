@@ -11,7 +11,7 @@ ui::Page StepView::GenerateStepViewPage(
 ) {
 	ui::Page page;
 	page.set_page_id("debate");
-	page.set_title("");
+	page.set_title("commit: " GIT_COMMIT_HASH);
 
 	int rootClaimId = -1;
 	std::string rootSentence = "Debate overview";

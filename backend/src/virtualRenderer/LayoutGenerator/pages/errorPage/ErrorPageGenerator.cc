@@ -4,7 +4,7 @@
 ui::Page ErrorPageGenerator::GenerateErrorPage() {
     ui::Page page;
     page.set_page_id("error");
-    page.set_title("Error - Page Not Found");
+    page.set_title("Error - Page Not Found | commit: " GIT_COMMIT_HASH);
 
     // Main container
     ui::Component mainLayout = GenerateErrorPageMainLayout();

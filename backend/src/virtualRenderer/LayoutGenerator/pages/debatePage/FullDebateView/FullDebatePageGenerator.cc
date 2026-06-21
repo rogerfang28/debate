@@ -108,7 +108,7 @@ ui::Page FullDebatePageGenerator::GenerateFullDebatePage(
     // later get user proto from database, for now just get from args
     ui::Page page;
     page.set_page_id("debate");
-    page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()));
+    page.set_title("Debate View: Debate ID " + std::to_string(userProto.engagement().debating_info().debate_id()) + " | commit: " GIT_COMMIT_HASH);
     ui::Component mainLayout;
 
     const auto scopeType = userProto.current_scope().scopetype();
