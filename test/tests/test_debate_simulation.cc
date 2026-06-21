@@ -122,25 +122,14 @@ protected:
         moderator_->handleRequest(event);
     }
 
-    void sendStartChallenge(int user_id) {
-        sendEvent(user_id, debate_event::START_CHALLENGE_CLAIM);
-    }
-
-    void sendAddClaimToBeChallenged(int user_id, int claim_id) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
-        event.mutable_add_claim_to_be_challenged()->set_claim_id(claim_id);
-        moderator_->handleRequest(event);
-    }
-
-    void sendOpenAddChallenge(int user_id) {
-        sendEvent(user_id, debate_event::OPEN_ADD_CHALLENGE);
-    }
-
     void sendSubmitChallenge(int user_id, const std::string& sentence) {
         debate_event::DebateEvent event = makeEvent(user_id, debate_event::SUBMIT_CHALLENGE_CLAIM);
         event.mutable_submit_challenge_claim()->set_challenge_sentence(sentence);
         moderator_->handleRequest(event);
     }
+
+    // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, and OPEN_ADD_CHALLENGE
+    // are purely UI state (modal flags). They're not needed for the submit to work.
 
     // ---- DB query helpers (read directly from DB, not through moderator) ----
     debate::Claim getClaim(int claim_id) {
@@ -311,11 +300,11 @@ TEST_F(SimulationTest, ChallengeClaim) {
     ASSERT_EQ(children.size(), 1u);
     int childId = children[0];
 
-    // B challenges the child claim
+    // B challenges the child claim (minimal flow: GO_TO_CLAIM + SUBMIT_CHALLENGE_CLAIM)
+    // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, OPEN_ADD_CHALLENGE are
+    // purely UI state (modal flags). SubmitChallengeClaim only needs current_claim_id
+    // from user protobuf, which is set by GO_TO_CLAIM.
     sendGoToClaim(userB_id_, childId);
-    sendStartChallenge(userB_id_);
-    sendAddClaimToBeChallenged(userB_id_, childId);
-    sendOpenAddChallenge(userB_id_);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
 
     // Verify challenge claim was created
@@ -367,11 +356,8 @@ TEST_F(SimulationTest, FullStateVerification) {
     ASSERT_EQ(children.size(), 1u);
     int childId = children[0];
 
-    // Step 4: B challenges child
+    // Step 4: B challenges child (minimal flow)
     sendGoToClaim(userB_id_, childId);
-    sendStartChallenge(userB_id_);
-    sendAddClaimToBeChallenged(userB_id_, childId);
-    sendOpenAddChallenge(userB_id_);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
 
     int challengeClaimId = findChallengeClaimId(childId);
