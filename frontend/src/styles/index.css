@@ -158,10 +158,8 @@ a:hover {
   max-width: none;
   margin: 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: auto;
-  display: flex;
-  flex-direction: column;
 }
 
 .page-title {
