@@ -154,19 +154,18 @@ a:hover {
 
 /* --- Page Root --- */
 .page-root {
-  padding: var(--space-lg);
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xl);
-  padding-bottom: var(--space-md);
-  border-bottom: 1px solid var(--border-subtle);
-  letter-spacing: -0.02em;
+  display: none;
 }
 
 /* --- Component Base Styles --- */
