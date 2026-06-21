@@ -1,15 +1,13 @@
-// test_debate_simulation.cc — Full debate simulation test
+// test_debate_simulation.cc — Step-by-step debate simulation
 //
-// Simulates a complete debate scenario with 3 users (A, B, C):
-//   1. User A creates a debate
-//   2. Users B and C join
-//   3. User A adds a child claim under root
-//   4. User B challenges that child claim
+// Each TEST_F is one check. Run individually or all at once:
+//   ./debate_simulation.exe                    # all checks
+//   ./debate_simulation.exe --gtest_filter="*CreateDebate*"
+//   ./debate_simulation.exe --gtest_filter="*EnterDebate*"
+//   ./debate_simulation.exe --gtest_filter="*AddChild*"
+//   ./debate_simulation.exe --gtest_filter="*Challenge*"
 //
-// Each step checks the database state via assertions.
-// The test database is preserved after the run for manual inspection.
-//
-// Expandable: add more steps after the existing ones.
+// Database persists after all tests finish (test_simulation.sqlite3).
 
 #include <gtest/gtest.h>
 #include <string>
@@ -30,9 +28,19 @@
 #include "debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.h"
 #include "debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.h"
 
-// -------------------------------------------------------
-// Helpers
-// -------------------------------------------------------
+// =====================================================================
+// HELPERS
+// =====================================================================
+
+static std::string statusToString(debate::ClaimStatus s) {
+    switch (s) {
+        case debate::ClaimStatus::UNDETERMINED: return "UNDETERMINED";
+        case debate::ClaimStatus::TRUE_CLAIM:   return "TRUE_CLAIM";
+        case debate::ClaimStatus::FALSE_CLAIM:  return "FALSE_CLAIM";
+        default: return "UNKNOWN(" + std::to_string(static_cast<int>(s)) + ")";
+    }
+}
+
 static user::User makeUser(int userId, const std::string& name,
                            user_engagement::EngagementAction action) {
     user::User u;
@@ -48,24 +56,15 @@ static std::vector<uint8_t> serializeUser(const user::User& u) {
     return data;
 }
 
-static std::string statusToString(debate::ClaimStatus s) {
-    switch (s) {
-        case debate::ClaimStatus::UNDETERMINED: return "UNDETERMINED";
-        case debate::ClaimStatus::TRUE_CLAIM:   return "TRUE_CLAIM";
-        case debate::ClaimStatus::FALSE_CLAIM:  return "FALSE_CLAIM";
-        default: return "UNKNOWN(" + std::to_string(static_cast<int>(s)) + ")";
-    }
-}
+// =====================================================================
+// FIXTURE — shared database across all tests
+// =====================================================================
 
-// -------------------------------------------------------
-// Fixture — persistent database for post-mortem debugging
-// -------------------------------------------------------
-class DebateSimulationTest : public ::testing::Test {
+class Simulation : public ::testing::Test {
 protected:
-    void SetUp() override {
-        // Use a fixed-name database so it persists after the test
+    // ---- one-time setup/teardown across all TEST_Fs ----
+    static void SetUpTestSuite() {
         db_path_ = "test_simulation.sqlite3";
-        // Always start fresh — delete any leftover from a previous run
         std::remove(db_path_.c_str());
         std::remove((db_path_ + "-wal").c_str());
         std::remove((db_path_ + "-shm").c_str());
@@ -73,341 +72,361 @@ protected:
         db_      = new Database(db_path_);
         wrapper_ = new DatabaseWrapper(*db_);
         debate_  = new DebateWrapper(*wrapper_);
-        ASSERT_TRUE(wrapper_->ensureAllTables());
+        bool ok = wrapper_->ensureAllTables();
+        if (!ok) {
+            std::cerr << "FATAL: ensureAllTables failed" << std::endl;
+            abort();
+        }
 
-        // Create User A
+        // Create 3 users
         userA_ = makeUser(0, "A", user_engagement::ACTION_HOME);
         userA_id_ = wrapper_->users.createUser("A", serializeUser(userA_));
-        ASSERT_GT(userA_id_, 0);
         userA_.set_user_id(userA_id_);
         wrapper_->users.updateUserProtobuf(userA_id_, serializeUser(userA_));
 
-        // Create User B
         userB_ = makeUser(0, "B", user_engagement::ACTION_HOME);
         userB_id_ = wrapper_->users.createUser("B", serializeUser(userB_));
-        ASSERT_GT(userB_id_, 0);
         userB_.set_user_id(userB_id_);
         wrapper_->users.updateUserProtobuf(userB_id_, serializeUser(userB_));
 
-        // Create User C
         userC_ = makeUser(0, "C", user_engagement::ACTION_HOME);
         userC_id_ = wrapper_->users.createUser("C", serializeUser(userC_));
-        ASSERT_GT(userC_id_, 0);
         userC_.set_user_id(userC_id_);
         wrapper_->users.updateUserProtobuf(userC_id_, serializeUser(userC_));
+
+        std::cout << "\n=== DB initialized: " << db_path_ << " ===" << std::endl;
+        std::cout << "Users: A=" << userA_id_ << " B=" << userB_id_ << " C=" << userC_id_ << "\n" << std::endl;
     }
 
-    void TearDown() override {
+    static void TearDownTestSuite() {
         delete debate_;
         delete wrapper_;
         delete db_;
-        // NOTE: We do NOT delete db_path_ — the database is kept for inspection.
-        // To clean up, manually delete test_simulation.sqlite3
         std::cout << "\n=== Database preserved at: " << db_path_ << " ===" << std::endl;
+        std::cout << "Inspect: sqlite3 " << db_path_ << "\n" << std::endl;
     }
 
-    // ---- User helpers ----
-    void actAsA() { userId_ = userA_id_; user_ = &userA_; }
-    void actAsB() { userId_ = userB_id_; user_ = &userB_; }
-    void actAsC() { userId_ = userC_id_; user_ = &userC_; }
+    // ---- per-test helpers ----
+    void actAs(int userId) { userId_ = userId; }
 
-    void refreshUserA() { userA_ = debate_->getUserProtobuf(userA_id_); }
-    void refreshUserB() { userB_ = debate_->getUserProtobuf(userB_id_); }
-    void refreshUserC() { userC_ = debate_->getUserProtobuf(userC_id_); }
+    void refreshAllUsers() {
+        userA_ = debate_->getUserProtobuf(userA_id_);
+        userB_ = debate_->getUserProtobuf(userB_id_);
+        userC_ = debate_->getUserProtobuf(userC_id_);
+    }
 
-    void enterDebate(int debateId) {
-        MoveUserHandler::EnterDebate(debateId, userId_, *debate_);
-        refreshCurrentUser();
+    // ---- action helpers (each calls the full event pipeline) ----
+    void createDebate(const std::string& topic, int userId) {
+        actAs(userId);
+        DebateHandler::AddDebate(topic, userId, *debate_);
+    }
+
+    void enterDebate(int debateId, int userId) {
+        actAs(userId);
+        MoveUserHandler::EnterDebate(debateId, userId, *debate_);
+    }
+
+    void goToClaim(int claimId, int userId) {
+        actAs(userId);
+        MoveUserHandler::GoToClaim(claimId, userId, *debate_);
     }
 
     void addChild(int parentId, const std::string& text,
-                  const std::string& connection) {
-        AddClaimHandler::OpenAddChildClaim(userId_, *debate_);
-        AddClaimHandler::AddClaimUnderClaim(text, connection, userId_, *debate_);
-        refreshCurrentUser();
+                  const std::string& connection, int userId) {
+        actAs(userId);
+        AddClaimHandler::OpenAddChildClaim(userId, *debate_);
+        AddClaimHandler::AddClaimUnderClaim(text, connection, userId, *debate_);
     }
 
-    void goToClaim(int claimId) {
-        MoveUserHandler::GoToClaim(claimId, userId_, *debate_);
-        refreshCurrentUser();
+    void challengeClaim(int claimId, const std::string& reason, int userId) {
+        actAs(userId);
+        // Navigate to the claim first
+        MoveUserHandler::GoToClaim(claimId, userId, *debate_);
+        // Full challenge pipeline
+        ChallengeHandler::StartChallengeClaim(userId, *debate_);
+        ChallengeHandler::AddClaimToBeChallenged(claimId, userId, *debate_);
+        ChallengeHandler::OpenAddChallenge(userId, *debate_);
+        ChallengeHandler::SubmitChallengeClaim(reason, userId, *debate_);
     }
 
-    void challengeCurrentClaim(const std::string& reason) {
-        ChallengeHandler::StartChallengeClaim(userId_, *debate_);
-        ChallengeHandler::AddClaimToBeChallenged(
-            user_->engagement().debating_info().current_claim().id(),
-            userId_, *debate_);
-        ChallengeHandler::OpenAddChallenge(userId_, *debate_);
-        ChallengeHandler::SubmitChallengeClaim(reason, userId_, *debate_);
-        refreshCurrentUser();
-    }
-
-    void refreshCurrentUser() {
-        if (userId_ == userA_id_) refreshUserA();
-        else if (userId_ == userB_id_) refreshUserB();
-        else if (userId_ == userC_id_) refreshUserC();
-    }
-
-    // ---- Claim helpers ----
+    // ---- query helpers ----
     debate::Claim getClaim(int id) { return debate_->getClaimById(id); }
 
-    // Get a user's view of a claim's status from the user_statuses map
-    debate::ClaimStatus getUserView(const debate::Claim& claim, const std::string& username) {
-        auto it = claim.user_statuses().find(username);
-        if (it != claim.user_statuses().end()) {
-            return it->second;
-        }
-        return debate::ClaimStatus::UNDETERMINED;  // default if not in map
+    debate::ClaimStatus userView(int claimId, const std::string& username) {
+        debate::Claim c = getClaim(claimId);
+        auto it = c.user_statuses().find(username);
+        if (it != c.user_statuses().end()) return it->second;
+        return debate::ClaimStatus::UNDETERMINED;
     }
 
-    // Find the challenge claim targeting a given claim
-    int findChallengeClaimId(int challengedClaimId) {
+    int findChallengeClaim(int challengedClaimId) {
         auto links = debate_->getLinksForDebate(1);
         for (const auto& link : links) {
-            int linkType = std::get<5>(link);
-            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-                int toClaim = std::get<2>(link);
-                if (toClaim == challengedClaimId) {
-                    return std::get<1>(link);  // from = challenge claim
-                }
+            if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE) &&
+                std::get<2>(link) == challengedClaimId) {
+                return std::get<1>(link);
             }
         }
         return -1;
     }
 
-    // ---- State dumper for debugging ----
-    void dumpState(const std::string& label) {
-        std::cout << "\n===== STATE: " << label << " =====" << std::endl;
-
-        // Dump all claims
-        auto statements = debate_->getStatementsForDebate(1);
-        std::cout << "\n--- Claims ---" << std::endl;
-        for (const auto& stmtBytes : statements) {
-            debate::Claim c;
-            if (!c.ParseFromArray(stmtBytes.data(), static_cast<int>(stmtBytes.size()))) {
-                std::cout << "  [failed to parse claim]" << std::endl;
-                continue;
-            }
-            std::cout << "  Claim " << c.id() << ": \"" << c.sentence() << "\""
-                      << " | status=" << statusToString(c.status())
-                      << " | creator=" << c.creator_id()
-                      << std::endl;
-            std::cout << "    user_statuses: { ";
-            for (const auto& kv : c.user_statuses()) {
-                std::cout << kv.first << "=" << statusToString(kv.second) << " ";
-            }
-            std::cout << "}" << std::endl;
-        }
-
-        // Dump all links
+    bool hasLink(int from, int to, debate::LinkType type) {
         auto links = debate_->getLinksForDebate(1);
-        std::cout << "\n--- Links ---" << std::endl;
         for (const auto& link : links) {
-            int linkId = std::get<0>(link);
-            int from   = std::get<1>(link);
-            int to     = std::get<2>(link);
-            int type   = std::get<5>(link);
-            std::string typeStr = (type == 0) ? "NORMAL" : (type == 1) ? "PARENT_CHILD" : "CHALLENGE";
-            std::cout << "  Link " << linkId << ": " << from << " -> " << to
-                      << " [" << typeStr << "]" << std::endl;
+            if (std::get<1>(link) == from &&
+                std::get<2>(link) == to &&
+                std::get<5>(link) == static_cast<int>(type)) {
+                return true;
+            }
         }
-
-        // Dump user engagement
-        std::cout << "\n--- User Engagement ---" << std::endl;
-        refreshUserA(); refreshUserB(); refreshUserC();
-        for (auto* u : {&userA_, &userB_, &userC_}) {
-            std::cout << "  " << u->username() << ": action="
-                      << u->engagement().current_action()
-                      << " debate=" << u->engagement().debating_info().debate_id()
-                      << " current_claim=" << u->engagement().debating_info().current_claim().id()
-                      << std::endl;
-        }
-        std::cout << "===== END STATE =====\n" << std::endl;
+        return false;
     }
 
-    std::string db_path_;
-    Database*      db_      = nullptr;
-    DatabaseWrapper* wrapper_ = nullptr;
-    DebateWrapper* debate_  = nullptr;
+    // ---- debug printer ----
+    void printClaims() {
+        auto stmts = debate_->getStatementsForDebate(1);
+        std::cout << "  Claims:" << std::endl;
+        for (const auto& bytes : stmts) {
+            debate::Claim c;
+            c.ParseFromArray(bytes.data(), static_cast<int>(bytes.size()));
+            std::cout << "    #" << c.id() << " \"" << c.sentence() << "\""
+                      << " status=" << statusToString(c.status())
+                      << " creator=" << c.creator_id()
+                      << " views={";
+            for (const auto& kv : c.user_statuses())
+                std::cout << " " << kv.first << "=" << statusToString(kv.second);
+            std::cout << " }" << std::endl;
+        }
+    }
 
-    int userA_id_ = 0;
-    int userB_id_ = 0;
-    int userC_id_ = 0;
-    user::User userA_;
-    user::User userB_;
-    user::User userC_;
+    void printLinks() {
+        auto links = debate_->getLinksForDebate(1);
+        std::cout << "  Links:" << std::endl;
+        for (const auto& link : links) {
+            std::string typeStr;
+            switch (std::get<5>(link)) {
+                case 0: typeStr = "NORMAL"; break;
+                case 1: typeStr = "PARENT_CHILD"; break;
+                case 2: typeStr = "CHALLENGE"; break;
+                default: typeStr = "?"; break;
+            }
+            std::cout << "    #" << std::get<0>(link)
+                      << " " << std::get<1>(link) << " -> " << std::get<2>(link)
+                      << " [" << typeStr << "]" << std::endl;
+        }
+    }
 
+    void printUsers() {
+        refreshAllUsers();
+        std::cout << "  Users:" << std::endl;
+        for (auto* u : {&userA_, &userB_, &userC_}) {
+            std::cout << "    " << u->username()
+                      << " action=" << u->engagement().current_action()
+                      << " debate=" << u->engagement().debating_info().debate_id()
+                      << " at_claim=" << u->engagement().debating_info().current_claim().id()
+                      << std::endl;
+        }
+    }
+
+    // ---- state ----
+    static std::string db_path_;
+    static Database* db_;
+    static DatabaseWrapper* wrapper_;
+    static DebateWrapper* debate_;
+    static int userA_id_, userB_id_, userC_id_;
+    static user::User userA_, userB_, userC_;
     int userId_ = 0;
-    user::User* user_ = nullptr;
+    int childId_ = 0;  // set by AddChildClaim, used by ChallengeClaim
 };
 
-// ============================================================
-// FULL DEBATE SIMULATION
-// ============================================================
-TEST_F(DebateSimulationTest, FullDebateSimulation) {
-    // -------------------------------------------------------
-    // STEP 1: User A creates a debate
-    // -------------------------------------------------------
-    std::cout << "\n>>> STEP 1: User A creates debate" << std::endl;
-    actAsA();
-    DebateHandler::AddDebate("Is AI beneficial?", userId_, *debate_);
-    int debateId = 1;
+// static member definitions
+std::string Simulation::db_path_;
+Database* Simulation::db_ = nullptr;
+DatabaseWrapper* Simulation::wrapper_ = nullptr;
+DebateWrapper* Simulation::debate_ = nullptr;
+int Simulation::userA_id_ = 0;
+int Simulation::userB_id_ = 0;
+int Simulation::userC_id_ = 0;
+user::User Simulation::userA_;
+user::User Simulation::userB_;
+user::User Simulation::userC_;
 
-    // Verify: debate exists with root claim
+// =====================================================================
+// CHECK 1: Create debate
+// =====================================================================
+TEST_F(Simulation, CreateDebate) {
+    std::cout << "\n--- CHECK: CreateDebate ---" << std::endl;
+
+    createDebate("Is AI beneficial?", userA_id_);
+
     debate::Claim root = getClaim(1);
     ASSERT_EQ(root.id(), 1);
     ASSERT_EQ(root.sentence(), "Is AI beneficial?");
     ASSERT_TRUE(debate_->isRoot(1));
 
-    // Root claim: A sees it as TRUE_CLAIM (creator), B and C have no entry
-    EXPECT_EQ(getUserView(root, "A"), debate::ClaimStatus::TRUE_CLAIM)
-        << "Creator A should see root as TRUE_CLAIM";
-    EXPECT_EQ(getUserView(root, "B"), debate::ClaimStatus::UNDETERMINED)
-        << "B should see root as UNDETERMINED (not in user_statuses map)";
-    EXPECT_EQ(getUserView(root, "C"), debate::ClaimStatus::UNDETERMINED)
-        << "C should see root as UNDETERMINED (not in user_statuses map)";
+    EXPECT_EQ(userView(1, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(1, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(userView(1, "C"), debate::ClaimStatus::UNDETERMINED);
 
-    dumpState("After Step 1: A creates debate");
+    printClaims();
+    std::cout << "  PASS" << std::endl;
+}
 
-    // -------------------------------------------------------
-    // STEP 2: Users B and C join the debate
-    // -------------------------------------------------------
-    std::cout << "\n>>> STEP 2: B and C join the debate" << std::endl;
+// =====================================================================
+// CHECK 2: Enter debate
+// =====================================================================
+TEST_F(Simulation, EnterDebate) {
+    std::cout << "\n--- CHECK: EnterDebate ---" << std::endl;
 
-    // A enters first (creator already has debate context)
-    actAsA();
-    enterDebate(debateId);
+    enterDebate(1, userA_id_);
+    enterDebate(1, userB_id_);
+    enterDebate(1, userC_id_);
+
+    refreshAllUsers();
+
+    // All users should be in the debate
     EXPECT_EQ(userA_.engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(userA_.engagement().debating_info().debate_id(), debateId);
-
-    // B enters
-    actAsB();
-    enterDebate(debateId);
-    EXPECT_EQ(userB_.engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(userB_.engagement().debating_info().debate_id(), debateId);
-    EXPECT_EQ(userB_.engagement().debating_info().current_claim().id(), 1);  // at root
-
-    // C enters
-    actAsC();
-    enterDebate(debateId);
-    EXPECT_EQ(userC_.engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(userC_.engagement().debating_info().debate_id(), debateId);
-    EXPECT_EQ(userC_.engagement().debating_info().current_claim().id(), 1);  // at root
-
-    // All users should be at root claim
-    refreshUserA(); refreshUserB(); refreshUserC();
+    EXPECT_EQ(userA_.engagement().debating_info().debate_id(), 1);
     EXPECT_EQ(userA_.engagement().debating_info().current_claim().id(), 1);
+
+    EXPECT_EQ(userB_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userB_.engagement().debating_info().debate_id(), 1);
     EXPECT_EQ(userB_.engagement().debating_info().current_claim().id(), 1);
+
+    EXPECT_EQ(userC_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userC_.engagement().debating_info().debate_id(), 1);
     EXPECT_EQ(userC_.engagement().debating_info().current_claim().id(), 1);
 
-    dumpState("After Step 2: B and C join");
+    printUsers();
+    std::cout << "  PASS" << std::endl;
+}
 
-    // -------------------------------------------------------
-    // STEP 3: User A adds a child claim under root
-    // -------------------------------------------------------
-    std::cout << "\n>>> STEP 3: A adds child claim" << std::endl;
-    actAsA();
-    goToClaim(1);  // ensure A is at root
-    addChild(1, "AI improves healthcare", "supports");
+// =====================================================================
+// CHECK 3: Add child claim
+// =====================================================================
+TEST_F(Simulation, AddChildClaim) {
+    std::cout << "\n--- CHECK: AddChildClaim ---" << std::endl;
 
-    // Find the new child claim
-    std::vector<int> rootChildren = debate_->findChildrenIds(1);
-    ASSERT_EQ(rootChildren.size(), 1u) << "Root should have exactly 1 child";
-    int childId = rootChildren[0];
+    goToClaim(1, userA_id_);
+    addChild(1, "AI improves healthcare", "supports", userA_id_);
 
-    debate::Claim child = getClaim(childId);
+    // Find the child
+    std::vector<int> children = debate_->findChildrenIds(1);
+    ASSERT_EQ(children.size(), 1u);
+    childId_ = children[0];
+
+    debate::Claim child = getClaim(childId_);
     EXPECT_EQ(child.sentence(), "AI improves healthcare");
 
-    // Verify parent-child link exists
-    auto links = debate_->getLinksForDebate(1);
-    bool foundParentChild = false;
-    for (const auto& link : links) {
-        int type = std::get<5>(link);
-        if (type == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
-            int from = std::get<1>(link);
-            int to   = std::get<2>(link);
-            if (from == 1 && to == childId) {
-                foundParentChild = true;
-                break;
-            }
-        }
+    // Parent-child link should exist
+    EXPECT_TRUE(hasLink(1, childId_, debate::LinkType::PARENT_CHILD));
+
+    // Per-user views
+    EXPECT_EQ(userView(childId_, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(childId_, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(userView(childId_, "C"), debate::ClaimStatus::UNDETERMINED);
+
+    printClaims();
+    printLinks();
+    std::cout << "  PASS" << std::endl;
+}
+
+// =====================================================================
+// CHECK 4: Challenge a claim
+// =====================================================================
+TEST_F(Simulation, ChallengeClaim) {
+    std::cout << "\n--- CHECK: ChallengeClaim ---" << std::endl;
+
+    // childId_ was set by the previous test (AddChildClaim)
+    // If running standalone, add the child first:
+    if (childId_ == 0) {
+        goToClaim(1, userA_id_);
+        addChild(1, "AI improves healthcare", "supports", userA_id_);
+        childId_ = debate_->findChildrenIds(1)[0];
     }
-    EXPECT_TRUE(foundParentChild) << "Parent-child link should exist between root and child";
 
-    // Verify user_statuses: A (creator) sees child as TRUE_CLAIM
-    child = getClaim(childId);  // refresh
-    EXPECT_EQ(getUserView(child, "A"), debate::ClaimStatus::TRUE_CLAIM)
-        << "A (creator) should see child claim as TRUE_CLAIM";
-    EXPECT_EQ(getUserView(child, "B"), debate::ClaimStatus::UNDETERMINED)
-        << "B should see child as UNDETERMINED (not creator, not in map)";
-    EXPECT_EQ(getUserView(child, "C"), debate::ClaimStatus::UNDETERMINED)
-        << "C should see child as UNDETERMINED (not creator, not in map)";
+    challengeClaim(childId_, "Healthcare AI has bias issues", userB_id_);
 
-    dumpState("After Step 3: A adds child claim");
+    // Challenge claim should exist
+    int challengeId = findChallengeClaim(childId_);
+    ASSERT_GT(challengeId, 0);
+    EXPECT_NE(challengeId, childId_);
 
-    // -------------------------------------------------------
-    // STEP 4: User B challenges the child claim
-    // -------------------------------------------------------
-    std::cout << "\n>>> STEP 4: B challenges child claim" << std::endl;
-    actAsB();
-    goToClaim(childId);
-    challengeCurrentClaim("Healthcare AI has bias issues");
-
-    // Verify: a challenge claim was created
-    int challengeClaimId = findChallengeClaimId(childId);
-    ASSERT_GT(challengeClaimId, 0) << "A challenge claim should have been created";
-    ASSERT_NE(challengeClaimId, childId) << "Challenge claim should be different from challenged claim";
-
-    debate::Claim challengeClaim = getClaim(challengeClaimId);
+    debate::Claim challengeClaim = getClaim(challengeId);
     EXPECT_EQ(challengeClaim.sentence(), "Healthcare AI has bias issues");
 
-    // Verify: CHALLENGE link exists from challenge claim to challenged claim
-    links = debate_->getLinksForDebate(1);
-    bool foundChallengeLink = false;
-    for (const auto& link : links) {
-        int type = std::get<5>(link);
-        if (type == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            int from = std::get<1>(link);
-            int to   = std::get<2>(link);
-            if (from == challengeClaimId && to == childId) {
-                foundChallengeLink = true;
-                break;
-            }
-        }
+    // CHALLENGE link should exist
+    EXPECT_TRUE(hasLink(challengeId, childId_, debate::LinkType::CHALLENGE));
+
+    // Per-user views on the challenged claim
+    EXPECT_EQ(userView(childId_, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(childId_, "B"), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(userView(childId_, "C"), debate::ClaimStatus::UNDETERMINED);
+
+    // Per-user views on the challenge claim
+    EXPECT_EQ(userView(challengeId, "B"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(challengeId, "A"), debate::ClaimStatus::UNDETERMINED);
+
+    printClaims();
+    printLinks();
+    std::cout << "  PASS" << std::endl;
+}
+
+// =====================================================================
+// CHECK 5: Verify full state after all steps
+// =====================================================================
+TEST_F(Simulation, FullStateVerification) {
+    std::cout << "\n--- CHECK: FullStateVerification ---" << std::endl;
+
+    // Ensure childId_ is set (depends on test order)
+    if (childId_ == 0) {
+        goToClaim(1, userA_id_);
+        addChild(1, "AI improves healthcare", "supports", userA_id_);
+        childId_ = debate_->findChildrenIds(1)[0];
     }
-    EXPECT_TRUE(foundChallengeLink)
-        << "CHALLENGE link should exist from challenge claim to challenged claim";
 
-    // Verify: B sees the challenged child as FALSE_CLAIM (challenger's view)
-    child = getClaim(childId);
-    EXPECT_EQ(getUserView(child, "B"), debate::ClaimStatus::FALSE_CLAIM)
-        << "B (challenger) should see challenged claim as FALSE_CLAIM";
+    int challengeId = findChallengeClaim(childId_);
+    if (challengeId == -1) {
+        challengeClaim(childId_, "Healthcare AI has bias issues", userB_id_);
+        challengeId = findChallengeClaim(childId_);
+    }
 
-    // Verify: A still sees child as TRUE_CLAIM (creator's view unchanged)
-    EXPECT_EQ(getUserView(child, "A"), debate::ClaimStatus::TRUE_CLAIM)
-        << "A (creator) should still see child as TRUE_CLAIM";
+    // ---- Verify all claims ----
+    debate::Claim root = getClaim(1);
+    debate::Claim child = getClaim(childId_);
+    debate::Claim challenge = getClaim(challengeId);
 
-    // Verify: C sees child as UNDETERMINED (not involved)
-    EXPECT_EQ(getUserView(child, "C"), debate::ClaimStatus::UNDETERMINED)
-        << "C (uninvolved) should see child as UNDETERMINED";
+    EXPECT_EQ(root.sentence(), "Is AI beneficial?");
+    EXPECT_EQ(child.sentence(), "AI improves healthcare");
+    EXPECT_EQ(challenge.sentence(), "Healthcare AI has bias issues");
 
-    // Verify: B sees the challenge claim as TRUE_CLAIM (creator of challenge)
-    challengeClaim = getClaim(challengeClaimId);
-    EXPECT_EQ(getUserView(challengeClaim, "B"), debate::ClaimStatus::TRUE_CLAIM)
-        << "B (creator of challenge claim) should see it as TRUE_CLAIM";
+    // ---- Verify all links ----
+    EXPECT_TRUE(hasLink(1, childId_, debate::LinkType::PARENT_CHILD));
+    EXPECT_TRUE(hasLink(challengeId, childId_, debate::LinkType::CHALLENGE));
 
-    // Verify: A sees challenge claim as UNDETERMINED (not creator)
-    EXPECT_EQ(getUserView(challengeClaim, "A"), debate::ClaimStatus::UNDETERMINED)
-        << "A (not creator of challenge) should see challenge claim as UNDETERMINED";
+    // ---- Verify per-user views on root ----
+    EXPECT_EQ(userView(1, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(1, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(userView(1, "C"), debate::ClaimStatus::UNDETERMINED);
 
-    dumpState("After Step 4: B challenges child claim");
+    // ---- Verify per-user views on child ----
+    EXPECT_EQ(userView(childId_, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(childId_, "B"), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(userView(childId_, "C"), debate::ClaimStatus::UNDETERMINED);
 
-    // -------------------------------------------------------
-    // SUMMARY
-    // -------------------------------------------------------
-    std::cout << "\n========================================" << std::endl;
-    std::cout << "  DEBATE SIMULATION COMPLETE" << std::endl;
-    std::cout << "  Database: " << db_path_ << std::endl;
-    std::cout << "  Inspect with: sqlite3 " << db_path_ << std::endl;
-    std::cout << "========================================\n" << std::endl;
+    // ---- Verify per-user views on challenge ----
+    EXPECT_EQ(userView(challengeId, "A"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(userView(challengeId, "B"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(userView(challengeId, "C"), debate::ClaimStatus::UNDETERMINED);
+
+    // ---- Verify user engagement ----
+    refreshAllUsers();
+    EXPECT_EQ(userA_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userB_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userC_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+
+    printClaims();
+    printLinks();
+    printUsers();
+    std::cout << "  PASS" << std::endl;
 }
