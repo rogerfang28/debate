@@ -45,6 +45,22 @@ message FullDebateViewInfo {
 
 	// Tree-structured data used by the full-debate map renderer.
 	FullDebateTree full_debate_tree = 4;
+
+	// Per-user claim status matrix for visualization.
+	// Each entry represents one user's view of every claim in the debate.
+	// This is separate from the per-claim user_statuses and can be removed
+	// when no longer needed.
+	PerUserClaimStatuses per_user_statuses = 5;
+}
+
+// A per-user matrix of claim statuses — used for visualization only.
+// Each UserClaimView maps one username to their view of every claim.
+message PerUserClaimStatuses {
+	message UserClaimView {
+		string username = 1;
+		map<int32, debate.ClaimStatus> claim_statuses = 2;  // claim_id -> status
+	}
+	repeated UserClaimView users = 1;
 }
 
 // Map-friendly full debate graph (claims as nodes and typed edges).

@@ -3,6 +3,8 @@
 #include "../../../../../../../src/gen/cpp/collection.pb.h"
 #include "../../../../../utils/Log.h"
 #include <algorithm>
+#include <map>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -512,5 +514,27 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		);
 	}
 
+	// Build per-user claim status matrix for visualization.
+	{
+		rendering_info::PerUserClaimStatuses* perUser = info.mutable_per_user_statuses();
+		std::unordered_map<std::string, std::map<int, debate::ClaimStatus>> userMap;
+		for (const auto& claimEntry : collectionProto.claims_by_id()) {
+			const int claimId = claimEntry.first;
+			const debate::Claim& claim = claimEntry.second;
+			const auto& statuses = claim.user_statuses();
+			for (const auto& s : statuses) {
+				userMap[s.first][claimId] = s.second;
+			}
+		}
+		for (const auto& u : userMap) {
+			rendering_info::PerUserClaimStatuses::UserClaimView* view = perUser->add_users();
+			view->set_username(u.first);
+			for (const auto& cs : u.second) {
+				(*view->mutable_claim_statuses())[cs.first] = cs.second;
+			}
+		}
+		Log::test("[ParseFullDebateViewInfo] per_user_statuses: users=" + std::to_string(perUser->users_size()));
+	}
+
 	return info;
-}
+	}
