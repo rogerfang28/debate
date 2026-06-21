@@ -2870,6 +2870,69 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&nodeCard, nodeTitle);
 
+        // Per-user status rectangles: "username: [color]"
+        if (node->user_statuses_size() > 0) {
+            ui::Component userStatusRow = ComponentGenerator::createContainer(
+                "mapNodeUsers_" + std::to_string(claimId),
+                "flex flex-wrap gap-1 mb-1",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            );
+            for (const auto& us : node->user_statuses()) {
+                std::string rectColor;
+                switch (us.status()) {
+                    case debate::ClaimStatus::TRUE_CLAIM:
+                        rectColor = "bg-green-500";
+                        break;
+                    case debate::ClaimStatus::FALSE_CLAIM:
+                        rectColor = "bg-red-500";
+                        break;
+                    case debate::ClaimStatus::UNDETERMINED:
+                        rectColor = "bg-gray-500";
+                        break;
+                    default:
+                        rectColor = "bg-purple-500";
+                        break;
+                }
+                ui::Component userBadge = ComponentGenerator::createContainer(
+                    "mapNodeUser_" + std::to_string(claimId) + "_" + us.username(),
+                    "flex items-center",
+                    "",
+                    "px-1 py-0.5",
+                    "",
+                    "rounded",
+                    "",
+                    "mr-1"
+                );
+                ui::Component colorRect = ComponentGenerator::createContainer(
+                    "mapNodeRect_" + std::to_string(claimId) + "_" + us.username(),
+                    "w-3 h-3 rounded-sm " + rectColor,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                );
+                ui::Component userLabel = ComponentGenerator::createText(
+                    "mapNodeLabel_" + std::to_string(claimId) + "_" + us.username(),
+                    us.username(),
+                    "text-xs",
+                    "text-gray-300",
+                    "",
+                    ""
+                );
+                ComponentGenerator::addChild(&userBadge, colorRect);
+                ComponentGenerator::addChild(&userBadge, userLabel);
+                ComponentGenerator::addChild(&userStatusRow, userBadge);
+            }
+            ComponentGenerator::addChild(&nodeCard, userStatusRow);
+        }
+
         ui::Component nodeSentence = ComponentGenerator::createText(
             "mapNodeSentence_" + std::to_string(claimId),
             node->sentence(),

@@ -433,7 +433,14 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outNode->set_sentence(claim.sentence());
 		outNode->set_creator_id(claim.creator_id());
 		// Use per-user status for tree nodes
-	outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
+		outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
+
+		// Populate per-user status rectangles on tree node
+		for (const auto& s : claim.user_statuses()) {
+			rendering_info::UserStatus* us = outNode->add_user_statuses();
+			us->set_username(s.first);
+			us->set_status(s.second);
+		}
 
 		auto parentIt = parentIdsByClaim.find(claimId);
 		if (parentIt != parentIdsByClaim.end()) {
