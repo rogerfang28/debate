@@ -11,10 +11,8 @@ interface TextareaComponentProps extends BaseComponentProps {
 
 const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, className, style }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Send event on Ctrl+Enter or Cmd+Enter
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       console.log(`⏎ Textarea "${component.id}" submitted with value:`, e.currentTarget.value);
-      
       handleEvent(
         e as any,
         component,
@@ -25,15 +23,30 @@ const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, classN
   };
 
   return (
-    <textarea
-      id={component.id}
-      name={component.name}
-      defaultValue={component.value as string || ""}
-      className={className}
-      style={style}
-      onKeyDown={handleKeyDown}
-      {...component.attributes}
-    />
+    <div className="flex flex-col gap-1">
+      {component.text && (
+        <label
+          htmlFor={component.id}
+          className="text-xs font-medium"
+          style={{ color: 'var(--text-secondary)' }}
+        >
+          {component.text}
+        </label>
+      )}
+      <textarea
+        id={component.id}
+        name={component.name}
+        defaultValue={component.value as string || ""}
+        className={className}
+        style={{
+          ...style,
+          minHeight: '80px',
+          resize: 'vertical',
+        }}
+        onKeyDown={handleKeyDown}
+        {...component.attributes}
+      />
+    </div>
   );
 };
 

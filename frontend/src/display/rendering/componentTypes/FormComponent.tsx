@@ -13,8 +13,6 @@ const FormComponent: React.FC<FormComponentProps> = ({ component, className, sty
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(`📋 Form "${component.id}" submitted`);
-    
-    // Send event to backend on form submit
     handleEvent(
       e as any,
       component,
@@ -24,7 +22,22 @@ const FormComponent: React.FC<FormComponentProps> = ({ component, className, sty
   };
 
   return (
-    <form id={component.id} className={className} style={style} onSubmit={handleSubmit} {...component.attributes}>
+    <form
+      id={component.id}
+      className={className}
+      style={{
+        ...style,
+        display: 'flex',
+        flexDirection: 'column' as const,
+        gap: 'var(--space-md)',
+        background: 'var(--surface-card)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 'var(--radius-lg)',
+        padding: 'var(--space-lg)',
+      }}
+      onSubmit={handleSubmit}
+      {...component.attributes}
+    >
       {component.children?.map((child, idx: number) => (
         <ComponentRenderer key={child.id || idx} component={child} />
       ))}
