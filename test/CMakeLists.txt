@@ -174,7 +174,35 @@ add_executable(debate_tests
 target_link_libraries(debate_tests ${COMMON_LIBS})
 
 # ============================================================
-# CTest
+# CTest — register each gtest test individually
 # ============================================================
 enable_testing()
-add_test(NAME DebateTests COMMAND debate_tests)
+
+# Manually register each test so ctest can run them individually
+# Format: add_test(NAME Suite.TestName COMMAND exe --gtest_filter=Suite.TestName)
+
+# DebateEventTest (5 tests)
+add_test(NAME DebateEventTest.CreateDebate_ViaHandler COMMAND debate_tests --gtest_filter="DebateEventTest.CreateDebate_ViaHandler")
+add_test(NAME DebateEventTest.FullEventFlow_CreateDebate_Enter_AddChild COMMAND debate_tests --gtest_filter="DebateEventTest.FullEventFlow_CreateDebate_Enter_AddChild")
+add_test(NAME DebateEventTest.AddMultipleChildren_ViaEventPipeline COMMAND debate_tests --gtest_filter="DebateEventTest.AddMultipleChildren_ViaEventPipeline")
+add_test(NAME DebateEventTest.NavigateAndAddGrandchild_ViaEventPipeline COMMAND debate_tests --gtest_filter="DebateEventTest.NavigateAndAddGrandchild_ViaEventPipeline")
+add_test(NAME DebateEventTest.UserEngagement_StateTransitions COMMAND debate_tests --gtest_filter="DebateEventTest.UserEngagement_StateTransitions")
+
+# PropagationTest (7 tests)
+add_test(NAME PropagationTest.ChallengeLeaf_CreatesChallengeClaimAndLink COMMAND debate_tests --gtest_filter="PropagationTest.ChallengeLeaf_CreatesChallengeClaimAndLink")
+add_test(NAME PropagationTest.UpdateStatus_ChallengeClaimStatusPropagates COMMAND debate_tests --gtest_filter="PropagationTest.UpdateStatus_ChallengeClaimStatusPropagates")
+add_test(NAME PropagationTest.ChallengeRoot_OnlyRootAffected COMMAND debate_tests --gtest_filter="PropagationTest.ChallengeRoot_OnlyRootAffected")
+add_test(NAME PropagationTest.MultipleChallenges_OnSameClaim COMMAND debate_tests --gtest_filter="PropagationTest.MultipleChallenges_OnSameClaim")
+add_test(NAME PropagationTest.ConcedeChallenge_ClearsUserState COMMAND debate_tests --gtest_filter="PropagationTest.ConcedeChallenge_ClearsUserState")
+add_test(NAME PropagationTest.DeleteChallenge_RestoresUndeterminedStatus COMMAND debate_tests --gtest_filter="PropagationTest.DeleteChallenge_RestoresUndeterminedStatus")
+add_test(NAME PropagationTest.CreatorSeesOwnClaimAsTrue COMMAND debate_tests --gtest_filter="PropagationTest.CreatorSeesOwnClaimAsTrue")
+
+# SimulationTest (5 tests)
+add_test(NAME SimulationTest.CreateDebate COMMAND debate_tests --gtest_filter="SimulationTest.CreateDebate")
+add_test(NAME SimulationTest.EnterDebate COMMAND debate_tests --gtest_filter="SimulationTest.EnterDebate")
+add_test(NAME SimulationTest.AddChildClaim COMMAND debate_tests --gtest_filter="SimulationTest.AddChildClaim")
+add_test(NAME SimulationTest.ChallengeClaim COMMAND debate_tests --gtest_filter="SimulationTest.ChallengeClaim")
+add_test(NAME SimulationTest.FullStateVerification COMMAND debate_tests --gtest_filter="SimulationTest.FullStateVerification")
+
+# Catch-all
+add_test(NAME AllTests COMMAND debate_tests)
