@@ -461,3 +461,68 @@ TEST_F(PropagationTest, DeleteChallenge_RestoresUndeterminedStatus) {
     }
     EXPECT_EQ(challengeLinksAfter, 0) << "All CHALLENGE links should be removed";
 }
+
+// ============================================================
+// TEST 7: On creation, claim is marked TRUE_CLAIM for the creator
+// ============================================================
+// When Alice creates a debate root claim, the claim's user_statuses map
+// should have { "alice" => TRUE_CLAIM }.
+// When Bob adds a child claim, that child should have { "bob" => TRUE_CLAIM }.
+// Alice's view of Bob's child should be UNDETERMINED (not in her user_statuses).
+// ============================================================
+TEST_F(PropagationTest, CreatorSeesOwnClaimAsTrue) {
+    actAsAlice();
+
+    // Alice creates a debate — root claim should be TRUE_CLAIM for alice
+    DebateHandler::AddDebate("Per-user status test", userId_, *debate_);
+    int debateId = 1;
+
+    // Verify root claim
+    debate::Claim rootClaim = claim(1);
+    const auto& rootStatuses = rootClaim.user_statuses();
+    EXPECT_EQ(rootStatuses.size(), 1)
+        << "Root claim should have exactly 1 user_statuses entry";
+    auto it = rootStatuses.find("alice");
+    ASSERT_NE(it, rootStatuses.end())
+        << "Root claim should have an entry for 'alice'";
+    EXPECT_EQ(it->second, debate::ClaimStatus::TRUE_CLAIM)
+        << "Creator should see own claim as TRUE_CLAIM";
+
+    // Alice adds a child claim — should also be TRUE_CLAIM for alice
+    enterDebate(debateId);
+    addChild(1, "Alice's child claim", "supports");
+    int childId = debate_->findChildrenIds(1).back();
+
+    debate::Claim childClaim = claim(childId);
+    const auto& childStatuses = childClaim.user_statuses();
+    EXPECT_EQ(childStatuses.size(), 1)
+        << "Child claim should have exactly 1 user_statuses entry";
+    auto itChild = childStatuses.find("alice");
+    ASSERT_NE(itChild, childStatuses.end())
+        << "Child claim should have an entry for 'alice'";
+    EXPECT_EQ(itChild->second, debate::ClaimStatus::TRUE_CLAIM)
+        << "Creator should see own child claim as TRUE_CLAIM";
+
+    // Bob enters the debate and adds his own child
+    actAsBob();
+    enterDebate(debateId);
+    goToClaim(1);
+    addChild(1, "Bob's child claim", "supports");
+    int bobChildId = debate_->findChildrenIds(1).back();
+
+    // Bob's child should be TRUE_CLAIM for bob
+    debate::Claim bobChildClaim = claim(bobChildId);
+    const auto& bobChildStatuses = bobChildClaim.user_statuses();
+    EXPECT_EQ(bobChildStatuses.size(), 1)
+        << "Bob's child claim should have exactly 1 user_statuses entry";
+    auto itBob = bobChildStatuses.find("bob");
+    ASSERT_NE(itBob, bobChildStatuses.end())
+        << "Bob's child claim should have an entry for 'bob'";
+    EXPECT_EQ(itBob->second, debate::ClaimStatus::TRUE_CLAIM)
+        << "Bob should see his own child claim as TRUE_CLAIM";
+
+    // Alice's child should NOT have an entry for bob (different user)
+    auto itBobOnAliceChild = childStatuses.find("bob");
+    EXPECT_EQ(itBobOnAliceChild, childStatuses.end())
+        << "Alice's child should NOT have a user_statuses entry for bob";
+}
