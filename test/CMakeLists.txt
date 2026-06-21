@@ -1,6 +1,16 @@
 # Test CMakeLists.txt for Debate Tool — tests branch
 # Build: cd test && cmake -S . -B build -G Ninja && cmake --build build -j
 # Test:  cd build && ctest --output-on-failure -j4
+#
+# Targets:
+#   debate_tests       — unit tests (12 tests: DebateEventTest + PropagationTest)
+#   debate_simulation  — comprehensive simulation test (1 test: DebateSimulationTest)
+#
+# Run separately:
+#   ./build/debate_tests.exe           — all unit tests
+#   ./build/debate_simulation.exe      — simulation test only
+#   ctest -R UnitTests                 — unit tests via ctest
+#   ctest -R Simulation                — simulation via ctest
 
 cmake_minimum_required(VERSION 3.20)
 project(DebateTests LANGUAGES CXX)
@@ -69,12 +79,6 @@ include_directories(
     ${REPO_ROOT}/backend/src/debateModerator
 )
 
-# --- Test sources ---
-set(TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
-    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
-)
-
 # --- Shared link libraries ---
 set(COMMON_LIBS
     ${VCPKG_INSTALLED}/lib/libgtest.a
@@ -93,15 +97,40 @@ set(COMMON_LIBS
     ws2_32
 )
 
-# --- Test executable ---
+# ============================================================
+# UNIT TESTS — fast, isolated, no persistent state
+# ============================================================
+set(UNIT_TEST_SOURCES
+    ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
+)
+
 add_executable(debate_tests
-    ${TEST_SOURCES}
+    ${UNIT_TEST_SOURCES}
     ${DB_SOURCES}
     ${HANDLER_SOURCES}
     ${PB_SRC}
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
 
-# --- Enable ctest ---
+# ============================================================
+# SIMULATION TEST — comprehensive, persistent DB, verbose output
+# ============================================================
+set(SIMULATION_TEST_SOURCES
+    ${CMAKE_SOURCE_DIR}/tests/test_debate_simulation.cc
+)
+
+add_executable(debate_simulation
+    ${SIMULATION_TEST_SOURCES}
+    ${DB_SOURCES}
+    ${HANDLER_SOURCES}
+    ${PB_SRC}
+)
+target_link_libraries(debate_simulation ${COMMON_LIBS})
+
+# ============================================================
+# CTest integration
+# ============================================================
 enable_testing()
-add_test(NAME DebateTests COMMAND debate_tests)
+add_test(NAME UnitTests COMMAND debate_tests)
+add_test(NAME Simulation COMMAND debate_simulation)
