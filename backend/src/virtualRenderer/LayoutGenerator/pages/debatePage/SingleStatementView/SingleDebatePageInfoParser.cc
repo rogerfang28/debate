@@ -16,35 +16,27 @@ rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
 	}
 }
 
-rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
-	switch (status) {
-		case debate::ClaimStatus::UNDETERMINED:
-			return rendering_info::CLAIM_STATUS_UNDETERMINED;
-		case debate::ClaimStatus::TRUE_CLAIM:
-			return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
-		case debate::ClaimStatus::FALSE_CLAIM:
-			return rendering_info::CLAIM_STATUS_FALSE_CLAIM;
-		default:
-			return rendering_info::CLAIM_STATUS_UNSPECIFIED;
-	}
+// ClaimStatus is now shared (debate::ClaimStatus) — no translation needed.
+debate::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
+	return status;
 }
 
 // Look up the per-user claim status from the user_statuses map.
 // If the viewer has no entry, default to UNDETERMINED.
 // If the viewer IS the creator and has no entry, default to TRUE_CLAIM.
-rendering_info::ClaimStatus MapClaimStatusForUser(
+debate::ClaimStatus MapClaimStatusForUser(
 		const debate::Claim& claim,
 		int viewer_user_id,
 		const std::string& viewer_username) {
 	const auto& user_statuses = claim.user_statuses();
 	auto it = user_statuses.find(viewer_username);
 	if (it != user_statuses.end()) {
-		return MapClaimStatus(it->second);
+		return it->second;
 	}
 	if (viewer_user_id == claim.creator_id()) {
-		return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
+		return debate::ClaimStatus::TRUE_CLAIM;
 	}
-	return rendering_info::CLAIM_STATUS_UNDETERMINED;
+	return debate::ClaimStatus::UNDETERMINED;
 }
 
 rendering_info::DebateActionType MapDebateAction(

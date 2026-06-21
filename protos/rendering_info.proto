@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package rendering_info;
 
+import "debate.proto";
+
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
 	// Viewer metadata — used for ownership checks and per-user claim status.
@@ -62,11 +64,12 @@ message FullDebateTreeNode {
 	int32 claim_id = 1;
 	string sentence = 2;
 	int32 creator_id = 3;
-	ClaimStatus status = 4;
+	debate.ClaimStatus status = 4;
+	repeated UserStatus user_statuses = 5;
 
 	// Convenience adjacency to simplify map rendering without extra joins.
-	repeated int32 parent_claim_ids = 5;
-	repeated int32 child_claim_ids = 6;
+	repeated int32 parent_claim_ids = 6;
+	repeated int32 child_claim_ids = 7;
 }
 
 enum FullDebateTreeLinkType {
@@ -124,13 +127,13 @@ message ClaimRenderInfo {
 	int32 id = 1;
 	string sentence = 2;
 	int32 creator_id = 3;
-	ClaimStatus status = 4;
+	debate.ClaimStatus status = 4;
 	repeated UserStatus user_statuses = 5;
 }
 
 message UserStatus {
 	string username = 1;
-	ClaimStatus status = 2;
+	debate.ClaimStatus status = 2;
 }
 
 message LinkRenderInfo {
@@ -154,12 +157,6 @@ enum ScopeType {
 	FULL_DEBATE = 2;
 }
 
-enum ClaimStatus {
-	CLAIM_STATUS_UNSPECIFIED = 0;
-	CLAIM_STATUS_UNDETERMINED = 1;
-	CLAIM_STATUS_TRUE_CLAIM = 2;
-	CLAIM_STATUS_FALSE_CLAIM = 3;
-}
 
 enum DebateActionType {
 	ACTION_TYPE_UNSPECIFIED = 0;

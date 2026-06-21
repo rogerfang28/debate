@@ -22,26 +22,16 @@ debate::ScopeType MapScopeType(rendering_info::ScopeType scopeType) {
     }
 }
 
-debate::ClaimStatus MapClaimStatus(rendering_info::ClaimStatus status) {
-    switch (status) {
-        case rendering_info::CLAIM_STATUS_UNDETERMINED:
-            return debate::ClaimStatus::UNDETERMINED;
-        case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
-            return debate::ClaimStatus::TRUE_CLAIM;
-        case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
-            return debate::ClaimStatus::FALSE_CLAIM;
-        default:
-            return debate::ClaimStatus::UNDETERMINED;
-    }
-}
+// ClaimStatus is now shared — these are pass-through since both sides use debate::ClaimStatus.
+debate::ClaimStatus MapClaimStatus(debate::ClaimStatus status) { return status; }
 
-std::string ClaimStatusToLabel(rendering_info::ClaimStatus status) {
+std::string ClaimStatusToLabel(debate::ClaimStatus status) {
     switch (status) {
-        case rendering_info::CLAIM_STATUS_UNDETERMINED:
+        case debate::ClaimStatus::UNDETERMINED:
             return "Undetermined";
-        case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+        case debate::ClaimStatus::TRUE_CLAIM:
             return "True";
-        case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+        case debate::ClaimStatus::FALSE_CLAIM:
             return "False";
         default:
             return "Unknown";
@@ -655,7 +645,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         ", openedConnectModal=" + std::string(debatingInfo.connecting_info().opened_connect_modal() ? "true" : "false")
     );
     
-    std::vector<std::tuple<std::string,std::string,int,rendering_info::ClaimStatus,std::vector<rendering_info::UserStatus>>> childClaimInfo; // id, sentence, creator_id, status, user_statuses
+    std::vector<std::tuple<std::string,std::string,int,debate::ClaimStatus,std::vector<rendering_info::UserStatus>>> childClaimInfo; // id, sentence, creator_id, status, user_statuses
     for (int i = 0; i < info.children_claims_size(); i++) {
         const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
         std::vector<rendering_info::UserStatus> userStatuses;
@@ -744,7 +734,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         std::string claimId = std::get<0>(childClaimInfo[i]);
         std::string claimSentence = std::get<1>(childClaimInfo[i]);
         int claimCreatorId = std::get<2>(childClaimInfo[i]);
-        rendering_info::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
+        debate::ClaimStatus claimStatus = std::get<3>(childClaimInfo[i]);
         bool userOwnsChildClaim = (currentUserId == claimCreatorId);
         Log::debug(
             "[DebatePageGenerator] Rendering child claim: id=" + claimId +
@@ -758,13 +748,13 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         // Determine border color based on status
         std::string borderColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+            case debate::ClaimStatus::FALSE_CLAIM:
                 borderColor = "border-2 border-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+            case debate::ClaimStatus::TRUE_CLAIM:
                 borderColor = "border-2 border-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_UNDETERMINED:
+            case debate::ClaimStatus::UNDETERMINED:
                 borderColor = "border-2 border-gray-600";
                 break;
             default:
@@ -776,15 +766,15 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         std::string statusText;
         std::string statusTextColor;
         switch (claimStatus) {
-            case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+            case debate::ClaimStatus::FALSE_CLAIM:
                 statusText = "False";
                 statusTextColor = "text-red-500";
                 break;
-            case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+            case debate::ClaimStatus::TRUE_CLAIM:
                 statusText = "True";
                 statusTextColor = "text-green-500";
                 break;
-            case rendering_info::CLAIM_STATUS_UNDETERMINED:
+            case debate::ClaimStatus::UNDETERMINED:
                 statusText = "Undetermined";
                 statusTextColor = "text-gray-400";
                 break;
@@ -807,7 +797,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         );
 
         // Per-user status rectangles above the claim sentence
-        if (claimStatus != rendering_info::CLAIM_STATUS_UNSPECIFIED) {
+        if (claimStatus != debate::ClaimStatus::UNDETERMINED) {
             ui::Component statusLabel = ComponentGenerator::createText(
                 nodeId + "Status",
                 "Status: " + statusText,
@@ -835,13 +825,13 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             for (const auto& us : std::get<4>(childClaimInfo[i])) {
                 std::string rectColor;
                 switch (us.status()) {
-                    case rendering_info::CLAIM_STATUS_TRUE_CLAIM:
+                    case debate::ClaimStatus::TRUE_CLAIM:
                         rectColor = "bg-green-500";
                         break;
-                    case rendering_info::CLAIM_STATUS_FALSE_CLAIM:
+                    case debate::ClaimStatus::FALSE_CLAIM:
                         rectColor = "bg-red-500";
                         break;
-                    case rendering_info::CLAIM_STATUS_UNDETERMINED:
+                    case debate::ClaimStatus::UNDETERMINED:
                         rectColor = "bg-gray-500";
                         break;
                     default:

@@ -18,24 +18,18 @@ rendering_info::ScopeType MapScopeType(debate::ScopeType scopeType) {
 	}
 }
 
-rendering_info::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
-	switch (status) {
-		case debate::ClaimStatus::UNDETERMINED:
-			return rendering_info::CLAIM_STATUS_UNDETERMINED;
-		case debate::ClaimStatus::TRUE_CLAIM:
-			return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
-		case debate::ClaimStatus::FALSE_CLAIM:
-			return rendering_info::CLAIM_STATUS_FALSE_CLAIM;
-		default:
-			return rendering_info::CLAIM_STATUS_UNSPECIFIED;
-	}
+// ClaimStatus is now a single enum (debate::ClaimStatus) shared between
+// debate.proto and rendering_info.proto — no translation needed.
+// MapClaimStatus is kept as a pass-through for source compatibility.
+debate::ClaimStatus MapClaimStatus(debate::ClaimStatus status) {
+	return status;
 }
 
 // Look up the per-user claim status from the user_statuses map.
 // If the viewer has no entry, default to UNDETERMINED.
 // If the viewer IS the creator and has no entry, default to TRUE_CLAIM
 // (creator believes their own claim).
-rendering_info::ClaimStatus MapClaimStatusForUser(
+debate::ClaimStatus MapClaimStatusForUser(
 		const debate::Claim& claim,
 		int viewer_user_id,
 		const std::string& viewer_username) {
@@ -43,14 +37,14 @@ rendering_info::ClaimStatus MapClaimStatusForUser(
 	const auto& user_statuses = claim.user_statuses();
 	auto it = user_statuses.find(viewer_username);
 	if (it != user_statuses.end()) {
-		return MapClaimStatus(it->second);
+		return it->second;
 	}
 	// No per-user entry: if viewer is the creator, they see TRUE_CLAIM
 	if (viewer_user_id == claim.creator_id()) {
-		return rendering_info::CLAIM_STATUS_TRUE_CLAIM;
+		return debate::ClaimStatus::TRUE_CLAIM;
 	}
 	// Otherwise default to UNDETERMINED
-	return rendering_info::CLAIM_STATUS_UNDETERMINED;
+	return debate::ClaimStatus::UNDETERMINED;
 }
 
 rendering_info::DebateActionType MapDebateAction(
@@ -105,7 +99,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		currentClaim->set_id(0);
 		currentClaim->set_sentence("No claim available");
 		currentClaim->set_creator_id(0);
-		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		currentClaim->set_status(debate::ClaimStatus::UNDETERMINED);
 		info.set_current_claim_description("No claim available.");
 		return info;
 	}
@@ -160,7 +154,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		currentClaim->set_id(0);
 		currentClaim->set_sentence("No claim available");
 		currentClaim->set_creator_id(0);
-		currentClaim->set_status(rendering_info::CLAIM_STATUS_UNSPECIFIED);
+		currentClaim->set_status(debate::ClaimStatus::UNDETERMINED);
 		info.set_current_claim_description("No claim available.");
 		return info;
 	}

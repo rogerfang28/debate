@@ -31,7 +31,7 @@ inline constexpr UserStatus::Impl_::Impl_(
       : username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        status_{static_cast< ::rendering_info::ClaimStatus >(0)},
+        status_{static_cast< ::debate::ClaimStatus >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -145,40 +145,6 @@ struct HomeDebateTopicRenderInfoDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HomeDebateTopicRenderInfoDefaultTypeInternal _HomeDebateTopicRenderInfo_default_instance_;
-
-inline constexpr FullDebateTreeNode::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : parent_claim_ids_{},
-        _parent_claim_ids_cached_byte_size_{0},
-        child_claim_ids_{},
-        _child_claim_ids_cached_byte_size_{0},
-        sentence_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        claim_id_{0},
-        creator_id_{0},
-        status_{static_cast< ::rendering_info::ClaimStatus >(0)},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR FullDebateTreeNode::FullDebateTreeNode(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct FullDebateTreeNodeDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR FullDebateTreeNodeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~FullDebateTreeNodeDefaultTypeInternal() {}
-  union {
-    FullDebateTreeNode _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FullDebateTreeNodeDefaultTypeInternal _FullDebateTreeNode_default_instance_;
 
 inline constexpr FullDebateTreeLink::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -333,6 +299,72 @@ struct HomePageRenderingInfoDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HomePageRenderingInfoDefaultTypeInternal _HomePageRenderingInfo_default_instance_;
 
+inline constexpr FullDebateTreeNode::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : user_statuses_{},
+        parent_claim_ids_{},
+        _parent_claim_ids_cached_byte_size_{0},
+        child_claim_ids_{},
+        _child_claim_ids_cached_byte_size_{0},
+        sentence_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        claim_id_{0},
+        creator_id_{0},
+        status_{static_cast< ::debate::ClaimStatus >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FullDebateTreeNode::FullDebateTreeNode(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FullDebateTreeNodeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FullDebateTreeNodeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FullDebateTreeNodeDefaultTypeInternal() {}
+  union {
+    FullDebateTreeNode _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FullDebateTreeNodeDefaultTypeInternal _FullDebateTreeNode_default_instance_;
+
+inline constexpr ClaimRenderInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : user_statuses_{},
+        sentence_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        id_{0},
+        creator_id_{0},
+        status_{static_cast< ::debate::ClaimStatus >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ClaimRenderInfo::ClaimRenderInfo(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ClaimRenderInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ClaimRenderInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ClaimRenderInfoDefaultTypeInternal() {}
+  union {
+    ClaimRenderInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClaimRenderInfoDefaultTypeInternal _ClaimRenderInfo_default_instance_;
+
 inline constexpr FullDebateTree::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : nodes_{},
@@ -359,67 +391,6 @@ struct FullDebateTreeDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FullDebateTreeDefaultTypeInternal _FullDebateTree_default_instance_;
-
-inline constexpr ClaimRenderInfo::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : user_statuses_{},
-        sentence_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        id_{0},
-        creator_id_{0},
-        status_{static_cast< ::rendering_info::ClaimStatus >(0)},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR ClaimRenderInfo::ClaimRenderInfo(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct ClaimRenderInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ClaimRenderInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ClaimRenderInfoDefaultTypeInternal() {}
-  union {
-    ClaimRenderInfo _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClaimRenderInfoDefaultTypeInternal _ClaimRenderInfo_default_instance_;
-
-inline constexpr FullDebateViewInfo::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        steps_{},
-        viewer_username_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        full_debate_tree_{nullptr},
-        viewer_user_id_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR FullDebateViewInfo::FullDebateViewInfo(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct FullDebateViewInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR FullDebateViewInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~FullDebateViewInfoDefaultTypeInternal() {}
-  union {
-    FullDebateViewInfo _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FullDebateViewInfoDefaultTypeInternal _FullDebateViewInfo_default_instance_;
 
 inline constexpr DebatePageRenderingInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -462,8 +433,38 @@ struct DebatePageRenderingInfoDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DebatePageRenderingInfoDefaultTypeInternal _DebatePageRenderingInfo_default_instance_;
+
+inline constexpr FullDebateViewInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        steps_{},
+        viewer_username_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        full_debate_tree_{nullptr},
+        viewer_user_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FullDebateViewInfo::FullDebateViewInfo(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FullDebateViewInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FullDebateViewInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FullDebateViewInfoDefaultTypeInternal() {}
+  union {
+    FullDebateViewInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FullDebateViewInfoDefaultTypeInternal _FullDebateViewInfo_default_instance_;
 }  // namespace rendering_info
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_rendering_5finfo_2eproto[4];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_rendering_5finfo_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_rendering_5finfo_2eproto = nullptr;
 const ::uint32_t
@@ -544,6 +545,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.sentence_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.creator_id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.status_),
+        PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.user_statuses_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.parent_claim_ids_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::FullDebateTreeNode, _impl_.child_claim_ids_),
         ~0u,  // no _has_bits_
@@ -676,16 +678,16 @@ static const ::_pbi::MigrationSchema
         {36, 48, -1, sizeof(::rendering_info::FullDebateViewInfo)},
         {52, -1, -1, sizeof(::rendering_info::FullDebateTree)},
         {63, -1, -1, sizeof(::rendering_info::FullDebateTreeNode)},
-        {77, -1, -1, sizeof(::rendering_info::FullDebateTreeLink)},
-        {93, -1, -1, sizeof(::rendering_info::Steps)},
-        {103, -1, -1, sizeof(::rendering_info::HomePageRenderingInfo)},
-        {115, -1, -1, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
-        {128, -1, -1, sizeof(::rendering_info::ClaimRenderInfo)},
-        {141, -1, -1, sizeof(::rendering_info::UserStatus)},
-        {151, -1, -1, sizeof(::rendering_info::LinkRenderInfo)},
-        {164, -1, -1, sizeof(::rendering_info::ChallengeRenderInfo)},
-        {176, -1, -1, sizeof(::rendering_info::ConnectingRenderInfo)},
-        {188, -1, -1, sizeof(::rendering_info::ChallengingRenderInfo)},
+        {78, -1, -1, sizeof(::rendering_info::FullDebateTreeLink)},
+        {94, -1, -1, sizeof(::rendering_info::Steps)},
+        {104, -1, -1, sizeof(::rendering_info::HomePageRenderingInfo)},
+        {116, -1, -1, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
+        {129, -1, -1, sizeof(::rendering_info::ClaimRenderInfo)},
+        {142, -1, -1, sizeof(::rendering_info::UserStatus)},
+        {152, -1, -1, sizeof(::rendering_info::LinkRenderInfo)},
+        {165, -1, -1, sizeof(::rendering_info::ChallengeRenderInfo)},
+        {177, -1, -1, sizeof(::rendering_info::ConnectingRenderInfo)},
+        {189, -1, -1, sizeof(::rendering_info::ChallengingRenderInfo)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::rendering_info::_DebatePageRenderingInfo_default_instance_._instance,
@@ -705,93 +707,94 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_rendering_5finfo_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\024rendering_info.proto\022\016rendering_info\"\211"
-    "\005\n\027DebatePageRenderingInfo\022\026\n\016viewer_use"
-    "r_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 \001(\t\022\021\n\td"
-    "ebate_id\030\003 \001(\005\022-\n\nscope_type\030\004 \001(\0162\031.ren"
-    "dering_info.ScopeType\022\033\n\023is_challenge_de"
-    "bate\030\005 \001(\010\0226\n\rcurrent_claim\030\006 \001(\0132\037.rend"
-    "ering_info.ClaimRenderInfo\022!\n\031current_cl"
-    "aim_description\030\007 \001(\t\0228\n\017children_claims"
-    "\030\010 \003(\0132\037.rendering_info.ClaimRenderInfo\022"
-    "-\n\005links\030\t \003(\0132\036.rendering_info.LinkRend"
-    "erInfo\022\?\n\022current_challenges\030\n \003(\0132#.ren"
-    "dering_info.ChallengeRenderInfo\022\037\n\027modif"
-    "ying_current_claim\030\013 \001(\010\0228\n\016current_acti"
-    "on\030\014 \001(\0162 .rendering_info.DebateActionTy"
-    "pe\022=\n\017connecting_info\030\r \001(\0132$.rendering_"
-    "info.ConnectingRenderInfo\022\?\n\020challenging"
-    "_info\030\016 \001(\0132%.rendering_info.Challenging"
-    "RenderInfo\"\245\001\n\022FullDebateViewInfo\022\026\n\016vie"
-    "wer_user_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 \001"
-    "(\t\022$\n\005steps\030\003 \003(\0132\025.rendering_info.Steps"
-    "\0228\n\020full_debate_tree\030\004 \001(\0132\036.rendering_i"
-    "nfo.FullDebateTree\"\215\001\n\016FullDebateTree\022\025\n"
-    "\rroot_claim_id\030\001 \001(\005\0221\n\005nodes\030\002 \003(\0132\".re"
-    "ndering_info.FullDebateTreeNode\0221\n\005links"
-    "\030\003 \003(\0132\".rendering_info.FullDebateTreeLi"
-    "nk\"\254\001\n\022FullDebateTreeNode\022\020\n\010claim_id\030\001 "
-    "\001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001("
-    "\005\022+\n\006status\030\004 \001(\0162\033.rendering_info.Claim"
-    "Status\022\030\n\020parent_claim_ids\030\005 \003(\005\022\027\n\017chil"
-    "d_claim_ids\030\006 \003(\005\"\340\001\n\022FullDebateTreeLink"
-    "\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_claim_id\030\002"
-    " \001(\005\0229\n\tlink_type\030\003 \001(\0162&.rendering_info"
-    ".FullDebateTreeLinkType\022\024\n\014is_challenge\030"
-    "\004 \001(\010\022\017\n\007link_id\030\005 \001(\005\022\024\n\014challenge_id\030\006"
-    " \001(\005\022\022\n\nconnection\030\007 \001(\t\022\022\n\ncreator_id\030\010"
-    " \001(\005\"*\n\005Steps\022\020\n\010claim_id\030\001 \001(\005\022\017\n\007summa"
-    "ry\030\002 \001(\t\"\262\001\n\025HomePageRenderingInfo\022\026\n\016vi"
-    "ewer_user_id\030\001 \001(\005\022\027\n\017viewer_username\030\002 "
-    "\001(\t\022D\n\021available_debates\030\003 \003(\0132).renderi"
-    "ng_info.HomeDebateTopicRenderInfo\022\"\n\032can"
-    "_create_or_join_debates\030\004 \001(\010\"\221\001\n\031HomeDe"
-    "bateTopicRenderInfo\022\034\n\024debate_root_claim"
-    "_id\030\001 \001(\005\022\r\n\005topic\030\002 \001(\t\022\022\n\ncreator_id\030\003"
-    " \001(\005\022\024\n\014is_challenge\030\004 \001(\010\022\035\n\025claim_its_"
-    "challenging\030\005 \001(\t\"\243\001\n\017ClaimRenderInfo\022\n\n"
-    "\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\ncreator_i"
-    "d\030\003 \001(\005\022+\n\006status\030\004 \001(\0162\033.rendering_info"
+    "\n\024rendering_info.proto\022\016rendering_info\032\014"
+    "debate.proto\"\211\005\n\027DebatePageRenderingInfo"
+    "\022\026\n\016viewer_user_id\030\001 \001(\005\022\027\n\017viewer_usern"
+    "ame\030\002 \001(\t\022\021\n\tdebate_id\030\003 \001(\005\022-\n\nscope_ty"
+    "pe\030\004 \001(\0162\031.rendering_info.ScopeType\022\033\n\023i"
+    "s_challenge_debate\030\005 \001(\010\0226\n\rcurrent_clai"
+    "m\030\006 \001(\0132\037.rendering_info.ClaimRenderInfo"
+    "\022!\n\031current_claim_description\030\007 \001(\t\0228\n\017c"
+    "hildren_claims\030\010 \003(\0132\037.rendering_info.Cl"
+    "aimRenderInfo\022-\n\005links\030\t \003(\0132\036.rendering"
+    "_info.LinkRenderInfo\022\?\n\022current_challeng"
+    "es\030\n \003(\0132#.rendering_info.ChallengeRende"
+    "rInfo\022\037\n\027modifying_current_claim\030\013 \001(\010\0228"
+    "\n\016current_action\030\014 \001(\0162 .rendering_info."
+    "DebateActionType\022=\n\017connecting_info\030\r \001("
+    "\0132$.rendering_info.ConnectingRenderInfo\022"
+    "\?\n\020challenging_info\030\016 \001(\0132%.rendering_in"
+    "fo.ChallengingRenderInfo\"\245\001\n\022FullDebateV"
+    "iewInfo\022\026\n\016viewer_user_id\030\001 \001(\005\022\027\n\017viewe"
+    "r_username\030\002 \001(\t\022$\n\005steps\030\003 \003(\0132\025.render"
+    "ing_info.Steps\0228\n\020full_debate_tree\030\004 \001(\013"
+    "2\036.rendering_info.FullDebateTree\"\215\001\n\016Ful"
+    "lDebateTree\022\025\n\rroot_claim_id\030\001 \001(\005\0221\n\005no"
+    "des\030\002 \003(\0132\".rendering_info.FullDebateTre"
+    "eNode\0221\n\005links\030\003 \003(\0132\".rendering_info.Fu"
+    "llDebateTreeLink\"\327\001\n\022FullDebateTreeNode\022"
+    "\020\n\010claim_id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\nc"
+    "reator_id\030\003 \001(\005\022#\n\006status\030\004 \001(\0162\023.debate"
     ".ClaimStatus\0221\n\ruser_statuses\030\005 \003(\0132\032.re"
-    "ndering_info.UserStatus\"K\n\nUserStatus\022\020\n"
-    "\010username\030\001 \001(\t\022+\n\006status\030\002 \001(\0162\033.render"
-    "ing_info.ClaimStatus\"n\n\016LinkRenderInfo\022\n"
-    "\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002 \001(\005\022\022\n\nconn"
-    "ect_to\030\003 \001(\005\022\022\n\nconnection\030\004 \001(\t\022\022\n\ncrea"
-    "tor_id\030\005 \001(\005\"\\\n\023ChallengeRenderInfo\022\n\n\002i"
-    "d\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023\n\013description"
-    "\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\"t\n\024Connecting"
-    "RenderInfo\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_"
-    "claim_id\030\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034\n\024op"
-    "ened_connect_modal\030\004 \001(\010\"\\\n\025ChallengingR"
-    "enderInfo\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link_ids"
-    "\030\002 \003(\005\022\036\n\026opened_challenge_modal\030\003 \001(\010*\207"
-    "\001\n\026FullDebateTreeLinkType\022*\n&FULL_DEBATE"
-    "_TREE_LINK_TYPE_UNSPECIFIED\020\000\022!\n\035FULL_DE"
-    "BATE_TREE_PARENT_CHILD\020\001\022\036\n\032FULL_DEBATE_"
-    "TREE_CHALLENGE\020\002*J\n\tScopeType\022\032\n\026SCOPE_T"
-    "YPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013F"
-    "ULL_DEBATE\020\002*\205\001\n\013ClaimStatus\022\034\n\030CLAIM_ST"
-    "ATUS_UNSPECIFIED\020\000\022\035\n\031CLAIM_STATUS_UNDET"
-    "ERMINED\020\001\022\033\n\027CLAIM_STATUS_TRUE_CLAIM\020\002\022\034"
-    "\n\030CLAIM_STATUS_FALSE_CLAIM\020\003*\317\001\n\020DebateA"
-    "ctionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022\021"
-    "\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_CHILD_CLAIM\020"
-    "\002\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021CHALLENGING_"
-    "CLAIM\020\004\022\035\n\031EDITING_CLAIM_DESCRIPTION\020\005\022\021"
-    "\n\rEDITING_CLAIM\020\006\022\023\n\017REPORTING_CLAIM\020\007b\006"
-    "proto3"
+    "ndering_info.UserStatus\022\030\n\020parent_claim_"
+    "ids\030\006 \003(\005\022\027\n\017child_claim_ids\030\007 \003(\005\"\340\001\n\022F"
+    "ullDebateTreeLink\022\025\n\rfrom_claim_id\030\001 \001(\005"
+    "\022\023\n\013to_claim_id\030\002 \001(\005\0229\n\tlink_type\030\003 \001(\016"
+    "2&.rendering_info.FullDebateTreeLinkType"
+    "\022\024\n\014is_challenge\030\004 \001(\010\022\017\n\007link_id\030\005 \001(\005\022"
+    "\024\n\014challenge_id\030\006 \001(\005\022\022\n\nconnection\030\007 \001("
+    "\t\022\022\n\ncreator_id\030\010 \001(\005\"*\n\005Steps\022\020\n\010claim_"
+    "id\030\001 \001(\005\022\017\n\007summary\030\002 \001(\t\"\262\001\n\025HomePageRe"
+    "nderingInfo\022\026\n\016viewer_user_id\030\001 \001(\005\022\027\n\017v"
+    "iewer_username\030\002 \001(\t\022D\n\021available_debate"
+    "s\030\003 \003(\0132).rendering_info.HomeDebateTopic"
+    "RenderInfo\022\"\n\032can_create_or_join_debates"
+    "\030\004 \001(\010\"\221\001\n\031HomeDebateTopicRenderInfo\022\034\n\024"
+    "debate_root_claim_id\030\001 \001(\005\022\r\n\005topic\030\002 \001("
+    "\t\022\022\n\ncreator_id\030\003 \001(\005\022\024\n\014is_challenge\030\004 "
+    "\001(\010\022\035\n\025claim_its_challenging\030\005 \001(\t\"\233\001\n\017C"
+    "laimRenderInfo\022\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002"
+    " \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022#\n\006status\030\004 \001(\016"
+    "2\023.debate.ClaimStatus\0221\n\ruser_statuses\030\005"
+    " \003(\0132\032.rendering_info.UserStatus\"C\n\nUser"
+    "Status\022\020\n\010username\030\001 \001(\t\022#\n\006status\030\002 \001(\016"
+    "2\023.debate.ClaimStatus\"n\n\016LinkRenderInfo\022"
+    "\n\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002 \001(\005\022\022\n\ncon"
+    "nect_to\030\003 \001(\005\022\022\n\nconnection\030\004 \001(\t\022\022\n\ncre"
+    "ator_id\030\005 \001(\005\"\\\n\023ChallengeRenderInfo\022\n\n\002"
+    "id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023\n\013descriptio"
+    "n\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\"t\n\024Connectin"
+    "gRenderInfo\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to"
+    "_claim_id\030\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034\n\024o"
+    "pened_connect_modal\030\004 \001(\010\"\\\n\025Challenging"
+    "RenderInfo\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link_id"
+    "s\030\002 \003(\005\022\036\n\026opened_challenge_modal\030\003 \001(\010*"
+    "\207\001\n\026FullDebateTreeLinkType\022*\n&FULL_DEBAT"
+    "E_TREE_LINK_TYPE_UNSPECIFIED\020\000\022!\n\035FULL_D"
+    "EBATE_TREE_PARENT_CHILD\020\001\022\036\n\032FULL_DEBATE"
+    "_TREE_CHALLENGE\020\002*J\n\tScopeType\022\032\n\026SCOPE_"
+    "TYPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013"
+    "FULL_DEBATE\020\002*\317\001\n\020DebateActionType\022\033\n\027AC"
+    "TION_TYPE_UNSPECIFIED\020\000\022\021\n\rVIEWING_CLAIM"
+    "\020\001\022\026\n\022ADDING_CHILD_CLAIM\020\002\022\025\n\021CONNECTING"
+    "_CLAIMS\020\003\022\025\n\021CHALLENGING_CLAIM\020\004\022\035\n\031EDIT"
+    "ING_CLAIM_DESCRIPTION\020\005\022\021\n\rEDITING_CLAIM"
+    "\020\006\022\023\n\017REPORTING_CLAIM\020\007b\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_rendering_5finfo_2eproto_deps[1] =
+    {
+        &::descriptor_table_debate_2eproto,
 };
 static ::absl::once_flag descriptor_table_rendering_5finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_rendering_5finfo_2eproto = {
     false,
     false,
-    3006,
+    2911,
     descriptor_table_protodef_rendering_5finfo_2eproto,
     "rendering_info.proto",
     &descriptor_table_rendering_5finfo_2eproto_once,
-    nullptr,
-    0,
+    descriptor_table_rendering_5finfo_2eproto_deps,
+    1,
     14,
     schemas,
     file_default_instances,
@@ -818,18 +821,9 @@ PROTOBUF_CONSTINIT const uint32_t ScopeType_internal_data_[] = {
 bool ScopeType_IsValid(int value) {
   return 0 <= value && value <= 2;
 }
-const ::google::protobuf::EnumDescriptor* ClaimStatus_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_rendering_5finfo_2eproto);
-  return file_level_enum_descriptors_rendering_5finfo_2eproto[2];
-}
-PROTOBUF_CONSTINIT const uint32_t ClaimStatus_internal_data_[] = {
-    262144u, 0u, };
-bool ClaimStatus_IsValid(int value) {
-  return 0 <= value && value <= 3;
-}
 const ::google::protobuf::EnumDescriptor* DebateActionType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_rendering_5finfo_2eproto);
-  return file_level_enum_descriptors_rendering_5finfo_2eproto[3];
+  return file_level_enum_descriptors_rendering_5finfo_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t DebateActionType_internal_data_[] = {
     524288u, 0u, };
@@ -2176,7 +2170,8 @@ FullDebateTreeNode::FullDebateTreeNode(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE FullDebateTreeNode::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::rendering_info::FullDebateTreeNode& from_msg)
-      : parent_claim_ids_{visibility, arena, from.parent_claim_ids_},
+      : user_statuses_{visibility, arena, from.user_statuses_},
+        parent_claim_ids_{visibility, arena, from.parent_claim_ids_},
         _parent_claim_ids_cached_byte_size_{0},
         child_claim_ids_{visibility, arena, from.child_claim_ids_},
         _child_claim_ids_cached_byte_size_{0},
@@ -2209,7 +2204,8 @@ FullDebateTreeNode::FullDebateTreeNode(
 inline PROTOBUF_NDEBUG_INLINE FullDebateTreeNode::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : parent_claim_ids_{visibility, arena},
+      : user_statuses_{visibility, arena},
+        parent_claim_ids_{visibility, arena},
         _parent_claim_ids_cached_byte_size_{0},
         child_claim_ids_{visibility, arena},
         _child_claim_ids_cached_byte_size_{0},
@@ -2243,6 +2239,10 @@ inline void* FullDebateTreeNode::PlacementNew_(const void*, void* mem,
 }
 constexpr auto FullDebateTreeNode::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.user_statuses_) +
+          decltype(FullDebateTreeNode::_impl_.user_statuses_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.parent_claim_ids_) +
           decltype(FullDebateTreeNode::_impl_.parent_claim_ids_)::
               InternalGetArenaOffset(
@@ -2289,17 +2289,17 @@ const ::google::protobuf::internal::ClassData* FullDebateTreeNode::GetClassData(
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 50, 2> FullDebateTreeNode::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 1, 50, 2> FullDebateTreeNode::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -2317,16 +2317,18 @@ const ::_pbi::TcParseTable<3, 6, 0, 50, 2> FullDebateTreeNode::_table_ = {
     // int32 creator_id = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FullDebateTreeNode, _impl_.creator_id_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.creator_id_)}},
-    // .rendering_info.ClaimStatus status = 4;
+    // .debate.ClaimStatus status = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FullDebateTreeNode, _impl_.status_), 63>(),
      {32, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.status_)}},
-    // repeated int32 parent_claim_ids = 5;
+    // repeated .rendering_info.UserStatus user_statuses = 5;
+    {::_pbi::TcParser::FastMtR1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.user_statuses_)}},
+    // repeated int32 parent_claim_ids = 6;
     {::_pbi::TcParser::FastV32P1,
-     {42, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.parent_claim_ids_)}},
-    // repeated int32 child_claim_ids = 6;
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.parent_claim_ids_)}},
+    // repeated int32 child_claim_ids = 7;
     {::_pbi::TcParser::FastV32P1,
-     {50, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.child_claim_ids_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {58, 63, 0, PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.child_claim_ids_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2339,18 +2341,21 @@ const ::_pbi::TcParseTable<3, 6, 0, 50, 2> FullDebateTreeNode::_table_ = {
     // int32 creator_id = 3;
     {PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.creator_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-    // .rendering_info.ClaimStatus status = 4;
+    // .debate.ClaimStatus status = 4;
     {PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.status_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // repeated int32 parent_claim_ids = 5;
+    // repeated .rendering_info.UserStatus user_statuses = 5;
+    {PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.user_statuses_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated int32 parent_claim_ids = 6;
     {PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.parent_claim_ids_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
-    // repeated int32 child_claim_ids = 6;
+    // repeated int32 child_claim_ids = 7;
     {PROTOBUF_FIELD_OFFSET(FullDebateTreeNode, _impl_.child_claim_ids_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
-  }},
-  // no aux_entries
-  {{
+  }}, {{
+    {::_pbi::TcParser::GetTable<::rendering_info::UserStatus>()},
+  }}, {{
     "\41\0\10\0\0\0\0\0"
     "rendering_info.FullDebateTreeNode"
     "sentence"
@@ -2364,6 +2369,7 @@ PROTOBUF_NOINLINE void FullDebateTreeNode::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.user_statuses_.Clear();
   _impl_.parent_claim_ids_.Clear();
   _impl_.child_claim_ids_.Clear();
   _impl_.sentence_.ClearToEmpty();
@@ -2410,28 +2416,39 @@ PROTOBUF_NOINLINE void FullDebateTreeNode::Clear() {
                     stream, this_._internal_creator_id(), target);
           }
 
-          // .rendering_info.ClaimStatus status = 4;
+          // .debate.ClaimStatus status = 4;
           if (this_._internal_status() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
                 4, this_._internal_status(), target);
           }
 
-          // repeated int32 parent_claim_ids = 5;
+          // repeated .rendering_info.UserStatus user_statuses = 5;
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_user_statuses_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_user_statuses().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    5, repfield, repfield.GetCachedSize(),
+                    target, stream);
+          }
+
+          // repeated int32 parent_claim_ids = 6;
           {
             int byte_size = this_._impl_._parent_claim_ids_cached_byte_size_.Get();
             if (byte_size > 0) {
               target = stream->WriteInt32Packed(
-                  5, this_._internal_parent_claim_ids(), byte_size, target);
+                  6, this_._internal_parent_claim_ids(), byte_size, target);
             }
           }
 
-          // repeated int32 child_claim_ids = 6;
+          // repeated int32 child_claim_ids = 7;
           {
             int byte_size = this_._impl_._child_claim_ids_cached_byte_size_.Get();
             if (byte_size > 0) {
               target = stream->WriteInt32Packed(
-                  6, this_._internal_child_claim_ids(), byte_size, target);
+                  7, this_._internal_child_claim_ids(), byte_size, target);
             }
           }
 
@@ -2460,14 +2477,21 @@ PROTOBUF_NOINLINE void FullDebateTreeNode::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated int32 parent_claim_ids = 5;
+            // repeated .rendering_info.UserStatus user_statuses = 5;
+            {
+              total_size += 1UL * this_._internal_user_statuses_size();
+              for (const auto& msg : this_._internal_user_statuses()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+            // repeated int32 parent_claim_ids = 6;
             {
               total_size +=
                   ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
                       this_._internal_parent_claim_ids(), 1,
                       this_._impl_._parent_claim_ids_cached_byte_size_);
             }
-            // repeated int32 child_claim_ids = 6;
+            // repeated int32 child_claim_ids = 7;
             {
               total_size +=
                   ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
@@ -2491,7 +2515,7 @@ PROTOBUF_NOINLINE void FullDebateTreeNode::Clear() {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_creator_id());
             }
-            // .rendering_info.ClaimStatus status = 4;
+            // .debate.ClaimStatus status = 4;
             if (this_._internal_status() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_status());
@@ -2509,6 +2533,8 @@ void FullDebateTreeNode::MergeImpl(::google::protobuf::MessageLite& to_msg, cons
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_user_statuses()->MergeFrom(
+      from._internal_user_statuses());
   _this->_internal_mutable_parent_claim_ids()->MergeFrom(from._internal_parent_claim_ids());
   _this->_internal_mutable_child_claim_ids()->MergeFrom(from._internal_child_claim_ids());
   if (!from._internal_sentence().empty()) {
@@ -2539,6 +2565,7 @@ void FullDebateTreeNode::InternalSwap(FullDebateTreeNode* PROTOBUF_RESTRICT othe
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.user_statuses_.InternalSwap(&other->_impl_.user_statuses_);
   _impl_.parent_claim_ids_.InternalSwap(&other->_impl_.parent_claim_ids_);
   _impl_.child_claim_ids_.InternalSwap(&other->_impl_.child_claim_ids_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sentence_, &other->_impl_.sentence_, arena);
@@ -4045,7 +4072,7 @@ const ::_pbi::TcParseTable<3, 5, 1, 47, 2> ClaimRenderInfo::_table_ = {
     // int32 creator_id = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ClaimRenderInfo, _impl_.creator_id_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(ClaimRenderInfo, _impl_.creator_id_)}},
-    // .rendering_info.ClaimStatus status = 4;
+    // .debate.ClaimStatus status = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ClaimRenderInfo, _impl_.status_), 63>(),
      {32, 63, 0, PROTOBUF_FIELD_OFFSET(ClaimRenderInfo, _impl_.status_)}},
     // repeated .rendering_info.UserStatus user_statuses = 5;
@@ -4065,7 +4092,7 @@ const ::_pbi::TcParseTable<3, 5, 1, 47, 2> ClaimRenderInfo::_table_ = {
     // int32 creator_id = 3;
     {PROTOBUF_FIELD_OFFSET(ClaimRenderInfo, _impl_.creator_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-    // .rendering_info.ClaimStatus status = 4;
+    // .debate.ClaimStatus status = 4;
     {PROTOBUF_FIELD_OFFSET(ClaimRenderInfo, _impl_.status_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
     // repeated .rendering_info.UserStatus user_statuses = 5;
@@ -4132,7 +4159,7 @@ PROTOBUF_NOINLINE void ClaimRenderInfo::Clear() {
                     stream, this_._internal_creator_id(), target);
           }
 
-          // .rendering_info.ClaimStatus status = 4;
+          // .debate.ClaimStatus status = 4;
           if (this_._internal_status() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -4199,7 +4226,7 @@ PROTOBUF_NOINLINE void ClaimRenderInfo::Clear() {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_creator_id());
             }
-            // .rendering_info.ClaimStatus status = 4;
+            // .debate.ClaimStatus status = 4;
             if (this_._internal_status() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_status());
@@ -4374,7 +4401,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 42, 2> UserStatus::_table_ = {
     ::_pbi::TcParser::GetTable<::rendering_info::UserStatus>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .rendering_info.ClaimStatus status = 2;
+    // .debate.ClaimStatus status = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserStatus, _impl_.status_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(UserStatus, _impl_.status_)}},
     // string username = 1;
@@ -4386,7 +4413,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 42, 2> UserStatus::_table_ = {
     // string username = 1;
     {PROTOBUF_FIELD_OFFSET(UserStatus, _impl_.username_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .rendering_info.ClaimStatus status = 2;
+    // .debate.ClaimStatus status = 2;
     {PROTOBUF_FIELD_OFFSET(UserStatus, _impl_.status_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
@@ -4433,7 +4460,7 @@ PROTOBUF_NOINLINE void UserStatus::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // .rendering_info.ClaimStatus status = 2;
+          // .debate.ClaimStatus status = 2;
           if (this_._internal_status() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -4470,7 +4497,7 @@ PROTOBUF_NOINLINE void UserStatus::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_username());
             }
-            // .rendering_info.ClaimStatus status = 2;
+            // .debate.ClaimStatus status = 2;
             if (this_._internal_status() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_status());
