@@ -168,6 +168,12 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 				outChild->set_sentence(childClaim.sentence());
 				outChild->set_creator_id(childClaim.creator_id());
 				outChild->set_status(MapClaimStatusForUser(childClaim, userProto.user_id(), userProto.username()));
+				// Populate per-user status rectangles on child claim
+				for (const auto& s : childClaim.user_statuses()) {
+					rendering_info::UserStatus* us = outChild->add_user_statuses();
+					us->set_username(s.first);
+					us->set_status(s.second);
+				}
 				visibleClaimIds.insert(childClaim.id());
 			} else {
 				Log::warn("[DebatePageInfoParser] Child claim " + std::to_string(childClaimId) + " not found in collection");
