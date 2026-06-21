@@ -485,3 +485,8 @@ svg circle {
     padding: var(--space-md);
   }
 }
+
+/* --- Map Section: remove excessive min-height --- */
+#mapSection {
+  min-height: 0 !important;
+}
