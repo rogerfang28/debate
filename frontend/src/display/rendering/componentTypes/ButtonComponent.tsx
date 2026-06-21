@@ -35,6 +35,13 @@ const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, s
             ? '1rem'
             : '0.875rem',
         fontWeight: 500,
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        display: 'inline-flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
       onClick={handleClick}
     >
