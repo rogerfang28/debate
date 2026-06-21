@@ -488,3 +488,26 @@ svg circle {
 #mapSection {
   min-height: fit-content !important;
 }
+
+/* --- Map Nodes: make flexible height instead of fixed --- */
+[id^="mapNode_"] {
+  height: auto !important;
+  min-height: 80px;
+  width: auto !important;
+  min-width: 160px;
+  max-width: 220px;
+}
+
+[id^="mapNode_"] > p,
+[id^="mapNode_"] > h3 {
+  -webkit-line-clamp: unset !important;
+  display: block !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: unset !important;
+}
+
+[id^="mapNode_"] > button {
+  margin-top: 0.5rem !important;
+  flex-shrink: 0;
+}
