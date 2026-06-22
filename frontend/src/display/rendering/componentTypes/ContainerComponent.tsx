@@ -5,6 +5,8 @@ import { BaseComponentProps } from "./TextComponent";
 const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const isFlex = className?.includes('flex');
   const isGrid = className?.includes('grid');
+  // Support both "children" (from protobuf) and "components" (from pbtxt) for nesting
+  const nested = component.children || component.components || [];
 
   return (
     <div
@@ -20,7 +22,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
         overflow: 'hidden',
       }}
     >
-      {component.children?.map((child, idx: number) => (
+      {nested.map((child: any, idx: number) => (
         <ComponentRenderer key={child.id || idx} component={child} />
       ))}
     </div>
