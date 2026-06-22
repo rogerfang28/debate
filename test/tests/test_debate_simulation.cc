@@ -128,8 +128,55 @@ protected:
         moderator_->handleRequest(event);
     }
 
+    // Send an event and return the full response (with collection)
+    moderator_to_vr::ModeratorToVRMessage sendAndGetResponse(int user_id, debate_event::EventType type) {
+        debate_event::DebateEvent event = makeEvent(user_id, type);
+        return moderator_->handleRequest(event);
+    }
+
     // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, and OPEN_ADD_CHALLENGE
     // are purely UI state (modal flags). They're not needed for the submit to work.
+
+    // ---- Collection-based query helpers (read from response, same as frontend sees) ----
+    // Get a claim from the response collection by its ID
+    debate::Claim getClaimFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int claim_id) {
+        auto it = response.collection().claims_by_id().find(claim_id);
+        if (it != response.collection().claims_by_id().end()) {
+            return it->second;
+        }
+        // Return default (id=0) if not found
+        return debate::Claim();
+    }
+
+    // Get per-user status on a claim from the collection
+    debate::ClaimStatus getUserViewFromCollection(const moderator_to_vr::ModeratorToVRMessage& response,
+                                                   int claim_id, const std::string& username) {
+        debate::Claim c = getClaimFromCollection(response, claim_id);
+        if (c.id() == 0) return debate::ClaimStatus::UNDETERMINED;
+        auto it = c.user_statuses().find(username);
+        if (it != c.user_statuses().end()) return it->second;
+        return debate::ClaimStatus::UNDETERMINED;
+    }
+
+    // Find the challenge claim ID targeting a given claim, from the collection
+    int findChallengeClaimIdFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int challenged_claim_id) {
+        for (const auto& linkEntry : response.collection().links_by_id()) {
+            const debate::Link& link = linkEntry.second;
+            if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == challenged_claim_id) {
+                return link.connect_from();
+            }
+        }
+        return -1;
+    }
+
+    // Count links of a given type in the collection
+    int countLinksByTypeFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, debate::LinkType type) {
+        int count = 0;
+        for (const auto& linkEntry : response.collection().links_by_id()) {
+            if (linkEntry.second.link_type() == type) count++;
+        }
+        return count;
+    }
 
     // ---- DB query helpers (read directly from DB, not through moderator) ----
     debate::Claim getClaim(int claim_id) {
@@ -210,16 +257,21 @@ protected:
 // ============================================================
 TEST_F(SimulationTest, CreateDebate) {
     sendCreateDebate(userA_id_, "Is AI beneficial?");
+    sendEnterDebate(userA_id_, 1);
 
-    debate::Claim root = getClaim(1);
+    // Get the response collection (same data the frontend receives)
+    auto resp = sendAndGetResponse(userA_id_, debate_event::NONE);
+
+    // Verify via collection instead of direct DB query
+    debate::Claim root = getClaimFromCollection(resp, 1);
     ASSERT_EQ(root.id(), 1);
     ASSERT_EQ(root.sentence(), "Is AI beneficial?");
 
     // A (creator) sees root as TRUE_CLAIM
-    EXPECT_EQ(getUserView(1, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    // B and C have no entry
-    EXPECT_EQ(getUserView(1, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserView(1, "C"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(resp, 1, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    // B and C have no entry (not in the debate yet)
+    EXPECT_EQ(getUserViewFromCollection(resp, 1, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(resp, 1, "C"), debate::ClaimStatus::UNDETERMINED);
 
     dumpState("CreateDebate");
 }
@@ -234,12 +286,20 @@ TEST_F(SimulationTest, EnterDebate) {
     sendEnterDebate(userC_id_, 1);
 
     // All users should be in the debate now
-    // We verify by checking the moderator's response
-    debate_event::DebateEvent event = makeEvent(userA_id_, debate_event::NONE);
-    moderator_to_vr::ModeratorToVRMessage response = moderator_->handleRequest(event);
+    // We verify by checking the moderator's response (same as frontend sees)
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
+    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
 
-    EXPECT_EQ(response.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(response.user().engagement().debating_info().debate_id(), 1);
+    EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(respA.user().engagement().debating_info().debate_id(), 1);
+    EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+
+    // Verify collection: A sees the root claim
+    debate::Claim rootViaCollection = getClaimFromCollection(respA, 1);
+    EXPECT_EQ(rootViaCollection.id(), 1);
+    EXPECT_EQ(rootViaCollection.sentence(), "Is AI beneficial?");
 
     dumpState("EnterDebate");
 }
