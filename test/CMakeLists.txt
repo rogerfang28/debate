@@ -149,7 +149,7 @@ set(COMMON_LIBS
     dbghelp
     -Wl,--end-group
     ${VCPKG_INSTALLED}/lib/libsqlite3.a
-    ${VCPKG_INSTALLED}/lib/libzlib.a
+    ${VCPKG_INSTALLED}/lib/libzs.a
     ws2_32
 )
 

@@ -51,6 +51,7 @@
 #include "utils/DebateWrapper.h"
 #include "debateModerator/DebateModerator.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
+#include "google/protobuf/text_format.h"
 
 using debate_test::TestScenario;
 using debate_test::TestAction;
@@ -360,6 +361,26 @@ protected:
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
     std::map<std::string, int> user_ids_;
+
+
+    // -----------------------------------------------------------------------
+    // SECTION 7a: LOAD SCENARIO FROM PBTXT FILE
+    // -----------------------------------------------------------------------
+    // Loads a TestScenario protobuf from a .pbtxt file on disk.
+    // path: relative to the build directory (e.g. "scenarios/CreateDebate.pbtxt")
+
+    TestScenario LoadScenarioFromFile(const std::string& path) {
+        TestScenario scenario;
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            std::cerr << "[LoadScenarioFromFile] FAILED to open: " << path << std::endl;
+            return scenario;
+        }
+        std::string content((std::istreambuf_iterator<char>(file)),
+                             std::istreambuf_iterator<char>());
+        google::protobuf::TextFormat::ParseFromString(content, &scenario);
+        return scenario;
+    }
 };
 
 
@@ -414,6 +435,19 @@ TEST_F(ScenarioRunner, CreateDebate) {
     e5->set_check_type("USER_VIEW"); e5->set_username("C"); e5->set_claim_id(1);
     e5->set_expected_status("UNDETERMINED");
 
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// CreateDebate_FromPbtxt
+// ---------------------------------------------------------------------------
+// Loads the CreateDebate scenario from a .pbtxt file and executes it.
+// This proves the pbtxt loading pipeline works end-to-end.
+
+TEST_F(ScenarioRunner, CreateDebate_FromPbtxt) {
+    TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
+    ASSERT_GT(s.actions_size(), 0) << "Failed to load CreateDebate.pbtxt";
     executeScenario(s);
 }
 
