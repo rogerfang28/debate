@@ -134,6 +134,15 @@ protected:
         return moderator_->handleRequest(event);
     }
 
+    // Register user in debate_members table (JOIN_DEBATE) — needed so that
+    // BuildCollection::getLinksForDebateAndCreators includes their claims/links.
+    // Note: ENTER_DEBATE only changes engagement state; JOIN_DEBATE adds the member.
+    void sendJoinDebate(int user_id, int debate_id) {
+        debate_event::DebateEvent event = makeEvent(user_id, debate_event::JOIN_DEBATE);
+        event.mutable_join_debate()->set_debate_id(debate_id);
+        moderator_->handleRequest(event);
+    }
+
     // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, and OPEN_ADD_CHALLENGE
     // are purely UI state (modal flags). They're not needed for the submit to work.
 
@@ -357,47 +366,62 @@ TEST_F(SimulationTest, ChallengeClaim) {
     sendEnterDebate(userA_id_, 1);
     sendEnterDebate(userB_id_, 1);
     sendEnterDebate(userC_id_, 1);
+    // JOIN_DEBATE registers users in debate_members so BuildCollection includes their claims/links
+    sendJoinDebate(userA_id_, 1);
+    sendJoinDebate(userB_id_, 1);
+    sendJoinDebate(userC_id_, 1);
 
     // A adds a child claim
     sendGoToClaim(userA_id_, 1);
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    // Get the child claim ID
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    std::vector<int> children = dw.findChildrenIds(1);
-    ASSERT_EQ(children.size(), 1u);
-    int childId = children[0];
+    // Get child ID from A's collection (PARENT_CHILD link from root)
+    auto respA_before = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int childId = -1;
+    for (const auto& linkEntry : respA_before.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
 
-    // B challenges the child claim (minimal flow: GO_TO_CLAIM + SUBMIT_CHALLENGE_CLAIM)
-    // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, OPEN_ADD_CHALLENGE are
-    // purely UI state (modal flags). SubmitChallengeClaim only needs current_claim_id
-    // from user protobuf, which is set by GO_TO_CLAIM.
+    // B challenges the child claim
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
 
-    // Verify challenge claim was created
-    int challengeClaimId = findChallengeClaimId(childId);
-    ASSERT_GT(challengeClaimId, 0) << "Challenge claim should exist";
+    // Get responses from A, B, C after challenge
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
+    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
 
-    debate::Claim challengeClaim = getClaim(challengeClaimId);
+    // Find challenge claim ID from B's collection (CHALLENGE link targeting child)
+    int challengeClaimId = findChallengeClaimIdFromCollection(respB, childId);
+    ASSERT_GT(challengeClaimId, 0) << "Challenge claim should exist in B's collection";
+
+    // Verify challenge claim sentence from B's view
+    debate::Claim challengeClaim = getClaimFromCollection(respB, challengeClaimId);
     EXPECT_EQ(challengeClaim.sentence(), "Healthcare AI has bias issues");
 
-    // Verify per-user views on the challenged claim
-    EXPECT_EQ(getUserView(childId, "A"), debate::ClaimStatus::TRUE_CLAIM)
+    // Verify per-user views on the challenged claim (from each user's own collection)
+    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM)
         << "A (creator) should see child as TRUE_CLAIM";
-    EXPECT_EQ(getUserView(childId, "B"), debate::ClaimStatus::FALSE_CLAIM)
+    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM)
         << "B (challenger) should see child as FALSE_CLAIM";
-    EXPECT_EQ(getUserView(childId, "C"), debate::ClaimStatus::UNDETERMINED)
+    EXPECT_EQ(getUserViewFromCollection(respC, childId, "C"), debate::ClaimStatus::UNDETERMINED)
         << "C (uninvolved) should see child as UNDETERMINED";
 
     // Verify per-user views on the challenge claim
-    EXPECT_EQ(getUserView(challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM)
+    EXPECT_EQ(getUserViewFromCollection(respB, challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM)
         << "B (creator of challenge) should see challenge claim as TRUE_CLAIM";
-    EXPECT_EQ(getUserView(challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED)
+    EXPECT_EQ(getUserViewFromCollection(respA, challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED)
         << "A (not creator) should see challenge claim as UNDETERMINED";
+
+    // Verify link counts in B's collection
+    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::PARENT_CHILD), 1);
+    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 1);
 
     dumpState("ChallengeClaim");
 }
