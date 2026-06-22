@@ -55,6 +55,7 @@ include_directories(
     ${REPO_ROOT}/backend/src/virtualRenderer/ClientMessageHandler/DebatePageEventParser
     ${REPO_ROOT}/backend/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser
     ${REPO_ROOT}/backend/src/virtualRenderer/utils
+    ${REPO_ROOT}/backend/src/database/virtualrenderer
     ${VCPKG_INSTALLED}/include
 )
 
@@ -159,6 +160,7 @@ set(ALL_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
     ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
 )
 
 add_executable(debate_tests
@@ -172,6 +174,13 @@ add_executable(debate_tests
     ${PB_SRC}
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
+
+# Copy scenario .pbtxt files to build dir so tests can find them at runtime
+file(GLOB SCENARIO_FILES "${CMAKE_SOURCE_DIR}/scenarios/*.pbtxt")
+foreach(scenario_file ${SCENARIO_FILES})
+    get_filename_component(scenario_name ${scenario_file} NAME)
+    configure_file(${scenario_file} ${CMAKE_BINARY_DIR}/scenarios/${scenario_name} COPYONLY)
+endforeach()
 
 # ============================================================
 # CTest — register each gtest test individually
