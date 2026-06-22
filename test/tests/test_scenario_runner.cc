@@ -50,6 +50,7 @@
 #include "database/debate/DatabaseWrapper.h"
 #include "utils/DebateWrapper.h"
 #include "debateModerator/DebateModerator.h"
+#include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 
 using debate_test::TestScenario;
 using debate_test::TestAction;
@@ -183,73 +184,104 @@ protected:
 
 
     // -----------------------------------------------------------------------
-    // SECTION 4: RESPONSE COLLECTION HELPERS
+    // SECTION 4: COLLECTION BUILDER
     // -----------------------------------------------------------------------
-    // After all actions run, we collect a response from each known user by
-    // sending a NONE event (which triggers buildResponseMessage without
-    // modifying state). These helpers extract data from those responses.
+    // Instead of sending a NONE event to each user (which is wasteful and
+    // doesn't match how the production frontend works), we call
+    // BuildCollection::BuildForDebateAndUsers() directly. This is the same
+    // function the backend uses to build the response for the virtual renderer.
+    //
+    // It takes a debate_id and all user IDs, and returns ONE Collection
+    // protobuf containing:
+    //   - All claims in the debate (with per-user statuses in user_statuses map)
+    //   - All links (PARENT_CHILD, CHALLENGE, etc.)
+    //
+    // This is more correct than per-user queries because:
+    //   1. It tests the actual BuildCollection code path used in production
+    //   2. It's a single call — no need to send N NONE events
+    //   3. The collection has all user statuses on each claim in one place
 
-    // Look up a claim by ID in a user's response collection
-    debate::Claim getClaimFromResponse(const moderator_to_vr::ModeratorToVRMessage& resp, int claim_id) {
-        auto it = resp.collection().claims_by_id().find(claim_id);
-        if (it != resp.collection().claims_by_id().end()) return it->second;
+    debate::Collection buildCollectionForAllUsers(int debate_id) {
+        std::vector<int> user_ids;
+        for (const auto& kv : user_ids_) {
+            user_ids.push_back(kv.second);
+        }
+        return BuildCollection::BuildForDebateAndUsers(debate_id, user_ids, moderator_->getDebateWrapper());
+    }
+
+
+    // -----------------------------------------------------------------------
+    // SECTION 5: COLLECTION QUERY HELPERS
+    // -----------------------------------------------------------------------
+    // These extract data from a single Collection protobuf (shared across all users).
+    // Each claim in the collection has a user_statuses map that records every
+    // user's opinion: TRUE_CLAIM, FALSE_CLAIM, or UNDETERMINED.
+
+    // Look up a claim by ID in the collection
+    debate::Claim getClaim(const debate::Collection& collection, int claim_id) {
+        auto it = collection.claims_by_id().find(claim_id);
+        if (it != collection.claims_by_id().end()) return it->second;
         return debate::Claim();  // empty claim (id == 0) if not found
     }
 
-    // Get the per-user status (TRUE/FALSE/UNDETERMINED) on a specific claim
-    debate::ClaimStatus getUserView(const moderator_to_vr::ModeratorToVRMessage& resp,
+    // Get one user's status on a specific claim from the collection
+    debate::ClaimStatus getUserView(const debate::Collection& collection,
                                      int claim_id, const std::string& username) {
-        debate::Claim c = getClaimFromResponse(resp, claim_id);
+        debate::Claim c = getClaim(collection, claim_id);
         if (c.id() == 0) return debate::ClaimStatus::UNDETERMINED;
         auto it = c.user_statuses().find(username);
         if (it != c.user_statuses().end()) return it->second;
         return debate::ClaimStatus::UNDETERMINED;
     }
 
-    // Count all links of a given type (PARENT_CHILD or CHALLENGE) in a response
-    int countLinksByType(const moderator_to_vr::ModeratorToVRMessage& resp, debate::LinkType type) {
+    // Count all links of a given type in the collection
+    int countLinks(const debate::Collection& collection, debate::LinkType type) {
         int count = 0;
-        for (const auto& entry : resp.collection().links_by_id()) {
+        for (const auto& entry : collection.links_by_id()) {
             if (entry.second.link_type() == type) count++;
         }
         return count;
     }
 
-    // Collect a response from every known user by sending a NONE event.
-    // Returns a map of username → ModeratorToVRMessage.
-    std::map<std::string, moderator_to_vr::ModeratorToVRMessage> getAllResponses() {
-        std::map<std::string, moderator_to_vr::ModeratorToVRMessage> responses;
-        for (const auto& kv : user_ids_) {
-            debate_event::DebateEvent event;
-            event.mutable_user()->set_user_id(kv.second);
-            event.mutable_user()->set_username(kv.first);
-            event.mutable_user()->set_is_logged_in(true);
-            event.set_type(debate_event::NONE);
-            responses[kv.first] = moderator_->handleRequest(event);
+    // Check if a specific link exists in the collection
+    bool linkExists(const debate::Collection& collection, debate::LinkType type,
+                    int from_claim_id, int to_claim_id) {
+        for (const auto& entry : collection.links_by_id()) {
+            const debate::Link& link = entry.second;
+            if (link.link_type() == type &&
+                link.connect_from() == from_claim_id &&
+                link.connect_to() == to_claim_id) {
+                return true;
+            }
         }
-        return responses;
+        return false;
     }
 
 
     // -----------------------------------------------------------------------
-    // SECTION 5: SCENARIO EXECUTOR
+    // SECTION 6: SCENARIO EXECUTOR
     // -----------------------------------------------------------------------
-    // executeScenario: The core function that runs a TestScenario end-to-end.
+    // executeScenario: Runs a TestScenario end-to-end.
     //
     // Phase 1 — Execute actions:
     //   CREATE_USER → calls getUserId() (creates user in DB)
     //   All others → forgeEvent() → handleRequest()
+    //   We also store each user's last response so we can check engagement state.
     //
-    // Phase 2 — Collect responses:
-    //   Sends a NONE event to each known user to get their current view.
+    // Phase 2 — Build collection:
+    //   Single call to BuildCollection::BuildForDebateAndUsers() with all user IDs.
+    //   This gives us one Collection with all claims, links, and per-user statuses.
     //
     // Phase 3 — Check expectations:
-    //   Each TestExpectation is checked against the appropriate user's response.
-    //   Uses ASSERT for user existence (fatal) and EXPECT for check results (non-fatal).
+    //   CLAIM_EXISTS, CLAIM_SENTENCE, USER_VIEW, LINK_COUNT, LINK_EXISTS, COLLECTION_SIZE
+    //     → checked against the shared collection
+    //   ENGAGEMENT_STATE
+    //     → checked against the stored per-user response from Phase 1
 
     void executeScenario(const TestScenario& scenario) {
 
-        // Phase 1: Execute all actions in order
+        // Phase 1: Execute all actions in order, storing each user's last response
+        std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
         for (const auto& action : scenario.actions()) {
             if (action.event_type() == "CREATE_USER") {
                 getUserId(action.username());
@@ -257,34 +289,61 @@ protected:
             }
             int user_id = getUserId(action.username());
             debate_event::DebateEvent event = forgeEvent(action);
-            moderator_->handleRequest(event);
+            auto resp = moderator_->handleRequest(event);
+            last_responses[action.username()] = resp;
         }
 
-        // Phase 2: Collect responses from all known users
-        auto responses = getAllResponses();
+        // Phase 2: Build a single collection for all users
+        // We need a debate_id — find it from any JOIN_DEBATE or CREATE_DEBATE action
+        int debate_id = 0;
+        for (const auto& action : scenario.actions()) {
+            if (action.event_type() == "CREATE_DEBATE") {
+                // The first claim created is the root, which has the debate_id
+                // We can get it from the DB, but simpler: use the first ENTER/JOIN debate_id
+            }
+            if ((action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE")
+                && action.debate_id() > 0) {
+                debate_id = action.debate_id();
+                break;
+            }
+        }
+        debate::Collection collection;
+        if (debate_id > 0) {
+            collection = buildCollectionForAllUsers(debate_id);
+        }
 
         // Phase 3: Verify all expectations
         for (const auto& exp : scenario.expectations()) {
             const std::string& username = exp.username();
-            auto resp_it = responses.find(username);
-            ASSERT_TRUE(resp_it != responses.end())
-                << "[" << scenario.name() << "] Expectation references unknown user: " << username;
-            const auto& resp = resp_it->second;
 
+            if (exp.check_type() == "ENGAGEMENT_STATE") {
+                // Engagement state is per-user, check from stored response
+                auto resp_it = last_responses.find(username);
+                ASSERT_TRUE(resp_it != last_responses.end())
+                    << "[" << scenario.name() << "] ENGAGEMENT_STATE references unknown user: " << username;
+                user_engagement::EngagementAction actual = resp_it->second.user().engagement().current_action();
+                user_engagement::EngagementAction expected = parseEngagementAction(exp.expected_action());
+                EXPECT_EQ(actual, expected)
+                    << "[" << scenario.name() << "] ENGAGEMENT_STATE for user " << username
+                    << " expected=" << exp.expected_action();
+                continue;
+            }
+
+            // All other checks use the shared collection
             if (exp.check_type() == "CLAIM_EXISTS") {
-                debate::Claim c = getClaimFromResponse(resp, exp.claim_id());
+                debate::Claim c = getClaim(collection, exp.claim_id());
                 EXPECT_GT(c.id(), 0)
                     << "[" << scenario.name() << "] CLAIM_EXISTS claim_id=" << exp.claim_id()
                     << " for user " << username;
             }
             else if (exp.check_type() == "CLAIM_SENTENCE") {
-                debate::Claim c = getClaimFromResponse(resp, exp.claim_id());
+                debate::Claim c = getClaim(collection, exp.claim_id());
                 EXPECT_EQ(c.sentence(), exp.expected_claim_sentence())
                     << "[" << scenario.name() << "] CLAIM_SENTENCE claim_id=" << exp.claim_id()
                     << " for user " << username;
             }
             else if (exp.check_type() == "USER_VIEW") {
-                debate::ClaimStatus actual = getUserView(resp, exp.claim_id(), username);
+                debate::ClaimStatus actual = getUserView(collection, exp.claim_id(), username);
                 debate::ClaimStatus expected = parseClaimStatus(exp.expected_status());
                 EXPECT_EQ(actual, expected)
                     << "[" << scenario.name() << "] USER_VIEW claim_id=" << exp.claim_id()
@@ -293,36 +352,21 @@ protected:
             }
             else if (exp.check_type() == "LINK_COUNT") {
                 debate::LinkType lt = parseLinkType(exp.link_type());
-                int actual = countLinksByType(resp, lt);
+                int actual = countLinks(collection, lt);
                 EXPECT_EQ(actual, exp.expected_count())
                     << "[" << scenario.name() << "] LINK_COUNT type=" << exp.link_type()
                     << " for user " << username;
             }
             else if (exp.check_type() == "LINK_EXISTS") {
-                bool found = false;
-                for (const auto& entry : resp.collection().links_by_id()) {
-                    const debate::Link& link = entry.second;
-                    if (link.link_type() == parseLinkType(exp.link_type()) &&
-                        link.connect_from() == exp.from_claim_id() &&
-                        link.connect_to() == exp.to_claim_id()) {
-                        found = true;
-                        break;
-                    }
-                }
+                bool found = linkExists(collection, parseLinkType(exp.link_type()),
+                                        exp.from_claim_id(), exp.to_claim_id());
                 EXPECT_TRUE(found)
                     << "[" << scenario.name() << "] LINK_EXISTS "
                     << exp.from_claim_id() << " -> " << exp.to_claim_id()
                     << " type=" << exp.link_type() << " for user " << username;
             }
-            else if (exp.check_type() == "ENGAGEMENT_STATE") {
-                user_engagement::EngagementAction actual = resp.user().engagement().current_action();
-                user_engagement::EngagementAction expected = parseEngagementAction(exp.expected_action());
-                EXPECT_EQ(actual, expected)
-                    << "[" << scenario.name() << "] ENGAGEMENT_STATE for user " << username
-                    << " expected=" << exp.expected_action();
-            }
             else if (exp.check_type() == "COLLECTION_SIZE") {
-                int actual = resp.collection().claims_by_id_size();
+                int actual = collection.claims_by_id_size();
                 EXPECT_EQ(actual, exp.expected_count())
                     << "[" << scenario.name() << "] COLLECTION_SIZE for user " << username;
             }
@@ -331,9 +375,8 @@ protected:
 
 
     // -----------------------------------------------------------------------
-    // SECTION 6: FIXTURE MEMBER VARIABLES
+    // SECTION 7: FIXTURE MEMBER VARIABLES
     // -----------------------------------------------------------------------
-
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
     std::map<std::string, int> user_ids_;  // username → user_id cache
