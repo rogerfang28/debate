@@ -153,7 +153,7 @@ add_executable(debate_server
 )
 
 target_link_libraries(debate_server
-    zlib
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libzs.a
     sqlite3
     ws2_32
     # abseil_dll
