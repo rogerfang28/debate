@@ -159,6 +159,7 @@ set(ALL_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
     ${CMAKE_SOURCE_DIR}/tests/test_debate_simulation.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
 )
 
 add_executable(debate_tests
