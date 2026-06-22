@@ -406,6 +406,9 @@ TEST_F(ScenarioRunner, CreateDebate) {
     TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
     ASSERT_GT(s.actions_size(), 0) << "Failed to load CreateDebate.pbtxt";
     executeScenario(s);
+
+    // Dump step view layout as .pbtxt for inspection
+    downloadPbtxt(1, "A", "step_view_create_debate.pbtxt");
 }
 
 
