@@ -318,22 +318,33 @@ TEST_F(SimulationTest, AddChildClaim) {
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    // Find the child claim
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    std::vector<int> children = dw.findChildrenIds(1);
-    ASSERT_EQ(children.size(), 1u) << "Root should have exactly 1 child";
-    int childId = children[0];
+    // Get A's response collection
+    auto resp = sendAndGetResponse(userA_id_, debate_event::NONE);
 
-    debate::Claim child = getClaim(childId);
+    // Find the child claim ID from collection links (PARENT_CHILD from root)
+    int childId = -1;
+    for (const auto& linkEntry : resp.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find a PARENT_CHILD link from root";
+
+    // Verify child claim via collection
+    debate::Claim child = getClaimFromCollection(resp, childId);
+    EXPECT_EQ(child.id(), childId);
     EXPECT_EQ(child.sentence(), "AI improves healthcare");
 
     // A (creator) sees child as TRUE_CLAIM
-    EXPECT_EQ(getUserView(childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    // B and C have no entry
-    EXPECT_EQ(getUserView(childId, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserView(childId, "C"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(resp, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    // B and C have no entry (not creator)
+    EXPECT_EQ(getUserViewFromCollection(resp, childId, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(resp, childId, "C"), debate::ClaimStatus::UNDETERMINED);
+
+    // Verify link count in collection
+    EXPECT_EQ(countLinksByTypeFromCollection(resp, debate::LinkType::PARENT_CHILD), 1);
 
     dumpState("AddChildClaim");
 }
