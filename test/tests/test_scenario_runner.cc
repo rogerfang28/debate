@@ -53,6 +53,10 @@
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 #include "google/protobuf/text_format.h"
 
+// Forward declaration — defined in test_step_view_layout.cc
+void downloadPbtxt(int debate_id, const std::string& viewer_username = "A",
+                   const std::string& output_path = "");
+
 using debate_test::TestScenario;
 using debate_test::TestAction;
 using debate_test::TestExpectation;
@@ -509,4 +513,7 @@ TEST_F(ScenarioRunner, FullLifecycle) {
     TestScenario s = LoadScenarioFromFile("scenarios/FullLifecycle.pbtxt");
     ASSERT_GT(s.actions_size(), 0) << "Failed to load FullLifecycle.pbtxt";
     executeScenario(s);
+
+    // Dump step view layout as .pbtxt for inspection
+    downloadPbtxt(1, "A", "step_view_full_lifecycle.pbtxt");
 }
