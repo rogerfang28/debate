@@ -178,6 +178,19 @@ protected:
         return -1;
     }
 
+    // Find the Nth challenge claim targeting a given claim (skip = how many to skip, 0 = first)
+    int findNthChallengeClaimIdFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int challenged_claim_id, int skip) {
+        int found = 0;
+        for (const auto& linkEntry : response.collection().links_by_id()) {
+            const debate::Link& link = linkEntry.second;
+            if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == challenged_claim_id) {
+                if (found == skip) return link.connect_from();
+                found++;
+            }
+        }
+        return -1;
+    }
+
     // Count links of a given type in the collection
     int countLinksByTypeFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, debate::LinkType type) {
         int count = 0;
@@ -523,77 +536,90 @@ TEST_F(SimulationTest, FullStateVerification) {
 // Then B challenges again (second challenge on original child).
 // ============================================================
 TEST_F(SimulationTest, CounterChallenge) {
-    // Setup: create debate, enter, add child, B challenges
+    // Setup: create debate, enter, join, add child, B challenges
     sendCreateDebate(userA_id_, "Is AI beneficial?");
     sendEnterDebate(userA_id_, 1);
     sendEnterDebate(userB_id_, 1);
     sendEnterDebate(userC_id_, 1);
+    sendJoinDebate(userA_id_, 1);
+    sendJoinDebate(userB_id_, 1);
+    sendJoinDebate(userC_id_, 1);
     sendGoToClaim(userA_id_, 1);
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    int childId = dw.findChildrenIds(1)[0];
+    // Get child ID from A's collection
+    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int childId = -1;
+    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
 
     // B challenges child
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
 
-    int bChallengeClaimId = findChallengeClaimId(childId);
+    // A counter-challenges B's challenge claim
+    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int bChallengeClaimId = findChallengeClaimIdFromCollection(respA_after_B, childId);
     ASSERT_GT(bChallengeClaimId, 0) << "B's challenge claim should exist";
 
-    // A counter-challenges B's challenge claim
     sendGoToClaim(userA_id_, bChallengeClaimId);
     sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-
-    int aCounterChallengeId = findChallengeClaimId(bChallengeClaimId);
-    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
-
-    // Verify: counter-challenge has CHALLENGE link to B's challenge claim
-    debate::Claim counterChallenge = getClaim(aCounterChallengeId);
-    EXPECT_EQ(counterChallenge.sentence(), "Actually healthcare AI is beneficial");
-
-    // Verify: A sees counter-challenge as TRUE_CLAIM (creator)
-    EXPECT_EQ(getUserView(aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-
-    // Verify: B sees counter-challenge as UNDETERMINED (not creator)
-    EXPECT_EQ(getUserView(aCounterChallengeId, "B"), debate::ClaimStatus::UNDETERMINED);
-
-    // Verify: B sees their own challenge claim as FALSE_CLAIM (A's counter view)
-    EXPECT_EQ(getUserView(bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
 
     // B launches another challenge on the same child claim
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
 
+    // Get final responses
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
+
+    // Find A's counter-challenge (CHALLENGE link targeting B's challenge claim)
+    int aCounterChallengeId = findChallengeClaimIdFromCollection(respA, bChallengeClaimId);
+    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
+
+    // Verify counter-challenge sentence from A's collection
+    debate::Claim counterChallenge = getClaimFromCollection(respA, aCounterChallengeId);
+    EXPECT_EQ(counterChallenge.sentence(), "Actually healthcare AI is beneficial");
+
+    // Verify: A sees counter-challenge as TRUE_CLAIM (creator)
+    EXPECT_EQ(getUserViewFromCollection(respA, aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+
+    // Verify: B sees counter-challenge as UNDETERMINED (not creator)
+    EXPECT_EQ(getUserViewFromCollection(respB, aCounterChallengeId, "B"), debate::ClaimStatus::UNDETERMINED);
+
+    // Verify: A sees B's challenge claim as FALSE_CLAIM (counter-view)
+    EXPECT_EQ(getUserViewFromCollection(respA, bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
+
+    // Find B's second challenge (CHALLENGE link targeting child, excluding bChallengeClaimId)
     int bSecondChallengeId = -1;
-    auto links = dw.getLinksForDebate(1);
-    int challengeCount = 0;
-    for (const auto& link : links) {
-        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeCount++;
-            int toClaim = std::get<2>(link);
-            if (toClaim == childId) {
-                int fromClaim = std::get<1>(link);
-                if (fromClaim != bChallengeClaimId) {
-                    bSecondChallengeId = fromClaim;
-                }
-            }
+    for (const auto& linkEntry : respB.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == childId
+            && link.connect_from() != bChallengeClaimId) {
+            bSecondChallengeId = link.connect_from();
+            break;
         }
     }
-    EXPECT_EQ(challengeCount, 3) << "Should have 3 CHALLENGE links total (B's first + A's counter + B's second)";
     ASSERT_GT(bSecondChallengeId, 0) << "B's second challenge claim should exist";
 
-    debate::Claim bSecondChallenge = getClaim(bSecondChallengeId);
+    debate::Claim bSecondChallenge = getClaimFromCollection(respB, bSecondChallengeId);
     EXPECT_EQ(bSecondChallenge.sentence(), "Healthcare AI has privacy issues too");
 
     // Verify: A sees child as TRUE_CLAIM (still creator, unchanged by more challenges)
-    EXPECT_EQ(getUserView(childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
 
-    // Verify: B sees child as FALSE_CLAIM (challenger view, set by first challenge)
-    EXPECT_EQ(getUserView(childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
+    // Verify: B sees child as FALSE_CLAIM (challenger view)
+    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
+
+    // Verify total challenge links = 3 (B's first + A's counter + B's second)
+    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 3);
 
     dumpState("CounterChallenge");
 }
