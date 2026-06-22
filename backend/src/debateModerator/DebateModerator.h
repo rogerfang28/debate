@@ -19,6 +19,9 @@ public:
         return dbWrapper.users.getUserId(username);
     }
     int createUserIfNotExist(const std::string& username);
+
+    // Exposes the DebateWrapper for test helpers (e.g. BuildCollection)
+    DebateWrapper& getDebateWrapper() { return debateWrapper; }
     
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
