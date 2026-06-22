@@ -81,6 +81,9 @@ const Renderer: React.FC = () => {
           setData(info);
           setError(null);
           if (intervalId) clearInterval(intervalId);
+        } else {
+          // postClientMessageToCPP returned null/undefined — server unreachable
+          setError("Connecting to server...");
         }
       } catch (err: unknown) {
         if (!mounted) return;
@@ -206,8 +209,18 @@ const Renderer: React.FC = () => {
           <PageRenderer page={data} />
         </>
       ) : (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ background: 'var(--surface-bg)' }}>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Waiting for page data…</p>
+          <button
+            onClick={handleLoadLayout}
+            className="text-xs px-4 py-2 rounded-md"
+            style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}
+          >
+            Load Layout from File
+          </button>
+          {layoutError && (
+            <p className="text-xs" style={{ color: 'var(--accent-red, #ef4444)' }}>{layoutError}</p>
+          )}
         </div>
       )}
     </div>
