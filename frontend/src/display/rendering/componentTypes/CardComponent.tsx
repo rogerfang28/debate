@@ -13,6 +13,8 @@ const CardComponent: React.FC<BaseComponentProps> = ({ component, className, sty
         border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--radius-lg)',
         padding: 'var(--space-lg)',
+        overflow: 'hidden',
+        wordBreak: 'break-word' as const,
       }}
     >
       {component.children?.map((child, idx: number) => (
