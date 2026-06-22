@@ -28,6 +28,29 @@ interface GraphComponentProps extends BaseComponentProps {
 const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, style }) => {
   const { nodes = [], edges = [], selectedNodeId } = component;
 
+  // Don't render the large SVG if there's no data
+  if (nodes.length === 0 && edges.length === 0) {
+    return (
+      <div
+        id={component.id}
+        className={`node-graph ${className || ''}`}
+        style={{
+          ...style,
+          background: 'var(--surface-card)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--radius-lg)',
+          padding: 'var(--space-lg)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '80px',
+        }}
+      >
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>No graph data</p>
+      </div>
+    );
+  }
+
   // Color mapping for node types
   const getNodeColor = (type?: string, isSelected?: boolean) => {
     if (isSelected) return { fill: 'var(--accent-indigo)', stroke: 'var(--accent-indigo-hover)' };
@@ -49,6 +72,17 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, s
     }
   };
 
+  // Calculate viewBox from actual node positions instead of fixed 800x600
+  const padding = 60;
+  const xs = nodes.map(n => n.x || 0);
+  const ys = nodes.map(n => n.y || 0);
+  const minX = Math.min(...xs, 0) - padding;
+  const minY = Math.min(...ys, 0) - padding;
+  const maxX = Math.max(...xs, 100) + padding;
+  const maxY = Math.max(...ys, 100) + padding;
+  const vw = Math.max(maxX - minX, 200);
+  const vh = Math.max(maxY - minY, 150);
+
   return (
     <div
       id={component.id}
@@ -62,7 +96,7 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ component, className, s
         position: 'relative',
       }}
     >
-      <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`${minX} ${minY} ${vw} ${vh}`} preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
         <defs>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="coloredBlur" />

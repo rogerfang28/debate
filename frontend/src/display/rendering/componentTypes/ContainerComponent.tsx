@@ -17,6 +17,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
           flexDirection: 'column' as const,
           gap: '0.75rem',
         } : {}),
+        overflow: 'hidden',
       }}
     >
       {component.children?.map((child, idx: number) => (
