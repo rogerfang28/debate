@@ -319,6 +319,67 @@ function resolveEnums(obj: Record<string, unknown>): void {
   }
 }
 
+/**
+ * Parse top-level pbtxt content (no outer braces).
+ * Handles field: value and field { ... } at the top level.
+ */
+function parseTopLevel(ctx: ParseContext): Record<string, unknown> {
+  const obj: Record<string, unknown> = {};
+
+  while (true) {
+    const tok = peek(ctx);
+    if (!tok) break;
+
+    // Field name
+    let fieldName: string;
+    if (tok.type === "ident") {
+      advance(ctx);
+      fieldName = toCamelCase(tok.value);
+    } else {
+      // Skip unexpected tokens
+      advance(ctx);
+      continue;
+    }
+
+    const nextTok = peek(ctx);
+
+    // key: value
+    if (nextTok && nextTok.type === "symbol" && nextTok.value === ":") {
+      advance(ctx);
+      const value = parseValue(ctx);
+
+      if (fieldName in obj) {
+        const existing = obj[fieldName];
+        if (Array.isArray(existing)) {
+          existing.push(value);
+        } else {
+          obj[fieldName] = [existing, value];
+        }
+      } else {
+        obj[fieldName] = value;
+      }
+    } else if (nextTok && nextTok.type === "symbol" && nextTok.value === "{") {
+      // Nested message
+      const nestedMsg = parseMessage(ctx);
+      if (fieldName in obj) {
+        const existing = obj[fieldName];
+        if (Array.isArray(existing)) {
+          existing.push(nestedMsg);
+        } else {
+          obj[fieldName] = [existing, nestedMsg];
+        }
+      } else {
+        obj[fieldName] = nestedMsg;
+      }
+    } else {
+      // Malformed — skip
+      continue;
+    }
+  }
+
+  return obj;
+}
+
 // ── Public API ──────────────────────────────────────────────────────────
 
 /**
@@ -327,7 +388,7 @@ function resolveEnums(obj: Record<string, unknown>): void {
 export function parsePbtxtToPage(text: string): Record<string, unknown> {
   const tokens = tokenize(text);
   const ctx: ParseContext = { tokens, pos: 0 };
-  const raw = parseMessage(ctx);
+  const raw = parseTopLevel(ctx);
   resolveEnums(raw);
   return raw;
 }
