@@ -2519,9 +2519,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     }
 
     const int nodeWidth = 180;
-    const int nodeHeight = 100;
+    const int nodeHeight = 130;
     const int horizontalGap = 40;
-    const int verticalGap = 160;
+    const int verticalGap = 180;
     const int canvasPadding = 40;
 
     std::unordered_map<int, int> subtreeWidth;
