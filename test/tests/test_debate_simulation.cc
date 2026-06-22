@@ -1,18 +1,15 @@
-// test_debate_simulation.cc — Full debate simulation via DebateModerator event pipeline
+// test_debate_simulation.cc — Full debate simulation test
 //
-// Instead of calling handler functions directly, this test forges DebateEvent
-// protobufs and sends them through DebateModerator::handleRequest().
-// This simulates exactly what the virtual renderer does in production.
+// Simulates a complete debate scenario with 3 users (A, B, C):
+//   1. User A creates a debate
+//   2. Users B and C join
+//   3. User A adds a child claim under root
+//   4. User B challenges that child claim
 //
-// Flow:
-//   1. User A creates a debate  (CREATE_DEBATE event)
-//   2. Users A, B, C enter     (ENTER_DEBATE event)
-//   3. A adds a child claim     (OPEN_ADD_CHILD_CLAIM + ADD_CHILD_CLAIM events)
-//   4. B challenges the child   (START_CHALLENGE_CLAIM + ADD_CLAIM_TO_BE_CHALLENGED
-//                                 + OPEN_ADD_CHALLENGE + SUBMIT_CHALLENGE_CLAIM events)
-//   5. Verify final state via DB queries
+// Each step checks the database state via assertions.
+// The test database is preserved after the run for manual inspection.
 //
-// The database persists after the run for manual inspection.
+// Expandable: add more steps after the existing ones.
 
 #include <gtest/gtest.h>
 #include <string>
@@ -21,18 +18,166 @@
 #include <iostream>
 
 #include "debate.pb.h"
-#include "debate_event.pb.h"
 #include "user.pb.h"
 #include "user_engagement.pb.h"
-#include "moderator_to_vr.pb.h"
 #include "database/sqlite/Database.h"
 #include "database/debate/DatabaseWrapper.h"
 #include "utils/DebateWrapper.h"
-#include "debateModerator/DebateModerator.h"
+
+#include "debateModerator/event-handlers/DebateHandler/DebateHandler.h"
+#include "debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.h"
+#include "debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.h"
+#include "debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.h"
+#include "debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.h"
+
+// Step view / pbtxt generation
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.h"
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
+#include "database/virtualrenderer/VRUserDatabase.h"
+#include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
+
+// -------------------------------------------------------
+// PBTXT serialization helpers
+// -------------------------------------------------------
+// The frontend parser expects flat pbtxt format:
+//   page_id: "debate"
+//   components { ... }
+// NOT wrapped in Page { }. We serialize manually to match.
+
+static std::string componentTypeToString(ui::ComponentType type) {
+    switch (type) {
+        case ui::TEXT:       return "TEXT";
+        case ui::BUTTON:     return "BUTTON";
+        case ui::INPUT:      return "INPUT";
+        case ui::CONTAINER:  return "CONTAINER";
+        default:             return "UNKNOWN";
+    }
+}
+
+static std::string serializeComponent(const ui::Component& comp, int indent) {
+    std::string pad(indent, ' ');
+    std::string out;
+
+    out += pad + "components {\n";
+
+    if (!comp.id().empty())
+        out += pad + "  id: \"" + comp.id() + "\"\n";
+    if (!comp.name().empty())
+        out += pad + "  name: \"" + comp.name() + "\"\n";
+    if (comp.type() != ui::UNKNOWN)
+        out += pad + "  type: " + componentTypeToString(comp.type()) + "\n";
+    if (!comp.text().empty()) {
+        // Escape backslashes and quotes in text
+        std::string escaped = comp.text();
+        size_t pos = 0;
+        while ((pos = escaped.find('\\', pos)) != std::string::npos) {
+            escaped.replace(pos, 1, "\\\\");
+            pos += 2;
+        }
+        pos = 0;
+        while ((pos = escaped.find('"', pos)) != std::string::npos) {
+            escaped.replace(pos, 1, "\\\"");
+            pos += 2;
+        }
+        out += pad + "  text: \"" + escaped + "\"\n";
+    }
+
+    // Serialize style.custom_class
+    if (!comp.style().custom_class().empty())
+        out += pad + "  custom_class: \"" + comp.style().custom_class() + "\"\n";
+
+    // Serialize css map
+    for (const auto& kv : comp.css())
+        out += pad + "  css { key: \"" + kv.first + "\" value: \"" + kv.second + "\" }\n";
+
+    // Serialize attributes map
+    for (const auto& kv : comp.attributes())
+        out += pad + "  attributes { key: \"" + kv.first + "\" value: \"" + kv.second + "\" }\n";
+
+    // Serialize children recursively
+    for (int i = 0; i < comp.children_size(); ++i)
+        out += serializeComponent(comp.children(i), indent + 2);
+
+    out += pad + "}\n";
+    return out;
+}
+
+static void downloadPbtxt(
+    int debateId,
+    int viewerUserId,
+    const std::string& viewerUsername,
+    DebateWrapper& debate,
+    Database& db,
+    const std::string& outputPath)
+{
+    // Build collection from DB
+    std::vector<int> userIds;
+    // Collect all user IDs from the debate
+    auto statements = debate.getStatementsForDebate(debateId);
+    for (const auto& stmtBlob : statements) {
+        debate::Claim c;
+        if (c.ParseFromArray(stmtBlob.data(), static_cast<int>(stmtBlob.size()))) {
+            // We need unique creator IDs; just add all and deduplicate later
+            userIds.push_back(c.creator_id());
+        }
+    }
+    std::sort(userIds.begin(), userIds.end());
+    userIds.erase(std::unique(userIds.begin(), userIds.end()), userIds.end());
+
+    debate::Collection collection = BuildCollection::BuildForDebateAndUsers(
+        debateId, userIds, debate);
+
+    // Parse into FullDebateViewInfo
+    VRUserDatabase userDb(db);
+    rendering_info::FullDebateViewInfo fullDebateInfo =
+        FullDebatePageInfoParser::ParseFullDebateViewInfo(
+            collection, viewerUserId, viewerUsername);
+
+    // Generate step view page
+    ui::Page page = StepView::GenerateStepViewPage(
+        fullDebateInfo, collection, userDb);
+
+    // Serialize to flat pbtxt format (no Page wrapper)
+    std::string pbtxt;
+    if (!page.page_id().empty())
+        pbtxt += "page_id: \"" + page.page_id() + "\"\n";
+    if (!page.title().empty())
+        pbtxt += "title: \"" + page.title() + "\"\n";
+
+    for (int i = 0; i < page.components_size(); ++i)
+        pbtxt += serializeComponent(page.components(i), 0);
+
+    // Write to file
+    FILE* f = fopen(outputPath.c_str(), "w");
+    if (f) {
+        fwrite(pbtxt.data(), 1, pbtxt.size(), f);
+        fclose(f);
+        std::cout << "\n=== PBTXT written to: " << outputPath << " ===" << std::endl;
+        std::cout << "  page_id: " << page.page_id() << std::endl;
+        std::cout << "  top-level components: " << page.components_size() << std::endl;
+    } else {
+        std::cerr << "ERROR: Failed to write " << outputPath << std::endl;
+    }
+}
 
 // -------------------------------------------------------
 // Helpers
 // -------------------------------------------------------
+static user::User makeUser(int userId, const std::string& name,
+                           user_engagement::EngagementAction action) {
+    user::User u;
+    u.set_user_id(userId);
+    u.set_username(name);
+    u.mutable_engagement()->set_current_action(action);
+    return u;
+}
+
+static std::vector<uint8_t> serializeUser(const user::User& u) {
+    std::vector<uint8_t> data(u.ByteSizeLong());
+    u.SerializeToArray(data.data(), data.size());
+    return data;
+}
+
 static std::string statusToString(debate::ClaimStatus s) {
     switch (s) {
         case debate::ClaimStatus::UNDETERMINED: return "UNDETERMINED";
@@ -42,700 +187,402 @@ static std::string statusToString(debate::ClaimStatus s) {
     }
 }
 
-// Forge a DebateEvent with the given type and user_id
-static debate_event::DebateEvent makeEvent(int user_id, debate_event::EventType type) {
-    debate_event::DebateEvent event;
-    event.mutable_user()->set_user_id(user_id);
-    event.mutable_user()->set_username("user_" + std::to_string(user_id));
-    event.mutable_user()->set_is_logged_in(true);
-    event.set_type(type);
-    return event;
-}
-
 // -------------------------------------------------------
-// Fixture
+// Fixture — persistent database for post-mortem debugging
 // -------------------------------------------------------
-class SimulationTest : public ::testing::Test {
+class DebateSimulationTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        // Use a fixed-name test database so it persists after the run
+        // Use a fixed-name database so it persists after the test
         db_path_ = "test_simulation.sqlite3";
+        // Always start fresh — delete any leftover from a previous run
         std::remove(db_path_.c_str());
         std::remove((db_path_ + "-wal").c_str());
         std::remove((db_path_ + "-shm").c_str());
 
-        // Set DB_PATH so DebateModerator uses our test database
-        _putenv_s("DB_PATH", db_path_.c_str());
+        db_      = new Database(db_path_);
+        wrapper_ = new DatabaseWrapper(*db_);
+        debate_  = new DebateWrapper(*wrapper_);
+        ASSERT_TRUE(wrapper_->ensureAllTables());
 
-        // Create the DebateModerator (it will use DB_PATH)
-        moderator_ = new DebateModerator();
+        // Create User A
+        userA_ = makeUser(0, "A", user_engagement::ACTION_HOME);
+        userA_id_ = wrapper_->users.createUser("A", serializeUser(userA_));
+        ASSERT_GT(userA_id_, 0);
+        userA_.set_user_id(userA_id_);
+        wrapper_->users.updateUserProtobuf(userA_id_, serializeUser(userA_));
 
-        // Create 3 users via the moderator's user creation
-        userA_id_ = moderator_->createUserIfNotExist("A");
-        userB_id_ = moderator_->createUserIfNotExist("B");
-        userC_id_ = moderator_->createUserIfNotExist("C");
+        // Create User B
+        userB_ = makeUser(0, "B", user_engagement::ACTION_HOME);
+        userB_id_ = wrapper_->users.createUser("B", serializeUser(userB_));
+        ASSERT_GT(userB_id_, 0);
+        userB_.set_user_id(userB_id_);
+        wrapper_->users.updateUserProtobuf(userB_id_, serializeUser(userB_));
 
-        std::cout << "\n=== DB initialized: " << db_path_ << " ===" << std::endl;
-        std::cout << "Users: A=" << userA_id_ << " B=" << userB_id_ << " C=" << userC_id_ << std::endl;
+        // Create User C
+        userC_ = makeUser(0, "C", user_engagement::ACTION_HOME);
+        userC_id_ = wrapper_->users.createUser("C", serializeUser(userC_));
+        ASSERT_GT(userC_id_, 0);
+        userC_.set_user_id(userC_id_);
+        wrapper_->users.updateUserProtobuf(userC_id_, serializeUser(userC_));
     }
 
     void TearDown() override {
-        delete moderator_;
-        // Unset DB_PATH
-        _putenv_s("DB_PATH", "");
+        delete debate_;
+        delete wrapper_;
+        delete db_;
+        // NOTE: We do NOT delete db_path_ — the database is kept for inspection.
+        // To clean up, manually delete test_simulation.sqlite3
         std::cout << "\n=== Database preserved at: " << db_path_ << " ===" << std::endl;
-        std::cout << "Inspect: sqlite3 " << db_path_ << std::endl;
     }
 
-    // ---- Event sending helpers ----
-    void sendEvent(int user_id, debate_event::EventType type) {
-        debate_event::DebateEvent event = makeEvent(user_id, type);
-        moderator_->handleRequest(event);
+    // ---- User helpers ----
+    void actAsA() { userId_ = userA_id_; user_ = &userA_; }
+    void actAsB() { userId_ = userB_id_; user_ = &userB_; }
+    void actAsC() { userId_ = userC_id_; user_ = &userC_; }
+
+    void refreshUserA() { userA_ = debate_->getUserProtobuf(userA_id_); }
+    void refreshUserB() { userB_ = debate_->getUserProtobuf(userB_id_); }
+    void refreshUserC() { userC_ = debate_->getUserProtobuf(userC_id_); }
+
+    void enterDebate(int debateId) {
+        MoveUserHandler::EnterDebate(debateId, userId_, *debate_);
+        refreshCurrentUser();
     }
 
-    void sendCreateDebate(int user_id, const std::string& topic) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::CREATE_DEBATE);
-        event.mutable_create_debate()->set_debate_topic(topic);
-        moderator_->handleRequest(event);
+    void addChild(int parentId, const std::string& text,
+                  const std::string& connection) {
+        AddClaimHandler::OpenAddChildClaim(userId_, *debate_);
+        AddClaimHandler::AddClaimUnderClaim(text, connection, userId_, *debate_);
+        refreshCurrentUser();
     }
 
-    void sendEnterDebate(int user_id, int debate_id) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::ENTER_DEBATE);
-        event.mutable_enter_debate()->set_debate_id(debate_id);
-        moderator_->handleRequest(event);
+    void goToClaim(int claimId) {
+        MoveUserHandler::GoToClaim(claimId, userId_, *debate_);
+        refreshCurrentUser();
     }
 
-    void sendGoToClaim(int user_id, int claim_id) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::GO_TO_CLAIM);
-        event.mutable_go_to_claim()->set_claim_id(claim_id);
-        moderator_->handleRequest(event);
+    void challengeCurrentClaim(const std::string& reason) {
+        ChallengeHandler::StartChallengeClaim(userId_, *debate_);
+        ChallengeHandler::AddClaimToBeChallenged(
+            user_->engagement().debating_info().current_claim().id(),
+            userId_, *debate_);
+        ChallengeHandler::OpenAddChallenge(userId_, *debate_);
+        ChallengeHandler::SubmitChallengeClaim(reason, userId_, *debate_);
+        refreshCurrentUser();
     }
 
-    void sendOpenAddChildClaim(int user_id) {
-        sendEvent(user_id, debate_event::OPEN_ADD_CHILD_CLAIM);
+    void refreshCurrentUser() {
+        if (userId_ == userA_id_) refreshUserA();
+        else if (userId_ == userB_id_) refreshUserB();
+        else if (userId_ == userC_id_) refreshUserC();
     }
 
-    void sendAddChildClaim(int user_id, const std::string& text, const std::string& description) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::ADD_CHILD_CLAIM);
-        event.mutable_add_child_claim()->set_claim(text);
-        event.mutable_add_child_claim()->set_description(description);
-        moderator_->handleRequest(event);
-    }
+    // ---- Claim helpers ----
+    debate::Claim getClaim(int id) { return debate_->getClaimById(id); }
 
-    void sendSubmitChallenge(int user_id, const std::string& sentence) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::SUBMIT_CHALLENGE_CLAIM);
-        event.mutable_submit_challenge_claim()->set_challenge_sentence(sentence);
-        moderator_->handleRequest(event);
-    }
-
-    // Send an event and return the full response (with collection)
-    moderator_to_vr::ModeratorToVRMessage sendAndGetResponse(int user_id, debate_event::EventType type) {
-        debate_event::DebateEvent event = makeEvent(user_id, type);
-        return moderator_->handleRequest(event);
-    }
-
-    // Register user in debate_members table (JOIN_DEBATE) — needed so that
-    // BuildCollection::getLinksForDebateAndCreators includes their claims/links.
-    // Note: ENTER_DEBATE only changes engagement state; JOIN_DEBATE adds the member.
-    void sendJoinDebate(int user_id, int debate_id) {
-        debate_event::DebateEvent event = makeEvent(user_id, debate_event::JOIN_DEBATE);
-        event.mutable_join_debate()->set_debate_id(debate_id);
-        moderator_->handleRequest(event);
-    }
-
-    // Note: START_CHALLENGE_CLAIM, ADD_CLAIM_TO_BE_CHALLENGED, and OPEN_ADD_CHALLENGE
-    // are purely UI state (modal flags). They're not needed for the submit to work.
-
-    // ---- Collection-based query helpers (read from response, same as frontend sees) ----
-    // Get a claim from the response collection by its ID
-    debate::Claim getClaimFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int claim_id) {
-        auto it = response.collection().claims_by_id().find(claim_id);
-        if (it != response.collection().claims_by_id().end()) {
+    // Get a user's view of a claim's status from the user_statuses map
+    debate::ClaimStatus getUserView(const debate::Claim& claim, const std::string& username) {
+        auto it = claim.user_statuses().find(username);
+        if (it != claim.user_statuses().end()) {
             return it->second;
         }
-        // Return default (id=0) if not found
-        return debate::Claim();
+        return debate::ClaimStatus::UNDETERMINED;  // default if not in map
     }
 
-    // Get per-user status on a claim from the collection
-    debate::ClaimStatus getUserViewFromCollection(const moderator_to_vr::ModeratorToVRMessage& response,
-                                                   int claim_id, const std::string& username) {
-        debate::Claim c = getClaimFromCollection(response, claim_id);
-        if (c.id() == 0) return debate::ClaimStatus::UNDETERMINED;
-        auto it = c.user_statuses().find(username);
-        if (it != c.user_statuses().end()) return it->second;
-        return debate::ClaimStatus::UNDETERMINED;
-    }
-
-    // Find the challenge claim ID targeting a given claim, from the collection
-    int findChallengeClaimIdFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int challenged_claim_id) {
-        for (const auto& linkEntry : response.collection().links_by_id()) {
-            const debate::Link& link = linkEntry.second;
-            if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == challenged_claim_id) {
-                return link.connect_from();
+    // Find the challenge claim targeting a given claim
+    int findChallengeClaimId(int challengedClaimId) {
+        auto links = debate_->getLinksForDebate(1);
+        for (const auto& link : links) {
+            int linkType = std::get<5>(link);
+            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
+                int toClaim = std::get<2>(link);
+                if (toClaim == challengedClaimId) {
+                    return std::get<1>(link);  // from = challenge claim
+                }
             }
         }
         return -1;
     }
 
-    // Count links of a given type in the collection
-    int countLinksByTypeFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, debate::LinkType type) {
-        int count = 0;
-        for (const auto& linkEntry : response.collection().links_by_id()) {
-            if (linkEntry.second.link_type() == type) count++;
-        }
-        return count;
-    }
-
-    // ---- State dumper (reads directly from DB for debugging) ----
+    // ---- State dumper for debugging ----
     void dumpState(const std::string& label) {
-        std::cout << "\n--- " << label << " ---" << std::endl;
-        Database db(db_path_);
-        DatabaseWrapper dbWrapper(db);
-        DebateWrapper dw(dbWrapper);
+        std::cout << "\n===== STATE: " << label << " =====" << std::endl;
 
-        auto statements = dw.getStatementsForDebate(1);
-        std::cout << "Claims:" << std::endl;
+        // Dump all claims
+        auto statements = debate_->getStatementsForDebate(1);
+        std::cout << "\n--- Claims ---" << std::endl;
         for (const auto& stmtBytes : statements) {
             debate::Claim c;
-            if (!c.ParseFromArray(stmtBytes.data(), static_cast<int>(stmtBytes.size()))) continue;
-            std::cout << "  #" << c.id() << " \"" << c.sentence() << "\""
-                      << " status=" << statusToString(c.status())
-                      << " creator=" << c.creator_id()
-                      << " views={ ";
+            if (!c.ParseFromArray(stmtBytes.data(), static_cast<int>(stmtBytes.size()))) {
+                std::cout << "  [failed to parse claim]" << std::endl;
+                continue;
+            }
+            std::cout << "  Claim " << c.id() << ": \"" << c.sentence() << "\""
+                      << " | status=" << statusToString(c.status())
+                      << " | creator=" << c.creator_id()
+                      << std::endl;
+            std::cout << "    user_statuses: { ";
             for (const auto& kv : c.user_statuses()) {
                 std::cout << kv.first << "=" << statusToString(kv.second) << " ";
             }
             std::cout << "}" << std::endl;
         }
 
-        auto links = dw.getLinksForDebate(1);
-        std::cout << "Links:" << std::endl;
+        // Dump all links
+        auto links = debate_->getLinksForDebate(1);
+        std::cout << "\n--- Links ---" << std::endl;
         for (const auto& link : links) {
             int linkId = std::get<0>(link);
             int from   = std::get<1>(link);
             int to     = std::get<2>(link);
             int type   = std::get<5>(link);
             std::string typeStr = (type == 0) ? "NORMAL" : (type == 1) ? "PARENT_CHILD" : "CHALLENGE";
-            std::cout << "  #" << linkId << " " << from << " -> " << to << " [" << typeStr << "]" << std::endl;
+            std::cout << "  Link " << linkId << ": " << from << " -> " << to
+                      << " [" << typeStr << "]" << std::endl;
         }
+
+        // Dump user engagement
+        std::cout << "\n--- User Engagement ---" << std::endl;
+        refreshUserA(); refreshUserB(); refreshUserC();
+        for (auto* u : {&userA_, &userB_, &userC_}) {
+            std::cout << "  " << u->username() << ": action="
+                      << u->engagement().current_action()
+                      << " debate=" << u->engagement().debating_info().debate_id()
+                      << " current_claim=" << u->engagement().debating_info().current_claim().id()
+                      << std::endl;
+        }
+        std::cout << "===== END STATE =====\n" << std::endl;
     }
 
     std::string db_path_;
-    DebateModerator* moderator_ = nullptr;
+    Database*      db_      = nullptr;
+    DatabaseWrapper* wrapper_ = nullptr;
+    DebateWrapper* debate_  = nullptr;
+
     int userA_id_ = 0;
     int userB_id_ = 0;
     int userC_id_ = 0;
+    user::User userA_;
+    user::User userB_;
+    user::User userC_;
+
+    int userId_ = 0;
+    user::User* user_ = nullptr;
 };
 
 // ============================================================
-// TEST 1: CreateDebate via event pipeline
+// FULL DEBATE SIMULATION
 // ============================================================
-TEST_F(SimulationTest, CreateDebate) {
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
+TEST_F(DebateSimulationTest, FullDebateSimulation) {
+    // -------------------------------------------------------
+    // STEP 1: User A creates a debate
+    // -------------------------------------------------------
+    std::cout << "\n>>> STEP 1: User A creates debate" << std::endl;
+    actAsA();
+    DebateHandler::AddDebate("Is AI beneficial?", userId_, *debate_);
+    int debateId = 1;
 
-    // Get the response collection (same data the frontend receives)
-    auto resp = sendAndGetResponse(userA_id_, debate_event::NONE);
-
-    // Verify via collection instead of direct DB query
-    debate::Claim root = getClaimFromCollection(resp, 1);
+    // Verify: debate exists with root claim
+    debate::Claim root = getClaim(1);
     ASSERT_EQ(root.id(), 1);
     ASSERT_EQ(root.sentence(), "Is AI beneficial?");
+    ASSERT_TRUE(debate_->isRoot(1));
 
-    // A (creator) sees root as TRUE_CLAIM
-    EXPECT_EQ(getUserViewFromCollection(resp, 1, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    // B and C have no entry (not in the debate yet)
-    EXPECT_EQ(getUserViewFromCollection(resp, 1, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserViewFromCollection(resp, 1, "C"), debate::ClaimStatus::UNDETERMINED);
+    // Root claim: A sees it as TRUE_CLAIM (creator), B and C have no entry
+    EXPECT_EQ(getUserView(root, "A"), debate::ClaimStatus::TRUE_CLAIM)
+        << "Creator A should see root as TRUE_CLAIM";
+    EXPECT_EQ(getUserView(root, "B"), debate::ClaimStatus::UNDETERMINED)
+        << "B should see root as UNDETERMINED (not in user_statuses map)";
+    EXPECT_EQ(getUserView(root, "C"), debate::ClaimStatus::UNDETERMINED)
+        << "C should see root as UNDETERMINED (not in user_statuses map)";
 
-    dumpState("CreateDebate");
-}
+    dumpState("After Step 1: A creates debate");
 
-// ============================================================
-// TEST 2: EnterDebate via event pipeline
-// ============================================================
-TEST_F(SimulationTest, EnterDebate) {
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
+    // -------------------------------------------------------
+    // STEP 2: Users B and C join the debate
+    // -------------------------------------------------------
+    std::cout << "\n>>> STEP 2: B and C join the debate" << std::endl;
 
-    // All users should be in the debate now
-    // We verify by checking the moderator's response (same as frontend sees)
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
-    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
+    // A enters first (creator already has debate context)
+    actAsA();
+    enterDebate(debateId);
+    EXPECT_EQ(userA_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userA_.engagement().debating_info().debate_id(), debateId);
 
-    EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respA.user().engagement().debating_info().debate_id(), 1);
-    EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+    // B enters
+    actAsB();
+    enterDebate(debateId);
+    EXPECT_EQ(userB_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userB_.engagement().debating_info().debate_id(), debateId);
+    EXPECT_EQ(userB_.engagement().debating_info().current_claim().id(), 1);  // at root
 
-    // Verify collection: A sees the root claim
-    debate::Claim rootViaCollection = getClaimFromCollection(respA, 1);
-    EXPECT_EQ(rootViaCollection.id(), 1);
-    EXPECT_EQ(rootViaCollection.sentence(), "Is AI beneficial?");
+    // C enters
+    actAsC();
+    enterDebate(debateId);
+    EXPECT_EQ(userC_.engagement().current_action(), user_engagement::ACTION_DEBATING);
+    EXPECT_EQ(userC_.engagement().debating_info().debate_id(), debateId);
+    EXPECT_EQ(userC_.engagement().debating_info().current_claim().id(), 1);  // at root
 
-    dumpState("EnterDebate");
-}
+    // All users should be at root claim
+    refreshUserA(); refreshUserB(); refreshUserC();
+    EXPECT_EQ(userA_.engagement().debating_info().current_claim().id(), 1);
+    EXPECT_EQ(userB_.engagement().debating_info().current_claim().id(), 1);
+    EXPECT_EQ(userC_.engagement().debating_info().current_claim().id(), 1);
 
-// ============================================================
-// TEST 3: AddChildClaim via event pipeline
-// ============================================================
-TEST_F(SimulationTest, AddChildClaim) {
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
+    dumpState("After Step 2: B and C join");
 
-    // A adds a child claim
-    sendGoToClaim(userA_id_, 1);  // navigate to root
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
+    // -------------------------------------------------------
+    // STEP 3: User A adds a child claim under root
+    // -------------------------------------------------------
+    std::cout << "\n>>> STEP 3: A adds child claim" << std::endl;
+    actAsA();
+    goToClaim(1);  // ensure A is at root
+    addChild(1, "AI improves healthcare", "supports");
 
-    // Get A's response collection
-    auto resp = sendAndGetResponse(userA_id_, debate_event::NONE);
+    // Find the new child claim
+    std::vector<int> rootChildren = debate_->findChildrenIds(1);
+    ASSERT_EQ(rootChildren.size(), 1u) << "Root should have exactly 1 child";
+    int childId = rootChildren[0];
 
-    // Find the child claim ID from collection links (PARENT_CHILD from root)
-    int childId = -1;
-    for (const auto& linkEntry : resp.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
-        }
-    }
-    ASSERT_GT(childId, 0) << "Should find a PARENT_CHILD link from root";
-
-    // Verify child claim via collection
-    debate::Claim child = getClaimFromCollection(resp, childId);
-    EXPECT_EQ(child.id(), childId);
+    debate::Claim child = getClaim(childId);
     EXPECT_EQ(child.sentence(), "AI improves healthcare");
 
-    // A (creator) sees child as TRUE_CLAIM
-    EXPECT_EQ(getUserViewFromCollection(resp, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    // B and C have no entry (not creator)
-    EXPECT_EQ(getUserViewFromCollection(resp, childId, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserViewFromCollection(resp, childId, "C"), debate::ClaimStatus::UNDETERMINED);
-
-    // Verify link count in collection
-    EXPECT_EQ(countLinksByTypeFromCollection(resp, debate::LinkType::PARENT_CHILD), 1);
-
-    dumpState("AddChildClaim");
-}
-
-// ============================================================
-// TEST 4: ChallengeClaim via event pipeline
-// ============================================================
-TEST_F(SimulationTest, ChallengeClaim) {
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
-    // JOIN_DEBATE registers users in debate_members so BuildCollection includes their claims/links
-    sendJoinDebate(userA_id_, 1);
-    sendJoinDebate(userB_id_, 1);
-    sendJoinDebate(userC_id_, 1);
-
-    // A adds a child claim
-    sendGoToClaim(userA_id_, 1);
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
-
-    // Get child ID from A's collection (PARENT_CHILD link from root)
-    auto respA_before = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int childId = -1;
-    for (const auto& linkEntry : respA_before.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
+    // Verify parent-child link exists
+    auto links = debate_->getLinksForDebate(1);
+    bool foundParentChild = false;
+    for (const auto& link : links) {
+        int type = std::get<5>(link);
+        if (type == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
+            int from = std::get<1>(link);
+            int to   = std::get<2>(link);
+            if (from == 1 && to == childId) {
+                foundParentChild = true;
+                break;
+            }
         }
     }
-    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
+    EXPECT_TRUE(foundParentChild) << "Parent-child link should exist between root and child";
 
-    // B challenges the child claim
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
+    // Verify user_statuses: A (creator) sees child as TRUE_CLAIM
+    child = getClaim(childId);  // refresh
+    EXPECT_EQ(getUserView(child, "A"), debate::ClaimStatus::TRUE_CLAIM)
+        << "A (creator) should see child claim as TRUE_CLAIM";
+    EXPECT_EQ(getUserView(child, "B"), debate::ClaimStatus::UNDETERMINED)
+        << "B should see child as UNDETERMINED (not creator, not in map)";
+    EXPECT_EQ(getUserView(child, "C"), debate::ClaimStatus::UNDETERMINED)
+        << "C should see child as UNDETERMINED (not creator, not in map)";
 
-    // Get responses from A, B, C after challenge
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
-    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
+    dumpState("After Step 3: A adds child claim");
 
-    // Find challenge claim ID from B's collection (CHALLENGE link targeting child)
-    int challengeClaimId = findChallengeClaimIdFromCollection(respB, childId);
-    ASSERT_GT(challengeClaimId, 0) << "Challenge claim should exist in B's collection";
+    // -------------------------------------------------------
+    // STEP 4: User B challenges the child claim
+    // -------------------------------------------------------
+    std::cout << "\n>>> STEP 4: B challenges child claim" << std::endl;
+    actAsB();
+    goToClaim(childId);
+    challengeCurrentClaim("Healthcare AI has bias issues");
 
-    // Verify challenge claim sentence from B's view
-    debate::Claim challengeClaim = getClaimFromCollection(respB, challengeClaimId);
+    // Verify: a challenge claim was created
+    int challengeClaimId = findChallengeClaimId(childId);
+    ASSERT_GT(challengeClaimId, 0) << "A challenge claim should have been created";
+    ASSERT_NE(challengeClaimId, childId) << "Challenge claim should be different from challenged claim";
+
+    debate::Claim challengeClaim = getClaim(challengeClaimId);
     EXPECT_EQ(challengeClaim.sentence(), "Healthcare AI has bias issues");
 
-    // Verify per-user views on the challenged claim (from each user's own collection)
-    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM)
-        << "A (creator) should see child as TRUE_CLAIM";
-    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM)
-        << "B (challenger) should see child as FALSE_CLAIM";
-    EXPECT_EQ(getUserViewFromCollection(respC, childId, "C"), debate::ClaimStatus::UNDETERMINED)
+    // Verify: CHALLENGE link exists from challenge claim to challenged claim
+    links = debate_->getLinksForDebate(1);
+    bool foundChallengeLink = false;
+    for (const auto& link : links) {
+        int type = std::get<5>(link);
+        if (type == static_cast<int>(debate::LinkType::CHALLENGE)) {
+            int from = std::get<1>(link);
+            int to   = std::get<2>(link);
+            if (from == challengeClaimId && to == childId) {
+                foundChallengeLink = true;
+                break;
+            }
+        }
+    }
+    EXPECT_TRUE(foundChallengeLink)
+        << "CHALLENGE link should exist from challenge claim to challenged claim";
+
+    // Verify: B sees the challenged child as FALSE_CLAIM (challenger's view)
+    child = getClaim(childId);
+    EXPECT_EQ(getUserView(child, "B"), debate::ClaimStatus::FALSE_CLAIM)
+        << "B (challenger) should see challenged claim as FALSE_CLAIM";
+
+    // Verify: A still sees child as TRUE_CLAIM (creator's view unchanged)
+    EXPECT_EQ(getUserView(child, "A"), debate::ClaimStatus::TRUE_CLAIM)
+        << "A (creator) should still see child as TRUE_CLAIM";
+
+    // Verify: C sees child as UNDETERMINED (not involved)
+    EXPECT_EQ(getUserView(child, "C"), debate::ClaimStatus::UNDETERMINED)
         << "C (uninvolved) should see child as UNDETERMINED";
 
-    // Verify per-user views on the challenge claim
-    EXPECT_EQ(getUserViewFromCollection(respB, challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM)
-        << "B (creator of challenge) should see challenge claim as TRUE_CLAIM";
-    EXPECT_EQ(getUserViewFromCollection(respA, challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED)
-        << "A (not creator) should see challenge claim as UNDETERMINED";
+    // Verify: B sees the challenge claim as TRUE_CLAIM (creator of challenge)
+    challengeClaim = getClaim(challengeClaimId);
+    EXPECT_EQ(getUserView(challengeClaim, "B"), debate::ClaimStatus::TRUE_CLAIM)
+        << "B (creator of challenge claim) should see it as TRUE_CLAIM";
 
-    // Verify link counts in B's collection
-    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::PARENT_CHILD), 1);
-    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 1);
+    // Verify: A sees challenge claim as UNDETERMINED (not creator)
+    EXPECT_EQ(getUserView(challengeClaim, "A"), debate::ClaimStatus::UNDETERMINED)
+        << "A (not creator of challenge) should see challenge claim as UNDETERMINED";
 
-    dumpState("ChallengeClaim");
+    dumpState("After Step 4: B challenges child claim");
+
+    // -------------------------------------------------------
+    // STEP 5: Generate step view pbtxt
+    // -------------------------------------------------------
+    std::cout << "\n>>> STEP 5: Generating step view pbtxt" << std::endl;
+    downloadPbtxt(
+        debateId,
+        userA_id_,   // viewer = user A
+        "A",         // viewer username
+        *debate_,
+        *db_,
+        "step_view_simulation.pbtxt"
+    );
+
+    // -------------------------------------------------------
+    // SUMMARY
+    // -------------------------------------------------------
+    std::cout << "\n========================================" << std::endl;
+    std::cout << "  DEBATE SIMULATION COMPLETE" << std::endl;
+    std::cout << "  Database: " << db_path_ << std::endl;
+    std::cout << "  Inspect with: sqlite3 " << db_path_ << std::endl;
+    std::cout << "========================================\n" << std::endl;
 }
 
 // ============================================================
-// TEST 5: Full state verification after all steps
+// SIMPLE CREATE DEBATE — just root claim, then generate pbtxt
 // ============================================================
-TEST_F(SimulationTest, FullStateVerification) {
-    // Step 1: Create debate
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
+TEST_F(DebateSimulationTest, SimpleCreateDebate_GeneratePbtxt) {
+    // Step 1: User A creates a debate (root claim only)
+    std::cout << "\n>>> SimpleCreateDebate: A creates debate" << std::endl;
+    actAsA();
+    DebateHandler::AddDebate("Is AI beneficial?", userId_, *debate_);
+    int debateId = 1;
 
-    // Step 2: All users enter + join (JOIN_DEBATE adds to debate_members for collection visibility)
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
-    sendJoinDebate(userA_id_, 1);
-    sendJoinDebate(userB_id_, 1);
-    sendJoinDebate(userC_id_, 1);
-
-    // Step 3: A adds child
-    sendGoToClaim(userA_id_, 1);
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
-
-    // Get child ID from A's collection (PARENT_CHILD link from root)
-    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int childId = -1;
-    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
-        }
-    }
-    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
-
-    // Step 4: B challenges child
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-
-    // Get responses from all users
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
-    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
-
-    // Find challenge claim ID from collection (CHALLENGE link targeting child)
-    int challengeClaimId = findChallengeClaimIdFromCollection(respB, childId);
-    ASSERT_GT(challengeClaimId, 0) << "Challenge claim should exist in collection";
-
-    // ---- Comprehensive verification via collection ----
-
-    // 1. Root claim
-    debate::Claim root = getClaimFromCollection(respA, 1);
+    // Verify root claim exists
+    debate::Claim root = getClaim(1);
     ASSERT_EQ(root.id(), 1);
     ASSERT_EQ(root.sentence(), "Is AI beneficial?");
+    ASSERT_TRUE(debate_->isRoot(1));
 
-    // 2. Child claim
-    debate::Claim child = getClaimFromCollection(respA, childId);
-    ASSERT_EQ(child.sentence(), "AI improves healthcare");
+    dumpState("SimpleCreateDebate: after creating debate");
 
-    // 3. Challenge claim
-    debate::Claim challenge = getClaimFromCollection(respB, challengeClaimId);
-    ASSERT_EQ(challenge.sentence(), "Healthcare AI has bias issues");
+    // Step 2: Generate step view pbtxt for this simple case
+    std::cout << "\n>>> SimpleCreateDebate: Generating step view pbtxt" << std::endl;
+    downloadPbtxt(
+        debateId,
+        userA_id_,
+        "A",
+        *debate_,
+        *db_,
+        "step_view_simple_create_debate.pbtxt"
+    );
 
-    // 4. Link counts
-    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::PARENT_CHILD), 1);
-    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 1);
-
-    // 5. Per-user views on root
-    EXPECT_EQ(getUserViewFromCollection(respA, 1, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserViewFromCollection(respB, 1, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserViewFromCollection(respC, 1, "C"), debate::ClaimStatus::UNDETERMINED);
-
-    // 6. Per-user views on child
-    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
-    EXPECT_EQ(getUserViewFromCollection(respC, childId, "C"), debate::ClaimStatus::UNDETERMINED);
-
-    // 7. Per-user views on challenge claim
-    EXPECT_EQ(getUserViewFromCollection(respB, challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserViewFromCollection(respA, challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserViewFromCollection(respC, challengeClaimId, "C"), debate::ClaimStatus::UNDETERMINED);
-
-    // 8. User engagement: all users in debate
-    EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    dumpState("FullStateVerification");
-}
-
-// ============================================================
-// TEST 6: Counter-challenge — A challenges B's challenge claim
-// ============================================================
-// After B challenges A's child claim, A can counter-challenge by
-// challenging B's challenge claim. This creates a nested structure:
-//   child Claim (2) <- Challenge Claim (3 from B) <- Counter Challenge Claim (4 from A)
-// counter-challenge targets B's challenge claim, not the original child.
-// Then B challenges again (second challenge on original child).
-// ============================================================
-TEST_F(SimulationTest, CounterChallenge) {
-    // Setup: create debate, enter, join, add child, B challenges
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
-    sendJoinDebate(userA_id_, 1);
-    sendJoinDebate(userB_id_, 1);
-    sendJoinDebate(userC_id_, 1);
-    sendGoToClaim(userA_id_, 1);
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
-
-    // Get child ID from A's collection
-    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int childId = -1;
-    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
-        }
-    }
-    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
-
-    // B challenges child
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-
-    // A counter-challenges B's challenge claim
-    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int bChallengeClaimId = findChallengeClaimIdFromCollection(respA_after_B, childId);
-    ASSERT_GT(bChallengeClaimId, 0) << "B's challenge claim should exist";
-
-    sendGoToClaim(userA_id_, bChallengeClaimId);
-    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-
-    // B launches another challenge on the same child claim
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
-
-    // Get final responses
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
-
-    // Find A's counter-challenge (CHALLENGE link targeting B's challenge claim)
-    int aCounterChallengeId = findChallengeClaimIdFromCollection(respA, bChallengeClaimId);
-    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
-
-    // Verify counter-challenge sentence from A's collection
-    debate::Claim counterChallenge = getClaimFromCollection(respA, aCounterChallengeId);
-    EXPECT_EQ(counterChallenge.sentence(), "Actually healthcare AI is beneficial");
-
-    // Verify: A sees counter-challenge as TRUE_CLAIM (creator)
-    EXPECT_EQ(getUserViewFromCollection(respA, aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-
-    // Verify: B sees counter-challenge as UNDETERMINED (not creator)
-    EXPECT_EQ(getUserViewFromCollection(respB, aCounterChallengeId, "B"), debate::ClaimStatus::UNDETERMINED);
-
-    // Verify: A sees B's challenge claim as FALSE_CLAIM (counter-view)
-    EXPECT_EQ(getUserViewFromCollection(respA, bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
-
-    // Find B's second challenge (CHALLENGE link targeting child, excluding bChallengeClaimId)
-    int bSecondChallengeId = -1;
-    for (const auto& linkEntry : respB.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == childId
-            && link.connect_from() != bChallengeClaimId) {
-            bSecondChallengeId = link.connect_from();
-            break;
-        }
-    }
-    ASSERT_GT(bSecondChallengeId, 0) << "B's second challenge claim should exist";
-
-    debate::Claim bSecondChallenge = getClaimFromCollection(respB, bSecondChallengeId);
-    EXPECT_EQ(bSecondChallenge.sentence(), "Healthcare AI has privacy issues too");
-
-    // Verify: A sees child as TRUE_CLAIM (still creator, unchanged by more challenges)
-    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-
-    // Verify: B sees child as FALSE_CLAIM (challenger view)
-    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
-
-    // Verify total challenge links = 3 (B's first + A's counter + B's second)
-    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 3);
-
-    dumpState("CounterChallenge");
-}
-
-// ============================================================
-// TEST 7: Concede — B concedes A's counter-challenge
-// ============================================================
-// After A counter-challenges B's challenge, B can concede.
-// Currently ConcedeChallenge is a stub — it only clears UI state.
-// This test documents the expected behavior for future implementation.
-//
-// Expected (future): ConcedeChallenge should:
-//   1. Find the challenge claim that B created (the one being conceded)
-//   2. Mark it as TRUE_CLAIM (the challenger accepts the counter)
-//   3. Cascade: the challenged claim (B's original challenge) becomes FALSE_CLAIM
-//   4. Clear user interaction state
-//
-// Current behavior: only clears interaction state, no status changes.
-// ============================================================
-TEST_F(SimulationTest, ConcedeChallenge) {
-    // Setup: create debate, enter, join, add child, B challenges, A counter-challenges
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
-    sendJoinDebate(userA_id_, 1);
-    sendJoinDebate(userB_id_, 1);
-    sendJoinDebate(userC_id_, 1);
-    sendGoToClaim(userA_id_, 1);
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
-
-    // Get child ID from A's collection
-    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int childId = -1;
-    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
-        }
-    }
-    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
-
-    // B challenges child
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-
-    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int bChallengeClaimId = findChallengeClaimIdFromCollection(respA_after_B, childId);
-    ASSERT_GT(bChallengeClaimId, 0) << "B's challenge claim should exist";
-
-    // A counter-challenges B's challenge claim
-    sendGoToClaim(userA_id_, bChallengeClaimId);
-    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int aCounterChallengeId = findChallengeClaimIdFromCollection(respA, bChallengeClaimId);
-    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
-
-    // Verify state before concede via collection
-    EXPECT_EQ(getUserViewFromCollection(respA, aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserViewFromCollection(respA, bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
-
-    // B concedes the counter-challenge
-    sendEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
-
-    // Current behavior: concede only clears UI state
-    // TODO: After ConcedeChallenge is implemented, add assertions for:
-    //   - B's challenge claim status -> FALSE_CLAIM (conceded)
-    //   - A's counter-challenge status -> TRUE_CLAIM (upheld)
-    //   - Challenge link removed
-    //   - User interaction state cleared
-
-    // For now, verify the interaction state is cleared
-    auto checkResp = sendAndGetResponse(userB_id_, debate_event::NONE);
-    EXPECT_EQ(checkResp.user().engagement().debating_info().current_debate_action().action_type(),
-              user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM)
-        << "After concede, user should be in VIEWING_CLAIM state";
-
-    dumpState("ConcedeChallenge — after B concedes");
-}
-
-// ============================================================
-// TEST 8: Full lifecycle — challenge, counter, second challenge, concede
-// ============================================================
-// Complete flow:
-//   1. A creates debate, adds child
-//   2. B challenges child
-//   3. A counter-challenges B's challenge
-//   4. B launches second challenge on child
-//   5. B concedes counter-challenge
-//   6. Verify final state
-// ============================================================
-TEST_F(SimulationTest, FullLifecycle) {
-    // Step 1: Setup
-    sendCreateDebate(userA_id_, "Is AI beneficial?");
-    sendEnterDebate(userA_id_, 1);
-    sendEnterDebate(userB_id_, 1);
-    sendEnterDebate(userC_id_, 1);
-    sendJoinDebate(userA_id_, 1);
-    sendJoinDebate(userB_id_, 1);
-    sendJoinDebate(userC_id_, 1);
-    sendGoToClaim(userA_id_, 1);
-    sendOpenAddChildClaim(userA_id_);
-    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
-
-    // Get child ID from A's collection
-    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int childId = -1;
-    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
-        const debate::Link& link = linkEntry.second;
-        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
-            childId = link.connect_to();
-            break;
-        }
-    }
-    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
-
-    // Step 2: B challenges child
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-
-    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int bChallenge1Id = findChallengeClaimIdFromCollection(respA_after_B, childId);
-    ASSERT_GT(bChallenge1Id, 0) << "B's first challenge claim should exist";
-
-    // Step 3: A counter-challenges
-    sendGoToClaim(userA_id_, bChallenge1Id);
-    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-
-    auto respA_after_counter = sendAndGetResponse(userA_id_, debate_event::NONE);
-    int aCounterId = findChallengeClaimIdFromCollection(respA_after_counter, bChallenge1Id);
-    ASSERT_GT(aCounterId, 0) << "A's counter-challenge claim should exist";
-
-    // Step 4: B second challenge on child
-    sendGoToClaim(userB_id_, childId);
-    sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
-
-    // Verify 3 CHALLENGE links via collection
-    auto respB_pre_concede = sendAndGetResponse(userB_id_, debate_event::NONE);
-    EXPECT_EQ(countLinksByTypeFromCollection(respB_pre_concede, debate::LinkType::CHALLENGE), 3)
-        << "Should have 3 CHALLENGE links (B1 + A counter + B2)";
-
-    // Step 5: B concedes counter-challenge
-    sendEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
-
-    // Step 6: Verify final state via collection
-    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
-    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
-    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
-
-    // All claims should still exist in A's collection
-    EXPECT_EQ(getClaimFromCollection(respA, 1).id(), 1);  // root
-    EXPECT_EQ(getClaimFromCollection(respA, childId).id(), childId);  // child
-    EXPECT_EQ(getClaimFromCollection(respA, bChallenge1Id).id(), bChallenge1Id);  // B's first challenge
-    EXPECT_EQ(getClaimFromCollection(respA, aCounterId).id(), aCounterId);  // A's counter
-
-    // All users still in debate
-    EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-    EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    dumpState("FullLifecycle — final state");
+    std::cout << "\n=== SimpleCreateDebate pbtxt written to: step_view_simple_create_debate.pbtxt ===" << std::endl;
 }
