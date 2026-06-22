@@ -12,7 +12,7 @@
 // 1. Each TEST_F builds a TestScenario protobuf in memory
 // 2. TestScenario.actions define what happens (user creation, debate events)
 // 3. TestScenario.expectations define what should be true afterward
-// 4. executeScenario() runs the actions, collects responses, checks expectations
+// 4. executeScenario() runs the actions, builds collection, checks expectations
 //
 // ACTION TYPES
 // ============
@@ -23,13 +23,13 @@
 //
 // EXPECTATION CHECK_TYPES
 // =======================
-// CLAIM_EXISTS      — Claim ID is present in user's response collection
+// CLAIM_EXISTS      — Claim ID is present in the shared collection
 // CLAIM_SENTENCE    — Claim's text matches expected string
 // USER_VIEW         — Per-user status on a claim (TRUE/FALSE/UNDETERMINED)
 // LINK_COUNT        — Number of links of a given type in collection
 // LINK_EXISTS       — Specific link from→to with given type exists
 // ENGAGEMENT_STATE  — User's current action (ACTION_DEBATING / ACTION_HOME)
-// COLLECTION_SIZE   — Total number of claims in user's collection
+// COLLECTION_SIZE   — Total number of claims in the collection
 //
 // Usage: debate_tests --gtest_filter="ScenarioRunner.*"
 
@@ -108,7 +108,6 @@ protected:
     // SECTION 2: STRING → ENUM PARSERS
     // -----------------------------------------------------------------------
     // Convert human-readable strings from the proto into C++ enums.
-    // These are used by both forgeEvent() and executeScenario().
 
     debate_event::EventType parseEventType(const std::string& name) {
         debate_event::EventType type;
@@ -138,7 +137,6 @@ protected:
     // -----------------------------------------------------------------------
     // forgeEvent: Converts a TestAction into a DebateEvent protobuf.
     // Does NOT handle CREATE_USER — that's handled separately in executeScenario().
-    // Sets user info and routes payload fields based on event type.
 
     debate_event::DebateEvent forgeEvent(const TestAction& action) {
         int user_id = getUserId(action.username());
@@ -165,7 +163,6 @@ protected:
                 event.mutable_go_to_claim()->set_claim_id(action.claim_id());
                 break;
             case debate_event::OPEN_ADD_CHILD_CLAIM:
-                // No payload — just opens the UI panel
                 break;
             case debate_event::ADD_CHILD_CLAIM:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
@@ -175,8 +172,9 @@ protected:
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 break;
+            case debate_event::CONCEDE_CHALLENGE:
+                break;
             default:
-                // No payload for other event types
                 break;
         }
         return event;
@@ -186,20 +184,11 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 4: COLLECTION BUILDER
     // -----------------------------------------------------------------------
-    // Instead of sending a NONE event to each user (which is wasteful and
-    // doesn't match how the production frontend works), we call
-    // BuildCollection::BuildForDebateAndUsers() directly. This is the same
-    // function the backend uses to build the response for the virtual renderer.
-    //
-    // It takes a debate_id and all user IDs, and returns ONE Collection
-    // protobuf containing:
-    //   - All claims in the debate (with per-user statuses in user_statuses map)
-    //   - All links (PARENT_CHILD, CHALLENGE, etc.)
-    //
-    // This is more correct than per-user queries because:
-    //   1. It tests the actual BuildCollection code path used in production
-    //   2. It's a single call — no need to send N NONE events
-    //   3. The collection has all user statuses on each claim in one place
+    // Instead of sending a NONE event to each user (wasteful, doesn't match
+    // production), we call BuildCollection::BuildForDebateAndUsers() directly.
+    // This is the same function the backend uses for the virtual renderer.
+    // One call returns a single Collection with all claims, links, and
+    // per-user statuses for all users.
 
     debate::Collection buildCollectionForAllUsers(int debate_id) {
         std::vector<int> user_ids;
@@ -214,17 +203,14 @@ protected:
     // SECTION 5: COLLECTION QUERY HELPERS
     // -----------------------------------------------------------------------
     // These extract data from a single Collection protobuf (shared across all users).
-    // Each claim in the collection has a user_statuses map that records every
-    // user's opinion: TRUE_CLAIM, FALSE_CLAIM, or UNDETERMINED.
+    // Each claim has a user_statuses map: username → TRUE/FALSE/UNDETERMINED.
 
-    // Look up a claim by ID in the collection
     debate::Claim getClaim(const debate::Collection& collection, int claim_id) {
         auto it = collection.claims_by_id().find(claim_id);
         if (it != collection.claims_by_id().end()) return it->second;
-        return debate::Claim();  // empty claim (id == 0) if not found
+        return debate::Claim();
     }
 
-    // Get one user's status on a specific claim from the collection
     debate::ClaimStatus getUserView(const debate::Collection& collection,
                                      int claim_id, const std::string& username) {
         debate::Claim c = getClaim(collection, claim_id);
@@ -234,7 +220,6 @@ protected:
         return debate::ClaimStatus::UNDETERMINED;
     }
 
-    // Count all links of a given type in the collection
     int countLinks(const debate::Collection& collection, debate::LinkType type) {
         int count = 0;
         for (const auto& entry : collection.links_by_id()) {
@@ -243,7 +228,6 @@ protected:
         return count;
     }
 
-    // Check if a specific link exists in the collection
     bool linkExists(const debate::Collection& collection, debate::LinkType type,
                     int from_claim_id, int to_claim_id) {
         for (const auto& entry : collection.links_by_id()) {
@@ -257,6 +241,24 @@ protected:
         return false;
     }
 
+    // Find the Nth claim ID that is the "from" end of a link with the given type
+    // targeting a specific claim. Used to find challenge claims by excluding
+    // already-known ones. skip_ids are IDs to skip (e.g. already-found challenges).
+    int findNthChallengeClaimId(const debate::Collection& collection, int target_claim_id,
+                                 debate::LinkType link_type, int n, const std::vector<int>& skip_ids) {
+        int found = 0;
+        for (const auto& entry : collection.links_by_id()) {
+            const debate::Link& link = entry.second;
+            if (link.link_type() != link_type || link.connect_to() != target_claim_id) continue;
+            int from_id = link.connect_from();
+            bool skip = false;
+            for (int sid : skip_ids) { if (from_id == sid) { skip = true; break; } }
+            if (skip) continue;
+            if (++found == n) return from_id;
+        }
+        return -1;
+    }
+
 
     // -----------------------------------------------------------------------
     // SECTION 6: SCENARIO EXECUTOR
@@ -264,23 +266,19 @@ protected:
     // executeScenario: Runs a TestScenario end-to-end.
     //
     // Phase 1 — Execute actions:
-    //   CREATE_USER → calls getUserId() (creates user in DB)
+    //   CREATE_USER → calls getUserId()
     //   All others → forgeEvent() → handleRequest()
-    //   We also store each user's last response so we can check engagement state.
+    //   Stores each user's last response (needed for ENGAGEMENT_STATE).
     //
     // Phase 2 — Build collection:
-    //   Single call to BuildCollection::BuildForDebateAndUsers() with all user IDs.
-    //   This gives us one Collection with all claims, links, and per-user statuses.
+    //   Single call to BuildCollection::BuildForDebateAndUsers().
     //
     // Phase 3 — Check expectations:
-    //   CLAIM_EXISTS, CLAIM_SENTENCE, USER_VIEW, LINK_COUNT, LINK_EXISTS, COLLECTION_SIZE
-    //     → checked against the shared collection
-    //   ENGAGEMENT_STATE
-    //     → checked against the stored per-user response from Phase 1
+    //   ENGAGEMENT_STATE → checked against stored per-user response
+    //   All others → checked against the shared collection
 
     void executeScenario(const TestScenario& scenario) {
-
-        // Phase 1: Execute all actions in order, storing each user's last response
+        // Phase 1: Execute all actions
         std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
         for (const auto& action : scenario.actions()) {
             if (action.event_type() == "CREATE_USER") {
@@ -293,14 +291,9 @@ protected:
             last_responses[action.username()] = resp;
         }
 
-        // Phase 2: Build a single collection for all users
-        // We need a debate_id — find it from any JOIN_DEBATE or CREATE_DEBATE action
+        // Phase 2: Build collection (find debate_id from actions)
         int debate_id = 0;
         for (const auto& action : scenario.actions()) {
-            if (action.event_type() == "CREATE_DEBATE") {
-                // The first claim created is the root, which has the debate_id
-                // We can get it from the DB, but simpler: use the first ENTER/JOIN debate_id
-            }
             if ((action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE")
                 && action.debate_id() > 0) {
                 debate_id = action.debate_id();
@@ -312,63 +305,49 @@ protected:
             collection = buildCollectionForAllUsers(debate_id);
         }
 
-        // Phase 3: Verify all expectations
+        // Phase 3: Verify expectations
         for (const auto& exp : scenario.expectations()) {
             const std::string& username = exp.username();
 
             if (exp.check_type() == "ENGAGEMENT_STATE") {
-                // Engagement state is per-user, check from stored response
                 auto resp_it = last_responses.find(username);
                 ASSERT_TRUE(resp_it != last_responses.end())
-                    << "[" << scenario.name() << "] ENGAGEMENT_STATE references unknown user: " << username;
-                user_engagement::EngagementAction actual = resp_it->second.user().engagement().current_action();
-                user_engagement::EngagementAction expected = parseEngagementAction(exp.expected_action());
+                    << "[" << scenario.name() << "] ENGAGEMENT_STATE unknown user: " << username;
+                auto actual = resp_it->second.user().engagement().current_action();
+                auto expected = parseEngagementAction(exp.expected_action());
                 EXPECT_EQ(actual, expected)
-                    << "[" << scenario.name() << "] ENGAGEMENT_STATE for user " << username
-                    << " expected=" << exp.expected_action();
+                    << "[" << scenario.name() << "] ENGAGEMENT_STATE " << username;
                 continue;
             }
 
-            // All other checks use the shared collection
             if (exp.check_type() == "CLAIM_EXISTS") {
-                debate::Claim c = getClaim(collection, exp.claim_id());
-                EXPECT_GT(c.id(), 0)
-                    << "[" << scenario.name() << "] CLAIM_EXISTS claim_id=" << exp.claim_id()
-                    << " for user " << username;
+                EXPECT_GT(getClaim(collection, exp.claim_id()).id(), 0)
+                    << "[" << scenario.name() << "] CLAIM_EXISTS " << exp.claim_id();
             }
             else if (exp.check_type() == "CLAIM_SENTENCE") {
-                debate::Claim c = getClaim(collection, exp.claim_id());
-                EXPECT_EQ(c.sentence(), exp.expected_claim_sentence())
-                    << "[" << scenario.name() << "] CLAIM_SENTENCE claim_id=" << exp.claim_id()
-                    << " for user " << username;
+                EXPECT_EQ(getClaim(collection, exp.claim_id()).sentence(), exp.expected_claim_sentence())
+                    << "[" << scenario.name() << "] CLAIM_SENTENCE " << exp.claim_id();
             }
             else if (exp.check_type() == "USER_VIEW") {
-                debate::ClaimStatus actual = getUserView(collection, exp.claim_id(), username);
-                debate::ClaimStatus expected = parseClaimStatus(exp.expected_status());
+                auto actual = getUserView(collection, exp.claim_id(), username);
+                auto expected = parseClaimStatus(exp.expected_status());
                 EXPECT_EQ(actual, expected)
-                    << "[" << scenario.name() << "] USER_VIEW claim_id=" << exp.claim_id()
-                    << " user=" << username
-                    << " expected=" << exp.expected_status();
+                    << "[" << scenario.name() << "] USER_VIEW " << exp.claim_id() << " " << username;
             }
             else if (exp.check_type() == "LINK_COUNT") {
-                debate::LinkType lt = parseLinkType(exp.link_type());
-                int actual = countLinks(collection, lt);
-                EXPECT_EQ(actual, exp.expected_count())
-                    << "[" << scenario.name() << "] LINK_COUNT type=" << exp.link_type()
-                    << " for user " << username;
+                auto lt = parseLinkType(exp.link_type());
+                EXPECT_EQ(countLinks(collection, lt), exp.expected_count())
+                    << "[" << scenario.name() << "] LINK_COUNT " << exp.link_type();
             }
             else if (exp.check_type() == "LINK_EXISTS") {
-                bool found = linkExists(collection, parseLinkType(exp.link_type()),
-                                        exp.from_claim_id(), exp.to_claim_id());
-                EXPECT_TRUE(found)
+                auto lt = parseLinkType(exp.link_type());
+                EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
                     << "[" << scenario.name() << "] LINK_EXISTS "
-                    << exp.from_claim_id() << " -> " << exp.to_claim_id()
-                    << " type=" << exp.link_type() << " for user " << username;
+                    << exp.from_claim_id() << " -> " << exp.to_claim_id();
             }
             else if (exp.check_type() == "COLLECTION_SIZE") {
-                int actual = collection.claims_by_id_size();
-                EXPECT_EQ(actual, exp.expected_count())
-                    << "[" << scenario.name() << "] COLLECTION_SIZE for user " << username;
+                EXPECT_EQ(collection.claims_by_id_size(), exp.expected_count())
+                    << "[" << scenario.name() << "] COLLECTION_SIZE";
             }
         }
     }
@@ -377,137 +356,714 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 7: FIXTURE MEMBER VARIABLES
     // -----------------------------------------------------------------------
+
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
-    std::map<std::string, int> user_ids_;  // username → user_id cache
+    std::map<std::string, int> user_ids_;
 };
 
 
 // ===========================================================================
-// SECTION 7: TEST CASES
+// SECTION 8: TEST CASES
 // ===========================================================================
 // Each TEST_F builds a TestScenario inline and calls executeScenario().
-// The scenario defines ALL state — users, actions, and expected outcomes.
-//
-// To add a new test: copy the pattern below, set scenario.name, add actions
-// (starting with CREATE_USER for each participant), then add expectations.
+// Claim IDs are predictable: SQLite auto-increment gives root=1, first child=2,
+// first challenge=3, etc.
+
+
+// ---------------------------------------------------------------------------
+// CreateDebate
+// ---------------------------------------------------------------------------
+// A creates a debate and enters it. Verifies root claim exists, sentence is
+// correct, and A sees it as TRUE_CLAIM while B/C see UNDETERMINED.
+
+TEST_F(ScenarioRunner, CreateDebate) {
+    TestScenario s;
+    s.set_name("CreateDebate");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+
+    // Root claim exists
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(1);
+
+    // Root sentence
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_SENTENCE"); e2->set_username("A"); e2->set_claim_id(1);
+    e2->set_expected_claim_sentence("Is AI beneficial?");
+
+    // A sees root as TRUE_CLAIM
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("USER_VIEW"); e3->set_username("A"); e3->set_claim_id(1);
+    e3->set_expected_status("TRUE_CLAIM");
+
+    // B and C see root as UNDETERMINED (not in debate yet)
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("USER_VIEW"); e4->set_username("B"); e4->set_claim_id(1);
+    e4->set_expected_status("UNDETERMINED");
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("USER_VIEW"); e5->set_username("C"); e5->set_claim_id(1);
+    e5->set_expected_status("UNDETERMINED");
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// EnterDebate
+// ---------------------------------------------------------------------------
+// A creates debate, all users enter. Verifies all are in ACTION_DEBATING state
+// and all can see the root claim.
+
+TEST_F(ScenarioRunner, EnterDebate) {
+    TestScenario s;
+    s.set_name("EnterDebate");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+
+    // All users in debating state
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("ENGAGEMENT_STATE"); e1->set_username("A");
+    e1->set_expected_action("ACTION_DEBATING");
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("ENGAGEMENT_STATE"); e2->set_username("B");
+    e2->set_expected_action("ACTION_DEBATING");
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("ENGAGEMENT_STATE"); e3->set_username("C");
+    e3->set_expected_action("ACTION_DEBATING");
+
+    // Root claim visible to all
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("CLAIM_EXISTS"); e4->set_username("A"); e4->set_claim_id(1);
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("CLAIM_SENTENCE"); e5->set_username("A"); e5->set_claim_id(1);
+    e5->set_expected_claim_sentence("Is AI beneficial?");
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// AddChildClaim
+// ---------------------------------------------------------------------------
+// A creates debate, all enter, A adds a child claim. Verifies child exists,
+// sentence is correct, A sees it as TRUE_CLAIM, B/C see UNDETERMINED.
+// Also verifies 1 PARENT_CHILD link.
+
+TEST_F(ScenarioRunner, AddChildClaim) {
+    TestScenario s;
+    s.set_name("AddChildClaim");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+
+    // A adds child under root (claim 1)
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("GO_TO_CLAIM"); a3->set_claim_id(1);
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("ADD_CHILD_CLAIM");
+    a5->set_claim_text("AI improves healthcare");
+
+    // Child claim (ID 2) exists
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(2);
+
+    // Child sentence
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_SENTENCE"); e2->set_username("A"); e2->set_claim_id(2);
+    e2->set_expected_claim_sentence("AI improves healthcare");
+
+    // A sees child as TRUE_CLAIM
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("USER_VIEW"); e3->set_username("A"); e3->set_claim_id(2);
+    e3->set_expected_status("TRUE_CLAIM");
+
+    // B/C see child as UNDETERMINED
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("USER_VIEW"); e4->set_username("B"); e4->set_claim_id(2);
+    e4->set_expected_status("UNDETERMINED");
+
+    // 1 PARENT_CHILD link
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("LINK_COUNT"); e5->set_username("A");
+    e5->set_link_type("PARENT_CHILD"); e5->set_expected_count(1);
+
+    executeScenario(s);
+}
 
 
 // ---------------------------------------------------------------------------
 // ChallengeClaim
 // ---------------------------------------------------------------------------
-// A creates a debate with a child claim. B challenges the child.
-// Verifies: claim exists, sentence correct, per-user statuses, link counts,
-//           engagement states.
-//
-// Flow: CREATE_USER(A) → CREATE_USER(B) → CREATE_DEBATE → ENTER+JOIN(A,B)
-//       → GO_TO_CLAIM(1) → OPEN_ADD_CHILD → ADD_CHILD_CLAIM
-//       → GO_TO_CLAIM(2) → SUBMIT_CHALLENGE_CLAIM
+// A creates debate + child, B challenges the child. Verifies challenge claim
+// exists, per-user views, link counts, and engagement states.
 
 TEST_F(ScenarioRunner, ChallengeClaim) {
-    TestScenario scenario;
-    scenario.set_name("ChallengeClaim");
+    TestScenario s;
+    s.set_name("ChallengeClaim");
 
-    // --- Users ---
-    auto* cu_a = scenario.add_actions();
-    cu_a->set_username("A");
-    cu_a->set_event_type("CREATE_USER");
-    auto* cu_b = scenario.add_actions();
-    cu_b->set_username("B");
-    cu_b->set_event_type("CREATE_USER");
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
 
-    // --- A creates debate and joins ---
-    auto* a1 = scenario.add_actions();
-    a1->set_username("A");
-    a1->set_event_type("CREATE_DEBATE");
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
     a1->set_debate_topic("Is AI beneficial?");
 
-    auto* a2 = scenario.add_actions();
-    a2->set_username("A");
-    a2->set_event_type("ENTER_DEBATE");
-    a2->set_debate_id(1);
-    auto* a3 = scenario.add_actions();
-    a3->set_username("A");
-    a3->set_event_type("JOIN_DEBATE");
-    a3->set_debate_id(1);
+    // All enter + join (JOIN needed for collection visibility)
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("JOIN_DEBATE"); a3->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* b2 = s.add_actions();
+    b2->set_username("B"); b2->set_event_type("JOIN_DEBATE"); b2->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+    auto* c2 = s.add_actions();
+    c2->set_username("C"); c2->set_event_type("JOIN_DEBATE"); c2->set_debate_id(1);
 
-    // --- B joins ---
-    auto* b1 = scenario.add_actions();
-    b1->set_username("B");
-    b1->set_event_type("ENTER_DEBATE");
-    b1->set_debate_id(1);
-    auto* b2 = scenario.add_actions();
-    b2->set_username("B");
-    b2->set_event_type("JOIN_DEBATE");
-    b2->set_debate_id(1);
-
-    // --- A adds child claim under root (claim 1) ---
-    auto* a4 = scenario.add_actions();
-    a4->set_username("A");
-    a4->set_event_type("GO_TO_CLAIM");
-    a4->set_claim_id(1);
-    auto* a5 = scenario.add_actions();
-    a5->set_username("A");
-    a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
-    auto* a6 = scenario.add_actions();
-    a6->set_username("A");
-    a6->set_event_type("ADD_CHILD_CLAIM");
+    // A adds child (claim 2)
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("GO_TO_CLAIM"); a4->set_claim_id(1);
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a6 = s.add_actions();
+    a6->set_username("A"); a6->set_event_type("ADD_CHILD_CLAIM");
     a6->set_claim_text("AI improves healthcare");
 
-    // --- B navigates to child (claim 2) and challenges it ---
-    auto* b3 = scenario.add_actions();
-    b3->set_username("B");
-    b3->set_event_type("GO_TO_CLAIM");
-    b3->set_claim_id(2);
-    auto* b4 = scenario.add_actions();
-    b4->set_username("B");
-    b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    // B challenges child (claim 2) → creates challenge claim (ID 3)
+    auto* b3 = s.add_actions();
+    b3->set_username("B"); b3->set_event_type("GO_TO_CLAIM"); b3->set_claim_id(2);
+    auto* b4 = s.add_actions();
+    b4->set_username("B"); b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
     b4->set_claim_text("Healthcare AI has bias issues");
 
-    // --- Expectations ---
+    // Child claim exists
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("B"); e1->set_claim_id(2);
 
-    auto* e1 = scenario.add_expectations();
-    e1->set_check_type("CLAIM_EXISTS");
-    e1->set_username("B");
-    e1->set_claim_id(2);
+    // Challenge claim (ID 3) exists
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_EXISTS"); e2->set_username("B"); e2->set_claim_id(3);
 
-    auto* e2 = scenario.add_expectations();
-    e2->set_check_type("CLAIM_SENTENCE");
-    e2->set_username("A");
-    e2->set_claim_id(2);
-    e2->set_expected_claim_sentence("AI improves healthcare");
+    // Challenge sentence
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("CLAIM_SENTENCE"); e3->set_username("B"); e3->set_claim_id(3);
+    e3->set_expected_claim_sentence("Healthcare AI has bias issues");
 
-    auto* e3 = scenario.add_expectations();
-    e3->set_check_type("USER_VIEW");
-    e3->set_username("A");
-    e3->set_claim_id(2);
+    // A sees child as TRUE_CLAIM
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("USER_VIEW"); e4->set_username("A"); e4->set_claim_id(2);
+    e4->set_expected_status("TRUE_CLAIM");
+
+    // B sees child as FALSE_CLAIM
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("USER_VIEW"); e5->set_username("B"); e5->set_claim_id(2);
+    e5->set_expected_status("FALSE_CLAIM");
+
+    // C sees child as UNDETERMINED
+    auto* e6 = s.add_expectations();
+    e6->set_check_type("USER_VIEW"); e6->set_username("C"); e6->set_claim_id(2);
+    e6->set_expected_status("UNDETERMINED");
+
+    // B sees own challenge as TRUE_CLAIM
+    auto* e7 = s.add_expectations();
+    e7->set_check_type("USER_VIEW"); e7->set_username("B"); e7->set_claim_id(3);
+    e7->set_expected_status("TRUE_CLAIM");
+
+    // A sees challenge as UNDETERMINED
+    auto* e8 = s.add_expectations();
+    e8->set_check_type("USER_VIEW"); e8->set_username("A"); e8->set_claim_id(3);
+    e8->set_expected_status("UNDETERMINED");
+
+    // 1 PARENT_CHILD, 1 CHALLENGE link
+    auto* e9 = s.add_expectations();
+    e9->set_check_type("LINK_COUNT"); e9->set_username("B");
+    e9->set_link_type("PARENT_CHILD"); e9->set_expected_count(1);
+    auto* e10 = s.add_expectations();
+    e10->set_check_type("LINK_COUNT"); e10->set_username("B");
+    e10->set_link_type("CHALLENGE"); e10->set_expected_count(1);
+
+    // All in debating state
+    auto* e11 = s.add_expectations();
+    e11->set_check_type("ENGAGEMENT_STATE"); e11->set_username("A");
+    e11->set_expected_action("ACTION_DEBATING");
+    auto* e12 = s.add_expectations();
+    e12->set_check_type("ENGAGEMENT_STATE"); e12->set_username("B");
+    e12->set_expected_action("ACTION_DEBATING");
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// FullStateVerification
+// ---------------------------------------------------------------------------
+// Comprehensive test: create debate, all join, add child, challenge.
+// Verifies all claims, all per-user views, link counts, engagement states.
+
+TEST_F(ScenarioRunner, FullStateVerification) {
+    TestScenario s;
+    s.set_name("FullStateVerification");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    // All enter + join
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("JOIN_DEBATE"); a3->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* b2 = s.add_actions();
+    b2->set_username("B"); b2->set_event_type("JOIN_DEBATE"); b2->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+    auto* c2 = s.add_actions();
+    c2->set_username("C"); c2->set_event_type("JOIN_DEBATE"); c2->set_debate_id(1);
+
+    // A adds child (claim 2)
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("GO_TO_CLAIM"); a4->set_claim_id(1);
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a6 = s.add_actions();
+    a6->set_username("A"); a6->set_event_type("ADD_CHILD_CLAIM");
+    a6->set_claim_text("AI improves healthcare");
+
+    // B challenges child (claim 2) → challenge claim ID 3
+    auto* b3 = s.add_actions();
+    b3->set_username("B"); b3->set_event_type("GO_TO_CLAIM"); b3->set_claim_id(2);
+    auto* b4 = s.add_actions();
+    b4->set_username("B"); b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b4->set_claim_text("Healthcare AI has bias issues");
+
+    // --- Root claim (ID 1) ---
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(1);
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_SENTENCE"); e2->set_username("A"); e2->set_claim_id(1);
+    e2->set_expected_claim_sentence("Is AI beneficial?");
+
+    // Root per-user views
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("USER_VIEW"); e3->set_username("A"); e3->set_claim_id(1);
+    e3->set_expected_status("TRUE_CLAIM");
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("USER_VIEW"); e4->set_username("B"); e4->set_claim_id(1);
+    e4->set_expected_status("UNDETERMINED");
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("USER_VIEW"); e5->set_username("C"); e5->set_claim_id(1);
+    e5->set_expected_status("UNDETERMINED");
+
+    // --- Child claim (ID 2) ---
+    auto* e6 = s.add_expectations();
+    e6->set_check_type("CLAIM_EXISTS"); e6->set_username("A"); e6->set_claim_id(2);
+    auto* e7 = s.add_expectations();
+    e7->set_check_type("CLAIM_SENTENCE"); e7->set_username("A"); e7->set_claim_id(2);
+    e7->set_expected_claim_sentence("AI improves healthcare");
+
+    // Child per-user views
+    auto* e8 = s.add_expectations();
+    e8->set_check_type("USER_VIEW"); e8->set_username("A"); e8->set_claim_id(2);
+    e8->set_expected_status("TRUE_CLAIM");
+    auto* e9 = s.add_expectations();
+    e9->set_check_type("USER_VIEW"); e9->set_username("B"); e9->set_claim_id(2);
+    e9->set_expected_status("FALSE_CLAIM");
+    auto* e10 = s.add_expectations();
+    e10->set_check_type("USER_VIEW"); e10->set_username("C"); e10->set_claim_id(2);
+    e10->set_expected_status("UNDETERMINED");
+
+    // --- Challenge claim (ID 3) ---
+    auto* e11 = s.add_expectations();
+    e11->set_check_type("CLAIM_EXISTS"); e11->set_username("B"); e11->set_claim_id(3);
+    auto* e12 = s.add_expectations();
+    e12->set_check_type("CLAIM_SENTENCE"); e12->set_username("B"); e12->set_claim_id(3);
+    e12->set_expected_claim_sentence("Healthcare AI has bias issues");
+
+    // Challenge per-user views
+    auto* e13 = s.add_expectations();
+    e13->set_check_type("USER_VIEW"); e13->set_username("B"); e13->set_claim_id(3);
+    e13->set_expected_status("TRUE_CLAIM");
+    auto* e14 = s.add_expectations();
+    e14->set_check_type("USER_VIEW"); e14->set_username("A"); e14->set_claim_id(3);
+    e14->set_expected_status("UNDETERMINED");
+
+    // Link counts
+    auto* e15 = s.add_expectations();
+    e15->set_check_type("LINK_COUNT"); e15->set_username("B");
+    e15->set_link_type("PARENT_CHILD"); e15->set_expected_count(1);
+    auto* e16 = s.add_expectations();
+    e16->set_check_type("LINK_COUNT"); e16->set_username("B");
+    e16->set_link_type("CHALLENGE"); e16->set_expected_count(1);
+
+    // All in debating
+    auto* e17 = s.add_expectations();
+    e17->set_check_type("ENGAGEMENT_STATE"); e17->set_username("A");
+    e17->set_expected_action("ACTION_DEBATING");
+    auto* e18 = s.add_expectations();
+    e18->set_check_type("ENGAGEMENT_STATE"); e18->set_username("B");
+    e18->set_expected_action("ACTION_DEBATING");
+    auto* e19 = s.add_expectations();
+    e19->set_check_type("ENGAGEMENT_STATE"); e19->set_username("C");
+    e19->set_expected_action("ACTION_DEBATING");
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// CounterChallenge
+// ---------------------------------------------------------------------------
+// B challenges A's child, A counter-challenges B's challenge claim,
+// B launches a second challenge on the same child.
+// Verifies: counter-challenge exists, per-user views, 3 CHALLENGE links.
+
+TEST_F(ScenarioRunner, CounterChallenge) {
+    TestScenario s;
+    s.set_name("CounterChallenge");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    // All enter + join
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("JOIN_DEBATE"); a3->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* b2 = s.add_actions();
+    b2->set_username("B"); b2->set_event_type("JOIN_DEBATE"); b2->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+    auto* c2 = s.add_actions();
+    c2->set_username("C"); c2->set_event_type("JOIN_DEBATE"); c2->set_debate_id(1);
+
+    // A adds child (claim 2)
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("GO_TO_CLAIM"); a4->set_claim_id(1);
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a6 = s.add_actions();
+    a6->set_username("A"); a6->set_event_type("ADD_CHILD_CLAIM");
+    a6->set_claim_text("AI improves healthcare");
+
+    // B challenges child (claim 2) → challenge claim ID 3
+    auto* b3 = s.add_actions();
+    b3->set_username("B"); b3->set_event_type("GO_TO_CLAIM"); b3->set_claim_id(2);
+    auto* b4 = s.add_actions();
+    b4->set_username("B"); b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b4->set_claim_text("Healthcare AI has bias issues");
+
+    // A counter-challenges B's challenge claim (ID 3) → counter-challenge ID 4
+    auto* a7 = s.add_actions();
+    a7->set_username("A"); a7->set_event_type("GO_TO_CLAIM"); a7->set_claim_id(3);
+    auto* a8 = s.add_actions();
+    a8->set_username("A"); a8->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    a8->set_claim_text("Actually healthcare AI is beneficial");
+
+    // B second challenge on child (claim 2) → challenge claim ID 5
+    auto* b5 = s.add_actions();
+    b5->set_username("B"); b5->set_event_type("GO_TO_CLAIM"); b5->set_claim_id(2);
+    auto* b6 = s.add_actions();
+    b6->set_username("B"); b6->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b6->set_claim_text("Healthcare AI has privacy issues too");
+
+    // Counter-challenge (ID 4) exists
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(4);
+
+    // Counter-challenge sentence
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_SENTENCE"); e2->set_username("A"); e2->set_claim_id(4);
+    e2->set_expected_claim_sentence("Actually healthcare AI is beneficial");
+
+    // A sees counter-challenge as TRUE_CLAIM
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("USER_VIEW"); e3->set_username("A"); e3->set_claim_id(4);
     e3->set_expected_status("TRUE_CLAIM");
 
-    auto* e4 = scenario.add_expectations();
-    e4->set_check_type("USER_VIEW");
-    e4->set_username("B");
-    e4->set_claim_id(2);
-    e4->set_expected_status("FALSE_CLAIM");
+    // B sees counter-challenge as UNDETERMINED
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("USER_VIEW"); e4->set_username("B"); e4->set_claim_id(4);
+    e4->set_expected_status("UNDETERMINED");
 
-    auto* e5 = scenario.add_expectations();
-    e5->set_check_type("LINK_COUNT");
-    e5->set_username("B");
-    e5->set_link_type("PARENT_CHILD");
-    e5->set_expected_count(1);
-    auto* e6 = scenario.add_expectations();
-    e6->set_check_type("LINK_COUNT");
-    e6->set_username("B");
-    e6->set_link_type("CHALLENGE");
-    e6->set_expected_count(1);
+    // A sees B's challenge (ID 3) as FALSE_CLAIM
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("USER_VIEW"); e5->set_username("A"); e5->set_claim_id(3);
+    e5->set_expected_status("FALSE_CLAIM");
 
-    auto* e7 = scenario.add_expectations();
-    e7->set_check_type("ENGAGEMENT_STATE");
-    e7->set_username("A");
+    // B's second challenge (ID 5) exists
+    auto* e6 = s.add_expectations();
+    e6->set_check_type("CLAIM_EXISTS"); e6->set_username("B"); e6->set_claim_id(5);
+
+    // Second challenge sentence
+    auto* e7 = s.add_expectations();
+    e7->set_check_type("CLAIM_SENTENCE"); e7->set_username("B"); e7->set_claim_id(5);
+    e7->set_expected_claim_sentence("Healthcare AI has privacy issues too");
+
+    // A still sees child as TRUE_CLAIM
+    auto* e8 = s.add_expectations();
+    e8->set_check_type("USER_VIEW"); e8->set_username("A"); e8->set_claim_id(2);
+    e8->set_expected_status("TRUE_CLAIM");
+
+    // B still sees child as FALSE_CLAIM
+    auto* e9 = s.add_expectations();
+    e9->set_check_type("USER_VIEW"); e9->set_username("B"); e9->set_claim_id(2);
+    e9->set_expected_status("FALSE_CLAIM");
+
+    // 3 CHALLENGE links total (B's first + A's counter + B's second)
+    auto* e10 = s.add_expectations();
+    e10->set_check_type("LINK_COUNT"); e10->set_username("B");
+    e10->set_link_type("CHALLENGE"); e10->set_expected_count(3);
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// ConcedeChallenge
+// ---------------------------------------------------------------------------
+// B challenges, A counter-challenges, B concedes.
+// Currently ConcedeChallenge is a stub — only clears UI state.
+// This test documents expected behavior for future implementation.
+
+TEST_F(ScenarioRunner, ConcedeChallenge) {
+    TestScenario s;
+    s.set_name("ConcedeChallenge");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    // All enter + join
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("JOIN_DEBATE"); a3->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* b2 = s.add_actions();
+    b2->set_username("B"); b2->set_event_type("JOIN_DEBATE"); b2->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+    auto* c2 = s.add_actions();
+    c2->set_username("C"); c2->set_event_type("JOIN_DEBATE"); c2->set_debate_id(1);
+
+    // A adds child (claim 2)
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("GO_TO_CLAIM"); a4->set_claim_id(1);
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a6 = s.add_actions();
+    a6->set_username("A"); a6->set_event_type("ADD_CHILD_CLAIM");
+    a6->set_claim_text("AI improves healthcare");
+
+    // B challenges child (claim 2) → challenge claim ID 3
+    auto* b3 = s.add_actions();
+    b3->set_username("B"); b3->set_event_type("GO_TO_CLAIM"); b3->set_claim_id(2);
+    auto* b4 = s.add_actions();
+    b4->set_username("B"); b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b4->set_claim_text("Healthcare AI has bias issues");
+
+    // A counter-challenges B's challenge (ID 3) → counter-challenge ID 4
+    auto* a7 = s.add_actions();
+    a7->set_username("A"); a7->set_event_type("GO_TO_CLAIM"); a7->set_claim_id(3);
+    auto* a8 = s.add_actions();
+    a8->set_username("A"); a8->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    a8->set_claim_text("Actually healthcare AI is beneficial");
+
+    // Verify state before concede
+    auto* e_pre1 = s.add_expectations();
+    e_pre1->set_check_type("USER_VIEW"); e_pre1->set_username("A"); e_pre1->set_claim_id(4);
+    e_pre1->set_expected_status("TRUE_CLAIM");
+    auto* e_pre2 = s.add_expectations();
+    e_pre2->set_check_type("USER_VIEW"); e_pre2->set_username("A"); e_pre2->set_claim_id(3);
+    e_pre2->set_expected_status("FALSE_CLAIM");
+
+    // B concedes
+    auto* b5 = s.add_actions();
+    b5->set_username("B"); b5->set_event_type("CONCEDE_CHALLENGE");
+
+    // After concede: all claims still exist
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(1);
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_EXISTS"); e2->set_username("A"); e2->set_claim_id(2);
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("CLAIM_EXISTS"); e3->set_username("A"); e3->set_claim_id(3);
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("CLAIM_EXISTS"); e4->set_username("A"); e4->set_claim_id(4);
+
+    // All still in debating
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("ENGAGEMENT_STATE"); e5->set_username("A");
+    e5->set_expected_action("ACTION_DEBATING");
+    auto* e6 = s.add_expectations();
+    e6->set_check_type("ENGAGEMENT_STATE"); e6->set_username("B");
+    e6->set_expected_action("ACTION_DEBATING");
+
+    // TODO: After ConcedeChallenge is implemented, add:
+    //   - B's challenge claim (3) → FALSE_CLAIM (conceded)
+    //   - A's counter-challenge (4) → TRUE_CLAIM (upheld)
+    //   - Challenge link removed
+
+    executeScenario(s);
+}
+
+
+// ---------------------------------------------------------------------------
+// FullLifecycle
+// ---------------------------------------------------------------------------
+// Complete flow: create, add child, challenge, counter-challenge, second
+// challenge, concede. Verifies final state with all claims and engagement.
+
+TEST_F(ScenarioRunner, FullLifecycle) {
+    TestScenario s;
+    s.set_name("FullLifecycle");
+
+    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
+    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
+
+    auto* a1 = s.add_actions();
+    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
+    a1->set_debate_topic("Is AI beneficial?");
+
+    // All enter + join
+    auto* a2 = s.add_actions();
+    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
+    auto* a3 = s.add_actions();
+    a3->set_username("A"); a3->set_event_type("JOIN_DEBATE"); a3->set_debate_id(1);
+    auto* b1 = s.add_actions();
+    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
+    auto* b2 = s.add_actions();
+    b2->set_username("B"); b2->set_event_type("JOIN_DEBATE"); b2->set_debate_id(1);
+    auto* c1 = s.add_actions();
+    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
+    auto* c2 = s.add_actions();
+    c2->set_username("C"); c2->set_event_type("JOIN_DEBATE"); c2->set_debate_id(1);
+
+    // A adds child (claim 2)
+    auto* a4 = s.add_actions();
+    a4->set_username("A"); a4->set_event_type("GO_TO_CLAIM"); a4->set_claim_id(1);
+    auto* a5 = s.add_actions();
+    a5->set_username("A"); a5->set_event_type("OPEN_ADD_CHILD_CLAIM");
+    auto* a6 = s.add_actions();
+    a6->set_username("A"); a6->set_event_type("ADD_CHILD_CLAIM");
+    a6->set_claim_text("AI improves healthcare");
+
+    // B challenges child (claim 2) → challenge claim ID 3
+    auto* b3 = s.add_actions();
+    b3->set_username("B"); b3->set_event_type("GO_TO_CLAIM"); b3->set_claim_id(2);
+    auto* b4 = s.add_actions();
+    b4->set_username("B"); b4->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b4->set_claim_text("Healthcare AI has bias issues");
+
+    // A counter-challenges B's challenge (ID 3) → counter-challenge ID 4
+    auto* a7 = s.add_actions();
+    a7->set_username("A"); a7->set_event_type("GO_TO_CLAIM"); a7->set_claim_id(3);
+    auto* a8 = s.add_actions();
+    a8->set_username("A"); a8->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    a8->set_claim_text("Actually healthcare AI is beneficial");
+
+    // B second challenge on child (claim 2) → challenge claim ID 5
+    auto* b5 = s.add_actions();
+    b5->set_username("B"); b5->set_event_type("GO_TO_CLAIM"); b5->set_claim_id(2);
+    auto* b6 = s.add_actions();
+    b6->set_username("B"); b6->set_event_type("SUBMIT_CHALLENGE_CLAIM");
+    b6->set_claim_text("Healthcare AI has privacy issues too");
+
+    // B concedes
+    auto* b7 = s.add_actions();
+    b7->set_username("B"); b7->set_event_type("CONCEDE_CHALLENGE");
+
+    // All claims still exist: root(1), child(2), B_challenge(3), A_counter(4), B_second(5)
+    auto* e1 = s.add_expectations();
+    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(1);
+    auto* e2 = s.add_expectations();
+    e2->set_check_type("CLAIM_EXISTS"); e2->set_username("A"); e2->set_claim_id(2);
+    auto* e3 = s.add_expectations();
+    e3->set_check_type("CLAIM_EXISTS"); e3->set_username("A"); e3->set_claim_id(3);
+    auto* e4 = s.add_expectations();
+    e4->set_check_type("CLAIM_EXISTS"); e4->set_username("A"); e4->set_claim_id(4);
+    auto* e5 = s.add_expectations();
+    e5->set_check_type("CLAIM_EXISTS"); e5->set_username("A"); e5->set_claim_id(5);
+
+    // All still in debating
+    auto* e6 = s.add_expectations();
+    e6->set_check_type("ENGAGEMENT_STATE"); e6->set_username("A");
+    e6->set_expected_action("ACTION_DEBATING");
+    auto* e7 = s.add_expectations();
+    e7->set_check_type("ENGAGEMENT_STATE"); e7->set_username("B");
     e7->set_expected_action("ACTION_DEBATING");
-    auto* e8 = scenario.add_expectations();
-    e8->set_check_type("ENGAGEMENT_STATE");
-    e8->set_username("B");
+    auto* e8 = s.add_expectations();
+    e8->set_check_type("ENGAGEMENT_STATE"); e8->set_username("C");
     e8->set_expected_action("ACTION_DEBATING");
 
-    executeScenario(scenario);
+    // 3 CHALLENGE links (B1 + A counter + B2)
+    auto* e9 = s.add_expectations();
+    e9->set_check_type("LINK_COUNT"); e9->set_username("B");
+    e9->set_link_type("CHALLENGE"); e9->set_expected_count(3);
+
+    // Collection has 5 claims total
+    auto* e10 = s.add_expectations();
+    e10->set_check_type("COLLECTION_SIZE"); e10->set_username("A");
+    e10->set_expected_count(5);
+
+    executeScenario(s);
 }

@@ -158,7 +158,6 @@ set(COMMON_LIBS
 set(ALL_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
-    ${CMAKE_SOURCE_DIR}/tests/test_debate_simulation.cc
     ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
 )
 
@@ -198,12 +197,15 @@ add_test(NAME PropagationTest.ConcedeChallenge_ClearsUserState COMMAND debate_te
 add_test(NAME PropagationTest.DeleteChallenge_RestoresUndeterminedStatus COMMAND debate_tests --gtest_filter="PropagationTest.DeleteChallenge_RestoresUndeterminedStatus")
 add_test(NAME PropagationTest.CreatorSeesOwnClaimAsTrue COMMAND debate_tests --gtest_filter="PropagationTest.CreatorSeesOwnClaimAsTrue")
 
-# SimulationTest (5 tests)
-add_test(NAME SimulationTest.CreateDebate COMMAND debate_tests --gtest_filter="SimulationTest.CreateDebate")
-add_test(NAME SimulationTest.EnterDebate COMMAND debate_tests --gtest_filter="SimulationTest.EnterDebate")
-add_test(NAME SimulationTest.AddChildClaim COMMAND debate_tests --gtest_filter="SimulationTest.AddChildClaim")
-add_test(NAME SimulationTest.ChallengeClaim COMMAND debate_tests --gtest_filter="SimulationTest.ChallengeClaim")
-add_test(NAME SimulationTest.FullStateVerification COMMAND debate_tests --gtest_filter="SimulationTest.FullStateVerification")
+# ScenarioRunner (8 tests)
+add_test(NAME ScenarioRunner.CreateDebate COMMAND debate_tests --gtest_filter="ScenarioRunner.CreateDebate")
+add_test(NAME ScenarioRunner.EnterDebate COMMAND debate_tests --gtest_filter="ScenarioRunner.EnterDebate")
+add_test(NAME ScenarioRunner.AddChildClaim COMMAND debate_tests --gtest_filter="ScenarioRunner.AddChildClaim")
+add_test(NAME ScenarioRunner.ChallengeClaim COMMAND debate_tests --gtest_filter="ScenarioRunner.ChallengeClaim")
+add_test(NAME ScenarioRunner.FullStateVerification COMMAND debate_tests --gtest_filter="ScenarioRunner.FullStateVerification")
+add_test(NAME ScenarioRunner.CounterChallenge COMMAND debate_tests --gtest_filter="ScenarioRunner.CounterChallenge")
+add_test(NAME ScenarioRunner.ConcedeChallenge COMMAND debate_tests --gtest_filter="ScenarioRunner.ConcedeChallenge")
+add_test(NAME ScenarioRunner.FullLifecycle COMMAND debate_tests --gtest_filter="ScenarioRunner.FullLifecycle")
 
 # Catch-all
 add_test(NAME AllTests COMMAND debate_tests)
