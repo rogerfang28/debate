@@ -720,63 +720,67 @@ TEST_F(SimulationTest, FullLifecycle) {
     sendEnterDebate(userA_id_, 1);
     sendEnterDebate(userB_id_, 1);
     sendEnterDebate(userC_id_, 1);
+    sendJoinDebate(userA_id_, 1);
+    sendJoinDebate(userB_id_, 1);
+    sendJoinDebate(userC_id_, 1);
     sendGoToClaim(userA_id_, 1);
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    int childId = dw.findChildrenIds(1)[0];
+    // Get child ID from A's collection
+    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int childId = -1;
+    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
 
     // Step 2: B challenges child
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-    int bChallenge1Id = findChallengeClaimId(childId);
-    ASSERT_GT(bChallenge1Id, 0);
+
+    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int bChallenge1Id = findChallengeClaimIdFromCollection(respA_after_B, childId);
+    ASSERT_GT(bChallenge1Id, 0) << "B's first challenge claim should exist";
 
     // Step 3: A counter-challenges
     sendGoToClaim(userA_id_, bChallenge1Id);
     sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-    int aCounterId = findChallengeClaimId(bChallenge1Id);
-    ASSERT_GT(aCounterId, 0);
+
+    auto respA_after_counter = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int aCounterId = findChallengeClaimIdFromCollection(respA_after_counter, bChallenge1Id);
+    ASSERT_GT(aCounterId, 0) << "A's counter-challenge claim should exist";
 
     // Step 4: B second challenge on child
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
 
-    // Count challenge links
-    auto links = dw.getLinksForDebate(1);
-    int totalChallengeLinks = 0;
-    for (const auto& link : links) {
-        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            totalChallengeLinks++;
-        }
-    }
-    EXPECT_EQ(totalChallengeLinks, 3) << "Should have 3 CHALLENGE links (B1 + A counter + B2)";
+    // Verify 3 CHALLENGE links via collection
+    auto respB_pre_concede = sendAndGetResponse(userB_id_, debate_event::NONE);
+    EXPECT_EQ(countLinksByTypeFromCollection(respB_pre_concede, debate::LinkType::CHALLENGE), 3)
+        << "Should have 3 CHALLENGE links (B1 + A counter + B2)";
 
     // Step 5: B concedes counter-challenge
-    debate_event::DebateEvent concedeEvent = makeEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
-    moderator_->handleRequest(concedeEvent);
+    sendEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
 
-    // Step 6: Verify final state
-    // All claims should still exist
-    EXPECT_EQ(getClaim(1).id(), 1);  // root
-    EXPECT_EQ(getClaim(childId).id(), childId);  // child
-    EXPECT_EQ(getClaim(bChallenge1Id).id(), bChallenge1Id);  // B's first challenge
-    EXPECT_EQ(getClaim(aCounterId).id(), aCounterId);  // A's counter
+    // Step 6: Verify final state via collection
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
+    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
+
+    // All claims should still exist in A's collection
+    EXPECT_EQ(getClaimFromCollection(respA, 1).id(), 1);  // root
+    EXPECT_EQ(getClaimFromCollection(respA, childId).id(), childId);  // child
+    EXPECT_EQ(getClaimFromCollection(respA, bChallenge1Id).id(), bChallenge1Id);  // B's first challenge
+    EXPECT_EQ(getClaimFromCollection(respA, aCounterId).id(), aCounterId);  // A's counter
 
     // All users still in debate
-    debate_event::DebateEvent checkA = makeEvent(userA_id_, debate_event::NONE);
-    auto respA = moderator_->handleRequest(checkA);
     EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    debate_event::DebateEvent checkB = makeEvent(userB_id_, debate_event::NONE);
-    auto respB = moderator_->handleRequest(checkB);
     EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    debate_event::DebateEvent checkC = makeEvent(userC_id_, debate_event::NONE);
-    auto respC = moderator_->handleRequest(checkC);
     EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
 
     dumpState("FullLifecycle — final state");
