@@ -294,6 +294,71 @@ function parseMessage(ctx: ParseContext): Record<string, unknown> {
 // ── Post-processing ─────────────────────────────────────────────────────
 
 /**
+ * Known repeated fields in the layout proto that should always be arrays.
+ * The parser only creates arrays when a field name appears multiple times.
+ * This function normalizes single-entry repeated fields into one-element arrays
+ * so downstream code can always call .map(), .length, etc.
+ */
+const REPEATED_FIELDS = new Set(["components", "children"]);
+
+function normalizeRepeatedFields(obj: Record<string, unknown>): void {
+  for (const field of REPEATED_FIELDS) {
+    if (
+      field in obj &&
+      !Array.isArray(obj[field]) &&
+      typeof obj[field] === "object" &&
+      obj[field] !== null
+    ) {
+      obj[field] = [obj[field]];
+    }
+  }
+  // Recurse into nested messages
+  for (const value of Object.values(obj)) {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === "object" && item !== null) {
+          normalizeRepeatedFields(item as Record<string, unknown>);
+        }
+      }
+    } else if (typeof value === "object" && value !== null) {
+      normalizeRepeatedFields(value as Record<string, unknown>);
+    }
+  }
+}
+
+/**
+ * Convert kebab-case CSS property names to camelCase.
+ * React's style prop expects camelCase keys (e.g. "fontStyle" not "font-style").
+ * Google's TextFormat outputs standard CSS kebab-case names.
+ */
+function toCamelCaseKey(kebab: string): string {
+  return kebab.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+function normalizeCssKeys(obj: Record<string, unknown>): void {
+  if (obj["css"] && typeof obj["css"] === "object" && !Array.isArray(obj["css"])) {
+    const css = obj["css"] as Record<string, unknown>;
+    const normalized: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(css)) {
+      normalized[toCamelCaseKey(key)] = value;
+    }
+    obj["css"] = normalized;
+  }
+  // Recurse into arrays and nested objects
+  for (const value of Object.values(obj)) {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === "object" && item !== null) {
+          normalizeCssKeys(item as Record<string, unknown>);
+        }
+      }
+    } else if (typeof value === "object" && value !== null) {
+      normalizeCssKeys(value as Record<string, unknown>);
+    }
+  }
+}
+
+/**
  * Convert enum name strings to their numeric values.
  */
 function resolveEnums(obj: Record<string, unknown>): void {
@@ -389,6 +454,8 @@ export function parsePbtxtToPage(text: string): Record<string, unknown> {
   const tokens = tokenize(text);
   const ctx: ParseContext = { tokens, pos: 0 };
   const raw = parseTopLevel(ctx);
+  normalizeRepeatedFields(raw);
+  normalizeCssKeys(raw);
   resolveEnums(raw);
   return raw;
 }
