@@ -508,3 +508,16 @@ svg circle {
   margin-top: 0.5rem !important;
   flex-shrink: 0;
 }
+
+/* --- Map Edges: make tree lines visible against dark background --- */
+[id^="mapEdgeV1_"],
+[id^="mapEdgeH_"],
+[id^="mapEdgeV2_"] {
+  background-color: #9ca3af !important;
+}
+
+[id^="mapChallengeEdgeV1_"],
+[id^="mapChallengeEdgeH_"],
+[id^="mapChallengeEdgeV2_"] {
+  background-color: #f97316 !important;
+}
