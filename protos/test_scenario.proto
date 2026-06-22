@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package debate_test;
+
+// A complete test scenario: setup actions + expected outcomes
+message TestScenario {
+  string name = 1;           // e.g. "ChallengeClaim", "CounterChallenge"
+  string debate_topic = 2;   // topic for CREATE_DEBATE (if empty, no debate created)
+
+  repeated TestAction actions = 3;
+  repeated TestExpectation expectations = 4;
+}
+
+// A single user action — maps to one DebateEvent
+message TestAction {
+  string username = 1;       // "A", "B", "C" — resolved by the runner
+  string event_type = 2;     // matches debate_event::EventType enum name
+
+  // Event-specific payloads (only one should be set per action)
+  string debate_topic = 3;   // for CREATE_DEBATE
+  int32  debate_id = 4;      // for ENTER_DEBATE, JOIN_DEBATE
+  int32  claim_id = 5;       // for GO_TO_CLAIM
+  string claim_text = 6;     // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
+  string claim_description = 7; // for ADD_CHILD_CLAIM
+}
+
+// A single expectation to verify after all actions run
+message TestExpectation {
+  string check_type = 1;     // CLAIM_EXISTS | CLAIM_SENTENCE | USER_VIEW |
+                             // LINK_COUNT | LINK_EXISTS | ENGAGEMENT_STATE |
+                             // COLLECTION_SIZE
+
+  // Target identifiers
+  string username = 2;       // whose response collection to check
+  int32  claim_id = 3;       // target claim (for CLAIM_*, USER_VIEW)
+  int32  from_claim_id = 4;  // for LINK_EXISTS
+  int32  to_claim_id = 5;    // for LINK_EXISTS
+  string link_type = 6;      // "PARENT_CHILD" | "CHALLENGE" (for LINK_COUNT, LINK_EXISTS)
+
+  // Expected values
+  string expected_claim_sentence = 7;  // for CLAIM_SENTENCE
+  string expected_status = 8;          // "TRUE_CLAIM" | "FALSE_CLAIM" | "UNDETERMINED" (for USER_VIEW)
+  int32  expected_count = 9;           // for LINK_COUNT, COLLECTION_SIZE
+  string expected_action = 10;         // "ACTION_DEBATING" | "ACTION_HOME" (for ENGAGEMENT_STATE)
+}
