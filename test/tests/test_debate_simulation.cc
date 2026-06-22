@@ -36,97 +36,13 @@
 #include "database/virtualrenderer/VRUserDatabase.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 
+#include <google/protobuf/text_format.h>
+
 // -------------------------------------------------------
-// PBTXT serialization helpers
+// downloadPbtxt — generates step view pbtxt from debate data
+// Uses standard protobuf TextFormat::PrintToString for serialization.
+// The frontend parser handles the format as-is.
 // -------------------------------------------------------
-// The frontend parser expects flat pbtxt format:
-//   page_id: "debate"
-//   components { ... }
-// NOT wrapped in Page { }. We serialize manually to match.
-//
-// Critical format rules from the frontend parser:
-//   - custom_class must be inside style { custom_class: "..." }, NOT a top-level field
-//   - css map keys must be camelCase (React CSS properties), not kebab-case
-//   - css uses the key/value block format: css { key: "..." value: "..." }
-
-static std::string toCamelCase(const std::string& kebab) {
-    std::string result;
-    bool capitalize = false;
-    for (char c : kebab) {
-        if (c == '-') {
-            capitalize = true;
-        } else if (capitalize) {
-            result += static_cast<char>(toupper(c));
-            capitalize = false;
-        } else {
-            result += c;
-        }
-    }
-    return result;
-}
-
-static std::string componentTypeToString(ui::ComponentType type) {
-    switch (type) {
-        case ui::TEXT:       return "TEXT";
-        case ui::BUTTON:     return "BUTTON";
-        case ui::INPUT:      return "INPUT";
-        case ui::CONTAINER:  return "CONTAINER";
-        default:             return "UNKNOWN";
-    }
-}
-
-static std::string serializeComponent(const ui::Component& comp, int indent) {
-    std::string pad(indent, ' ');
-    std::string out;
-
-    out += pad + "components {\n";
-
-    if (!comp.id().empty())
-        out += pad + "  id: \"" + comp.id() + "\"\n";
-    if (!comp.name().empty())
-        out += pad + "  name: \"" + comp.name() + "\"\n";
-    if (comp.type() != ui::UNKNOWN)
-        out += pad + "  type: " + componentTypeToString(comp.type()) + "\n";
-    if (!comp.text().empty()) {
-        // Escape backslashes and quotes in text
-        std::string escaped = comp.text();
-        size_t pos = 0;
-        while ((pos = escaped.find('\\', pos)) != std::string::npos) {
-            escaped.replace(pos, 1, "\\\\");
-            pos += 2;
-        }
-        pos = 0;
-        while ((pos = escaped.find('"', pos)) != std::string::npos) {
-            escaped.replace(pos, 1, "\\\"");
-            pos += 2;
-        }
-        out += pad + "  text: \"" + escaped + "\"\n";
-    }
-
-    // Serialize style.custom_class inside a style block (not as top-level field)
-    if (!comp.style().custom_class().empty()) {
-        out += pad + "  style {\n";
-        out += pad + "    custom_class: \"" + comp.style().custom_class() + "\"\n";
-        out += pad + "  }\n";
-    }
-
-    // Serialize css map with camelCase keys (React CSS properties)
-    for (const auto& kv : comp.css()) {
-        std::string camelKey = toCamelCase(kv.first);
-        out += pad + "  css { key: \"" + camelKey + "\" value: \"" + kv.second + "\" }\n";
-    }
-
-    // Serialize attributes map
-    for (const auto& kv : comp.attributes())
-        out += pad + "  attributes { key: \"" + kv.first + "\" value: \"" + kv.second + "\" }\n";
-
-    // Serialize children recursively
-    for (int i = 0; i < comp.children_size(); ++i)
-        out += serializeComponent(comp.children(i), indent + 2);
-
-    out += pad + "}\n";
-    return out;
-}
 
 static void downloadPbtxt(
     int debateId,
@@ -163,15 +79,9 @@ static void downloadPbtxt(
     ui::Page page = StepView::GenerateStepViewPage(
         fullDebateInfo, collection, userDb);
 
-    // Serialize to flat pbtxt format (no Page wrapper)
+    // Serialize using standard Google TextFormat
     std::string pbtxt;
-    if (!page.page_id().empty())
-        pbtxt += "page_id: \"" + page.page_id() + "\"\n";
-    if (!page.title().empty())
-        pbtxt += "title: \"" + page.title() + "\"\n";
-
-    for (int i = 0; i < page.components_size(); ++i)
-        pbtxt += serializeComponent(page.components(i), 0);
+    google::protobuf::TextFormat::PrintToString(page, &pbtxt);
 
     // Write to file
     FILE* f = fopen(outputPath.c_str(), "w");
