@@ -491,7 +491,7 @@ svg circle {
 
 /* --- Map Nodes: keep backend's fixed height layout, just ensure content fits --- */
 [id^="mapNode_"] {
-  height: 100px !important;
+  height: 130px !important;
   width: 180px !important;
   overflow: visible !important;
 }
