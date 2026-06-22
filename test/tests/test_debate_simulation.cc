@@ -178,19 +178,6 @@ protected:
         return -1;
     }
 
-    // Find the Nth challenge claim targeting a given claim (skip = how many to skip, 0 = first)
-    int findNthChallengeClaimIdFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, int challenged_claim_id, int skip) {
-        int found = 0;
-        for (const auto& linkEntry : response.collection().links_by_id()) {
-            const debate::Link& link = linkEntry.second;
-            if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_to() == challenged_claim_id) {
-                if (found == skip) return link.connect_from();
-                found++;
-            }
-        }
-        return -1;
-    }
-
     // Count links of a given type in the collection
     int countLinksByTypeFromCollection(const moderator_to_vr::ModeratorToVRMessage& response, debate::LinkType type) {
         int count = 0;
@@ -200,40 +187,7 @@ protected:
         return count;
     }
 
-    // ---- DB query helpers (read directly from DB, not through moderator) ----
-    debate::Claim getClaim(int claim_id) {
-        // Use a fresh DatabaseWrapper to read from the same DB
-        Database db(db_path_);
-        DatabaseWrapper dbWrapper(db);
-        DebateWrapper dw(dbWrapper);
-        return dw.getClaimById(claim_id);
-    }
-
-    debate::ClaimStatus getUserView(int claim_id, const std::string& username) {
-        debate::Claim c = getClaim(claim_id);
-        auto it = c.user_statuses().find(username);
-        if (it != c.user_statuses().end()) return it->second;
-        return debate::ClaimStatus::UNDETERMINED;
-    }
-
-    int findChallengeClaimId(int challenged_claim_id) {
-        Database db(db_path_);
-        DatabaseWrapper dbWrapper(db);
-        DebateWrapper dw(dbWrapper);
-        auto links = dw.getLinksForDebate(1);
-        for (const auto& link : links) {
-            int linkType = std::get<5>(link);
-            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-                int toClaim = std::get<2>(link);
-                if (toClaim == challenged_claim_id) {
-                    return std::get<1>(link);
-                }
-            }
-        }
-        return -1;
-    }
-
-    // ---- State dumper ----
+    // ---- State dumper (reads directly from DB for debugging) ----
     void dumpState(const std::string& label) {
         std::cout << "\n--- " << label << " ---" << std::endl;
         Database db(db_path_);
