@@ -489,16 +489,13 @@ svg circle {
   min-height: fit-content !important;
 }
 
-/* --- Map Nodes: make flexible height instead of fixed --- */
+/* --- Map Nodes: keep backend's fixed height layout, just ensure content fits --- */
 [id^="mapNode_"] {
-  height: auto !important;
-  min-height: 80px;
-  width: auto !important;
-  min-width: 160px;
-  max-width: 220px;
+  height: 100px !important;
+  width: 180px !important;
+  overflow: visible !important;
 }
 
-[id^="mapNode_"] > p,
 [id^="mapNode_"] > h3 {
   -webkit-line-clamp: unset !important;
   display: block !important;
