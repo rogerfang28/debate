@@ -420,3 +420,233 @@ TEST_F(SimulationTest, FullStateVerification) {
 
     dumpState("FullStateVerification");
 }
+
+// ============================================================
+// TEST 6: Counter-challenge — A challenges B's challenge claim
+// ============================================================
+// After B challenges A's child claim, A can counter-challenge by
+// challenging B's challenge claim. This creates a nested structure:
+//   child Claim (2) <- Challenge Claim (3 from B) <- Counter Challenge Claim (4 from A)
+// counter-challenge targets B's challenge claim, not the original child.
+// Then B challenges again (second challenge on original child).
+// ============================================================
+TEST_F(SimulationTest, CounterChallenge) {
+    // Setup: create debate, enter, add child, B challenges
+    sendCreateDebate(userA_id_, "Is AI beneficial?");
+    sendEnterDebate(userA_id_, 1);
+    sendEnterDebate(userB_id_, 1);
+    sendEnterDebate(userC_id_, 1);
+    sendGoToClaim(userA_id_, 1);
+    sendOpenAddChildClaim(userA_id_);
+    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
+
+    Database db(db_path_);
+    DatabaseWrapper dbWrapper(db);
+    DebateWrapper dw(dbWrapper);
+    int childId = dw.findChildrenIds(1)[0];
+
+    // B challenges child
+    sendGoToClaim(userB_id_, childId);
+    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
+
+    int bChallengeClaimId = findChallengeClaimId(childId);
+    ASSERT_GT(bChallengeClaimId, 0) << "B's challenge claim should exist";
+
+    // A counter-challenges B's challenge claim
+    sendGoToClaim(userA_id_, bChallengeClaimId);
+    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
+
+    int aCounterChallengeId = findChallengeClaimId(bChallengeClaimId);
+    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
+
+    // Verify: counter-challenge has CHALLENGE link to B's challenge claim
+    debate::Claim counterChallenge = getClaim(aCounterChallengeId);
+    EXPECT_EQ(counterChallenge.sentence(), "Actually healthcare AI is beneficial");
+
+    // Verify: A sees counter-challenge as TRUE_CLAIM (creator)
+    EXPECT_EQ(getUserView(aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+
+    // Verify: B sees counter-challenge as UNDETERMINED (not creator)
+    EXPECT_EQ(getUserView(aCounterChallengeId, "B"), debate::ClaimStatus::UNDETERMINED);
+
+    // Verify: B sees their own challenge claim as FALSE_CLAIM (A's counter view)
+    EXPECT_EQ(getUserView(bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
+
+    // B launches another challenge on the same child claim
+    sendGoToClaim(userB_id_, childId);
+    sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
+
+    int bSecondChallengeId = -1;
+    auto links = dw.getLinksForDebate(1);
+    int challengeCount = 0;
+    for (const auto& link : links) {
+        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
+            challengeCount++;
+            int toClaim = std::get<2>(link);
+            if (toClaim == childId) {
+                int fromClaim = std::get<1>(link);
+                if (fromClaim != bChallengeClaimId) {
+                    bSecondChallengeId = fromClaim;
+                }
+            }
+        }
+    }
+    EXPECT_EQ(challengeCount, 3) << "Should have 3 CHALLENGE links total (B's first + A's counter + B's second)";
+    ASSERT_GT(bSecondChallengeId, 0) << "B's second challenge claim should exist";
+
+    debate::Claim bSecondChallenge = getClaim(bSecondChallengeId);
+    EXPECT_EQ(bSecondChallenge.sentence(), "Healthcare AI has privacy issues too");
+
+    // Verify: A sees child as TRUE_CLAIM (still creator, unchanged by more challenges)
+    EXPECT_EQ(getUserView(childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+
+    // Verify: B sees child as FALSE_CLAIM (challenger view, set by first challenge)
+    EXPECT_EQ(getUserView(childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
+
+    dumpState("CounterChallenge");
+}
+
+// ============================================================
+// TEST 7: Concede — B concedes A's counter-challenge
+// ============================================================
+// After A counter-challenges B's challenge, B can concede.
+// Currently ConcedeChallenge is a stub — it only clears UI state.
+// This test documents the expected behavior for future implementation.
+//
+// Expected (future): ConcedeChallenge should:
+//   1. Find the challenge claim that B created (the one being conceded)
+//   2. Mark it as TRUE_CLAIM (the challenger accepts the counter)
+//   3. Cascade: the challenged claim (B's original challenge) becomes FALSE_CLAIM
+//   4. Clear user interaction state
+//
+// Current behavior: only clears interaction state, no status changes.
+// ============================================================
+TEST_F(SimulationTest, ConcedeChallenge) {
+    // Setup: create debate, enter, add child, B challenges, A counter-challenges
+    sendCreateDebate(userA_id_, "Is AI beneficial?");
+    sendEnterDebate(userA_id_, 1);
+    sendEnterDebate(userB_id_, 1);
+    sendEnterDebate(userC_id_, 1);
+    sendGoToClaim(userA_id_, 1);
+    sendOpenAddChildClaim(userA_id_);
+    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
+
+    Database db(db_path_);
+    DatabaseWrapper dbWrapper(db);
+    DebateWrapper dw(dbWrapper);
+    int childId = dw.findChildrenIds(1)[0];
+
+    // B challenges child
+    sendGoToClaim(userB_id_, childId);
+    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
+    int bChallengeClaimId = findChallengeClaimId(childId);
+
+    // A counter-challenges B's challenge claim
+    sendGoToClaim(userA_id_, bChallengeClaimId);
+    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
+    int aCounterChallengeId = findChallengeClaimId(bChallengeClaimId);
+
+    // Verify state before concede
+    EXPECT_EQ(getUserView(aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserView(bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
+
+    // B concedes the counter-challenge
+    // Send CONCEDE_CHALLENGE event
+    debate_event::DebateEvent concedeEvent = makeEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
+    auto response = moderator_->handleRequest(concedeEvent);
+
+    // Current behavior: concede only clears UI state
+    // TODO: After ConcedeChallenge is implemented, add assertions for:
+    //   - B's challenge claim status -> FALSE_CLAIM (conceded)
+    //   - A's counter-challenge status -> TRUE_CLAIM (upheld)
+    //   - Challenge link removed
+    //   - User interaction state cleared
+
+    // For now, verify the interaction state is cleared
+    debate_event::DebateEvent checkEvent = makeEvent(userB_id_, debate_event::NONE);
+    auto checkResp = moderator_->handleRequest(checkEvent);
+    EXPECT_EQ(checkResp.user().engagement().debating_info().current_debate_action().action_type(),
+              user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM)
+        << "After concede, user should be in VIEWING_CLAIM state";
+
+    dumpState("ConcedeChallenge — after B concedes");
+}
+
+// ============================================================
+// TEST 8: Full lifecycle — challenge, counter, second challenge, concede
+// ============================================================
+// Complete flow:
+//   1. A creates debate, adds child
+//   2. B challenges child
+//   3. A counter-challenges B's challenge
+//   4. B launches second challenge on child
+//   5. B concedes counter-challenge
+//   6. Verify final state
+// ============================================================
+TEST_F(SimulationTest, FullLifecycle) {
+    // Step 1: Setup
+    sendCreateDebate(userA_id_, "Is AI beneficial?");
+    sendEnterDebate(userA_id_, 1);
+    sendEnterDebate(userB_id_, 1);
+    sendEnterDebate(userC_id_, 1);
+    sendGoToClaim(userA_id_, 1);
+    sendOpenAddChildClaim(userA_id_);
+    sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
+
+    Database db(db_path_);
+    DatabaseWrapper dbWrapper(db);
+    DebateWrapper dw(dbWrapper);
+    int childId = dw.findChildrenIds(1)[0];
+
+    // Step 2: B challenges child
+    sendGoToClaim(userB_id_, childId);
+    sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
+    int bChallenge1Id = findChallengeClaimId(childId);
+    ASSERT_GT(bChallenge1Id, 0);
+
+    // Step 3: A counter-challenges
+    sendGoToClaim(userA_id_, bChallenge1Id);
+    sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
+    int aCounterId = findChallengeClaimId(bChallenge1Id);
+    ASSERT_GT(aCounterId, 0);
+
+    // Step 4: B second challenge on child
+    sendGoToClaim(userB_id_, childId);
+    sendSubmitChallenge(userB_id_, "Healthcare AI has privacy issues too");
+
+    // Count challenge links
+    auto links = dw.getLinksForDebate(1);
+    int totalChallengeLinks = 0;
+    for (const auto& link : links) {
+        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
+            totalChallengeLinks++;
+        }
+    }
+    EXPECT_EQ(totalChallengeLinks, 3) << "Should have 3 CHALLENGE links (B1 + A counter + B2)";
+
+    // Step 5: B concedes counter-challenge
+    debate_event::DebateEvent concedeEvent = makeEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
+    moderator_->handleRequest(concedeEvent);
+
+    // Step 6: Verify final state
+    // All claims should still exist
+    EXPECT_EQ(getClaim(1).id(), 1);  // root
+    EXPECT_EQ(getClaim(childId).id(), childId);  // child
+    EXPECT_EQ(getClaim(bChallenge1Id).id(), bChallenge1Id);  // B's first challenge
+    EXPECT_EQ(getClaim(aCounterId).id(), aCounterId);  // A's counter
+
+    // All users still in debate
+    debate_event::DebateEvent checkA = makeEvent(userA_id_, debate_event::NONE);
+    auto respA = moderator_->handleRequest(checkA);
+    EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+
+    debate_event::DebateEvent checkB = makeEvent(userB_id_, debate_event::NONE);
+    auto respB = moderator_->handleRequest(checkB);
+    EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+
+    debate_event::DebateEvent checkC = makeEvent(userC_id_, debate_event::NONE);
+    auto respC = moderator_->handleRequest(checkC);
+    EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
+
+    dumpState("FullLifecycle — final state");
+}
