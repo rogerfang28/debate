@@ -3,18 +3,19 @@ syntax = "proto3";
 package debate_test;
 
 // A complete test scenario: setup actions + expected outcomes
+// Everything is driven by actions — no hardcoded state.
 message TestScenario {
   string name = 1;           // e.g. "ChallengeClaim", "CounterChallenge"
-  string debate_topic = 2;   // topic for CREATE_DEBATE (if empty, no debate created)
 
-  repeated TestAction actions = 3;
-  repeated TestExpectation expectations = 4;
+  repeated TestAction actions = 2;
+  repeated TestExpectation expectations = 3;
 }
 
-// A single user action — maps to one DebateEvent
+// A single user action — maps to one DebateEvent or a runner-level operation
 message TestAction {
   string username = 1;       // "A", "B", "C" — resolved by the runner
-  string event_type = 2;     // matches debate_event::EventType enum name
+  string event_type = 2;     // matches debate_event::EventType enum name,
+                             // or "CREATE_USER" for runner-level user creation
 
   // Event-specific payloads (only one should be set per action)
   string debate_topic = 3;   // for CREATE_DEBATE

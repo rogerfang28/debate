@@ -1,8 +1,8 @@
 // test_scenario_runner.cc — Data-driven test runner for TestScenario protobufs
 //
-// Loads TestScenario messages from test/scenarios/ directory and executes each
-// one through the DebateModerator event pipeline. Each scenario defines a
-// sequence of user actions and a set of expected outcomes.
+// Every piece of state comes from TestScenario.actions — nothing is hardcoded.
+// User creation is an action with event_type "CREATE_USER".
+// All other actions are forged into DebateEvent and sent through DebateModerator::handleRequest().
 //
 // Usage: debate_tests --gtest_filter="ScenarioRunner.*"
 
@@ -47,7 +47,6 @@ protected:
         _putenv_s("DB_PATH", "");
     }
 
-    // Resolve username to user_id, creating the user if needed
     int getUserId(const std::string& username) {
         auto it = user_ids_.find(username);
         if (it != user_ids_.end()) return it->second;
@@ -56,36 +55,28 @@ protected:
         return id;
     }
 
-    // Convert string event_type to enum
     debate_event::EventType parseEventType(const std::string& name) {
         debate_event::EventType type;
         if (debate_event::EventType_Parse(name, &type)) return type;
-        // Fallback: try with full qualifier
-        std::string full = "debate_event::" + name;
-        if (debate_event::EventType_Parse(full, &type)) return type;
         return debate_event::NONE;
     }
 
-    // Convert string status to ClaimStatus enum
     debate::ClaimStatus parseClaimStatus(const std::string& s) {
         if (s == "TRUE_CLAIM") return debate::ClaimStatus::TRUE_CLAIM;
         if (s == "FALSE_CLAIM") return debate::ClaimStatus::FALSE_CLAIM;
         return debate::ClaimStatus::UNDETERMINED;
     }
 
-    // Convert string action to engagement enum
-    user_engagement::EngagementAction parseUserAction(const std::string& s) {
+    user_engagement::EngagementAction parseEngagementAction(const std::string& s) {
         if (s == "ACTION_DEBATING") return user_engagement::ACTION_DEBATING;
         return user_engagement::ACTION_HOME;
     }
 
-    // Convert string to LinkType
     debate::LinkType parseLinkType(const std::string& s) {
         if (s == "CHALLENGE") return debate::LinkType::CHALLENGE;
         return debate::LinkType::PARENT_CHILD;
     }
 
-    // Forge a DebateEvent from a TestAction
     debate_event::DebateEvent forgeEvent(const TestAction& action) {
         int user_id = getUserId(action.username());
         debate_event::EventType type = parseEventType(action.event_type());
@@ -111,7 +102,6 @@ protected:
                 event.mutable_go_to_claim()->set_claim_id(action.claim_id());
                 break;
             case debate_event::OPEN_ADD_CHILD_CLAIM:
-                // No payload
                 break;
             case debate_event::ADD_CHILD_CLAIM:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
@@ -127,19 +117,12 @@ protected:
         return event;
     }
 
-    // Send event and return the response
-    moderator_to_vr::ModeratorToVRMessage sendEvent(int user_id, const debate_event::DebateEvent& event) {
-        return moderator_->handleRequest(const_cast<debate_event::DebateEvent&>(event));
-    }
-
-    // Get claim from a user's response collection
     debate::Claim getClaimFromResponse(const moderator_to_vr::ModeratorToVRMessage& resp, int claim_id) {
         auto it = resp.collection().claims_by_id().find(claim_id);
         if (it != resp.collection().claims_by_id().end()) return it->second;
         return debate::Claim();
     }
 
-    // Get per-user status on a claim from a response collection
     debate::ClaimStatus getUserView(const moderator_to_vr::ModeratorToVRMessage& resp,
                                      int claim_id, const std::string& username) {
         debate::Claim c = getClaimFromResponse(resp, claim_id);
@@ -149,7 +132,6 @@ protected:
         return debate::ClaimStatus::UNDETERMINED;
     }
 
-    // Count links of a given type in a response collection
     int countLinksByType(const moderator_to_vr::ModeratorToVRMessage& resp, debate::LinkType type) {
         int count = 0;
         for (const auto& entry : resp.collection().links_by_id()) {
@@ -158,7 +140,6 @@ protected:
         return count;
     }
 
-    // Get all responses (one per user in user_ids_)
     std::map<std::string, moderator_to_vr::ModeratorToVRMessage> getAllResponses() {
         std::map<std::string, moderator_to_vr::ModeratorToVRMessage> responses;
         for (const auto& kv : user_ids_) {
@@ -172,31 +153,24 @@ protected:
         return responses;
     }
 
-    // Execute a single TestScenario and check all expectations
     void executeScenario(const TestScenario& scenario) {
-        // Create initial users A, B, C
-        getUserId("A");
-        getUserId("B");
-        getUserId("C");
-
-        std::string debate_topic = scenario.debate_topic();
-
-        // Execute all actions
         for (const auto& action : scenario.actions()) {
+            if (action.event_type() == "CREATE_USER") {
+                getUserId(action.username());
+                continue;
+            }
             int user_id = getUserId(action.username());
             debate_event::DebateEvent event = forgeEvent(action);
             moderator_->handleRequest(event);
         }
 
-        // Get responses from all users
         auto responses = getAllResponses();
 
-        // Check expectations
         for (const auto& exp : scenario.expectations()) {
             const std::string& username = exp.username();
             auto resp_it = responses.find(username);
             ASSERT_TRUE(resp_it != responses.end())
-                << "Expectation references unknown user: " << username;
+                << "[" << scenario.name() << "] Expectation references unknown user: " << username;
             const auto& resp = resp_it->second;
 
             if (exp.check_type() == "CLAIM_EXISTS") {
@@ -244,7 +218,7 @@ protected:
             }
             else if (exp.check_type() == "ENGAGEMENT_STATE") {
                 user_engagement::EngagementAction actual = resp.user().engagement().current_action();
-                user_engagement::EngagementAction expected = parseUserAction(exp.expected_action());
+                user_engagement::EngagementAction expected = parseEngagementAction(exp.expected_action());
                 EXPECT_EQ(actual, expected)
                     << "[" << scenario.name() << "] ENGAGEMENT_STATE for user " << username
                     << " expected=" << exp.expected_action();
@@ -257,29 +231,25 @@ protected:
         }
     }
 
-    // Load a TestScenario from a binary protobuf file
-    TestScenario loadScenario(const std::string& path) {
-        TestScenario scenario;
-        std::ifstream file(path, std::ios::binary);
-        EXPECT_TRUE(file.is_open()) << "Failed to open scenario file: " << path;
-        if (file.is_open()) {
-            scenario.ParseFromIstream(&file);
-        }
-        return scenario;
-    }
-
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
     std::map<std::string, int> user_ids_;
 };
 
-// ============================================================
-// Test: ChallengeClaim scenario
-// ============================================================
+// ===========================================================
+// ChallengeClaim - A creates debate + child, B challenges
+// ===========================================================
 TEST_F(ScenarioRunner, ChallengeClaim) {
     TestScenario scenario;
     scenario.set_name("ChallengeClaim");
-    scenario.set_debate_topic("Is AI beneficial?");
+
+    // Create users via actions - not hardcoded
+    auto* cu_a = scenario.add_actions();
+    cu_a->set_username("A");
+    cu_a->set_event_type("CREATE_USER");
+    auto* cu_b = scenario.add_actions();
+    cu_b->set_username("B");
+    cu_b->set_event_type("CREATE_USER");
 
     // A creates debate
     auto* a1 = scenario.add_actions();
@@ -332,34 +302,29 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
 
     // --- Expectations ---
 
-    // Child claim exists for B
     auto* e1 = scenario.add_expectations();
     e1->set_check_type("CLAIM_EXISTS");
     e1->set_username("B");
     e1->set_claim_id(2);
 
-    // Child sentence correct
     auto* e2 = scenario.add_expectations();
     e2->set_check_type("CLAIM_SENTENCE");
     e2->set_username("A");
     e2->set_claim_id(2);
     e2->set_expected_claim_sentence("AI improves healthcare");
 
-    // A sees child as TRUE_CLAIM
     auto* e3 = scenario.add_expectations();
     e3->set_check_type("USER_VIEW");
     e3->set_username("A");
     e3->set_claim_id(2);
     e3->set_expected_status("TRUE_CLAIM");
 
-    // B sees child as FALSE_CLAIM
     auto* e4 = scenario.add_expectations();
     e4->set_check_type("USER_VIEW");
     e4->set_username("B");
     e4->set_claim_id(2);
     e4->set_expected_status("FALSE_CLAIM");
 
-    // 1 PARENT_CHILD link, 1 CHALLENGE link in B's collection
     auto* e5 = scenario.add_expectations();
     e5->set_check_type("LINK_COUNT");
     e5->set_username("B");
@@ -371,7 +336,6 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
     e6->set_link_type("CHALLENGE");
     e6->set_expected_count(1);
 
-    // Both users in debating state
     auto* e7 = scenario.add_expectations();
     e7->set_check_type("ENGAGEMENT_STATE");
     e7->set_username("A");

@@ -120,9 +120,6 @@ inline constexpr TestScenario::Impl_::Impl_(
         name_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        debate_topic_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
 
 template <typename>
@@ -161,7 +158,6 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.debate_topic_),
         PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.actions_),
         PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.expectations_),
         ~0u,  // no _has_bits_
@@ -202,8 +198,8 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::debate_test::TestScenario)},
-        {12, -1, -1, sizeof(::debate_test::TestAction)},
-        {27, -1, -1, sizeof(::debate_test::TestExpectation)},
+        {11, -1, -1, sizeof(::debate_test::TestAction)},
+        {26, -1, -1, sizeof(::debate_test::TestExpectation)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::debate_test::_TestScenario_default_instance_._instance,
@@ -212,27 +208,27 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_test_5fscenario_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\023test_scenario.proto\022\013debate_test\"\220\001\n\014T"
-    "estScenario\022\014\n\004name\030\001 \001(\t\022\024\n\014debate_topi"
-    "c\030\002 \001(\t\022(\n\007actions\030\003 \003(\0132\027.debate_test.T"
-    "estAction\0222\n\014expectations\030\004 \003(\0132\034.debate"
-    "_test.TestExpectation\"\234\001\n\nTestAction\022\020\n\010"
-    "username\030\001 \001(\t\022\022\n\nevent_type\030\002 \001(\t\022\024\n\014de"
-    "bate_topic\030\003 \001(\t\022\021\n\tdebate_id\030\004 \001(\005\022\020\n\010c"
-    "laim_id\030\005 \001(\005\022\022\n\nclaim_text\030\006 \001(\t\022\031\n\021cla"
-    "im_description\030\007 \001(\t\"\363\001\n\017TestExpectation"
-    "\022\022\n\ncheck_type\030\001 \001(\t\022\020\n\010username\030\002 \001(\t\022\020"
-    "\n\010claim_id\030\003 \001(\005\022\025\n\rfrom_claim_id\030\004 \001(\005\022"
-    "\023\n\013to_claim_id\030\005 \001(\005\022\021\n\tlink_type\030\006 \001(\t\022"
-    "\037\n\027expected_claim_sentence\030\007 \001(\t\022\027\n\017expe"
-    "cted_status\030\010 \001(\t\022\026\n\016expected_count\030\t \001("
-    "\005\022\027\n\017expected_action\030\n \001(\tb\006proto3"
+    "\n\023test_scenario.proto\022\013debate_test\"z\n\014Te"
+    "stScenario\022\014\n\004name\030\001 \001(\t\022(\n\007actions\030\002 \003("
+    "\0132\027.debate_test.TestAction\0222\n\014expectatio"
+    "ns\030\003 \003(\0132\034.debate_test.TestExpectation\"\234"
+    "\001\n\nTestAction\022\020\n\010username\030\001 \001(\t\022\022\n\nevent"
+    "_type\030\002 \001(\t\022\024\n\014debate_topic\030\003 \001(\t\022\021\n\tdeb"
+    "ate_id\030\004 \001(\005\022\020\n\010claim_id\030\005 \001(\005\022\022\n\nclaim_"
+    "text\030\006 \001(\t\022\031\n\021claim_description\030\007 \001(\t\"\363\001"
+    "\n\017TestExpectation\022\022\n\ncheck_type\030\001 \001(\t\022\020\n"
+    "\010username\030\002 \001(\t\022\020\n\010claim_id\030\003 \001(\005\022\025\n\rfro"
+    "m_claim_id\030\004 \001(\005\022\023\n\013to_claim_id\030\005 \001(\005\022\021\n"
+    "\tlink_type\030\006 \001(\t\022\037\n\027expected_claim_sente"
+    "nce\030\007 \001(\t\022\027\n\017expected_status\030\010 \001(\t\022\026\n\016ex"
+    "pected_count\030\t \001(\005\022\027\n\017expected_action\030\n "
+    "\001(\tb\006proto3"
 };
 static ::absl::once_flag descriptor_table_test_5fscenario_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_test_5fscenario_2eproto = {
     false,
     false,
-    594,
+    571,
     descriptor_table_protodef_test_5fscenario_2eproto,
     "test_scenario.proto",
     &descriptor_table_test_5fscenario_2eproto_once,
@@ -267,7 +263,6 @@ inline PROTOBUF_NDEBUG_INLINE TestScenario::Impl_::Impl_(
       : actions_{visibility, arena, from.actions_},
         expectations_{visibility, arena, from.expectations_},
         name_(arena, from.name_),
-        debate_topic_(arena, from.debate_topic_),
         _cached_size_{0} {}
 
 TestScenario::TestScenario(
@@ -292,7 +287,6 @@ inline PROTOBUF_NDEBUG_INLINE TestScenario::Impl_::Impl_(
       : actions_{visibility, arena},
         expectations_{visibility, arena},
         name_(arena),
-        debate_topic_(arena),
         _cached_size_{0} {}
 
 inline void TestScenario::SharedCtor(::_pb::Arena* arena) {
@@ -307,7 +301,6 @@ inline void TestScenario::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.name_.Destroy();
-  this_._impl_.debate_topic_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -363,15 +356,15 @@ const ::google::protobuf::internal::ClassData* TestScenario::GetClassData() cons
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 2, 49, 2> TestScenario::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 2, 37, 2> TestScenario::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    3,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -381,41 +374,35 @@ const ::_pbi::TcParseTable<2, 4, 2, 49, 2> TestScenario::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_test::TestScenario>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .debate_test.TestExpectation expectations = 4;
-    {::_pbi::TcParser::FastMtR1,
-     {34, 63, 1, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_)}},
-    // string debate_topic = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.debate_topic_)}},
-    // repeated .debate_test.TestAction actions = 3;
+    // repeated .debate_test.TestAction actions = 2;
     {::_pbi::TcParser::FastMtR1,
-     {26, 63, 0, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_)}},
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_)}},
+    // repeated .debate_test.TestExpectation expectations = 3;
+    {::_pbi::TcParser::FastMtR1,
+     {26, 63, 1, PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string name = 1;
     {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string debate_topic = 2;
-    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.debate_topic_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .debate_test.TestAction actions = 3;
+    // repeated .debate_test.TestAction actions = 2;
     {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated .debate_test.TestExpectation expectations = 4;
+    // repeated .debate_test.TestExpectation expectations = 3;
     {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_), 0, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::debate_test::TestAction>()},
     {::_pbi::TcParser::GetTable<::debate_test::TestExpectation>()},
   }}, {{
-    "\30\4\14\0\0\0\0\0"
+    "\30\4\0\0\0\0\0\0"
     "debate_test.TestScenario"
     "name"
-    "debate_topic"
   }},
 };
 
@@ -429,7 +416,6 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
   _impl_.actions_.Clear();
   _impl_.expectations_.Clear();
   _impl_.name_.ClearToEmpty();
-  _impl_.debate_topic_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -456,33 +442,25 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string debate_topic = 2;
-          if (!this_._internal_debate_topic().empty()) {
-            const std::string& _s = this_._internal_debate_topic();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_test.TestScenario.debate_topic");
-            target = stream->WriteStringMaybeAliased(2, _s, target);
-          }
-
-          // repeated .debate_test.TestAction actions = 3;
+          // repeated .debate_test.TestAction actions = 2;
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_actions_size());
                i < n; i++) {
             const auto& repfield = this_._internal_actions().Get(i);
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    3, repfield, repfield.GetCachedSize(),
+                    2, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
-          // repeated .debate_test.TestExpectation expectations = 4;
+          // repeated .debate_test.TestExpectation expectations = 3;
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_expectations_size());
                i < n; i++) {
             const auto& repfield = this_._internal_expectations().Get(i);
             target =
                 ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                    4, repfield, repfield.GetCachedSize(),
+                    3, repfield, repfield.GetCachedSize(),
                     target, stream);
           }
 
@@ -511,14 +489,14 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .debate_test.TestAction actions = 3;
+            // repeated .debate_test.TestAction actions = 2;
             {
               total_size += 1UL * this_._internal_actions_size();
               for (const auto& msg : this_._internal_actions()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // repeated .debate_test.TestExpectation expectations = 4;
+            // repeated .debate_test.TestExpectation expectations = 3;
             {
               total_size += 1UL * this_._internal_expectations_size();
               for (const auto& msg : this_._internal_expectations()) {
@@ -531,11 +509,6 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
             if (!this_._internal_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
-            }
-            // string debate_topic = 2;
-            if (!this_._internal_debate_topic().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_debate_topic());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -557,9 +530,6 @@ void TestScenario::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::go
   if (!from._internal_name().empty()) {
     _this->_internal_set_name(from._internal_name());
   }
-  if (!from._internal_debate_topic().empty()) {
-    _this->_internal_set_debate_topic(from._internal_debate_topic());
-  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -579,7 +549,6 @@ void TestScenario::InternalSwap(TestScenario* PROTOBUF_RESTRICT other) {
   _impl_.actions_.InternalSwap(&other->_impl_.actions_);
   _impl_.expectations_.InternalSwap(&other->_impl_.expectations_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.debate_topic_, &other->_impl_.debate_topic_, arena);
 }
 
 ::google::protobuf::Metadata TestScenario::GetMetadata() const {

@@ -846,12 +846,11 @@ class TestScenario final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kActionsFieldNumber = 3,
-    kExpectationsFieldNumber = 4,
+    kActionsFieldNumber = 2,
+    kExpectationsFieldNumber = 3,
     kNameFieldNumber = 1,
-    kDebateTopicFieldNumber = 2,
   };
-  // repeated .debate_test.TestAction actions = 3;
+  // repeated .debate_test.TestAction actions = 2;
   int actions_size() const;
   private:
   int _internal_actions_size() const;
@@ -868,7 +867,7 @@ class TestScenario final : public ::google::protobuf::Message
   const ::debate_test::TestAction& actions(int index) const;
   ::debate_test::TestAction* add_actions();
   const ::google::protobuf::RepeatedPtrField<::debate_test::TestAction>& actions() const;
-  // repeated .debate_test.TestExpectation expectations = 4;
+  // repeated .debate_test.TestExpectation expectations = 3;
   int expectations_size() const;
   private:
   int _internal_expectations_size() const;
@@ -901,29 +900,13 @@ class TestScenario final : public ::google::protobuf::Message
   std::string* _internal_mutable_name();
 
   public:
-  // string debate_topic = 2;
-  void clear_debate_topic() ;
-  const std::string& debate_topic() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_debate_topic(Arg_&& arg, Args_... args);
-  std::string* mutable_debate_topic();
-  PROTOBUF_NODISCARD std::string* release_debate_topic();
-  void set_allocated_debate_topic(std::string* value);
-
-  private:
-  const std::string& _internal_debate_topic() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_debate_topic(
-      const std::string& value);
-  std::string* _internal_mutable_debate_topic();
-
-  public:
   // @@protoc_insertion_point(class_scope:debate_test.TestScenario)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 2,
-      49, 2>
+      2, 3, 2,
+      37, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -943,7 +926,6 @@ class TestScenario final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::debate_test::TestAction > actions_;
     ::google::protobuf::RepeatedPtrField< ::debate_test::TestExpectation > expectations_;
     ::google::protobuf::internal::ArenaStringPtr name_;
-    ::google::protobuf::internal::ArenaStringPtr debate_topic_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1015,55 +997,7 @@ inline void TestScenario::set_allocated_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestScenario.name)
 }
 
-// string debate_topic = 2;
-inline void TestScenario::clear_debate_topic() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.ClearToEmpty();
-}
-inline const std::string& TestScenario::debate_topic() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate_test.TestScenario.debate_topic)
-  return _internal_debate_topic();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void TestScenario::set_debate_topic(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate_test.TestScenario.debate_topic)
-}
-inline std::string* TestScenario::mutable_debate_topic() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_debate_topic();
-  // @@protoc_insertion_point(field_mutable:debate_test.TestScenario.debate_topic)
-  return _s;
-}
-inline const std::string& TestScenario::_internal_debate_topic() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.debate_topic_.Get();
-}
-inline void TestScenario::_internal_set_debate_topic(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.Set(value, GetArena());
-}
-inline std::string* TestScenario::_internal_mutable_debate_topic() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.debate_topic_.Mutable( GetArena());
-}
-inline std::string* TestScenario::release_debate_topic() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate_test.TestScenario.debate_topic)
-  return _impl_.debate_topic_.Release();
-}
-inline void TestScenario::set_allocated_debate_topic(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.debate_topic_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_.IsDefault()) {
-    _impl_.debate_topic_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:debate_test.TestScenario.debate_topic)
-}
-
-// repeated .debate_test.TestAction actions = 3;
+// repeated .debate_test.TestAction actions = 2;
 inline int TestScenario::_internal_actions_size() const {
   return _internal_actions().size();
 }
@@ -1112,7 +1046,7 @@ TestScenario::_internal_mutable_actions() {
   return &_impl_.actions_;
 }
 
-// repeated .debate_test.TestExpectation expectations = 4;
+// repeated .debate_test.TestExpectation expectations = 3;
 inline int TestScenario::_internal_expectations_size() const {
   return _internal_expectations().size();
 }
