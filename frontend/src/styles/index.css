@@ -239,6 +239,16 @@ button[class*="bg-green-"]:hover {
   background-color: var(--accent-green-hover);
 }
 
+button[class*="bg-emerald-"] {
+  background-color: #10b981;
+  border-color: transparent;
+  color: #fff;
+}
+
+button[class*="bg-emerald-"]:hover {
+  background-color: #059669;
+}
+
 button[class*="bg-red-"] {
   background-color: var(--accent-red);
   border-color: transparent;
