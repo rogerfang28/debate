@@ -43,6 +43,27 @@
 //   page_id: "debate"
 //   components { ... }
 // NOT wrapped in Page { }. We serialize manually to match.
+//
+// Critical format rules from the frontend parser:
+//   - custom_class must be inside style { custom_class: "..." }, NOT a top-level field
+//   - css map keys must be camelCase (React CSS properties), not kebab-case
+//   - css uses the key/value block format: css { key: "..." value: "..." }
+
+static std::string toCamelCase(const std::string& kebab) {
+    std::string result;
+    bool capitalize = false;
+    for (char c : kebab) {
+        if (c == '-') {
+            capitalize = true;
+        } else if (capitalize) {
+            result += static_cast<char>(toupper(c));
+            capitalize = false;
+        } else {
+            result += c;
+        }
+    }
+    return result;
+}
 
 static std::string componentTypeToString(ui::ComponentType type) {
     switch (type) {
@@ -82,13 +103,18 @@ static std::string serializeComponent(const ui::Component& comp, int indent) {
         out += pad + "  text: \"" + escaped + "\"\n";
     }
 
-    // Serialize style.custom_class
-    if (!comp.style().custom_class().empty())
-        out += pad + "  custom_class: \"" + comp.style().custom_class() + "\"\n";
+    // Serialize style.custom_class inside a style block (not as top-level field)
+    if (!comp.style().custom_class().empty()) {
+        out += pad + "  style {\n";
+        out += pad + "    custom_class: \"" + comp.style().custom_class() + "\"\n";
+        out += pad + "  }\n";
+    }
 
-    // Serialize css map
-    for (const auto& kv : comp.css())
-        out += pad + "  css { key: \"" + kv.first + "\" value: \"" + kv.second + "\" }\n";
+    // Serialize css map with camelCase keys (React CSS properties)
+    for (const auto& kv : comp.css()) {
+        std::string camelKey = toCamelCase(kv.first);
+        out += pad + "  css { key: \"" + camelKey + "\" value: \"" + kv.second + "\" }\n";
+    }
 
     // Serialize attributes map
     for (const auto& kv : comp.attributes())
