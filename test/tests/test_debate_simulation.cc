@@ -640,38 +640,52 @@ TEST_F(SimulationTest, CounterChallenge) {
 // Current behavior: only clears interaction state, no status changes.
 // ============================================================
 TEST_F(SimulationTest, ConcedeChallenge) {
-    // Setup: create debate, enter, add child, B challenges, A counter-challenges
+    // Setup: create debate, enter, join, add child, B challenges, A counter-challenges
     sendCreateDebate(userA_id_, "Is AI beneficial?");
     sendEnterDebate(userA_id_, 1);
     sendEnterDebate(userB_id_, 1);
     sendEnterDebate(userC_id_, 1);
+    sendJoinDebate(userA_id_, 1);
+    sendJoinDebate(userB_id_, 1);
+    sendJoinDebate(userC_id_, 1);
     sendGoToClaim(userA_id_, 1);
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    int childId = dw.findChildrenIds(1)[0];
+    // Get child ID from A's collection
+    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int childId = -1;
+    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
 
     // B challenges child
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
-    int bChallengeClaimId = findChallengeClaimId(childId);
+
+    auto respA_after_B = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int bChallengeClaimId = findChallengeClaimIdFromCollection(respA_after_B, childId);
+    ASSERT_GT(bChallengeClaimId, 0) << "B's challenge claim should exist";
 
     // A counter-challenges B's challenge claim
     sendGoToClaim(userA_id_, bChallengeClaimId);
     sendSubmitChallenge(userA_id_, "Actually healthcare AI is beneficial");
-    int aCounterChallengeId = findChallengeClaimId(bChallengeClaimId);
 
-    // Verify state before concede
-    EXPECT_EQ(getUserView(aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserView(bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int aCounterChallengeId = findChallengeClaimIdFromCollection(respA, bChallengeClaimId);
+    ASSERT_GT(aCounterChallengeId, 0) << "A's counter-challenge claim should exist";
+
+    // Verify state before concede via collection
+    EXPECT_EQ(getUserViewFromCollection(respA, aCounterChallengeId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respA, bChallengeClaimId, "A"), debate::ClaimStatus::FALSE_CLAIM);
 
     // B concedes the counter-challenge
-    // Send CONCEDE_CHALLENGE event
-    debate_event::DebateEvent concedeEvent = makeEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
-    auto response = moderator_->handleRequest(concedeEvent);
+    sendEvent(userB_id_, debate_event::CONCEDE_CHALLENGE);
 
     // Current behavior: concede only clears UI state
     // TODO: After ConcedeChallenge is implemented, add assertions for:
@@ -681,8 +695,7 @@ TEST_F(SimulationTest, ConcedeChallenge) {
     //   - User interaction state cleared
 
     // For now, verify the interaction state is cleared
-    debate_event::DebateEvent checkEvent = makeEvent(userB_id_, debate_event::NONE);
-    auto checkResp = moderator_->handleRequest(checkEvent);
+    auto checkResp = sendAndGetResponse(userB_id_, debate_event::NONE);
     EXPECT_EQ(checkResp.user().engagement().debating_info().current_debate_action().action_type(),
               user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM)
         << "After concede, user should be in VIEWING_CLAIM state";
