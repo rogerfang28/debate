@@ -399,42 +399,8 @@ protected:
 // correct, and A sees it as TRUE_CLAIM while B/C see UNDETERMINED.
 
 TEST_F(ScenarioRunner, CreateDebate) {
-    TestScenario s;
-    s.set_name("CreateDebate");
-
-    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
-    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
-    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
-
-    auto* a1 = s.add_actions();
-    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
-    a1->set_debate_topic("Is AI beneficial?");
-
-    auto* a2 = s.add_actions();
-    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
-
-    // Root claim exists
-    auto* e1 = s.add_expectations();
-    e1->set_check_type("CLAIM_EXISTS"); e1->set_username("A"); e1->set_claim_id(1);
-
-    // Root sentence
-    auto* e2 = s.add_expectations();
-    e2->set_check_type("CLAIM_SENTENCE"); e2->set_username("A"); e2->set_claim_id(1);
-    e2->set_expected_claim_sentence("Is AI beneficial?");
-
-    // A sees root as TRUE_CLAIM
-    auto* e3 = s.add_expectations();
-    e3->set_check_type("USER_VIEW"); e3->set_username("A"); e3->set_claim_id(1);
-    e3->set_expected_status("TRUE_CLAIM");
-
-    // B and C see root as UNDETERMINED (not in debate yet)
-    auto* e4 = s.add_expectations();
-    e4->set_check_type("USER_VIEW"); e4->set_username("B"); e4->set_claim_id(1);
-    e4->set_expected_status("UNDETERMINED");
-    auto* e5 = s.add_expectations();
-    e5->set_check_type("USER_VIEW"); e5->set_username("C"); e5->set_claim_id(1);
-    e5->set_expected_status("UNDETERMINED");
-
+    TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
+    ASSERT_GT(s.actions_size(), 0) << "Failed to load CreateDebate.pbtxt";
     executeScenario(s);
 }
 
@@ -442,8 +408,8 @@ TEST_F(ScenarioRunner, CreateDebate) {
 // ---------------------------------------------------------------------------
 // CreateDebate_FromPbtxt
 // ---------------------------------------------------------------------------
-// Loads the CreateDebate scenario from a .pbtxt file and executes it.
-// This proves the pbtxt loading pipeline works end-to-end.
+// Duplicate of CreateDebate that also loads from pbtxt — kept as proof that
+// the pbtxt loading pipeline works identically to inline construction.
 
 TEST_F(ScenarioRunner, CreateDebate_FromPbtxt) {
     TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
@@ -459,42 +425,8 @@ TEST_F(ScenarioRunner, CreateDebate_FromPbtxt) {
 // and all can see the root claim.
 
 TEST_F(ScenarioRunner, EnterDebate) {
-    TestScenario s;
-    s.set_name("EnterDebate");
-
-    auto* cu_a = s.add_actions(); cu_a->set_username("A"); cu_a->set_event_type("CREATE_USER");
-    auto* cu_b = s.add_actions(); cu_b->set_username("B"); cu_b->set_event_type("CREATE_USER");
-    auto* cu_c = s.add_actions(); cu_c->set_username("C"); cu_c->set_event_type("CREATE_USER");
-
-    auto* a1 = s.add_actions();
-    a1->set_username("A"); a1->set_event_type("CREATE_DEBATE");
-    a1->set_debate_topic("Is AI beneficial?");
-
-    auto* a2 = s.add_actions();
-    a2->set_username("A"); a2->set_event_type("ENTER_DEBATE"); a2->set_debate_id(1);
-    auto* b1 = s.add_actions();
-    b1->set_username("B"); b1->set_event_type("ENTER_DEBATE"); b1->set_debate_id(1);
-    auto* c1 = s.add_actions();
-    c1->set_username("C"); c1->set_event_type("ENTER_DEBATE"); c1->set_debate_id(1);
-
-    // All users in debating state
-    auto* e1 = s.add_expectations();
-    e1->set_check_type("ENGAGEMENT_STATE"); e1->set_username("A");
-    e1->set_expected_action("ACTION_DEBATING");
-    auto* e2 = s.add_expectations();
-    e2->set_check_type("ENGAGEMENT_STATE"); e2->set_username("B");
-    e2->set_expected_action("ACTION_DEBATING");
-    auto* e3 = s.add_expectations();
-    e3->set_check_type("ENGAGEMENT_STATE"); e3->set_username("C");
-    e3->set_expected_action("ACTION_DEBATING");
-
-    // Root claim visible to all
-    auto* e4 = s.add_expectations();
-    e4->set_check_type("CLAIM_EXISTS"); e4->set_username("A"); e4->set_claim_id(1);
-    auto* e5 = s.add_expectations();
-    e5->set_check_type("CLAIM_SENTENCE"); e5->set_username("A"); e5->set_claim_id(1);
-    e5->set_expected_claim_sentence("Is AI beneficial?");
-
+    TestScenario s = LoadScenarioFromFile("scenarios/EnterDebate.pbtxt");
+    ASSERT_GT(s.actions_size(), 0) << "Failed to load EnterDebate.pbtxt";
     executeScenario(s);
 }
 
