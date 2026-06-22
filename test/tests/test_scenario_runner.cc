@@ -1,8 +1,35 @@
 // test_scenario_runner.cc — Data-driven test runner for TestScenario protobufs
 //
-// Every piece of state comes from TestScenario.actions — nothing is hardcoded.
-// User creation is an action with event_type "CREATE_USER".
-// All other actions are forged into DebateEvent and sent through DebateModerator::handleRequest().
+// ARCHITECTURE OVERVIEW
+// =====================
+// This file implements a generic test runner that executes debate scenarios
+// defined entirely in TestScenario protobuf messages. There is ZERO hardcoded
+// state — no hardcoded users, no hardcoded debate IDs, no hardcoded topics.
+// Everything flows through TestScenario.actions.
+//
+// HOW IT WORKS
+// ============
+// 1. Each TEST_F builds a TestScenario protobuf in memory
+// 2. TestScenario.actions define what happens (user creation, debate events)
+// 3. TestScenario.expectations define what should be true afterward
+// 4. executeScenario() runs the actions, collects responses, checks expectations
+//
+// ACTION TYPES
+// ============
+// "CREATE_USER" — Special runner-level action. Calls createUserIfNotExist().
+//                 Not a DebateEvent — handled before event forging.
+// Any other string — Parsed as debate_event::EventType enum name.
+//                   Forged into a DebateEvent and sent through handleRequest().
+//
+// EXPECTATION CHECK_TYPES
+// =======================
+// CLAIM_EXISTS      — Claim ID is present in user's response collection
+// CLAIM_SENTENCE    — Claim's text matches expected string
+// USER_VIEW         — Per-user status on a claim (TRUE/FALSE/UNDETERMINED)
+// LINK_COUNT        — Number of links of a given type in collection
+// LINK_EXISTS       — Specific link from→to with given type exists
+// ENGAGEMENT_STATE  — User's current action (ACTION_DEBATING / ACTION_HOME)
+// COLLECTION_SIZE   — Total number of claims in user's collection
 //
 // Usage: debate_tests --gtest_filter="ScenarioRunner.*"
 
@@ -28,11 +55,22 @@ using debate_test::TestScenario;
 using debate_test::TestAction;
 using debate_test::TestExpectation;
 
-// -------------------------------------------------------
-// Fixture
-// -------------------------------------------------------
+
+// ===========================================================================
+// SECTION 1: TEST FIXTURE
+// ===========================================================================
+// ScenarioRunner is the gtest fixture. Each TEST_F gets a fresh instance
+// with its own DebateModerator and clean database.
+
 class ScenarioRunner : public ::testing::Test {
 protected:
+
+    // -----------------------------------------------------------------------
+    // SECTION 1a: Lifecycle (SetUp / TearDown)
+    // -----------------------------------------------------------------------
+    // SetUp: Creates a fresh SQLite DB and DebateModerator for each test.
+    // TearDown: Cleans up the moderator and unsets the DB env var.
+
     void SetUp() override {
         db_path_ = "test_scenario.sqlite3";
         std::remove(db_path_.c_str());
@@ -47,6 +85,15 @@ protected:
         _putenv_s("DB_PATH", "");
     }
 
+
+    // -----------------------------------------------------------------------
+    // SECTION 1b: User Management
+    // -----------------------------------------------------------------------
+    // getUserId: Resolves a username to a user_id. Creates the user on first
+    // encounter via createUserIfNotExist(). Subsequent calls return the cached ID.
+    // Users are only created when a CREATE_USER action or the first event for
+    // that username is encountered.
+
     int getUserId(const std::string& username) {
         auto it = user_ids_.find(username);
         if (it != user_ids_.end()) return it->second;
@@ -54,6 +101,13 @@ protected:
         user_ids_[username] = id;
         return id;
     }
+
+
+    // -----------------------------------------------------------------------
+    // SECTION 2: STRING → ENUM PARSERS
+    // -----------------------------------------------------------------------
+    // Convert human-readable strings from the proto into C++ enums.
+    // These are used by both forgeEvent() and executeScenario().
 
     debate_event::EventType parseEventType(const std::string& name) {
         debate_event::EventType type;
@@ -76,6 +130,14 @@ protected:
         if (s == "CHALLENGE") return debate::LinkType::CHALLENGE;
         return debate::LinkType::PARENT_CHILD;
     }
+
+
+    // -----------------------------------------------------------------------
+    // SECTION 3: EVENT FORGING
+    // -----------------------------------------------------------------------
+    // forgeEvent: Converts a TestAction into a DebateEvent protobuf.
+    // Does NOT handle CREATE_USER — that's handled separately in executeScenario().
+    // Sets user info and routes payload fields based on event type.
 
     debate_event::DebateEvent forgeEvent(const TestAction& action) {
         int user_id = getUserId(action.username());
@@ -102,6 +164,7 @@ protected:
                 event.mutable_go_to_claim()->set_claim_id(action.claim_id());
                 break;
             case debate_event::OPEN_ADD_CHILD_CLAIM:
+                // No payload — just opens the UI panel
                 break;
             case debate_event::ADD_CHILD_CLAIM:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
@@ -112,17 +175,28 @@ protected:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 break;
             default:
+                // No payload for other event types
                 break;
         }
         return event;
     }
 
+
+    // -----------------------------------------------------------------------
+    // SECTION 4: RESPONSE COLLECTION HELPERS
+    // -----------------------------------------------------------------------
+    // After all actions run, we collect a response from each known user by
+    // sending a NONE event (which triggers buildResponseMessage without
+    // modifying state). These helpers extract data from those responses.
+
+    // Look up a claim by ID in a user's response collection
     debate::Claim getClaimFromResponse(const moderator_to_vr::ModeratorToVRMessage& resp, int claim_id) {
         auto it = resp.collection().claims_by_id().find(claim_id);
         if (it != resp.collection().claims_by_id().end()) return it->second;
-        return debate::Claim();
+        return debate::Claim();  // empty claim (id == 0) if not found
     }
 
+    // Get the per-user status (TRUE/FALSE/UNDETERMINED) on a specific claim
     debate::ClaimStatus getUserView(const moderator_to_vr::ModeratorToVRMessage& resp,
                                      int claim_id, const std::string& username) {
         debate::Claim c = getClaimFromResponse(resp, claim_id);
@@ -132,6 +206,7 @@ protected:
         return debate::ClaimStatus::UNDETERMINED;
     }
 
+    // Count all links of a given type (PARENT_CHILD or CHALLENGE) in a response
     int countLinksByType(const moderator_to_vr::ModeratorToVRMessage& resp, debate::LinkType type) {
         int count = 0;
         for (const auto& entry : resp.collection().links_by_id()) {
@@ -140,6 +215,8 @@ protected:
         return count;
     }
 
+    // Collect a response from every known user by sending a NONE event.
+    // Returns a map of username → ModeratorToVRMessage.
     std::map<std::string, moderator_to_vr::ModeratorToVRMessage> getAllResponses() {
         std::map<std::string, moderator_to_vr::ModeratorToVRMessage> responses;
         for (const auto& kv : user_ids_) {
@@ -153,7 +230,26 @@ protected:
         return responses;
     }
 
+
+    // -----------------------------------------------------------------------
+    // SECTION 5: SCENARIO EXECUTOR
+    // -----------------------------------------------------------------------
+    // executeScenario: The core function that runs a TestScenario end-to-end.
+    //
+    // Phase 1 — Execute actions:
+    //   CREATE_USER → calls getUserId() (creates user in DB)
+    //   All others → forgeEvent() → handleRequest()
+    //
+    // Phase 2 — Collect responses:
+    //   Sends a NONE event to each known user to get their current view.
+    //
+    // Phase 3 — Check expectations:
+    //   Each TestExpectation is checked against the appropriate user's response.
+    //   Uses ASSERT for user existence (fatal) and EXPECT for check results (non-fatal).
+
     void executeScenario(const TestScenario& scenario) {
+
+        // Phase 1: Execute all actions in order
         for (const auto& action : scenario.actions()) {
             if (action.event_type() == "CREATE_USER") {
                 getUserId(action.username());
@@ -164,8 +260,10 @@ protected:
             moderator_->handleRequest(event);
         }
 
+        // Phase 2: Collect responses from all known users
         auto responses = getAllResponses();
 
+        // Phase 3: Verify all expectations
         for (const auto& exp : scenario.expectations()) {
             const std::string& username = exp.username();
             auto resp_it = responses.find(username);
@@ -231,19 +329,43 @@ protected:
         }
     }
 
+
+    // -----------------------------------------------------------------------
+    // SECTION 6: FIXTURE MEMBER VARIABLES
+    // -----------------------------------------------------------------------
+
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
-    std::map<std::string, int> user_ids_;
+    std::map<std::string, int> user_ids_;  // username → user_id cache
 };
 
-// ===========================================================
-// ChallengeClaim - A creates debate + child, B challenges
-// ===========================================================
+
+// ===========================================================================
+// SECTION 7: TEST CASES
+// ===========================================================================
+// Each TEST_F builds a TestScenario inline and calls executeScenario().
+// The scenario defines ALL state — users, actions, and expected outcomes.
+//
+// To add a new test: copy the pattern below, set scenario.name, add actions
+// (starting with CREATE_USER for each participant), then add expectations.
+
+
+// ---------------------------------------------------------------------------
+// ChallengeClaim
+// ---------------------------------------------------------------------------
+// A creates a debate with a child claim. B challenges the child.
+// Verifies: claim exists, sentence correct, per-user statuses, link counts,
+//           engagement states.
+//
+// Flow: CREATE_USER(A) → CREATE_USER(B) → CREATE_DEBATE → ENTER+JOIN(A,B)
+//       → GO_TO_CLAIM(1) → OPEN_ADD_CHILD → ADD_CHILD_CLAIM
+//       → GO_TO_CLAIM(2) → SUBMIT_CHALLENGE_CLAIM
+
 TEST_F(ScenarioRunner, ChallengeClaim) {
     TestScenario scenario;
     scenario.set_name("ChallengeClaim");
 
-    // Create users via actions - not hardcoded
+    // --- Users ---
     auto* cu_a = scenario.add_actions();
     cu_a->set_username("A");
     cu_a->set_event_type("CREATE_USER");
@@ -251,13 +373,12 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
     cu_b->set_username("B");
     cu_b->set_event_type("CREATE_USER");
 
-    // A creates debate
+    // --- A creates debate and joins ---
     auto* a1 = scenario.add_actions();
     a1->set_username("A");
     a1->set_event_type("CREATE_DEBATE");
     a1->set_debate_topic("Is AI beneficial?");
 
-    // A enters + joins
     auto* a2 = scenario.add_actions();
     a2->set_username("A");
     a2->set_event_type("ENTER_DEBATE");
@@ -267,7 +388,7 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
     a3->set_event_type("JOIN_DEBATE");
     a3->set_debate_id(1);
 
-    // B enters + joins
+    // --- B joins ---
     auto* b1 = scenario.add_actions();
     b1->set_username("B");
     b1->set_event_type("ENTER_DEBATE");
@@ -277,7 +398,7 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
     b2->set_event_type("JOIN_DEBATE");
     b2->set_debate_id(1);
 
-    // A adds child claim
+    // --- A adds child claim under root (claim 1) ---
     auto* a4 = scenario.add_actions();
     a4->set_username("A");
     a4->set_event_type("GO_TO_CLAIM");
@@ -290,7 +411,7 @@ TEST_F(ScenarioRunner, ChallengeClaim) {
     a6->set_event_type("ADD_CHILD_CLAIM");
     a6->set_claim_text("AI improves healthcare");
 
-    // B navigates to child and challenges it
+    // --- B navigates to child (claim 2) and challenges it ---
     auto* b3 = scenario.add_actions();
     b3->set_username("B");
     b3->set_event_type("GO_TO_CLAIM");
