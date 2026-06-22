@@ -7,6 +7,16 @@
 cmake_minimum_required(VERSION 3.20)
 project(DebateServer LANGUAGES CXX)
 
+# Embed git commit hash
+execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+add_definitions(-DGIT_COMMIT_HASH="${GIT_COMMIT_HASH}")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -143,7 +153,7 @@ add_executable(debate_server
 )
 
 target_link_libraries(debate_server
-    zlib
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libzs.a
     sqlite3
     ws2_32
     # abseil_dll

@@ -13,50 +13,50 @@ export interface EventData {
   actionId?: string | number;
   eventName?: string;
   data?: {
-    [key: string]: any; // All page input data from getEntirePage()
+    [key: string]: any;
   };
   timestamp?: number;
 }
 
+// Resolve the API base URL:
+// 1. VITE_API_URL env var (set at build time for production)
+// 2. Empty string (use relative paths, relies on Vite proxy in dev)
+const API_BASE = import.meta.env.VITE_API_URL?.trim() || "";
+
 /**
- * Send a ClientMessage protobuf to your C++ server (POST / on :3000).
- * Contains the event info + complete page state with all component values.
- * Returns the Page protobuf response from the server.
+ * Send a ClientMessage protobuf to the C++ server.
+ * In dev: uses Vite proxy (/api/clientmessage → localhost:8080/clientmessage)
+ * In prod: uses VITE_API_URL directly (e.g., https://backend.onrender.com/clientmessage)
  */
 export default async function postClientMessageToCPP(
   eventData: EventData,
   opts?: {
-    endpoint?: string;        // override target if needed
-    withCredentials?: boolean // set true only if your C++ CORS allows credentials
+    endpoint?: string;
+    withCredentials?: boolean;
   }
 ): Promise<any> {
   try {
     console.log("🚀 postClientMessageToCPP received:", eventData);
     console.log("🚀 eventData.data keys:", Object.keys(eventData.data || {}));
 
-    // Extract page ID (stored with special _pageId key)
     const pageId = eventData.data?._pageId as string || "login";
-    
-    // Build list of ComponentData from the page data (excluding _pageId)
+
     const components = Object.entries(eventData.data || {})
-      .filter(([id]) => id !== '_pageId') // Exclude the special _pageId field
+      .filter(([id]) => id !== '_pageId')
       .map(([id, value]) =>
         create(ComponentDataSchema, {
           id,
           value: String(value),
-          type: "", // Can enhance this later if needed
+          type: "",
         })
       );
 
-    // Build PageData
     const pageData = create(PageDataSchema, {
-      pageId: pageId,
+      pageId,
       components,
     });
 
-    // Build ClientMessage with event + page state
     const clientMessage = create(ClientMessageSchema, {
-      // Empty defaults intentionally encode a no-op message for initial polling.
       componentId: eventData.componentId ?? "",
       eventType: eventData.eventType ?? eventData.eventName ?? "",
       pageData,
@@ -68,11 +68,16 @@ export default async function postClientMessageToCPP(
       componentsCount: clientMessage.pageData?.components.length || 0,
     });
 
-    // Encode protobuf
     const bytes = toBinary(ClientMessageSchema, clientMessage);
 
-    // POST to C++ server using configured API base
-    const endpoint = opts?.endpoint ?? "/api/clientmessage";
+    // Build the full endpoint URL
+    const relativePath = opts?.endpoint ?? "/api/clientmessage";
+    // In production, prepend the API base URL; in dev, use relative path for proxy
+    const endpoint = API_BASE
+      ? `${API_BASE.replace(/\/+$/, '')}${relativePath.replace(/^\/api/, '')}`
+      : relativePath;
+
+    console.log("📡 Sending to:", endpoint);
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -87,17 +92,16 @@ export default async function postClientMessageToCPP(
       throw new Error(`POST failed: ${res.status} ${res.statusText} ${text}`);
     }
 
-    console.log("✅ ClientMessage posted to C++ server.");
-    
-    // Decode the Page protobuf response
+    console.log("✅ ClientMessage posted to server.");
+
     const arrayBuffer = await res.arrayBuffer();
     const page_bytes = new Uint8Array(arrayBuffer);
     const page = fromBinary(PageSchema, page_bytes);
-    
+
     console.log("📄 Received Page:", page);
     return page;
-    
+
   } catch (err) {
-    console.error("❌ Error sending ClientMessage to C++ server:", err);
+    console.error("❌ Error sending ClientMessage to server:", err);
   }
 }

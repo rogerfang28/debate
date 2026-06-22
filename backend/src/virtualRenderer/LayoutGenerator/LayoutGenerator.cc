@@ -36,7 +36,7 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
         } else if (scopeType == debate::FULL_DEBATE) {
             Log::info("[LayoutGenerator] Generating Full Debate Page");
-            rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection());
+            rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection(), info.user().user_id(), info.user().username());
             if (info.user().current_scope().has_full_debate() &&
                 info.user().current_scope().full_debate().top_view()) {
                 Log::info("[LayoutGenerator] top_view=true, generating Step View page");

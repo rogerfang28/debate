@@ -5,23 +5,24 @@ export interface PageData {
   [key: string]: any;
 }
 
+const API_BASE = import.meta.env.VITE_API_URL?.trim() || "";
+
 /**
- * Fetch a protobuf Page from your C++ server.
- * - Defaults to the configured backend URL
- * - Validates Content-Type
- * - Supports optional ?id=<pageId>
- * - Keeps no-store to avoid caching during dev
+ * Fetch a protobuf Page from the server.
  */
 export default async function getPageFromCPP(opts?: {
   pageId?: string;
-  endpoint?: string;          // override default root if you want
-  withCredentials?: boolean;  // send cookies if needed
+  endpoint?: string;
+  withCredentials?: boolean;
 }): Promise<PageData | null> {
   try {
     const defaultEndpoint = "/api/";
     const endpoint = opts?.endpoint ?? defaultEndpoint;
+    const fullUrl = API_BASE
+      ? `${API_BASE.replace(/\/+$/, '')}${endpoint.replace(/^\/api/, '')}`
+      : endpoint;
 
-    const url = new URL(endpoint, window.location.origin);
+    const url = new URL(fullUrl, window.location.origin);
     if (opts?.pageId) url.searchParams.set("id", opts.pageId);
 
     console.log("▶️ GET", url.toString(), "(expecting protobuf Page)");

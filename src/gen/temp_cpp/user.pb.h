@@ -223,7 +223,7 @@ class User final : public ::google::protobuf::Message
     kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
   };
-  // string username = 2 [json_name = "username"];
+  // string username = 2;
   void clear_username() ;
   const std::string& username() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -239,7 +239,7 @@ class User final : public ::google::protobuf::Message
   std::string* _internal_mutable_username();
 
   public:
-  // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+  // .user_engagement.UserEngagement engagement = 3;
   bool has_engagement() const;
   void clear_engagement() ;
   const ::user_engagement::UserEngagement& engagement() const;
@@ -254,7 +254,7 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* _internal_mutable_engagement();
 
   public:
-  // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+  // .debate.Scope current_scope = 4;
   bool has_current_scope() const;
   void clear_current_scope() ;
   const ::debate::Scope& current_scope() const;
@@ -269,7 +269,7 @@ class User final : public ::google::protobuf::Message
   ::debate::Scope* _internal_mutable_current_scope();
 
   public:
-  // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+  // .debate.CollectionSpecification collection_spec = 5;
   bool has_collection_spec() const;
   void clear_collection_spec() ;
   const ::debate::CollectionSpecification& collection_spec() const;
@@ -284,7 +284,7 @@ class User final : public ::google::protobuf::Message
   ::debate::CollectionSpecification* _internal_mutable_collection_spec();
 
   public:
-  // int32 user_id = 1 [json_name = "userId"];
+  // int32 user_id = 1;
   void clear_user_id() ;
   ::int32_t user_id() const;
   void set_user_id(::int32_t value);
@@ -346,7 +346,7 @@ class User final : public ::google::protobuf::Message
 
 // User
 
-// int32 user_id = 1 [json_name = "userId"];
+// int32 user_id = 1;
 inline void User::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_id_ = 0;
@@ -368,7 +368,7 @@ inline void User::_internal_set_user_id(::int32_t value) {
   _impl_.user_id_ = value;
 }
 
-// string username = 2 [json_name = "username"];
+// string username = 2;
 inline void User::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -416,7 +416,7 @@ inline void User::set_allocated_username(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:user.User.username)
 }
 
-// .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+// .user_engagement.UserEngagement engagement = 3;
 inline bool User::has_engagement() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
@@ -507,7 +507,7 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* va
   // @@protoc_insertion_point(field_set_allocated:user.User.engagement)
 }
 
-// .debate.Scope current_scope = 4 [json_name = "currentScope"];
+// .debate.Scope current_scope = 4;
 inline bool User::has_current_scope() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.current_scope_ != nullptr);
@@ -598,7 +598,7 @@ inline void User::set_allocated_current_scope(::debate::Scope* value) {
   // @@protoc_insertion_point(field_set_allocated:user.User.current_scope)
 }
 
-// .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+// .debate.CollectionSpecification collection_spec = 5;
 inline bool User::has_collection_spec() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.collection_spec_ != nullptr);
