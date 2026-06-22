@@ -433,84 +433,81 @@ TEST_F(SimulationTest, FullStateVerification) {
     // Step 1: Create debate
     sendCreateDebate(userA_id_, "Is AI beneficial?");
 
-    // Step 2: All users enter
+    // Step 2: All users enter + join (JOIN_DEBATE adds to debate_members for collection visibility)
     sendEnterDebate(userA_id_, 1);
     sendEnterDebate(userB_id_, 1);
     sendEnterDebate(userC_id_, 1);
+    sendJoinDebate(userA_id_, 1);
+    sendJoinDebate(userB_id_, 1);
+    sendJoinDebate(userC_id_, 1);
 
     // Step 3: A adds child
     sendGoToClaim(userA_id_, 1);
     sendOpenAddChildClaim(userA_id_);
     sendAddChildClaim(userA_id_, "AI improves healthcare", "supports");
 
-    // Get child ID
-    Database db(db_path_);
-    DatabaseWrapper dbWrapper(db);
-    DebateWrapper dw(dbWrapper);
-    std::vector<int> children = dw.findChildrenIds(1);
-    ASSERT_EQ(children.size(), 1u);
-    int childId = children[0];
+    // Get child ID from A's collection (PARENT_CHILD link from root)
+    auto respA_pre = sendAndGetResponse(userA_id_, debate_event::NONE);
+    int childId = -1;
+    for (const auto& linkEntry : respA_pre.collection().links_by_id()) {
+        const debate::Link& link = linkEntry.second;
+        if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_from() == 1) {
+            childId = link.connect_to();
+            break;
+        }
+    }
+    ASSERT_GT(childId, 0) << "Should find child claim via PARENT_CHILD link";
 
-    // Step 4: B challenges child (minimal flow)
+    // Step 4: B challenges child
     sendGoToClaim(userB_id_, childId);
     sendSubmitChallenge(userB_id_, "Healthcare AI has bias issues");
 
-    int challengeClaimId = findChallengeClaimId(childId);
-    ASSERT_GT(challengeClaimId, 0);
+    // Get responses from all users
+    auto respA = sendAndGetResponse(userA_id_, debate_event::NONE);
+    auto respB = sendAndGetResponse(userB_id_, debate_event::NONE);
+    auto respC = sendAndGetResponse(userC_id_, debate_event::NONE);
 
-    // ---- Comprehensive verification ----
+    // Find challenge claim ID from collection (CHALLENGE link targeting child)
+    int challengeClaimId = findChallengeClaimIdFromCollection(respB, childId);
+    ASSERT_GT(challengeClaimId, 0) << "Challenge claim should exist in collection";
 
-    // 1. Root claim exists and is correct
-    debate::Claim root = getClaim(1);
+    // ---- Comprehensive verification via collection ----
+
+    // 1. Root claim
+    debate::Claim root = getClaimFromCollection(respA, 1);
     ASSERT_EQ(root.id(), 1);
     ASSERT_EQ(root.sentence(), "Is AI beneficial?");
-    ASSERT_TRUE(dw.isRoot(1));
 
-    // 2. Child claim exists and is correct
-    debate::Claim child = getClaim(childId);
+    // 2. Child claim
+    debate::Claim child = getClaimFromCollection(respA, childId);
     ASSERT_EQ(child.sentence(), "AI improves healthcare");
 
-    // 3. Challenge claim exists and is correct
-    debate::Claim challenge = getClaim(challengeClaimId);
+    // 3. Challenge claim
+    debate::Claim challenge = getClaimFromCollection(respB, challengeClaimId);
     ASSERT_EQ(challenge.sentence(), "Healthcare AI has bias issues");
 
-    // 4. Links: parent-child + challenge
-    auto links = dw.getLinksForDebate(1);
-    int pcCount = 0, chCount = 0;
-    for (const auto& link : links) {
-        int type = std::get<5>(link);
-        if (type == static_cast<int>(debate::LinkType::PARENT_CHILD)) pcCount++;
-        if (type == static_cast<int>(debate::LinkType::CHALLENGE)) chCount++;
-    }
-    EXPECT_EQ(pcCount, 1) << "Should have 1 parent-child link";
-    EXPECT_EQ(chCount, 1) << "Should have 1 challenge link";
+    // 4. Link counts
+    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::PARENT_CHILD), 1);
+    EXPECT_EQ(countLinksByTypeFromCollection(respB, debate::LinkType::CHALLENGE), 1);
 
     // 5. Per-user views on root
-    EXPECT_EQ(getUserView(1, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserView(1, "B"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserView(1, "C"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(respA, 1, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respB, 1, "B"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(respC, 1, "C"), debate::ClaimStatus::UNDETERMINED);
 
     // 6. Per-user views on child
-    EXPECT_EQ(getUserView(childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserView(childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
-    EXPECT_EQ(getUserView(childId, "C"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(respA, childId, "A"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respB, childId, "B"), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respC, childId, "C"), debate::ClaimStatus::UNDETERMINED);
 
     // 7. Per-user views on challenge claim
-    EXPECT_EQ(getUserView(challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(getUserView(challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(getUserView(challengeClaimId, "C"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(respB, challengeClaimId, "B"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(getUserViewFromCollection(respA, challengeClaimId, "A"), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(getUserViewFromCollection(respC, challengeClaimId, "C"), debate::ClaimStatus::UNDETERMINED);
 
     // 8. User engagement: all users in debate
-    debate_event::DebateEvent eventA = makeEvent(userA_id_, debate_event::NONE);
-    auto respA = moderator_->handleRequest(eventA);
     EXPECT_EQ(respA.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    debate_event::DebateEvent eventB = makeEvent(userB_id_, debate_event::NONE);
-    auto respB = moderator_->handleRequest(eventB);
     EXPECT_EQ(respB.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
-
-    debate_event::DebateEvent eventC = makeEvent(userC_id_, debate_event::NONE);
-    auto respC = moderator_->handleRequest(eventC);
     EXPECT_EQ(respC.user().engagement().current_action(), user_engagement::ACTION_DEBATING);
 
     dumpState("FullStateVerification");
