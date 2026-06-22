@@ -7,7 +7,7 @@
  */
 
 import { parsePbtxtToPage } from "./pbtxtBridge";
-import type { Page } from "../gen/ts/layout_pb";
+import type { Page } from "../../../src/gen/ts/layout_pb";
 
 /**
  * Read a .pbtxt file and parse it into a @bufbuild/protobuf Page message.

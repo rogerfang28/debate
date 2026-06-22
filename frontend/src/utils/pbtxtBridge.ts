@@ -16,7 +16,7 @@
 import * as protobuf from "protobufjs";
 import { fromText, toText } from "protobufjs/ext/textformat";
 import { fromBinary } from "@bufbuild/protobuf";
-import { PageSchema } from "../gen/ts/layout_pb";
+import { PageSchema } from "../../../src/gen/ts/layout_pb";
 
 // Load the proto definition once at module init.
 // We use protobufjs.parse() (works in browser, no fs needed).
