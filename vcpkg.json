@@ -1,0 +1,11 @@
+{
+  "name": "debate-server",
+  "version": "0.1.0",
+  "dependencies": [
+    { "name": "protobuf", "platform": "x64-mingw-static" },
+    { "name": "abseil", "platform": "x64-mingw-static" },
+    { "name": "zlib", "platform": "x64-mingw-static" },
+    { "name": "sqlite3", "platform": "x64-mingw-static" },
+    { "name": "utf8proc", "platform": "x64-mingw-static" }
+  ]
+}
