@@ -531,3 +531,12 @@ svg circle {
 [id^="mapChallengeEdgeV2_"] {
   background-color: #f97316 !important;
 }
+
+/* --- Legend: update swatch colors to match new edge colors --- */
+#legendNormalLinkSwatch {
+  background-color: #9ca3af !important;
+}
+
+#legendChallengeLinkSwatch {
+  background-color: #f97316 !important;
+}
