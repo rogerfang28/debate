@@ -335,30 +335,34 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\014layout.proto\022\002ui\"I\n\004Page\022\017\n\007page_id\030\001 "
-    "\001(\t\022\r\n\005title\030\002 \001(\t\022!\n\ncomponents\030\003 \003(\0132\r"
-    ".ui.Component\"\306\002\n\tComponent\022\n\n\002id\030\001 \001(\t\022"
-    "\014\n\004name\030\002 \001(\t\022\037\n\004type\030\003 \001(\0162\021.ui.Compone"
-    "ntType\022\014\n\004text\030\004 \001(\t\022\037\n\010children\030\005 \003(\0132\r"
-    ".ui.Component\022\030\n\005style\030\006 \001(\0132\t.ui.Style\022"
-    "#\n\003css\030\010 \003(\0132\026.ui.Component.CssEntry\0221\n\n"
-    "attributes\030\007 \003(\0132\035.ui.Component.Attribut"
-    "esEntry\032*\n\010CssEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu"
-    "e\030\002 \001(\t:\0028\001\0321\n\017AttributesEntry\022\013\n\003key\030\001 "
-    "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custo"
-    "m_class\030\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001"
-    "y\030\002 \001(\002\022\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001"
-    " \001(\t\022\016\n\006height\030\002 \001(\t*L\n\rComponentType\022\013\n"
-    "\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPU"
-    "T\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t\n\005ABSL"
-    "T\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020"
-    "\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\n\014layout.proto\022\002ui\"d\n\004Page\022\027\n\007page_id\030\001 "
+    "\001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncom"
+    "ponents\030\003 \003(\0132\r.ui.ComponentR\ncomponents"
+    "\"\226\003\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002"
+    " \001(\tR\004name\022%\n\004type\030\003 \001(\0162\021.ui.ComponentT"
+    "ypeR\004type\022\022\n\004text\030\004 \001(\tR\004text\022)\n\010childre"
+    "n\030\005 \003(\0132\r.ui.ComponentR\010children\022\037\n\005styl"
+    "e\030\006 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\010 \003(\0132\026"
+    ".ui.Component.CssEntryR\003css\022=\n\nattribute"
+    "s\030\007 \003(\0132\035.ui.Component.AttributesEntryR\n"
+    "attributes\0326\n\010CssEntry\022\020\n\003key\030\001 \001(\tR\003key"
+    "\022\024\n\005value\030\002 \001(\tR\005value:\0028\001\032=\n\017Attributes"
+    "Entry\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005"
+    "value:\0028\001\"*\n\005Style\022!\n\014custom_class\030\001 \001(\t"
+    "R\013customClass\":\n\010Position\022\014\n\001x\030\001 \001(\002R\001x\022"
+    "\014\n\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001(\tR\004unit\"4\n\004Siz"
+    "e\022\024\n\005width\030\001 \001(\tR\005width\022\026\n\006height\030\002 \001(\tR"
+    "\006height*L\n\rComponentType\022\013\n\007UNKNOWN\020\000\022\010\n"
+    "\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\r\n\tCONTAI"
+    "NER\020\014*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_R"
+    "OW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004"
+    "b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    701,
+    848,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -520,25 +524,25 @@ const ::_pbi::TcParseTable<2, 3, 1, 28, 2> Page::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_)}},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.title_)}},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Page, _impl_.components_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.title_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.components_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -579,7 +583,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string page_id = 1;
+          // string page_id = 1 [json_name = "pageId"];
           if (!this_._internal_page_id().empty()) {
             const std::string& _s = this_._internal_page_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -587,7 +591,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string title = 2;
+          // string title = 2 [json_name = "title"];
           if (!this_._internal_title().empty()) {
             const std::string& _s = this_._internal_title();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -595,7 +599,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // repeated .ui.Component components = 3;
+          // repeated .ui.Component components = 3 [json_name = "components"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_components_size());
                i < n; i++) {
@@ -631,7 +635,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component components = 3;
+            // repeated .ui.Component components = 3 [json_name = "components"];
             {
               total_size += 1UL * this_._internal_components_size();
               for (const auto& msg : this_._internal_components()) {
@@ -640,12 +644,12 @@ PROTOBUF_NOINLINE void Page::Clear() {
             }
           }
            {
-            // string page_id = 1;
+            // string page_id = 1 [json_name = "pageId"];
             if (!this_._internal_page_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_page_id());
             }
-            // string title = 2;
+            // string title = 2 [json_name = "title"];
             if (!this_._internal_title().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_title());
@@ -761,19 +765,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 38, 2> Component_CssEntry_DoNotUse::_table_ 
     ::_pbi::TcParser::GetTable<::ui::Component_CssEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -852,19 +856,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 45, 2> Component_AttributesEntry_DoNotUse::_
     ::_pbi::TcParser::GetTable<::ui::Component_AttributesEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1047,50 +1051,50 @@ const ::_pbi::TcParseTable<3, 8, 4, 52, 2> Component::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.name_)}},
-    // .ui.ComponentType type = 3;
+    // .ui.ComponentType type = 3 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
-    // string text = 4;
+    // string text = 4 [json_name = "text"];
     {::_pbi::TcParser::FastUS1,
      {34, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
-    // repeated .ui.Component children = 5;
+    // repeated .ui.Component children = 5 [json_name = "children"];
     {::_pbi::TcParser::FastMtR1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
-    // .ui.Style style = 6;
+    // .ui.Style style = 6 [json_name = "style"];
     {::_pbi::TcParser::FastMtS1,
      {50, 0, 1, PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.name_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .ui.ComponentType type = 3;
+    // .ui.ComponentType type = 3 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // string text = 4;
+    // string text = 4 [json_name = "text"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component children = 5;
+    // repeated .ui.Component children = 5 [json_name = "children"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Style style = 6;
+    // .ui.Style style = 6 [json_name = "style"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 0, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> attributes = 7;
+    // map<string, string> attributes = 7 [json_name = "attributes"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<string, string> css = 8;
+    // map<string, string> css = 8 [json_name = "css"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), -1, 3,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
@@ -1153,7 +1157,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string id = 1;
+          // string id = 1 [json_name = "id"];
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1161,7 +1165,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string name = 2;
+          // string name = 2 [json_name = "name"];
           if (!this_._internal_name().empty()) {
             const std::string& _s = this_._internal_name();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1169,14 +1173,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // .ui.ComponentType type = 3;
+          // .ui.ComponentType type = 3 [json_name = "type"];
           if (this_._internal_type() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteEnumToArray(
                 3, this_._internal_type(), target);
           }
 
-          // string text = 4;
+          // string text = 4 [json_name = "text"];
           if (!this_._internal_text().empty()) {
             const std::string& _s = this_._internal_text();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1184,7 +1188,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             target = stream->WriteStringMaybeAliased(4, _s, target);
           }
 
-          // repeated .ui.Component children = 5;
+          // repeated .ui.Component children = 5 [json_name = "children"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_children_size());
                i < n; i++) {
@@ -1196,14 +1200,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .ui.Style style = 6;
+          // .ui.Style style = 6 [json_name = "style"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 6, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
                 stream);
           }
 
-          // map<string, string> attributes = 7;
+          // map<string, string> attributes = 7 [json_name = "attributes"];
           if (!this_._internal_attributes().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1236,7 +1240,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
 
-          // map<string, string> css = 8;
+          // map<string, string> css = 8 [json_name = "css"];
           if (!this_._internal_css().empty()) {
             using MapType = ::google::protobuf::Map<std::string, std::string>;
             using WireHelper = _pbi::MapEntryFuncs<std::string, std::string,
@@ -1294,14 +1298,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .ui.Component children = 5;
+            // repeated .ui.Component children = 5 [json_name = "children"];
             {
               total_size += 1UL * this_._internal_children_size();
               for (const auto& msg : this_._internal_children()) {
                 total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
               }
             }
-            // map<string, string> attributes = 7;
+            // map<string, string> attributes = 7 [json_name = "attributes"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_attributes_size());
@@ -1311,7 +1315,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                                _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
               }
             }
-            // map<string, string> css = 8;
+            // map<string, string> css = 8 [json_name = "css"];
             {
               total_size +=
                   1 * ::google::protobuf::internal::FromIntSize(this_._internal_css_size());
@@ -1323,24 +1327,24 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // string id = 1;
+            // string id = 1 [json_name = "id"];
             if (!this_._internal_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-            // string name = 2;
+            // string name = 2 [json_name = "name"];
             if (!this_._internal_name().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
             }
-            // string text = 4;
+            // string text = 4 [json_name = "text"];
             if (!this_._internal_text().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_text());
             }
           }
            {
-            // .ui.Style style = 6;
+            // .ui.Style style = 6 [json_name = "style"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -1348,7 +1352,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
             }
           }
            {
-            // .ui.ComponentType type = 3;
+            // .ui.ComponentType type = 3 [json_name = "type"];
             if (this_._internal_type() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
@@ -1540,13 +1544,13 @@ const ::_pbi::TcParseTable<0, 1, 0, 29, 2> Style::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Style>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string custom_class = 1;
+    // string custom_class = 1 [json_name = "customClass"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string custom_class = 1;
+    // string custom_class = 1 [json_name = "customClass"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1584,7 +1588,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string custom_class = 1;
+          // string custom_class = 1 [json_name = "customClass"];
           if (!this_._internal_custom_class().empty()) {
             const std::string& _s = this_._internal_custom_class();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1616,7 +1620,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
           (void)cached_has_bits;
 
            {
-            // string custom_class = 1;
+            // string custom_class = 1 [json_name = "customClass"];
             if (!this_._internal_custom_class().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_custom_class());
@@ -1785,25 +1789,25 @@ const ::_pbi::TcParseTable<2, 3, 0, 24, 2> Position::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {::_pbi::TcParser::FastF32S1,
      {13, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.x_)}},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {::_pbi::TcParser::FastF32S1,
      {21, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.y_)}},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.x_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.y_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -1844,21 +1848,21 @@ PROTOBUF_NOINLINE void Position::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // float x = 1;
+          // float x = 1 [json_name = "x"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
                 1, this_._internal_x(), target);
           }
 
-          // float y = 2;
+          // float y = 2 [json_name = "y"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
                 2, this_._internal_y(), target);
           }
 
-          // string unit = 3;
+          // string unit = 3 [json_name = "unit"];
           if (!this_._internal_unit().empty()) {
             const std::string& _s = this_._internal_unit();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1891,16 +1895,16 @@ PROTOBUF_NOINLINE void Position::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string unit = 3;
+            // string unit = 3 [json_name = "unit"];
             if (!this_._internal_unit().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_unit());
             }
-            // float x = 1;
+            // float x = 1 [json_name = "x"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
               total_size += 5;
             }
-            // float y = 2;
+            // float y = 2 [json_name = "y"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
               total_size += 5;
             }
@@ -2069,19 +2073,19 @@ const ::_pbi::TcParseTable<1, 2, 0, 27, 2> Size::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Size>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.height_)}},
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Size, _impl_.width_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.width_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.height_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -2121,7 +2125,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string width = 1;
+          // string width = 1 [json_name = "width"];
           if (!this_._internal_width().empty()) {
             const std::string& _s = this_._internal_width();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2129,7 +2133,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string height = 2;
+          // string height = 2 [json_name = "height"];
           if (!this_._internal_height().empty()) {
             const std::string& _s = this_._internal_height();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -2162,12 +2166,12 @@ PROTOBUF_NOINLINE void Size::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string width = 1;
+            // string width = 1 [json_name = "width"];
             if (!this_._internal_width().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_width());
             }
-            // string height = 2;
+            // string height = 2 [json_name = "height"];
             if (!this_._internal_height().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_height());

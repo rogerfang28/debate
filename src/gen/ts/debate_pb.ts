@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK9AQoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBSJZCgpDbGFpbVN0YXRlEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHAoFY2xhaW0YASABKAsyDS5kZWJhdGUuQ2xhaW0inAEKBExpbmsSCgoCaWQYASABKAUSFAoMY29ubmVjdF9mcm9tGAIgASgFEhIKCmNvbm5lY3RfdG8YAyABKAUSEgoKY29ubmVjdGlvbhgEIAEoCRISCgpjcmVhdG9yX2lkGAUgASgFEiMKCWxpbmtfdHlwZRgGIAEoDjIQLmRlYmF0ZS5MaW5rVHlwZRIRCglkZWJhdGVfaWQYByABKAUiwAEKBkRlYmF0ZRIKCgJpZBgBIAEoBRIVCg1yb290X2NsYWltX2lkGAIgASgFEg0KBXRvcGljGAMgASgJEhMKC2RlYmF0ZXJfaWRzGAQgAygFEhIKCmNyZWF0b3JfaWQYBSABKAUSKAoIc2V0dGluZ3MYBiABKAsyFi5kZWJhdGUuRGViYXRlU2V0dGluZ3MSFAoMaXNfY2hhbGxlbmdlGAcgASgIEhsKE3BhcmVudF9jaGFsbGVuZ2VfaWQYCCABKAUqRwoLQ2xhaW1TdGF0dXMSCwoHTkVVVFJBTBAAEg4KCkNIQUxMRU5HRUQQARIMCghERUZFTkRFRBACEg0KCURJU1BST1ZFThADKjcKCExpbmtUeXBlEgoKBk5PUk1BTBAAEhAKDFBBUkVOVF9DSElMRBABEg0KCUNIQUxMRU5HRRACKjgKD0NoYWxsZW5nZVN0YXR1cxILCgdPTkdPSU5HEAASDAoIQ09OQ0VERUQQARIKCgZQUk9WRU4QAmIGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK/AgoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBRI2Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5GkgKEVVzZXJTdGF0dXNlc0VudHJ5EgsKA2tleRgBIAEoCRIiCgV2YWx1ZRgCIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1czoCOAEiWQoKQ2xhaW1TdGF0ZRItCgl0aW1lc3RhbXAYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhwKBWNsYWltGAEgASgLMg0uZGViYXRlLkNsYWltIpwBCgRMaW5rEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBRIjCglsaW5rX3R5cGUYBiABKA4yEC5kZWJhdGUuTGlua1R5cGUSEQoJZGViYXRlX2lkGAcgASgFIsABCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhQKDGlzX2NoYWxsZW5nZRgHIAEoCBIbChNwYXJlbnRfY2hhbGxlbmdlX2lkGAggASgFKkAKC0NsYWltU3RhdHVzEhAKDFVOREVURVJNSU5FRBAAEg4KClRSVUVfQ0xBSU0QARIPCgtGQUxTRV9DTEFJTRACKjcKCExpbmtUeXBlEgoKBk5PUk1BTBAAEhAKDFBBUkVOVF9DSElMRBABEg0KCUNIQUxMRU5HRRACYgZwcm90bzM", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -61,6 +61,11 @@ export type Claim = Message<"debate.Claim"> & {
    * @generated from field: repeated int32 link_ids = 12;
    */
   linkIds: number[];
+
+  /**
+   * @generated from field: map<string, debate.ClaimStatus> user_statuses = 13;
+   */
+  userStatuses: { [key: string]: ClaimStatus };
 };
 
 /**
@@ -198,32 +203,25 @@ export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
  */
 export enum ClaimStatus {
   /**
-   * unchallenged, default
+   * default, no resolution yet
    *
-   * @generated from enum value: NEUTRAL = 0;
+   * @generated from enum value: UNDETERMINED = 0;
    */
-  NEUTRAL = 0,
+  UNDETERMINED = 0,
 
   /**
-   * currently challenged
+   * claim upheld / defended against challenge
    *
-   * @generated from enum value: CHALLENGED = 1;
+   * @generated from enum value: TRUE_CLAIM = 1;
    */
-  CHALLENGED = 1,
+  TRUE_CLAIM = 1,
 
   /**
-   * successfully defended against a challenge
+   * claim disproven by challenge
    *
-   * @generated from enum value: DEFENDED = 2;
+   * @generated from enum value: FALSE_CLAIM = 2;
    */
-  DEFENDED = 2,
-
-  /**
-   * disproven by a challenge
-   *
-   * @generated from enum value: DISPROVEN = 3;
-   */
-  DISPROVEN = 3,
+  FALSE_CLAIM = 2,
 }
 
 /**
@@ -257,36 +255,4 @@ export enum LinkType {
  */
 export const LinkTypeSchema: GenEnum<LinkType> = /*@__PURE__*/
   enumDesc(file_debate, 1);
-
-/**
- * @generated from enum debate.ChallengeStatus
- */
-export enum ChallengeStatus {
-  /**
-   * challenge is ongoing
-   *
-   * @generated from enum value: ONGOING = 0;
-   */
-  ONGOING = 0,
-
-  /**
-   * challenge has been conceded
-   *
-   * @generated from enum value: CONCEDED = 1;
-   */
-  CONCEDED = 1,
-
-  /**
-   * challenge successfully defended
-   *
-   * @generated from enum value: PROVEN = 2;
-   */
-  PROVEN = 2,
-}
-
-/**
- * Describes the enum debate.ChallengeStatus.
- */
-export const ChallengeStatusSchema: GenEnum<ChallengeStatus> = /*@__PURE__*/
-  enumDesc(file_debate, 2);
 
