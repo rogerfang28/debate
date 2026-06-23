@@ -2,10 +2,14 @@
   "name": "debate-server",
   "version": "0.1.0",
   "dependencies": [
-    { "name": "protobuf", "platform": "x64-mingw-static" },
-    { "name": "abseil", "platform": "x64-mingw-static" },
-    { "name": "zlib", "platform": "x64-mingw-static" },
-    { "name": "sqlite3", "platform": "x64-mingw-static" },
-    { "name": "utf8proc", "platform": "x64-mingw-static" }
-  ]
+    "protobuf",
+    "abseil",
+    "zlib",
+    "sqlite3",
+    "utf8proc"
+  ],
+  "overrides": [
+    { "name": "protobuf", "version": "28.1" }
+  ],
+  "builtin-baseline": "a1a1cbc95d59415a46b5785a4163560455507f3a"
 }

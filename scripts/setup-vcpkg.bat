@@ -17,8 +17,8 @@ if not exist "vcpkg.exe" (
     call bootstrap-vcpkg.bat
 )
 
-echo ^>^>^> Installing dependencies ...
-vcpkg install --triplet=x64-mingw-static
+echo ^>^>^> Installing dependencies from vcpkg.json ...
+vcpkg install
 
 echo ^>^>^> Done. Build with:
 echo     cd backend ^&^& cmake -S . -B build ^&^& cmake --build build -j
