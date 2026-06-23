@@ -10,15 +10,16 @@ if not exist "%VCPKG_DIR%" (
     git clone https://github.com/microsoft/vcpkg.git "%VCPKG_DIR%"
 )
 
-cd /d "%VCPKG_DIR%"
-
-if not exist "vcpkg.exe" (
+if not exist "%VCPKG_DIR%\vcpkg.exe" (
     echo ^>^>^> Bootstrapping vcpkg ...
+    pushd "%VCPKG_DIR%"
     call bootstrap-vcpkg.bat
+    popd
 )
 
 echo ^>^>^> Installing dependencies from vcpkg.json ...
-vcpkg install
+set VCPKG_DEFAULT_TRIPLET=x64-mingw-static
+"%VCPKG_DIR%\vcpkg" install --x-manifest-root="%REPO_ROOT%"
 
 echo ^>^>^> Done. Build with:
 echo     cd backend ^&^& cmake -S . -B build ^&^& cmake --build build -j
