@@ -30,6 +30,7 @@
 #include "debateModerator/DebateModerator.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 #include "virtualRenderer/LayoutGenerator/LayoutGenerator.h"
+#include "virtualRenderer/LayoutGenerator/ComponentGenerator.h"
 #include "virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.h"
 #include "virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
 #include "google/protobuf/text_format.h"
@@ -41,6 +42,7 @@
 // debate_id: the debate to generate the step view for
 // viewer_username: which user's perspective to use (determines per-user claim statuses)
 // output_path: where to save the .json file (relative to cwd, usually test/build/)
+// description: human-readable label for this snapshot (e.g. "Step 5: B submits challenge")
 //
 // This function:
 // 1. Creates a DebateModerator (reuses the existing DB via DB_PATH env var)
@@ -48,10 +50,12 @@
 // 3. Builds the collection via BuildCollection::BuildForDebateAndUsers()
 // 4. Parses the full debate view info via FullDebatePageInfoParser
 // 5. Generates the step view page via StepView::GenerateStepViewPage()
-// 6. Serializes the resulting ui::Page to a .json file
+// 6. Adds a description text component at the bottom of the page
+// 7. Serializes the resulting ui::Page to a .json file
 // ---------------------------------------------------------------------------
 void downloadJson(int debate_id, const std::string& viewer_username = "A",
-                  const std::string& output_path = "") {
+                  const std::string& output_path = "",
+                  const std::string& description = "") {
     // Use the same DB_PATH that the test fixture set
     const char* db_path = getenv("DB_PATH");
     if (!db_path || std::string(db_path).empty()) {
@@ -103,6 +107,19 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     std::cout << "[downloadJson] Generated step view page: page_id=" << page.page_id()
               << ", title=" << page.title() << std::endl;
 
+    // Add description as the last component of the page (a visible label at the bottom)
+    if (!description.empty()) {
+        ui::Component descComponent = ComponentGenerator::createText(
+            "stepDescription",
+            description,
+            "text-xs",
+            "text-gray-500",
+            "",
+            "border-t border-gray-700 mt-4 pt-2"
+        );
+        page.add_components()->CopyFrom(descComponent);
+    }
+
     // Serialize to JSON using protobuf's built-in JSON utility
     std::string json_output;
     google::protobuf::json::PrintOptions opts;
@@ -124,7 +141,11 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     if (out.is_open()) {
         out << json_output;
         out.close();
-        std::cout << "[downloadJson] Saved step view to: " << out_file << std::endl;
+        std::cout << "[downloadJson] Saved step view to: " << out_file;
+        if (!description.empty()) {
+            std::cout << " — " << description;
+        }
+        std::cout << std::endl;
     } else {
         std::cerr << "[downloadJson] Failed to open output file: " << out_file << std::endl;
     }

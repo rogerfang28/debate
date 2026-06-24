@@ -57,7 +57,8 @@ using debate_test::TestExpectation;
 
 // Forward declaration — defined in test_step_view_layout.cc
 void downloadJson(int debate_id, const std::string& viewer_username = "A",
-                  const std::string& output_path = "");
+                  const std::string& output_path = "",
+                  const std::string& description = "");
 
 
 // ===========================================================================
@@ -258,7 +259,7 @@ protected:
         auto savePageJson = [&]() {
             if (debate_id > 0) {
                 std::string filename = "FAIL_" + scenario_name + "_step" + std::to_string(step_index) + ".json";
-                downloadJson(debate_id, "A", filename);
+                downloadJson(debate_id, "A", filename, "FAILED expectation at step " + std::to_string(step_index));
             }
         };
 
@@ -334,8 +335,12 @@ protected:
     // -----------------------------------------------------------------------
     // Iterates through steps in order.
     // For each step: execute action (if present), then check expectations (if present).
+    //
+    // dump_json_per_step: if true, saves a JSON snapshot after every action step
+    //   (filename: STEP_<scenario>_step<N>.json) so you can inspect the page state
+    //   at each intermediate point.
 
-    void executeScenario(const TestScenario& scenario) {
+    void executeScenario(const TestScenario& scenario, bool dump_json_per_step = false) {
         // Track per-user last response for ENGAGEMENT_STATE checks
         std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
         // Track the debate_id from actions for collection building
@@ -359,6 +364,28 @@ protected:
                     if (action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE") {
                         if (action.debate_id() > 0) debate_id = action.debate_id();
                     }
+                }
+
+                // Dump JSON after every action step (if enabled)
+                if (dump_json_per_step && debate_id > 0) {
+                    // Build a description from the action
+                    const TestAction& action = step.action();
+                    std::string desc = "Step " + std::to_string(step_index) + ": " +
+                        action.username() + " " + action.event_type();
+                    if (!action.debate_topic().empty()) {
+                        desc += " [topic: " + action.debate_topic() + "]";
+                    }
+                    if (!action.claim_text().empty()) {
+                        desc += " [text: " + action.claim_text() + "]";
+                    }
+                    if (action.claim_id() > 0) {
+                        desc += " [claim_id: " + std::to_string(action.claim_id()) + "]";
+                    }
+                    if (action.debate_id() > 0) {
+                        desc += " [debate_id: " + std::to_string(action.debate_id()) + "]";
+                    }
+                    std::string filename = "STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
+                    downloadJson(debate_id, "A", filename, desc);
                 }
             }
 
@@ -423,5 +450,6 @@ protected:
 TEST_F(ScenarioRunner, ComprehensiveTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ComprehensiveTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ComprehensiveTest.pbtxt";
-    executeScenario(s);
+    // Dump JSON after every action step — files: STEP_ComprehensiveTest_step0.json, step1.json, ...
+    executeScenario(s, /*dump_json_per_step=*/true);
 }
