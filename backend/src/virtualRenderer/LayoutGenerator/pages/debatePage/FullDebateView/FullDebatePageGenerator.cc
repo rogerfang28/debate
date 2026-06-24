@@ -2816,7 +2816,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
         (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
         (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
-        (*nodeCard.mutable_css())["height"] = std::to_string(nodeHeight) + "px";
+        (*nodeCard.mutable_css())["min-height"] = std::to_string(nodeHeight) + "px";
 
         ui::Component nodeTitle = ComponentGenerator::createText(
             "mapNodeTitle_" + std::to_string(claimId),
@@ -2834,7 +2834,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "mapNodeCreator_" + std::to_string(claimId),
             "Created by: " + std::to_string(node->creator_id()),
             "text-xs",
-            "text-gray-400",
+            "text-gray-100",
             "",
             "mb-1"
         );
@@ -2892,7 +2892,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
                     "mapNodeLabel_" + std::to_string(claimId) + "_" + us.username(),
                     us.username(),
                     "text-xs",
-                    "text-gray-300",
+                    "text-gray-100",
                     "",
                     ""
                 );
