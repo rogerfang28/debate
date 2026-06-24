@@ -34,7 +34,7 @@ int main() {
       return httplib::Server::HandlerResponse::Handled;
     }
 
-    return httplib::Server::HandlerResponse::Handled;
+    return httplib::Server::HandlerResponse::Unhandled;
   });
 
   svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {

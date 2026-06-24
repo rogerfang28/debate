@@ -19,6 +19,12 @@ const Renderer: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dataRef = useRef<PageData | null>(null);
+
+  // Keep ref in sync with state for the async callback
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
 
   const reloadPage = useCallback(async (): Promise<void> => {
     try {
@@ -64,7 +70,7 @@ const Renderer: React.FC = () => {
         if (!mounted) return;
         console.warn("Renderer: Failed to load data, retrying...", err);
         // Don't set error if we already have data
-        if (!data) {
+        if (!dataRef.current) {
           setError("Connecting to server...");
         }
       } finally {
@@ -79,7 +85,7 @@ const Renderer: React.FC = () => {
       mounted = false;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [data]);
+  }, []);
 
   // Load from JSON file
   const handleLoadFromFile = useCallback(() => {
@@ -114,7 +120,7 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen fade-in" style={{ background: 'var(--surface-bg)', color: 'var(--text-primary)' }}>
-      {/* Hidden file input — always present */}
+      {/* Load from file — visible only on the waiting screen */}
       <input
         ref={fileInputRef}
         type="file"
@@ -123,22 +129,23 @@ const Renderer: React.FC = () => {
         onChange={handleFileChange}
       />
 
-      {/* Load from file button — always visible */}
-      <button
-        onClick={handleLoadFromFile}
-        className="fixed top-4 left-4 z-50 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg shadow-lg transition-opacity hover:opacity-80"
-        style={{
-          background: 'var(--surface-elevated)',
-          border: '1px solid var(--border-default)',
-          color: 'var(--text-secondary)',
-        }}
-        title="Load layout from JSON file"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-        </svg>
-        Load File
-      </button>
+      {!loading && !error && !data && (
+        <button
+          onClick={handleLoadFromFile}
+          className="fixed top-4 left-4 z-50 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg shadow-lg transition-opacity hover:opacity-80"
+          style={{
+            background: 'var(--surface-elevated)',
+            border: '1px solid var(--border-default)',
+            color: 'var(--text-secondary)',
+          }}
+          title="Load layout from JSON file"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+          </svg>
+          Load File
+        </button>
+      )}
 
       {loading && (
         <div

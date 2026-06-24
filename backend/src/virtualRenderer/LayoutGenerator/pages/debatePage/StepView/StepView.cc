@@ -50,6 +50,7 @@ ui::Page StepView::GenerateStepViewPage(
 	);
     (*contentRow.mutable_css())["display"] = "flex";
     (*contentRow.mutable_css())["flex-direction"] = "row";
+    (*contentRow.mutable_css())["flex-wrap"] = "nowrap";
     (*contentRow.mutable_css())["align-items"] = "flex-start";
     (*contentRow.mutable_css())["gap"] = "1rem";
 
@@ -80,9 +81,9 @@ ui::Page StepView::GenerateStepViewPage(
 		""
 	);
 	(*rightColumn.mutable_css())["display"] = "flex";
-	(*rightColumn.mutable_css())["justify-content"] = "flex-end";
-	(*rightColumn.mutable_css())["flex"] = "0 0 34%";
-	(*rightColumn.mutable_css())["min-width"] = "320px";
+	(*rightColumn.mutable_css())["flex-direction"] = "row";
+	(*rightColumn.mutable_css())["flex"] = "0 0 45%";
+	(*rightColumn.mutable_css())["min-width"] = "400px";
 
 	ui::Component guideBox = ComponentGenerator::createContainer(
 		"stepViewGuideBox",
