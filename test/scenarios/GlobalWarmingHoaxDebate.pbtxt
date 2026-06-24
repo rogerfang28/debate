@@ -1,0 +1,182 @@
+name: "GlobalWarmingHoaxDebate"
+
+# =============================================================================
+# PHASE 1: SETUP
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "Scientist" event_type: "CREATE_USER" }
+}
+
+# =============================================================================
+# PHASE 2: TRUMP MAKES FALSE CLAIM
+# =============================================================================
+
+steps {
+  action {
+    username: "Trump"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Global Warming as a Chinese Hoax"
+  }
+  expectations {
+    check_type: "CLAIM_EXISTS"
+    claim_id: 1
+  }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Global Warming as a Chinese Hoax"
+  }
+}
+
+# Both join the debate
+steps {
+  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}
+
+# Trump adds his false claim as a supporting child of the debate topic
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "Trump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive."
+    claim_description: "Trump tweet, Nov 6 2012 — Twitter/X ID: 265895292191248385"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive."
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Trump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Scientist" expected_status: "UNDETERMINED" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+# =============================================================================
+# PHASE 3: SCIENTIST CHALLENGES WITH HISTORICAL EVIDENCE
+# =============================================================================
+
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Global warming physics was discovered in the 19th century by Western scientists — Eunice Newton Foote (1856), John Tyndall (1859), Svante Arrhenius (1896) — over 150 years before modern China's manufacturing rise. The claim is chronologically impossible."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 3
+    expected_claim_sentence: "Global warming physics was discovered in the 19th century by Western scientists — Eunice Newton Foote (1856), John Tyndall (1859), Svante Arrhenius (1896) — over 150 years before modern China's manufacturing rise. The claim is chronologically impossible."
+  }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+# =============================================================================
+# PHASE 4: TRUMP COUNTER-CHALLENGES (WEAK DEFENSE)
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action {
+    username: "Trump"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "China is the world's largest emitter of greenhouse gases today. They benefit from weak climate policies that let them produce cheap goods while the U.S. bears the cost of emissions cuts."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 3 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# =============================================================================
+# PHASE 5: SCIENTIST COUNTERS THE COUNTER-CHALLENGE
+# =============================================================================
+
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Current Chinese emissions are a recent development (post-2000 industrialization). The greenhouse effect was proven by Western scientists in the 1800s using basic lab equipment. China did not exist as a manufacturing power when the science was established. Correlation of modern emissions does not retroactively fabricate 19th-century physics."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+# =============================================================================
+# PHASE 6: TRUMP CONCEDES
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# PHASE 7: VERIFY FINAL STATE — CONCEDE CASCADE
+# =============================================================================
+
+# Claim 2 (Trump's false claim) — FALSE after concede cascade
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Scientist" expected_status: "FALSE_CLAIM" }
+}
+
+# Claim 3 (Scientist's historical evidence challenge) — TRUE, successfully defended
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Trump" expected_status: "TRUE_CLAIM" }
+}
+
+# Claim 4 (Trump's counter about Chinese emissions) — FALSE, Scientist's challenge stands
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "FALSE_CLAIM" }
+}
+
+# Claim 5 (Scientist's counter-challenge) — TRUE, unchallenged after concede
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "UNDETERMINED" }
+}
+
+# Root claim — debate topic still exists, affected by cascade
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 1 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+}
+
+# Both users still in debate
+steps {
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}

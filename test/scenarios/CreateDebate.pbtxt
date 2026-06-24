@@ -1,0 +1,30 @@
+name: "CreateDebate"
+
+# Create users
+steps { action { username: "A" event_type: "CREATE_USER" } }
+steps { action { username: "B" event_type: "CREATE_USER" } }
+steps { action { username: "C" event_type: "CREATE_USER" } }
+
+# A creates debate
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Is AI beneficial?" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "A" expected_action: "ACTION_HOME" }
+}
+
+# Verify root claim
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 1 expected_claim_sentence: "Is AI beneficial?" }
+}
+
+# A sees root as TRUE
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "UNDETERMINED" }
+}
+
+# Only 1 claim in collection
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 1 }
+}

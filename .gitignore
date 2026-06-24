@@ -3,3 +3,9 @@ node_modules
 third_party
 ngrok.exe
 *.exe
+test/test_scenario.sqlite3
+test/test_simulation.sqlite3
+test/FINAL_*.json
+test/FAIL_*.json
+test/build/
+test/step_view_*.json

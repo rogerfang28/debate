@@ -1,0 +1,184 @@
+name: "SeaLevelDebate"
+
+# =============================================================================
+# PHASE 1: SETUP
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "Scientist" event_type: "CREATE_USER" }
+}
+
+# =============================================================================
+# PHASE 2: TRUMP MAKES FALSE CLAIM
+# =============================================================================
+
+steps {
+  action {
+    username: "Trump"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Sea Level Rise Predictions"
+  }
+  expectations {
+    check_type: "CLAIM_EXISTS"
+    claim_id: 1
+  }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Sea Level Rise Predictions"
+  }
+}
+
+# Both join the debate
+steps {
+  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}
+
+# Trump goes to root claim and adds his false claim as a supporting child
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "Trump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Sea levels will only rise 1/8 of an inch over centuries. In 400 years, an eighth of an inch. You'll have more seafront property."
+    claim_description: "Trump rally statement, Sept 17 2024 — Flint MI"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "Sea levels will only rise 1/8 of an inch over centuries. In 400 years, an eighth of an inch. You'll have more seafront property."
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Trump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+# =============================================================================
+# PHASE 3: SCIENTIST CHALLENGES THE CLAIM
+# =============================================================================
+
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Satellite data proves sea levels are rising ~0.17 inches (4.2mm) per year, not 1/8 inch per centuries. NASA confirms 4+ inches risen since 1993 alone. Multiple feet projected by 2100."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+# =============================================================================
+# PHASE 4: TRUMP COUNTER-CHALLENGES (WEAK DEFENSE)
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action {
+    username: "Trump"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Sea levels have always changed naturally throughout Earth's history. Current trends are part of natural cycles, not unprecedented."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 3 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# =============================================================================
+# PHASE 5: SCIENTIST COUNTERS THE COUNTER-CHALLENGE
+# =============================================================================
+
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Natural sea level changes occurred over millennia. The current rate of 4.2mm/year is 10x faster than the post-ice age average, directly correlated with CO2 levels and Arctic ice loss measured by GRACE satellites."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+# =============================================================================
+# PHASE 6: TRUMP CONCEDES
+# =============================================================================
+
+steps {
+  action { username: "Trump" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# PHASE 7: VERIFY FINAL STATE — CONCEDE CASCADE
+# =============================================================================
+
+# After concede: claim 5 stands → claim 4 fails → claim 3 stands → claim 2 fails
+# Claim 2 (Trump's false claim) should be FALSE for everyone now
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Scientist" expected_status: "FALSE_CLAIM" }
+}
+
+# Claim 3 (Scientist's challenge) should be TRUE — it was successfully defended
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Trump" expected_status: "TRUE_CLAIM" }
+}
+
+# Claim 4 (Trump's counter-challenge) should be FALSE — Scientist's challenge on it stands
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "FALSE_CLAIM" }
+}
+
+# Claim 5 (Scientist's counter-challenge) should be TRUE — unchallenged after concede
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "UNDETERMINED" }
+}
+
+# Root claim — Trump's debate topic, affected by concede cascade
+# Claim 2 is FALSE → but root claim TRUE_CLAIM status depends on children
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 1 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+}
+
+# Both users still in debate
+steps {
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}
+
+# Neither went home
+steps {
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}

@@ -138,21 +138,137 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
+
+    // Set the user's current claim to the newly created challenge claim
+    // so that subsequent operations (like CONCEDE_CHALLENGE) can find it.
+    if (same_debate_challenge_claim_id != -1) {
+        user::User updatedUser = debateWrapper.getUserProtobuf(user_id);
+        updatedUser.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(same_debate_challenge_claim_id);
+        debateWrapper.updateUserProtobuf(user_id, updatedUser);
+    }
+
     Log::debug("[SubmitChallengeClaimHandler] Submitted new challenge for user: " + std::to_string(user_id));
 }
 
 void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    std::string username = userProto.username();
 
-    // Legacy challenge protobuf records are deprecated. Concede now only
-    // clears the in-progress challenge interaction state for the user.
-    
+    // Find the user's current claim — this is the challenge claim being conceded.
+    int challengeClaimId = userProto.engagement().debating_info().current_claim().id();
+    if (challengeClaimId == 0) {
+        Log::warn("[ConcedeChallengeHandler] User " + std::to_string(user_id) + " has no current claim");
+        CancelChallengeClaim(user_id, debateWrapper);
+        CloseAddChallenge(user_id, debateWrapper);
+        return;
+    }
+
+    debate::Claim challengeClaim = debateWrapper.getClaimById(challengeClaimId);
+    if (challengeClaim.id() == 0) {
+        Log::warn("[ConcedeChallengeHandler] Challenge claim " + std::to_string(challengeClaimId) + " not found");
+        CancelChallengeClaim(user_id, debateWrapper);
+        CloseAddChallenge(user_id, debateWrapper);
+        return;
+    }
+
+    // Find the CHALLENGE link from this claim to the challenged claim.
+    int challengedClaimId = -1;
+    for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
+        int linkId = challengeClaim.link_ids(i);
+        debate::Link link = debateWrapper.getLinkById(linkId);
+        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == challengeClaimId) {
+            challengedClaimId = link.connect_to();
+            break;
+        }
+    }
+
+    if (challengedClaimId == -1) {
+        Log::warn("[ConcedeChallengeHandler] No CHALLENGE link found from claim " + std::to_string(challengeClaimId));
+        CancelChallengeClaim(user_id, debateWrapper);
+        CloseAddChallenge(user_id, debateWrapper);
+        return;
+    }
+
+    // Step 1: Mark the challenge claim as FALSE for the concessor (they conceded it).
+    debate::Claim challengeClaimUpdated = debateWrapper.getClaimById(challengeClaimId);
+    (*challengeClaimUpdated.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
+    debateWrapper.updateClaimInDB(challengeClaimUpdated);
+    Log::debug("[ConcedeChallengeHandler] User " + username + " conceded challenge claim " +
+              std::to_string(challengeClaimId) + " → FALSE_CLAIM");
+
+    // Step 2: The challenged claim is TRUE (the challenge succeeded).
+    // Then find what the challenged claim itself challenges (if anything),
+    // and propagate FALSE from there up the parent chain.
+    //
+    // Example: A concedes claim 5 (challenges claim 4).
+    //   Claim 5 → FALSE (conceded)
+    //   Claim 4 → TRUE (challenge succeeded)
+    //   Claim 2 → FALSE (claim 4 challenges claim 2, and 4 succeeded)
+    //   Claim 1 → FALSE (parent of 2, propagated up)
+
+    // Set the challenged claim to TRUE
+    debate::Claim challengedClaim = debateWrapper.getClaimById(challengedClaimId);
+    (*challengedClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
+    debateWrapper.updateClaimInDB(challengedClaim);
+    Log::debug("[ConcedeChallengeHandler] Set claim " +
+              std::to_string(challengedClaimId) + " as TRUE for " + username);
+
+    // Find the claim that the challenged claim itself challenges (via CHALLENGE link).
+    int deeperChallengedId = -1;
+    for (int i = 0; i < challengedClaim.link_ids_size(); ++i) {
+        int linkId = challengedClaim.link_ids(i);
+        debate::Link link = debateWrapper.getLinkById(linkId);
+        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == challengedClaimId) {
+            deeperChallengedId = link.connect_to();
+            break;
+        }
+    }
+
+    // Walk up the parent chain from the deeper-challenged claim (if any),
+    // propagating FALSE to it and all its ancestors.
+    // If the challenged claim doesn't itself challenge anything, walk up from it.
+    int walkStartId = (deeperChallengedId != -1) ? deeperChallengedId : challengedClaimId;
+
+    // If we started from the challenged claim itself (no deeper challenge),
+    // we already set it to TRUE, so skip it and just walk ancestors.
+    // If we started from the deeper-challenged claim, we need to set it to FALSE.
+    bool alreadyHandledFirst = (deeperChallengedId == -1);
+
+    int currentClaimId = walkStartId;
+    while (currentClaimId != 0) {
+        debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
+        if (currentClaim.id() == 0) break;
+
+        if (alreadyHandledFirst) {
+            alreadyHandledFirst = false;
+        } else {
+            (*currentClaim.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
+            debateWrapper.updateClaimInDB(currentClaim);
+            Log::debug("[ConcedeChallengeHandler] Propagated FALSE to claim " +
+                      std::to_string(currentClaimId) + " for " + username);
+        }
+
+        // Move up to parent via PARENT_CHILD link
+        debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
+        if (parentClaim.id() == 0 || parentClaim.id() == currentClaimId) {
+            break;
+        }
+        currentClaimId = parentClaim.id();
+    }
+
+    // Also update global claim statuses
+    int debateId = userProto.engagement().debating_info().debate_id();
+    if (debateId > 0) {
+        debateWrapper.UpdateStatusOfAllClaimsInDebate(debateId);
+    }
+
     // clear the user's challenging state
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
-    
-    Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge");
+
+    Log::debug("[ConcedeChallengeHandler] User: " + std::to_string(user_id) + " conceded challenge on claim " +
+              std::to_string(challengeClaimId) + " challenging " + std::to_string(challengedClaimId));
 }
 
 void ChallengeHandler::OpenAddChallenge(const int& user_id, DebateWrapper& debateWrapper) {

@@ -113,11 +113,36 @@ struct TestActionDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TestActionDefaultTypeInternal _TestAction_default_instance_;
 
+inline constexpr TestStep::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        expectations_{},
+        action_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR TestStep::TestStep(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(TestStep_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct TestStepDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TestStepDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TestStepDefaultTypeInternal() {}
+  union {
+    TestStep _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TestStepDefaultTypeInternal _TestStep_default_instance_;
+
 inline constexpr TestScenario::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        actions_{},
-        expectations_{},
+        steps_{},
         name_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()) {}
@@ -151,13 +176,18 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_._has_bits_),
-        6, // hasbit index offset
+        5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.actions_),
-        PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.expectations_),
-        2,
-        0,
+        PROTOBUF_FIELD_OFFSET(::debate_test::TestScenario, _impl_.steps_),
         1,
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::debate_test::TestStep, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::debate_test::TestStep, _impl_.action_),
+        PROTOBUF_FIELD_OFFSET(::debate_test::TestStep, _impl_.expectations_),
+        1,
+        0,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_test::TestAction, _impl_._has_bits_),
         10, // hasbit index offset
@@ -203,43 +233,46 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::debate_test::TestScenario)},
-        {9, sizeof(::debate_test::TestAction)},
-        {26, sizeof(::debate_test::TestExpectation)},
+        {7, sizeof(::debate_test::TestStep)},
+        {14, sizeof(::debate_test::TestAction)},
+        {31, sizeof(::debate_test::TestExpectation)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate_test::_TestScenario_default_instance_._instance,
+    &::debate_test::_TestStep_default_instance_._instance,
     &::debate_test::_TestAction_default_instance_._instance,
     &::debate_test::_TestExpectation_default_instance_._instance,
 };
 const char descriptor_table_protodef_test_5fscenario_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\023test_scenario.proto\022\013debate_test\"z\n\014Te"
-    "stScenario\022\014\n\004name\030\001 \001(\t\022(\n\007actions\030\002 \003("
-    "\0132\027.debate_test.TestAction\0222\n\014expectatio"
-    "ns\030\003 \003(\0132\034.debate_test.TestExpectation\"\234"
-    "\001\n\nTestAction\022\020\n\010username\030\001 \001(\t\022\022\n\nevent"
-    "_type\030\002 \001(\t\022\024\n\014debate_topic\030\003 \001(\t\022\021\n\tdeb"
-    "ate_id\030\004 \001(\005\022\020\n\010claim_id\030\005 \001(\005\022\022\n\nclaim_"
-    "text\030\006 \001(\t\022\031\n\021claim_description\030\007 \001(\t\"\363\001"
-    "\n\017TestExpectation\022\022\n\ncheck_type\030\001 \001(\t\022\020\n"
-    "\010username\030\002 \001(\t\022\020\n\010claim_id\030\003 \001(\005\022\025\n\rfro"
-    "m_claim_id\030\004 \001(\005\022\023\n\013to_claim_id\030\005 \001(\005\022\021\n"
-    "\tlink_type\030\006 \001(\t\022\037\n\027expected_claim_sente"
-    "nce\030\007 \001(\t\022\027\n\017expected_status\030\010 \001(\t\022\026\n\016ex"
-    "pected_count\030\t \001(\005\022\027\n\017expected_action\030\n "
-    "\001(\tb\006proto3"
+    "\n\023test_scenario.proto\022\013debate_test\"B\n\014Te"
+    "stScenario\022\014\n\004name\030\001 \001(\t\022$\n\005steps\030\002 \003(\0132"
+    "\025.debate_test.TestStep\"g\n\010TestStep\022\'\n\006ac"
+    "tion\030\001 \001(\0132\027.debate_test.TestAction\0222\n\014e"
+    "xpectations\030\002 \003(\0132\034.debate_test.TestExpe"
+    "ctation\"\234\001\n\nTestAction\022\020\n\010username\030\001 \001(\t"
+    "\022\022\n\nevent_type\030\002 \001(\t\022\024\n\014debate_topic\030\003 \001"
+    "(\t\022\021\n\tdebate_id\030\004 \001(\005\022\020\n\010claim_id\030\005 \001(\005\022"
+    "\022\n\nclaim_text\030\006 \001(\t\022\031\n\021claim_description"
+    "\030\007 \001(\t\"\363\001\n\017TestExpectation\022\022\n\ncheck_type"
+    "\030\001 \001(\t\022\020\n\010username\030\002 \001(\t\022\020\n\010claim_id\030\003 \001"
+    "(\005\022\025\n\rfrom_claim_id\030\004 \001(\005\022\023\n\013to_claim_id"
+    "\030\005 \001(\005\022\021\n\tlink_type\030\006 \001(\t\022\037\n\027expected_cl"
+    "aim_sentence\030\007 \001(\t\022\027\n\017expected_status\030\010 "
+    "\001(\t\022\026\n\016expected_count\030\t \001(\005\022\027\n\017expected_"
+    "action\030\n \001(\tb\006proto3"
 };
 static ::absl::once_flag descriptor_table_test_5fscenario_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_test_5fscenario_2eproto = {
     false,
     false,
-    571,
+    620,
     descriptor_table_protodef_test_5fscenario_2eproto,
     "test_scenario.proto",
     &descriptor_table_test_5fscenario_2eproto_once,
     nullptr,
     0,
-    3,
+    4,
     schemas,
     file_default_instances,
     TableStruct_test_5fscenario_2eproto::offsets,
@@ -272,8 +305,7 @@ PROTOBUF_NDEBUG_INLINE TestScenario::Impl_::Impl_(
     [[maybe_unused]] const ::debate_test::TestScenario& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        actions_{visibility, arena, from.actions_},
-        expectations_{visibility, arena, from.expectations_},
+        steps_{visibility, arena, from.steps_},
         name_(arena, from.name_) {}
 
 TestScenario::TestScenario(
@@ -296,8 +328,7 @@ PROTOBUF_NDEBUG_INLINE TestScenario::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
-        actions_{visibility, arena},
-        expectations_{visibility, arena},
+        steps_{visibility, arena},
         name_(arena) {}
 
 inline void TestScenario::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
@@ -325,12 +356,8 @@ inline void* PROTOBUF_NONNULL TestScenario::PlacementNew_(
 }
 constexpr auto TestScenario::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_) +
-          decltype(TestScenario::_impl_.actions_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_) +
-          decltype(TestScenario::_impl_.expectations_)::
+      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.steps_) +
+          decltype(TestScenario::_impl_.steps_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
   });
@@ -377,17 +404,17 @@ TestScenario::GetClassData() const {
   return TestScenario_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 2, 37, 2>
+const ::_pbi::TcParseTable<1, 2, 1, 37, 2>
 TestScenario::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(TestScenario, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    2,  // num_aux_entries
+    2,  // num_field_entries
+    1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     TestScenario_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -396,32 +423,24 @@ TestScenario::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_test::TestScenario>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // string name = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 2, 0,
-      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_)}},
-    // repeated .debate_test.TestAction actions = 2;
+    // repeated .debate_test.TestStep steps = 2;
     {::_pbi::TcParser::FastMtR1,
      {18, 0, 0,
-      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_)}},
-    // repeated .debate_test.TestExpectation expectations = 3;
-    {::_pbi::TcParser::FastMtR1,
-     {26, 1, 1,
-      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_)}},
+      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.steps_)}},
+    // string name = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 1, 0,
+      PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string name = 1;
-    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .debate_test.TestAction actions = 2;
-    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.actions_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated .debate_test.TestExpectation expectations = 3;
-    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.expectations_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.name_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .debate_test.TestStep steps = 2;
+    {PROTOBUF_FIELD_OFFSET(TestScenario, _impl_.steps_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
-      {::_pbi::TcParser::GetTable<::debate_test::TestAction>()},
-      {::_pbi::TcParser::GetTable<::debate_test::TestExpectation>()},
+      {::_pbi::TcParser::GetTable<::debate_test::TestStep>()},
   }},
   {{
     "\30\4\0\0\0\0\0\0"
@@ -437,14 +456,11 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _impl_.actions_.Clear();
+      _impl_.steps_.Clear();
     }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _impl_.expectations_.Clear();
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       _impl_.name_.ClearNonDefaultToEmpty();
     }
   }
@@ -472,7 +488,7 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
 
   cached_has_bits = this_._impl_._has_bits_[0];
   // string name = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_name().empty()) {
       const ::std::string& _s = this_._internal_name();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -481,28 +497,15 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
     }
   }
 
-  // repeated .debate_test.TestAction actions = 2;
+  // repeated .debate_test.TestStep steps = 2;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
-                             this_._internal_actions_size());
+                             this_._internal_steps_size());
          i < n; i++) {
-      const auto& repfield = this_._internal_actions().Get(i);
+      const auto& repfield = this_._internal_steps().Get(i);
       target =
           ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
               2, repfield, repfield.GetCachedSize(),
-              target, stream);
-    }
-  }
-
-  // repeated .debate_test.TestExpectation expectations = 3;
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-    for (unsigned i = 0, n = static_cast<unsigned>(
-                             this_._internal_expectations_size());
-         i < n; i++) {
-      const auto& repfield = this_._internal_expectations().Get(i);
-      target =
-          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-              3, repfield, repfield.GetCachedSize(),
               target, stream);
     }
   }
@@ -532,23 +535,16 @@ PROTOBUF_NOINLINE void TestScenario::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // repeated .debate_test.TestAction actions = 2;
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // repeated .debate_test.TestStep steps = 2;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      total_size += 1UL * this_._internal_actions_size();
-      for (const auto& msg : this_._internal_actions()) {
-        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
-      }
-    }
-    // repeated .debate_test.TestExpectation expectations = 3;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      total_size += 1UL * this_._internal_expectations_size();
-      for (const auto& msg : this_._internal_expectations()) {
+      total_size += 1UL * this_._internal_steps_size();
+      for (const auto& msg : this_._internal_steps()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
     // string name = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_name().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_name());
@@ -574,18 +570,13 @@ void TestScenario::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_actions()->InternalMergeFromWithArena(
+      _this->_internal_mutable_steps()->InternalMergeFromWithArena(
           ::google::protobuf::MessageLite::internal_visibility(), arena,
-          from._internal_actions());
+          from._internal_steps());
     }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _this->_internal_mutable_expectations()->InternalMergeFromWithArena(
-          ::google::protobuf::MessageLite::internal_visibility(), arena,
-          from._internal_expectations());
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!from._internal_name().empty()) {
         _this->_internal_set_name(from._internal_name());
       } else {
@@ -614,12 +605,337 @@ void TestScenario::InternalSwap(TestScenario* PROTOBUF_RESTRICT PROTOBUF_NONNULL
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.actions_.InternalSwap(&other->_impl_.actions_);
-  _impl_.expectations_.InternalSwap(&other->_impl_.expectations_);
+  _impl_.steps_.InternalSwap(&other->_impl_.steps_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
 }
 
 ::google::protobuf::Metadata TestScenario::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class TestStep::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<TestStep>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(TestStep, _impl_._has_bits_);
+};
+
+TestStep::TestStep(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TestStep_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate_test.TestStep)
+}
+PROTOBUF_NDEBUG_INLINE TestStep::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::debate_test::TestStep& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        expectations_{visibility, arena, from.expectations_} {}
+
+TestStep::TestStep(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const TestStep& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TestStep_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TestStep* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.action_ = (CheckHasBit(cached_has_bits, 0x00000002U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.action_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:debate_test.TestStep)
+}
+PROTOBUF_NDEBUG_INLINE TestStep::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        expectations_{visibility, arena} {}
+
+inline void TestStep::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.action_ = {};
+}
+TestStep::~TestStep() {
+  // @@protoc_insertion_point(destructor:debate_test.TestStep)
+  SharedDtor(*this);
+}
+inline void TestStep::SharedDtor(MessageLite& self) {
+  TestStep& this_ = static_cast<TestStep&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.action_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL TestStep::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) TestStep(arena);
+}
+constexpr auto TestStep::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(TestStep, _impl_.expectations_) +
+          decltype(TestStep::_impl_.expectations_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(TestStep), alignof(TestStep), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&TestStep::PlacementNew_,
+                                 sizeof(TestStep),
+                                 alignof(TestStep));
+  }
+}
+constexpr auto TestStep::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_TestStep_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &TestStep::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<TestStep>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &TestStep::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<TestStep>(), &TestStep::ByteSizeLong,
+              &TestStep::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(TestStep, _impl_._cached_size_),
+          false,
+      },
+      &TestStep::kDescriptorMethods,
+      &descriptor_table_test_5fscenario_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull TestStep_class_data_ =
+        TestStep::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+TestStep::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&TestStep_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(TestStep_class_data_.tc_table);
+  return TestStep_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2>
+TestStep::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(TestStep, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    TestStep_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_test::TestStep>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated .debate_test.TestExpectation expectations = 2;
+    {::_pbi::TcParser::FastMtR1,
+     {18, 0, 1,
+      PROTOBUF_FIELD_OFFSET(TestStep, _impl_.expectations_)}},
+    // .debate_test.TestAction action = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 1, 0,
+      PROTOBUF_FIELD_OFFSET(TestStep, _impl_.action_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .debate_test.TestAction action = 1;
+    {PROTOBUF_FIELD_OFFSET(TestStep, _impl_.action_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .debate_test.TestExpectation expectations = 2;
+    {PROTOBUF_FIELD_OFFSET(TestStep, _impl_.expectations_), _Internal::kHasBitsOffset + 0, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::debate_test::TestAction>()},
+      {::_pbi::TcParser::GetTable<::debate_test::TestExpectation>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void TestStep::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate_test.TestStep)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _impl_.expectations_.Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(_impl_.action_ != nullptr);
+      _impl_.action_->Clear();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL TestStep::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const TestStep& this_ = static_cast<const TestStep&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL TestStep::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const TestStep& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:debate_test.TestStep)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .debate_test.TestAction action = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.action_, this_._impl_.action_->GetCachedSize(), target,
+        stream);
+  }
+
+  // repeated .debate_test.TestExpectation expectations = 2;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_expectations_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_expectations().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              2, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:debate_test.TestStep)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t TestStep::ByteSizeLong(const MessageLite& base) {
+  const TestStep& this_ = static_cast<const TestStep&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t TestStep::ByteSizeLong() const {
+  const TestStep& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:debate_test.TestStep)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // repeated .debate_test.TestExpectation expectations = 2;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      total_size += 1UL * this_._internal_expectations_size();
+      for (const auto& msg : this_._internal_expectations()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // .debate_test.TestAction action = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void TestStep::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<TestStep*>(&to_msg);
+  auto& from = static_cast<const TestStep&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate_test.TestStep)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_expectations()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_expectations());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(from._impl_.action_ != nullptr);
+      if (_this->_impl_.action_ == nullptr) {
+        _this->_impl_.action_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.action_);
+      } else {
+        _this->_impl_.action_->MergeFrom(*from._impl_.action_);
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void TestStep::CopyFrom(const TestStep& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:debate_test.TestStep)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void TestStep::InternalSwap(TestStep* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.expectations_.InternalSwap(&other->_impl_.expectations_);
+  swap(_impl_.action_, other->_impl_.action_);
+}
+
+::google::protobuf::Metadata TestStep::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

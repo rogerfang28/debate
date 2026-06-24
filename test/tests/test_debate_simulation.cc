@@ -37,14 +37,15 @@
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 
 #include <google/protobuf/text_format.h>
+#include <google/protobuf/json/json.h>
 
 // -------------------------------------------------------
-// downloadPbtxt — generates step view pbtxt from debate data
-// Uses standard protobuf TextFormat::PrintToString for serialization.
+// downloadJson — generates step view JSON from debate data
+// Uses protobuf's built-in MessageToJsonString for serialization.
 // The frontend parser handles the format as-is.
 // -------------------------------------------------------
 
-static void downloadPbtxt(
+static void downloadJson(
     int debateId,
     int viewerUserId,
     const std::string& viewerUsername,
@@ -79,16 +80,22 @@ static void downloadPbtxt(
     ui::Page page = StepView::GenerateStepViewPage(
         fullDebateInfo, collection, userDb);
 
-    // Serialize using standard Google TextFormat
-    std::string pbtxt;
-    google::protobuf::TextFormat::PrintToString(page, &pbtxt);
+    // Serialize using protobuf's built-in JSON utility
+    std::string json;
+    google::protobuf::json::PrintOptions opts;
+    opts.add_whitespace = true;  // pretty-print for readability
+    auto status = google::protobuf::json::MessageToJsonString(page, &json, opts);
+    if (!status.ok()) {
+        std::cerr << "ERROR: Failed to serialize to JSON: " << status.ToString() << std::endl;
+        return;
+    }
 
     // Write to file
     FILE* f = fopen(outputPath.c_str(), "w");
     if (f) {
-        fwrite(pbtxt.data(), 1, pbtxt.size(), f);
+        fwrite(json.data(), 1, json.size(), f);
         fclose(f);
-        std::cout << "\n=== PBTXT written to: " << outputPath << " ===" << std::endl;
+        std::cout << "\n=== JSON written to: " << outputPath << " ===" << std::endl;
         std::cout << "  page_id: " << page.page_id() << std::endl;
         std::cout << "  top-level components: " << page.components_size() << std::endl;
     } else {
@@ -469,16 +476,16 @@ TEST_F(DebateSimulationTest, FullDebateSimulation) {
     dumpState("After Step 4: B challenges child claim");
 
     // -------------------------------------------------------
-    // STEP 5: Generate step view pbtxt
+    // STEP 5: Generate step view JSON
     // -------------------------------------------------------
-    std::cout << "\n>>> STEP 5: Generating step view pbtxt" << std::endl;
-    downloadPbtxt(
+    std::cout << "\n>>> STEP 5: Generating step view JSON" << std::endl;
+    downloadJson(
         debateId,
         userA_id_,   // viewer = user A
         "A",         // viewer username
         *debate_,
         *db_,
-        "step_view_simulation.pbtxt"
+        "step_view_simulation.json"
     );
 
     // -------------------------------------------------------
@@ -509,16 +516,16 @@ TEST_F(DebateSimulationTest, SimpleCreateDebate_GeneratePbtxt) {
 
     dumpState("SimpleCreateDebate: after creating debate");
 
-    // Step 2: Generate step view pbtxt for this simple case
-    std::cout << "\n>>> SimpleCreateDebate: Generating step view pbtxt" << std::endl;
-    downloadPbtxt(
+    // Step 2: Generate step view JSON for this simple case
+    std::cout << "\n>>> SimpleCreateDebate: Generating step view JSON" << std::endl;
+    downloadJson(
         debateId,
         userA_id_,
         "A",
         *debate_,
         *db_,
-        "step_view_simple_create_debate.pbtxt"
+        "step_view_simple_create_debate.json"
     );
 
-    std::cout << "\n=== SimpleCreateDebate pbtxt written to: step_view_simple_create_debate.pbtxt ===" << std::endl;
+    std::cout << "\n=== SimpleCreateDebate JSON written to: step_view_simple_create_debate.json ===" << std::endl;
 }
