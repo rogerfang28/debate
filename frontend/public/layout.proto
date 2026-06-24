@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package ui;
+
+message Page {
+  string page_id = 1;                 // Unique page identifier
+  string title = 2;                   // Page title (optional)
+  repeated Component components = 3;  // Top-level components
+}
+
+message Component {
+  string id = 1;                       // Unique component ID
+  string name = 2;                      // Component name
+  ComponentType type = 3;              // Predefined component type
+  string text = 4;                     // I don't know what I'll replace this with if I remove it, maybe just making components each have their own classes
+  repeated Component children = 5;     // Nested components
+  Style style = 6;                     // Tailwind / structured style info
+  map<string, string> css = 8;         // Arbitrary inline CSS (fallback/flexibility)
+  map<string, string> attributes = 7;  // Arbitrary HTML attributes (e.g., data-* attrs)
+  // string value = 9;                   // Default or bound value
+}
+
+enum ComponentType {
+  UNKNOWN = 0;
+  TEXT = 1;
+  BUTTON = 2;
+  INPUT = 3;
+  CONTAINER = 12;
+}
+
+message Style {
+  string custom_class = 1;            // Any extra Tailwind classes FOR NOW WE ONLY USING THIS
+}
+
+enum LayoutType {
+  ABSLT = 0;
+  FLEX_ROW = 1;
+  FLEX_COL = 2;
+  GRID = 3;
+  INLINE = 4;
+}
+
+message Position {
+  float x = 1; // px or % depending on renderer
+  float y = 2;
+  string unit = 3; // "px", "%", "rem"
+}
+
+message Size {
+  string width = 1;  // Tailwind width class or explicit value
+  string height = 2; // Tailwind height class or explicit value
+}
+

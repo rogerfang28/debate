@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
+import { loadPbtxtFromFile } from "../utils/pbtxtParser.ts";
 
 interface PageData {
   [key: string]: any;
@@ -16,6 +17,23 @@ const Renderer: React.FC = () => {
   const [data, setData] = useState<PageData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [layoutError, setLayoutError] = useState<string | null>(null);
+  const [manualLayout, setManualLayout] = useState<boolean>(false);
+
+  const handleLoadLayout = useCallback(async () => {
+    setLayoutError(null);
+    try {
+      const page = await loadPbtxtFromFile();
+      if (page) {
+        setData(page);
+        setError(null);
+        setManualLayout(true);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setLayoutError("Failed to load layout: " + msg);
+    }
+  }, []);
 
   const reloadPage = useCallback(async (): Promise<void> => {
     try {
@@ -33,6 +51,13 @@ const Renderer: React.FC = () => {
     }
   }, []);
 
+  const handleReloadFromServer = useCallback(() => {
+    setManualLayout(false);
+    setData(null);
+    setError(null);
+    reloadPage();
+  }, [reloadPage]);
+
   // Expose global reload function for handleEvent.ts
   useEffect(() => {
     window.reloadPage = reloadPage;
@@ -47,6 +72,7 @@ const Renderer: React.FC = () => {
 
     async function fetchData(): Promise<void> {
       if (!mounted) return;
+      if (manualLayout) return;
       try {
         setLoading(true);
         const info: PageData | null = await postClientMessageToCPP({});
@@ -55,6 +81,9 @@ const Renderer: React.FC = () => {
           setData(info);
           setError(null);
           if (intervalId) clearInterval(intervalId);
+        } else {
+          // postClientMessageToCPP returned null/undefined — server unreachable
+          setError("Connecting to server...");
         }
       } catch (err: unknown) {
         if (!mounted) return;
@@ -89,6 +118,16 @@ const Renderer: React.FC = () => {
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
             Loading page...
           </p>
+          <button
+            onClick={handleLoadLayout}
+            className="text-xs px-4 py-2 rounded-md mt-2"
+            style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}
+          >
+            Load Layout from File
+          </button>
+          {layoutError && (
+            <p className="text-xs mt-1" style={{ color: 'var(--accent-red, #ef4444)' }}>{layoutError}</p>
+          )}
         </div>
       </div>
     );
@@ -108,9 +147,21 @@ const Renderer: React.FC = () => {
             </svg>
           </div>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{error}</p>
-          <button onClick={reloadPage} className="text-xs px-4 py-2 rounded-md" style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}>
-            Retry
-          </button>
+          <div className="flex gap-2">
+            <button onClick={reloadPage} className="text-xs px-4 py-2 rounded-md" style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}>
+              Retry
+            </button>
+            <button
+              onClick={handleLoadLayout}
+              className="text-xs px-4 py-2 rounded-md"
+              style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}
+            >
+              Load Layout from File
+            </button>
+          </div>
+          {layoutError && (
+            <p className="text-xs mt-1" style={{ color: 'var(--accent-red, #ef4444)' }}>{layoutError}</p>
+          )}
         </div>
       </div>
     );
@@ -135,10 +186,41 @@ const Renderer: React.FC = () => {
         </div>
       )}
       {data ? (
-        <PageRenderer page={data} />
+        <>
+          {manualLayout && (
+            <div
+              className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg shadow-lg"
+              style={{
+                background: 'var(--surface-elevated)',
+                border: '1px solid var(--border-default)',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              <span>📁 Layout loaded from file</span>
+              <button
+                onClick={handleReloadFromServer}
+                className="text-xs px-2 py-1 rounded"
+                style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}
+              >
+                Reload from Server
+              </button>
+            </div>
+          )}
+          <PageRenderer page={data} />
+        </>
       ) : (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-screen gap-4" style={{ background: 'var(--surface-bg)' }}>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Waiting for page data…</p>
+          <button
+            onClick={handleLoadLayout}
+            className="text-xs px-4 py-2 rounded-md"
+            style={{ background: 'var(--surface-card)', border: '1px solid var(--border-default)', color: 'var(--text-accent)' }}
+          >
+            Load Layout from File
+          </button>
+          {layoutError && (
+            <p className="text-xs" style={{ color: 'var(--accent-red, #ef4444)' }}>{layoutError}</p>
+          )}
         </div>
       )}
     </div>

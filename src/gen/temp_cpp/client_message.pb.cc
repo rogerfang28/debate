@@ -174,21 +174,23 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_client_5fmessage_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\024client_message.proto\022\016client_message\"f"
-    "\n\rClientMessage\022\024\n\014component_id\030\001 \001(\t\022\022\n"
-    "\nevent_type\030\002 \001(\t\022+\n\tpage_data\030\003 \001(\0132\030.c"
-    "lient_message.PageData\"N\n\010PageData\022\017\n\007pa"
-    "ge_id\030\001 \001(\t\0221\n\ncomponents\030\002 \003(\0132\035.client"
-    "_message.ComponentData\"8\n\rComponentData\022"
-    "\n\n\002id\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\022\014\n\004type\030\003 \001(\t"
-    "*E\n\tEventType\022\013\n\007UNKNOWN\020\000\022\010\n\004NONE\020\001\022\t\n\005"
-    "CLICK\020\002\022\n\n\006CHANGE\020\003\022\n\n\006SUBMIT\020\004b\006proto3"
+    "\n\024client_message.proto\022\016client_message\"\210"
+    "\001\n\rClientMessage\022!\n\014component_id\030\001 \001(\tR\013"
+    "componentId\022\035\n\nevent_type\030\002 \001(\tR\teventTy"
+    "pe\0225\n\tpage_data\030\003 \001(\0132\030.client_message.P"
+    "ageDataR\010pageData\"b\n\010PageData\022\027\n\007page_id"
+    "\030\001 \001(\tR\006pageId\022=\n\ncomponents\030\002 \003(\0132\035.cli"
+    "ent_message.ComponentDataR\ncomponents\"I\n"
+    "\rComponentData\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005value\030"
+    "\002 \001(\tR\005value\022\022\n\004type\030\003 \001(\tR\004type*E\n\tEven"
+    "tType\022\013\n\007UNKNOWN\020\000\022\010\n\004NONE\020\001\022\t\n\005CLICK\020\002\022"
+    "\n\n\006CHANGE\020\003\022\n\n\006SUBMIT\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_client_5fmessage_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_client_5fmessage_2eproto = {
     false,
     false,
-    359,
+    431,
     descriptor_table_protodef_client_5fmessage_2eproto,
     "client_message.proto",
     &descriptor_table_client_5fmessage_2eproto_once,
@@ -338,25 +340,25 @@ const ::_pbi::TcParseTable<2, 3, 1, 59, 2> ClientMessage::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string component_id = 1;
+    // string component_id = 1 [json_name = "componentId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.component_id_)}},
-    // string event_type = 2;
+    // string event_type = 2 [json_name = "eventType"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.event_type_)}},
-    // .client_message.PageData page_data = 3;
+    // .client_message.PageData page_data = 3 [json_name = "pageData"];
     {::_pbi::TcParser::FastMtS1,
      {26, 0, 0, PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.page_data_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string component_id = 1;
+    // string component_id = 1 [json_name = "componentId"];
     {PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.component_id_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string event_type = 2;
+    // string event_type = 2 [json_name = "eventType"];
     {PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.event_type_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .client_message.PageData page_data = 3;
+    // .client_message.PageData page_data = 3 [json_name = "pageData"];
     {PROTOBUF_FIELD_OFFSET(ClientMessage, _impl_.page_data_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -402,7 +404,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string component_id = 1;
+          // string component_id = 1 [json_name = "componentId"];
           if (!this_._internal_component_id().empty()) {
             const std::string& _s = this_._internal_component_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -410,7 +412,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string event_type = 2;
+          // string event_type = 2 [json_name = "eventType"];
           if (!this_._internal_event_type().empty()) {
             const std::string& _s = this_._internal_event_type();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -419,7 +421,7 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
           }
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .client_message.PageData page_data = 3;
+          // .client_message.PageData page_data = 3 [json_name = "pageData"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.page_data_, this_._impl_.page_data_->GetCachedSize(), target,
@@ -451,19 +453,19 @@ PROTOBUF_NOINLINE void ClientMessage::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string component_id = 1;
+            // string component_id = 1 [json_name = "componentId"];
             if (!this_._internal_component_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_component_id());
             }
-            // string event_type = 2;
+            // string event_type = 2 [json_name = "eventType"];
             if (!this_._internal_event_type().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_event_type());
             }
           }
            {
-            // .client_message.PageData page_data = 3;
+            // .client_message.PageData page_data = 3 [json_name = "pageData"];
             cached_has_bits = this_._impl_._has_bits_[0];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
@@ -651,19 +653,19 @@ const ::_pbi::TcParseTable<1, 2, 1, 39, 2> PageData::_table_ = {
     ::_pbi::TcParser::GetTable<::client_message::PageData>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .client_message.ComponentData components = 2;
+    // repeated .client_message.ComponentData components = 2 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(PageData, _impl_.components_)}},
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(PageData, _impl_.page_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {PROTOBUF_FIELD_OFFSET(PageData, _impl_.page_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .client_message.ComponentData components = 2;
+    // repeated .client_message.ComponentData components = 2 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(PageData, _impl_.components_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -702,7 +704,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string page_id = 1;
+          // string page_id = 1 [json_name = "pageId"];
           if (!this_._internal_page_id().empty()) {
             const std::string& _s = this_._internal_page_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -710,7 +712,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // repeated .client_message.ComponentData components = 2;
+          // repeated .client_message.ComponentData components = 2 [json_name = "components"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_components_size());
                i < n; i++) {
@@ -746,7 +748,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .client_message.ComponentData components = 2;
+            // repeated .client_message.ComponentData components = 2 [json_name = "components"];
             {
               total_size += 1UL * this_._internal_components_size();
               for (const auto& msg : this_._internal_components()) {
@@ -755,7 +757,7 @@ PROTOBUF_NOINLINE void PageData::Clear() {
             }
           }
            {
-            // string page_id = 1;
+            // string page_id = 1 [json_name = "pageId"];
             if (!this_._internal_page_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_page_id());
@@ -920,25 +922,25 @@ const ::_pbi::TcParseTable<2, 3, 0, 48, 2> ComponentData::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.id_)}},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.value_)}},
-    // string type = 3;
+    // string type = 3 [json_name = "type"];
     {::_pbi::TcParser::FastUS1,
      {26, 63, 0, PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.type_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.value_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string type = 3;
+    // string type = 3 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(ComponentData, _impl_.type_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -980,7 +982,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string id = 1;
+          // string id = 1 [json_name = "id"];
           if (!this_._internal_id().empty()) {
             const std::string& _s = this_._internal_id();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -988,7 +990,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // string value = 2;
+          // string value = 2 [json_name = "value"];
           if (!this_._internal_value().empty()) {
             const std::string& _s = this_._internal_value();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -996,7 +998,7 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // string type = 3;
+          // string type = 3 [json_name = "type"];
           if (!this_._internal_type().empty()) {
             const std::string& _s = this_._internal_type();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1029,17 +1031,17 @@ PROTOBUF_NOINLINE void ComponentData::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string id = 1;
+            // string id = 1 [json_name = "id"];
             if (!this_._internal_id().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_id());
             }
-            // string value = 2;
+            // string value = 2 [json_name = "value"];
             if (!this_._internal_value().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_value());
             }
-            // string type = 3;
+            // string type = 3 [json_name = "type"];
             if (!this_._internal_type().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_type());

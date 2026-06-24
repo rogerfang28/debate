@@ -170,15 +170,18 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
-    "\032\nuser.proto\032\020collection.proto\"\212\001\n\024Moder"
-    "atorToVRMessage\022\030\n\004user\030\001 \001(\0132\n.user.Use"
-    "r\022&\n\ncollection\030\002 \001(\0132\022.debate.Collectio"
-    "n\0220\n\013debate_list\030\003 \001(\0132\033.moderator_to_vr"
-    ".DebateList\"q\n\013DebateTopic\022\n\n\002id\030\001 \001(\005\022\r"
-    "\n\005topic\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022\024\n\014is_"
-    "challenge\030\004 \001(\010\022\035\n\025claim_its_challenging"
-    "\030\005 \001(\t\":\n\nDebateList\022,\n\006topics\030\001 \003(\0132\034.m"
-    "oderator_to_vr.DebateTopicb\006proto3"
+    "\032\nuser.proto\032\020collection.proto\"\250\001\n\024Moder"
+    "atorToVRMessage\022\036\n\004user\030\001 \001(\0132\n.user.Use"
+    "rR\004user\0222\n\ncollection\030\002 \001(\0132\022.debate.Col"
+    "lectionR\ncollection\022<\n\013debate_list\030\003 \001(\013"
+    "2\033.moderator_to_vr.DebateListR\ndebateLis"
+    "t\"\251\001\n\013DebateTopic\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005top"
+    "ic\030\002 \001(\tR\005topic\022\035\n\ncreator_id\030\003 \001(\005R\tcre"
+    "atorId\022!\n\014is_challenge\030\004 \001(\010R\013isChalleng"
+    "e\0222\n\025claim_its_challenging\030\005 \001(\tR\023claimI"
+    "tsChallenging\"B\n\nDebateList\0224\n\006topics\030\001 "
+    "\003(\0132\034.moderator_to_vr.DebateTopicR\006topic"
+    "sb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_moderator_5fto_5fvr_2eproto_deps[2] =
     {
@@ -189,7 +192,7 @@ static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    394,
+    489,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
@@ -347,25 +350,25 @@ const ::_pbi::TcParseTable<2, 3, 3, 0, 2> ModeratorToVRMessage::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .user.User user = 1;
+    // .user.User user = 1 [json_name = "user"];
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_)}},
-    // .debate.Collection collection = 2;
+    // .debate.Collection collection = 2 [json_name = "collection"];
     {::_pbi::TcParser::FastMtS1,
      {18, 1, 1, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.collection_)}},
-    // .moderator_to_vr.DebateList debate_list = 3;
+    // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
     {::_pbi::TcParser::FastMtS1,
      {26, 2, 2, PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .user.User user = 1;
+    // .user.User user = 1 [json_name = "user"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.Collection collection = 2;
+    // .debate.Collection collection = 2 [json_name = "collection"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.collection_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .moderator_to_vr.DebateList debate_list = 3;
+    // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_), _Internal::kHasBitsOffset + 2, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -418,21 +421,21 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           (void)cached_has_bits;
 
           cached_has_bits = this_._impl_._has_bits_[0];
-          // .user.User user = 1;
+          // .user.User user = 1 [json_name = "user"];
           if (cached_has_bits & 0x00000001u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 1, *this_._impl_.user_, this_._impl_.user_->GetCachedSize(), target,
                 stream);
           }
 
-          // .debate.Collection collection = 2;
+          // .debate.Collection collection = 2 [json_name = "collection"];
           if (cached_has_bits & 0x00000002u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 2, *this_._impl_.collection_, this_._impl_.collection_->GetCachedSize(), target,
                 stream);
           }
 
-          // .moderator_to_vr.DebateList debate_list = 3;
+          // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
           if (cached_has_bits & 0x00000004u) {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.debate_list_, this_._impl_.debate_list_->GetCachedSize(), target,
@@ -465,17 +468,17 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
           cached_has_bits = this_._impl_._has_bits_[0];
           if (cached_has_bits & 0x00000007u) {
-            // .user.User user = 1;
+            // .user.User user = 1 [json_name = "user"];
             if (cached_has_bits & 0x00000001u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.user_);
             }
-            // .debate.Collection collection = 2;
+            // .debate.Collection collection = 2 [json_name = "collection"];
             if (cached_has_bits & 0x00000002u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.collection_);
             }
-            // .moderator_to_vr.DebateList debate_list = 3;
+            // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
             if (cached_has_bits & 0x00000004u) {
               total_size += 1 +
                             ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_list_);
@@ -680,19 +683,19 @@ const ::_pbi::TcParseTable<3, 5, 0, 62, 2> DebateTopic::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // int32 id = 1;
+    // int32 id = 1 [json_name = "id"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.id_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_)}},
-    // string topic = 2;
+    // string topic = 2 [json_name = "topic"];
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.topic_)}},
-    // int32 creator_id = 3;
+    // int32 creator_id = 3 [json_name = "creatorId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.creator_id_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.creator_id_)}},
-    // bool is_challenge = 4;
+    // bool is_challenge = 4 [json_name = "isChallenge"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebateTopic, _impl_.is_challenge_), 63>(),
      {32, 63, 0, PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_)}},
-    // string claim_its_challenging = 5;
+    // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
     {::_pbi::TcParser::FastUS1,
      {42, 63, 0, PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_its_challenging_)}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -700,19 +703,19 @@ const ::_pbi::TcParseTable<3, 5, 0, 62, 2> DebateTopic::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // int32 id = 1;
+    // int32 id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-    // string topic = 2;
+    // string topic = 2 [json_name = "topic"];
     {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.topic_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 creator_id = 3;
+    // int32 creator_id = 3 [json_name = "creatorId"];
     {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.creator_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-    // bool is_challenge = 4;
+    // bool is_challenge = 4 [json_name = "isChallenge"];
     {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // string claim_its_challenging = 5;
+    // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
     {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_its_challenging_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -755,14 +758,14 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // int32 id = 1;
+          // int32 id = 1 [json_name = "id"];
           if (this_._internal_id() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<1>(
                     stream, this_._internal_id(), target);
           }
 
-          // string topic = 2;
+          // string topic = 2 [json_name = "topic"];
           if (!this_._internal_topic().empty()) {
             const std::string& _s = this_._internal_topic();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -770,21 +773,21 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
             target = stream->WriteStringMaybeAliased(2, _s, target);
           }
 
-          // int32 creator_id = 3;
+          // int32 creator_id = 3 [json_name = "creatorId"];
           if (this_._internal_creator_id() != 0) {
             target = ::google::protobuf::internal::WireFormatLite::
                 WriteInt32ToArrayWithField<3>(
                     stream, this_._internal_creator_id(), target);
           }
 
-          // bool is_challenge = 4;
+          // bool is_challenge = 4 [json_name = "isChallenge"];
           if (this_._internal_is_challenge() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteBoolToArray(
                 4, this_._internal_is_challenge(), target);
           }
 
-          // string claim_its_challenging = 5;
+          // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
           if (!this_._internal_claim_its_challenging().empty()) {
             const std::string& _s = this_._internal_claim_its_challenging();
             ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -817,27 +820,27 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // string topic = 2;
+            // string topic = 2 [json_name = "topic"];
             if (!this_._internal_topic().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_topic());
             }
-            // string claim_its_challenging = 5;
+            // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
             if (!this_._internal_claim_its_challenging().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_claim_its_challenging());
             }
-            // int32 id = 1;
+            // int32 id = 1 [json_name = "id"];
             if (this_._internal_id() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_id());
             }
-            // int32 creator_id = 3;
+            // int32 creator_id = 3 [json_name = "creatorId"];
             if (this_._internal_creator_id() != 0) {
               total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
                   this_._internal_creator_id());
             }
-            // bool is_challenge = 4;
+            // bool is_challenge = 4 [json_name = "isChallenge"];
             if (this_._internal_is_challenge() != 0) {
               total_size += 2;
             }
@@ -1021,13 +1024,13 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> DebateList::_table_ = {
     ::_pbi::TcParser::GetTable<::moderator_to_vr::DebateList>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .moderator_to_vr.DebateTopic topics = 1;
+    // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
     {::_pbi::TcParser::FastMtR1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .moderator_to_vr.DebateTopic topics = 1;
+    // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
     {PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
@@ -1062,7 +1065,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // repeated .moderator_to_vr.DebateTopic topics = 1;
+          // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
           for (unsigned i = 0, n = static_cast<unsigned>(
                                    this_._internal_topics_size());
                i < n; i++) {
@@ -1098,7 +1101,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
 
           ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
-            // repeated .moderator_to_vr.DebateTopic topics = 1;
+            // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
             {
               total_size += 1UL * this_._internal_topics_size();
               for (const auto& msg : this_._internal_topics()) {

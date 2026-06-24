@@ -1,0 +1,15 @@
+--- a/src/google/protobuf/port_def.inc
++++ b/src/google/protobuf/port_def.inc
+@@ -440,6 +440,12 @@
+ #define PROTOBUF_TAILCALL true
+ #else
+ #define PROTOBUF_MUSTTAIL
+ #define PROTOBUF_TAILCALL false
+ #endif
++
++// GCC does not support [[clang::musttail]] and will error on tail-call
++// optimization requirements in protobuf 33.x. Override to no-op.
++#if defined(__GNUC__) && !defined(__clang__)
++#undef PROTOBUF_MUSTTAIL
++#define PROTOBUF_MUSTTAIL
++#endif

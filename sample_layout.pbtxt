@@ -1,0 +1,44 @@
+// sample_layout.pbtxt
+// Example layout file for the debate tool frontend.
+// Load this via the "Load Layout from File" button when the backend is down.
+
+page_id: "sample_page"
+
+components {
+  id: "header_text"
+  name: "Header"
+  type: TEXT
+  text: "Welcome to the Debate Tool"
+}
+
+components {
+  id: "info_text"
+  name: "Info"
+  type: TEXT
+  text: "This layout was loaded from a .pbtxt file. The backend is not running."
+}
+
+components {
+  id: "button_container"
+  name: "Actions"
+  type: CONTAINER
+  children {
+    id: "btn_retry"
+    name: "Retry"
+    type: BUTTON
+    text: "Retry Connection"
+  }
+  children {
+    id: "btn_load"
+    name: "Load"
+    type: BUTTON
+    text: "Load Another Layout"
+  }
+}
+
+components {
+  id: "footer_text"
+  name: "Footer"
+  type: TEXT
+  text: "Engineer-1 — pbtxt layout loader demo"
+}
