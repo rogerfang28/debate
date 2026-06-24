@@ -1,0 +1,27 @@
+name: "ChallengeClaim"
+
+# Create users
+steps { action { username: "A" event_type: "CREATE_USER" } }
+steps { action { username: "B" event_type: "CREATE_USER" } }
+
+# A creates debate
+steps { action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Is AI beneficial?" } }
+
+# Both enter
+steps { action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "B" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+# A adds child claim #2
+steps { action { username: "A" event_type: "OPEN_ADD_CHILD_CLAIM" } }
+steps { action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "AI improves healthcare" claim_description: "test" } }
+
+# B challenges claim #2
+steps { action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action { username: "B" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Healthcare AI has bias issues" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "Healthcare AI has bias issues" }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}

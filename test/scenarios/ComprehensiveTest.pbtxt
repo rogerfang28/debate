@@ -1,0 +1,153 @@
+name: "ComprehensiveTest"
+
+# =============================================================================
+# PHASE 1: SETUP — Create users
+# =============================================================================
+
+steps { action { username: "A" event_type: "CREATE_USER" } }
+steps { action { username: "B" event_type: "CREATE_USER" } }
+steps { action { username: "C" event_type: "CREATE_USER" } }
+
+# A creates debate "Is AI beneficial?" → root claim id=1
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Is AI beneficial?" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 1 expected_claim_sentence: "Is AI beneficial?" }
+}
+
+# =============================================================================
+# PHASE 2: JOIN DEBATE
+# =============================================================================
+
+steps {
+  action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "A" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+}
+steps {
+  action { username: "B" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "B" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "TRUE_CLAIM" }
+}
+steps {
+  action { username: "C" event_type: "JOIN_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "C" expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "TRUE_CLAIM" }
+}
+
+# =============================================================================
+# PHASE 3: ADD CLAIMS
+# =============================================================================
+
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "AI improves healthcare" claim_description: "test" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "AI improves healthcare" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+}
+
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "AI causes job displacement" claim_description: "test" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "AI causes job displacement" }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+# =============================================================================
+# PHASE 4: CHALLENGE — B challenges claim #2
+# =============================================================================
+
+steps { action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action { username: "B" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Healthcare AI has bias issues" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Healthcare AI has bias issues" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# =============================================================================
+# PHASE 5: COUNTER-CHALLENGE — A challenges B's challenge claim #4
+# =============================================================================
+
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 4 } }
+steps {
+  action { username: "A" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Bias can be mitigated with diverse training data" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+# =============================================================================
+# PHASE 6: C CHALLENGES A'S COUNTER-CHALLENGE
+# =============================================================================
+
+steps { action { username: "C" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps {
+  action { username: "C" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Diverse data is hard to obtain in practice" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 6 to_claim_id: 5 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+}
+
+# =============================================================================
+# PHASE 7: CONCEDE — A concedes their counter-challenge
+# =============================================================================
+
+steps {
+  action { username: "A" event_type: "CONCEDE_CHALLENGE" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "A" expected_action: "ACTION_DEBATING" }
+}
+
+# =============================================================================
+# FINAL EXPECTATIONS — Verify all per-user views after concede cascade
+# =============================================================================
+
+# --- Claim 2 "AI improves healthcare" per-user views ---
+# A created it, but after concede A sees it as FALSE (B's challenge #4 succeeded)
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "A" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "B" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "C" expected_status: "UNDETERMINED" }
+}
+
+# --- Claim 3 "AI causes job displacement" per-user views ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "C" expected_status: "UNDETERMINED" }
+}
+
+# --- Claim 4 "Healthcare AI has bias issues" per-user views ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "B" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "A" expected_status: "TRUE_CLAIM" }
+}
+
+# --- Claim 5 "Bias can be mitigated..." per-user views ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "A" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "C" expected_status: "FALSE_CLAIM" }
+}
+
+# --- Claim 6 "Diverse data is hard..." per-user views ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "C" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "A" expected_status: "UNDETERMINED" }
+}
+
+# --- Root claim per-user views after concede cascade ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "UNDETERMINED" }
+}

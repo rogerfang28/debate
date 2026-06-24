@@ -1,0 +1,30 @@
+name: "EnterDebate"
+
+# Create users
+steps { action { username: "A" event_type: "CREATE_USER" } }
+steps { action { username: "B" event_type: "CREATE_USER" } }
+steps { action { username: "C" event_type: "CREATE_USER" } }
+
+# A creates debate
+steps { action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Is AI beneficial?" } }
+
+# All enter debate — verify state after each
+steps {
+  action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "A" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "B" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "B" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "C" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "C" expected_action: "ACTION_DEBATING" }
+}
+
+# All see root claim
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "TRUE_CLAIM" }
+}
