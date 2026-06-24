@@ -2367,7 +2367,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         claimIds.push_back(node.claim_id());
     }
     std::sort(claimIds.begin(), claimIds.end());
-    Log::test(
+    Log::debug(
         "[MapLayout] Start: nodes=" + std::to_string(tree.nodes_size()) +
         ", links=" + std::to_string(tree.links_size()) +
         ", proto_root_claim_id=" + std::to_string(tree.root_claim_id())
@@ -2391,7 +2391,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             }
             traversalChildrenById[claimId].push_back(childId);
             hasIncoming.insert(childId);
-            Log::test(
+            Log::debug(
                 "[MapLayout] Node adjacency child edge: " +
                 std::to_string(claimId) + " -> " + std::to_string(childId)
             );
@@ -2404,7 +2404,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             }
             traversalChildrenById[parentId].push_back(claimId);
             hasIncoming.insert(claimId);
-            Log::test(
+            Log::debug(
                 "[MapLayout] Node adjacency parent edge: " +
                 std::to_string(parentId) + " -> " + std::to_string(claimId)
             );
@@ -2423,7 +2423,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             challengingClaimIds.insert(link.from_claim_id());
             challengedClaimIds.insert(link.to_claim_id());
             traversalChildrenById[link.to_claim_id()].push_back(link.from_claim_id());
-            Log::test(
+            Log::debug(
                 "[MapLayout] Traversal challenge edge: " +
                 std::to_string(link.to_claim_id()) + " -> " + std::to_string(link.from_claim_id()) +
                 " (challenge link_id=" + std::to_string(link.link_id()) + ")"
@@ -2435,7 +2435,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
         traversalChildrenById[link.from_claim_id()].push_back(link.to_claim_id());
         hasIncoming.insert(link.to_claim_id());
-        Log::test(
+        Log::debug(
             "[MapLayout] Link fallback parent-child edge: " +
             std::to_string(link.from_claim_id()) + " -> " + std::to_string(link.to_claim_id()) +
             " (link_id=" + std::to_string(link.link_id()) + ")"
@@ -2453,7 +2453,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             }
             childrenList += std::to_string(children[i]);
         }
-        Log::test(
+        Log::debug(
             "[MapLayout] Traversal children parent=" + std::to_string(entry.first) +
             " -> [" + childrenList + "]"
         );
@@ -2462,18 +2462,18 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     int rootClaimId = 0;
     if (tree.root_claim_id() != 0 && nodeById.count(tree.root_claim_id()) > 0) {
         rootClaimId = tree.root_claim_id();
-        Log::test("[MapLayout] Using proto root_claim_id=" + std::to_string(rootClaimId));
+        Log::debug("[MapLayout] Using proto root_claim_id=" + std::to_string(rootClaimId));
     } else {
         for (int claimId : claimIds) {
             if (hasIncoming.count(claimId) == 0) {
                 rootClaimId = claimId;
-                Log::test("[MapLayout] Root selected by no-incoming rule=" + std::to_string(rootClaimId));
+                Log::debug("[MapLayout] Root selected by no-incoming rule=" + std::to_string(rootClaimId));
                 break;
             }
         }
         if (rootClaimId == 0 && !claimIds.empty()) {
             rootClaimId = claimIds.front();
-            Log::test("[MapLayout] Root selected by fallback smallest id=" + std::to_string(rootClaimId));
+            Log::debug("[MapLayout] Root selected by fallback smallest id=" + std::to_string(rootClaimId));
         }
     }
 
@@ -2498,7 +2498,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
         for (int childId : childIt->second) {
             if (visited.count(childId) > 0) {
-                Log::test(
+                Log::debug(
                     "[MapLayout] BFS skip already visited child=" + std::to_string(childId) +
                     " from parent=" + std::to_string(current)
                 );
@@ -2507,7 +2507,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             visited.insert(childId);
             treeChildren[current].push_back(childId);
             q.push(childId);
-            Log::test(
+            Log::debug(
                 "[MapLayout] BFS assign parent: " +
                 std::to_string(current) + " -> " + std::to_string(childId)
             );
@@ -2577,7 +2577,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         const int topLeftX = centerX - (nodeWidth / 2);
         const int topLeftY = canvasPadding + depth * verticalGap;
         nodeTopLeftById[claimId] = {topLeftX, topLeftY};
-        Log::test(
+        Log::debug(
             "[MapLayout] Place node id=" + std::to_string(claimId) +
             ", depth=" + std::to_string(depth) +
             ", x=" + std::to_string(topLeftX) +
@@ -2631,7 +2631,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             treeEdges.push_back({entry.first, childId});
         }
     }
-    Log::test(
+    Log::debug(
         "[MapLayout] Final tree summary: root=" + std::to_string(rootClaimId) +
         ", placed_nodes=" + std::to_string(nodeTopLeftById.size()) +
         ", tree_edges=" + std::to_string(treeEdges.size()) +

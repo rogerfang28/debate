@@ -21,10 +21,19 @@ steps {
 
 # A, B, C all enter the debate (sets up engagement state: debate_id, current_claim, root_claim)
 steps {
+  action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
   action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 }
 }
 steps {
+  action { username: "B" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
   action { username: "B" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "C" event_type: "JOIN_DEBATE" debate_id: 1 }
 }
 steps {
   action { username: "C" event_type: "ENTER_DEBATE" debate_id: 1 }
