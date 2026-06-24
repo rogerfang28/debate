@@ -2829,6 +2829,17 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&nodeCard, nodeTitle);
 
+        // Creator info
+        ui::Component nodeCreator = ComponentGenerator::createText(
+            "mapNodeCreator_" + std::to_string(claimId),
+            "Created by: " + std::to_string(node->creator_id()),
+            "text-xs",
+            "text-gray-400",
+            "",
+            "mb-1"
+        );
+        ComponentGenerator::addChild(&nodeCard, nodeCreator);
+
         // Per-user status rectangles: "username: [color]"
         if (node->user_statuses_size() > 0) {
             ui::Component userStatusRow = ComponentGenerator::createContainer(

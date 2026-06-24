@@ -208,10 +208,28 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				outChild->set_creator_id(childClaim.creator_id());
 				outChild->set_status(MapClaimStatusForUser(childClaim, userProto.user_id(), userProto.username()));
 				// Populate per-user status rectangles on child claim
+				// Always include at least the viewer's status (default UNDETERMINED if unset)
+				{
+				    auto statusIt = childClaim.user_statuses().find(userProto.username());
+				    if (statusIt != childClaim.user_statuses().end()) {
+				        rendering_info::UserStatus* us = outChild->add_user_statuses();
+				        us->set_username(userProto.username());
+				        us->set_status(statusIt->second);
+				    } else {
+				        debate::ClaimStatus defaultStatus = (userProto.user_id() == childClaim.creator_id())
+				            ? debate::ClaimStatus::TRUE_CLAIM
+				            : debate::ClaimStatus::UNDETERMINED;
+				        rendering_info::UserStatus* us = outChild->add_user_statuses();
+				        us->set_username(userProto.username());
+				        us->set_status(defaultStatus);
+				    }
+				}
+				// Add other users' statuses
 				for (const auto& s : childClaim.user_statuses()) {
-					rendering_info::UserStatus* us = outChild->add_user_statuses();
-					us->set_username(s.first);
-					us->set_status(s.second);
+				    if (s.first == userProto.username()) continue;  // already added above
+				    rendering_info::UserStatus* us = outChild->add_user_statuses();
+				    us->set_username(s.first);
+				    us->set_status(s.second);
 				}
 				visibleClaimIds.insert(childClaim.id());
 			} else {
@@ -442,10 +460,30 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
 
 		// Populate per-user status rectangles on tree node
+		// Always include at least the viewer's status (default UNDETERMINED if unset)
+		{
+		    auto statusIt = claim.user_statuses().find(viewer_username);
+		    if (statusIt != claim.user_statuses().end()) {
+		        // Viewer has an explicit entry — add it
+		        rendering_info::UserStatus* us = outNode->add_user_statuses();
+		        us->set_username(viewer_username);
+		        us->set_status(statusIt->second);
+		    } else {
+		        // Viewer has no entry — show their default status
+		        debate::ClaimStatus defaultStatus = (viewer_user_id == claim.creator_id())
+		            ? debate::ClaimStatus::TRUE_CLAIM
+		            : debate::ClaimStatus::UNDETERMINED;
+		        rendering_info::UserStatus* us = outNode->add_user_statuses();
+		        us->set_username(viewer_username);
+		        us->set_status(defaultStatus);
+		    }
+		}
+		// Add other users' statuses
 		for (const auto& s : claim.user_statuses()) {
-			rendering_info::UserStatus* us = outNode->add_user_statuses();
-			us->set_username(s.first);
-			us->set_status(s.second);
+		    if (s.first == viewer_username) continue;  // already added above
+		    rendering_info::UserStatus* us = outNode->add_user_statuses();
+		    us->set_username(s.first);
+		    us->set_status(s.second);
 		}
 
 		auto parentIt = parentIdsByClaim.find(claimId);
