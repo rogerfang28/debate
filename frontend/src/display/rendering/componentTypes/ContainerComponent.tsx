@@ -19,7 +19,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
           gap: '0.75rem',
         } : {}),
         ...style,
-        overflow: 'hidden',
+        overflow: style?.overflow || 'hidden',
       }}
     >
       {nested.map((child: any, idx: number) => (

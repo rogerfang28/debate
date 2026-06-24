@@ -2655,6 +2655,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     );
     (*mapCanvas.mutable_css())["width"] = std::to_string(canvasWidth) + "px";
     (*mapCanvas.mutable_css())["height"] = std::to_string(canvasHeight) + "px";
+    (*mapCanvas.mutable_css())["overflow"] = "visible";
     (*mapCanvas.mutable_css())["transform"] = "scale(" + std::to_string(normalizedScale) + ")";
     (*mapCanvas.mutable_css())["transform-origin"] = "top left";
 
