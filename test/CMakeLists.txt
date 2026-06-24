@@ -4,13 +4,13 @@
 #
 # Targets:
 #   debate_tests       — unit tests (12 tests: DebateEventTest + PropagationTest)
-#   debate_simulation  — comprehensive simulation test (1 test: DebateSimulationTest)
+#   debate_simulation  — .pbtxt scenario runner + JSON page generation
 #
 # Run separately:
 #   ./build/debate_tests.exe           — all unit tests
-#   ./build/debate_simulation.exe      — simulation test only
+#   ./build/debate_simulation.exe      — scenario tests only
 #   ctest -R UnitTests                 — unit tests via ctest
-#   ctest -R Simulation                — simulation via ctest
+#   ctest -R Scenario                 — scenario tests via ctest
 
 cmake_minimum_required(VERSION 3.20)
 project(DebateTests LANGUAGES CXX)
@@ -141,37 +141,27 @@ set(COMMON_LIBS
 )
 
 # ============================================================
-# UNIT TESTS — fast, isolated, no persistent state
+# SCENARIO TEST — .pbtxt-driven scenarios + JSON page generation
 # ============================================================
-set(UNIT_TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
-    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
-)
-
-add_executable(debate_tests
-    ${UNIT_TEST_SOURCES}
-    ${DB_SOURCES}
-    ${HANDLER_SOURCES}
-    ${PB_SRC}
-)
-target_link_libraries(debate_tests ${COMMON_LIBS})
-
-# ============================================================
-# SIMULATION TEST — comprehensive, persistent DB, verbose output
-# ============================================================
-set(SIMULATION_TEST_SOURCES
-    ${CMAKE_SOURCE_DIR}/tests/test_debate_simulation.cc
+set(SCENARIO_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
     ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
 )
 
 add_executable(debate_simulation
-    ${SIMULATION_TEST_SOURCES}
+    ${SCENARIO_TEST_SOURCES}
     ${DB_SOURCES}
-    ${HANDLER_SOURCES}
     ${MODERATOR_SOURCES}
     ${RENDERER_SOURCES}
     ${PB_SRC}
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
 )
 target_link_libraries(debate_simulation ${COMMON_LIBS})
 
@@ -185,6 +175,3 @@ message(STATUS "Copied scenario files: ${SCENARIO_FILES}")
 # ============================================================
 # CTest integration
 # ============================================================
-enable_testing()
-add_test(NAME UnitTests COMMAND debate_tests)
-add_test(NAME Simulation COMMAND debate_simulation)

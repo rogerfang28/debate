@@ -79,7 +79,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 
 	// Pass viewer info so tree nodes can show per-user status
 	const rendering_info::FullDebateViewInfo fullDebateInfo = ParseFullDebateViewInfo(collectionProto, userProto.user_id(), userProto.username());
-	Log::test("[DebatePageInfoParser] ParseFullDebateViewInfo invoked from ParseFromUser; steps_count=" + std::to_string(fullDebateInfo.steps_size()));
+	Log::debug("[DebatePageInfoParser] ParseFullDebateViewInfo invoked from ParseFromUser; steps_count=" + std::to_string(fullDebateInfo.steps_size()));
 
 	
 	// Set viewer metadata for per-user claim status lookup
@@ -340,7 +340,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 
 rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateViewInfo(const debate::Collection& collectionProto, int viewer_user_id, const std::string& viewer_username) {
 	rendering_info::FullDebateViewInfo info;
-	Log::test(
+	Log::debug(
 		"[ParseFullDebateViewInfo] Start: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) +
 		", links_by_id=" + std::to_string(collectionProto.links_by_id_size())
 	);
@@ -378,7 +378,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 			}
 		}
 	}
-	Log::test("[ParseFullDebateViewInfo] Resolved rootClaimId=" + std::to_string(rootClaimId));
+	Log::debug("[ParseFullDebateViewInfo] Resolved rootClaimId=" + std::to_string(rootClaimId));
 
 	// Build full debate tree payload for map rendering.
 	rendering_info::FullDebateTree* tree = info.mutable_full_debate_tree();
@@ -467,7 +467,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		}
 	}
 
-	Log::test(
+	Log::debug(
 		"[ParseFullDebateViewInfo] Built full_debate_tree: root_claim_id=" + std::to_string(tree->root_claim_id()) +
 		", nodes=" + std::to_string(tree->nodes_size()) +
 		", links=" + std::to_string(tree->links_size())
@@ -481,7 +481,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 			rootStep->set_claim_id(rootClaimId);
 			rootStep->set_summary(rootIt->second.sentence());
 			addedClaimIds.insert(rootClaimId);
-			Log::test(
+			Log::debug(
 				"[ParseFullDebateViewInfo] Added root step: claim_id=" + std::to_string(rootClaimId) +
 				", summary=\"" + rootIt->second.sentence() + "\""
 			);
@@ -489,7 +489,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	}
 
 	for (const auto& entry : linksById) {
-		Log::test("[ParseFullDebateViewInfo] Inspecting link_id=" + std::to_string(entry.first));
+		Log::debug("[ParseFullDebateViewInfo] Inspecting link_id=" + std::to_string(entry.first));
 		const debate::Link& link = entry.second;
 		if (link.link_type() != debate::LinkType::CHALLENGE) {
 			continue;
@@ -497,13 +497,13 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 
 		const int challengeClaimId = link.connect_from();
 		if (addedClaimIds.count(challengeClaimId) > 0) {
-			Log::test("[ParseFullDebateViewInfo] Skip duplicate challenge step claim_id=" + std::to_string(challengeClaimId));
+			Log::debug("[ParseFullDebateViewInfo] Skip duplicate challenge step claim_id=" + std::to_string(challengeClaimId));
 			continue;
 		}
 
 		auto claimIt = collectionProto.claims_by_id().find(challengeClaimId);
 		if (claimIt == collectionProto.claims_by_id().end()) {
-			Log::test("[ParseFullDebateViewInfo] Missing challenge claim_id=" + std::to_string(challengeClaimId) + " in claims_by_id");
+			Log::debug("[ParseFullDebateViewInfo] Missing challenge claim_id=" + std::to_string(challengeClaimId) + " in claims_by_id");
 			continue;
 		}
 
@@ -511,17 +511,17 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		step->set_claim_id(challengeClaimId);
 		step->set_summary(claimIt->second.sentence());
 		addedClaimIds.insert(challengeClaimId);
-		Log::test(
+		Log::debug(
 			"[ParseFullDebateViewInfo] Added challenge step from link_id=" + std::to_string(entry.first) +
 			": claim_id=" + std::to_string(challengeClaimId) +
 			", summary=\"" + claimIt->second.sentence() + "\""
 		);
 	}
 
-	Log::test("[ParseFullDebateViewInfo] Final steps_count=" + std::to_string(info.steps_size()));
+	Log::debug("[ParseFullDebateViewInfo] Final steps_count=" + std::to_string(info.steps_size()));
 	for (int i = 0; i < info.steps_size(); ++i) {
 		const rendering_info::Steps& step = info.steps(i);
-		Log::test(
+		Log::debug(
 			"[ParseFullDebateViewInfo] step[" + std::to_string(i) + "] claim_id=" + std::to_string(step.claim_id()) +
 			", summary=\"" + step.summary() + "\""
 		);
@@ -546,7 +546,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 				(*view->mutable_claim_statuses())[cs.first] = cs.second;
 			}
 		}
-		Log::test("[ParseFullDebateViewInfo] per_user_statuses: users=" + std::to_string(perUser->users_size()));
+		Log::debug("[ParseFullDebateViewInfo] per_user_statuses: users=" + std::to_string(perUser->users_size()));
 	}
 
 	return info;
