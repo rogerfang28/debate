@@ -1,0 +1,52 @@
+{
+  "pageId": "sample-page",
+  "title": "Sample Debate Page",
+  "components": [
+    {
+      "id": "header",
+      "name": "Header",
+      "type": "TEXT",
+      "text": "Welcome to the Debate",
+      "style": {
+        "customClass": "text-2xl font-bold text-center p-4"
+      }
+    },
+    {
+      "id": "description",
+      "name": "Description",
+      "type": "TEXT",
+      "text": "This is a sample layout loaded from a JSON file.",
+      "style": {
+        "customClass": "text-sm text-gray-600 text-center p-2"
+      }
+    },
+    {
+      "id": "input-container",
+      "name": "Input Container",
+      "type": "CONTAINER",
+      "children": [
+        {
+          "id": "name-input",
+          "name": "Name Input",
+          "type": "INPUT",
+          "text": "Enter your name",
+          "style": {
+            "customClass": "border rounded p-2 w-full"
+          }
+        }
+      ],
+      "style": {
+        "customClass": "flex flex-col gap-2 p-4"
+      }
+    },
+    {
+      "id": "submit-btn",
+      "name": "Submit Button",
+      "type": "BUTTON",
+      "text": "Submit",
+      "style": {
+        "customClass": "bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600"
+      }
+    }
+  ]
+}
