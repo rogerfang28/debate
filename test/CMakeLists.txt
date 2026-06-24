@@ -76,6 +76,17 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+)
+
+# --- Moderator + response generators (needed by scenario runner) ---
+set(MODERATOR_SOURCES
+    ${REPO_ROOT}/backend/src/debateModerator/DebateModerator.cc
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/loginPageResponse/LoginPageResponseGenerator.cc
 )
 
 # --- Virtual renderer source files (step view / pbtxt generation) ---
@@ -99,13 +110,15 @@ include_directories(
     ${REPO_ROOT}/backend/src/debateModerator
 )
 
-# --- Virtual renderer include paths ---
+# --- Virtual renderer/include paths ---
 include_directories(
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/StepView
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView
     ${REPO_ROOT}/backend/src/database/virtualrenderer
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/homePageResponse
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/loginPageResponse
     ${REPO_ROOT}/backend/src/virtualRenderer/utils
 )
 
@@ -148,16 +161,26 @@ target_link_libraries(debate_tests ${COMMON_LIBS})
 # ============================================================
 set(SIMULATION_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_simulation.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
 )
 
 add_executable(debate_simulation
     ${SIMULATION_TEST_SOURCES}
     ${DB_SOURCES}
     ${HANDLER_SOURCES}
+    ${MODERATOR_SOURCES}
     ${RENDERER_SOURCES}
     ${PB_SRC}
 )
 target_link_libraries(debate_simulation ${COMMON_LIBS})
+
+# ============================================================
+# Copy scenario .pbtxt files to build directory
+# ============================================
+file(GLOB SCENARIO_FILES "${CMAKE_SOURCE_DIR}/scenarios/*.pbtxt")
+file(COPY ${SCENARIO_FILES} DESTINATION "${CMAKE_BINARY_DIR}/scenarios")
+message(STATUS "Copied scenario files: ${SCENARIO_FILES}")
 
 # ============================================================
 # CTest integration

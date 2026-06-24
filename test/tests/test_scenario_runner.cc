@@ -2,22 +2,15 @@
 //
 // ARCHITECTURE OVERVIEW
 // =====================
-// This file implements a generic test runner that executes debate scenarios
-// defined entirely in TestScenario protobuf messages. There is ZERO hardcoded
-// state — no hardcoded users, no hardcoded debate IDs, no hardcoded topics.
-// Everything flows through TestScenario.actions.
+// Each TestScenario is a list of TestSteps.
+// Each TestStep has an optional action and optional expectations.
+// Steps execute sequentially — action runs, then expectations are checked.
 //
-// HOW IT WORKS
-// ============
-// 1. Each TEST_F builds a TestScenario protobuf in memory
-// 2. TestScenario.actions define what happens (user creation, debate events)
-// 3. TestScenario.expectations define what should be true afterward
-// 4. executeScenario() runs the actions, builds collection, checks expectations
+// This means you can verify state at any intermediate point, not just at the end.
 //
 // ACTION TYPES
-// ============
+// ===========
 // "CREATE_USER" — Special runner-level action. Calls createUserIfNotExist().
-//                 Not a DebateEvent — handled before event forging.
 // Any other string — Parsed as debate_event::EventType enum name.
 //                   Forged into a DebateEvent and sent through handleRequest().
 //
@@ -52,21 +45,24 @@
 #include "debateModerator/DebateModerator.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 #include "google/protobuf/text_format.h"
-
-// Forward declaration — defined in test_step_view_layout.cc
-void downloadPbtxt(int debate_id, const std::string& viewer_username = "A",
-                   const std::string& output_path = "");
+#include "google/protobuf/json/json.h"
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.h"
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
+#include "database/virtualrenderer/VRUserDatabase.h"
 
 using debate_test::TestScenario;
+using debate_test::TestStep;
 using debate_test::TestAction;
 using debate_test::TestExpectation;
+
+// Forward declaration — defined in test_step_view_layout.cc
+void downloadJson(int debate_id, const std::string& viewer_username = "A",
+                  const std::string& output_path = "");
 
 
 // ===========================================================================
 // SECTION 1: TEST FIXTURE
 // ===========================================================================
-// ScenarioRunner is the gtest fixture. Each TEST_F gets a fresh instance
-// with its own DebateModerator and clean database.
 
 class ScenarioRunner : public ::testing::Test {
 protected:
@@ -74,8 +70,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 1a: Lifecycle (SetUp / TearDown)
     // -----------------------------------------------------------------------
-    // SetUp: Creates a fresh SQLite DB and DebateModerator for each test.
-    // TearDown: Cleans up the moderator and unsets the DB env var.
 
     void SetUp() override {
         db_path_ = "test_scenario.sqlite3";
@@ -95,10 +89,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 1b: User Management
     // -----------------------------------------------------------------------
-    // getUserId: Resolves a username to a user_id. Creates the user on first
-    // encounter via createUserIfNotExist(). Subsequent calls return the cached ID.
-    // Users are only created when a CREATE_USER action or the first event for
-    // that username is encountered.
 
     int getUserId(const std::string& username) {
         auto it = user_ids_.find(username);
@@ -112,7 +102,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 2: STRING → ENUM PARSERS
     // -----------------------------------------------------------------------
-    // Convert human-readable strings from the proto into C++ enums.
 
     debate_event::EventType parseEventType(const std::string& name) {
         debate_event::EventType type;
@@ -140,8 +129,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 3: EVENT FORGING
     // -----------------------------------------------------------------------
-    // forgeEvent: Converts a TestAction into a DebateEvent protobuf.
-    // Does NOT handle CREATE_USER — that's handled separately in executeScenario().
 
     debate_event::DebateEvent forgeEvent(const TestAction& action) {
         int user_id = getUserId(action.username());
@@ -189,11 +176,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 4: COLLECTION BUILDER
     // -----------------------------------------------------------------------
-    // Instead of sending a NONE event to each user (wasteful, doesn't match
-    // production), we call BuildCollection::BuildForDebateAndUsers() directly.
-    // This is the same function the backend uses for the virtual renderer.
-    // One call returns a single Collection with all claims, links, and
-    // per-user statuses for all users.
 
     debate::Collection buildCollectionForAllUsers(int debate_id) {
         std::vector<int> user_ids;
@@ -207,8 +189,6 @@ protected:
     // -----------------------------------------------------------------------
     // SECTION 5: COLLECTION QUERY HELPERS
     // -----------------------------------------------------------------------
-    // These extract data from a single Collection protobuf (shared across all users).
-    // Each claim has a user_statuses map: username → TRUE/FALSE/UNDETERMINED.
 
     debate::Claim getClaim(const debate::Collection& collection, int claim_id) {
         auto it = collection.claims_by_id().find(claim_id);
@@ -246,9 +226,6 @@ protected:
         return false;
     }
 
-    // Find the Nth claim ID that is the "from" end of a link with the given type
-    // targeting a specific claim. Used to find challenge claims by excluding
-    // already-known ones. skip_ids are IDs to skip (e.g. already-found challenges).
     int findNthChallengeClaimId(const debate::Collection& collection, int target_claim_id,
                                  debate::LinkType link_type, int n, const std::vector<int>& skip_ids) {
         int found = 0;
@@ -266,100 +243,150 @@ protected:
 
 
     // -----------------------------------------------------------------------
-    // SECTION 6: SCENARIO EXECUTOR
+    // SECTION 6b: EXPECTATION CHECKER (saves page JSON on failure)
     // -----------------------------------------------------------------------
-    // executeScenario: Runs a TestScenario end-to-end.
-    //
-    // Phase 1 — Execute actions:
-    //   CREATE_USER → calls getUserId()
-    //   All others → forgeEvent() → handleRequest()
-    //   Stores each user's last response (needed for ENGAGEMENT_STATE).
-    //
-    // Phase 2 — Build collection:
-    //   Single call to BuildCollection::BuildForDebateAndUsers().
-    //
-    // Phase 3 — Check expectations:
-    //   ENGAGEMENT_STATE → checked against stored per-user response
-    //   All others → checked against the shared collection
+    // Checks a single expectation against the current state.
+    // On failure, calls downloadJson to save the rendered page as JSON.
 
-    void executeScenario(const TestScenario& scenario) {
-        // Phase 1: Execute all actions
-        std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
-        for (const auto& action : scenario.actions()) {
-            if (action.event_type() == "CREATE_USER") {
-                getUserId(action.username());
-                continue;
+    void checkExpectation(const TestExpectation& exp,
+                          const std::map<std::string, moderator_to_vr::ModeratorToVRMessage>& last_responses,
+                          const debate::Collection& collection,
+                          const std::string& scenario_name,
+                          int step_index,
+                          int debate_id) {
+
+        auto savePageJson = [&]() {
+            if (debate_id > 0) {
+                std::string filename = "FAIL_" + scenario_name + "_step" + std::to_string(step_index) + ".json";
+                downloadJson(debate_id, "A", filename);
             }
-            int user_id = getUserId(action.username());
-            debate_event::DebateEvent event = forgeEvent(action);
-            auto resp = moderator_->handleRequest(event);
-            last_responses[action.username()] = resp;
+        };
+
+        if (exp.check_type() == "ENGAGEMENT_STATE") {
+            auto resp_it = last_responses.find(exp.username());
+            if (resp_it == last_responses.end()) {
+                savePageJson();
+            }
+            ASSERT_TRUE(resp_it != last_responses.end())
+                << "[" << scenario_name << "] ENGAGEMENT_STATE unknown user: " << exp.username();
+            auto actual = resp_it->second.user().engagement().current_action();
+            auto expected = parseEngagementAction(exp.expected_action());
+            if (actual != expected) {
+                savePageJson();
+            }
+            EXPECT_EQ(actual, expected)
+                << "[" << scenario_name << "] ENGAGEMENT_STATE " << exp.username();
+            return;
         }
 
-        // Phase 2: Build collection (find debate_id from actions)
-        int debate_id = 0;
-        for (const auto& action : scenario.actions()) {
-            if ((action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE")
-                && action.debate_id() > 0) {
-                debate_id = action.debate_id();
-                break;
+        if (exp.check_type() == "CLAIM_EXISTS") {
+            if (getClaim(collection, exp.claim_id()).id() == 0) {
+                savePageJson();
             }
+            EXPECT_GT(getClaim(collection, exp.claim_id()).id(), 0)
+                << "[" << scenario_name << "] CLAIM_EXISTS " << exp.claim_id();
         }
-        debate::Collection collection;
-        if (debate_id > 0) {
-            collection = buildCollectionForAllUsers(debate_id);
+        else if (exp.check_type() == "CLAIM_SENTENCE") {
+            if (getClaim(collection, exp.claim_id()).sentence() != exp.expected_claim_sentence()) {
+                savePageJson();
+            }
+            EXPECT_EQ(getClaim(collection, exp.claim_id()).sentence(), exp.expected_claim_sentence())
+                << "[" << scenario_name << "] CLAIM_SENTENCE " << exp.claim_id();
         }
-
-        // Phase 3: Verify expectations
-        for (const auto& exp : scenario.expectations()) {
-            const std::string& username = exp.username();
-
-            if (exp.check_type() == "ENGAGEMENT_STATE") {
-                auto resp_it = last_responses.find(username);
-                ASSERT_TRUE(resp_it != last_responses.end())
-                    << "[" << scenario.name() << "] ENGAGEMENT_STATE unknown user: " << username;
-                auto actual = resp_it->second.user().engagement().current_action();
-                auto expected = parseEngagementAction(exp.expected_action());
-                EXPECT_EQ(actual, expected)
-                    << "[" << scenario.name() << "] ENGAGEMENT_STATE " << username;
-                continue;
+        else if (exp.check_type() == "USER_VIEW") {
+            auto actual = getUserView(collection, exp.claim_id(), exp.username());
+            auto expected = parseClaimStatus(exp.expected_status());
+            if (actual != expected) {
+                savePageJson();
             }
-
-            if (exp.check_type() == "CLAIM_EXISTS") {
-                EXPECT_GT(getClaim(collection, exp.claim_id()).id(), 0)
-                    << "[" << scenario.name() << "] CLAIM_EXISTS " << exp.claim_id();
+            EXPECT_EQ(actual, expected)
+                << "[" << scenario_name << "] USER_VIEW " << exp.claim_id() << " " << exp.username();
+        }
+        else if (exp.check_type() == "LINK_COUNT") {
+            auto lt = parseLinkType(exp.link_type());
+            if (countLinks(collection, lt) != exp.expected_count()) {
+                savePageJson();
             }
-            else if (exp.check_type() == "CLAIM_SENTENCE") {
-                EXPECT_EQ(getClaim(collection, exp.claim_id()).sentence(), exp.expected_claim_sentence())
-                    << "[" << scenario.name() << "] CLAIM_SENTENCE " << exp.claim_id();
+            EXPECT_EQ(countLinks(collection, lt), exp.expected_count())
+                << "[" << scenario_name << "] LINK_COUNT " << exp.link_type();
+        }
+        else if (exp.check_type() == "LINK_EXISTS") {
+            auto lt = parseLinkType(exp.link_type());
+            if (!linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id())) {
+                savePageJson();
             }
-            else if (exp.check_type() == "USER_VIEW") {
-                auto actual = getUserView(collection, exp.claim_id(), username);
-                auto expected = parseClaimStatus(exp.expected_status());
-                EXPECT_EQ(actual, expected)
-                    << "[" << scenario.name() << "] USER_VIEW " << exp.claim_id() << " " << username;
+            EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
+                << "[" << scenario_name << "] LINK_EXISTS "
+                << exp.from_claim_id() << " -> " << exp.to_claim_id();
+        }
+        else if (exp.check_type() == "COLLECTION_SIZE") {
+            if (collection.claims_by_id_size() != exp.expected_count()) {
+                savePageJson();
             }
-            else if (exp.check_type() == "LINK_COUNT") {
-                auto lt = parseLinkType(exp.link_type());
-                EXPECT_EQ(countLinks(collection, lt), exp.expected_count())
-                    << "[" << scenario.name() << "] LINK_COUNT " << exp.link_type();
-            }
-            else if (exp.check_type() == "LINK_EXISTS") {
-                auto lt = parseLinkType(exp.link_type());
-                EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
-                    << "[" << scenario.name() << "] LINK_EXISTS "
-                    << exp.from_claim_id() << " -> " << exp.to_claim_id();
-            }
-            else if (exp.check_type() == "COLLECTION_SIZE") {
-                EXPECT_EQ(collection.claims_by_id_size(), exp.expected_count())
-                    << "[" << scenario.name() << "] COLLECTION_SIZE";
-            }
+            EXPECT_EQ(collection.claims_by_id_size(), exp.expected_count())
+                << "[" << scenario_name << "] COLLECTION_SIZE";
         }
     }
 
 
     // -----------------------------------------------------------------------
-    // SECTION 7: FIXTURE MEMBER VARIABLES
+    // SECTION 7: SCENARIO EXECUTOR
+    // -----------------------------------------------------------------------
+    // Iterates through steps in order.
+    // For each step: execute action (if present), then check expectations (if present).
+
+    void executeScenario(const TestScenario& scenario) {
+        // Track per-user last response for ENGAGEMENT_STATE checks
+        std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
+        // Track the debate_id from actions for collection building
+        int debate_id = 0;
+        int step_index = 0;
+
+        for (const auto& step : scenario.steps()) {
+            // --- Execute action (if present) ---
+            if (step.has_action()) {
+                const TestAction& action = step.action();
+
+                if (action.event_type() == "CREATE_USER") {
+                    getUserId(action.username());
+                } else {
+                    int user_id = getUserId(action.username());
+                    debate_event::DebateEvent event = forgeEvent(action);
+                    auto resp = moderator_->handleRequest(event);
+                    last_responses[action.username()] = resp;
+
+                    // Track debate_id from ENTER_DEBATE or JOIN_DEBATE
+                    if (action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE") {
+                        if (action.debate_id() > 0) debate_id = action.debate_id();
+                    }
+                }
+            }
+
+            // --- Check expectations (if any) ---
+            if (step.expectations_size() > 0) {
+                // Build collection for expectation checks
+                debate::Collection collection;
+                if (debate_id > 0) {
+                    collection = buildCollectionForAllUsers(debate_id);
+                }
+
+                for (const auto& exp : step.expectations()) {
+                    checkExpectation(exp, last_responses, collection, scenario.name(), step_index, debate_id);
+                }
+            }
+            step_index++;
+        }
+
+        // Save final state as JSON after scenario completes (pass or fail)
+        if (debate_id > 0) {
+            std::string filename = "FINAL_" + scenario.name() + ".json";
+            downloadJson(debate_id, "A", filename);
+        }
+    }
+
+
+    // -----------------------------------------------------------------------
+    // SECTION 8: FIXTURE MEMBER VARIABLES
     // -----------------------------------------------------------------------
 
     std::string db_path_;
@@ -368,10 +395,8 @@ protected:
 
 
     // -----------------------------------------------------------------------
-    // SECTION 7a: LOAD SCENARIO FROM PBTXT FILE
+    // SECTION 8a: LOAD SCENARIO FROM PBTXT FILE
     // -----------------------------------------------------------------------
-    // Loads a TestScenario protobuf from a .pbtxt file on disk.
-    // path: relative to the build directory (e.g. "scenarios/CreateDebate.pbtxt")
 
     TestScenario LoadScenarioFromFile(const std::string& path) {
         TestScenario scenario;
@@ -389,134 +414,14 @@ protected:
 
 
 // ===========================================================================
-// SECTION 8: TEST CASES
+// SECTION 9: TEST CASES
 // ===========================================================================
-// Each TEST_F loads a TestScenario from a .pbtxt file and calls executeScenario().
-// Claim IDs are predictable: SQLite auto-increment gives root=1, first child=2,
-// first challenge=3, etc.
-
 
 // ---------------------------------------------------------------------------
-// CreateDebate
+// ComprehensiveTest — Full lifecycle scenario (create→add children→challenge→counter→concede)
 // ---------------------------------------------------------------------------
-// A creates a debate and enters it. Verifies root claim exists, sentence is
-// correct, and A sees it as TRUE_CLAIM while B/C see UNDETERMINED.
-
-TEST_F(ScenarioRunner, CreateDebate) {
-    TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load CreateDebate.pbtxt";
+TEST_F(ScenarioRunner, ComprehensiveTest) {
+    TestScenario s = LoadScenarioFromFile("scenarios/ComprehensiveTest.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load ComprehensiveTest.pbtxt";
     executeScenario(s);
-
-    // Dump step view layout as .pbtxt for inspection
-    downloadPbtxt(1, "A", "step_view_create_debate.pbtxt");
-}
-
-
-// ---------------------------------------------------------------------------
-// CreateDebate_FromPbtxt
-// ---------------------------------------------------------------------------
-// Duplicate of CreateDebate that also loads from pbtxt — kept as proof that
-// the pbtxt loading pipeline works identically to inline construction.
-
-TEST_F(ScenarioRunner, CreateDebate_FromPbtxt) {
-    TestScenario s = LoadScenarioFromFile("scenarios/CreateDebate.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load CreateDebate.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// EnterDebate
-// ---------------------------------------------------------------------------
-// A creates debate, all users enter. Verifies all are in ACTION_DEBATING state
-// and all can see the root claim.
-
-TEST_F(ScenarioRunner, EnterDebate) {
-    TestScenario s = LoadScenarioFromFile("scenarios/EnterDebate.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load EnterDebate.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// AddChildClaim
-// ---------------------------------------------------------------------------
-// A creates debate, all enter, A adds a child claim. Verifies child exists,
-// sentence is correct, A sees it as TRUE_CLAIM, B/C see UNDETERMINED.
-// Also verifies 1 PARENT_CHILD link.
-
-TEST_F(ScenarioRunner, AddChildClaim) {
-    TestScenario s = LoadScenarioFromFile("scenarios/AddChildClaim.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load AddChildClaim.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// ChallengeClaim
-// ---------------------------------------------------------------------------
-// A creates debate + child, B challenges the child. Verifies challenge claim
-// exists, per-user views, link counts, and engagement states.
-
-TEST_F(ScenarioRunner, ChallengeClaim) {
-    TestScenario s = LoadScenarioFromFile("scenarios/ChallengeClaim.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load ChallengeClaim.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// FullStateVerification
-// ---------------------------------------------------------------------------
-// Comprehensive test: create debate, all join, add child, challenge.
-// Verifies all claims, all per-user views, link counts, engagement states.
-
-TEST_F(ScenarioRunner, FullStateVerification) {
-    TestScenario s = LoadScenarioFromFile("scenarios/FullStateVerification.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load FullStateVerification.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// CounterChallenge
-// ---------------------------------------------------------------------------
-// B challenges A's child, A counter-challenges B's challenge claim,
-// B launches a second challenge on the same child.
-// Verifies: counter-challenge exists, per-user views, 3 CHALLENGE links.
-
-TEST_F(ScenarioRunner, CounterChallenge) {
-    TestScenario s = LoadScenarioFromFile("scenarios/CounterChallenge.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load CounterChallenge.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// ConcedeChallenge
-// ---------------------------------------------------------------------------
-// B challenges, A counter-challenges, B concedes.
-// Currently ConcedeChallenge is a stub — only clears UI state.
-// This test documents expected behavior for future implementation.
-
-TEST_F(ScenarioRunner, ConcedeChallenge) {
-    TestScenario s = LoadScenarioFromFile("scenarios/ConcedeChallenge.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load ConcedeChallenge.pbtxt";
-    executeScenario(s);
-}
-
-
-// ---------------------------------------------------------------------------
-// FullLifecycle
-// ---------------------------------------------------------------------------
-// Complete flow: create, add child, challenge, counter-challenge, second
-// challenge, concede. Verifies final state with all claims and engagement.
-
-TEST_F(ScenarioRunner, FullLifecycle) {
-    TestScenario s = LoadScenarioFromFile("scenarios/FullLifecycle.pbtxt");
-    ASSERT_GT(s.actions_size(), 0) << "Failed to load FullLifecycle.pbtxt";
-    executeScenario(s);
-
-    // Dump step view layout as .pbtxt for inspection
-    downloadPbtxt(1, "A", "step_view_full_lifecycle.pbtxt");
 }

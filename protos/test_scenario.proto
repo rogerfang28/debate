@@ -2,13 +2,19 @@ syntax = "proto3";
 
 package debate_test;
 
-// A complete test scenario: setup actions + expected outcomes
-// Everything is driven by actions — no hardcoded state.
+// A complete test scenario: an ordered list of steps
+// Each step has an action (optional) and expectations (optional)
+// Steps execute sequentially — action runs, then expectations check.
 message TestScenario {
-  string name = 1;           // e.g. "ChallengeClaim", "CounterChallenge"
+  string name = 1;
+  repeated TestStep steps = 2;
+}
 
-  repeated TestAction actions = 2;
-  repeated TestExpectation expectations = 3;
+// One step = optional action + optional expectations
+// Both can be empty: action-only (no check), expectation-only (check state), or both.
+message TestStep {
+  TestAction action = 1;                      // optional — if absent, just check expectations
+  repeated TestExpectation expectations = 2;  // optional — if absent, just execute action
 }
 
 // A single user action — maps to one DebateEvent or a runner-level operation
@@ -18,14 +24,14 @@ message TestAction {
                              // or "CREATE_USER" for runner-level user creation
 
   // Event-specific payloads (only one should be set per action)
-  string debate_topic = 3;   // for CREATE_DEBATE
-  int32  debate_id = 4;      // for ENTER_DEBATE, JOIN_DEBATE
-  int32  claim_id = 5;       // for GO_TO_CLAIM
-  string claim_text = 6;     // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
+  string debate_topic = 3;      // for CREATE_DEBATE
+  int32  debate_id = 4;         // for ENTER_DEBATE, JOIN_DEBATE
+  int32  claim_id = 5;          // for GO_TO_CLAIM
+  string claim_text = 6;        // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
   string claim_description = 7; // for ADD_CHILD_CLAIM
 }
 
-// A single expectation to verify after all actions run
+// A single expectation to verify after the action in this step runs
 message TestExpectation {
   string check_type = 1;     // CLAIM_EXISTS | CLAIM_SENTENCE | USER_VIEW |
                              // LINK_COUNT | LINK_EXISTS | ENGAGEMENT_STATE |
