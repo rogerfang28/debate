@@ -2334,13 +2334,11 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ""
     );
     (*treeContainer.mutable_css())["overflow-x"] = "auto";
-    (*treeContainer.mutable_css())["overflow-y"] = "hidden";
     (*treeContainer.mutable_css())["width"] = "100%";
     (*treeContainer.mutable_css())["max-width"] = "100%";
-    // Explicit height so absolutely positioned children have a visible area.
-    // Must match the scaled viewport height (canvasHeight * normalizedScale + padding).
-    // Default canvas is 500px tall, scale is ~0.82, plus padding ≈ 467px.
-    (*treeContainer.mutable_css())["height"] = "467px";
+    // Use min-height so the container grows with deeper tree layers.
+    // The 467px base accounts for default canvas (500px * 0.82 scale + padding).
+    (*treeContainer.mutable_css())["min-height"] = "467px";
 
     if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
         ui::Component emptyText = ComponentGenerator::createText(

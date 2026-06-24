@@ -13,12 +13,12 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
       id={component.id}
       className={className}
       style={{
-        ...style,
         ...(!isFlex && !isGrid ? {
           display: 'flex',
           flexDirection: 'column' as const,
           gap: '0.75rem',
         } : {}),
+        ...style,
         overflow: 'hidden',
       }}
     >
