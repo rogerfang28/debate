@@ -211,9 +211,9 @@ steps {
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 6 username: "C" expected_status: "TRUE_CLAIM" }
 }
-# A not creator → UNDETERMINED
+# After A concedes #5, challenge #6 (targeting #5) succeeds → A sees #6 as TRUE
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 6 username: "A" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "A" expected_status: "TRUE_CLAIM" }
 }
 
 # --- Root claim per-user views after concede propagation ---

@@ -168,9 +168,22 @@ target_link_libraries(debate_simulation ${COMMON_LIBS})
 # ============================================================
 # Copy scenario .pbtxt files to build directory
 # ============================================
+# configure-time copy (one-time, at cmake configure step)
 file(GLOB SCENARIO_FILES "${CMAKE_SOURCE_DIR}/scenarios/*.pbtxt")
-file(COPY ${SCENARIO_FILES} DESTINATION "${CMAKE_BINARY_DIR}/scenarios")
-message(STATUS "Copied scenario files: ${SCENARIO_FILES}")
+file(COPY ${SCENARIO_FILES} DESTINATION "${CMAKE_BINARY_DIR}/scenarios" FILES_MATCHING PATTERN "*.pbtxt")
+
+# add_custom_target to re-copy at build time when source pbtxt is newer
+add_custom_target(copy_scenarios ALL
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/scenarios"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/ComprehensiveTest.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/SeaLevelDebate.pbtxt"
+    COMMENT "Copying scenario .pbtxt files to build directory"
+    SOURCES "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt"
+)
+add_dependencies(debate_simulation copy_scenarios)
 
 # ============================================================
 # CTest integration

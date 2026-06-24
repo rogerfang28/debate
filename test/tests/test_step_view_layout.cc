@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
-#include <iostream>
+#include "utils/Log.h"
 
 #include "debate.pb.h"
 #include "debate_event.pb.h"
@@ -59,7 +59,7 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     // Use the same DB_PATH that the test fixture set
     const char* db_path = getenv("DB_PATH");
     if (!db_path || std::string(db_path).empty()) {
-        std::cerr << "[downloadJson] DB_PATH not set — was a test fixture SetUp() called?" << std::endl;
+        Log::error("[downloadJson] DB_PATH not set — was a test fixture SetUp() called?");
         return;
     }
 
@@ -69,14 +69,14 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     // Find all users in the debate
     std::vector<int> user_ids = moderator.getDebateWrapper().findUsersInDebate(debate_id);
     if (user_ids.empty()) {
-        std::cerr << "[downloadJson] No users found in debate " << debate_id << std::endl;
+        Log::error("[downloadJson] No users found in debate " + std::to_string(debate_id));
         return;
     }
 
     // Get the viewer's user ID
     int viewer_user_id = moderator.getUserId(viewer_username);
     if (viewer_user_id <= 0) {
-        std::cerr << "[downloadJson] Viewer user '" << viewer_username << "' not found" << std::endl;
+        Log::error("[downloadJson] Viewer user '" + viewer_username + "' not found");
         return;
     }
 
@@ -84,18 +84,18 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     debate::Collection collection = BuildCollection::BuildForDebateAndUsers(
         debate_id, user_ids, moderator.getDebateWrapper());
 
-    std::cout << "[downloadJson] Collection: " << collection.claims_by_id_size()
-              << " claims, " << collection.links_by_id_size() << " links" << std::endl;
+    Log::info("[downloadJson] Collection: " + std::to_string(collection.claims_by_id_size())
+              + " claims, " + std::to_string(collection.links_by_id_size()) + " links");
 
     // Parse the full debate view info (tree structure, steps, etc.)
     rendering_info::FullDebateViewInfo fullDebateInfo =
         FullDebatePageInfoParser::ParseFullDebateViewInfo(
             collection, viewer_user_id, viewer_username);
 
-    std::cout << "[downloadJson] FullDebateViewInfo: " << fullDebateInfo.steps_size()
-              << " steps, " << fullDebateInfo.full_debate_tree().nodes_size()
-              << " tree nodes, " << fullDebateInfo.full_debate_tree().links_size()
-              << " tree links" << std::endl;
+    Log::info("[downloadJson] FullDebateViewInfo: " + std::to_string(fullDebateInfo.steps_size())
+              + " steps, " + std::to_string(fullDebateInfo.full_debate_tree().nodes_size())
+              + " tree nodes, " + std::to_string(fullDebateInfo.full_debate_tree().links_size())
+              + " tree links");
 
     // Create VRUserDatabase for StepView
     Database db(db_path);
@@ -104,8 +104,8 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     // Generate the step view page
     ui::Page page = StepView::GenerateStepViewPage(fullDebateInfo, collection, userDb);
 
-    std::cout << "[downloadJson] Generated step view page: page_id=" << page.page_id()
-              << ", title=" << page.title() << std::endl;
+    Log::info("[downloadJson] Generated step view page: page_id=" + page.page_id()
+              + ", title=" + page.title());
 
     // Add description as the last component of the page (a visible label at the bottom)
     if (!description.empty()) {
@@ -126,7 +126,7 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     opts.add_whitespace = true;  // pretty-print for readability
     auto status = google::protobuf::json::MessageToJsonString(page, &json_output, opts);
     if (!status.ok()) {
-        std::cerr << "[downloadJson] Failed to serialize to JSON: " << status.ToString() << std::endl;
+        Log::error("[downloadJson] Failed to serialize to JSON: " + status.ToString());
         return;
     }
 
@@ -141,12 +141,9 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     if (out.is_open()) {
         out << json_output;
         out.close();
-        std::cout << "[downloadJson] Saved step view to: " << out_file;
-        if (!description.empty()) {
-            std::cout << " — " << description;
-        }
-        std::cout << std::endl;
+        Log::info("[downloadJson] Saved step view to: " + out_file
+                  + (description.empty() ? "" : " — " + description));
     } else {
-        std::cerr << "[downloadJson] Failed to open output file: " << out_file << std::endl;
+        Log::error("[downloadJson] Failed to open output file: " + out_file);
     }
 }

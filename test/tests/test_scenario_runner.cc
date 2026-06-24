@@ -42,6 +42,7 @@
 #include "database/sqlite/Database.h"
 #include "database/debate/DatabaseWrapper.h"
 #include "utils/DebateWrapper.h"
+#include "utils/Log.h"
 #include "debateModerator/DebateModerator.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 #include "google/protobuf/text_format.h"
@@ -78,6 +79,7 @@ protected:
         std::remove((db_path_ + "-wal").c_str());
         std::remove((db_path_ + "-shm").c_str());
         _putenv_s("DB_PATH", db_path_.c_str());
+        Log::init(LogLevel::Test);
         moderator_ = new DebateModerator();
     }
 
@@ -114,6 +116,12 @@ protected:
         if (s == "TRUE_CLAIM") return debate::ClaimStatus::TRUE_CLAIM;
         if (s == "FALSE_CLAIM") return debate::ClaimStatus::FALSE_CLAIM;
         return debate::ClaimStatus::UNDETERMINED;
+    }
+
+    std::string claimStatusToString(debate::ClaimStatus s) {
+        if (s == debate::ClaimStatus::TRUE_CLAIM) return "TRUE_CLAIM";
+        if (s == debate::ClaimStatus::FALSE_CLAIM) return "FALSE_CLAIM";
+        return "UNDETERMINED";
     }
 
     user_engagement::EngagementAction parseEngagementAction(const std::string& s) {
@@ -264,6 +272,8 @@ protected:
         };
 
         if (exp.check_type() == "ENGAGEMENT_STATE") {
+            Log::test("  CHECK ENGAGEMENT_STATE " + exp.username() +
+                      " expected=" + exp.expected_action());
             auto resp_it = last_responses.find(exp.username());
             if (resp_it == last_responses.end()) {
                 savePageJson();
@@ -274,6 +284,9 @@ protected:
             auto expected = parseEngagementAction(exp.expected_action());
             if (actual != expected) {
                 savePageJson();
+                Log::error("  FAIL actual=" + actual);
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(actual, expected)
                 << "[" << scenario_name << "] ENGAGEMENT_STATE " << exp.username();
@@ -281,48 +294,79 @@ protected:
         }
 
         if (exp.check_type() == "CLAIM_EXISTS") {
+            Log::test("  CHECK CLAIM_EXISTS " + std::to_string(exp.claim_id()));
             if (getClaim(collection, exp.claim_id()).id() == 0) {
                 savePageJson();
+                Log::error("  FAIL (not found)");
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_GT(getClaim(collection, exp.claim_id()).id(), 0)
                 << "[" << scenario_name << "] CLAIM_EXISTS " << exp.claim_id();
         }
         else if (exp.check_type() == "CLAIM_SENTENCE") {
-            if (getClaim(collection, exp.claim_id()).sentence() != exp.expected_claim_sentence()) {
+            Log::test("  CHECK CLAIM_SENTENCE " + std::to_string(exp.claim_id()) +
+                      " expected=" + exp.expected_claim_sentence());
+            auto actual = getClaim(collection, exp.claim_id()).sentence();
+            if (actual != exp.expected_claim_sentence()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + actual);
+            } else {
+                Log::test("  PASS");
             }
-            EXPECT_EQ(getClaim(collection, exp.claim_id()).sentence(), exp.expected_claim_sentence())
+            EXPECT_EQ(actual, exp.expected_claim_sentence())
                 << "[" << scenario_name << "] CLAIM_SENTENCE " << exp.claim_id();
         }
         else if (exp.check_type() == "USER_VIEW") {
+            Log::test("  CHECK USER_VIEW " + std::to_string(exp.claim_id()) +
+                      " " + exp.username() + " expected=" + exp.expected_status());
             auto actual = getUserView(collection, exp.claim_id(), exp.username());
             auto expected = parseClaimStatus(exp.expected_status());
             if (actual != expected) {
                 savePageJson();
+                Log::error("  FAIL actual=" + claimStatusToString(actual));
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(actual, expected)
                 << "[" << scenario_name << "] USER_VIEW " << exp.claim_id() << " " << exp.username();
         }
         else if (exp.check_type() == "LINK_COUNT") {
+            Log::test("  CHECK LINK_COUNT " + exp.link_type() +
+                      " expected=" + std::to_string(exp.expected_count()));
             auto lt = parseLinkType(exp.link_type());
-            if (countLinks(collection, lt) != exp.expected_count()) {
+            auto actual = countLinks(collection, lt);
+            if (actual != exp.expected_count()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
             }
-            EXPECT_EQ(countLinks(collection, lt), exp.expected_count())
+            EXPECT_EQ(actual, exp.expected_count())
                 << "[" << scenario_name << "] LINK_COUNT " << exp.link_type();
         }
         else if (exp.check_type() == "LINK_EXISTS") {
+            Log::test("  CHECK LINK_EXISTS " + exp.link_type() + " " +
+                      std::to_string(exp.from_claim_id()) + " -> " +
+                      std::to_string(exp.to_claim_id()));
             auto lt = parseLinkType(exp.link_type());
             if (!linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id())) {
                 savePageJson();
+                Log::error("  FAIL (link not found)");
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
                 << "[" << scenario_name << "] LINK_EXISTS "
                 << exp.from_claim_id() << " -> " << exp.to_claim_id();
         }
         else if (exp.check_type() == "COLLECTION_SIZE") {
+            Log::test("  CHECK COLLECTION_SIZE expected=" + std::to_string(exp.expected_count()));
             if (collection.claims_by_id_size() != exp.expected_count()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(collection.claims_by_id_size()));
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(collection.claims_by_id_size(), exp.expected_count())
                 << "[" << scenario_name << "] COLLECTION_SIZE";
@@ -351,6 +395,8 @@ protected:
             // --- Execute action (if present) ---
             if (step.has_action()) {
                 const TestAction& action = step.action();
+                Log::test("[STEP " + std::to_string(step_index) + "] ACTION: " +
+                         action.username() + " -> " + action.event_type());
 
                 if (action.event_type() == "CREATE_USER") {
                     getUserId(action.username());
