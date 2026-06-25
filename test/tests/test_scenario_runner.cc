@@ -42,6 +42,7 @@
 #include "database/sqlite/Database.h"
 #include "database/debate/DatabaseWrapper.h"
 #include "utils/DebateWrapper.h"
+#include "utils/Log.h"
 #include "debateModerator/DebateModerator.h"
 #include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
 #include "google/protobuf/text_format.h"
@@ -57,7 +58,8 @@ using debate_test::TestExpectation;
 
 // Forward declaration — defined in test_step_view_layout.cc
 void downloadJson(int debate_id, const std::string& viewer_username = "A",
-                  const std::string& output_path = "");
+                  const std::string& output_path = "",
+                  const std::string& description = "");
 
 
 // ===========================================================================
@@ -77,6 +79,7 @@ protected:
         std::remove((db_path_ + "-wal").c_str());
         std::remove((db_path_ + "-shm").c_str());
         _putenv_s("DB_PATH", db_path_.c_str());
+        Log::init(LogLevel::Test);
         moderator_ = new DebateModerator();
     }
 
@@ -113,6 +116,12 @@ protected:
         if (s == "TRUE_CLAIM") return debate::ClaimStatus::TRUE_CLAIM;
         if (s == "FALSE_CLAIM") return debate::ClaimStatus::FALSE_CLAIM;
         return debate::ClaimStatus::UNDETERMINED;
+    }
+
+    std::string claimStatusToString(debate::ClaimStatus s) {
+        if (s == debate::ClaimStatus::TRUE_CLAIM) return "TRUE_CLAIM";
+        if (s == debate::ClaimStatus::FALSE_CLAIM) return "FALSE_CLAIM";
+        return "UNDETERMINED";
     }
 
     user_engagement::EngagementAction parseEngagementAction(const std::string& s) {
@@ -258,11 +267,13 @@ protected:
         auto savePageJson = [&]() {
             if (debate_id > 0) {
                 std::string filename = "FAIL_" + scenario_name + "_step" + std::to_string(step_index) + ".json";
-                downloadJson(debate_id, "A", filename);
+                downloadJson(debate_id, "A", filename, "FAILED expectation at step " + std::to_string(step_index));
             }
         };
 
         if (exp.check_type() == "ENGAGEMENT_STATE") {
+            Log::test("  CHECK ENGAGEMENT_STATE " + exp.username() +
+                      " expected=" + exp.expected_action());
             auto resp_it = last_responses.find(exp.username());
             if (resp_it == last_responses.end()) {
                 savePageJson();
@@ -273,6 +284,9 @@ protected:
             auto expected = parseEngagementAction(exp.expected_action());
             if (actual != expected) {
                 savePageJson();
+                Log::error("  FAIL actual=" + actual);
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(actual, expected)
                 << "[" << scenario_name << "] ENGAGEMENT_STATE " << exp.username();
@@ -280,48 +294,79 @@ protected:
         }
 
         if (exp.check_type() == "CLAIM_EXISTS") {
+            Log::test("  CHECK CLAIM_EXISTS " + std::to_string(exp.claim_id()));
             if (getClaim(collection, exp.claim_id()).id() == 0) {
                 savePageJson();
+                Log::error("  FAIL (not found)");
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_GT(getClaim(collection, exp.claim_id()).id(), 0)
                 << "[" << scenario_name << "] CLAIM_EXISTS " << exp.claim_id();
         }
         else if (exp.check_type() == "CLAIM_SENTENCE") {
-            if (getClaim(collection, exp.claim_id()).sentence() != exp.expected_claim_sentence()) {
+            Log::test("  CHECK CLAIM_SENTENCE " + std::to_string(exp.claim_id()) +
+                      " expected=" + exp.expected_claim_sentence());
+            auto actual = getClaim(collection, exp.claim_id()).sentence();
+            if (actual != exp.expected_claim_sentence()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + actual);
+            } else {
+                Log::test("  PASS");
             }
-            EXPECT_EQ(getClaim(collection, exp.claim_id()).sentence(), exp.expected_claim_sentence())
+            EXPECT_EQ(actual, exp.expected_claim_sentence())
                 << "[" << scenario_name << "] CLAIM_SENTENCE " << exp.claim_id();
         }
         else if (exp.check_type() == "USER_VIEW") {
+            Log::test("  CHECK USER_VIEW " + std::to_string(exp.claim_id()) +
+                      " " + exp.username() + " expected=" + exp.expected_status());
             auto actual = getUserView(collection, exp.claim_id(), exp.username());
             auto expected = parseClaimStatus(exp.expected_status());
             if (actual != expected) {
                 savePageJson();
+                Log::error("  FAIL actual=" + claimStatusToString(actual));
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(actual, expected)
                 << "[" << scenario_name << "] USER_VIEW " << exp.claim_id() << " " << exp.username();
         }
         else if (exp.check_type() == "LINK_COUNT") {
+            Log::test("  CHECK LINK_COUNT " + exp.link_type() +
+                      " expected=" + std::to_string(exp.expected_count()));
             auto lt = parseLinkType(exp.link_type());
-            if (countLinks(collection, lt) != exp.expected_count()) {
+            auto actual = countLinks(collection, lt);
+            if (actual != exp.expected_count()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
             }
-            EXPECT_EQ(countLinks(collection, lt), exp.expected_count())
+            EXPECT_EQ(actual, exp.expected_count())
                 << "[" << scenario_name << "] LINK_COUNT " << exp.link_type();
         }
         else if (exp.check_type() == "LINK_EXISTS") {
+            Log::test("  CHECK LINK_EXISTS " + exp.link_type() + " " +
+                      std::to_string(exp.from_claim_id()) + " -> " +
+                      std::to_string(exp.to_claim_id()));
             auto lt = parseLinkType(exp.link_type());
             if (!linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id())) {
                 savePageJson();
+                Log::error("  FAIL (link not found)");
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
                 << "[" << scenario_name << "] LINK_EXISTS "
                 << exp.from_claim_id() << " -> " << exp.to_claim_id();
         }
         else if (exp.check_type() == "COLLECTION_SIZE") {
+            Log::test("  CHECK COLLECTION_SIZE expected=" + std::to_string(exp.expected_count()));
             if (collection.claims_by_id_size() != exp.expected_count()) {
                 savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(collection.claims_by_id_size()));
+            } else {
+                Log::test("  PASS");
             }
             EXPECT_EQ(collection.claims_by_id_size(), exp.expected_count())
                 << "[" << scenario_name << "] COLLECTION_SIZE";
@@ -334,8 +379,12 @@ protected:
     // -----------------------------------------------------------------------
     // Iterates through steps in order.
     // For each step: execute action (if present), then check expectations (if present).
+    //
+    // dump_json_per_step: if true, saves a JSON snapshot after every action step
+    //   (filename: STEP_<scenario>_step<N>.json) so you can inspect the page state
+    //   at each intermediate point.
 
-    void executeScenario(const TestScenario& scenario) {
+    void executeScenario(const TestScenario& scenario, bool dump_json_per_step = false) {
         // Track per-user last response for ENGAGEMENT_STATE checks
         std::map<std::string, moderator_to_vr::ModeratorToVRMessage> last_responses;
         // Track the debate_id from actions for collection building
@@ -346,6 +395,8 @@ protected:
             // --- Execute action (if present) ---
             if (step.has_action()) {
                 const TestAction& action = step.action();
+                Log::test("[STEP " + std::to_string(step_index) + "] ACTION: " +
+                         action.username() + " -> " + action.event_type());
 
                 if (action.event_type() == "CREATE_USER") {
                     getUserId(action.username());
@@ -359,6 +410,34 @@ protected:
                     if (action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE") {
                         if (action.debate_id() > 0) debate_id = action.debate_id();
                     }
+                }
+
+                // Dump JSON after every action step (if enabled)
+                if (dump_json_per_step && debate_id > 0) {
+                    // Build a description from the action
+                    const TestAction& action = step.action();
+                    std::string desc = "Step " + std::to_string(step_index) + ": " +
+                        action.username() + " " + action.event_type();
+                    if (!action.debate_topic().empty()) {
+                        desc += " [topic: " + action.debate_topic() + "]";
+                    }
+                    if (!action.claim_text().empty()) {
+                        desc += " [text: " + action.claim_text() + "]";
+                    }
+                    if (action.claim_id() > 0) {
+                        desc += " [claim_id: " + std::to_string(action.claim_id()) + "]";
+                    }
+                    if (action.debate_id() > 0) {
+                        desc += " [debate_id: " + std::to_string(action.debate_id()) + "]";
+                    }
+                    // Create per-scenario output directory
+                    std::string outDir = "json_output/" + scenario.name();
+                    std::filesystem::create_directories(outDir);
+                    std::string filename = outDir + "/STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
+                    // Use first user as viewer (fallback to "A")
+                    std::string viewer = "A";
+                    if (!user_ids_.empty()) viewer = user_ids_.begin()->first;
+                    downloadJson(debate_id, viewer, filename, desc);
                 }
             }
 
@@ -380,7 +459,12 @@ protected:
         // Save final state as JSON after scenario completes (pass or fail)
         if (debate_id > 0) {
             std::string filename = "FINAL_" + scenario.name() + ".json";
-            downloadJson(debate_id, "A", filename);
+            // Use the first user in the scenario as viewer (fallback to "A")
+            std::string viewer = "A";
+            if (!user_ids_.empty()) {
+                viewer = user_ids_.begin()->first;
+            }
+            downloadJson(debate_id, viewer, filename);
         }
     }
 
@@ -423,5 +507,24 @@ protected:
 TEST_F(ScenarioRunner, ComprehensiveTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ComprehensiveTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ComprehensiveTest.pbtxt";
-    executeScenario(s);
+    // Dump JSON after every action step — files: STEP_ComprehensiveTest_step0.json, step1.json, ...
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, TestA) {
+    TestScenario s = LoadScenarioFromFile("scenarios/TestA.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load TestA.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, SeaLevelDebate) {
+    TestScenario s = LoadScenarioFromFile("scenarios/SeaLevelDebate.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load SeaLevelDebate.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, GlobalWarmingHoaxDebate) {
+    TestScenario s = LoadScenarioFromFile("scenarios/GlobalWarmingHoaxDebate.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load GlobalWarmingHoaxDebate.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
 }
