@@ -263,6 +263,60 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debat
         debateWrapper.UpdateStatusOfAllClaimsInDebate(debateId);
     }
 
+    // Step 3: Find all claims that challenge the conceded claim (CHALLENGE link → conceded claim).
+    // When a claim is conceded, any challenge claim targeting it is vindicated (TRUE for concessor).
+    // Example: A concedes claim 5 (challenging claim 4). Claim 6 challenges claim 5.
+    //   Claim 6 → TRUE for A (it correctly challenged the now-conceded claim 5).
+    // Then recursively apply: if claim 6 is now TRUE, any challenge on claim 6 is FALSE.
+    std::vector<int> downstreamChallengeIds;
+    if (debateId > 0) {
+        auto allLinks = debateWrapper.getLinksForDebate(debateId);
+        for (const auto& linkTuple : allLinks) {
+            int fromClaimId = std::get<1>(linkTuple);
+            int toClaimId = std::get<2>(linkTuple);
+            debate::Link link = debateWrapper.getLinkById(std::get<0>(linkTuple));
+            if (link.link_type() == debate::LinkType::CHALLENGE && toClaimId == challengeClaimId) {
+                downstreamChallengeIds.push_back(fromClaimId);
+            }
+        }
+    }
+
+    // Process downstream challenge claims:
+    // For each claim that challenges the conceded claim, set it to TRUE for the concessor.
+    // Then recursively find challenges targeting it and set those to FALSE.
+    for (int downstreamId : downstreamChallengeIds) {
+        debate::Claim downstreamClaim = debateWrapper.getClaimById(downstreamId);
+        if (downstreamClaim.id() == 0) continue;
+        (*downstreamClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
+        debateWrapper.updateClaimInDB(downstreamClaim);
+        Log::debug("[ConcedeChallengeHandler] Set downstream challenge claim " +
+                  std::to_string(downstreamId) + " as TRUE for " + username);
+
+        // Recursively: find challenges targeting this downstream claim → those are FALSE
+        // (because the downstream claim succeeded, so challenges against it failed)
+        std::vector<int> furtherDownstream;
+        if (debateId > 0) {
+            auto allLinks2 = debateWrapper.getLinksForDebate(debateId);
+            for (const auto& linkTuple : allLinks2) {
+                int fromClaimId2 = std::get<1>(linkTuple);
+                int toClaimId2 = std::get<2>(linkTuple);
+                debate::Link link2 = debateWrapper.getLinkById(std::get<0>(linkTuple));
+                if (link2.link_type() == debate::LinkType::CHALLENGE && toClaimId2 == downstreamId) {
+                    furtherDownstream.push_back(fromClaimId2);
+                }
+            }
+        }
+        for (int fdId : furtherDownstream) {
+            if (fdId == downstreamId) continue;  // avoid infinite loop
+            debate::Claim fdClaim = debateWrapper.getClaimById(fdId);
+            if (fdClaim.id() == 0) continue;
+            (*fdClaim.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
+            debateWrapper.updateClaimInDB(fdClaim);
+            Log::debug("[ConcedeChallengeHandler] Recursively set further-downstream claim " +
+                      std::to_string(fdId) + " as FALSE for " + username);
+        }
+    }
+
     // clear the user's challenging state
     CancelChallengeClaim(user_id, debateWrapper);
     CloseAddChallenge(user_id, debateWrapper);
