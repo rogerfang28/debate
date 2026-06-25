@@ -1,10 +1,17 @@
 #include "ChallengeHandler.h"
 
 #include <iostream>
+#include <set>
 #include "../../../../../src/gen/cpp/debate.pb.h"
 #include "../../../../../src/gen/cpp/user.pb.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
+
+static std::string claimStatusToString(debate::ClaimStatus s) {
+    if (s == debate::ClaimStatus::TRUE_CLAIM) return "TRUE_CLAIM";
+    if (s == debate::ClaimStatus::FALSE_CLAIM) return "FALSE_CLAIM";
+    return "UNDETERMINED";
+}
 
 void ChallengeHandler::StartChallengeClaim(const int& user_id, DebateWrapper& debateWrapper) {
     // get the user from the database
@@ -190,131 +197,38 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debat
         return;
     }
 
-    // Step 1: Mark the challenge claim as FALSE for the concessor (they conceded it).
+    // Step 1: Mark the conceded claim as FALSE for the concessor.
     debate::Claim challengeClaimUpdated = debateWrapper.getClaimById(challengeClaimId);
     (*challengeClaimUpdated.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
     debateWrapper.updateClaimInDB(challengeClaimUpdated);
     Log::debug("[ConcedeChallengeHandler] User " + username + " conceded challenge claim " +
               std::to_string(challengeClaimId) + " → FALSE_CLAIM");
 
-    // Step 2: The challenged claim is TRUE (the challenge succeeded).
-    // Then find what the challenged claim itself challenges (if anything),
-    // and propagate FALSE from there up the parent chain.
-    //
-    // Example: A concedes claim 5 (challenges claim 4).
-    //   Claim 5 → FALSE (conceded)
-    //   Claim 4 → TRUE (challenge succeeded)
-    //   Claim 2 → FALSE (claim 4 challenges claim 2, and 4 succeeded)
-    //   Claim 1 → FALSE (parent of 2, propagated up)
-
-    // Set the challenged claim to TRUE
-    debate::Claim challengedClaim = debateWrapper.getClaimById(challengedClaimId);
-    (*challengedClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-    debateWrapper.updateClaimInDB(challengedClaim);
-    Log::debug("[ConcedeChallengeHandler] Set claim " +
-              std::to_string(challengedClaimId) + " as TRUE for " + username);
-
-    // Find the claim that the challenged claim itself challenges (via CHALLENGE link).
-    int deeperChallengedId = -1;
-    for (int i = 0; i < challengedClaim.link_ids_size(); ++i) {
-        int linkId = challengedClaim.link_ids(i);
-        debate::Link link = debateWrapper.getLinkById(linkId);
-        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == challengedClaimId) {
-            deeperChallengedId = link.connect_to();
-            break;
-        }
-    }
-
-    // Walk up the parent chain from the deeper-challenged claim (if any),
-    // propagating FALSE to it and all its ancestors.
-    // If the challenged claim doesn't itself challenge anything, walk up from it.
-    int walkStartId = (deeperChallengedId != -1) ? deeperChallengedId : challengedClaimId;
-
-    // If we started from the challenged claim itself (no deeper challenge),
-    // we already set it to TRUE, so skip it and just walk ancestors.
-    // If we started from the deeper-challenged claim, we need to set it to FALSE.
-    bool alreadyHandledFirst = (deeperChallengedId == -1);
-
-    int currentClaimId = walkStartId;
-    while (currentClaimId != 0) {
-        debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
-        if (currentClaim.id() == 0) break;
-
-        if (alreadyHandledFirst) {
-            alreadyHandledFirst = false;
-        } else {
-            (*currentClaim.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
-            debateWrapper.updateClaimInDB(currentClaim);
-            Log::debug("[ConcedeChallengeHandler] Propagated FALSE to claim " +
-                      std::to_string(currentClaimId) + " for " + username);
-        }
-
-        // Move up to parent via PARENT_CHILD link
-        debate::Claim parentClaim = debateWrapper.findClaimParent(currentClaimId);
-        if (parentClaim.id() == 0 || parentClaim.id() == currentClaimId) {
-            break;
-        }
-        currentClaimId = parentClaim.id();
-    }
-
-    // Also update global claim statuses
+    // Step 2: Find downstream challenges of the conceded claim and set them to TRUE.
+    // When A concedes claim 5, any claim that challenges claim 5 (e.g., claim 6) is vindicated.
     int debateId = userProto.engagement().debating_info().debate_id();
-    if (debateId > 0) {
-        debateWrapper.UpdateStatusOfAllClaimsInDebate(debateId);
-    }
-
-    // Step 3: Find all claims that challenge the conceded claim (CHALLENGE link → conceded claim).
-    // When a claim is conceded, any challenge claim targeting it is vindicated (TRUE for concessor).
-    // Example: A concedes claim 5 (challenging claim 4). Claim 6 challenges claim 5.
-    //   Claim 6 → TRUE for A (it correctly challenged the now-conceded claim 5).
-    // Then recursively apply: if claim 6 is now TRUE, any challenge on claim 6 is FALSE.
-    std::vector<int> downstreamChallengeIds;
     if (debateId > 0) {
         auto allLinks = debateWrapper.getLinksForDebate(debateId);
         for (const auto& linkTuple : allLinks) {
             int fromClaimId = std::get<1>(linkTuple);
             int toClaimId = std::get<2>(linkTuple);
-            debate::Link link = debateWrapper.getLinkById(std::get<0>(linkTuple));
-            if (link.link_type() == debate::LinkType::CHALLENGE && toClaimId == challengeClaimId) {
-                downstreamChallengeIds.push_back(fromClaimId);
+            int linkType = std::get<5>(linkTuple);
+            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE) && toClaimId == challengeClaimId) {
+                // fromClaimId challenges the conceded claim → vindicated
+                debate::Claim downstreamClaim = debateWrapper.getClaimById(fromClaimId);
+                if (downstreamClaim.id() != 0) {
+                    (*downstreamClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
+                    debateWrapper.updateClaimInDB(downstreamClaim);
+                    Log::debug("[ConcedeChallengeHandler] Downstream challenge " + std::to_string(fromClaimId) +
+                              " → TRUE for " + username);
+                }
             }
         }
     }
 
-    // Process downstream challenge claims:
-    // For each claim that challenges the conceded claim, set it to TRUE for the concessor.
-    // Then recursively find challenges targeting it and set those to FALSE.
-    for (int downstreamId : downstreamChallengeIds) {
-        debate::Claim downstreamClaim = debateWrapper.getClaimById(downstreamId);
-        if (downstreamClaim.id() == 0) continue;
-        (*downstreamClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-        debateWrapper.updateClaimInDB(downstreamClaim);
-        Log::debug("[ConcedeChallengeHandler] Set downstream challenge claim " +
-                  std::to_string(downstreamId) + " as TRUE for " + username);
-
-        // Recursively: find challenges targeting this downstream claim → those are FALSE
-        // (because the downstream claim succeeded, so challenges against it failed)
-        std::vector<int> furtherDownstream;
-        if (debateId > 0) {
-            auto allLinks2 = debateWrapper.getLinksForDebate(debateId);
-            for (const auto& linkTuple : allLinks2) {
-                int fromClaimId2 = std::get<1>(linkTuple);
-                int toClaimId2 = std::get<2>(linkTuple);
-                debate::Link link2 = debateWrapper.getLinkById(std::get<0>(linkTuple));
-                if (link2.link_type() == debate::LinkType::CHALLENGE && toClaimId2 == downstreamId) {
-                    furtherDownstream.push_back(fromClaimId2);
-                }
-            }
-        }
-        for (int fdId : furtherDownstream) {
-            if (fdId == downstreamId) continue;  // avoid infinite loop
-            debate::Claim fdClaim = debateWrapper.getClaimById(fdId);
-            if (fdClaim.id() == 0) continue;
-            (*fdClaim.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
-            debateWrapper.updateClaimInDB(fdClaim);
-            Log::debug("[ConcedeChallengeHandler] Recursively set further-downstream claim " +
-                      std::to_string(fdId) + " as FALSE for " + username);
-        }
+    // Step 3: Propagate — cascades status changes to all affected users.
+    if (debateId > 0) {
+        debateWrapper.PropagateClaimStatuses(debateId);
     }
 
     // clear the user's challenging state

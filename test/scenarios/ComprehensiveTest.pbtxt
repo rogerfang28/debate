@@ -164,9 +164,9 @@ steps {
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 2 username: "B" expected_status: "FALSE_CLAIM" }
 }
-# C not directly involved with claim 2 → UNDETERMINED
+# C sees claim 4 as TRUE (B's challenge vindicated), so claim 2 (challenged by 4) → FALSE
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 2 username: "C" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "C" expected_status: "FALSE_CLAIM" }
 }
 
 # --- Claim 3 "AI causes job displacement" per-user views ---
@@ -221,10 +221,10 @@ steps {
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "FALSE_CLAIM" }
 }
-# B and C not involved in concede → unchanged
+# B affected via claim 2 (B's challenge #4 succeeded → #2 FALSE → #1 FALSE)
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "FALSE_CLAIM" }
 }
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "FALSE_CLAIM" }
 }
