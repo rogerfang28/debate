@@ -21,6 +21,26 @@ steps {
     event_type: "CREATE_DEBATE"
     debate_topic: "Sea Level Rise Predictions"
   }
+}
+
+# Both join and enter the debate
+steps {
+  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Trump" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Scientist" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}
+
+# Verify debate root claim exists after setup
+steps {
   expectations {
     check_type: "CLAIM_EXISTS"
     claim_id: 1
@@ -30,16 +50,6 @@ steps {
     claim_id: 1
     expected_claim_sentence: "Sea Level Rise Predictions"
   }
-}
-
-# Both join the debate
-steps {
-  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
-}
-steps {
-  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
 }
 
 # Trump goes to root claim and adds his false claim as a supporting child
@@ -152,10 +162,10 @@ steps {
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "FALSE_CLAIM" }
 }
 
-# Claim 5 (Scientist's counter-challenge) should be TRUE — unchallenged after concede
+# Claim 5 (Scientist's counter-challenge) — Trump concedes to this challenge, so 5/Trump = TRUE_CLAIM
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 5 username: "Scientist" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "TRUE_CLAIM" }
 }
 
 # Root claim — Trump's debate topic, affected by concede cascade
@@ -172,12 +182,6 @@ steps {
 }
 
 # Both users still in debate
-steps {
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
-}
-
-# Neither went home
 steps {
   expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
   expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }

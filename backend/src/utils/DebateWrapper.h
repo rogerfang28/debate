@@ -69,6 +69,7 @@ public:
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
     void UpdateStatusOfAllClaimsInDebate(const int& debate_id);
+    void PropagateClaimStatuses(const int& debate_id, const std::set<int>& conceded_claims = {});
     std::vector<int> findUsersInDebate(const int& debate_id);
 
 private:
