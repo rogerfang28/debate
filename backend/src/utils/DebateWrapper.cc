@@ -682,15 +682,18 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
     }
 }
 
-void DebateWrapper::PropagateClaimStatuses(const int& debate_id) {
+void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<int>& conceded_claims) {
     // Propagation rules (per-user):
     //   Rule A: FALSE + PARENT_CHILD → parent FALSE
-    //   Rule B: TRUE + PARENT_CHILD → parent TRUE (only if ALL children TRUE)
-    //   Rule C: FALSE + CHALLENGE (this challenges another) → challenged claim TRUE
-    //   Rule D: TRUE + CHALLENGE (this challenges another) → challenged claim FALSE
+    //   Rule B: TRUE + PARENT_CHILD → parent TRUE (only if ALL children TRUE, and claim not conceded)
+    //   Rule C: FALSE + CHALLENGE (targeting this claim) → this claim TRUE
+    //   Rule D: TRUE + CHALLENGE (targeting this claim) → this claim FALSE
     //
     // Iterate until fixed point. Only set status for users who already have an entry
     // on the claim (skip if currentStatus is UNDETERMINED and no rule fires).
+    //
+    // conceded_claims: claims explicitly set FALSE by the concede handler. These must
+    // not be overwritten to TRUE by Rule B (child-all-TRUE → parent-TRUE).
 
     debate::Debate debateProto;
     std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
@@ -788,7 +791,9 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id) {
                     if (cit->second != debate::ClaimStatus::TRUE_CLAIM) { allChildrenTrue = false; }
                 }
                 if (anyChildFalse) ns = debate::ClaimStatus::FALSE_CLAIM;
-                else if (hasChildren && allChildrenTrue) ns = debate::ClaimStatus::TRUE_CLAIM;
+                else if (hasChildren && allChildrenTrue &&
+                         conceded_claims.find(claimId) == conceded_claims.end())
+                    ns = debate::ClaimStatus::TRUE_CLAIM;
 
                 // Rule C: incoming CHALLENGE is FALSE → this claim TRUE
                 auto citIn = challengeIncoming.find(claimId);

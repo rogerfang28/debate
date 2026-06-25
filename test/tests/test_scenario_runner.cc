@@ -430,8 +430,14 @@ protected:
                     if (action.debate_id() > 0) {
                         desc += " [debate_id: " + std::to_string(action.debate_id()) + "]";
                     }
-                    std::string filename = "STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
-                    downloadJson(debate_id, "A", filename, desc);
+                    // Create per-scenario output directory
+                    std::string outDir = "json_output/" + scenario.name();
+                    std::filesystem::create_directories(outDir);
+                    std::string filename = outDir + "/STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
+                    // Use first user as viewer (fallback to "A")
+                    std::string viewer = "A";
+                    if (!user_ids_.empty()) viewer = user_ids_.begin()->first;
+                    downloadJson(debate_id, viewer, filename, desc);
                 }
             }
 
@@ -453,7 +459,12 @@ protected:
         // Save final state as JSON after scenario completes (pass or fail)
         if (debate_id > 0) {
             std::string filename = "FINAL_" + scenario.name() + ".json";
-            downloadJson(debate_id, "A", filename);
+            // Use the first user in the scenario as viewer (fallback to "A")
+            std::string viewer = "A";
+            if (!user_ids_.empty()) {
+                viewer = user_ids_.begin()->first;
+            }
+            downloadJson(debate_id, viewer, filename);
         }
     }
 
@@ -497,5 +508,23 @@ TEST_F(ScenarioRunner, ComprehensiveTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ComprehensiveTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ComprehensiveTest.pbtxt";
     // Dump JSON after every action step — files: STEP_ComprehensiveTest_step0.json, step1.json, ...
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, TestA) {
+    TestScenario s = LoadScenarioFromFile("scenarios/TestA.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load TestA.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, SeaLevelDebate) {
+    TestScenario s = LoadScenarioFromFile("scenarios/SeaLevelDebate.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load SeaLevelDebate.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, GlobalWarmingHoaxDebate) {
+    TestScenario s = LoadScenarioFromFile("scenarios/GlobalWarmingHoaxDebate.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load GlobalWarmingHoaxDebate.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
 }

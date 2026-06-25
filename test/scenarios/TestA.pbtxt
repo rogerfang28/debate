@@ -1,0 +1,89 @@
+name: "TestA"
+
+steps {
+  action { username: "A" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "B" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Test Topic" }
+}
+steps {
+  action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "B" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "B" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+
+# A adds a child claim under root (claim 1)
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "Claim 2" claim_description: "test" }
+}
+
+# B challenges claim 2 (creates claim 3 →CHALLENGE→ 2)
+steps {
+  action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+steps {
+  action { username: "B" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Claim 3" }
+}
+
+# B adds a child under his challenge claim 3 (claim 4)
+steps {
+  action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action { username: "B" event_type: "ADD_CHILD_CLAIM" claim_text: "Claim 4" claim_description: "test" }
+}
+
+# A challenges B's child claim 4 (creates claim 5 →CHALLENGE→ 4)
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+steps {
+  action { username: "A" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Claim 5" }
+}
+
+# B concedes to A's challenge (claim 5 challenges B's claim 4)
+steps {
+  action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+steps {
+  action { username: "B" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# --- Expectations after B conceded ---
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 1 expected_claim_sentence: "Test Topic" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "Claim 2" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "Claim 3" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Claim 4" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "Claim 5" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 3 to_claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 2 }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "A" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "B" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "B" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "B" expected_status: "TRUE_CLAIM" }
+}

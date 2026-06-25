@@ -146,6 +146,7 @@ set(COMMON_LIBS
 set(SCENARIO_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_scenario_runner.cc
     ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
 )
 
 add_executable(debate_simulation
@@ -178,10 +179,12 @@ add_custom_target(copy_scenarios ALL
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/ComprehensiveTest.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/SeaLevelDebate.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/TestA.pbtxt"
     COMMENT "Copying scenario .pbtxt files to build directory"
     SOURCES "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt"
 )
 add_dependencies(debate_simulation copy_scenarios)
 

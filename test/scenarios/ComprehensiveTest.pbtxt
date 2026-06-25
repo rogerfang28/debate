@@ -14,12 +14,10 @@ steps {
   action { username: "C" event_type: "CREATE_USER" }
 }
 
-# A creates debate "Is AI beneficial?" → root claim id=1
 steps {
   action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Is AI beneficial?" }
 }
 
-# A, B, C all enter the debate (sets up engagement state: debate_id, current_claim, root_claim)
 steps {
   action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
 }
@@ -40,10 +38,10 @@ steps {
 }
 
 # =============================================================================
-# PHASE 2: ADD CLAIMS — Build the claim tree
+# PHASE 2: ADD BASE CLAIMS
 # =============================================================================
 
-# A goes to root, adds child #2
+# A adds child #2 to root
 steps {
   action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
 }
@@ -51,7 +49,7 @@ steps {
   action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "AI improves healthcare" claim_description: "test" }
 }
 
-# A goes to root, adds child #3
+# A adds child #3 to root
 steps {
   action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
 }
@@ -60,46 +58,71 @@ steps {
 }
 
 # =============================================================================
-# PHASE 3: CHALLENGE — B challenges A's first child claim
+# PHASE 3: CHALLENGE CHAIN WITH CHILDREN
+# Structure:
+#   1 (root)
+#   ├── 2 (child)
+#   ├── 3 (child)
+#   ├── 4 (challenge→2, root-level) [B]
+#   │   └── 5 (child of 4) [B]
+#   ├── 6 (challenge→5, root-level) [A]  ← challenges child 5, not root 4
+#   │   └── 7 (child of 6) [A]
+#   ├── 8 (challenge→7, root-level) [C]  ← challenges child 7, not root 6
+#   │   └── 9 (child of 8) [C]
 # =============================================================================
 
-# B goes to claim 2 "AI improves healthcare"
+# B goes to claim 2, creates challenge claim #4 targeting claim 2
 steps {
   action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 2 }
 }
-# B creates challenge claim #4 targeting claim 2
 steps {
   action { username: "B" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Healthcare AI has bias issues" }
 }
 
-# =============================================================================
-# PHASE 4: COUNTER-CHALLENGE — A challenges B's challenge claim
-# =============================================================================
-
-# A goes to B's challenge claim #4
+# B adds child #5 to challenge claim #4
 steps {
-  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 4 }
+  action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 4 }
 }
-# A creates challenge claim #5 targeting claim 4
+steps {
+  action { username: "B" event_type: "ADD_CHILD_CLAIM" claim_text: "Bias in diagnostic algorithms" claim_description: "test" }
+}
+
+# A goes to child #5, creates challenge claim #6 targeting child #5
+# (instead of challenging the challenge root #4)
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 5 }
+}
 steps {
   action { username: "A" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Bias can be mitigated with diverse training data" }
 }
 
-# =============================================================================
-# PHASE 5: C CHALLENGES A'S COUNTER-CHALLENGE
-# =============================================================================
-
-# C goes to A's counter-challenge claim #5
+# A adds child #7 to challenge claim #6
 steps {
-  action { username: "C" event_type: "GO_TO_CLAIM" claim_id: 5 }
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 6 }
 }
-# C creates challenge claim #6 targeting claim 5
+steps {
+  action { username: "A" event_type: "ADD_CHILD_CLAIM" claim_text: "Diverse datasets exist in medical imaging" claim_description: "test" }
+}
+
+# C goes to child #7, creates challenge claim #8 targeting child #7
+# (instead of challenging the challenge root #6)
+steps {
+  action { username: "C" event_type: "GO_TO_CLAIM" claim_id: 7 }
+}
 steps {
   action { username: "C" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Diverse data is hard to obtain in practice" }
 }
 
+# C adds child #9 to challenge claim #8
+steps {
+  action { username: "C" event_type: "GO_TO_CLAIM" claim_id: 8 }
+}
+steps {
+  action { username: "C" event_type: "ADD_CHILD_CLAIM" claim_text: "Rare diseases lack data by definition" claim_description: "test" }
+}
+
 # =============================================================================
-# PHASE 6: CONCEDE — A concedes their counter-challenge
+# PHASE 4: CONCEDE — A concedes their challenge
 # =============================================================================
 
 steps {
@@ -119,11 +142,14 @@ steps {
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
 }
 
-# --- Total: root(1) + 2 children(2,3) + 3 challenges(4,5,6) = 6 ---
+# --- Total: 9 claims ---
 steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 9 }
 }
 
 # --- Claim sentences ---
@@ -132,16 +158,19 @@ steps {
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "AI improves healthcare" }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "AI causes job displacement" }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Healthcare AI has bias issues" }
-  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "Bias can be mitigated with diverse training data" }
-  expectations { check_type: "CLAIM_SENTENCE" claim_id: 6 expected_claim_sentence: "Diverse data is hard to obtain in practice" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "Bias in diagnostic algorithms" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 6 expected_claim_sentence: "Bias can be mitigated with diverse training data" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 7 expected_claim_sentence: "Diverse datasets exist in medical imaging" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 8 expected_claim_sentence: "Diverse data is hard to obtain in practice" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 9 expected_claim_sentence: "Rare diseases lack data by definition" }
 }
 
 # --- Link counts ---
-# 2 PARENT_CHILD: 1→2, 1→3
+# 5 PARENT_CHILD: 1→2, 1→3, 4→5, 6→7, 8→9
 steps {
-  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 5 }
 }
-# 3 CHALLENGE: 4→2, 5→4, 6→5
+# 3 CHALLENGE: 4→2, 6→5, 8→7
 steps {
   expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
 }
@@ -150,21 +179,32 @@ steps {
 steps {
   expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
   expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 4 to_claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 6 to_claim_id: 7 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 8 to_claim_id: 9 }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
-  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 6 to_claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 8 to_claim_id: 7 }
 }
 
 # --- Claim 2 "AI improves healthcare" per-user views ---
-# A created it, but after concede A sees it as FALSE (B's challenge #4 succeeded)
+# A: 8 is TRUE (conceded). 8 challenges 7. Rule D: 8 TRUE → 7 FALSE.
+# 7 is child of 6. Rule A: child 7 FALSE → parent 6 FALSE.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE.
+# 4 challenges 2. 4 is TRUE. Rule D: incoming challenge 4 TRUE → 2 FALSE.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 2 username: "A" expected_status: "FALSE_CLAIM" }
 }
-# B challenged it → FALSE
+# B: 4 challenges 2. B created 4 (TRUE). Rule D: incoming challenge 4 TRUE → 2 FALSE for B.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 2 username: "B" expected_status: "FALSE_CLAIM" }
 }
-# C sees claim 4 as TRUE (B's challenge vindicated), so claim 2 (challenged by 4) → FALSE
+# C: 8 is TRUE for C. 8 challenges 7. Rule D: 7 FALSE for C.
+# 7 is child of 6. Rule A: 6 FALSE for C.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE for C.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE for C.
+# 4 challenges 2. 4 is TRUE. Rule D: incoming challenge 4 TRUE → 2 FALSE for C.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 2 username: "C" expected_status: "FALSE_CLAIM" }
 }
@@ -182,49 +222,135 @@ steps {
   expectations { check_type: "USER_VIEW" claim_id: 3 username: "C" expected_status: "UNDETERMINED" }
 }
 
-# --- Claim 4 "Healthcare AI has bias issues" (B's challenge on #2) per-user views ---
+# --- Claim 4 "Healthcare AI has bias issues" (challenge→2, root-level) per-user views ---
 # B created it → TRUE
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "B" expected_status: "TRUE_CLAIM" }
 }
-# A conceded counter-challenge → A accepts #4's challenge succeeded → A sees #4 as TRUE
+# A: 8 is TRUE (conceded). 8 challenges 7. Rule D: 8 TRUE → 7 FALSE.
+# 7 is child of 6. Rule A: child 7 FALSE → parent 6 FALSE.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE for A.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "A" expected_status: "TRUE_CLAIM" }
 }
-
-# --- Claim 5 "Bias can be mitigated..." (A's counter-challenge on #4) per-user views ---
-# A created it but conceded → FALSE
+# C: 8 is TRUE for C. 8 challenges 7. Rule D: 7 FALSE for C.
+# 7 is child of 6. Rule A: 6 FALSE for C.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE for C.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE for C.
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 5 username: "A" expected_status: "FALSE_CLAIM" }
-}
-# B not creator → UNDETERMINED
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 5 username: "B" expected_status: "UNDETERMINED" }
-}
-# C challenged claim 5, so C sees it as FALSE
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 5 username: "C" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "C" expected_status: "TRUE_CLAIM" }
 }
 
-# --- Claim 6 "Diverse data is hard..." (C's challenge on #5) per-user views ---
+# --- Claim 5 "Bias in diagnostic algorithms" (child of 4) per-user views ---
+# B created it → TRUE
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "B" expected_status: "TRUE_CLAIM" }
+}
+# A: 8 is TRUE (conceded). 8 challenges 7. Rule D: 8 TRUE → 7 FALSE.
+# 7 is child of 6. Rule A: child 7 FALSE → parent 6 FALSE.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE for A.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "A" expected_status: "TRUE_CLAIM" }
+}
+# C: 6 is FALSE for C (child of 8 which is TRUE, 8 challenges 7 → 7 FALSE → 6 FALSE).
+# Rule C: incoming challenge 6 FALSE → 5 TRUE for C.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "C" expected_status: "TRUE_CLAIM" }
+}
+
+# --- Claim 6 "Bias can be mitigated..." (challenge→5, root-level) per-user views ---
+# A created it. After concede: 8/A = TRUE (conceded). 8 challenges 7. Rule D: 7 FALSE.
+# 7 is child of 6. Rule A: child 7 FALSE → parent 6 FALSE for A.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE for A.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE for A.
+# 4 challenges 2. 4 is TRUE. Rule D: incoming challenge 4 TRUE → 2 FALSE for A.
+# 2 is child of 1. Rule A: child 2 FALSE → parent 1 FALSE for A.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "A" expected_status: "FALSE_CLAIM" }
+}
+# B: 6 challenges 5. B has no entry on 6. → UNDETERMINED
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "B" expected_status: "UNDETERMINED" }
+}
+# C: 8 is TRUE for C. 8 challenges 7. Rule D: 7 FALSE for C.
+# 7 is child of 6. Rule A: 6 FALSE for C.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "C" expected_status: "FALSE_CLAIM" }
+}
+
+# --- Claim 7 "Diverse datasets exist..." (child of 6) per-user views ---
+# A created it. 8 is TRUE (conceded). 8 challenges 7. Rule D: incoming challenge 8 TRUE → 7 FALSE for A.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "A" expected_status: "FALSE_CLAIM" }
+}
+# B: no entry on 7 → UNDETERMINED
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "B" expected_status: "UNDETERMINED" }
+}
+# C: 8 is TRUE for C. 8 challenges 7. Rule D: incoming challenge 8 TRUE → 7 FALSE for C.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "C" expected_status: "FALSE_CLAIM" }
+}
+
+# --- Claim 8 "Diverse data is hard..." (challenge→7, root-level) per-user views ---
 # C created it → TRUE
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 6 username: "C" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 8 username: "C" expected_status: "TRUE_CLAIM" }
 }
-# After A concedes #5, challenge #6 (targeting #5) succeeds → A sees #6 as TRUE
+# A: 8 is TRUE for A (conceded). A concedes to C's challenge on claim 7.
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 6 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 8 username: "A" expected_status: "TRUE_CLAIM" }
+}
+# B: no entry on 8 → UNDETERMINED
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 8 username: "B" expected_status: "UNDETERMINED" }
 }
 
-# --- Root claim per-user views after concede propagation ---
-# A created root, but concede cascade: #5 conceded → #4 succeeds → #2 FALSE → #1 FALSE
+# --- Claim 9 "Rare diseases lack data..." (child of 8) per-user views ---
+# C created it → TRUE
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "C" expected_status: "TRUE_CLAIM" }
+}
+# A: 8 is TRUE for A (conceded). 8 is parent of 9. Rule A doesn't propagate parent→child.
+# But 9 is child of 8, and 8/A = TRUE. Rule B would need all children TRUE for parent.
+# 9 has no children. For 9/A: children=none, incoming challenges=none → no rule fires.
+# Wait — 9 is a child of 8, but the cascade processes claim 9: it collects users from its own statuses (C),
+# from children (none), from incoming challenges (none), from outgoing challenges (none).
+# So only C is the user for claim 9. A doesn't get an entry on 9.
+# Hmm, but the JSON shows A should have an entry on 9...
+# Actually: claim 8 has outgoing challenge to 7. When processing claim 8, A gets entry (TRUE).
+# But claim 9: its only connection is as child of 8. The cascade collects users from children
+# of 9 (none), incoming challenges to 9 (none), outgoing challenges from 9 (none), and 9's own
+# statuses (only C). So A never gets an entry on 9.
+# This means 9/A should remain UNDETERMINED.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "A" expected_status: "UNDETERMINED" }
+}
+# B: no entry on 9 → UNDETERMINED
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "B" expected_status: "UNDETERMINED" }
+}
+# A: 8 is TRUE (conceded). 8 challenges 7. Rule D: 8 TRUE → 7 FALSE.
+# 7 is child of 6. Rule A: child 7 FALSE → parent 6 FALSE.
+# 6 challenges 5. 6 is FALSE. Rule C: incoming challenge 6 FALSE → 5 TRUE.
+# 5 is child of 4. Rule B: child 5 TRUE → parent 4 TRUE.
+# 4 challenges 2. 4 is TRUE. Rule D: incoming challenge 4 TRUE → 2 FALSE.
+# 2 is child of 1. Rule A: child 2 FALSE → parent 1 FALSE.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "FALSE_CLAIM" }
 }
-# B affected via claim 2 (B's challenge #4 succeeded → #2 FALSE → #1 FALSE)
+# B: 4 is TRUE for B. 4 challenges 2. Rule D: 2 FALSE for B.
+# 2 is child of 1. Rule A: 1 FALSE for B.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "FALSE_CLAIM" }
 }
+# C: 8 is TRUE for C. 8 challenges 7. Rule D: 7 FALSE for C.
+# 7 is child of 6. Rule A: 6 FALSE for C.
+# 6 challenges 5. 6 is FALSE. Rule C: 5 TRUE for C.
+# 5 is child of 4. Rule B: 4 TRUE for C.
+# 4 challenges 2. 4 is TRUE. Rule D: 2 FALSE for C.
+# 2 is child of 1. Rule A: 1 FALSE for C.
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "C" expected_status: "FALSE_CLAIM" }
 }

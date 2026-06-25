@@ -400,6 +400,66 @@ TEST_F(PropagationTest, ConcedeChallenge_ClearsUserState) {
 }
 
 // ============================================================
+// TEST 5b: Concede challenge → challenge claim TRUE, challenged claim FALSE
+// for the concessor
+// ============================================================
+// Scenario: Alice creates claim 2. Bob challenges claim 2 (creates claim 4→2).
+// Alice concedes to Bob's challenge (claim 4). So 4/A = TRUE, 2/A = FALSE.
+TEST_F(PropagationTest, ConcedeChallenge_UpdatesUserStatuses) {
+    actAsAlice();
+    DebateHandler::AddDebate("Concede status test", userId_, *debate_);
+    enterDebate(1);
+    addChild(1, "Claim to defend", "supports");
+    int targetClaim = debate_->findChildrenIds(1).back();  // claim 2
+
+    // Bob challenges claim 2 (creates claim 4 with CHALLENGE link 4→2)
+    actAsBob();
+    enterDebate(1);
+    goToClaim(targetClaim);
+    challengeCurrentClaim("I challenge this claim");
+
+    // Find the challenge claim ID (Bob's challenge)
+    auto links = debate_->getLinksForDebate(1);
+    int challengeClaimId = -1;
+    for (const auto& link : links) {
+        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
+            challengeClaimId = std::get<1>(link);  // from = challenge claim
+            break;
+        }
+    }
+    ASSERT_NE(challengeClaimId, -1) << "Should find a challenge claim";
+
+    // Alice concedes to Bob's challenge on her claim 2
+    actAsAlice();
+    concede();
+
+    // After concession:
+    // 1. Challenge claim (4) should be TRUE_CLAIM for alice (she admits it was right)
+    debate::Claim challengeClaimAfter = claim(challengeClaimId);
+    auto itChallenge = challengeClaimAfter.user_statuses().find("alice");
+    ASSERT_NE(itChallenge, challengeClaimAfter.user_statuses().end())
+        << "Challenge claim should have a user_statuses entry for alice";
+    EXPECT_EQ(itChallenge->second, debate::ClaimStatus::TRUE_CLAIM)
+        << "Challenge claim should be TRUE_CLAIM for alice after concession";
+
+    // 2. Challenged claim (2) should be FALSE_CLAIM for alice (she admits her claim was wrong)
+    debate::Claim challengedClaimAfter = claim(targetClaim);
+    auto itChallenged = challengedClaimAfter.user_statuses().find("alice");
+    ASSERT_NE(itChallenged, challengedClaimAfter.user_statuses().end())
+        << "Challenged claim should have a user_statuses entry for alice";
+    EXPECT_EQ(itChallenged->second, debate::ClaimStatus::FALSE_CLAIM)
+        << "Challenged claim should be FALSE_CLAIM for alice after concession";
+
+    // 3. Bob's view: he created the challenge claim, so it stays TRUE for him.
+    //    The concession only affects Alice's (the concessor's) user_statuses.
+    auto itBobOnChallenge = challengeClaimAfter.user_statuses().find("bob");
+    ASSERT_NE(itBobOnChallenge, challengeClaimAfter.user_statuses().end())
+        << "Challenge claim should have a user_statuses entry for bob (creator)";
+    EXPECT_EQ(itBobOnChallenge->second, debate::ClaimStatus::TRUE_CLAIM)
+        << "Bob should see his own challenge claim as TRUE_CLAIM";
+}
+
+// ============================================================
 // TEST 6: Challenge → delete challenge → statuses recomputed
 // ============================================================
 // After deleting a challenge claim + its CHALLENGE link,

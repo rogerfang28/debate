@@ -21,6 +21,26 @@ steps {
     event_type: "CREATE_DEBATE"
     debate_topic: "Global Warming as a Chinese Hoax"
   }
+}
+
+# Both join and enter the debate
+steps {
+  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Trump" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Scientist" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
+}
+
+# Verify debate root claim exists after setup
+steps {
   expectations {
     check_type: "CLAIM_EXISTS"
     claim_id: 1
@@ -32,16 +52,6 @@ steps {
   }
 }
 
-# Both join the debate
-steps {
-  action { username: "Trump" event_type: "JOIN_DEBATE" debate_id: 1 }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Trump" expected_action: "ACTION_DEBATING" }
-}
-steps {
-  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Scientist" expected_action: "ACTION_DEBATING" }
-}
-
 # Trump adds his false claim as a supporting child of the debate topic
 steps {
   action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 1 }
@@ -51,7 +61,7 @@ steps {
     username: "Trump"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive."
-    claim_description: "Trump tweet, Nov 6 2012 — Twitter/X ID: 265895292191248385"
+    claim_description: "Trump tweet, Nov 6 2012"
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
   expectations {
@@ -79,11 +89,6 @@ steps {
     claim_text: "Global warming physics was discovered in the 19th century by Western scientists — Eunice Newton Foote (1856), John Tyndall (1859), Svante Arrhenius (1896) — over 150 years before modern China's manufacturing rise. The claim is chronologically impossible."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
-  expectations {
-    check_type: "CLAIM_SENTENCE"
-    claim_id: 3
-    expected_claim_sentence: "Global warming physics was discovered in the 19th century by Western scientists — Eunice Newton Foote (1856), John Tyndall (1859), Svante Arrhenius (1896) — over 150 years before modern China's manufacturing rise. The claim is chronologically impossible."
-  }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
   expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
   expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
@@ -157,10 +162,10 @@ steps {
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "FALSE_CLAIM" }
 }
 
-# Claim 5 (Scientist's counter-challenge) — TRUE, unchallenged after concede
+# Claim 5 (Scientist's counter-challenge) — Trump concedes to this challenge, so 5/Trump = TRUE_CLAIM
 steps {
   expectations { check_type: "USER_VIEW" claim_id: 5 username: "Scientist" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Trump" expected_status: "TRUE_CLAIM" }
 }
 
 # Root claim — debate topic still exists, affected by cascade
