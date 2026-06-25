@@ -528,3 +528,9 @@ TEST_F(ScenarioRunner, GlobalWarmingHoaxDebate) {
     ASSERT_GT(s.steps_size(), 0) << "Failed to load GlobalWarmingHoaxDebate.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
 }
+
+TEST_F(ScenarioRunner, WeatherVsClimate) {
+    TestScenario s = LoadScenarioFromFile("scenarios/WeatherVsClimate.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load WeatherVsClimate.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
