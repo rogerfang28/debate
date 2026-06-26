@@ -2337,8 +2337,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     (*treeContainer.mutable_css())["width"] = "100%";
     (*treeContainer.mutable_css())["max-width"] = "100%";
     // Use min-height so the container grows with deeper tree layers.
-    // The 467px base accounts for default canvas (500px * 0.82 scale + padding).
-    (*treeContainer.mutable_css())["min-height"] = "467px";
+    // Base accounts for default canvas (500px * 0.82 scale + padding + vertical gap for expanded cards).
+    (*treeContainer.mutable_css())["min-height"] = "520px";
 
     if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
         ui::Component emptyText = ComponentGenerator::createText(
@@ -2520,10 +2520,10 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         children.erase(std::unique(children.begin(), children.end()), children.end());
     }
 
-    const int nodeWidth = 180;
-    const int nodeHeight = 130;
+    const int nodeWidth = 200;
+    const int nodeMinHeight = 130;
     const int horizontalGap = 40;
-    const int verticalGap = 180;
+    const int verticalGap = 220;
     const int canvasPadding = 40;
 
     std::unordered_map<int, int> subtreeWidth;
@@ -2636,9 +2636,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ", challenge_edges=" + std::to_string(challengeEdges.size())
     );
 
-    int maxBottom = canvasPadding + nodeHeight;
+    int maxBottom = canvasPadding + nodeMinHeight;
     for (const auto& entry : nodeTopLeftById) {
-        maxBottom = std::max(maxBottom, entry.second.second + nodeHeight + canvasPadding);
+        maxBottom = std::max(maxBottom, entry.second.second + nodeMinHeight + canvasPadding);
     }
     const int canvasWidth = std::max(1000, rootWidth + (2 * canvasPadding));
     const int canvasHeight = std::max(500, maxBottom);
@@ -2654,7 +2654,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ""
     );
     (*mapCanvas.mutable_css())["width"] = std::to_string(canvasWidth) + "px";
-    (*mapCanvas.mutable_css())["height"] = std::to_string(canvasHeight) + "px";
+    (*mapCanvas.mutable_css())["min-height"] = std::to_string(canvasHeight) + "px";
     (*mapCanvas.mutable_css())["overflow"] = "visible";
     (*mapCanvas.mutable_css())["transform"] = "scale(" + std::to_string(normalizedScale) + ")";
     (*mapCanvas.mutable_css())["transform-origin"] = "top left";
@@ -2668,7 +2668,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
 
         const int parentX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
-        const int parentY = nodeTopLeftById[fromId].second + nodeHeight;
+        const int parentY = nodeTopLeftById[fromId].second + nodeMinHeight;
         const int childX = nodeTopLeftById[toId].first + (nodeWidth / 2);
         const int childY = nodeTopLeftById[toId].second;
         const int midY = (parentY + childY) / 2;
@@ -2730,7 +2730,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
 
         const int fromX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
-        const int fromY = nodeTopLeftById[fromId].second + nodeHeight;
+        const int fromY = nodeTopLeftById[fromId].second + nodeMinHeight;
         const int toX = nodeTopLeftById[toId].first + (nodeWidth / 2);
         const int toY = nodeTopLeftById[toId].second;
         const int midY = (fromY + toY) / 2;
@@ -2816,7 +2816,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
         (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
         (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
-        (*nodeCard.mutable_css())["min-height"] = std::to_string(nodeHeight) + "px";
+        (*nodeCard.mutable_css())["min-height"] = std::to_string(nodeMinHeight) + "px";
+        (*nodeCard.mutable_css())["overflow"] = "hidden";
+        (*nodeCard.mutable_css())["word-break"] = "break-word";
 
         ui::Component nodeTitle = ComponentGenerator::createText(
             "mapNodeTitle_" + std::to_string(claimId),
@@ -2911,10 +2913,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "",
             "leading-tight"
         );
-        (*nodeSentence.mutable_css())["overflow"] = "hidden";
-        (*nodeSentence.mutable_css())["display"] = "-webkit-box";
-        (*nodeSentence.mutable_css())["-webkit-line-clamp"] = "2";
-        (*nodeSentence.mutable_css())["-webkit-box-orient"] = "vertical";
+        (*nodeSentence.mutable_css())["overflow-wrap"] = "break-word";
         ComponentGenerator::addChild(&nodeCard, nodeSentence);
 
         ui::Component goToClaimButton = ComponentGenerator::createButton(
@@ -2926,9 +2925,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "text-white",
             "px-2 py-1",
             "rounded",
-            "mt-2 text-xs w-full transition-colors"
+            "mt-1 text-xs w-full transition-colors"
         );
-        (*goToClaimButton.mutable_css())["margin-top"] = "auto";
         ComponentGenerator::addChild(&nodeCard, goToClaimButton);
 
         ComponentGenerator::addChild(&mapCanvas, nodeCard);
