@@ -114,14 +114,33 @@ steps {
   action {
     username: "User2"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "Sea level will rise significantly more than 1/100th of an inch https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
-    claim_description: "Challenge to sea level rise claim with evidence link"
+    claim_text: "Sea level will rise significantly more than 1/100th of an inch"
+    claim_description: "Challenge to sea level rise claim"
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
-  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch" }
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "User2" expected_status: "TRUE_CLAIM" }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
   expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# User 2 adds a child claim under the challenge with the evidence link
+steps {
+  action { username: "User2" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+
+steps {
+  action {
+    username: "User2"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
+    claim_description: "NOAA evidence on global sea level rise"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "User2" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 4 to_claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
 }
 
 # Donald Trump concedes the challenge
@@ -130,7 +149,7 @@ steps {
 }
 
 # =============================================================================
-# FINAL STATE: Verify all claims and challenge link exist
+# FINAL STATE: Verify all claims, challenge link, and evidence child
 # =============================================================================
 
 steps {
@@ -138,7 +157,8 @@ steps {
   expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
-  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 3 }
   expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
 }
