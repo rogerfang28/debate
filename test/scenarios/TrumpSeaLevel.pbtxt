@@ -1,0 +1,84 @@
+name: "TrumpSeaLevel"
+
+# Simplified test: Trump makes sea level claim, Scientist challenges with evidence.
+# Trump concedes. Scientist wins.
+
+steps {
+  action { username: "Trump" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "Scientist" event_type: "CREATE_USER" }
+}
+
+# --- Setup ---
+steps {
+  action { username: "Trump" event_type: "CREATE_DEBATE" debate_topic: "Climate Change is Overblown" }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Trump" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Scientist" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+
+# --- Trump makes sea level claim ---
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action { username: "Trump" event_type: "ADD_CHILD_CLAIM" claim_text: "The ocean will rise only 1/8th of an inch over the next 400 years." claim_description: "trump sea level claim" }
+}
+
+# --- Scientist challenges with evidence ---
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+steps {
+  action { username: "Scientist" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Sea levels will rise significantly more than 1/8th inch — official data shows accelerating rise." }
+}
+
+# --- Scientist adds evidence ---
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action { username: "Scientist" event_type: "ADD_CHILD_CLAIM" claim_text: "Per climate.gov: Global sea level has risen 8-9 inches since 1880, rate accelerating at 3.6 mm/year, projections 1-4 feet by 2100." claim_description: "climate.gov evidence" }
+}
+
+# --- Trump concedes the sea level challenge ---
+steps {
+  action { username: "Trump" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action { username: "Trump" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# --- Verify structure ---
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+steps {
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 3 to_claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+}
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Scientist" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Trump" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Scientist" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Trump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Trump" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "TRUE_CLAIM" }
+}
