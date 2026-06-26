@@ -12,7 +12,7 @@ steps {
   action {
     username: "DonaldTrump"
     event_type: "CREATE_DEBATE"
-    debate_topic: "Climate Change"
+    debate_topic: "Climate change is not impactful to us"
   }
 }
 
@@ -34,7 +34,7 @@ steps {
   expectations {
     check_type: "CLAIM_SENTENCE"
     claim_id: 1
-    expected_claim_sentence: "Climate Change"
+    expected_claim_sentence: "Climate change is not impactful to us"
   }
 }
 
