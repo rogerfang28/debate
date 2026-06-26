@@ -250,6 +250,38 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debat
                   std::to_string(challengedClaimId) + " → FALSE_CLAIM");
     }
 
+    // Step 1c: Mark all PARENT_CHILD descendants of the challenge claim as TRUE for concessor.
+    // When user concedes, they agree the entire challenge chain is correct —
+    // not just the root challenge claim, but every child (evidence) under it.
+    {
+        std::set<int> visited;
+        std::vector<int> queue = {challengeClaimId};
+        visited.insert(challengeClaimId);
+        while (!queue.empty()) {
+            int currentId = queue.back();
+            queue.pop_back();
+            auto allLinksForChildren = debateWrapper.getLinksForDebate(debateId);
+            for (const auto& linkTuple : allLinksForChildren) {
+                int fromId = std::get<1>(linkTuple);
+                int toId = std::get<2>(linkTuple);
+                int lType = std::get<5>(linkTuple);
+                if (lType == static_cast<int>(debate::LinkType::PARENT_CHILD) && fromId == currentId) {
+                    if (visited.find(toId) == visited.end()) {
+                        visited.insert(toId);
+                        debate::Claim childClaim = debateWrapper.getClaimById(toId);
+                        if (childClaim.id() != 0) {
+                            (*childClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
+                            debateWrapper.updateClaimInDB(childClaim);
+                            Log::debug("[ConcedeChallengeHandler] Child claim " + std::to_string(toId) +
+                                      " → TRUE for " + username);
+                        }
+                        queue.push_back(toId);
+                    }
+                }
+            }
+        }
+    }
+
     // Step 2: Find downstream challenges of the conceded claim and set them to TRUE.
     // When A concedes to challenge 8 (targeting 7), any claim that challenges 8 is vindicated.
     if (debateId > 0) {

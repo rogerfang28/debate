@@ -323,9 +323,10 @@ steps {
 # But claim 9: its only connection is as child of 8. The cascade collects users from children
 # of 9 (none), incoming challenges to 9 (none), outgoing challenges from 9 (none), and 9's own
 # statuses (only C). So A never gets an entry on 9.
-# This means 9/A should remain UNDETERMINED.
+# A conceded to claim 8, so A agrees everything in the challenge chain is correct,
+# including child 9. Concede propagates TRUE to the challenge claim and its children.
 steps {
-  expectations { check_type: "USER_VIEW" claim_id: 9 username: "A" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "A" expected_status: "TRUE_CLAIM" }
 }
 # B: no entry on 9 → UNDETERMINED
 steps {
