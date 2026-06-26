@@ -2905,9 +2905,17 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             ComponentGenerator::addChild(&nodeCard, userStatusRow);
         }
 
+        // Truncate long sentences for map display (30 chars max)
+        const size_t kMapMaxSentenceLen = 30;
+        std::string displaySentence = node->sentence();
+        if (displaySentence.size() > kMapMaxSentenceLen) {
+            displaySentence.resize(kMapMaxSentenceLen);
+            displaySentence += "...";
+        }
+
         ui::Component nodeSentence = ComponentGenerator::createText(
             "mapNodeSentence_" + std::to_string(claimId),
-            node->sentence(),
+            displaySentence,
             "text-sm",
             "text-white",
             "",
