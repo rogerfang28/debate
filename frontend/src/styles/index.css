@@ -499,14 +499,19 @@ svg circle {
   min-height: fit-content !important;
 }
 
-/* --- Map Nodes: size to content, not fixed --- */
+/* --- Map Nodes: fixed size, content truncated --- */
 [id^="mapNode_"] {
-  height: auto !important;
-  width: auto !important;
-  min-height: 130px;
-  min-width: 180px;
-  max-width: 240px;
+  height: 180px !important;
+  width: 200px !important;
   overflow: hidden !important;
+}
+
+[id^="mapNode_"] .text-sm,
+[id^="mapNodeSentence_"] {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
 }
 
 [id^="mapNode_"] > h3 {

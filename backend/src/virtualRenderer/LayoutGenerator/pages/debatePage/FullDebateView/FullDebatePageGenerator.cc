@@ -2337,8 +2337,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     (*treeContainer.mutable_css())["width"] = "100%";
     (*treeContainer.mutable_css())["max-width"] = "100%";
     // Use min-height so the container grows with deeper tree layers.
-    // Base accounts for default canvas (500px * 0.82 scale + padding + vertical gap for expanded cards).
-    (*treeContainer.mutable_css())["min-height"] = "520px";
+    // Base accounts for default canvas (200px card + 180px height + gaps + scale).
+    (*treeContainer.mutable_css())["min-height"] = "580px";
 
     if (!fullDebateInfo.has_full_debate_tree() || fullDebateInfo.full_debate_tree().nodes_size() == 0) {
         ui::Component emptyText = ComponentGenerator::createText(
@@ -2521,9 +2521,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     }
 
     const int nodeWidth = 200;
-    const int nodeMinHeight = 130;
+    const int nodeMinHeight = 180;
     const int horizontalGap = 40;
-    const int verticalGap = 220;
+    const int verticalGap = 230;
     const int canvasPadding = 40;
 
     std::unordered_map<int, int> subtreeWidth;
@@ -2816,7 +2816,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
         (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
         (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
-        (*nodeCard.mutable_css())["min-height"] = std::to_string(nodeMinHeight) + "px";
+        (*nodeCard.mutable_css())["height"] = "180px";
         (*nodeCard.mutable_css())["overflow"] = "hidden";
         (*nodeCard.mutable_css())["word-break"] = "break-word";
 
@@ -2843,67 +2843,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         ComponentGenerator::addChild(&nodeCard, nodeCreator);
 
         // Per-user status rectangles: "username: [color]"
-        if (node->user_statuses_size() > 0) {
-            ui::Component userStatusRow = ComponentGenerator::createContainer(
-                "mapNodeUsers_" + std::to_string(claimId),
-                "flex flex-wrap gap-1 mb-1",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            );
-            for (const auto& us : node->user_statuses()) {
-                std::string rectColor;
-                switch (us.status()) {
-                    case debate::ClaimStatus::TRUE_CLAIM:
-                        rectColor = "bg-green-500";
-                        break;
-                    case debate::ClaimStatus::FALSE_CLAIM:
-                        rectColor = "bg-red-500";
-                        break;
-                    case debate::ClaimStatus::UNDETERMINED:
-                        rectColor = "bg-gray-500";
-                        break;
-                    default:
-                        rectColor = "bg-purple-500";
-                        break;
-                }
-                ui::Component userBadge = ComponentGenerator::createContainer(
-                    "mapNodeUser_" + std::to_string(claimId) + "_" + us.username(),
-                    "flex items-center",
-                    "",
-                    "px-1 py-0.5",
-                    "",
-                    "rounded",
-                    "",
-                    "mr-1"
-                );
-                ui::Component colorRect = ComponentGenerator::createContainer(
-                    "mapNodeRect_" + std::to_string(claimId) + "_" + us.username(),
-                    "w-3 h-3 rounded-sm " + rectColor,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-                );
-                ui::Component userLabel = ComponentGenerator::createText(
-                    "mapNodeLabel_" + std::to_string(claimId) + "_" + us.username(),
-                    us.username(),
-                    "text-xs",
-                    "text-gray-100",
-                    "",
-                    ""
-                );
-                ComponentGenerator::addChild(&userBadge, colorRect);
-                ComponentGenerator::addChild(&userBadge, userLabel);
-                ComponentGenerator::addChild(&userStatusRow, userBadge);
-            }
-            ComponentGenerator::addChild(&nodeCard, userStatusRow);
-        }
+        // REMOVED from map display per user request
 
         // Truncate long sentences for map display (30 chars max)
         const size_t kMapMaxSentenceLen = 30;
@@ -2933,8 +2873,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             "text-white",
             "px-2 py-1",
             "rounded",
-            "mt-1 text-xs w-full transition-colors"
+            "text-xs w-full transition-colors"
         );
+        (*goToClaimButton.mutable_css())["margin-top"] = "auto";
         ComponentGenerator::addChild(&nodeCard, goToClaimButton);
 
         ComponentGenerator::addChild(&mapCanvas, nodeCard);
