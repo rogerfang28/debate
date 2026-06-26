@@ -1,0 +1,128 @@
+name: "WeatherVsClimate"
+
+# =============================================================================
+# PHASE 1: SETUP — Create users and debate
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "Scientist" event_type: "CREATE_USER" }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Global Warming is Fake"
+  }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Skeptic" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Scientist" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "Scientist" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+
+# Verify root claim exists
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 1 expected_claim_sentence: "Global Warming is Fake" }
+}
+
+# =============================================================================
+# PHASE 2: SKEPTIC MAKES THE FLAIM
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "It's freezing in January — how can the planet be warming?"
+    claim_description: "Weather ≠ climate confusion"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "It's freezing in January — how can the planet be warming?" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Skeptic" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+}
+
+# =============================================================================
+# PHASE 3: SCIENTIST CHALLENGES THE LOGIC
+# =============================================================================
+
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Local cold weather right now disproves global long-term warming"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 3 to_claim_id: 2 }
+}
+
+# Scientist adds evidence under the challenge
+steps {
+  action { username: "Scientist" event_type: "GO_TO_CLAIM" claim_id: 3 }
+}
+steps {
+  action {
+    username: "Scientist"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Weather = local, short-term, daily. Climate = global, long-term, 30+ year trends. One cold day doesn't mean the planet isn't warming — just like one losing day doesn't mean the team is bad. Data shows cold snaps happen more because warming destabilizes the polar vortex."
+    claim_description: "Weather vs climate distinction with analogy and data"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 3 to_claim_id: 4 }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "TRUE_CLAIM" }
+}
+
+# =============================================================================
+# PHASE 4: SKEPTIC CAN'T DEFEND — CONCEDES
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# PHASE 5: VERIFY FINAL STATE
+# =============================================================================
+
+# Claim 2 (Skeptic's weather claim) — FALSE (conceded, collapsed)
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Skeptic" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Scientist" expected_status: "FALSE_CLAIM" }
+}
+
+# Claim 3 (Scientist's challenge) — TRUE (successfully defended)
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Scientist" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Skeptic" expected_status: "TRUE_CLAIM" }
+}
+
+# Claim 4 (Scientist's evidence under challenge) — TRUE
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Scientist" expected_status: "TRUE_CLAIM" }
+}
+
+# Graph structure verification
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+}
