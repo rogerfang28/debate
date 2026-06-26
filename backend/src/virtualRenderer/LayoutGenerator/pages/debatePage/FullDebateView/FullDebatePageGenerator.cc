@@ -2842,16 +2842,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&nodeCard, nodeCreator);
 
-        // Per-user status rectangles: "username: [color]"
-        // REMOVED from map display per user request
-
-        // Truncate long sentences for map display (90 chars max)
-        const size_t kMapMaxSentenceLen = 90;
-        std::string displaySentence = node->sentence();
-        if (displaySentence.size() > kMapMaxSentenceLen) {
-            displaySentence.resize(kMapMaxSentenceLen);
-            displaySentence += "...";
-        }
+        // Per-user status rectangles removed — claimed status shown via node border color only.
 
         ui::Component nodeSentence = ComponentGenerator::createText(
             "mapNodeSentence_" + std::to_string(claimId),

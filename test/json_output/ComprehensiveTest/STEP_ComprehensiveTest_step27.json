@@ -1,0 +1,1371 @@
+{
+ "pageId": "debate",
+ "title": "commit: 35f6712",
+ "components": [
+  {
+   "id": "stepViewMain",
+   "type": "CONTAINER",
+   "children": [
+    {
+     "id": "stepViewContentRow",
+     "type": "CONTAINER",
+     "children": [
+      {
+       "id": "stepViewLeftColumn",
+       "type": "CONTAINER",
+       "children": [
+        {
+         "id": "stepViewGuideBox",
+         "type": "CONTAINER",
+         "children": [
+          {
+           "id": "stepViewGuideTitle",
+           "type": "TEXT",
+           "text": "Guide",
+           "style": {
+            "customClass": "text-sm text-blue-200 font-semibold uppercase tracking-wide mb-2"
+           }
+          },
+          {
+           "id": "stepViewGuideParagraph",
+           "type": "TEXT",
+           "text": "This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt’s work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
+           "style": {
+            "customClass": "text-base text-blue-100 leading-snug"
+           },
+           "css": {
+            "font-style": "italic",
+            "overflow-wrap": "break-word",
+            "text-align": "left",
+            "white-space": "pre-line"
+           }
+          }
+         ],
+         "style": {
+          "customClass": "w-full bg-blue-900/30 p-4 border border-blue-700 rounded-lg"
+         },
+         "css": {
+          "max-width": "100%"
+         }
+        },
+        {
+         "id": "stepCardsContainer",
+         "type": "CONTAINER",
+         "children": [
+          {
+           "id": "stepCard_1",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "stepSentence_1",
+             "type": "TEXT",
+             "text": "Is AI beneficial?",
+             "style": {
+              "customClass": "text-base text-white font-medium flex-1"
+             }
+            },
+            {
+             "id": "fullDebateStepButton_1",
+             "type": "BUTTON",
+             "text": "Go to Claim",
+             "style": {
+              "customClass": "px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-xs w-fit shrink-0 self-start"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "flex items-start justify-between gap-3 bg-gray-800 p-4 border border-gray-700 rounded-lg"
+           }
+          },
+          {
+           "id": "stepCard_4",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "stepSentence_4",
+             "type": "TEXT",
+             "text": "Healthcare AI has bias issues",
+             "style": {
+              "customClass": "text-base text-white font-medium flex-1"
+             }
+            },
+            {
+             "id": "fullDebateStepButton_4",
+             "type": "BUTTON",
+             "text": "Go to Claim",
+             "style": {
+              "customClass": "px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-xs w-fit shrink-0 self-start"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "flex items-start justify-between gap-3 bg-gray-800 p-4 border border-gray-700 rounded-lg"
+           }
+          },
+          {
+           "id": "stepCard_6",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "stepSentence_6",
+             "type": "TEXT",
+             "text": "Bias can be mitigated with diverse training data",
+             "style": {
+              "customClass": "text-base text-white font-medium flex-1"
+             }
+            },
+            {
+             "id": "fullDebateStepButton_6",
+             "type": "BUTTON",
+             "text": "Go to Claim",
+             "style": {
+              "customClass": "px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-xs w-fit shrink-0 self-start"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "flex items-start justify-between gap-3 bg-gray-800 p-4 border border-gray-700 rounded-lg"
+           }
+          },
+          {
+           "id": "stepCard_8",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "stepSentence_8",
+             "type": "TEXT",
+             "text": "Diverse data is hard to obtain in practice",
+             "style": {
+              "customClass": "text-base text-white font-medium flex-1"
+             }
+            },
+            {
+             "id": "fullDebateStepButton_8",
+             "type": "BUTTON",
+             "text": "Go to Claim",
+             "style": {
+              "customClass": "px-2 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-xs w-fit shrink-0 self-start"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "flex items-start justify-between gap-3 bg-gray-800 p-4 border border-gray-700 rounded-lg"
+           }
+          },
+          {
+           "id": "stepCard_influencerConcedeNote",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "stepViewInfluencerConcedeNote",
+             "type": "TEXT",
+             "text": "Now influencer has to concede (to be implemented)",
+             "style": {
+              "customClass": "text-base text-white font-medium flex-1"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "flex items-start justify-between gap-3 bg-gray-800 p-4 border border-gray-700 rounded-lg"
+           }
+          }
+         ],
+         "style": {
+          "customClass": "w-full grid grid-cols-1 gap-4"
+         }
+        }
+       ],
+       "css": {
+        "display": "flex",
+        "flex": "1 1 auto",
+        "gap": "1rem",
+        "flex-direction": "column",
+        "min-width": "0"
+       }
+      },
+      {
+       "id": "stepViewRightColumn",
+       "type": "CONTAINER",
+       "children": [
+        {
+         "id": "mapSection",
+         "type": "CONTAINER",
+         "children": [
+          {
+           "id": "mapTreeContainer",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "mapScaledViewport",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "mapCanvas",
+               "type": "CONTAINER",
+               "children": [
+                {
+                 "id": "mapEdgeV1_0",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "1250px",
+                  "width": "2px",
+                  "left": "129px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_1",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "top": "1274px",
+                  "left": "130px",
+                  "height": "2px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_2",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "top": "1275px",
+                  "height": "25px",
+                  "left": "129px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_3",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "height": "25px",
+                  "top": "1070px",
+                  "width": "2px",
+                  "left": "129px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_4",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "1094px",
+                  "height": "2px",
+                  "width": "2px",
+                  "left": "130px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_5",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "1095px",
+                  "height": "25px",
+                  "width": "2px",
+                  "left": "129px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_6",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "left": "129px",
+                  "height": "25px",
+                  "top": "890px",
+                  "width": "2px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_7",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "130px",
+                  "top": "914px",
+                  "height": "2px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_8",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "915px",
+                  "left": "129px",
+                  "width": "2px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_9",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "129px",
+                  "top": "710px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_10",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "top": "734px",
+                  "left": "130px",
+                  "height": "2px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_11",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "735px",
+                  "width": "2px",
+                  "left": "129px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_12",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "height": "25px",
+                  "left": "129px",
+                  "top": "530px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_13",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "left": "130px",
+                  "width": "2px",
+                  "height": "2px",
+                  "top": "554px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_14",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "height": "25px",
+                  "left": "129px",
+                  "top": "555px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_15",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "350px",
+                  "width": "2px",
+                  "left": "129px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_16",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "374px",
+                  "height": "2px",
+                  "width": "2px",
+                  "left": "130px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_17",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "375px",
+                  "height": "25px",
+                  "width": "2px",
+                  "left": "129px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_18",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "height": "25px",
+                  "width": "2px",
+                  "top": "170px",
+                  "left": "239px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_19",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "left": "130px",
+                  "height": "2px",
+                  "top": "194px",
+                  "width": "110px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_20",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "129px",
+                  "height": "25px",
+                  "top": "195px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV1_21",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "top": "170px",
+                  "left": "239px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapEdgeH_22",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "194px",
+                  "width": "110px",
+                  "left": "240px",
+                  "height": "2px"
+                 }
+                },
+                {
+                 "id": "mapEdgeV2_23",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-gray-500"
+                 },
+                 "css": {
+                  "top": "195px",
+                  "width": "2px",
+                  "left": "349px",
+                  "height": "25px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV1_24",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "129px",
+                  "top": "375px",
+                  "height": "155px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeH_25",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "height": "2px",
+                  "left": "130px",
+                  "top": "374px",
+                  "width": "2px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV2_26",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "left": "129px",
+                  "top": "220px",
+                  "height": "155px",
+                  "width": "2px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV1_27",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "129px",
+                  "height": "155px",
+                  "top": "735px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeH_28",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "width": "2px",
+                  "left": "130px",
+                  "height": "2px",
+                  "top": "734px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV2_29",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "top": "580px",
+                  "left": "129px",
+                  "height": "155px",
+                  "width": "2px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV1_30",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "height": "155px",
+                  "width": "2px",
+                  "left": "129px",
+                  "top": "1095px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeH_31",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "left": "130px",
+                  "top": "1094px",
+                  "width": "2px",
+                  "height": "2px"
+                 }
+                },
+                {
+                 "id": "mapChallengeEdgeV2_32",
+                 "type": "CONTAINER",
+                 "style": {
+                  "customClass": "absolute bg-orange-500"
+                 },
+                 "css": {
+                  "height": "155px",
+                  "left": "129px",
+                  "width": "2px",
+                  "top": "940px"
+                 }
+                },
+                {
+                 "id": "mapNode_0",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_1",
+                   "type": "TEXT",
+                   "text": "CURRENT CLAIM - [1] False",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_1",
+                   "type": "TEXT",
+                   "text": "Created by: 1",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_1",
+                   "type": "TEXT",
+                   "text": "Is AI beneficial?",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "display": "-webkit-box",
+                    "-webkit-box-orient": "vertical",
+                    "overflow": "hidden",
+                    "-webkit-line-clamp": "2"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_1",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "width": "180px",
+                  "border-width": "4px",
+                  "top": "40px",
+                  "border-style": "solid",
+                  "border-color": "#fde047",
+                  "left": "150px",
+                  "height": "130px"
+                 }
+                },
+                {
+                 "id": "mapNode_1",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_2",
+                   "type": "TEXT",
+                   "text": "[2] False",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_2",
+                   "type": "TEXT",
+                   "text": "Created by: 1",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_2",
+                   "type": "TEXT",
+                   "text": "AI improves healthcare",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "-webkit-line-clamp": "2",
+                    "-webkit-box-orient": "vertical",
+                    "display": "-webkit-box",
+                    "overflow": "hidden"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_2",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border-2 border-orange-500 rounded shadow"
+                 },
+                 "css": {
+                  "top": "220px",
+                  "height": "130px",
+                  "width": "180px",
+                  "left": "40px"
+                 }
+                },
+                {
+                 "id": "mapNode_2",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_3",
+                   "type": "TEXT",
+                   "text": "[3] True",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_3",
+                   "type": "TEXT",
+                   "text": "Created by: 1",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_3",
+                   "type": "TEXT",
+                   "text": "AI causes job displacement",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "-webkit-line-clamp": "2",
+                    "display": "-webkit-box",
+                    "-webkit-box-orient": "vertical",
+                    "overflow": "hidden"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_3",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "height": "130px",
+                  "width": "180px",
+                  "left": "260px",
+                  "top": "220px"
+                 }
+                },
+                {
+                 "id": "mapNode_3",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_4",
+                   "type": "TEXT",
+                   "text": "[4] True",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_4",
+                   "type": "TEXT",
+                   "text": "Created by: 2",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_4",
+                   "type": "TEXT",
+                   "text": "Healthcare AI has bias issues",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "-webkit-line-clamp": "2",
+                    "-webkit-box-orient": "vertical",
+                    "display": "-webkit-box",
+                    "overflow": "hidden"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_4",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-orange-600 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "height": "130px",
+                  "width": "180px",
+                  "left": "40px",
+                  "top": "400px"
+                 }
+                },
+                {
+                 "id": "mapNode_4",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_5",
+                   "type": "TEXT",
+                   "text": "[5] True",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_5",
+                   "type": "TEXT",
+                   "text": "Created by: 2",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_5",
+                   "type": "TEXT",
+                   "text": "Bias in diagnostic algorithms",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "-webkit-line-clamp": "2",
+                    "display": "-webkit-box",
+                    "overflow": "hidden",
+                    "-webkit-box-orient": "vertical"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_5",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border-2 border-orange-500 rounded shadow"
+                 },
+                 "css": {
+                  "top": "580px",
+                  "left": "40px",
+                  "width": "180px",
+                  "height": "130px"
+                 }
+                },
+                {
+                 "id": "mapNode_5",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_6",
+                   "type": "TEXT",
+                   "text": "[6] False",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_6",
+                   "type": "TEXT",
+                   "text": "Created by: 1",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_6",
+                   "type": "TEXT",
+                   "text": "Bias can be mitigated with diverse training data",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "overflow": "hidden",
+                    "-webkit-line-clamp": "2",
+                    "-webkit-box-orient": "vertical",
+                    "display": "-webkit-box"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_6",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-orange-600 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "width": "180px",
+                  "left": "40px",
+                  "top": "760px",
+                  "height": "130px"
+                 }
+                },
+                {
+                 "id": "mapNode_6",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_7",
+                   "type": "TEXT",
+                   "text": "[7] False",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_7",
+                   "type": "TEXT",
+                   "text": "Created by: 1",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_7",
+                   "type": "TEXT",
+                   "text": "Diverse datasets exist in medical imaging",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "overflow": "hidden",
+                    "-webkit-line-clamp": "2",
+                    "-webkit-box-orient": "vertical",
+                    "display": "-webkit-box"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_7",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border-2 border-orange-500 rounded shadow"
+                 },
+                 "css": {
+                  "height": "130px",
+                  "left": "40px",
+                  "width": "180px",
+                  "top": "940px"
+                 }
+                },
+                {
+                 "id": "mapNode_7",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_8",
+                   "type": "TEXT",
+                   "text": "[8] True",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_8",
+                   "type": "TEXT",
+                   "text": "Created by: 3",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_8",
+                   "type": "TEXT",
+                   "text": "Diverse data is hard to obtain in practice",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "display": "-webkit-box",
+                    "-webkit-line-clamp": "2",
+                    "overflow": "hidden",
+                    "-webkit-box-orient": "vertical"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_8",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-orange-600 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "width": "180px",
+                  "top": "1120px",
+                  "height": "130px",
+                  "left": "40px"
+                 }
+                },
+                {
+                 "id": "mapNode_8",
+                 "type": "CONTAINER",
+                 "children": [
+                  {
+                   "id": "mapNodeTitle_9",
+                   "type": "TEXT",
+                   "text": "[9] Undetermined",
+                   "style": {
+                    "customClass": "text-xs text-gray-300 font-semibold mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeCreator_9",
+                   "type": "TEXT",
+                   "text": "Created by: 3",
+                   "style": {
+                    "customClass": "text-xs text-gray-400 mb-1"
+                   }
+                  },
+                  {
+                   "id": "mapNodeSentence_9",
+                   "type": "TEXT",
+                   "text": "Rare diseases lack data by definition",
+                   "style": {
+                    "customClass": "text-sm text-white leading-tight"
+                   },
+                   "css": {
+                    "overflow": "hidden",
+                    "display": "-webkit-box",
+                    "-webkit-box-orient": "vertical",
+                    "-webkit-line-clamp": "2"
+                   }
+                  },
+                  {
+                   "id": "goToClaim_9",
+                   "type": "BUTTON",
+                   "text": "Go to Claim",
+                   "style": {
+                    "customClass": "px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors mt-2 text-xs w-full transition-colors"
+                   },
+                   "css": {
+                    "margin-top": "auto"
+                   }
+                  }
+                 ],
+                 "style": {
+                  "customClass": "absolute z-10 flex flex-col bg-gray-700 p-2 border border-gray-500 rounded shadow"
+                 },
+                 "css": {
+                  "width": "180px",
+                  "top": "1300px",
+                  "left": "40px",
+                  "height": "130px"
+                 }
+                }
+               ],
+               "style": {
+                "customClass": "relative"
+               },
+               "css": {
+                "width": "1000px",
+                "height": "1470px",
+                "transform": "scale(0.820000)",
+                "overflow": "visible",
+                "transform-origin": "top left"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "relative"
+             },
+             "css": {
+              "width": "820px",
+              "height": "1205px"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "w-full bg-gray-900/40 p-4 border border-gray-700 rounded"
+           },
+           "css": {
+            "max-width": "100%",
+            "min-height": "467px",
+            "overflow-x": "auto",
+            "width": "100%"
+           }
+          },
+          {
+           "id": "mapLegend",
+           "type": "CONTAINER",
+           "children": [
+            {
+             "id": "legendNormalClaim",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendNormalClaimSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-gray-700 rounded w-4 h-4 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendNormalClaimText",
+               "type": "TEXT",
+               "text": "Normal claim",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            },
+            {
+             "id": "legendChallengedClaim",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendChallengedClaimSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-gray-700 border-2 border-orange-500 rounded w-4 h-4 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendChallengedClaimText",
+               "type": "TEXT",
+               "text": "Challenged claim",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            },
+            {
+             "id": "legendChallengeClaim",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendChallengeClaimSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-orange-600 rounded w-4 h-4 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendChallengeClaimText",
+               "type": "TEXT",
+               "text": "Challenge claim",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            },
+            {
+             "id": "legendNormalLink",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendNormalLinkSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-gray-500 rounded-full w-10 h-1.5 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendNormalLinkText",
+               "type": "TEXT",
+               "text": "Normal link",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            },
+            {
+             "id": "legendChallengeLink",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendChallengeLinkSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-orange-500 rounded-full w-10 h-1.5 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendChallengeLinkText",
+               "type": "TEXT",
+               "text": "Challenge link",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            },
+            {
+             "id": "legendCurrentClaim",
+             "type": "CONTAINER",
+             "children": [
+              {
+               "id": "legendCurrentClaimSwatch",
+               "type": "CONTAINER",
+               "style": {
+                "customClass": "bg-transparent border-4 border-yellow-400 rounded w-4 h-4 flex-shrink-0"
+               }
+              },
+              {
+               "id": "legendCurrentClaimText",
+               "type": "TEXT",
+               "text": "Current claim",
+               "style": {
+                "customClass": "text-sm text-white truncate"
+               }
+              }
+             ],
+             "style": {
+              "customClass": "flex items-center gap-3 bg-gray-800/80 px-3 py-2 border border-gray-700 rounded min-w-0"
+             }
+            }
+           ],
+           "style": {
+            "customClass": "grid grid-cols-2 md:grid-cols-3 gap-3 bg-gray-900/60 p-3 mt-4 border border-gray-700 rounded text-sm text-gray-200"
+           }
+          }
+         ],
+         "style": {
+          "customClass": "w-full bg-gray-800 p-6 mt-6 border-2 border-gray-700 rounded min-h-[32rem]"
+         },
+         "css": {
+          "width": "100%",
+          "max-width": "760px",
+          "margin-top": "0"
+         }
+        }
+       ],
+       "css": {
+        "flex": "0 0 45%",
+        "flex-direction": "row",
+        "display": "flex",
+        "min-width": "400px"
+       }
+      }
+     ],
+     "style": {
+      "customClass": "w-full"
+     },
+     "css": {
+      "gap": "1rem",
+      "display": "flex",
+      "flex-direction": "row",
+      "flex-wrap": "nowrap",
+      "align-items": "flex-start"
+     }
+    }
+   ],
+   "style": {
+    "customClass": "min-h-screen flex flex-col items-stretch bg-gray-900 p-6 gap-4"
+   }
+  },
+  {
+   "id": "stepDescription",
+   "type": "TEXT",
+   "text": "Step 27: A GO_TO_CLAIM [claim_id: 1]",
+   "style": {
+    "customClass": "text-xs text-gray-500 border-t border-gray-700 mt-4 pt-2"
+   }
+  }
+ ]
+}
