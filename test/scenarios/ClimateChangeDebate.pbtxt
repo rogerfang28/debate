@@ -89,13 +89,51 @@ steps {
 }
 
 # =============================================================================
-# FINAL STATE: Verify both claims exist
+# PHASE 3: USER 2 CHALLENGES THE SEA LEVEL CLAIM
+# =============================================================================
+
+steps {
+  action { username: "User2" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "User2" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "User2" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "User2" expected_action: "ACTION_DEBATING" }
+}
+
+# User 2 challenges claim 2 (sea level rise)
+steps {
+  action { username: "User2" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "User2"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Sea level will rise significantly more than 1/100th of an inch"
+    claim_description: "Challenge to sea level rise claim"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "User2" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# =============================================================================
+# FINAL STATE: Verify all claims and challenge link exist
 # =============================================================================
 
 steps {
   expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
   expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
 }
