@@ -499,7 +499,7 @@ svg circle {
   min-height: fit-content !important;
 }
 
-/* --- Map Nodes: fixed size, content truncated --- */
+/* --- Map Nodes: fixed size, content wraps then clipped by card --- */
 [id^="mapNode_"] {
   height: 180px !important;
   width: 200px !important;
@@ -508,10 +508,10 @@ svg circle {
 
 [id^="mapNode_"] .text-sm,
 [id^="mapNodeSentence_"] {
-  white-space: nowrap !important;
   overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: block !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
 }
 
 [id^="mapNode_"] > h3 {
