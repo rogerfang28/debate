@@ -1,0 +1,204 @@
+name: "ClimateChangeDebate"
+
+# =============================================================================
+# PHASE 1: SETUP
+# =============================================================================
+
+steps {
+  action { username: "DonaldTrump" event_type: "CREATE_USER" }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Climate change is not impactful to us"
+  }
+}
+
+steps {
+  action { username: "DonaldTrump" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "DonaldTrump" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "DonaldTrump" expected_action: "ACTION_DEBATING" }
+}
+
+# Verify debate root claim
+steps {
+  expectations {
+    check_type: "CLAIM_EXISTS"
+    claim_id: 1
+  }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Climate change is not impactful to us"
+  }
+}
+
+# =============================================================================
+# PHASE 2: DONALD TRUMP'S CLAIMS
+# =============================================================================
+
+# Claim 1: Sea level rise
+steps {
+  action { username: "DonaldTrump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The sea level will rise 1/100th of an inch over the next 350 years"
+    claim_description: "Trump statement on sea level rise"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "The sea level will rise 1/100th of an inch over the next 350 years"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "DonaldTrump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+# Claim 2: Global warming terminology
+steps {
+  action { username: "DonaldTrump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Global warming was changed because the earth climate was warming and cooling so global warming was inaccurate"
+    claim_description: "Trump on global warming name change"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 3
+    expected_claim_sentence: "Global warming was changed because the earth climate was warming and cooling so global warming was inaccurate"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "DonaldTrump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+# =============================================================================
+# PHASE 3: USER 2 CHALLENGES THE SEA LEVEL CLAIM
+# =============================================================================
+
+steps {
+  action { username: "User2" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "User2" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "User2" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "User2" expected_action: "ACTION_DEBATING" }
+}
+
+# User 2 challenges claim 2 (sea level rise)
+steps {
+  action { username: "User2" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "User2"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Sea level will rise significantly more than 1/100th of an inch"
+    claim_description: "Challenge to sea level rise claim"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "User2" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# User 2 adds a child claim under the challenge with the evidence link
+steps {
+  action { username: "User2" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+
+steps {
+  action {
+    username: "User2"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
+    claim_description: "NOAA evidence on global sea level rise"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "User2" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 4 to_claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+# Trump tries to challenge the evidence (claim 5)
+steps {
+  action { username: "DonaldTrump" event_type: "GO_TO_CLAIM" claim_id: 5 }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Science does not know"
+    claim_description: "Trump challenges the evidence"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 6 expected_claim_sentence: "Science does not know" }
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "DonaldTrump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 6 to_claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+}
+
+# User2 counters Trump's challenge
+steps {
+  action { username: "User2" event_type: "GO_TO_CLAIM" claim_id: 6 }
+}
+
+steps {
+  action {
+    username: "User2"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Yes it does"
+    claim_description: "User2 counters Trump's challenge"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 7 expected_claim_sentence: "Yes it does" }
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "User2" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 7 to_claim_id: 6 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 7 }
+}
+
+# Donald Trump concedes the challenge
+steps {
+  action { username: "DonaldTrump" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# FINAL STATE: Verify all claims, challenge links, and evidence child
+# =============================================================================
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 7 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 3 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+}
