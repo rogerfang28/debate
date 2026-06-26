@@ -1,0 +1,101 @@
+name: "ClimateChangeDebate"
+
+# =============================================================================
+# PHASE 1: SETUP
+# =============================================================================
+
+steps {
+  action { username: "DonaldTrump" event_type: "CREATE_USER" }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Climate Change"
+  }
+}
+
+steps {
+  action { username: "DonaldTrump" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "DonaldTrump" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "DonaldTrump" expected_action: "ACTION_DEBATING" }
+}
+
+# Verify debate root claim
+steps {
+  expectations {
+    check_type: "CLAIM_EXISTS"
+    claim_id: 1
+  }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Climate Change"
+  }
+}
+
+# =============================================================================
+# PHASE 2: DONALD TRUMP'S CLAIMS
+# =============================================================================
+
+# Claim 1: Sea level rise
+steps {
+  action { username: "DonaldTrump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The sea level will rise 1/100th of an inch over the next 350 years"
+    claim_description: "Trump statement on sea level rise"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "The sea level will rise 1/100th of an inch over the next 350 years"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "DonaldTrump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+# Claim 2: Global warming terminology
+steps {
+  action { username: "DonaldTrump" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "DonaldTrump"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Global warming was changed because the earth climate was warming and cooling so global warming was inaccurate"
+    claim_description: "Trump on global warming name change"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 3
+    expected_claim_sentence: "Global warming was changed because the earth climate was warming and cooling so global warming was inaccurate"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "DonaldTrump" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+# =============================================================================
+# FINAL STATE: Verify both claims exist
+# =============================================================================
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+}

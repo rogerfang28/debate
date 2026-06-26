@@ -2845,8 +2845,8 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         // Per-user status rectangles: "username: [color]"
         // REMOVED from map display per user request
 
-        // Truncate long sentences for map display (30 chars max)
-        const size_t kMapMaxSentenceLen = 30;
+        // Truncate long sentences for map display (90 chars max)
+        const size_t kMapMaxSentenceLen = 90;
         std::string displaySentence = node->sentence();
         if (displaySentence.size() > kMapMaxSentenceLen) {
             displaySentence.resize(kMapMaxSentenceLen);
