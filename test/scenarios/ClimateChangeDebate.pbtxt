@@ -114,14 +114,19 @@ steps {
   action {
     username: "User2"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "Sea level will rise significantly more than 1/100th of an inch"
-    claim_description: "Challenge to sea level rise claim"
+    claim_text: "Sea level will rise significantly more than 1/100th of an inch https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
+    claim_description: "Challenge to sea level rise claim with evidence link"
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
-  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" }
   expectations { check_type: "USER_VIEW" claim_id: 4 username: "User2" expected_status: "TRUE_CLAIM" }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
   expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+# Donald Trump concedes the challenge
+steps {
+  action { username: "DonaldTrump" event_type: "CONCEDE_CHALLENGE" }
 }
 
 # =============================================================================
