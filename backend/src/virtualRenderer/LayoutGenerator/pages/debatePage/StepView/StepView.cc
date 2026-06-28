@@ -178,6 +178,22 @@ ui::Page StepView::GenerateStepViewPage(
 		);
 
 		ComponentGenerator::addChild(&stepCard, sentenceText);
+
+		// Render leaf paragraph if this step has one.
+		if (!step.leaf_paragraph().empty()) {
+			ui::Component leafPara = ComponentGenerator::createText(
+				"stepLeafPara_" + std::to_string(claimId),
+				step.leaf_paragraph(),
+				"text-sm",
+				"text-gray-400",
+				"",
+				"mt-2 ms-2 border-s-2 border-gray-700 ps-3"
+			);
+			(*leafPara.mutable_css())["white-space"] = "normal";
+			(*leafPara.mutable_css())["overflow-wrap"] = "break-word";
+			ComponentGenerator::addChild(&stepCard, leafPara);
+		}
+
 		ComponentGenerator::addChild(&stepCard, goToStepButton);
 
 		ComponentGenerator::addChild(&stepsContainer, stepCard);

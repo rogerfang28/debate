@@ -621,6 +621,7 @@ class Steps final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kSummaryFieldNumber = 2,
+    kLeafParagraphFieldNumber = 3,
     kClaimIdFieldNumber = 1,
   };
   // string summary = 2;
@@ -638,6 +639,21 @@ class Steps final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_summary();
 
   public:
+  // string leaf_paragraph = 3;
+  void clear_leaf_paragraph() ;
+  const ::std::string& leaf_paragraph() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_leaf_paragraph(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_leaf_paragraph();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_leaf_paragraph();
+  void set_allocated_leaf_paragraph(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_leaf_paragraph() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_leaf_paragraph(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_leaf_paragraph();
+
+  public:
   // int32 claim_id = 1;
   void clear_claim_id() ;
   ::int32_t claim_id() const;
@@ -652,8 +668,8 @@ class Steps final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 36,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 50,
                                    2>
       _table_;
 
@@ -675,6 +691,7 @@ class Steps final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr summary_;
+    ::google::protobuf::internal::ArenaStringPtr leaf_paragraph_;
     ::int32_t claim_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -6226,7 +6243,7 @@ inline void Steps::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000004U);
 }
 inline ::int32_t Steps::claim_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.Steps.claim_id)
@@ -6234,7 +6251,7 @@ inline ::int32_t Steps::claim_id() const {
 }
 inline void Steps::set_claim_id(::int32_t value) {
   _internal_set_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   // @@protoc_insertion_point(field_set:rendering_info.Steps.claim_id)
 }
 inline ::int32_t Steps::_internal_claim_id() const {
@@ -6309,6 +6326,71 @@ inline void Steps::set_allocated_summary(::std::string* PROTOBUF_NULLABLE value)
     _impl_.summary_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:rendering_info.Steps.summary)
+}
+
+// string leaf_paragraph = 3;
+inline void Steps::clear_leaf_paragraph() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.leaf_paragraph_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& Steps::leaf_paragraph() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.Steps.leaf_paragraph)
+  return _internal_leaf_paragraph();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Steps::set_leaf_paragraph(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.leaf_paragraph_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:rendering_info.Steps.leaf_paragraph)
+}
+inline ::std::string* PROTOBUF_NONNULL Steps::mutable_leaf_paragraph()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_leaf_paragraph();
+  // @@protoc_insertion_point(field_mutable:rendering_info.Steps.leaf_paragraph)
+  return _s;
+}
+inline const ::std::string& Steps::_internal_leaf_paragraph() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.leaf_paragraph_.Get();
+}
+inline void Steps::_internal_set_leaf_paragraph(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.leaf_paragraph_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Steps::_internal_mutable_leaf_paragraph() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.leaf_paragraph_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Steps::release_leaf_paragraph() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:rendering_info.Steps.leaf_paragraph)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.leaf_paragraph_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.leaf_paragraph_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Steps::set_allocated_leaf_paragraph(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.leaf_paragraph_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.leaf_paragraph_.IsDefault()) {
+    _impl_.leaf_paragraph_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:rendering_info.Steps.leaf_paragraph)
 }
 
 // -------------------------------------------------------------------

@@ -116,6 +116,8 @@ message FullDebateTreeLink {
 message Steps {
 	int32 claim_id = 1;
 	string summary = 2;
+	// Flattened paragraph of all leaf-node sentences in this step's subtree.
+	string leaf_paragraph = 3;
 }
 
 // The exact input needed to build the home page UI.

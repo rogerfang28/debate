@@ -2846,7 +2846,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
 
         ui::Component nodeSentence = ComponentGenerator::createText(
             "mapNodeSentence_" + std::to_string(claimId),
-            displaySentence,
+            node->sentence(),
             "text-sm",
             "text-white",
             "",
