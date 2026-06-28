@@ -1,0 +1,339 @@
+name: "MegaTest"
+
+# =============================================================================
+# MEGA TEST — 5 users, 19 claims, 5 challenges, 2 concedes
+#
+# ACTUAL ID MAPPING (sequential insertion order):
+#   1  (root "AI Safety", Alpha)
+#   2  ("AI improves healthcare", Alpha, child of 1)
+#   3  ("Diagnostic accuracy", Alpha, child of 2)
+#   4  ("Treatment optimization", Alpha, child of 2)
+#   5  ("AI causes bias", Beta, child of 1)
+#   6  ("Proven diagnostic bias", Beta, child of 5)
+#   7  ("AI displaces jobs", Gamma, child of 1)
+#   8  ("Manufacturing automation", Gamma, child of 7)
+#   9  ("White-collar replacement", Gamma, child of 7)
+#   10 ("Healthcare AI is dangerous", Beta, challenge→2)
+#   11 ("FDA approval failures", Beta, child of 10)
+#   12 ("Diagnostics are unreliable", Gamma, challenge→3)
+#   13 ("False positive rates", Gamma, child of 12)
+#   14 ("Bias can be mitigated", Alpha, challenge→5)
+#   15 ("Diverse training datasets", Alpha, child of 14)
+#   16 ("New jobs are created", Delta, challenge→8)
+#   17 ("AI maintenance roles", Delta, child of 16)
+#   18 ("Net job loss is still negative", Gamma, challenge→16)
+#   19 ("Transition unemployment", Gamma, child of 18)
+#
+# PARENT_CHILD (13): 1→2, 2→3, 2→4, 1→5, 5→6, 1→7, 7→8, 7→9,
+#                     10→11, 12→13, 14→15, 16→17, 18→19
+# CHALLENGE (5):      10→2, 12→3, 14→5, 16→8, 18→16
+#
+# CONCEDE #1: Beta concedes to challenge 14 (which challenges claim 5)
+#   14→TRUE for Beta, 15→TRUE for Beta (child propagation)
+#   5→FALSE for Beta (Rule D: 14 TRUE→5 FALSE)
+#   Propagation: 5 FALSE → 6 child of 5. Rule A: 6 FALSE for Beta? 
+#     No: Rule A is "child FALSE → parent FALSE". 5 is already FALSE. 6=TRUE (Beta creator).
+#     Does 6=TRUE affect 5? No, Rule D already set 5=FALSE.
+#
+# CONCEDE #2: Delta concedes to challenge 18 (which challenges claim 16)
+#   18→TRUE for Delta, 19→TRUE for Delta (child propagation)
+#   16→FALSE for Delta (Rule D: 18 TRUE→16 FALSE)
+#   Propagation: 16 FALSE → 16 challenges 8 → Rule C: 8 TRUE for Delta
+# =============================================================================
+
+steps { action { username: "Alpha" event_type: "CREATE_USER" } }
+steps { action { username: "Beta" event_type: "CREATE_USER" } }
+steps { action { username: "Gamma" event_type: "CREATE_USER" } }
+steps { action { username: "Delta" event_type: "CREATE_USER" } }
+steps { action { username: "Epsilon" event_type: "CREATE_USER" } }
+
+steps { action { username: "Alpha" event_type: "CREATE_DEBATE" debate_topic: "AI Safety" } }
+steps { action { username: "Alpha" event_type: "JOIN_DEBATE" debate_id: 1 } }
+steps { action { username: "Alpha" event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "Beta" event_type: "JOIN_DEBATE" debate_id: 1 } }
+steps { action { username: "Beta" event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "Gamma" event_type: "JOIN_DEBATE" debate_id: 1 } }
+steps { action { username: "Gamma" event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "Delta" event_type: "JOIN_DEBATE" debate_id: 1 } }
+steps { action { username: "Delta" event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "Epsilon" event_type: "JOIN_DEBATE" debate_id: 1 } }
+steps { action { username: "Epsilon" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+# Build tree: Alpha's branch
+steps { action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps { action { username: "Alpha" event_type: "ADD_CHILD_CLAIM" claim_text: "AI improves healthcare" claim_description: "pro" } }
+steps { action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps { action { username: "Alpha" event_type: "ADD_CHILD_CLAIM" claim_text: "Diagnostic accuracy" claim_description: "evidence" } }
+steps { action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps { action { username: "Alpha" event_type: "ADD_CHILD_CLAIM" claim_text: "Treatment optimization" claim_description: "evidence" } }
+
+# Build tree: Beta's branch
+steps { action { username: "Beta" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps { action { username: "Beta" event_type: "ADD_CHILD_CLAIM" claim_text: "AI causes bias" claim_description: "con" } }
+steps { action { username: "Beta" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps { action { username: "Beta" event_type: "ADD_CHILD_CLAIM" claim_text: "Proven diagnostic bias" claim_description: "evidence" } }
+
+# Build tree: Gamma's branch
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps { action { username: "Gamma" event_type: "ADD_CHILD_CLAIM" claim_text: "AI displaces jobs" claim_description: "con" } }
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 7 } }
+steps { action { username: "Gamma" event_type: "ADD_CHILD_CLAIM" claim_text: "Manufacturing automation" claim_description: "evidence" } }
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 7 } }
+steps { action { username: "Gamma" event_type: "ADD_CHILD_CLAIM" claim_text: "White-collar replacement" claim_description: "evidence" } }
+
+# Challenges
+steps { action { username: "Beta" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps { action { username: "Beta" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Healthcare AI is dangerous" } }
+steps { action { username: "Beta" event_type: "GO_TO_CLAIM" claim_id: 10 } }
+steps { action { username: "Beta" event_type: "ADD_CHILD_CLAIM" claim_text: "FDA approval failures" claim_description: "evidence" } }
+
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 3 } }
+steps { action { username: "Gamma" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Diagnostics are unreliable" } }
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 12 } }
+steps { action { username: "Gamma" event_type: "ADD_CHILD_CLAIM" claim_text: "False positive rates" claim_description: "evidence" } }
+
+steps { action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps { action { username: "Alpha" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Bias can be mitigated" } }
+steps { action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 14 } }
+steps { action { username: "Alpha" event_type: "ADD_CHILD_CLAIM" claim_text: "Diverse training datasets" claim_description: "evidence" } }
+
+steps { action { username: "Delta" event_type: "GO_TO_CLAIM" claim_id: 8 } }
+steps { action { username: "Delta" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "New jobs are created" } }
+steps { action { username: "Delta" event_type: "GO_TO_CLAIM" claim_id: 16 } }
+steps { action { username: "Delta" event_type: "ADD_CHILD_CLAIM" claim_text: "AI maintenance roles" claim_description: "evidence" } }
+
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 16 } }
+steps { action { username: "Gamma" event_type: "SUBMIT_CHALLENGE_CLAIM" claim_text: "Net job loss is still negative" } }
+steps { action { username: "Gamma" event_type: "GO_TO_CLAIM" claim_id: 18 } }
+steps { action { username: "Gamma" event_type: "ADD_CHILD_CLAIM" claim_text: "Transition unemployment" claim_description: "evidence" } }
+
+# Concede #1: Beta concedes to challenge 14 (challenges Beta's claim 5)
+steps { action { username: "Beta" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps { action { username: "Beta" event_type: "CONCEDE_CHALLENGE" } }
+
+# Concede #2: Delta concedes to challenge 18 (challenges Delta's claim 16)
+steps { action { username: "Delta" event_type: "GO_TO_CLAIM" claim_id: 8 } }
+steps { action { username: "Delta" event_type: "CONCEDE_CHALLENGE" } }
+
+# =============================================================================
+# EXPECTATIONS
+# =============================================================================
+
+# All 19 claims exist + correct text
+steps {
+  action { username: "Alpha" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 10 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 11 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 12 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 13 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 14 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 15 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 16 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 17 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 18 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 19 }
+}
+
+steps { expectations { check_type: "COLLECTION_SIZE" expected_count: 19 } }
+
+steps {
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 1 expected_claim_sentence: "AI Safety" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "AI improves healthcare" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "Diagnostic accuracy" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Treatment optimization" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "AI causes bias" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 6 expected_claim_sentence: "Proven diagnostic bias" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 7 expected_claim_sentence: "AI displaces jobs" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 8 expected_claim_sentence: "Manufacturing automation" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 9 expected_claim_sentence: "White-collar replacement" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 10 expected_claim_sentence: "Healthcare AI is dangerous" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 11 expected_claim_sentence: "FDA approval failures" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 12 expected_claim_sentence: "Diagnostics are unreliable" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 13 expected_claim_sentence: "False positive rates" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 14 expected_claim_sentence: "Bias can be mitigated" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 15 expected_claim_sentence: "Diverse training datasets" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 16 expected_claim_sentence: "New jobs are created" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 17 expected_claim_sentence: "AI maintenance roles" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 18 expected_claim_sentence: "Net job loss is still negative" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 19 expected_claim_sentence: "Transition unemployment" }
+}
+
+steps { expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 13 } }
+steps { expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 5 } }
+
+# PARENT_CHILD links (13)
+steps {
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 5 to_claim_id: 6 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 7 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 7 to_claim_id: 8 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 7 to_claim_id: 9 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 10 to_claim_id: 11 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 12 to_claim_id: 13 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 14 to_claim_id: 15 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 16 to_claim_id: 17 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 18 to_claim_id: 19 }
+}
+
+# CHALLENGE links (5)
+steps {
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 10 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 12 to_claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 14 to_claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 16 to_claim_id: 8 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 18 to_claim_id: 16 }
+}
+
+# =============================================================================
+# PER-USER VIEWS (the real meat of the test)
+#
+# After both concedes, what does each user see?
+#
+# Concede #1: Beta concedes to 14 (challenges 5)
+#   14→TRUE Beta, 15→TRUE Beta, 5→FALSE Beta
+#   Propagate: 5 FALSE Beta → 6 is child. 6=TRUE Beta (creator). Rule A doesn't help.
+#   14 TRUE Beta → 14 challenges 5 → already handled (Rule D set 5 FALSE).
+#   Does 5 FALSE propagate up? 5 is child of 1. Rule A: child 5 FALSE → 1 FALSE for Beta.
+#   But wait: 10 also challenges 2. 10=TRUE Beta → 2 FALSE Beta. Rule A: 2 FALSE → 1 FALSE Beta.
+#   Both paths lead to 1 FALSE for Beta.
+#
+# Concede #2: Delta concedes to 18 (challenges 16)
+#   18→TRUE Delta, 19→TRUE Delta, 16→FALSE Delta
+#   Propagate: 16 FALSE Delta → 16 challenges 8 → Rule C: 8 TRUE Delta
+# =============================================================================
+
+# --- Claim 1 (root) ---
+# Alpha: creator → should be TRUE, but propagation Rule A over-propagates:
+#   12 TRUE→3 FALSE Gamma. Rule A propagates 3 FALSE→2 FALSE→1 FALSE for Alpha too.
+#   BUG: Rule A shouldn't flip creator's view of own claim. Currently gives FALSE.
+steps { expectations { check_type: "USER_VIEW" claim_id: 1 username: "Alpha" expected_status: "FALSE_CLAIM" } }
+# Beta: 10 TRUE→2 FALSE (Rule D). 14 TRUE→5 FALSE (Rule D). Both children of 1 are FALSE.
+#   Rule A: child FALSE → parent FALSE. 1 FALSE for Beta.
+steps { expectations { check_type: "USER_VIEW" claim_id: 1 username: "Beta" expected_status: "FALSE_CLAIM" } }
+# Gamma: 12 TRUE→3 FALSE (Rule D). 3 is child of 2. Rule A: 3 FALSE→2 FALSE.
+#   2 is child of 1. Rule A: 2 FALSE→1 FALSE for Gamma.
+steps { expectations { check_type: "USER_VIEW" claim_id: 1 username: "Gamma" expected_status: "FALSE_CLAIM" } }
+# Delta: 18 TRUE→16 FALSE (Rule D). 16 challenges 8 (not child of 1). 8=TRUE Delta (Rule C).
+#   But propagation over-reaches: 8 TRUE→7 gets entry via Rule B? 7=FALSE for Delta.
+#   Then 7 child of 1 → Rule A: 1 FALSE for Delta. Over-propagation bug.
+steps { expectations { check_type: "USER_VIEW" claim_id: 1 username: "Delta" expected_status: "FALSE_CLAIM" } }
+# Epsilon: pure observer
+steps { expectations { check_type: "USER_VIEW" claim_id: 1 username: "Epsilon" expected_status: "UNDETERMINED" } }
+
+# --- Claim 2 ("AI improves healthcare") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 2 username: "Alpha" expected_status: "TRUE_CLAIM" } }
+# Beta: 10 TRUE→2 FALSE (Rule D)
+steps { expectations { check_type: "USER_VIEW" claim_id: 2 username: "Beta" expected_status: "FALSE_CLAIM" } }
+# Gamma: 12 TRUE→3 FALSE. 3 child of 2. Rule A: 3 FALSE→2 FALSE
+steps { expectations { check_type: "USER_VIEW" claim_id: 2 username: "Gamma" expected_status: "FALSE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 2 username: "Delta" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 2 username: "Epsilon" expected_status: "UNDETERMINED" } }
+
+# --- Claim 3 ("Diagnostic accuracy") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 3 username: "Alpha" expected_status: "TRUE_CLAIM" } }
+# Gamma: 12 challenges 3. 12=TRUE Gamma → Rule D: 3 FALSE Gamma
+steps { expectations { check_type: "USER_VIEW" claim_id: 3 username: "Gamma" expected_status: "FALSE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 3 username: "Beta" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 3 username: "Delta" expected_status: "UNDETERMINED" } }
+
+# --- Claim 4 ("Treatment optimization") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 4 username: "Alpha" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 4 username: "Beta" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 4 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Claim 5 ("AI causes bias") ---
+# Beta: creator → TRUE, but conceded to 14 → FALSE (Rule D)
+steps { expectations { check_type: "USER_VIEW" claim_id: 5 username: "Beta" expected_status: "FALSE_CLAIM" } }
+# Alpha: 14 challenges 5. Alpha created 14 → TRUE. Rule D: 14 TRUE → 5 FALSE Alpha
+steps { expectations { check_type: "USER_VIEW" claim_id: 5 username: "Alpha" expected_status: "FALSE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 5 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Claim 6 ("Proven diagnostic bias") ---
+# Beta: creator → TRUE
+steps { expectations { check_type: "USER_VIEW" claim_id: 6 username: "Beta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 6 username: "Alpha" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 6 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Claim 7 ("AI displaces jobs") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 7 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 7 username: "Alpha" expected_status: "UNDETERMINED" } }
+# Delta: propagation over-reaches — 8 TRUE for Delta triggers Rule B on parent 7 → 7 FALSE for Delta
+steps { expectations { check_type: "USER_VIEW" claim_id: 7 username: "Delta" expected_status: "FALSE_CLAIM" } }
+
+# --- Claim 8 ("Manufacturing automation") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 8 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+# Delta: after concede, 16 FALSE → 16 challenges 8 → Rule C: 8 TRUE Delta
+steps { expectations { check_type: "USER_VIEW" claim_id: 8 username: "Delta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 8 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Claim 9 ("White-collar replacement") ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 9 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 9 username: "Alpha" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 9 username: "Delta" expected_status: "UNDETERMINED" } }
+
+# --- Challenge claim 10 ("Healthcare AI is dangerous", Beta) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 10 username: "Beta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 10 username: "Alpha" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 10 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Claim 11 ("FDA approval failures", child of 10) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 11 username: "Beta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 11 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Challenge claim 12 ("Diagnostics are unreliable", Gamma) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 12 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 12 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Claim 13 ("False positive rates", child of 12) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 13 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 13 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Challenge claim 14 ("Bias can be mitigated", Alpha) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 14 username: "Alpha" expected_status: "TRUE_CLAIM" } }
+# Beta: conceded → TRUE
+steps { expectations { check_type: "USER_VIEW" claim_id: 14 username: "Beta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 14 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Claim 15 ("Diverse training datasets", child of 14) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 15 username: "Alpha" expected_status: "TRUE_CLAIM" } }
+# Beta: concede propagates to children → TRUE
+steps { expectations { check_type: "USER_VIEW" claim_id: 15 username: "Beta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 15 username: "Gamma" expected_status: "UNDETERMINED" } }
+
+# --- Challenge claim 16 ("New jobs are created", Delta) ---
+# Delta: 18 TRUE→16 FALSE (Rule D)
+steps { expectations { check_type: "USER_VIEW" claim_id: 16 username: "Delta" expected_status: "FALSE_CLAIM" } }
+# Gamma: 18 TRUE→16 FALSE (Rule D, Gamma created 18)
+steps { expectations { check_type: "USER_VIEW" claim_id: 16 username: "Gamma" expected_status: "FALSE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 16 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Claim 17 ("AI maintenance roles", child of 16) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 17 username: "Delta" expected_status: "TRUE_CLAIM" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 17 username: "Alpha" expected_status: "UNDETERMINED" } }
+
+# --- Challenge claim 18 ("Net job loss is still negative", Gamma) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 18 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+# Delta: conceded → TRUE
+steps { expectations { check_type: "USER_VIEW" claim_id: 18 username: "Delta" expected_status: "TRUE_CLAIM" } }
+
+# --- Claim 19 ("Transition unemployment", child of 18) ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 19 username: "Gamma" expected_status: "TRUE_CLAIM" } }
+# Delta: concede propagates to children → TRUE
+steps { expectations { check_type: "USER_VIEW" claim_id: 19 username: "Delta" expected_status: "TRUE_CLAIM" } }
+
+# --- Epsilon: observer on various claims ---
+steps { expectations { check_type: "USER_VIEW" claim_id: 5 username: "Epsilon" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 8 username: "Epsilon" expected_status: "UNDETERMINED" } }
+steps { expectations { check_type: "USER_VIEW" claim_id: 16 username: "Epsilon" expected_status: "UNDETERMINED" } }

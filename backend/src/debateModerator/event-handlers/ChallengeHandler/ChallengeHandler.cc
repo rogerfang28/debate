@@ -160,7 +160,7 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     Log::debug("[SubmitChallengeClaimHandler] Submitted new challenge for user: " + std::to_string(user_id));
 }
 
-void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge_link_id, DebateWrapper& debateWrapper) {
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     std::string username = userProto.username();
@@ -173,31 +173,46 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, DebateWrapper& debat
         return;
     }
 
-    // Find the challenge that targets the user's claims.
-    // Look for CHALLENGE links where the challenged claim (connect_to) is owned by user_id.
-    // Pick the most recent (highest from-claim ID) — that's the latest open challenge to respond to.
+    // Use the challenge_link_id to directly look up the challenge link.
+    // The link's connect_from = challenge claim ID, connect_to = challenged claim ID.
     int challengeClaimId = -1;
     int challengedClaimId = -1;
-    int bestFromId = -1;
 
-    auto allLinks = debateWrapper.getLinksForDebate(debateId);
-    for (const auto& linkTuple : allLinks) {
-        int fromClaimId = std::get<1>(linkTuple);
-        int toClaimId = std::get<2>(linkTuple);
-        int linkType = std::get<5>(linkTuple);
-        if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            debate::Claim targetClaim = debateWrapper.getClaimById(toClaimId);
-            if (targetClaim.id() != 0 && targetClaim.creator_id() == user_id) {
-                if (fromClaimId > bestFromId) {
-                    bestFromId = fromClaimId;
-                    challengeClaimId = fromClaimId;
-                    challengedClaimId = toClaimId;
+    if (challenge_link_id > 0) {
+        debate::Link challengeLink = debateWrapper.getLinkById(challenge_link_id);
+        if (challengeLink.id() != 0 && challengeLink.link_type() == debate::LinkType::CHALLENGE) {
+            challengeClaimId = challengeLink.connect_from();
+            challengedClaimId = challengeLink.connect_to();
+            Log::debug("[ConcedeChallengeHandler] Found challenge link " + std::to_string(challenge_link_id) +
+                      ": from=" + std::to_string(challengeClaimId) + " to=" + std::to_string(challengedClaimId));
+        } else {
+            Log::warn("[ConcedeChallengeHandler] challenge_link_id " + std::to_string(challenge_link_id) +
+                      " is not a valid CHALLENGE link");
+        }
+    }
+
+    // Fallback: if link lookup failed, use the old scan approach
+    if (challengeClaimId == -1) {
+        int bestFromId = -1;
+        auto allLinks = debateWrapper.getLinksForDebate(debateId);
+        for (const auto& linkTuple : allLinks) {
+            int fromClaimId = std::get<1>(linkTuple);
+            int toClaimId = std::get<2>(linkTuple);
+            int linkType = std::get<5>(linkTuple);
+            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
+                debate::Claim targetClaim = debateWrapper.getClaimById(toClaimId);
+                if (targetClaim.id() != 0 && targetClaim.creator_id() == user_id) {
+                    if (fromClaimId > bestFromId) {
+                        bestFromId = fromClaimId;
+                        challengeClaimId = fromClaimId;
+                        challengedClaimId = toClaimId;
+                    }
                 }
             }
         }
     }
 
-    // Fallback: if no incoming challenge to user's own claims, check if current_claim is a challenge
+    // Fallback: current claim check
     if (challengeClaimId == -1) {
         int currentClaimId = userProto.engagement().debating_info().current_claim().id();
         if (currentClaimId == 0) {

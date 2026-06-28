@@ -209,9 +209,11 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::DELETE_CHALLENGE);
         event.mutable_delete_challenge()->set_challenge_id(std::stoi(challengeId));
     }
-    else if (componentId == "concedeChallengeButton" && eventType == "onClick"){
-        Log::debug("  CONCEDE_CHALLENGE for user: " + std::to_string(user_id));
+    else if (componentId.find("concedeChallengeButton_") == 0 && eventType == "onClick"){
+        std::string challengeLinkId = componentId.substr(strlen("concedeChallengeButton_"));
+        Log::debug("  CONCEDE_CHALLENGE for user: " + std::to_string(user_id) + " challenge_link_id: " + challengeLinkId);
         event.set_type(debate_event::CONCEDE_CHALLENGE);
+        event.mutable_concede_challenge()->set_challenge_link_id(std::stoi(challengeLinkId));
     }
 
     else if (componentId == "goToChallengedClaimButton" && eventType == "onClick") {

@@ -4311,6 +4311,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChallengeIdFieldNumber = 1,
+    kChallengeLinkIdFieldNumber = 2,
   };
   // int32 challenge_id = 1;
   void clear_challenge_id() ;
@@ -4322,11 +4323,21 @@ class ConcedeChallenge final : public ::google::protobuf::Message
   void _internal_set_challenge_id(::int32_t value);
 
   public:
+  // int32 challenge_link_id = 2;
+  void clear_challenge_link_id() ;
+  ::int32_t challenge_link_id() const;
+  void set_challenge_link_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_challenge_link_id() const;
+  void _internal_set_challenge_link_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.ConcedeChallenge)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
                                    0, 0,
                                    2>
       _table_;
@@ -4349,6 +4360,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::int32_t challenge_id_;
+    ::int32_t challenge_link_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -7398,6 +7410,31 @@ inline ::int32_t ConcedeChallenge::_internal_challenge_id() const {
 inline void ConcedeChallenge::_internal_set_challenge_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenge_id_ = value;
+}
+
+// int32 challenge_link_id = 2;
+inline void ConcedeChallenge::clear_challenge_link_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int32_t ConcedeChallenge::challenge_link_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.ConcedeChallenge.challenge_link_id)
+  return _internal_challenge_link_id();
+}
+inline void ConcedeChallenge::set_challenge_link_id(::int32_t value) {
+  _internal_set_challenge_link_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:debate_event.ConcedeChallenge.challenge_link_id)
+}
+inline ::int32_t ConcedeChallenge::_internal_challenge_link_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.challenge_link_id_;
+}
+inline void ConcedeChallenge::_internal_set_challenge_link_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = value;
 }
 
 // -------------------------------------------------------------------

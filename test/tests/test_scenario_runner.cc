@@ -534,3 +534,15 @@ TEST_F(ScenarioRunner, ClimateChangeDebate) {
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ClimateChangeDebate.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
 }
+
+TEST_F(ScenarioRunner, ConcedePropagationTest) {
+    TestScenario s = LoadScenarioFromFile("scenarios/ConcedePropagationTest.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load ConcedePropagationTest.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, MegaTest) {
+    TestScenario s = LoadScenarioFromFile("scenarios/MegaTest.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load MegaTest.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
