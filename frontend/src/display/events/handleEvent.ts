@@ -48,17 +48,15 @@ export default async function handleEvent(
       e.preventDefault();
     }
 
-    // Collect ALL input data from the entire page
-    const entirePageData = getEntirePage(component.id);
-    console.log(`Collected ${Object.keys(entirePageData).length} components from entire page`);
-    console.log('Full page data:', entirePageData);
+    // Collect only form input values from the page (not div textContent)
+    const pageData = getEntirePage(component.id);
 
     await postClientMessageToCPP({
       componentId: component.id || "unknown",
       eventType: eventName,
       actionId,
       eventName,
-      data: entirePageData, // Send complete page data
+      data: pageData,
       timestamp: Date.now(),
     });
 

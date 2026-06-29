@@ -11,17 +11,12 @@
     "dev:css": "tailwindcss -i ./src/styles/index.css -o ./dist/output.css --watch"
   },
   "dependencies": {
-    "@bufbuild/protobuf": "^2.6.3",
-    "better-auth": "^1.3.7",
+    "@bufbuild/protobuf": "^2.12.1",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
     "protobufjs": "^8.6.3",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-force-graph": "^1.48.0",
-    "react-force-graph-2d": "^1.28.0",
-    "react-router-dom": "^7.7.0",
-    "socket.io-client": "^4.8.1"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@bufbuild/protoc-gen-es": "^2.12.1",

@@ -16,7 +16,6 @@ import ModalComponent from "./componentTypes/ModalComponent.tsx";
 import ChatComponent from "./componentTypes/ChatComponent.tsx";
 import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
-import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -45,7 +44,6 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CHAT]: ChatComponent,
   [ComponentType.TEXTAREA]: TextareaComponent,
   [ComponentType.ICON]: IconComponent,
-  [ComponentType.NODE_GRAPH]: NodeGraphComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
