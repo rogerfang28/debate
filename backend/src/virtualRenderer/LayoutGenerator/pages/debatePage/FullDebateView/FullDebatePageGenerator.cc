@@ -2798,6 +2798,14 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         const std::string nodeBg = isChallengingClaim ? "bg-orange-600" : "bg-gray-700";
         const std::string nodeBorder = isChallengedClaim ? "border-2 border-orange-500" : "border border-gray-500";
 
+        // Display-side truncation — full data stays in DB, only map view truncates
+        const size_t kMapMaxSentenceLen = 90;
+        std::string displaySentence = node->sentence();
+        if (displaySentence.size() > kMapMaxSentenceLen) {
+            displaySentence.resize(kMapMaxSentenceLen);
+            displaySentence += "...";
+        }
+
         ui::Component nodeCard = ComponentGenerator::createContainer(
             "mapNode_" + std::to_string(nodeIndex++),
             "absolute z-10 flex flex-col",
