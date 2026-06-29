@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
 import { BaseComponentProps } from "./TextComponent";
 
@@ -91,70 +91,111 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     return () => ro.disconnect();
   }, []);
 
-  // ── Build the D3 simulation ──────────────────────────────────────
-  const simulationRef = useRef<d3.Simulation<GraphNode, undefined> | null>(null);
+  // ── Compute tree layout positions ─────────────────────────────────
+  const GAP_X = 160;
+  const GAP_Y = 120;
 
-  useEffect(() => {
-    if (nodes.length === 0) return;
+  const positionedNodes = useMemo(() => {
+    if (nodes.length === 0) return [];
 
-    // Clone nodes so D3 mutates its own copies
-    const simNodes: GraphNode[] = nodes.map((n) => ({
-      ...n,
-      x: n.x ?? dims.width / 2 + (Math.random() - 0.5) * 200,
-      y: n.y ?? dims.height / 2 + (Math.random() - 0.5) * 200,
-    }));
+    const nodeMap = new Map<string, GraphNode>();
+    nodes.forEach((n) => nodeMap.set(n.id, { ...n }));
 
-    // Resolve edge source/target from string IDs
-    const simLinks: d3.SimulationLinkDatum<GraphNode>[] = edges
-      .map((e) => ({
-        source: e.source,
-        target: e.target,
-        ...e,
-      }))
-      .filter((l) => {
-        const s = typeof l.source === "string" ? simNodes.find((n) => n.id === l.source) : undefined;
-        const t = typeof l.target === "string" ? simNodes.find((n) => n.id === l.target) : undefined;
-        return s && t;
-      });
+    // Build children map from PARENT_CHILD edges
+    const childrenMap = new Map<string, string[]>();
+    const hasParent = new Set<string>();
+    for (const e of edges) {
+      if (e.type === "PARENT_CHILD") {
+        if (!childrenMap.has(e.source)) childrenMap.set(e.source, []);
+        childrenMap.get(e.source)!.push(e.target);
+        hasParent.add(e.target);
+      }
+    }
 
-    const sim = d3
-      .forceSimulation<GraphNode>(simNodes)
-      .force(
-        "link",
-        d3
-          .forceLink<GraphNode, d3.SimulationLinkDatum<GraphNode>>(simLinks)
-          .id((d) => d.id)
-          .distance(130)
-          .strength(0.6)
-      )
-      .force("charge", d3.forceManyBody<GraphNode>().strength(-500))
-      .force("center", d3.forceCenter(dims.width / 2, dims.height / 2).strength(0.05))
-      .force(
-        "collision",
-        d3.forceCollide<GraphNode>().radius((d) => (d.isRoot ? ROOT_RADIUS : NODE_RADIUS) + 10)
-      );
+    // Find root (node with no parent, prefer isRoot flag)
+    let rootId = nodes.find((n) => n.isRoot)?.id ?? "";
+    if (!rootId) {
+      rootId = nodes.find((n) => !hasParent.has(n.id))?.id ?? nodes[0]?.id ?? "";
+    }
 
-    simulationRef.current = sim;
+    // BFS to assign levels and order
+    const positioned: GraphNode[] = [];
+    const levels: string[][] = [];
+    const visited = new Set<string>();
+    let currentLevel = [rootId];
 
-    return () => {
-      sim.stop();
+    while (currentLevel.length > 0) {
+      const nextLevel: string[] = [];
+      for (const id of currentLevel) {
+        if (visited.has(id)) continue;
+        visited.add(id);
+        const node = nodeMap.get(id);
+        if (node) {
+          positioned.push(node);
+          const children = childrenMap.get(id) ?? [];
+          for (const c of children) {
+            if (!visited.has(c)) nextLevel.push(c);
+          }
+        }
+      }
+      levels.push(currentLevel.filter((id) => visited.has(id)));
+      currentLevel = nextLevel;
+    }
+
+    // Add any disconnected nodes at the bottom
+    for (const n of nodes) {
+      if (!visited.has(n.id)) positioned.push(n);
+    }
+
+    // Compute subtree widths
+    const subtreeWidth = new Map<string, number>();
+    const computeWidth = (id: string): number => {
+      if (subtreeWidth.has(id)) return subtreeWidth.get(id)!;
+      const children = childrenMap.get(id) ?? [];
+      if (children.length === 0) {
+        subtreeWidth.set(id, GAP_X);
+        return GAP_X;
+      }
+      const total = children.reduce((sum, c) => sum + computeWidth(c), 0);
+      const w = Math.max(GAP_X, total);
+      subtreeWidth.set(id, w);
+      return w;
     };
-  }, [nodes.length, edges.length, dims.width, dims.height]); // eslint-disable-line react-hooks/exhaustive-deps
+    computeWidth(rootId);
 
-  // ── Render simulation tick → update SVG ──────────────────────────
-  const [tick, setTick] = useState(0);
+    // Place nodes: root at top center, children spread below
+    const totalWidth = computeWidth(rootId);
+    const xOffset = (dims.width - totalWidth) / 2;
 
-  useEffect(() => {
-    const sim = simulationRef.current;
-    if (!sim) return;
-
-    sim.alpha(1).restart();
-    sim.on("tick", () => setTick((t) => t + 1));
-
-    return () => {
-      sim.off("tick");
+    const placeNode = (id: string, x: number, depth: number) => {
+      const node = nodeMap.get(id);
+      if (!node) return;
+      const w = subtreeWidth.get(id) ?? GAP_X;
+      node.x = x + w / 2;
+      node.y = 60 + depth * GAP_Y;
+      const children = childrenMap.get(id) ?? [];
+      let cx = x;
+      for (const c of children) {
+        const cw = subtreeWidth.get(c) ?? GAP_X;
+        placeNode(c, cx, depth + 1);
+        cx += cw;
+      }
     };
-  }, [nodes.length, edges.length]); // eslint-disable-line react-hooks/exhaustive-deps
+    placeNode(rootId, xOffset, 0);
+
+    // Place disconnected nodes in a row at bottom
+    const maxDepth = levels.length;
+    let dx = GAP_X;
+    for (const n of nodes) {
+      if (!visited.has(n.id)) {
+        n.x = dx;
+        n.y = 60 + maxDepth * GAP_Y;
+        dx += GAP_X;
+      }
+    }
+
+    return positioned;
+  }, [nodes, edges, dims.width]);
 
   // ── Zoom & pan ────────────────────────────────────────────────────
   useEffect(() => {
@@ -171,38 +212,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     svg.call(zoom);
   }, []);
 
-  // ── Node drag ─────────────────────────────────────────────────────
-  const dragStarted = useCallback(
-    (event: React.PointerEvent<SVGGElement>, d: GraphNode) => {
-      const sim = simulationRef.current;
-      if (!sim) return;
-      sim.alphaTarget(0.3).restart();
-      (d as any).fx = d.x;
-      (d as any).fy = d.y;
-    },
-    []
-  );
-
-  const dragged = useCallback(
-    (event: React.PointerEvent<SVGGElement>, d: GraphNode) => {
-      (d as any).fx = event.clientX;
-      (d as any).fy = event.clientY;
-    },
-    []
-  );
-
-  const dragEnded = useCallback(
-    (event: React.PointerEvent<SVGGElement>, d: GraphNode) => {
-      const sim = simulationRef.current;
-      if (!sim) return;
-      sim.alphaTarget(0);
-      (d as any).fx = null;
-      (d as any).fy = null;
-    },
-    []
-  );
-
-  // ── Click handler ─────────────────────────────────────────────────
+  // ── Click handler
   const handleNodeClick = useCallback(
     (node: GraphNode) => {
       setSelectedId(node.id === selectedId ? null : node.id);
@@ -238,7 +248,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
   // ── Compute positions for rendering ──────────────────────────────
   const nodeMap = new Map<string, GraphNode>();
-  nodes.forEach((n) => nodeMap.set(n.id, n));
+  positionedNodes.forEach((n) => nodeMap.set(n.id, n));
 
   return (
     <div
@@ -310,12 +320,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const target = nodeMap.get(edge.target);
             if (!source || !target) return null;
 
-            // Use simulation positions when available (tick forces re-render)
-            void tick; // dependency marker — don't remove
-            const sx = (source as any).x ?? source.x ?? 100;
-            const sy = (source as any).y ?? source.y ?? 100;
-            const tx = (target as any).x ?? target.x ?? 200;
-            const ty = (target as any).y ?? target.y ?? 200;
+            const sx = source.x ?? 100;
+            const sy = source.y ?? 100;
+            const tx = target.x ?? 200;
+            const ty = target.y ?? 200;
 
             const isChallenge = edge.type === "CHALLENGE" || edge.type === "challenges";
             const color = isChallenge
@@ -343,11 +351,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           })}
 
           {/* ── Nodes ─────────────────────────────────────────────── */}
-          {nodes.map((node) => {
-            // tick forces re-render on simulation step
-            void tick;
-            const cx = (node as any).x ?? node.x ?? 100;
-            const cy = (node as any).y ?? node.y ?? 100;
+          {positionedNodes.map((node) => {
+            const cx = node.x ?? 100;
+            const cy = node.y ?? 100;
             const r = node.isRoot ? ROOT_RADIUS : NODE_RADIUS;
             const isSelected = node.id === selectedId;
             const isCurrent = node.isCurrent;
@@ -363,9 +369,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 style={{ cursor: "pointer" }}
                 transform={`translate(${cx},${cy})`}
                 onClick={() => handleNodeClick(node)}
-                onPointerDown={(e) => dragStarted(e, node)}
-                onPointerMove={(e) => dragged(e, node)}
-                onPointerUp={(e) => dragEnded(e, node)}
                 onPointerEnter={(e) => {
                   const rect = containerRef.current?.getBoundingClientRect();
                   setTooltip({
