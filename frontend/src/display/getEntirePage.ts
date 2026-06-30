@@ -15,16 +15,15 @@ export interface PageData {
 }
 
 /**
- * Scans the entire DOM and collects all components (not just inputs).
- * Collects from: input, textarea, select, button, and any element with an ID.
+ * Scans the DOM and collects only meaningful form input values.
+ * Collects from: input, textarea, select (the only elements users edit).
  * Also extracts the page ID from data-page-id attribute.
- * 
+ *
  * @param clickedComponentId - Optional ID of the component that was clicked
- * @returns Object mapping element IDs to their current values/states
+ * @returns Object mapping element IDs to their current values
  */
 export function getEntirePage(clickedComponentId?: string): PageData {
   const pageData: PageData = {};
-  let fieldCount = 0;
 
   // Extract page ID from the page-root element
   const pageRoot = document.querySelector('.page-root');
@@ -32,7 +31,6 @@ export function getEntirePage(clickedComponentId?: string): PageData {
     const pageId = pageRoot.getAttribute('data-page-id');
     if (pageId) {
       pageData._pageId = pageId;
-      console.log(`📄 Page ID: ${pageId}`);
     }
   }
 
@@ -40,8 +38,6 @@ export function getEntirePage(clickedComponentId?: string): PageData {
   const inputs = document.querySelectorAll<HTMLInputElement>('input[id]');
   inputs.forEach((input) => {
     if (!input.id) return;
-    
-    fieldCount++;
     if (input.type === 'checkbox' || input.type === 'radio') {
       pageData[input.id] = input.checked;
     } else if (input.type === 'number') {
@@ -56,8 +52,6 @@ export function getEntirePage(clickedComponentId?: string): PageData {
   const textareas = document.querySelectorAll<HTMLTextAreaElement>('textarea[id]');
   textareas.forEach((textarea) => {
     if (!textarea.id) return;
-    
-    fieldCount++;
     pageData[textarea.id] = textarea.value || '';
   });
 
@@ -65,49 +59,12 @@ export function getEntirePage(clickedComponentId?: string): PageData {
   const selects = document.querySelectorAll<HTMLSelectElement>('select[id]');
   selects.forEach((select) => {
     if (!select.id) return;
-    
-    fieldCount++;
     if (select.multiple) {
-      // For multi-select, join selected values
       const selectedValues = Array.from(select.selectedOptions).map(opt => opt.value);
       pageData[select.id] = selectedValues.join(',');
     } else {
       pageData[select.id] = select.value || '';
     }
-  });
-
-  // Collect all buttons with clicked state
-  const buttons = document.querySelectorAll<HTMLButtonElement>('button[id]');
-  buttons.forEach((button) => {
-    if (!button.id) return;
-    
-    fieldCount++;
-    // Mark if this button was clicked
-    pageData[button.id] = button.id === clickedComponentId ? 'clicked' : 'not-clicked';
-  });
-
-  // Collect all other elements with IDs (divs, spans, etc.)
-  const allElements = document.querySelectorAll<HTMLElement>('[id]');
-  allElements.forEach((element) => {
-    if (!element.id) return;
-    
-    // Skip if already collected (input, textarea, select, button)
-    if (pageData.hasOwnProperty(element.id)) return;
-    
-    fieldCount++;
-    
-    // Get text content or empty string
-    const textContent = element.textContent?.trim() || '';
-    pageData[element.id] = textContent;
-  });
-
-  console.log(`📦 getEntirePage collected ${fieldCount} components:`, {
-    inputCount: inputs.length,
-    textareaCount: textareas.length,
-    selectCount: selects.length,
-    buttonCount: buttons.length,
-    otherElements: allElements.length - inputs.length - textareas.length - selects.length - buttons.length,
-    totalFields: Object.keys(pageData).length,
   });
 
   return pageData;

@@ -13,6 +13,13 @@ export default defineConfig(({ mode }) => {
   return {
     root: __dirname,
     plugins: [react()],
+    resolve: {
+      alias: {
+        "@bufbuild/protobuf/codegenv2": fileURLToPath(
+          new URL("./node_modules/@bufbuild/protobuf/dist/esm/codegenv2/index.js", import.meta.url)
+        ),
+      },
+    },
     server: {
       host: "0.0.0.0",
       port: 5173,

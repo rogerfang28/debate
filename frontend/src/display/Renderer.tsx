@@ -50,8 +50,8 @@ const Renderer: React.FC = () => {
     };
   }, [reloadPage]);
 
+  // Fetch page on mount only — subsequent refreshes are event-driven via reloadPage()
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | undefined;
     let mounted = true;
 
     async function fetchData(): Promise<void> {
@@ -63,13 +63,10 @@ const Renderer: React.FC = () => {
         if (info) {
           setData(info);
           setError(null);
-          if (intervalId) clearInterval(intervalId);
         }
-        // If server returns null, keep existing data — don't wipe it
       } catch (err: unknown) {
         if (!mounted) return;
-        console.warn("Renderer: Failed to load data, retrying...", err);
-        // Don't set error if we already have data
+        console.warn("Renderer: Failed to load data", err);
         if (!dataRef.current) {
           setError("Connecting to server...");
         }
@@ -79,11 +76,9 @@ const Renderer: React.FC = () => {
     }
 
     fetchData();
-    intervalId = setInterval(fetchData, 3000);
 
     return () => {
       mounted = false;
-      if (intervalId) clearInterval(intervalId);
     };
   }, []);
 
