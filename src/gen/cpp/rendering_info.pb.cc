@@ -265,7 +265,8 @@ inline constexpr ChallengeRenderInfo::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         id_{0},
-        creator_id_{0} {}
+        creator_id_{0},
+        challenge_link_id_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR ChallengeRenderInfo::ChallengeRenderInfo(::_pbi::ConstantInitialized)
@@ -717,15 +718,17 @@ const ::uint32_t
         4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_._has_bits_),
-        7, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_.sentence_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_.description_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_.creator_id_),
+        PROTOBUF_FIELD_OFFSET(::rendering_info::ChallengeRenderInfo, _impl_.challenge_link_id_),
         2,
         0,
         1,
         3,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::rendering_info::ConnectingRenderInfo, _impl_._has_bits_),
         7, // hasbit index offset
@@ -765,8 +768,8 @@ static const ::_pbi::MigrationSchema
         {152, sizeof(::rendering_info::UserStatus)},
         {159, sizeof(::rendering_info::LinkRenderInfo)},
         {172, sizeof(::rendering_info::ChallengeRenderInfo)},
-        {183, sizeof(::rendering_info::ConnectingRenderInfo)},
-        {194, sizeof(::rendering_info::ChallengingRenderInfo)},
+        {185, sizeof(::rendering_info::ConnectingRenderInfo)},
+        {196, sizeof(::rendering_info::ChallengingRenderInfo)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::rendering_info::_DebatePageRenderingInfo_default_instance_._instance,
@@ -852,25 +855,26 @@ const char descriptor_table_protodef_rendering_5finfo_2eproto[] ABSL_ATTRIBUTE_S
     "\001(\0162\023.debate.ClaimStatus\"n\n\016LinkRenderIn"
     "fo\022\n\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002 \001(\005\022\022\n\n"
     "connect_to\030\003 \001(\005\022\022\n\nconnection\030\004 \001(\t\022\022\n\n"
-    "creator_id\030\005 \001(\005\"\\\n\023ChallengeRenderInfo\022"
+    "creator_id\030\005 \001(\005\"w\n\023ChallengeRenderInfo\022"
     "\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023\n\013descrip"
-    "tion\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\"t\n\024Connec"
-    "tingRenderInfo\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n"
-    "\013to_claim_id\030\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034"
-    "\n\024opened_connect_modal\030\004 \001(\010\"\\\n\025Challeng"
-    "ingRenderInfo\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link"
-    "_ids\030\002 \003(\005\022\036\n\026opened_challenge_modal\030\003 \001"
-    "(\010*\207\001\n\026FullDebateTreeLinkType\022*\n&FULL_DE"
-    "BATE_TREE_LINK_TYPE_UNSPECIFIED\020\000\022!\n\035FUL"
-    "L_DEBATE_TREE_PARENT_CHILD\020\001\022\036\n\032FULL_DEB"
-    "ATE_TREE_CHALLENGE\020\002*J\n\tScopeType\022\032\n\026SCO"
-    "PE_TYPE_UNSPECIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022"
-    "\017\n\013FULL_DEBATE\020\002*\317\001\n\020DebateActionType\022\033\n"
-    "\027ACTION_TYPE_UNSPECIFIED\020\000\022\021\n\rVIEWING_CL"
-    "AIM\020\001\022\026\n\022ADDING_CHILD_CLAIM\020\002\022\025\n\021CONNECT"
-    "ING_CLAIMS\020\003\022\025\n\021CHALLENGING_CLAIM\020\004\022\035\n\031E"
-    "DITING_CLAIM_DESCRIPTION\020\005\022\021\n\rEDITING_CL"
-    "AIM\020\006\022\023\n\017REPORTING_CLAIM\020\007b\006proto3"
+    "tion\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\022\031\n\021challe"
+    "nge_link_id\030\005 \001(\005\"t\n\024ConnectingRenderInf"
+    "o\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_claim_id\030"
+    "\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034\n\024opened_conn"
+    "ect_modal\030\004 \001(\010\"\\\n\025ChallengingRenderInfo"
+    "\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link_ids\030\002 \003(\005\022\036\n"
+    "\026opened_challenge_modal\030\003 \001(\010*\207\001\n\026FullDe"
+    "bateTreeLinkType\022*\n&FULL_DEBATE_TREE_LIN"
+    "K_TYPE_UNSPECIFIED\020\000\022!\n\035FULL_DEBATE_TREE"
+    "_PARENT_CHILD\020\001\022\036\n\032FULL_DEBATE_TREE_CHAL"
+    "LENGE\020\002*J\n\tScopeType\022\032\n\026SCOPE_TYPE_UNSPE"
+    "CIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013FULL_DEBAT"
+    "E\020\002*\317\001\n\020DebateActionType\022\033\n\027ACTION_TYPE_"
+    "UNSPECIFIED\020\000\022\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDI"
+    "NG_CHILD_CLAIM\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022"
+    "\025\n\021CHALLENGING_CLAIM\020\004\022\035\n\031EDITING_CLAIM_"
+    "DESCRIPTION\020\005\022\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPO"
+    "RTING_CLAIM\020\007b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_rendering_5finfo_2eproto_deps[1] = {
@@ -880,7 +884,7 @@ static ::absl::once_flag descriptor_table_rendering_5finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_rendering_5finfo_2eproto = {
     false,
     false,
-    3274,
+    3301,
     descriptor_table_protodef_rendering_5finfo_2eproto,
     "rendering_info.proto",
     &descriptor_table_rendering_5finfo_2eproto_once,
@@ -6548,9 +6552,9 @@ ChallengeRenderInfo::ChallengeRenderInfo(
                offsetof(Impl_, id_),
            reinterpret_cast<const char*>(&from._impl_) +
                offsetof(Impl_, id_),
-           offsetof(Impl_, creator_id_) -
+           offsetof(Impl_, challenge_link_id_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::creator_id_));
+               sizeof(Impl_::challenge_link_id_));
 
   // @@protoc_insertion_point(copy_constructor:rendering_info.ChallengeRenderInfo)
 }
@@ -6566,9 +6570,9 @@ inline void ChallengeRenderInfo::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE aren
   ::memset(reinterpret_cast<char*>(&_impl_) +
                offsetof(Impl_, id_),
            0,
-           offsetof(Impl_, creator_id_) -
+           offsetof(Impl_, challenge_link_id_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::creator_id_));
+               sizeof(Impl_::challenge_link_id_));
 }
 ChallengeRenderInfo::~ChallengeRenderInfo() {
   // @@protoc_insertion_point(destructor:rendering_info.ChallengeRenderInfo)
@@ -6629,16 +6633,16 @@ ChallengeRenderInfo::GetClassData() const {
   return ChallengeRenderInfo_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 62, 2>
+const ::_pbi::TcParseTable<3, 5, 0, 62, 2>
 ChallengeRenderInfo::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     ChallengeRenderInfo_class_data_.base(),
@@ -6648,10 +6652,7 @@ ChallengeRenderInfo::_table_ = {
     ::_pbi::TcParser::GetTable<::rendering_info::ChallengeRenderInfo>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 creator_id = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeRenderInfo, _impl_.creator_id_), 3>(),
-     {32, 3, 0,
-      PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.creator_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // int32 id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeRenderInfo, _impl_.id_), 2>(),
      {8, 2, 0,
@@ -6664,6 +6665,16 @@ ChallengeRenderInfo::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {26, 1, 0,
       PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.description_)}},
+    // int32 creator_id = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeRenderInfo, _impl_.creator_id_), 3>(),
+     {32, 3, 0,
+      PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.creator_id_)}},
+    // int32 challenge_link_id = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ChallengeRenderInfo, _impl_.challenge_link_id_), 4>(),
+     {40, 4, 0,
+      PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.challenge_link_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -6675,6 +6686,8 @@ ChallengeRenderInfo::_table_ = {
     {PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.description_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 creator_id = 4;
     {PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.creator_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 challenge_link_id = 5;
+    {PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.challenge_link_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -6700,10 +6713,10 @@ PROTOBUF_NOINLINE void ChallengeRenderInfo::Clear() {
       _impl_.description_.ClearNonDefaultToEmpty();
     }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000cU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001cU)) {
     ::memset(&_impl_.id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.creator_id_) -
-        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.creator_id_));
+        reinterpret_cast<char*>(&_impl_.challenge_link_id_) -
+        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.challenge_link_id_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -6766,6 +6779,15 @@ PROTOBUF_NOINLINE void ChallengeRenderInfo::Clear() {
     }
   }
 
+  // int32 challenge_link_id = 5;
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (this_._internal_challenge_link_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
+              stream, this_._internal_challenge_link_id(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -6791,7 +6813,7 @@ PROTOBUF_NOINLINE void ChallengeRenderInfo::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     // string sentence = 2;
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_sentence().empty()) {
@@ -6820,6 +6842,13 @@ PROTOBUF_NOINLINE void ChallengeRenderInfo::Clear() {
             this_._internal_creator_id());
       }
     }
+    // int32 challenge_link_id = 5;
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (this_._internal_challenge_link_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_challenge_link_id());
+      }
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -6839,7 +6868,7 @@ void ChallengeRenderInfo::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_sentence().empty()) {
         _this->_internal_set_sentence(from._internal_sentence());
@@ -6868,6 +6897,11 @@ void ChallengeRenderInfo::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.creator_id_ = from._impl_.creator_id_;
       }
     }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (from._internal_challenge_link_id() != 0) {
+        _this->_impl_.challenge_link_id_ = from._impl_.challenge_link_id_;
+      }
+    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
@@ -6891,8 +6925,8 @@ void ChallengeRenderInfo::InternalSwap(ChallengeRenderInfo* PROTOBUF_RESTRICT PR
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.sentence_, &other->_impl_.sentence_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, &other->_impl_.description_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.creator_id_)
-      + sizeof(ChallengeRenderInfo::_impl_.creator_id_)
+      PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.challenge_link_id_)
+      + sizeof(ChallengeRenderInfo::_impl_.challenge_link_id_)
       - PROTOBUF_FIELD_OFFSET(ChallengeRenderInfo, _impl_.id_)>(
           reinterpret_cast<char*>(&_impl_.id_),
           reinterpret_cast<char*>(&other->_impl_.id_));

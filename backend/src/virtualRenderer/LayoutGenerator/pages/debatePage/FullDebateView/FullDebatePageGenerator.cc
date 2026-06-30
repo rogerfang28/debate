@@ -1178,10 +1178,10 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
     // Extract data
     int currentUserId = user.user_id();
     
-    std::vector<std::tuple<std::string, std::string, int>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int, int>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
         const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id()});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.challenge_link_id()});
     }
 
     // Find challengesContainer
@@ -1221,6 +1221,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
+        int challengeLinkId = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
         
         // Determine colors — challenges no longer have their own status.
@@ -1294,23 +1295,43 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // WIP placeholder: intentionally non-interactive.
-        ui::Component concedeWipButton = ComponentGenerator::createText(
-            "concedeWipButton_" + challengedClaimId,
-            "Concede (WIP)",
-            "text-sm",
-            "text-gray-200",
-            "font-medium",
-            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
-        );
-        ComponentGenerator::addChild(
-            &challengeButtonContainer,
-            CreateStableActionSlot(
-                "challengeConcedeSlot_" + challengedClaimId,
-                &concedeWipButton,
-                "challengeConcedeSlotPlaceholder_" + challengedClaimId
-            )
-        );
+        // Concede button: visible when the current user's claim is being challenged
+        // (i.e., user is the defender, not the attacker)
+        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+            ui::Component concedeButton = ComponentGenerator::createButton(
+                "concedeChallengeButton_" + std::to_string(challengeLinkId),
+                "Concede",
+                "",
+                "bg-red-700",
+                "hover:bg-red-800",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "w-full transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeButton,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        } else {
+            ui::Component concedeSpacer = ComponentGenerator::createText(
+                "concedeSpacer_" + challengedClaimId,
+                "",
+                "hidden"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeSpacer,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        }
 
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;

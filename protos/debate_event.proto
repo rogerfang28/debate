@@ -97,6 +97,7 @@ message GoToChallenge {
 
 message ConcedeChallenge {
     int32 challenge_id = 1;
+    int32 challenge_link_id = 2;
 }
 
 message DeleteChallenge {

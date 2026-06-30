@@ -123,7 +123,7 @@ protected:
     }
 
     void concede() {
-        ChallengeHandler::ConcedeChallenge(userId_, *debate_);
+        ChallengeHandler::ConcedeChallenge(userId_, 0, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 

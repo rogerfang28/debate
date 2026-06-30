@@ -165,6 +165,7 @@ message ChallengeRenderInfo {
 	string sentence = 2;
 	string description = 3;
 	int32 creator_id = 4;
+	int32 challenge_link_id = 5;
 }
 
 enum ScopeType {
