@@ -439,17 +439,18 @@ std::vector<int> DebateWrapper::findLinksUnder(const int& claimId) {
     return linkIds;
 }
 
-debate::Link DebateWrapper::getLinkById(int linkId) {
-    debate::Link linkProto;
+debate::Relationship DebateWrapper::getLinkById(int linkId) {
+    debate::Relationship relationshipProto;
     auto linkData = databaseWrapper.links.getLinkById(linkId);
-    
+
     if (linkData.has_value()) {
         const auto& link = linkData.value();
-        linkProto.set_connect_from(std::get<1>(link));
-        linkProto.set_connect_to(std::get<2>(link));
-        linkProto.set_connection(std::get<3>(link));
-        linkProto.set_creator_id(std::get<4>(link));
-        linkProto.set_link_type(static_cast<debate::LinkType>(std::get<5>(link)));
+        debate::Relationship::Link* linkProto = relationshipProto.mutable_link();
+        linkProto->set_connect_from(std::get<1>(link));
+        linkProto->set_connect_to(std::get<2>(link));
+        linkProto->set_connection(std::get<3>(link));
+        linkProto->set_creator_id(std::get<4>(link));
+        linkProto->set_link_type(static_cast<debate::LinkType>(std::get<5>(link)));
         
         Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
             + " from Claim ID: " + std::to_string(std::get<1>(link))
@@ -459,8 +460,8 @@ debate::Link DebateWrapper::getLinkById(int linkId) {
     } else {
         Log::warn("[DebateWrapper] Link with ID " + std::to_string(linkId) + " not found.");
     }
-    
-    return linkProto;
+
+    return relationshipProto;
 }
 
 void DebateWrapper::deleteLinkById(int linkId) {

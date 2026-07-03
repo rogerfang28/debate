@@ -80,10 +80,14 @@ class Debate;
 struct DebateDefaultTypeInternal;
 extern DebateDefaultTypeInternal _Debate_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Debate_class_data_;
-class Link;
-struct LinkDefaultTypeInternal;
-extern LinkDefaultTypeInternal _Link_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull Link_class_data_;
+class Relationship;
+struct RelationshipDefaultTypeInternal;
+extern RelationshipDefaultTypeInternal _Relationship_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_class_data_;
+class Relationship_Link;
+struct Relationship_LinkDefaultTypeInternal;
+extern Relationship_LinkDefaultTypeInternal _Relationship_Link_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_Link_class_data_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -177,30 +181,30 @@ inline bool LinkType_Parse(
 
 // -------------------------------------------------------------------
 
-class Link final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.Link) */ {
+class Relationship_Link final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Relationship.Link) */ {
  public:
-  inline Link() : Link(nullptr) {}
-  ~Link() PROTOBUF_FINAL;
+  inline Relationship_Link() : Relationship_Link(nullptr) {}
+  ~Relationship_Link() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(Link* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(Relationship_Link* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(Link));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Relationship_Link));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR Link(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR Relationship_Link(::google::protobuf::internal::ConstantInitialized);
 
-  inline Link(const Link& from) : Link(nullptr, from) {}
-  inline Link(Link&& from) noexcept
-      : Link(nullptr, ::std::move(from)) {}
-  inline Link& operator=(const Link& from) {
+  inline Relationship_Link(const Relationship_Link& from) : Relationship_Link(nullptr, from) {}
+  inline Relationship_Link(Relationship_Link&& from) noexcept
+      : Relationship_Link(nullptr, ::std::move(from)) {}
+  inline Relationship_Link& operator=(const Relationship_Link& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Link& operator=(Link&& from) noexcept {
+  inline Relationship_Link& operator=(Relationship_Link&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -228,13 +232,13 @@ class Link final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Link& default_instance() {
-    return *reinterpret_cast<const Link*>(
-        &_Link_default_instance_);
+  static const Relationship_Link& default_instance() {
+    return *reinterpret_cast<const Relationship_Link*>(
+        &_Relationship_Link_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 3;
-  friend void swap(Link& a, Link& b) { a.Swap(&b); }
-  inline void Swap(Link* PROTOBUF_NONNULL other) {
+  friend void swap(Relationship_Link& a, Relationship_Link& b) { a.Swap(&b); }
+  inline void Swap(Relationship_Link* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -242,7 +246,7 @@ class Link final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Link* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(Relationship_Link* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -250,13 +254,13 @@ class Link final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  Link* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<Link>(arena);
+  Relationship_Link* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Relationship_Link>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Link& from);
+  void CopyFrom(const Relationship_Link& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const Link& from) { Link::MergeImpl(*this, from); }
+  void MergeFrom(const Relationship_Link& from) { Relationship_Link::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -292,17 +296,17 @@ class Link final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(Link* PROTOBUF_NONNULL other);
+  void InternalSwap(Relationship_Link* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.Link"; }
+  static ::absl::string_view FullMessageName() { return "debate.Relationship.Link"; }
 
-  explicit Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Link& from);
-  Link(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Link&& from) noexcept
-      : Link(arena) {
+  explicit Relationship_Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  Relationship_Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Relationship_Link& from);
+  Relationship_Link(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Relationship_Link&& from) noexcept
+      : Relationship_Link(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -402,12 +406,12 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.Link)
+  // @@protoc_insertion_point(class_scope:debate.Relationship.Link)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<3, 7,
-                                   0, 30,
+                                   0, 43,
                                    2>
       _table_;
 
@@ -425,7 +429,7 @@ class Link final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const Link& from_msg);
+        const Relationship_Link& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr connection_;
@@ -441,7 +445,7 @@ class Link final : public ::google::protobuf::Message
   friend struct ::TableStruct_debate_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull Link_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_Link_class_data_;
 // -------------------------------------------------------------------
 
 class Claim_UserStatusesEntry_DoNotUse final
@@ -481,6 +485,202 @@ class Claim_UserStatusesEntry_DoNotUse final
   static constexpr auto InternalNewImpl_();
 };
 extern const ::google::protobuf::internal::ClassDataFull Claim_UserStatusesEntry_DoNotUse_class_data_;
+// -------------------------------------------------------------------
+
+class Relationship final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Relationship) */ {
+ public:
+  inline Relationship() : Relationship(nullptr) {}
+  ~Relationship() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(Relationship* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Relationship));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Relationship(::google::protobuf::internal::ConstantInitialized);
+
+  inline Relationship(const Relationship& from) : Relationship(nullptr, from) {}
+  inline Relationship(Relationship&& from) noexcept
+      : Relationship(nullptr, ::std::move(from)) {}
+  inline Relationship& operator=(const Relationship& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Relationship& operator=(Relationship&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Relationship& default_instance() {
+    return *reinterpret_cast<const Relationship*>(
+        &_Relationship_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(Relationship& a, Relationship& b) { a.Swap(&b); }
+  inline void Swap(Relationship* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Relationship* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Relationship* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Relationship>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Relationship& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Relationship& from) { Relationship::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(Relationship* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate.Relationship"; }
+
+  explicit Relationship(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  Relationship(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Relationship& from);
+  Relationship(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Relationship&& from) noexcept
+      : Relationship(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Link = Relationship_Link;
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLinkFieldNumber = 1,
+  };
+  // .debate.Relationship.Link link = 1;
+  bool has_link() const;
+  void clear_link() ;
+  const ::debate::Relationship_Link& link() const;
+  [[nodiscard]] ::debate::Relationship_Link* PROTOBUF_NULLABLE release_link();
+  ::debate::Relationship_Link* PROTOBUF_NONNULL mutable_link();
+  void set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value);
+  ::debate::Relationship_Link* PROTOBUF_NULLABLE unsafe_arena_release_link();
+
+  private:
+  const ::debate::Relationship_Link& _internal_link() const;
+  ::debate::Relationship_Link* PROTOBUF_NONNULL _internal_mutable_link();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate.Relationship)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const Relationship& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::debate::Relationship_Link* PROTOBUF_NULLABLE link_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull Relationship_class_data_;
 // -------------------------------------------------------------------
 
 class Debate final : public ::google::protobuf::Message
@@ -538,7 +738,7 @@ class Debate final : public ::google::protobuf::Message
     return *reinterpret_cast<const Debate*>(
         &_Debate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
   inline void Swap(Debate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1891,124 +2091,124 @@ inline void ClaimState::set_allocated_claim(::debate::Claim* PROTOBUF_NULLABLE v
 
 // -------------------------------------------------------------------
 
-// Link
+// Relationship_Link
 
 // int32 id = 1;
-inline void Link::clear_id() {
+inline void Relationship_Link::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000002U);
 }
-inline ::int32_t Link::id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.id)
+inline ::int32_t Relationship_Link::id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.id)
   return _internal_id();
 }
-inline void Link::set_id(::int32_t value) {
+inline void Relationship_Link::set_id(::int32_t value) {
   _internal_set_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_set:debate.Link.id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.id)
 }
-inline ::int32_t Link::_internal_id() const {
+inline ::int32_t Relationship_Link::_internal_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.id_;
 }
-inline void Link::_internal_set_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = value;
 }
 
 // int32 connect_from = 2;
-inline void Link::clear_connect_from() {
+inline void Relationship_Link::clear_connect_from() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000004U);
 }
-inline ::int32_t Link::connect_from() const {
-  // @@protoc_insertion_point(field_get:debate.Link.connect_from)
+inline ::int32_t Relationship_Link::connect_from() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connect_from)
   return _internal_connect_from();
 }
-inline void Link::set_connect_from(::int32_t value) {
+inline void Relationship_Link::set_connect_from(::int32_t value) {
   _internal_set_connect_from(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  // @@protoc_insertion_point(field_set:debate.Link.connect_from)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connect_from)
 }
-inline ::int32_t Link::_internal_connect_from() const {
+inline ::int32_t Relationship_Link::_internal_connect_from() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connect_from_;
 }
-inline void Link::_internal_set_connect_from(::int32_t value) {
+inline void Relationship_Link::_internal_set_connect_from(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = value;
 }
 
 // int32 connect_to = 3;
-inline void Link::clear_connect_to() {
+inline void Relationship_Link::clear_connect_to() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000008U);
 }
-inline ::int32_t Link::connect_to() const {
-  // @@protoc_insertion_point(field_get:debate.Link.connect_to)
+inline ::int32_t Relationship_Link::connect_to() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connect_to)
   return _internal_connect_to();
 }
-inline void Link::set_connect_to(::int32_t value) {
+inline void Relationship_Link::set_connect_to(::int32_t value) {
   _internal_set_connect_to(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000008U);
-  // @@protoc_insertion_point(field_set:debate.Link.connect_to)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connect_to)
 }
-inline ::int32_t Link::_internal_connect_to() const {
+inline ::int32_t Relationship_Link::_internal_connect_to() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connect_to_;
 }
-inline void Link::_internal_set_connect_to(::int32_t value) {
+inline void Relationship_Link::_internal_set_connect_to(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = value;
 }
 
 // string connection = 4;
-inline void Link::clear_connection() {
+inline void Relationship_Link::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000001U);
 }
-inline const ::std::string& Link::connection() const
+inline const ::std::string& Relationship_Link::connection() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Link.connection)
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connection)
   return _internal_connection();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void Link::set_connection(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void Relationship_Link::set_connection(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   _impl_.connection_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.Link.connection)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connection)
 }
-inline ::std::string* PROTOBUF_NONNULL Link::mutable_connection()
+inline ::std::string* PROTOBUF_NONNULL Relationship_Link::mutable_connection()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   ::std::string* _s = _internal_mutable_connection();
-  // @@protoc_insertion_point(field_mutable:debate.Link.connection)
+  // @@protoc_insertion_point(field_mutable:debate.Relationship.Link.connection)
   return _s;
 }
-inline const ::std::string& Link::_internal_connection() const {
+inline const ::std::string& Relationship_Link::_internal_connection() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connection_.Get();
 }
-inline void Link::_internal_set_connection(const ::std::string& value) {
+inline void Relationship_Link::_internal_set_connection(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL Link::_internal_mutable_connection() {
+inline ::std::string* PROTOBUF_NONNULL Relationship_Link::_internal_mutable_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.connection_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE Link::release_connection() {
+inline ::std::string* PROTOBUF_NULLABLE Relationship_Link::release_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.Link.connection)
+  // @@protoc_insertion_point(field_release:debate.Relationship.Link.connection)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
@@ -2019,7 +2219,7 @@ inline ::std::string* PROTOBUF_NULLABLE Link::release_connection() {
   }
   return released;
 }
-inline void Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE value) {
+inline void Relationship_Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
@@ -2030,82 +2230,185 @@ inline void Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE valu
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connection_.IsDefault()) {
     _impl_.connection_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.Link.connection)
+  // @@protoc_insertion_point(field_set_allocated:debate.Relationship.Link.connection)
 }
 
 // int32 creator_id = 5;
-inline void Link::clear_creator_id() {
+inline void Relationship_Link::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000010U);
 }
-inline ::int32_t Link::creator_id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.creator_id)
+inline ::int32_t Relationship_Link::creator_id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.creator_id)
   return _internal_creator_id();
 }
-inline void Link::set_creator_id(::int32_t value) {
+inline void Relationship_Link::set_creator_id(::int32_t value) {
   _internal_set_creator_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000010U);
-  // @@protoc_insertion_point(field_set:debate.Link.creator_id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.creator_id)
 }
-inline ::int32_t Link::_internal_creator_id() const {
+inline ::int32_t Relationship_Link::_internal_creator_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.creator_id_;
 }
-inline void Link::_internal_set_creator_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
 }
 
 // .debate.LinkType link_type = 6;
-inline void Link::clear_link_type() {
+inline void Relationship_Link::clear_link_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_type_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000020U);
 }
-inline ::debate::LinkType Link::link_type() const {
-  // @@protoc_insertion_point(field_get:debate.Link.link_type)
+inline ::debate::LinkType Relationship_Link::link_type() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.link_type)
   return _internal_link_type();
 }
-inline void Link::set_link_type(::debate::LinkType value) {
+inline void Relationship_Link::set_link_type(::debate::LinkType value) {
   _internal_set_link_type(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000020U);
-  // @@protoc_insertion_point(field_set:debate.Link.link_type)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.link_type)
 }
-inline ::debate::LinkType Link::_internal_link_type() const {
+inline ::debate::LinkType Relationship_Link::_internal_link_type() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return static_cast<::debate::LinkType>(_impl_.link_type_);
 }
-inline void Link::_internal_set_link_type(::debate::LinkType value) {
+inline void Relationship_Link::_internal_set_link_type(::debate::LinkType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_type_ = value;
 }
 
 // int32 debate_id = 7;
-inline void Link::clear_debate_id() {
+inline void Relationship_Link::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000040U);
 }
-inline ::int32_t Link::debate_id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.debate_id)
+inline ::int32_t Relationship_Link::debate_id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.debate_id)
   return _internal_debate_id();
 }
-inline void Link::set_debate_id(::int32_t value) {
+inline void Relationship_Link::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000040U);
-  // @@protoc_insertion_point(field_set:debate.Link.debate_id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.debate_id)
 }
-inline ::int32_t Link::_internal_debate_id() const {
+inline ::int32_t Relationship_Link::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.debate_id_;
 }
-inline void Link::_internal_set_debate_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Relationship
+
+// .debate.Relationship.Link link = 1;
+inline bool Relationship::has_link() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.link_ != nullptr);
+  return value;
+}
+inline void Relationship::clear_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.link_ != nullptr) _impl_.link_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::debate::Relationship_Link& Relationship::_internal_link() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::debate::Relationship_Link* p = _impl_.link_;
+  return p != nullptr ? *p : reinterpret_cast<const ::debate::Relationship_Link&>(::debate::_Relationship_Link_default_instance_);
+}
+inline const ::debate::Relationship_Link& Relationship::link() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Relationship.link)
+  return _internal_link();
+}
+inline void Relationship::unsafe_arena_set_allocated_link(
+    ::debate::Relationship_Link* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.link_);
+  }
+  _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.Relationship.link)
+}
+inline ::debate::Relationship_Link* PROTOBUF_NULLABLE Relationship::release_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* released = _impl_.link_;
+  _impl_.link_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NULLABLE Relationship::unsafe_arena_release_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Relationship.link)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* temp = _impl_.link_;
+  _impl_.link_ = nullptr;
+  return temp;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NONNULL Relationship::_internal_mutable_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.link_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Relationship_Link>(GetArena());
+    _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(p);
+  }
+  return _impl_.link_;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NONNULL Relationship::mutable_link()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* _msg = _internal_mutable_link();
+  // @@protoc_insertion_point(field_mutable:debate.Relationship.link)
+  return _msg;
+}
+inline void Relationship::set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.link_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(value);
+  // @@protoc_insertion_point(field_set_allocated:debate.Relationship.link)
 }
 
 // -------------------------------------------------------------------

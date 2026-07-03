@@ -29,15 +29,20 @@ message ClaimState {
   Claim claim = 1;
 }
 
-message Link {
-  int32 id = 1;
-  int32 connect_from = 2;
-  int32 connect_to = 3;
-  string connection = 4;  
-  int32 creator_id = 5;
-  // add a type, normal, parent child, or challenge connection
-  LinkType link_type = 6;
-  int32 debate_id = 7;
+// Wraps a Link to allow future extension without breaking the link schema.
+message Relationship {
+  Link link = 1;
+
+  message Link {
+    int32 id = 1;
+    int32 connect_from = 2;
+    int32 connect_to = 3;
+    string connection = 4;
+    int32 creator_id = 5;
+    // add a type, normal, parent child, or challenge connection
+    LinkType link_type = 6;
+    int32 debate_id = 7;
+  }
 }
 
 enum LinkType {

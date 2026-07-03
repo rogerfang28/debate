@@ -168,15 +168,15 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_collection_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\020collection.proto\022\006debate\032\014debate.proto"
-    "\"\200\002\n\nCollection\0228\n\014claims_by_id\030\001 \003(\0132\"."
+    "\"\210\002\n\nCollection\0228\n\014claims_by_id\030\001 \003(\0132\"."
     "debate.Collection.ClaimsByIdEntry\0226\n\013lin"
     "ks_by_id\030\002 \003(\0132!.debate.Collection.Links"
     "ByIdEntry\032@\n\017ClaimsByIdEntry\022\013\n\003key\030\001 \001("
-    "\005\022\034\n\005value\030\002 \001(\0132\r.debate.Claim:\0028\001\032>\n\016L"
-    "inksByIdEntry\022\013\n\003key\030\001 \001(\005\022\033\n\005value\030\002 \001("
-    "\0132\014.debate.Link:\0028\001\"\?\n\027CollectionSpecifi"
-    "cation\022\021\n\tdebate_id\030\001 \001(\005\022\021\n\tclaim_ids\030\002"
-    " \003(\005b\006proto3"
+    "\005\022\034\n\005value\030\002 \001(\0132\r.debate.Claim:\0028\001\032F\n\016L"
+    "inksByIdEntry\022\013\n\003key\030\001 \001(\005\022#\n\005value\030\002 \001("
+    "\0132\024.debate.Relationship:\0028\001\"\?\n\027Collectio"
+    "nSpecification\022\021\n\tdebate_id\030\001 \001(\005\022\021\n\tcla"
+    "im_ids\030\002 \003(\005b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_collection_2eproto_deps[1] = {
@@ -186,7 +186,7 @@ static ::absl::once_flag descriptor_table_collection_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_collection_2eproto = {
     false,
     false,
-    372,
+    380,
     descriptor_table_protodef_collection_2eproto,
     "collection.proto",
     &descriptor_table_collection_2eproto_once,
@@ -370,7 +370,7 @@ Collection_LinksByIdEntry_DoNotUse::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Collection_LinksByIdEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .debate.Link value = 2;
+    // .debate.Relationship value = 2;
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.value_)}},
@@ -383,11 +383,11 @@ Collection_LinksByIdEntry_DoNotUse::_table_ = {
   }}, {{
     // int32 key = 1;
     {PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.key_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // .debate.Link value = 2;
+    // .debate.Relationship value = 2;
     {PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.value_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
-      {::_pbi::TcParser::GetTable<::debate::Link>()},
+      {::_pbi::TcParser::GetTable<::debate::Relationship>()},
   }},
   {{
   }},
@@ -556,7 +556,7 @@ Collection::_table_ = {
   }}, {{
     // map<int32, .debate.Claim> claims_by_id = 1;
     {PROTOBUF_FIELD_OFFSET(Collection, _impl_.claims_by_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<int32, .debate.Link> links_by_id = 2;
+    // map<int32, .debate.Relationship> links_by_id = 2;
     {PROTOBUF_FIELD_OFFSET(Collection, _impl_.links_by_id_), _Internal::kHasBitsOffset + 1, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }},
   {{
@@ -565,7 +565,7 @@ Collection::_table_ = {
       {::_pbi::TcParser::GetTable<::debate::Claim>()},
       {::_pbi::TcParser::GetMapAuxInfo(
           0, 0, 5, 11, 0)},
-      {::_pbi::TcParser::GetTable<::debate::Link>()},
+      {::_pbi::TcParser::GetTable<::debate::Relationship>()},
   }},
   {{
   }},
@@ -632,11 +632,11 @@ PROTOBUF_NOINLINE void Collection::Clear() {
     }
   }
 
-  // map<int32, .debate.Link> links_by_id = 2;
+  // map<int32, .debate.Relationship> links_by_id = 2;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_links_by_id().empty()) {
-      using MapType = ::google::protobuf::Map<::int32_t, ::debate::Link>;
-      using WireHelper = _pbi::MapEntryFuncs<::int32_t, ::debate::Link,
+      using MapType = ::google::protobuf::Map<::int32_t, ::debate::Relationship>;
+      using WireHelper = _pbi::MapEntryFuncs<::int32_t, ::debate::Relationship,
                                      _pbi::WireFormatLite::TYPE_INT32,
                                      _pbi::WireFormatLite::TYPE_MESSAGE>;
       const auto& field = this_._internal_links_by_id();
@@ -691,12 +691,12 @@ PROTOBUF_NOINLINE void Collection::Clear() {
                                        _pbi::WireFormatLite::TYPE_MESSAGE>::ByteSizeLong(entry.first, entry.second);
       }
     }
-    // map<int32, .debate.Link> links_by_id = 2;
+    // map<int32, .debate.Relationship> links_by_id = 2;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_links_by_id_size());
       for (const auto& entry : this_._internal_links_by_id()) {
-        total_size += _pbi::MapEntryFuncs<::int32_t, ::debate::Link,
+        total_size += _pbi::MapEntryFuncs<::int32_t, ::debate::Relationship,
                                        _pbi::WireFormatLite::TYPE_INT32,
                                        _pbi::WireFormatLite::TYPE_MESSAGE>::ByteSizeLong(entry.first, entry.second);
       }

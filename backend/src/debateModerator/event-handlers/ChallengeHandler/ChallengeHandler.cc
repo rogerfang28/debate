@@ -179,7 +179,7 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
     int challengedClaimId = -1;
 
     if (challenge_link_id > 0) {
-        debate::Link challengeLink = debateWrapper.getLinkById(challenge_link_id);
+        debate::Relationship::Link challengeLink = debateWrapper.getLinkById(challenge_link_id).link();
         if (challengeLink.id() != 0 && challengeLink.link_type() == debate::LinkType::CHALLENGE) {
             challengeClaimId = challengeLink.connect_from();
             challengedClaimId = challengeLink.connect_to();
@@ -231,7 +231,7 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
         // Check if current claim is a challenge (has outgoing CHALLENGE link)
         for (int i = 0; i < currentClaim.link_ids_size(); ++i) {
             int linkId = currentClaim.link_ids(i);
-            debate::Link link = debateWrapper.getLinkById(linkId);
+            debate::Relationship::Link link = debateWrapper.getLinkById(linkId).link();
             if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == currentClaimId) {
                 challengeClaimId = currentClaimId;
                 challengedClaimId = link.connect_to();
@@ -366,7 +366,7 @@ void ChallengeHandler::DeleteChallenge(const int& challenge_id, const int& user_
     int challengedClaimId = -1;
     for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
         const int linkId = challengeClaim.link_ids(i);
-        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        debate::Relationship::Link linkProto = debateWrapper.getLinkById(linkId).link();
         if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == challenge_claim_id) {
             challengeLinkId = linkId;
             challengedClaimId = linkProto.connect_to();

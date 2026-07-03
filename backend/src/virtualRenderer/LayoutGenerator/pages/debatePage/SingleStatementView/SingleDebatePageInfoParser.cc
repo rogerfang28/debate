@@ -95,7 +95,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 			const int candidateId = claimEntry.first;
 			bool hasIncomingParentChild = false;
 			for (const auto& linkEntry : collectionProto.links_by_id()) {
-				const debate::Link& link = linkEntry.second;
+				const debate::Relationship::Link& link = linkEntry.second.link();
 				if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_to() == candidateId) {
 					hasIncomingParentChild = true;
 					break;
@@ -147,7 +147,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()));
 	for (const auto& linkEntry : collectionProto.links_by_id()) {
 		const int linkId = linkEntry.first;
-		const debate::Link& linkProto = linkEntry.second;
+		const debate::Relationship::Link& linkProto = linkEntry.second.link();
 		if (linkProto.connect_from() != currentClaimProto.id()) {
 			continue;
 		}
@@ -194,7 +194,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	int outputLinkIndex = 0;
 	for (const auto& entry : collectionProto.links_by_id()) {
 		const int linkId = entry.first;
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second.link();
 		const bool fromVisible = visibleClaimIds.count(link.connect_from()) > 0;
 		const bool toVisible = visibleClaimIds.count(link.connect_to()) > 0;
 		const bool isParentChild = (link.link_type() == debate::LinkType::PARENT_CHILD);
@@ -234,7 +234,7 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	int challengeLinkCount = 0;
 	for (const auto& entry : collectionProto.links_by_id()) {
 		challengeLinkCount++;
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second.link();
 		Log::debug("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));
 		
 		// Look for challenge links pointing to current claim

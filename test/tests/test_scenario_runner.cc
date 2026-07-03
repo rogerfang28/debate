@@ -217,7 +217,7 @@ protected:
     int countLinks(const debate::Collection& collection, debate::LinkType type) {
         int count = 0;
         for (const auto& entry : collection.links_by_id()) {
-            if (entry.second.link_type() == type) count++;
+            if (entry.second.link().link_type() == type) count++;
         }
         return count;
     }
@@ -225,7 +225,7 @@ protected:
     bool linkExists(const debate::Collection& collection, debate::LinkType type,
                     int from_claim_id, int to_claim_id) {
         for (const auto& entry : collection.links_by_id()) {
-            const debate::Link& link = entry.second;
+            const debate::Relationship::Link& link = entry.second.link();
             if (link.link_type() == type &&
                 link.connect_from() == from_claim_id &&
                 link.connect_to() == to_claim_id) {
@@ -239,7 +239,7 @@ protected:
                                  debate::LinkType link_type, int n, const std::vector<int>& skip_ids) {
         int found = 0;
         for (const auto& entry : collection.links_by_id()) {
-            const debate::Link& link = entry.second;
+            const debate::Relationship::Link& link = entry.second.link();
             if (link.link_type() != link_type || link.connect_to() != target_claim_id) continue;
             int from_id = link.connect_from();
             bool skip = false;

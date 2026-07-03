@@ -103,7 +103,7 @@ void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper&
     int challengedClaimId = -1;
     for (int i = 0; i < currentClaim.link_ids_size(); ++i) {
         int linkId = currentClaim.link_ids(i);
-        debate::Link linkProto = debateWrapper.getLinkById(linkId);
+        debate::Relationship::Link linkProto = debateWrapper.getLinkById(linkId).link();
         if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == currentClaimId) {
             challengedClaimId = linkProto.connect_to();
             Log::debug("[GoToParentClaimOfDebate] Found CHALLENGE link id: " + std::to_string(linkId) + " from claim " + std::to_string(currentClaimId) + " to challenged claim " + std::to_string(challengedClaimId));

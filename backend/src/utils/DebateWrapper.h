@@ -58,7 +58,7 @@ public:
     std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebate(const int& debate_id);
     std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
-    debate::Link getLinkById(int linkId);
+    debate::Relationship getLinkById(int linkId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
     void addMemberToDebate(const int& debateId, const int& user_id);
