@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <map>
+#include <set>
 #include "../database/debate/DatabaseWrapper.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
@@ -76,4 +78,15 @@ private:
     DatabaseWrapper& databaseWrapper;
     void addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id);
     // void updateClaimInDB(const debate::Claim& claim);
+
+    // Determines what a claim's status should become for one user, given its
+    // current status and its PARENT_CHILD/CHALLENGE neighbors. Pure computation —
+    // does not write anything; callers decide whether/how to apply the result.
+    debate::ClaimStatus ComputeStatusForUser(
+        const int& claimId,
+        const std::string& user,
+        const debate::ClaimStatus& currentStatus,
+        const std::map<int, std::vector<int>>& childrenMap,
+        const std::map<int, std::vector<int>>& challengeIncoming,
+        const std::set<int>& conceded_claims);
 };

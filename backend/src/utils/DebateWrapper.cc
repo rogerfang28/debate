@@ -683,6 +683,60 @@ void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
     }
 }
 
+debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
+    const int& claimId,
+    const std::string& user,
+    const debate::ClaimStatus& currentStatus,
+    const std::map<int, std::vector<int>>& childrenMap,
+    const std::map<int, std::vector<int>>& challengeIncoming,
+    const std::set<int>& conceded_claims) {
+    debate::ClaimStatus ns = currentStatus;
+
+    // Rule A/B: parent-child
+    bool anyChildFalse = false;
+    bool allChildrenTrue = true;
+    auto childrenIt = childrenMap.find(claimId);
+    bool hasChildren = childrenIt != childrenMap.end() && !childrenIt->second.empty();
+    if (childrenIt != childrenMap.end()) {
+        for (int childId : childrenIt->second) {
+            debate::Claim cc = getClaimById(childId);
+            auto cit = cc.user_statuses().find(user);
+            if (cit == cc.user_statuses().end()) { allChildrenTrue = false; continue; }
+            if (cit->second == debate::ClaimStatus::FALSE_CLAIM) { anyChildFalse = true; break; }
+            if (cit->second != debate::ClaimStatus::TRUE_CLAIM) { allChildrenTrue = false; }
+        }
+    }
+    if (anyChildFalse) ns = debate::ClaimStatus::FALSE_CLAIM;
+    else if (hasChildren && allChildrenTrue &&
+             conceded_claims.find(claimId) == conceded_claims.end())
+        ns = debate::ClaimStatus::TRUE_CLAIM;
+
+    // Rule C: incoming CHALLENGE is FALSE → this claim TRUE
+    auto citIn = challengeIncoming.find(claimId);
+    if (citIn != challengeIncoming.end()) {
+        bool anyFalse = false;
+        for (int cid : citIn->second) {
+            debate::Claim cc = getClaimById(cid);
+            auto uit = cc.user_statuses().find(user);
+            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
+        }
+        if (anyFalse) ns = debate::ClaimStatus::TRUE_CLAIM;
+    }
+
+    // Rule D: incoming CHALLENGE is TRUE → this claim FALSE
+    if (citIn != challengeIncoming.end()) {
+        bool anyTrue = false;
+        for (int cid : citIn->second) {
+            debate::Claim cc = getClaimById(cid);
+            auto uit = cc.user_statuses().find(user);
+            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) { anyTrue = true; break; }
+        }
+        if (anyTrue) ns = debate::ClaimStatus::FALSE_CLAIM;
+    }
+
+    return ns;
+}
+
 void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<int>& conceded_claims) {
     // Propagation rules (per-user):
     //   Rule A: FALSE + PARENT_CHILD → parent FALSE
@@ -778,46 +832,8 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
                 auto it = claim.user_statuses().find(user);
                 debate::ClaimStatus cs = (it != claim.user_statuses().end())
                     ? it->second : debate::ClaimStatus::UNDETERMINED;
-                debate::ClaimStatus ns = cs;
-
-                // Rule A/B: parent-child
-                bool anyChildFalse = false;
-                bool allChildrenTrue = true;
-                bool hasChildren = !childrenMap[claimId].empty();
-                for (int childId : childrenMap[claimId]) {
-                    debate::Claim cc = getClaimById(childId);
-                    auto cit = cc.user_statuses().find(user);
-                    if (cit == cc.user_statuses().end()) { allChildrenTrue = false; continue; }
-                    if (cit->second == debate::ClaimStatus::FALSE_CLAIM) { anyChildFalse = true; break; }
-                    if (cit->second != debate::ClaimStatus::TRUE_CLAIM) { allChildrenTrue = false; }
-                }
-                if (anyChildFalse) ns = debate::ClaimStatus::FALSE_CLAIM;
-                else if (hasChildren && allChildrenTrue &&
-                         conceded_claims.find(claimId) == conceded_claims.end())
-                    ns = debate::ClaimStatus::TRUE_CLAIM;
-
-                // Rule C: incoming CHALLENGE is FALSE → this claim TRUE
-                auto citIn = challengeIncoming.find(claimId);
-                if (citIn != challengeIncoming.end()) {
-                    bool anyFalse = false;
-                    for (int cid : citIn->second) {
-                        debate::Claim cc = getClaimById(cid);
-                        auto uit = cc.user_statuses().find(user);
-                        if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
-                    }
-                    if (anyFalse) ns = debate::ClaimStatus::TRUE_CLAIM;
-                }
-
-                // Rule D: incoming CHALLENGE is TRUE → this claim FALSE
-                if (citIn != challengeIncoming.end()) {
-                    bool anyTrue = false;
-                    for (int cid : citIn->second) {
-                        debate::Claim cc = getClaimById(cid);
-                        auto uit = cc.user_statuses().find(user);
-                        if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) { anyTrue = true; break; }
-                    }
-                    if (anyTrue) ns = debate::ClaimStatus::FALSE_CLAIM;
-                }
+                debate::ClaimStatus ns = ComputeStatusForUser(
+                    claimId, user, cs, childrenMap, challengeIncoming, conceded_claims);
 
                 if (ns != cs) {
                     debate::Claim updated = getClaimById(claimId);
