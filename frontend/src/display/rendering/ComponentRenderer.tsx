@@ -16,6 +16,7 @@ import ModalComponent from "./componentTypes/ModalComponent.tsx";
 import ChatComponent from "./componentTypes/ChatComponent.tsx";
 import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
+import ClaimParserComponent from "./componentTypes/ClaimParserComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -44,6 +45,7 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CHAT]: ChatComponent,
   [ComponentType.TEXTAREA]: TextareaComponent,
   [ComponentType.ICON]: IconComponent,
+  [ComponentType.CLAIM_PARSER]: ClaimParserComponent,
 };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
