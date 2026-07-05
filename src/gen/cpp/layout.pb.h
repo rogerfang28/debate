@@ -108,7 +108,19 @@ enum ComponentType : int {
   TEXT = 1,
   BUTTON = 2,
   INPUT = 3,
+  IMAGE = 4,
+  LIST = 5,
+  CARD = 6,
+  GRAPH = 7,
+  FORM = 8,
+  TABLE = 9,
+  MODAL = 10,
+  CHAT = 11,
   CONTAINER = 12,
+  TEXTAREA = 13,
+  ICON = 14,
+  NODE_GRAPH = 15,
+  CLAIM_PARSER = 16,
   ComponentType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ComponentType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -119,11 +131,11 @@ extern const uint32_t ComponentType_internal_data_[];
 inline constexpr ComponentType ComponentType_MIN =
     static_cast<ComponentType>(0);
 inline constexpr ComponentType ComponentType_MAX =
-    static_cast<ComponentType>(12);
+    static_cast<ComponentType>(16);
 inline bool ComponentType_IsValid(int value) {
-  return 0 <= value && value <= 12 && ((4111u >> value) & 1) != 0;
+  return 0 <= value && value <= 16;
 }
-inline constexpr int ComponentType_ARRAYSIZE = 12 + 1;
+inline constexpr int ComponentType_ARRAYSIZE = 16 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descriptor();
 template <typename T>
 const ::std::string& ComponentType_Name(T value) {
@@ -134,7 +146,7 @@ const ::std::string& ComponentType_Name(T value) {
 }
 template <>
 inline const ::std::string& ComponentType_Name(ComponentType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 12>(
+  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 16>(
       static_cast<int>(value));
 }
 inline bool ComponentType_Parse(

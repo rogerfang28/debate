@@ -25,7 +25,19 @@ enum ComponentType {
   TEXT = 1;
   BUTTON = 2;
   INPUT = 3;
+  IMAGE = 4;
+  LIST = 5;
+  CARD = 6;
+  GRAPH = 7;
+  FORM = 8;
+  TABLE = 9;
+  MODAL = 10;
+  CHAT = 11;
   CONTAINER = 12;
+  TEXTAREA = 13;
+  ICON = 14;
+  NODE_GRAPH = 15;
+  CLAIM_PARSER = 16;
 }
 
 message Style {

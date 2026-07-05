@@ -323,17 +323,21 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custo"
     "m_class\030\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001"
     "y\030\002 \001(\002\022\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001"
-    " \001(\t\022\016\n\006height\030\002 \001(\t*L\n\rComponentType\022\013\n"
-    "\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPU"
-    "T\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t\n\005ABSL"
-    "T\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020"
-    "\003\022\n\n\006INLINE\020\004b\006proto3"
+    " \001(\t\022\016\n\006height\030\002 \001(\t*\332\001\n\rComponentType\022\013"
+    "\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INP"
+    "UT\020\003\022\t\n\005IMAGE\020\004\022\010\n\004LIST\020\005\022\010\n\004CARD\020\006\022\t\n\005G"
+    "RAPH\020\007\022\010\n\004FORM\020\010\022\t\n\005TABLE\020\t\022\t\n\005MODAL\020\n\022\010"
+    "\n\004CHAT\020\013\022\r\n\tCONTAINER\020\014\022\014\n\010TEXTAREA\020\r\022\010\n"
+    "\004ICON\020\016\022\016\n\nNODE_GRAPH\020\017\022\020\n\014CLAIM_PARSER\020"
+    "\020*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001"
+    "\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006pr"
+    "oto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    701,
+    844,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -352,7 +356,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descrip
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    262144u, 32u, 256u, };
+    1114112u, 0u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL LayoutType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);
   return file_level_enum_descriptors_layout_2eproto[1];

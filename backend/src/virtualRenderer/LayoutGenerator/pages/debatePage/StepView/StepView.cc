@@ -222,7 +222,24 @@ ui::Page StepView::GenerateStepViewPage(
 	(*mapSection.mutable_css())["width"] = "100%";
 	ComponentGenerator::addChild(&rightColumn, mapSection);
 
-	ComponentGenerator::addChild(&contentRow, leftColumn);
+		// Claim Parser input box
+		ui::Component claimParser = ComponentGenerator::createClaimParser(
+			"claimParserInput",
+			"Enter article URL or paste text to parse claims...",
+			"",
+			"bg-gray-800",
+			"text-white",
+			"border-blue-700",
+			"p-4",
+			"rounded-lg",
+			"w-full resize-y min-h-[120px]"
+		);
+		(*claimParser.mutable_css())["display"] = "flex";
+		(*claimParser.mutable_css())["flex-direction"] = "column";
+		(*claimParser.mutable_css())["gap"] = "0.5rem";
+		ComponentGenerator::addChild(&rightColumn, claimParser);
+
+		ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
 	ComponentGenerator::addChild(&container, contentRow);
 

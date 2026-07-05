@@ -45,16 +45,29 @@ public:
     );
 
     // Create a CONTAINER component
-    static ui::Component createContainer(
-        const std::string& id,
-        const std::string& layout = "",
-        const std::string& bgColor = "",
-        const std::string& padding = "",
-        const std::string& margin = "",
-        const std::string& border = "",
-        const std::string& rounded = "",
-        const std::string& additionalClasses = ""
-    );
+     static ui::Component createContainer(
+         const std::string& id,
+         const std::string& layout = "",
+         const std::string& bgColor = "",
+         const std::string& padding = "",
+         const std::string& margin = "",
+         const std::string& border = "",
+         const std::string& rounded = "",
+         const std::string& additionalClasses = ""
+     );
+
+     // Create a CLAIM_PARSER component
+     static ui::Component createClaimParser(
+         const std::string& id,
+         const std::string& placeholder = "Enter article URL or paste text to parse claims...",
+         const std::string& name = "",
+         const std::string& bgColor = "bg-gray-800",
+         const std::string& textColor = "text-white",
+         const std::string& borderColor = "border-gray-600",
+         const std::string& padding = "p-4",
+         const std::string& rounded = "rounded-lg",
+         const std::string& additionalClasses = ""
+     );
 
     // Helper: Add a child component to a parent
     static void addChild(ui::Component* parent, const ui::Component& child);

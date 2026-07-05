@@ -17,6 +17,7 @@ import ChatComponent from "./componentTypes/ChatComponent.tsx";
 import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
 import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
+import ClaimParserComponent from "./componentTypes/ClaimParserComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -46,7 +47,8 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.TEXTAREA]: TextareaComponent,
   [ComponentType.ICON]: IconComponent,
   [ComponentType.NODE_GRAPH]: NodeGraphComponent,
-};
+   [ComponentType.CLAIM_PARSER]: ClaimParserComponent,
+  };
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (!component) return null;
