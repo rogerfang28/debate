@@ -19,9 +19,19 @@ interface GoogleLoginComponentProps {
 
 const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ component }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
-    // Load Google Identity Services script
+    if (initializedRef.current) return;
+
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+    if (!clientId) {
+      console.warn("[GoogleAuth] No Google Client ID configured (VITE_GOOGLE_CLIENT_ID not set).");
+      return;
+    }
+
+    initializedRef.current = true;
+
     if (!window.google) {
       const script = document.createElement("script");
       script.src = "https://accounts.google.com/gsi/client";
@@ -29,30 +39,26 @@ const GoogleLoginComponent: React.FC<GoogleLoginComponentProps> = ({ component }
       script.defer = true;
       script.onload = () => {
         if (containerRef.current && window.google) {
-          const clientId = document.documentElement.getAttribute("data-google-client-id") || "";
-          if (clientId) {
-            window.google.accounts.id.initialize({
-              client_id: clientId,
-              callback: (response: { credential: string }) => {
-                // Send the Google ID token to the backend
-                window.googleLoginCallback?.(response.credential);
-              },
-              error_callback: () => {
-                console.error("[GoogleAuth] Google sign-in error");
-              },
-            });
+          window.google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response: { credential: string }) => {
+              window.googleLoginCallback?.(response.credential);
+            },
+            error_callback: () => {
+              console.error("[GoogleAuth] Google sign-in error");
+            },
+          });
 
-            window.google.accounts.id.renderButton(
-              containerRef.current,
-              {
-                theme: "filled_blue",
-                size: "large",
-                shape: "rounded_rect",
-                text: "continue_with",
-                width: "250",
-              }
-            );
-          }
+          window.google.accounts.id.renderButton(
+            containerRef.current,
+            {
+              theme: "filled_blue",
+              size: "large",
+              shape: "rounded_rect",
+              text: "continue_with",
+              width: "250",
+            }
+          );
         }
       };
       document.head.appendChild(script);
