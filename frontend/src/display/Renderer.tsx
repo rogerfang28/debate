@@ -198,10 +198,7 @@ const Renderer: React.FC = () => {
       )}
 
       {/* Data loaded — render page */}
-       {data && <PageRenderer page={data} />}
-
-       {/* Google Sign-In SDK — inject when on login page */}
-       <GoogleSdkInjector data={data} />
+      {data && <PageRenderer page={data} />}
 
       {/* Waiting for data — no error, no loading, no data */}
       {!loading && !error && !data && (
@@ -211,93 +208,6 @@ const Renderer: React.FC = () => {
       )}
     </div>
   );
-};
-
-// eslint-disable-next-line react/forward-ref-ref
-const GoogleSdkInjector: React.FC<{ data: PageData | null }> = ({ data }) => {
-  const dataRef = useRef<PageData | null>(null);
-  const initializedRef = useRef(false);
-
-  useEffect(() => {
-    dataRef.current = data;
-  }, [data]);
-
-  useEffect(() => {
-     if (initializedRef.current) return;
-
-     // Check if the current page has the Google login button
-     const pageData = dataRef.current;
-     if (!pageData || !pageData.components) return;
-
-     const hasGoogleButton = pageData.components.some(
-       (comp: PageData) => comp.id === "googleLoginButton"
-     );
-     if (!hasGoogleButton) return;
-
-     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.GOOGLE_CLIENT_ID || "";
-     if (!clientId) return;
-
-     initializedRef.current = true;
-
-     // Set data attribute for Google JS SDK to read
-     document.documentElement.setAttribute("data-google-client-id", clientId);
-
-     // Load Google Identity Services
-     const loadGoogleSDK = () => {
-       if (!window.google) {
-         const script = document.createElement("script");
-         script.src = "https://accounts.google.com/gsi/client";
-         script.async = true;
-         script.defer = true;
-         script.onload = () => {
-           if (window.google) {
-             initializeGoogle(clientId);
-           }
-         };
-         script.onerror = () => {
-           console.error("[GoogleAuth] Failed to load Google JS SDK");
-         };
-         document.head.appendChild(script);
-       } else {
-         initializeGoogle(clientId);
-       }
-     };
-
-     const initializeGoogle = (cid: string) => {
-       window.google.accounts.id.initialize({
-         client_id: cid,
-         callback: (response: { credential: string }) => {
-           console.log("[GoogleAuth] Got credential, sending to backend...");
-           window.googleLoginCallback?.(response.credential);
-         },
-         error_callback: () => {
-           console.error("[GoogleAuth] Google sign-in error");
-         },
-         auto_select: false,
-       });
-
-       // Wait for the container DOM element to exist, then render button
-       const tryRender = () => {
-         const container = document.getElementById("googleLoginButton");
-         if (container) {
-           window.google.accounts.id.renderButton(container, {
-             theme: "outline",
-             size: "large",
-             shape: "rectangular",
-             width: 300,
-             text: "continue_with",
-           });
-         } else {
-           requestAnimationFrame(tryRender);
-         }
-       };
-       requestAnimationFrame(tryRender);
-     };
-
-     loadGoogleSDK();
-   }, []);
-
-  return null;
 };
 
 export default Renderer;
