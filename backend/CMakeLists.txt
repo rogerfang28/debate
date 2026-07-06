@@ -157,7 +157,6 @@ add_executable(debate_server
 target_link_libraries(debate_server
     ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libzs.a
     sqlite3
-    ws2_32
     # abseil_dll
     -Wl,--start-group
     dbghelp
@@ -165,9 +164,10 @@ target_link_libraries(debate_server
     ${UTF8_LIB}
     ${ABSL_LIBS}
     -Wl,--end-group
-    openssl
-    crypto
-    cpp-jwt
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libssl.a
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libcrypto.a
+    ws2_32
+    crypt32
 )
 
 set_target_properties(debate_server PROPERTIES

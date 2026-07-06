@@ -40,9 +40,9 @@ private:
     // Convert base64url-encoded integer to BIGNUM.
     static void* b64url_to_bignum(const std::string& b64url);
 
-    // OpenSSL RSA verification using raw public key components.
+    // OpenSSL RSA verification using base64url-encoded n and e.
     static bool rsa_verify(const std::string& signing_input,
-                           const std::string& signature_bytes,
-                           void* rsa_n,
-                           void* rsa_e);
+                           const std::string& signature_b64url,
+                           const std::string& n_b64url,
+                           const std::string& e_b64url);
 };
