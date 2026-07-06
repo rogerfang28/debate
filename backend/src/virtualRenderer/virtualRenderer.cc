@@ -106,6 +106,12 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     moderator_to_vr::ModeratorToVRMessage info;
     info = moderator.handleRequest(evt);
 
+    // After a successful login, transition user to HOME page
+    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() && !evt.login().google_id_token().empty()) {
+        info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
+    }
+
     // parse user info to create layout based on it
     ui::Page page = LayoutGenerator::generateLayout(info, userDb);
     return page;
@@ -185,6 +191,7 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
         // Apply authenticated identity for this same request
         resolvedUserId = moderatorUserId;
         resolvedUsername = finalUsername;
+
     }
 
     // add login info to the event
