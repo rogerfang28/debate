@@ -201,7 +201,7 @@ const Renderer: React.FC = () => {
        {data && <PageRenderer page={data} />}
 
        {/* Google Sign-In SDK — inject when on login page */}
-       <GoogleSdkInjector />
+       <GoogleSdkInjector data={data} />
 
       {/* Waiting for data — no error, no loading, no data */}
       {!loading && !error && !data && (
@@ -214,7 +214,7 @@ const Renderer: React.FC = () => {
 };
 
 // eslint-disable-next-line react/forward-ref-ref
-const GoogleSdkInjector: React.FC = () => {
+const GoogleSdkInjector: React.FC<{ data: PageData | null }> = ({ data }) => {
   const dataRef = useRef<PageData | null>(null);
   const initializedRef = useRef(false);
 
