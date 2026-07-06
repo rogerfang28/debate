@@ -61,6 +61,10 @@ public:
     std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
     debate::Relationship getLinkById(int linkId);
+    // Scans fromClaimId's link_ids for an outgoing CHALLENGE link (a link where
+    // this claim is the challenger, i.e. connect_from() == fromClaimId).
+    // Returns a default (empty) Relationship if none found.
+    debate::Relationship findOutgoingChallengeLink(int fromClaimId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
     void addMemberToDebate(const int& debateId, const int& user_id);

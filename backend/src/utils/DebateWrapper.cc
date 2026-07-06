@@ -446,6 +446,7 @@ debate::Relationship DebateWrapper::getLinkById(int linkId) {
     if (linkData.has_value()) {
         const auto& link = linkData.value();
         debate::Relationship::Link* linkProto = relationshipProto.mutable_link();
+        linkProto->set_id(std::get<0>(link));
         linkProto->set_connect_from(std::get<1>(link));
         linkProto->set_connect_to(std::get<2>(link));
         linkProto->set_connection(std::get<3>(link));
@@ -462,6 +463,18 @@ debate::Relationship DebateWrapper::getLinkById(int linkId) {
     }
 
     return relationshipProto;
+}
+
+debate::Relationship DebateWrapper::findOutgoingChallengeLink(int fromClaimId) {
+    debate::Claim claim = getClaimById(fromClaimId);
+    for (int i = 0; i < claim.link_ids_size(); ++i) {
+        debate::Relationship rel = getLinkById(claim.link_ids(i));
+        const debate::Relationship::Link& link = rel.link();
+        if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == fromClaimId) {
+            return rel;
+        }
+    }
+    return debate::Relationship();
 }
 
 void DebateWrapper::deleteLinkById(int linkId) {
