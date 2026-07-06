@@ -1,6 +1,7 @@
 #include "LoginPageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/DemoMode.h"
+#include "../../../../utils/Log.h"
 
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
@@ -106,13 +107,16 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
           ComponentGenerator::addChild(&main, submitButton);
 
           // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set)
-           if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
-               ui::Component googleButton = ComponentGenerator::createContainer(
-                   "googleLoginButton",
-                   "google-login"
-               );
-               ComponentGenerator::addChild(&main, googleButton);
-           }
+            if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
+                Log::info("[LoginPageGenerator] GOOGLE_CLIENT_ID is set, including googleLoginButton");
+                ui::Component googleButton = ComponentGenerator::createContainer(
+                    "googleLoginButton",
+                    "google-login"
+                );
+                ComponentGenerator::addChild(&main, googleButton);
+            } else {
+                Log::warn("[LoginPageGenerator] GOOGLE_CLIENT_ID is NOT set — googleLoginButton will NOT be included");
+            }
         }
 
     return main;
