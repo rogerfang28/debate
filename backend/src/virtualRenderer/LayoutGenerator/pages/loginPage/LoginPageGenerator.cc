@@ -106,20 +106,13 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
           ComponentGenerator::addChild(&main, submitButton);
 
           // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set)
-          if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
-              ui::Component googleButton = ComponentGenerator::createButton(
-                  "googleLoginButton",
-                  "Sign in with Google",
-                  "google",
-                  "bg-blue-500",
-                  "hover:bg-blue-400",
-                  "text-white",
-                  "px-6 py-3",
-                  "rounded-lg",
-                  "flex items-center gap-2"
-              );
-              ComponentGenerator::addChild(&main, googleButton);
-          }
+           if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
+               ui::Component googleButton = ComponentGenerator::createContainer(
+                   "googleLoginButton",
+                   "google-login"
+               );
+               ComponentGenerator::addChild(&main, googleButton);
+           }
         }
 
     return main;

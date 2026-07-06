@@ -10,8 +10,29 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     debate_event::DebateEvent event;
     const bool isSubmitClick = (componentId == "submitButton" && eventType == "onClick");
     const bool isDemoClick = (componentId == "demoButton" && eventType == "onClick");
+    const bool isGoogleClick = (componentId == "googleLoginButton" && eventType == "onGoogleLogin");
 
-    if (isSubmitClick || isDemoClick) {
+    if (isGoogleClick) {
+        // Google Sign-In: extract the google_id_token from the pageData components
+        Log::debug("  GOOGLE LOGIN event triggered.");
+        event.set_type(debate_event::LOGIN);
+        auto* loginEvent = event.mutable_login();
+
+        // Find google_id_token in the pageData components
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "google_id_token") {
+                loginEvent->set_google_id_token(comp.value());
+                Log::debug("  Google ID token received (" + std::to_string(comp.value().size()) + " chars).");
+                break;
+            }
+        }
+
+        if (loginEvent->google_id_token().empty()) {
+            Log::error("  Google login without token — falling back to unspecified event.");
+            event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
+        }
+    }
+    else if (isSubmitClick || isDemoClick) {
         Log::debug("  LOGIN event triggered.");
         event.set_type(debate_event::LOGIN);
         auto* loginEvent = event.mutable_login();
