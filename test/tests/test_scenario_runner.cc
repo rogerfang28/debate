@@ -81,9 +81,15 @@ protected:
         _putenv_s("DB_PATH", db_path_.c_str());
         Log::init(LogLevel::Test);
         moderator_ = new DebateModerator();
+        db_ = new Database(db_path_);
+        dbWrapper_ = new DatabaseWrapper(*db_);
+        debateWrapper_ = new DebateWrapper(*dbWrapper_);
     }
 
     void TearDown() override {
+        delete debateWrapper_;
+        delete dbWrapper_;
+        delete db_;
         delete moderator_;
         _putenv_s("DB_PATH", "");
     }
@@ -191,7 +197,7 @@ protected:
         for (const auto& kv : user_ids_) {
             user_ids.push_back(kv.second);
         }
-        return BuildCollection::BuildForDebateAndUsers(debate_id, user_ids, moderator_->getDebateWrapper());
+        return BuildCollection::BuildForDebateAndUsers(debate_id, user_ids, *debateWrapper_);
     }
 
 
@@ -475,6 +481,12 @@ protected:
 
     std::string db_path_;
     DebateModerator* moderator_ = nullptr;
+    // Standalone DB handle wired to the same DB_PATH as moderator_, used only
+    // to reach a DebateWrapper for read-only collection building in tests
+    // (DebateModerator no longer exposes its internal DebateWrapper).
+    Database* db_ = nullptr;
+    DatabaseWrapper* dbWrapper_ = nullptr;
+    DebateWrapper* debateWrapper_ = nullptr;
     std::map<std::string, int> user_ids_;
 
 
