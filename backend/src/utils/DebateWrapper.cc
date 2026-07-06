@@ -687,8 +687,8 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     const int& claimId,
     const std::string& user,
     const debate::ClaimStatus& currentStatus,
-    const std::map<int, std::vector<int>>& childrenMap,
-    const std::map<int, std::vector<int>>& challengeIncoming,
+    const std::map<int, std::vector<debate::Relationship>>& childrenMap,
+    const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
     const std::set<int>& conceded_claims) {
     debate::ClaimStatus ns = currentStatus;
 
@@ -698,8 +698,8 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     auto childrenIt = childrenMap.find(claimId);
     bool hasChildren = childrenIt != childrenMap.end() && !childrenIt->second.empty();
     if (childrenIt != childrenMap.end()) {
-        for (int childId : childrenIt->second) {
-            debate::Claim cc = getClaimById(childId);
+        for (const auto& rel : childrenIt->second) {
+            debate::Claim cc = getClaimById(rel.link().connect_to());
             auto cit = cc.user_statuses().find(user);
             if (cit == cc.user_statuses().end()) { allChildrenTrue = false; continue; }
             if (cit->second == debate::ClaimStatus::FALSE_CLAIM) { anyChildFalse = true; break; }
@@ -715,8 +715,8 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     auto citIn = challengeIncoming.find(claimId);
     if (citIn != challengeIncoming.end()) {
         bool anyFalse = false;
-        for (int cid : citIn->second) {
-            debate::Claim cc = getClaimById(cid);
+        for (const auto& rel : citIn->second) {
+            debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
             if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
         }
@@ -726,8 +726,8 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     // Rule D: incoming CHALLENGE is TRUE → this claim FALSE
     if (citIn != challengeIncoming.end()) {
         bool anyTrue = false;
-        for (int cid : citIn->second) {
-            debate::Claim cc = getClaimById(cid);
+        for (const auto& rel : citIn->second) {
+            debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
             if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) { anyTrue = true; break; }
         }
@@ -761,25 +761,38 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
 
     int rootId = debateProto.root_claim_id();
 
-    std::map<int, std::vector<int>> childrenMap;
-    std::map<int, std::vector<int>> challengeIncoming;
-    std::map<int, std::vector<int>> challengeOutgoing;
+    std::map<int, std::vector<debate::Relationship>> childrenMap;
+    std::map<int, std::vector<debate::Relationship>> challengeIncoming;
+    std::map<int, std::vector<debate::Relationship>> challengeOutgoing;
     std::set<int> allClaimIds;
     allClaimIds.insert(rootId);
 
     auto allLinks = getLinksForDebate(debate_id);
     for (const auto& linkTuple : allLinks) {
+        int linkId = std::get<0>(linkTuple);
         int fromId = std::get<1>(linkTuple);
         int toId = std::get<2>(linkTuple);
+        const std::string& connection = std::get<3>(linkTuple);
+        int creatorId = std::get<4>(linkTuple);
         int linkType = std::get<5>(linkTuple);
         allClaimIds.insert(fromId);
         allClaimIds.insert(toId);
 
+        debate::Relationship rel;
+        debate::Relationship::Link* link = rel.mutable_link();
+        link->set_id(linkId);
+        link->set_connect_from(fromId);
+        link->set_connect_to(toId);
+        link->set_connection(connection);
+        link->set_creator_id(creatorId);
+        link->set_link_type(static_cast<debate::LinkType>(linkType));
+        link->set_debate_id(debate_id);
+
         if (linkType == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
-            childrenMap[fromId].push_back(toId);
+            childrenMap[fromId].push_back(rel);
         } else if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeIncoming[toId].push_back(fromId);
-            challengeOutgoing[fromId].push_back(toId);
+            challengeIncoming[toId].push_back(rel);
+            challengeOutgoing[fromId].push_back(rel);
         }
     }
 
@@ -790,7 +803,8 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
         bfs.push_back(rootId);
         for (size_t i = 0; i < bfs.size(); ++i) {
             topoOrder.push_back(bfs[i]);
-            for (int childId : childrenMap[bfs[i]]) {
+            for (const auto& rel : childrenMap[bfs[i]]) {
+                int childId = rel.link().connect_to();
                 if (std::find(topoOrder.begin(), topoOrder.end(), childId) == topoOrder.end()) {
                     bfs.push_back(childId);
                 }
@@ -815,16 +829,16 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
 
             std::set<std::string> users;
             for (const auto& entry : claim.user_statuses()) users.insert(entry.first);
-            for (int childId : childrenMap[claimId]) {
-                debate::Claim c = getClaimById(childId);
+            for (const auto& rel : childrenMap[claimId]) {
+                debate::Claim c = getClaimById(rel.link().connect_to());
                 for (const auto& e : c.user_statuses()) users.insert(e.first);
             }
-            for (int cid : challengeIncoming[claimId]) {
-                debate::Claim c = getClaimById(cid);
+            for (const auto& rel : challengeIncoming[claimId]) {
+                debate::Claim c = getClaimById(rel.link().connect_from());
                 for (const auto& e : c.user_statuses()) users.insert(e.first);
             }
-            for (int cid : challengeOutgoing[claimId]) {
-                debate::Claim c = getClaimById(cid);
+            for (const auto& rel : challengeOutgoing[claimId]) {
+                debate::Claim c = getClaimById(rel.link().connect_to());
                 for (const auto& e : c.user_statuses()) users.insert(e.first);
             }
 

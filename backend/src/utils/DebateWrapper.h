@@ -86,7 +86,7 @@ private:
         const int& claimId,
         const std::string& user,
         const debate::ClaimStatus& currentStatus,
-        const std::map<int, std::vector<int>>& childrenMap,
-        const std::map<int, std::vector<int>>& challengeIncoming,
+        const std::map<int, std::vector<debate::Relationship>>& childrenMap,
+        const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
         const std::set<int>& conceded_claims);
 };
