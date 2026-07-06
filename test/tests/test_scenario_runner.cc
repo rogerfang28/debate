@@ -145,7 +145,35 @@ protected:
     // SECTION 3: EVENT FORGING
     // -----------------------------------------------------------------------
 
-    debate_event::DebateEvent forgeEvent(const TestAction& action) {
+    // Scenario files never recorded which specific CHALLENGE link a concede
+    // targets (autoincrement link ids aren't known when authoring a .pbtxt).
+    // Production ChallengeHandler::ConcedeChallenge now requires an explicit,
+    // valid challenge_link_id and errors otherwise — so the harness resolves
+    // it here instead, standing in for what a real frontend's UI state would
+    // supply: the CHALLENGE link whose target claim was created by the
+    // conceding user (highest link id wins if more than one matches).
+    int resolveChallengeLinkIdForUser(int debate_id, int conceding_user_id) {
+        int bestFromClaimId = -1;
+        int bestLinkId = -1;
+        auto allLinks = debateWrapper_->getLinksForDebate(debate_id);
+        for (const auto& linkTuple : allLinks) {
+            int linkId = std::get<0>(linkTuple);
+            int fromClaimId = std::get<1>(linkTuple);
+            int toClaimId = std::get<2>(linkTuple);
+            int linkType = std::get<5>(linkTuple);
+            if (linkType != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
+            debate::Claim targetClaim = debateWrapper_->getClaimById(toClaimId);
+            if (targetClaim.id() != 0 && targetClaim.creator_id() == conceding_user_id) {
+                if (fromClaimId > bestFromClaimId) {
+                    bestFromClaimId = fromClaimId;
+                    bestLinkId = linkId;
+                }
+            }
+        }
+        return bestLinkId;
+    }
+
+    debate_event::DebateEvent forgeEvent(const TestAction& action, int debate_id) {
         int user_id = getUserId(action.username());
         debate_event::EventType type = parseEventType(action.event_type());
 
@@ -180,6 +208,8 @@ protected:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 break;
             case debate_event::CONCEDE_CHALLENGE:
+                event.mutable_concede_challenge()->set_challenge_link_id(
+                    resolveChallengeLinkIdForUser(debate_id, user_id));
                 break;
             default:
                 break;
@@ -408,7 +438,7 @@ protected:
                     getUserId(action.username());
                 } else {
                     int user_id = getUserId(action.username());
-                    debate_event::DebateEvent event = forgeEvent(action);
+                    debate_event::DebateEvent event = forgeEvent(action, debate_id);
                     auto resp = moderator_->handleRequest(event);
                     last_responses[action.username()] = resp;
 
