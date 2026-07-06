@@ -1,7 +1,7 @@
 #include "HomePageResponseGenerator.h"
 #include "../../../utils/pathUtils.h"
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "debate.pb.h"
+#include "user_engagement.pb.h"
 #include <iostream>
 #include <vector>
 #include <map>

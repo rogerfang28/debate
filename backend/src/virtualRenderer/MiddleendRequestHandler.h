@@ -3,8 +3,8 @@
 #include <string>
 #include <map>
 #include "httplib.h"
-#include "../../../src/gen/cpp/layout.pb.h"
-#include "../../../src/gen/cpp/client_message.pb.h"
+#include "layout.pb.h"
+#include "client_message.pb.h"
 #include "./virtualRenderer.h"
 
 class MiddleendRequestHandler {

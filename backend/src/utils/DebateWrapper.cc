@@ -3,8 +3,8 @@
 #include <map>
 #include <algorithm>
 #include "Log.h"
-#include "../../../src/gen/cpp/debate.pb.h"
-#include "../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 
 DebateWrapper::DebateWrapper(DatabaseWrapper& dbWrapper)
     : databaseWrapper(dbWrapper) {}

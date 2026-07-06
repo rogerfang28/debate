@@ -1,8 +1,8 @@
 #include "ConnectClaimsHandler.h"
 #include "../../../utils/Log.h"
-#include "../../../../../src/gen/cpp/user_engagement.pb.h"
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "user_engagement.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 
 void ConnectClaimsHandler::ConnectClaims(
     const int& user_id,

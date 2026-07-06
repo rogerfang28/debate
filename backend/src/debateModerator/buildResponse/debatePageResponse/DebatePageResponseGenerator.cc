@@ -1,6 +1,6 @@
 #include "DebatePageResponseGenerator.h"
 #include "../../../utils/pathUtils.h"
-#include "../../../../../src/gen/cpp/debate.pb.h"
+#include "debate.pb.h"
 #include "../../../utils/Log.h"
 #include <iostream>
 #include <vector>

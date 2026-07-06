@@ -5,7 +5,7 @@
 
 // #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../virtualRenderer/MiddleendRequestHandler.h"
-#include "../../../src/gen/cpp/client_message.pb.h"
+#include "client_message.pb.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>
@@ -44,7 +44,7 @@ int main() {
   // ---------- Start server ----------
   const char* HOST = std::getenv("DEBATE_SERVER_HOST");
   if (HOST == nullptr || HOST[0] == '\0') {
-    HOST = "127.0.0.1";
+    HOST = "0.0.0.0";
   }
 
   const char* portEnv = std::getenv("DEBATE_SERVER_PORT");

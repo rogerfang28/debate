@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../../src/gen/cpp/layout.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "layout.pb.h"
+#include "user.pb.h"
 
 class HistoryPageGenerator {
 public:

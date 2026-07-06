@@ -1,7 +1,7 @@
 #include "AddClaimHandler.h"
 #include <iostream>
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 

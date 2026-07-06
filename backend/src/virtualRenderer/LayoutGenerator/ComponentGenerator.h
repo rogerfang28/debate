@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "../../../../src/gen/cpp/layout.pb.h"
+#include "layout.pb.h"
 
 class ComponentGenerator {
 public:
