@@ -25,7 +25,8 @@ public:
     bool updateUserProtobuf(int user_id, const std::vector<uint8_t>& protobufData);
     bool updateUsername(int user_id, const std::string& newUsername);
     bool updateUserPassword(int user_id, const std::string& newPasswordHash);
-    bool deleteUser(int user_id);
+     bool updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email);
+     bool deleteUser(int user_id);
     bool userExists(int user_id);
     std::string getUsername(int id);
     int getUserId(const std::string& username);

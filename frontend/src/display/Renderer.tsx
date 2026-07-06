@@ -4,14 +4,16 @@ import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCP
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
-interface PageData {
-  [key: string]: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
+    googleLoginCallback?: (credential: string) => void;
   }
+}
+
+interface PageData {
+  [key: string]: any;
 }
 
 const Renderer: React.FC = () => {
@@ -196,7 +198,10 @@ const Renderer: React.FC = () => {
       )}
 
       {/* Data loaded — render page */}
-      {data && <PageRenderer page={data} />}
+       {data && <PageRenderer page={data} />}
+
+       {/* Google Sign-In SDK — inject when on login page */}
+       <GoogleSdkInjector />
 
       {/* Waiting for data — no error, no loading, no data */}
       {!loading && !error && !data && (
@@ -206,6 +211,75 @@ const Renderer: React.FC = () => {
       )}
     </div>
   );
+};
+
+// eslint-disable-next-line react/forward-ref-ref
+const GoogleSdkInjector: React.FC = () => {
+  const dataRef = useRef<PageData | null>(null);
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
+  useEffect(() => {
+    if (initializedRef.current) return;
+
+    // Check if the current page has the Google login button
+    const pageData = dataRef.current;
+    if (!pageData || !pageData.components) return;
+
+    const hasGoogleButton = pageData.components.some(
+      (comp: PageData) => comp.id === "googleLoginButton"
+    );
+    if (!hasGoogleButton) return;
+
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || import.meta.env.GOOGLE_CLIENT_ID || "";
+    if (!clientId) return;
+
+    initializedRef.current = true;
+
+    // Set data attribute for Google JS SDK to read
+    document.documentElement.setAttribute("data-google-client-id", clientId);
+
+    // Load Google Identity Services
+    if (!window.google) {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.google) {
+          window.google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response: { credential: string }) => {
+              window.googleLoginCallback?.(response.credential);
+            },
+            error_callback: () => {
+              console.error("[GoogleAuth] Google sign-in error");
+            },
+          });
+        }
+      };
+      script.onerror = () => {
+        console.error("[GoogleAuth] Failed to load Google JS SDK");
+      };
+      document.head.appendChild(script);
+    } else {
+      // Already loaded, just initialize
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: (response: { credential: string }) => {
+          window.googleLoginCallback?.(response.credential);
+        },
+        error_callback: () => {
+          console.error("[GoogleAuth] Google sign-in error");
+        },
+      });
+    }
+  }, []);
+
+  return null;
 };
 
 export default Renderer;

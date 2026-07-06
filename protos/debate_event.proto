@@ -69,6 +69,9 @@ message JoinDebate {
 message Login {
     string username = 1;
     string password = 2;
+    oneof auth_method {
+        string google_id_token = 3;
+    }
 }
 
 message AddClaimToBeChallenged {
