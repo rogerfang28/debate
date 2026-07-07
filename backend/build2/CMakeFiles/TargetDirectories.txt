@@ -1,3 +1,0 @@
-C:/Users/yunch/AppData/Local/hermes/company/agents/engineer-3/workspace/debate/backend/build2/CMakeFiles/debate_server.dir
-C:/Users/yunch/AppData/Local/hermes/company/agents/engineer-3/workspace/debate/backend/build2/CMakeFiles/edit_cache.dir
-C:/Users/yunch/AppData/Local/hermes/company/agents/engineer-3/workspace/debate/backend/build2/CMakeFiles/rebuild_cache.dir
