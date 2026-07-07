@@ -10,6 +10,7 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     debate_event::DebateEvent event;
     const bool isSubmitClick = (componentId == "submitButton" && eventType == "onClick");
     const bool isDemoClick = (componentId == "demoButton" && eventType == "onClick");
+    const bool isGuestClick = (componentId == "guestButton" && eventType == "onClick");
     const bool isGoogleClick = (componentId == "googleLoginButton" && eventType == "onGoogleLogin");
 
     if (isGoogleClick) {
@@ -31,6 +32,11 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
             Log::error("  Google login without token — falling back to unspecified event.");
             event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
         }
+    }
+    else if (isGuestClick) {
+        Log::debug("  GUEST LOGIN event triggered.");
+        event.set_type(debate_event::LOGIN);
+        event.mutable_login()->set_username("guest");
     }
     else if (isSubmitClick || isDemoClick) {
         Log::debug("  LOGIN event triggered.");
@@ -54,7 +60,7 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
             loginEvent->set_username(username);
             Log::debug("  Username: " + username);
         }
-    } 
+    }
     else {
         Log::warn("  Unhandled LoginPage event for component: " + componentId + " with event type: " + eventType);
         event.set_type(debate_event::EVENT_KIND_UNSPECIFIED);
