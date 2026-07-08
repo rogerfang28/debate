@@ -37,9 +37,6 @@ private:
     // Parse JSON boolean.
     static bool json_get_bool(const std::string& json, const std::string& key, bool default_val = false);
 
-    // Convert base64url-encoded integer to BIGNUM.
-    static void* b64url_to_bignum(const std::string& b64url);
-
     // OpenSSL RSA verification using base64url-encoded n and e.
     static bool rsa_verify(const std::string& signing_input,
                            const std::string& signature_b64url,

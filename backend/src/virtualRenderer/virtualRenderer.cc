@@ -107,7 +107,8 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     info = moderator.handleRequest(evt);
 
     // After a successful login, transition user to HOME page
-    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() && !evt.login().google_id_token().empty()) {
+    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() &&
+        !evt.login().google_id_token().empty() && evt.user().is_logged_in()) {
         info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
         Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
     }
@@ -135,6 +136,7 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
         std::string finalUsername;
         int moderatorUserId;
         int userId;
+        bool authSucceeded = true;
 
         // Check if Google sign-in token is present
         if (evt.login().has_google_id_token() && !evt.login().google_id_token().empty()) {
@@ -165,13 +167,10 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
                 Log::info("[VirtualRenderer] Google auth success: " + username + " google_sub=" + userInfo.sub);
             } catch (const std::exception& e) {
                 Log::error("[VirtualRenderer] Google auth failed: " + std::string(e.what()));
-                // Fall through to cookie-based auth as fallback
-                finalUsername = evt.login().username();
-                moderatorUserId = moderator.createUserIfNotExist(finalUsername);
-                userId = userDb.getUserId(finalUsername);
-                if (userId == -1) {
-                    userId = createUserIfNotExist(finalUsername);
-                }
+                // No username field is set on a Google login event, so there is no
+                // valid fallback identity here. Leave any existing cookie-based
+                // session untouched instead of overwriting it with an empty user.
+                authSucceeded = false;
             }
         } else {
             // Legacy username-only flow
@@ -184,14 +183,15 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
             }
         }
 
-        // Set cookies
-        parseCookie::setCookieUserId(req, res, moderatorUserId);
-        parseCookie::setCookieUsername(req, res, finalUsername);
+        if (authSucceeded) {
+            // Set cookies
+            parseCookie::setCookieUserId(req, res, moderatorUserId);
+            parseCookie::setCookieUsername(req, res, finalUsername);
 
-        // Apply authenticated identity for this same request
-        resolvedUserId = moderatorUserId;
-        resolvedUsername = finalUsername;
-
+            // Apply authenticated identity for this same request
+            resolvedUserId = moderatorUserId;
+            resolvedUsername = finalUsername;
+        }
     }
 
     // add login info to the event

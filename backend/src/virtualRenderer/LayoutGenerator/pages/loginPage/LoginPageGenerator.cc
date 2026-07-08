@@ -106,6 +106,20 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
           );
           ComponentGenerator::addChild(&main, submitButton);
 
+          // Guest Mode button — signs in as username "guest"
+          ui::Component guestButton = ComponentGenerator::createButton(
+              "guestButton",
+              "Continue as Guest",
+              "guest",
+              "bg-gray-600",
+              "hover:bg-gray-500",
+              "text-white",
+              "px-6 py-3",
+              "rounded-lg",
+              "transition"
+          );
+          ComponentGenerator::addChild(&main, guestButton);
+
           // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set)
             if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
                 Log::info("[LoginPageGenerator] GOOGLE_CLIENT_ID is set, including googleLoginButton");
