@@ -32,6 +32,12 @@ inline constexpr User::Impl_::Impl_(
         username_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        google_sub_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        email_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         engagement_{nullptr},
         current_scope_{nullptr},
         collection_spec_{nullptr},
@@ -66,17 +72,21 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_._has_bits_),
-        8, // hasbit index offset
+        10, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.engagement_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.current_scope_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.collection_spec_),
-        4,
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.google_sub_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.email_),
+        6,
         0,
+        3,
+        4,
+        5,
         1,
         2,
-        3,
 };
 
 static const ::_pbi::MigrationSchema
@@ -89,12 +99,15 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\032\013scope.proto\032\020collection.proto\"\276\001\n\004Use"
-    "r\022\017\n\007user_id\030\001 \001(\005\022\020\n\010username\030\002 \001(\t\0223\n\n"
-    "engagement\030\003 \001(\0132\037.user_engagement.UserE"
-    "ngagement\022$\n\rcurrent_scope\030\004 \001(\0132\r.debat"
-    "e.Scope\0228\n\017collection_spec\030\005 \001(\0132\037.debat"
-    "e.CollectionSpecificationb\006proto3"
+    "o\032\013scope.proto\032\020collection.proto\"\257\002\n\004Use"
+    "r\022\027\n\007user_id\030\001 \001(\005R\006userId\022\032\n\010username\030\002"
+    " \001(\tR\010username\022\?\n\nengagement\030\003 \001(\0132\037.use"
+    "r_engagement.UserEngagementR\nengagement\022"
+    "2\n\rcurrent_scope\030\004 \001(\0132\r.debate.ScopeR\014c"
+    "urrentScope\022H\n\017collection_spec\030\005 \001(\0132\037.d"
+    "ebate.CollectionSpecificationR\016collectio"
+    "nSpec\022\035\n\ngoogle_sub\030\006 \001(\tR\tgoogleSub\022\024\n\005"
+    "email\030\007 \001(\tR\005emailb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_user_2eproto_deps[3] = {
@@ -106,7 +119,7 @@ static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    273,
+    386,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -134,19 +147,19 @@ void User::clear_engagement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.engagement_ != nullptr) _impl_.engagement_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000008U);
 }
 void User::clear_current_scope() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.current_scope_ != nullptr) _impl_.current_scope_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000010U);
 }
 void User::clear_collection_spec() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.collection_spec_ != nullptr) _impl_.collection_spec_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000020U);
 }
 User::User(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -163,7 +176,9 @@ PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     [[maybe_unused]] const ::user::User& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        username_(arena, from.username_) {}
+        username_(arena, from.username_),
+        google_sub_(arena, from.google_sub_),
+        email_(arena, from.email_) {}
 
 User::User(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -179,13 +194,13 @@ User::User(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.engagement_ = (CheckHasBit(cached_has_bits, 0x00000002U))
+  _impl_.engagement_ = (CheckHasBit(cached_has_bits, 0x00000008U))
                 ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.engagement_)
                 : nullptr;
-  _impl_.current_scope_ = (CheckHasBit(cached_has_bits, 0x00000004U))
+  _impl_.current_scope_ = (CheckHasBit(cached_has_bits, 0x00000010U))
                 ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.current_scope_)
                 : nullptr;
-  _impl_.collection_spec_ = (CheckHasBit(cached_has_bits, 0x00000008U))
+  _impl_.collection_spec_ = (CheckHasBit(cached_has_bits, 0x00000020U))
                 ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.collection_spec_)
                 : nullptr;
   _impl_.user_id_ = from._impl_.user_id_;
@@ -196,7 +211,9 @@ PROTOBUF_NDEBUG_INLINE User::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
-        username_(arena) {}
+        username_(arena),
+        google_sub_(arena),
+        email_(arena) {}
 
 inline void User::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -219,6 +236,8 @@ inline void User::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.username_.Destroy();
+  this_._impl_.google_sub_.Destroy();
+  this_._impl_.email_.Destroy();
   delete this_._impl_.engagement_;
   delete this_._impl_.current_scope_;
   delete this_._impl_.collection_spec_;
@@ -268,16 +287,16 @@ User::GetClassData() const {
   return User_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 3, 26, 2>
+const ::_pbi::TcParseTable<3, 7, 3, 41, 2>
 User::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    7,  // num_field_entries
     3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     User_class_data_.base(),
@@ -288,41 +307,51 @@ User::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // int32 user_id = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.user_id_), 4>(),
-     {8, 4, 0,
+    // int32 user_id = 1 [json_name = "userId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(User, _impl_.user_id_), 6>(),
+     {8, 6, 0,
       PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)}},
-    // string username = 2;
+    // string username = 2 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(User, _impl_.username_)}},
-    // .user_engagement.UserEngagement engagement = 3;
+    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
     {::_pbi::TcParser::FastMtS1,
-     {26, 1, 0,
+     {26, 3, 0,
       PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)}},
-    // .debate.Scope current_scope = 4;
+    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
     {::_pbi::TcParser::FastMtS1,
-     {34, 2, 1,
+     {34, 4, 1,
       PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_)}},
-    // .debate.CollectionSpecification collection_spec = 5;
+    // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
     {::_pbi::TcParser::FastMtS1,
-     {42, 3, 2,
+     {42, 5, 2,
       PROTOBUF_FIELD_OFFSET(User, _impl_.collection_spec_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // string google_sub = 6 [json_name = "googleSub"];
+    {::_pbi::TcParser::FastUS1,
+     {50, 1, 0,
+      PROTOBUF_FIELD_OFFSET(User, _impl_.google_sub_)}},
+    // string email = 7 [json_name = "email"];
+    {::_pbi::TcParser::FastUS1,
+     {58, 2, 0,
+      PROTOBUF_FIELD_OFFSET(User, _impl_.email_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 user_id = 1;
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string username = 2;
+    // int32 user_id = 1 [json_name = "userId"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string username = 2 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.username_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .user_engagement.UserEngagement engagement = 3;
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.Scope current_scope = 4;
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_), _Internal::kHasBitsOffset + 2, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.CollectionSpecification collection_spec = 5;
-    {PROTOBUF_FIELD_OFFSET(User, _impl_.collection_spec_), _Internal::kHasBitsOffset + 3, 2, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.current_scope_), _Internal::kHasBitsOffset + 4, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.collection_spec_), _Internal::kHasBitsOffset + 5, 2, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // string google_sub = 6 [json_name = "googleSub"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.google_sub_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string email = 7 [json_name = "email"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.email_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
@@ -330,9 +359,11 @@ User::_table_ = {
       {::_pbi::TcParser::GetTable<::debate::CollectionSpecification>()},
   }},
   {{
-    "\11\0\10\0\0\0\0\0"
+    "\11\0\10\0\0\0\12\5"
     "user.User"
     "username"
+    "google_sub"
+    "email"
   }},
 };
 PROTOBUF_NOINLINE void User::Clear() {
@@ -343,19 +374,25 @@ PROTOBUF_NOINLINE void User::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       _impl_.username_.ClearNonDefaultToEmpty();
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.google_sub_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      _impl_.email_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       ABSL_DCHECK(_impl_.engagement_ != nullptr);
       _impl_.engagement_->Clear();
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       ABSL_DCHECK(_impl_.current_scope_ != nullptr);
       _impl_.current_scope_->Clear();
     }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       ABSL_DCHECK(_impl_.collection_spec_ != nullptr);
       _impl_.collection_spec_->Clear();
     }
@@ -384,8 +421,8 @@ PROTOBUF_NOINLINE void User::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 user_id = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+  // int32 user_id = 1 [json_name = "userId"];
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
     if (this_._internal_user_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
@@ -393,7 +430,7 @@ PROTOBUF_NOINLINE void User::Clear() {
     }
   }
 
-  // string username = 2;
+  // string username = 2 [json_name = "username"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_username().empty()) {
       const ::std::string& _s = this_._internal_username();
@@ -403,25 +440,45 @@ PROTOBUF_NOINLINE void User::Clear() {
     }
   }
 
-  // .user_engagement.UserEngagement engagement = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         3, *this_._impl_.engagement_, this_._impl_.engagement_->GetCachedSize(), target,
         stream);
   }
 
-  // .debate.Scope current_scope = 4;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         4, *this_._impl_.current_scope_, this_._impl_.current_scope_->GetCachedSize(), target,
         stream);
   }
 
-  // .debate.CollectionSpecification collection_spec = 5;
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+  // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         5, *this_._impl_.collection_spec_, this_._impl_.collection_spec_->GetCachedSize(), target,
         stream);
+  }
+
+  // string google_sub = 6 [json_name = "googleSub"];
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_google_sub().empty()) {
+      const ::std::string& _s = this_._internal_google_sub();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.google_sub");
+      target = stream->WriteStringMaybeAliased(6, _s, target);
+    }
+  }
+
+  // string email = 7 [json_name = "email"];
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (!this_._internal_email().empty()) {
+      const ::std::string& _s = this_._internal_email();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "user.User.email");
+      target = stream->WriteStringMaybeAliased(7, _s, target);
+    }
   }
 
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -449,31 +506,45 @@ PROTOBUF_NOINLINE void User::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    // string username = 2;
+  if (BatchCheckHasBit(cached_has_bits, 0x0000007fU)) {
+    // string username = 2 [json_name = "username"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_username().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_username());
       }
     }
-    // .user_engagement.UserEngagement engagement = 3;
+    // string google_sub = 6 [json_name = "googleSub"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_google_sub().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_google_sub());
+      }
+    }
+    // string email = 7 [json_name = "email"];
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!this_._internal_email().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_email());
+      }
+    }
+    // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.engagement_);
     }
-    // .debate.Scope current_scope = 4;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    // .debate.Scope current_scope = 4 [json_name = "currentScope"];
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.current_scope_);
     }
-    // .debate.CollectionSpecification collection_spec = 5;
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.collection_spec_);
     }
-    // int32 user_id = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    // int32 user_id = 1 [json_name = "userId"];
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (this_._internal_user_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_user_id());
@@ -499,7 +570,7 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000007fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_username().empty()) {
         _this->_internal_set_username(from._internal_username());
@@ -510,6 +581,24 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_google_sub().empty()) {
+        _this->_internal_set_google_sub(from._internal_google_sub());
+      } else {
+        if (_this->_impl_.google_sub_.IsDefault()) {
+          _this->_internal_set_google_sub("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!from._internal_email().empty()) {
+        _this->_internal_set_email(from._internal_email());
+      } else {
+        if (_this->_impl_.email_.IsDefault()) {
+          _this->_internal_set_email("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       ABSL_DCHECK(from._impl_.engagement_ != nullptr);
       if (_this->_impl_.engagement_ == nullptr) {
         _this->_impl_.engagement_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.engagement_);
@@ -517,7 +606,7 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.engagement_->MergeFrom(*from._impl_.engagement_);
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       ABSL_DCHECK(from._impl_.current_scope_ != nullptr);
       if (_this->_impl_.current_scope_ == nullptr) {
         _this->_impl_.current_scope_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.current_scope_);
@@ -525,7 +614,7 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.current_scope_->MergeFrom(*from._impl_.current_scope_);
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       ABSL_DCHECK(from._impl_.collection_spec_ != nullptr);
       if (_this->_impl_.collection_spec_ == nullptr) {
         _this->_impl_.collection_spec_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.collection_spec_);
@@ -533,7 +622,7 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.collection_spec_->MergeFrom(*from._impl_.collection_spec_);
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (from._internal_user_id() != 0) {
         _this->_impl_.user_id_ = from._impl_.user_id_;
       }
@@ -559,6 +648,8 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, &other->_impl_.username_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.google_sub_, &other->_impl_.google_sub_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.email_, &other->_impl_.email_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(User, _impl_.user_id_)
       + sizeof(User::_impl_.user_id_)

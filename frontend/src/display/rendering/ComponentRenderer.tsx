@@ -17,6 +17,7 @@ import ChatComponent from "./componentTypes/ChatComponent.tsx";
 import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
 import ClaimParserComponent from "./componentTypes/ClaimParserComponent.tsx";
+import GoogleLoginComponent from "./componentTypes/GoogleLoginComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -48,11 +49,24 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CLAIM_PARSER]: ClaimParserComponent,
 };
 
+const GoogleLoginButtonId = "googleLoginButton";
+
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (!component) return null;
 
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
+
+  // Special case: Google login button — rendered by dedicated component
+  if (component.id === GoogleLoginButtonId) {
+    return (
+      <GoogleLoginComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
 
   const Component = componentMap[component.type];
 

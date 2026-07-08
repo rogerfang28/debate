@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Claim, Link } from "./debate_pb";
+import type { Claim, Relationship } from "./debate_pb";
 import { file_debate } from "./debate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file collection.proto.
  */
 export const file_collection: GenFile = /*@__PURE__*/
-  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUigAIKCkNvbGxlY3Rpb24SOAoMY2xhaW1zX2J5X2lkGAEgAygLMiIuZGViYXRlLkNvbGxlY3Rpb24uQ2xhaW1zQnlJZEVudHJ5EjYKC2xpbmtzX2J5X2lkGAIgAygLMiEuZGViYXRlLkNvbGxlY3Rpb24uTGlua3NCeUlkRW50cnkaQAoPQ2xhaW1zQnlJZEVudHJ5EgsKA2tleRgBIAEoBRIcCgV2YWx1ZRgCIAEoCzINLmRlYmF0ZS5DbGFpbToCOAEaPgoOTGlua3NCeUlkRW50cnkSCwoDa2V5GAEgASgFEhsKBXZhbHVlGAIgASgLMgwuZGViYXRlLkxpbms6AjgBIj8KF0NvbGxlY3Rpb25TcGVjaWZpY2F0aW9uEhEKCWRlYmF0ZV9pZBgBIAEoBRIRCgljbGFpbV9pZHMYAiADKAViBnByb3RvMw", [file_debate]);
+  fileDesc("ChBjb2xsZWN0aW9uLnByb3RvEgZkZWJhdGUiiAIKCkNvbGxlY3Rpb24SOAoMY2xhaW1zX2J5X2lkGAEgAygLMiIuZGViYXRlLkNvbGxlY3Rpb24uQ2xhaW1zQnlJZEVudHJ5EjYKC2xpbmtzX2J5X2lkGAIgAygLMiEuZGViYXRlLkNvbGxlY3Rpb24uTGlua3NCeUlkRW50cnkaQAoPQ2xhaW1zQnlJZEVudHJ5EgsKA2tleRgBIAEoBRIcCgV2YWx1ZRgCIAEoCzINLmRlYmF0ZS5DbGFpbToCOAEaRgoOTGlua3NCeUlkRW50cnkSCwoDa2V5GAEgASgFEiMKBXZhbHVlGAIgASgLMhQuZGViYXRlLlJlbGF0aW9uc2hpcDoCOAEiPwoXQ29sbGVjdGlvblNwZWNpZmljYXRpb24SEQoJZGViYXRlX2lkGAEgASgFEhEKCWNsYWltX2lkcxgCIAMoBWIGcHJvdG8z", [file_debate]);
 
 /**
  * @generated from message debate.Collection
@@ -24,9 +24,9 @@ export type Collection = Message<"debate.Collection"> & {
   claimsById: { [key: number]: Claim };
 
   /**
-   * @generated from field: map<int32, debate.Link> links_by_id = 2;
+   * @generated from field: map<int32, debate.Relationship> links_by_id = 2;
    */
-  linksById: { [key: number]: Link };
+  linksById: { [key: number]: Relationship };
 };
 
 /**

@@ -189,5 +189,33 @@ add_custom_target(copy_scenarios ALL
 add_dependencies(debate_simulation copy_scenarios)
 
 # ============================================================
+# UNIT TESTS — debate_tests (DebateEventTest + PropagationTest + EnterDebateMembersTest)
+# ============================================================
+set(UNIT_TEST_SOURCES
+    ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_enter_debate_members.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
+)
+
+add_executable(debate_tests
+    ${UNIT_TEST_SOURCES}
+    ${DB_SOURCES}
+    ${PB_SRC}
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+)
+target_link_libraries(debate_tests ${COMMON_LIBS})
+
+# ============================================================
 # CTest integration
 # ============================================================
+enable_testing()
+
+add_test(NAME UnitTests COMMAND debate_tests)
+add_test(NAME Scenario COMMAND debate_simulation)
