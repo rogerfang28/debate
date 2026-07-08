@@ -18,6 +18,7 @@ import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
 import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
 import TreeComponent from "./componentTypes/TreeComponent.tsx";
+import TreeRootComponent from "./componentTypes/TreeRootComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -57,6 +58,15 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
 
   // Check if this is a tree node (CONTAINER with data-tree-node attribute)
   const attributes = component.attributes || {};
+  if (component.type === ComponentType.CONTAINER && attributes["data-tree-root"] === "true") {
+    return (
+      <TreeRootComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
   if (component.type === ComponentType.CONTAINER && attributes["data-tree-node"] === "true") {
     return (
       <TreeComponent

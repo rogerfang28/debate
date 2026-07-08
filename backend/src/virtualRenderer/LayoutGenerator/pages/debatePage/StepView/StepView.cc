@@ -336,6 +336,7 @@ ui::Page StepView::GenerateStepViewPage(
 			rootClaimId, fullDebateInfo, collectionProto,
 			"debateTree", visited
 		);
+		ComponentGenerator::addAttribute(&treeRoot, "data-tree-root", "true");
 		ComponentGenerator::addChild(&treeWrapper, treeRoot);
 		ComponentGenerator::addChild(&container, treeWrapper);
 	}
