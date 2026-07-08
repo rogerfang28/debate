@@ -4,14 +4,16 @@ import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCP
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
-interface PageData {
-  [key: string]: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
+    googleLoginCallback?: (credential: string) => void;
   }
+}
+
+interface PageData {
+  [key: string]: any;
 }
 
 const Renderer: React.FC = () => {
@@ -50,8 +52,8 @@ const Renderer: React.FC = () => {
     };
   }, [reloadPage]);
 
+  // Fetch page on mount only — subsequent refreshes are event-driven via reloadPage()
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | undefined;
     let mounted = true;
 
     async function fetchData(): Promise<void> {
@@ -63,13 +65,10 @@ const Renderer: React.FC = () => {
         if (info) {
           setData(info);
           setError(null);
-          if (intervalId) clearInterval(intervalId);
         }
-        // If server returns null, keep existing data — don't wipe it
       } catch (err: unknown) {
         if (!mounted) return;
-        console.warn("Renderer: Failed to load data, retrying...", err);
-        // Don't set error if we already have data
+        console.warn("Renderer: Failed to load data", err);
         if (!dataRef.current) {
           setError("Connecting to server...");
         }
@@ -79,11 +78,9 @@ const Renderer: React.FC = () => {
     }
 
     fetchData();
-    intervalId = setInterval(fetchData, 3000);
 
     return () => {
       mounted = false;
-      if (intervalId) clearInterval(intervalId);
     };
   }, []);
 
@@ -120,7 +117,7 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen fade-in" style={{ background: 'var(--surface-bg)', color: 'var(--text-primary)' }}>
-      {/* Load from file — visible only on the waiting screen */}
+      {/* Load from file — always visible, fixed bottom-right */}
       <input
         ref={fileInputRef}
         type="file"
@@ -129,23 +126,21 @@ const Renderer: React.FC = () => {
         onChange={handleFileChange}
       />
 
-      {!loading && !error && !data && (
-        <button
-          onClick={handleLoadFromFile}
-          className="fixed top-4 left-4 z-50 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg shadow-lg transition-opacity hover:opacity-80"
-          style={{
-            background: 'var(--surface-elevated)',
-            border: '1px solid var(--border-default)',
-            color: 'var(--text-secondary)',
-          }}
-          title="Load layout from JSON file"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-          </svg>
-          Load File
-        </button>
-      )}
+      <button
+        onClick={handleLoadFromFile}
+        className="fixed bottom-4 right-4 z-50 flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg shadow-lg transition-opacity hover:opacity-80"
+        style={{
+          background: 'var(--surface-elevated)',
+          border: '1px solid var(--border-default)',
+          color: 'var(--text-secondary)',
+        }}
+        title="Load layout from JSON file"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+        </svg>
+        Load File
+      </button>
 
       {loading && (
         <div

@@ -31,7 +31,7 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     std::vector<int> link_ids = debateWrapper.findLinksUnder(currentClaimId);
     for (int link_id : link_ids) {
         Log::debug("[DebatePageResponseGenerator] Processing link ID: " + std::to_string(link_id));
-        debate::Link link = debateWrapper.getLinkById(link_id);
+        debate::Relationship::Link link = debateWrapper.getLinkById(link_id).link();
         user_engagement::LinkInfo* linkInfo = debatingInfo.add_links();
         linkInfo->set_id(link_id);
         linkInfo->set_connect_from(link.connect_from());

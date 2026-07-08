@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK/AgoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBRI2Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5GkgKEVVzZXJTdGF0dXNlc0VudHJ5EgsKA2tleRgBIAEoCRIiCgV2YWx1ZRgCIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1czoCOAEiWQoKQ2xhaW1TdGF0ZRItCgl0aW1lc3RhbXAYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhwKBWNsYWltGAEgASgLMg0uZGViYXRlLkNsYWltIpwBCgRMaW5rEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBRIjCglsaW5rX3R5cGUYBiABKA4yEC5kZWJhdGUuTGlua1R5cGUSEQoJZGViYXRlX2lkGAcgASgFIsABCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEhQKDGlzX2NoYWxsZW5nZRgHIAEoCBIbChNwYXJlbnRfY2hhbGxlbmdlX2lkGAggASgFKkAKC0NsYWltU3RhdHVzEhAKDFVOREVURVJNSU5FRBAAEg4KClRSVUVfQ0xBSU0QARIPCgtGQUxTRV9DTEFJTRACKjcKCExpbmtUeXBlEgoKBk5PUk1BTBAAEhAKDFBBUkVOVF9DSElMRBABEg0KCUNIQUxMRU5HRRACYgZwcm90bzM", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK/AgoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBRI2Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5GkgKEVVzZXJTdGF0dXNlc0VudHJ5EgsKA2tleRgBIAEoCRIiCgV2YWx1ZRgCIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1czoCOAEiWQoKQ2xhaW1TdGF0ZRItCgl0aW1lc3RhbXAYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhwKBWNsYWltGAEgASgLMg0uZGViYXRlLkNsYWltItYBCgxSZWxhdGlvbnNoaXASJwoEbGluaxgBIAEoCzIZLmRlYmF0ZS5SZWxhdGlvbnNoaXAuTGluaxqcAQoETGluaxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUSIwoJbGlua190eXBlGAYgASgOMhAuZGViYXRlLkxpbmtUeXBlEhEKCWRlYmF0ZV9pZBgHIAEoBSLAAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIUCgxpc19jaGFsbGVuZ2UYByABKAgSGwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBSpACgtDbGFpbVN0YXR1cxIQCgxVTkRFVEVSTUlORUQQABIOCgpUUlVFX0NMQUlNEAESDwoLRkFMU0VfQ0xBSU0QAio3CghMaW5rVHlwZRIKCgZOT1JNQUwQABIQCgxQQVJFTlRfQ0hJTEQQARINCglDSEFMTEVOR0UQAmIGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
  * A single claim node in the debate graph
@@ -98,9 +98,28 @@ export const ClaimStateSchema: GenMessage<ClaimState> = /*@__PURE__*/
   messageDesc(file_debate, 1);
 
 /**
- * @generated from message debate.Link
+ * Wraps a Link to allow future extension without breaking the link schema.
+ *
+ * @generated from message debate.Relationship
  */
-export type Link = Message<"debate.Link"> & {
+export type Relationship = Message<"debate.Relationship"> & {
+  /**
+   * @generated from field: debate.Relationship.Link link = 1;
+   */
+  link?: Relationship_Link;
+};
+
+/**
+ * Describes the message debate.Relationship.
+ * Use `create(RelationshipSchema)` to create a new message.
+ */
+export const RelationshipSchema: GenMessage<Relationship> = /*@__PURE__*/
+  messageDesc(file_debate, 2);
+
+/**
+ * @generated from message debate.Relationship.Link
+ */
+export type Relationship_Link = Message<"debate.Relationship.Link"> & {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -140,11 +159,11 @@ export type Link = Message<"debate.Link"> & {
 };
 
 /**
- * Describes the message debate.Link.
- * Use `create(LinkSchema)` to create a new message.
+ * Describes the message debate.Relationship.Link.
+ * Use `create(Relationship_LinkSchema)` to create a new message.
  */
-export const LinkSchema: GenMessage<Link> = /*@__PURE__*/
-  messageDesc(file_debate, 2);
+export const Relationship_LinkSchema: GenMessage<Relationship_Link> = /*@__PURE__*/
+  messageDesc(file_debate, 2, 0);
 
 /**
  * @generated from message debate.Debate

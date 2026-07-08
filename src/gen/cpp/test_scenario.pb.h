@@ -235,7 +235,7 @@ class TestExpectation final : public ::google::protobuf::Message
     kToClaimIdFieldNumber = 5,
     kExpectedCountFieldNumber = 9,
   };
-  // string check_type = 1;
+  // string check_type = 1 [json_name = "checkType"];
   void clear_check_type() ;
   const ::std::string& check_type() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -250,7 +250,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_check_type();
 
   public:
-  // string username = 2;
+  // string username = 2 [json_name = "username"];
   void clear_username() ;
   const ::std::string& username() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -265,7 +265,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
 
   public:
-  // string link_type = 6;
+  // string link_type = 6 [json_name = "linkType"];
   void clear_link_type() ;
   const ::std::string& link_type() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -280,7 +280,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_link_type();
 
   public:
-  // string expected_claim_sentence = 7;
+  // string expected_claim_sentence = 7 [json_name = "expectedClaimSentence"];
   void clear_expected_claim_sentence() ;
   const ::std::string& expected_claim_sentence() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -295,7 +295,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_expected_claim_sentence();
 
   public:
-  // string expected_status = 8;
+  // string expected_status = 8 [json_name = "expectedStatus"];
   void clear_expected_status() ;
   const ::std::string& expected_status() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -310,7 +310,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_expected_status();
 
   public:
-  // string expected_action = 10;
+  // string expected_action = 10 [json_name = "expectedAction"];
   void clear_expected_action() ;
   const ::std::string& expected_action() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -325,7 +325,7 @@ class TestExpectation final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_expected_action();
 
   public:
-  // int32 claim_id = 3;
+  // int32 claim_id = 3 [json_name = "claimId"];
   void clear_claim_id() ;
   ::int32_t claim_id() const;
   void set_claim_id(::int32_t value);
@@ -335,7 +335,7 @@ class TestExpectation final : public ::google::protobuf::Message
   void _internal_set_claim_id(::int32_t value);
 
   public:
-  // int32 from_claim_id = 4;
+  // int32 from_claim_id = 4 [json_name = "fromClaimId"];
   void clear_from_claim_id() ;
   ::int32_t from_claim_id() const;
   void set_from_claim_id(::int32_t value);
@@ -345,7 +345,7 @@ class TestExpectation final : public ::google::protobuf::Message
   void _internal_set_from_claim_id(::int32_t value);
 
   public:
-  // int32 to_claim_id = 5;
+  // int32 to_claim_id = 5 [json_name = "toClaimId"];
   void clear_to_claim_id() ;
   ::int32_t to_claim_id() const;
   void set_to_claim_id(::int32_t value);
@@ -355,7 +355,7 @@ class TestExpectation final : public ::google::protobuf::Message
   void _internal_set_to_claim_id(::int32_t value);
 
   public:
-  // int32 expected_count = 9;
+  // int32 expected_count = 9 [json_name = "expectedCount"];
   void clear_expected_count() ;
   ::int32_t expected_count() const;
   void set_expected_count(::int32_t value);
@@ -560,7 +560,7 @@ class TestAction final : public ::google::protobuf::Message
     kDebateIdFieldNumber = 4,
     kClaimIdFieldNumber = 5,
   };
-  // string username = 1;
+  // string username = 1 [json_name = "username"];
   void clear_username() ;
   const ::std::string& username() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -575,7 +575,7 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
 
   public:
-  // string event_type = 2;
+  // string event_type = 2 [json_name = "eventType"];
   void clear_event_type() ;
   const ::std::string& event_type() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -590,7 +590,7 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_event_type();
 
   public:
-  // string debate_topic = 3;
+  // string debate_topic = 3 [json_name = "debateTopic"];
   void clear_debate_topic() ;
   const ::std::string& debate_topic() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -605,7 +605,7 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_debate_topic();
 
   public:
-  // string claim_text = 6;
+  // string claim_text = 6 [json_name = "claimText"];
   void clear_claim_text() ;
   const ::std::string& claim_text() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -620,7 +620,7 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_claim_text();
 
   public:
-  // string claim_description = 7;
+  // string claim_description = 7 [json_name = "claimDescription"];
   void clear_claim_description() ;
   const ::std::string& claim_description() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -635,7 +635,7 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_claim_description();
 
   public:
-  // int32 debate_id = 4;
+  // int32 debate_id = 4 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -645,7 +645,7 @@ class TestAction final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // int32 claim_id = 5;
+  // int32 claim_id = 5 [json_name = "claimId"];
   void clear_claim_id() ;
   ::int32_t claim_id() const;
   void set_claim_id(::int32_t value);
@@ -842,7 +842,7 @@ class TestStep final : public ::google::protobuf::Message
     kExpectationsFieldNumber = 2,
     kActionFieldNumber = 1,
   };
-  // repeated .debate_test.TestExpectation expectations = 2;
+  // repeated .debate_test.TestExpectation expectations = 2 [json_name = "expectations"];
   int expectations_size() const;
   private:
   int _internal_expectations_size() const;
@@ -859,7 +859,7 @@ class TestStep final : public ::google::protobuf::Message
   const ::debate_test::TestExpectation& expectations(int index) const;
   ::debate_test::TestExpectation* PROTOBUF_NONNULL add_expectations();
   const ::google::protobuf::RepeatedPtrField<::debate_test::TestExpectation>& expectations() const;
-  // .debate_test.TestAction action = 1;
+  // .debate_test.TestAction action = 1 [json_name = "action"];
   bool has_action() const;
   void clear_action() ;
   const ::debate_test::TestAction& action() const;
@@ -1056,7 +1056,7 @@ class TestScenario final : public ::google::protobuf::Message
     kStepsFieldNumber = 2,
     kNameFieldNumber = 1,
   };
-  // repeated .debate_test.TestStep steps = 2;
+  // repeated .debate_test.TestStep steps = 2 [json_name = "steps"];
   int steps_size() const;
   private:
   int _internal_steps_size() const;
@@ -1073,7 +1073,7 @@ class TestScenario final : public ::google::protobuf::Message
   const ::debate_test::TestStep& steps(int index) const;
   ::debate_test::TestStep* PROTOBUF_NONNULL add_steps();
   const ::google::protobuf::RepeatedPtrField<::debate_test::TestStep>& steps() const;
-  // string name = 1;
+  // string name = 1 [json_name = "name"];
   void clear_name() ;
   const ::std::string& name() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1140,7 +1140,7 @@ extern const ::google::protobuf::internal::ClassDataFull TestScenario_class_data
 
 // TestScenario
 
-// string name = 1;
+// string name = 1 [json_name = "name"];
 inline void TestScenario::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
@@ -1205,7 +1205,7 @@ inline void TestScenario::set_allocated_name(::std::string* PROTOBUF_NULLABLE va
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestScenario.name)
 }
 
-// repeated .debate_test.TestStep steps = 2;
+// repeated .debate_test.TestStep steps = 2 [json_name = "steps"];
 inline int TestScenario::_internal_steps_size() const {
   return _internal_steps().size();
 }
@@ -1265,7 +1265,7 @@ TestScenario::_internal_mutable_steps() {
 
 // TestStep
 
-// .debate_test.TestAction action = 1;
+// .debate_test.TestAction action = 1 [json_name = "action"];
 inline bool TestStep::has_action() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.action_ != nullptr);
@@ -1364,7 +1364,7 @@ inline void TestStep::set_allocated_action(::debate_test::TestAction* PROTOBUF_N
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestStep.action)
 }
 
-// repeated .debate_test.TestExpectation expectations = 2;
+// repeated .debate_test.TestExpectation expectations = 2 [json_name = "expectations"];
 inline int TestStep::_internal_expectations_size() const {
   return _internal_expectations().size();
 }
@@ -1424,7 +1424,7 @@ TestStep::_internal_mutable_expectations() {
 
 // TestAction
 
-// string username = 1;
+// string username = 1 [json_name = "username"];
 inline void TestAction::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -1489,7 +1489,7 @@ inline void TestAction::set_allocated_username(::std::string* PROTOBUF_NULLABLE 
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.username)
 }
 
-// string event_type = 2;
+// string event_type = 2 [json_name = "eventType"];
 inline void TestAction::clear_event_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.event_type_.ClearToEmpty();
@@ -1554,7 +1554,7 @@ inline void TestAction::set_allocated_event_type(::std::string* PROTOBUF_NULLABL
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.event_type)
 }
 
-// string debate_topic = 3;
+// string debate_topic = 3 [json_name = "debateTopic"];
 inline void TestAction::clear_debate_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_topic_.ClearToEmpty();
@@ -1619,7 +1619,7 @@ inline void TestAction::set_allocated_debate_topic(::std::string* PROTOBUF_NULLA
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.debate_topic)
 }
 
-// int32 debate_id = 4;
+// int32 debate_id = 4 [json_name = "debateId"];
 inline void TestAction::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -1644,7 +1644,7 @@ inline void TestAction::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// int32 claim_id = 5;
+// int32 claim_id = 5 [json_name = "claimId"];
 inline void TestAction::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = 0;
@@ -1669,7 +1669,7 @@ inline void TestAction::_internal_set_claim_id(::int32_t value) {
   _impl_.claim_id_ = value;
 }
 
-// string claim_text = 6;
+// string claim_text = 6 [json_name = "claimText"];
 inline void TestAction::clear_claim_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_text_.ClearToEmpty();
@@ -1734,7 +1734,7 @@ inline void TestAction::set_allocated_claim_text(::std::string* PROTOBUF_NULLABL
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.claim_text)
 }
 
-// string claim_description = 7;
+// string claim_description = 7 [json_name = "claimDescription"];
 inline void TestAction::clear_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_description_.ClearToEmpty();
@@ -1803,7 +1803,7 @@ inline void TestAction::set_allocated_claim_description(::std::string* PROTOBUF_
 
 // TestExpectation
 
-// string check_type = 1;
+// string check_type = 1 [json_name = "checkType"];
 inline void TestExpectation::clear_check_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.check_type_.ClearToEmpty();
@@ -1868,7 +1868,7 @@ inline void TestExpectation::set_allocated_check_type(::std::string* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestExpectation.check_type)
 }
 
-// string username = 2;
+// string username = 2 [json_name = "username"];
 inline void TestExpectation::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -1933,7 +1933,7 @@ inline void TestExpectation::set_allocated_username(::std::string* PROTOBUF_NULL
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestExpectation.username)
 }
 
-// int32 claim_id = 3;
+// int32 claim_id = 3 [json_name = "claimId"];
 inline void TestExpectation::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = 0;
@@ -1958,7 +1958,7 @@ inline void TestExpectation::_internal_set_claim_id(::int32_t value) {
   _impl_.claim_id_ = value;
 }
 
-// int32 from_claim_id = 4;
+// int32 from_claim_id = 4 [json_name = "fromClaimId"];
 inline void TestExpectation::clear_from_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.from_claim_id_ = 0;
@@ -1983,7 +1983,7 @@ inline void TestExpectation::_internal_set_from_claim_id(::int32_t value) {
   _impl_.from_claim_id_ = value;
 }
 
-// int32 to_claim_id = 5;
+// int32 to_claim_id = 5 [json_name = "toClaimId"];
 inline void TestExpectation::clear_to_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.to_claim_id_ = 0;
@@ -2008,7 +2008,7 @@ inline void TestExpectation::_internal_set_to_claim_id(::int32_t value) {
   _impl_.to_claim_id_ = value;
 }
 
-// string link_type = 6;
+// string link_type = 6 [json_name = "linkType"];
 inline void TestExpectation::clear_link_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_type_.ClearToEmpty();
@@ -2073,7 +2073,7 @@ inline void TestExpectation::set_allocated_link_type(::std::string* PROTOBUF_NUL
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestExpectation.link_type)
 }
 
-// string expected_claim_sentence = 7;
+// string expected_claim_sentence = 7 [json_name = "expectedClaimSentence"];
 inline void TestExpectation::clear_expected_claim_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.expected_claim_sentence_.ClearToEmpty();
@@ -2138,7 +2138,7 @@ inline void TestExpectation::set_allocated_expected_claim_sentence(::std::string
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestExpectation.expected_claim_sentence)
 }
 
-// string expected_status = 8;
+// string expected_status = 8 [json_name = "expectedStatus"];
 inline void TestExpectation::clear_expected_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.expected_status_.ClearToEmpty();
@@ -2203,7 +2203,7 @@ inline void TestExpectation::set_allocated_expected_status(::std::string* PROTOB
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestExpectation.expected_status)
 }
 
-// int32 expected_count = 9;
+// int32 expected_count = 9 [json_name = "expectedCount"];
 inline void TestExpectation::clear_expected_count() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.expected_count_ = 0;
@@ -2228,7 +2228,7 @@ inline void TestExpectation::_internal_set_expected_count(::int32_t value) {
   _impl_.expected_count_ = value;
 }
 
-// string expected_action = 10;
+// string expected_action = 10 [json_name = "expectedAction"];
 inline void TestExpectation::clear_expected_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.expected_action_.ClearToEmpty();

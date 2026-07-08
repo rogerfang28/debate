@@ -80,10 +80,14 @@ class Debate;
 struct DebateDefaultTypeInternal;
 extern DebateDefaultTypeInternal _Debate_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Debate_class_data_;
-class Link;
-struct LinkDefaultTypeInternal;
-extern LinkDefaultTypeInternal _Link_default_instance_;
-extern const ::google::protobuf::internal::ClassDataFull Link_class_data_;
+class Relationship;
+struct RelationshipDefaultTypeInternal;
+extern RelationshipDefaultTypeInternal _Relationship_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_class_data_;
+class Relationship_Link;
+struct Relationship_LinkDefaultTypeInternal;
+extern Relationship_LinkDefaultTypeInternal _Relationship_Link_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_Link_class_data_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -177,30 +181,30 @@ inline bool LinkType_Parse(
 
 // -------------------------------------------------------------------
 
-class Link final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:debate.Link) */ {
+class Relationship_Link final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Relationship.Link) */ {
  public:
-  inline Link() : Link(nullptr) {}
-  ~Link() PROTOBUF_FINAL;
+  inline Relationship_Link() : Relationship_Link(nullptr) {}
+  ~Relationship_Link() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(Link* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+  void operator delete(Relationship_Link* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(Link));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Relationship_Link));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR Link(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR Relationship_Link(::google::protobuf::internal::ConstantInitialized);
 
-  inline Link(const Link& from) : Link(nullptr, from) {}
-  inline Link(Link&& from) noexcept
-      : Link(nullptr, ::std::move(from)) {}
-  inline Link& operator=(const Link& from) {
+  inline Relationship_Link(const Relationship_Link& from) : Relationship_Link(nullptr, from) {}
+  inline Relationship_Link(Relationship_Link&& from) noexcept
+      : Relationship_Link(nullptr, ::std::move(from)) {}
+  inline Relationship_Link& operator=(const Relationship_Link& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Link& operator=(Link&& from) noexcept {
+  inline Relationship_Link& operator=(Relationship_Link&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -228,13 +232,13 @@ class Link final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Link& default_instance() {
-    return *reinterpret_cast<const Link*>(
-        &_Link_default_instance_);
+  static const Relationship_Link& default_instance() {
+    return *reinterpret_cast<const Relationship_Link*>(
+        &_Relationship_Link_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 3;
-  friend void swap(Link& a, Link& b) { a.Swap(&b); }
-  inline void Swap(Link* PROTOBUF_NONNULL other) {
+  friend void swap(Relationship_Link& a, Relationship_Link& b) { a.Swap(&b); }
+  inline void Swap(Relationship_Link* PROTOBUF_NONNULL other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -242,7 +246,7 @@ class Link final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Link* PROTOBUF_NONNULL other) {
+  void UnsafeArenaSwap(Relationship_Link* PROTOBUF_NONNULL other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -250,13 +254,13 @@ class Link final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  Link* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<Link>(arena);
+  Relationship_Link* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Relationship_Link>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Link& from);
+  void CopyFrom(const Relationship_Link& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const Link& from) { Link::MergeImpl(*this, from); }
+  void MergeFrom(const Relationship_Link& from) { Relationship_Link::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(::google::protobuf::MessageLite& to_msg,
@@ -292,17 +296,17 @@ class Link final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(Link* PROTOBUF_NONNULL other);
+  void InternalSwap(Relationship_Link* PROTOBUF_NONNULL other);
  private:
   template <typename T>
   friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "debate.Link"; }
+  static ::absl::string_view FullMessageName() { return "debate.Relationship.Link"; }
 
-  explicit Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
-  Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Link& from);
-  Link(
-      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Link&& from) noexcept
-      : Link(arena) {
+  explicit Relationship_Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  Relationship_Link(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Relationship_Link& from);
+  Relationship_Link(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Relationship_Link&& from) noexcept
+      : Relationship_Link(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
@@ -327,7 +331,7 @@ class Link final : public ::google::protobuf::Message
     kLinkTypeFieldNumber = 6,
     kDebateIdFieldNumber = 7,
   };
-  // string connection = 4;
+  // string connection = 4 [json_name = "connection"];
   void clear_connection() ;
   const ::std::string& connection() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -342,7 +346,7 @@ class Link final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_connection();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -352,7 +356,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 connect_from = 2;
+  // int32 connect_from = 2 [json_name = "connectFrom"];
   void clear_connect_from() ;
   ::int32_t connect_from() const;
   void set_connect_from(::int32_t value);
@@ -362,7 +366,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_from(::int32_t value);
 
   public:
-  // int32 connect_to = 3;
+  // int32 connect_to = 3 [json_name = "connectTo"];
   void clear_connect_to() ;
   ::int32_t connect_to() const;
   void set_connect_to(::int32_t value);
@@ -372,7 +376,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_connect_to(::int32_t value);
 
   public:
-  // int32 creator_id = 5;
+  // int32 creator_id = 5 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -382,7 +386,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // .debate.LinkType link_type = 6;
+  // .debate.LinkType link_type = 6 [json_name = "linkType"];
   void clear_link_type() ;
   ::debate::LinkType link_type() const;
   void set_link_type(::debate::LinkType value);
@@ -392,7 +396,7 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_link_type(::debate::LinkType value);
 
   public:
-  // int32 debate_id = 7;
+  // int32 debate_id = 7 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -402,12 +406,12 @@ class Link final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:debate.Link)
+  // @@protoc_insertion_point(class_scope:debate.Relationship.Link)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<3, 7,
-                                   0, 30,
+                                   0, 43,
                                    2>
       _table_;
 
@@ -425,7 +429,7 @@ class Link final : public ::google::protobuf::Message
     inline explicit Impl_(
         ::google::protobuf::internal::InternalVisibility visibility,
         ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
-        const Link& from_msg);
+        const Relationship_Link& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr connection_;
@@ -441,7 +445,7 @@ class Link final : public ::google::protobuf::Message
   friend struct ::TableStruct_debate_2eproto;
 };
 
-extern const ::google::protobuf::internal::ClassDataFull Link_class_data_;
+extern const ::google::protobuf::internal::ClassDataFull Relationship_Link_class_data_;
 // -------------------------------------------------------------------
 
 class Claim_UserStatusesEntry_DoNotUse final
@@ -481,6 +485,202 @@ class Claim_UserStatusesEntry_DoNotUse final
   static constexpr auto InternalNewImpl_();
 };
 extern const ::google::protobuf::internal::ClassDataFull Claim_UserStatusesEntry_DoNotUse_class_data_;
+// -------------------------------------------------------------------
+
+class Relationship final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Relationship) */ {
+ public:
+  inline Relationship() : Relationship(nullptr) {}
+  ~Relationship() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(Relationship* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Relationship));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Relationship(::google::protobuf::internal::ConstantInitialized);
+
+  inline Relationship(const Relationship& from) : Relationship(nullptr, from) {}
+  inline Relationship(Relationship&& from) noexcept
+      : Relationship(nullptr, ::std::move(from)) {}
+  inline Relationship& operator=(const Relationship& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Relationship& operator=(Relationship&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Relationship& default_instance() {
+    return *reinterpret_cast<const Relationship*>(
+        &_Relationship_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(Relationship& a, Relationship& b) { a.Swap(&b); }
+  inline void Swap(Relationship* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Relationship* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Relationship* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Relationship>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Relationship& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Relationship& from) { Relationship::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(Relationship* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate.Relationship"; }
+
+  explicit Relationship(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  Relationship(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Relationship& from);
+  Relationship(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Relationship&& from) noexcept
+      : Relationship(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Link = Relationship_Link;
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLinkFieldNumber = 1,
+  };
+  // .debate.Relationship.Link link = 1 [json_name = "link"];
+  bool has_link() const;
+  void clear_link() ;
+  const ::debate::Relationship_Link& link() const;
+  [[nodiscard]] ::debate::Relationship_Link* PROTOBUF_NULLABLE release_link();
+  ::debate::Relationship_Link* PROTOBUF_NONNULL mutable_link();
+  void set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value);
+  ::debate::Relationship_Link* PROTOBUF_NULLABLE unsafe_arena_release_link();
+
+  private:
+  const ::debate::Relationship_Link& _internal_link() const;
+  ::debate::Relationship_Link* PROTOBUF_NONNULL _internal_mutable_link();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate.Relationship)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const Relationship& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::debate::Relationship_Link* PROTOBUF_NULLABLE link_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull Relationship_class_data_;
 // -------------------------------------------------------------------
 
 class Debate final : public ::google::protobuf::Message
@@ -538,7 +738,7 @@ class Debate final : public ::google::protobuf::Message
     return *reinterpret_cast<const Debate*>(
         &_Debate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
   inline void Swap(Debate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -634,7 +834,7 @@ class Debate final : public ::google::protobuf::Message
     kIsChallengeFieldNumber = 7,
     kParentChallengeIdFieldNumber = 8,
   };
-  // repeated int32 debater_ids = 4;
+  // repeated int32 debater_ids = 4 [json_name = "debaterIds"];
   int debater_ids_size() const;
   private:
   int _internal_debater_ids_size() const;
@@ -652,7 +852,7 @@ class Debate final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_debater_ids();
 
   public:
-  // string topic = 3;
+  // string topic = 3 [json_name = "topic"];
   void clear_topic() ;
   const ::std::string& topic() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -667,7 +867,7 @@ class Debate final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_topic();
 
   public:
-  // .debate.DebateSettings settings = 6;
+  // .debate.DebateSettings settings = 6 [json_name = "settings"];
   bool has_settings() const;
   void clear_settings() ;
   const ::debate::DebateSettings& settings() const;
@@ -682,7 +882,7 @@ class Debate final : public ::google::protobuf::Message
   ::debate::DebateSettings* PROTOBUF_NONNULL _internal_mutable_settings();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -692,7 +892,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 root_claim_id = 2;
+  // int32 root_claim_id = 2 [json_name = "rootClaimId"];
   void clear_root_claim_id() ;
   ::int32_t root_claim_id() const;
   void set_root_claim_id(::int32_t value);
@@ -702,7 +902,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_root_claim_id(::int32_t value);
 
   public:
-  // int32 creator_id = 5;
+  // int32 creator_id = 5 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -712,7 +912,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // bool is_challenge = 7;
+  // bool is_challenge = 7 [json_name = "isChallenge"];
   void clear_is_challenge() ;
   bool is_challenge() const;
   void set_is_challenge(bool value);
@@ -722,7 +922,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_is_challenge(bool value);
 
   public:
-  // int32 parent_challenge_id = 8;
+  // int32 parent_challenge_id = 8 [json_name = "parentChallengeId"];
   void clear_parent_challenge_id() ;
   ::int32_t parent_challenge_id() const;
   void set_parent_challenge_id(::int32_t value);
@@ -928,7 +1128,7 @@ class Claim final : public ::google::protobuf::Message
     kStatusFieldNumber = 11,
     kUserStatusesFieldNumber = 13,
   };
-  // repeated .debate.ClaimState history = 10;
+  // repeated .debate.ClaimState history = 10 [json_name = "history"];
   int history_size() const;
   private:
   int _internal_history_size() const;
@@ -945,7 +1145,7 @@ class Claim final : public ::google::protobuf::Message
   const ::debate::ClaimState& history(int index) const;
   ::debate::ClaimState* PROTOBUF_NONNULL add_history();
   const ::google::protobuf::RepeatedPtrField<::debate::ClaimState>& history() const;
-  // repeated int32 link_ids = 12;
+  // repeated int32 link_ids = 12 [json_name = "linkIds"];
   int link_ids_size() const;
   private:
   int _internal_link_ids_size() const;
@@ -963,7 +1163,7 @@ class Claim final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_link_ids();
 
   public:
-  // string sentence = 2;
+  // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
   const ::std::string& sentence() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -978,7 +1178,7 @@ class Claim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_sentence();
 
   public:
-  // string description = 3;
+  // string description = 3 [json_name = "description"];
   void clear_description() ;
   const ::std::string& description() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -993,7 +1193,7 @@ class Claim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_description();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1003,7 +1203,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 creator_id = 8;
+  // int32 creator_id = 8 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1013,7 +1213,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // int32 debate_id = 9;
+  // int32 debate_id = 9 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -1023,7 +1223,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // .debate.ClaimStatus status = 11;
+  // .debate.ClaimStatus status = 11 [json_name = "status"];
   void clear_status() ;
   ::debate::ClaimStatus status() const;
   void set_status(::debate::ClaimStatus value);
@@ -1033,7 +1233,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_status(::debate::ClaimStatus value);
 
   public:
-  // map<string, .debate.ClaimStatus> user_statuses = 13;
+  // map<string, .debate.ClaimStatus> user_statuses = 13 [json_name = "userStatuses"];
   int user_statuses_size() const;
   private:
   int _internal_user_statuses_size() const;
@@ -1241,7 +1441,7 @@ class ClaimState final : public ::google::protobuf::Message
     kClaimFieldNumber = 1,
     kTimestampFieldNumber = 2,
   };
-  // .debate.Claim claim = 1;
+  // .debate.Claim claim = 1 [json_name = "claim"];
   bool has_claim() const;
   void clear_claim() ;
   const ::debate::Claim& claim() const;
@@ -1256,7 +1456,7 @@ class ClaimState final : public ::google::protobuf::Message
   ::debate::Claim* PROTOBUF_NONNULL _internal_mutable_claim();
 
   public:
-  // .google.protobuf.Timestamp timestamp = 2;
+  // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
   bool has_timestamp() const;
   void clear_timestamp() ;
   const ::google::protobuf::Timestamp& timestamp() const;
@@ -1325,7 +1525,7 @@ extern const ::google::protobuf::internal::ClassDataFull ClaimState_class_data_;
 
 // Claim
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Claim::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -1350,7 +1550,7 @@ inline void Claim::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string sentence = 2;
+// string sentence = 2 [json_name = "sentence"];
 inline void Claim::clear_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sentence_.ClearToEmpty();
@@ -1415,7 +1615,7 @@ inline void Claim::set_allocated_sentence(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.sentence)
 }
 
-// string description = 3;
+// string description = 3 [json_name = "description"];
 inline void Claim::clear_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.description_.ClearToEmpty();
@@ -1480,7 +1680,7 @@ inline void Claim::set_allocated_description(::std::string* PROTOBUF_NULLABLE va
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.description)
 }
 
-// int32 creator_id = 8;
+// int32 creator_id = 8 [json_name = "creatorId"];
 inline void Claim::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -1505,7 +1705,7 @@ inline void Claim::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// int32 debate_id = 9;
+// int32 debate_id = 9 [json_name = "debateId"];
 inline void Claim::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -1530,7 +1730,7 @@ inline void Claim::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// repeated .debate.ClaimState history = 10;
+// repeated .debate.ClaimState history = 10 [json_name = "history"];
 inline int Claim::_internal_history_size() const {
   return _internal_history().size();
 }
@@ -1586,7 +1786,7 @@ Claim::_internal_mutable_history() {
   return &_impl_.history_;
 }
 
-// .debate.ClaimStatus status = 11;
+// .debate.ClaimStatus status = 11 [json_name = "status"];
 inline void Claim::clear_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_ = 0;
@@ -1611,7 +1811,7 @@ inline void Claim::_internal_set_status(::debate::ClaimStatus value) {
   _impl_.status_ = value;
 }
 
-// repeated int32 link_ids = 12;
+// repeated int32 link_ids = 12 [json_name = "linkIds"];
 inline int Claim::_internal_link_ids_size() const {
   return _internal_link_ids().size();
 }
@@ -1661,7 +1861,7 @@ Claim::_internal_mutable_link_ids() {
   return &_impl_.link_ids_;
 }
 
-// map<string, .debate.ClaimStatus> user_statuses = 13;
+// map<string, .debate.ClaimStatus> user_statuses = 13 [json_name = "userStatuses"];
 inline int Claim::_internal_user_statuses_size() const {
   return _internal_user_statuses().size();
 }
@@ -1697,7 +1897,7 @@ inline ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>* PROTOBUF_N
 
 // ClaimState
 
-// .google.protobuf.Timestamp timestamp = 2;
+// .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
 inline bool ClaimState::has_timestamp() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.timestamp_ != nullptr);
@@ -1790,7 +1990,7 @@ inline void ClaimState::set_allocated_timestamp(::google::protobuf::Timestamp* P
   // @@protoc_insertion_point(field_set_allocated:debate.ClaimState.timestamp)
 }
 
-// .debate.Claim claim = 1;
+// .debate.Claim claim = 1 [json_name = "claim"];
 inline bool ClaimState::has_claim() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
   PROTOBUF_ASSUME(!value || _impl_.claim_ != nullptr);
@@ -1891,124 +2091,124 @@ inline void ClaimState::set_allocated_claim(::debate::Claim* PROTOBUF_NULLABLE v
 
 // -------------------------------------------------------------------
 
-// Link
+// Relationship_Link
 
-// int32 id = 1;
-inline void Link::clear_id() {
+// int32 id = 1 [json_name = "id"];
+inline void Relationship_Link::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000002U);
 }
-inline ::int32_t Link::id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.id)
+inline ::int32_t Relationship_Link::id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.id)
   return _internal_id();
 }
-inline void Link::set_id(::int32_t value) {
+inline void Relationship_Link::set_id(::int32_t value) {
   _internal_set_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_set:debate.Link.id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.id)
 }
-inline ::int32_t Link::_internal_id() const {
+inline ::int32_t Relationship_Link::_internal_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.id_;
 }
-inline void Link::_internal_set_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = value;
 }
 
-// int32 connect_from = 2;
-inline void Link::clear_connect_from() {
+// int32 connect_from = 2 [json_name = "connectFrom"];
+inline void Relationship_Link::clear_connect_from() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000004U);
 }
-inline ::int32_t Link::connect_from() const {
-  // @@protoc_insertion_point(field_get:debate.Link.connect_from)
+inline ::int32_t Relationship_Link::connect_from() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connect_from)
   return _internal_connect_from();
 }
-inline void Link::set_connect_from(::int32_t value) {
+inline void Relationship_Link::set_connect_from(::int32_t value) {
   _internal_set_connect_from(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000004U);
-  // @@protoc_insertion_point(field_set:debate.Link.connect_from)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connect_from)
 }
-inline ::int32_t Link::_internal_connect_from() const {
+inline ::int32_t Relationship_Link::_internal_connect_from() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connect_from_;
 }
-inline void Link::_internal_set_connect_from(::int32_t value) {
+inline void Relationship_Link::_internal_set_connect_from(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_from_ = value;
 }
 
-// int32 connect_to = 3;
-inline void Link::clear_connect_to() {
+// int32 connect_to = 3 [json_name = "connectTo"];
+inline void Relationship_Link::clear_connect_to() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000008U);
 }
-inline ::int32_t Link::connect_to() const {
-  // @@protoc_insertion_point(field_get:debate.Link.connect_to)
+inline ::int32_t Relationship_Link::connect_to() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connect_to)
   return _internal_connect_to();
 }
-inline void Link::set_connect_to(::int32_t value) {
+inline void Relationship_Link::set_connect_to(::int32_t value) {
   _internal_set_connect_to(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000008U);
-  // @@protoc_insertion_point(field_set:debate.Link.connect_to)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connect_to)
 }
-inline ::int32_t Link::_internal_connect_to() const {
+inline ::int32_t Relationship_Link::_internal_connect_to() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connect_to_;
 }
-inline void Link::_internal_set_connect_to(::int32_t value) {
+inline void Relationship_Link::_internal_set_connect_to(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connect_to_ = value;
 }
 
-// string connection = 4;
-inline void Link::clear_connection() {
+// string connection = 4 [json_name = "connection"];
+inline void Relationship_Link::clear_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000001U);
 }
-inline const ::std::string& Link::connection() const
+inline const ::std::string& Relationship_Link::connection() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:debate.Link.connection)
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.connection)
   return _internal_connection();
 }
 template <typename Arg_, typename... Args_>
-PROTOBUF_ALWAYS_INLINE void Link::set_connection(Arg_&& arg, Args_... args) {
+PROTOBUF_ALWAYS_INLINE void Relationship_Link::set_connection(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   _impl_.connection_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:debate.Link.connection)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.connection)
 }
-inline ::std::string* PROTOBUF_NONNULL Link::mutable_connection()
+inline ::std::string* PROTOBUF_NONNULL Relationship_Link::mutable_connection()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBit(_impl_._has_bits_[0], 0x00000001U);
   ::std::string* _s = _internal_mutable_connection();
-  // @@protoc_insertion_point(field_mutable:debate.Link.connection)
+  // @@protoc_insertion_point(field_mutable:debate.Relationship.Link.connection)
   return _s;
 }
-inline const ::std::string& Link::_internal_connection() const {
+inline const ::std::string& Relationship_Link::_internal_connection() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.connection_.Get();
 }
-inline void Link::_internal_set_connection(const ::std::string& value) {
+inline void Relationship_Link::_internal_set_connection(const ::std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.connection_.Set(value, GetArena());
 }
-inline ::std::string* PROTOBUF_NONNULL Link::_internal_mutable_connection() {
+inline ::std::string* PROTOBUF_NONNULL Relationship_Link::_internal_mutable_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.connection_.Mutable( GetArena());
 }
-inline ::std::string* PROTOBUF_NULLABLE Link::release_connection() {
+inline ::std::string* PROTOBUF_NULLABLE Relationship_Link::release_connection() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:debate.Link.connection)
+  // @@protoc_insertion_point(field_release:debate.Relationship.Link.connection)
   if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
     return nullptr;
   }
@@ -2019,7 +2219,7 @@ inline ::std::string* PROTOBUF_NULLABLE Link::release_connection() {
   }
   return released;
 }
-inline void Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE value) {
+inline void Relationship_Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
     SetHasBit(_impl_._has_bits_[0], 0x00000001U);
@@ -2030,89 +2230,192 @@ inline void Link::set_allocated_connection(::std::string* PROTOBUF_NULLABLE valu
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.connection_.IsDefault()) {
     _impl_.connection_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:debate.Link.connection)
+  // @@protoc_insertion_point(field_set_allocated:debate.Relationship.Link.connection)
 }
 
-// int32 creator_id = 5;
-inline void Link::clear_creator_id() {
+// int32 creator_id = 5 [json_name = "creatorId"];
+inline void Relationship_Link::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000010U);
 }
-inline ::int32_t Link::creator_id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.creator_id)
+inline ::int32_t Relationship_Link::creator_id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.creator_id)
   return _internal_creator_id();
 }
-inline void Link::set_creator_id(::int32_t value) {
+inline void Relationship_Link::set_creator_id(::int32_t value) {
   _internal_set_creator_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000010U);
-  // @@protoc_insertion_point(field_set:debate.Link.creator_id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.creator_id)
 }
-inline ::int32_t Link::_internal_creator_id() const {
+inline ::int32_t Relationship_Link::_internal_creator_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.creator_id_;
 }
-inline void Link::_internal_set_creator_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
 }
 
-// .debate.LinkType link_type = 6;
-inline void Link::clear_link_type() {
+// .debate.LinkType link_type = 6 [json_name = "linkType"];
+inline void Relationship_Link::clear_link_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_type_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000020U);
 }
-inline ::debate::LinkType Link::link_type() const {
-  // @@protoc_insertion_point(field_get:debate.Link.link_type)
+inline ::debate::LinkType Relationship_Link::link_type() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.link_type)
   return _internal_link_type();
 }
-inline void Link::set_link_type(::debate::LinkType value) {
+inline void Relationship_Link::set_link_type(::debate::LinkType value) {
   _internal_set_link_type(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000020U);
-  // @@protoc_insertion_point(field_set:debate.Link.link_type)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.link_type)
 }
-inline ::debate::LinkType Link::_internal_link_type() const {
+inline ::debate::LinkType Relationship_Link::_internal_link_type() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return static_cast<::debate::LinkType>(_impl_.link_type_);
 }
-inline void Link::_internal_set_link_type(::debate::LinkType value) {
+inline void Relationship_Link::_internal_set_link_type(::debate::LinkType value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_type_ = value;
 }
 
-// int32 debate_id = 7;
-inline void Link::clear_debate_id() {
+// int32 debate_id = 7 [json_name = "debateId"];
+inline void Relationship_Link::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
                   0x00000040U);
 }
-inline ::int32_t Link::debate_id() const {
-  // @@protoc_insertion_point(field_get:debate.Link.debate_id)
+inline ::int32_t Relationship_Link::debate_id() const {
+  // @@protoc_insertion_point(field_get:debate.Relationship.Link.debate_id)
   return _internal_debate_id();
 }
-inline void Link::set_debate_id(::int32_t value) {
+inline void Relationship_Link::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
   SetHasBit(_impl_._has_bits_[0], 0x00000040U);
-  // @@protoc_insertion_point(field_set:debate.Link.debate_id)
+  // @@protoc_insertion_point(field_set:debate.Relationship.Link.debate_id)
 }
-inline ::int32_t Link::_internal_debate_id() const {
+inline ::int32_t Relationship_Link::_internal_debate_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.debate_id_;
 }
-inline void Link::_internal_set_debate_id(::int32_t value) {
+inline void Relationship_Link::_internal_set_debate_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = value;
 }
 
 // -------------------------------------------------------------------
 
+// Relationship
+
+// .debate.Relationship.Link link = 1 [json_name = "link"];
+inline bool Relationship::has_link() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
+  PROTOBUF_ASSUME(!value || _impl_.link_ != nullptr);
+  return value;
+}
+inline void Relationship::clear_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.link_ != nullptr) _impl_.link_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::debate::Relationship_Link& Relationship::_internal_link() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::debate::Relationship_Link* p = _impl_.link_;
+  return p != nullptr ? *p : reinterpret_cast<const ::debate::Relationship_Link&>(::debate::_Relationship_Link_default_instance_);
+}
+inline const ::debate::Relationship_Link& Relationship::link() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Relationship.link)
+  return _internal_link();
+}
+inline void Relationship::unsafe_arena_set_allocated_link(
+    ::debate::Relationship_Link* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.link_);
+  }
+  _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.Relationship.link)
+}
+inline ::debate::Relationship_Link* PROTOBUF_NULLABLE Relationship::release_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* released = _impl_.link_;
+  _impl_.link_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NULLABLE Relationship::unsafe_arena_release_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Relationship.link)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* temp = _impl_.link_;
+  _impl_.link_ = nullptr;
+  return temp;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NONNULL Relationship::_internal_mutable_link() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.link_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::debate::Relationship_Link>(GetArena());
+    _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(p);
+  }
+  return _impl_.link_;
+}
+inline ::debate::Relationship_Link* PROTOBUF_NONNULL Relationship::mutable_link()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::debate::Relationship_Link* _msg = _internal_mutable_link();
+  // @@protoc_insertion_point(field_mutable:debate.Relationship.link)
+  return _msg;
+}
+inline void Relationship::set_allocated_link(::debate::Relationship_Link* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.link_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+
+  _impl_.link_ = reinterpret_cast<::debate::Relationship_Link*>(value);
+  // @@protoc_insertion_point(field_set_allocated:debate.Relationship.link)
+}
+
+// -------------------------------------------------------------------
+
 // Debate
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Debate::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -2137,7 +2440,7 @@ inline void Debate::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// int32 root_claim_id = 2;
+// int32 root_claim_id = 2 [json_name = "rootClaimId"];
 inline void Debate::clear_root_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.root_claim_id_ = 0;
@@ -2162,7 +2465,7 @@ inline void Debate::_internal_set_root_claim_id(::int32_t value) {
   _impl_.root_claim_id_ = value;
 }
 
-// string topic = 3;
+// string topic = 3 [json_name = "topic"];
 inline void Debate::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
@@ -2227,7 +2530,7 @@ inline void Debate::set_allocated_topic(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:debate.Debate.topic)
 }
 
-// repeated int32 debater_ids = 4;
+// repeated int32 debater_ids = 4 [json_name = "debaterIds"];
 inline int Debate::_internal_debater_ids_size() const {
   return _internal_debater_ids().size();
 }
@@ -2277,7 +2580,7 @@ Debate::_internal_mutable_debater_ids() {
   return &_impl_.debater_ids_;
 }
 
-// int32 creator_id = 5;
+// int32 creator_id = 5 [json_name = "creatorId"];
 inline void Debate::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -2302,7 +2605,7 @@ inline void Debate::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// .debate.DebateSettings settings = 6;
+// .debate.DebateSettings settings = 6 [json_name = "settings"];
 inline bool Debate::has_settings() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
   PROTOBUF_ASSUME(!value || _impl_.settings_ != nullptr);
@@ -2395,7 +2698,7 @@ inline void Debate::set_allocated_settings(::debate::DebateSettings* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:debate.Debate.settings)
 }
 
-// bool is_challenge = 7;
+// bool is_challenge = 7 [json_name = "isChallenge"];
 inline void Debate::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
@@ -2420,7 +2723,7 @@ inline void Debate::_internal_set_is_challenge(bool value) {
   _impl_.is_challenge_ = value;
 }
 
-// int32 parent_challenge_id = 8;
+// int32 parent_challenge_id = 8 [json_name = "parentChallengeId"];
 inline void Debate::clear_parent_challenge_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.parent_challenge_id_ = 0;

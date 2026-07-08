@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <map>
+#include <set>
 #include "../database/debate/DatabaseWrapper.h"
 #include "../../../../../src/gen/cpp/user_engagement.pb.h"
 
@@ -58,7 +60,11 @@ public:
     std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebate(const int& debate_id);
     std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
-    debate::Link getLinkById(int linkId);
+    debate::Relationship getLinkById(int linkId);
+    // Scans fromClaimId's link_ids for an outgoing CHALLENGE link (a link where
+    // this claim is the challenger, i.e. connect_from() == fromClaimId).
+    // Returns a default (empty) Relationship if none found.
+    debate::Relationship findOutgoingChallengeLink(int fromClaimId);
     void updateClaimInDB(const debate::Claim& claim);
     void deleteLinkById(int linkId);
     void addMemberToDebate(const int& debateId, const int& user_id);
@@ -76,4 +82,15 @@ private:
     DatabaseWrapper& databaseWrapper;
     void addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id);
     // void updateClaimInDB(const debate::Claim& claim);
+
+    // Determines what a claim's status should become for one user, given its
+    // current status and its PARENT_CHILD/CHALLENGE neighbors. Pure computation —
+    // does not write anything; callers decide whether/how to apply the result.
+    debate::ClaimStatus ComputeStatusForUser(
+        const int& claimId,
+        const std::string& user,
+        const debate::ClaimStatus& currentStatus,
+        const std::map<int, std::vector<debate::Relationship>>& childrenMap,
+        const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
+        const std::set<int>& conceded_claims);
 };

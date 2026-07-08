@@ -74,6 +74,18 @@ class Component_CssEntry_DoNotUse;
 struct Component_CssEntry_DoNotUseDefaultTypeInternal;
 extern Component_CssEntry_DoNotUseDefaultTypeInternal _Component_CssEntry_DoNotUse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Component_CssEntry_DoNotUse_class_data_;
+class GraphComponent;
+struct GraphComponentDefaultTypeInternal;
+extern GraphComponentDefaultTypeInternal _GraphComponent_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull GraphComponent_class_data_;
+class GraphEdge;
+struct GraphEdgeDefaultTypeInternal;
+extern GraphEdgeDefaultTypeInternal _GraphEdge_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull GraphEdge_class_data_;
+class GraphNode;
+struct GraphNodeDefaultTypeInternal;
+extern GraphNodeDefaultTypeInternal _GraphNode_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull GraphNode_class_data_;
 class Page;
 struct PageDefaultTypeInternal;
 extern PageDefaultTypeInternal _Page_default_instance_;
@@ -108,7 +120,9 @@ enum ComponentType : int {
   TEXT = 1,
   BUTTON = 2,
   INPUT = 3,
+  GRAPH = 4,
   CONTAINER = 12,
+  CLAIM_PARSER = 14,
   ComponentType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ComponentType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -119,11 +133,11 @@ extern const uint32_t ComponentType_internal_data_[];
 inline constexpr ComponentType ComponentType_MIN =
     static_cast<ComponentType>(0);
 inline constexpr ComponentType ComponentType_MAX =
-    static_cast<ComponentType>(12);
+    static_cast<ComponentType>(14);
 inline bool ComponentType_IsValid(int value) {
-  return 0 <= value && value <= 12 && ((4111u >> value) & 1) != 0;
+  return 0 <= value && value <= 14 && ((20511u >> value) & 1) != 0;
 }
-inline constexpr int ComponentType_ARRAYSIZE = 12 + 1;
+inline constexpr int ComponentType_ARRAYSIZE = 14 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descriptor();
 template <typename T>
 const ::std::string& ComponentType_Name(T value) {
@@ -134,7 +148,7 @@ const ::std::string& ComponentType_Name(T value) {
 }
 template <>
 inline const ::std::string& ComponentType_Name(ComponentType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 12>(
+  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 14>(
       static_cast<int>(value));
 }
 inline bool ComponentType_Parse(
@@ -813,6 +827,558 @@ class Position final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull Position_class_data_;
 // -------------------------------------------------------------------
 
+class GraphNode final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ui.GraphNode) */ {
+ public:
+  inline GraphNode() : GraphNode(nullptr) {}
+  ~GraphNode() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GraphNode* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GraphNode));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GraphNode(::google::protobuf::internal::ConstantInitialized);
+
+  inline GraphNode(const GraphNode& from) : GraphNode(nullptr, from) {}
+  inline GraphNode(GraphNode&& from) noexcept
+      : GraphNode(nullptr, ::std::move(from)) {}
+  inline GraphNode& operator=(const GraphNode& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GraphNode& operator=(GraphNode&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GraphNode& default_instance() {
+    return *reinterpret_cast<const GraphNode*>(
+        &_GraphNode_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(GraphNode& a, GraphNode& b) { a.Swap(&b); }
+  inline void Swap(GraphNode* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GraphNode* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GraphNode* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GraphNode>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GraphNode& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GraphNode& from) { GraphNode::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GraphNode* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ui.GraphNode"; }
+
+  explicit GraphNode(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  GraphNode(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const GraphNode& from);
+  GraphNode(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, GraphNode&& from) noexcept
+      : GraphNode(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kIdFieldNumber = 1,
+    kTextFieldNumber = 2,
+    kTypeFieldNumber = 5,
+    kStatusFieldNumber = 6,
+    kXFieldNumber = 3,
+    kYFieldNumber = 4,
+    kCreatorIdFieldNumber = 7,
+    kIsRootFieldNumber = 8,
+    kIsCurrentFieldNumber = 9,
+  };
+  // string id = 1;
+  void clear_id() ;
+  const ::std::string& id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_id();
+  void set_allocated_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
+
+  public:
+  // string text = 2;
+  void clear_text() ;
+  const ::std::string& text() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_text(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_text();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_text();
+  void set_allocated_text(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_text() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_text(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_text();
+
+  public:
+  // string type = 5;
+  void clear_type() ;
+  const ::std::string& type() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_type(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_type();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_type();
+  void set_allocated_type(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_type() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_type(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_type();
+
+  public:
+  // string status = 6;
+  void clear_status() ;
+  const ::std::string& status() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_status(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_status();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_status();
+  void set_allocated_status(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_status() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_status(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_status();
+
+  public:
+  // double x = 3;
+  void clear_x() ;
+  double x() const;
+  void set_x(double value);
+
+  private:
+  double _internal_x() const;
+  void _internal_set_x(double value);
+
+  public:
+  // double y = 4;
+  void clear_y() ;
+  double y() const;
+  void set_y(double value);
+
+  private:
+  double _internal_y() const;
+  void _internal_set_y(double value);
+
+  public:
+  // int32 creator_id = 7;
+  void clear_creator_id() ;
+  ::int32_t creator_id() const;
+  void set_creator_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_creator_id() const;
+  void _internal_set_creator_id(::int32_t value);
+
+  public:
+  // bool is_root = 8;
+  void clear_is_root() ;
+  bool is_root() const;
+  void set_is_root(bool value);
+
+  private:
+  bool _internal_is_root() const;
+  void _internal_set_is_root(bool value);
+
+  public:
+  // bool is_current = 9;
+  void clear_is_current() ;
+  bool is_current() const;
+  void set_is_current(bool value);
+
+  private:
+  bool _internal_is_current() const;
+  void _internal_set_is_current(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:ui.GraphNode)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
+                                   0, 45,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const GraphNode& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr id_;
+    ::google::protobuf::internal::ArenaStringPtr text_;
+    ::google::protobuf::internal::ArenaStringPtr type_;
+    ::google::protobuf::internal::ArenaStringPtr status_;
+    double x_;
+    double y_;
+    ::int32_t creator_id_;
+    bool is_root_;
+    bool is_current_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_layout_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull GraphNode_class_data_;
+// -------------------------------------------------------------------
+
+class GraphEdge final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ui.GraphEdge) */ {
+ public:
+  inline GraphEdge() : GraphEdge(nullptr) {}
+  ~GraphEdge() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GraphEdge* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GraphEdge));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GraphEdge(::google::protobuf::internal::ConstantInitialized);
+
+  inline GraphEdge(const GraphEdge& from) : GraphEdge(nullptr, from) {}
+  inline GraphEdge(GraphEdge&& from) noexcept
+      : GraphEdge(nullptr, ::std::move(from)) {}
+  inline GraphEdge& operator=(const GraphEdge& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GraphEdge& operator=(GraphEdge&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GraphEdge& default_instance() {
+    return *reinterpret_cast<const GraphEdge*>(
+        &_GraphEdge_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(GraphEdge& a, GraphEdge& b) { a.Swap(&b); }
+  inline void Swap(GraphEdge* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GraphEdge* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GraphEdge* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GraphEdge>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GraphEdge& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GraphEdge& from) { GraphEdge::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GraphEdge* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ui.GraphEdge"; }
+
+  explicit GraphEdge(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  GraphEdge(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const GraphEdge& from);
+  GraphEdge(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, GraphEdge&& from) noexcept
+      : GraphEdge(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kIdFieldNumber = 1,
+    kSourceFieldNumber = 2,
+    kTargetFieldNumber = 3,
+    kTypeFieldNumber = 4,
+  };
+  // string id = 1;
+  void clear_id() ;
+  const ::std::string& id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_id();
+  void set_allocated_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
+
+  public:
+  // string source = 2;
+  void clear_source() ;
+  const ::std::string& source() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source();
+  void set_allocated_source(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source();
+
+  public:
+  // string target = 3;
+  void clear_target() ;
+  const ::std::string& target() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_target(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_target();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_target();
+  void set_allocated_target(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_target() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_target(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_target();
+
+  public:
+  // string type = 4;
+  void clear_type() ;
+  const ::std::string& type() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_type(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_type();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_type();
+  void set_allocated_type(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_type() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_type(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_type();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ui.GraphEdge)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 39,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const GraphEdge& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr id_;
+    ::google::protobuf::internal::ArenaStringPtr source_;
+    ::google::protobuf::internal::ArenaStringPtr target_;
+    ::google::protobuf::internal::ArenaStringPtr type_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_layout_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull GraphEdge_class_data_;
+// -------------------------------------------------------------------
+
 class Component_CssEntry_DoNotUse final
     : public ::google::protobuf::internal::MapEntry<::std::string, ::std::string,
                              ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
@@ -889,6 +1455,273 @@ class Component_AttributesEntry_DoNotUse final
   static constexpr auto InternalNewImpl_();
 };
 extern const ::google::protobuf::internal::ClassDataFull Component_AttributesEntry_DoNotUse_class_data_;
+// -------------------------------------------------------------------
+
+class GraphComponent final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:ui.GraphComponent) */ {
+ public:
+  inline GraphComponent() : GraphComponent(nullptr) {}
+  ~GraphComponent() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GraphComponent* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GraphComponent));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GraphComponent(::google::protobuf::internal::ConstantInitialized);
+
+  inline GraphComponent(const GraphComponent& from) : GraphComponent(nullptr, from) {}
+  inline GraphComponent(GraphComponent&& from) noexcept
+      : GraphComponent(nullptr, ::std::move(from)) {}
+  inline GraphComponent& operator=(const GraphComponent& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GraphComponent& operator=(GraphComponent&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GraphComponent& default_instance() {
+    return *reinterpret_cast<const GraphComponent*>(
+        &_GraphComponent_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(GraphComponent& a, GraphComponent& b) { a.Swap(&b); }
+  inline void Swap(GraphComponent* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GraphComponent* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GraphComponent* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GraphComponent>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GraphComponent& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GraphComponent& from) { GraphComponent::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GraphComponent* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "ui.GraphComponent"; }
+
+  explicit GraphComponent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  GraphComponent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const GraphComponent& from);
+  GraphComponent(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, GraphComponent&& from) noexcept
+      : GraphComponent(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNodesFieldNumber = 2,
+    kEdgesFieldNumber = 3,
+    kIdFieldNumber = 1,
+    kSelectedNodeIdFieldNumber = 4,
+    kSelectedEdgeIdFieldNumber = 5,
+  };
+  // repeated .ui.GraphNode nodes = 2;
+  int nodes_size() const;
+  private:
+  int _internal_nodes_size() const;
+
+  public:
+  void clear_nodes() ;
+  ::ui::GraphNode* PROTOBUF_NONNULL mutable_nodes(int index);
+  ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL mutable_nodes();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& _internal_nodes() const;
+  ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL _internal_mutable_nodes();
+  public:
+  const ::ui::GraphNode& nodes(int index) const;
+  ::ui::GraphNode* PROTOBUF_NONNULL add_nodes();
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& nodes() const;
+  // repeated .ui.GraphEdge edges = 3;
+  int edges_size() const;
+  private:
+  int _internal_edges_size() const;
+
+  public:
+  void clear_edges() ;
+  ::ui::GraphEdge* PROTOBUF_NONNULL mutable_edges(int index);
+  ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL mutable_edges();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& _internal_edges() const;
+  ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL _internal_mutable_edges();
+  public:
+  const ::ui::GraphEdge& edges(int index) const;
+  ::ui::GraphEdge* PROTOBUF_NONNULL add_edges();
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& edges() const;
+  // string id = 1;
+  void clear_id() ;
+  const ::std::string& id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_id();
+  void set_allocated_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
+
+  public:
+  // string selected_node_id = 4;
+  void clear_selected_node_id() ;
+  const ::std::string& selected_node_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_selected_node_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_selected_node_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_selected_node_id();
+  void set_allocated_selected_node_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_selected_node_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_selected_node_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_node_id();
+
+  public:
+  // string selected_edge_id = 5;
+  void clear_selected_edge_id() ;
+  const ::std::string& selected_edge_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_selected_edge_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_selected_edge_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_selected_edge_id();
+  void set_allocated_selected_edge_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_selected_edge_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_selected_edge_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_edge_id();
+
+  public:
+  // @@protoc_insertion_point(class_scope:ui.GraphComponent)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   2, 60,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const GraphComponent& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::ui::GraphNode > nodes_;
+    ::google::protobuf::RepeatedPtrField< ::ui::GraphEdge > edges_;
+    ::google::protobuf::internal::ArenaStringPtr id_;
+    ::google::protobuf::internal::ArenaStringPtr selected_node_id_;
+    ::google::protobuf::internal::ArenaStringPtr selected_edge_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_layout_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull GraphComponent_class_data_;
 // -------------------------------------------------------------------
 
 class Component final : public ::google::protobuf::Message
@@ -1034,9 +1867,13 @@ class Component final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChildrenFieldNumber = 5,
+    kNodesFieldNumber = 10,
+    kEdgesFieldNumber = 11,
     kIdFieldNumber = 1,
     kNameFieldNumber = 2,
     kTextFieldNumber = 4,
+    kSelectedNodeIdFieldNumber = 12,
+    kSelectedEdgeIdFieldNumber = 13,
     kStyleFieldNumber = 6,
     kTypeFieldNumber = 3,
     kAttributesFieldNumber = 7,
@@ -1059,6 +1896,40 @@ class Component final : public ::google::protobuf::Message
   const ::ui::Component& children(int index) const;
   ::ui::Component* PROTOBUF_NONNULL add_children();
   const ::google::protobuf::RepeatedPtrField<::ui::Component>& children() const;
+  // repeated .ui.GraphNode nodes = 10;
+  int nodes_size() const;
+  private:
+  int _internal_nodes_size() const;
+
+  public:
+  void clear_nodes() ;
+  ::ui::GraphNode* PROTOBUF_NONNULL mutable_nodes(int index);
+  ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL mutable_nodes();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& _internal_nodes() const;
+  ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL _internal_mutable_nodes();
+  public:
+  const ::ui::GraphNode& nodes(int index) const;
+  ::ui::GraphNode* PROTOBUF_NONNULL add_nodes();
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& nodes() const;
+  // repeated .ui.GraphEdge edges = 11;
+  int edges_size() const;
+  private:
+  int _internal_edges_size() const;
+
+  public:
+  void clear_edges() ;
+  ::ui::GraphEdge* PROTOBUF_NONNULL mutable_edges(int index);
+  ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL mutable_edges();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& _internal_edges() const;
+  ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL _internal_mutable_edges();
+  public:
+  const ::ui::GraphEdge& edges(int index) const;
+  ::ui::GraphEdge* PROTOBUF_NONNULL add_edges();
+  const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& edges() const;
   // string id = 1;
   void clear_id() ;
   const ::std::string& id() const;
@@ -1102,6 +1973,36 @@ class Component final : public ::google::protobuf::Message
   const ::std::string& _internal_text() const;
   PROTOBUF_ALWAYS_INLINE void _internal_set_text(const ::std::string& value);
   ::std::string* PROTOBUF_NONNULL _internal_mutable_text();
+
+  public:
+  // string selected_node_id = 12;
+  void clear_selected_node_id() ;
+  const ::std::string& selected_node_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_selected_node_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_selected_node_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_selected_node_id();
+  void set_allocated_selected_node_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_selected_node_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_selected_node_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_node_id();
+
+  public:
+  // string selected_edge_id = 13;
+  void clear_selected_edge_id() ;
+  const ::std::string& selected_edge_id() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_selected_edge_id(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_selected_edge_id();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_selected_edge_id();
+  void set_allocated_selected_edge_id(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_selected_edge_id() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_selected_edge_id(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_edge_id();
 
   public:
   // .ui.Style style = 6;
@@ -1163,8 +2064,8 @@ class Component final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
-                                   4, 52,
+  static const ::google::protobuf::internal::TcParseTable<4, 12,
+                                   6, 84,
                                    2>
       _table_;
 
@@ -1186,9 +2087,13 @@ class Component final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::ui::Component > children_;
+    ::google::protobuf::RepeatedPtrField< ::ui::GraphNode > nodes_;
+    ::google::protobuf::RepeatedPtrField< ::ui::GraphEdge > edges_;
     ::google::protobuf::internal::ArenaStringPtr id_;
     ::google::protobuf::internal::ArenaStringPtr name_;
     ::google::protobuf::internal::ArenaStringPtr text_;
+    ::google::protobuf::internal::ArenaStringPtr selected_node_id_;
+    ::google::protobuf::internal::ArenaStringPtr selected_edge_id_;
     ::ui::Style* PROTOBUF_NULLABLE style_;
     int type_;
     ::google::protobuf::internal::MapField<Component_AttributesEntry_DoNotUse, ::std::string, ::std::string,
@@ -1653,7 +2558,7 @@ inline void Component::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000008U);
 }
 inline const ::std::string& Component::id() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1663,13 +2568,13 @@ inline const ::std::string& Component::id() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void Component::set_id(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:ui.Component.id)
 }
 inline ::std::string* PROTOBUF_NONNULL Component::mutable_id()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::std::string* _s = _internal_mutable_id();
   // @@protoc_insertion_point(field_mutable:ui.Component.id)
   return _s;
@@ -1689,10 +2594,10 @@ inline ::std::string* PROTOBUF_NONNULL Component::_internal_mutable_id() {
 inline ::std::string* PROTOBUF_NULLABLE Component::release_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:ui.Component.id)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   auto* released = _impl_.id_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.id_.Set("", GetArena());
@@ -1702,9 +2607,9 @@ inline ::std::string* PROTOBUF_NULLABLE Component::release_id() {
 inline void Component::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   _impl_.id_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
@@ -1718,7 +2623,7 @@ inline void Component::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000010U);
 }
 inline const ::std::string& Component::name() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1728,13 +2633,13 @@ inline const ::std::string& Component::name() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void Component::set_name(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:ui.Component.name)
 }
 inline ::std::string* PROTOBUF_NONNULL Component::mutable_name()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::std::string* _s = _internal_mutable_name();
   // @@protoc_insertion_point(field_mutable:ui.Component.name)
   return _s;
@@ -1754,10 +2659,10 @@ inline ::std::string* PROTOBUF_NONNULL Component::_internal_mutable_name() {
 inline ::std::string* PROTOBUF_NULLABLE Component::release_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:ui.Component.name)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   auto* released = _impl_.name_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.name_.Set("", GetArena());
@@ -1767,9 +2672,9 @@ inline ::std::string* PROTOBUF_NULLABLE Component::release_name() {
 inline void Component::set_allocated_name(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   _impl_.name_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.name_.IsDefault()) {
@@ -1783,7 +2688,7 @@ inline void Component::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000200U);
 }
 inline ::ui::ComponentType Component::type() const {
   // @@protoc_insertion_point(field_get:ui.Component.type)
@@ -1791,7 +2696,7 @@ inline ::ui::ComponentType Component::type() const {
 }
 inline void Component::set_type(::ui::ComponentType value) {
   _internal_set_type(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   // @@protoc_insertion_point(field_set:ui.Component.type)
 }
 inline ::ui::ComponentType Component::_internal_type() const {
@@ -1808,7 +2713,7 @@ inline void Component::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000020U);
 }
 inline const ::std::string& Component::text() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1818,13 +2723,13 @@ inline const ::std::string& Component::text() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void Component::set_text(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   _impl_.text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:ui.Component.text)
 }
 inline ::std::string* PROTOBUF_NONNULL Component::mutable_text()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::std::string* _s = _internal_mutable_text();
   // @@protoc_insertion_point(field_mutable:ui.Component.text)
   return _s;
@@ -1844,10 +2749,10 @@ inline ::std::string* PROTOBUF_NONNULL Component::_internal_mutable_text() {
 inline ::std::string* PROTOBUF_NULLABLE Component::release_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:ui.Component.text)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   auto* released = _impl_.text_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.text_.Set("", GetArena());
@@ -1857,9 +2762,9 @@ inline ::std::string* PROTOBUF_NULLABLE Component::release_text() {
 inline void Component::set_allocated_text(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   _impl_.text_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.text_.IsDefault()) {
@@ -1926,7 +2831,7 @@ Component::_internal_mutable_children() {
 
 // .ui.Style style = 6;
 inline bool Component::has_style() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
   PROTOBUF_ASSUME(!value || _impl_.style_ != nullptr);
   return value;
 }
@@ -1934,7 +2839,7 @@ inline void Component::clear_style() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.style_ != nullptr) _impl_.style_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000100U);
 }
 inline const ::ui::Style& Component::_internal_style() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -1953,16 +2858,16 @@ inline void Component::unsafe_arena_set_allocated_style(
   }
   _impl_.style_ = reinterpret_cast<::ui::Style*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:ui.Component.style)
 }
 inline ::ui::Style* PROTOBUF_NULLABLE Component::release_style() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::ui::Style* released = _impl_.style_;
   _impl_.style_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -1982,7 +2887,7 @@ inline ::ui::Style* PROTOBUF_NULLABLE Component::unsafe_arena_release_style() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:ui.Component.style)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::ui::Style* temp = _impl_.style_;
   _impl_.style_ = nullptr;
   return temp;
@@ -1997,7 +2902,7 @@ inline ::ui::Style* PROTOBUF_NONNULL Component::_internal_mutable_style() {
 }
 inline ::ui::Style* PROTOBUF_NONNULL Component::mutable_style()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::ui::Style* _msg = _internal_mutable_style();
   // @@protoc_insertion_point(field_mutable:ui.Component.style)
   return _msg;
@@ -2014,9 +2919,9 @@ inline void Component::set_allocated_style(::ui::Style* PROTOBUF_NULLABLE value)
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   }
 
   _impl_.style_ = reinterpret_cast<::ui::Style*>(value);
@@ -2034,7 +2939,7 @@ inline void Component::clear_css() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.css_.Clear();
   ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000800U);
 }
 inline const ::google::protobuf::Map<::std::string, ::std::string>& Component::_internal_css() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -2050,7 +2955,7 @@ inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL C
 }
 inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL Component::mutable_css()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000800U);
   // @@protoc_insertion_point(field_mutable_map:ui.Component.css)
   return _internal_mutable_css();
 }
@@ -2066,7 +2971,7 @@ inline void Component::clear_attributes() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.attributes_.Clear();
   ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000400U);
 }
 inline const ::google::protobuf::Map<::std::string, ::std::string>& Component::_internal_attributes() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -2082,9 +2987,251 @@ inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL C
 }
 inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL Component::mutable_attributes()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000400U);
   // @@protoc_insertion_point(field_mutable_map:ui.Component.attributes)
   return _internal_mutable_attributes();
+}
+
+// repeated .ui.GraphNode nodes = 10;
+inline int Component::_internal_nodes_size() const {
+  return _internal_nodes().size();
+}
+inline int Component::nodes_size() const {
+  return _internal_nodes_size();
+}
+inline void Component::clear_nodes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.nodes_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::ui::GraphNode* PROTOBUF_NONNULL Component::mutable_nodes(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ui.Component.nodes)
+  return _internal_mutable_nodes()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL Component::mutable_nodes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:ui.Component.nodes)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_nodes();
+}
+inline const ::ui::GraphNode& Component::nodes(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.Component.nodes)
+  return _internal_nodes().Get(index);
+}
+inline ::ui::GraphNode* PROTOBUF_NONNULL Component::add_nodes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ui::GraphNode* _add =
+      _internal_mutable_nodes()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:ui.Component.nodes)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& Component::nodes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ui.Component.nodes)
+  return _internal_nodes();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>&
+Component::_internal_nodes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.nodes_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL
+Component::_internal_mutable_nodes() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.nodes_;
+}
+
+// repeated .ui.GraphEdge edges = 11;
+inline int Component::_internal_edges_size() const {
+  return _internal_edges().size();
+}
+inline int Component::edges_size() const {
+  return _internal_edges_size();
+}
+inline void Component::clear_edges() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.edges_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::ui::GraphEdge* PROTOBUF_NONNULL Component::mutable_edges(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ui.Component.edges)
+  return _internal_mutable_edges()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL Component::mutable_edges()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_mutable_list:ui.Component.edges)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_edges();
+}
+inline const ::ui::GraphEdge& Component::edges(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.Component.edges)
+  return _internal_edges().Get(index);
+}
+inline ::ui::GraphEdge* PROTOBUF_NONNULL Component::add_edges()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ui::GraphEdge* _add =
+      _internal_mutable_edges()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_add:ui.Component.edges)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& Component::edges() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ui.Component.edges)
+  return _internal_edges();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>&
+Component::_internal_edges() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.edges_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL
+Component::_internal_mutable_edges() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.edges_;
+}
+
+// string selected_node_id = 12;
+inline void Component::clear_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_node_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& Component::selected_node_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.Component.selected_node_id)
+  return _internal_selected_node_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Component::set_selected_node_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.selected_node_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.Component.selected_node_id)
+}
+inline ::std::string* PROTOBUF_NONNULL Component::mutable_selected_node_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_selected_node_id();
+  // @@protoc_insertion_point(field_mutable:ui.Component.selected_node_id)
+  return _s;
+}
+inline const ::std::string& Component::_internal_selected_node_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selected_node_id_.Get();
+}
+inline void Component::_internal_set_selected_node_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_node_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Component::_internal_mutable_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.selected_node_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Component::release_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.Component.selected_node_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.selected_node_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.selected_node_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Component::set_allocated_selected_node_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.selected_node_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.selected_node_id_.IsDefault()) {
+    _impl_.selected_node_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.Component.selected_node_id)
+}
+
+// string selected_edge_id = 13;
+inline void Component::clear_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_edge_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& Component::selected_edge_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.Component.selected_edge_id)
+  return _internal_selected_edge_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Component::set_selected_edge_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.selected_edge_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.Component.selected_edge_id)
+}
+inline ::std::string* PROTOBUF_NONNULL Component::mutable_selected_edge_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_selected_edge_id();
+  // @@protoc_insertion_point(field_mutable:ui.Component.selected_edge_id)
+  return _s;
+}
+inline const ::std::string& Component::_internal_selected_edge_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selected_edge_id_.Get();
+}
+inline void Component::_internal_set_selected_edge_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_edge_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Component::_internal_mutable_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.selected_edge_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Component::release_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.Component.selected_edge_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.selected_edge_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.selected_edge_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Component::set_allocated_selected_edge_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.selected_edge_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.selected_edge_id_.IsDefault()) {
+    _impl_.selected_edge_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.Component.selected_edge_id)
 }
 
 // -------------------------------------------------------------------
@@ -2407,6 +3554,970 @@ inline void Size::set_allocated_height(::std::string* PROTOBUF_NULLABLE value) {
     _impl_.height_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ui.Size.height)
+}
+
+// -------------------------------------------------------------------
+
+// GraphNode
+
+// string id = 1;
+inline void GraphNode::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& GraphNode::id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.id)
+  return _internal_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphNode::set_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphNode.id)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::mutable_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:ui.GraphNode.id)
+  return _s;
+}
+inline const ::std::string& GraphNode::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_.Get();
+}
+inline void GraphNode::_internal_set_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::_internal_mutable_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphNode::release_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphNode.id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphNode::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.id)
+}
+
+// string text = 2;
+inline void GraphNode::clear_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.text_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& GraphNode::text() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.text)
+  return _internal_text();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphNode::set_text(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphNode.text)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::mutable_text()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_text();
+  // @@protoc_insertion_point(field_mutable:ui.GraphNode.text)
+  return _s;
+}
+inline const ::std::string& GraphNode::_internal_text() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.text_.Get();
+}
+inline void GraphNode::_internal_set_text(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.text_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::_internal_mutable_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.text_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphNode::release_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphNode.text)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.text_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.text_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphNode::set_allocated_text(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.text_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.text_.IsDefault()) {
+    _impl_.text_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.text)
+}
+
+// double x = 3;
+inline void GraphNode::clear_x() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline double GraphNode::x() const {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.x)
+  return _internal_x();
+}
+inline void GraphNode::set_x(double value) {
+  _internal_set_x(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:ui.GraphNode.x)
+}
+inline double GraphNode::_internal_x() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.x_;
+}
+inline void GraphNode::_internal_set_x(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_ = value;
+}
+
+// double y = 4;
+inline void GraphNode::clear_y() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.y_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline double GraphNode::y() const {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.y)
+  return _internal_y();
+}
+inline void GraphNode::set_y(double value) {
+  _internal_set_y(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:ui.GraphNode.y)
+}
+inline double GraphNode::_internal_y() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.y_;
+}
+inline void GraphNode::_internal_set_y(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.y_ = value;
+}
+
+// string type = 5;
+inline void GraphNode::clear_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& GraphNode::type() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.type)
+  return _internal_type();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphNode::set_type(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphNode.type)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::mutable_type()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_type();
+  // @@protoc_insertion_point(field_mutable:ui.GraphNode.type)
+  return _s;
+}
+inline const ::std::string& GraphNode::_internal_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.type_.Get();
+}
+inline void GraphNode::_internal_set_type(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::_internal_mutable_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.type_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphNode::release_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphNode.type)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.type_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.type_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphNode::set_allocated_type(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.type_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.type_.IsDefault()) {
+    _impl_.type_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.type)
+}
+
+// string status = 6;
+inline void GraphNode::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& GraphNode::status() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.status)
+  return _internal_status();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphNode::set_status(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.status_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphNode.status)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::mutable_status()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_status();
+  // @@protoc_insertion_point(field_mutable:ui.GraphNode.status)
+  return _s;
+}
+inline const ::std::string& GraphNode::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.status_.Get();
+}
+inline void GraphNode::_internal_set_status(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::_internal_mutable_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.status_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphNode::release_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphNode.status)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.status_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.status_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphNode::set_allocated_status(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.status_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.status_.IsDefault()) {
+    _impl_.status_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.status)
+}
+
+// int32 creator_id = 7;
+inline void GraphNode::clear_creator_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline ::int32_t GraphNode::creator_id() const {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.creator_id)
+  return _internal_creator_id();
+}
+inline void GraphNode::set_creator_id(::int32_t value) {
+  _internal_set_creator_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  // @@protoc_insertion_point(field_set:ui.GraphNode.creator_id)
+}
+inline ::int32_t GraphNode::_internal_creator_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.creator_id_;
+}
+inline void GraphNode::_internal_set_creator_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_id_ = value;
+}
+
+// bool is_root = 8;
+inline void GraphNode::clear_is_root() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_root_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline bool GraphNode::is_root() const {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.is_root)
+  return _internal_is_root();
+}
+inline void GraphNode::set_is_root(bool value) {
+  _internal_set_is_root(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  // @@protoc_insertion_point(field_set:ui.GraphNode.is_root)
+}
+inline bool GraphNode::_internal_is_root() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_root_;
+}
+inline void GraphNode::_internal_set_is_root(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_root_ = value;
+}
+
+// bool is_current = 9;
+inline void GraphNode::clear_is_current() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_current_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline bool GraphNode::is_current() const {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.is_current)
+  return _internal_is_current();
+}
+inline void GraphNode::set_is_current(bool value) {
+  _internal_set_is_current(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:ui.GraphNode.is_current)
+}
+inline bool GraphNode::_internal_is_current() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_current_;
+}
+inline void GraphNode::_internal_set_is_current(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_current_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GraphEdge
+
+// string id = 1;
+inline void GraphEdge::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& GraphEdge::id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.id)
+  return _internal_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphEdge::set_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.id)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::mutable_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:ui.GraphEdge.id)
+  return _s;
+}
+inline const ::std::string& GraphEdge::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_.Get();
+}
+inline void GraphEdge::_internal_set_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::_internal_mutable_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphEdge::release_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphEdge.id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphEdge::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.id)
+}
+
+// string source = 2;
+inline void GraphEdge::clear_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& GraphEdge::source() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.source)
+  return _internal_source();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphEdge::set_source(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.source_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.source)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::mutable_source()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_source();
+  // @@protoc_insertion_point(field_mutable:ui.GraphEdge.source)
+  return _s;
+}
+inline const ::std::string& GraphEdge::_internal_source() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_.Get();
+}
+inline void GraphEdge::_internal_set_source(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::_internal_mutable_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphEdge::release_source() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphEdge.source)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.source_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphEdge::set_allocated_source(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.source_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_.IsDefault()) {
+    _impl_.source_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.source)
+}
+
+// string target = 3;
+inline void GraphEdge::clear_target() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& GraphEdge::target() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.target)
+  return _internal_target();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphEdge::set_target(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.target_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.target)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::mutable_target()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_target();
+  // @@protoc_insertion_point(field_mutable:ui.GraphEdge.target)
+  return _s;
+}
+inline const ::std::string& GraphEdge::_internal_target() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.target_.Get();
+}
+inline void GraphEdge::_internal_set_target(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::_internal_mutable_target() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.target_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphEdge::release_target() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphEdge.target)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.target_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.target_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphEdge::set_allocated_target(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.target_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.target_.IsDefault()) {
+    _impl_.target_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.target)
+}
+
+// string type = 4;
+inline void GraphEdge::clear_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& GraphEdge::type() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.type)
+  return _internal_type();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphEdge::set_type(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.type)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::mutable_type()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_type();
+  // @@protoc_insertion_point(field_mutable:ui.GraphEdge.type)
+  return _s;
+}
+inline const ::std::string& GraphEdge::_internal_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.type_.Get();
+}
+inline void GraphEdge::_internal_set_type(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.type_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::_internal_mutable_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.type_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphEdge::release_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphEdge.type)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.type_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.type_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphEdge::set_allocated_type(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.type_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.type_.IsDefault()) {
+    _impl_.type_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.type)
+}
+
+// -------------------------------------------------------------------
+
+// GraphComponent
+
+// string id = 1;
+inline void GraphComponent::clear_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& GraphComponent::id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphComponent.id)
+  return _internal_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphComponent::set_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphComponent.id)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::mutable_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_id();
+  // @@protoc_insertion_point(field_mutable:ui.GraphComponent.id)
+  return _s;
+}
+inline const ::std::string& GraphComponent::_internal_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.id_.Get();
+}
+inline void GraphComponent::_internal_set_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::_internal_mutable_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphComponent::release_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphComponent.id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphComponent::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.id_.IsDefault()) {
+    _impl_.id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphComponent.id)
+}
+
+// repeated .ui.GraphNode nodes = 2;
+inline int GraphComponent::_internal_nodes_size() const {
+  return _internal_nodes().size();
+}
+inline int GraphComponent::nodes_size() const {
+  return _internal_nodes_size();
+}
+inline void GraphComponent::clear_nodes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.nodes_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::ui::GraphNode* PROTOBUF_NONNULL GraphComponent::mutable_nodes(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ui.GraphComponent.nodes)
+  return _internal_mutable_nodes()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL GraphComponent::mutable_nodes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:ui.GraphComponent.nodes)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_nodes();
+}
+inline const ::ui::GraphNode& GraphComponent::nodes(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphComponent.nodes)
+  return _internal_nodes().Get(index);
+}
+inline ::ui::GraphNode* PROTOBUF_NONNULL GraphComponent::add_nodes()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ui::GraphNode* _add =
+      _internal_mutable_nodes()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:ui.GraphComponent.nodes)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& GraphComponent::nodes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ui.GraphComponent.nodes)
+  return _internal_nodes();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>&
+GraphComponent::_internal_nodes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.nodes_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphNode>* PROTOBUF_NONNULL
+GraphComponent::_internal_mutable_nodes() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.nodes_;
+}
+
+// repeated .ui.GraphEdge edges = 3;
+inline int GraphComponent::_internal_edges_size() const {
+  return _internal_edges().size();
+}
+inline int GraphComponent::edges_size() const {
+  return _internal_edges_size();
+}
+inline void GraphComponent::clear_edges() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.edges_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::ui::GraphEdge* PROTOBUF_NONNULL GraphComponent::mutable_edges(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:ui.GraphComponent.edges)
+  return _internal_mutable_edges()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL GraphComponent::mutable_edges()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:ui.GraphComponent.edges)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_edges();
+}
+inline const ::ui::GraphEdge& GraphComponent::edges(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphComponent.edges)
+  return _internal_edges().Get(index);
+}
+inline ::ui::GraphEdge* PROTOBUF_NONNULL GraphComponent::add_edges()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::ui::GraphEdge* _add =
+      _internal_mutable_edges()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:ui.GraphComponent.edges)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& GraphComponent::edges() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:ui.GraphComponent.edges)
+  return _internal_edges();
+}
+inline const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>&
+GraphComponent::_internal_edges() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.edges_;
+}
+inline ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>* PROTOBUF_NONNULL
+GraphComponent::_internal_mutable_edges() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.edges_;
+}
+
+// string selected_node_id = 4;
+inline void GraphComponent::clear_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_node_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& GraphComponent::selected_node_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphComponent.selected_node_id)
+  return _internal_selected_node_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphComponent::set_selected_node_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.selected_node_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphComponent.selected_node_id)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::mutable_selected_node_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_selected_node_id();
+  // @@protoc_insertion_point(field_mutable:ui.GraphComponent.selected_node_id)
+  return _s;
+}
+inline const ::std::string& GraphComponent::_internal_selected_node_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selected_node_id_.Get();
+}
+inline void GraphComponent::_internal_set_selected_node_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_node_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::_internal_mutable_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.selected_node_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphComponent::release_selected_node_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphComponent.selected_node_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.selected_node_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.selected_node_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphComponent::set_allocated_selected_node_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.selected_node_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.selected_node_id_.IsDefault()) {
+    _impl_.selected_node_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphComponent.selected_node_id)
+}
+
+// string selected_edge_id = 5;
+inline void GraphComponent::clear_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_edge_id_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& GraphComponent::selected_edge_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphComponent.selected_edge_id)
+  return _internal_selected_edge_id();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphComponent::set_selected_edge_id(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.selected_edge_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphComponent.selected_edge_id)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::mutable_selected_edge_id()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_selected_edge_id();
+  // @@protoc_insertion_point(field_mutable:ui.GraphComponent.selected_edge_id)
+  return _s;
+}
+inline const ::std::string& GraphComponent::_internal_selected_edge_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selected_edge_id_.Get();
+}
+inline void GraphComponent::_internal_set_selected_edge_id(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_edge_id_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphComponent::_internal_mutable_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.selected_edge_id_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphComponent::release_selected_edge_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphComponent.selected_edge_id)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.selected_edge_id_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.selected_edge_id_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphComponent::set_allocated_selected_edge_id(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.selected_edge_id_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.selected_edge_id_.IsDefault()) {
+    _impl_.selected_edge_id_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphComponent.selected_edge_id)
 }
 
 #ifdef __GNUC__

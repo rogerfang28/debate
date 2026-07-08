@@ -111,6 +111,83 @@ struct PositionDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
+
+inline constexpr GraphNode::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        type_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        status_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        x_{0},
+        y_{0},
+        creator_id_{0},
+        is_root_{false},
+        is_current_{false} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GraphNode::GraphNode(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(GraphNode_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GraphNodeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GraphNodeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GraphNodeDefaultTypeInternal() {}
+  union {
+    GraphNode _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GraphNodeDefaultTypeInternal _GraphNode_default_instance_;
+
+inline constexpr GraphEdge::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        source_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        target_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        type_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GraphEdge::GraphEdge(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(GraphEdge_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GraphEdgeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GraphEdgeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GraphEdgeDefaultTypeInternal() {}
+  union {
+    GraphEdge _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GraphEdgeDefaultTypeInternal _GraphEdge_default_instance_;
 template <typename>
 PROTOBUF_CONSTEXPR Component_CssEntry_DoNotUse::Component_CssEntry_DoNotUse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -148,10 +225,47 @@ struct Component_AttributesEntry_DoNotUseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Component_AttributesEntry_DoNotUseDefaultTypeInternal _Component_AttributesEntry_DoNotUse_default_instance_;
 
+inline constexpr GraphComponent::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        nodes_{},
+        edges_{},
+        id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        selected_node_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        selected_edge_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GraphComponent::GraphComponent(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(GraphComponent_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct GraphComponentDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GraphComponentDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GraphComponentDefaultTypeInternal() {}
+  union {
+    GraphComponent _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GraphComponentDefaultTypeInternal _GraphComponent_default_instance_;
+
 inline constexpr Component::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         children_{},
+        nodes_{},
+        edges_{},
         id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
@@ -159,6 +273,12 @@ inline constexpr Component::Impl_::Impl_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        selected_node_id_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        selected_edge_id_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         style_{nullptr},
@@ -249,7 +369,7 @@ const ::uint32_t
         1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_._has_bits_),
-        11, // hasbit index offset
+        15, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.name_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.type_),
@@ -258,14 +378,22 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.style_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.css_),
         PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.attributes_),
+        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.nodes_),
+        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.edges_),
+        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.selected_node_id_),
+        PROTOBUF_FIELD_OFFSET(::ui::Component, _impl_.selected_edge_id_),
+        3,
+        4,
+        9,
+        5,
+        0,
+        8,
+        11,
+        10,
         1,
         2,
-        5,
-        3,
-        0,
-        4,
-        7,
         6,
+        7,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::Style, _impl_._has_bits_),
         4, // hasbit index offset
@@ -287,6 +415,51 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::Size, _impl_.height_),
         0,
         1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_._has_bits_),
+        12, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.text_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.x_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.y_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.status_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.creator_id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.is_root_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.is_current_),
+        0,
+        1,
+        4,
+        5,
+        2,
+        3,
+        6,
+        7,
+        8,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_._has_bits_),
+        7, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.source_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.target_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.type_),
+        0,
+        1,
+        2,
+        3,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_._has_bits_),
+        8, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_.nodes_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_.edges_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_.selected_node_id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_.selected_edge_id_),
+        2,
+        0,
+        1,
+        3,
+        4,
 };
 
 static const ::_pbi::MigrationSchema
@@ -295,9 +468,12 @@ static const ::_pbi::MigrationSchema
         {9, sizeof(::ui::Component_CssEntry_DoNotUse)},
         {16, sizeof(::ui::Component_AttributesEntry_DoNotUse)},
         {23, sizeof(::ui::Component)},
-        {42, sizeof(::ui::Style)},
-        {47, sizeof(::ui::Position)},
-        {56, sizeof(::ui::Size)},
+        {50, sizeof(::ui::Style)},
+        {55, sizeof(::ui::Position)},
+        {64, sizeof(::ui::Size)},
+        {71, sizeof(::ui::GraphNode)},
+        {92, sizeof(::ui::GraphEdge)},
+        {103, sizeof(::ui::GraphComponent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
@@ -307,39 +483,55 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::ui::_Style_default_instance_._instance,
     &::ui::_Position_default_instance_._instance,
     &::ui::_Size_default_instance_._instance,
+    &::ui::_GraphNode_default_instance_._instance,
+    &::ui::_GraphEdge_default_instance_._instance,
+    &::ui::_GraphComponent_default_instance_._instance,
 };
 const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\014layout.proto\022\002ui\"I\n\004Page\022\017\n\007page_id\030\001 "
     "\001(\t\022\r\n\005title\030\002 \001(\t\022!\n\ncomponents\030\003 \003(\0132\r"
-    ".ui.Component\"\306\002\n\tComponent\022\n\n\002id\030\001 \001(\t\022"
+    ".ui.Component\"\266\003\n\tComponent\022\n\n\002id\030\001 \001(\t\022"
     "\014\n\004name\030\002 \001(\t\022\037\n\004type\030\003 \001(\0162\021.ui.Compone"
     "ntType\022\014\n\004text\030\004 \001(\t\022\037\n\010children\030\005 \003(\0132\r"
     ".ui.Component\022\030\n\005style\030\006 \001(\0132\t.ui.Style\022"
     "#\n\003css\030\010 \003(\0132\026.ui.Component.CssEntry\0221\n\n"
     "attributes\030\007 \003(\0132\035.ui.Component.Attribut"
-    "esEntry\032*\n\010CssEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu"
-    "e\030\002 \001(\t:\0028\001\0321\n\017AttributesEntry\022\013\n\003key\030\001 "
-    "\001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custo"
-    "m_class\030\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001"
-    "y\030\002 \001(\002\022\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001"
-    " \001(\t\022\016\n\006height\030\002 \001(\t*L\n\rComponentType\022\013\n"
-    "\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPU"
-    "T\020\003\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t\n\005ABSL"
-    "T\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020"
-    "\003\022\n\n\006INLINE\020\004b\006proto3"
+    "esEntry\022\034\n\005nodes\030\n \003(\0132\r.ui.GraphNode\022\034\n"
+    "\005edges\030\013 \003(\0132\r.ui.GraphEdge\022\030\n\020selected_"
+    "node_id\030\014 \001(\t\022\030\n\020selected_edge_id\030\r \001(\t\032"
+    "*\n\010CssEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:"
+    "\0028\001\0321\n\017AttributesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
+    "alue\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custom_class\030"
+    "\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
+    "\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001 \001(\t\022\016\n\006"
+    "height\030\002 \001(\t\"\222\001\n\tGraphNode\022\n\n\002id\030\001 \001(\t\022\014"
+    "\n\004text\030\002 \001(\t\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\014\n\004ty"
+    "pe\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\022\n\ncreator_id\030\007"
+    " \001(\005\022\017\n\007is_root\030\010 \001(\010\022\022\n\nis_current\030\t \001("
+    "\010\"E\n\tGraphEdge\022\n\n\002id\030\001 \001(\t\022\016\n\006source\030\002 \001"
+    "(\t\022\016\n\006target\030\003 \001(\t\022\014\n\004type\030\004 \001(\t\"\214\001\n\016Gra"
+    "phComponent\022\n\n\002id\030\001 \001(\t\022\034\n\005nodes\030\002 \003(\0132\r"
+    ".ui.GraphNode\022\034\n\005edges\030\003 \003(\0132\r.ui.GraphE"
+    "dge\022\030\n\020selected_node_id\030\004 \001(\t\022\030\n\020selecte"
+    "d_edge_id\030\005 \001(\t*i\n\rComponentType\022\013\n\007UNKN"
+    "OWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t"
+    "\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014CLAIM_PARSER"
+    "\020\016*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020"
+    "\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006p"
+    "roto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    701,
+    1205,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
     nullptr,
     0,
-    7,
+    10,
     schemas,
     file_default_instances,
     TableStruct_layout_2eproto::offsets,
@@ -352,7 +544,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descrip
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    262144u, 32u, 256u, };
+    327680u, 32u, 640u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL LayoutType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);
   return file_level_enum_descriptors_layout_2eproto[1];
@@ -954,9 +1146,13 @@ PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
         children_{visibility, arena, from.children_},
+        nodes_{visibility, arena, from.nodes_},
+        edges_{visibility, arena, from.edges_},
         id_(arena, from.id_),
         name_(arena, from.name_),
         text_(arena, from.text_),
+        selected_node_id_(arena, from.selected_node_id_),
+        selected_edge_id_(arena, from.selected_edge_id_),
         attributes_{visibility, arena, from.attributes_},
         css_{visibility, arena, from.css_} {}
 
@@ -974,7 +1170,7 @@ Component::Component(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.style_ = (CheckHasBit(cached_has_bits, 0x00000010U))
+  _impl_.style_ = (CheckHasBit(cached_has_bits, 0x00000100U))
                 ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.style_)
                 : nullptr;
   _impl_.type_ = from._impl_.type_;
@@ -986,9 +1182,13 @@ PROTOBUF_NDEBUG_INLINE Component::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
         children_{visibility, arena},
+        nodes_{visibility, arena},
+        edges_{visibility, arena},
         id_(arena),
         name_(arena),
         text_(arena),
+        selected_node_id_(arena),
+        selected_edge_id_(arena),
         attributes_{visibility, arena},
         css_{visibility, arena} {}
 
@@ -1015,6 +1215,8 @@ inline void Component::SharedDtor(MessageLite& self) {
   this_._impl_.id_.Destroy();
   this_._impl_.name_.Destroy();
   this_._impl_.text_.Destroy();
+  this_._impl_.selected_node_id_.Destroy();
+  this_._impl_.selected_edge_id_.Destroy();
   delete this_._impl_.style_;
   this_._impl_.~Impl_();
 }
@@ -1036,6 +1238,14 @@ constexpr auto Component::InternalNewImpl_() {
                   ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_) +
           decltype(Component::_impl_.attributes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.nodes_) +
+          decltype(Component::_impl_.nodes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.edges_) +
+          decltype(Component::_impl_.edges_)::
               InternalGetArenaOffset(
                   ::google::protobuf::Message::internal_visibility()),
   });
@@ -1082,17 +1292,17 @@ Component::GetClassData() const {
   return Component_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 8, 4, 52, 2>
+const ::_pbi::TcParseTable<4, 12, 6, 84, 2>
 Component::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Component, _impl_._has_bits_),
     0, // no _extensions_
-    8, 56,  // max_field_number, fast_idx_mask
+    13, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967040,  // skipmap
+    4294959360,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    8,  // num_field_entries
-    4,  // num_aux_entries
+    12,  // num_field_entries
+    6,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     Component_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -1104,19 +1314,19 @@ Component::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // string id = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 1, 0,
+     {10, 3, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
     // string name = 2;
     {::_pbi::TcParser::FastUS1,
-     {18, 2, 0,
+     {18, 4, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.name_)}},
     // .ui.ComponentType type = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 5>(),
-     {24, 5, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 9>(),
+     {24, 9, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
     // string text = 4;
     {::_pbi::TcParser::FastUS1,
-     {34, 3, 0,
+     {34, 5, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
     // repeated .ui.Component children = 5;
     {::_pbi::TcParser::FastMtR1,
@@ -1124,45 +1334,77 @@ Component::_table_ = {
       PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
     // .ui.Style style = 6;
     {::_pbi::TcParser::FastMtS1,
-     {50, 4, 1,
+     {50, 8, 1,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // repeated .ui.GraphNode nodes = 10;
+    {::_pbi::TcParser::FastMtR1,
+     {82, 1, 2,
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.nodes_)}},
+    // repeated .ui.GraphEdge edges = 11;
+    {::_pbi::TcParser::FastMtR1,
+     {90, 2, 3,
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.edges_)}},
+    // string selected_node_id = 12;
+    {::_pbi::TcParser::FastUS1,
+     {98, 6, 0,
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_node_id_)}},
+    // string selected_edge_id = 13;
+    {::_pbi::TcParser::FastUS1,
+     {106, 7, 0,
+      PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_edge_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // string id = 1;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string name = 2;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.name_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.name_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // .ui.ComponentType type = 3;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
     // string text = 4;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // repeated .ui.Component children = 5;
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // .ui.Style style = 6;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 4, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 8, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
     // map<string, string> attributes = 7;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), _Internal::kHasBitsOffset + 6, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), _Internal::kHasBitsOffset + 10, 4, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
     // map<string, string> css = 8;
-    {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), _Internal::kHasBitsOffset + 7, 3, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), _Internal::kHasBitsOffset + 11, 5, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
+    // repeated .ui.GraphNode nodes = 10;
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.nodes_), _Internal::kHasBitsOffset + 1, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .ui.GraphEdge edges = 11;
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.edges_), _Internal::kHasBitsOffset + 2, 3, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // string selected_node_id = 12;
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_node_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string selected_edge_id = 13;
+    {PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_edge_id_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::ui::Component>()},
       {::_pbi::TcParser::GetTable<::ui::Style>()},
+      {::_pbi::TcParser::GetTable<::ui::GraphNode>()},
+      {::_pbi::TcParser::GetTable<::ui::GraphEdge>()},
       {::_pbi::TcParser::GetMapAuxInfo(
           1, 0, 9, 9, 0)},
       {::_pbi::TcParser::GetMapAuxInfo(
           1, 0, 9, 9, 0)},
   }},
   {{
-    "\14\2\4\0\4\0\0\12\3\0\0\0\0\0\0\0"
+    "\14\2\4\0\4\0\0\12\3\0\0\20\20\0\0\0"
     "ui.Component"
     "id"
     "name"
     "text"
     "attributes"
     "css"
+    "selected_node_id"
+    "selected_edge_id"
   }},
 };
 PROTOBUF_NOINLINE void Component::Clear() {
@@ -1173,30 +1415,42 @@ PROTOBUF_NOINLINE void Component::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       _impl_.children_.Clear();
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      _impl_.id_.ClearNonDefaultToEmpty();
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _impl_.nodes_.Clear();
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
-      _impl_.name_.ClearNonDefaultToEmpty();
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      _impl_.edges_.Clear();
     }
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
-      _impl_.text_.ClearNonDefaultToEmpty();
+      _impl_.id_.ClearNonDefaultToEmpty();
     }
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
-      ABSL_DCHECK(_impl_.style_ != nullptr);
-      _impl_.style_->Clear();
+      _impl_.name_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      _impl_.text_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      _impl_.selected_node_id_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+      _impl_.selected_edge_id_.ClearNonDefaultToEmpty();
     }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x000000e0U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+    ABSL_DCHECK(_impl_.style_ != nullptr);
+    _impl_.style_->Clear();
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000e00U)) {
     _impl_.type_ = 0;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
       _impl_.attributes_.Clear();
     }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000080U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
       _impl_.css_.Clear();
     }
   }
@@ -1224,7 +1478,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
 
   cached_has_bits = this_._impl_._has_bits_[0];
   // string id = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (!this_._internal_id().empty()) {
       const ::std::string& _s = this_._internal_id();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1234,7 +1488,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   }
 
   // string name = 2;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (!this_._internal_name().empty()) {
       const ::std::string& _s = this_._internal_name();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1244,7 +1498,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   }
 
   // .ui.ComponentType type = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000200U)) {
     if (this_._internal_type() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -1253,7 +1507,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   }
 
   // string text = 4;
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
     if (!this_._internal_text().empty()) {
       const ::std::string& _s = this_._internal_text();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -1276,14 +1530,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
   }
 
   // .ui.Style style = 6;
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         6, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
         stream);
   }
 
   // map<string, string> attributes = 7;
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
     if (!this_._internal_attributes().empty()) {
       using MapType = ::google::protobuf::Map<::std::string, ::std::string>;
       using WireHelper = _pbi::MapEntryFuncs<::std::string, ::std::string,
@@ -1318,7 +1572,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   }
 
   // map<string, string> css = 8;
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000080U)) {
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
     if (!this_._internal_css().empty()) {
       using MapType = ::google::protobuf::Map<::std::string, ::std::string>;
       using WireHelper = _pbi::MapEntryFuncs<::std::string, ::std::string,
@@ -1349,6 +1603,52 @@ PROTOBUF_NOINLINE void Component::Clear() {
  ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.css");
         }
       }
+    }
+  }
+
+  // repeated .ui.GraphNode nodes = 10;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_nodes_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_nodes().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              10, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated .ui.GraphEdge edges = 11;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_edges_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_edges().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              11, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // string selected_node_id = 12;
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (!this_._internal_selected_node_id().empty()) {
+      const ::std::string& _s = this_._internal_selected_node_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.selected_node_id");
+      target = stream->WriteStringMaybeAliased(12, _s, target);
+    }
+  }
+
+  // string selected_edge_id = 13;
+  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+    if (!this_._internal_selected_edge_id().empty()) {
+      const ::std::string& _s = this_._internal_selected_edge_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.Component.selected_edge_id");
+      target = stream->WriteStringMaybeAliased(13, _s, target);
     }
   }
 
@@ -1385,41 +1685,71 @@ PROTOBUF_NOINLINE void Component::Clear() {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
+    // repeated .ui.GraphNode nodes = 10;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      total_size += 1UL * this_._internal_nodes_size();
+      for (const auto& msg : this_._internal_nodes()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated .ui.GraphEdge edges = 11;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      total_size += 1UL * this_._internal_edges_size();
+      for (const auto& msg : this_._internal_edges()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
     // string id = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!this_._internal_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_id());
       }
     }
     // string name = 2;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (!this_._internal_name().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_name());
       }
     }
     // string text = 4;
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (!this_._internal_text().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_text());
       }
     }
+    // string selected_node_id = 12;
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (!this_._internal_selected_node_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_selected_node_id());
+      }
+    }
+    // string selected_edge_id = 13;
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+      if (!this_._internal_selected_edge_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_selected_edge_id());
+      }
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000f00U)) {
     // .ui.Style style = 6;
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.style_);
     }
     // .ui.ComponentType type = 3;
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (this_._internal_type() != 0) {
         total_size += 1 +
                       ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
       }
     }
     // map<string, string> attributes = 7;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_attributes_size());
       for (const auto& entry : this_._internal_attributes()) {
@@ -1429,7 +1759,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
       }
     }
     // map<string, string> css = 8;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000080U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_css_size());
       for (const auto& entry : this_._internal_css()) {
@@ -1464,7 +1794,17 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg,
           ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_children());
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _this->_internal_mutable_nodes()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_nodes());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      _this->_internal_mutable_edges()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_edges());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!from._internal_id().empty()) {
         _this->_internal_set_id(from._internal_id());
       } else {
@@ -1473,7 +1813,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (!from._internal_name().empty()) {
         _this->_internal_set_name(from._internal_name());
       } else {
@@ -1482,7 +1822,7 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (!from._internal_text().empty()) {
         _this->_internal_set_text(from._internal_text());
       } else {
@@ -1491,7 +1831,27 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (!from._internal_selected_node_id().empty()) {
+        _this->_internal_set_selected_node_id(from._internal_selected_node_id());
+      } else {
+        if (_this->_impl_.selected_node_id_.IsDefault()) {
+          _this->_internal_set_selected_node_id("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+      if (!from._internal_selected_edge_id().empty()) {
+        _this->_internal_set_selected_edge_id(from._internal_selected_edge_id());
+      } else {
+        if (_this->_impl_.selected_edge_id_.IsDefault()) {
+          _this->_internal_set_selected_edge_id("");
+        }
+      }
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000f00U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       ABSL_DCHECK(from._impl_.style_ != nullptr);
       if (_this->_impl_.style_ == nullptr) {
         _this->_impl_.style_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.style_);
@@ -1499,15 +1859,15 @@ void Component::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.style_->MergeFrom(*from._impl_.style_);
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (from._internal_type() != 0) {
         _this->_impl_.type_ = from._impl_.type_;
       }
     }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
       _this->_impl_.attributes_.MergeFrom(from._impl_.attributes_);
     }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000080U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
       _this->_impl_.css_.MergeFrom(from._impl_.css_);
     }
   }
@@ -1531,9 +1891,13 @@ void Component::InternalSwap(Component* PROTOBUF_RESTRICT PROTOBUF_NONNULL other
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.children_.InternalSwap(&other->_impl_.children_);
+  _impl_.nodes_.InternalSwap(&other->_impl_.nodes_);
+  _impl_.edges_.InternalSwap(&other->_impl_.edges_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.selected_node_id_, &other->_impl_.selected_node_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.selected_edge_id_, &other->_impl_.selected_edge_id_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)
       + sizeof(Component::_impl_.type_)
@@ -2495,6 +2859,1428 @@ void Size::InternalSwap(Size* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
 }
 
 ::google::protobuf::Metadata Size::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GraphNode::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<GraphNode>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GraphNode, _impl_._has_bits_);
+};
+
+GraphNode::GraphNode(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphNode_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ui.GraphNode)
+}
+PROTOBUF_NDEBUG_INLINE GraphNode::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::ui::GraphNode& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        id_(arena, from.id_),
+        text_(arena, from.text_),
+        type_(arena, from.type_),
+        status_(arena, from.status_) {}
+
+GraphNode::GraphNode(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GraphNode& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphNode_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GraphNode* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, x_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, x_),
+           offsetof(Impl_, is_current_) -
+               offsetof(Impl_, x_) +
+               sizeof(Impl_::is_current_));
+
+  // @@protoc_insertion_point(copy_constructor:ui.GraphNode)
+}
+PROTOBUF_NDEBUG_INLINE GraphNode::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        id_(arena),
+        text_(arena),
+        type_(arena),
+        status_(arena) {}
+
+inline void GraphNode::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, x_),
+           0,
+           offsetof(Impl_, is_current_) -
+               offsetof(Impl_, x_) +
+               sizeof(Impl_::is_current_));
+}
+GraphNode::~GraphNode() {
+  // @@protoc_insertion_point(destructor:ui.GraphNode)
+  SharedDtor(*this);
+}
+inline void GraphNode::SharedDtor(MessageLite& self) {
+  GraphNode& this_ = static_cast<GraphNode&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.id_.Destroy();
+  this_._impl_.text_.Destroy();
+  this_._impl_.type_.Destroy();
+  this_._impl_.status_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL GraphNode::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) GraphNode(arena);
+}
+constexpr auto GraphNode::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GraphNode),
+                                            alignof(GraphNode));
+}
+constexpr auto GraphNode::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_GraphNode_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &GraphNode::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<GraphNode>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &GraphNode::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<GraphNode>(), &GraphNode::ByteSizeLong,
+              &GraphNode::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(GraphNode, _impl_._cached_size_),
+          false,
+      },
+      &GraphNode::kDescriptorMethods,
+      &descriptor_table_layout_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull GraphNode_class_data_ =
+        GraphNode::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GraphNode::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GraphNode_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(GraphNode_class_data_.tc_table);
+  return GraphNode_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<4, 9, 0, 45, 2>
+GraphNode::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GraphNode, _impl_._has_bits_),
+    0, // no _extensions_
+    9, 120,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294966784,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    9,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    GraphNode_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ui::GraphNode>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.id_)}},
+    // string text = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_)}},
+    // double x = 3;
+    {::_pbi::TcParser::FastF64S1,
+     {25, 4, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_)}},
+    // double y = 4;
+    {::_pbi::TcParser::FastF64S1,
+     {33, 5, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_)}},
+    // string type = 5;
+    {::_pbi::TcParser::FastUS1,
+     {42, 2, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.type_)}},
+    // string status = 6;
+    {::_pbi::TcParser::FastUS1,
+     {50, 3, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_)}},
+    // int32 creator_id = 7;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphNode, _impl_.creator_id_), 6>(),
+     {56, 6, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_)}},
+    // bool is_root = 8;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_root_), 7>(),
+     {64, 7, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_)}},
+    // bool is_current = 9;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_current_), 8>(),
+     {72, 8, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string text = 2;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // double x = 3;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // double y = 4;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // string type = 5;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.type_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string status = 6;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 creator_id = 7;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // bool is_root = 8;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // bool is_current = 9;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+    "\14\2\4\0\0\4\6\0\0\0\0\0\0\0\0\0"
+    "ui.GraphNode"
+    "id"
+    "text"
+    "type"
+    "status"
+  }},
+};
+PROTOBUF_NOINLINE void GraphNode::Clear() {
+// @@protoc_insertion_point(message_clear_start:ui.GraphNode)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.id_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.text_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      _impl_.type_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      _impl_.status_.ClearNonDefaultToEmpty();
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x000000f0U)) {
+    ::memset(&_impl_.x_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.is_root_) -
+        reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.is_root_));
+  }
+  _impl_.is_current_ = false;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL GraphNode::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const GraphNode& this_ = static_cast<const GraphNode&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL GraphNode::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const GraphNode& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:ui.GraphNode)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_id().empty()) {
+      const ::std::string& _s = this_._internal_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphNode.id");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // string text = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_text().empty()) {
+      const ::std::string& _s = this_._internal_text();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphNode.text");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // double x = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+          3, this_._internal_x(), target);
+    }
+  }
+
+  // double y = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+          4, this_._internal_y(), target);
+    }
+  }
+
+  // string type = 5;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (!this_._internal_type().empty()) {
+      const ::std::string& _s = this_._internal_type();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphNode.type");
+      target = stream->WriteStringMaybeAliased(5, _s, target);
+    }
+  }
+
+  // string status = 6;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (!this_._internal_status().empty()) {
+      const ::std::string& _s = this_._internal_status();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphNode.status");
+      target = stream->WriteStringMaybeAliased(6, _s, target);
+    }
+  }
+
+  // int32 creator_id = 7;
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (this_._internal_creator_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
+              stream, this_._internal_creator_id(), target);
+    }
+  }
+
+  // bool is_root = 8;
+  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+    if (this_._internal_is_root() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          8, this_._internal_is_root(), target);
+    }
+  }
+
+  // bool is_current = 9;
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+    if (this_._internal_is_current() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          9, this_._internal_is_current(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ui.GraphNode)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t GraphNode::ByteSizeLong(const MessageLite& base) {
+  const GraphNode& this_ = static_cast<const GraphNode&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t GraphNode::ByteSizeLong() const {
+  const GraphNode& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:ui.GraphNode)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
+    // string id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_id());
+      }
+    }
+    // string text = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_text().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_text());
+      }
+    }
+    // string type = 5;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!this_._internal_type().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_type());
+      }
+    }
+    // string status = 6;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!this_._internal_status().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_status());
+      }
+    }
+    // double x = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
+        total_size += 9;
+      }
+    }
+    // double y = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
+        total_size += 9;
+      }
+    }
+    // int32 creator_id = 7;
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (this_._internal_creator_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_creator_id());
+      }
+    }
+    // bool is_root = 8;
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+      if (this_._internal_is_root() != 0) {
+        total_size += 2;
+      }
+    }
+  }
+   {
+    // bool is_current = 9;
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+      if (this_._internal_is_current() != 0) {
+        total_size += 2;
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void GraphNode::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<GraphNode*>(&to_msg);
+  auto& from = static_cast<const GraphNode&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui.GraphNode)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_id().empty()) {
+        _this->_internal_set_id(from._internal_id());
+      } else {
+        if (_this->_impl_.id_.IsDefault()) {
+          _this->_internal_set_id("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_text().empty()) {
+        _this->_internal_set_text(from._internal_text());
+      } else {
+        if (_this->_impl_.text_.IsDefault()) {
+          _this->_internal_set_text("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!from._internal_type().empty()) {
+        _this->_internal_set_type(from._internal_type());
+      } else {
+        if (_this->_impl_.type_.IsDefault()) {
+          _this->_internal_set_type("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!from._internal_status().empty()) {
+        _this->_internal_set_status(from._internal_status());
+      } else {
+        if (_this->_impl_.status_.IsDefault()) {
+          _this->_internal_set_status("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (::absl::bit_cast<::uint64_t>(from._internal_x()) != 0) {
+        _this->_impl_.x_ = from._impl_.x_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      if (::absl::bit_cast<::uint64_t>(from._internal_y()) != 0) {
+        _this->_impl_.y_ = from._impl_.y_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (from._internal_creator_id() != 0) {
+        _this->_impl_.creator_id_ = from._impl_.creator_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+      if (from._internal_is_root() != 0) {
+        _this->_impl_.is_root_ = from._impl_.is_root_;
+      }
+    }
+  }
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+    if (from._internal_is_current() != 0) {
+      _this->_impl_.is_current_ = from._impl_.is_current_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void GraphNode::CopyFrom(const GraphNode& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:ui.GraphNode)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GraphNode::InternalSwap(GraphNode* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.type_, &other->_impl_.type_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.status_, &other->_impl_.status_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_)
+      + sizeof(GraphNode::_impl_.is_current_)
+      - PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_)>(
+          reinterpret_cast<char*>(&_impl_.x_),
+          reinterpret_cast<char*>(&other->_impl_.x_));
+}
+
+::google::protobuf::Metadata GraphNode::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GraphEdge::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<GraphEdge>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_._has_bits_);
+};
+
+GraphEdge::GraphEdge(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphEdge_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ui.GraphEdge)
+}
+PROTOBUF_NDEBUG_INLINE GraphEdge::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::ui::GraphEdge& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        id_(arena, from.id_),
+        source_(arena, from.source_),
+        target_(arena, from.target_),
+        type_(arena, from.type_) {}
+
+GraphEdge::GraphEdge(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GraphEdge& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphEdge_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GraphEdge* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ui.GraphEdge)
+}
+PROTOBUF_NDEBUG_INLINE GraphEdge::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        id_(arena),
+        source_(arena),
+        target_(arena),
+        type_(arena) {}
+
+inline void GraphEdge::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+GraphEdge::~GraphEdge() {
+  // @@protoc_insertion_point(destructor:ui.GraphEdge)
+  SharedDtor(*this);
+}
+inline void GraphEdge::SharedDtor(MessageLite& self) {
+  GraphEdge& this_ = static_cast<GraphEdge&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.id_.Destroy();
+  this_._impl_.source_.Destroy();
+  this_._impl_.target_.Destroy();
+  this_._impl_.type_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL GraphEdge::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) GraphEdge(arena);
+}
+constexpr auto GraphEdge::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GraphEdge),
+                                            alignof(GraphEdge));
+}
+constexpr auto GraphEdge::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_GraphEdge_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &GraphEdge::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<GraphEdge>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &GraphEdge::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<GraphEdge>(), &GraphEdge::ByteSizeLong,
+              &GraphEdge::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_._cached_size_),
+          false,
+      },
+      &GraphEdge::kDescriptorMethods,
+      &descriptor_table_layout_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull GraphEdge_class_data_ =
+        GraphEdge::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GraphEdge::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GraphEdge_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(GraphEdge_class_data_.tc_table);
+  return GraphEdge_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 39, 2>
+GraphEdge::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_._has_bits_),
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    GraphEdge_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ui::GraphEdge>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string type = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 3, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_)}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.id_)}},
+    // string source = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.source_)}},
+    // string target = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 2, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string source = 2;
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.source_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string target = 3;
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string type = 4;
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\14\2\6\6\4\0\0\0"
+    "ui.GraphEdge"
+    "id"
+    "source"
+    "target"
+    "type"
+  }},
+};
+PROTOBUF_NOINLINE void GraphEdge::Clear() {
+// @@protoc_insertion_point(message_clear_start:ui.GraphEdge)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.id_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.source_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      _impl_.target_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      _impl_.type_.ClearNonDefaultToEmpty();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL GraphEdge::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const GraphEdge& this_ = static_cast<const GraphEdge&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL GraphEdge::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const GraphEdge& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:ui.GraphEdge)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_id().empty()) {
+      const ::std::string& _s = this_._internal_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphEdge.id");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // string source = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_source().empty()) {
+      const ::std::string& _s = this_._internal_source();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphEdge.source");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // string target = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (!this_._internal_target().empty()) {
+      const ::std::string& _s = this_._internal_target();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphEdge.target");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  // string type = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (!this_._internal_type().empty()) {
+      const ::std::string& _s = this_._internal_type();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphEdge.type");
+      target = stream->WriteStringMaybeAliased(4, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ui.GraphEdge)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t GraphEdge::ByteSizeLong(const MessageLite& base) {
+  const GraphEdge& this_ = static_cast<const GraphEdge&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t GraphEdge::ByteSizeLong() const {
+  const GraphEdge& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:ui.GraphEdge)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    // string id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_id());
+      }
+    }
+    // string source = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_source().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_source());
+      }
+    }
+    // string target = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!this_._internal_target().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_target());
+      }
+    }
+    // string type = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!this_._internal_type().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_type());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void GraphEdge::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<GraphEdge*>(&to_msg);
+  auto& from = static_cast<const GraphEdge&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui.GraphEdge)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_id().empty()) {
+        _this->_internal_set_id(from._internal_id());
+      } else {
+        if (_this->_impl_.id_.IsDefault()) {
+          _this->_internal_set_id("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_source().empty()) {
+        _this->_internal_set_source(from._internal_source());
+      } else {
+        if (_this->_impl_.source_.IsDefault()) {
+          _this->_internal_set_source("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!from._internal_target().empty()) {
+        _this->_internal_set_target(from._internal_target());
+      } else {
+        if (_this->_impl_.target_.IsDefault()) {
+          _this->_internal_set_target("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!from._internal_type().empty()) {
+        _this->_internal_set_type(from._internal_type());
+      } else {
+        if (_this->_impl_.type_.IsDefault()) {
+          _this->_internal_set_type("");
+        }
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void GraphEdge::CopyFrom(const GraphEdge& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:ui.GraphEdge)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GraphEdge::InternalSwap(GraphEdge* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.source_, &other->_impl_.source_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.target_, &other->_impl_.target_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.type_, &other->_impl_.type_, arena);
+}
+
+::google::protobuf::Metadata GraphEdge::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class GraphComponent::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<GraphComponent>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_._has_bits_);
+};
+
+GraphComponent::GraphComponent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphComponent_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:ui.GraphComponent)
+}
+PROTOBUF_NDEBUG_INLINE GraphComponent::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::ui::GraphComponent& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        nodes_{visibility, arena, from.nodes_},
+        edges_{visibility, arena, from.edges_},
+        id_(arena, from.id_),
+        selected_node_id_(arena, from.selected_node_id_),
+        selected_edge_id_(arena, from.selected_edge_id_) {}
+
+GraphComponent::GraphComponent(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GraphComponent& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, GraphComponent_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GraphComponent* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:ui.GraphComponent)
+}
+PROTOBUF_NDEBUG_INLINE GraphComponent::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        nodes_{visibility, arena},
+        edges_{visibility, arena},
+        id_(arena),
+        selected_node_id_(arena),
+        selected_edge_id_(arena) {}
+
+inline void GraphComponent::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+GraphComponent::~GraphComponent() {
+  // @@protoc_insertion_point(destructor:ui.GraphComponent)
+  SharedDtor(*this);
+}
+inline void GraphComponent::SharedDtor(MessageLite& self) {
+  GraphComponent& this_ = static_cast<GraphComponent&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.id_.Destroy();
+  this_._impl_.selected_node_id_.Destroy();
+  this_._impl_.selected_edge_id_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL GraphComponent::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) GraphComponent(arena);
+}
+constexpr auto GraphComponent::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.nodes_) +
+          decltype(GraphComponent::_impl_.nodes_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.edges_) +
+          decltype(GraphComponent::_impl_.edges_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(GraphComponent), alignof(GraphComponent), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&GraphComponent::PlacementNew_,
+                                 sizeof(GraphComponent),
+                                 alignof(GraphComponent));
+  }
+}
+constexpr auto GraphComponent::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_GraphComponent_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &GraphComponent::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<GraphComponent>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &GraphComponent::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<GraphComponent>(), &GraphComponent::ByteSizeLong,
+              &GraphComponent::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_._cached_size_),
+          false,
+      },
+      &GraphComponent::kDescriptorMethods,
+      &descriptor_table_layout_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull GraphComponent_class_data_ =
+        GraphComponent::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+GraphComponent::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&GraphComponent_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(GraphComponent_class_data_.tc_table);
+  return GraphComponent_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 2, 60, 2>
+GraphComponent::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_._has_bits_),
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    GraphComponent_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::ui::GraphComponent>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string id = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 2, 0,
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.id_)}},
+    // repeated .ui.GraphNode nodes = 2;
+    {::_pbi::TcParser::FastMtR1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.nodes_)}},
+    // repeated .ui.GraphEdge edges = 3;
+    {::_pbi::TcParser::FastMtR1,
+     {26, 1, 1,
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.edges_)}},
+    // string selected_node_id = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 3, 0,
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_node_id_)}},
+    // string selected_edge_id = 5;
+    {::_pbi::TcParser::FastUS1,
+     {42, 4, 0,
+      PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_edge_id_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string id = 1;
+    {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .ui.GraphNode nodes = 2;
+    {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.nodes_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .ui.GraphEdge edges = 3;
+    {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.edges_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // string selected_node_id = 4;
+    {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_node_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string selected_edge_id = 5;
+    {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_edge_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::ui::GraphNode>()},
+      {::_pbi::TcParser::GetTable<::ui::GraphEdge>()},
+  }},
+  {{
+    "\21\2\0\0\20\20\0\0"
+    "ui.GraphComponent"
+    "id"
+    "selected_node_id"
+    "selected_edge_id"
+  }},
+};
+PROTOBUF_NOINLINE void GraphComponent::Clear() {
+// @@protoc_insertion_point(message_clear_start:ui.GraphComponent)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _impl_.nodes_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _impl_.edges_.Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      _impl_.id_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      _impl_.selected_node_id_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      _impl_.selected_edge_id_.ClearNonDefaultToEmpty();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL GraphComponent::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const GraphComponent& this_ = static_cast<const GraphComponent&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL GraphComponent::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const GraphComponent& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:ui.GraphComponent)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (!this_._internal_id().empty()) {
+      const ::std::string& _s = this_._internal_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphComponent.id");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // repeated .ui.GraphNode nodes = 2;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_nodes_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_nodes().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              2, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated .ui.GraphEdge edges = 3;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_edges_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_edges().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              3, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // string selected_node_id = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (!this_._internal_selected_node_id().empty()) {
+      const ::std::string& _s = this_._internal_selected_node_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphComponent.selected_node_id");
+      target = stream->WriteStringMaybeAliased(4, _s, target);
+    }
+  }
+
+  // string selected_edge_id = 5;
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (!this_._internal_selected_edge_id().empty()) {
+      const ::std::string& _s = this_._internal_selected_edge_id();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphComponent.selected_edge_id");
+      target = stream->WriteStringMaybeAliased(5, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ui.GraphComponent)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t GraphComponent::ByteSizeLong(const MessageLite& base) {
+  const GraphComponent& this_ = static_cast<const GraphComponent&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t GraphComponent::ByteSizeLong() const {
+  const GraphComponent& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:ui.GraphComponent)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    // repeated .ui.GraphNode nodes = 2;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      total_size += 1UL * this_._internal_nodes_size();
+      for (const auto& msg : this_._internal_nodes()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated .ui.GraphEdge edges = 3;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      total_size += 1UL * this_._internal_edges_size();
+      for (const auto& msg : this_._internal_edges()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // string id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!this_._internal_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_id());
+      }
+    }
+    // string selected_node_id = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!this_._internal_selected_node_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_selected_node_id());
+      }
+    }
+    // string selected_edge_id = 5;
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!this_._internal_selected_edge_id().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_selected_edge_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void GraphComponent::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<GraphComponent*>(&to_msg);
+  auto& from = static_cast<const GraphComponent&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:ui.GraphComponent)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_nodes()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_nodes());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _this->_internal_mutable_edges()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_edges());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (!from._internal_id().empty()) {
+        _this->_internal_set_id(from._internal_id());
+      } else {
+        if (_this->_impl_.id_.IsDefault()) {
+          _this->_internal_set_id("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!from._internal_selected_node_id().empty()) {
+        _this->_internal_set_selected_node_id(from._internal_selected_node_id());
+      } else {
+        if (_this->_impl_.selected_node_id_.IsDefault()) {
+          _this->_internal_set_selected_node_id("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!from._internal_selected_edge_id().empty()) {
+        _this->_internal_set_selected_edge_id(from._internal_selected_edge_id());
+      } else {
+        if (_this->_impl_.selected_edge_id_.IsDefault()) {
+          _this->_internal_set_selected_edge_id("");
+        }
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void GraphComponent::CopyFrom(const GraphComponent& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:ui.GraphComponent)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void GraphComponent::InternalSwap(GraphComponent* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.nodes_.InternalSwap(&other->_impl_.nodes_);
+  _impl_.edges_.InternalSwap(&other->_impl_.edges_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.id_, &other->_impl_.id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.selected_node_id_, &other->_impl_.selected_node_id_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.selected_edge_id_, &other->_impl_.selected_edge_id_, arena);
+}
+
+::google::protobuf::Metadata GraphComponent::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

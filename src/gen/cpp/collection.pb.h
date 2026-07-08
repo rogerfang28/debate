@@ -232,7 +232,7 @@ class CollectionSpecification final : public ::google::protobuf::Message
     kClaimIdsFieldNumber = 2,
     kDebateIdFieldNumber = 1,
   };
-  // repeated int32 claim_ids = 2;
+  // repeated int32 claim_ids = 2 [json_name = "claimIds"];
   int claim_ids_size() const;
   private:
   int _internal_claim_ids_size() const;
@@ -250,7 +250,7 @@ class CollectionSpecification final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_claim_ids();
 
   public:
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -521,7 +521,7 @@ class Collection final : public ::google::protobuf::Message
     kClaimsByIdFieldNumber = 1,
     kLinksByIdFieldNumber = 2,
   };
-  // map<int32, .debate.Claim> claims_by_id = 1;
+  // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
   int claims_by_id_size() const;
   private:
   int _internal_claims_by_id_size() const;
@@ -536,19 +536,19 @@ class Collection final : public ::google::protobuf::Message
   ::google::protobuf::Map<::int32_t, ::debate::Claim>* PROTOBUF_NONNULL _internal_mutable_claims_by_id();
 
   public:
-  // map<int32, .debate.Link> links_by_id = 2;
+  // map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
   int links_by_id_size() const;
   private:
   int _internal_links_by_id_size() const;
 
   public:
   void clear_links_by_id() ;
-  const ::google::protobuf::Map<::int32_t, ::debate::Link>& links_by_id() const;
-  ::google::protobuf::Map<::int32_t, ::debate::Link>* PROTOBUF_NONNULL mutable_links_by_id();
+  const ::google::protobuf::Map<::int32_t, ::debate::Relationship>& links_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Relationship>* PROTOBUF_NONNULL mutable_links_by_id();
 
   private:
-  const ::google::protobuf::Map<::int32_t, ::debate::Link>& _internal_links_by_id() const;
-  ::google::protobuf::Map<::int32_t, ::debate::Link>* PROTOBUF_NONNULL _internal_mutable_links_by_id();
+  const ::google::protobuf::Map<::int32_t, ::debate::Relationship>& _internal_links_by_id() const;
+  ::google::protobuf::Map<::int32_t, ::debate::Relationship>* PROTOBUF_NONNULL _internal_mutable_links_by_id();
 
   public:
   // @@protoc_insertion_point(class_scope:debate.Collection)
@@ -581,7 +581,7 @@ class Collection final : public ::google::protobuf::Message
                       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
                       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>
         claims_by_id_;
-    ::google::protobuf::internal::MapField<Collection_LinksByIdEntry_DoNotUse, ::int32_t, ::debate::Link,
+    ::google::protobuf::internal::MapField<Collection_LinksByIdEntry_DoNotUse, ::int32_t, ::debate::Relationship,
                       ::google::protobuf::internal::WireFormatLite::TYPE_INT32,
                       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>
         links_by_id_;
@@ -613,7 +613,7 @@ extern const ::google::protobuf::internal::ClassDataFull Collection_class_data_;
 
 // Collection
 
-// map<int32, .debate.Claim> claims_by_id = 1;
+// map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
 inline int Collection::_internal_claims_by_id_size() const {
   return _internal_claims_by_id().size();
 }
@@ -639,26 +639,26 @@ inline ::google::protobuf::Map<::int32_t, ::debate::Claim>* PROTOBUF_NONNULL Col
   return _internal_mutable_claims_by_id();
 }
 
-// map<int32, .debate.Link> links_by_id = 2;
+// map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
 inline int Collection::_internal_links_by_id_size() const {
   return _internal_links_by_id().size();
 }
 inline int Collection::links_by_id_size() const {
   return _internal_links_by_id_size();
 }
-inline const ::google::protobuf::Map<::int32_t, ::debate::Link>& Collection::_internal_links_by_id() const {
+inline const ::google::protobuf::Map<::int32_t, ::debate::Relationship>& Collection::_internal_links_by_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.links_by_id_.GetMap();
 }
-inline const ::google::protobuf::Map<::int32_t, ::debate::Link>& Collection::links_by_id() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::google::protobuf::Map<::int32_t, ::debate::Relationship>& Collection::links_by_id() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_map:debate.Collection.links_by_id)
   return _internal_links_by_id();
 }
-inline ::google::protobuf::Map<::int32_t, ::debate::Link>* PROTOBUF_NONNULL Collection::_internal_mutable_links_by_id() {
+inline ::google::protobuf::Map<::int32_t, ::debate::Relationship>* PROTOBUF_NONNULL Collection::_internal_mutable_links_by_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.links_by_id_.MutableMap();
 }
-inline ::google::protobuf::Map<::int32_t, ::debate::Link>* PROTOBUF_NONNULL Collection::mutable_links_by_id()
+inline ::google::protobuf::Map<::int32_t, ::debate::Relationship>* PROTOBUF_NONNULL Collection::mutable_links_by_id()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
   // @@protoc_insertion_point(field_mutable_map:debate.Collection.links_by_id)
@@ -669,7 +669,7 @@ inline ::google::protobuf::Map<::int32_t, ::debate::Link>* PROTOBUF_NONNULL Coll
 
 // CollectionSpecification
 
-// int32 debate_id = 1;
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void CollectionSpecification::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -694,7 +694,7 @@ inline void CollectionSpecification::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// repeated int32 claim_ids = 2;
+// repeated int32 claim_ids = 2 [json_name = "claimIds"];
 inline int CollectionSpecification::_internal_claim_ids_size() const {
   return _internal_claim_ids().size();
 }

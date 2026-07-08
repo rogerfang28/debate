@@ -18,6 +18,11 @@ message Component {
   map<string, string> css = 8;         // Arbitrary inline CSS (fallback/flexibility)
   map<string, string> attributes = 7;  // Arbitrary HTML attributes (e.g., data-* attrs)
   // string value = 9;                   // Default or bound value
+  // Graph data — only used when type == GRAPH
+  repeated GraphNode nodes = 10;
+  repeated GraphEdge edges = 11;
+  string selected_node_id = 12;
+  string selected_edge_id = 13;
 }
 
 enum ComponentType {
@@ -25,7 +30,9 @@ enum ComponentType {
   TEXT = 1;
   BUTTON = 2;
   INPUT = 3;
+  GRAPH = 4;
   CONTAINER = 12;
+  CLAIM_PARSER = 14;
 }
 
 message Style {
@@ -49,5 +56,32 @@ message Position {
 message Size {
   string width = 1;  // Tailwind width class or explicit value
   string height = 2; // Tailwind height class or explicit value
+}
+
+message GraphNode {
+  string id = 1;          // Unique node identifier
+  string text = 2;        // Claim/sentence text
+  double x = 3;           // Optional initial x position
+  double y = 4;           // Optional initial y position
+  string type = 5;        // "claim" | "evidence" | "challenge" | ""
+  string status = 6;      // "TRUE_CLAIM" | "FALSE_CLAIM" | "UNDETERMINED"
+  int32 creator_id = 7;   // Creator user ID
+  bool is_root = 8;       // Renders larger if true
+  bool is_current = 9;    // Highlights with yellow stroke if true
+}
+
+message GraphEdge {
+  string id = 1;          // Unique edge identifier
+  string source = 2;      // Source node ID
+  string target = 3;      // Target node ID
+  string type = 4;        // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
+}
+
+message GraphComponent {
+  string id = 1;                    // Component ID
+  repeated GraphNode nodes = 2;     // Debate tree nodes
+  repeated GraphEdge edges = 3;     // Edges between nodes
+  string selected_node_id = 4;      // Initially selected node
+  string selected_edge_id = 5;      // Initially selected edge
 }
 

@@ -1085,56 +1085,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
         ui::Component deleteChildClaimButton;
         bool hasDeleteChildClaimButton = false;
         if (userOwnsChildClaim && modifyingCurrentClaim) {
-            // Add connection buttons based on connecting state
-            if (connecting) {
-                // If we're connecting and this is the FROM claim, show Cancel button
-                Log::info("[DebatePageGenerator] Currently connecting claims. fromClaimId=" + fromClaimId + ", child claimId=" + claimId);
-                if (claimId == fromClaimId) {
-                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is the from claim; rendering Cancel Connection button");
-                    connectionActionButton = ComponentGenerator::createButton(
-                        "cancelConnectClaimsButton_" + claimId,
-                        "Cancel Connection",
-                        "",
-                        "bg-gray-600",
-                        "hover:bg-gray-700",
-                        "text-white",
-                        "px-4 py-2",
-                        "rounded",
-                        "w-full transition-colors text-sm"
-                    );
-                    hasConnectionActionButton = true;
-                } else {
-                    // For all other claims, show Connect To button
-                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not the from claim; rendering Connect To button");
-                    connectionActionButton = ComponentGenerator::createButton(
-                        "connectToClaimButton_" + claimId,
-                        "Connect To",
-                        "",
-                        "bg-purple-600",
-                        "hover:bg-purple-700",
-                        "text-white",
-                        "px-4 py-2",
-                        "rounded",
-                        "w-full transition-colors text-sm"
-                    );
-                    hasConnectionActionButton = true;
-                }
-            } else {
-                // If we're not connecting, show Connect From button
-                Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not connecting; rendering Connect From button");
-                connectionActionButton = ComponentGenerator::createButton(
-                    "connectFromClaimButton_" + claimId,
-                    "Connect From",
-                    "",
-                    "bg-purple-600",
-                    "hover:bg-purple-700",
-                    "text-white",
-                    "px-4 py-2",
-                    "rounded",
-                    "w-full transition-colors text-sm"
-                );
-                hasConnectionActionButton = true;
-            }
+            // TODO remove: was used for user manual linking claims (Connect From/To/Cancel buttons disabled for now)
 
             Log::debug("[DebatePageGenerator] Child claim " + claimId + " rendering Delete button alongside connection controls");
             deleteChildClaimButton = ComponentGenerator::createButton(
@@ -1178,10 +1129,10 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
     // Extract data
     int currentUserId = user.user_id();
     
-    std::vector<std::tuple<std::string, std::string, int>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int, int>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
         const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id()});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.challenge_link_id()});
     }
 
     // Find challengesContainer
@@ -1221,6 +1172,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
+        int challengeLinkId = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
         
         // Determine colors — challenges no longer have their own status.
@@ -1294,23 +1246,43 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
             )
         );
 
-        // WIP placeholder: intentionally non-interactive.
-        ui::Component concedeWipButton = ComponentGenerator::createText(
-            "concedeWipButton_" + challengedClaimId,
-            "Concede (WIP)",
-            "text-sm",
-            "text-gray-200",
-            "font-medium",
-            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
-        );
-        ComponentGenerator::addChild(
-            &challengeButtonContainer,
-            CreateStableActionSlot(
-                "challengeConcedeSlot_" + challengedClaimId,
-                &concedeWipButton,
-                "challengeConcedeSlotPlaceholder_" + challengedClaimId
-            )
-        );
+        // Concede button: visible when the current user's claim is being challenged
+        // (i.e., user is the defender, not the attacker)
+        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+            ui::Component concedeButton = ComponentGenerator::createButton(
+                "concedeChallengeButton_" + std::to_string(challengeLinkId),
+                "Concede",
+                "",
+                "bg-red-700",
+                "hover:bg-red-800",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "w-full transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeButton,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        } else {
+            ui::Component concedeSpacer = ComponentGenerator::createText(
+                "concedeSpacer_" + challengedClaimId,
+                "",
+                "hidden"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeSpacer,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        }
 
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
@@ -2028,213 +2000,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             break;
         }
         case user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CONNECTING_CLAIMS: {
-            // Extract data for connecting claims
-            // check if it's opened_connecting_modal
-            int currentClaimId = debatingInfo.current_claim().id();
-            std::string claim = debatingInfo.current_claim().sentence();
-            int fromClaimId = debatingInfo.connecting_info().from_claim_id();
-            int toClaimId = debatingInfo.connecting_info().to_claim_id();
-            bool isConnectingModal = debatingInfo.connecting_info().opened_connect_modal();
-            if (!isConnectingModal) {
-                break;
-            }
-            
-            std::string fromClaimSentence = "";
-            std::string toClaimSentence = "";
-            
-            // Check if fromClaimId is the current claim
-            if (fromClaimId == currentClaimId) {
-                fromClaimSentence = claim;
-            } else {
-                // Search in child claims
-                for (int i = 0; i < info.children_claims_size(); i++) {
-                    const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-                    if (childClaim.id() == fromClaimId) {
-                        fromClaimSentence = childClaim.sentence();
-                        break;
-                    }
-                }
-            }
-            
-            // Check if toClaimId is the current claim
-            if (toClaimId == currentClaimId) {
-                toClaimSentence = claim;
-            } else {
-                // Search in child claims
-                for (int i = 0; i < info.children_claims_size(); i++) {
-                    const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-                    if (childClaim.id() == toClaimId) {
-                        toClaimSentence = childClaim.sentence();
-                        break;
-                    }
-                }
-            }
-
-            // Modal overlay
-            ui::Component connectModalOverlay = ComponentGenerator::createContainer(
-                "connectModalOverlay",
-                "fixed inset-0 flex items-center justify-center",
-                "bg-black/50",
-                "",
-                "",
-                "",
-                "",
-                "z-50"
-            );
-
-            // Modal content
-            ui::Component connectModalContent = ComponentGenerator::createContainer(
-                "connectModalContent",
-                "",
-                "bg-gray-800",
-                "p-8",
-                "",
-                "border-2 border-gray-700",
-                "rounded-lg",
-                "w-full max-w-2xl"
-            );
-
-            // Modal title
-            ui::Component connectModalTitle = ComponentGenerator::createText(
-                "connectModalTitle",
-                "Create Connection",
-                "text-2xl",
-                "text-white",
-                "font-bold",
-                "mb-6"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectModalTitle);
-
-            // Display connecting claims
-            ui::Component connectingClaimsContainer = ComponentGenerator::createContainer(
-                "connectingClaimsContainer",
-                "",
-                "bg-gray-700",
-                "p-4",
-                "mb-6",
-                "border border-gray-600",
-                "rounded",
-                ""
-            );
-
-            ui::Component fromClaimLabel = ComponentGenerator::createText(
-                "fromClaimLabel",
-                "From:",
-                "text-xs",
-                "text-gray-400",
-                "font-semibold",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimLabel);
-
-            ui::Component fromClaimText = ComponentGenerator::createText(
-                "fromClaimText",
-                fromClaimSentence,
-                "text-sm",
-                "text-white",
-                "",
-                "mb-3"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimText);
-
-            ui::Component arrowText = ComponentGenerator::createText(
-                "arrowText",
-                "↓",
-                "text-center text-2xl",
-                "text-purple-400",
-                "",
-                "mb-3"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, arrowText);
-
-            ui::Component toClaimLabel = ComponentGenerator::createText(
-                "toClaimLabel",
-                "To:",
-                "text-xs",
-                "text-gray-400",
-                "font-semibold",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, toClaimLabel);
-
-            ui::Component toClaimText = ComponentGenerator::createText(
-                "toClaimText",
-                toClaimSentence,
-                "text-sm",
-                "text-white",
-                "",
-                ""
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, toClaimText);
-
-            ComponentGenerator::addChild(&connectModalContent, connectingClaimsContainer);
-
-            // Connection label
-            ui::Component connectionLabel = ComponentGenerator::createText(
-                "connectionLabel",
-                "Connection:",
-                "text-sm",
-                "text-white",
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectionLabel);
-
-            // Connection input
-            ui::Component connectionInput = ComponentGenerator::createInput(
-                "connectionInput",
-                "Enter the connection type...",
-                "connection",
-                "bg-gray-700",
-                "text-white",
-                "border-gray-600",
-                "p-3",
-                "rounded",
-                "w-full mb-6"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectionInput);
-
-            // Modal action buttons
-            ui::Component connectModalActions = ComponentGenerator::createContainer(
-                "connectModalActions",
-                "flex gap-3 justify-end",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            );
-
-            ui::Component connectCancelButton = ComponentGenerator::createButton(
-                "closeConnectModalButton",
-                "Cancel",
-                "",
-                "bg-gray-600",
-                "hover:bg-gray-700",
-                "text-white",
-                "px-6 py-2",
-                "rounded",
-                "transition-colors"
-            );
-            ComponentGenerator::addChild(&connectModalActions, connectCancelButton);
-
-            ui::Component submitConnectClaimsButton = ComponentGenerator::createButton(
-                "submitConnectClaimsButton",
-                "Submit",
-                "",
-                "bg-green-600",
-                "hover:bg-green-700",
-                "text-white",
-                "px-6 py-2",
-                "rounded",
-                "transition-colors"
-            );
-            ComponentGenerator::addChild(&connectModalActions, submitConnectClaimsButton);
-
-            ComponentGenerator::addChild(&connectModalContent, connectModalActions);
-            ComponentGenerator::addChild(&connectModalOverlay, connectModalContent);
-            ComponentGenerator::addChild(&mainLayout, connectModalOverlay);
+            // TODO remove: was used for user manual linking claims (connect-claims modal disabled for now)
             break;
         }
         default:
@@ -2246,7 +2012,6 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
 }
 
 ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale) {
-    const float normalizedScale = mapScale > 0.0f ? mapScale : 1.0f;
 
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
@@ -2520,373 +2285,63 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         children.erase(std::unique(children.begin(), children.end()), children.end());
     }
 
-    const int nodeWidth = 200;
-    const int nodeMinHeight = 180;
-    const int horizontalGap = 40;
-    const int verticalGap = 230;
-    const int canvasPadding = 40;
-
-    std::unordered_map<int, int> subtreeWidth;
-    std::unordered_map<int, std::pair<int, int>> nodeTopLeftById;
-
-    std::function<int(int, std::unordered_set<int>&)> computeWidth = [&](int claimId, std::unordered_set<int>& path) -> int {
-        if (nodeById.count(claimId) == 0 || path.count(claimId) > 0) {
-            return 0;
-        }
-        if (subtreeWidth.count(claimId) > 0) {
-            return subtreeWidth[claimId];
-        }
-
-        path.insert(claimId);
-        int childrenTotalWidth = 0;
-        int renderedChildrenCount = 0;
-
-        const auto childIt = treeChildren.find(claimId);
-        if (childIt != treeChildren.end()) {
-            for (int childId : childIt->second) {
-                if (path.count(childId) > 0) {
-                    continue;
-                }
-                const int childWidth = computeWidth(childId, path);
-                if (childWidth <= 0) {
-                    continue;
-                }
-                childrenTotalWidth += childWidth;
-                ++renderedChildrenCount;
-            }
-        }
-
-        path.erase(claimId);
-
-        if (renderedChildrenCount > 1) {
-            childrenTotalWidth += horizontalGap * (renderedChildrenCount - 1);
-        }
-        const int width = std::max(nodeWidth, childrenTotalWidth);
-        subtreeWidth[claimId] = width;
-        return width;
-    };
-
-    std::function<void(int, int, int, std::unordered_set<int>&)> placeSubtree = [&](int claimId, int centerX, int depth, std::unordered_set<int>& path) {
-        if (nodeById.count(claimId) == 0 || path.count(claimId) > 0) {
-            return;
-        }
-
-        path.insert(claimId);
-        const int topLeftX = centerX - (nodeWidth / 2);
-        const int topLeftY = canvasPadding + depth * verticalGap;
-        nodeTopLeftById[claimId] = {topLeftX, topLeftY};
-        Log::debug(
-            "[MapLayout] Place node id=" + std::to_string(claimId) +
-            ", depth=" + std::to_string(depth) +
-            ", x=" + std::to_string(topLeftX) +
-            ", y=" + std::to_string(topLeftY)
-        );
-
-        std::vector<int> childrenToPlace;
-        const auto childIt = treeChildren.find(claimId);
-        if (childIt != treeChildren.end()) {
-            for (int childId : childIt->second) {
-                if (path.count(childId) == 0) {
-                    childrenToPlace.push_back(childId);
-                }
-            }
-        }
-
-        int totalChildrenWidth = 0;
-        for (int childId : childrenToPlace) {
-            std::unordered_set<int> widthPath = path;
-            totalChildrenWidth += computeWidth(childId, widthPath);
-        }
-        if (childrenToPlace.size() > 1) {
-            totalChildrenWidth += static_cast<int>(childrenToPlace.size() - 1) * horizontalGap;
-        }
-
-        int cursorX = centerX - (totalChildrenWidth / 2);
-        for (int childId : childrenToPlace) {
-            std::unordered_set<int> widthPath = path;
-            const int childSubtreeWidth = computeWidth(childId, widthPath);
-            const int childCenterX = cursorX + (childSubtreeWidth / 2);
-            placeSubtree(childId, childCenterX, depth + 1, path);
-            cursorX += childSubtreeWidth + horizontalGap;
-        }
-
-        path.erase(claimId);
-    };
-
-    int rootWidth = nodeWidth;
-    if (rootClaimId != 0) {
-        subtreeWidth.clear();
-        std::unordered_set<int> widthPath;
-        rootWidth = std::max(nodeWidth, computeWidth(rootClaimId, widthPath));
-        const int rootCenterX = canvasPadding + (rootWidth / 2);
-        std::unordered_set<int> placePath;
-        placeSubtree(rootClaimId, rootCenterX, 0, placePath);
-    }
-
-    std::vector<std::pair<int, int>> treeEdges;
-    for (const auto& entry : treeChildren) {
-        for (int childId : entry.second) {
-            treeEdges.push_back({entry.first, childId});
-        }
-    }
     Log::debug(
-        "[MapLayout] Final tree summary: root=" + std::to_string(rootClaimId) +
-        ", placed_nodes=" + std::to_string(nodeTopLeftById.size()) +
-        ", tree_edges=" + std::to_string(treeEdges.size()) +
+        "[MapLayout] Tree ready for d3: root=" + std::to_string(rootClaimId) +
+        ", nodes=" + std::to_string(claimIds.size()) +
+        ", tree_edges=" + std::to_string(treeChildren.size()) +
         ", challenge_edges=" + std::to_string(challengeEdges.size())
     );
 
-    int maxBottom = canvasPadding + nodeMinHeight;
-    for (const auto& entry : nodeTopLeftById) {
-        maxBottom = std::max(maxBottom, entry.second.second + nodeMinHeight + canvasPadding);
-    }
-    const int canvasWidth = std::max(1000, rootWidth + (2 * canvasPadding));
-    const int canvasHeight = std::max(500, maxBottom);
+    // Build GRAPH component with nodes and edges
+    ui::Component graphComp;
+    graphComp.set_id("debateGraph");
+    graphComp.set_type(ui::ComponentType::GRAPH);
 
-    ui::Component mapCanvas = ComponentGenerator::createContainer(
-        "mapCanvas",
-        "relative",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    );
-    (*mapCanvas.mutable_css())["width"] = std::to_string(canvasWidth) + "px";
-    (*mapCanvas.mutable_css())["min-height"] = std::to_string(canvasHeight) + "px";
-    (*mapCanvas.mutable_css())["overflow"] = "visible";
-    (*mapCanvas.mutable_css())["transform"] = "scale(" + std::to_string(normalizedScale) + ")";
-    (*mapCanvas.mutable_css())["transform-origin"] = "top left";
-
-    int lineIndex = 0;
-    for (const auto& edge : treeEdges) {
-        const int fromId = edge.first;
-        const int toId = edge.second;
-        if (nodeTopLeftById.count(fromId) == 0 || nodeTopLeftById.count(toId) == 0) {
-            continue;
-        }
-
-        const int parentX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
-        const int parentY = nodeTopLeftById[fromId].second + nodeMinHeight;
-        const int childX = nodeTopLeftById[toId].first + (nodeWidth / 2);
-        const int childY = nodeTopLeftById[toId].second;
-        const int midY = (parentY + childY) / 2;
-
-        ui::Component v1 = ComponentGenerator::createContainer(
-            "mapEdgeV1_" + std::to_string(lineIndex++),
-            "absolute bg-gray-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*v1.mutable_css())["left"] = std::to_string(parentX - 1) + "px";
-        (*v1.mutable_css())["top"] = std::to_string(parentY) + "px";
-        (*v1.mutable_css())["width"] = "2px";
-        (*v1.mutable_css())["height"] = std::to_string(std::max(1, midY - parentY)) + "px";
-        ComponentGenerator::addChild(&mapCanvas, v1);
-
-        ui::Component h = ComponentGenerator::createContainer(
-            "mapEdgeH_" + std::to_string(lineIndex++),
-            "absolute bg-gray-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*h.mutable_css())["left"] = std::to_string(std::min(parentX, childX)) + "px";
-        (*h.mutable_css())["top"] = std::to_string(midY - 1) + "px";
-        (*h.mutable_css())["width"] = std::to_string(std::max(2, std::abs(childX - parentX))) + "px";
-        (*h.mutable_css())["height"] = "2px";
-        ComponentGenerator::addChild(&mapCanvas, h);
-
-        ui::Component v2 = ComponentGenerator::createContainer(
-            "mapEdgeV2_" + std::to_string(lineIndex++),
-            "absolute bg-gray-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*v2.mutable_css())["left"] = std::to_string(childX - 1) + "px";
-        (*v2.mutable_css())["top"] = std::to_string(midY) + "px";
-        (*v2.mutable_css())["width"] = "2px";
-        (*v2.mutable_css())["height"] = std::to_string(std::max(1, childY - midY)) + "px";
-        ComponentGenerator::addChild(&mapCanvas, v2);
-    }
-
-    for (const auto& edge : challengeEdges) {
-        const int fromId = edge.first;
-        const int toId = edge.second;
-        if (nodeTopLeftById.count(fromId) == 0 || nodeTopLeftById.count(toId) == 0) {
-            continue;
-        }
-
-        const int fromX = nodeTopLeftById[fromId].first + (nodeWidth / 2);
-        const int fromY = nodeTopLeftById[fromId].second + nodeMinHeight;
-        const int toX = nodeTopLeftById[toId].first + (nodeWidth / 2);
-        const int toY = nodeTopLeftById[toId].second;
-        const int midY = (fromY + toY) / 2;
-
-        ui::Component v1 = ComponentGenerator::createContainer(
-            "mapChallengeEdgeV1_" + std::to_string(lineIndex++),
-            "absolute bg-orange-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*v1.mutable_css())["left"] = std::to_string(fromX - 1) + "px";
-        (*v1.mutable_css())["top"] = std::to_string(std::min(fromY, midY)) + "px";
-        (*v1.mutable_css())["width"] = "2px";
-        (*v1.mutable_css())["height"] = std::to_string(std::max(1, std::abs(midY - fromY))) + "px";
-        ComponentGenerator::addChild(&mapCanvas, v1);
-
-        ui::Component h = ComponentGenerator::createContainer(
-            "mapChallengeEdgeH_" + std::to_string(lineIndex++),
-            "absolute bg-orange-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*h.mutable_css())["left"] = std::to_string(std::min(fromX, toX)) + "px";
-        (*h.mutable_css())["top"] = std::to_string(midY - 1) + "px";
-        (*h.mutable_css())["width"] = std::to_string(std::max(2, std::abs(toX - fromX))) + "px";
-        (*h.mutable_css())["height"] = "2px";
-        ComponentGenerator::addChild(&mapCanvas, h);
-
-        ui::Component v2 = ComponentGenerator::createContainer(
-            "mapChallengeEdgeV2_" + std::to_string(lineIndex++),
-            "absolute bg-orange-500",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-        (*v2.mutable_css())["left"] = std::to_string(toX - 1) + "px";
-        (*v2.mutable_css())["top"] = std::to_string(std::min(midY, toY)) + "px";
-        (*v2.mutable_css())["width"] = "2px";
-        (*v2.mutable_css())["height"] = std::to_string(std::max(1, std::abs(toY - midY))) + "px";
-        ComponentGenerator::addChild(&mapCanvas, v2);
-    }
-
-    int nodeIndex = 0;
+    // Add nodes
     for (int claimId : claimIds) {
-        if (nodeTopLeftById.count(claimId) == 0) {
-            continue;
-        }
         const rendering_info::FullDebateTreeNode* node = nodeById.at(claimId);
-        const int x = nodeTopLeftById[claimId].first;
-        const int y = nodeTopLeftById[claimId].second;
-
-        const bool isChallengingClaim = (challengingClaimIds.count(claimId) > 0);
-        const bool isChallengedClaim = (challengedClaimIds.count(claimId) > 0);
-        const std::string nodeBg = isChallengingClaim ? "bg-orange-600" : "bg-gray-700";
-        const std::string nodeBorder = isChallengedClaim ? "border-2 border-orange-500" : "border border-gray-500";
-
-        ui::Component nodeCard = ComponentGenerator::createContainer(
-            "mapNode_" + std::to_string(nodeIndex++),
-            "absolute z-10 flex flex-col",
-            nodeBg,
-            "p-2",
-            "",
-            nodeBorder,
-            "rounded",
-            "shadow"
-        );
-        if (claimId == currentClaimId) {
-            (*nodeCard.mutable_css())["border-width"] = "4px";
-            (*nodeCard.mutable_css())["border-style"] = "solid";
-            (*nodeCard.mutable_css())["border-color"] = "#fde047";
+        auto* gNode = graphComp.add_nodes();
+        gNode->set_id(std::to_string(claimId));
+        gNode->set_text(node->sentence());
+        switch (node->status()) {
+            case debate::ClaimStatus::TRUE_CLAIM:    gNode->set_status("TRUE_CLAIM"); break;
+            case debate::ClaimStatus::FALSE_CLAIM:   gNode->set_status("FALSE_CLAIM"); break;
+            case debate::ClaimStatus::UNDETERMINED:  gNode->set_status("UNDETERMINED"); break;
+            default:                                  gNode->set_status("UNDETERMINED"); break;
         }
-        (*nodeCard.mutable_css())["left"] = std::to_string(x) + "px";
-        (*nodeCard.mutable_css())["top"] = std::to_string(y) + "px";
-        (*nodeCard.mutable_css())["width"] = std::to_string(nodeWidth) + "px";
-        (*nodeCard.mutable_css())["height"] = "180px";
-        (*nodeCard.mutable_css())["overflow"] = "hidden";
-        (*nodeCard.mutable_css())["word-break"] = "break-word";
-
-        ui::Component nodeTitle = ComponentGenerator::createText(
-            "mapNodeTitle_" + std::to_string(claimId),
-            std::string(claimId == currentClaimId ? "CURRENT CLAIM - " : "") +
-                "[" + std::to_string(node->claim_id()) + "] " + ClaimStatusToLabel(node->status()),
-            "text-xs",
-            "text-gray-300",
-            "font-semibold",
-            "mb-1"
-        );
-        ComponentGenerator::addChild(&nodeCard, nodeTitle);
-
-        // Creator info
-        ui::Component nodeCreator = ComponentGenerator::createText(
-            "mapNodeCreator_" + std::to_string(claimId),
-            "Created by: " + std::to_string(node->creator_id()),
-            "text-xs",
-            "text-gray-100",
-            "",
-            "mb-1"
-        );
-        ComponentGenerator::addChild(&nodeCard, nodeCreator);
-
-        // Per-user status rectangles removed — claimed status shown via node border color only.
-
-        ui::Component nodeSentence = ComponentGenerator::createText(
-            "mapNodeSentence_" + std::to_string(claimId),
-            node->sentence(),
-            "text-sm",
-            "text-white",
-            "",
-            "leading-tight"
-        );
-        (*nodeSentence.mutable_css())["overflow-wrap"] = "break-word";
-        ComponentGenerator::addChild(&nodeCard, nodeSentence);
-
-        ui::Component goToClaimButton = ComponentGenerator::createButton(
-            "goToClaim_" + std::to_string(claimId),
-            "Go to Claim",
-            "",
-            "bg-blue-600",
-            "hover:bg-blue-700",
-            "text-white",
-            "px-2 py-1",
-            "rounded",
-            "text-xs w-full transition-colors"
-        );
-        (*goToClaimButton.mutable_css())["margin-top"] = "auto";
-        ComponentGenerator::addChild(&nodeCard, goToClaimButton);
-
-        ComponentGenerator::addChild(&mapCanvas, nodeCard);
+        gNode->set_creator_id(node->creator_id());
+        gNode->set_is_root(claimId == rootClaimId);
+        gNode->set_is_current(claimId == currentClaimId);
     }
 
-    ui::Component mapScaledViewport = ComponentGenerator::createContainer(
-        "mapScaledViewport",
-        "relative",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    );
-    (*mapScaledViewport.mutable_css())["width"] = std::to_string(static_cast<int>(canvasWidth * normalizedScale)) + "px";
-    (*mapScaledViewport.mutable_css())["height"] = std::to_string(static_cast<int>(canvasHeight * normalizedScale)) + "px";
+    // Add parent-child / tree edges
+    int edgeIdx = 0;
+    for (const auto& entry : treeChildren) {
+        for (int childId : entry.second) {
+            auto* gEdge = graphComp.add_edges();
+            gEdge->set_id("e" + std::to_string(edgeIdx++));
+            gEdge->set_source(std::to_string(entry.first));
+            gEdge->set_target(std::to_string(childId));
+            gEdge->set_type("PARENT_CHILD");
+        }
+    }
 
-    ComponentGenerator::addChild(&mapScaledViewport, mapCanvas);
-    ComponentGenerator::addChild(&treeContainer, mapScaledViewport);
+    // Add challenge edges
+    for (const auto& ce : challengeEdges) {
+        auto* gEdge = graphComp.add_edges();
+        gEdge->set_id("e" + std::to_string(edgeIdx++));
+        gEdge->set_source(std::to_string(ce.first));
+        gEdge->set_target(std::to_string(ce.second));
+        gEdge->set_type("CHALLENGE");
+    }
+
+    // Set selected node to current claim if present
+    if (currentClaimId > 0) {
+        graphComp.set_selected_node_id(std::to_string(currentClaimId));
+    }
+
+    ComponentGenerator::addChild(&treeContainer, graphComp);
+
     ComponentGenerator::addChild(&mapSection, treeContainer);
     ComponentGenerator::addChild(&mapSection, legend);
 

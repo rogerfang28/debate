@@ -72,7 +72,7 @@ void ConnectClaimsHandler::DeleteLinkById(
     DebateWrapper& debateWrapper
 ) {
     // first find the link
-    debate::Link linkProto = debateWrapper.getLinkById(linkId);
+    debate::Relationship::Link linkProto = debateWrapper.getLinkById(linkId).link();
     int fromClaimId = linkProto.connect_from();
     int toClaimId = linkProto.connect_to();
 

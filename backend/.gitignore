@@ -1,6 +1,7 @@
 .env
 include
 build
+build2
 # SQLite database files
 *.sqlite3
 *.sqlite3-shm

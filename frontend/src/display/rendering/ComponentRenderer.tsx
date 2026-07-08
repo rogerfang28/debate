@@ -19,6 +19,8 @@ import IconComponent from "./componentTypes/IconComponent.tsx";
 import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
 import TreeComponent from "./componentTypes/TreeComponent.tsx";
 import TreeRootComponent from "./componentTypes/TreeRootComponent.tsx";
+import ClaimParserComponent from "./componentTypes/ClaimParserComponent.tsx";
+import GoogleLoginComponent from "./componentTypes/GoogleLoginComponent.tsx";
 
 interface ComponentProps {
   id?: string;
@@ -47,8 +49,10 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CHAT]: ChatComponent,
   [ComponentType.TEXTAREA]: TextareaComponent,
   [ComponentType.ICON]: IconComponent,
-  [ComponentType.NODE_GRAPH]: NodeGraphComponent,
+  [ComponentType.CLAIM_PARSER]: ClaimParserComponent,
 };
+
+const GoogleLoginButtonId = "googleLoginButton";
 
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (!component) return null;
@@ -70,6 +74,17 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (component.type === ComponentType.CONTAINER && attributes["data-tree-node"] === "true") {
     return (
       <TreeComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
+
+  // Special case: Google login button — rendered by dedicated component
+  if (component.id === GoogleLoginButtonId) {
+    return (
+      <GoogleLoginComponent
         component={component}
         className={className}
         style={inlineStyle}

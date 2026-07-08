@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "backend-test-9991",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set DEBATE_SERVER_PORT=9991 && backend\\build\\bin\\debate_server.exe"],
+      "port": 9991
+    },
+    {
+      "name": "frontend-test-5172",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd frontend && npm run dev -- --port 5172"],
+      "port": 5172
+    }
+  ]
+}

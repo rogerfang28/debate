@@ -24,6 +24,12 @@ bool isLocalOrigin(const std::string& value) {
     return value.find("localhost") != std::string::npos || value.find("127.0.0.1") != std::string::npos;
 }
 
+bool isHttpsRequest(const httplib::Request& req) {
+    const std::string origin = req.get_header_value("Origin");
+    const std::string host = req.get_header_value("Host");
+    return origin.find("https://") != std::string::npos || host.find(":443") != std::string::npos;
+}
+
 std::string cookieAttributesFromRequest(const httplib::Request& req) {
     std::string sameSite = "Lax";
     bool secure = false;
@@ -45,8 +51,15 @@ std::string cookieAttributesFromRequest(const httplib::Request& req) {
         const bool hostedRequest = (!origin.empty() && !isLocalOrigin(origin)) || (!host.empty() && !isLocalOrigin(host));
 
         if (hostedRequest) {
-            sameSite = "None";
-            secure = true;
+            // Only use Secure + SameSite=None for HTTPS
+            if (isHttpsRequest(req)) {
+                sameSite = "None";
+                secure = true;
+            } else {
+                // HTTP hosted request — use Lax so cookies work over plain HTTP
+                sameSite = "Lax";
+                secure = false;
+            }
         }
     }
 

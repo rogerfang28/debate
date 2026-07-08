@@ -44,14 +44,17 @@ message SubmitEditClaim {
     string new_claim = 1;
 }
 
+// TODO remove field, was used for user manual linking claims
 message ConnectFromClaim {
     int32 from_claim_id = 1;
 }
 
+// TODO remove field, was used for user manual linking claims
 message ConnectToClaim {
     int32 to_claim_id   = 2;
 }
 
+// TODO remove field, was used for user manual linking claims
 message SubmitConnectClaims {
     string connection    = 1;
     int32 from_claim_id = 2;
@@ -69,6 +72,9 @@ message JoinDebate {
 message Login {
     string username = 1;
     string password = 2;
+    oneof auth_method {
+        string google_id_token = 3;
+    }
 }
 
 message AddClaimToBeChallenged {
@@ -97,6 +103,7 @@ message GoToChallenge {
 
 message ConcedeChallenge {
     int32 challenge_id = 1;
+    int32 challenge_link_id = 2;
 }
 
 message DeleteChallenge {
@@ -138,9 +145,13 @@ enum EventType {
     SUBMIT_EDIT_CLAIM = 21;
     CANCEL_EDIT_CLAIM = 22;
     // connecting claims
+    // TODO remove field, was used for user manual linking claims
     CONNECT_FROM_CLAIM = 23;
+    // TODO remove field, was used for user manual linking claims
     CONNECT_TO_CLAIM = 24;
+    // TODO remove field, was used for user manual linking claims
     SUBMIT_CONNECT_CLAIMS = 25;
+    // TODO remove field, was used for user manual linking claims
     CANCEL_CONNECT_CLAIMS = 26;
     DELETE_LINK = 27;
     JOIN_DEBATE = 28;
@@ -193,8 +204,11 @@ message DebateEvent {
     DeleteChildClaim delete_child_claim = 23;
     SubmitEditClaimDescription submit_edit_claim_description = 25;
     SubmitEditClaim submit_edit_claim = 28;
+    // TODO remove field, was used for user manual linking claims
     ConnectFromClaim connect_from_claim = 30;
+    // TODO remove field, was used for user manual linking claims
     ConnectToClaim   connect_to_claim   = 31;
+    // TODO remove field, was used for user manual linking claims
     SubmitConnectClaims submit_connect_claims = 32;
     DeleteLink delete_link = 34;
     JoinDebate join_debate = 35;

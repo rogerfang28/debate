@@ -1030,56 +1030,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
         ui::Component deleteChildClaimButton;
         bool hasDeleteChildClaimButton = false;
         if (userOwnsChildClaim && modifyingCurrentClaim) {
-            // Add connection buttons based on connecting state
-            if (connecting) {
-                // If we're connecting and this is the FROM claim, show Cancel button
-                Log::info("[DebatePageGenerator] Currently connecting claims. fromClaimId=" + fromClaimId + ", child claimId=" + claimId);
-                if (claimId == fromClaimId) {
-                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is the from claim; rendering Cancel Connection button");
-                    connectionActionButton = ComponentGenerator::createButton(
-                        "cancelConnectClaimsButton_" + claimId,
-                        "Cancel Connection",
-                        "",
-                        "bg-gray-600",
-                        "hover:bg-gray-700",
-                        "text-white",
-                        "px-4 py-2",
-                        "rounded",
-                        "w-full transition-colors text-sm"
-                    );
-                    hasConnectionActionButton = true;
-                } else {
-                    // For all other claims, show Connect To button
-                    Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not the from claim; rendering Connect To button");
-                    connectionActionButton = ComponentGenerator::createButton(
-                        "connectToClaimButton_" + claimId,
-                        "Connect To",
-                        "",
-                        "bg-purple-600",
-                        "hover:bg-purple-700",
-                        "text-white",
-                        "px-4 py-2",
-                        "rounded",
-                        "w-full transition-colors text-sm"
-                    );
-                    hasConnectionActionButton = true;
-                }
-            } else {
-                // If we're not connecting, show Connect From button
-                Log::debug("[DebatePageGenerator] Child claim " + claimId + " is not connecting; rendering Connect From button");
-                connectionActionButton = ComponentGenerator::createButton(
-                    "connectFromClaimButton_" + claimId,
-                    "Connect From",
-                    "",
-                    "bg-purple-600",
-                    "hover:bg-purple-700",
-                    "text-white",
-                    "px-4 py-2",
-                    "rounded",
-                    "w-full transition-colors text-sm"
-                );
-                hasConnectionActionButton = true;
-            }
+            // TODO remove: was used for user manual linking claims (Connect From/To/Cancel buttons disabled for now)
 
             Log::debug("[DebatePageGenerator] Child claim " + claimId + " rendering Delete button alongside connection controls");
             deleteChildClaimButton = ComponentGenerator::createButton(
@@ -1123,10 +1074,10 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
     // Extract data
     int currentUserId = user.user_id();
     
-    std::vector<std::tuple<std::string, std::string, int>> challengesInfo;
+    std::vector<std::tuple<std::string, std::string, int, int>> challengesInfo;
     for (int i = 0; i < info.current_challenges_size(); i++) {
         const rendering_info::ChallengeRenderInfo& challenge = info.current_challenges(i);
-        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id()});
+        challengesInfo.push_back({std::to_string(challenge.id()), challenge.sentence(), challenge.creator_id(), challenge.challenge_link_id()});
     }
 
     // Find challengesContainer
@@ -1166,6 +1117,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         std::string challengedClaimId = std::get<0>(challenge);
         std::string challengeSentence = std::get<1>(challenge);
         int challengeCreatorId = std::get<2>(challenge);
+        int challengeLinkId = std::get<3>(challenge);
         bool userOwnsChallenge = (currentUserId == challengeCreatorId);
 
         // Challenges no longer have their own status — use default styling.
@@ -1239,23 +1191,43 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
             )
         );
 
-        // WIP placeholder: intentionally non-interactive.
-        ui::Component concedeWipButton = ComponentGenerator::createText(
-            "concedeWipButton_" + challengedClaimId,
-            "Concede (WIP)",
-            "text-sm",
-            "text-gray-200",
-            "font-medium",
-            "px-4 py-2 rounded bg-gray-600 border border-gray-500 cursor-not-allowed select-none"
-        );
-        ComponentGenerator::addChild(
-            &challengeButtonContainer,
-            CreateStableActionSlot(
-                "challengeConcedeSlot_" + challengedClaimId,
-                &concedeWipButton,
-                "challengeConcedeSlotPlaceholder_" + challengedClaimId
-            )
-        );
+        // Concede button: visible when the current user's claim is being challenged
+        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+            ui::Component concedeButton = ComponentGenerator::createButton(
+                "concedeChallengeButton_" + std::to_string(challengeLinkId),
+                "Concede",
+                "",
+                "bg-red-700",
+                "hover:bg-red-800",
+                "text-white",
+                "px-4 py-2",
+                "rounded",
+                "w-full transition-colors text-sm"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeButton,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        } else {
+            // When user owns the challenge, show a spacer for the concede slot
+            ui::Component concedeSpacer = ComponentGenerator::createText(
+                "concedeSpacer_" + challengedClaimId,
+                "",
+                "hidden"
+            );
+            ComponentGenerator::addChild(
+                &challengeButtonContainer,
+                CreateStableActionSlot(
+                    "challengeConcedeSlot_" + challengedClaimId,
+                    &concedeSpacer,
+                    "challengeConcedeSlotPlaceholder_" + challengedClaimId
+                )
+            );
+        }
 
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
@@ -1961,213 +1933,7 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             break;
         }
         case user_engagement::DebatingInfo_CurrentDebateAction_ActionType_CONNECTING_CLAIMS: {
-            // Extract data for connecting claims
-            // check if it's opened_connecting_modal
-            int currentClaimId = debatingInfo.current_claim().id();
-            std::string claim = debatingInfo.current_claim().sentence();
-            int fromClaimId = debatingInfo.connecting_info().from_claim_id();
-            int toClaimId = debatingInfo.connecting_info().to_claim_id();
-            bool isConnectingModal = debatingInfo.connecting_info().opened_connect_modal();
-            if (!isConnectingModal) {
-                break;
-            }
-            
-            std::string fromClaimSentence = "";
-            std::string toClaimSentence = "";
-            
-            // Check if fromClaimId is the current claim
-            if (fromClaimId == currentClaimId) {
-                fromClaimSentence = claim;
-            } else {
-                // Search in child claims
-                for (int i = 0; i < info.children_claims_size(); i++) {
-                    const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-                    if (childClaim.id() == fromClaimId) {
-                        fromClaimSentence = childClaim.sentence();
-                        break;
-                    }
-                }
-            }
-            
-            // Check if toClaimId is the current claim
-            if (toClaimId == currentClaimId) {
-                toClaimSentence = claim;
-            } else {
-                // Search in child claims
-                for (int i = 0; i < info.children_claims_size(); i++) {
-                    const rendering_info::ClaimRenderInfo& childClaim = info.children_claims(i);
-                    if (childClaim.id() == toClaimId) {
-                        toClaimSentence = childClaim.sentence();
-                        break;
-                    }
-                }
-            }
-
-            // Modal overlay
-            ui::Component connectModalOverlay = ComponentGenerator::createContainer(
-                "connectModalOverlay",
-                "fixed inset-0 flex items-center justify-center",
-                "bg-black/50",
-                "",
-                "",
-                "",
-                "",
-                "z-50"
-            );
-
-            // Modal content
-            ui::Component connectModalContent = ComponentGenerator::createContainer(
-                "connectModalContent",
-                "",
-                "bg-gray-800",
-                "p-8",
-                "",
-                "border-2 border-gray-700",
-                "rounded-lg",
-                "w-full max-w-2xl"
-            );
-
-            // Modal title
-            ui::Component connectModalTitle = ComponentGenerator::createText(
-                "connectModalTitle",
-                "Create Connection",
-                "text-2xl",
-                "text-white",
-                "font-bold",
-                "mb-6"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectModalTitle);
-
-            // Display connecting claims
-            ui::Component connectingClaimsContainer = ComponentGenerator::createContainer(
-                "connectingClaimsContainer",
-                "",
-                "bg-gray-700",
-                "p-4",
-                "mb-6",
-                "border border-gray-600",
-                "rounded",
-                ""
-            );
-
-            ui::Component fromClaimLabel = ComponentGenerator::createText(
-                "fromClaimLabel",
-                "From:",
-                "text-xs",
-                "text-gray-400",
-                "font-semibold",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimLabel);
-
-            ui::Component fromClaimText = ComponentGenerator::createText(
-                "fromClaimText",
-                fromClaimSentence,
-                "text-sm",
-                "text-white",
-                "",
-                "mb-3"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, fromClaimText);
-
-            ui::Component arrowText = ComponentGenerator::createText(
-                "arrowText",
-                "↓",
-                "text-center text-2xl",
-                "text-purple-400",
-                "",
-                "mb-3"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, arrowText);
-
-            ui::Component toClaimLabel = ComponentGenerator::createText(
-                "toClaimLabel",
-                "To:",
-                "text-xs",
-                "text-gray-400",
-                "font-semibold",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, toClaimLabel);
-
-            ui::Component toClaimText = ComponentGenerator::createText(
-                "toClaimText",
-                toClaimSentence,
-                "text-sm",
-                "text-white",
-                "",
-                ""
-            );
-            ComponentGenerator::addChild(&connectingClaimsContainer, toClaimText);
-
-            ComponentGenerator::addChild(&connectModalContent, connectingClaimsContainer);
-
-            // Connection label
-            ui::Component connectionLabel = ComponentGenerator::createText(
-                "connectionLabel",
-                "Connection:",
-                "text-sm",
-                "text-white",
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectionLabel);
-
-            // Connection input
-            ui::Component connectionInput = ComponentGenerator::createInput(
-                "connectionInput",
-                "Enter the connection type...",
-                "connection",
-                "bg-gray-700",
-                "text-white",
-                "border-gray-600",
-                "p-3",
-                "rounded",
-                "w-full mb-6"
-            );
-            ComponentGenerator::addChild(&connectModalContent, connectionInput);
-
-            // Modal action buttons
-            ui::Component connectModalActions = ComponentGenerator::createContainer(
-                "connectModalActions",
-                "flex gap-3 justify-end",
-                "",
-                "",
-                "",
-                "",
-                "",
-                ""
-            );
-
-            ui::Component connectCancelButton = ComponentGenerator::createButton(
-                "closeConnectModalButton",
-                "Cancel",
-                "",
-                "bg-gray-600",
-                "hover:bg-gray-700",
-                "text-white",
-                "px-6 py-2",
-                "rounded",
-                "transition-colors"
-            );
-            ComponentGenerator::addChild(&connectModalActions, connectCancelButton);
-
-            ui::Component submitConnectClaimsButton = ComponentGenerator::createButton(
-                "submitConnectClaimsButton",
-                "Submit",
-                "",
-                "bg-green-600",
-                "hover:bg-green-700",
-                "text-white",
-                "px-6 py-2",
-                "rounded",
-                "transition-colors"
-            );
-            ComponentGenerator::addChild(&connectModalActions, submitConnectClaimsButton);
-
-            ComponentGenerator::addChild(&connectModalContent, connectModalActions);
-            ComponentGenerator::addChild(&connectModalOverlay, connectModalContent);
-            ComponentGenerator::addChild(&mainLayout, connectModalOverlay);
+            // TODO remove: was used for user manual linking claims (connect-claims modal disabled for now)
             break;
         }
         default:

@@ -1,6 +1,25 @@
 import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
 import getEntirePage from "../getEntirePage.ts";
 
+// Google sign-in callback — set by GoogleLoginComponent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).googleLoginCallback = async (credential: string) => {
+  console.log("[GoogleAuth] Got ID token from Google, sending to backend...");
+  try {
+    await postClientMessageToCPP({
+      componentId: "googleLoginButton",
+      eventType: "onGoogleLogin",
+      actionId: "google",
+      eventName: "onGoogleLogin",
+      data: { _pageId: "login", google_id_token: credential },
+      timestamp: Date.now(),
+    });
+    window.reloadPage?.();
+  } catch (error) {
+    console.error("[GoogleAuth] Failed to send Google token:", error);
+  }
+};
+
 // TypeScript interfaces
 interface ComponentProps {
   id?: string;
@@ -44,21 +63,25 @@ export default async function handleEvent(
       // collectFrom
     );
 
+    // Skip normal handling for Google login button — it's handled by Google JS SDK
+    if (component.id === "googleLoginButton") {
+      console.log("[GoogleAuth] Google button click — skipped normal handler");
+      return;
+    }
+
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();
     }
 
-    // Collect ALL input data from the entire page
-    const entirePageData = getEntirePage(component.id);
-    console.log(`Collected ${Object.keys(entirePageData).length} components from entire page`);
-    console.log('Full page data:', entirePageData);
+    // Collect only form input values from the page (not div textContent)
+    const pageData = getEntirePage(component.id);
 
     await postClientMessageToCPP({
       componentId: component.id || "unknown",
       eventType: eventName,
       actionId,
       eventName,
-      data: entirePageData, // Send complete page data
+      data: pageData,
       timestamp: Date.now(),
     });
 

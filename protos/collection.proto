@@ -6,7 +6,7 @@ import "debate.proto";
 
 message Collection {
 	map<int32, Claim> claims_by_id = 1;
-	map<int32, Link> links_by_id = 2;
+	map<int32, Relationship> links_by_id = 2;
 }
 
 message CollectionSpecification{

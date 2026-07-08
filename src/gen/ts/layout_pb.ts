@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file layout.proto.
  */
 export const file_layout: GenFile = /*@__PURE__*/
-  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IsYCCglDb21wb25lbnQSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIfCgR0eXBlGAMgASgOMhEudWkuQ29tcG9uZW50VHlwZRIMCgR0ZXh0GAQgASgJEh8KCGNoaWxkcmVuGAUgAygLMg0udWkuQ29tcG9uZW50EhgKBXN0eWxlGAYgASgLMgkudWkuU3R5bGUSIwoDY3NzGAggAygLMhYudWkuQ29tcG9uZW50LkNzc0VudHJ5EjEKCmF0dHJpYnV0ZXMYByADKAsyHS51aS5Db21wb25lbnQuQXR0cmlidXRlc0VudHJ5GioKCENzc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEaMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiHQoFU3R5bGUSFAoMY3VzdG9tX2NsYXNzGAEgASgJIi4KCFBvc2l0aW9uEgkKAXgYASABKAISCQoBeRgCIAEoAhIMCgR1bml0GAMgASgJIiUKBFNpemUSDQoFd2lkdGgYASABKAkSDgoGaGVpZ2h0GAIgASgJKkwKDUNvbXBvbmVudFR5cGUSCwoHVU5LTk9XThAAEggKBFRFWFQQARIKCgZCVVRUT04QAhIJCgVJTlBVVBADEg0KCUNPTlRBSU5FUhAMKkkKCkxheW91dFR5cGUSCQoFQUJTTFQQABIMCghGTEVYX1JPVxABEgwKCEZMRVhfQ09MEAISCAoER1JJRBADEgoKBklOTElORRAEYgZwcm90bzM");
+  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IrYDCglDb21wb25lbnQSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIfCgR0eXBlGAMgASgOMhEudWkuQ29tcG9uZW50VHlwZRIMCgR0ZXh0GAQgASgJEh8KCGNoaWxkcmVuGAUgAygLMg0udWkuQ29tcG9uZW50EhgKBXN0eWxlGAYgASgLMgkudWkuU3R5bGUSIwoDY3NzGAggAygLMhYudWkuQ29tcG9uZW50LkNzc0VudHJ5EjEKCmF0dHJpYnV0ZXMYByADKAsyHS51aS5Db21wb25lbnQuQXR0cmlidXRlc0VudHJ5EhwKBW5vZGVzGAogAygLMg0udWkuR3JhcGhOb2RlEhwKBWVkZ2VzGAsgAygLMg0udWkuR3JhcGhFZGdlEhgKEHNlbGVjdGVkX25vZGVfaWQYDCABKAkSGAoQc2VsZWN0ZWRfZWRnZV9pZBgNIAEoCRoqCghDc3NFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIh0KBVN0eWxlEhQKDGN1c3RvbV9jbGFzcxgBIAEoCSIuCghQb3NpdGlvbhIJCgF4GAEgASgCEgkKAXkYAiABKAISDAoEdW5pdBgDIAEoCSIlCgRTaXplEg0KBXdpZHRoGAEgASgJEg4KBmhlaWdodBgCIAEoCSKSAQoJR3JhcGhOb2RlEgoKAmlkGAEgASgJEgwKBHRleHQYAiABKAkSCQoBeBgDIAEoARIJCgF5GAQgASgBEgwKBHR5cGUYBSABKAkSDgoGc3RhdHVzGAYgASgJEhIKCmNyZWF0b3JfaWQYByABKAUSDwoHaXNfcm9vdBgIIAEoCBISCgppc19jdXJyZW50GAkgASgIIkUKCUdyYXBoRWRnZRIKCgJpZBgBIAEoCRIOCgZzb3VyY2UYAiABKAkSDgoGdGFyZ2V0GAMgASgJEgwKBHR5cGUYBCABKAkijAEKDkdyYXBoQ29tcG9uZW50EgoKAmlkGAEgASgJEhwKBW5vZGVzGAIgAygLMg0udWkuR3JhcGhOb2RlEhwKBWVkZ2VzGAMgAygLMg0udWkuR3JhcGhFZGdlEhgKEHNlbGVjdGVkX25vZGVfaWQYBCABKAkSGAoQc2VsZWN0ZWRfZWRnZV9pZBgFIAEoCSppCg1Db21wb25lbnRUeXBlEgsKB1VOS05PV04QABIICgRURVhUEAESCgoGQlVUVE9OEAISCQoFSU5QVVQQAxIJCgVHUkFQSBAEEg0KCUNPTlRBSU5FUhAMEhAKDENMQUlNX1BBUlNFUhAOKkkKCkxheW91dFR5cGUSCQoFQUJTTFQQABIMCghGTEVYX1JPVxABEgwKCEZMRVhfQ09MEAISCAoER1JJRBADEgoKBklOTElORRAEYgZwcm90bzM");
 
 /**
  * @generated from message ui.Page
@@ -104,6 +104,29 @@ export type Component = Message<"ui.Component"> & {
    * @generated from field: map<string, string> attributes = 7;
    */
   attributes: { [key: string]: string };
+
+  /**
+   * string value = 9;                   // Default or bound value
+   * Graph data — only used when type == GRAPH
+   *
+   * @generated from field: repeated ui.GraphNode nodes = 10;
+   */
+  nodes: GraphNode[];
+
+  /**
+   * @generated from field: repeated ui.GraphEdge edges = 11;
+   */
+  edges: GraphEdge[];
+
+  /**
+   * @generated from field: string selected_node_id = 12;
+   */
+  selectedNodeId: string;
+
+  /**
+   * @generated from field: string selected_edge_id = 13;
+   */
+  selectedEdgeId: string;
 };
 
 /**
@@ -190,6 +213,168 @@ export const SizeSchema: GenMessage<Size> = /*@__PURE__*/
   messageDesc(file_layout, 4);
 
 /**
+ * @generated from message ui.GraphNode
+ */
+export type GraphNode = Message<"ui.GraphNode"> & {
+  /**
+   * Unique node identifier
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * Claim/sentence text
+   *
+   * @generated from field: string text = 2;
+   */
+  text: string;
+
+  /**
+   * Optional initial x position
+   *
+   * @generated from field: double x = 3;
+   */
+  x: number;
+
+  /**
+   * Optional initial y position
+   *
+   * @generated from field: double y = 4;
+   */
+  y: number;
+
+  /**
+   * "claim" | "evidence" | "challenge" | ""
+   *
+   * @generated from field: string type = 5;
+   */
+  type: string;
+
+  /**
+   * "TRUE_CLAIM" | "FALSE_CLAIM" | "UNDETERMINED"
+   *
+   * @generated from field: string status = 6;
+   */
+  status: string;
+
+  /**
+   * Creator user ID
+   *
+   * @generated from field: int32 creator_id = 7;
+   */
+  creatorId: number;
+
+  /**
+   * Renders larger if true
+   *
+   * @generated from field: bool is_root = 8;
+   */
+  isRoot: boolean;
+
+  /**
+   * Highlights with yellow stroke if true
+   *
+   * @generated from field: bool is_current = 9;
+   */
+  isCurrent: boolean;
+};
+
+/**
+ * Describes the message ui.GraphNode.
+ * Use `create(GraphNodeSchema)` to create a new message.
+ */
+export const GraphNodeSchema: GenMessage<GraphNode> = /*@__PURE__*/
+  messageDesc(file_layout, 5);
+
+/**
+ * @generated from message ui.GraphEdge
+ */
+export type GraphEdge = Message<"ui.GraphEdge"> & {
+  /**
+   * Unique edge identifier
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * Source node ID
+   *
+   * @generated from field: string source = 2;
+   */
+  source: string;
+
+  /**
+   * Target node ID
+   *
+   * @generated from field: string target = 3;
+   */
+  target: string;
+
+  /**
+   * "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
+   *
+   * @generated from field: string type = 4;
+   */
+  type: string;
+};
+
+/**
+ * Describes the message ui.GraphEdge.
+ * Use `create(GraphEdgeSchema)` to create a new message.
+ */
+export const GraphEdgeSchema: GenMessage<GraphEdge> = /*@__PURE__*/
+  messageDesc(file_layout, 6);
+
+/**
+ * @generated from message ui.GraphComponent
+ */
+export type GraphComponent = Message<"ui.GraphComponent"> & {
+  /**
+   * Component ID
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * Debate tree nodes
+   *
+   * @generated from field: repeated ui.GraphNode nodes = 2;
+   */
+  nodes: GraphNode[];
+
+  /**
+   * Edges between nodes
+   *
+   * @generated from field: repeated ui.GraphEdge edges = 3;
+   */
+  edges: GraphEdge[];
+
+  /**
+   * Initially selected node
+   *
+   * @generated from field: string selected_node_id = 4;
+   */
+  selectedNodeId: string;
+
+  /**
+   * Initially selected edge
+   *
+   * @generated from field: string selected_edge_id = 5;
+   */
+  selectedEdgeId: string;
+};
+
+/**
+ * Describes the message ui.GraphComponent.
+ * Use `create(GraphComponentSchema)` to create a new message.
+ */
+export const GraphComponentSchema: GenMessage<GraphComponent> = /*@__PURE__*/
+  messageDesc(file_layout, 7);
+
+/**
  * @generated from enum ui.ComponentType
  */
 export enum ComponentType {
@@ -214,9 +399,19 @@ export enum ComponentType {
   INPUT = 3,
 
   /**
+   * @generated from enum value: GRAPH = 4;
+   */
+  GRAPH = 4,
+
+  /**
    * @generated from enum value: CONTAINER = 12;
    */
   CONTAINER = 12,
+
+  /**
+   * @generated from enum value: CLAIM_PARSER = 14;
+   */
+  CLAIM_PARSER = 14,
 }
 
 /**

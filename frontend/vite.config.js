@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
-import { dirname, resolve } from 'node:path'
+import { dirname } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -15,7 +15,9 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     resolve: {
       alias: {
-        '@bufbuild/protobuf/codegenv2': resolve(__dirname, 'node_modules/@bufbuild/protobuf/dist/esm/codegenv2/index.js'),
+        "@bufbuild/protobuf/codegenv2": fileURLToPath(
+          new URL("./node_modules/@bufbuild/protobuf/dist/esm/codegenv2/index.js", import.meta.url)
+        ),
       },
     },
     server: {

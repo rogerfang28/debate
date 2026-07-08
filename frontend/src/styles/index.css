@@ -494,57 +494,27 @@ svg circle {
   }
 }
 
-/* --- Map Section --- */
+/* --- SVG Graph --- */
+.graph-node circle {
+  transition: fill 0.15s ease, stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.graph-node:hover circle {
+  filter: brightness(1.2);
+}
+
+.graph-tooltip {
+  transition: opacity 0.15s ease;
+}
+
+.graph-zoom-btn:hover {
+  background: var(--surface-hover) !important;
+  border-color: var(--border-strong) !important;
+}
+
+/* --- Map Section (legacy — kept for pbtxt compatibility) --- */
 #mapSection {
   min-height: fit-content !important;
 }
 
-/* --- Map Nodes: fixed size, content wraps then clipped by card --- */
-[id^="mapNode_"] {
-  height: 180px !important;
-  width: 200px !important;
-  overflow: hidden !important;
-}
 
-[id^="mapNode_"] .text-sm,
-[id^="mapNodeSentence_"] {
-  overflow: hidden !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 3 !important;
-  -webkit-box-orient: vertical !important;
-}
-
-[id^="mapNode_"] > h3 {
-  -webkit-line-clamp: unset !important;
-  display: block !important;
-  overflow: visible !important;
-  white-space: normal !important;
-  text-overflow: unset !important;
-}
-
-[id^="mapNode_"] > button {
-  margin-top: 0.5rem !important;
-  flex-shrink: 0;
-}
-
-/* --- Map Edges: make tree lines visible against dark background --- */
-[id^="mapEdgeV1_"],
-[id^="mapEdgeH_"],
-[id^="mapEdgeV2_"] {
-  background-color: #9ca3af !important;
-}
-
-[id^="mapChallengeEdgeV1_"],
-[id^="mapChallengeEdgeH_"],
-[id^="mapChallengeEdgeV2_"] {
-  background-color: #f97316 !important;
-}
-
-/* --- Legend: update swatch colors to match new edge colors --- */
-#legendNormalLinkSwatch {
-  background-color: #9ca3af !important;
-}
-
-#legendChallengeLinkSwatch {
-  background-color: #f97316 !important;
-}

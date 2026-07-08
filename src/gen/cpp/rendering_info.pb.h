@@ -2115,6 +2115,7 @@ class ChallengeRenderInfo final : public ::google::protobuf::Message
     kDescriptionFieldNumber = 3,
     kIdFieldNumber = 1,
     kCreatorIdFieldNumber = 4,
+    kChallengeLinkIdFieldNumber = 5,
   };
   // string sentence = 2;
   void clear_sentence() ;
@@ -2166,11 +2167,21 @@ class ChallengeRenderInfo final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // int32 challenge_link_id = 5;
+  void clear_challenge_link_id() ;
+  ::int32_t challenge_link_id() const;
+  void set_challenge_link_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_challenge_link_id() const;
+  void _internal_set_challenge_link_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:rendering_info.ChallengeRenderInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 62,
                                    2>
       _table_;
@@ -2196,6 +2207,7 @@ class ChallengeRenderInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::int32_t id_;
     ::int32_t creator_id_;
+    ::int32_t challenge_link_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -7422,6 +7434,31 @@ inline ::int32_t ChallengeRenderInfo::_internal_creator_id() const {
 inline void ChallengeRenderInfo::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
+}
+
+// int32 challenge_link_id = 5;
+inline void ChallengeRenderInfo::clear_challenge_link_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::int32_t ChallengeRenderInfo::challenge_link_id() const {
+  // @@protoc_insertion_point(field_get:rendering_info.ChallengeRenderInfo.challenge_link_id)
+  return _internal_challenge_link_id();
+}
+inline void ChallengeRenderInfo::set_challenge_link_id(::int32_t value) {
+  _internal_set_challenge_link_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:rendering_info.ChallengeRenderInfo.challenge_link_id)
+}
+inline ::int32_t ChallengeRenderInfo::_internal_challenge_link_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.challenge_link_id_;
+}
+inline void ChallengeRenderInfo::_internal_set_challenge_link_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = value;
 }
 
 // -------------------------------------------------------------------

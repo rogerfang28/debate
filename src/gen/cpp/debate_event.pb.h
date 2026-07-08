@@ -1726,6 +1726,10 @@ class Login final : public ::google::protobuf::Message
     return *reinterpret_cast<const Login*>(
         &_Login_default_instance_);
   }
+  enum AuthMethodCase {
+    kGoogleIdToken = 3,
+    AUTH_METHOD_NOT_SET = 0,
+  };
   static constexpr int kIndexInFileMessages = 14;
   friend void swap(Login& a, Login& b) { a.Swap(&b); }
   inline void Swap(Login* PROTOBUF_NONNULL other) {
@@ -1815,6 +1819,7 @@ class Login final : public ::google::protobuf::Message
   enum : int {
     kUsernameFieldNumber = 1,
     kPasswordFieldNumber = 2,
+    kGoogleIdTokenFieldNumber = 3,
   };
   // string username = 1;
   void clear_username() ;
@@ -1846,12 +1851,33 @@ class Login final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_password();
 
   public:
+  // string google_id_token = 3;
+  bool has_google_id_token() const;
+  void clear_google_id_token() ;
+  const ::std::string& google_id_token() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_google_id_token(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_google_id_token();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_google_id_token();
+  void set_allocated_google_id_token(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_google_id_token() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_google_id_token(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_google_id_token();
+
+  public:
+  void clear_auth_method();
+  AuthMethodCase auth_method_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.Login)
  private:
   class _Internal;
+  void set_has_google_id_token();
+  inline bool has_auth_method() const;
+  inline void clear_has_auth_method();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 43,
+  static const ::google::protobuf::internal::TcParseTable<1, 3,
+                                   0, 58,
                                    2>
       _table_;
 
@@ -1874,6 +1900,12 @@ class Login final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr username_;
     ::google::protobuf::internal::ArenaStringPtr password_;
+    union AuthMethodUnion {
+      constexpr AuthMethodUnion() : _constinit_{} {}
+      ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::google::protobuf::internal::ArenaStringPtr google_id_token_;
+    } auth_method_;
+    ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4311,6 +4343,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChallengeIdFieldNumber = 1,
+    kChallengeLinkIdFieldNumber = 2,
   };
   // int32 challenge_id = 1;
   void clear_challenge_id() ;
@@ -4322,11 +4355,21 @@ class ConcedeChallenge final : public ::google::protobuf::Message
   void _internal_set_challenge_id(::int32_t value);
 
   public:
+  // int32 challenge_link_id = 2;
+  void clear_challenge_link_id() ;
+  ::int32_t challenge_link_id() const;
+  void set_challenge_link_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_challenge_link_id() const;
+  void _internal_set_challenge_link_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.ConcedeChallenge)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
                                    0, 0,
                                    2>
       _table_;
@@ -4349,6 +4392,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::int32_t challenge_id_;
+    ::int32_t challenge_link_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -7157,6 +7201,94 @@ inline void Login::set_allocated_password(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:debate_event.Login.password)
 }
 
+// string google_id_token = 3;
+inline bool Login::has_google_id_token() const {
+  return auth_method_case() == kGoogleIdToken;
+}
+inline void Login::set_has_google_id_token() {
+  _impl_._oneof_case_[0] = kGoogleIdToken;
+}
+inline void Login::clear_google_id_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (auth_method_case() == kGoogleIdToken) {
+    _impl_.auth_method_.google_id_token_.Destroy();
+    clear_has_auth_method();
+  }
+}
+inline const ::std::string& Login::google_id_token() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.Login.google_id_token)
+  return _internal_google_id_token();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Login::set_google_id_token(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (auth_method_case() != kGoogleIdToken) {
+    clear_auth_method();
+
+    set_has_google_id_token();
+    _impl_.auth_method_.google_id_token_.InitDefault();
+  }
+  _impl_.auth_method_.google_id_token_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.Login.google_id_token)
+}
+inline ::std::string* PROTOBUF_NONNULL Login::mutable_google_id_token()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  if (auth_method_case() != kGoogleIdToken) {
+    clear_auth_method();
+
+    set_has_google_id_token();
+    _impl_.auth_method_.google_id_token_.InitDefault();
+  }
+  ::std::string* _s = _internal_mutable_google_id_token();
+  // @@protoc_insertion_point(field_mutable:debate_event.Login.google_id_token)
+  return _s;
+}
+inline const ::std::string& Login::_internal_google_id_token() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  if (auth_method_case() != kGoogleIdToken) {
+    return ::google::protobuf::internal::GetEmptyStringAlreadyInited();
+  }
+  return _impl_.auth_method_.google_id_token_.Get();
+}
+inline void Login::_internal_set_google_id_token(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.auth_method_.google_id_token_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Login::_internal_mutable_google_id_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.auth_method_.google_id_token_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Login::release_google_id_token() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.Login.google_id_token)
+  if (auth_method_case() != kGoogleIdToken) {
+    return nullptr;
+  }
+  clear_has_auth_method();
+  return _impl_.auth_method_.google_id_token_.Release();
+}
+inline void Login::set_allocated_google_id_token(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (has_auth_method()) {
+    clear_auth_method();
+  }
+  if (value != nullptr) {
+    set_has_google_id_token();
+    _impl_.auth_method_.google_id_token_.InitAllocated(value, GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.Login.google_id_token)
+}
+
+inline bool Login::has_auth_method() const {
+  return auth_method_case() != AUTH_METHOD_NOT_SET;
+}
+inline void Login::clear_has_auth_method() {
+  _impl_._oneof_case_[0] = AUTH_METHOD_NOT_SET;
+}
+inline Login::AuthMethodCase Login::auth_method_case() const {
+  return Login::AuthMethodCase(_impl_._oneof_case_[0]);
+}
 // -------------------------------------------------------------------
 
 // AddClaimToBeChallenged
@@ -7398,6 +7530,31 @@ inline ::int32_t ConcedeChallenge::_internal_challenge_id() const {
 inline void ConcedeChallenge::_internal_set_challenge_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenge_id_ = value;
+}
+
+// int32 challenge_link_id = 2;
+inline void ConcedeChallenge::clear_challenge_link_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int32_t ConcedeChallenge::challenge_link_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.ConcedeChallenge.challenge_link_id)
+  return _internal_challenge_link_id();
+}
+inline void ConcedeChallenge::set_challenge_link_id(::int32_t value) {
+  _internal_set_challenge_link_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:debate_event.ConcedeChallenge.challenge_link_id)
+}
+inline ::int32_t ConcedeChallenge::_internal_challenge_link_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.challenge_link_id_;
+}
+inline void ConcedeChallenge::_internal_set_challenge_link_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_link_id_ = value;
 }
 
 // -------------------------------------------------------------------

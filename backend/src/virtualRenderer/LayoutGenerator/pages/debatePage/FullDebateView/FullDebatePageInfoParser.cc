@@ -124,7 +124,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 			const int candidateId = claimEntry.first;
 			bool hasIncomingParentChild = false;
 			for (const auto& linkEntry : collectionProto.links_by_id()) {
-				const debate::Link& link = linkEntry.second;
+				const debate::Relationship::Link& link = linkEntry.second.link();
 				if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_to() == candidateId) {
 					hasIncomingParentChild = true;
 					break;
@@ -186,7 +186,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()));
 	for (const auto& linkEntry : collectionProto.links_by_id()) {
 		const int linkId = linkEntry.first;
-		const debate::Link& linkProto = linkEntry.second;
+		const debate::Relationship::Link& linkProto = linkEntry.second.link();
 		if (linkProto.connect_from() != currentClaimProto.id()) {
 			continue;
 		}
@@ -251,7 +251,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	int outputLinkIndex = 0;
 	for (const auto& entry : collectionProto.links_by_id()) {
 		const int linkId = entry.first;
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second.link();
 		const bool fromVisible = visibleClaimIds.count(link.connect_from()) > 0;
 		const bool toVisible = visibleClaimIds.count(link.connect_to()) > 0;
 		const bool isParentChild = (link.link_type() == debate::LinkType::PARENT_CHILD);
@@ -291,7 +291,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	int challengeLinkCount = 0;
 	for (const auto& entry : collectionProto.links_by_id()) {
 		challengeLinkCount++;
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second.link();
 		Log::debug("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));
 		
 		// Look for challenge links pointing to current claim
@@ -307,10 +307,11 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				const debate::Claim& challengeClaim = challengeClaimIt->second;
 				
 				rendering_info::ChallengeRenderInfo* outChallenge = info.add_current_challenges();
-				outChallenge->set_id(challengeClaimId);
-				outChallenge->set_sentence(challengeClaim.sentence());
-				outChallenge->set_creator_id(challengeClaim.creator_id());
-				Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()));
+					outChallenge->set_id(challengeClaimId);
+					outChallenge->set_sentence(challengeClaim.sentence());
+					outChallenge->set_creator_id(challengeClaim.creator_id());
+					outChallenge->set_challenge_link_id(entry.first);
+					Log::debug("[DebatePageInfoParser] Added CHALLENGE to rendering_info: id=" + std::to_string(challengeClaimId) + ", sentence=\"" + challengeClaim.sentence() + "\", creator_id=" + std::to_string(challengeClaim.creator_id()) + ", challenge_link_id=" + std::to_string(entry.first));
 			} else {
 				Log::warn("[DebatePageInfoParser] Challenge claim id=" + std::to_string(challengeClaimId) + " NOT FOUND in collection!");
 			}
@@ -364,10 +365,10 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	);
 
 	// Chronological order is inferred by link id ascending.
-	std::vector<std::pair<int, debate::Link>> linksById;
+	std::vector<std::pair<int, debate::Relationship::Link>> linksById;
 	linksById.reserve(collectionProto.links_by_id_size());
 	for (const auto& entry : collectionProto.links_by_id()) {
-		linksById.push_back({entry.first, entry.second});
+		linksById.push_back({entry.first, entry.second.link()});
 	}
 	std::sort(linksById.begin(), linksById.end(), [](const auto& a, const auto& b) {
 		return a.first < b.first;
@@ -379,7 +380,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		const int candidateId = claimEntry.first;
 		bool hasIncomingParentChild = false;
 		for (const auto& linkEntry : collectionProto.links_by_id()) {
-			const debate::Link& link = linkEntry.second;
+			const debate::Relationship::Link& link = linkEntry.second.link();
 			if (link.link_type() == debate::LinkType::PARENT_CHILD && link.connect_to() == candidateId) {
 				hasIncomingParentChild = true;
 				break;
@@ -417,7 +418,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 
 	for (const auto& entry : linksById) {
 		const int linkId = entry.first;
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second;
 
 		if (claimIdSet.count(link.connect_from()) == 0 || claimIdSet.count(link.connect_to()) == 0) {
 			Log::warn(
@@ -528,7 +529,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 
 	for (const auto& entry : linksById) {
 		Log::debug("[ParseFullDebateViewInfo] Inspecting link_id=" + std::to_string(entry.first));
-		const debate::Link& link = entry.second;
+		const debate::Relationship::Link& link = entry.second;
 		if (link.link_type() != debate::LinkType::CHALLENGE) {
 			continue;
 		}
