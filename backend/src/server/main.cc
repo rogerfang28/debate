@@ -12,10 +12,22 @@
 #include <cstdlib>
 #include <iostream>
 #include "../utils/Log.h"
+#include "../utils/GoogleJWTVerifier.h"
 
 int main() {
   httplib::Server svr;
   MiddleendRequestHandler handler;
+
+  // Pre-warm Google's JWKS cache at startup so the first login doesn't pay
+  // the fetch latency, and the timestamp check in verify() has a real
+  // baseline instead of defaulting to epoch 0. Non-fatal if it fails (e.g.
+  // no network, or Google Sign-In isn't configured) — verify() will retry
+  // the fetch on first use.
+  if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
+    if (!GoogleJWTVerifier::init()) {
+      Log::error("[GoogleAuth] Failed to pre-load JWKS at startup; will retry on first login.");
+    }
+  }
 
   // ---------- CORS handling for cross-origin + credentialed requests ----------
   svr.set_pre_routing_handler([](const httplib::Request& req, httplib::Response& res) {

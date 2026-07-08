@@ -3,19 +3,16 @@
 #include "../server/httplib.h"
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
 #include <sstream>
-#include <iomanip>
 #include <chrono>
 #include <stdexcept>
-#include <cstring>
 #include <cstdlib>
 #include <vector>
 
 namespace {
 // Google's JWKS endpoint
-const std::string JWKS_URL = "https://www.googleapis.com/oauth2/v3/certs";
+const std::string JWKS_ORIGIN = "https://www.googleapis.com";
+const std::string JWKS_PATH = "/oauth2/v3/certs";
 
 // Cached JWKS keys: kid -> {n, e}
 std::map<std::string, std::map<std::string, std::string>> g_jwks_cache;
@@ -119,7 +116,7 @@ void parse_jwks(const std::string& jwks_json) {
 // can't do TLS, and shelling out to curl (Windows Schannel) is what actually works
 // reliably here; httplib::SSLClient is kept as a fallback in case curl isn't on PATH.
 std::string fetch_jwks_via_curl() {
-    std::string cmd = "curl -s --max-time 10 https://www.googleapis.com/oauth2/v3/certs 2>&1";
+    std::string cmd = "curl -s --max-time 10 " + JWKS_ORIGIN + JWKS_PATH + " 2>&1";
     FILE* pipe = _popen(cmd.c_str(), "r");
     if (!pipe) {
         return "";
@@ -149,10 +146,10 @@ std::string fetch_jwks() {
     Log::error("[GoogleAuth] curl JWKS fetch failed, trying httplib SSLClient fallback");
     try {
 #ifdef CPPHTTPLIB_OPENSSL_SUPPORT
-        httplib::SSLClient cli("https://www.googleapis.com");
+        httplib::SSLClient cli(JWKS_ORIGIN);
         cli.set_connection_timeout(10, 0);
         cli.set_read_timeout(10, 0);
-        auto res = cli.Get("/oauth2/v3/certs");
+        auto res = cli.Get(JWKS_PATH);
         if (res && res->status == 200) {
             return res->body;
         }
@@ -367,13 +364,6 @@ bool GoogleJWTVerifier::json_get_bool(const std::string& json, const std::string
     if (pos + 4 <= json.size() && json.substr(pos, 4) == "true") return true;
     if (pos + 5 <= json.size() && json.substr(pos, 5) == "false") return false;
     return default_val;
-}
-
-void* GoogleJWTVerifier::b64url_to_bignum(const std::string& b64url) {
-    std::vector<unsigned char> raw = base64_decode_internal(b64url);
-    if (raw.empty()) return nullptr;
-    BIGNUM* bn = BN_bin2bn(raw.data(), (int)raw.size(), nullptr);
-    return (void*)bn;
 }
 
 bool GoogleJWTVerifier::rsa_verify(const std::string& signing_input,

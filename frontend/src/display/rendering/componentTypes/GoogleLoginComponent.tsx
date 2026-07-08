@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import handleEvent from "../../events/handleEvent";
 import { BaseComponentProps } from "./TextComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     google?: any;
-    onGoogleLoginSuccess?: (credential: string) => void;
-    onGoogleLoginError?: () => void;
   }
 }
 
