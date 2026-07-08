@@ -106,7 +106,7 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	ui::Component guideParagraph = ComponentGenerator::createText(
 		"stepViewGuideParagraph",
-		"This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt’s work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
+		"This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt's work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
 		"text-base",
 		"text-blue-100",
 		"",
@@ -206,6 +206,11 @@ ui::Page StepView::GenerateStepViewPage(
 
 	ComponentGenerator::addChild(&leftColumn, guideBox);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
+
+	// Claim Parser placeholder
+	ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
+	(*claimParser.mutable_css())["margin-top"] = "1rem";
+	ComponentGenerator::addChild(&leftColumn, claimParser);
 
 	const int mapFocusClaimId = rootClaimId > 0
 		? rootClaimId

@@ -1020,113 +1020,134 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\022debate_event.proto\022\014debate_event\032\037goog"
-    "le/protobuf/timestamp.proto\"$\n\014CreateDeb"
-    "ate\022\024\n\014debate_topic\030\002 \001(\t\"!\n\014DeleteDebat"
-    "e\022\021\n\tdebate_id\030\001 \001(\005\" \n\013EnterDebate\022\021\n\td"
-    "ebate_id\030\001 \001(\005\"3\n\rAddChildClaim\022\r\n\005claim"
-    "\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\"$\n\020DeleteChi"
-    "ldClaim\022\020\n\010claim_id\030\002 \001(\005\"V\n\rAddConnecti"
-    "on\022\021\n\tdebate_id\030\002 \001(\005\022\017\n\007from_id\030\003 \001(\005\022\r"
-    "\n\005to_id\030\004 \001(\005\022\022\n\nconnection\030\005 \001(\t\"\035\n\tGoT"
-    "oClaim\022\020\n\010claim_id\030\002 \001(\005\"5\n\032SubmitEditCl"
-    "aimDescription\022\027\n\017new_description\030\001 \001(\t\""
-    "$\n\017SubmitEditClaim\022\021\n\tnew_claim\030\001 \001(\t\")\n"
-    "\020ConnectFromClaim\022\025\n\rfrom_claim_id\030\001 \001(\005"
-    "\"%\n\016ConnectToClaim\022\023\n\013to_claim_id\030\002 \001(\005\""
-    "U\n\023SubmitConnectClaims\022\022\n\nconnection\030\001 \001"
-    "(\t\022\025\n\rfrom_claim_id\030\002 \001(\005\022\023\n\013to_claim_id"
-    "\030\003 \001(\005\"\035\n\nDeleteLink\022\017\n\007link_id\030\001 \001(\005\"\037\n"
-    "\nJoinDebate\022\021\n\tdebate_id\030\001 \001(\005\"+\n\005Login\022"
-    "\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"*\n\026A"
-    "ddClaimToBeChallenged\022\020\n\010claim_id\030\001 \001(\005\""
-    "-\n\031RemoveClaimToBeChallenged\022\020\n\010claim_id"
-    "\030\001 \001(\005\"(\n\025AddLinkToBeChallenged\022\017\n\007link_"
-    "id\030\001 \001(\005\"+\n\030RemoveLinkToBeChallenged\022\017\n\007"
-    "link_id\030\001 \001(\005\"2\n\024SubmitChallengeClaim\022\032\n"
-    "\022challenge_sentence\030\001 \001(\t\"%\n\rGoToChallen"
-    "ge\022\024\n\014challenge_id\030\001 \001(\005\"C\n\020ConcedeChall"
-    "enge\022\024\n\014challenge_id\030\001 \001(\005\022\031\n\021challenge_"
-    "link_id\030\002 \001(\005\"\'\n\017DeleteChallenge\022\024\n\014chal"
-    "lenge_id\030\001 \001(\005\" \n\013LeaveDebate\022\021\n\tdebate_"
-    "id\030\001 \001(\005\"V\n\023MoveUserToTimestamp\022\020\n\010claim"
-    "_id\030\001 \001(\005\022-\n\ttimestamp\030\002 \001(\0132\032.google.pr"
-    "otobuf.Timestamp\"G\n\014UserAuthInfo\022\020\n\010user"
-    "name\030\001 \001(\t\022\017\n\007user_id\030\002 \001(\005\022\024\n\014is_logged"
-    "_in\030\003 \001(\010\"\326\014\n\013DebateEvent\022(\n\004user\030\001 \001(\0132"
-    "\032.debate_event.UserAuthInfo\022/\n\013occurred_"
-    "at\030\003 \001(\0132\032.google.protobuf.Timestamp\022%\n\004"
-    "type\030\004 \001(\0162\027.debate_event.EventType\0223\n\rc"
-    "reate_debate\030\n \001(\0132\032.debate_event.Create"
-    "DebateH\000\0223\n\rdelete_debate\030\014 \001(\0132\032.debate"
-    "_event.DeleteDebateH\000\0221\n\014enter_debate\030\r "
-    "\001(\0132\031.debate_event.EnterDebateH\000\0226\n\017add_"
-    "child_claim\030\020 \001(\0132\033.debate_event.AddChil"
-    "dClaimH\000\022.\n\013go_to_claim\030\024 \001(\0132\027.debate_e"
-    "vent.GoToClaimH\000\022<\n\022delete_child_claim\030\027"
-    " \001(\0132\036.debate_event.DeleteChildClaimH\000\022Q"
-    "\n\035submit_edit_claim_description\030\031 \001(\0132(."
-    "debate_event.SubmitEditClaimDescriptionH"
-    "\000\022:\n\021submit_edit_claim\030\034 \001(\0132\035.debate_ev"
-    "ent.SubmitEditClaimH\000\022<\n\022connect_from_cl"
-    "aim\030\036 \001(\0132\036.debate_event.ConnectFromClai"
-    "mH\000\0228\n\020connect_to_claim\030\037 \001(\0132\034.debate_e"
-    "vent.ConnectToClaimH\000\022B\n\025submit_connect_"
-    "claims\030  \001(\0132!.debate_event.SubmitConnec"
-    "tClaimsH\000\022/\n\013delete_link\030\" \001(\0132\030.debate_"
-    "event.DeleteLinkH\000\022/\n\013join_debate\030# \001(\0132"
-    "\030.debate_event.JoinDebateH\000\022$\n\005login\030$ \001"
-    "(\0132\023.debate_event.LoginH\000\022J\n\032add_claim_t"
+    "le/protobuf/timestamp.proto\"1\n\014CreateDeb"
+    "ate\022!\n\014debate_topic\030\002 \001(\tR\013debateTopic\"+"
+    "\n\014DeleteDebate\022\033\n\tdebate_id\030\001 \001(\005R\010debat"
+    "eId\"*\n\013EnterDebate\022\033\n\tdebate_id\030\001 \001(\005R\010d"
+    "ebateId\"G\n\rAddChildClaim\022\024\n\005claim\030\001 \001(\tR"
+    "\005claim\022 \n\013description\030\002 \001(\tR\013description"
+    "\"-\n\020DeleteChildClaim\022\031\n\010claim_id\030\002 \001(\005R\007"
+    "claimId\"z\n\rAddConnection\022\033\n\tdebate_id\030\002 "
+    "\001(\005R\010debateId\022\027\n\007from_id\030\003 \001(\005R\006fromId\022\023"
+    "\n\005to_id\030\004 \001(\005R\004toId\022\036\n\nconnection\030\005 \001(\tR"
+    "\nconnection\"&\n\tGoToClaim\022\031\n\010claim_id\030\002 \001"
+    "(\005R\007claimId\"E\n\032SubmitEditClaimDescriptio"
+    "n\022\'\n\017new_description\030\001 \001(\tR\016newDescripti"
+    "on\".\n\017SubmitEditClaim\022\033\n\tnew_claim\030\001 \001(\t"
+    "R\010newClaim\"6\n\020ConnectFromClaim\022\"\n\rfrom_c"
+    "laim_id\030\001 \001(\005R\013fromClaimId\"0\n\016ConnectToC"
+    "laim\022\036\n\013to_claim_id\030\002 \001(\005R\ttoClaimId\"y\n\023"
+    "SubmitConnectClaims\022\036\n\nconnection\030\001 \001(\tR"
+    "\nconnection\022\"\n\rfrom_claim_id\030\002 \001(\005R\013from"
+    "ClaimId\022\036\n\013to_claim_id\030\003 \001(\005R\ttoClaimId\""
+    "%\n\nDeleteLink\022\027\n\007link_id\030\001 \001(\005R\006linkId\")"
+    "\n\nJoinDebate\022\033\n\tdebate_id\030\001 \001(\005R\010debateI"
+    "d\"\?\n\005Login\022\032\n\010username\030\001 \001(\tR\010username\022\032"
+    "\n\010password\030\002 \001(\tR\010password\"3\n\026AddClaimTo"
+    "BeChallenged\022\031\n\010claim_id\030\001 \001(\005R\007claimId\""
+    "6\n\031RemoveClaimToBeChallenged\022\031\n\010claim_id"
+    "\030\001 \001(\005R\007claimId\"0\n\025AddLinkToBeChallenged"
+    "\022\027\n\007link_id\030\001 \001(\005R\006linkId\"3\n\030RemoveLinkT"
+    "oBeChallenged\022\027\n\007link_id\030\001 \001(\005R\006linkId\"E"
+    "\n\024SubmitChallengeClaim\022-\n\022challenge_sent"
+    "ence\030\001 \001(\tR\021challengeSentence\"2\n\rGoToCha"
+    "llenge\022!\n\014challenge_id\030\001 \001(\005R\013challengeI"
+    "d\"a\n\020ConcedeChallenge\022!\n\014challenge_id\030\001 "
+    "\001(\005R\013challengeId\022*\n\021challenge_link_id\030\002 "
+    "\001(\005R\017challengeLinkId\"4\n\017DeleteChallenge\022"
+    "!\n\014challenge_id\030\001 \001(\005R\013challengeId\"*\n\013Le"
+    "aveDebate\022\033\n\tdebate_id\030\001 \001(\005R\010debateId\"j"
+    "\n\023MoveUserToTimestamp\022\031\n\010claim_id\030\001 \001(\005R"
+    "\007claimId\0228\n\ttimestamp\030\002 \001(\0132\032.google.pro"
+    "tobuf.TimestampR\ttimestamp\"e\n\014UserAuthIn"
+    "fo\022\032\n\010username\030\001 \001(\tR\010username\022\027\n\007user_i"
+    "d\030\002 \001(\005R\006userId\022 \n\014is_logged_in\030\003 \001(\010R\ni"
+    "sLoggedIn\"\224\020\n\013DebateEvent\022.\n\004user\030\001 \001(\0132"
+    "\032.debate_event.UserAuthInfoR\004user\022;\n\013occ"
+    "urred_at\030\003 \001(\0132\032.google.protobuf.Timesta"
+    "mpR\noccurredAt\022+\n\004type\030\004 \001(\0162\027.debate_ev"
+    "ent.EventTypeR\004type\022A\n\rcreate_debate\030\n \001"
+    "(\0132\032.debate_event.CreateDebateH\000R\014create"
+    "Debate\022A\n\rdelete_debate\030\014 \001(\0132\032.debate_e"
+    "vent.DeleteDebateH\000R\014deleteDebate\022>\n\014ent"
+    "er_debate\030\r \001(\0132\031.debate_event.EnterDeba"
+    "teH\000R\013enterDebate\022E\n\017add_child_claim\030\020 \001"
+    "(\0132\033.debate_event.AddChildClaimH\000R\raddCh"
+    "ildClaim\0229\n\013go_to_claim\030\024 \001(\0132\027.debate_e"
+    "vent.GoToClaimH\000R\tgoToClaim\022N\n\022delete_ch"
+    "ild_claim\030\027 \001(\0132\036.debate_event.DeleteChi"
+    "ldClaimH\000R\020deleteChildClaim\022m\n\035submit_ed"
+    "it_claim_description\030\031 \001(\0132(.debate_even"
+    "t.SubmitEditClaimDescriptionH\000R\032submitEd"
+    "itClaimDescription\022K\n\021submit_edit_claim\030"
+    "\034 \001(\0132\035.debate_event.SubmitEditClaimH\000R\017"
+    "submitEditClaim\022N\n\022connect_from_claim\030\036 "
+    "\001(\0132\036.debate_event.ConnectFromClaimH\000R\020c"
+    "onnectFromClaim\022H\n\020connect_to_claim\030\037 \001("
+    "\0132\034.debate_event.ConnectToClaimH\000R\016conne"
+    "ctToClaim\022W\n\025submit_connect_claims\030  \001(\013"
+    "2!.debate_event.SubmitConnectClaimsH\000R\023s"
+    "ubmitConnectClaims\022;\n\013delete_link\030\" \001(\0132"
+    "\030.debate_event.DeleteLinkH\000R\ndeleteLink\022"
+    ";\n\013join_debate\030# \001(\0132\030.debate_event.Join"
+    "DebateH\000R\njoinDebate\022+\n\005login\030$ \001(\0132\023.de"
+    "bate_event.LoginH\000R\005login\022b\n\032add_claim_t"
     "o_be_challenged\030& \001(\0132$.debate_event.Add"
-    "ClaimToBeChallengedH\000\022H\n\031add_link_to_be_"
-    "challenged\030\' \001(\0132#.debate_event.AddLinkT"
-    "oBeChallengedH\000\022D\n\026submit_challenge_clai"
-    "m\030( \001(\0132\".debate_event.SubmitChallengeCl"
-    "aimH\000\0226\n\017go_to_challenge\030) \001(\0132\033.debate_"
-    "event.GoToChallengeH\000\022;\n\021concede_challen"
-    "ge\030* \001(\0132\036.debate_event.ConcedeChallenge"
-    "H\000\022P\n\035remove_claim_to_be_challenged\030. \001("
-    "\0132\'.debate_event.RemoveClaimToBeChalleng"
-    "edH\000\022N\n\034remove_link_to_be_challenged\030/ \001"
-    "(\0132&.debate_event.RemoveLinkToBeChalleng"
-    "edH\000\0229\n\020delete_challenge\0300 \001(\0132\035.debate_"
-    "event.DeleteChallengeH\000\0221\n\014leave_debate\030"
-    "1 \001(\0132\031.debate_event.LeaveDebateH\000\022C\n\026mo"
-    "ve_user_to_timestamp\0302 \001(\0132!.debate_even"
-    "t.MoveUserToTimestampH\000B\t\n\007payload*\251\n\n\tE"
-    "ventType\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004"
-    "NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBAT"
-    "ES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020"
-    "\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n\024OPEN"
-    "_ADD_CHILD_CLAIM\020\010\022\023\n\017ADD_CHILD_CLAIM\020\t\022"
-    "\034\n\030DELETE_CURRENT_STATEMENT\020\n\022\020\n\014REPORT_"
-    "CLAIM\020\013\022\017\n\013GO_TO_CLAIM\020\014\022\031\n\025CLOSE_ADD_CH"
-    "ILD_CLAIM\020\r\022\026\n\022CLOSE_REPORT_CLAIM\020\016\022\032\n\026S"
-    "UBMIT_ADD_CHILD_CLAIM\020\017\022\026\n\022DELETE_CHILD_"
-    "CLAIM\020\020\022 \n\034START_EDIT_CLAIM_DESCRIPTION\020"
-    "\021\022!\n\035SUBMIT_EDIT_CLAIM_DESCRIPTION\020\022\022!\n\035"
-    "CANCEL_EDIT_CLAIM_DESCRIPTION\020\023\022\024\n\020START"
-    "_EDIT_CLAIM\020\024\022\025\n\021SUBMIT_EDIT_CLAIM\020\025\022\025\n\021"
-    "CANCEL_EDIT_CLAIM\020\026\022\026\n\022CONNECT_FROM_CLAI"
-    "M\020\027\022\024\n\020CONNECT_TO_CLAIM\020\030\022\031\n\025SUBMIT_CONN"
-    "ECT_CLAIMS\020\031\022\031\n\025CANCEL_CONNECT_CLAIMS\020\032\022"
-    "\017\n\013DELETE_LINK\020\033\022\017\n\013JOIN_DEBATE\020\034\022\t\n\005LOG"
-    "IN\020\035\022\n\n\006LOGOUT\020\036\022\031\n\025START_CHALLENGE_CLAI"
-    "M\020\037\022\036\n\032ADD_CLAIM_TO_BE_CHALLENGED\020 \022\035\n\031A"
-    "DD_LINK_TO_BE_CHALLENGED\020!\022\032\n\026SUBMIT_CHA"
-    "LLENGE_CLAIM\020\"\022\023\n\017GO_TO_CHALLENGE\020#\022\025\n\021C"
-    "ONCEDE_CHALLENGE\020$\022\032\n\026CANCEL_CHALLENGE_C"
-    "LAIM\020%\022\026\n\022OPEN_ADD_CHALLENGE\020&\022\027\n\023CLOSE_"
-    "ADD_CHALLENGE\020\'\022!\n\035REMOVE_CLAIM_TO_BE_CH"
-    "ALLENGED\020(\022 \n\034REMOVE_LINK_TO_BE_CHALLENG"
-    "ED\020)\022\024\n\020DELETE_CHALLENGE\020*\022!\n\035GO_TO_CHAL"
-    "LENGED_PARENT_CLAIM\020+\022\020\n\014LEAVE_DEBATE\020,\022"
-    "\"\n\036GO_TO_HISTORY_OF_CURRENT_CLAIM\020-\022\032\n\026M"
-    "OVE_USER_TO_TIMESTAMP\020.\022\030\n\024MOVE_USER_TO_"
-    "PRESENT\020/\022\037\n\033START_MODIFICATION_OF_CLAIM"
-    "\0200\022 \n\034SUBMIT_MODIFICATION_OF_CLAIM\0201\022 \n\034"
-    "CANCEL_MODIFICATION_OF_CLAIM\0202\022\022\n\016GO_TO_"
-    "OVERVIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VIEW\0204b\006"
-    "proto3"
+    "ClaimToBeChallengedH\000R\026addClaimToBeChall"
+    "enged\022_\n\031add_link_to_be_challenged\030\' \001(\013"
+    "2#.debate_event.AddLinkToBeChallengedH\000R"
+    "\025addLinkToBeChallenged\022Z\n\026submit_challen"
+    "ge_claim\030( \001(\0132\".debate_event.SubmitChal"
+    "lengeClaimH\000R\024submitChallengeClaim\022E\n\017go"
+    "_to_challenge\030) \001(\0132\033.debate_event.GoToC"
+    "hallengeH\000R\rgoToChallenge\022M\n\021concede_cha"
+    "llenge\030* \001(\0132\036.debate_event.ConcedeChall"
+    "engeH\000R\020concedeChallenge\022k\n\035remove_claim"
+    "_to_be_challenged\030. \001(\0132\'.debate_event.R"
+    "emoveClaimToBeChallengedH\000R\031removeClaimT"
+    "oBeChallenged\022h\n\034remove_link_to_be_chall"
+    "enged\030/ \001(\0132&.debate_event.RemoveLinkToB"
+    "eChallengedH\000R\030removeLinkToBeChallenged\022"
+    "J\n\020delete_challenge\0300 \001(\0132\035.debate_event"
+    ".DeleteChallengeH\000R\017deleteChallenge\022>\n\014l"
+    "eave_debate\0301 \001(\0132\031.debate_event.LeaveDe"
+    "bateH\000R\013leaveDebate\022X\n\026move_user_to_time"
+    "stamp\0302 \001(\0132!.debate_event.MoveUserToTim"
+    "estampH\000R\023moveUserToTimestampB\t\n\007payload"
+    "*\251\n\n\tEventType\022\032\n\026EVENT_KIND_UNSPECIFIED"
+    "\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR"
+    "_DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_D"
+    "EBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030"
+    "\n\024OPEN_ADD_CHILD_CLAIM\020\010\022\023\n\017ADD_CHILD_CL"
+    "AIM\020\t\022\034\n\030DELETE_CURRENT_STATEMENT\020\n\022\020\n\014R"
+    "EPORT_CLAIM\020\013\022\017\n\013GO_TO_CLAIM\020\014\022\031\n\025CLOSE_"
+    "ADD_CHILD_CLAIM\020\r\022\026\n\022CLOSE_REPORT_CLAIM\020"
+    "\016\022\032\n\026SUBMIT_ADD_CHILD_CLAIM\020\017\022\026\n\022DELETE_"
+    "CHILD_CLAIM\020\020\022 \n\034START_EDIT_CLAIM_DESCRI"
+    "PTION\020\021\022!\n\035SUBMIT_EDIT_CLAIM_DESCRIPTION"
+    "\020\022\022!\n\035CANCEL_EDIT_CLAIM_DESCRIPTION\020\023\022\024\n"
+    "\020START_EDIT_CLAIM\020\024\022\025\n\021SUBMIT_EDIT_CLAIM"
+    "\020\025\022\025\n\021CANCEL_EDIT_CLAIM\020\026\022\026\n\022CONNECT_FRO"
+    "M_CLAIM\020\027\022\024\n\020CONNECT_TO_CLAIM\020\030\022\031\n\025SUBMI"
+    "T_CONNECT_CLAIMS\020\031\022\031\n\025CANCEL_CONNECT_CLA"
+    "IMS\020\032\022\017\n\013DELETE_LINK\020\033\022\017\n\013JOIN_DEBATE\020\034\022"
+    "\t\n\005LOGIN\020\035\022\n\n\006LOGOUT\020\036\022\031\n\025START_CHALLENG"
+    "E_CLAIM\020\037\022\036\n\032ADD_CLAIM_TO_BE_CHALLENGED\020"
+    " \022\035\n\031ADD_LINK_TO_BE_CHALLENGED\020!\022\032\n\026SUBM"
+    "IT_CHALLENGE_CLAIM\020\"\022\023\n\017GO_TO_CHALLENGE\020"
+    "#\022\025\n\021CONCEDE_CHALLENGE\020$\022\032\n\026CANCEL_CHALL"
+    "ENGE_CLAIM\020%\022\026\n\022OPEN_ADD_CHALLENGE\020&\022\027\n\023"
+    "CLOSE_ADD_CHALLENGE\020\'\022!\n\035REMOVE_CLAIM_TO"
+    "_BE_CHALLENGED\020(\022 \n\034REMOVE_LINK_TO_BE_CH"
+    "ALLENGED\020)\022\024\n\020DELETE_CHALLENGE\020*\022!\n\035GO_T"
+    "O_CHALLENGED_PARENT_CLAIM\020+\022\020\n\014LEAVE_DEB"
+    "ATE\020,\022\"\n\036GO_TO_HISTORY_OF_CURRENT_CLAIM\020"
+    "-\022\032\n\026MOVE_USER_TO_TIMESTAMP\020.\022\030\n\024MOVE_US"
+    "ER_TO_PRESENT\020/\022\037\n\033START_MODIFICATION_OF"
+    "_CLAIM\0200\022 \n\034SUBMIT_MODIFICATION_OF_CLAIM"
+    "\0201\022 \n\034CANCEL_MODIFICATION_OF_CLAIM\0202\022\022\n\016"
+    "GO_TO_OVERVIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VI"
+    "EW\0204b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1136,7 +1157,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    4286,
+    5132,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1285,14 +1306,14 @@ CreateDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::CreateDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string debate_topic = 2;
+    // string debate_topic = 2 [json_name = "debateTopic"];
     {::_pbi::TcParser::FastUS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.debate_topic_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string debate_topic = 2;
+    // string debate_topic = 2 [json_name = "debateTopic"];
     {PROTOBUF_FIELD_OFFSET(CreateDebate, _impl_.debate_topic_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -1336,7 +1357,7 @@ PROTOBUF_NOINLINE void CreateDebate::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string debate_topic = 2;
+  // string debate_topic = 2 [json_name = "debateTopic"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_debate_topic().empty()) {
       const ::std::string& _s = this_._internal_debate_topic();
@@ -1370,7 +1391,7 @@ PROTOBUF_NOINLINE void CreateDebate::Clear() {
   (void)cached_has_bits;
 
    {
-    // string debate_topic = 2;
+    // string debate_topic = 2 [json_name = "debateTopic"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_debate_topic().empty()) {
@@ -1546,14 +1567,14 @@ DeleteDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteDebate, _impl_.debate_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(DeleteDebate, _impl_.debate_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -1591,7 +1612,7 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -1624,7 +1645,7 @@ PROTOBUF_NOINLINE void DeleteDebate::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_debate_id() != 0) {
@@ -1794,14 +1815,14 @@ EnterDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::EnterDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(EnterDebate, _impl_.debate_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(EnterDebate, _impl_.debate_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -1839,7 +1860,7 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -1872,7 +1893,7 @@ PROTOBUF_NOINLINE void EnterDebate::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_debate_id() != 0) {
@@ -2059,20 +2080,20 @@ AddChildClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddChildClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string description = 2;
+    // string description = 2 [json_name = "description"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.description_)}},
-    // string claim = 1;
+    // string claim = 1 [json_name = "claim"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.claim_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string claim = 1;
+    // string claim = 1 [json_name = "claim"];
     {PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.claim_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string description = 2;
+    // string description = 2 [json_name = "description"];
     {PROTOBUF_FIELD_OFFSET(AddChildClaim, _impl_.description_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -2122,7 +2143,7 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string claim = 1;
+  // string claim = 1 [json_name = "claim"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_claim().empty()) {
       const ::std::string& _s = this_._internal_claim();
@@ -2132,7 +2153,7 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
     }
   }
 
-  // string description = 2;
+  // string description = 2 [json_name = "description"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_description().empty()) {
       const ::std::string& _s = this_._internal_description();
@@ -2168,14 +2189,14 @@ PROTOBUF_NOINLINE void AddChildClaim::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // string claim = 1;
+    // string claim = 1 [json_name = "claim"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_claim().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_claim());
       }
     }
-    // string description = 2;
+    // string description = 2 [json_name = "description"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_description().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2362,14 +2383,14 @@ DeleteChildClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteChildClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteChildClaim, _impl_.claim_id_), 0>(),
      {16, 0, 0,
       PROTOBUF_FIELD_OFFSET(DeleteChildClaim, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(DeleteChildClaim, _impl_.claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -2407,7 +2428,7 @@ PROTOBUF_NOINLINE void DeleteChildClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 claim_id = 2;
+  // int32 claim_id = 2 [json_name = "claimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_claim_id() != 0) {
       target =
@@ -2440,7 +2461,7 @@ PROTOBUF_NOINLINE void DeleteChildClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_claim_id() != 0) {
@@ -2637,32 +2658,32 @@ AddConnection::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddConnection>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 to_id = 4;
+    // int32 to_id = 4 [json_name = "toId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.to_id_), 3>(),
      {32, 3, 0,
       PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_)}},
-    // string connection = 5;
+    // string connection = 5 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {42, 0, 0,
       PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.connection_)}},
-    // int32 debate_id = 2;
+    // int32 debate_id = 2 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.debate_id_), 1>(),
      {16, 1, 0,
       PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_)}},
-    // int32 from_id = 3;
+    // int32 from_id = 3 [json_name = "fromId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddConnection, _impl_.from_id_), 2>(),
      {24, 2, 0,
       PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 2;
+    // int32 debate_id = 2 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.debate_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 from_id = 3;
+    // int32 from_id = 3 [json_name = "fromId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.from_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 to_id = 4;
+    // int32 to_id = 4 [json_name = "toId"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.to_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string connection = 5;
+    // string connection = 5 [json_name = "connection"];
     {PROTOBUF_FIELD_OFFSET(AddConnection, _impl_.connection_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -2711,7 +2732,7 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 2;
+  // int32 debate_id = 2 [json_name = "debateId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -2720,7 +2741,7 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
     }
   }
 
-  // int32 from_id = 3;
+  // int32 from_id = 3 [json_name = "fromId"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (this_._internal_from_id() != 0) {
       target =
@@ -2729,7 +2750,7 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
     }
   }
 
-  // int32 to_id = 4;
+  // int32 to_id = 4 [json_name = "toId"];
   if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (this_._internal_to_id() != 0) {
       target =
@@ -2738,7 +2759,7 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
     }
   }
 
-  // string connection = 5;
+  // string connection = 5 [json_name = "connection"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_connection().empty()) {
       const ::std::string& _s = this_._internal_connection();
@@ -2774,28 +2795,28 @@ PROTOBUF_NOINLINE void AddConnection::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
-    // string connection = 5;
+    // string connection = 5 [json_name = "connection"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_connection().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_connection());
       }
     }
-    // int32 debate_id = 2;
+    // int32 debate_id = 2 [json_name = "debateId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_debate_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_debate_id());
       }
     }
-    // int32 from_id = 3;
+    // int32 from_id = 3 [json_name = "fromId"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (this_._internal_from_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_from_id());
       }
     }
-    // int32 to_id = 4;
+    // int32 to_id = 4 [json_name = "toId"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (this_._internal_to_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -2993,14 +3014,14 @@ GoToClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoToClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GoToClaim, _impl_.claim_id_), 0>(),
      {16, 0, 0,
       PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(GoToClaim, _impl_.claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -3038,7 +3059,7 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 claim_id = 2;
+  // int32 claim_id = 2 [json_name = "claimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_claim_id() != 0) {
       target =
@@ -3071,7 +3092,7 @@ PROTOBUF_NOINLINE void GoToClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 claim_id = 2;
+    // int32 claim_id = 2 [json_name = "claimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_claim_id() != 0) {
@@ -3255,14 +3276,14 @@ SubmitEditClaimDescription::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::SubmitEditClaimDescription>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string new_description = 1;
+    // string new_description = 1 [json_name = "newDescription"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(SubmitEditClaimDescription, _impl_.new_description_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string new_description = 1;
+    // string new_description = 1 [json_name = "newDescription"];
     {PROTOBUF_FIELD_OFFSET(SubmitEditClaimDescription, _impl_.new_description_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -3306,7 +3327,7 @@ PROTOBUF_NOINLINE void SubmitEditClaimDescription::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string new_description = 1;
+  // string new_description = 1 [json_name = "newDescription"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_new_description().empty()) {
       const ::std::string& _s = this_._internal_new_description();
@@ -3340,7 +3361,7 @@ PROTOBUF_NOINLINE void SubmitEditClaimDescription::Clear() {
   (void)cached_has_bits;
 
    {
-    // string new_description = 1;
+    // string new_description = 1 [json_name = "newDescription"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_new_description().empty()) {
@@ -3530,14 +3551,14 @@ SubmitEditClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::SubmitEditClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string new_claim = 1;
+    // string new_claim = 1 [json_name = "newClaim"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(SubmitEditClaim, _impl_.new_claim_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string new_claim = 1;
+    // string new_claim = 1 [json_name = "newClaim"];
     {PROTOBUF_FIELD_OFFSET(SubmitEditClaim, _impl_.new_claim_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -3581,7 +3602,7 @@ PROTOBUF_NOINLINE void SubmitEditClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string new_claim = 1;
+  // string new_claim = 1 [json_name = "newClaim"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_new_claim().empty()) {
       const ::std::string& _s = this_._internal_new_claim();
@@ -3615,7 +3636,7 @@ PROTOBUF_NOINLINE void SubmitEditClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // string new_claim = 1;
+    // string new_claim = 1 [json_name = "newClaim"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_new_claim().empty()) {
@@ -3791,14 +3812,14 @@ ConnectFromClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ConnectFromClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 from_claim_id = 1;
+    // int32 from_claim_id = 1 [json_name = "fromClaimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConnectFromClaim, _impl_.from_claim_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(ConnectFromClaim, _impl_.from_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 from_claim_id = 1;
+    // int32 from_claim_id = 1 [json_name = "fromClaimId"];
     {PROTOBUF_FIELD_OFFSET(ConnectFromClaim, _impl_.from_claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -3836,7 +3857,7 @@ PROTOBUF_NOINLINE void ConnectFromClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 from_claim_id = 1;
+  // int32 from_claim_id = 1 [json_name = "fromClaimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_from_claim_id() != 0) {
       target =
@@ -3869,7 +3890,7 @@ PROTOBUF_NOINLINE void ConnectFromClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 from_claim_id = 1;
+    // int32 from_claim_id = 1 [json_name = "fromClaimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_from_claim_id() != 0) {
@@ -4039,14 +4060,14 @@ ConnectToClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ConnectToClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 to_claim_id = 2;
+    // int32 to_claim_id = 2 [json_name = "toClaimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConnectToClaim, _impl_.to_claim_id_), 0>(),
      {16, 0, 0,
       PROTOBUF_FIELD_OFFSET(ConnectToClaim, _impl_.to_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 to_claim_id = 2;
+    // int32 to_claim_id = 2 [json_name = "toClaimId"];
     {PROTOBUF_FIELD_OFFSET(ConnectToClaim, _impl_.to_claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -4084,7 +4105,7 @@ PROTOBUF_NOINLINE void ConnectToClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 to_claim_id = 2;
+  // int32 to_claim_id = 2 [json_name = "toClaimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_to_claim_id() != 0) {
       target =
@@ -4117,7 +4138,7 @@ PROTOBUF_NOINLINE void ConnectToClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 to_claim_id = 2;
+    // int32 to_claim_id = 2 [json_name = "toClaimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_to_claim_id() != 0) {
@@ -4315,26 +4336,26 @@ SubmitConnectClaims::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string connection = 1;
+    // string connection = 1 [json_name = "connection"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.connection_)}},
-    // int32 from_claim_id = 2;
+    // int32 from_claim_id = 2 [json_name = "fromClaimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SubmitConnectClaims, _impl_.from_claim_id_), 1>(),
      {16, 1, 0,
       PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_)}},
-    // int32 to_claim_id = 3;
+    // int32 to_claim_id = 3 [json_name = "toClaimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SubmitConnectClaims, _impl_.to_claim_id_), 2>(),
      {24, 2, 0,
       PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string connection = 1;
+    // string connection = 1 [json_name = "connection"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.connection_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 from_claim_id = 2;
+    // int32 from_claim_id = 2 [json_name = "fromClaimId"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.from_claim_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 to_claim_id = 3;
+    // int32 to_claim_id = 3 [json_name = "toClaimId"];
     {PROTOBUF_FIELD_OFFSET(SubmitConnectClaims, _impl_.to_claim_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -4383,7 +4404,7 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string connection = 1;
+  // string connection = 1 [json_name = "connection"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_connection().empty()) {
       const ::std::string& _s = this_._internal_connection();
@@ -4393,7 +4414,7 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
     }
   }
 
-  // int32 from_claim_id = 2;
+  // int32 from_claim_id = 2 [json_name = "fromClaimId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_from_claim_id() != 0) {
       target =
@@ -4402,7 +4423,7 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
     }
   }
 
-  // int32 to_claim_id = 3;
+  // int32 to_claim_id = 3 [json_name = "toClaimId"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (this_._internal_to_claim_id() != 0) {
       target =
@@ -4437,21 +4458,21 @@ PROTOBUF_NOINLINE void SubmitConnectClaims::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // string connection = 1;
+    // string connection = 1 [json_name = "connection"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_connection().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_connection());
       }
     }
-    // int32 from_claim_id = 2;
+    // int32 from_claim_id = 2 [json_name = "fromClaimId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_from_claim_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_from_claim_id());
       }
     }
-    // int32 to_claim_id = 3;
+    // int32 to_claim_id = 3 [json_name = "toClaimId"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (this_._internal_to_claim_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -4644,14 +4665,14 @@ DeleteLink::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteLink>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteLink, _impl_.link_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(DeleteLink, _impl_.link_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {PROTOBUF_FIELD_OFFSET(DeleteLink, _impl_.link_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -4689,7 +4710,7 @@ PROTOBUF_NOINLINE void DeleteLink::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 link_id = 1;
+  // int32 link_id = 1 [json_name = "linkId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_link_id() != 0) {
       target =
@@ -4722,7 +4743,7 @@ PROTOBUF_NOINLINE void DeleteLink::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_link_id() != 0) {
@@ -4892,14 +4913,14 @@ JoinDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::JoinDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(JoinDebate, _impl_.debate_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(JoinDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(JoinDebate, _impl_.debate_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -4937,7 +4958,7 @@ PROTOBUF_NOINLINE void JoinDebate::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -4970,7 +4991,7 @@ PROTOBUF_NOINLINE void JoinDebate::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_debate_id() != 0) {
@@ -5157,20 +5178,20 @@ Login::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::Login>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string password = 2;
+    // string password = 2 [json_name = "password"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(Login, _impl_.password_)}},
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(Login, _impl_.username_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(Login, _impl_.username_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string password = 2;
+    // string password = 2 [json_name = "password"];
     {PROTOBUF_FIELD_OFFSET(Login, _impl_.password_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -5220,7 +5241,7 @@ PROTOBUF_NOINLINE void Login::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string username = 1;
+  // string username = 1 [json_name = "username"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_username().empty()) {
       const ::std::string& _s = this_._internal_username();
@@ -5230,7 +5251,7 @@ PROTOBUF_NOINLINE void Login::Clear() {
     }
   }
 
-  // string password = 2;
+  // string password = 2 [json_name = "password"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_password().empty()) {
       const ::std::string& _s = this_._internal_password();
@@ -5266,14 +5287,14 @@ PROTOBUF_NOINLINE void Login::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_username().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_username());
       }
     }
-    // string password = 2;
+    // string password = 2 [json_name = "password"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_password().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -5460,14 +5481,14 @@ AddClaimToBeChallenged::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddClaimToBeChallenged>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddClaimToBeChallenged, _impl_.claim_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(AddClaimToBeChallenged, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(AddClaimToBeChallenged, _impl_.claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -5505,7 +5526,7 @@ PROTOBUF_NOINLINE void AddClaimToBeChallenged::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 claim_id = 1;
+  // int32 claim_id = 1 [json_name = "claimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_claim_id() != 0) {
       target =
@@ -5538,7 +5559,7 @@ PROTOBUF_NOINLINE void AddClaimToBeChallenged::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_claim_id() != 0) {
@@ -5708,14 +5729,14 @@ RemoveClaimToBeChallenged::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::RemoveClaimToBeChallenged>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RemoveClaimToBeChallenged, _impl_.claim_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(RemoveClaimToBeChallenged, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(RemoveClaimToBeChallenged, _impl_.claim_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -5753,7 +5774,7 @@ PROTOBUF_NOINLINE void RemoveClaimToBeChallenged::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 claim_id = 1;
+  // int32 claim_id = 1 [json_name = "claimId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_claim_id() != 0) {
       target =
@@ -5786,7 +5807,7 @@ PROTOBUF_NOINLINE void RemoveClaimToBeChallenged::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_claim_id() != 0) {
@@ -5956,14 +5977,14 @@ AddLinkToBeChallenged::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::AddLinkToBeChallenged>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddLinkToBeChallenged, _impl_.link_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(AddLinkToBeChallenged, _impl_.link_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {PROTOBUF_FIELD_OFFSET(AddLinkToBeChallenged, _impl_.link_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -6001,7 +6022,7 @@ PROTOBUF_NOINLINE void AddLinkToBeChallenged::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 link_id = 1;
+  // int32 link_id = 1 [json_name = "linkId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_link_id() != 0) {
       target =
@@ -6034,7 +6055,7 @@ PROTOBUF_NOINLINE void AddLinkToBeChallenged::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_link_id() != 0) {
@@ -6204,14 +6225,14 @@ RemoveLinkToBeChallenged::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::RemoveLinkToBeChallenged>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RemoveLinkToBeChallenged, _impl_.link_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(RemoveLinkToBeChallenged, _impl_.link_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     {PROTOBUF_FIELD_OFFSET(RemoveLinkToBeChallenged, _impl_.link_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -6249,7 +6270,7 @@ PROTOBUF_NOINLINE void RemoveLinkToBeChallenged::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 link_id = 1;
+  // int32 link_id = 1 [json_name = "linkId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_link_id() != 0) {
       target =
@@ -6282,7 +6303,7 @@ PROTOBUF_NOINLINE void RemoveLinkToBeChallenged::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 link_id = 1;
+    // int32 link_id = 1 [json_name = "linkId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_link_id() != 0) {
@@ -6466,14 +6487,14 @@ SubmitChallengeClaim::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::SubmitChallengeClaim>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string challenge_sentence = 1;
+    // string challenge_sentence = 1 [json_name = "challengeSentence"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(SubmitChallengeClaim, _impl_.challenge_sentence_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string challenge_sentence = 1;
+    // string challenge_sentence = 1 [json_name = "challengeSentence"];
     {PROTOBUF_FIELD_OFFSET(SubmitChallengeClaim, _impl_.challenge_sentence_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -6517,7 +6538,7 @@ PROTOBUF_NOINLINE void SubmitChallengeClaim::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string challenge_sentence = 1;
+  // string challenge_sentence = 1 [json_name = "challengeSentence"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_challenge_sentence().empty()) {
       const ::std::string& _s = this_._internal_challenge_sentence();
@@ -6551,7 +6572,7 @@ PROTOBUF_NOINLINE void SubmitChallengeClaim::Clear() {
   (void)cached_has_bits;
 
    {
-    // string challenge_sentence = 1;
+    // string challenge_sentence = 1 [json_name = "challengeSentence"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_challenge_sentence().empty()) {
@@ -6727,14 +6748,14 @@ GoToChallenge::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::GoToChallenge>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GoToChallenge, _impl_.challenge_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(GoToChallenge, _impl_.challenge_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {PROTOBUF_FIELD_OFFSET(GoToChallenge, _impl_.challenge_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -6772,7 +6793,7 @@ PROTOBUF_NOINLINE void GoToChallenge::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 challenge_id = 1;
+  // int32 challenge_id = 1 [json_name = "challengeId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_challenge_id() != 0) {
       target =
@@ -6805,7 +6826,7 @@ PROTOBUF_NOINLINE void GoToChallenge::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_challenge_id() != 0) {
@@ -6980,20 +7001,20 @@ ConcedeChallenge::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::ConcedeChallenge>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 challenge_link_id = 2;
+    // int32 challenge_link_id = 2 [json_name = "challengeLinkId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConcedeChallenge, _impl_.challenge_link_id_), 1>(),
      {16, 1, 0,
       PROTOBUF_FIELD_OFFSET(ConcedeChallenge, _impl_.challenge_link_id_)}},
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ConcedeChallenge, _impl_.challenge_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(ConcedeChallenge, _impl_.challenge_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {PROTOBUF_FIELD_OFFSET(ConcedeChallenge, _impl_.challenge_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // int32 challenge_link_id = 2;
+    // int32 challenge_link_id = 2 [json_name = "challengeLinkId"];
     {PROTOBUF_FIELD_OFFSET(ConcedeChallenge, _impl_.challenge_link_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -7036,7 +7057,7 @@ PROTOBUF_NOINLINE void ConcedeChallenge::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 challenge_id = 1;
+  // int32 challenge_id = 1 [json_name = "challengeId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_challenge_id() != 0) {
       target =
@@ -7045,7 +7066,7 @@ PROTOBUF_NOINLINE void ConcedeChallenge::Clear() {
     }
   }
 
-  // int32 challenge_link_id = 2;
+  // int32 challenge_link_id = 2 [json_name = "challengeLinkId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_challenge_link_id() != 0) {
       target =
@@ -7080,14 +7101,14 @@ PROTOBUF_NOINLINE void ConcedeChallenge::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_challenge_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_challenge_id());
       }
     }
-    // int32 challenge_link_id = 2;
+    // int32 challenge_link_id = 2 [json_name = "challengeLinkId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_challenge_link_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -7268,14 +7289,14 @@ DeleteChallenge::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DeleteChallenge>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DeleteChallenge, _impl_.challenge_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(DeleteChallenge, _impl_.challenge_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     {PROTOBUF_FIELD_OFFSET(DeleteChallenge, _impl_.challenge_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -7313,7 +7334,7 @@ PROTOBUF_NOINLINE void DeleteChallenge::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 challenge_id = 1;
+  // int32 challenge_id = 1 [json_name = "challengeId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_challenge_id() != 0) {
       target =
@@ -7346,7 +7367,7 @@ PROTOBUF_NOINLINE void DeleteChallenge::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 challenge_id = 1;
+    // int32 challenge_id = 1 [json_name = "challengeId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_challenge_id() != 0) {
@@ -7516,14 +7537,14 @@ LeaveDebate::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::LeaveDebate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(LeaveDebate, _impl_.debate_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(LeaveDebate, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     {PROTOBUF_FIELD_OFFSET(LeaveDebate, _impl_.debate_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -7561,7 +7582,7 @@ PROTOBUF_NOINLINE void LeaveDebate::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -7594,7 +7615,7 @@ PROTOBUF_NOINLINE void LeaveDebate::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 debate_id = 1;
+    // int32 debate_id = 1 [json_name = "debateId"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_debate_id() != 0) {
@@ -7793,20 +7814,20 @@ MoveUserToTimestamp::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::MoveUserToTimestamp>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .google.protobuf.Timestamp timestamp = 2;
+    // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(MoveUserToTimestamp, _impl_.timestamp_)}},
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MoveUserToTimestamp, _impl_.claim_id_), 1>(),
      {8, 1, 0,
       PROTOBUF_FIELD_OFFSET(MoveUserToTimestamp, _impl_.claim_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     {PROTOBUF_FIELD_OFFSET(MoveUserToTimestamp, _impl_.claim_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // .google.protobuf.Timestamp timestamp = 2;
+    // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
     {PROTOBUF_FIELD_OFFSET(MoveUserToTimestamp, _impl_.timestamp_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -7851,7 +7872,7 @@ PROTOBUF_NOINLINE void MoveUserToTimestamp::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 claim_id = 1;
+  // int32 claim_id = 1 [json_name = "claimId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_claim_id() != 0) {
       target =
@@ -7860,7 +7881,7 @@ PROTOBUF_NOINLINE void MoveUserToTimestamp::Clear() {
     }
   }
 
-  // .google.protobuf.Timestamp timestamp = 2;
+  // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         2, *this_._impl_.timestamp_, this_._impl_.timestamp_->GetCachedSize(), target,
@@ -7893,12 +7914,12 @@ PROTOBUF_NOINLINE void MoveUserToTimestamp::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // .google.protobuf.Timestamp timestamp = 2;
+    // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.timestamp_);
     }
-    // int32 claim_id = 1;
+    // int32 claim_id = 1 [json_name = "claimId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_claim_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -8111,26 +8132,26 @@ UserAuthInfo::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.username_)}},
-    // int32 user_id = 2;
+    // int32 user_id = 2 [json_name = "userId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserAuthInfo, _impl_.user_id_), 1>(),
      {16, 1, 0,
       PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_)}},
-    // bool is_logged_in = 3;
+    // bool is_logged_in = 3 [json_name = "isLoggedIn"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UserAuthInfo, _impl_.is_logged_in_), 2>(),
      {24, 2, 0,
       PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.is_logged_in_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.username_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 user_id = 2;
+    // int32 user_id = 2 [json_name = "userId"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.user_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool is_logged_in = 3;
+    // bool is_logged_in = 3 [json_name = "isLoggedIn"];
     {PROTOBUF_FIELD_OFFSET(UserAuthInfo, _impl_.is_logged_in_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
   }},
   // no aux_entries
@@ -8179,7 +8200,7 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string username = 1;
+  // string username = 1 [json_name = "username"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_username().empty()) {
       const ::std::string& _s = this_._internal_username();
@@ -8189,7 +8210,7 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
     }
   }
 
-  // int32 user_id = 2;
+  // int32 user_id = 2 [json_name = "userId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_user_id() != 0) {
       target =
@@ -8198,7 +8219,7 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
     }
   }
 
-  // bool is_logged_in = 3;
+  // bool is_logged_in = 3 [json_name = "isLoggedIn"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (this_._internal_is_logged_in() != 0) {
       target = stream->EnsureSpace(target);
@@ -8233,21 +8254,21 @@ PROTOBUF_NOINLINE void UserAuthInfo::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // string username = 1;
+    // string username = 1 [json_name = "username"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_username().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_username());
       }
     }
-    // int32 user_id = 2;
+    // int32 user_id = 2 [json_name = "userId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_user_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_user_id());
       }
     }
-    // bool is_logged_in = 3;
+    // bool is_logged_in = 3 [json_name = "isLoggedIn"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (this_._internal_is_logged_in() != 0) {
         total_size += 2;
@@ -9073,16 +9094,16 @@ DebateEvent::_table_ = {
     ::_pbi::TcParser::GetTable<::debate_event::DebateEvent>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .debate_event.EventType type = 4;
+    // .debate_event.EventType type = 4 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateEvent, _impl_.type_), 2>(),
      {32, 2, 0,
       PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.type_)}},
-    // .debate_event.UserAuthInfo user = 1;
+    // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.user_)}},
     {::_pbi::TcParser::MiniParse, {}},
-    // .google.protobuf.Timestamp occurred_at = 3;
+    // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];
     {::_pbi::TcParser::FastMtS1,
      {26, 1, 1,
       PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.occurred_at_)}},
@@ -9092,59 +9113,59 @@ DebateEvent::_table_ = {
     65534, 26,
     65535, 65535
   }}, {{
-    // .debate_event.UserAuthInfo user = 1;
+    // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.user_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .google.protobuf.Timestamp occurred_at = 3;
+    // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.occurred_at_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.EventType type = 4;
+    // .debate_event.EventType type = 4 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.type_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // .debate_event.CreateDebate create_debate = 10;
+    // .debate_event.CreateDebate create_debate = 10 [json_name = "createDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.create_debate_), _Internal::kOneofCaseOffset + 0, 2, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.DeleteDebate delete_debate = 12;
+    // .debate_event.DeleteDebate delete_debate = 12 [json_name = "deleteDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.delete_debate_), _Internal::kOneofCaseOffset + 0, 3, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.EnterDebate enter_debate = 13;
+    // .debate_event.EnterDebate enter_debate = 13 [json_name = "enterDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.enter_debate_), _Internal::kOneofCaseOffset + 0, 4, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.AddChildClaim add_child_claim = 16;
+    // .debate_event.AddChildClaim add_child_claim = 16 [json_name = "addChildClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.add_child_claim_), _Internal::kOneofCaseOffset + 0, 5, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.GoToClaim go_to_claim = 20;
+    // .debate_event.GoToClaim go_to_claim = 20 [json_name = "goToClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.go_to_claim_), _Internal::kOneofCaseOffset + 0, 6, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.DeleteChildClaim delete_child_claim = 23;
+    // .debate_event.DeleteChildClaim delete_child_claim = 23 [json_name = "deleteChildClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.delete_child_claim_), _Internal::kOneofCaseOffset + 0, 7, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25;
+    // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.submit_edit_claim_description_), _Internal::kOneofCaseOffset + 0, 8, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.SubmitEditClaim submit_edit_claim = 28;
+    // .debate_event.SubmitEditClaim submit_edit_claim = 28 [json_name = "submitEditClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.submit_edit_claim_), _Internal::kOneofCaseOffset + 0, 9, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.ConnectFromClaim connect_from_claim = 30;
+    // .debate_event.ConnectFromClaim connect_from_claim = 30 [json_name = "connectFromClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.connect_from_claim_), _Internal::kOneofCaseOffset + 0, 10, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.ConnectToClaim connect_to_claim = 31;
+    // .debate_event.ConnectToClaim connect_to_claim = 31 [json_name = "connectToClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.connect_to_claim_), _Internal::kOneofCaseOffset + 0, 11, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.SubmitConnectClaims submit_connect_claims = 32;
+    // .debate_event.SubmitConnectClaims submit_connect_claims = 32 [json_name = "submitConnectClaims"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.submit_connect_claims_), _Internal::kOneofCaseOffset + 0, 12, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.DeleteLink delete_link = 34;
+    // .debate_event.DeleteLink delete_link = 34 [json_name = "deleteLink"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.delete_link_), _Internal::kOneofCaseOffset + 0, 13, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.JoinDebate join_debate = 35;
+    // .debate_event.JoinDebate join_debate = 35 [json_name = "joinDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.join_debate_), _Internal::kOneofCaseOffset + 0, 14, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.Login login = 36;
+    // .debate_event.Login login = 36 [json_name = "login"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.login_), _Internal::kOneofCaseOffset + 0, 15, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.AddClaimToBeChallenged add_claim_to_be_challenged = 38;
+    // .debate_event.AddClaimToBeChallenged add_claim_to_be_challenged = 38 [json_name = "addClaimToBeChallenged"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.add_claim_to_be_challenged_), _Internal::kOneofCaseOffset + 0, 16, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.AddLinkToBeChallenged add_link_to_be_challenged = 39;
+    // .debate_event.AddLinkToBeChallenged add_link_to_be_challenged = 39 [json_name = "addLinkToBeChallenged"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.add_link_to_be_challenged_), _Internal::kOneofCaseOffset + 0, 17, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.SubmitChallengeClaim submit_challenge_claim = 40;
+    // .debate_event.SubmitChallengeClaim submit_challenge_claim = 40 [json_name = "submitChallengeClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.submit_challenge_claim_), _Internal::kOneofCaseOffset + 0, 18, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.GoToChallenge go_to_challenge = 41;
+    // .debate_event.GoToChallenge go_to_challenge = 41 [json_name = "goToChallenge"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.go_to_challenge_), _Internal::kOneofCaseOffset + 0, 19, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.ConcedeChallenge concede_challenge = 42;
+    // .debate_event.ConcedeChallenge concede_challenge = 42 [json_name = "concedeChallenge"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.concede_challenge_), _Internal::kOneofCaseOffset + 0, 20, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46;
+    // .debate_event.RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46 [json_name = "removeClaimToBeChallenged"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.remove_claim_to_be_challenged_), _Internal::kOneofCaseOffset + 0, 21, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
+    // .debate_event.RemoveLinkToBeChallenged remove_link_to_be_challenged = 47 [json_name = "removeLinkToBeChallenged"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.remove_link_to_be_challenged_), _Internal::kOneofCaseOffset + 0, 22, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.DeleteChallenge delete_challenge = 48;
+    // .debate_event.DeleteChallenge delete_challenge = 48 [json_name = "deleteChallenge"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.delete_challenge_), _Internal::kOneofCaseOffset + 0, 23, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.LeaveDebate leave_debate = 49;
+    // .debate_event.LeaveDebate leave_debate = 49 [json_name = "leaveDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.leave_debate_), _Internal::kOneofCaseOffset + 0, 24, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50;
+    // .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50 [json_name = "moveUserToTimestamp"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.move_user_to_timestamp_), _Internal::kOneofCaseOffset + 0, 25, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -9221,21 +9242,21 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // .debate_event.UserAuthInfo user = 1;
+  // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         1, *this_._impl_.user_, this_._impl_.user_->GetCachedSize(), target,
         stream);
   }
 
-  // .google.protobuf.Timestamp occurred_at = 3;
+  // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         3, *this_._impl_.occurred_at_, this_._impl_.occurred_at_->GetCachedSize(), target,
         stream);
   }
 
-  // .debate_event.EventType type = 4;
+  // .debate_event.EventType type = 4 [json_name = "type"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (this_._internal_type() != 0) {
       target = stream->EnsureSpace(target);
@@ -9418,17 +9439,17 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // .debate_event.UserAuthInfo user = 1;
+    // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.user_);
     }
-    // .google.protobuf.Timestamp occurred_at = 3;
+    // .google.protobuf.Timestamp occurred_at = 3 [json_name = "occurredAt"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.occurred_at_);
     }
-    // .debate_event.EventType type = 4;
+    // .debate_event.EventType type = 4 [json_name = "type"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (this_._internal_type() != 0) {
         total_size += 1 +
@@ -9437,145 +9458,145 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
     }
   }
   switch (this_.payload_case()) {
-    // .debate_event.CreateDebate create_debate = 10;
+    // .debate_event.CreateDebate create_debate = 10 [json_name = "createDebate"];
     case kCreateDebate: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.create_debate_);
       break;
     }
-    // .debate_event.DeleteDebate delete_debate = 12;
+    // .debate_event.DeleteDebate delete_debate = 12 [json_name = "deleteDebate"];
     case kDeleteDebate: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_debate_);
       break;
     }
-    // .debate_event.EnterDebate enter_debate = 13;
+    // .debate_event.EnterDebate enter_debate = 13 [json_name = "enterDebate"];
     case kEnterDebate: {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.enter_debate_);
       break;
     }
-    // .debate_event.AddChildClaim add_child_claim = 16;
+    // .debate_event.AddChildClaim add_child_claim = 16 [json_name = "addChildClaim"];
     case kAddChildClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.add_child_claim_);
       break;
     }
-    // .debate_event.GoToClaim go_to_claim = 20;
+    // .debate_event.GoToClaim go_to_claim = 20 [json_name = "goToClaim"];
     case kGoToClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.go_to_claim_);
       break;
     }
-    // .debate_event.DeleteChildClaim delete_child_claim = 23;
+    // .debate_event.DeleteChildClaim delete_child_claim = 23 [json_name = "deleteChildClaim"];
     case kDeleteChildClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_child_claim_);
       break;
     }
-    // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25;
+    // .debate_event.SubmitEditClaimDescription submit_edit_claim_description = 25 [json_name = "submitEditClaimDescription"];
     case kSubmitEditClaimDescription: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.submit_edit_claim_description_);
       break;
     }
-    // .debate_event.SubmitEditClaim submit_edit_claim = 28;
+    // .debate_event.SubmitEditClaim submit_edit_claim = 28 [json_name = "submitEditClaim"];
     case kSubmitEditClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.submit_edit_claim_);
       break;
     }
-    // .debate_event.ConnectFromClaim connect_from_claim = 30;
+    // .debate_event.ConnectFromClaim connect_from_claim = 30 [json_name = "connectFromClaim"];
     case kConnectFromClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.connect_from_claim_);
       break;
     }
-    // .debate_event.ConnectToClaim connect_to_claim = 31;
+    // .debate_event.ConnectToClaim connect_to_claim = 31 [json_name = "connectToClaim"];
     case kConnectToClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.connect_to_claim_);
       break;
     }
-    // .debate_event.SubmitConnectClaims submit_connect_claims = 32;
+    // .debate_event.SubmitConnectClaims submit_connect_claims = 32 [json_name = "submitConnectClaims"];
     case kSubmitConnectClaims: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.submit_connect_claims_);
       break;
     }
-    // .debate_event.DeleteLink delete_link = 34;
+    // .debate_event.DeleteLink delete_link = 34 [json_name = "deleteLink"];
     case kDeleteLink: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_link_);
       break;
     }
-    // .debate_event.JoinDebate join_debate = 35;
+    // .debate_event.JoinDebate join_debate = 35 [json_name = "joinDebate"];
     case kJoinDebate: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.join_debate_);
       break;
     }
-    // .debate_event.Login login = 36;
+    // .debate_event.Login login = 36 [json_name = "login"];
     case kLogin: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.login_);
       break;
     }
-    // .debate_event.AddClaimToBeChallenged add_claim_to_be_challenged = 38;
+    // .debate_event.AddClaimToBeChallenged add_claim_to_be_challenged = 38 [json_name = "addClaimToBeChallenged"];
     case kAddClaimToBeChallenged: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.add_claim_to_be_challenged_);
       break;
     }
-    // .debate_event.AddLinkToBeChallenged add_link_to_be_challenged = 39;
+    // .debate_event.AddLinkToBeChallenged add_link_to_be_challenged = 39 [json_name = "addLinkToBeChallenged"];
     case kAddLinkToBeChallenged: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.add_link_to_be_challenged_);
       break;
     }
-    // .debate_event.SubmitChallengeClaim submit_challenge_claim = 40;
+    // .debate_event.SubmitChallengeClaim submit_challenge_claim = 40 [json_name = "submitChallengeClaim"];
     case kSubmitChallengeClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.submit_challenge_claim_);
       break;
     }
-    // .debate_event.GoToChallenge go_to_challenge = 41;
+    // .debate_event.GoToChallenge go_to_challenge = 41 [json_name = "goToChallenge"];
     case kGoToChallenge: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.go_to_challenge_);
       break;
     }
-    // .debate_event.ConcedeChallenge concede_challenge = 42;
+    // .debate_event.ConcedeChallenge concede_challenge = 42 [json_name = "concedeChallenge"];
     case kConcedeChallenge: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.concede_challenge_);
       break;
     }
-    // .debate_event.RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46;
+    // .debate_event.RemoveClaimToBeChallenged remove_claim_to_be_challenged = 46 [json_name = "removeClaimToBeChallenged"];
     case kRemoveClaimToBeChallenged: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.remove_claim_to_be_challenged_);
       break;
     }
-    // .debate_event.RemoveLinkToBeChallenged remove_link_to_be_challenged = 47;
+    // .debate_event.RemoveLinkToBeChallenged remove_link_to_be_challenged = 47 [json_name = "removeLinkToBeChallenged"];
     case kRemoveLinkToBeChallenged: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.remove_link_to_be_challenged_);
       break;
     }
-    // .debate_event.DeleteChallenge delete_challenge = 48;
+    // .debate_event.DeleteChallenge delete_challenge = 48 [json_name = "deleteChallenge"];
     case kDeleteChallenge: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.delete_challenge_);
       break;
     }
-    // .debate_event.LeaveDebate leave_debate = 49;
+    // .debate_event.LeaveDebate leave_debate = 49 [json_name = "leaveDebate"];
     case kLeaveDebate: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.leave_debate_);
       break;
     }
-    // .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50;
+    // .debate_event.MoveUserToTimestamp move_user_to_timestamp = 50 [json_name = "moveUserToTimestamp"];
     case kMoveUserToTimestamp: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.move_user_to_timestamp_);

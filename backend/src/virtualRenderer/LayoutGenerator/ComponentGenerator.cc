@@ -164,3 +164,18 @@ void ComponentGenerator::addAttribute(ui::Component* component, const std::strin
         (*component->mutable_attributes())[key] = value;
     }
 }
+
+ui::Component ComponentGenerator::createClaimParser(
+    const std::string& id,
+    const std::string& defaultValue
+) {
+    ui::Component component;
+    component.set_id(id);
+    component.set_type(ui::ComponentType::CLAIM_PARSER);
+
+    if (!defaultValue.empty()) {
+        addAttribute(&component, "defaultValue", defaultValue);
+    }
+
+    return component;
+}

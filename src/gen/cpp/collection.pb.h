@@ -232,7 +232,7 @@ class CollectionSpecification final : public ::google::protobuf::Message
     kClaimIdsFieldNumber = 2,
     kDebateIdFieldNumber = 1,
   };
-  // repeated int32 claim_ids = 2;
+  // repeated int32 claim_ids = 2 [json_name = "claimIds"];
   int claim_ids_size() const;
   private:
   int _internal_claim_ids_size() const;
@@ -250,7 +250,7 @@ class CollectionSpecification final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_claim_ids();
 
   public:
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -521,7 +521,7 @@ class Collection final : public ::google::protobuf::Message
     kClaimsByIdFieldNumber = 1,
     kLinksByIdFieldNumber = 2,
   };
-  // map<int32, .debate.Claim> claims_by_id = 1;
+  // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
   int claims_by_id_size() const;
   private:
   int _internal_claims_by_id_size() const;
@@ -536,7 +536,7 @@ class Collection final : public ::google::protobuf::Message
   ::google::protobuf::Map<::int32_t, ::debate::Claim>* PROTOBUF_NONNULL _internal_mutable_claims_by_id();
 
   public:
-  // map<int32, .debate.Relationship> links_by_id = 2;
+  // map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
   int links_by_id_size() const;
   private:
   int _internal_links_by_id_size() const;
@@ -613,7 +613,7 @@ extern const ::google::protobuf::internal::ClassDataFull Collection_class_data_;
 
 // Collection
 
-// map<int32, .debate.Claim> claims_by_id = 1;
+// map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
 inline int Collection::_internal_claims_by_id_size() const {
   return _internal_claims_by_id().size();
 }
@@ -639,7 +639,7 @@ inline ::google::protobuf::Map<::int32_t, ::debate::Claim>* PROTOBUF_NONNULL Col
   return _internal_mutable_claims_by_id();
 }
 
-// map<int32, .debate.Relationship> links_by_id = 2;
+// map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
 inline int Collection::_internal_links_by_id_size() const {
   return _internal_links_by_id().size();
 }
@@ -669,7 +669,7 @@ inline ::google::protobuf::Map<::int32_t, ::debate::Relationship>* PROTOBUF_NONN
 
 // CollectionSpecification
 
-// int32 debate_id = 1;
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void CollectionSpecification::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -694,7 +694,7 @@ inline void CollectionSpecification::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// repeated int32 claim_ids = 2;
+// repeated int32 claim_ids = 2 [json_name = "claimIds"];
 inline int CollectionSpecification::_internal_claim_ids_size() const {
   return _internal_claim_ids().size();
 }

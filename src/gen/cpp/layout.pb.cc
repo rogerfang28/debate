@@ -489,42 +489,51 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\014layout.proto\022\002ui\"I\n\004Page\022\017\n\007page_id\030\001 "
-    "\001(\t\022\r\n\005title\030\002 \001(\t\022!\n\ncomponents\030\003 \003(\0132\r"
-    ".ui.Component\"\266\003\n\tComponent\022\n\n\002id\030\001 \001(\t\022"
-    "\014\n\004name\030\002 \001(\t\022\037\n\004type\030\003 \001(\0162\021.ui.Compone"
-    "ntType\022\014\n\004text\030\004 \001(\t\022\037\n\010children\030\005 \003(\0132\r"
-    ".ui.Component\022\030\n\005style\030\006 \001(\0132\t.ui.Style\022"
-    "#\n\003css\030\010 \003(\0132\026.ui.Component.CssEntry\0221\n\n"
-    "attributes\030\007 \003(\0132\035.ui.Component.Attribut"
-    "esEntry\022\034\n\005nodes\030\n \003(\0132\r.ui.GraphNode\022\034\n"
-    "\005edges\030\013 \003(\0132\r.ui.GraphEdge\022\030\n\020selected_"
-    "node_id\030\014 \001(\t\022\030\n\020selected_edge_id\030\r \001(\t\032"
-    "*\n\010CssEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:"
-    "\0028\001\0321\n\017AttributesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005v"
-    "alue\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custom_class\030"
-    "\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
-    "\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001 \001(\t\022\016\n\006"
-    "height\030\002 \001(\t\"\222\001\n\tGraphNode\022\n\n\002id\030\001 \001(\t\022\014"
-    "\n\004text\030\002 \001(\t\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\014\n\004ty"
-    "pe\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\022\n\ncreator_id\030\007"
-    " \001(\005\022\017\n\007is_root\030\010 \001(\010\022\022\n\nis_current\030\t \001("
-    "\010\"E\n\tGraphEdge\022\n\n\002id\030\001 \001(\t\022\016\n\006source\030\002 \001"
-    "(\t\022\016\n\006target\030\003 \001(\t\022\014\n\004type\030\004 \001(\t\"\214\001\n\016Gra"
-    "phComponent\022\n\n\002id\030\001 \001(\t\022\034\n\005nodes\030\002 \003(\0132\r"
-    ".ui.GraphNode\022\034\n\005edges\030\003 \003(\0132\r.ui.GraphE"
-    "dge\022\030\n\020selected_node_id\030\004 \001(\t\022\030\n\020selecte"
-    "d_edge_id\030\005 \001(\t*W\n\rComponentType\022\013\n\007UNKN"
-    "OWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t"
-    "\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014*I\n\nLayoutType\022\t"
-    "\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n"
-    "\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\n\014layout.proto\022\002ui\"d\n\004Page\022\027\n\007page_id\030\001 "
+    "\001(\tR\006pageId\022\024\n\005title\030\002 \001(\tR\005title\022-\n\ncom"
+    "ponents\030\003 \003(\0132\r.ui.ComponentR\ncomponents"
+    "\"\264\004\n\tComponent\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002"
+    " \001(\tR\004name\022%\n\004type\030\003 \001(\0162\021.ui.ComponentT"
+    "ypeR\004type\022\022\n\004text\030\004 \001(\tR\004text\022)\n\010childre"
+    "n\030\005 \003(\0132\r.ui.ComponentR\010children\022\037\n\005styl"
+    "e\030\006 \001(\0132\t.ui.StyleR\005style\022(\n\003css\030\010 \003(\0132\026"
+    ".ui.Component.CssEntryR\003css\022=\n\nattribute"
+    "s\030\007 \003(\0132\035.ui.Component.AttributesEntryR\n"
+    "attributes\022#\n\005nodes\030\n \003(\0132\r.ui.GraphNode"
+    "R\005nodes\022#\n\005edges\030\013 \003(\0132\r.ui.GraphEdgeR\005e"
+    "dges\022(\n\020selected_node_id\030\014 \001(\tR\016selected"
+    "NodeId\022(\n\020selected_edge_id\030\r \001(\tR\016select"
+    "edEdgeId\0326\n\010CssEntry\022\020\n\003key\030\001 \001(\tR\003key\022\024"
+    "\n\005value\030\002 \001(\tR\005value:\0028\001\032=\n\017AttributesEn"
+    "try\022\020\n\003key\030\001 \001(\tR\003key\022\024\n\005value\030\002 \001(\tR\005va"
+    "lue:\0028\001\"*\n\005Style\022!\n\014custom_class\030\001 \001(\tR\013"
+    "customClass\":\n\010Position\022\014\n\001x\030\001 \001(\002R\001x\022\014\n"
+    "\001y\030\002 \001(\002R\001y\022\022\n\004unit\030\003 \001(\tR\004unit\"4\n\004Size\022"
+    "\024\n\005width\030\001 \001(\tR\005width\022\026\n\006height\030\002 \001(\tR\006h"
+    "eight\"\316\001\n\tGraphNode\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004t"
+    "ext\030\002 \001(\tR\004text\022\014\n\001x\030\003 \001(\001R\001x\022\014\n\001y\030\004 \001(\001"
+    "R\001y\022\022\n\004type\030\005 \001(\tR\004type\022\026\n\006status\030\006 \001(\tR"
+    "\006status\022\035\n\ncreator_id\030\007 \001(\005R\tcreatorId\022\027"
+    "\n\007is_root\030\010 \001(\010R\006isRoot\022\035\n\nis_current\030\t "
+    "\001(\010R\tisCurrent\"_\n\tGraphEdge\022\016\n\002id\030\001 \001(\tR"
+    "\002id\022\026\n\006source\030\002 \001(\tR\006source\022\026\n\006target\030\003 "
+    "\001(\tR\006target\022\022\n\004type\030\004 \001(\tR\004type\"\276\001\n\016Grap"
+    "hComponent\022\016\n\002id\030\001 \001(\tR\002id\022#\n\005nodes\030\002 \003("
+    "\0132\r.ui.GraphNodeR\005nodes\022#\n\005edges\030\003 \003(\0132\r"
+    ".ui.GraphEdgeR\005edges\022(\n\020selected_node_id"
+    "\030\004 \001(\tR\016selectedNodeId\022(\n\020selected_edge_"
+    "id\030\005 \001(\tR\016selectedEdgeId*i\n\rComponentTyp"
+    "e\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005"
+    "INPUT\020\003\022\t\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014CLA"
+    "IM_PARSER\020\016*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010"
+    "FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006IN"
+    "LINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1187,
+    1534,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -543,7 +552,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descrip
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    327680u, 32u, 128u, };
+    327680u, 32u, 640u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL LayoutType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);
   return file_level_enum_descriptors_layout_2eproto[1];
@@ -697,26 +706,26 @@ Page::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {::_pbi::TcParser::FastUS1,
      {10, 1, 0,
       PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_)}},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {::_pbi::TcParser::FastUS1,
      {18, 2, 0,
       PROTOBUF_FIELD_OFFSET(Page, _impl_.title_)}},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {::_pbi::TcParser::FastMtR1,
      {26, 0, 0,
       PROTOBUF_FIELD_OFFSET(Page, _impl_.components_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.page_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.title_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     {PROTOBUF_FIELD_OFFSET(Page, _impl_.components_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -771,7 +780,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string page_id = 1;
+  // string page_id = 1 [json_name = "pageId"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_page_id().empty()) {
       const ::std::string& _s = this_._internal_page_id();
@@ -781,7 +790,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
     }
   }
 
-  // string title = 2;
+  // string title = 2 [json_name = "title"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (!this_._internal_title().empty()) {
       const ::std::string& _s = this_._internal_title();
@@ -791,7 +800,7 @@ PROTOBUF_NOINLINE void Page::Clear() {
     }
   }
 
-  // repeated .ui.Component components = 3;
+  // repeated .ui.Component components = 3 [json_name = "components"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_components_size());
@@ -830,21 +839,21 @@ PROTOBUF_NOINLINE void Page::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // repeated .ui.Component components = 3;
+    // repeated .ui.Component components = 3 [json_name = "components"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size += 1UL * this_._internal_components_size();
       for (const auto& msg : this_._internal_components()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // string page_id = 1;
+    // string page_id = 1 [json_name = "pageId"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_page_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_page_id());
       }
     }
-    // string title = 2;
+    // string title = 2 [json_name = "title"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!this_._internal_title().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -997,20 +1006,20 @@ Component_CssEntry_DoNotUse::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Component_CssEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.key_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_CssEntry_DoNotUse, _impl_.value_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -1095,20 +1104,20 @@ Component_AttributesEntry_DoNotUse::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Component_AttributesEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_)}},
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string key = 1;
+    // string key = 1 [json_name = "key"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.key_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string value = 2;
+    // string value = 2 [json_name = "value"];
     {PROTOBUF_FIELD_OFFSET(Component_AttributesEntry_DoNotUse, _impl_.value_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -1311,46 +1320,46 @@ Component::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 3, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.id_)}},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {::_pbi::TcParser::FastUS1,
      {18, 4, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.name_)}},
-    // .ui.ComponentType type = 3;
+    // .ui.ComponentType type = 3 [json_name = "type"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Component, _impl_.type_), 9>(),
      {24, 9, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.type_)}},
-    // string text = 4;
+    // string text = 4 [json_name = "text"];
     {::_pbi::TcParser::FastUS1,
      {34, 5, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.text_)}},
-    // repeated .ui.Component children = 5;
+    // repeated .ui.Component children = 5 [json_name = "children"];
     {::_pbi::TcParser::FastMtR1,
      {42, 0, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.children_)}},
-    // .ui.Style style = 6;
+    // .ui.Style style = 6 [json_name = "style"];
     {::_pbi::TcParser::FastMtS1,
      {50, 8, 1,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.style_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
-    // repeated .ui.GraphNode nodes = 10;
+    // repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
     {::_pbi::TcParser::FastMtR1,
      {82, 1, 2,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.nodes_)}},
-    // repeated .ui.GraphEdge edges = 11;
+    // repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
     {::_pbi::TcParser::FastMtR1,
      {90, 2, 3,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.edges_)}},
-    // string selected_node_id = 12;
+    // string selected_node_id = 12 [json_name = "selectedNodeId"];
     {::_pbi::TcParser::FastUS1,
      {98, 6, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_node_id_)}},
-    // string selected_edge_id = 13;
+    // string selected_edge_id = 13 [json_name = "selectedEdgeId"];
     {::_pbi::TcParser::FastUS1,
      {106, 7, 0,
       PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_edge_id_)}},
@@ -1359,29 +1368,29 @@ Component::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.name_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .ui.ComponentType type = 3;
+    // .ui.ComponentType type = 3 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.type_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kOpenEnum)},
-    // string text = 4;
+    // string text = 4 [json_name = "text"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.text_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.Component children = 5;
+    // repeated .ui.Component children = 5 [json_name = "children"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.children_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .ui.Style style = 6;
+    // .ui.Style style = 6 [json_name = "style"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.style_), _Internal::kHasBitsOffset + 8, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // map<string, string> attributes = 7;
+    // map<string, string> attributes = 7 [json_name = "attributes"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.attributes_), _Internal::kHasBitsOffset + 10, 4, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<string, string> css = 8;
+    // map<string, string> css = 8 [json_name = "css"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.css_), _Internal::kHasBitsOffset + 11, 5, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // repeated .ui.GraphNode nodes = 10;
+    // repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.nodes_), _Internal::kHasBitsOffset + 1, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated .ui.GraphEdge edges = 11;
+    // repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.edges_), _Internal::kHasBitsOffset + 2, 3, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // string selected_node_id = 12;
+    // string selected_node_id = 12 [json_name = "selectedNodeId"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_node_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string selected_edge_id = 13;
+    // string selected_edge_id = 13 [json_name = "selectedEdgeId"];
     {PROTOBUF_FIELD_OFFSET(Component, _impl_.selected_edge_id_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   {{
@@ -1476,7 +1485,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (!this_._internal_id().empty()) {
       const ::std::string& _s = this_._internal_id();
@@ -1486,7 +1495,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // string name = 2;
+  // string name = 2 [json_name = "name"];
   if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (!this_._internal_name().empty()) {
       const ::std::string& _s = this_._internal_name();
@@ -1496,7 +1505,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // .ui.ComponentType type = 3;
+  // .ui.ComponentType type = 3 [json_name = "type"];
   if (CheckHasBit(cached_has_bits, 0x00000200U)) {
     if (this_._internal_type() != 0) {
       target = stream->EnsureSpace(target);
@@ -1505,7 +1514,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // string text = 4;
+  // string text = 4 [json_name = "text"];
   if (CheckHasBit(cached_has_bits, 0x00000020U)) {
     if (!this_._internal_text().empty()) {
       const ::std::string& _s = this_._internal_text();
@@ -1515,7 +1524,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // repeated .ui.Component children = 5;
+  // repeated .ui.Component children = 5 [json_name = "children"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_children_size());
@@ -1528,14 +1537,14 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // .ui.Style style = 6;
+  // .ui.Style style = 6 [json_name = "style"];
   if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         6, *this_._impl_.style_, this_._impl_.style_->GetCachedSize(), target,
         stream);
   }
 
-  // map<string, string> attributes = 7;
+  // map<string, string> attributes = 7 [json_name = "attributes"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
     if (!this_._internal_attributes().empty()) {
       using MapType = ::google::protobuf::Map<::std::string, ::std::string>;
@@ -1570,7 +1579,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // map<string, string> css = 8;
+  // map<string, string> css = 8 [json_name = "css"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
     if (!this_._internal_css().empty()) {
       using MapType = ::google::protobuf::Map<::std::string, ::std::string>;
@@ -1605,7 +1614,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // repeated .ui.GraphNode nodes = 10;
+  // repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_nodes_size());
@@ -1618,7 +1627,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // repeated .ui.GraphEdge edges = 11;
+  // repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_edges_size());
@@ -1631,7 +1640,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // string selected_node_id = 12;
+  // string selected_node_id = 12 [json_name = "selectedNodeId"];
   if (CheckHasBit(cached_has_bits, 0x00000040U)) {
     if (!this_._internal_selected_node_id().empty()) {
       const ::std::string& _s = this_._internal_selected_node_id();
@@ -1641,7 +1650,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
 
-  // string selected_edge_id = 13;
+  // string selected_edge_id = 13 [json_name = "selectedEdgeId"];
   if (CheckHasBit(cached_has_bits, 0x00000080U)) {
     if (!this_._internal_selected_edge_id().empty()) {
       const ::std::string& _s = this_._internal_selected_edge_id();
@@ -1677,56 +1686,56 @@ PROTOBUF_NOINLINE void Component::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
-    // repeated .ui.Component children = 5;
+    // repeated .ui.Component children = 5 [json_name = "children"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size += 1UL * this_._internal_children_size();
       for (const auto& msg : this_._internal_children()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // repeated .ui.GraphNode nodes = 10;
+    // repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
       total_size += 1UL * this_._internal_nodes_size();
       for (const auto& msg : this_._internal_nodes()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // repeated .ui.GraphEdge edges = 11;
+    // repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
       total_size += 1UL * this_._internal_edges_size();
       for (const auto& msg : this_._internal_edges()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!this_._internal_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_id());
       }
     }
-    // string name = 2;
+    // string name = 2 [json_name = "name"];
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (!this_._internal_name().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_name());
       }
     }
-    // string text = 4;
+    // string text = 4 [json_name = "text"];
     if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (!this_._internal_text().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_text());
       }
     }
-    // string selected_node_id = 12;
+    // string selected_node_id = 12 [json_name = "selectedNodeId"];
     if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (!this_._internal_selected_node_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_selected_node_id());
       }
     }
-    // string selected_edge_id = 13;
+    // string selected_edge_id = 13 [json_name = "selectedEdgeId"];
     if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (!this_._internal_selected_edge_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1735,19 +1744,19 @@ PROTOBUF_NOINLINE void Component::Clear() {
     }
   }
   if (BatchCheckHasBit(cached_has_bits, 0x00000f00U)) {
-    // .ui.Style style = 6;
+    // .ui.Style style = 6 [json_name = "style"];
     if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.style_);
     }
-    // .ui.ComponentType type = 3;
+    // .ui.ComponentType type = 3 [json_name = "type"];
     if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (this_._internal_type() != 0) {
         total_size += 1 +
                       ::_pbi::WireFormatLite::EnumSize(this_._internal_type());
       }
     }
-    // map<string, string> attributes = 7;
+    // map<string, string> attributes = 7 [json_name = "attributes"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000400U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_attributes_size());
@@ -1757,7 +1766,7 @@ PROTOBUF_NOINLINE void Component::Clear() {
                                        _pbi::WireFormatLite::TYPE_STRING>::ByteSizeLong(entry.first, entry.second);
       }
     }
-    // map<string, string> css = 8;
+    // map<string, string> css = 8 [json_name = "css"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000800U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_css_size());
@@ -2039,14 +2048,14 @@ Style::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Style>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string custom_class = 1;
+    // string custom_class = 1 [json_name = "customClass"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string custom_class = 1;
+    // string custom_class = 1 [json_name = "customClass"];
     {PROTOBUF_FIELD_OFFSET(Style, _impl_.custom_class_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -2090,7 +2099,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string custom_class = 1;
+  // string custom_class = 1 [json_name = "customClass"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_custom_class().empty()) {
       const ::std::string& _s = this_._internal_custom_class();
@@ -2124,7 +2133,7 @@ PROTOBUF_NOINLINE void Style::Clear() {
   (void)cached_has_bits;
 
    {
-    // string custom_class = 1;
+    // string custom_class = 1 [json_name = "customClass"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_custom_class().empty()) {
@@ -2328,26 +2337,26 @@ Position::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {::_pbi::TcParser::FastF32S1,
      {13, 1, 0,
       PROTOBUF_FIELD_OFFSET(Position, _impl_.x_)}},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {::_pbi::TcParser::FastF32S1,
      {21, 2, 0,
       PROTOBUF_FIELD_OFFSET(Position, _impl_.y_)}},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {::_pbi::TcParser::FastUS1,
      {26, 0, 0,
       PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.x_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.y_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     {PROTOBUF_FIELD_OFFSET(Position, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -2396,7 +2405,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // float x = 1;
+  // float x = 1 [json_name = "x"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
       target = stream->EnsureSpace(target);
@@ -2405,7 +2414,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
     }
   }
 
-  // float y = 2;
+  // float y = 2 [json_name = "y"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
       target = stream->EnsureSpace(target);
@@ -2414,7 +2423,7 @@ PROTOBUF_NOINLINE void Position::Clear() {
     }
   }
 
-  // string unit = 3;
+  // string unit = 3 [json_name = "unit"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_unit().empty()) {
       const ::std::string& _s = this_._internal_unit();
@@ -2450,20 +2459,20 @@ PROTOBUF_NOINLINE void Position::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // string unit = 3;
+    // string unit = 3 [json_name = "unit"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_unit().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_unit());
       }
     }
-    // float x = 1;
+    // float x = 1 [json_name = "x"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
         total_size += 5;
       }
     }
-    // float y = 2;
+    // float y = 2 [json_name = "y"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
         total_size += 5;
@@ -2672,20 +2681,20 @@ Size::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::Size>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(Size, _impl_.height_)}},
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(Size, _impl_.width_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.width_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     {PROTOBUF_FIELD_OFFSET(Size, _impl_.height_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -2735,7 +2744,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string width = 1;
+  // string width = 1 [json_name = "width"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_width().empty()) {
       const ::std::string& _s = this_._internal_width();
@@ -2745,7 +2754,7 @@ PROTOBUF_NOINLINE void Size::Clear() {
     }
   }
 
-  // string height = 2;
+  // string height = 2 [json_name = "height"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_height().empty()) {
       const ::std::string& _s = this_._internal_height();
@@ -2781,14 +2790,14 @@ PROTOBUF_NOINLINE void Size::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // string width = 1;
+    // string width = 1 [json_name = "width"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_width().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_width());
       }
     }
-    // string height = 2;
+    // string height = 2 [json_name = "height"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_height().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3012,39 +3021,39 @@ GraphNode::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.id_)}},
-    // string text = 2;
+    // string text = 2 [json_name = "text"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_)}},
-    // double x = 3;
+    // double x = 3 [json_name = "x"];
     {::_pbi::TcParser::FastF64S1,
      {25, 4, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_)}},
-    // double y = 4;
+    // double y = 4 [json_name = "y"];
     {::_pbi::TcParser::FastF64S1,
      {33, 5, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_)}},
-    // string type = 5;
+    // string type = 5 [json_name = "type"];
     {::_pbi::TcParser::FastUS1,
      {42, 2, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.type_)}},
-    // string status = 6;
+    // string status = 6 [json_name = "status"];
     {::_pbi::TcParser::FastUS1,
      {50, 3, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_)}},
-    // int32 creator_id = 7;
+    // int32 creator_id = 7 [json_name = "creatorId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphNode, _impl_.creator_id_), 6>(),
      {56, 6, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_)}},
-    // bool is_root = 8;
+    // bool is_root = 8 [json_name = "isRoot"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_root_), 7>(),
      {64, 7, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_)}},
-    // bool is_current = 9;
+    // bool is_current = 9 [json_name = "isCurrent"];
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_current_), 8>(),
      {72, 8, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_)}},
@@ -3057,23 +3066,23 @@ GraphNode::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string text = 2;
+    // string text = 2 [json_name = "text"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // double x = 3;
+    // double x = 3 [json_name = "x"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double y = 4;
+    // double y = 4 [json_name = "y"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // string type = 5;
+    // string type = 5 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.type_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string status = 6;
+    // string status = 6 [json_name = "status"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 creator_id = 7;
+    // int32 creator_id = 7 [json_name = "creatorId"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool is_root = 8;
+    // bool is_root = 8 [json_name = "isRoot"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // bool is_current = 9;
+    // bool is_current = 9 [json_name = "isCurrent"];
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
   }},
   // no aux_entries
@@ -3137,7 +3146,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_id().empty()) {
       const ::std::string& _s = this_._internal_id();
@@ -3147,7 +3156,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // string text = 2;
+  // string text = 2 [json_name = "text"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_text().empty()) {
       const ::std::string& _s = this_._internal_text();
@@ -3157,7 +3166,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // double x = 3;
+  // double x = 3 [json_name = "x"];
   if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
       target = stream->EnsureSpace(target);
@@ -3166,7 +3175,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // double y = 4;
+  // double y = 4 [json_name = "y"];
   if (CheckHasBit(cached_has_bits, 0x00000020U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
       target = stream->EnsureSpace(target);
@@ -3175,7 +3184,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // string type = 5;
+  // string type = 5 [json_name = "type"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (!this_._internal_type().empty()) {
       const ::std::string& _s = this_._internal_type();
@@ -3185,7 +3194,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // string status = 6;
+  // string status = 6 [json_name = "status"];
   if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (!this_._internal_status().empty()) {
       const ::std::string& _s = this_._internal_status();
@@ -3195,7 +3204,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // int32 creator_id = 7;
+  // int32 creator_id = 7 [json_name = "creatorId"];
   if (CheckHasBit(cached_has_bits, 0x00000040U)) {
     if (this_._internal_creator_id() != 0) {
       target =
@@ -3204,7 +3213,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // bool is_root = 8;
+  // bool is_root = 8 [json_name = "isRoot"];
   if (CheckHasBit(cached_has_bits, 0x00000080U)) {
     if (this_._internal_is_root() != 0) {
       target = stream->EnsureSpace(target);
@@ -3213,7 +3222,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
 
-  // bool is_current = 9;
+  // bool is_current = 9 [json_name = "isCurrent"];
   if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     if (this_._internal_is_current() != 0) {
       target = stream->EnsureSpace(target);
@@ -3248,54 +3257,54 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_id());
       }
     }
-    // string text = 2;
+    // string text = 2 [json_name = "text"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_text().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_text());
       }
     }
-    // string type = 5;
+    // string type = 5 [json_name = "type"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!this_._internal_type().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_type());
       }
     }
-    // string status = 6;
+    // string status = 6 [json_name = "status"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!this_._internal_status().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_status());
       }
     }
-    // double x = 3;
+    // double x = 3 [json_name = "x"];
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
         total_size += 9;
       }
     }
-    // double y = 4;
+    // double y = 4 [json_name = "y"];
     if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
         total_size += 9;
       }
     }
-    // int32 creator_id = 7;
+    // int32 creator_id = 7 [json_name = "creatorId"];
     if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (this_._internal_creator_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_creator_id());
       }
     }
-    // bool is_root = 8;
+    // bool is_root = 8 [json_name = "isRoot"];
     if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (this_._internal_is_root() != 0) {
         total_size += 2;
@@ -3303,7 +3312,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     }
   }
    {
-    // bool is_current = 9;
+    // bool is_current = 9 [json_name = "isCurrent"];
     if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (this_._internal_is_current() != 0) {
         total_size += 2;
@@ -3563,32 +3572,32 @@ GraphEdge::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::GraphEdge>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string type = 4;
+    // string type = 4 [json_name = "type"];
     {::_pbi::TcParser::FastUS1,
      {34, 3, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_)}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.id_)}},
-    // string source = 2;
+    // string source = 2 [json_name = "source"];
     {::_pbi::TcParser::FastUS1,
      {18, 1, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.source_)}},
-    // string target = 3;
+    // string target = 3 [json_name = "target"];
     {::_pbi::TcParser::FastUS1,
      {26, 2, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string source = 2;
+    // string source = 2 [json_name = "source"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.source_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string target = 3;
+    // string target = 3 [json_name = "target"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string type = 4;
+    // string type = 4 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
@@ -3646,7 +3655,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_id().empty()) {
       const ::std::string& _s = this_._internal_id();
@@ -3656,7 +3665,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
   }
 
-  // string source = 2;
+  // string source = 2 [json_name = "source"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_source().empty()) {
       const ::std::string& _s = this_._internal_source();
@@ -3666,7 +3675,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
   }
 
-  // string target = 3;
+  // string target = 3 [json_name = "target"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (!this_._internal_target().empty()) {
       const ::std::string& _s = this_._internal_target();
@@ -3676,7 +3685,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
   }
 
-  // string type = 4;
+  // string type = 4 [json_name = "type"];
   if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (!this_._internal_type().empty()) {
       const ::std::string& _s = this_._internal_type();
@@ -3712,28 +3721,28 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_id());
       }
     }
-    // string source = 2;
+    // string source = 2 [json_name = "source"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (!this_._internal_source().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_source());
       }
     }
-    // string target = 3;
+    // string target = 3 [json_name = "target"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!this_._internal_target().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_target());
       }
     }
-    // string type = 4;
+    // string type = 4 [json_name = "type"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!this_._internal_type().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3981,23 +3990,23 @@ GraphComponent::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 2, 0,
       PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.id_)}},
-    // repeated .ui.GraphNode nodes = 2;
+    // repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
     {::_pbi::TcParser::FastMtR1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.nodes_)}},
-    // repeated .ui.GraphEdge edges = 3;
+    // repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
     {::_pbi::TcParser::FastMtR1,
      {26, 1, 1,
       PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.edges_)}},
-    // string selected_node_id = 4;
+    // string selected_node_id = 4 [json_name = "selectedNodeId"];
     {::_pbi::TcParser::FastUS1,
      {34, 3, 0,
       PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_node_id_)}},
-    // string selected_edge_id = 5;
+    // string selected_edge_id = 5 [json_name = "selectedEdgeId"];
     {::_pbi::TcParser::FastUS1,
      {42, 4, 0,
       PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_edge_id_)}},
@@ -4006,15 +4015,15 @@ GraphComponent::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated .ui.GraphNode nodes = 2;
+    // repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
     {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.nodes_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated .ui.GraphEdge edges = 3;
+    // repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
     {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.edges_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
-    // string selected_node_id = 4;
+    // string selected_node_id = 4 [json_name = "selectedNodeId"];
     {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_node_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string selected_edge_id = 5;
+    // string selected_edge_id = 5 [json_name = "selectedEdgeId"];
     {PROTOBUF_FIELD_OFFSET(GraphComponent, _impl_.selected_edge_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   {{
@@ -4077,7 +4086,7 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (!this_._internal_id().empty()) {
       const ::std::string& _s = this_._internal_id();
@@ -4087,7 +4096,7 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
     }
   }
 
-  // repeated .ui.GraphNode nodes = 2;
+  // repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_nodes_size());
@@ -4100,7 +4109,7 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
     }
   }
 
-  // repeated .ui.GraphEdge edges = 3;
+  // repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_edges_size());
@@ -4113,7 +4122,7 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
     }
   }
 
-  // string selected_node_id = 4;
+  // string selected_node_id = 4 [json_name = "selectedNodeId"];
   if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (!this_._internal_selected_node_id().empty()) {
       const ::std::string& _s = this_._internal_selected_node_id();
@@ -4123,7 +4132,7 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
     }
   }
 
-  // string selected_edge_id = 5;
+  // string selected_edge_id = 5 [json_name = "selectedEdgeId"];
   if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (!this_._internal_selected_edge_id().empty()) {
       const ::std::string& _s = this_._internal_selected_edge_id();
@@ -4159,35 +4168,35 @@ PROTOBUF_NOINLINE void GraphComponent::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    // repeated .ui.GraphNode nodes = 2;
+    // repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size += 1UL * this_._internal_nodes_size();
       for (const auto& msg : this_._internal_nodes()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // repeated .ui.GraphEdge edges = 3;
+    // repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
       total_size += 1UL * this_._internal_edges_size();
       for (const auto& msg : this_._internal_edges()) {
         total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
       }
     }
-    // string id = 1;
+    // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!this_._internal_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_id());
       }
     }
-    // string selected_node_id = 4;
+    // string selected_node_id = 4 [json_name = "selectedNodeId"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (!this_._internal_selected_node_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_selected_node_id());
       }
     }
-    // string selected_edge_id = 5;
+    // string selected_edge_id = 5 [json_name = "selectedEdgeId"];
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (!this_._internal_selected_edge_id().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(

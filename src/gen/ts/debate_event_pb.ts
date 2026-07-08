@@ -188,6 +188,8 @@ export const SubmitEditClaimSchema: GenMessage<SubmitEditClaim> = /*@__PURE__*/
   messageDesc(file_debate_event, 8);
 
 /**
+ * TODO remove field, was used for user manual linking claims
+ *
  * @generated from message debate_event.ConnectFromClaim
  */
 export type ConnectFromClaim = Message<"debate_event.ConnectFromClaim"> & {
@@ -205,6 +207,8 @@ export const ConnectFromClaimSchema: GenMessage<ConnectFromClaim> = /*@__PURE__*
   messageDesc(file_debate_event, 9);
 
 /**
+ * TODO remove field, was used for user manual linking claims
+ *
  * @generated from message debate_event.ConnectToClaim
  */
 export type ConnectToClaim = Message<"debate_event.ConnectToClaim"> & {
@@ -222,6 +226,8 @@ export const ConnectToClaimSchema: GenMessage<ConnectToClaim> = /*@__PURE__*/
   messageDesc(file_debate_event, 10);
 
 /**
+ * TODO remove field, was used for user manual linking claims
+ *
  * @generated from message debate_event.SubmitConnectClaims
  */
 export type SubmitConnectClaims = Message<"debate_event.SubmitConnectClaims"> & {
@@ -587,18 +593,24 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
     case: "submitEditClaim";
   } | {
     /**
+     * TODO remove field, was used for user manual linking claims
+     *
      * @generated from field: debate_event.ConnectFromClaim connect_from_claim = 30;
      */
     value: ConnectFromClaim;
     case: "connectFromClaim";
   } | {
     /**
+     * TODO remove field, was used for user manual linking claims
+     *
      * @generated from field: debate_event.ConnectToClaim connect_to_claim = 31;
      */
     value: ConnectToClaim;
     case: "connectToClaim";
   } | {
     /**
+     * TODO remove field, was used for user manual linking claims
+     *
      * @generated from field: debate_event.SubmitConnectClaims submit_connect_claims = 32;
      */
     value: SubmitConnectClaims;
@@ -816,22 +828,29 @@ export enum EventType {
 
   /**
    * connecting claims
+   * TODO remove field, was used for user manual linking claims
    *
    * @generated from enum value: CONNECT_FROM_CLAIM = 23;
    */
   CONNECT_FROM_CLAIM = 23,
 
   /**
+   * TODO remove field, was used for user manual linking claims
+   *
    * @generated from enum value: CONNECT_TO_CLAIM = 24;
    */
   CONNECT_TO_CLAIM = 24,
 
   /**
+   * TODO remove field, was used for user manual linking claims
+   *
    * @generated from enum value: SUBMIT_CONNECT_CLAIMS = 25;
    */
   SUBMIT_CONNECT_CLAIMS = 25,
 
   /**
+   * TODO remove field, was used for user manual linking claims
+   *
    * @generated from enum value: CANCEL_CONNECT_CLAIMS = 26;
    */
   CANCEL_CONNECT_CLAIMS = 26,
