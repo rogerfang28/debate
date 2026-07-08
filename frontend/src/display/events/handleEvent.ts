@@ -1,6 +1,25 @@
 import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
 import getEntirePage from "../getEntirePage.ts";
 
+// Google sign-in callback — set by GoogleLoginComponent
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).googleLoginCallback = async (credential: string) => {
+  console.log("[GoogleAuth] Got ID token from Google, sending to backend...");
+  try {
+    await postClientMessageToCPP({
+      componentId: "googleLoginButton",
+      eventType: "onGoogleLogin",
+      actionId: "google",
+      eventName: "onGoogleLogin",
+      data: { _pageId: "login", google_id_token: credential },
+      timestamp: Date.now(),
+    });
+    window.reloadPage?.();
+  } catch (error) {
+    console.error("[GoogleAuth] Failed to send Google token:", error);
+  }
+};
+
 // TypeScript interfaces
 interface ComponentProps {
   id?: string;
@@ -43,6 +62,12 @@ export default async function handleEvent(
       // "collectFrom:",
       // collectFrom
     );
+
+    // Skip normal handling for Google login button — it's handled by Google JS SDK
+    if (component.id === "googleLoginButton") {
+      console.log("[GoogleAuth] Google button click — skipped normal handler");
+      return;
+    }
 
     if (e?.preventDefault && (eventName === "onSubmit" || e.type === "submit")) {
       e.preventDefault();

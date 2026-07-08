@@ -216,12 +216,14 @@ class User final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kUsernameFieldNumber = 2,
+    kGoogleSubFieldNumber = 6,
+    kEmailFieldNumber = 7,
     kEngagementFieldNumber = 3,
     kCurrentScopeFieldNumber = 4,
     kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
   };
-  // string username = 2;
+  // string username = 2 [json_name = "username"];
   void clear_username() ;
   const ::std::string& username() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -236,7 +238,37 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
 
   public:
-  // .user_engagement.UserEngagement engagement = 3;
+  // string google_sub = 6 [json_name = "googleSub"];
+  void clear_google_sub() ;
+  const ::std::string& google_sub() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_google_sub(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_google_sub();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_google_sub();
+  void set_allocated_google_sub(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_google_sub() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_google_sub(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_google_sub();
+
+  public:
+  // string email = 7 [json_name = "email"];
+  void clear_email() ;
+  const ::std::string& email() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_email(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_email();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_email();
+  void set_allocated_email(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_email() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_email(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_email();
+
+  public:
+  // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
   bool has_engagement() const;
   void clear_engagement() ;
   const ::user_engagement::UserEngagement& engagement() const;
@@ -251,7 +283,7 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* PROTOBUF_NONNULL _internal_mutable_engagement();
 
   public:
-  // .debate.Scope current_scope = 4;
+  // .debate.Scope current_scope = 4 [json_name = "currentScope"];
   bool has_current_scope() const;
   void clear_current_scope() ;
   const ::debate::Scope& current_scope() const;
@@ -266,7 +298,7 @@ class User final : public ::google::protobuf::Message
   ::debate::Scope* PROTOBUF_NONNULL _internal_mutable_current_scope();
 
   public:
-  // .debate.CollectionSpecification collection_spec = 5;
+  // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
   bool has_collection_spec() const;
   void clear_collection_spec() ;
   const ::debate::CollectionSpecification& collection_spec() const;
@@ -281,7 +313,7 @@ class User final : public ::google::protobuf::Message
   ::debate::CollectionSpecification* PROTOBUF_NONNULL _internal_mutable_collection_spec();
 
   public:
-  // int32 user_id = 1;
+  // int32 user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
   ::int32_t user_id() const;
   void set_user_id(::int32_t value);
@@ -295,8 +327,8 @@ class User final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
-                                   3, 26,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
+                                   3, 41,
                                    2>
       _table_;
 
@@ -318,6 +350,8 @@ class User final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr username_;
+    ::google::protobuf::internal::ArenaStringPtr google_sub_;
+    ::google::protobuf::internal::ArenaStringPtr email_;
     ::user_engagement::UserEngagement* PROTOBUF_NULLABLE engagement_;
     ::debate::Scope* PROTOBUF_NULLABLE current_scope_;
     ::debate::CollectionSpecification* PROTOBUF_NULLABLE collection_spec_;
@@ -346,12 +380,12 @@ extern const ::google::protobuf::internal::ClassDataFull User_class_data_;
 
 // User
 
-// int32 user_id = 1;
+// int32 user_id = 1 [json_name = "userId"];
 inline void User::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000040U);
 }
 inline ::int32_t User::user_id() const {
   // @@protoc_insertion_point(field_get:user.User.user_id)
@@ -359,7 +393,7 @@ inline ::int32_t User::user_id() const {
 }
 inline void User::set_user_id(::int32_t value) {
   _internal_set_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:user.User.user_id)
 }
 inline ::int32_t User::_internal_user_id() const {
@@ -371,7 +405,7 @@ inline void User::_internal_set_user_id(::int32_t value) {
   _impl_.user_id_ = value;
 }
 
-// string username = 2;
+// string username = 2 [json_name = "username"];
 inline void User::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -436,9 +470,9 @@ inline void User::set_allocated_username(::std::string* PROTOBUF_NULLABLE value)
   // @@protoc_insertion_point(field_set_allocated:user.User.username)
 }
 
-// .user_engagement.UserEngagement engagement = 3;
+// .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
 inline bool User::has_engagement() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000008U);
   PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
   return value;
 }
@@ -459,16 +493,16 @@ inline void User::unsafe_arena_set_allocated_engagement(
   }
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.engagement)
 }
 inline ::user_engagement::UserEngagement* PROTOBUF_NULLABLE User::release_engagement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::user_engagement::UserEngagement* released = _impl_.engagement_;
   _impl_.engagement_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -488,7 +522,7 @@ inline ::user_engagement::UserEngagement* PROTOBUF_NULLABLE User::unsafe_arena_r
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.engagement)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::user_engagement::UserEngagement* temp = _impl_.engagement_;
   _impl_.engagement_ = nullptr;
   return temp;
@@ -503,7 +537,7 @@ inline ::user_engagement::UserEngagement* PROTOBUF_NONNULL User::_internal_mutab
 }
 inline ::user_engagement::UserEngagement* PROTOBUF_NONNULL User::mutable_engagement()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::user_engagement::UserEngagement* _msg = _internal_mutable_engagement();
   // @@protoc_insertion_point(field_mutable:user.User.engagement)
   return _msg;
@@ -520,18 +554,18 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* PR
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
 
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
   // @@protoc_insertion_point(field_set_allocated:user.User.engagement)
 }
 
-// .debate.Scope current_scope = 4;
+// .debate.Scope current_scope = 4 [json_name = "currentScope"];
 inline bool User::has_current_scope() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
   PROTOBUF_ASSUME(!value || _impl_.current_scope_ != nullptr);
   return value;
 }
@@ -552,16 +586,16 @@ inline void User::unsafe_arena_set_allocated_current_scope(
   }
   _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.current_scope)
 }
 inline ::debate::Scope* PROTOBUF_NULLABLE User::release_current_scope() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::debate::Scope* released = _impl_.current_scope_;
   _impl_.current_scope_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -581,7 +615,7 @@ inline ::debate::Scope* PROTOBUF_NULLABLE User::unsafe_arena_release_current_sco
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.current_scope)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::debate::Scope* temp = _impl_.current_scope_;
   _impl_.current_scope_ = nullptr;
   return temp;
@@ -596,7 +630,7 @@ inline ::debate::Scope* PROTOBUF_NONNULL User::_internal_mutable_current_scope()
 }
 inline ::debate::Scope* PROTOBUF_NONNULL User::mutable_current_scope()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::debate::Scope* _msg = _internal_mutable_current_scope();
   // @@protoc_insertion_point(field_mutable:user.User.current_scope)
   return _msg;
@@ -613,18 +647,18 @@ inline void User::set_allocated_current_scope(::debate::Scope* PROTOBUF_NULLABLE
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
 
   _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
   // @@protoc_insertion_point(field_set_allocated:user.User.current_scope)
 }
 
-// .debate.CollectionSpecification collection_spec = 5;
+// .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
 inline bool User::has_collection_spec() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000008U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
   PROTOBUF_ASSUME(!value || _impl_.collection_spec_ != nullptr);
   return value;
 }
@@ -645,16 +679,16 @@ inline void User::unsafe_arena_set_allocated_collection_spec(
   }
   _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.collection_spec)
 }
 inline ::debate::CollectionSpecification* PROTOBUF_NULLABLE User::release_collection_spec() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::debate::CollectionSpecification* released = _impl_.collection_spec_;
   _impl_.collection_spec_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -674,7 +708,7 @@ inline ::debate::CollectionSpecification* PROTOBUF_NULLABLE User::unsafe_arena_r
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.collection_spec)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::debate::CollectionSpecification* temp = _impl_.collection_spec_;
   _impl_.collection_spec_ = nullptr;
   return temp;
@@ -689,7 +723,7 @@ inline ::debate::CollectionSpecification* PROTOBUF_NONNULL User::_internal_mutab
 }
 inline ::debate::CollectionSpecification* PROTOBUF_NONNULL User::mutable_collection_spec()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::debate::CollectionSpecification* _msg = _internal_mutable_collection_spec();
   // @@protoc_insertion_point(field_mutable:user.User.collection_spec)
   return _msg;
@@ -706,13 +740,143 @@ inline void User::set_allocated_collection_spec(::debate::CollectionSpecificatio
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
 
   _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
   // @@protoc_insertion_point(field_set_allocated:user.User.collection_spec)
+}
+
+// string google_sub = 6 [json_name = "googleSub"];
+inline void User::clear_google_sub() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.google_sub_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& User::google_sub() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.google_sub)
+  return _internal_google_sub();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void User::set_google_sub(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.google_sub_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.google_sub)
+}
+inline ::std::string* PROTOBUF_NONNULL User::mutable_google_sub()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_google_sub();
+  // @@protoc_insertion_point(field_mutable:user.User.google_sub)
+  return _s;
+}
+inline const ::std::string& User::_internal_google_sub() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.google_sub_.Get();
+}
+inline void User::_internal_set_google_sub(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.google_sub_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL User::_internal_mutable_google_sub() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.google_sub_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE User::release_google_sub() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.google_sub)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.google_sub_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.google_sub_.Set("", GetArena());
+  }
+  return released;
+}
+inline void User::set_allocated_google_sub(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.google_sub_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.google_sub_.IsDefault()) {
+    _impl_.google_sub_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user.User.google_sub)
+}
+
+// string email = 7 [json_name = "email"];
+inline void User::clear_email() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.email_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& User::email() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.email)
+  return _internal_email();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void User::set_email(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.email_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.email)
+}
+inline ::std::string* PROTOBUF_NONNULL User::mutable_email()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_email();
+  // @@protoc_insertion_point(field_mutable:user.User.email)
+  return _s;
+}
+inline const ::std::string& User::_internal_email() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.email_.Get();
+}
+inline void User::_internal_set_email(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.email_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL User::_internal_mutable_email() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.email_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE User::release_email() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.email)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.email_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.email_.Set("", GetArena());
+  }
+  return released;
+}
+inline void User::set_allocated_email(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.email_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.email_.IsDefault()) {
+    _impl_.email_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user.User.email)
 }
 
 #ifdef __GNUC__

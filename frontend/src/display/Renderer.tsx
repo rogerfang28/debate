@@ -4,14 +4,16 @@ import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCP
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
-interface PageData {
-  [key: string]: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
+    googleLoginCallback?: (credential: string) => void;
   }
+}
+
+interface PageData {
+  [key: string]: any;
 }
 
 const Renderer: React.FC = () => {

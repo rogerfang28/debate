@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <cstdlib>
 
 #include "debate.pb.h"
 #include "user.pb.h"
@@ -54,8 +55,9 @@ static std::vector<uint8_t> serializeUser(const user::User& u) {
 class PropagationTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        db_path_ = "test_prop_temp.sqlite3";
-        std::remove(db_path_.c_str());
+         // Use unique temp file per test process to avoid race conditions in parallel runs
+         db_path_ = std::string("test_prop_temp_") + std::to_string(getpid()) + ".sqlite3";
+         std::remove(db_path_.c_str());
 
         db_      = new Database(db_path_);
         wrapper_ = new DatabaseWrapper(*db_);
