@@ -257,38 +257,6 @@ ui::Page StepView::GenerateStepViewPage(
 		);
 
 		ComponentGenerator::addChild(&stepCard, sentenceText);
-
-		// Render interactive paragraph tree for this step's subtree.
-		{
-			std::unordered_set<int> visited;
-			visited.insert(claimId);
-			ui::Component treeRoot = BuildTreeNode(
-				claimId, fullDebateInfo, collectionProto,
-				"stepTree_" + std::to_string(claimId), visited
-			);
-			// Add a wrapper with label.
-			ui::Component treeWrapper;
-			treeWrapper.set_id("stepTreeWrapper_" + std::to_string(claimId));
-			treeWrapper.set_type(ui::ComponentType::CONTAINER);
-			(*treeWrapper.mutable_css())["margin-top"] = "0.5rem";
-			(*treeWrapper.mutable_css())["padding"] = "0.5rem";
-			(*treeWrapper.mutable_css())["background"] = "rgba(17, 24, 39, 0.5)";
-			(*treeWrapper.mutable_css())["border-radius"] = "0.375rem";
-			(*treeWrapper.mutable_css())["border"] = "1px solid #374151";
-
-			ui::Component treeHeader = ComponentGenerator::createText(
-				"stepTreeHeader_" + std::to_string(claimId),
-				"Paragraph Tree",
-				"text-xs",
-				"text-gray-500",
-				"font-semibold uppercase tracking-wide",
-				"mb-2"
-			);
-			ComponentGenerator::addChild(&treeWrapper, treeHeader);
-			ComponentGenerator::addChild(&treeWrapper, treeRoot);
-			ComponentGenerator::addChild(&stepCard, treeWrapper);
-		}
-
 		ComponentGenerator::addChild(&stepCard, goToStepButton);
 
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
@@ -336,6 +304,41 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
 	ComponentGenerator::addChild(&container, contentRow);
+
+	// Render a single interactive paragraph tree for the entire debate,
+	// underneath the step view content.
+	if (rootClaimId > 0) {
+		ui::Component treeWrapper = ComponentGenerator::createContainer(
+			"debateTreeWrapper",
+			"w-full",
+			"bg-gray-800/50",
+			"p-4",
+			"",
+			"border border-gray-700",
+			"rounded-lg",
+			""
+		);
+		(*treeWrapper.mutable_css())["margin-top"] = "1rem";
+
+		ui::Component treeHeader = ComponentGenerator::createText(
+			"debateTreeHeader",
+			"Paragraph Tree",
+			"text-xs",
+			"text-gray-500",
+			"font-semibold uppercase tracking-wide",
+			"mb-2"
+		);
+		ComponentGenerator::addChild(&treeWrapper, treeHeader);
+
+		std::unordered_set<int> visited;
+		visited.insert(rootClaimId);
+		ui::Component treeRoot = BuildTreeNode(
+			rootClaimId, fullDebateInfo, collectionProto,
+			"debateTree", visited
+		);
+		ComponentGenerator::addChild(&treeWrapper, treeRoot);
+		ComponentGenerator::addChild(&container, treeWrapper);
+	}
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);
