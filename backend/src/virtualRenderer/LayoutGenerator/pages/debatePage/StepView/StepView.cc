@@ -286,32 +286,8 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&leftColumn, guideBox);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
 
-	// Claim Parser placeholder
-	ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
-	(*claimParser.mutable_css())["margin-top"] = "1rem";
-	ComponentGenerator::addChild(&leftColumn, claimParser);
-
-	const int mapFocusClaimId = rootClaimId > 0
-		? rootClaimId
-		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
-	const float mapScale = 0.82f;
-	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
-	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
-		if (mapSection.children(childIndex).id() == "mapTitle") {
-			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
-		}
-	}
-	(*mapSection.mutable_css())["margin-top"] = "0";
-	(*mapSection.mutable_css())["max-width"] = "760px";
-	(*mapSection.mutable_css())["width"] = "100%";
-	ComponentGenerator::addChild(&rightColumn, mapSection);
-
-	ComponentGenerator::addChild(&contentRow, leftColumn);
-	ComponentGenerator::addChild(&contentRow, rightColumn);
-	ComponentGenerator::addChild(&container, contentRow);
-
 	// Render a single interactive paragraph tree for the entire debate,
-	// underneath the step view content.
+	// underneath the step list within the left column.
 	if (rootClaimId > 0) {
 		ui::Component treeWrapper = ComponentGenerator::createContainer(
 			"debateTreeWrapper",
@@ -343,8 +319,32 @@ ui::Page StepView::GenerateStepViewPage(
 		);
 		ComponentGenerator::addAttribute(&treeRoot, "data-tree-root", "true");
 		ComponentGenerator::addChild(&treeWrapper, treeRoot);
-		ComponentGenerator::addChild(&container, treeWrapper);
+		ComponentGenerator::addChild(&leftColumn, treeWrapper);
 	}
+
+	const int mapFocusClaimId = rootClaimId > 0
+		? rootClaimId
+		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
+	const float mapScale = 0.82f;
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
+	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
+		if (mapSection.children(childIndex).id() == "mapTitle") {
+			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
+		}
+	}
+	(*mapSection.mutable_css())["margin-top"] = "0";
+	(*mapSection.mutable_css())["max-width"] = "760px";
+	(*mapSection.mutable_css())["width"] = "100%";
+	ComponentGenerator::addChild(&rightColumn, mapSection);
+
+	ComponentGenerator::addChild(&contentRow, leftColumn);
+	ComponentGenerator::addChild(&contentRow, rightColumn);
+	ComponentGenerator::addChild(&container, contentRow);
+
+	// Claim Parser placeholder — underneath the step view content.
+	ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
+	(*claimParser.mutable_css())["margin-top"] = "1rem";
+	ComponentGenerator::addChild(&container, claimParser);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);
