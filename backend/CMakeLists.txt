@@ -30,6 +30,7 @@ add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
 add_definitions(-D_WIN32_WINNT=0x0A00)
 add_definitions(-DWIN32_LEAN_AND_MEAN)
 add_definitions(-DNOMINMAX)
+add_definitions(-DCPPHTTPLIB_OPENSSL_SUPPORT)
 
 
 # -I flags
@@ -80,7 +81,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/parseCookie.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/UserNameResolver.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
-    ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/GoogleJWTVerifier.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateDatabase.cc
@@ -155,7 +157,6 @@ add_executable(debate_server
 target_link_libraries(debate_server
     ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libzs.a
     sqlite3
-    ws2_32
     # abseil_dll
     -Wl,--start-group
     dbghelp
@@ -163,6 +164,10 @@ target_link_libraries(debate_server
     ${UTF8_LIB}
     ${ABSL_LIBS}
     -Wl,--end-group
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libssl.a
+    ${CMAKE_SOURCE_DIR}/../third_party/vcpkg/installed/x64-mingw-static/lib/libcrypto.a
+    ws2_32
+    crypt32
 )
 
 set_target_properties(debate_server PROPERTIES

@@ -4,7 +4,13 @@ import handleEvent from "../../events/handleEvent";
 
 const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const handleClick = (e: React.MouseEvent) => {
-    console.log(`Button "${component.id}" clicked`);
+     // Google login button — handled by Google JS SDK callback instead
+     if (component.id === "googleLoginButton") {
+       // The Google SDK injects its own button inside this container
+       // Do not trigger normal click handling
+       return;
+     }
+     console.log(`Button "${component.id}" clicked`);
     handleEvent(
       e as any,
       component,
