@@ -52,15 +52,47 @@ const EDGE_COLORS: Record<string, string> = {
   CHALLENGE:  "#f97316",
 };
 
-const NODE_RADIUS = 36;
-const ROOT_RADIUS = 44;
-const LABEL_MAX_LEN = 20;
+const NODE_WIDTH = 150;
+const NODE_HEIGHT = 68;
+const ROOT_WIDTH = 170;
+const ROOT_HEIGHT = 76;
+const CHARS_PER_LINE = 20;
+const MAX_LINES = 3;
 
-// ── Truncate helper ───────────────────────────────────────────────────
+// ── Text wrapping helper ──────────────────────────────────────────────
 
-function truncate(text: string, max: number): string {
-  if (text.length <= max) return text;
-  return text.slice(0, max - 1) + "…";
+function wrapText(text: string, maxCharsPerLine: number, maxLines: number): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let current = "";
+  let wordIndex = 0;
+
+  for (; wordIndex < words.length; wordIndex++) {
+    const word = words[wordIndex];
+    const test = current ? `${current} ${word}` : word;
+    if (test.length > maxCharsPerLine && current) {
+      lines.push(current);
+      current = word;
+      if (lines.length === maxLines) {
+        wordIndex++;
+        break;
+      }
+    } else {
+      current = test;
+    }
+  }
+  if (lines.length < maxLines && current) {
+    lines.push(current);
+    wordIndex = words.length;
+  }
+
+  if (wordIndex < words.length && lines.length > 0) {
+    const last = lines[lines.length - 1];
+    lines[lines.length - 1] =
+      last.length > maxCharsPerLine - 1 ? last.slice(0, maxCharsPerLine - 1) + "…" : last + "…";
+  }
+
+  return lines.slice(0, maxLines);
 }
 
 // ── Component ─────────────────────────────────────────────────────────
@@ -92,8 +124,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   }, []);
 
   // ── Compute tree layout positions ─────────────────────────────────
-  const GAP_X = 160;
-  const GAP_Y = 120;
+  const GAP_X = 190;
+  const GAP_Y = 150;
 
   const positionedNodes = useMemo(() => {
     if (nodes.length === 0) return [];
@@ -354,13 +386,17 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           {positionedNodes.map((node) => {
             const cx = node.x ?? 100;
             const cy = node.y ?? 100;
-            const r = node.isRoot ? ROOT_RADIUS : NODE_RADIUS;
+            const w = node.isRoot ? ROOT_WIDTH : NODE_WIDTH;
+            const h = node.isRoot ? ROOT_HEIGHT : NODE_HEIGHT;
             const isSelected = node.id === selectedId;
             const isCurrent = node.isCurrent;
             const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
             const fill = isCurrent ? colors.fill : colors.fill;
             const stroke = isCurrent ? "#fbbf24" : colors.stroke;
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : 2;
+            const lines = wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
+            const lineHeight = 12;
+            const firstLineDy = -((lines.length - 1) * lineHeight) / 2;
 
             return (
               <g
@@ -381,8 +417,13 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
               >
                 {/* Glow ring */}
                 {(isSelected || isCurrent) && (
-                  <circle
-                    r={r + 8}
+                  <rect
+                    x={-w / 2 - 8}
+                    y={-h / 2 - 8}
+                    width={w + 16}
+                    height={h + 16}
+                    rx={14}
+                    ry={14}
                     fill="none"
                     stroke={isCurrent ? "#fbbf24" : colors.stroke}
                     strokeWidth="2"
@@ -391,8 +432,13 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   />
                 )}
                 {/* Node body */}
-                <circle
-                  r={r}
+                <rect
+                  x={-w / 2}
+                  y={-h / 2}
+                  width={w}
+                  height={h}
+                  rx={10}
+                  ry={10}
                   fill={fill}
                   stroke={stroke}
                   strokeWidth={strokeWidth}
@@ -400,27 +446,30 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 {/* Status dot */}
                 {!node.status || node.status === "UNDETERMINED" ? null : (
                   <circle
-                    cx={r - 6}
-                    cy={-r + 6}
+                    cx={w / 2 - 10}
+                    cy={-h / 2 + 10}
                     r={5}
                     fill={node.status === "TRUE_CLAIM" ? "#34d399" : "#f87171"}
                   />
                 )}
-                {/* Label */}
+                {/* Label (wrapped, up to MAX_LINES) */}
                 <text
                   textAnchor="middle"
-                  dy="0.35em"
                   fill="var(--text-primary)"
                   fontSize="10"
                   fontWeight="500"
                   style={{ pointerEvents: "none", userSelect: "none" }}
                 >
-                  {truncate(node.text, LABEL_MAX_LEN)}
+                  {lines.map((line, i) => (
+                    <tspan key={i} x={0} dy={i === 0 ? firstLineDy : lineHeight}>
+                      {line}
+                    </tspan>
+                  ))}
                 </text>
                 {/* ID badge */}
                 <text
                   textAnchor="middle"
-                  dy="1.5em"
+                  y={h / 2 - 6}
                   fill="var(--text-muted)"
                   fontSize="8"
                   style={{ pointerEvents: "none" }}

@@ -557,13 +557,61 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		);
 	}
 
-	Log::debug("[ParseFullDebateViewInfo] Final steps_count=" + std::to_string(info.steps_size()));
+	// Build leaf_paragraph for each step by walking the tree subtree.
+	// Build a claim_id -> sentence lookup from collection.
+	std::unordered_map<int, std::string> sentenceByClaimId;
+	for (const auto& entry : collectionProto.claims_by_id()) {
+		sentenceByClaimId[entry.first] = entry.second.sentence();
+	}
+	// For each step, recursively collect leaf sentences from full_debate_tree.
 	for (int i = 0; i < info.steps_size(); ++i) {
-		const rendering_info::Steps& step = info.steps(i);
-		Log::debug(
-			"[ParseFullDebateViewInfo] step[" + std::to_string(i) + "] claim_id=" + std::to_string(step.claim_id()) +
-			", summary=\"" + step.summary() + "\""
-		);
+		rendering_info::Steps* step = info.mutable_steps(i);
+		int stepClaimId = step->claim_id();
+
+		// Collect leaf sentences via DFS using child_claim_ids from tree nodes.
+		std::vector<std::string> leafSentences;
+		std::vector<int> stack;
+		std::unordered_set<int> visited;
+		stack.push_back(stepClaimId);
+		while (!stack.empty()) {
+			int current = stack.back();
+			stack.pop_back();
+			if (visited.count(current)) continue;
+			visited.insert(current);
+
+			// Find this node in the tree to get its children.
+			bool hasChildren = false;
+			for (const auto& node : info.full_debate_tree().nodes()) {
+				if (node.claim_id() == current) {
+					if (node.child_claim_ids_size() > 0) {
+						hasChildren = true;
+						for (int childId : node.child_claim_ids()) {
+							if (!visited.count(childId)) {
+								stack.push_back(childId);
+							}
+						}
+					}
+					break;
+				}
+			}
+			if (!hasChildren) {
+				// Leaf node — add its sentence.
+				auto it = sentenceByClaimId.find(current);
+				if (it != sentenceByClaimId.end()) {
+					leafSentences.push_back(it->second);
+				}
+			}
+		}
+		// Join leaf sentences into a paragraph.
+		std::string paragraph;
+		for (size_t j = 0; j < leafSentences.size(); ++j) {
+			if (j > 0) paragraph += " ";
+			paragraph += leafSentences[j];
+		}
+		step->set_leaf_paragraph(paragraph);
+
+		Log::debug("[ParseFullDebateViewInfo] step[" + std::to_string(i) + "] claim_id=" + std::to_string(stepClaimId) +
+			" leaf_count=" + std::to_string(leafSentences.size()));
 	}
 
 	// Build per-user claim status matrix for visualization.
