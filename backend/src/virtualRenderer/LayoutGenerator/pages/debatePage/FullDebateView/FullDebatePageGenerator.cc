@@ -2034,60 +2034,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     );
     ComponentGenerator::addChild(&mapSection, mapTitle);
 
-    ui::Component legend = ComponentGenerator::createContainer(
-        "mapLegend",
-        "grid grid-cols-2 md:grid-cols-3 gap-3",
-        "bg-gray-900/60",
-        "p-3",
-        "mt-4",
-        "border border-gray-700",
-        "rounded",
-        "text-sm text-gray-200"
-    );
-
-    auto addLegendItem = [&](const std::string& id, const std::string& sampleClass, const std::string& label, bool isLineSample = false) {
-        ui::Component item = ComponentGenerator::createContainer(
-            id,
-            "flex items-center gap-3",
-            "bg-gray-800/80",
-            "px-3 py-2",
-            "",
-            "border border-gray-700",
-            "rounded",
-            "min-w-0"
-        );
-
-        ui::Component swatch = ComponentGenerator::createContainer(
-            id + "Swatch",
-            "",
-            sampleClass,
-            "",
-            "",
-            "",
-            isLineSample ? "rounded-full" : "rounded",
-            isLineSample ? "w-10 h-1.5 flex-shrink-0" : "w-4 h-4 flex-shrink-0"
-        );
-        ComponentGenerator::addChild(&item, swatch);
-
-        ui::Component text = ComponentGenerator::createText(
-            id + "Text",
-            label,
-            "text-sm",
-            "text-white",
-            "",
-            "truncate"
-        );
-        ComponentGenerator::addChild(&item, text);
-        ComponentGenerator::addChild(&legend, item);
-    };
-
-    addLegendItem("legendNormalClaim", "bg-gray-700", "Normal claim");
-    addLegendItem("legendChallengedClaim", "bg-gray-700 border-2 border-orange-500", "Challenged claim");
-    addLegendItem("legendChallengeClaim", "bg-orange-600", "Challenge claim");
-    addLegendItem("legendNormalLink", "bg-gray-500", "Normal link", true);
-    addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link", true);
-    addLegendItem("legendCurrentClaim", "bg-transparent border-4 border-yellow-400", "Current claim");
-
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
         "w-full",
@@ -2116,7 +2062,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&treeContainer, emptyText);
         ComponentGenerator::addChild(&mapSection, treeContainer);
-        ComponentGenerator::addChild(&mapSection, legend);
         return mapSection;
     }
 
@@ -2343,7 +2288,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     ComponentGenerator::addChild(&treeContainer, graphComp);
 
     ComponentGenerator::addChild(&mapSection, treeContainer);
-    ComponentGenerator::addChild(&mapSection, legend);
 
     return mapSection;
 }

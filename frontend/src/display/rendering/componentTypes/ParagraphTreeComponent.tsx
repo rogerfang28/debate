@@ -10,6 +10,14 @@ interface ParagraphTreeProps extends BaseComponentProps {
   depth?: number;
 }
 
+// Ensures each sentence reads like actual prose -- appends a period if the
+// text doesn't already end with sentence-ending punctuation.
+function ensureSentenceEnd(text: string): string {
+  const trimmed = text.trim();
+  if (!trimmed) return trimmed;
+  return /[.!?]["')\]]?$/.test(trimmed) ? trimmed : trimmed + ".";
+}
+
 /**
  * ParagraphTreeComponent renders the same debate tree data as TreeComponent,
  * but as flowing run-on prose instead of an indented tree.
@@ -41,7 +49,7 @@ const ParagraphTreeComponent: React.FC<ParagraphTreeProps> = ({ component, depth
   }, [component.id, hasChildren]);
 
   const isCollapsed = collapsed.has(component.id);
-  const text = labelChild?.text || "";
+  const text = ensureSentenceEnd(labelChild?.text || "");
   const color = DEPTH_COLORS[depth % DEPTH_COLORS.length];
 
   return (

@@ -115,7 +115,33 @@ ui::Page StepView::GenerateStepViewPage(
 		"gap-4"
 	);
 
-	// Intentionally no top bar action button in Step View.
+	ui::Component topBar = ComponentGenerator::createContainer(
+		"stepViewTopBar",
+		"w-full",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	);
+	(*topBar.mutable_css())["display"] = "flex";
+	(*topBar.mutable_css())["flex-direction"] = "row";
+	(*topBar.mutable_css())["justify-content"] = "flex-end";
+	(*topBar.mutable_css())["align-items"] = "flex-start";
+	ui::Component goHomeButton = ComponentGenerator::createButton(
+		"goHomeButton",
+		"Home",
+		"",
+		"bg-blue-600",
+		"hover:bg-blue-700",
+		"text-white",
+		"px-4 py-2",
+		"rounded",
+		"transition-colors text-sm"
+	);
+	ComponentGenerator::addChild(&topBar, goHomeButton);
+	ComponentGenerator::addChild(&container, topBar);
 
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",
@@ -164,39 +190,15 @@ ui::Page StepView::GenerateStepViewPage(
 	(*rightColumn.mutable_css())["flex"] = "0 0 45%";
 	(*rightColumn.mutable_css())["min-width"] = "400px";
 
-	ui::Component guideBox = ComponentGenerator::createContainer(
-		"stepViewGuideBox",
-		"w-full",
-		"bg-blue-900/30",
-		"p-4",
-		"",
-		"border border-blue-700",
-		"rounded-lg",
-		""
-	);
-	(*guideBox.mutable_css())["max-width"] = "100%";
-	ui::Component guideTitle = ComponentGenerator::createText(
-		"stepViewGuideTitle",
-		"Guide",
-		"text-sm",
-		"text-blue-200",
+
+	ui::Component stepsHeading = ComponentGenerator::createText(
+		"stepViewStepsHeading",
+		"Debate Steps",
+		"text-xs",
+		"text-gray-500",
 		"font-semibold uppercase tracking-wide",
 		"mb-2"
 	);
-	ui::Component guideParagraph = ComponentGenerator::createText(
-		"stepViewGuideParagraph",
-		"This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt's work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
-		"text-base",
-		"text-blue-100",
-		"",
-		"leading-snug"
-	);
-	(*guideParagraph.mutable_css())["white-space"] = "pre-line";
-	(*guideParagraph.mutable_css())["overflow-wrap"] = "break-word";
-	(*guideParagraph.mutable_css())["text-align"] = "left";
-	(*guideParagraph.mutable_css())["font-style"] = "italic";
-	ComponentGenerator::addChild(&guideBox, guideTitle);
-	ComponentGenerator::addChild(&guideBox, guideParagraph);
 
 	ui::Component stepsContainer = ComponentGenerator::createContainer(
 		"stepCardsContainer",
@@ -262,28 +264,7 @@ ui::Page StepView::GenerateStepViewPage(
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
 	}
 
-	ui::Component influencerNoteCard = ComponentGenerator::createContainer(
-		"stepCard_influencerConcedeNote",
-		"flex items-start justify-between gap-3",
-		"bg-gray-800",
-		"p-4",
-		"",
-		"border border-gray-700",
-		"rounded-lg",
-		""
-	);
-	ui::Component influencerNoteText = ComponentGenerator::createText(
-		"stepViewInfluencerConcedeNote",
-		"Now influencer has to concede (to be implemented)",
-		"text-base",
-		"text-white",
-		"font-medium",
-		"flex-1"
-	);
-	ComponentGenerator::addChild(&influencerNoteCard, influencerNoteText);
-	ComponentGenerator::addChild(&stepsContainer, influencerNoteCard);
-
-	ComponentGenerator::addChild(&leftColumn, guideBox);
+	ComponentGenerator::addChild(&leftColumn, stepsHeading);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
 
 	// Render a single interactive paragraph tree for the entire debate,
@@ -342,9 +323,10 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.
-	ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
-	(*claimParser.mutable_css())["margin-top"] = "1rem";
-	ComponentGenerator::addChild(&container, claimParser);
+	// Temporarily disabled.
+	// ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
+	// (*claimParser.mutable_css())["margin-top"] = "1rem";
+	// ComponentGenerator::addChild(&container, claimParser);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);
