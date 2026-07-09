@@ -1,0 +1,344 @@
+name: "ClimateChangeDemo"
+
+# =============================================================================
+# A more complex debate than ClimateChangeDebate.pbtxt: a climate scientist
+# (guest) argues climate change is a real, urgent global crisis, and a
+# skeptic (Marcus) challenges her across three independent argument threads —
+# global temperature, sea level/ice loss, and CO2 causation. Each main claim
+# carries a description explaining the argument and a sourced evidence child
+# claim linking to real public data. Each thread ends with Marcus conceding,
+# so the debate resolves in favor of "climate change is real."
+# =============================================================================
+
+# =============================================================================
+# PHASE 1: SETUP — guest creates the debate
+# =============================================================================
+
+steps {
+  action { username: "guest" event_type: "CREATE_USER" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Climate change is a real and urgent global crisis"
+  }
+}
+
+steps {
+  action { username: "guest" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "guest" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "guest" expected_action: "ACTION_DEBATING" }
+}
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Climate change is a real and urgent global crisis"
+  }
+}
+
+# =============================================================================
+# BRANCH 1: GLOBAL TEMPERATURE RISE
+# =============================================================================
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Global average temperature has risen about 1.1 degrees Celsius above pre-industrial levels, driven primarily by human greenhouse gas emissions"
+    claim_description: "The foundational observation: independent surface temperature records from multiple agencies all show the same century-long warming trend, and the timing and magnitude match what greenhouse gas physics predicts."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "Global average temperature has risen about 1.1 degrees Celsius above pre-industrial levels, driven primarily by human greenhouse gas emissions"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "guest" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://climate.nasa.gov/vital-signs/global-temperature/"
+    claim_description: "NASA's GISTEMP dataset, combining thousands of land-based weather stations with ocean buoy and satellite sea-surface temperature records, showing consistent warming since 1880."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "Marcus" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Marcus" expected_action: "ACTION_DEBATING" }
+}
+
+steps {
+  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "Marcus"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Temperature records are unreliable due to urban heat island effects and inconsistent station placement"
+    challenge_description: "Marcus argues that expanding cities near weather stations artificially inflate recorded temperatures, casting doubt on the reported warming trend."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Marcus" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 4 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Urban heat island effects are corrected for, and independent satellite measurements confirm the same warming trend"
+    challenge_description: "Climate scientists apply rigorous homogenization algorithms to remove urban bias, and satellite-based measurements -- which aren't affected by surface station siting -- show the same warming pattern."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 5 to_claim_id: 4 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 5 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.remss.com/measurements/upper-air-temperature/"
+    claim_description: "Remote Sensing Systems' satellite-derived atmospheric temperature record, an independent measurement method unaffected by ground station placement, showing warming consistent with surface records."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 5 to_claim_id: 6 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# BRANCH 2: SEA LEVEL RISE AND ICE LOSS
+# =============================================================================
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Global sea levels are rising at an accelerating rate as polar ice sheets and glaciers lose mass"
+    claim_description: "Rising seas are a direct, measurable consequence of a warming planet: thermal expansion of ocean water plus meltwater from land ice both add volume to the oceans."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "guest" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 7 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 7 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 7 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
+    claim_description: "NOAA's climate.gov overview, compiling tide-gauge and satellite altimetry records showing global mean sea level rising roughly 3.3mm per year, with the rate increasing over the past three decades."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 7 to_claim_id: 8 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 8 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 7 }
+}
+
+steps {
+  action {
+    username: "Marcus"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Sea level rise is a natural cyclical process unrelated to human activity"
+    challenge_description: "Marcus contends that oceans have risen and fallen throughout geological history, and today's rise is just part of a natural post-ice-age cycle rather than human-caused warming."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 9 to_claim_id: 7 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 9 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 9 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Satellite gravimetry shows ice sheet mass loss accelerating in direct correlation with rising CO2 emissions, ruling out a purely natural cycle"
+    challenge_description: "GRACE satellite gravity measurements directly weigh the Antarctic and Greenland ice sheets month over month, and the accelerating mass loss tracks the industrial-era rise in greenhouse gases far too closely to be coincidental natural variability."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 10 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 10 to_claim_id: 9 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 10 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 10 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://climate.nasa.gov/vital-signs/ice-sheets/"
+    claim_description: "NASA's GRACE and GRACE-FO satellite mission data tracking Antarctic and Greenland ice sheet mass changes since 2002, showing a consistent, accelerating loss of hundreds of billions of tons of ice per year."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 11 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 10 to_claim_id: 11 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 11 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# BRANCH 3: CO2 LEVELS AND CAUSATION
+# =============================================================================
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Atmospheric CO2 has risen from about 280ppm before industrialization to over 420ppm today, closely tracking fossil fuel emissions"
+    claim_description: "CO2 is the primary human-caused greenhouse gas driving the warming: its atmospheric concentration has risen in lockstep with cumulative fossil fuel combustion since the Industrial Revolution."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 12 }
+  expectations { check_type: "USER_VIEW" claim_id: 12 username: "guest" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 12 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 12 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 12 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://gml.noaa.gov/ccgg/trends/"
+    claim_description: "NOAA's Mauna Loa Observatory CO2 record (the Keeling Curve), the longest continuous direct measurement of atmospheric CO2, documenting the rise from 315ppm in 1958 to over 420ppm today."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 13 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 12 to_claim_id: 13 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 13 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 12 }
+}
+
+steps {
+  action {
+    username: "Marcus"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Correlation between CO2 and temperature doesn't prove causation -- volcanic activity and solar cycles could explain the changes"
+    challenge_description: "Marcus argues that natural forcings like solar output and volcanic activity are being underweighted, and that rising CO2 could simply be coincidental with, rather than the cause of, rising temperatures."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 14 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 14 to_claim_id: 12 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 14 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 14 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Solar output has been flat to slightly declining since the 1980s, volcanic CO2 emissions are about 1% of human emissions, and isotopic analysis of atmospheric carbon confirms a fossil fuel origin"
+    challenge_description: "Measured total solar irradiance shows no warming trend over the last 40 years, so the sun can't explain recent warming. Volcanic CO2 output is tiny compared to fossil fuel combustion, and the carbon-13 isotopic signature of the CO2 increase matches fossil fuels, not volcanoes or the ocean."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 15 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 15 to_claim_id: 14 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 15 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 15 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.ncei.noaa.gov/products/climate-data-records/total-solar-irradiance"
+    claim_description: "NOAA's Total Solar Irradiance Climate Data Record, showing measured solar output has remained essentially flat -- even slightly declining -- since satellite measurements began in the late 1970s, ruling out the sun as the driver of recent warming."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 16 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 15 to_claim_id: 16 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 16 }
+}
+
+steps {
+  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# FINAL STATE: three argument threads, each resolved in favor of guest
+# (Marcus conceded every challenge he raised), 16 claims total.
+# =============================================================================
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 16 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 16 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 9 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 6 }
+}

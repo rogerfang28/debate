@@ -1239,6 +1239,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kChallengeSentenceFieldNumber = 1,
+    kChallengeDescriptionFieldNumber = 2,
   };
   // string challenge_sentence = 1;
   void clear_challenge_sentence() ;
@@ -1255,12 +1256,27 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_challenge_sentence();
 
   public:
+  // string challenge_description = 2;
+  void clear_challenge_description() ;
+  const ::std::string& challenge_description() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_challenge_description(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_challenge_description();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_challenge_description();
+  void set_allocated_challenge_description(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_challenge_description() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_challenge_description(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_challenge_description();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.SubmitChallengeClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 60,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 81,
                                    2>
       _table_;
 
@@ -1282,6 +1298,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr challenge_sentence_;
+    ::google::protobuf::internal::ArenaStringPtr challenge_description_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -7472,6 +7489,71 @@ inline void SubmitChallengeClaim::set_allocated_challenge_sentence(::std::string
     _impl_.challenge_sentence_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.challenge_sentence)
+}
+
+// string challenge_description = 2;
+inline void SubmitChallengeClaim::clear_challenge_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_description_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& SubmitChallengeClaim::challenge_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitChallengeClaim.challenge_description)
+  return _internal_challenge_description();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void SubmitChallengeClaim::set_challenge_description(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.challenge_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitChallengeClaim.challenge_description)
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::mutable_challenge_description()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_challenge_description();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitChallengeClaim.challenge_description)
+  return _s;
+}
+inline const ::std::string& SubmitChallengeClaim::_internal_challenge_description() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.challenge_description_.Get();
+}
+inline void SubmitChallengeClaim::_internal_set_challenge_description(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.challenge_description_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::_internal_mutable_challenge_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.challenge_description_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE SubmitChallengeClaim::release_challenge_description() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitChallengeClaim.challenge_description)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.challenge_description_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.challenge_description_.Set("", GetArena());
+  }
+  return released;
+}
+inline void SubmitChallengeClaim::set_allocated_challenge_description(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.challenge_description_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.challenge_description_.IsDefault()) {
+    _impl_.challenge_description_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.challenge_description)
 }
 
 // -------------------------------------------------------------------

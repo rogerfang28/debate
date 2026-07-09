@@ -29,6 +29,7 @@ message TestAction {
   int32  claim_id = 5;          // for GO_TO_CLAIM
   string claim_text = 6;        // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
   string claim_description = 7; // for ADD_CHILD_CLAIM
+  string challenge_description = 8; // for SUBMIT_CHALLENGE_CLAIM
 }
 
 // A single expectation to verify after the action in this step runs

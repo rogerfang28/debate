@@ -52,7 +52,7 @@ steps {
     username: "DonaldTrump"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "The sea level will rise 1/100th of an inch over the next 350 years"
-    claim_description: "Trump statement on sea level rise"
+    claim_description: "Trump's central argument for dismissing climate concern: he frames sea level rise as so slow that it poses no meaningful risk within any human timescale."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
   expectations {
@@ -75,7 +75,7 @@ steps {
     username: "DonaldTrump"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Global warming was changed because the earth climate was warming and cooling so global warming was inaccurate"
-    claim_description: "Trump on global warming name change"
+    claim_description: "Trump argues the terminology shift from 'global warming' to 'climate change' is itself evidence that scientists' original warming hypothesis didn't hold up."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
   expectations {
@@ -115,7 +115,7 @@ steps {
     username: "User2"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Sea level will rise significantly more than 1/100th of an inch"
-    claim_description: "Challenge to sea level rise claim"
+    challenge_description: "User2 disputes Trump's figure as a dramatic understatement, arguing it contradicts published scientific projections by orders of magnitude."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Sea level will rise significantly more than 1/100th of an inch" }
@@ -134,7 +134,7 @@ steps {
     username: "User2"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level"
-    claim_description: "NOAA evidence on global sea level rise"
+    claim_description: "NOAA's climate.gov page compiling satellite altimetry and tide-gauge records, which document global mean sea level rising roughly 3.3mm per year — far above the rate Trump cited."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "https://www.climate.gov/news-features/understanding-climate/climate-change-global-sea-level" }
@@ -153,7 +153,7 @@ steps {
     username: "DonaldTrump"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Science does not know"
-    claim_description: "Trump challenges the evidence"
+    challenge_description: "Trump dismisses the NOAA data by casting broad doubt on the reliability of climate measurement and forecasting methods, without addressing the specific figures cited."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 6 expected_claim_sentence: "Science does not know" }
@@ -172,7 +172,7 @@ steps {
     username: "User2"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Yes it does"
-    claim_description: "User2 counters Trump's challenge"
+    challenge_description: "User2 rebuts the doubt by pointing out that satellite altimetry and tide-gauge instruments give scientists precise, cross-validated measurements of sea level change over decades."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
   expectations { check_type: "CLAIM_SENTENCE" claim_id: 7 expected_claim_sentence: "Yes it does" }

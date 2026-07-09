@@ -189,6 +189,41 @@ add_custom_target(copy_scenarios ALL
 add_dependencies(debate_simulation copy_scenarios)
 
 # ============================================================
+# IMPORT TOOL — import_debate_tool: replay a .pbtxt scenario into a live DB
+# ============================================================
+# Standalone CLI, not a gtest binary — link protobuf/sqlite directly and skip
+# gtest/gmock (COMMON_LIBS pulls in libgtest_main.a, which defines its own main()).
+set(IMPORT_TOOL_LIBS
+    -Wl,--start-group
+    ${VCPKG_INSTALLED}/lib/libprotobuf.a
+    ${VCPKG_INSTALLED}/lib/libutf8_range.a
+    ${VCPKG_INSTALLED}/lib/libutf8_validity.a
+    ${ABSL_LIBS}
+    dbghelp
+    -Wl,--end-group
+    ${VCPKG_INSTALLED}/lib/libsqlite3.a
+    ${VCPKG_INSTALLED}/lib/libzs.a
+    ws2_32
+)
+
+add_executable(import_debate_tool
+    ${CMAKE_SOURCE_DIR}/tools/import_debate_tool.cc
+    ${DB_SOURCES}
+    ${MODERATOR_SOURCES}
+    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/BuildCollection.cc
+    ${PB_SRC}
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+)
+target_link_libraries(import_debate_tool ${IMPORT_TOOL_LIBS})
+
+# ============================================================
 # UNIT TESTS — debate_tests (DebateEventTest + PropagationTest + EnterDebateMembersTest)
 # ============================================================
 set(UNIT_TEST_SOURCES
