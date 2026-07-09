@@ -74,15 +74,15 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_debate_5fsettings_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\025debate_settings.proto\022\006debate\"*\n\016Debat"
-    "eSettings\022\030\n\020max_participants\030\001 \001(\005b\006pro"
-    "to3"
+    "\n\025debate_settings.proto\022\006debate\";\n\016Debat"
+    "eSettings\022)\n\020max_participants\030\001 \001(\005R\017max"
+    "Participantsb\006proto3"
 };
 static ::absl::once_flag descriptor_table_debate_5fsettings_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fsettings_2eproto = {
     false,
     false,
-    83,
+    100,
     descriptor_table_protodef_debate_5fsettings_2eproto,
     "debate_settings.proto",
     &descriptor_table_debate_5fsettings_2eproto_once,
@@ -211,14 +211,14 @@ DebateSettings::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::DebateSettings>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // int32 max_participants = 1;
+    // int32 max_participants = 1 [json_name = "maxParticipants"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateSettings, _impl_.max_participants_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(DebateSettings, _impl_.max_participants_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 max_participants = 1;
+    // int32 max_participants = 1 [json_name = "maxParticipants"];
     {PROTOBUF_FIELD_OFFSET(DebateSettings, _impl_.max_participants_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
@@ -256,7 +256,7 @@ PROTOBUF_NOINLINE void DebateSettings::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 max_participants = 1;
+  // int32 max_participants = 1 [json_name = "maxParticipants"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     if (this_._internal_max_participants() != 0) {
       target =
@@ -289,7 +289,7 @@ PROTOBUF_NOINLINE void DebateSettings::Clear() {
   (void)cached_has_bits;
 
    {
-    // int32 max_participants = 1;
+    // int32 max_participants = 1 [json_name = "maxParticipants"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_max_participants() != 0) {

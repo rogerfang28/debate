@@ -212,6 +212,7 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   additionalInfo: {
     /**
      * could be none
+     * TODO remove field, was used for user manual linking claims
      *
      * info about connecting claims
      *
@@ -310,6 +311,8 @@ export enum DebatingInfo_CurrentDebateAction_ActionType {
   ADDING_CHILD_CLAIM = 2,
 
   /**
+   * TODO remove field, was used for user manual linking claims
+   *
    * user is connecting claims
    *
    * @generated from enum value: CONNECTING_CLAIMS = 3;
@@ -352,6 +355,8 @@ export const DebatingInfo_CurrentDebateAction_ActionTypeSchema: GenEnum<Debating
   enumDesc(file_user_engagement, 4, 1, 0);
 
 /**
+ * TODO remove field, was used for user manual linking claims
+ *
  * @generated from message user_engagement.DebatingInfo.ConnectingInfo
  */
 export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.ConnectingInfo"> & {

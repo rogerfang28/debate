@@ -10,31 +10,25 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file test_scenario.proto.
  */
 export const file_test_scenario: GenFile = /*@__PURE__*/
-  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJ6CgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIoCgdhY3Rpb25zGAIgAygLMhcuZGViYXRlX3Rlc3QuVGVzdEFjdGlvbhIyCgxleHBlY3RhdGlvbnMYAyADKAsyHC5kZWJhdGVfdGVzdC5UZXN0RXhwZWN0YXRpb24inAEKClRlc3RBY3Rpb24SEAoIdXNlcm5hbWUYASABKAkSEgoKZXZlbnRfdHlwZRgCIAEoCRIUCgxkZWJhdGVfdG9waWMYAyABKAkSEQoJZGViYXRlX2lkGAQgASgFEhAKCGNsYWltX2lkGAUgASgFEhIKCmNsYWltX3RleHQYBiABKAkSGQoRY2xhaW1fZGVzY3JpcHRpb24YByABKAki8wEKD1Rlc3RFeHBlY3RhdGlvbhISCgpjaGVja190eXBlGAEgASgJEhAKCHVzZXJuYW1lGAIgASgJEhAKCGNsYWltX2lkGAMgASgFEhUKDWZyb21fY2xhaW1faWQYBCABKAUSEwoLdG9fY2xhaW1faWQYBSABKAUSEQoJbGlua190eXBlGAYgASgJEh8KF2V4cGVjdGVkX2NsYWltX3NlbnRlbmNlGAcgASgJEhcKD2V4cGVjdGVkX3N0YXR1cxgIIAEoCRIWCg5leHBlY3RlZF9jb3VudBgJIAEoBRIXCg9leHBlY3RlZF9hY3Rpb24YCiABKAliBnByb3RvMw");
+  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJCCgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIkCgVzdGVwcxgCIAMoCzIVLmRlYmF0ZV90ZXN0LlRlc3RTdGVwImcKCFRlc3RTdGVwEicKBmFjdGlvbhgBIAEoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SMgoMZXhwZWN0YXRpb25zGAIgAygLMhwuZGViYXRlX3Rlc3QuVGVzdEV4cGVjdGF0aW9uIpwBCgpUZXN0QWN0aW9uEhAKCHVzZXJuYW1lGAEgASgJEhIKCmV2ZW50X3R5cGUYAiABKAkSFAoMZGViYXRlX3RvcGljGAMgASgJEhEKCWRlYmF0ZV9pZBgEIAEoBRIQCghjbGFpbV9pZBgFIAEoBRISCgpjbGFpbV90ZXh0GAYgASgJEhkKEWNsYWltX2Rlc2NyaXB0aW9uGAcgASgJIvMBCg9UZXN0RXhwZWN0YXRpb24SEgoKY2hlY2tfdHlwZRgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIQCghjbGFpbV9pZBgDIAEoBRIVCg1mcm9tX2NsYWltX2lkGAQgASgFEhMKC3RvX2NsYWltX2lkGAUgASgFEhEKCWxpbmtfdHlwZRgGIAEoCRIfChdleHBlY3RlZF9jbGFpbV9zZW50ZW5jZRgHIAEoCRIXCg9leHBlY3RlZF9zdGF0dXMYCCABKAkSFgoOZXhwZWN0ZWRfY291bnQYCSABKAUSFwoPZXhwZWN0ZWRfYWN0aW9uGAogASgJYgZwcm90bzM");
 
 /**
- * A complete test scenario: setup actions + expected outcomes
- * Everything is driven by actions — no hardcoded state.
+ * A complete test scenario: an ordered list of steps
+ * Each step has an action (optional) and expectations (optional)
+ * Steps execute sequentially — action runs, then expectations check.
  *
  * @generated from message debate_test.TestScenario
  */
 export type TestScenario = Message<"debate_test.TestScenario"> & {
   /**
-   * e.g. "ChallengeClaim", "CounterChallenge"
-   *
    * @generated from field: string name = 1;
    */
   name: string;
 
   /**
-   * @generated from field: repeated debate_test.TestAction actions = 2;
+   * @generated from field: repeated debate_test.TestStep steps = 2;
    */
-  actions: TestAction[];
-
-  /**
-   * @generated from field: repeated debate_test.TestExpectation expectations = 3;
-   */
-  expectations: TestExpectation[];
+  steps: TestStep[];
 };
 
 /**
@@ -43,6 +37,35 @@ export type TestScenario = Message<"debate_test.TestScenario"> & {
  */
 export const TestScenarioSchema: GenMessage<TestScenario> = /*@__PURE__*/
   messageDesc(file_test_scenario, 0);
+
+/**
+ * One step = optional action + optional expectations
+ * Both can be empty: action-only (no check), expectation-only (check state), or both.
+ *
+ * @generated from message debate_test.TestStep
+ */
+export type TestStep = Message<"debate_test.TestStep"> & {
+  /**
+   * optional — if absent, just check expectations
+   *
+   * @generated from field: debate_test.TestAction action = 1;
+   */
+  action?: TestAction;
+
+  /**
+   * optional — if absent, just execute action
+   *
+   * @generated from field: repeated debate_test.TestExpectation expectations = 2;
+   */
+  expectations: TestExpectation[];
+};
+
+/**
+ * Describes the message debate_test.TestStep.
+ * Use `create(TestStepSchema)` to create a new message.
+ */
+export const TestStepSchema: GenMessage<TestStep> = /*@__PURE__*/
+  messageDesc(file_test_scenario, 1);
 
 /**
  * A single user action — maps to one DebateEvent or a runner-level operation
@@ -107,10 +130,10 @@ export type TestAction = Message<"debate_test.TestAction"> & {
  * Use `create(TestActionSchema)` to create a new message.
  */
 export const TestActionSchema: GenMessage<TestAction> = /*@__PURE__*/
-  messageDesc(file_test_scenario, 1);
+  messageDesc(file_test_scenario, 2);
 
 /**
- * A single expectation to verify after all actions run
+ * A single expectation to verify after the action in this step runs
  *
  * @generated from message debate_test.TestExpectation
  */
@@ -195,5 +218,5 @@ export type TestExpectation = Message<"debate_test.TestExpectation"> & {
  * Use `create(TestExpectationSchema)` to create a new message.
  */
 export const TestExpectationSchema: GenMessage<TestExpectation> = /*@__PURE__*/
-  messageDesc(file_test_scenario, 2);
+  messageDesc(file_test_scenario, 3);
 

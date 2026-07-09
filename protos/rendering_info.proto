@@ -29,6 +29,7 @@ message DebatePageRenderingInfo {
 	DebateActionType current_action = 12;
 
 	// Optional action-specific context.
+	// TODO remove field, was used for user manual linking claims
 	ConnectingRenderInfo connecting_info = 13;
 	ChallengingRenderInfo challenging_info = 14;
 }
@@ -116,6 +117,8 @@ message FullDebateTreeLink {
 message Steps {
 	int32 claim_id = 1;
 	string summary = 2;
+	// Flattened paragraph of all leaf-node sentences in this step's subtree.
+	string leaf_paragraph = 3;
 }
 
 // The exact input needed to build the home page UI.
@@ -179,6 +182,7 @@ enum DebateActionType {
 	ACTION_TYPE_UNSPECIFIED = 0;
 	VIEWING_CLAIM = 1;
 	ADDING_CHILD_CLAIM = 2;
+	// TODO remove field, was used for user manual linking claims
 	CONNECTING_CLAIMS = 3;
 	CHALLENGING_CLAIM = 4;
 	EDITING_CLAIM_DESCRIPTION = 5;
@@ -186,6 +190,7 @@ enum DebateActionType {
 	REPORTING_CLAIM = 7;
 }
 
+// TODO remove field, was used for user manual linking claims
 message ConnectingRenderInfo {
 	int32 from_claim_id = 1;
 	int32 to_claim_id = 2;

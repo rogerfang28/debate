@@ -49,10 +49,12 @@ std::string cookieAttributesFromRequest(const httplib::Request& req) {
         const bool hostedRequest = (!origin.empty() && !isLocalOrigin(origin)) || (!host.empty() && !isLocalOrigin(host));
 
         if (hostedRequest) {
+            // Only use Secure + SameSite=None for HTTPS
             if (isHttpsRequest(req)) {
                 sameSite = "None";
                 secure = true;
             } else {
+                // HTTP hosted request — use Lax so cookies work over plain HTTP
                 sameSite = "Lax";
                 secure = false;
             }

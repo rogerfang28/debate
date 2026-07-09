@@ -47,8 +47,10 @@ public:
 
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
-    int createUserIfNotExist(const std::string& username);
-    std::string getUsersDatabasePath() const;
+     int createUserIfNotExist(const std::string& username);
+     int createUserWithGoogleInfo(const std::string& username, const std::string& google_sub, const std::string& email);
+     void updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email);
+     std::string getUsersDatabasePath() const;
     Database usersDb;
     VRUserDatabase userDb;
     DebateModerator moderator;

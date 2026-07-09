@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <cstdlib>
 
 #include "debate.pb.h"
 #include "user.pb.h"
@@ -45,8 +46,8 @@ static user::User makeUserEngagement(int userId, int currentAction) {
 class DebateEventTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        db_path_ = "test_event_temp.sqlite3";
-        std::remove(db_path_.c_str());
+         db_path_ = std::string("test_event_temp_") + std::to_string(getpid()) + ".sqlite3";
+         std::remove(db_path_.c_str());
 
         db_      = new Database(db_path_);
         wrapper_ = new DatabaseWrapper(*db_);

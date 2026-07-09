@@ -5,13 +5,11 @@ import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
-interface PageData {
-  [key: string]: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
+    googleLoginCallback?: (credential: string) => void;
   }
 }
 
@@ -27,6 +25,10 @@ function parseSharedLink(): { debateId: string; username: string } | null {
     return { debateId: match[1], username: match[2] };
   }
   return null;
+}
+
+interface PageData {
+  [key: string]: any;
 }
 
 const Renderer: React.FC = () => {

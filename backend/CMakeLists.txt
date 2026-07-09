@@ -14,6 +14,11 @@ add_definitions(-DGIT_COMMIT_HASH="${GIT_COMMIT_HASH}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
+
+# Needed for GoogleJWTVerifier's httplib::SSLClient fallback path.
+add_definitions(-DCPPHTTPLIB_OPENSSL_SUPPORT)
+
 # ----- Include directories -----
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/server
@@ -51,7 +56,9 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/parseCookie.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/utils/UserNameResolver.cc
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
-    ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/GoogleJWTVerifier.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateDatabase.cc
