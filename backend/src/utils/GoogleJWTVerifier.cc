@@ -117,7 +117,11 @@ void parse_jwks(const std::string& jwks_json) {
 // reliably here; httplib::SSLClient is kept as a fallback in case curl isn't on PATH.
 std::string fetch_jwks_via_curl() {
     std::string cmd = "curl -s --max-time 10 " + JWKS_ORIGIN + JWKS_PATH + " 2>&1";
+#ifdef _WIN32
     FILE* pipe = _popen(cmd.c_str(), "r");
+#else
+    FILE* pipe = popen(cmd.c_str(), "r");
+#endif
     if (!pipe) {
         return "";
     }
@@ -127,7 +131,11 @@ std::string fetch_jwks_via_curl() {
     while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
         result += buffer;
     }
+#ifdef _WIN32
     int exit_code = _pclose(pipe);
+#else
+    int exit_code = pclose(pipe);
+#endif
 
     if (exit_code != 0 || result.find("\"keys\"") == std::string::npos) {
         return "";
