@@ -32,6 +32,7 @@ enum ComponentType {
   INPUT = 3;
   GRAPH = 4;
   CONTAINER = 12;
+  CLAIM_PARSER = 14;
 }
 
 message Style {

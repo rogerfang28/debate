@@ -60,6 +60,9 @@ inline constexpr Steps::Impl_::Impl_(
         summary_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        leaf_paragraph_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         claim_id_{0} {}
 
 template <typename>
@@ -654,11 +657,13 @@ const ::uint32_t
         7,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::rendering_info::Steps, _impl_._has_bits_),
-        5, // hasbit index offset
+        6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::rendering_info::Steps, _impl_.claim_id_),
         PROTOBUF_FIELD_OFFSET(::rendering_info::Steps, _impl_.summary_),
-        1,
+        PROTOBUF_FIELD_OFFSET(::rendering_info::Steps, _impl_.leaf_paragraph_),
+        2,
         0,
+        1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::rendering_info::HomePageRenderingInfo, _impl_._has_bits_),
         7, // hasbit index offset
@@ -762,14 +767,14 @@ static const ::_pbi::MigrationSchema
         {72, sizeof(::rendering_info::FullDebateTreeNode)},
         {89, sizeof(::rendering_info::FullDebateTreeLink)},
         {108, sizeof(::rendering_info::Steps)},
-        {115, sizeof(::rendering_info::HomePageRenderingInfo)},
-        {126, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
-        {139, sizeof(::rendering_info::ClaimRenderInfo)},
-        {152, sizeof(::rendering_info::UserStatus)},
-        {159, sizeof(::rendering_info::LinkRenderInfo)},
-        {172, sizeof(::rendering_info::ChallengeRenderInfo)},
-        {185, sizeof(::rendering_info::ConnectingRenderInfo)},
-        {196, sizeof(::rendering_info::ChallengingRenderInfo)},
+        {117, sizeof(::rendering_info::HomePageRenderingInfo)},
+        {128, sizeof(::rendering_info::HomeDebateTopicRenderInfo)},
+        {141, sizeof(::rendering_info::ClaimRenderInfo)},
+        {154, sizeof(::rendering_info::UserStatus)},
+        {161, sizeof(::rendering_info::LinkRenderInfo)},
+        {174, sizeof(::rendering_info::ChallengeRenderInfo)},
+        {187, sizeof(::rendering_info::ConnectingRenderInfo)},
+        {198, sizeof(::rendering_info::ChallengingRenderInfo)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::rendering_info::_DebatePageRenderingInfo_default_instance_._instance,
@@ -837,44 +842,45 @@ const char descriptor_table_protodef_rendering_5finfo_2eproto[] ABSL_ATTRIBUTE_S
     "\001(\0162&.rendering_info.FullDebateTreeLinkT"
     "ype\022\024\n\014is_challenge\030\004 \001(\010\022\017\n\007link_id\030\005 \001"
     "(\005\022\024\n\014challenge_id\030\006 \001(\005\022\022\n\nconnection\030\007"
-    " \001(\t\022\022\n\ncreator_id\030\010 \001(\005\"*\n\005Steps\022\020\n\010cla"
-    "im_id\030\001 \001(\005\022\017\n\007summary\030\002 \001(\t\"\262\001\n\025HomePag"
-    "eRenderingInfo\022\026\n\016viewer_user_id\030\001 \001(\005\022\027"
-    "\n\017viewer_username\030\002 \001(\t\022D\n\021available_deb"
-    "ates\030\003 \003(\0132).rendering_info.HomeDebateTo"
-    "picRenderInfo\022\"\n\032can_create_or_join_deba"
-    "tes\030\004 \001(\010\"\221\001\n\031HomeDebateTopicRenderInfo\022"
-    "\034\n\024debate_root_claim_id\030\001 \001(\005\022\r\n\005topic\030\002"
-    " \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022\024\n\014is_challenge"
-    "\030\004 \001(\010\022\035\n\025claim_its_challenging\030\005 \001(\t\"\233\001"
-    "\n\017ClaimRenderInfo\022\n\n\002id\030\001 \001(\005\022\020\n\010sentenc"
-    "e\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022#\n\006status\030\004 "
-    "\001(\0162\023.debate.ClaimStatus\0221\n\ruser_statuse"
-    "s\030\005 \003(\0132\032.rendering_info.UserStatus\"C\n\nU"
-    "serStatus\022\020\n\010username\030\001 \001(\t\022#\n\006status\030\002 "
-    "\001(\0162\023.debate.ClaimStatus\"n\n\016LinkRenderIn"
-    "fo\022\n\n\002id\030\001 \001(\005\022\024\n\014connect_from\030\002 \001(\005\022\022\n\n"
-    "connect_to\030\003 \001(\005\022\022\n\nconnection\030\004 \001(\t\022\022\n\n"
-    "creator_id\030\005 \001(\005\"w\n\023ChallengeRenderInfo\022"
-    "\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\023\n\013descrip"
-    "tion\030\003 \001(\t\022\022\n\ncreator_id\030\004 \001(\005\022\031\n\021challe"
-    "nge_link_id\030\005 \001(\005\"t\n\024ConnectingRenderInf"
-    "o\022\025\n\rfrom_claim_id\030\001 \001(\005\022\023\n\013to_claim_id\030"
-    "\002 \001(\005\022\022\n\nconnecting\030\003 \001(\010\022\034\n\024opened_conn"
-    "ect_modal\030\004 \001(\010\"\\\n\025ChallengingRenderInfo"
-    "\022\021\n\tclaim_ids\030\001 \003(\005\022\020\n\010link_ids\030\002 \003(\005\022\036\n"
-    "\026opened_challenge_modal\030\003 \001(\010*\207\001\n\026FullDe"
-    "bateTreeLinkType\022*\n&FULL_DEBATE_TREE_LIN"
-    "K_TYPE_UNSPECIFIED\020\000\022!\n\035FULL_DEBATE_TREE"
-    "_PARENT_CHILD\020\001\022\036\n\032FULL_DEBATE_TREE_CHAL"
-    "LENGE\020\002*J\n\tScopeType\022\032\n\026SCOPE_TYPE_UNSPE"
-    "CIFIED\020\000\022\020\n\014SINGLE_CLAIM\020\001\022\017\n\013FULL_DEBAT"
-    "E\020\002*\317\001\n\020DebateActionType\022\033\n\027ACTION_TYPE_"
-    "UNSPECIFIED\020\000\022\021\n\rVIEWING_CLAIM\020\001\022\026\n\022ADDI"
-    "NG_CHILD_CLAIM\020\002\022\025\n\021CONNECTING_CLAIMS\020\003\022"
-    "\025\n\021CHALLENGING_CLAIM\020\004\022\035\n\031EDITING_CLAIM_"
-    "DESCRIPTION\020\005\022\021\n\rEDITING_CLAIM\020\006\022\023\n\017REPO"
-    "RTING_CLAIM\020\007b\006proto3"
+    " \001(\t\022\022\n\ncreator_id\030\010 \001(\005\"B\n\005Steps\022\020\n\010cla"
+    "im_id\030\001 \001(\005\022\017\n\007summary\030\002 \001(\t\022\026\n\016leaf_par"
+    "agraph\030\003 \001(\t\"\262\001\n\025HomePageRenderingInfo\022\026"
+    "\n\016viewer_user_id\030\001 \001(\005\022\027\n\017viewer_usernam"
+    "e\030\002 \001(\t\022D\n\021available_debates\030\003 \003(\0132).ren"
+    "dering_info.HomeDebateTopicRenderInfo\022\"\n"
+    "\032can_create_or_join_debates\030\004 \001(\010\"\221\001\n\031Ho"
+    "meDebateTopicRenderInfo\022\034\n\024debate_root_c"
+    "laim_id\030\001 \001(\005\022\r\n\005topic\030\002 \001(\t\022\022\n\ncreator_"
+    "id\030\003 \001(\005\022\024\n\014is_challenge\030\004 \001(\010\022\035\n\025claim_"
+    "its_challenging\030\005 \001(\t\"\233\001\n\017ClaimRenderInf"
+    "o\022\n\n\002id\030\001 \001(\005\022\020\n\010sentence\030\002 \001(\t\022\022\n\ncreat"
+    "or_id\030\003 \001(\005\022#\n\006status\030\004 \001(\0162\023.debate.Cla"
+    "imStatus\0221\n\ruser_statuses\030\005 \003(\0132\032.render"
+    "ing_info.UserStatus\"C\n\nUserStatus\022\020\n\010use"
+    "rname\030\001 \001(\t\022#\n\006status\030\002 \001(\0162\023.debate.Cla"
+    "imStatus\"n\n\016LinkRenderInfo\022\n\n\002id\030\001 \001(\005\022\024"
+    "\n\014connect_from\030\002 \001(\005\022\022\n\nconnect_to\030\003 \001(\005"
+    "\022\022\n\nconnection\030\004 \001(\t\022\022\n\ncreator_id\030\005 \001(\005"
+    "\"w\n\023ChallengeRenderInfo\022\n\n\002id\030\001 \001(\005\022\020\n\010s"
+    "entence\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\022\n\ncr"
+    "eator_id\030\004 \001(\005\022\031\n\021challenge_link_id\030\005 \001("
+    "\005\"t\n\024ConnectingRenderInfo\022\025\n\rfrom_claim_"
+    "id\030\001 \001(\005\022\023\n\013to_claim_id\030\002 \001(\005\022\022\n\nconnect"
+    "ing\030\003 \001(\010\022\034\n\024opened_connect_modal\030\004 \001(\010\""
+    "\\\n\025ChallengingRenderInfo\022\021\n\tclaim_ids\030\001 "
+    "\003(\005\022\020\n\010link_ids\030\002 \003(\005\022\036\n\026opened_challeng"
+    "e_modal\030\003 \001(\010*\207\001\n\026FullDebateTreeLinkType"
+    "\022*\n&FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFI"
+    "ED\020\000\022!\n\035FULL_DEBATE_TREE_PARENT_CHILD\020\001\022"
+    "\036\n\032FULL_DEBATE_TREE_CHALLENGE\020\002*J\n\tScope"
+    "Type\022\032\n\026SCOPE_TYPE_UNSPECIFIED\020\000\022\020\n\014SING"
+    "LE_CLAIM\020\001\022\017\n\013FULL_DEBATE\020\002*\317\001\n\020DebateAc"
+    "tionType\022\033\n\027ACTION_TYPE_UNSPECIFIED\020\000\022\021\n"
+    "\rVIEWING_CLAIM\020\001\022\026\n\022ADDING_CHILD_CLAIM\020\002"
+    "\022\025\n\021CONNECTING_CLAIMS\020\003\022\025\n\021CHALLENGING_C"
+    "LAIM\020\004\022\035\n\031EDITING_CLAIM_DESCRIPTION\020\005\022\021\n"
+    "\rEDITING_CLAIM\020\006\022\023\n\017REPORTING_CLAIM\020\007b\006p"
+    "roto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_rendering_5finfo_2eproto_deps[1] = {
@@ -884,7 +890,7 @@ static ::absl::once_flag descriptor_table_rendering_5finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_rendering_5finfo_2eproto = {
     false,
     false,
-    3301,
+    3325,
     descriptor_table_protodef_rendering_5finfo_2eproto,
     "rendering_info.proto",
     &descriptor_table_rendering_5finfo_2eproto_once,
@@ -4225,7 +4231,8 @@ PROTOBUF_NDEBUG_INLINE Steps::Impl_::Impl_(
     [[maybe_unused]] const ::rendering_info::Steps& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        summary_(arena, from.summary_) {}
+        summary_(arena, from.summary_),
+        leaf_paragraph_(arena, from.leaf_paragraph_) {}
 
 Steps::Steps(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -4248,7 +4255,8 @@ PROTOBUF_NDEBUG_INLINE Steps::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
-        summary_(arena) {}
+        summary_(arena),
+        leaf_paragraph_(arena) {}
 
 inline void Steps::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -4266,6 +4274,7 @@ inline void Steps::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.summary_.Destroy();
+  this_._impl_.leaf_paragraph_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -4312,16 +4321,16 @@ Steps::GetClassData() const {
   return Steps_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 36, 2>
+const ::_pbi::TcParseTable<2, 3, 0, 50, 2>
 Steps::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Steps, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     Steps_class_data_.base(),
@@ -4331,27 +4340,35 @@ Steps::_table_ = {
     ::_pbi::TcParser::GetTable<::rendering_info::Steps>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 claim_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Steps, _impl_.claim_id_), 2>(),
+     {8, 2, 0,
+      PROTOBUF_FIELD_OFFSET(Steps, _impl_.claim_id_)}},
     // string summary = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(Steps, _impl_.summary_)}},
-    // int32 claim_id = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Steps, _impl_.claim_id_), 1>(),
-     {8, 1, 0,
-      PROTOBUF_FIELD_OFFSET(Steps, _impl_.claim_id_)}},
+    // string leaf_paragraph = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 1, 0,
+      PROTOBUF_FIELD_OFFSET(Steps, _impl_.leaf_paragraph_)}},
   }}, {{
     65535, 65535
   }}, {{
     // int32 claim_id = 1;
-    {PROTOBUF_FIELD_OFFSET(Steps, _impl_.claim_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    {PROTOBUF_FIELD_OFFSET(Steps, _impl_.claim_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
     // string summary = 2;
     {PROTOBUF_FIELD_OFFSET(Steps, _impl_.summary_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string leaf_paragraph = 3;
+    {PROTOBUF_FIELD_OFFSET(Steps, _impl_.leaf_paragraph_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\24\0\7\0\0\0\0\0"
+    "\24\0\7\16\0\0\0\0"
     "rendering_info.Steps"
     "summary"
+    "leaf_paragraph"
   }},
 };
 PROTOBUF_NOINLINE void Steps::Clear() {
@@ -4362,8 +4379,13 @@ PROTOBUF_NOINLINE void Steps::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-    _impl_.summary_.ClearNonDefaultToEmpty();
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.summary_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.leaf_paragraph_.ClearNonDefaultToEmpty();
+    }
   }
   _impl_.claim_id_ = 0;
   _impl_._has_bits_.Clear();
@@ -4390,7 +4412,7 @@ PROTOBUF_NOINLINE void Steps::Clear() {
 
   cached_has_bits = this_._impl_._has_bits_[0];
   // int32 claim_id = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (this_._internal_claim_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
@@ -4405,6 +4427,16 @@ PROTOBUF_NOINLINE void Steps::Clear() {
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "rendering_info.Steps.summary");
       target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // string leaf_paragraph = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_leaf_paragraph().empty()) {
+      const ::std::string& _s = this_._internal_leaf_paragraph();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "rendering_info.Steps.leaf_paragraph");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
     }
   }
 
@@ -4433,7 +4465,7 @@ PROTOBUF_NOINLINE void Steps::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     // string summary = 2;
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_summary().empty()) {
@@ -4441,8 +4473,15 @@ PROTOBUF_NOINLINE void Steps::Clear() {
                                         this_._internal_summary());
       }
     }
-    // int32 claim_id = 1;
+    // string leaf_paragraph = 3;
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_leaf_paragraph().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_leaf_paragraph());
+      }
+    }
+    // int32 claim_id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (this_._internal_claim_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_claim_id());
@@ -4467,7 +4506,7 @@ void Steps::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_summary().empty()) {
         _this->_internal_set_summary(from._internal_summary());
@@ -4478,6 +4517,15 @@ void Steps::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_leaf_paragraph().empty()) {
+        _this->_internal_set_leaf_paragraph(from._internal_leaf_paragraph());
+      } else {
+        if (_this->_impl_.leaf_paragraph_.IsDefault()) {
+          _this->_internal_set_leaf_paragraph("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (from._internal_claim_id() != 0) {
         _this->_impl_.claim_id_ = from._impl_.claim_id_;
       }
@@ -4503,6 +4551,7 @@ void Steps::InternalSwap(Steps* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.summary_, &other->_impl_.summary_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.leaf_paragraph_, &other->_impl_.leaf_paragraph_, arena);
   swap(_impl_.claim_id_, other->_impl_.claim_id_);
 }
 

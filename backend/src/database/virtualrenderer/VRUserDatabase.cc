@@ -1,5 +1,6 @@
 #include "VRUserDatabase.h"
 #include <iostream>
+#include "../../../src/gen/cpp/user.pb.h"
 
 VRUserDatabase::VRUserDatabase(Database& db) : db_(db) {
     ensureTable();
@@ -138,6 +139,32 @@ bool VRUserDatabase::updateUsername(int user_id, const std::string& newUsername)
 bool VRUserDatabase::updateUserPassword(int user_id, const std::string& newPasswordHash) {
     std::cerr << "updateUserPassword: Password should be managed via protobuf data" << std::endl;
     return false;
+}
+
+bool VRUserDatabase::updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email) {
+    // Fetch existing protobuf data
+    std::vector<uint8_t> protobufData = getUserProtobuf(user_id);
+    if (protobufData.empty()) {
+        return false;
+    }
+
+    // Parse the User protobuf
+    user::User newUser;
+    if (!newUser.ParseFromArray(protobufData.data(), static_cast<int>(protobufData.size()))) {
+        return false;
+    }
+
+    // Update google_sub and email in the protobuf
+    newUser.set_google_sub(google_sub);
+    newUser.set_email(email);
+
+    // Serialize back to blob
+    std::string serializedData;
+    newUser.SerializeToString(&serializedData);
+
+    return updateUserProtobuf(user_id, std::vector<uint8_t>(
+        serializedData.begin(), serializedData.end()
+    ));
 }
 
 bool VRUserDatabase::deleteUser(int user_id) {

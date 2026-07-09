@@ -92,6 +92,7 @@ export type DebatePageRenderingInfo = Message<"rendering_info.DebatePageRenderin
 
   /**
    * Optional action-specific context.
+   * TODO remove field, was used for user manual linking claims
    *
    * @generated from field: rendering_info.ConnectingRenderInfo connecting_info = 13;
    */
@@ -586,6 +587,8 @@ export const ChallengeRenderInfoSchema: GenMessage<ChallengeRenderInfo> = /*@__P
   messageDesc(file_rendering_info, 12);
 
 /**
+ * TODO remove field, was used for user manual linking claims
+ *
  * @generated from message rendering_info.ConnectingRenderInfo
  */
 export type ConnectingRenderInfo = Message<"rendering_info.ConnectingRenderInfo"> & {
@@ -716,6 +719,8 @@ export enum DebateActionType {
   ADDING_CHILD_CLAIM = 2,
 
   /**
+   * TODO remove field, was used for user manual linking claims
+   *
    * @generated from enum value: CONNECTING_CLAIMS = 3;
    */
   CONNECTING_CLAIMS = 3,

@@ -333,10 +333,15 @@ export enum ComponentType {
   GRAPH = 4,
 
   /**
-   * @generated from enum value: CONTAINER = 12;
-   */
-  CONTAINER = 12,
-}
+    * @generated from enum value: CONTAINER = 12;
+    */
+   CONTAINER = 12,
+
+   /**
+    * @generated from enum value: CLAIM_PARSER = 14;
+    */
+   CLAIM_PARSER = 14,
+  }
 
 /**
  * Describes the enum ui.ComponentType.

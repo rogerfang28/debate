@@ -99,16 +99,11 @@ void MoveUserHandler::GoToParentClaimOfDebate(const int& user_id, DebateWrapper&
 
     Log::debug("[GoToParentClaimOfDebate] User " + std::to_string(user_id) + " going to parent claim from current claim id: " + std::to_string(currentClaimId));
 
-    debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
     int challengedClaimId = -1;
-    for (int i = 0; i < currentClaim.link_ids_size(); ++i) {
-        int linkId = currentClaim.link_ids(i);
-        debate::Relationship::Link linkProto = debateWrapper.getLinkById(linkId).link();
-        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == currentClaimId) {
-            challengedClaimId = linkProto.connect_to();
-            Log::debug("[GoToParentClaimOfDebate] Found CHALLENGE link id: " + std::to_string(linkId) + " from claim " + std::to_string(currentClaimId) + " to challenged claim " + std::to_string(challengedClaimId));
-            break;
-        }
+    debate::Relationship::Link outgoingChallenge = debateWrapper.findOutgoingChallengeLink(currentClaimId).link();
+    if (outgoingChallenge.link_type() == debate::LinkType::CHALLENGE) {
+        challengedClaimId = outgoingChallenge.connect_to();
+        Log::debug("[GoToParentClaimOfDebate] Found CHALLENGE link id: " + std::to_string(outgoingChallenge.id()) + " from claim " + std::to_string(currentClaimId) + " to challenged claim " + std::to_string(challengedClaimId));
     }
 
     if (challengedClaimId != -1) {

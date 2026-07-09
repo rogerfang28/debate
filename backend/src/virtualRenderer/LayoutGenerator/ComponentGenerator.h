@@ -63,7 +63,13 @@ public:
     static std::string buildCustomClass(const std::vector<std::string>& classes);
 
     // Helper: Add an attribute to a component
-    static void addAttribute(ui::Component* component, const std::string& key, const std::string& value);
-};
+     static void addAttribute(ui::Component* component, const std::string& key, const std::string& value);
+
+     // Create a CLAIM_PARSER component (placeholder for claim extraction)
+     static ui::Component createClaimParser(
+         const std::string& id,
+         const std::string& defaultValue = ""
+     );
+    };
 
 #endif // COMPONENT_GENERATOR_H

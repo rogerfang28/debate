@@ -175,77 +175,18 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
 
     // Use the challenge_link_id to directly look up the challenge link.
     // The link's connect_from = challenge claim ID, connect_to = challenged claim ID.
-    int challengeClaimId = -1;
-    int challengedClaimId = -1;
-
-    if (challenge_link_id > 0) {
-        debate::Relationship::Link challengeLink = debateWrapper.getLinkById(challenge_link_id).link();
-        if (challengeLink.id() != 0 && challengeLink.link_type() == debate::LinkType::CHALLENGE) {
-            challengeClaimId = challengeLink.connect_from();
-            challengedClaimId = challengeLink.connect_to();
-            Log::debug("[ConcedeChallengeHandler] Found challenge link " + std::to_string(challenge_link_id) +
-                      ": from=" + std::to_string(challengeClaimId) + " to=" + std::to_string(challengedClaimId));
-        } else {
-            Log::warn("[ConcedeChallengeHandler] challenge_link_id " + std::to_string(challenge_link_id) +
-                      " is not a valid CHALLENGE link");
-        }
-    }
-
-    // Fallback: if link lookup failed, use the old scan approach
-    if (challengeClaimId == -1) {
-        int bestFromId = -1;
-        auto allLinks = debateWrapper.getLinksForDebate(debateId);
-        for (const auto& linkTuple : allLinks) {
-            int fromClaimId = std::get<1>(linkTuple);
-            int toClaimId = std::get<2>(linkTuple);
-            int linkType = std::get<5>(linkTuple);
-            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-                debate::Claim targetClaim = debateWrapper.getClaimById(toClaimId);
-                if (targetClaim.id() != 0 && targetClaim.creator_id() == user_id) {
-                    if (fromClaimId > bestFromId) {
-                        bestFromId = fromClaimId;
-                        challengeClaimId = fromClaimId;
-                        challengedClaimId = toClaimId;
-                    }
-                }
-            }
-        }
-    }
-
-    // Fallback: current claim check
-    if (challengeClaimId == -1) {
-        int currentClaimId = userProto.engagement().debating_info().current_claim().id();
-        if (currentClaimId == 0) {
-            Log::warn("[ConcedeChallengeHandler] User " + std::to_string(user_id) + " has no current claim");
-            CancelChallengeClaim(user_id, debateWrapper);
-            CloseAddChallenge(user_id, debateWrapper);
-            return;
-        }
-        debate::Claim currentClaim = debateWrapper.getClaimById(currentClaimId);
-        if (currentClaim.id() == 0) {
-            Log::warn("[ConcedeChallengeHandler] Current claim " + std::to_string(currentClaimId) + " not found");
-            CancelChallengeClaim(user_id, debateWrapper);
-            CloseAddChallenge(user_id, debateWrapper);
-            return;
-        }
-        // Check if current claim is a challenge (has outgoing CHALLENGE link)
-        for (int i = 0; i < currentClaim.link_ids_size(); ++i) {
-            int linkId = currentClaim.link_ids(i);
-            debate::Relationship::Link link = debateWrapper.getLinkById(linkId).link();
-            if (link.link_type() == debate::LinkType::CHALLENGE && link.connect_from() == currentClaimId) {
-                challengeClaimId = currentClaimId;
-                challengedClaimId = link.connect_to();
-                break;
-            }
-        }
-    }
-
-    if (challengeClaimId == -1) {
-        Log::warn("[ConcedeChallengeHandler] No challenge found for user " + std::to_string(user_id) + " to concede to");
+    debate::Relationship::Link challengeLink = debateWrapper.getLinkById(challenge_link_id).link();
+    if (challenge_link_id <= 0 || challengeLink.id() == 0 || challengeLink.link_type() != debate::LinkType::CHALLENGE) {
+        Log::error("[ConcedeChallengeHandler] Cannot find challenge with id " + std::to_string(challenge_link_id));
         CancelChallengeClaim(user_id, debateWrapper);
         CloseAddChallenge(user_id, debateWrapper);
         return;
     }
+
+    int challengeClaimId = challengeLink.connect_from();
+    int challengedClaimId = challengeLink.connect_to();
+    Log::debug("[ConcedeChallengeHandler] Found challenge link " + std::to_string(challenge_link_id) +
+              ": from=" + std::to_string(challengeClaimId) + " to=" + std::to_string(challengedClaimId));
 
     // Step 1: Mark the challenge claim as TRUE_CLAIM for the concessor.
     // When User A concedes, they admit the challenge was valid → challenge claim is TRUE for them.
@@ -364,14 +305,10 @@ void ChallengeHandler::DeleteChallenge(const int& challenge_id, const int& user_
 
     int challengeLinkId = -1;
     int challengedClaimId = -1;
-    for (int i = 0; i < challengeClaim.link_ids_size(); ++i) {
-        const int linkId = challengeClaim.link_ids(i);
-        debate::Relationship::Link linkProto = debateWrapper.getLinkById(linkId).link();
-        if (linkProto.link_type() == debate::LinkType::CHALLENGE && linkProto.connect_from() == challenge_claim_id) {
-            challengeLinkId = linkId;
-            challengedClaimId = linkProto.connect_to();
-            break;
-        }
+    debate::Relationship::Link outgoingChallenge = debateWrapper.findOutgoingChallengeLink(challenge_claim_id).link();
+    if (outgoingChallenge.link_type() == debate::LinkType::CHALLENGE) {
+        challengeLinkId = outgoingChallenge.id();
+        challengedClaimId = outgoingChallenge.connect_to();
     }
 
     if (challengeLinkId != -1) {

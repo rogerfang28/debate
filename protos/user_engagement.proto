@@ -59,6 +59,7 @@ message DebatingInfo {
       ACTION_TYPE_UNSPECIFIED = 0;
       VIEWING_CLAIM = 1; // normal state
       ADDING_CHILD_CLAIM = 2; // user is adding a claim
+      // TODO remove field, was used for user manual linking claims
       CONNECTING_CLAIMS = 3; // user is connecting claims
       CHALLENGING_CLAIM = 4; // user is challenging the current claim
       EDITING_CLAIM_DESCRIPTION = 5; // user is editing the current claim description
@@ -71,16 +72,18 @@ message DebatingInfo {
   CurrentDebateAction current_debate_action = 11;
   oneof additional_info {
     // could be none
+    // TODO remove field, was used for user manual linking claims
     ConnectingInfo connecting_info = 12; // info about connecting claims
     ChallengingInfo challenging_info = 15; // info about challenging claims
   }
 
+  // TODO remove field, was used for user manual linking claims
   message ConnectingInfo {
     int32 from_claim_id = 1;
     int32 to_claim_id   = 2;
     string connection = 3;
     bool connecting = 4;
-    bool opened_connect_modal = 5;  
+    bool opened_connect_modal = 5;
   }
 
   message ChallengingInfo {

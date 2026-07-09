@@ -8,7 +8,6 @@
 #include "./ClientMessageHandler/ClientMessageParser.h"
 #include "./LayoutGenerator/LayoutGenerator.h"
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
-// #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
 #include <cstdlib>
@@ -19,6 +18,7 @@
 #include "../utils/DemoMode.h"
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
+#include "../utils/GoogleJWTVerifier.h"
 
 namespace {
 std::string buildAutoGuestUsername() {
@@ -92,14 +92,11 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     }
 
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
-    // BackendCommunicator backend("localhost", 3000);
-    // ! no server call for now, backend and virtual renderer are on the same backend
     
     // change cookies accordingly
     handleAuthEvents(evt, req, res);
 
     // Auto-login sets response cookies, but request cookies are still empty on first load.
-    // Keep this request authenticated by applying the resolved auto-login identity directly.
     if (autoLoginResolvedUserId > 0 && !autoLoginResolvedUsername.empty() && !evt.user().is_logged_in()) {
         evt.mutable_user()->set_user_id(autoLoginResolvedUserId);
         evt.mutable_user()->set_username(autoLoginResolvedUsername);
@@ -108,7 +105,13 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     
     moderator_to_vr::ModeratorToVRMessage info;
     info = moderator.handleRequest(evt);
-    // backend.sendEvent(evt, info);
+
+    // After a successful login, transition user to HOME page
+    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() &&
+        !evt.login().google_id_token().empty() && evt.user().is_logged_in()) {
+        info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
+    }
 
     // parse user info to create layout based on it
     ui::Page page = LayoutGenerator::generateLayout(info, userDb);
@@ -128,21 +131,67 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
         resolvedUsername = "";
     }
     else if (evt.type() == debate_event::LOGIN) {
-        Log::info("[VirtualRenderer] Login event detected, login the user with cookies.");
-        int moderatorUserId = moderator.createUserIfNotExist(evt.login().username());
-        int userId = userDb.getUserId(evt.login().username());
-        if (userId == -1) {
-            Log::info("[VirtualRenderer] User not found in virtual renderer DB, creating new user.");
-            createUserIfNotExist(evt.login().username());
-            userId = userDb.getUserId(evt.login().username());
-        }
-        // this ensures a user exists
-        parseCookie::setCookieUserId(req, res, moderatorUserId);
-        parseCookie::setCookieUsername(req, res, evt.login().username());
+        Log::info("[VirtualRenderer] Login event detected.");
 
-        // Apply authenticated identity for this same request, not only future requests.
-        resolvedUserId = moderatorUserId;
-        resolvedUsername = evt.login().username();
+        std::string finalUsername;
+        int moderatorUserId;
+        int userId;
+        bool authSucceeded = true;
+
+        // Check if Google sign-in token is present
+        if (evt.login().has_google_id_token() && !evt.login().google_id_token().empty()) {
+            // Google OIDC flow
+            Log::info("[VirtualRenderer] Google ID token received, verifying...");
+            try {
+                auto userInfo = GoogleJWTVerifier::verify(evt.login().google_id_token());
+
+                // Use Google's name as fallback username, prefer email
+                std::string username = userInfo.email.empty() ? userInfo.name : userInfo.email;
+                if (username.empty()) {
+                    username = "google_user_" + userInfo.sub.substr(0, 8);
+                }
+
+                // Look up or create user with google_sub
+                moderatorUserId = moderator.createUserIfNotExist(username);
+                userId = userDb.getUserId(username);
+                if (userId == -1) {
+                    Log::info("[VirtualRenderer] User not found, creating with google_sub=" + userInfo.sub);
+                    userId = createUserWithGoogleInfo(username, userInfo.sub, userInfo.email);
+                    userId = userDb.getUserId(username);
+                } else {
+                    // Update google_sub if not set
+                    updateGoogleSub(userId, userInfo.sub, userInfo.email);
+                }
+
+                finalUsername = username;
+                Log::info("[VirtualRenderer] Google auth success: " + username + " google_sub=" + userInfo.sub);
+            } catch (const std::exception& e) {
+                Log::error("[VirtualRenderer] Google auth failed: " + std::string(e.what()));
+                // No username field is set on a Google login event, so there is no
+                // valid fallback identity here. Leave any existing cookie-based
+                // session untouched instead of overwriting it with an empty user.
+                authSucceeded = false;
+            }
+        } else {
+            // Legacy username-only flow
+            finalUsername = evt.login().username();
+            moderatorUserId = moderator.createUserIfNotExist(finalUsername);
+            userId = userDb.getUserId(finalUsername);
+            if (userId == -1) {
+                Log::info("[VirtualRenderer] User not found, creating new user.");
+                userId = createUserIfNotExist(finalUsername);
+            }
+        }
+
+        if (authSucceeded) {
+            // Set cookies
+            parseCookie::setCookieUserId(req, res, moderatorUserId);
+            parseCookie::setCookieUsername(req, res, finalUsername);
+
+            // Apply authenticated identity for this same request
+            resolvedUserId = moderatorUserId;
+            resolvedUsername = finalUsername;
+        }
     }
 
     // add login info to the event
@@ -214,4 +263,46 @@ ui::Page VirtualRenderer::handleDebatePageLoad(const std::string& username, int 
 
     // 3. Generate layout page
     return LayoutGenerator::generateLayout(info, userDb);
+}
+
+int VirtualRenderer::createUserWithGoogleInfo(const std::string& username, const std::string& google_sub, const std::string& email) {
+    int user_id = userDb.getUserId(username);
+    if (user_id == -1) {
+        user::User newUser;
+        newUser.set_username(username);
+        newUser.set_google_sub(google_sub);
+        newUser.set_email(email);
+        newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+
+        std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        user_id = userDb.createUser(username, serializedNewUser);
+
+        newUser.set_user_id(user_id);
+        serializedNewUser.resize(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        userDb.updateUserProtobuf(user_id, serializedNewUser);
+
+        Log::info("[VirtualRenderer] Created new user with Google: " + username + " user_id=" + std::to_string(user_id) + " google_sub=" + google_sub);
+    }
+    return user_id;
+}
+
+void VirtualRenderer::updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email) {
+    auto protoData = userDb.getUserProtobuf(user_id);
+    if (protoData.empty()) return;
+
+    user::User user;
+    if (!user.ParseFromArray(protoData.data(), (int)protoData.size())) return;
+
+    if (!user.google_sub().empty()) return; // already set
+
+    user.set_google_sub(google_sub);
+    if (!email.empty()) user.set_email(email);
+
+    std::vector<uint8_t> updated(protoData.size());
+    user.SerializeToArray(updated.data(), updated.size());
+    userDb.updateUserProtobuf(user_id, updated);
+
+    Log::info("[VirtualRenderer] Updated google_sub for user_id=" + std::to_string(user_id));
 }

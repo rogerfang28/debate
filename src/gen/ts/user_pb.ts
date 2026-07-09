@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIr4BCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbmIGcHJvdG8z", [file_user_engagement, file_scope, file_collection]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIuEBCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJYgZwcm90bzM", [file_user_engagement, file_scope, file_collection]);
 
 /**
  * @generated from message user.User
@@ -46,6 +46,16 @@ export type User = Message<"user.User"> & {
    * @generated from field: debate.CollectionSpecification collection_spec = 5;
    */
   collectionSpec?: CollectionSpecification;
+
+  /**
+   * @generated from field: string google_sub = 6;
+   */
+  googleSub: string;
+
+  /**
+   * @generated from field: string email = 7;
+   */
+  email: string;
 };
 
 /**

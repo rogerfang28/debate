@@ -66,8 +66,15 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     // Create moderator (uses existing DB)
     DebateModerator moderator;
 
+    // Standalone DB handle wired to the same DB_PATH as moderator, used only to
+    // reach a DebateWrapper for read-only collection building in tests
+    // (DebateModerator no longer exposes its internal DebateWrapper).
+    Database wrapperDb(db_path);
+    DatabaseWrapper wrapperDbWrapper(wrapperDb);
+    DebateWrapper debateWrapper(wrapperDbWrapper);
+
     // Find all users in the debate
-    std::vector<int> user_ids = moderator.getDebateWrapper().findUsersInDebate(debate_id);
+    std::vector<int> user_ids = debateWrapper.findUsersInDebate(debate_id);
     if (user_ids.empty()) {
         Log::error("[downloadJson] No users found in debate " + std::to_string(debate_id));
         return;
@@ -82,7 +89,7 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
 
     // Build the collection for all users in the debate
     debate::Collection collection = BuildCollection::BuildForDebateAndUsers(
-        debate_id, user_ids, moderator.getDebateWrapper());
+        debate_id, user_ids, debateWrapper);
 
     Log::info("[downloadJson] Collection: " + std::to_string(collection.claims_by_id_size())
               + " claims, " + std::to_string(collection.links_by_id_size()) + " links");

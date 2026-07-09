@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <cstdlib>
 
 #include "debate.pb.h"
 #include "user.pb.h"
@@ -54,8 +55,9 @@ static std::vector<uint8_t> serializeUser(const user::User& u) {
 class PropagationTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        db_path_ = "test_prop_temp.sqlite3";
-        std::remove(db_path_.c_str());
+         // Use unique temp file per test process to avoid race conditions in parallel runs
+         db_path_ = std::string("test_prop_temp_") + std::to_string(getpid()) + ".sqlite3";
+         std::remove(db_path_.c_str());
 
         db_      = new Database(db_path_);
         wrapper_ = new DatabaseWrapper(*db_);
@@ -91,6 +93,7 @@ protected:
     void actAsBob()   { userId_ = bob_id_;   user_ = &bob_;   }
 
     void enterDebate(int debateId) {
+        debateId_ = debateId;
         MoveUserHandler::EnterDebate(debateId, userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
@@ -123,8 +126,43 @@ protected:
     }
 
     void concede() {
-        ChallengeHandler::ConcedeChallenge(userId_, 0, *debate_);
+        int challengeLinkId = resolveChallengeLinkIdToConcede();
+        ChallengeHandler::ConcedeChallenge(userId_, challengeLinkId, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
+    }
+
+    // Test-only stand-in for what a real frontend's UI state would supply
+    // directly (the specific challenge link being conceded to). Tries the two
+    // scenarios these tests exercise:
+    //   1. The conceding user IS the challenger: SubmitChallengeClaim left their
+    //      current_claim pointed at the challenge claim, so its own outgoing
+    //      CHALLENGE link is the one to concede.
+    //   2. The conceding user was challenged: find the CHALLENGE link whose
+    //      target claim they created.
+    int resolveChallengeLinkIdToConcede() {
+        int currentClaimId = user_->engagement().debating_info().current_claim().id();
+        debate::Relationship::Link fromCurrent = debate_->findOutgoingChallengeLink(currentClaimId).link();
+        if (fromCurrent.link_type() == debate::LinkType::CHALLENGE) {
+            return fromCurrent.id();
+        }
+
+        int bestFromClaimId = -1;
+        int bestLinkId = -1;
+        for (const auto& linkTuple : debate_->getLinksForDebate(debateId_)) {
+            int linkId = std::get<0>(linkTuple);
+            int fromClaimId = std::get<1>(linkTuple);
+            int toClaimId = std::get<2>(linkTuple);
+            int linkType = std::get<5>(linkTuple);
+            if (linkType != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
+            debate::Claim targetClaim = debate_->getClaimById(toClaimId);
+            if (targetClaim.id() != 0 && targetClaim.creator_id() == userId_) {
+                if (fromClaimId > bestFromClaimId) {
+                    bestFromClaimId = fromClaimId;
+                    bestLinkId = linkId;
+                }
+            }
+        }
+        return bestLinkId;
     }
 
     debate::Claim claim(int id) { return debate_->getClaimById(id); }
@@ -133,6 +171,7 @@ protected:
     Database*      db_      = nullptr;
     DatabaseWrapper* wrapper_ = nullptr;
     DebateWrapper* debate_  = nullptr;
+    int debateId_ = 0;
 
     int alice_id_ = 0;
     int bob_id_   = 0;

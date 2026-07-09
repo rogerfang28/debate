@@ -16,9 +16,10 @@ public:
 
     moderator_to_vr::ModeratorToVRMessage handleRequest(debate_event::DebateEvent& event);
     int getUserId(const std::string& username) {
-        return dbWrapper.users.getUserId(username);
-    }
-    int createUserIfNotExist(const std::string& username);
+         return dbWrapper.users.getUserId(username);
+     }
+     DebateWrapper& getDebateWrapper() { return debateWrapper; }
+     int createUserIfNotExist(const std::string& username);
 
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
