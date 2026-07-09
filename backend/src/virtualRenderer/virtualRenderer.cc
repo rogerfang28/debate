@@ -8,6 +8,7 @@
 #include "./ClientMessageHandler/ClientMessageParser.h"
 #include "./LayoutGenerator/LayoutGenerator.h"
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
+#include "./LayoutGenerator/pages/errorPage/ErrorPageGenerator.h"
 // #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
@@ -212,6 +213,12 @@ ui::Page VirtualRenderer::handleDebatePageLoad(const std::string& username, int 
 
     moderator_to_vr::ModeratorToVRMessage info = moderator.handleRequest(evt);
 
-    // 3. Generate layout page
+    // 3. Check if debate exists — collection has no claims if debate doesn't exist
+    if (info.collection().claims_by_id_size() == 0) {
+        Log::warn("[VirtualRenderer] Debate " + std::to_string(debate_id) + " does not exist for user " + username);
+        return ErrorPageGenerator::GenerateErrorPage();
+    }
+
+    // 4. Generate layout page
     return LayoutGenerator::generateLayout(info, userDb);
 }
