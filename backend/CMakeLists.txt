@@ -83,6 +83,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/utils/pathUtils.cpp
      ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
      ${CMAKE_SOURCE_DIR}/src/utils/GoogleJWTVerifier.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateDatabase.cc
