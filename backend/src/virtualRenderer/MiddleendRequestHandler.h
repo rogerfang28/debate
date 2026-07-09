@@ -3,8 +3,8 @@
 #include <string>
 #include <map>
 #include "httplib.h"
-#include "layout.pb.h"
-#include "client_message.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 #include "./virtualRenderer.h"
 
 class MiddleendRequestHandler {
@@ -13,8 +13,11 @@ public:
     ~MiddleendRequestHandler() = default;
 
     // Handle POST request
-    void handleRequest(const httplib::Request& req, httplib::Response& res);
-private:
+     void handleRequest(const httplib::Request& req, httplib::Response& res);
+
+     // Handle GET request (?id= and ?username= query params)
+     void handleGetRequest(const httplib::Request& req, httplib::Response& res);
+    private:
     // Helper methods can be added here
     int extractUserIdFromCookies(const httplib::Request& req);
     ui::Page createLoginPage();

@@ -5,7 +5,7 @@
 
 // #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../virtualRenderer/MiddleendRequestHandler.h"
-#include "client_message.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>
@@ -41,10 +41,15 @@ int main() {
     handler.handleRequest(req, res);
   });
 
+  // GET /api/ with ?id=<debate_id>&username=<username>
+  svr.Get("/api", [&handler](const httplib::Request& req, httplib::Response& res) {
+    handler.handleGetRequest(req, res);
+  });
+
   // ---------- Start server ----------
   const char* HOST = std::getenv("DEBATE_SERVER_HOST");
   if (HOST == nullptr || HOST[0] == '\0') {
-    HOST = "0.0.0.0";
+    HOST = "127.0.0.1";
   }
 
   const char* portEnv = std::getenv("DEBATE_SERVER_PORT");

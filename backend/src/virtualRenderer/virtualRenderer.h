@@ -1,9 +1,10 @@
 #pragma once
+
 #include <string>
 #include "../database/sqlite/Database.h"
 #include "../database/virtualrenderer/VRUserDatabase.h"
-#include "layout.pb.h"
-#include "client_message.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
 #include "../debateModerator/DebateModerator.h"
 
 // Forward declarations to avoid heavy includes
@@ -31,10 +32,19 @@ public:
     std::string layoutGenerator(const std::string& user);
 
     // HTTP request handlers
-    // void handleGetRequest(const httplib::Request& req, httplib::Response& res);
-    // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
-    ui::Page handleClientMessage(const client_message::ClientMessage& client_message, const httplib::Request& req, httplib::Response& res);
-    void handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
+     // void handleGetRequest(const httplib::Request& req, httplib::Response& res);
+     // void handlePostRequest(const httplib::Request& req, httplib::Response& res);
+     ui::Page handleClientMessage(const client_message::ClientMessage& client_message, const httplib::Request& req, httplib::Response& res);
+     void handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
+
+     // Get user ID by username (public access for GET handler)
+     int getUserId(const std::string& username) { return userDb.getUserId(username); }
+     int createUser(const std::string& username, std::vector<uint8_t> data) { return userDb.createUser(username, data); }
+     bool updateUserProtobuf(int user_id, const std::vector<uint8_t>& data) { return userDb.updateUserProtobuf(user_id, data); }
+
+     // Load a debate page for a shared link: creates user, enters debate, returns page
+     ui::Page handleDebatePageLoad(const std::string& username, int debate_id);
+
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
     int createUserIfNotExist(const std::string& username);

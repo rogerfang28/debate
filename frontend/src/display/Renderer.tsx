@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
+import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
@@ -12,6 +13,20 @@ declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
   }
+}
+
+/**
+ * Parse /debate/:debateId/:username from the current URL pathname.
+ * Returns { debateId, username } or null if not a shared link.
+ */
+function parseSharedLink(): { debateId: string; username: string } | null {
+  const pathname = window.location.pathname;
+  // Match /debate/123/username or /debate/123/username/
+  const match = pathname.match(/^\/debate\/([^/]+)\/([^/]+)\/?$/);
+  if (match) {
+    return { debateId: match[1], username: match[2] };
+  }
+  return null;
 }
 
 const Renderer: React.FC = () => {
@@ -50,7 +65,7 @@ const Renderer: React.FC = () => {
     };
   }, [reloadPage]);
 
-  // Fetch page on mount only — subsequent refreshes are event-driven via reloadPage()
+  // Fetch page on mount — supports shared links (/debate/:id/:username)
   useEffect(() => {
     let mounted = true;
 
@@ -58,11 +73,27 @@ const Renderer: React.FC = () => {
       if (!mounted) return;
       try {
         setLoading(true);
-        const info: PageData | null = await postClientMessageToCPP({});
-        if (!mounted) return;
-        if (info) {
-          setData(info);
-          setError(null);
+
+        const shared = parseSharedLink();
+        if (shared) {
+          // Shared link: GET /api?id=X&username=Y (protobuf)
+          const info = await getPageFromCPP({ pageId: shared.debateId, username: shared.username });
+          if (!mounted) return;
+          if (info) {
+            setData(info);
+            setError(null);
+            return;
+          } else {
+            setError("Failed to load debate. The user may not exist or the debate may have been deleted.");
+          }
+        } else {
+          // Normal app flow: POST /clientmessage
+          const info: PageData | null = await postClientMessageToCPP({});
+          if (!mounted) return;
+          if (info) {
+            setData(info);
+            setError(null);
+          }
         }
       } catch (err: unknown) {
         if (!mounted) return;
@@ -135,7 +166,7 @@ const Renderer: React.FC = () => {
         title="Load layout from JSON file"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2v-4M17 8l-5-5-5 5M12 3v12" />
         </svg>
         Load File
       </button>

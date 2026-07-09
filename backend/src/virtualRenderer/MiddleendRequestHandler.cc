@@ -1,12 +1,15 @@
 // has handle get or post or any request, calls virtual renderer
 #include "MiddleendRequestHandler.h"
 
-// #include "client_message.pb.h"
+// #include "../../../src/gen/cpp/client_message.pb.h"
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
 #include <fstream>
 
-#include "layout.pb.h"
+#include "../../../src/gen/cpp/layout.pb.h"
+#include "../../../src/gen/cpp/client_message.pb.h"
+#include "../../../src/gen/cpp/user.pb.h"
+#include "../../../src/gen/cpp/user_engagement.pb.h"
 #include "./virtualRenderer.h"
 #include <iostream>
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
@@ -39,7 +42,46 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     // send proto back in the res
     std::string page_data_serialized;
     if (!page.SerializeToString(&page_data_serialized)) {
-        Log::error("❌ Failed to serialize Page response");
+        Log::error("Failed to serialize Page response");
+        res.status = 500;
+        res.set_content("Failed to serialize Page response", "text/plain");
+        return;
+    }
+    res.status = 200;
+    res.set_content(page_data_serialized, "application/x-protobuf");
+}
+
+void MiddleendRequestHandler::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
+    // Extract query params: ?id=<debate_id>&username=<username>
+    std::string debate_id_str = req.get_param_value("id");
+    std::string username = req.get_param_value("username");
+
+    Log::info("[GET /api/] id=" + debate_id_str + " username=" + username);
+
+    if (debate_id_str.empty() || username.empty()) {
+        Log::error("[GET /api/] Missing id or username query param");
+        res.status = 400;
+        res.set_content("{\"error\": \"Missing 'id' or 'username' query parameter\"}", "text/plain");
+        return;
+    }
+
+    // Parse debate_id
+    int debate_id = 0;
+    try {
+        debate_id = std::stoi(debate_id_str);
+    } catch (const std::exception& e) {
+        Log::error("[GET /api/] Invalid debate_id: " + debate_id_str);
+        res.status = 400;
+        res.set_content("{\"error\": \"Invalid debate_id parameter\"}", "text/plain");
+        return;
+    }
+
+    // Load debate page through new method
+    ui::Page page = renderer.handleDebatePageLoad(username, debate_id);
+
+    std::string page_data_serialized;
+    if (!page.SerializeToString(&page_data_serialized)) {
+        Log::error("Failed to serialize Page response");
         res.status = 500;
         res.set_content("Failed to serialize Page response", "text/plain");
         return;

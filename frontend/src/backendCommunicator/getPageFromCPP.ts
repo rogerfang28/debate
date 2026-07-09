@@ -12,11 +12,12 @@ const API_BASE = import.meta.env.VITE_API_URL?.trim() || "";
  */
 export default async function getPageFromCPP(opts?: {
   pageId?: string;
+  username?: string;
   endpoint?: string;
   withCredentials?: boolean;
 }): Promise<PageData | null> {
   try {
-    const defaultEndpoint = "/api/";
+    const defaultEndpoint = "/api";
     const endpoint = opts?.endpoint ?? defaultEndpoint;
     const fullUrl = API_BASE
       ? `${API_BASE.replace(/\/+$/, '')}${endpoint.replace(/^\/api/, '')}`
@@ -24,6 +25,7 @@ export default async function getPageFromCPP(opts?: {
 
     const url = new URL(fullUrl, window.location.origin);
     if (opts?.pageId) url.searchParams.set("id", opts.pageId);
+    if (opts?.username) url.searchParams.set("username", opts.username);
 
     console.log("▶️ GET", url.toString(), "(expecting protobuf Page)");
 

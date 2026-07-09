@@ -171,3 +171,47 @@ int VirtualRenderer::createUserIfNotExist(const std::string& username) {
     }
     return user_id;
 }
+
+ui::Page VirtualRenderer::handleDebatePageLoad(const std::string& username, int debate_id) {
+    Log::info("[VirtualRenderer] handleDebatePageLoad: username=" + username + " debate_id=" + std::to_string(debate_id));
+
+    // 1. Create user in BOTH databases so MoveUserHandler::EnterDebate can find it
+    int user_id = userDb.getUserId(username);
+    if (user_id == -1) {
+        user::User newUser;
+        newUser.set_username(username);
+        newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+
+        std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        user_id = userDb.createUser(username, serializedNewUser);
+
+        newUser.set_user_id(user_id);
+        serializedNewUser.resize(newUser.ByteSizeLong());
+        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
+        userDb.updateUserProtobuf(user_id, serializedNewUser);
+        Log::info("[VirtualRenderer] Created user in VR DB: " + username + " (id=" + std::to_string(user_id) + ")");
+    } else {
+        Log::info("[VirtualRenderer] User already in VR DB: " + username + " (id=" + std::to_string(user_id) + ")");
+    }
+
+    // Also ensure user exists in the main DebateModerator DB (dbWrapper.users)
+    int moderatorUserId = moderator.createUserIfNotExist(username);
+    if (moderatorUserId != user_id) {
+        Log::info("[VirtualRenderer] User ID mismatch: VR DB=" + std::to_string(user_id) + " vs Moderator DB=" + std::to_string(moderatorUserId));
+    }
+    Log::info("[VirtualRenderer] Moderator DB user_id: " + std::to_string(moderatorUserId));
+
+    // 2. Send ENTER_DEBATE event to load the debate
+    debate_event::DebateEvent evt;
+    evt.set_type(debate_event::ENTER_DEBATE);
+    evt.mutable_enter_debate()->set_debate_id(debate_id);
+    evt.mutable_user()->set_user_id(moderatorUserId);
+    evt.mutable_user()->set_username(username);
+    evt.mutable_user()->set_is_logged_in(true);
+
+    moderator_to_vr::ModeratorToVRMessage info = moderator.handleRequest(evt);
+
+    // 3. Generate layout page
+    return LayoutGenerator::generateLayout(info, userDb);
+}
