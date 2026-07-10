@@ -23,6 +23,26 @@ static std::string StepViewClaimStatusToLabel(debate::ClaimStatus status) {
     }
 }
 
+// Local copy of FullDebatePageInfoParser.cc's MapClaimStatusForUser -- that
+// one isn't declared in a header either. The Claim.status field itself is
+// not the source of truth; status is per-viewer (an explicit user_statuses
+// entry, else TRUE_CLAIM if the viewer created it, else UNDETERMINED).
+static debate::ClaimStatus StepViewMapClaimStatusForUser(
+    const debate::Claim& claim,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    const auto& userStatuses = claim.user_statuses();
+    auto it = userStatuses.find(viewerUsername);
+    if (it != userStatuses.end()) {
+        return it->second;
+    }
+    if (viewerUserId == claim.creator_id()) {
+        return debate::ClaimStatus::TRUE_CLAIM;
+    }
+    return debate::ClaimStatus::UNDETERMINED;
+}
+
 // Builds the "Selected Claim" info panel: sentence, status, creator,
 // description, and contextual action buttons (Add Child + Delete for the
 // viewer's own claims, Challenge for others').
@@ -30,7 +50,8 @@ static ui::Component BuildSelectedClaimPanel(
     int claimId,
     const debate::Collection& collectionProto,
     VRUserDatabase& userDb,
-    int viewerUserId
+    int viewerUserId,
+    const std::string& viewerUsername
 ) {
     ui::Component panel = ComponentGenerator::createContainer(
         "selectedClaimPanel",
@@ -101,7 +122,8 @@ static ui::Component BuildSelectedClaimPanel(
     };
 
     addField("Sentence", "Selected Claim:", claim.sentence(), false);
-    addField("Status", "Status:", StepViewClaimStatusToLabel(claim.status()), false);
+    debate::ClaimStatus viewerStatus = StepViewMapClaimStatusForUser(claim, viewerUserId, viewerUsername);
+    addField("Status", "Status:", StepViewClaimStatusToLabel(viewerStatus), false);
     std::string creatorUsername = userDb.getUsername(claim.creator_id());
     if (creatorUsername.empty()) {
         creatorUsername = "User " + std::to_string(claim.creator_id());
@@ -459,7 +481,7 @@ ui::Page StepView::GenerateStepViewPage(
 	*/
 
 	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
-		currentClaimId, collectionProto, userDb, fullDebateInfo.viewer_user_id()
+		currentClaimId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
