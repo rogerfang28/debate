@@ -167,7 +167,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
     // BFS to assign levels and order
     const positioned: GraphNode[] = [];
-    const levels: string[][] = [];
     const visited = new Set<string>();
     let currentLevel = [rootId];
 
@@ -185,14 +184,11 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           }
         }
       }
-      levels.push(currentLevel.filter((id) => visited.has(id)));
       currentLevel = nextLevel;
     }
 
-    // Add any disconnected nodes at the bottom
-    for (const n of nodes) {
-      if (!visited.has(n.id)) positioned.push(n);
-    }
+    // Nodes not connected to the root (no PARENT_CHILD path from it) are
+    // dropped entirely for now, instead of floating in a row underneath.
 
     // Compute subtree widths
     const subtreeWidth = new Map<string, number>();
@@ -229,17 +225,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       }
     };
     placeNode(rootId, xOffset, 0);
-
-    // Place disconnected nodes in a row at bottom
-    const maxDepth = levels.length;
-    let dx = GAP_X;
-    for (const n of nodes) {
-      if (!visited.has(n.id)) {
-        n.x = dx;
-        n.y = 60 + maxDepth * GAP_Y;
-        dx += GAP_X;
-      }
-    }
 
     return positioned;
   }, [nodes, edges, dims.width]);
