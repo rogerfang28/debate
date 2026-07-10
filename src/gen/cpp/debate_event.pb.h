@@ -145,6 +145,10 @@ class RemoveLinkToBeChallenged;
 struct RemoveLinkToBeChallengedDefaultTypeInternal;
 extern RemoveLinkToBeChallengedDefaultTypeInternal _RemoveLinkToBeChallenged_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull RemoveLinkToBeChallenged_class_data_;
+class SelectClaim;
+struct SelectClaimDefaultTypeInternal;
+extern SelectClaimDefaultTypeInternal _SelectClaim_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull SelectClaim_class_data_;
 class SubmitChallengeClaim;
 struct SubmitChallengeClaimDefaultTypeInternal;
 extern SubmitChallengeClaimDefaultTypeInternal _SubmitChallengeClaim_default_instance_;
@@ -229,6 +233,7 @@ enum EventType : int {
   CANCEL_MODIFICATION_OF_CLAIM = 50,
   GO_TO_OVERVIEW = 51,
   GO_TO_FULL_DEBATE_VIEW = 52,
+  SELECT_CLAIM = 53,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -239,11 +244,11 @@ extern const uint32_t EventType_internal_data_[];
 inline constexpr EventType EventType_MIN =
     static_cast<EventType>(0);
 inline constexpr EventType EventType_MAX =
-    static_cast<EventType>(52);
+    static_cast<EventType>(53);
 inline bool EventType_IsValid(int value) {
-  return 0 <= value && value <= 52;
+  return 0 <= value && value <= 53;
 }
-inline constexpr int EventType_ARRAYSIZE = 52 + 1;
+inline constexpr int EventType_ARRAYSIZE = 53 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor();
 template <typename T>
 const ::std::string& EventType_Name(T value) {
@@ -254,7 +259,7 @@ const ::std::string& EventType_Name(T value) {
 }
 template <>
 inline const ::std::string& EventType_Name(EventType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 52>(
+  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 53>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(
@@ -323,7 +328,7 @@ class UserAuthInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const UserAuthInfo*>(
         &_UserAuthInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(UserAuthInfo& a, UserAuthInfo& b) { a.Swap(&b); }
   inline void Swap(UserAuthInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -542,7 +547,7 @@ class SubmitEditClaimDescription final : public ::google::protobuf::Message
     return *reinterpret_cast<const SubmitEditClaimDescription*>(
         &_SubmitEditClaimDescription_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(SubmitEditClaimDescription& a, SubmitEditClaimDescription& b) { a.Swap(&b); }
   inline void Swap(SubmitEditClaimDescription* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -737,7 +742,7 @@ class SubmitEditClaim final : public ::google::protobuf::Message
     return *reinterpret_cast<const SubmitEditClaim*>(
         &_SubmitEditClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(SubmitEditClaim& a, SubmitEditClaim& b) { a.Swap(&b); }
   inline void Swap(SubmitEditClaim* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -932,7 +937,7 @@ class SubmitConnectClaims final : public ::google::protobuf::Message
     return *reinterpret_cast<const SubmitConnectClaims*>(
         &_SubmitConnectClaims_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(SubmitConnectClaims& a, SubmitConnectClaims& b) { a.Swap(&b); }
   inline void Swap(SubmitConnectClaims* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1151,7 +1156,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     return *reinterpret_cast<const SubmitChallengeClaim*>(
         &_SubmitChallengeClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(SubmitChallengeClaim& a, SubmitChallengeClaim& b) { a.Swap(&b); }
   inline void Swap(SubmitChallengeClaim* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1291,6 +1296,196 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull SubmitChallengeClaim_class_data_;
 // -------------------------------------------------------------------
 
+class SelectClaim final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.SelectClaim) */ {
+ public:
+  inline SelectClaim() : SelectClaim(nullptr) {}
+  ~SelectClaim() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SelectClaim* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SelectClaim));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SelectClaim(::google::protobuf::internal::ConstantInitialized);
+
+  inline SelectClaim(const SelectClaim& from) : SelectClaim(nullptr, from) {}
+  inline SelectClaim(SelectClaim&& from) noexcept
+      : SelectClaim(nullptr, ::std::move(from)) {}
+  inline SelectClaim& operator=(const SelectClaim& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SelectClaim& operator=(SelectClaim&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SelectClaim& default_instance() {
+    return *reinterpret_cast<const SelectClaim*>(
+        &_SelectClaim_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(SelectClaim& a, SelectClaim& b) { a.Swap(&b); }
+  inline void Swap(SelectClaim* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SelectClaim* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SelectClaim* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SelectClaim>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SelectClaim& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SelectClaim& from) { SelectClaim::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SelectClaim* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.SelectClaim"; }
+
+  explicit SelectClaim(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  SelectClaim(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const SelectClaim& from);
+  SelectClaim(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, SelectClaim&& from) noexcept
+      : SelectClaim(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kClaimIdFieldNumber = 1,
+  };
+  // int32 claim_id = 1;
+  void clear_claim_id() ;
+  ::int32_t claim_id() const;
+  void set_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_claim_id() const;
+  void _internal_set_claim_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.SelectClaim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const SelectClaim& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t claim_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull SelectClaim_class_data_;
+// -------------------------------------------------------------------
+
 class RemoveLinkToBeChallenged final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.RemoveLinkToBeChallenged) */ {
  public:
@@ -1346,7 +1541,7 @@ class RemoveLinkToBeChallenged final : public ::google::protobuf::Message
     return *reinterpret_cast<const RemoveLinkToBeChallenged*>(
         &_RemoveLinkToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 18;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(RemoveLinkToBeChallenged& a, RemoveLinkToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(RemoveLinkToBeChallenged* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1536,7 +1731,7 @@ class RemoveClaimToBeChallenged final : public ::google::protobuf::Message
     return *reinterpret_cast<const RemoveClaimToBeChallenged*>(
         &_RemoveClaimToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(RemoveClaimToBeChallenged& a, RemoveClaimToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(RemoveClaimToBeChallenged* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1730,7 +1925,7 @@ class Login final : public ::google::protobuf::Message
     kGoogleIdToken = 3,
     AUTH_METHOD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(Login& a, Login& b) { a.Swap(&b); }
   inline void Swap(Login* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1970,7 +2165,7 @@ class LeaveDebate final : public ::google::protobuf::Message
     return *reinterpret_cast<const LeaveDebate*>(
         &_LeaveDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(LeaveDebate& a, LeaveDebate& b) { a.Swap(&b); }
   inline void Swap(LeaveDebate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2160,7 +2355,7 @@ class JoinDebate final : public ::google::protobuf::Message
     return *reinterpret_cast<const JoinDebate*>(
         &_JoinDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(JoinDebate& a, JoinDebate& b) { a.Swap(&b); }
   inline void Swap(JoinDebate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2540,7 +2735,7 @@ class GoToChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const GoToChallenge*>(
         &_GoToChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 20;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(GoToChallenge& a, GoToChallenge& b) { a.Swap(&b); }
   inline void Swap(GoToChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2920,7 +3115,7 @@ class DeleteLink final : public ::google::protobuf::Message
     return *reinterpret_cast<const DeleteLink*>(
         &_DeleteLink_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(DeleteLink& a, DeleteLink& b) { a.Swap(&b); }
   inline void Swap(DeleteLink* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3490,7 +3685,7 @@ class DeleteChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const DeleteChallenge*>(
         &_DeleteChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(DeleteChallenge& a, DeleteChallenge& b) { a.Swap(&b); }
   inline void Swap(DeleteChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3875,7 +4070,7 @@ class ConnectToClaim final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConnectToClaim*>(
         &_ConnectToClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(ConnectToClaim& a, ConnectToClaim& b) { a.Swap(&b); }
   inline void Swap(ConnectToClaim* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4065,7 +4260,7 @@ class ConnectFromClaim final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConnectFromClaim*>(
         &_ConnectFromClaim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(ConnectFromClaim& a, ConnectFromClaim& b) { a.Swap(&b); }
   inline void Swap(ConnectFromClaim* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4255,7 +4450,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConcedeChallenge*>(
         &_ConcedeChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 21;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(ConcedeChallenge& a, ConcedeChallenge& b) { a.Swap(&b); }
   inline void Swap(ConcedeChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4457,7 +4652,7 @@ class AddLinkToBeChallenged final : public ::google::protobuf::Message
     return *reinterpret_cast<const AddLinkToBeChallenged*>(
         &_AddLinkToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 17;
+  static constexpr int kIndexInFileMessages = 18;
   friend void swap(AddLinkToBeChallenged& a, AddLinkToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(AddLinkToBeChallenged* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4878,7 +5073,7 @@ class AddClaimToBeChallenged final : public ::google::protobuf::Message
     return *reinterpret_cast<const AddClaimToBeChallenged*>(
         &_AddClaimToBeChallenged_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(AddClaimToBeChallenged& a, AddClaimToBeChallenged& b) { a.Swap(&b); }
   inline void Swap(AddClaimToBeChallenged* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5280,7 +5475,7 @@ class MoveUserToTimestamp final : public ::google::protobuf::Message
     return *reinterpret_cast<const MoveUserToTimestamp*>(
         &_MoveUserToTimestamp_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(MoveUserToTimestamp& a, MoveUserToTimestamp& b) { a.Swap(&b); }
   inline void Swap(MoveUserToTimestamp* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5512,9 +5707,10 @@ class DebateEvent final : public ::google::protobuf::Message
     kDeleteChallenge = 48,
     kLeaveDebate = 49,
     kMoveUserToTimestamp = 50,
+    kSelectClaim = 51,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 27;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5628,6 +5824,7 @@ class DebateEvent final : public ::google::protobuf::Message
     kDeleteChallengeFieldNumber = 48,
     kLeaveDebateFieldNumber = 49,
     kMoveUserToTimestampFieldNumber = 50,
+    kSelectClaimFieldNumber = 51,
   };
   // .debate_event.UserAuthInfo user = 1;
   bool has_user() const;
@@ -6125,6 +6322,25 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::MoveUserToTimestamp* PROTOBUF_NONNULL _internal_mutable_move_user_to_timestamp();
 
   public:
+  // .debate_event.SelectClaim select_claim = 51;
+  bool has_select_claim() const;
+  private:
+  bool _internal_has_select_claim() const;
+
+  public:
+  void clear_select_claim() ;
+  const ::debate_event::SelectClaim& select_claim() const;
+  [[nodiscard]] ::debate_event::SelectClaim* PROTOBUF_NULLABLE release_select_claim();
+  ::debate_event::SelectClaim* PROTOBUF_NONNULL mutable_select_claim();
+  void set_allocated_select_claim(::debate_event::SelectClaim* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_select_claim(::debate_event::SelectClaim* PROTOBUF_NULLABLE value);
+  ::debate_event::SelectClaim* PROTOBUF_NULLABLE unsafe_arena_release_select_claim();
+
+  private:
+  const ::debate_event::SelectClaim& _internal_select_claim() const;
+  ::debate_event::SelectClaim* PROTOBUF_NONNULL _internal_mutable_select_claim();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -6154,11 +6370,12 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_delete_challenge();
   void set_has_leave_debate();
   void set_has_move_user_to_timestamp();
+  void set_has_select_claim();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 27,
-                                   26, 0,
+  static const ::google::protobuf::internal::TcParseTable<2, 28,
+                                   27, 0,
                                    9>
       _table_;
 
@@ -6209,6 +6426,7 @@ class DebateEvent final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE delete_challenge_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE leave_debate_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE move_user_to_timestamp_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE select_claim_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6690,6 +6908,35 @@ inline ::int32_t GoToClaim::_internal_claim_id() const {
   return _impl_.claim_id_;
 }
 inline void GoToClaim::_internal_set_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SelectClaim
+
+// int32 claim_id = 1;
+inline void SelectClaim::clear_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::int32_t SelectClaim::claim_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.SelectClaim.claim_id)
+  return _internal_claim_id();
+}
+inline void SelectClaim::set_claim_id(::int32_t value) {
+  _internal_set_claim_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:debate_event.SelectClaim.claim_id)
+}
+inline ::int32_t SelectClaim::_internal_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claim_id_;
+}
+inline void SelectClaim::_internal_set_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = value;
 }
@@ -10042,6 +10289,88 @@ inline ::debate_event::MoveUserToTimestamp* PROTOBUF_NONNULL DebateEvent::mutabl
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::MoveUserToTimestamp* _msg = _internal_mutable_move_user_to_timestamp();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.move_user_to_timestamp)
+  return _msg;
+}
+
+// .debate_event.SelectClaim select_claim = 51;
+inline bool DebateEvent::has_select_claim() const {
+  return payload_case() == kSelectClaim;
+}
+inline bool DebateEvent::_internal_has_select_claim() const {
+  return payload_case() == kSelectClaim;
+}
+inline void DebateEvent::set_has_select_claim() {
+  _impl_._oneof_case_[0] = kSelectClaim;
+}
+inline void DebateEvent::clear_select_claim() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kSelectClaim) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.select_claim_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.select_claim_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::SelectClaim* PROTOBUF_NULLABLE DebateEvent::release_select_claim() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.select_claim)
+  if (payload_case() == kSelectClaim) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::SelectClaim*>(_impl_.payload_.select_claim_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.select_claim_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::SelectClaim& DebateEvent::_internal_select_claim() const {
+  return payload_case() == kSelectClaim ? static_cast<const ::debate_event::SelectClaim&>(*reinterpret_cast<::debate_event::SelectClaim*>(_impl_.payload_.select_claim_))
+                     : reinterpret_cast<const ::debate_event::SelectClaim&>(::debate_event::_SelectClaim_default_instance_);
+}
+inline const ::debate_event::SelectClaim& DebateEvent::select_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.select_claim)
+  return _internal_select_claim();
+}
+inline ::debate_event::SelectClaim* PROTOBUF_NULLABLE DebateEvent::unsafe_arena_release_select_claim() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.select_claim)
+  if (payload_case() == kSelectClaim) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::SelectClaim*>(_impl_.payload_.select_claim_);
+    _impl_.payload_.select_claim_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_select_claim(
+    ::debate_event::SelectClaim* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_select_claim();
+    _impl_.payload_.select_claim_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.select_claim)
+}
+inline ::debate_event::SelectClaim* PROTOBUF_NONNULL DebateEvent::_internal_mutable_select_claim() {
+  if (payload_case() != kSelectClaim) {
+    clear_payload();
+    set_has_select_claim();
+    _impl_.payload_.select_claim_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::SelectClaim>(GetArena()));
+  }
+  return reinterpret_cast<::debate_event::SelectClaim*>(_impl_.payload_.select_claim_);
+}
+inline ::debate_event::SelectClaim* PROTOBUF_NONNULL DebateEvent::mutable_select_claim()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::SelectClaim* _msg = _internal_mutable_select_claim();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.select_claim)
   return _msg;
 }
 

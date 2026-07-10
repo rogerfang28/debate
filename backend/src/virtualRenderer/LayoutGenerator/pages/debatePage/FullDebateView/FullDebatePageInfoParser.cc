@@ -357,8 +357,9 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	return info;
 }
 
-rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateViewInfo(const debate::Collection& collectionProto, int viewer_user_id, const std::string& viewer_username) {
+rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateViewInfo(const debate::Collection& collectionProto, int viewer_user_id, const std::string& viewer_username, int viewer_current_claim_id) {
 	rendering_info::FullDebateViewInfo info;
+	info.set_viewer_current_claim_id(viewer_current_claim_id);
 	Log::debug(
 		"[ParseFullDebateViewInfo] Start: claims_by_id=" + std::to_string(collectionProto.claims_by_id_size()) +
 		", links_by_id=" + std::to_string(collectionProto.links_by_id_size())
