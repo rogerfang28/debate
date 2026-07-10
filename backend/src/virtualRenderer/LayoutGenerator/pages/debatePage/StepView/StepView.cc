@@ -176,6 +176,8 @@ static ui::Component BuildSelectedClaimPanel(
         );
         ComponentGenerator::addChild(&buttonRow, deleteButton);
     } else {
+        // challengeClaimButton now enters challenging mode AND opens the
+        // challenge modal in one step (see ChallengeHandler::StartChallengeClaim).
         ui::Component challengeButton = ComponentGenerator::createButton(
             "challengeClaimButton",
             "Challenge",
