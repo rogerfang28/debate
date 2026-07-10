@@ -30,15 +30,23 @@ static ui::Component BuildTreeNode(
         sentence = claimIt->second.sentence();
     }
 
-    // Find children in the full_debate_tree.
-    std::vector<int> childIds;
+    // Find children in the full_debate_tree: PARENT_CHILD children from the
+    // convenience adjacency list, plus CHALLENGE targets from the tree's
+    // link list (child_claim_ids only ever carries PARENT_CHILD edges).
+    std::vector<std::pair<int, bool>> children; // (claimId, isChallenge)
     if (fullDebateInfo.has_full_debate_tree()) {
-        for (const auto& treeNode : fullDebateInfo.full_debate_tree().nodes()) {
+        const auto& tree = fullDebateInfo.full_debate_tree();
+        for (const auto& treeNode : tree.nodes()) {
             if (treeNode.claim_id() == claimId) {
                 for (int cid : treeNode.child_claim_ids()) {
-                    childIds.push_back(cid);
+                    children.emplace_back(cid, false);
                 }
                 break;
+            }
+        }
+        for (const auto& link : tree.links()) {
+            if (link.is_challenge() && link.from_claim_id() == claimId) {
+                children.emplace_back(link.to_claim_id(), true);
             }
         }
     }
@@ -48,15 +56,15 @@ static ui::Component BuildTreeNode(
         idPrefix + "_label_" + std::to_string(claimId),
         sentence,
         "text-sm",
-        childIds.empty() ? "text-gray-300" : "text-blue-300",
-        childIds.empty() ? "" : "font-medium",
+        children.empty() ? "text-gray-300" : "text-blue-300",
+        children.empty() ? "" : "font-medium",
         "cursor-pointer ms-1"
     );
     ComponentGenerator::addAttribute(&label, "data-tree-label", "true");
     ComponentGenerator::addChild(&node, label);
 
     // Recursively build children.
-    if (!childIds.empty()) {
+    if (!children.empty()) {
         ui::Component childrenContainer;
         childrenContainer.set_id(idPrefix + "_children_" + std::to_string(claimId));
         childrenContainer.set_type(ui::ComponentType::CONTAINER);
@@ -68,13 +76,16 @@ static ui::Component BuildTreeNode(
         (*childrenContainer.mutable_css())["padding-left"] = "0.75rem";
         (*childrenContainer.mutable_css())["gap"] = "0.25rem";
 
-        for (size_t i = 0; i < childIds.size(); ++i) {
-            if (visited.count(childIds[i])) continue;
-            visited.insert(childIds[i]);
+        for (const auto& [childId, isChallenge] : children) {
+            if (visited.count(childId)) continue;
+            visited.insert(childId);
             ui::Component childNode = BuildTreeNode(
-                childIds[i], fullDebateInfo, collectionProto,
+                childId, fullDebateInfo, collectionProto,
                 idPrefix, visited
             );
+            if (isChallenge) {
+                ComponentGenerator::addAttribute(&childNode, "data-tree-challenge", "true");
+            }
             ComponentGenerator::addChild(&childrenContainer, childNode);
         }
         ComponentGenerator::addChild(&node, childrenContainer);

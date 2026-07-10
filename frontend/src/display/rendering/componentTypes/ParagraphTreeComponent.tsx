@@ -6,6 +6,10 @@ import { BaseComponentProps } from "./TextComponent";
 // making it visually obvious which children belong to which parent.
 const DEPTH_COLORS = ["#60a5fa", "#34d399", "#f59e0b", "#f472b6", "#a78bfa", "#22d3ee"];
 
+// Matches the "Challenge" color used in the debate map/graph, so a
+// challenging claim reads visually the same way in both views.
+const CHALLENGE_COLOR = "#f97316";
+
 interface ParagraphTreeProps extends BaseComponentProps {
   depth?: number;
 }
@@ -50,7 +54,8 @@ const ParagraphTreeComponent: React.FC<ParagraphTreeProps> = ({ component, depth
 
   const isCollapsed = collapsed.has(component.id);
   const text = ensureSentenceEnd(labelChild?.text || "");
-  const color = DEPTH_COLORS[depth % DEPTH_COLORS.length];
+  const isChallenge = (component.attributes || {})["data-tree-challenge"] === "true";
+  const color = isChallenge ? CHALLENGE_COLOR : DEPTH_COLORS[depth % DEPTH_COLORS.length];
 
   return (
     <span id={component.id}>
@@ -66,9 +71,15 @@ const ParagraphTreeComponent: React.FC<ParagraphTreeProps> = ({ component, depth
             {isCollapsed ? "▸" : "▾"}
           </span>
         )}
+        {isChallenge && (
+          <span style={{ color, fontWeight: 700, fontStyle: "italic", marginRight: "0.25rem" }}>
+            Challenge:
+          </span>
+        )}
         <span
           style={{
-            fontWeight: hasChildren ? 600 : 400,
+            fontWeight: hasChildren || isChallenge ? 600 : 400,
+            fontStyle: isChallenge ? "italic" : "normal",
             borderBottom: hasChildren ? `2px solid ${color}` : "none",
           }}
         >
