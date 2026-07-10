@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
 import { BaseComponentProps } from "./TextComponent";
+import handleEvent from "../../events/handleEvent";
 
 // ── Types matching the backend protobuf data ──────────────────────────
 
@@ -258,11 +259,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     svg.call(zoom);
   }, []);
 
-  // ── Click handler
+  // ── Click handler — selects the claim server-side (SELECT_CLAIM), which
+  // moves the "current claim" highlight to it on next render.
   const handleNodeClick = useCallback(
-    (node: GraphNode) => {
+    (node: GraphNode, e: React.MouseEvent) => {
       setSelectedId(node.id === selectedId ? null : node.id);
       onNodeClick?.(node);
+      const syntheticId = `selectClaimNode_${node.id}`;
+      handleEvent(e as any, { id: syntheticId }, "onClick", syntheticId);
     },
     [selectedId, onNodeClick]
   );
@@ -418,7 +422,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 className="graph-node"
                 style={{ cursor: "pointer" }}
                 transform={`translate(${cx},${cy})`}
-                onClick={() => handleNodeClick(node)}
+                onClick={(e) => handleNodeClick(node, e)}
                 onPointerEnter={(e) => {
                   const rect = containerRef.current?.getBoundingClientRect();
                   setTooltip({

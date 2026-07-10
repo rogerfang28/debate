@@ -168,6 +168,10 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: GO_TO_CLAIM");
             MoveUserHandler::GoToClaim(event.go_to_claim().claim_id(), user_id, debateWrapper);
             break;
+        case debate_event::SELECT_CLAIM:
+            Log::info("[DebateModerator] Event Type: SELECT_CLAIM");
+            MoveUserHandler::SelectClaim(event.select_claim().claim_id(), user_id, debateWrapper);
+            break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::info("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
             AddClaimHandler::OpenAddChildClaim(user_id, debateWrapper);

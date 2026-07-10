@@ -52,6 +52,11 @@ message FullDebateViewInfo {
 	// This is separate from the per-claim user_statuses and can be removed
 	// when no longer needed.
 	PerUserClaimStatuses per_user_statuses = 5;
+
+	// The viewer's currently-selected claim (from UserEngagement.DebatingInfo),
+	// used to highlight the active node in the map/graph and paragraph tree.
+	// 0 if unset.
+	int32 viewer_current_claim_id = 6;
 }
 
 // A per-user matrix of claim statuses — used for visualization only.

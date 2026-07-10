@@ -77,6 +77,15 @@ void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateW
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
+void MoveUserHandler::SelectClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[SelectClaim] User " + std::to_string(user_id) + " selecting claim id: " + std::to_string(claim_id));
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    // Only update current_claim -- current_scope is intentionally untouched
+    // so this never navigates away from whatever page the user is on.
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
 // this function should be not called later, since vr can just call go to claim with claim id
 void MoveUserHandler::GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper) {
     resetOngoingActivities(user_id, debateWrapper);

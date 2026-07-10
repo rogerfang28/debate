@@ -8,6 +8,10 @@ public:
     static bool EnterDebate(const int& debateId, const int& user_id, DebateWrapper& debateWrapper);
     static bool GoHome(const int& user_id, DebateWrapper& debateWrapper);
     static void GoToClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
+    // Updates the viewer's "current claim" (for map/tree highlighting) without
+    // touching current_scope -- unlike GoToClaim, this never navigates to the
+    // single-claim view.
+    static void SelectClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper);
     static void GoToChallenge(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper);

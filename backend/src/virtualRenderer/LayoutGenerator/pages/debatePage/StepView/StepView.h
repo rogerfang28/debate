@@ -3,6 +3,7 @@
 #include "layout.pb.h"
 #include "rendering_info.pb.h"
 #include "collection.pb.h"
+#include "user.pb.h"
 
 class VRUserDatabase;
 
@@ -11,6 +12,7 @@ public:
 	static ui::Page GenerateStepViewPage(
 		const rendering_info::FullDebateViewInfo& fullDebateInfo,
 		const debate::Collection& collectionProto,
-		VRUserDatabase& userDb
+		VRUserDatabase& userDb,
+		const user::User& viewerUser
 	);
 };

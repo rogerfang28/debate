@@ -6,7 +6,7 @@ import getEntirePage from "../getEntirePage.ts";
 (window as any).googleLoginCallback = async (credential: string) => {
   console.log("[GoogleAuth] Got ID token from Google, sending to backend...");
   try {
-    await postClientMessageToCPP({
+    const page = await postClientMessageToCPP({
       componentId: "googleLoginButton",
       eventType: "onGoogleLogin",
       actionId: "google",
@@ -14,7 +14,11 @@ import getEntirePage from "../getEntirePage.ts";
       data: { _pageId: "login", google_id_token: credential },
       timestamp: Date.now(),
     });
-    window.reloadPage?.();
+    if (page && window.applyPageData) {
+      window.applyPageData(page);
+    } else {
+      window.reloadPage?.();
+    }
   } catch (error) {
     console.error("[GoogleAuth] Failed to send Google token:", error);
   }
@@ -76,7 +80,7 @@ export default async function handleEvent(
     // Collect only form input values from the page (not div textContent)
     const pageData = getEntirePage(component.id);
 
-    await postClientMessageToCPP({
+    const page = await postClientMessageToCPP({
       componentId: component.id || "unknown",
       eventType: eventName,
       actionId,
@@ -85,8 +89,13 @@ export default async function handleEvent(
       timestamp: Date.now(),
     });
 
-    // 🔹 Instantly refresh the page after sending event
-    window.reloadPage?.();
+    // Apply the page already returned by this event's own response instead
+    // of firing a second, redundant full-page fetch via reloadPage().
+    if (page && window.applyPageData) {
+      window.applyPageData(page);
+    } else {
+      window.reloadPage?.();
+    }
 
   } catch (error: unknown) {
     console.error(`Error handling event ${eventName}:`, error);

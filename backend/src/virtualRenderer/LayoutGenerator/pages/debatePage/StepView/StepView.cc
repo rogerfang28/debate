@@ -1,11 +1,176 @@
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
+#include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+// Local copy of FullDebatePageGenerator.cc's ClaimStatusToLabel -- that one
+// isn't declared in a header, so it's not reusable across translation units.
+static std::string StepViewClaimStatusToLabel(debate::ClaimStatus status) {
+    switch (status) {
+        case debate::ClaimStatus::UNDETERMINED:
+            return "Undetermined";
+        case debate::ClaimStatus::TRUE_CLAIM:
+            return "True";
+        case debate::ClaimStatus::FALSE_CLAIM:
+            return "False";
+        default:
+            return "Unknown";
+    }
+}
+
+// Builds the "Selected Claim" info panel: sentence, status, creator,
+// description, and contextual action buttons (Add Child + Delete for the
+// viewer's own claims, Challenge for others').
+static ui::Component BuildSelectedClaimPanel(
+    int claimId,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "selectedClaimPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    auto claimIt = collectionProto.claims_by_id().find(claimId);
+    if (claimId <= 0 || claimIt == collectionProto.claims_by_id().end()) {
+        ui::Component emptyText = ComponentGenerator::createText(
+            "selectedClaimEmpty",
+            "No claim selected.",
+            "text-sm",
+            "text-gray-400",
+            "",
+            ""
+        );
+        ComponentGenerator::addChild(&panel, emptyText);
+        return panel;
+    }
+    const debate::Claim& claim = claimIt->second;
+
+    auto addField = [&](const std::string& idSuffix, const std::string& label, const std::string& value, bool italic) {
+        ui::Component row = ComponentGenerator::createContainer(
+            "selectedClaim" + idSuffix + "Row",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*row.mutable_css())["display"] = "flex";
+        (*row.mutable_css())["flex-direction"] = "column";
+        (*row.mutable_css())["gap"] = "0.15rem";
+
+        ui::Component labelText = ComponentGenerator::createText(
+            "selectedClaim" + idSuffix + "Label",
+            label,
+            "text-xs",
+            "text-gray-500",
+            "font-semibold uppercase tracking-wide",
+            ""
+        );
+        ComponentGenerator::addChild(&row, labelText);
+
+        ui::Component valueText = ComponentGenerator::createText(
+            "selectedClaim" + idSuffix + "Value",
+            value,
+            "text-sm",
+            "text-white",
+            "",
+            italic ? "italic" : ""
+        );
+        (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&row, valueText);
+
+        ComponentGenerator::addChild(&panel, row);
+    };
+
+    addField("Sentence", "Selected Claim:", claim.sentence(), false);
+    addField("Status", "Status:", StepViewClaimStatusToLabel(claim.status()), false);
+    std::string creatorUsername = userDb.getUsername(claim.creator_id());
+    if (creatorUsername.empty()) {
+        creatorUsername = "User " + std::to_string(claim.creator_id());
+    }
+    addField("Creator", "Created by:", creatorUsername, false);
+    addField(
+        "Description",
+        "Description:",
+        claim.description().empty() ? "(no description)" : claim.description(),
+        claim.description().empty()
+    );
+
+    ui::Component buttonRow = ComponentGenerator::createContainer(
+        "selectedClaimButtonRow",
+        "flex gap-2",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
+
+    const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
+    if (isOwnClaim) {
+        ui::Component addChildButton = ComponentGenerator::createButton(
+            "addChildClaimButton",
+            "Add Child",
+            "",
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, addChildButton);
+
+        ui::Component deleteButton = ComponentGenerator::createButton(
+            "deleteStatementButton",
+            "Delete",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, deleteButton);
+    } else {
+        ui::Component challengeButton = ComponentGenerator::createButton(
+            "challengeClaimButton",
+            "Challenge",
+            "",
+            "bg-orange-600",
+            "hover:bg-orange-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, challengeButton);
+    }
+    ComponentGenerator::addChild(&panel, buttonRow);
+
+    return panel;
+}
 
 // Helper: Build a nested tree of CONTAINER components from the debate tree.
 // Each node becomes a CONTAINER with data-tree-node attribute.
@@ -15,13 +180,17 @@ static ui::Component BuildTreeNode(
     const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
     const std::string& idPrefix,
-    std::unordered_set<int>& visited
+    std::unordered_set<int>& visited,
+    int currentClaimId
 ) {
     ui::Component node;
     node.set_id(idPrefix + "_node_" + std::to_string(claimId));
     node.set_type(ui::ComponentType::CONTAINER);
     ComponentGenerator::addAttribute(&node, "data-tree-node", "true");
     ComponentGenerator::addAttribute(&node, "data-node-id", std::to_string(claimId));
+    if (currentClaimId > 0 && claimId == currentClaimId) {
+        ComponentGenerator::addAttribute(&node, "data-tree-current", "true");
+    }
 
     // Get sentence for this claim.
     std::string sentence;
@@ -81,7 +250,7 @@ static ui::Component BuildTreeNode(
             visited.insert(childId);
             ui::Component childNode = BuildTreeNode(
                 childId, fullDebateInfo, collectionProto,
-                idPrefix, visited
+                idPrefix, visited, currentClaimId
             );
             if (isChallenge) {
                 ComponentGenerator::addAttribute(&childNode, "data-tree-challenge", "true");
@@ -97,7 +266,8 @@ static ui::Component BuildTreeNode(
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
 	const debate::Collection& collectionProto,
-	VRUserDatabase& userDb
+	VRUserDatabase& userDb,
+	const user::User& viewerUser
 ) {
 	ui::Page page;
 	page.set_page_id("debate");
@@ -113,6 +283,13 @@ ui::Page StepView::GenerateStepViewPage(
 		if (rootIt != collectionProto.claims_by_id().end() && !rootIt->second.sentence().empty()) {
 			rootSentence = rootIt->second.sentence();
 		}
+	}
+
+	// The viewer's actually-selected claim, if it exists in this debate;
+	// falls back to the root claim so the map/tree still highlight something.
+	int currentClaimId = fullDebateInfo.viewer_current_claim_id();
+	if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
+		currentClaimId = rootClaimId;
 	}
 
 	ui::Component container = ComponentGenerator::createContainer(
@@ -202,6 +379,8 @@ ui::Page StepView::GenerateStepViewPage(
 	(*rightColumn.mutable_css())["min-width"] = "400px";
 
 
+	/* Step list -- replaced by the "Selected Claim" panel below. Kept here
+	   commented out in case we want to bring the flat step list back.
 	ui::Component stepsHeading = ComponentGenerator::createText(
 		"stepViewStepsHeading",
 		"Debate Steps",
@@ -277,6 +456,12 @@ ui::Page StepView::GenerateStepViewPage(
 
 	ComponentGenerator::addChild(&leftColumn, stepsHeading);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
+	*/
+
+	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
+		currentClaimId, collectionProto, userDb, fullDebateInfo.viewer_user_id()
+	);
+	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
 	// Render a single interactive paragraph tree for the entire debate,
 	// underneath the step list within the left column.
@@ -307,15 +492,15 @@ ui::Page StepView::GenerateStepViewPage(
 		visited.insert(rootClaimId);
 		ui::Component treeRoot = BuildTreeNode(
 			rootClaimId, fullDebateInfo, collectionProto,
-			"debateTree", visited
+			"debateTree", visited, currentClaimId
 		);
 		ComponentGenerator::addAttribute(&treeRoot, "data-tree-root", "true");
 		ComponentGenerator::addChild(&treeWrapper, treeRoot);
 		ComponentGenerator::addChild(&leftColumn, treeWrapper);
 	}
 
-	const int mapFocusClaimId = rootClaimId > 0
-		? rootClaimId
+	const int mapFocusClaimId = currentClaimId > 0
+		? currentClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
 	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
@@ -338,6 +523,13 @@ ui::Page StepView::GenerateStepViewPage(
 	// ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
 	// (*claimParser.mutable_css())["margin-top"] = "1rem";
 	// ComponentGenerator::addChild(&container, claimParser);
+
+	// Add Child / Challenge modals (from the Selected Claim panel's buttons)
+	// reuse the same overlay rendering as the single-claim view -- they're
+	// driven purely by the viewer's engagement state, not by which page
+	// they're rendered on.
+	rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(viewerUser, collectionProto);
+	container = FullDebatePageGenerator::AddAppropriateOverlays(debatePageInfo, viewerUser, container);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);

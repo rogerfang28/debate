@@ -4177,6 +4177,7 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
     kFullDebateTreeFieldNumber = 4,
     kPerUserStatusesFieldNumber = 5,
     kViewerUserIdFieldNumber = 1,
+    kViewerCurrentClaimIdFieldNumber = 6,
   };
   // repeated .rendering_info.Steps steps = 3;
   int steps_size() const;
@@ -4250,11 +4251,21 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
   void _internal_set_viewer_user_id(::int32_t value);
 
   public:
+  // int32 viewer_current_claim_id = 6;
+  void clear_viewer_current_claim_id() ;
+  ::int32_t viewer_current_claim_id() const;
+  void set_viewer_current_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_viewer_current_claim_id() const;
+  void _internal_set_viewer_current_claim_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:rendering_info.FullDebateViewInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
                                    3, 57,
                                    2>
       _table_;
@@ -4281,6 +4292,7 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
     ::rendering_info::FullDebateTree* PROTOBUF_NULLABLE full_debate_tree_;
     ::rendering_info::PerUserClaimStatuses* PROTOBUF_NULLABLE per_user_statuses_;
     ::int32_t viewer_user_id_;
+    ::int32_t viewer_current_claim_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -5396,6 +5408,31 @@ inline void FullDebateViewInfo::set_allocated_per_user_statuses(::rendering_info
 
   _impl_.per_user_statuses_ = reinterpret_cast<::rendering_info::PerUserClaimStatuses*>(value);
   // @@protoc_insertion_point(field_set_allocated:rendering_info.FullDebateViewInfo.per_user_statuses)
+}
+
+// int32 viewer_current_claim_id = 6;
+inline void FullDebateViewInfo::clear_viewer_current_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_current_claim_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline ::int32_t FullDebateViewInfo::viewer_current_claim_id() const {
+  // @@protoc_insertion_point(field_get:rendering_info.FullDebateViewInfo.viewer_current_claim_id)
+  return _internal_viewer_current_claim_id();
+}
+inline void FullDebateViewInfo::set_viewer_current_claim_id(::int32_t value) {
+  _internal_set_viewer_current_claim_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:rendering_info.FullDebateViewInfo.viewer_current_claim_id)
+}
+inline ::int32_t FullDebateViewInfo::_internal_viewer_current_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.viewer_current_claim_id_;
+}
+inline void FullDebateViewInfo::_internal_set_viewer_current_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_current_claim_id_ = value;
 }
 
 // -------------------------------------------------------------------

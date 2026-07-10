@@ -9,6 +9,7 @@ import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 declare global {
   interface Window {
     reloadPage?: () => Promise<void>;
+    applyPageData?: (page: PageData) => void;
     googleLoginCallback?: (credential: string) => void;
   }
 }
@@ -59,13 +60,23 @@ const Renderer: React.FC = () => {
     }
   }, []);
 
-  // Expose global reload function for handleEvent.ts
+  // Directly apply a page already returned by an event's own response --
+  // avoids a redundant second full-page fetch (see applyPageData usage in
+  // handleEvent.ts).
+  const applyPageData = useCallback((page: PageData) => {
+    setData(page);
+    setError(null);
+  }, []);
+
+  // Expose global reload/apply functions for handleEvent.ts
   useEffect(() => {
     window.reloadPage = reloadPage;
+    window.applyPageData = applyPageData;
     return () => {
       window.reloadPage = undefined;
+      window.applyPageData = undefined;
     };
-  }, [reloadPage]);
+  }, [reloadPage, applyPageData]);
 
   // Fetch page on mount — supports shared links (/debate/:id/:username)
   useEffect(() => {
