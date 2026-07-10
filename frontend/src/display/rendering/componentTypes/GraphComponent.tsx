@@ -62,7 +62,21 @@ const MAX_LINES = 3;
 // ── Text wrapping helper ──────────────────────────────────────────────
 
 function wrapText(text: string, maxCharsPerLine: number, maxLines: number): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
+  // Split into words, then force-break any word longer than a line on its
+  // own (e.g. a continuous run with no spaces) into fixed-size chunks so it
+  // still wraps instead of overflowing the node.
+  const rawWords = text.split(/\s+/).filter(Boolean);
+  const words: string[] = [];
+  for (const word of rawWords) {
+    if (word.length <= maxCharsPerLine) {
+      words.push(word);
+    } else {
+      for (let i = 0; i < word.length; i += maxCharsPerLine) {
+        words.push(word.slice(i, i + maxCharsPerLine));
+      }
+    }
+  }
+
   const lines: string[] = [];
   let current = "";
   let wordIndex = 0;
