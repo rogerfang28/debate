@@ -501,7 +501,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         <div
           className="graph-tooltip"
           style={{
-            position: "fixed",
+            position: "absolute",
             left: tooltip.x + 12,
             top: tooltip.y - 10,
             background: "var(--surface-elevated)",
