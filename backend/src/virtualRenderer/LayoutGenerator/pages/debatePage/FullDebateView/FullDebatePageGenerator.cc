@@ -796,40 +796,6 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             "w-80 flex-shrink-0"
         );
 
-        // Per-user status rectangles above the claim sentence
-        if (claimStatus != debate::ClaimStatus::UNDETERMINED) {
-            ui::Component statusLabel = ComponentGenerator::createText(
-                nodeId + "Status",
-                "Status: " + statusText,
-                "text-xs",
-                statusTextColor,
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&childNode, statusLabel);
-        }
-
-        // Debug: show raw user_statuses data as text
-        {
-            const auto& statuses = std::get<4>(childClaimInfo[i]);
-            std::string debugText = "user_statuses[" + std::to_string(statuses.size()) + "]: ";
-            for (const auto& us : statuses) {
-                debugText += us.username() + "=" + std::to_string(us.status()) + " ";
-            }
-            if (statuses.empty()) {
-                debugText += "(empty)";
-            }
-            ui::Component debugLabel = ComponentGenerator::createText(
-                nodeId + "UserStatusDebug",
-                debugText,
-                "text-xs",
-                "text-yellow-400",
-                "",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&childNode, debugLabel);
-        }
-
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
             claimSentence,
