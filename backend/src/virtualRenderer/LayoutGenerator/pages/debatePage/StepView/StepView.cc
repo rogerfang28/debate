@@ -226,20 +226,27 @@ static ui::Component BuildTreeNode(
     // Find children in the full_debate_tree: PARENT_CHILD children from the
     // convenience adjacency list, plus CHALLENGE targets from the tree's
     // link list (child_claim_ids only ever carries PARENT_CHILD edges).
-    std::vector<std::pair<int, bool>> children; // (claimId, isChallenge)
+    // Challenges are treated exactly like normal links here -- no distinct
+    // marker or styling, just another nested child claim.
+    std::vector<int> children;
     if (fullDebateInfo.has_full_debate_tree()) {
         const auto& tree = fullDebateInfo.full_debate_tree();
         for (const auto& treeNode : tree.nodes()) {
             if (treeNode.claim_id() == claimId) {
                 for (int cid : treeNode.child_claim_ids()) {
-                    children.emplace_back(cid, false);
+                    children.push_back(cid);
                 }
                 break;
             }
         }
         for (const auto& link : tree.links()) {
-            if (link.is_challenge() && link.from_claim_id() == claimId) {
-                children.emplace_back(link.to_claim_id(), true);
+            // Challenge links point from the new challenge claim TO the
+            // original claim being challenged (addLink(challengeClaim,
+            // challengedClaim, ...)) -- the opposite direction from
+            // PARENT_CHILD. So the challenge claim nests under the claim
+            // it's challenging, not the other way around.
+            if (link.is_challenge() && link.to_claim_id() == claimId) {
+                children.push_back(link.from_claim_id());
             }
         }
     }
@@ -269,16 +276,13 @@ static ui::Component BuildTreeNode(
         (*childrenContainer.mutable_css())["padding-left"] = "0.75rem";
         (*childrenContainer.mutable_css())["gap"] = "0.25rem";
 
-        for (const auto& [childId, isChallenge] : children) {
+        for (int childId : children) {
             if (visited.count(childId)) continue;
             visited.insert(childId);
             ui::Component childNode = BuildTreeNode(
                 childId, fullDebateInfo, collectionProto,
                 idPrefix, visited, currentClaimId
             );
-            if (isChallenge) {
-                ComponentGenerator::addAttribute(&childNode, "data-tree-challenge", "true");
-            }
             ComponentGenerator::addChild(&childrenContainer, childNode);
         }
         ComponentGenerator::addChild(&node, childrenContainer);
