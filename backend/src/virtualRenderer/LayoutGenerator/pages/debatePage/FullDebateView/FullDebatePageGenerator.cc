@@ -2,6 +2,7 @@
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../../../../../src/gen/cpp/user.pb.h"
 #include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <algorithm>
@@ -795,40 +796,6 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             "rounded",
             "w-80 flex-shrink-0"
         );
-
-        // Per-user status rectangles above the claim sentence
-        if (claimStatus != debate::ClaimStatus::UNDETERMINED) {
-            ui::Component statusLabel = ComponentGenerator::createText(
-                nodeId + "Status",
-                "Status: " + statusText,
-                "text-xs",
-                statusTextColor,
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&childNode, statusLabel);
-        }
-
-        // Debug: show raw user_statuses data as text
-        {
-            const auto& statuses = std::get<4>(childClaimInfo[i]);
-            std::string debugText = "user_statuses[" + std::to_string(statuses.size()) + "]: ";
-            for (const auto& us : statuses) {
-                debugText += us.username() + "=" + std::to_string(us.status()) + " ";
-            }
-            if (statuses.empty()) {
-                debugText += "(empty)";
-            }
-            ui::Component debugLabel = ComponentGenerator::createText(
-                nodeId + "UserStatusDebug",
-                debugText,
-                "text-xs",
-                "text-yellow-400",
-                "",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&childNode, debugLabel);
-        }
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
@@ -2011,7 +1978,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb) {
 
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
@@ -2255,6 +2222,10 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             default:                                  gNode->set_status("UNDETERMINED"); break;
         }
         gNode->set_creator_id(node->creator_id());
+        if (userDb != nullptr) {
+            std::string creatorUsername = userDb->getUsername(node->creator_id());
+            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(node->creator_id())) : creatorUsername);
+        }
         gNode->set_is_root(claimId == rootClaimId);
         gNode->set_is_current(claimId == currentClaimId);
     }

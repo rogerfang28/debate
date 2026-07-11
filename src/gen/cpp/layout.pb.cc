@@ -127,6 +127,9 @@ inline constexpr GraphNode::Impl_::Impl_(
         status_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        creator_username_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         x_{0},
         y_{0},
         creator_id_{0},
@@ -417,7 +420,7 @@ const ::uint32_t
         1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_._has_bits_),
-        12, // hasbit index offset
+        13, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.text_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.x_),
@@ -427,15 +430,17 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.creator_id_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.is_root_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.is_current_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphNode, _impl_.creator_username_),
         0,
         1,
-        4,
         5,
+        6,
         2,
         3,
-        6,
         7,
         8,
+        9,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_._has_bits_),
         7, // hasbit index offset
@@ -472,8 +477,8 @@ static const ::_pbi::MigrationSchema
         {55, sizeof(::ui::Position)},
         {64, sizeof(::ui::Size)},
         {71, sizeof(::ui::GraphNode)},
-        {92, sizeof(::ui::GraphEdge)},
-        {103, sizeof(::ui::GraphComponent)},
+        {94, sizeof(::ui::GraphEdge)},
+        {105, sizeof(::ui::GraphComponent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
@@ -505,27 +510,27 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "alue\030\002 \001(\t:\0028\001\"\035\n\005Style\022\024\n\014custom_class\030"
     "\001 \001(\t\".\n\010Position\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
     "\014\n\004unit\030\003 \001(\t\"%\n\004Size\022\r\n\005width\030\001 \001(\t\022\016\n\006"
-    "height\030\002 \001(\t\"\222\001\n\tGraphNode\022\n\n\002id\030\001 \001(\t\022\014"
+    "height\030\002 \001(\t\"\254\001\n\tGraphNode\022\n\n\002id\030\001 \001(\t\022\014"
     "\n\004text\030\002 \001(\t\022\t\n\001x\030\003 \001(\001\022\t\n\001y\030\004 \001(\001\022\014\n\004ty"
     "pe\030\005 \001(\t\022\016\n\006status\030\006 \001(\t\022\022\n\ncreator_id\030\007"
     " \001(\005\022\017\n\007is_root\030\010 \001(\010\022\022\n\nis_current\030\t \001("
-    "\010\"E\n\tGraphEdge\022\n\n\002id\030\001 \001(\t\022\016\n\006source\030\002 \001"
-    "(\t\022\016\n\006target\030\003 \001(\t\022\014\n\004type\030\004 \001(\t\"\214\001\n\016Gra"
-    "phComponent\022\n\n\002id\030\001 \001(\t\022\034\n\005nodes\030\002 \003(\0132\r"
-    ".ui.GraphNode\022\034\n\005edges\030\003 \003(\0132\r.ui.GraphE"
-    "dge\022\030\n\020selected_node_id\030\004 \001(\t\022\030\n\020selecte"
-    "d_edge_id\030\005 \001(\t*i\n\rComponentType\022\013\n\007UNKN"
-    "OWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t"
-    "\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014CLAIM_PARSER"
-    "\020\016*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020"
-    "\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006p"
-    "roto3"
+    "\010\022\030\n\020creator_username\030\n \001(\t\"E\n\tGraphEdge"
+    "\022\n\n\002id\030\001 \001(\t\022\016\n\006source\030\002 \001(\t\022\016\n\006target\030\003"
+    " \001(\t\022\014\n\004type\030\004 \001(\t\"\214\001\n\016GraphComponent\022\n\n"
+    "\002id\030\001 \001(\t\022\034\n\005nodes\030\002 \003(\0132\r.ui.GraphNode\022"
+    "\034\n\005edges\030\003 \003(\0132\r.ui.GraphEdge\022\030\n\020selecte"
+    "d_node_id\030\004 \001(\t\022\030\n\020selected_edge_id\030\005 \001("
+    "\t*i\n\rComponentType\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020"
+    "\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t\n\005GRAPH\020\004\022\r\n\tC"
+    "ONTAINER\020\014\022\020\n\014CLAIM_PARSER\020\016*I\n\nLayoutTy"
+    "pe\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020"
+    "\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1205,
+    1231,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -2889,7 +2894,8 @@ PROTOBUF_NDEBUG_INLINE GraphNode::Impl_::Impl_(
         id_(arena, from.id_),
         text_(arena, from.text_),
         type_(arena, from.type_),
-        status_(arena, from.status_) {}
+        status_(arena, from.status_),
+        creator_username_(arena, from.creator_username_) {}
 
 GraphNode::GraphNode(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -2921,7 +2927,8 @@ PROTOBUF_NDEBUG_INLINE GraphNode::Impl_::Impl_(
         id_(arena),
         text_(arena),
         type_(arena),
-        status_(arena) {}
+        status_(arena),
+        creator_username_(arena) {}
 
 inline void GraphNode::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -2947,6 +2954,7 @@ inline void GraphNode::SharedDtor(MessageLite& self) {
   this_._impl_.text_.Destroy();
   this_._impl_.type_.Destroy();
   this_._impl_.status_.Destroy();
+  this_._impl_.creator_username_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -2993,16 +3001,16 @@ GraphNode::GetClassData() const {
   return GraphNode_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 0, 45, 2>
+const ::_pbi::TcParseTable<4, 10, 0, 61, 2>
 GraphNode::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(GraphNode, _impl_._has_bits_),
     0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
+    10,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     GraphNode_class_data_.base(),
@@ -3023,11 +3031,11 @@ GraphNode::_table_ = {
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_)}},
     // double x = 3;
     {::_pbi::TcParser::FastF64S1,
-     {25, 4, 0,
+     {25, 5, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_)}},
     // double y = 4;
     {::_pbi::TcParser::FastF64S1,
-     {33, 5, 0,
+     {33, 6, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_)}},
     // string type = 5;
     {::_pbi::TcParser::FastUS1,
@@ -3038,18 +3046,21 @@ GraphNode::_table_ = {
      {50, 3, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_)}},
     // int32 creator_id = 7;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphNode, _impl_.creator_id_), 6>(),
-     {56, 6, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphNode, _impl_.creator_id_), 7>(),
+     {56, 7, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_)}},
     // bool is_root = 8;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_root_), 7>(),
-     {64, 7, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_root_), 8>(),
+     {64, 8, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_)}},
     // bool is_current = 9;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_current_), 8>(),
-     {72, 8, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(GraphNode, _impl_.is_current_), 9>(),
+     {72, 9, 0,
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // string creator_username = 10;
+    {::_pbi::TcParser::FastUS1,
+     {82, 4, 0,
+      PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_username_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -3063,28 +3074,31 @@ GraphNode::_table_ = {
     // string text = 2;
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.text_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // double x = 3;
-    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.x_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
     // double y = 4;
-    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.y_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
     // string type = 5;
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.type_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string status = 6;
     {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.status_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 creator_id = 7;
-    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_id_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
     // bool is_root = 8;
-    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_root_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // bool is_current = 9;
-    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string creator_username = 10;
+    {PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.creator_username_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\14\2\4\0\0\4\6\0\0\0\0\0\0\0\0\0"
+    "\14\2\4\0\0\4\6\0\0\0\20\0\0\0\0\0"
     "ui.GraphNode"
     "id"
     "text"
     "type"
     "status"
+    "creator_username"
   }},
 };
 PROTOBUF_NOINLINE void GraphNode::Clear() {
@@ -3095,7 +3109,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       _impl_.id_.ClearNonDefaultToEmpty();
     }
@@ -3108,13 +3122,20 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       _impl_.status_.ClearNonDefaultToEmpty();
     }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      _impl_.creator_username_.ClearNonDefaultToEmpty();
+    }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x000000f0U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000e0U)) {
     ::memset(&_impl_.x_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.is_root_) -
-        reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.is_root_));
+        reinterpret_cast<char*>(&_impl_.creator_id_) -
+        reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.creator_id_));
   }
-  _impl_.is_current_ = false;
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+    ::memset(&_impl_.is_root_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.is_current_) -
+        reinterpret_cast<char*>(&_impl_.is_root_)) + sizeof(_impl_.is_current_));
+  }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3159,7 +3180,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   }
 
   // double x = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
@@ -3168,7 +3189,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   }
 
   // double y = 4;
-  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
@@ -3197,7 +3218,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   }
 
   // int32 creator_id = 7;
-  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
     if (this_._internal_creator_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
@@ -3206,7 +3227,7 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   }
 
   // bool is_root = 8;
-  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     if (this_._internal_is_root() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -3215,11 +3236,21 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
   }
 
   // bool is_current = 9;
-  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000200U)) {
     if (this_._internal_is_current() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
           9, this_._internal_is_current(), target);
+    }
+  }
+
+  // string creator_username = 10;
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (!this_._internal_creator_username().empty()) {
+      const ::std::string& _s = this_._internal_creator_username();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphNode.creator_username");
+      target = stream->WriteStringMaybeAliased(10, _s, target);
     }
   }
 
@@ -3277,35 +3308,42 @@ PROTOBUF_NOINLINE void GraphNode::Clear() {
                                         this_._internal_status());
       }
     }
-    // double x = 3;
+    // string creator_username = 10;
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!this_._internal_creator_username().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_creator_username());
+      }
+    }
+    // double x = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_x()) != 0) {
         total_size += 9;
       }
     }
     // double y = 4;
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_y()) != 0) {
         total_size += 9;
       }
     }
     // int32 creator_id = 7;
-    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (this_._internal_creator_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_creator_id());
       }
     }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
     // bool is_root = 8;
-    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (this_._internal_is_root() != 0) {
         total_size += 2;
       }
     }
-  }
-   {
     // bool is_current = 9;
-    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (this_._internal_is_current() != 0) {
         total_size += 2;
       }
@@ -3367,29 +3405,40 @@ void GraphNode::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!from._internal_creator_username().empty()) {
+        _this->_internal_set_creator_username(from._internal_creator_username());
+      } else {
+        if (_this->_impl_.creator_username_.IsDefault()) {
+          _this->_internal_set_creator_username("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_x()) != 0) {
         _this->_impl_.x_ = from._impl_.x_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_y()) != 0) {
         _this->_impl_.y_ = from._impl_.y_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (from._internal_creator_id() != 0) {
         _this->_impl_.creator_id_ = from._impl_.creator_id_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (from._internal_is_root() != 0) {
         _this->_impl_.is_root_ = from._impl_.is_root_;
       }
     }
-  }
-  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
-    if (from._internal_is_current() != 0) {
-      _this->_impl_.is_current_ = from._impl_.is_current_;
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+      if (from._internal_is_current() != 0) {
+        _this->_impl_.is_current_ = from._impl_.is_current_;
+      }
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -3415,6 +3464,7 @@ void GraphNode::InternalSwap(GraphNode* PROTOBUF_RESTRICT PROTOBUF_NONNULL other
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.type_, &other->_impl_.type_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.status_, &other->_impl_.status_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.creator_username_, &other->_impl_.creator_username_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GraphNode, _impl_.is_current_)
       + sizeof(GraphNode::_impl_.is_current_)

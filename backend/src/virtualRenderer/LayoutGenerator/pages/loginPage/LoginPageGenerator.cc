@@ -6,7 +6,7 @@
 ui::Page LoginPageGenerator::GenerateLoginPage() {
     ui::Page page;
     page.set_page_id("login");
-    page.set_title((demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Enter Username")) + std::string(" | commit: ") + GIT_COMMIT_HASH);
+    page.set_title((demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Sign In")) + std::string(" | commit: ") + GIT_COMMIT_HASH);
 
     // Main container
     ui::Component main = GenerateLoginPageMainLayout();
@@ -51,7 +51,7 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Please enter your username to continue."),
+        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Sign in with Google, or continue as guest."),
         "",
         "text-gray-300",
         "",
@@ -78,34 +78,6 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
         ComponentGenerator::addChild(&main, demoButton);
     }
     else {
-        // Username input
-        ui::Component usernameInput = ComponentGenerator::createInput(
-            "usernameInput",
-            "Enter your username...",
-            "username",
-            "bg-gray-800",
-            "text-white",
-            "border-gray-600",
-            "p-3",
-            "rounded",
-            "w-full max-w-sm"
-        );
-        ComponentGenerator::addChild(&main, usernameInput);
-
-        // Submit button
-          ui::Component submitButton = ComponentGenerator::createButton(
-              "submitButton",
-              "Submit",
-              "submit",
-              "bg-green-600",
-              "hover:bg-green-500",
-              "text-white",
-              "px-6 py-3",
-              "rounded-lg",
-              "transition"
-          );
-          ComponentGenerator::addChild(&main, submitButton);
-
           // Guest Mode button — signs in as username "guest"
           ui::Component guestButton = ComponentGenerator::createButton(
               "guestButton",

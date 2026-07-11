@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
 import { BaseComponentProps } from "./TextComponent";
+import handleEvent from "../../events/handleEvent";
 
 // ── Types matching the backend protobuf data ──────────────────────────
 
@@ -12,6 +13,7 @@ interface GraphNode {
   type?: string;       // "claim" | "evidence" | "challenge" | "counter" | ""
   status?: string;     // "TRUE_CLAIM" | "FALSE_CLAIM" | "UNDETERMINED"
   creatorId?: number;
+  creatorUsername?: string;
   isRoot?: boolean;
   isCurrent?: boolean;
 }
@@ -52,17 +54,32 @@ const EDGE_COLORS: Record<string, string> = {
   CHALLENGE:  "#f97316",
 };
 
-const NODE_WIDTH = 150;
-const NODE_HEIGHT = 68;
-const ROOT_WIDTH = 170;
-const ROOT_HEIGHT = 76;
+const NODE_WIDTH = 160;
+const NODE_HEIGHT = 80;
+const ROOT_WIDTH = 180;
+const ROOT_HEIGHT = 88;
 const CHARS_PER_LINE = 20;
 const MAX_LINES = 3;
+const LINE_HEIGHT = 12;
 
 // ── Text wrapping helper ──────────────────────────────────────────────
 
 function wrapText(text: string, maxCharsPerLine: number, maxLines: number): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
+  // Split into words, then force-break any word longer than a line on its
+  // own (e.g. a continuous run with no spaces) into fixed-size chunks so it
+  // still wraps instead of overflowing the node.
+  const rawWords = text.split(/\s+/).filter(Boolean);
+  const words: string[] = [];
+  for (const word of rawWords) {
+    if (word.length <= maxCharsPerLine) {
+      words.push(word);
+    } else {
+      for (let i = 0; i < word.length; i += maxCharsPerLine) {
+        words.push(word.slice(i, i + maxCharsPerLine));
+      }
+    }
+  }
+
   const lines: string[] = [];
   let current = "";
   let wordIndex = 0;
@@ -124,8 +141,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   }, []);
 
   // ── Compute tree layout positions ─────────────────────────────────
-  const GAP_X = 190;
-  const GAP_Y = 150;
+  const GAP_X = 200;
+  const GAP_Y = 170;
 
   const positionedNodes = useMemo(() => {
     if (nodes.length === 0) return [];
@@ -152,7 +169,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
     // BFS to assign levels and order
     const positioned: GraphNode[] = [];
-    const levels: string[][] = [];
     const visited = new Set<string>();
     let currentLevel = [rootId];
 
@@ -170,14 +186,11 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           }
         }
       }
-      levels.push(currentLevel.filter((id) => visited.has(id)));
       currentLevel = nextLevel;
     }
 
-    // Add any disconnected nodes at the bottom
-    for (const n of nodes) {
-      if (!visited.has(n.id)) positioned.push(n);
-    }
+    // Nodes not connected to the root (no PARENT_CHILD path from it) are
+    // dropped entirely for now, instead of floating in a row underneath.
 
     // Compute subtree widths
     const subtreeWidth = new Map<string, number>();
@@ -215,17 +228,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     };
     placeNode(rootId, xOffset, 0);
 
-    // Place disconnected nodes in a row at bottom
-    const maxDepth = levels.length;
-    let dx = GAP_X;
-    for (const n of nodes) {
-      if (!visited.has(n.id)) {
-        n.x = dx;
-        n.y = 60 + maxDepth * GAP_Y;
-        dx += GAP_X;
-      }
-    }
-
     return positioned;
   }, [nodes, edges, dims.width]);
 
@@ -244,11 +246,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     svg.call(zoom);
   }, []);
 
-  // ── Click handler
+  // ── Click handler — selects the claim server-side (SELECT_CLAIM), which
+  // moves the "current claim" highlight to it on next render.
   const handleNodeClick = useCallback(
-    (node: GraphNode) => {
+    (node: GraphNode, e: React.MouseEvent) => {
       setSelectedId(node.id === selectedId ? null : node.id);
       onNodeClick?.(node);
+      const syntheticId = `selectClaimNode_${node.id}`;
+      handleEvent(e as any, { id: syntheticId }, "onClick", syntheticId);
     },
     [selectedId, onNodeClick]
   );
@@ -395,8 +400,23 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const stroke = isCurrent ? "#fbbf24" : colors.stroke;
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : 2;
             const lines = wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
-            const lineHeight = 12;
-            const firstLineDy = -((lines.length - 1) * lineHeight) / 2;
+            // Center the whole block (sentence + creator + status) based on
+            // this node's actual line count, instead of reserving fixed
+            // room for MAX_LINES -- keeps everything close together
+            // regardless of how long the sentence is.
+            const sentenceGap = 4;
+            const contentHeight = lines.length * LINE_HEIGHT + sentenceGap + 2 * LINE_HEIGHT;
+            const sentenceTop = -contentHeight / 2 + LINE_HEIGHT * 0.8;
+            const creatorY = sentenceTop + (lines.length - 1) * LINE_HEIGHT + sentenceGap + LINE_HEIGHT;
+            const statusY = creatorY + LINE_HEIGHT;
+            const statusLabel =
+              node.status === "TRUE_CLAIM" ? "Status: True" :
+              node.status === "FALSE_CLAIM" ? "Status: False" :
+              "Status: Undetermined";
+            const statusColor =
+              node.status === "TRUE_CLAIM" ? "#34d399" :
+              node.status === "FALSE_CLAIM" ? "#f87171" :
+              "var(--text-muted)";
 
             return (
               <g
@@ -404,7 +424,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 className="graph-node"
                 style={{ cursor: "pointer" }}
                 transform={`translate(${cx},${cy})`}
-                onClick={() => handleNodeClick(node)}
+                onClick={(e) => handleNodeClick(node, e)}
                 onPointerEnter={(e) => {
                   const rect = containerRef.current?.getBoundingClientRect();
                   setTooltip({
@@ -443,16 +463,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   stroke={stroke}
                   strokeWidth={strokeWidth}
                 />
-                {/* Status dot */}
-                {!node.status || node.status === "UNDETERMINED" ? null : (
-                  <circle
-                    cx={w / 2 - 10}
-                    cy={-h / 2 + 10}
-                    r={5}
-                    fill={node.status === "TRUE_CLAIM" ? "#34d399" : "#f87171"}
-                  />
-                )}
-                {/* Label (wrapped, up to MAX_LINES) */}
+                {/* Claim sentence (wrapped, up to MAX_LINES), top-anchored */}
                 <text
                   textAnchor="middle"
                   fill="var(--text-primary)"
@@ -461,20 +472,31 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   style={{ pointerEvents: "none", userSelect: "none" }}
                 >
                   {lines.map((line, i) => (
-                    <tspan key={i} x={0} dy={i === 0 ? firstLineDy : lineHeight}>
+                    <tspan key={i} x={0} y={sentenceTop + i * LINE_HEIGHT}>
                       {line}
                     </tspan>
                   ))}
                 </text>
-                {/* ID badge */}
+                {/* Created by */}
                 <text
                   textAnchor="middle"
-                  y={h / 2 - 6}
+                  y={creatorY}
                   fill="var(--text-muted)"
                   fontSize="8"
                   style={{ pointerEvents: "none" }}
                 >
-                  #{node.id}
+                  Created by: {node.creatorUsername || `#${node.id}`}
+                </text>
+                {/* Status */}
+                <text
+                  textAnchor="middle"
+                  y={statusY}
+                  fill={statusColor}
+                  fontSize="8"
+                  fontWeight="600"
+                  style={{ pointerEvents: "none" }}
+                >
+                  {statusLabel}
                 </text>
               </g>
             );
@@ -487,7 +509,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         <div
           className="graph-tooltip"
           style={{
-            position: "fixed",
+            position: "absolute",
             left: tooltip.x + 12,
             top: tooltip.y - 10,
             background: "var(--surface-elevated)",
