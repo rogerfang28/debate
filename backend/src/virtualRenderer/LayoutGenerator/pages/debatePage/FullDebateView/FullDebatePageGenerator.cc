@@ -2228,6 +2228,11 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
         gNode->set_is_root(claimId == rootClaimId);
         gNode->set_is_current(claimId == currentClaimId);
+        // Challenge (root) claims -- those that challenge another claim -- get
+        // an orange border in the map renderer.
+        if (challengingClaimIds.count(claimId) > 0) {
+            gNode->set_type("challenge");
+        }
     }
 
     // Add parent-child / tree edges

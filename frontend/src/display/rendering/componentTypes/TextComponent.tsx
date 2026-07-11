@@ -33,12 +33,12 @@ const TextComponent: React.FC<BaseComponentProps> = ({ component, className, sty
         id={component.id}
         className={className}
         style={{
-          ...style,
-          color: 'var(--text-primary)',
           fontWeight: 600,
           fontSize: '1rem',
           lineHeight: 1.4,
           marginBottom: '0.25rem',
+          ...style,
+          color: style?.color ?? 'var(--text-primary)',
         }}
       >
         {text}
@@ -51,10 +51,10 @@ const TextComponent: React.FC<BaseComponentProps> = ({ component, className, sty
       id={component.id}
       className={className}
       style={{
-        ...style,
-        color: isMuted ? 'var(--text-muted)' : 'var(--text-secondary)',
         fontSize: '0.875rem',
         lineHeight: 1.6,
+        ...style,
+        color: style?.color ?? (isMuted ? 'var(--text-muted)' : 'var(--text-secondary)'),
       }}
     >
       {text}
