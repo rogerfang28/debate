@@ -68,6 +68,7 @@ message GraphNode {
   int32 creator_id = 7;   // Creator user ID
   bool is_root = 8;       // Renders larger if true
   bool is_current = 9;    // Highlights with yellow stroke if true
+  string creator_username = 10; // Resolved creator username
 }
 
 message GraphEdge {

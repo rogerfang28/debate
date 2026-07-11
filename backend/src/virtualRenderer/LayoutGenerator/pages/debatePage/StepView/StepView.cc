@@ -527,7 +527,7 @@ ui::Page StepView::GenerateStepViewPage(
 		? currentClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
-	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale, &userDb);
 	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
 		if (mapSection.children(childIndex).id() == "mapTitle") {
 			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
