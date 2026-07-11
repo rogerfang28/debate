@@ -48,6 +48,7 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
 // viewer's own claims, Challenge for others').
 static ui::Component BuildSelectedClaimPanel(
     int claimId,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
     VRUserDatabase& userDb,
     int viewerUserId,
@@ -148,6 +149,22 @@ static ui::Component BuildSelectedClaimPanel(
     );
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
 
+    // A "Concede" button shows when the selected claim is itself a challenge
+    // claim (from_claim_id == claimId, is_challenge) and the claim it
+    // challenges was created by the viewer -- i.e. someone is challenging
+    // the viewer's own claim, and the viewer is looking at that challenge.
+    int concedeChallengeLinkId = -1;
+    for (const auto& link : fullDebateInfo.full_debate_tree().links()) {
+        if (link.is_challenge() && link.from_claim_id() == claimId) {
+            auto challengedIt = collectionProto.claims_by_id().find(link.to_claim_id());
+            if (challengedIt != collectionProto.claims_by_id().end() &&
+                viewerUserId > 0 && challengedIt->second.creator_id() == viewerUserId) {
+                concedeChallengeLinkId = link.link_id();
+            }
+            break;
+        }
+    }
+
     const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
     if (isOwnClaim) {
         ui::Component addChildButton = ComponentGenerator::createButton(
@@ -190,6 +207,21 @@ static ui::Component BuildSelectedClaimPanel(
             "text-sm"
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
+    }
+
+    if (concedeChallengeLinkId > 0) {
+        ui::Component concedeButton = ComponentGenerator::createButton(
+            "concedeChallengeButton_" + std::to_string(concedeChallengeLinkId),
+            "Concede",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, concedeButton);
     }
     ComponentGenerator::addChild(&panel, buttonRow);
 
@@ -487,7 +519,7 @@ ui::Page StepView::GenerateStepViewPage(
 	*/
 
 	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
-		currentClaimId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
+		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
