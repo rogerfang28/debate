@@ -447,11 +447,9 @@ static ui::Component BuildTreeNode(
         sentence = claimIt->second.sentence();
     }
 
-    // Find children in the full_debate_tree: PARENT_CHILD children from the
-    // convenience adjacency list, plus CHALLENGE targets from the tree's
-    // link list (child_claim_ids only ever carries PARENT_CHILD edges).
-    // Challenges are treated exactly like normal links here -- no distinct
-    // marker or styling, just another nested child claim.
+    // Find children in the full_debate_tree: PARENT_CHILD children only, from
+    // the convenience adjacency list. Challenges are intentionally NOT nested
+    // in the paragraph tree for now.
     std::vector<int> children;
     if (fullDebateInfo.has_full_debate_tree()) {
         const auto& tree = fullDebateInfo.full_debate_tree();
@@ -461,16 +459,6 @@ static ui::Component BuildTreeNode(
                     children.push_back(cid);
                 }
                 break;
-            }
-        }
-        for (const auto& link : tree.links()) {
-            // Challenge links point from the new challenge claim TO the
-            // original claim being challenged (addLink(challengeClaim,
-            // challengedClaim, ...)) -- the opposite direction from
-            // PARENT_CHILD. So the challenge claim nests under the claim
-            // it's challenging, not the other way around.
-            if (link.is_challenge() && link.to_claim_id() == claimId) {
-                children.push_back(link.from_claim_id());
             }
         }
     }
