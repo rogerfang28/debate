@@ -396,9 +396,12 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const isSelected = node.id === selectedId;
             const isCurrent = node.isCurrent;
             const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
-            const fill = isCurrent ? colors.fill : colors.fill;
-            const stroke = isCurrent ? "#fbbf24" : colors.stroke;
-            const strokeWidth = isCurrent ? 4 : isSelected ? 3 : 2;
+            const isChallenge = node.type === "challenge";
+            // Challenge (root) claims get an orange-tinted body and border; the
+            // current/selected highlight still takes precedence when active.
+            const fill = isChallenge ? "#3a2412" : colors.fill;
+            const stroke = isCurrent ? "#fbbf24" : isChallenge ? "#f97316" : colors.stroke;
+            const strokeWidth = isCurrent ? 4 : isSelected ? 3 : isChallenge ? 3 : 2;
             const lines = wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
             // Center the whole block (sentence + creator + status) based on
             // this node's actual line count, instead of reserving fixed

@@ -48,6 +48,7 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
 // viewer's own claims, Challenge for others').
 static ui::Component BuildSelectedClaimPanel(
     int claimId,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
     VRUserDatabase& userDb,
     int viewerUserId,
@@ -148,6 +149,22 @@ static ui::Component BuildSelectedClaimPanel(
     );
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
 
+    // A "Concede" button shows when the selected claim is itself a challenge
+    // claim (from_claim_id == claimId, is_challenge) and the claim it
+    // challenges was created by the viewer -- i.e. someone is challenging
+    // the viewer's own claim, and the viewer is looking at that challenge.
+    int concedeChallengeLinkId = -1;
+    for (const auto& link : fullDebateInfo.full_debate_tree().links()) {
+        if (link.is_challenge() && link.from_claim_id() == claimId) {
+            auto challengedIt = collectionProto.claims_by_id().find(link.to_claim_id());
+            if (challengedIt != collectionProto.claims_by_id().end() &&
+                viewerUserId > 0 && challengedIt->second.creator_id() == viewerUserId) {
+                concedeChallengeLinkId = link.link_id();
+            }
+            break;
+        }
+    }
+
     const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
     if (isOwnClaim) {
         ui::Component addChildButton = ComponentGenerator::createButton(
@@ -191,7 +208,214 @@ static ui::Component BuildSelectedClaimPanel(
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
     }
+
+    if (concedeChallengeLinkId > 0) {
+        ui::Component concedeButton = ComponentGenerator::createButton(
+            "concedeChallengeButton_" + std::to_string(concedeChallengeLinkId),
+            "Concede",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, concedeButton);
+    }
     ComponentGenerator::addChild(&panel, buttonRow);
+
+    return panel;
+}
+
+// Builds the "Current Status of Debate" panel. Keeps it simple: purely about
+// unanswered challenges.
+//   - No live (unanswered) challenge anywhere  -> "No current challenges."
+//   - A live challenge targets one of the viewer's claims -> the viewer must
+//     respond (list those challenge claims).
+//   - A live challenge exists but none target the viewer -> "Waiting..." (it's
+//     the opponent's move).
+// A challenge Ck -> T counts as "answered" if it was challenged back (some
+// challenge link points to Ck) or conceded (T's owner marked Ck TRUE_CLAIM,
+// which is exactly what ConcedeChallenge writes).
+static ui::Component BuildDebateStatusPanel(
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "debateStatusPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    ui::Component heading = ComponentGenerator::createText(
+        "debateStatusHeading",
+        "Current Status of Debate:",
+        "text-xs",
+        "text-gray-500",
+        "font-semibold uppercase tracking-wide",
+        ""
+    );
+    ComponentGenerator::addChild(&panel, heading);
+
+    std::vector<int> myChallengesToRespond;  // live challenges targeting the viewer's claims
+    std::vector<int> myPendingChallenges;    // live challenges the viewer made, awaiting a response
+    bool anyLiveChallenge = false;
+
+    if (fullDebateInfo.has_full_debate_tree()) {
+        const auto& tree = fullDebateInfo.full_debate_tree();
+
+        // Any challenge claim that has itself been challenged back has been
+        // "answered" and is no longer live.
+        std::unordered_set<int> challengedBack;
+        for (const auto& link : tree.links()) {
+            if (link.is_challenge()) {
+                challengedBack.insert(link.to_claim_id());
+            }
+        }
+
+        for (const auto& link : tree.links()) {
+            if (!link.is_challenge()) continue;
+            int challengeClaimId = link.from_claim_id();
+            int targetClaimId = link.to_claim_id();
+
+            // Answered by a counter-challenge?
+            if (challengedBack.count(challengeClaimId)) continue;
+
+            auto targetIt = collectionProto.claims_by_id().find(targetClaimId);
+            if (targetIt == collectionProto.claims_by_id().end()) continue;
+            int targetOwnerId = targetIt->second.creator_id();
+
+            // Answered by concede? The target's owner marks the challenge claim
+            // TRUE_CLAIM when they concede.
+            auto challengeIt = collectionProto.claims_by_id().find(challengeClaimId);
+            if (challengeIt != collectionProto.claims_by_id().end()) {
+                std::string targetOwnerName = userDb.getUsername(targetOwnerId);
+                const auto& statuses = challengeIt->second.user_statuses();
+                auto statusIt = statuses.find(targetOwnerName);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::TRUE_CLAIM) {
+                    continue;  // conceded
+                }
+            }
+
+            int challengeCreatorId = (challengeIt != collectionProto.claims_by_id().end())
+                ? challengeIt->second.creator_id() : -1;
+
+            anyLiveChallenge = true;
+            if (viewerUserId > 0 && targetOwnerId == viewerUserId) {
+                // Someone is challenging the viewer's claim -> viewer must respond.
+                myChallengesToRespond.push_back(challengeClaimId);
+            } else if (viewerUserId > 0 && challengeCreatorId == viewerUserId) {
+                // The viewer made this challenge -> waiting on the opponent.
+                myPendingChallenges.push_back(challengeClaimId);
+            }
+        }
+    }
+
+    // With no live challenges, the root claim's status decides who's ahead:
+    //   - viewer IS the root creator and their root claim is FALSE -> they
+    //     conceded/lost an exchange and must go on the offensive or lose.
+    //   - viewer is NOT the root creator and the creator's root claim is FALSE
+    //     -> the creator conceded, so the viewer is winning and just needs the
+    //     opponent to stay silent.
+    bool mustWinBack = false;  // defender is losing
+    bool aboutToWin = false;   // attacker is winning
+    if (!anyLiveChallenge && fullDebateInfo.has_full_debate_tree()) {
+        int rootId = fullDebateInfo.full_debate_tree().root_claim_id();
+        auto rootIt = collectionProto.claims_by_id().find(rootId);
+        if (rootIt != collectionProto.claims_by_id().end() && viewerUserId > 0) {
+            int rootCreatorId = rootIt->second.creator_id();
+            const auto& statuses = rootIt->second.user_statuses();
+            if (rootCreatorId == viewerUserId) {
+                auto statusIt = statuses.find(viewerUsername);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+                    mustWinBack = true;
+                }
+            } else {
+                std::string rootCreatorName = userDb.getUsername(rootCreatorId);
+                auto statusIt = statuses.find(rootCreatorName);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+                    aboutToWin = true;
+                }
+            }
+        }
+    }
+
+    // TextComponent applies an inline color that would override a Tailwind
+    // text-color class, so the status color is set via the css map (inline)
+    // instead. Empty string leaves TextComponent's default color in place.
+    std::string statusText;
+    std::string statusColorHex;
+    if (!anyLiveChallenge) {
+        if (mustWinBack) {
+            statusText = "No current challenges. If you don't challenge your opponent, you will lose the debate.";
+            statusColorHex = "#f97316";  // orange-500
+        } else if (aboutToWin) {
+            statusText = "No current challenges. If your opponent doesn't challenge you, you will win the debate.";
+            statusColorHex = "#22c55e";  // green-500
+        } else {
+            statusText = "No current challenges.";
+            statusColorHex = "";
+        }
+    } else if (!myChallengesToRespond.empty()) {
+        statusText = myChallengesToRespond.size() > 1
+            ? "Your opponent has challenged your claims. Respond to each challenge with a counter-challenge, or concede:"
+            : "Your opponent has challenged your claim. Respond with a counter-challenge, or concede:";
+        statusColorHex = "#f97316";  // orange-500
+    } else if (!myPendingChallenges.empty()) {
+        statusText = myPendingChallenges.size() > 1
+            ? "Waiting for your opponent to respond to your challenges:"
+            : "Waiting for your opponent to respond to your challenge:";
+        statusColorHex = "";
+    } else {
+        statusText = "Waiting for your opponent to respond.";
+        statusColorHex = "";
+    }
+
+    ui::Component statusLine = ComponentGenerator::createText(
+        "debateStatusText",
+        statusText,
+        "text-sm",
+        "",
+        "",
+        ""
+    );
+    if (!statusColorHex.empty()) {
+        (*statusLine.mutable_css())["color"] = statusColorHex;
+    }
+    ComponentGenerator::addChild(&panel, statusLine);
+
+    // List whichever set of challenges the status line refers to.
+    const std::vector<int>& challengesToList =
+        !myChallengesToRespond.empty() ? myChallengesToRespond : myPendingChallenges;
+    for (int challengeClaimId : challengesToList) {
+        std::string sentence;
+        auto it = collectionProto.claims_by_id().find(challengeClaimId);
+        if (it != collectionProto.claims_by_id().end()) {
+            sentence = it->second.sentence();
+        }
+        ui::Component item = ComponentGenerator::createText(
+            "debateStatusChallenge_" + std::to_string(challengeClaimId),
+            "\xE2\x80\xA2 " + sentence,
+            "text-sm",
+            "text-white",
+            "",
+            ""
+        );
+        (*item.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&panel, item);
+    }
 
     return panel;
 }
@@ -223,11 +447,9 @@ static ui::Component BuildTreeNode(
         sentence = claimIt->second.sentence();
     }
 
-    // Find children in the full_debate_tree: PARENT_CHILD children from the
-    // convenience adjacency list, plus CHALLENGE targets from the tree's
-    // link list (child_claim_ids only ever carries PARENT_CHILD edges).
-    // Challenges are treated exactly like normal links here -- no distinct
-    // marker or styling, just another nested child claim.
+    // Find children in the full_debate_tree: PARENT_CHILD children only, from
+    // the convenience adjacency list. Challenges are intentionally NOT nested
+    // in the paragraph tree for now.
     std::vector<int> children;
     if (fullDebateInfo.has_full_debate_tree()) {
         const auto& tree = fullDebateInfo.full_debate_tree();
@@ -237,16 +459,6 @@ static ui::Component BuildTreeNode(
                     children.push_back(cid);
                 }
                 break;
-            }
-        }
-        for (const auto& link : tree.links()) {
-            // Challenge links point from the new challenge claim TO the
-            // original claim being challenged (addLink(challengeClaim,
-            // challengedClaim, ...)) -- the opposite direction from
-            // PARENT_CHILD. So the challenge claim nests under the claim
-            // it's challenging, not the other way around.
-            if (link.is_challenge() && link.to_claim_id() == claimId) {
-                children.push_back(link.from_claim_id());
             }
         }
     }
@@ -486,8 +698,13 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
 	*/
 
+	ui::Component debateStatusPanel = BuildDebateStatusPanel(
+		fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
+	);
+	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
+
 	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
-		currentClaimId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
+		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
