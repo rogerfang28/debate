@@ -36,6 +36,13 @@ message GoToClaim {
     int32 claim_id      = 2;
 }
 
+// Selects a claim as the viewer's "current claim" (for highlighting in the
+// map/tree) WITHOUT touching current_scope -- unlike GoToClaim, this never
+// navigates to the single-claim view.
+message SelectClaim {
+    int32 claim_id      = 1;
+}
+
 message SubmitEditClaimDescription {
     string new_description = 1;
 }
@@ -180,6 +187,7 @@ enum EventType {
     CANCEL_MODIFICATION_OF_CLAIM = 50;
     GO_TO_OVERVIEW = 51;
     GO_TO_FULL_DEBATE_VIEW = 52;
+    SELECT_CLAIM = 53;
 
 }
 
@@ -224,5 +232,6 @@ message DebateEvent {
     DeleteChallenge delete_challenge = 48;
     LeaveDebate leave_debate = 49;
     MoveUserToTimestamp move_user_to_timestamp = 50;
+    SelectClaim select_claim = 51;
   }
 }

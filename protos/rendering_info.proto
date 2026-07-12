@@ -52,6 +52,11 @@ message FullDebateViewInfo {
 	// This is separate from the per-claim user_statuses and can be removed
 	// when no longer needed.
 	PerUserClaimStatuses per_user_statuses = 5;
+
+	// The viewer's currently-selected claim (from UserEngagement.DebatingInfo),
+	// used to highlight the active node in the map/graph and paragraph tree.
+	// 0 if unset.
+	int32 viewer_current_claim_id = 6;
 }
 
 // A per-user matrix of claim statuses — used for visualization only.
@@ -117,6 +122,8 @@ message FullDebateTreeLink {
 message Steps {
 	int32 claim_id = 1;
 	string summary = 2;
+	// Flattened paragraph of all leaf-node sentences in this step's subtree.
+	string leaf_paragraph = 3;
 }
 
 // The exact input needed to build the home page UI.

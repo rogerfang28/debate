@@ -271,7 +271,10 @@ void DebateWrapper::deleteClaim(const int& claimId) {
         }
 
         const int linkType = std::get<5>(linkData.value());
-        if (linkType != 1) {
+        // Delete both PARENT_CHILD and CHALLENGE links touching this claim --
+        // otherwise deleting a challenge-root claim leaves its (now dangling)
+        // challenge link behind instead of cleaning it up like a normal edge.
+        if (linkType != debate::LinkType::PARENT_CHILD && linkType != debate::LinkType::CHALLENGE) {
             continue;
         }
 

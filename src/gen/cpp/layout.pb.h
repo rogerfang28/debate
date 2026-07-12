@@ -973,6 +973,7 @@ class GraphNode final : public ::google::protobuf::Message
     kTextFieldNumber = 2,
     kTypeFieldNumber = 5,
     kStatusFieldNumber = 6,
+    kCreatorUsernameFieldNumber = 10,
     kXFieldNumber = 3,
     kYFieldNumber = 4,
     kCreatorIdFieldNumber = 7,
@@ -1039,6 +1040,21 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_status();
 
   public:
+  // string creator_username = 10;
+  void clear_creator_username() ;
+  const ::std::string& creator_username() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_creator_username(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_creator_username();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_creator_username();
+  void set_allocated_creator_username(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_creator_username() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_creator_username(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_creator_username();
+
+  public:
   // double x = 3;
   void clear_x() ;
   double x() const;
@@ -1093,8 +1109,8 @@ class GraphNode final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 9,
-                                   0, 45,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 61,
                                    2>
       _table_;
 
@@ -1119,6 +1135,7 @@ class GraphNode final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr type_;
     ::google::protobuf::internal::ArenaStringPtr status_;
+    ::google::protobuf::internal::ArenaStringPtr creator_username_;
     double x_;
     double y_;
     ::int32_t creator_id_;
@@ -3695,7 +3712,7 @@ inline void GraphNode::clear_x() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.x_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000020U);
 }
 inline double GraphNode::x() const {
   // @@protoc_insertion_point(field_get:ui.GraphNode.x)
@@ -3703,7 +3720,7 @@ inline double GraphNode::x() const {
 }
 inline void GraphNode::set_x(double value) {
   _internal_set_x(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   // @@protoc_insertion_point(field_set:ui.GraphNode.x)
 }
 inline double GraphNode::_internal_x() const {
@@ -3720,7 +3737,7 @@ inline void GraphNode::clear_y() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.y_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline double GraphNode::y() const {
   // @@protoc_insertion_point(field_get:ui.GraphNode.y)
@@ -3728,7 +3745,7 @@ inline double GraphNode::y() const {
 }
 inline void GraphNode::set_y(double value) {
   _internal_set_y(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:ui.GraphNode.y)
 }
 inline double GraphNode::_internal_y() const {
@@ -3875,7 +3892,7 @@ inline void GraphNode::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000080U);
 }
 inline ::int32_t GraphNode::creator_id() const {
   // @@protoc_insertion_point(field_get:ui.GraphNode.creator_id)
@@ -3883,7 +3900,7 @@ inline ::int32_t GraphNode::creator_id() const {
 }
 inline void GraphNode::set_creator_id(::int32_t value) {
   _internal_set_creator_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:ui.GraphNode.creator_id)
 }
 inline ::int32_t GraphNode::_internal_creator_id() const {
@@ -3900,7 +3917,7 @@ inline void GraphNode::clear_is_root() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_root_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline bool GraphNode::is_root() const {
   // @@protoc_insertion_point(field_get:ui.GraphNode.is_root)
@@ -3908,7 +3925,7 @@ inline bool GraphNode::is_root() const {
 }
 inline void GraphNode::set_is_root(bool value) {
   _internal_set_is_root(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:ui.GraphNode.is_root)
 }
 inline bool GraphNode::_internal_is_root() const {
@@ -3925,7 +3942,7 @@ inline void GraphNode::clear_is_current() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_current_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000200U);
 }
 inline bool GraphNode::is_current() const {
   // @@protoc_insertion_point(field_get:ui.GraphNode.is_current)
@@ -3933,7 +3950,7 @@ inline bool GraphNode::is_current() const {
 }
 inline void GraphNode::set_is_current(bool value) {
   _internal_set_is_current(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   // @@protoc_insertion_point(field_set:ui.GraphNode.is_current)
 }
 inline bool GraphNode::_internal_is_current() const {
@@ -3943,6 +3960,71 @@ inline bool GraphNode::_internal_is_current() const {
 inline void GraphNode::_internal_set_is_current(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_current_ = value;
+}
+
+// string creator_username = 10;
+inline void GraphNode::clear_creator_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_username_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& GraphNode::creator_username() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphNode.creator_username)
+  return _internal_creator_username();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphNode::set_creator_username(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.creator_username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphNode.creator_username)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::mutable_creator_username()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_creator_username();
+  // @@protoc_insertion_point(field_mutable:ui.GraphNode.creator_username)
+  return _s;
+}
+inline const ::std::string& GraphNode::_internal_creator_username() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.creator_username_.Get();
+}
+inline void GraphNode::_internal_set_creator_username(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.creator_username_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphNode::_internal_mutable_creator_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.creator_username_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphNode::release_creator_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphNode.creator_username)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.creator_username_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.creator_username_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphNode::set_allocated_creator_username(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.creator_username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.creator_username_.IsDefault()) {
+    _impl_.creator_username_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.creator_username)
 }
 
 // -------------------------------------------------------------------

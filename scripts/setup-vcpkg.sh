@@ -52,6 +52,7 @@ echo ">>> Installing remaining packages..."
 ./vcpkg install zlib:x64-mingw-static
 ./vcpkg install abseil:x64-mingw-static
 ./vcpkg install utf8proc:x64-mingw-static
+./vcpkg install jsoncons:x64-mingw-static
 
 # Step 7: Verify
 echo ""

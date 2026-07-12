@@ -1,13 +1,513 @@
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
+#include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+// Local copy of FullDebatePageGenerator.cc's ClaimStatusToLabel -- that one
+// isn't declared in a header, so it's not reusable across translation units.
+static std::string StepViewClaimStatusToLabel(debate::ClaimStatus status) {
+    switch (status) {
+        case debate::ClaimStatus::UNDETERMINED:
+            return "Undetermined";
+        case debate::ClaimStatus::TRUE_CLAIM:
+            return "True";
+        case debate::ClaimStatus::FALSE_CLAIM:
+            return "False";
+        default:
+            return "Unknown";
+    }
+}
+
+// Local copy of FullDebatePageInfoParser.cc's MapClaimStatusForUser -- that
+// one isn't declared in a header either. The Claim.status field itself is
+// not the source of truth; status is per-viewer (an explicit user_statuses
+// entry, else TRUE_CLAIM if the viewer created it, else UNDETERMINED).
+static debate::ClaimStatus StepViewMapClaimStatusForUser(
+    const debate::Claim& claim,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    const auto& userStatuses = claim.user_statuses();
+    auto it = userStatuses.find(viewerUsername);
+    if (it != userStatuses.end()) {
+        return it->second;
+    }
+    if (viewerUserId == claim.creator_id()) {
+        return debate::ClaimStatus::TRUE_CLAIM;
+    }
+    return debate::ClaimStatus::UNDETERMINED;
+}
+
+// Builds the "Selected Claim" info panel: sentence, status, creator,
+// description, and contextual action buttons (Add Child + Delete for the
+// viewer's own claims, Challenge for others').
+static ui::Component BuildSelectedClaimPanel(
+    int claimId,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "selectedClaimPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    auto claimIt = collectionProto.claims_by_id().find(claimId);
+    if (claimId <= 0 || claimIt == collectionProto.claims_by_id().end()) {
+        ui::Component emptyText = ComponentGenerator::createText(
+            "selectedClaimEmpty",
+            "No claim selected.",
+            "text-sm",
+            "text-gray-400",
+            "",
+            ""
+        );
+        ComponentGenerator::addChild(&panel, emptyText);
+        return panel;
+    }
+    const debate::Claim& claim = claimIt->second;
+
+    auto addField = [&](const std::string& idSuffix, const std::string& label, const std::string& value, bool italic) {
+        ui::Component row = ComponentGenerator::createContainer(
+            "selectedClaim" + idSuffix + "Row",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        );
+        (*row.mutable_css())["display"] = "flex";
+        (*row.mutable_css())["flex-direction"] = "column";
+        (*row.mutable_css())["gap"] = "0.15rem";
+
+        ui::Component labelText = ComponentGenerator::createText(
+            "selectedClaim" + idSuffix + "Label",
+            label,
+            "text-xs",
+            "text-gray-500",
+            "font-semibold uppercase tracking-wide",
+            ""
+        );
+        ComponentGenerator::addChild(&row, labelText);
+
+        ui::Component valueText = ComponentGenerator::createText(
+            "selectedClaim" + idSuffix + "Value",
+            value,
+            "text-sm",
+            "text-white",
+            "",
+            italic ? "italic" : ""
+        );
+        (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&row, valueText);
+
+        ComponentGenerator::addChild(&panel, row);
+    };
+
+    addField("Sentence", "Selected Claim:", claim.sentence(), false);
+    debate::ClaimStatus viewerStatus = StepViewMapClaimStatusForUser(claim, viewerUserId, viewerUsername);
+    addField("Status", "Status:", StepViewClaimStatusToLabel(viewerStatus), false);
+    std::string creatorUsername = userDb.getUsername(claim.creator_id());
+    if (creatorUsername.empty()) {
+        creatorUsername = "User " + std::to_string(claim.creator_id());
+    }
+    addField("Creator", "Created by:", creatorUsername, false);
+    addField(
+        "Description",
+        "Description:",
+        claim.description().empty() ? "(no description)" : claim.description(),
+        claim.description().empty()
+    );
+
+    ui::Component buttonRow = ComponentGenerator::createContainer(
+        "selectedClaimButtonRow",
+        "flex gap-2",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
+
+    // A "Concede" button shows when the selected claim is itself a challenge
+    // claim (from_claim_id == claimId, is_challenge) and the claim it
+    // challenges was created by the viewer -- i.e. someone is challenging
+    // the viewer's own claim, and the viewer is looking at that challenge.
+    int concedeChallengeLinkId = -1;
+    for (const auto& link : fullDebateInfo.full_debate_tree().links()) {
+        if (link.is_challenge() && link.from_claim_id() == claimId) {
+            auto challengedIt = collectionProto.claims_by_id().find(link.to_claim_id());
+            if (challengedIt != collectionProto.claims_by_id().end() &&
+                viewerUserId > 0 && challengedIt->second.creator_id() == viewerUserId) {
+                concedeChallengeLinkId = link.link_id();
+            }
+            break;
+        }
+    }
+
+    const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
+    if (isOwnClaim) {
+        ui::Component addChildButton = ComponentGenerator::createButton(
+            "addChildClaimButton",
+            "Add Child",
+            "",
+            "bg-blue-600",
+            "hover:bg-blue-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, addChildButton);
+
+        ui::Component deleteButton = ComponentGenerator::createButton(
+            "deleteStatementButton",
+            "Delete",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, deleteButton);
+    } else {
+        // challengeClaimButton now enters challenging mode AND opens the
+        // challenge modal in one step (see ChallengeHandler::StartChallengeClaim).
+        ui::Component challengeButton = ComponentGenerator::createButton(
+            "challengeClaimButton",
+            "Challenge",
+            "",
+            "bg-orange-600",
+            "hover:bg-orange-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, challengeButton);
+    }
+
+    if (concedeChallengeLinkId > 0) {
+        ui::Component concedeButton = ComponentGenerator::createButton(
+            "concedeChallengeButton_" + std::to_string(concedeChallengeLinkId),
+            "Concede",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, concedeButton);
+    }
+    ComponentGenerator::addChild(&panel, buttonRow);
+
+    return panel;
+}
+
+// Builds the "Current Status of Debate" panel. Keeps it simple: purely about
+// unanswered challenges.
+//   - No live (unanswered) challenge anywhere  -> "No current challenges."
+//   - A live challenge targets one of the viewer's claims -> the viewer must
+//     respond (list those challenge claims).
+//   - A live challenge exists but none target the viewer -> "Waiting..." (it's
+//     the opponent's move).
+// A challenge Ck -> T counts as "answered" if it was challenged back (some
+// challenge link points to Ck) or conceded (T's owner marked Ck TRUE_CLAIM,
+// which is exactly what ConcedeChallenge writes).
+static ui::Component BuildDebateStatusPanel(
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "debateStatusPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    ui::Component heading = ComponentGenerator::createText(
+        "debateStatusHeading",
+        "Current Status of Debate:",
+        "text-xs",
+        "text-gray-500",
+        "font-semibold uppercase tracking-wide",
+        ""
+    );
+    ComponentGenerator::addChild(&panel, heading);
+
+    std::vector<int> myChallengesToRespond;  // live challenges targeting the viewer's claims
+    std::vector<int> myPendingChallenges;    // live challenges the viewer made, awaiting a response
+    bool anyLiveChallenge = false;
+
+    if (fullDebateInfo.has_full_debate_tree()) {
+        const auto& tree = fullDebateInfo.full_debate_tree();
+
+        // Any challenge claim that has itself been challenged back has been
+        // "answered" and is no longer live.
+        std::unordered_set<int> challengedBack;
+        for (const auto& link : tree.links()) {
+            if (link.is_challenge()) {
+                challengedBack.insert(link.to_claim_id());
+            }
+        }
+
+        for (const auto& link : tree.links()) {
+            if (!link.is_challenge()) continue;
+            int challengeClaimId = link.from_claim_id();
+            int targetClaimId = link.to_claim_id();
+
+            // Answered by a counter-challenge?
+            if (challengedBack.count(challengeClaimId)) continue;
+
+            auto targetIt = collectionProto.claims_by_id().find(targetClaimId);
+            if (targetIt == collectionProto.claims_by_id().end()) continue;
+            int targetOwnerId = targetIt->second.creator_id();
+
+            // Answered by concede? The target's owner marks the challenge claim
+            // TRUE_CLAIM when they concede.
+            auto challengeIt = collectionProto.claims_by_id().find(challengeClaimId);
+            if (challengeIt != collectionProto.claims_by_id().end()) {
+                std::string targetOwnerName = userDb.getUsername(targetOwnerId);
+                const auto& statuses = challengeIt->second.user_statuses();
+                auto statusIt = statuses.find(targetOwnerName);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::TRUE_CLAIM) {
+                    continue;  // conceded
+                }
+            }
+
+            int challengeCreatorId = (challengeIt != collectionProto.claims_by_id().end())
+                ? challengeIt->second.creator_id() : -1;
+
+            anyLiveChallenge = true;
+            if (viewerUserId > 0 && targetOwnerId == viewerUserId) {
+                // Someone is challenging the viewer's claim -> viewer must respond.
+                myChallengesToRespond.push_back(challengeClaimId);
+            } else if (viewerUserId > 0 && challengeCreatorId == viewerUserId) {
+                // The viewer made this challenge -> waiting on the opponent.
+                myPendingChallenges.push_back(challengeClaimId);
+            }
+        }
+    }
+
+    // With no live challenges, the root claim's status decides who's ahead:
+    //   - viewer IS the root creator and their root claim is FALSE -> they
+    //     conceded/lost an exchange and must go on the offensive or lose.
+    //   - viewer is NOT the root creator and the creator's root claim is FALSE
+    //     -> the creator conceded, so the viewer is winning and just needs the
+    //     opponent to stay silent.
+    bool mustWinBack = false;  // defender is losing
+    bool aboutToWin = false;   // attacker is winning
+    if (!anyLiveChallenge && fullDebateInfo.has_full_debate_tree()) {
+        int rootId = fullDebateInfo.full_debate_tree().root_claim_id();
+        auto rootIt = collectionProto.claims_by_id().find(rootId);
+        if (rootIt != collectionProto.claims_by_id().end() && viewerUserId > 0) {
+            int rootCreatorId = rootIt->second.creator_id();
+            const auto& statuses = rootIt->second.user_statuses();
+            if (rootCreatorId == viewerUserId) {
+                auto statusIt = statuses.find(viewerUsername);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+                    mustWinBack = true;
+                }
+            } else {
+                std::string rootCreatorName = userDb.getUsername(rootCreatorId);
+                auto statusIt = statuses.find(rootCreatorName);
+                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+                    aboutToWin = true;
+                }
+            }
+        }
+    }
+
+    // TextComponent applies an inline color that would override a Tailwind
+    // text-color class, so the status color is set via the css map (inline)
+    // instead. Empty string leaves TextComponent's default color in place.
+    std::string statusText;
+    std::string statusColorHex;
+    if (!anyLiveChallenge) {
+        if (mustWinBack) {
+            statusText = "No current challenges. If you don't challenge your opponent, you will lose the debate.";
+            statusColorHex = "#f97316";  // orange-500
+        } else if (aboutToWin) {
+            statusText = "No current challenges. If your opponent doesn't challenge you, you will win the debate.";
+            statusColorHex = "#22c55e";  // green-500
+        } else {
+            statusText = "No current challenges.";
+            statusColorHex = "";
+        }
+    } else if (!myChallengesToRespond.empty()) {
+        statusText = myChallengesToRespond.size() > 1
+            ? "Your opponent has challenged your claims. Respond to each challenge with a counter-challenge, or concede:"
+            : "Your opponent has challenged your claim. Respond with a counter-challenge, or concede:";
+        statusColorHex = "#f97316";  // orange-500
+    } else if (!myPendingChallenges.empty()) {
+        statusText = myPendingChallenges.size() > 1
+            ? "Waiting for your opponent to respond to your challenges:"
+            : "Waiting for your opponent to respond to your challenge:";
+        statusColorHex = "";
+    } else {
+        statusText = "Waiting for your opponent to respond.";
+        statusColorHex = "";
+    }
+
+    ui::Component statusLine = ComponentGenerator::createText(
+        "debateStatusText",
+        statusText,
+        "text-sm",
+        "",
+        "",
+        ""
+    );
+    if (!statusColorHex.empty()) {
+        (*statusLine.mutable_css())["color"] = statusColorHex;
+    }
+    ComponentGenerator::addChild(&panel, statusLine);
+
+    // List whichever set of challenges the status line refers to.
+    const std::vector<int>& challengesToList =
+        !myChallengesToRespond.empty() ? myChallengesToRespond : myPendingChallenges;
+    for (int challengeClaimId : challengesToList) {
+        std::string sentence;
+        auto it = collectionProto.claims_by_id().find(challengeClaimId);
+        if (it != collectionProto.claims_by_id().end()) {
+            sentence = it->second.sentence();
+        }
+        ui::Component item = ComponentGenerator::createText(
+            "debateStatusChallenge_" + std::to_string(challengeClaimId),
+            "\xE2\x80\xA2 " + sentence,
+            "text-sm",
+            "text-white",
+            "",
+            ""
+        );
+        (*item.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&panel, item);
+    }
+
+    return panel;
+}
+
+// Helper: Build a nested tree of CONTAINER components from the debate tree.
+// Each node becomes a CONTAINER with data-tree-node attribute.
+// Returns the root component for the subtree rooted at `claimId`.
+static ui::Component BuildTreeNode(
+    int claimId,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    const std::string& idPrefix,
+    std::unordered_set<int>& visited,
+    int currentClaimId
+) {
+    ui::Component node;
+    node.set_id(idPrefix + "_node_" + std::to_string(claimId));
+    node.set_type(ui::ComponentType::CONTAINER);
+    ComponentGenerator::addAttribute(&node, "data-tree-node", "true");
+    ComponentGenerator::addAttribute(&node, "data-node-id", std::to_string(claimId));
+    if (currentClaimId > 0 && claimId == currentClaimId) {
+        ComponentGenerator::addAttribute(&node, "data-tree-current", "true");
+    }
+
+    // Get sentence for this claim.
+    std::string sentence;
+    auto claimIt = collectionProto.claims_by_id().find(claimId);
+    if (claimIt != collectionProto.claims_by_id().end()) {
+        sentence = claimIt->second.sentence();
+    }
+
+    // Find children in the full_debate_tree: PARENT_CHILD children only, from
+    // the convenience adjacency list. Challenges are intentionally NOT nested
+    // in the paragraph tree for now.
+    std::vector<int> children;
+    if (fullDebateInfo.has_full_debate_tree()) {
+        const auto& tree = fullDebateInfo.full_debate_tree();
+        for (const auto& treeNode : tree.nodes()) {
+            if (treeNode.claim_id() == claimId) {
+                for (int cid : treeNode.child_claim_ids()) {
+                    children.push_back(cid);
+                }
+                break;
+            }
+        }
+    }
+
+    // Text label for this node.
+    ui::Component label = ComponentGenerator::createText(
+        idPrefix + "_label_" + std::to_string(claimId),
+        sentence,
+        "text-sm",
+        children.empty() ? "text-gray-300" : "text-blue-300",
+        children.empty() ? "" : "font-medium",
+        "cursor-pointer ms-1"
+    );
+    ComponentGenerator::addAttribute(&label, "data-tree-label", "true");
+    ComponentGenerator::addChild(&node, label);
+
+    // Recursively build children.
+    if (!children.empty()) {
+        ui::Component childrenContainer;
+        childrenContainer.set_id(idPrefix + "_children_" + std::to_string(claimId));
+        childrenContainer.set_type(ui::ComponentType::CONTAINER);
+        ComponentGenerator::addAttribute(&childrenContainer, "data-tree-children", "true");
+        (*childrenContainer.mutable_css())["display"] = "flex";
+        (*childrenContainer.mutable_css())["flex-direction"] = "column";
+        (*childrenContainer.mutable_css())["margin-left"] = "1.25rem";
+        (*childrenContainer.mutable_css())["border-left"] = "1px solid #4b5563";
+        (*childrenContainer.mutable_css())["padding-left"] = "0.75rem";
+        (*childrenContainer.mutable_css())["gap"] = "0.25rem";
+
+        for (int childId : children) {
+            if (visited.count(childId)) continue;
+            visited.insert(childId);
+            ui::Component childNode = BuildTreeNode(
+                childId, fullDebateInfo, collectionProto,
+                idPrefix, visited, currentClaimId
+            );
+            ComponentGenerator::addChild(&childrenContainer, childNode);
+        }
+        ComponentGenerator::addChild(&node, childrenContainer);
+    }
+
+    return node;
+}
 
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
 	const debate::Collection& collectionProto,
-	VRUserDatabase& userDb
+	VRUserDatabase& userDb,
+	const user::User& viewerUser
 ) {
 	ui::Page page;
 	page.set_page_id("debate");
@@ -25,6 +525,13 @@ ui::Page StepView::GenerateStepViewPage(
 		}
 	}
 
+	// The viewer's actually-selected claim, if it exists in this debate;
+	// falls back to the root claim so the map/tree still highlight something.
+	int currentClaimId = fullDebateInfo.viewer_current_claim_id();
+	if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
+		currentClaimId = rootClaimId;
+	}
+
 	ui::Component container = ComponentGenerator::createContainer(
 		"stepViewMain",
 		"min-h-screen flex flex-col items-stretch",
@@ -36,7 +543,33 @@ ui::Page StepView::GenerateStepViewPage(
 		"gap-4"
 	);
 
-	// Intentionally no top bar action button in Step View.
+	ui::Component topBar = ComponentGenerator::createContainer(
+		"stepViewTopBar",
+		"w-full",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	);
+	(*topBar.mutable_css())["display"] = "flex";
+	(*topBar.mutable_css())["flex-direction"] = "row";
+	(*topBar.mutable_css())["justify-content"] = "flex-end";
+	(*topBar.mutable_css())["align-items"] = "flex-start";
+	ui::Component goHomeButton = ComponentGenerator::createButton(
+		"goHomeButton",
+		"Home",
+		"",
+		"bg-blue-600",
+		"hover:bg-blue-700",
+		"text-white",
+		"px-4 py-2",
+		"rounded",
+		"transition-colors text-sm"
+	);
+	ComponentGenerator::addChild(&topBar, goHomeButton);
+	ComponentGenerator::addChild(&container, topBar);
 
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",
@@ -85,39 +618,17 @@ ui::Page StepView::GenerateStepViewPage(
 	(*rightColumn.mutable_css())["flex"] = "0 0 45%";
 	(*rightColumn.mutable_css())["min-width"] = "400px";
 
-	ui::Component guideBox = ComponentGenerator::createContainer(
-		"stepViewGuideBox",
-		"w-full",
-		"bg-blue-900/30",
-		"p-4",
-		"",
-		"border border-blue-700",
-		"rounded-lg",
-		""
-	);
-	(*guideBox.mutable_css())["max-width"] = "100%";
-	ui::Component guideTitle = ComponentGenerator::createText(
-		"stepViewGuideTitle",
-		"Guide",
-		"text-sm",
-		"text-blue-200",
+
+	/* Step list -- replaced by the "Selected Claim" panel below. Kept here
+	   commented out in case we want to bring the flat step list back.
+	ui::Component stepsHeading = ComponentGenerator::createText(
+		"stepViewStepsHeading",
+		"Debate Steps",
+		"text-xs",
+		"text-gray-500",
 		"font-semibold uppercase tracking-wide",
 		"mb-2"
 	);
-	ui::Component guideParagraph = ComponentGenerator::createText(
-		"stepViewGuideParagraph",
-		"This example shows how an anti-vax influencer was challenged. Two mock users, an influencer and a challenger, debated for two rounds using this tool. You are viewing the aftermath.\n\nThe tree structure visualizes how every statement is logically connected, including the challenging statements against each other.\n\nAI segmented this debate into steps and generated a summary (currently mocked) for your convenience. You may click on each step to jump to its vital statement in the debate.\n\n(The power of this tool resides in that all logic within a narrative is up for challenge. And challenges can not be dodged.)\n\nIt's work in progress. Efforts are needed to make it fully functioning and easy to understand for non-tech users.",
-		"text-base",
-		"text-blue-100",
-		"",
-		"leading-snug"
-	);
-	(*guideParagraph.mutable_css())["white-space"] = "pre-line";
-	(*guideParagraph.mutable_css())["overflow-wrap"] = "break-word";
-	(*guideParagraph.mutable_css())["text-align"] = "left";
-	(*guideParagraph.mutable_css())["font-style"] = "italic";
-	ComponentGenerator::addChild(&guideBox, guideTitle);
-	ComponentGenerator::addChild(&guideBox, guideParagraph);
 
 	ui::Component stepsContainer = ComponentGenerator::createContainer(
 		"stepCardsContainer",
@@ -183,40 +694,61 @@ ui::Page StepView::GenerateStepViewPage(
 		ComponentGenerator::addChild(&stepsContainer, stepCard);
 	}
 
-	ui::Component influencerNoteCard = ComponentGenerator::createContainer(
-		"stepCard_influencerConcedeNote",
-		"flex items-start justify-between gap-3",
-		"bg-gray-800",
-		"p-4",
-		"",
-		"border border-gray-700",
-		"rounded-lg",
-		""
-	);
-	ui::Component influencerNoteText = ComponentGenerator::createText(
-		"stepViewInfluencerConcedeNote",
-		"Now influencer has to concede (to be implemented)",
-		"text-base",
-		"text-white",
-		"font-medium",
-		"flex-1"
-	);
-	ComponentGenerator::addChild(&influencerNoteCard, influencerNoteText);
-	ComponentGenerator::addChild(&stepsContainer, influencerNoteCard);
-
-	ComponentGenerator::addChild(&leftColumn, guideBox);
+	ComponentGenerator::addChild(&leftColumn, stepsHeading);
 	ComponentGenerator::addChild(&leftColumn, stepsContainer);
+	*/
 
-	// Claim Parser placeholder
-	ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
-	(*claimParser.mutable_css())["margin-top"] = "1rem";
-	ComponentGenerator::addChild(&leftColumn, claimParser);
+	ui::Component debateStatusPanel = BuildDebateStatusPanel(
+		fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
+	);
+	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
-	const int mapFocusClaimId = rootClaimId > 0
-		? rootClaimId
+	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
+		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
+	);
+	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
+
+	// Render a single interactive paragraph tree for the entire debate,
+	// underneath the step list within the left column.
+	if (rootClaimId > 0) {
+		ui::Component treeWrapper = ComponentGenerator::createContainer(
+			"debateTreeWrapper",
+			"w-full",
+			"bg-gray-800/50",
+			"p-4",
+			"",
+			"border border-gray-700",
+			"rounded-lg",
+			""
+		);
+		(*treeWrapper.mutable_css())["margin-top"] = "1rem";
+
+		ui::Component treeHeader = ComponentGenerator::createText(
+			"debateTreeHeader",
+			"Paragraph Tree",
+			"text-xs",
+			"text-gray-500",
+			"font-semibold uppercase tracking-wide",
+			"mb-2"
+		);
+		ComponentGenerator::addChild(&treeWrapper, treeHeader);
+
+		std::unordered_set<int> visited;
+		visited.insert(rootClaimId);
+		ui::Component treeRoot = BuildTreeNode(
+			rootClaimId, fullDebateInfo, collectionProto,
+			"debateTree", visited, currentClaimId
+		);
+		ComponentGenerator::addAttribute(&treeRoot, "data-tree-root", "true");
+		ComponentGenerator::addChild(&treeWrapper, treeRoot);
+		ComponentGenerator::addChild(&leftColumn, treeWrapper);
+	}
+
+	const int mapFocusClaimId = currentClaimId > 0
+		? currentClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
-	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale);
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale, &userDb);
 	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
 		if (mapSection.children(childIndex).id() == "mapTitle") {
 			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
@@ -230,6 +762,19 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
 	ComponentGenerator::addChild(&container, contentRow);
+
+	// Claim Parser placeholder — underneath the step view content.
+	// Temporarily disabled.
+	// ui::Component claimParser = ComponentGenerator::createClaimParser("stepViewClaimParser", "");
+	// (*claimParser.mutable_css())["margin-top"] = "1rem";
+	// ComponentGenerator::addChild(&container, claimParser);
+
+	// Add Child / Challenge modals (from the Selected Claim panel's buttons)
+	// reuse the same overlay rendering as the single-claim view -- they're
+	// driven purely by the viewer's engagement state, not by which page
+	// they're rendered on.
+	rendering_info::DebatePageRenderingInfo debatePageInfo = FullDebatePageInfoParser::ParseFromUser(viewerUser, collectionProto);
+	container = FullDebatePageGenerator::AddAppropriateOverlays(debatePageInfo, viewerUser, container);
 
 	ui::Component* root = page.add_components();
 	root->CopyFrom(container);

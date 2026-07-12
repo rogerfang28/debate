@@ -17,8 +17,11 @@ void ChallengeHandler::StartChallengeClaim(const int& user_id, DebateWrapper& de
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
-    // set challenging_claim to true
+    // set challenging_claim to true and open the challenge modal directly --
+    // previously this was a separate step (openCreateChallengeButton), but
+    // one click should be enough to get to the challenge form.
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_debate_action()->set_action_type(user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->set_opened_challenge_modal(true);
     Log::debug("[StartChallengeClaimHandler] Set challenging_claim to true for user: " + std::to_string(user_id));
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }

@@ -246,6 +246,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::GO_TO_CLAIM);
         event.mutable_go_to_claim()->set_claim_id(std::stoi(claimId));
     }
+    else if (componentId.rfind("selectClaimNode_", 0) == 0 && eventType == "onClick") {
+        std::string claimId = componentId.substr(strlen("selectClaimNode_"));
+        Log::debug("  SELECT_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::SELECT_CLAIM);
+        event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
+    }
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);

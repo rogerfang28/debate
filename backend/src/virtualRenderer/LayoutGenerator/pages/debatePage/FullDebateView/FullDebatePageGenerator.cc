@@ -2,6 +2,7 @@
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../../../../../src/gen/cpp/user.pb.h"
 #include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
 #include <algorithm>
@@ -795,40 +796,6 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
             "rounded",
             "w-80 flex-shrink-0"
         );
-
-        // Per-user status rectangles above the claim sentence
-        if (claimStatus != debate::ClaimStatus::UNDETERMINED) {
-            ui::Component statusLabel = ComponentGenerator::createText(
-                nodeId + "Status",
-                "Status: " + statusText,
-                "text-xs",
-                statusTextColor,
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&childNode, statusLabel);
-        }
-
-        // Debug: show raw user_statuses data as text
-        {
-            const auto& statuses = std::get<4>(childClaimInfo[i]);
-            std::string debugText = "user_statuses[" + std::to_string(statuses.size()) + "]: ";
-            for (const auto& us : statuses) {
-                debugText += us.username() + "=" + std::to_string(us.status()) + " ";
-            }
-            if (statuses.empty()) {
-                debugText += "(empty)";
-            }
-            ui::Component debugLabel = ComponentGenerator::createText(
-                nodeId + "UserStatusDebug",
-                debugText,
-                "text-xs",
-                "text-yellow-400",
-                "",
-                "mb-1"
-            );
-            ComponentGenerator::addChild(&childNode, debugLabel);
-        }
 
         ui::Component childNodeTitle = ComponentGenerator::createText(
             nodeId + "Title",
@@ -2011,7 +1978,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb) {
 
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
@@ -2033,60 +2000,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         "mb-4"
     );
     ComponentGenerator::addChild(&mapSection, mapTitle);
-
-    ui::Component legend = ComponentGenerator::createContainer(
-        "mapLegend",
-        "grid grid-cols-2 md:grid-cols-3 gap-3",
-        "bg-gray-900/60",
-        "p-3",
-        "mt-4",
-        "border border-gray-700",
-        "rounded",
-        "text-sm text-gray-200"
-    );
-
-    auto addLegendItem = [&](const std::string& id, const std::string& sampleClass, const std::string& label, bool isLineSample = false) {
-        ui::Component item = ComponentGenerator::createContainer(
-            id,
-            "flex items-center gap-3",
-            "bg-gray-800/80",
-            "px-3 py-2",
-            "",
-            "border border-gray-700",
-            "rounded",
-            "min-w-0"
-        );
-
-        ui::Component swatch = ComponentGenerator::createContainer(
-            id + "Swatch",
-            "",
-            sampleClass,
-            "",
-            "",
-            "",
-            isLineSample ? "rounded-full" : "rounded",
-            isLineSample ? "w-10 h-1.5 flex-shrink-0" : "w-4 h-4 flex-shrink-0"
-        );
-        ComponentGenerator::addChild(&item, swatch);
-
-        ui::Component text = ComponentGenerator::createText(
-            id + "Text",
-            label,
-            "text-sm",
-            "text-white",
-            "",
-            "truncate"
-        );
-        ComponentGenerator::addChild(&item, text);
-        ComponentGenerator::addChild(&legend, item);
-    };
-
-    addLegendItem("legendNormalClaim", "bg-gray-700", "Normal claim");
-    addLegendItem("legendChallengedClaim", "bg-gray-700 border-2 border-orange-500", "Challenged claim");
-    addLegendItem("legendChallengeClaim", "bg-orange-600", "Challenge claim");
-    addLegendItem("legendNormalLink", "bg-gray-500", "Normal link", true);
-    addLegendItem("legendChallengeLink", "bg-orange-500", "Challenge link", true);
-    addLegendItem("legendCurrentClaim", "bg-transparent border-4 border-yellow-400", "Current claim");
 
     ui::Component treeContainer = ComponentGenerator::createContainer(
         "mapTreeContainer",
@@ -2116,7 +2029,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         );
         ComponentGenerator::addChild(&treeContainer, emptyText);
         ComponentGenerator::addChild(&mapSection, treeContainer);
-        ComponentGenerator::addChild(&mapSection, legend);
         return mapSection;
     }
 
@@ -2310,8 +2222,17 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             default:                                  gNode->set_status("UNDETERMINED"); break;
         }
         gNode->set_creator_id(node->creator_id());
+        if (userDb != nullptr) {
+            std::string creatorUsername = userDb->getUsername(node->creator_id());
+            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(node->creator_id())) : creatorUsername);
+        }
         gNode->set_is_root(claimId == rootClaimId);
         gNode->set_is_current(claimId == currentClaimId);
+        // Challenge (root) claims -- those that challenge another claim -- get
+        // an orange border in the map renderer.
+        if (challengingClaimIds.count(claimId) > 0) {
+            gNode->set_type("challenge");
+        }
     }
 
     // Add parent-child / tree edges
@@ -2343,7 +2264,6 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     ComponentGenerator::addChild(&treeContainer, graphComp);
 
     ComponentGenerator::addChild(&mapSection, treeContainer);
-    ComponentGenerator::addChild(&mapSection, legend);
 
     return mapSection;
 }

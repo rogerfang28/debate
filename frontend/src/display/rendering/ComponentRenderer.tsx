@@ -16,6 +16,9 @@ import ModalComponent from "./componentTypes/ModalComponent.tsx";
 import ChatComponent from "./componentTypes/ChatComponent.tsx";
 import TextareaComponent from "./componentTypes/TextareaComponent.tsx";
 import IconComponent from "./componentTypes/IconComponent.tsx";
+import NodeGraphComponent from "./componentTypes/NodeGraphComponent.tsx";
+import TreeComponent from "./componentTypes/TreeComponent.tsx";
+import TreeRootComponent from "./componentTypes/TreeRootComponent.tsx";
 import ClaimParserComponent from "./componentTypes/ClaimParserComponent.tsx";
 import GoogleLoginComponent from "./componentTypes/GoogleLoginComponent.tsx";
 
@@ -56,6 +59,27 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
 
   const className = buildClassName(component.style);
   const inlineStyle: React.CSSProperties = component.css || {};
+
+  // Check if this is a tree node (CONTAINER with data-tree-node attribute)
+  const attributes = component.attributes || {};
+  if (component.type === ComponentType.CONTAINER && attributes["data-tree-root"] === "true") {
+    return (
+      <TreeRootComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
+  if (component.type === ComponentType.CONTAINER && attributes["data-tree-node"] === "true") {
+    return (
+      <TreeComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
 
   // Special case: Google login button — rendered by dedicated component
   if (component.id === GoogleLoginButtonId) {
