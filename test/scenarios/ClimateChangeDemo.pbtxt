@@ -3,11 +3,12 @@ name: "ClimateChangeDemo"
 # =============================================================================
 # A more complex debate than ClimateChangeDebate.pbtxt: a climate scientist
 # (guest) argues climate change is a real, urgent global crisis, and a
-# skeptic (Marcus) challenges her across three independent argument threads —
-# global temperature, sea level/ice loss, and CO2 causation. Each main claim
-# carries a description explaining the argument and a sourced evidence child
-# claim linking to real public data. Each thread ends with Marcus conceding,
-# so the debate resolves in favor of "climate change is real."
+# skeptic (Challenger) challenges her across three independent argument
+# threads — global temperature, sea level/ice loss, and CO2 causation. Each
+# main claim carries a description explaining the argument and a sourced
+# evidence child claim linking to real public data. Each thread ends with
+# Challenger conceding, so the debate resolves in favor of "climate change is
+# real."
 # =============================================================================
 
 # =============================================================================
@@ -87,31 +88,31 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "CREATE_USER" }
+  action { username: "Challenger" event_type: "CREATE_USER" }
 }
 
 steps {
-  action { username: "Marcus" event_type: "JOIN_DEBATE" debate_id: 1 }
+  action { username: "Challenger" event_type: "JOIN_DEBATE" debate_id: 1 }
 }
 
 steps {
-  action { username: "Marcus" event_type: "ENTER_DEBATE" debate_id: 1 }
-  expectations { check_type: "ENGAGEMENT_STATE" username: "Marcus" expected_action: "ACTION_DEBATING" }
+  action { username: "Challenger" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Challenger" expected_action: "ACTION_DEBATING" }
 }
 
 steps {
-  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 2 }
+  action { username: "Challenger" event_type: "GO_TO_CLAIM" claim_id: 2 }
 }
 
 steps {
   action {
-    username: "Marcus"
+    username: "Challenger"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Temperature records are unreliable due to urban heat island effects and inconsistent station placement"
-    challenge_description: "Marcus argues that expanding cities near weather stations artificially inflate recorded temperatures, casting doubt on the reported warming trend."
+    challenge_description: "Challenger argues that expanding cities near weather stations artificially inflate recorded temperatures, casting doubt on the reported warming trend."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
-  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Marcus" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Challenger" expected_status: "TRUE_CLAIM" }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 4 to_claim_id: 2 }
   expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
 }
@@ -149,7 +150,7 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+  action { username: "Challenger" event_type: "CONCEDE_CHALLENGE" }
 }
 
 # =============================================================================
@@ -190,15 +191,15 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 7 }
+  action { username: "Challenger" event_type: "GO_TO_CLAIM" claim_id: 7 }
 }
 
 steps {
   action {
-    username: "Marcus"
+    username: "Challenger"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Sea level rise is a natural cyclical process unrelated to human activity"
-    challenge_description: "Marcus contends that oceans have risen and fallen throughout geological history, and today's rise is just part of a natural post-ice-age cycle rather than human-caused warming."
+    challenge_description: "Challenger contends that oceans have risen and fallen throughout geological history, and today's rise is just part of a natural post-ice-age cycle rather than human-caused warming."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 9 to_claim_id: 7 }
@@ -238,7 +239,7 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+  action { username: "Challenger" event_type: "CONCEDE_CHALLENGE" }
 }
 
 # =============================================================================
@@ -279,15 +280,15 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "GO_TO_CLAIM" claim_id: 12 }
+  action { username: "Challenger" event_type: "GO_TO_CLAIM" claim_id: 12 }
 }
 
 steps {
   action {
-    username: "Marcus"
+    username: "Challenger"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Correlation between CO2 and temperature doesn't prove causation -- volcanic activity and solar cycles could explain the changes"
-    challenge_description: "Marcus argues that natural forcings like solar output and volcanic activity are being underweighted, and that rising CO2 could simply be coincidental with, rather than the cause of, rising temperatures."
+    challenge_description: "Challenger argues that natural forcings like solar output and volcanic activity are being underweighted, and that rising CO2 could simply be coincidental with, rather than the cause of, rising temperatures."
   }
   expectations { check_type: "CLAIM_EXISTS" claim_id: 14 }
   expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 14 to_claim_id: 12 }
@@ -327,12 +328,12 @@ steps {
 }
 
 steps {
-  action { username: "Marcus" event_type: "CONCEDE_CHALLENGE" }
+  action { username: "Challenger" event_type: "CONCEDE_CHALLENGE" }
 }
 
 # =============================================================================
 # FINAL STATE: three argument threads, each resolved in favor of guest
-# (Marcus conceded every challenge he raised), 16 claims total.
+# (Challenger conceded every challenge he raised), 16 claims total.
 # =============================================================================
 
 steps {

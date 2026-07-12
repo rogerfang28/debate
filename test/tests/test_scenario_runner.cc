@@ -585,6 +585,12 @@ TEST_F(ScenarioRunner, ClimateChangeDemo) {
     executeScenario(s, /*dump_json_per_step=*/true);
 }
 
+TEST_F(ScenarioRunner, ClimateChangeSkepticDemo) {
+    TestScenario s = LoadScenarioFromFile("scenarios/ClimateChangeSkepticDemo.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load ClimateChangeSkepticDemo.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
 TEST_F(ScenarioRunner, ConcedePropagationTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ConcedePropagationTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ConcedePropagationTest.pbtxt";

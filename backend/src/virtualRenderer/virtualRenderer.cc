@@ -37,10 +37,12 @@ std::string VirtualRenderer::getUsersDatabasePath() const {
         return configured.lexically_normal().string();
     }
 
-    std::filesystem::path exeDir = utils::getExeDir();
-    std::filesystem::path dbPath = exeDir / ".." / ".." / "users.sqlite3";
-    dbPath = std::filesystem::weakly_canonical(dbPath);
-    return dbPath.string();
+    // Share the same database file as DebateModerator's UserDatabase (identical
+    // USERS schema — ID/USERNAME/USER_DATA). Previously this pointed at a
+    // separate users.sqlite3 with its own auto-increment ID space, so a claim's
+    // creator_id (from the debate DB) and this VRUserDatabase lookup could
+    // resolve to two completely different people at the same numeric ID.
+    return utils::getDatabasePath();
 }
 
 // Constructor
