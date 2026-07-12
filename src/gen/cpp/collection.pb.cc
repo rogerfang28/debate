@@ -168,17 +168,15 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_collection_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\020collection.proto\022\006debate\032\014debate.proto"
-    "\"\267\002\n\nCollection\022D\n\014claims_by_id\030\001 \003(\0132\"."
-    "debate.Collection.ClaimsByIdEntryR\nclaim"
-    "sById\022A\n\013links_by_id\030\002 \003(\0132!.debate.Coll"
-    "ection.LinksByIdEntryR\tlinksById\032L\n\017Clai"
-    "msByIdEntry\022\020\n\003key\030\001 \001(\005R\003key\022#\n\005value\030\002"
-    " \001(\0132\r.debate.ClaimR\005value:\0028\001\032R\n\016LinksB"
-    "yIdEntry\022\020\n\003key\030\001 \001(\005R\003key\022*\n\005value\030\002 \001("
-    "\0132\024.debate.RelationshipR\005value:\0028\001\"S\n\027Co"
-    "llectionSpecification\022\033\n\tdebate_id\030\001 \001(\005"
-    "R\010debateId\022\033\n\tclaim_ids\030\002 \003(\005R\010claimIdsb"
-    "\006proto3"
+    "\"\210\002\n\nCollection\0228\n\014claims_by_id\030\001 \003(\0132\"."
+    "debate.Collection.ClaimsByIdEntry\0226\n\013lin"
+    "ks_by_id\030\002 \003(\0132!.debate.Collection.Links"
+    "ByIdEntry\032@\n\017ClaimsByIdEntry\022\013\n\003key\030\001 \001("
+    "\005\022\034\n\005value\030\002 \001(\0132\r.debate.Claim:\0028\001\032F\n\016L"
+    "inksByIdEntry\022\013\n\003key\030\001 \001(\005\022#\n\005value\030\002 \001("
+    "\0132\024.debate.Relationship:\0028\001\"\?\n\027Collectio"
+    "nSpecification\022\021\n\tdebate_id\030\001 \001(\005\022\021\n\tcla"
+    "im_ids\030\002 \003(\005b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_collection_2eproto_deps[1] = {
@@ -188,7 +186,7 @@ static ::absl::once_flag descriptor_table_collection_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_collection_2eproto = {
     false,
     false,
-    447,
+    380,
     descriptor_table_protodef_collection_2eproto,
     "collection.proto",
     &descriptor_table_collection_2eproto_once,
@@ -276,20 +274,20 @@ Collection_ClaimsByIdEntry_DoNotUse::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Collection_ClaimsByIdEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .debate.Claim value = 2 [json_name = "value"];
+    // .debate.Claim value = 2;
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(Collection_ClaimsByIdEntry_DoNotUse, _impl_.value_)}},
-    // int32 key = 1 [json_name = "key"];
+    // int32 key = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Collection_ClaimsByIdEntry_DoNotUse, _impl_.key_), 1>(),
      {8, 1, 0,
       PROTOBUF_FIELD_OFFSET(Collection_ClaimsByIdEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 key = 1 [json_name = "key"];
+    // int32 key = 1;
     {PROTOBUF_FIELD_OFFSET(Collection_ClaimsByIdEntry_DoNotUse, _impl_.key_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // .debate.Claim value = 2 [json_name = "value"];
+    // .debate.Claim value = 2;
     {PROTOBUF_FIELD_OFFSET(Collection_ClaimsByIdEntry_DoNotUse, _impl_.value_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -372,20 +370,20 @@ Collection_LinksByIdEntry_DoNotUse::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Collection_LinksByIdEntry_DoNotUse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .debate.Relationship value = 2 [json_name = "value"];
+    // .debate.Relationship value = 2;
     {::_pbi::TcParser::FastMtS1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.value_)}},
-    // int32 key = 1 [json_name = "key"];
+    // int32 key = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Collection_LinksByIdEntry_DoNotUse, _impl_.key_), 1>(),
      {8, 1, 0,
       PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.key_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 key = 1 [json_name = "key"];
+    // int32 key = 1;
     {PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.key_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // .debate.Relationship value = 2 [json_name = "value"];
+    // .debate.Relationship value = 2;
     {PROTOBUF_FIELD_OFFSET(Collection_LinksByIdEntry_DoNotUse, _impl_.value_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -556,9 +554,9 @@ Collection::_table_ = {
   }}, {{
     65535, 65535
   }}, {{
-    // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
+    // map<int32, .debate.Claim> claims_by_id = 1;
     {PROTOBUF_FIELD_OFFSET(Collection, _impl_.claims_by_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
+    // map<int32, .debate.Relationship> links_by_id = 2;
     {PROTOBUF_FIELD_OFFSET(Collection, _impl_.links_by_id_), _Internal::kHasBitsOffset + 1, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }},
   {{
@@ -611,7 +609,7 @@ PROTOBUF_NOINLINE void Collection::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
+  // map<int32, .debate.Claim> claims_by_id = 1;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     if (!this_._internal_claims_by_id().empty()) {
       using MapType = ::google::protobuf::Map<::int32_t, ::debate::Claim>;
@@ -634,7 +632,7 @@ PROTOBUF_NOINLINE void Collection::Clear() {
     }
   }
 
-  // map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
+  // map<int32, .debate.Relationship> links_by_id = 2;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
     if (!this_._internal_links_by_id().empty()) {
       using MapType = ::google::protobuf::Map<::int32_t, ::debate::Relationship>;
@@ -683,7 +681,7 @@ PROTOBUF_NOINLINE void Collection::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // map<int32, .debate.Claim> claims_by_id = 1 [json_name = "claimsById"];
+    // map<int32, .debate.Claim> claims_by_id = 1;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_claims_by_id_size());
@@ -693,7 +691,7 @@ PROTOBUF_NOINLINE void Collection::Clear() {
                                        _pbi::WireFormatLite::TYPE_MESSAGE>::ByteSizeLong(entry.first, entry.second);
       }
     }
-    // map<int32, .debate.Relationship> links_by_id = 2 [json_name = "linksById"];
+    // map<int32, .debate.Relationship> links_by_id = 2;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
       total_size +=
           1 * ::google::protobuf::internal::FromIntSize(this_._internal_links_by_id_size());
@@ -898,20 +896,20 @@ CollectionSpecification::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::CollectionSpecification>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+    // repeated int32 claim_ids = 2;
     {::_pbi::TcParser::FastV32P1,
      {18, 0, 0,
       PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.claim_ids_)}},
-    // int32 debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CollectionSpecification, _impl_.debate_id_), 1>(),
      {8, 1, 0,
       PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.debate_id_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1;
     {PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.debate_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+    // repeated int32 claim_ids = 2;
     {PROTOBUF_FIELD_OFFSET(CollectionSpecification, _impl_.claim_ids_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
   }},
   // no aux_entries
@@ -953,7 +951,7 @@ PROTOBUF_NOINLINE void CollectionSpecification::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 debate_id = 1 [json_name = "debateId"];
+  // int32 debate_id = 1;
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     if (this_._internal_debate_id() != 0) {
       target =
@@ -962,7 +960,7 @@ PROTOBUF_NOINLINE void CollectionSpecification::Clear() {
     }
   }
 
-  // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+  // repeated int32 claim_ids = 2;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     {
       int byte_size = this_._impl_._claim_ids_cached_byte_size_.Get();
@@ -999,14 +997,14 @@ PROTOBUF_NOINLINE void CollectionSpecification::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    // repeated int32 claim_ids = 2 [json_name = "claimIds"];
+    // repeated int32 claim_ids = 2;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size +=
           ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
               this_._internal_claim_ids(), 1,
               this_._impl_._claim_ids_cached_byte_size_);
     }
-    // int32 debate_id = 1 [json_name = "debateId"];
+    // int32 debate_id = 1;
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_debate_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(

@@ -54,6 +54,29 @@ const EDGE_COLORS: Record<string, string> = {
   CHALLENGE:  "#f97316",
 };
 
+// ── Per-author color badge ─────────────────────────────────────────────
+// Deterministic (not order-of-appearance) so a given username always gets
+// the same color across reloads/debates, independent of node status color.
+
+const AUTHOR_PALETTE = [
+  "#60a5fa", "#f472b6", "#facc15", "#34d399",
+  "#a78bfa", "#fb923c", "#22d3ee", "#f87171",
+];
+
+function hashString(s: string): number {
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    hash = (hash << 5) - hash + s.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function colorForAuthor(username: string): string {
+  if (!username) return "#6b7280";
+  return AUTHOR_PALETTE[hashString(username) % AUTHOR_PALETTE.length];
+}
+
 const NODE_WIDTH = 160;
 const NODE_HEIGHT = 80;
 const ROOT_WIDTH = 180;
@@ -122,6 +145,19 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
   const { nodes = [], edges = [] } = component;
+
+  // ── Unique authors present, in first-seen order, for the legend ──
+  const uniqueAuthors = useMemo(() => {
+    const seen = new Set<string>();
+    const list: string[] = [];
+    for (const n of nodes) {
+      if (n.creatorUsername && !seen.has(n.creatorUsername)) {
+        seen.add(n.creatorUsername);
+        list.push(n.creatorUsername);
+      }
+    }
+    return list;
+  }, [nodes]);
 
   // ── Track container size for responsive SVG ───────────────────────
   useEffect(() => {
@@ -480,6 +516,33 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     </tspan>
                   ))}
                 </text>
+                {/* Author badge — colored dot + initial, top-left corner.
+                    Separate visual channel from the status color (node fill/
+                    border) so the two don't compete for the same signal. */}
+                {node.creatorUsername && (
+                  <g style={{ pointerEvents: "none" }}>
+                    <circle
+                      cx={-w / 2 + 12}
+                      cy={-h / 2 + 12}
+                      r={7}
+                      fill={colorForAuthor(node.creatorUsername)}
+                      stroke="var(--surface-card)"
+                      strokeWidth={1.5}
+                    />
+                    <text
+                      x={-w / 2 + 12}
+                      y={-h / 2 + 12}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize="8"
+                      fontWeight="700"
+                      fill="#0f1117"
+                      style={{ userSelect: "none" }}
+                    >
+                      {node.creatorUsername.charAt(0).toUpperCase()}
+                    </text>
+                  </g>
+                )}
                 {/* Created by */}
                 <text
                   textAnchor="middle"
@@ -645,6 +708,30 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           <span style={{ width: 12, height: 2, background: "#f97316", display: "inline-block" }} />
           Challenge
         </span>
+        {uniqueAuthors.length > 0 && (
+          <span
+            style={{
+              width: 1,
+              alignSelf: "stretch",
+              background: "var(--border-subtle)",
+              margin: "0 0.125rem",
+            }}
+          />
+        )}
+        {uniqueAuthors.map((author) => (
+          <span key={author} style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: colorForAuthor(author),
+                display: "inline-block",
+              }}
+            />
+            {author}
+          </span>
+        ))}
       </div>
     </div>
   );

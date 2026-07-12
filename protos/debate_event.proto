@@ -102,6 +102,7 @@ message RemoveLinkToBeChallenged {
 
 message SubmitChallengeClaim {
     string challenge_sentence = 1;
+    string challenge_description = 2;
 }
 
 message GoToChallenge {

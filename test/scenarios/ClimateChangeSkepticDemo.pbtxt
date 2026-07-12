@@ -1,0 +1,363 @@
+name: "ClimateChangeSkepticDemo"
+
+# =============================================================================
+# A simpler companion to ClimateChangeDemo.pbtxt with the roles reversed:
+# Skeptic creates the debate arguing climate change isn't a real threat, and
+# offers three supporting claims, each with 2-3 sibling sub-claims one level
+# deeper (all bare assertions with no real evidence behind them -- that's
+# intentional, not an oversight). guest challenges the one top-level claim
+# that sounds most scientific, Skeptic pushes back with an equally
+# unsubstantiated counter-challenge, guest counters again with real
+# evidence, and Skeptic concedes. ~15 claims, one challenge chain (unchanged
+# from the earlier versions -- only the supporting-claim tree grew wider),
+# no branching in the challenge itself.
+# =============================================================================
+
+# =============================================================================
+# PHASE 1: SETUP — Skeptic creates the debate
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "CREATE_USER" }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Climate change is not a serious threat and current warnings are overblown"
+  }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "Skeptic" expected_action: "ACTION_DEBATING" }
+}
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 1
+    expected_claim_sentence: "Climate change is not a serious threat and current warnings are overblown"
+  }
+}
+
+# =============================================================================
+# BRANCH 1: "climate has always changed naturally" — 3 sub-claims
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The climate has always changed naturally throughout Earth's history, so today's warming is nothing unusual"
+    claim_description: "Skeptic points to past ice ages and warm periods but cites no comparison of the RATE of change between those natural shifts and today -- a claim offered without real supporting data."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations {
+    check_type: "CLAIM_SENTENCE"
+    claim_id: 2
+    expected_claim_sentence: "The climate has always changed naturally throughout Earth's history, so today's warming is nothing unusual"
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Skeptic" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 2 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Ice ages and warm periods occurred long before human industrial activity began, so natural cycles alone explain temperature swings"
+    claim_description: "A true historical fact stated in isolation, without engaging with why the current warming's timing and magnitude line up specifically with industrial-era CO2 emissions rather than any previously known natural cycle."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 3 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 3 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The Medieval Warm Period and Little Ice Age show temperatures have swung significantly on their own before, without any industrial influence"
+    claim_description: "References two historical climate episodes but doesn't address that they were regional rather than global, and far smaller in magnitude than current warming -- a comparison offered without the actual data needed to make it."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 4 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Solar cycles and volcanic activity have driven major temperature shifts in the past without any human involvement"
+    claim_description: "Correctly notes that solar and volcanic forcing have influenced past climate, but doesn't address that measured solar output has been flat to declining in recent decades while temperatures kept rising -- a comparison offered without the data needed to actually support it."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 2 to_claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+
+# =============================================================================
+# BRANCH 2: "scientists exaggerate for funding" — 2 sub-claims
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Mainstream scientists exaggerate the severity of climate change to secure research funding and government grants"
+    claim_description: "An unsubstantiated claim about researchers' motives, offered without any evidence of actual funding manipulation or data fraud."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 6 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 6 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Research grants and media attention reward alarming conclusions over null results, creating a systemic bias toward exaggeration"
+    claim_description: "A general claim about incentive structures in science, offered without any specific study, audit, or dataset showing that climate research findings have actually been distorted by funding pressure."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 6 to_claim_id: 7 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 7 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 6 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Peer review itself is susceptible to groupthink, since papers challenging the mainstream consensus face harsher scrutiny and higher rejection rates"
+    claim_description: "A general claim about the sociology of science, offered without any specific case study, journal audit, or rejection-rate data to back up the accusation."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 6 to_claim_id: 8 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 8 }
+}
+
+# =============================================================================
+# BRANCH 3: "historical temperature records are unreliable" — 2 sub-claims
+# =============================================================================
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Historical temperature records are unreliable because measurement methods and instruments have changed dramatically over the past century"
+    claim_description: "Skeptic raises the general possibility of measurement inconsistency but doesn't address how climatologists calibrate and cross-validate historical records -- a doubt-casting claim without real substantiation."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 9 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 9 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 9 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Many weather stations have been relocated, upgraded, or replaced over the decades, making direct comparisons across a century of data unreliable"
+    claim_description: "Raises a real methodological concern in the abstract, but ignores that climatologists explicitly apply homogenization adjustments to correct for exactly this kind of station-siting change."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 10 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 9 to_claim_id: 10 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 10 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 9 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "No comprehensive independent audit has ever cross-checked every weather station's metadata against its full historical record"
+    claim_description: "Asserts a gap in oversight without acknowledging the station-history audits and homogenization studies that already exist and are published alongside the temperature datasets."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 11 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 9 to_claim_id: 11 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 11 }
+}
+
+# =============================================================================
+# GUEST CHALLENGES THE STRONGEST CLAIM. Each challenge in the chain now
+# carries its own evidence child, and the next challenge targets that
+# EVIDENCE claim rather than the argument claim itself -- you dispute the
+# source, not just the assertion sitting on top of it.
+# =============================================================================
+
+steps {
+  action { username: "guest" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "guest" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+
+steps {
+  action { username: "guest" event_type: "ENTER_DEBATE" debate_id: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "guest" expected_action: "ACTION_DEBATING" }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 2 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The current rate of warming is roughly 10 times faster than any natural warming period found in the last 65 million years"
+    challenge_description: "guest argues the pace of modern warming has no precedent anywhere in the geological record."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 12 }
+  expectations { check_type: "USER_VIEW" claim_id: 12 username: "guest" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 12 to_claim_id: 2 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 12 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 12 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.ncei.noaa.gov/products/paleoclimatology"
+    claim_description: "NOAA's paleoclimatology archive, compiling ice core, ocean sediment, and pollen records used to reconstruct temperature over the last 65 million years -- no natural event in the archive matches the speed of modern warming."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 13 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 12 to_claim_id: 13 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 13 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 13 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Paleoclimate proxy reconstructions carry wide uncertainty and can't precisely pin down the rate of change over centuries"
+    challenge_description: "Skeptic disputes the precision of the cited proxy evidence rather than engaging with what it actually shows -- another doubt-casting claim without real substantiation."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 14 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 14 to_claim_id: 13 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 14 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "GO_TO_CLAIM" claim_id: 14 }
+}
+
+steps {
+  action {
+    username: "Skeptic"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "A widely-shared op-ed by a retired geologist argued proxy dating methods are too imprecise to trust"
+    claim_description: "Cites a single opinion piece by a non-climate-specialist rather than any peer-reviewed study auditing proxy precision -- the kind of source that sounds authoritative but doesn't hold up to scrutiny."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 15 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 14 to_claim_id: 15 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 15 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 15 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Proxy uncertainty is well-quantified and doesn't change the conclusion -- ice cores, coral records, and tree rings all independently agree that current warming is unprecedented"
+    challenge_description: "guest points out that a single op-ed by a non-specialist doesn't outweigh decades of peer-reviewed, cross-validated proxy research."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 16 }
+  expectations { check_type: "LINK_EXISTS" link_type: "CHALLENGE" from_claim_id: 16 to_claim_id: 15 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 16 }
+}
+
+steps {
+  action { username: "guest" event_type: "GO_TO_CLAIM" claim_id: 16 }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "https://www.ipcc.ch/report/ar6/wg1/"
+    claim_description: "The IPCC's Sixth Assessment Report (Working Group I) -- the most comprehensive peer-reviewed synthesis of climate science -- documenting the cross-validated paleoclimate evidence for unprecedented modern warming."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 17 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 16 to_claim_id: 17 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 17 }
+}
+
+steps {
+  action { username: "Skeptic" event_type: "CONCEDE_CHALLENGE" }
+}
+
+# =============================================================================
+# FINAL STATE: 17 claims, one challenge chain (each link carrying its own
+# evidence, each next challenge targeting the prior evidence rather than the
+# argument on top of it) resolved in favor of guest (Skeptic conceded).
+# Skeptic's other two supporting branches (6->7,6->8 and 9->10,9->11) still
+# stand as unsubstantiated assertions nobody addressed.
+# =============================================================================
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 17 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 17 }
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 13 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 3 }
+}

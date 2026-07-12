@@ -206,6 +206,8 @@ protected:
                 break;
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
+                event.mutable_submit_challenge_claim()->set_challenge_description(
+                    action.challenge_description().empty() ? "challenge claim" : action.challenge_description());
                 break;
             case debate_event::CONCEDE_CHALLENGE:
                 event.mutable_concede_challenge()->set_challenge_link_id(
@@ -574,6 +576,18 @@ TEST_F(ScenarioRunner, GlobalWarmingHoaxDebate) {
 TEST_F(ScenarioRunner, ClimateChangeDebate) {
     TestScenario s = LoadScenarioFromFile("scenarios/ClimateChangeDebate.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ClimateChangeDebate.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, ClimateChangeDemo) {
+    TestScenario s = LoadScenarioFromFile("scenarios/ClimateChangeDemo.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load ClimateChangeDemo.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, ClimateChangeSkepticDemo) {
+    TestScenario s = LoadScenarioFromFile("scenarios/ClimateChangeSkepticDemo.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load ClimateChangeSkepticDemo.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
 }
 

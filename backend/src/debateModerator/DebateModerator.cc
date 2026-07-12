@@ -297,7 +297,12 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::SUBMIT_CHALLENGE_CLAIM:
             Log::info("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
-            ChallengeHandler::SubmitChallengeClaim(event.submit_challenge_claim().challenge_sentence(),user_id, debateWrapper);
+            ChallengeHandler::SubmitChallengeClaim(
+                event.submit_challenge_claim().challenge_sentence(),
+                event.submit_challenge_claim().challenge_description(),
+                user_id,
+                debateWrapper
+            );
             break;
         case debate_event::GO_TO_CHALLENGE:
             Log::info("[DebateModerator] Event Type: GO_TO_CHALLENGE");

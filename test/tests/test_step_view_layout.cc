@@ -109,7 +109,8 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
     VRUserDatabase userDb(db);
 
     // Generate the step view page
-    ui::Page page = StepView::GenerateStepViewPage(fullDebateInfo, collection, userDb);
+    user::User viewerUser = debateWrapper.getUserProtobuf(viewer_user_id);
+    ui::Page page = StepView::GenerateStepViewPage(fullDebateInfo, collection, userDb, viewerUser);
 
     Log::info("[downloadJson] Generated step view page: page_id=" + page.page_id()
               + ", title=" + page.title());

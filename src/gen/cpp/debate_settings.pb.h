@@ -214,7 +214,7 @@ class DebateSettings final : public ::google::protobuf::Message
   enum : int {
     kMaxParticipantsFieldNumber = 1,
   };
-  // int32 max_participants = 1 [json_name = "maxParticipants"];
+  // int32 max_participants = 1;
   void clear_max_participants() ;
   ::int32_t max_participants() const;
   void set_max_participants(::int32_t value);
@@ -275,7 +275,7 @@ extern const ::google::protobuf::internal::ClassDataFull DebateSettings_class_da
 
 // DebateSettings
 
-// int32 max_participants = 1 [json_name = "maxParticipants"];
+// int32 max_participants = 1;
 inline void DebateSettings::clear_max_participants() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.max_participants_ = 0;

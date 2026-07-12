@@ -97,7 +97,7 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const std::string& challenge_description, const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // find the current claim (it's challenging that one)
@@ -108,7 +108,7 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
     // to the challenged claim with a CHALLENGE link.
     int same_debate_challenge_claim_id = debateWrapper.createClaim(
         challenge_sentence,
-        "challenge claim",
+        challenge_description.empty() ? "challenge claim" : challenge_description,
         user_id,
         current_debate_id
     );
