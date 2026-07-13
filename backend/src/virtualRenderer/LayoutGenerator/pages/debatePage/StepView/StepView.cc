@@ -276,8 +276,18 @@ static ui::Component BuildDebateStatusPanel(
     if (fullDebateInfo.has_full_debate_tree()) {
         const auto& tree = fullDebateInfo.full_debate_tree();
 
-        // Any challenge claim that has itself been challenged back has been
-        // "answered" and is no longer live.
+        // PARENT_CHILD children of each claim, e.g. an evidence claim added
+        // under a challenge -- needed below to look through evidence when
+        // deciding whether a challenge has been "answered".
+        std::unordered_map<int, std::vector<int>> childrenOf;
+        for (const auto& link : tree.links()) {
+            if (!link.is_challenge()) {
+                childrenOf[link.from_claim_id()].push_back(link.to_claim_id());
+            }
+        }
+
+        // Any claim that has itself been challenged back has been "answered"
+        // and is no longer live.
         std::unordered_set<int> challengedBack;
         for (const auto& link : tree.links()) {
             if (link.is_challenge()) {
@@ -285,30 +295,50 @@ static ui::Component BuildDebateStatusPanel(
             }
         }
 
+        // A challenge is "answered" if IT, or any PARENT_CHILD descendant of
+        // it (e.g. an evidence claim attached to it), was itself challenged
+        // back or conceded. Challenges often target a claim's evidence
+        // rather than the claim itself, so the direct id alone isn't enough.
+        auto isAnswered = [&](int challengeClaimId, const std::string& targetOwnerName) {
+            std::vector<int> stack = {challengeClaimId};
+            std::unordered_set<int> visited;
+            while (!stack.empty()) {
+                int id = stack.back();
+                stack.pop_back();
+                if (!visited.insert(id).second) continue;
+
+                if (challengedBack.count(id)) return true;
+
+                auto it = collectionProto.claims_by_id().find(id);
+                if (it != collectionProto.claims_by_id().end()) {
+                    const auto& statuses = it->second.user_statuses();
+                    auto statusIt = statuses.find(targetOwnerName);
+                    if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::TRUE_CLAIM) {
+                        return true;  // conceded
+                    }
+                }
+
+                auto childIt = childrenOf.find(id);
+                if (childIt != childrenOf.end()) {
+                    for (int child : childIt->second) stack.push_back(child);
+                }
+            }
+            return false;
+        };
+
         for (const auto& link : tree.links()) {
             if (!link.is_challenge()) continue;
             int challengeClaimId = link.from_claim_id();
             int targetClaimId = link.to_claim_id();
 
-            // Answered by a counter-challenge?
-            if (challengedBack.count(challengeClaimId)) continue;
-
             auto targetIt = collectionProto.claims_by_id().find(targetClaimId);
             if (targetIt == collectionProto.claims_by_id().end()) continue;
             int targetOwnerId = targetIt->second.creator_id();
+            std::string targetOwnerName = userDb.getUsername(targetOwnerId);
 
-            // Answered by concede? The target's owner marks the challenge claim
-            // TRUE_CLAIM when they concede.
+            if (isAnswered(challengeClaimId, targetOwnerName)) continue;
+
             auto challengeIt = collectionProto.claims_by_id().find(challengeClaimId);
-            if (challengeIt != collectionProto.claims_by_id().end()) {
-                std::string targetOwnerName = userDb.getUsername(targetOwnerId);
-                const auto& statuses = challengeIt->second.user_statuses();
-                auto statusIt = statuses.find(targetOwnerName);
-                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::TRUE_CLAIM) {
-                    continue;  // conceded
-                }
-            }
-
             int challengeCreatorId = (challengeIt != collectionProto.claims_by_id().end())
                 ? challengeIt->second.creator_id() : -1;
 
