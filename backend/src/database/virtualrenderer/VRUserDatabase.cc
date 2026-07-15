@@ -137,8 +137,26 @@ bool VRUserDatabase::updateUsername(int user_id, const std::string& newUsername)
 }
 
 bool VRUserDatabase::updateUserPassword(int user_id, const std::string& newPasswordHash) {
-    std::cerr << "updateUserPassword: Password should be managed via protobuf data" << std::endl;
-    return false;
+    // Password lives inside the serialized User protobuf (USER_DATA blob),
+    // same pattern as updateGoogleSub: load, set the field, save back.
+    std::vector<uint8_t> protobufData = getUserProtobuf(user_id);
+    if (protobufData.empty()) {
+        return false;
+    }
+
+    user::User newUser;
+    if (!newUser.ParseFromArray(protobufData.data(), static_cast<int>(protobufData.size()))) {
+        return false;
+    }
+
+    newUser.set_password_hash(newPasswordHash);
+
+    std::string serializedData;
+    newUser.SerializeToString(&serializedData);
+
+    return updateUserProtobuf(user_id, std::vector<uint8_t>(
+        serializedData.begin(), serializedData.end()
+    ));
 }
 
 bool VRUserDatabase::updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email) {

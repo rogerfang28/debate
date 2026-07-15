@@ -19,6 +19,7 @@
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
 #include "../utils/GoogleJWTVerifier.h"
+#include "../utils/PasswordHasher.h"
 
 namespace {
 std::string buildAutoGuestUsername() {
@@ -96,7 +97,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     
     // change cookies accordingly
-    handleAuthEvents(evt, req, res);
+    std::string loginError = handleAuthEvents(evt, req, res);
 
     // Auto-login sets response cookies, but request cookies are still empty on first load.
     if (autoLoginResolvedUserId > 0 && !autoLoginResolvedUsername.empty() && !evt.user().is_logged_in()) {
@@ -115,6 +116,13 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
     }
 
+    // A failed username/password login leaves the user unauthenticated, so the
+    // moderator returns the login page anyway — but re-render it here with the
+    // error message and the attempted username prefilled.
+    if (!loginError.empty()) {
+        return LoginPageGenerator::GenerateLoginPage(loginError, evt.login().username());
+    }
+
     // parse user info to create layout based on it
     ui::Page page = LayoutGenerator::generateLayout(info, userDb);
     return page;
@@ -122,9 +130,10 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
 
 
-void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
+std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
     int resolvedUserId = parseCookie::extractUserIdFromCookies(req);
     std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
+    std::string loginError;
 
     if (evt.type() == debate_event::LOGOUT) {
         Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
@@ -175,13 +184,57 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
                 authSucceeded = false;
             }
         } else {
-            // Legacy username-only flow
+            // Username-based flow.
             finalUsername = evt.login().username();
-            moderatorUserId = moderator.createUserIfNotExist(finalUsername);
-            userId = userDb.getUserId(finalUsername);
-            if (userId == -1) {
-                Log::info("[VirtualRenderer] User not found, creating new user.");
-                userId = createUserIfNotExist(finalUsername);
+            const std::string password = evt.login().password();
+
+            // "guest" and demo-mode logins are intentionally passwordless.
+            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest";
+
+            if (passwordless) {
+                moderatorUserId = moderator.createUserIfNotExist(finalUsername);
+                userId = userDb.getUserId(finalUsername);
+                if (userId == -1) {
+                    Log::info("[VirtualRenderer] User not found, creating new user.");
+                    userId = createUserIfNotExist(finalUsername);
+                }
+            } else if (finalUsername.empty() || password.empty()) {
+                Log::warn("[VirtualRenderer] Login missing username or password.");
+                authSucceeded = false;
+                loginError = "Please enter both a username and a password.";
+            } else {
+                const int existingUserId = userDb.getUserId(finalUsername);
+                const bool isNewUser = (existingUserId == -1);
+                moderatorUserId = moderator.createUserIfNotExist(finalUsername);
+
+                if (isNewUser) {
+                    // Auto-register: create the account and set its password.
+                    userId = createUserIfNotExist(finalUsername);
+                    userDb.updateUserPassword(userId, PasswordHasher::hash(password));
+                    Log::info("[VirtualRenderer] Registered new user '" + finalUsername + "' with a password.");
+                } else {
+                    userId = existingUserId;
+                    // Read the stored hash from the user's protobuf.
+                    std::string storedHash;
+                    auto protoData = userDb.getUserProtobufByUsername(finalUsername);
+                    user::User existing;
+                    if (!protoData.empty() &&
+                        existing.ParseFromArray(protoData.data(), static_cast<int>(protoData.size()))) {
+                        storedHash = existing.password_hash();
+                    }
+
+                    if (storedHash.empty()) {
+                        // Pre-existing account with no password yet: set it on first use.
+                        userDb.updateUserPassword(userId, PasswordHasher::hash(password));
+                        Log::info("[VirtualRenderer] Set password for previously passwordless user '" + finalUsername + "'.");
+                    } else if (!PasswordHasher::verify(password, storedHash)) {
+                        Log::warn("[VirtualRenderer] Incorrect password for user '" + finalUsername + "'.");
+                        authSucceeded = false;
+                        loginError = "Incorrect username or password.";
+                    } else {
+                        Log::info("[VirtualRenderer] Password verified for user '" + finalUsername + "'.");
+                    }
+                }
             }
         }
 
@@ -200,6 +253,8 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
     evt.mutable_user()->set_user_id(resolvedUserId);
     evt.mutable_user()->set_username(resolvedUsername);
     evt.mutable_user()->set_is_logged_in(!resolvedUsername.empty() && resolvedUserId > 0);
+
+    return loginError;
 }
 
 int VirtualRenderer::createUserIfNotExist(const std::string& username) {
