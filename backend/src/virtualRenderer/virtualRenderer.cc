@@ -27,6 +27,11 @@ std::string buildAutoGuestUsername() {
     const auto timestampMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     return "guest_" + std::to_string(timestampMs);
 }
+
+// True if the string contains any whitespace (space, tab, newline, etc.).
+bool hasWhitespace(const std::string& s) {
+    return s.find_first_of(" \t\n\r\f\v") != std::string::npos;
+}
 }
 
 std::string VirtualRenderer::getUsersDatabasePath() const {
@@ -202,6 +207,10 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                 Log::warn("[VirtualRenderer] Login missing username or password.");
                 authSucceeded = false;
                 loginError = "Please enter both a username and a password.";
+            } else if (hasWhitespace(finalUsername) || hasWhitespace(password)) {
+                Log::warn("[VirtualRenderer] Username or password contains whitespace.");
+                authSucceeded = false;
+                loginError = "Username and password cannot contain spaces.";
             } else {
                 const int existingUserId = userDb.getUserId(finalUsername);
                 const bool isNewUser = (existingUserId == -1);
