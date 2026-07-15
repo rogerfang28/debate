@@ -3,13 +3,14 @@
 #include "../../../../utils/DemoMode.h"
 #include "../../../../utils/Log.h"
 
-ui::Page LoginPageGenerator::GenerateLoginPage() {
+ui::Page LoginPageGenerator::GenerateLoginPage(const std::string& errorMessage,
+                                               const std::string& prefillUsername) {
     ui::Page page;
     page.set_page_id("login");
     page.set_title((demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Sign In")) + std::string(" | commit: ") + GIT_COMMIT_HASH);
 
     // Main container
-    ui::Component main = GenerateLoginPageMainLayout();
+    ui::Component main = GenerateLoginPageMainLayout(errorMessage, prefillUsername);
 
     ui::Component* pageLayout = page.add_components();
     pageLayout->CopyFrom(main);
@@ -24,7 +25,8 @@ ui::Page LoginPageGenerator::GenerateLoginPage() {
 
 
 
-ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
+ui::Component LoginPageGenerator::GenerateLoginPageMainLayout(const std::string& errorMessage,
+                                                              const std::string& prefillUsername) {
     // Main container
     ui::Component main = ComponentGenerator::createContainer(
         "main",
@@ -51,13 +53,26 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Sign in with Google, or continue as guest."),
+        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Log in with a username and password, sign in with Google, or continue as guest."),
         "",
         "text-gray-300",
         "",
         "text-center"
     );
     ComponentGenerator::addChild(&main, description);
+
+    // Error message (e.g. wrong password) — only shown when present.
+    if (!errorMessage.empty()) {
+        ui::Component error = ComponentGenerator::createText(
+            "loginError",
+            errorMessage,
+            "",
+            "text-red-400",
+            "font-medium",
+            "text-center"
+        );
+        ComponentGenerator::addChild(&main, error);
+    }
 
     if (demo_mode::autoLogin) {
         return main;
@@ -78,6 +93,50 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout() {
         ComponentGenerator::addChild(&main, demoButton);
     }
     else {
+          // Username input
+          ui::Component usernameInput = ComponentGenerator::createInput(
+              "usernameInput",
+              "Enter your username...",
+              "username",
+              "bg-gray-800",
+              "text-white",
+              "border-gray-600",
+              "p-3",
+              "rounded",
+              "w-full max-w-sm",
+              prefillUsername
+          );
+          ComponentGenerator::addChild(&main, usernameInput);
+
+          // Password input (masked via type="password")
+          ui::Component passwordInput = ComponentGenerator::createInput(
+              "passwordInput",
+              "Enter your password...",
+              "password",
+              "bg-gray-800",
+              "text-white",
+              "border-gray-600",
+              "p-3",
+              "rounded",
+              "w-full max-w-sm"
+          );
+          ComponentGenerator::addAttribute(&passwordInput, "type", "password");
+          ComponentGenerator::addChild(&main, passwordInput);
+
+          // Log In button (username + password)
+          ui::Component submitButton = ComponentGenerator::createButton(
+              "submitButton",
+              "Log In",
+              "submit",
+              "bg-green-600",
+              "hover:bg-green-500",
+              "text-white",
+              "px-6 py-3",
+              "rounded-lg",
+              "transition"
+          );
+          ComponentGenerator::addChild(&main, submitButton);
+
           // Guest Mode button — signs in as username "guest"
           ui::Component guestButton = ComponentGenerator::createButton(
               "guestButton",
