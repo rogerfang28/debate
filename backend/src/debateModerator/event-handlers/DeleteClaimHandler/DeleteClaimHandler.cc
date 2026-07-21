@@ -1,5 +1,6 @@
 #include "DeleteClaimHandler.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 #include "../../../utils/Log.h"
 
 void DeleteClaimHandler::DeleteCurrentStatement(const int& user_id, DebateWrapper& debateWrapper) {
@@ -9,10 +10,18 @@ void DeleteClaimHandler::DeleteCurrentStatement(const int& user_id, DebateWrappe
     
     Log::debug("[DeleteCurrentStatement] Deleting claim " + std::to_string(currentClaimId) + " for user: " + std::to_string(user_id));
     
+    // Authorization: user can only delete their own claims
+    debate::Claim claim = debateWrapper.getClaimById(currentClaimId);
+    if (claim.creator_id() != user_id) {
+        Log::warn("[DeleteCurrentStatement] Unauthorized delete — user " + std::to_string(user_id) + " tried to delete claim " + std::to_string(currentClaimId));
+        return;
+    }
+    
     // Delete the current claim
-    debateWrapper.deleteClaim(currentClaimId);
+    debateWrapper.deleteClaim(currentClaimId, user_id);
 }
 
 void DeleteClaimHandler::DeleteChildClaim(const int& claimId, const int& user_id, DebateWrapper& debateWrapper) {
-    debateWrapper.deleteClaim(claimId);
+    // Authorization is performed inside deleteClaim (ownership check)
+    debateWrapper.deleteClaim(claimId, user_id);
 }

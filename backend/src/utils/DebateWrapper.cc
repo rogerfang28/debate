@@ -199,7 +199,13 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
     }
 }
 
-void DebateWrapper::deleteClaim(const int& claimId) {
+void DebateWrapper::deleteClaim(const int& claimId, const int& user_id) {
+    // Authorization: verify user owns this claim
+    debate::Claim claim = getClaimById(claimId);
+    if (claim.creator_id() != user_id) {
+        Log::warn("[DebateWrapper] Unauthorized delete attempt — user " + std::to_string(user_id) + " tried to delete claim " + std::to_string(claimId) + " (owned by " + std::to_string(claim.creator_id()) + ")");
+        return;
+    }
     // find the claim parent to remove it's reference, dont actually delete the claim
     debate::Claim claim = getClaimById(claimId);
     int parentId = claim.parent_id();
@@ -289,15 +295,26 @@ void DebateWrapper::updateUserProtobufBinary(const int& user_id, const std::vect
 
 void DebateWrapper::changeDescriptionOfClaim(
     const int& claimId,
+    const int& user_id,
     const std::string& newDescription) {
     debate::Claim claim = getClaimById(claimId);
+    if (claim.creator_id() != user_id) {
+        Log::warn("[DebateWrapper] Unauthorized edit — user " + std::to_string(user_id) + " tried to modify description of claim " + std::to_string(claimId));
+        return;
+    }
     claim.set_description(newDescription);
     updateClaimInDB(claim);
 }
 
 void DebateWrapper::editClaimText(
     const int& claimId,
+    const int& user_id,
     const std::string& newText) {
+    debate::Claim claim = getClaimById(claimId);
+    if (claim.creator_id() != user_id) {
+        Log::warn("[DebateWrapper] Unauthorized edit — user " + std::to_string(user_id) + " tried to edit claim " + std::to_string(claimId));
+        return;
+    }
     debate::Claim claim = getClaimById(claimId);
     claim.set_sentence(newText);
     updateClaimInDB(claim);

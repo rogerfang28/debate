@@ -1,0 +1,30 @@
+rules:
+  - id: no-rate-limiting
+    message: "HIGH: No rate limiting on POST endpoint. Susceptible to brute force and DoS."
+    languages: [cpp]
+    severity: HIGH
+    pattern: |
+      $BODY.size()
+    metadata:
+      category: security
+      subcategory: availability
+      owasp: "A04:2021 - Insecure Design"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/server/main.cc
+
+  - id: no-request-size-limit
+    message: "HIGH: No request body size validation before parsing protobuf."
+    languages: [cpp]
+    severity: HIGH
+    pattern: |
+      req.body.size()
+    metadata:
+      category: security
+      subcategory: availability
+      owasp: "A04:2021 - Insecure Design"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/virtualRenderer/MiddleendRequestHandler.cc

@@ -22,11 +22,13 @@ public:
         const int& user_id,
         const int& debate_id);
     void changeDescriptionOfClaim(
-        const int& claimId,
-        const std::string& newDescription);
+         const int& claimId,
+         const int& user_id,
+         const std::string& newDescription);
     void editClaimText(
-        const int& claimId,
-        const std::string& newText);
+          const int& claimId,
+          const int& user_id,
+          const std::string& newText);
     std::string findClaimSentence(
         const int& claimId);
     std::vector<int> findChildrenIds(
@@ -34,8 +36,8 @@ public:
     std::vector<std::pair<std::string,std::string>> findChildrenInfo(
         const int& parentId); // returns vector of (id, sentence) pairs
     void deleteDebate(const int& debateId, const int& user_id);
-    void deleteClaim(const int& claimId);
-    void deleteAllDebates(const int& user_id);
+    void deleteClaim(const int& claimId, const int& user_id);
+     void deleteAllDebates(const int& user_id);
     void moveUserToClaim(const int& user_id, const int& claimId);
     std::vector<int> getUserDebateIds(const int& user_id);
     std::vector<uint8_t> getDebateProtobuf(const int& debateId);

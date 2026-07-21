@@ -1,0 +1,28 @@
+rules:
+  - id: frontend-attr-spread
+    message: "MEDIUM: Frontend spreads arbitrary attributes from server. If server is compromised, this enables XSS."
+    languages: [typescript]
+    severity: MEDIUM
+    pattern: '{...component.attributes}'
+    metadata:
+      category: security
+      subcategory: xss
+      owasp: "A03:2021 - Injection"
+      source: "manual-audit"
+    paths:
+      include:
+        - frontend/src/**/*.tsx
+
+  - id: frontend-attr-spread-2
+    message: "MEDIUM: Frontend spreads arbitrary attributes from server via destructuring."
+    languages: [typescript]
+    severity: MEDIUM
+    pattern: '{...$ATTRS}'
+    metadata:
+      category: security
+      subcategory: xss
+      owasp: "A03:2021 - Injection"
+      source: "manual-audit"
+    paths:
+      include:
+        - frontend/src/**/*.tsx

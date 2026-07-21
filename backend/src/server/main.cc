@@ -25,7 +25,7 @@ int main() {
   httplib::Server svr;
   MiddleendRequestHandler handler;
 
-  // ---------- CORS middleware ----------
+  // ---------- CORS + Security middleware ----------
   svr.set_pre_routing_handler([](const httplib::Request &req, httplib::Response &res) {
     // Allow credentials (cookies) - must specify exact origin, not "*"
     std::string origin = req.get_header_value("Origin");
@@ -41,7 +41,22 @@ int main() {
       res.status = 204;
       return httplib::Server::HandlerResponse::Handled;
     }
-    return httplib::Server::HandlerResponse::Unhandled;
+
+    // Security headers (applied to every response)
+    res.set_header("X-Content-Type-Options", "nosniff");
+    res.set_header("X-Frame-Options", "DENY");
+    res.set_header("X-XSS-Protection", "1; mode=block");
+    res.set_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    res.set_header("Content-Security-Policy",
+        "default-src 'self'; "
+        "script-src 'self'; "
+        "style-src 'self'; "
+        "img-src 'self' data:; "
+        "connect-src 'self'; "
+        "frame-ancestors 'none'; "
+        "base-uri 'self'; "
+        "form-action 'self'");
+    res.set_header("Referrer-Policy", "no-referrer");
   });
 
   svr.Post("/clientmessage", [&handler](const httplib::Request& req, httplib::Response& res) {
@@ -49,6 +64,6 @@ int main() {
   });
 
   // ---------- Start server ----------
-  Log::info("Serving server on http://127.0.0.1:8080");
+  Log::info("Serving server on http://0.0.0.0:8080");
   svr.listen("0.0.0.0", 8080);
 }

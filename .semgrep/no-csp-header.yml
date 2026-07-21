@@ -1,0 +1,29 @@
+rules:
+  - id: missing-csp-header
+    message: "HIGH: No Content-Security-Policy header set. Vulnerable to XSS and clickjacking."
+    languages: [cpp]
+    severity: HIGH
+    pattern: "CSP"
+    metadata:
+      category: security
+      subcategory: xss
+      owasp: "A03:2021 - Injection"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/server/main.cc
+    modes: [diff]
+
+  - id: missing-samesite-cookie
+    message: "HIGH: Cookies set without SameSite attribute. Vulnerable to CSRF."
+    languages: [cpp]
+    severity: HIGH
+    pattern: "HttpOnly"
+    metadata:
+      category: security
+      subcategory: csrf
+      owasp: "A01:2021 - Broken Access Control"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/virtualRenderer/utils/parseCookie.cc

@@ -1,0 +1,30 @@
+rules:
+  - id: auth-cookie-trust
+    message: "CRITICAL: Authentication relies on unsanitized user_id cookie. Anyone can impersonate any user."
+    languages: [cpp]
+    severity: CRITICAL
+    pattern: parseCookie
+    metadata:
+      category: security
+      subcategory: auth-bypass
+      owasp: "A2:2021 - Cryptographic Failures"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/virtualRenderer/utils/parseCookie.cc
+
+  - id: missing-auth-check
+    message: "CRITICAL: No authorization check before database mutation. User can modify/delete any resource."
+    languages: [cpp]
+    severity: CRITICAL
+    pattern: |
+      $DB->$METHOD(...);
+    metadata:
+      category: security
+      subcategory: idor
+      owasp: "A01:2021 - Broken Access Control"
+      source: "manual-audit"
+    paths:
+      include:
+        - backend/src/database/handlers/*.cc
+        - backend/src/debateModerator/event-handlers/*.cc
