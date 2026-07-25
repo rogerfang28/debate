@@ -43,18 +43,22 @@ std::string VirtualRenderer::getUsersDatabasePath() const {
         return configured.lexically_normal().string();
     }
 
-    // Share the same database file as DebateModerator's UserDatabase (identical
-    // USERS schema — ID/USERNAME/USER_DATA). Previously this pointed at a
-    // separate users.sqlite3 with its own auto-increment ID space, so a claim's
-    // creator_id (from the debate DB) and this VRUserDatabase lookup could
-    // resolve to two completely different people at the same numeric ID.
-    return utils::getDatabasePath();
+    // All user records live in their own users.sqlite3, separate from the
+    // debate data in debates.sqlite3. The DebateModerator is handed this exact
+    // same connection (VirtualRenderer ctor -> DebateModerator -> DatabaseWrapper),
+    // so every user ID comes from this one table and the debate DB's
+    // creator_id / DEBATE_MEMBERS.USER_ID reference these IDs consistently.
+    std::filesystem::path exeDir = utils::getExeDir();
+    std::filesystem::path dbPath = exeDir / ".." / ".." / "users.sqlite3";
+    dbPath = std::filesystem::weakly_canonical(dbPath);
+    return dbPath.string();
 }
 
 // Constructor
 VirtualRenderer::VirtualRenderer()
     : usersDb(getUsersDatabasePath()),
-      userDb(usersDb) {
+      userDb(usersDb),
+      moderator(usersDb) {
     Log::info("VirtualRenderer initialized.");
 }
 
@@ -322,7 +326,10 @@ void VirtualRenderer::updateGoogleSub(int user_id, const std::string& google_sub
     user.set_google_sub(google_sub);
     if (!email.empty()) user.set_email(email);
 
-    std::vector<uint8_t> updated(protoData.size());
+    // Size the buffer to the UPDATED user, not the original blob — adding
+    // google_sub/email makes it larger, and serializing into an undersized
+    // buffer truncates it, corrupting the stored protobuf (causes 404 on next load).
+    std::vector<uint8_t> updated(user.ByteSizeLong());
     user.SerializeToArray(updated.data(), updated.size());
     userDb.updateUserProtobuf(user_id, updated);
 

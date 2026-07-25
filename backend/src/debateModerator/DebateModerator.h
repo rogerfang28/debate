@@ -11,7 +11,9 @@
 #include "../utils/DebateWrapper.h"
 class DebateModerator {
 public:
-    DebateModerator();
+    // usersDb is the shared users.sqlite3 connection (owned by VirtualRenderer)
+    // so the moderator and the renderer read/write the same user records.
+    explicit DebateModerator(Database& usersDb);
     ~DebateModerator();
 
     moderator_to_vr::ModeratorToVRMessage handleRequest(debate_event::DebateEvent& event);
