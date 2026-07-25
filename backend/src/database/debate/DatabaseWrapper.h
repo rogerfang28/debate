@@ -15,13 +15,15 @@
 // ---------------------------------------
 class DatabaseWrapper {
 public:
-    // Constructor takes a reference to the Database instance
-    explicit DatabaseWrapper(Database& db)
-        : users(db),
-          debates(db),
-          statements(db),
-          debateMembers(db),
-          links(db) {}
+    // Debate data (debates/statements/members/links) lives in the debates DB;
+    // user records live in a separate users DB (users.sqlite3) so there is a
+    // single source of truth for users shared with the VirtualRenderer.
+    DatabaseWrapper(Database& debatesDb, Database& usersDb)
+        : users(usersDb),
+          debates(debatesDb),
+          statements(debatesDb),
+          debateMembers(debatesDb),
+          links(debatesDb) {}
 
     // Initialize all tables
     bool ensureAllTables() {
