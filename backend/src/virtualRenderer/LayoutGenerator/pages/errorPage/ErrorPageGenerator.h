@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../src/gen/cpp/layout.pb.h"
+#include "layout.pb.h"
 
 class ErrorPageGenerator {
 public:

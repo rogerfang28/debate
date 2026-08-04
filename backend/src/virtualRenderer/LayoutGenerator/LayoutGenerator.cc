@@ -1,8 +1,8 @@
 #include "LayoutGenerator.h"
 
-#include "../../../src/gen/cpp/moderator_to_vr.pb.h"
-#include "../../../src/gen/cpp/layout.pb.h"
-#include "../../../src/gen/cpp/rendering_info.pb.h"
+#include "moderator_to_vr.pb.h"
+#include "layout.pb.h"
+#include "rendering_info.pb.h"
 #include "./pages/homePage/HomePageGenerator.h"
 #include "./pages/homePage/HomePageInfoParser.h"
 #include "./pages/debatePage/SingleStatementView/SingleDebatePageGenerator.h"

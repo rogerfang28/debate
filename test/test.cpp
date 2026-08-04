@@ -1,5 +1,5 @@
-#include "../../../src/gen/cpp/layout.pb.h"
-#include "../../../src/gen/cpp/event.pb.h"
+#include "layout.pb.h"
+#include "event.pb.h"
 #include <iostream>
 using namespace std;
 

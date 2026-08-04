@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "../../../src/gen/cpp/moderator_to_vr.pb.h"
-#include "../../../src/gen/cpp/debate_event.pb.h"
+#include "moderator_to_vr.pb.h"
+#include "debate_event.pb.h"
 
 // database includes
 #include "../database/sqlite/Database.h"

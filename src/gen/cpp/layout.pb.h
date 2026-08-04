@@ -345,7 +345,7 @@ class Style final : public ::google::protobuf::Message
   enum : int {
     kCustomClassFieldNumber = 1,
   };
-  // string custom_class = 1;
+  // string custom_class = 1 [json_name = "customClass"];
   void clear_custom_class() ;
   const ::std::string& custom_class() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -541,7 +541,7 @@ class Size final : public ::google::protobuf::Message
     kWidthFieldNumber = 1,
     kHeightFieldNumber = 2,
   };
-  // string width = 1;
+  // string width = 1 [json_name = "width"];
   void clear_width() ;
   const ::std::string& width() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -556,7 +556,7 @@ class Size final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_width();
 
   public:
-  // string height = 2;
+  // string height = 2 [json_name = "height"];
   void clear_height() ;
   const ::std::string& height() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -754,7 +754,7 @@ class Position final : public ::google::protobuf::Message
     kXFieldNumber = 1,
     kYFieldNumber = 2,
   };
-  // string unit = 3;
+  // string unit = 3 [json_name = "unit"];
   void clear_unit() ;
   const ::std::string& unit() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -769,7 +769,7 @@ class Position final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_unit();
 
   public:
-  // float x = 1;
+  // float x = 1 [json_name = "x"];
   void clear_x() ;
   float x() const;
   void set_x(float value);
@@ -779,7 +779,7 @@ class Position final : public ::google::protobuf::Message
   void _internal_set_x(float value);
 
   public:
-  // float y = 2;
+  // float y = 2 [json_name = "y"];
   void clear_y() ;
   float y() const;
   void set_y(float value);
@@ -980,7 +980,7 @@ class GraphNode final : public ::google::protobuf::Message
     kIsRootFieldNumber = 8,
     kIsCurrentFieldNumber = 9,
   };
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const ::std::string& id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -995,7 +995,7 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
 
   public:
-  // string text = 2;
+  // string text = 2 [json_name = "text"];
   void clear_text() ;
   const ::std::string& text() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1010,7 +1010,7 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_text();
 
   public:
-  // string type = 5;
+  // string type = 5 [json_name = "type"];
   void clear_type() ;
   const ::std::string& type() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1025,7 +1025,7 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_type();
 
   public:
-  // string status = 6;
+  // string status = 6 [json_name = "status"];
   void clear_status() ;
   const ::std::string& status() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1040,7 +1040,7 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_status();
 
   public:
-  // string creator_username = 10;
+  // string creator_username = 10 [json_name = "creatorUsername"];
   void clear_creator_username() ;
   const ::std::string& creator_username() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1055,7 +1055,7 @@ class GraphNode final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_creator_username();
 
   public:
-  // double x = 3;
+  // double x = 3 [json_name = "x"];
   void clear_x() ;
   double x() const;
   void set_x(double value);
@@ -1065,7 +1065,7 @@ class GraphNode final : public ::google::protobuf::Message
   void _internal_set_x(double value);
 
   public:
-  // double y = 4;
+  // double y = 4 [json_name = "y"];
   void clear_y() ;
   double y() const;
   void set_y(double value);
@@ -1075,7 +1075,7 @@ class GraphNode final : public ::google::protobuf::Message
   void _internal_set_y(double value);
 
   public:
-  // int32 creator_id = 7;
+  // int32 creator_id = 7 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1085,7 +1085,7 @@ class GraphNode final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // bool is_root = 8;
+  // bool is_root = 8 [json_name = "isRoot"];
   void clear_is_root() ;
   bool is_root() const;
   void set_is_root(bool value);
@@ -1095,7 +1095,7 @@ class GraphNode final : public ::google::protobuf::Message
   void _internal_set_is_root(bool value);
 
   public:
-  // bool is_current = 9;
+  // bool is_current = 9 [json_name = "isCurrent"];
   void clear_is_current() ;
   bool is_current() const;
   void set_is_current(bool value);
@@ -1297,7 +1297,7 @@ class GraphEdge final : public ::google::protobuf::Message
     kTargetFieldNumber = 3,
     kTypeFieldNumber = 4,
   };
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const ::std::string& id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1312,7 +1312,7 @@ class GraphEdge final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
 
   public:
-  // string source = 2;
+  // string source = 2 [json_name = "source"];
   void clear_source() ;
   const ::std::string& source() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1327,7 +1327,7 @@ class GraphEdge final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_source();
 
   public:
-  // string target = 3;
+  // string target = 3 [json_name = "target"];
   void clear_target() ;
   const ::std::string& target() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1342,7 +1342,7 @@ class GraphEdge final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_target();
 
   public:
-  // string type = 4;
+  // string type = 4 [json_name = "type"];
   void clear_type() ;
   const ::std::string& type() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1622,7 +1622,7 @@ class GraphComponent final : public ::google::protobuf::Message
     kSelectedNodeIdFieldNumber = 4,
     kSelectedEdgeIdFieldNumber = 5,
   };
-  // repeated .ui.GraphNode nodes = 2;
+  // repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
   int nodes_size() const;
   private:
   int _internal_nodes_size() const;
@@ -1639,7 +1639,7 @@ class GraphComponent final : public ::google::protobuf::Message
   const ::ui::GraphNode& nodes(int index) const;
   ::ui::GraphNode* PROTOBUF_NONNULL add_nodes();
   const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& nodes() const;
-  // repeated .ui.GraphEdge edges = 3;
+  // repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
   int edges_size() const;
   private:
   int _internal_edges_size() const;
@@ -1656,7 +1656,7 @@ class GraphComponent final : public ::google::protobuf::Message
   const ::ui::GraphEdge& edges(int index) const;
   ::ui::GraphEdge* PROTOBUF_NONNULL add_edges();
   const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& edges() const;
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const ::std::string& id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1671,7 +1671,7 @@ class GraphComponent final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
 
   public:
-  // string selected_node_id = 4;
+  // string selected_node_id = 4 [json_name = "selectedNodeId"];
   void clear_selected_node_id() ;
   const ::std::string& selected_node_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1686,7 +1686,7 @@ class GraphComponent final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_node_id();
 
   public:
-  // string selected_edge_id = 5;
+  // string selected_edge_id = 5 [json_name = "selectedEdgeId"];
   void clear_selected_edge_id() ;
   const ::std::string& selected_edge_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1896,7 +1896,7 @@ class Component final : public ::google::protobuf::Message
     kAttributesFieldNumber = 7,
     kCssFieldNumber = 8,
   };
-  // repeated .ui.Component children = 5;
+  // repeated .ui.Component children = 5 [json_name = "children"];
   int children_size() const;
   private:
   int _internal_children_size() const;
@@ -1913,7 +1913,7 @@ class Component final : public ::google::protobuf::Message
   const ::ui::Component& children(int index) const;
   ::ui::Component* PROTOBUF_NONNULL add_children();
   const ::google::protobuf::RepeatedPtrField<::ui::Component>& children() const;
-  // repeated .ui.GraphNode nodes = 10;
+  // repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
   int nodes_size() const;
   private:
   int _internal_nodes_size() const;
@@ -1930,7 +1930,7 @@ class Component final : public ::google::protobuf::Message
   const ::ui::GraphNode& nodes(int index) const;
   ::ui::GraphNode* PROTOBUF_NONNULL add_nodes();
   const ::google::protobuf::RepeatedPtrField<::ui::GraphNode>& nodes() const;
-  // repeated .ui.GraphEdge edges = 11;
+  // repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
   int edges_size() const;
   private:
   int _internal_edges_size() const;
@@ -1947,7 +1947,7 @@ class Component final : public ::google::protobuf::Message
   const ::ui::GraphEdge& edges(int index) const;
   ::ui::GraphEdge* PROTOBUF_NONNULL add_edges();
   const ::google::protobuf::RepeatedPtrField<::ui::GraphEdge>& edges() const;
-  // string id = 1;
+  // string id = 1 [json_name = "id"];
   void clear_id() ;
   const ::std::string& id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1962,7 +1962,7 @@ class Component final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_id();
 
   public:
-  // string name = 2;
+  // string name = 2 [json_name = "name"];
   void clear_name() ;
   const ::std::string& name() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1977,7 +1977,7 @@ class Component final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_name();
 
   public:
-  // string text = 4;
+  // string text = 4 [json_name = "text"];
   void clear_text() ;
   const ::std::string& text() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1992,7 +1992,7 @@ class Component final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_text();
 
   public:
-  // string selected_node_id = 12;
+  // string selected_node_id = 12 [json_name = "selectedNodeId"];
   void clear_selected_node_id() ;
   const ::std::string& selected_node_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2007,7 +2007,7 @@ class Component final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_node_id();
 
   public:
-  // string selected_edge_id = 13;
+  // string selected_edge_id = 13 [json_name = "selectedEdgeId"];
   void clear_selected_edge_id() ;
   const ::std::string& selected_edge_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2022,7 +2022,7 @@ class Component final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_selected_edge_id();
 
   public:
-  // .ui.Style style = 6;
+  // .ui.Style style = 6 [json_name = "style"];
   bool has_style() const;
   void clear_style() ;
   const ::ui::Style& style() const;
@@ -2037,7 +2037,7 @@ class Component final : public ::google::protobuf::Message
   ::ui::Style* PROTOBUF_NONNULL _internal_mutable_style();
 
   public:
-  // .ui.ComponentType type = 3;
+  // .ui.ComponentType type = 3 [json_name = "type"];
   void clear_type() ;
   ::ui::ComponentType type() const;
   void set_type(::ui::ComponentType value);
@@ -2047,7 +2047,7 @@ class Component final : public ::google::protobuf::Message
   void _internal_set_type(::ui::ComponentType value);
 
   public:
-  // map<string, string> attributes = 7;
+  // map<string, string> attributes = 7 [json_name = "attributes"];
   int attributes_size() const;
   private:
   int _internal_attributes_size() const;
@@ -2062,7 +2062,7 @@ class Component final : public ::google::protobuf::Message
   ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL _internal_mutable_attributes();
 
   public:
-  // map<string, string> css = 8;
+  // map<string, string> css = 8 [json_name = "css"];
   int css_size() const;
   private:
   int _internal_css_size() const;
@@ -2276,7 +2276,7 @@ class Page final : public ::google::protobuf::Message
     kPageIdFieldNumber = 1,
     kTitleFieldNumber = 2,
   };
-  // repeated .ui.Component components = 3;
+  // repeated .ui.Component components = 3 [json_name = "components"];
   int components_size() const;
   private:
   int _internal_components_size() const;
@@ -2293,7 +2293,7 @@ class Page final : public ::google::protobuf::Message
   const ::ui::Component& components(int index) const;
   ::ui::Component* PROTOBUF_NONNULL add_components();
   const ::google::protobuf::RepeatedPtrField<::ui::Component>& components() const;
-  // string page_id = 1;
+  // string page_id = 1 [json_name = "pageId"];
   void clear_page_id() ;
   const ::std::string& page_id() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2308,7 +2308,7 @@ class Page final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_page_id();
 
   public:
-  // string title = 2;
+  // string title = 2 [json_name = "title"];
   void clear_title() ;
   const ::std::string& title() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -2376,7 +2376,7 @@ extern const ::google::protobuf::internal::ClassDataFull Page_class_data_;
 
 // Page
 
-// string page_id = 1;
+// string page_id = 1 [json_name = "pageId"];
 inline void Page::clear_page_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.page_id_.ClearToEmpty();
@@ -2441,7 +2441,7 @@ inline void Page::set_allocated_page_id(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:ui.Page.page_id)
 }
 
-// string title = 2;
+// string title = 2 [json_name = "title"];
 inline void Page::clear_title() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.title_.ClearToEmpty();
@@ -2506,7 +2506,7 @@ inline void Page::set_allocated_title(::std::string* PROTOBUF_NULLABLE value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Page.title)
 }
 
-// repeated .ui.Component components = 3;
+// repeated .ui.Component components = 3 [json_name = "components"];
 inline int Page::_internal_components_size() const {
   return _internal_components().size();
 }
@@ -2570,7 +2570,7 @@ Page::_internal_mutable_components() {
 
 // Component
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void Component::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -2635,7 +2635,7 @@ inline void Component::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:ui.Component.id)
 }
 
-// string name = 2;
+// string name = 2 [json_name = "name"];
 inline void Component::clear_name() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.name_.ClearToEmpty();
@@ -2700,7 +2700,7 @@ inline void Component::set_allocated_name(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:ui.Component.name)
 }
 
-// .ui.ComponentType type = 3;
+// .ui.ComponentType type = 3 [json_name = "type"];
 inline void Component::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
@@ -2725,7 +2725,7 @@ inline void Component::_internal_set_type(::ui::ComponentType value) {
   _impl_.type_ = value;
 }
 
-// string text = 4;
+// string text = 4 [json_name = "text"];
 inline void Component::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
@@ -2790,7 +2790,7 @@ inline void Component::set_allocated_text(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:ui.Component.text)
 }
 
-// repeated .ui.Component children = 5;
+// repeated .ui.Component children = 5 [json_name = "children"];
 inline int Component::_internal_children_size() const {
   return _internal_children().size();
 }
@@ -2846,7 +2846,7 @@ Component::_internal_mutable_children() {
   return &_impl_.children_;
 }
 
-// .ui.Style style = 6;
+// .ui.Style style = 6 [json_name = "style"];
 inline bool Component::has_style() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
   PROTOBUF_ASSUME(!value || _impl_.style_ != nullptr);
@@ -2945,7 +2945,7 @@ inline void Component::set_allocated_style(::ui::Style* PROTOBUF_NULLABLE value)
   // @@protoc_insertion_point(field_set_allocated:ui.Component.style)
 }
 
-// map<string, string> css = 8;
+// map<string, string> css = 8 [json_name = "css"];
 inline int Component::_internal_css_size() const {
   return _internal_css().size();
 }
@@ -2977,7 +2977,7 @@ inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL C
   return _internal_mutable_css();
 }
 
-// map<string, string> attributes = 7;
+// map<string, string> attributes = 7 [json_name = "attributes"];
 inline int Component::_internal_attributes_size() const {
   return _internal_attributes().size();
 }
@@ -3009,7 +3009,7 @@ inline ::google::protobuf::Map<::std::string, ::std::string>* PROTOBUF_NONNULL C
   return _internal_mutable_attributes();
 }
 
-// repeated .ui.GraphNode nodes = 10;
+// repeated .ui.GraphNode nodes = 10 [json_name = "nodes"];
 inline int Component::_internal_nodes_size() const {
   return _internal_nodes().size();
 }
@@ -3065,7 +3065,7 @@ Component::_internal_mutable_nodes() {
   return &_impl_.nodes_;
 }
 
-// repeated .ui.GraphEdge edges = 11;
+// repeated .ui.GraphEdge edges = 11 [json_name = "edges"];
 inline int Component::_internal_edges_size() const {
   return _internal_edges().size();
 }
@@ -3121,7 +3121,7 @@ Component::_internal_mutable_edges() {
   return &_impl_.edges_;
 }
 
-// string selected_node_id = 12;
+// string selected_node_id = 12 [json_name = "selectedNodeId"];
 inline void Component::clear_selected_node_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_node_id_.ClearToEmpty();
@@ -3186,7 +3186,7 @@ inline void Component::set_allocated_selected_node_id(::std::string* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:ui.Component.selected_node_id)
 }
 
-// string selected_edge_id = 13;
+// string selected_edge_id = 13 [json_name = "selectedEdgeId"];
 inline void Component::clear_selected_edge_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_edge_id_.ClearToEmpty();
@@ -3255,7 +3255,7 @@ inline void Component::set_allocated_selected_edge_id(::std::string* PROTOBUF_NU
 
 // Style
 
-// string custom_class = 1;
+// string custom_class = 1 [json_name = "customClass"];
 inline void Style::clear_custom_class() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.custom_class_.ClearToEmpty();
@@ -3324,7 +3324,7 @@ inline void Style::set_allocated_custom_class(::std::string* PROTOBUF_NULLABLE v
 
 // Position
 
-// float x = 1;
+// float x = 1 [json_name = "x"];
 inline void Position::clear_x() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.x_ = 0;
@@ -3349,7 +3349,7 @@ inline void Position::_internal_set_x(float value) {
   _impl_.x_ = value;
 }
 
-// float y = 2;
+// float y = 2 [json_name = "y"];
 inline void Position::clear_y() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.y_ = 0;
@@ -3374,7 +3374,7 @@ inline void Position::_internal_set_y(float value) {
   _impl_.y_ = value;
 }
 
-// string unit = 3;
+// string unit = 3 [json_name = "unit"];
 inline void Position::clear_unit() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.unit_.ClearToEmpty();
@@ -3443,7 +3443,7 @@ inline void Position::set_allocated_unit(::std::string* PROTOBUF_NULLABLE value)
 
 // Size
 
-// string width = 1;
+// string width = 1 [json_name = "width"];
 inline void Size::clear_width() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.width_.ClearToEmpty();
@@ -3508,7 +3508,7 @@ inline void Size::set_allocated_width(::std::string* PROTOBUF_NULLABLE value) {
   // @@protoc_insertion_point(field_set_allocated:ui.Size.width)
 }
 
-// string height = 2;
+// string height = 2 [json_name = "height"];
 inline void Size::clear_height() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.height_.ClearToEmpty();
@@ -3577,7 +3577,7 @@ inline void Size::set_allocated_height(::std::string* PROTOBUF_NULLABLE value) {
 
 // GraphNode
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void GraphNode::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -3642,7 +3642,7 @@ inline void GraphNode::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.id)
 }
 
-// string text = 2;
+// string text = 2 [json_name = "text"];
 inline void GraphNode::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
@@ -3707,7 +3707,7 @@ inline void GraphNode::set_allocated_text(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.text)
 }
 
-// double x = 3;
+// double x = 3 [json_name = "x"];
 inline void GraphNode::clear_x() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.x_ = 0;
@@ -3732,7 +3732,7 @@ inline void GraphNode::_internal_set_x(double value) {
   _impl_.x_ = value;
 }
 
-// double y = 4;
+// double y = 4 [json_name = "y"];
 inline void GraphNode::clear_y() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.y_ = 0;
@@ -3757,7 +3757,7 @@ inline void GraphNode::_internal_set_y(double value) {
   _impl_.y_ = value;
 }
 
-// string type = 5;
+// string type = 5 [json_name = "type"];
 inline void GraphNode::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_.ClearToEmpty();
@@ -3822,7 +3822,7 @@ inline void GraphNode::set_allocated_type(::std::string* PROTOBUF_NULLABLE value
   // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.type)
 }
 
-// string status = 6;
+// string status = 6 [json_name = "status"];
 inline void GraphNode::clear_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_.ClearToEmpty();
@@ -3887,7 +3887,7 @@ inline void GraphNode::set_allocated_status(::std::string* PROTOBUF_NULLABLE val
   // @@protoc_insertion_point(field_set_allocated:ui.GraphNode.status)
 }
 
-// int32 creator_id = 7;
+// int32 creator_id = 7 [json_name = "creatorId"];
 inline void GraphNode::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -3912,7 +3912,7 @@ inline void GraphNode::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// bool is_root = 8;
+// bool is_root = 8 [json_name = "isRoot"];
 inline void GraphNode::clear_is_root() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_root_ = false;
@@ -3937,7 +3937,7 @@ inline void GraphNode::_internal_set_is_root(bool value) {
   _impl_.is_root_ = value;
 }
 
-// bool is_current = 9;
+// bool is_current = 9 [json_name = "isCurrent"];
 inline void GraphNode::clear_is_current() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_current_ = false;
@@ -3962,7 +3962,7 @@ inline void GraphNode::_internal_set_is_current(bool value) {
   _impl_.is_current_ = value;
 }
 
-// string creator_username = 10;
+// string creator_username = 10 [json_name = "creatorUsername"];
 inline void GraphNode::clear_creator_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_username_.ClearToEmpty();
@@ -4031,7 +4031,7 @@ inline void GraphNode::set_allocated_creator_username(::std::string* PROTOBUF_NU
 
 // GraphEdge
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void GraphEdge::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -4096,7 +4096,7 @@ inline void GraphEdge::set_allocated_id(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.id)
 }
 
-// string source = 2;
+// string source = 2 [json_name = "source"];
 inline void GraphEdge::clear_source() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.source_.ClearToEmpty();
@@ -4161,7 +4161,7 @@ inline void GraphEdge::set_allocated_source(::std::string* PROTOBUF_NULLABLE val
   // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.source)
 }
 
-// string target = 3;
+// string target = 3 [json_name = "target"];
 inline void GraphEdge::clear_target() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.target_.ClearToEmpty();
@@ -4226,7 +4226,7 @@ inline void GraphEdge::set_allocated_target(::std::string* PROTOBUF_NULLABLE val
   // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.target)
 }
 
-// string type = 4;
+// string type = 4 [json_name = "type"];
 inline void GraphEdge::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_.ClearToEmpty();
@@ -4295,7 +4295,7 @@ inline void GraphEdge::set_allocated_type(::std::string* PROTOBUF_NULLABLE value
 
 // GraphComponent
 
-// string id = 1;
+// string id = 1 [json_name = "id"];
 inline void GraphComponent::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_.ClearToEmpty();
@@ -4360,7 +4360,7 @@ inline void GraphComponent::set_allocated_id(::std::string* PROTOBUF_NULLABLE va
   // @@protoc_insertion_point(field_set_allocated:ui.GraphComponent.id)
 }
 
-// repeated .ui.GraphNode nodes = 2;
+// repeated .ui.GraphNode nodes = 2 [json_name = "nodes"];
 inline int GraphComponent::_internal_nodes_size() const {
   return _internal_nodes().size();
 }
@@ -4416,7 +4416,7 @@ GraphComponent::_internal_mutable_nodes() {
   return &_impl_.nodes_;
 }
 
-// repeated .ui.GraphEdge edges = 3;
+// repeated .ui.GraphEdge edges = 3 [json_name = "edges"];
 inline int GraphComponent::_internal_edges_size() const {
   return _internal_edges().size();
 }
@@ -4472,7 +4472,7 @@ GraphComponent::_internal_mutable_edges() {
   return &_impl_.edges_;
 }
 
-// string selected_node_id = 4;
+// string selected_node_id = 4 [json_name = "selectedNodeId"];
 inline void GraphComponent::clear_selected_node_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_node_id_.ClearToEmpty();
@@ -4537,7 +4537,7 @@ inline void GraphComponent::set_allocated_selected_node_id(::std::string* PROTOB
   // @@protoc_insertion_point(field_set_allocated:ui.GraphComponent.selected_node_id)
 }
 
-// string selected_edge_id = 5;
+// string selected_edge_id = 5 [json_name = "selectedEdgeId"];
 inline void GraphComponent::clear_selected_edge_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_edge_id_.ClearToEmpty();

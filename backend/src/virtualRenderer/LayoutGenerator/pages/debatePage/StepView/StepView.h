@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../../../../../src/gen/cpp/layout.pb.h"
-#include "../../../../../../../src/gen/cpp/rendering_info.pb.h"
-#include "../../../../../../../src/gen/cpp/collection.pb.h"
-#include "../../../../../../../src/gen/cpp/user.pb.h"
+#include "layout.pb.h"
+#include "rendering_info.pb.h"
+#include "collection.pb.h"
+#include "user.pb.h"
 
 class VRUserDatabase;
 

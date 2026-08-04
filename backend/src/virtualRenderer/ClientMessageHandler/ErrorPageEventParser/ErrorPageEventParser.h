@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../../src/gen/cpp/debate_event.pb.h"
-#include "../../../../../src/gen/cpp/client_message.pb.h"
+#include "debate_event.pb.h"
+#include "client_message.pb.h"
 
 class ErrorPageEventParser {
 public:

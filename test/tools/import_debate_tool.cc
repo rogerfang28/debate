@@ -253,7 +253,10 @@ int main(int argc, char** argv) {
     std::cout << "[import_debate_tool] Importing scenario '" << scenario.name() << "' ("
                << scenario.steps_size() << " step(s)) into DB: " << utils::getDatabasePath() << std::endl;
 
-    DebateModerator moderator;
+    // Users live in the same file as debates for the import tool; production
+    // splits them across debates.sqlite3 and users.sqlite3.
+    Database moderatorDb(utils::getDatabasePath());
+    DebateModerator moderator(moderatorDb);
     ScenarioImporter importer(moderator);
     bool success = importer.Run(scenario);
 

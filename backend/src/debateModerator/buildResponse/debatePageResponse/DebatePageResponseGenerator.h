@@ -1,8 +1,8 @@
 #ifndef DEBATEPAGERESPONSEGENERATOR_H
 #define DEBATEPAGERESPONSEGENERATOR_H
 
-#include "../../../../../src/gen/cpp/moderator_to_vr.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "moderator_to_vr.pb.h"
+#include "user.pb.h"
 #include <string>
 #include "../../../utils/DebateWrapper.h"
 

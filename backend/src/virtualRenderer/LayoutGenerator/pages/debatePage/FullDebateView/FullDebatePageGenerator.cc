@@ -3,8 +3,8 @@
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
-#include "../../../../../../../src/gen/cpp/user.pb.h"
-#include "../../../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "user.pb.h"
+#include "user_engagement.pb.h"
 #include <algorithm>
 #include <queue>
 #include <unordered_map>

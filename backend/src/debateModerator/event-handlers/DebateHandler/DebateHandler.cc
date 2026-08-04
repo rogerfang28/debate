@@ -1,6 +1,6 @@
 #include "DebateHandler.h"
 #include <iostream>
-#include "../../../../../src/gen/cpp/debate.pb.h"
+#include "debate.pb.h"
 #include "../../../database/debate/DatabaseWrapper.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"

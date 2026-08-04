@@ -1,5 +1,5 @@
 #include "EditClaimHandler.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "user.pb.h"
 #include "../../../utils/Log.h"
 
 void EditClaimHandler::CancelEditClaim(const int& user_id, DebateWrapper& debateWrapper) {

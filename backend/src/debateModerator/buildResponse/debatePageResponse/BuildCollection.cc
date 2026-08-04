@@ -1,6 +1,6 @@
 #include "BuildCollection.h"
 #include "../../../utils/Log.h"
-#include "../../../../../src/gen/cpp/debate.pb.h"
+#include "debate.pb.h"
 
 #include <tuple>
 #include <vector>

@@ -1,5 +1,5 @@
 #include "DeleteClaimHandler.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "user.pb.h"
 #include "../../../utils/Log.h"
 
 void DeleteClaimHandler::DeleteCurrentStatement(const int& user_id, DebateWrapper& debateWrapper) {

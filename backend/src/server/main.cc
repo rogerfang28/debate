@@ -5,7 +5,7 @@
 
 // #include "../virtualRenderer/virtualRenderer.h"  // Add this include
 #include "../virtualRenderer/MiddleendRequestHandler.h"
-#include "../../../src/gen/cpp/client_message.pb.h"
+#include "client_message.pb.h"
 
 #include "httplib.h"
 #include <google/protobuf/text_format.h>

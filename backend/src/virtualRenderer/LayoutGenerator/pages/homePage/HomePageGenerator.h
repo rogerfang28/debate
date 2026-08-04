@@ -1,8 +1,8 @@
 #ifndef HOME_PAGE_GENERATOR_H
 #define HOME_PAGE_GENERATOR_H
 
-#include "../../../../../src/gen/cpp/layout.pb.h"
-#include "../../../../../src/gen/cpp/rendering_info.pb.h"
+#include "layout.pb.h"
+#include "rendering_info.pb.h"
 
 class HomePageGenerator {
 public:

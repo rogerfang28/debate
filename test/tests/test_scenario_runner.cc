@@ -80,17 +80,20 @@ protected:
         std::remove((db_path_ + "-shm").c_str());
         _putenv_s("DB_PATH", db_path_.c_str());
         Log::init(LogLevel::Test);
-        moderator_ = new DebateModerator();
+        // db_ must outlive moderator_, which holds a reference to it.
         db_ = new Database(db_path_);
-        dbWrapper_ = new DatabaseWrapper(*db_);
+        moderator_ = new DebateModerator(*db_);
+        // Debates and users share one temp file in tests; production splits them
+        // across debates.sqlite3 and users.sqlite3.
+        dbWrapper_ = new DatabaseWrapper(*db_, *db_);
         debateWrapper_ = new DebateWrapper(*dbWrapper_);
     }
 
     void TearDown() override {
         delete debateWrapper_;
         delete dbWrapper_;
-        delete db_;
         delete moderator_;
+        delete db_;
         _putenv_s("DB_PATH", "");
     }
 

@@ -2,6 +2,7 @@ node_modules
 .env
 third_party
 ngrok.exe
+cloudflared.exe
 *.exe
 test/test_scenario.sqlite3
 test/test_simulation.sqlite3
