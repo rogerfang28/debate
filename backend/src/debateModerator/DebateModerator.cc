@@ -400,9 +400,19 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // std::string user = dbWrapper.users.getUsername(user_id);
 
     userProto = debateWrapper.getUserProtobuf(user_id);
-    
+
     // Copy the engagement data
     *responseMessage.mutable_user() = userProto;
+
+    // Strip the credential before it can travel any further. Today this message
+    // stays server-side -- MiddleendRequestHandler serialises only the ui::Page
+    // to the client, and the frontend decodes nothing but PageSchema -- so this
+    // is defence in depth, not a fix for a live leak. It exists so that if this
+    // message is ever sent to a client, or logged, or dumped by a debug
+    // endpoint, the password hash is already gone. Nothing downstream reads it:
+    // verification loads the hash from the database directly
+    // (virtualRenderer.cc), never from a response message.
+    responseMessage.mutable_user()->clear_password_hash();
 
     // switch statement for different engagement states
     switch (userProto.engagement().current_action()) {
