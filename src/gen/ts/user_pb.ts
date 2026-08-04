@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIuEBCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJYgZwcm90bzM", [file_user_engagement, file_scope, file_collection]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIvgBCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJEhUKDXBhc3N3b3JkX2hhc2gYCCABKAliBnByb3RvMw", [file_user_engagement, file_scope, file_collection]);
 
 /**
  * @generated from message user.User
@@ -56,6 +56,14 @@ export type User = Message<"user.User"> & {
    * @generated from field: string email = 7;
    */
   email: string;
+
+  /**
+   * PBKDF2-encoded password ("pbkdf2$<iters>$<salt_hex>$<hash_hex>").
+   * Empty means no password has been set for this account yet.
+   *
+   * @generated from field: string password_hash = 8;
+   */
+  passwordHash: string;
 };
 
 /**

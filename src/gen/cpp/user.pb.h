@@ -224,7 +224,7 @@ class User final : public ::google::protobuf::Message
     kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
   };
-  // string username = 2;
+  // string username = 2 [json_name = "username"];
   void clear_username() ;
   const ::std::string& username() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -239,7 +239,7 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_username();
 
   public:
-  // string google_sub = 6;
+  // string google_sub = 6 [json_name = "googleSub"];
   void clear_google_sub() ;
   const ::std::string& google_sub() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -254,7 +254,7 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_google_sub();
 
   public:
-  // string email = 7;
+  // string email = 7 [json_name = "email"];
   void clear_email() ;
   const ::std::string& email() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -269,7 +269,7 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_email();
 
   public:
-  // string password_hash = 8;
+  // string password_hash = 8 [json_name = "passwordHash"];
   void clear_password_hash() ;
   const ::std::string& password_hash() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -284,7 +284,7 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_password_hash();
 
   public:
-  // .user_engagement.UserEngagement engagement = 3;
+  // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
   bool has_engagement() const;
   void clear_engagement() ;
   const ::user_engagement::UserEngagement& engagement() const;
@@ -299,7 +299,7 @@ class User final : public ::google::protobuf::Message
   ::user_engagement::UserEngagement* PROTOBUF_NONNULL _internal_mutable_engagement();
 
   public:
-  // .debate.Scope current_scope = 4;
+  // .debate.Scope current_scope = 4 [json_name = "currentScope"];
   bool has_current_scope() const;
   void clear_current_scope() ;
   const ::debate::Scope& current_scope() const;
@@ -314,7 +314,7 @@ class User final : public ::google::protobuf::Message
   ::debate::Scope* PROTOBUF_NONNULL _internal_mutable_current_scope();
 
   public:
-  // .debate.CollectionSpecification collection_spec = 5;
+  // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
   bool has_collection_spec() const;
   void clear_collection_spec() ;
   const ::debate::CollectionSpecification& collection_spec() const;
@@ -329,7 +329,7 @@ class User final : public ::google::protobuf::Message
   ::debate::CollectionSpecification* PROTOBUF_NONNULL _internal_mutable_collection_spec();
 
   public:
-  // int32 user_id = 1;
+  // int32 user_id = 1 [json_name = "userId"];
   void clear_user_id() ;
   ::int32_t user_id() const;
   void set_user_id(::int32_t value);
@@ -397,7 +397,7 @@ extern const ::google::protobuf::internal::ClassDataFull User_class_data_;
 
 // User
 
-// int32 user_id = 1;
+// int32 user_id = 1 [json_name = "userId"];
 inline void User::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_id_ = 0;
@@ -422,7 +422,7 @@ inline void User::_internal_set_user_id(::int32_t value) {
   _impl_.user_id_ = value;
 }
 
-// string username = 2;
+// string username = 2 [json_name = "username"];
 inline void User::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
@@ -487,7 +487,7 @@ inline void User::set_allocated_username(::std::string* PROTOBUF_NULLABLE value)
   // @@protoc_insertion_point(field_set_allocated:user.User.username)
 }
 
-// .user_engagement.UserEngagement engagement = 3;
+// .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
 inline bool User::has_engagement() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
   PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
@@ -580,7 +580,7 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* PR
   // @@protoc_insertion_point(field_set_allocated:user.User.engagement)
 }
 
-// .debate.Scope current_scope = 4;
+// .debate.Scope current_scope = 4 [json_name = "currentScope"];
 inline bool User::has_current_scope() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
   PROTOBUF_ASSUME(!value || _impl_.current_scope_ != nullptr);
@@ -673,7 +673,7 @@ inline void User::set_allocated_current_scope(::debate::Scope* PROTOBUF_NULLABLE
   // @@protoc_insertion_point(field_set_allocated:user.User.current_scope)
 }
 
-// .debate.CollectionSpecification collection_spec = 5;
+// .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
 inline bool User::has_collection_spec() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
   PROTOBUF_ASSUME(!value || _impl_.collection_spec_ != nullptr);
@@ -766,7 +766,7 @@ inline void User::set_allocated_collection_spec(::debate::CollectionSpecificatio
   // @@protoc_insertion_point(field_set_allocated:user.User.collection_spec)
 }
 
-// string google_sub = 6;
+// string google_sub = 6 [json_name = "googleSub"];
 inline void User::clear_google_sub() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.google_sub_.ClearToEmpty();
@@ -831,7 +831,7 @@ inline void User::set_allocated_google_sub(::std::string* PROTOBUF_NULLABLE valu
   // @@protoc_insertion_point(field_set_allocated:user.User.google_sub)
 }
 
-// string email = 7;
+// string email = 7 [json_name = "email"];
 inline void User::clear_email() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.email_.ClearToEmpty();
@@ -896,7 +896,7 @@ inline void User::set_allocated_email(::std::string* PROTOBUF_NULLABLE value) {
   // @@protoc_insertion_point(field_set_allocated:user.User.email)
 }
 
-// string password_hash = 8;
+// string password_hash = 8 [json_name = "passwordHash"];
 inline void User::clear_password_hash() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.password_hash_.ClearToEmpty();

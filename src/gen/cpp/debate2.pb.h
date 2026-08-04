@@ -426,7 +426,7 @@ class DebateElement final : public ::google::protobuf::Message
     kClaimIdFieldNumber = 1,
     kRelationIdFieldNumber = 2,
   };
-  // int32 claim_id = 1;
+  // int32 claim_id = 1 [json_name = "claimId"];
   bool has_claim_id() const;
   void clear_claim_id() ;
   ::int32_t claim_id() const;
@@ -437,7 +437,7 @@ class DebateElement final : public ::google::protobuf::Message
   void _internal_set_claim_id(::int32_t value);
 
   public:
-  // int32 relation_id = 2;
+  // int32 relation_id = 2 [json_name = "relationId"];
   bool has_relation_id() const;
   void clear_relation_id() ;
   ::int32_t relation_id() const;
@@ -646,7 +646,7 @@ class Relationship final : public ::google::protobuf::Message
     kBasisFieldNumber = 6,
     kCreatorIdFieldNumber = 7,
   };
-  // repeated int32 from_claim_ids = 3;
+  // repeated int32 from_claim_ids = 3 [json_name = "fromClaimIds"];
   int from_claim_ids_size() const;
   private:
   int _internal_from_claim_ids_size() const;
@@ -664,7 +664,7 @@ class Relationship final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_from_claim_ids();
 
   public:
-  // .debate2.DebateElement to = 4;
+  // .debate2.DebateElement to = 4 [json_name = "to"];
   bool has_to() const;
   void clear_to() ;
   const ::debate2::DebateElement& to() const;
@@ -679,7 +679,7 @@ class Relationship final : public ::google::protobuf::Message
   ::debate2::DebateElement* PROTOBUF_NONNULL _internal_mutable_to();
 
   public:
-  // .google.protobuf.Timestamp created_at = 10;
+  // .google.protobuf.Timestamp created_at = 10 [json_name = "createdAt"];
   bool has_created_at() const;
   void clear_created_at() ;
   const ::google::protobuf::Timestamp& created_at() const;
@@ -694,7 +694,7 @@ class Relationship final : public ::google::protobuf::Message
   ::google::protobuf::Timestamp* PROTOBUF_NONNULL _internal_mutable_created_at();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -704,7 +704,7 @@ class Relationship final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 debate_id = 2;
+  // int32 debate_id = 2 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -714,7 +714,7 @@ class Relationship final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // .debate2.RelationRole role = 5;
+  // .debate2.RelationRole role = 5 [json_name = "role"];
   void clear_role() ;
   ::debate2::RelationRole role() const;
   void set_role(::debate2::RelationRole value);
@@ -724,7 +724,7 @@ class Relationship final : public ::google::protobuf::Message
   void _internal_set_role(::debate2::RelationRole value);
 
   public:
-  // .debate2.Basis basis = 6;
+  // .debate2.Basis basis = 6 [json_name = "basis"];
   void clear_basis() ;
   ::debate2::Basis basis() const;
   void set_basis(::debate2::Basis value);
@@ -734,7 +734,7 @@ class Relationship final : public ::google::protobuf::Message
   void _internal_set_basis(::debate2::Basis value);
 
   public:
-  // int32 creator_id = 7;
+  // int32 creator_id = 7 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -940,7 +940,7 @@ class Move final : public ::google::protobuf::Message
     kPayloadClaimIdFieldNumber = 6,
     kPayloadRelationIdFieldNumber = 7,
   };
-  // string note = 8;
+  // string note = 8 [json_name = "note"];
   void clear_note() ;
   const ::std::string& note() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -955,7 +955,7 @@ class Move final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_note();
 
   public:
-  // .debate2.DebateElement target = 5;
+  // .debate2.DebateElement target = 5 [json_name = "target"];
   bool has_target() const;
   void clear_target() ;
   const ::debate2::DebateElement& target() const;
@@ -970,7 +970,7 @@ class Move final : public ::google::protobuf::Message
   ::debate2::DebateElement* PROTOBUF_NONNULL _internal_mutable_target();
 
   public:
-  // .google.protobuf.Timestamp occurred_at = 9;
+  // .google.protobuf.Timestamp occurred_at = 9 [json_name = "occurredAt"];
   bool has_occurred_at() const;
   void clear_occurred_at() ;
   const ::google::protobuf::Timestamp& occurred_at() const;
@@ -985,7 +985,7 @@ class Move final : public ::google::protobuf::Message
   ::google::protobuf::Timestamp* PROTOBUF_NONNULL _internal_mutable_occurred_at();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -995,7 +995,7 @@ class Move final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 debate_id = 2;
+  // int32 debate_id = 2 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -1005,7 +1005,7 @@ class Move final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // int32 actor_id = 3;
+  // int32 actor_id = 3 [json_name = "actorId"];
   void clear_actor_id() ;
   ::int32_t actor_id() const;
   void set_actor_id(::int32_t value);
@@ -1015,7 +1015,7 @@ class Move final : public ::google::protobuf::Message
   void _internal_set_actor_id(::int32_t value);
 
   public:
-  // .debate2.MoveType type = 4;
+  // .debate2.MoveType type = 4 [json_name = "type"];
   void clear_type() ;
   ::debate2::MoveType type() const;
   void set_type(::debate2::MoveType value);
@@ -1025,7 +1025,7 @@ class Move final : public ::google::protobuf::Message
   void _internal_set_type(::debate2::MoveType value);
 
   public:
-  // int32 payload_claim_id = 6;
+  // int32 payload_claim_id = 6 [json_name = "payloadClaimId"];
   void clear_payload_claim_id() ;
   ::int32_t payload_claim_id() const;
   void set_payload_claim_id(::int32_t value);
@@ -1035,7 +1035,7 @@ class Move final : public ::google::protobuf::Message
   void _internal_set_payload_claim_id(::int32_t value);
 
   public:
-  // int32 payload_relation_id = 7;
+  // int32 payload_relation_id = 7 [json_name = "payloadRelationId"];
   void clear_payload_relation_id() ;
   ::int32_t payload_relation_id() const;
   void set_payload_relation_id(::int32_t value);
@@ -1240,7 +1240,7 @@ class Debate final : public ::google::protobuf::Message
     kIsChallengeFieldNumber = 7,
     kParentChallengeIdFieldNumber = 8,
   };
-  // repeated int32 debater_ids = 4;
+  // repeated int32 debater_ids = 4 [json_name = "debaterIds"];
   int debater_ids_size() const;
   private:
   int _internal_debater_ids_size() const;
@@ -1258,7 +1258,7 @@ class Debate final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_debater_ids();
 
   public:
-  // string topic = 3;
+  // string topic = 3 [json_name = "topic"];
   void clear_topic() ;
   const ::std::string& topic() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1273,7 +1273,7 @@ class Debate final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_topic();
 
   public:
-  // .debate.DebateSettings settings = 6;
+  // .debate.DebateSettings settings = 6 [json_name = "settings"];
   bool has_settings() const;
   void clear_settings() ;
   const ::debate::DebateSettings& settings() const;
@@ -1288,7 +1288,7 @@ class Debate final : public ::google::protobuf::Message
   ::debate::DebateSettings* PROTOBUF_NONNULL _internal_mutable_settings();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1298,7 +1298,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 root_claim_id = 2;
+  // int32 root_claim_id = 2 [json_name = "rootClaimId"];
   void clear_root_claim_id() ;
   ::int32_t root_claim_id() const;
   void set_root_claim_id(::int32_t value);
@@ -1308,7 +1308,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_root_claim_id(::int32_t value);
 
   public:
-  // int32 creator_id = 5;
+  // int32 creator_id = 5 [json_name = "creatorId"];
   void clear_creator_id() ;
   ::int32_t creator_id() const;
   void set_creator_id(::int32_t value);
@@ -1318,7 +1318,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
-  // bool is_challenge = 7;
+  // bool is_challenge = 7 [json_name = "isChallenge"];
   void clear_is_challenge() ;
   bool is_challenge() const;
   void set_is_challenge(bool value);
@@ -1328,7 +1328,7 @@ class Debate final : public ::google::protobuf::Message
   void _internal_set_is_challenge(bool value);
 
   public:
-  // int32 parent_challenge_id = 8;
+  // int32 parent_challenge_id = 8 [json_name = "parentChallengeId"];
   void clear_parent_challenge_id() ;
   ::int32_t parent_challenge_id() const;
   void set_parent_challenge_id(::int32_t value);
@@ -1533,7 +1533,7 @@ class Claim final : public ::google::protobuf::Message
     kAuthorIdFieldNumber = 8,
     kDebateIdFieldNumber = 9,
   };
-  // repeated .debate2.ClaimState history = 10;
+  // repeated .debate2.ClaimState history = 10 [json_name = "history"];
   int history_size() const;
   private:
   int _internal_history_size() const;
@@ -1550,7 +1550,7 @@ class Claim final : public ::google::protobuf::Message
   const ::debate2::ClaimState& history(int index) const;
   ::debate2::ClaimState* PROTOBUF_NONNULL add_history();
   const ::google::protobuf::RepeatedPtrField<::debate2::ClaimState>& history() const;
-  // repeated int32 link_ids = 12;
+  // repeated int32 link_ids = 12 [json_name = "linkIds"];
   int link_ids_size() const;
   private:
   int _internal_link_ids_size() const;
@@ -1568,7 +1568,7 @@ class Claim final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_link_ids();
 
   public:
-  // string text = 2;
+  // string text = 2 [json_name = "text"];
   void clear_text() ;
   const ::std::string& text() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1583,7 +1583,7 @@ class Claim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_text();
 
   public:
-  // string description = 3;
+  // string description = 3 [json_name = "description"];
   void clear_description() ;
   const ::std::string& description() const;
   template <typename Arg_ = const ::std::string&, typename... Args_>
@@ -1598,7 +1598,7 @@ class Claim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_description();
 
   public:
-  // .google.protobuf.Timestamp created_at = 14;
+  // .google.protobuf.Timestamp created_at = 14 [json_name = "createdAt"];
   bool has_created_at() const;
   void clear_created_at() ;
   const ::google::protobuf::Timestamp& created_at() const;
@@ -1613,7 +1613,7 @@ class Claim final : public ::google::protobuf::Message
   ::google::protobuf::Timestamp* PROTOBUF_NONNULL _internal_mutable_created_at();
 
   public:
-  // int32 id = 1;
+  // int32 id = 1 [json_name = "id"];
   void clear_id() ;
   ::int32_t id() const;
   void set_id(::int32_t value);
@@ -1623,7 +1623,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_id(::int32_t value);
 
   public:
-  // int32 author_id = 8;
+  // int32 author_id = 8 [json_name = "authorId"];
   void clear_author_id() ;
   ::int32_t author_id() const;
   void set_author_id(::int32_t value);
@@ -1633,7 +1633,7 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_author_id(::int32_t value);
 
   public:
-  // int32 debate_id = 9;
+  // int32 debate_id = 9 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -1832,7 +1832,7 @@ class ClaimState final : public ::google::protobuf::Message
     kClaimFieldNumber = 1,
     kTimestampFieldNumber = 2,
   };
-  // .debate2.Claim claim = 1;
+  // .debate2.Claim claim = 1 [json_name = "claim"];
   bool has_claim() const;
   void clear_claim() ;
   const ::debate2::Claim& claim() const;
@@ -1847,7 +1847,7 @@ class ClaimState final : public ::google::protobuf::Message
   ::debate2::Claim* PROTOBUF_NONNULL _internal_mutable_claim();
 
   public:
-  // .google.protobuf.Timestamp timestamp = 2;
+  // .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
   bool has_timestamp() const;
   void clear_timestamp() ;
   const ::google::protobuf::Timestamp& timestamp() const;
@@ -1914,7 +1914,7 @@ extern const ::google::protobuf::internal::ClassDataFull ClaimState_class_data_;
 
 // DebateElement
 
-// int32 claim_id = 1;
+// int32 claim_id = 1 [json_name = "claimId"];
 inline bool DebateElement::has_claim_id() const {
   return element_case() == kClaimId;
 }
@@ -1947,7 +1947,7 @@ inline ::int32_t DebateElement::_internal_claim_id() const {
   return 0;
 }
 
-// int32 relation_id = 2;
+// int32 relation_id = 2 [json_name = "relationId"];
 inline bool DebateElement::has_relation_id() const {
   return element_case() == kRelationId;
 }
@@ -1993,7 +1993,7 @@ inline DebateElement::ElementCase DebateElement::element_case() const {
 
 // Claim
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Claim::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -2018,7 +2018,7 @@ inline void Claim::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// string text = 2;
+// string text = 2 [json_name = "text"];
 inline void Claim::clear_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.text_.ClearToEmpty();
@@ -2083,7 +2083,7 @@ inline void Claim::set_allocated_text(::std::string* PROTOBUF_NULLABLE value) {
   // @@protoc_insertion_point(field_set_allocated:debate2.Claim.text)
 }
 
-// string description = 3;
+// string description = 3 [json_name = "description"];
 inline void Claim::clear_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.description_.ClearToEmpty();
@@ -2148,7 +2148,7 @@ inline void Claim::set_allocated_description(::std::string* PROTOBUF_NULLABLE va
   // @@protoc_insertion_point(field_set_allocated:debate2.Claim.description)
 }
 
-// int32 author_id = 8;
+// int32 author_id = 8 [json_name = "authorId"];
 inline void Claim::clear_author_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.author_id_ = 0;
@@ -2173,7 +2173,7 @@ inline void Claim::_internal_set_author_id(::int32_t value) {
   _impl_.author_id_ = value;
 }
 
-// int32 debate_id = 9;
+// int32 debate_id = 9 [json_name = "debateId"];
 inline void Claim::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -2198,7 +2198,7 @@ inline void Claim::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// repeated .debate2.ClaimState history = 10;
+// repeated .debate2.ClaimState history = 10 [json_name = "history"];
 inline int Claim::_internal_history_size() const {
   return _internal_history().size();
 }
@@ -2254,7 +2254,7 @@ Claim::_internal_mutable_history() {
   return &_impl_.history_;
 }
 
-// repeated int32 link_ids = 12;
+// repeated int32 link_ids = 12 [json_name = "linkIds"];
 inline int Claim::_internal_link_ids_size() const {
   return _internal_link_ids().size();
 }
@@ -2304,7 +2304,7 @@ Claim::_internal_mutable_link_ids() {
   return &_impl_.link_ids_;
 }
 
-// .google.protobuf.Timestamp created_at = 14;
+// .google.protobuf.Timestamp created_at = 14 [json_name = "createdAt"];
 inline bool Claim::has_created_at() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
   PROTOBUF_ASSUME(!value || _impl_.created_at_ != nullptr);
@@ -2401,7 +2401,7 @@ inline void Claim::set_allocated_created_at(::google::protobuf::Timestamp* PROTO
 
 // ClaimState
 
-// .google.protobuf.Timestamp timestamp = 2;
+// .google.protobuf.Timestamp timestamp = 2 [json_name = "timestamp"];
 inline bool ClaimState::has_timestamp() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.timestamp_ != nullptr);
@@ -2494,7 +2494,7 @@ inline void ClaimState::set_allocated_timestamp(::google::protobuf::Timestamp* P
   // @@protoc_insertion_point(field_set_allocated:debate2.ClaimState.timestamp)
 }
 
-// .debate2.Claim claim = 1;
+// .debate2.Claim claim = 1 [json_name = "claim"];
 inline bool ClaimState::has_claim() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000001U);
   PROTOBUF_ASSUME(!value || _impl_.claim_ != nullptr);
@@ -2597,7 +2597,7 @@ inline void ClaimState::set_allocated_claim(::debate2::Claim* PROTOBUF_NULLABLE 
 
 // Relationship
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Relationship::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -2622,7 +2622,7 @@ inline void Relationship::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// int32 debate_id = 2;
+// int32 debate_id = 2 [json_name = "debateId"];
 inline void Relationship::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -2647,7 +2647,7 @@ inline void Relationship::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// repeated int32 from_claim_ids = 3;
+// repeated int32 from_claim_ids = 3 [json_name = "fromClaimIds"];
 inline int Relationship::_internal_from_claim_ids_size() const {
   return _internal_from_claim_ids().size();
 }
@@ -2697,7 +2697,7 @@ Relationship::_internal_mutable_from_claim_ids() {
   return &_impl_.from_claim_ids_;
 }
 
-// .debate2.DebateElement to = 4;
+// .debate2.DebateElement to = 4 [json_name = "to"];
 inline bool Relationship::has_to() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.to_ != nullptr);
@@ -2796,7 +2796,7 @@ inline void Relationship::set_allocated_to(::debate2::DebateElement* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:debate2.Relationship.to)
 }
 
-// .debate2.RelationRole role = 5;
+// .debate2.RelationRole role = 5 [json_name = "role"];
 inline void Relationship::clear_role() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.role_ = 0;
@@ -2821,7 +2821,7 @@ inline void Relationship::_internal_set_role(::debate2::RelationRole value) {
   _impl_.role_ = value;
 }
 
-// .debate2.Basis basis = 6;
+// .debate2.Basis basis = 6 [json_name = "basis"];
 inline void Relationship::clear_basis() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.basis_ = 0;
@@ -2846,7 +2846,7 @@ inline void Relationship::_internal_set_basis(::debate2::Basis value) {
   _impl_.basis_ = value;
 }
 
-// int32 creator_id = 7;
+// int32 creator_id = 7 [json_name = "creatorId"];
 inline void Relationship::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -2871,7 +2871,7 @@ inline void Relationship::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// .google.protobuf.Timestamp created_at = 10;
+// .google.protobuf.Timestamp created_at = 10 [json_name = "createdAt"];
 inline bool Relationship::has_created_at() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
   PROTOBUF_ASSUME(!value || _impl_.created_at_ != nullptr);
@@ -2968,7 +2968,7 @@ inline void Relationship::set_allocated_created_at(::google::protobuf::Timestamp
 
 // Move
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Move::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -2993,7 +2993,7 @@ inline void Move::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// int32 debate_id = 2;
+// int32 debate_id = 2 [json_name = "debateId"];
 inline void Move::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -3018,7 +3018,7 @@ inline void Move::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// int32 actor_id = 3;
+// int32 actor_id = 3 [json_name = "actorId"];
 inline void Move::clear_actor_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.actor_id_ = 0;
@@ -3043,7 +3043,7 @@ inline void Move::_internal_set_actor_id(::int32_t value) {
   _impl_.actor_id_ = value;
 }
 
-// .debate2.MoveType type = 4;
+// .debate2.MoveType type = 4 [json_name = "type"];
 inline void Move::clear_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.type_ = 0;
@@ -3068,7 +3068,7 @@ inline void Move::_internal_set_type(::debate2::MoveType value) {
   _impl_.type_ = value;
 }
 
-// .debate2.DebateElement target = 5;
+// .debate2.DebateElement target = 5 [json_name = "target"];
 inline bool Move::has_target() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000002U);
   PROTOBUF_ASSUME(!value || _impl_.target_ != nullptr);
@@ -3167,7 +3167,7 @@ inline void Move::set_allocated_target(::debate2::DebateElement* PROTOBUF_NULLAB
   // @@protoc_insertion_point(field_set_allocated:debate2.Move.target)
 }
 
-// int32 payload_claim_id = 6;
+// int32 payload_claim_id = 6 [json_name = "payloadClaimId"];
 inline void Move::clear_payload_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.payload_claim_id_ = 0;
@@ -3192,7 +3192,7 @@ inline void Move::_internal_set_payload_claim_id(::int32_t value) {
   _impl_.payload_claim_id_ = value;
 }
 
-// int32 payload_relation_id = 7;
+// int32 payload_relation_id = 7 [json_name = "payloadRelationId"];
 inline void Move::clear_payload_relation_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.payload_relation_id_ = 0;
@@ -3217,7 +3217,7 @@ inline void Move::_internal_set_payload_relation_id(::int32_t value) {
   _impl_.payload_relation_id_ = value;
 }
 
-// string note = 8;
+// string note = 8 [json_name = "note"];
 inline void Move::clear_note() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.note_.ClearToEmpty();
@@ -3282,7 +3282,7 @@ inline void Move::set_allocated_note(::std::string* PROTOBUF_NULLABLE value) {
   // @@protoc_insertion_point(field_set_allocated:debate2.Move.note)
 }
 
-// .google.protobuf.Timestamp occurred_at = 9;
+// .google.protobuf.Timestamp occurred_at = 9 [json_name = "occurredAt"];
 inline bool Move::has_occurred_at() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
   PROTOBUF_ASSUME(!value || _impl_.occurred_at_ != nullptr);
@@ -3379,7 +3379,7 @@ inline void Move::set_allocated_occurred_at(::google::protobuf::Timestamp* PROTO
 
 // Debate
 
-// int32 id = 1;
+// int32 id = 1 [json_name = "id"];
 inline void Debate::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
@@ -3404,7 +3404,7 @@ inline void Debate::_internal_set_id(::int32_t value) {
   _impl_.id_ = value;
 }
 
-// int32 root_claim_id = 2;
+// int32 root_claim_id = 2 [json_name = "rootClaimId"];
 inline void Debate::clear_root_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.root_claim_id_ = 0;
@@ -3429,7 +3429,7 @@ inline void Debate::_internal_set_root_claim_id(::int32_t value) {
   _impl_.root_claim_id_ = value;
 }
 
-// string topic = 3;
+// string topic = 3 [json_name = "topic"];
 inline void Debate::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
@@ -3494,7 +3494,7 @@ inline void Debate::set_allocated_topic(::std::string* PROTOBUF_NULLABLE value) 
   // @@protoc_insertion_point(field_set_allocated:debate2.Debate.topic)
 }
 
-// repeated int32 debater_ids = 4;
+// repeated int32 debater_ids = 4 [json_name = "debaterIds"];
 inline int Debate::_internal_debater_ids_size() const {
   return _internal_debater_ids().size();
 }
@@ -3544,7 +3544,7 @@ Debate::_internal_mutable_debater_ids() {
   return &_impl_.debater_ids_;
 }
 
-// int32 creator_id = 5;
+// int32 creator_id = 5 [json_name = "creatorId"];
 inline void Debate::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
@@ -3569,7 +3569,7 @@ inline void Debate::_internal_set_creator_id(::int32_t value) {
   _impl_.creator_id_ = value;
 }
 
-// .debate.DebateSettings settings = 6;
+// .debate.DebateSettings settings = 6 [json_name = "settings"];
 inline bool Debate::has_settings() const {
   bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
   PROTOBUF_ASSUME(!value || _impl_.settings_ != nullptr);
@@ -3662,7 +3662,7 @@ inline void Debate::set_allocated_settings(::debate::DebateSettings* PROTOBUF_NU
   // @@protoc_insertion_point(field_set_allocated:debate2.Debate.settings)
 }
 
-// bool is_challenge = 7;
+// bool is_challenge = 7 [json_name = "isChallenge"];
 inline void Debate::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
@@ -3687,7 +3687,7 @@ inline void Debate::_internal_set_is_challenge(bool value) {
   _impl_.is_challenge_ = value;
 }
 
-// int32 parent_challenge_id = 8;
+// int32 parent_challenge_id = 8 [json_name = "parentChallengeId"];
 inline void Debate::clear_parent_challenge_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.parent_challenge_id_ = 0;
