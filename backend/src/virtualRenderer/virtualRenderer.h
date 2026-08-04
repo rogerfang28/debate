@@ -2,8 +2,8 @@
 #include <string>
 #include "../database/sqlite/Database.h"
 #include "../database/virtualrenderer/VRUserDatabase.h"
-#include "../../../src/gen/cpp/layout.pb.h"
-#include "../../../src/gen/cpp/client_message.pb.h"
+#include "layout.pb.h"
+#include "client_message.pb.h"
 #include "../debateModerator/DebateModerator.h"
 
 // Forward declarations to avoid heavy includes

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../src/gen/cpp/collection.pb.h"
+#include "collection.pb.h"
 #include "../../../utils/DebateWrapper.h"
 #include <vector>
 

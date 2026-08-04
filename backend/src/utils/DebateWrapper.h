@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 #include "./pathUtils.h"
 #include <vector>
 #include <string>
@@ -9,7 +9,7 @@
 #include <map>
 #include <set>
 #include "../database/debate/DatabaseWrapper.h"
-#include "../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "user_engagement.pb.h"
 
 class DebateWrapper {
 public:

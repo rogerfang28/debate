@@ -1,6 +1,6 @@
 #pragma once 
-#include "../../../../../src/gen/cpp/debate.pb.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+#include "user.pb.h"
 #include "../../../utils/DebateWrapper.h"
 #include "../../../database/debate/DatabaseWrapper.h"
 

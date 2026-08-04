@@ -1,5 +1,5 @@
 #include "ModifyClaimHandler.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
+#include "user.pb.h"
 
 void ModifyClaimHandler::StartModifyClaim(
     DebateWrapper& debateWrapper,

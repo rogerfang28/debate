@@ -1,8 +1,8 @@
 // should take in debate event protobuf and handle it and give back information
 #include "DebateModerator.h"
-#include "../../../src/gen/cpp/debate.pb.h"
-// #include "../../../src/gen/cpp/debate_list.pb.h"
-#include "../../../src/gen/cpp/user.pb.h"
+#include "debate.pb.h"
+// #include "debate_list.pb.h"
+#include "user.pb.h"
 #include "../utils/pathUtils.h"
 #include <iostream>
 #include <vector>

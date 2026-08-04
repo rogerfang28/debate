@@ -3,8 +3,8 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
-#include "../../../../src/gen/cpp/client_message.pb.h"
-#include "../../../../src/gen/cpp/debate_event.pb.h"
+#include "client_message.pb.h"
+#include "debate_event.pb.h"
 #include "HomePageEventParser/HomePageEventParser.h"
 #include "DebatePageEventParser/DebatePageEventParser.h"
 #include "ErrorPageEventParser/ErrorPageEventParser.h"

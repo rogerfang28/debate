@@ -1,6 +1,6 @@
 #include "VRUserDatabase.h"
 #include <iostream>
-#include "../../../src/gen/cpp/user.pb.h"
+#include "user.pb.h"
 
 VRUserDatabase::VRUserDatabase(Database& db) : db_(db) {
     ensureTable();

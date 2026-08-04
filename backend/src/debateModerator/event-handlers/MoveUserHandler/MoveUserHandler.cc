@@ -1,6 +1,6 @@
 #include "MoveUserHandler.h"
-#include "../../../../../src/gen/cpp/user.pb.h"
-#include "../../../../../src/gen/cpp/user_engagement.pb.h"
+#include "user.pb.h"
+#include "user_engagement.pb.h"
 #include "../../../utils/Log.h"
 #include "../../../utils/pathUtils.h"
 #include <iostream>

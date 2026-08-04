@@ -1,7 +1,7 @@
 #ifndef LOGIN_PAGE_GENERATOR_H
 #define LOGIN_PAGE_GENERATOR_H
 
-#include "../../../../../src/gen/cpp/layout.pb.h"
+#include "layout.pb.h"
 
 class LoginPageGenerator {
 public:

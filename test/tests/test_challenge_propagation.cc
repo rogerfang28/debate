@@ -60,7 +60,9 @@ protected:
          std::remove(db_path_.c_str());
 
         db_      = new Database(db_path_);
-        wrapper_ = new DatabaseWrapper(*db_);
+        // Debates and users share one temp file in tests; production splits them
+        // across debates.sqlite3 and users.sqlite3.
+        wrapper_ = new DatabaseWrapper(*db_, *db_);
         debate_  = new DebateWrapper(*wrapper_);
         ASSERT_TRUE(wrapper_->ensureAllTables());
 

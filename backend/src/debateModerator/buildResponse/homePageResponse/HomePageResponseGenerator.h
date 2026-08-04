@@ -1,7 +1,7 @@
 #ifndef HOMEPAGERESPONSEGENERATOR_H
 #define HOMEPAGERESPONSEGENERATOR_H
 
-#include "../../../../../src/gen/cpp/moderator_to_vr.pb.h"
+#include "moderator_to_vr.pb.h"
 #include "../../../utils/DebateWrapper.h"
 #include <string>
 
