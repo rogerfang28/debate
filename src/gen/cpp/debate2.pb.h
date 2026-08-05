@@ -237,6 +237,8 @@ enum MoveType : int {
   DISOWN = 7,
   REOPEN = 8,
   TIMEOUT = 9,
+  RETRACT = 10,
+  REDACT = 11,
   MoveType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   MoveType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -247,11 +249,11 @@ extern const uint32_t MoveType_internal_data_[];
 inline constexpr MoveType MoveType_MIN =
     static_cast<MoveType>(0);
 inline constexpr MoveType MoveType_MAX =
-    static_cast<MoveType>(9);
+    static_cast<MoveType>(11);
 inline bool MoveType_IsValid(int value) {
-  return 0 <= value && value <= 9;
+  return 0 <= value && value <= 11;
 }
-inline constexpr int MoveType_ARRAYSIZE = 9 + 1;
+inline constexpr int MoveType_ARRAYSIZE = 11 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL MoveType_descriptor();
 template <typename T>
 const ::std::string& MoveType_Name(T value) {
@@ -262,7 +264,7 @@ const ::std::string& MoveType_Name(T value) {
 }
 template <>
 inline const ::std::string& MoveType_Name(MoveType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<MoveType_descriptor, 0, 9>(
+  return ::google::protobuf::internal::NameOfDenseEnum<MoveType_descriptor, 0, 11>(
       static_cast<int>(value));
 }
 inline bool MoveType_Parse(

@@ -91,6 +91,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/StatementDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DatabaseWrapper.cc
     ${CMAKE_SOURCE_DIR}/src/database/virtualrenderer/VRUserDatabase.cc
 

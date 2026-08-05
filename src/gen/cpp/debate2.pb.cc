@@ -381,10 +381,11 @@ const char descriptor_table_protodef_debate2_2eproto[] ABSL_ATTRIBUTE_SECTION_VA
     "UPPORTED\020\002\022\r\n\tCOLLAPSED\020\003\022\r\n\tCONTESTED\020\004"
     "\022\016\n\nUNRESOLVED\020\005\022\r\n\tABANDONED\020\006\022\016\n\nSUPER"
     "SEDED\020\007\022\014\n\010ACCEPTED\020\010\022\014\n\010CIRCULAR\020\t\022\017\n\013M"
-    "ISDIRECTED\020\n*\211\001\n\010MoveType\022\n\n\006ASSERT\020\000\022\n\n"
+    "ISDIRECTED\020\n*\242\001\n\010MoveType\022\n\n\006ASSERT\020\000\022\n\n"
     "\006OPPOSE\020\001\022\013\n\007CONCEDE\020\002\022\n\n\006ACCEPT\020\003\022\010\n\004RE"
     "ST\020\004\022\020\n\014FLAG_UNKNOWN\020\005\022\013\n\007REPLACE\020\006\022\n\n\006D"
-    "ISOWN\020\007\022\n\n\006REOPEN\020\010\022\013\n\007TIMEOUT\020\tb\006proto3"
+    "ISOWN\020\007\022\n\n\006REOPEN\020\010\022\013\n\007TIMEOUT\020\t\022\013\n\007RETR"
+    "ACT\020\n\022\n\n\006REDACT\020\013b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate2_2eproto_deps[2] = {
@@ -395,7 +396,7 @@ static ::absl::once_flag descriptor_table_debate2_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate2_2eproto = {
     false,
     false,
-    1960,
+    1985,
     descriptor_table_protodef_debate2_2eproto,
     "debate2.proto",
     &descriptor_table_debate2_2eproto_once,
@@ -432,7 +433,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL MoveType_descriptor()
   return file_level_enum_descriptors_debate2_2eproto[3];
 }
 PROTOBUF_CONSTINIT const uint32_t MoveType_internal_data_[] = {
-    655360u, 0u, };
+    786432u, 0u, };
 // ===================================================================
 
 class DebateElement::_Internal {

@@ -206,9 +206,48 @@ void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const
     );
     databaseWrapper.statements.updateStatementDebateId(claim.id(), debate_id);
     databaseWrapper.statements.updateStatementRoot(
-        claim.id(), 
+        claim.id(),
         claim.id()
     );
+
+    // Every claim in the system is created through here, so this one call
+    // covers root claims, child claims and challenge claims alike.
+    logMove(debate_id, user_id, "ASSERT", /*targetIsClaim=*/true, claim.id());
+}
+
+void DebateWrapper::logMove(const int& debate_id,
+                            const int& actor_id,
+                            const std::string& type,
+                            bool targetIsClaim,
+                            const int& target_id,
+                            const std::string& payload) {
+    // The log is a parallel record during this phase. It must not be able to
+    // break a feature that works today, so every failure mode ends in a log
+    // line rather than propagating: appendMove already returns false instead
+    // of throwing, and the try/catch is belt-and-braces against anything the
+    // sqlite layer might surface unexpectedly.
+    try {
+        const bool ok = databaseWrapper.moves.appendMove(
+            debate_id,
+            actor_id,
+            type,
+            targetIsClaim ? "claim" : "relation",
+            target_id,
+            payload
+        );
+        if (!ok) {
+            Log::warn("[DebateWrapper] Move log write failed (type=" + type +
+                      ", debate=" + std::to_string(debate_id) +
+                      ", target=" + std::to_string(target_id) +
+                      "); the originating operation is unaffected.");
+        }
+    } catch (const std::exception& e) {
+        Log::error("[DebateWrapper] Move log threw (" + std::string(e.what()) +
+                   "); the originating operation is unaffected.");
+    } catch (...) {
+        Log::error("[DebateWrapper] Move log threw an unknown exception; "
+                   "the originating operation is unaffected.");
+    }
 }
 
 void DebateWrapper::updateClaimInDB(const debate::Claim& claim) {
@@ -413,6 +452,23 @@ int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& co
     }
 
     Log::debug("[DebateWrapper] Added link from claim " + std::to_string(fromClaimId) + " to claim " + std::to_string(toClaimId) + " by user " + std::to_string(creator_id));
+
+    // Every relation is created through here. The move type depends on what
+    // kind of link it is: a CHALLENGE link IS the act of opposing, so it logs
+    // OPPOSE and targets the claim being challenged. Structural links
+    // (PARENT_CHILD, NORMAL) are assertions of a connection, so they log
+    // ASSERT and target the relation itself.
+    if (link_type == debate::LinkType::CHALLENGE) {
+        logMove(debate_id, creator_id, "OPPOSE", /*targetIsClaim=*/true, toClaimId,
+                "{\"relation_id\":" + std::to_string(linkId) +
+                ",\"challenging_claim_id\":" + std::to_string(fromClaimId) + "}");
+    } else {
+        logMove(debate_id, creator_id, "ASSERT", /*targetIsClaim=*/false, linkId,
+                "{\"from_claim_id\":" + std::to_string(fromClaimId) +
+                ",\"to_claim_id\":" + std::to_string(toClaimId) +
+                ",\"link_type\":" + std::to_string(static_cast<int>(link_type)) + "}");
+    }
+
     return linkId;
 }
 

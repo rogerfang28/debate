@@ -191,6 +191,15 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
     Log::debug("[ConcedeChallengeHandler] Found challenge link " + std::to_string(challenge_link_id) +
               ": from=" + std::to_string(challengeClaimId) + " to=" + std::to_string(challengedClaimId));
 
+    // CONCEDE targets the claim being given up -- the challenged claim, not the
+    // challenge. "You defeated this", as distinct from RETRACT's "I am taking
+    // this back". Logged once here rather than alongside each of the status
+    // writes below: the cascade that follows is derived consequence, not
+    // separate user actions.
+    debateWrapper.logMove(debateId, user_id, "CONCEDE", /*targetIsClaim=*/true, challengedClaimId,
+                          "{\"challenge_relation_id\":" + std::to_string(challenge_link_id) +
+                          ",\"challenging_claim_id\":" + std::to_string(challengeClaimId) + "}");
+
     // Step 1: Mark the challenge claim as TRUE_CLAIM for the concessor.
     // When User A concedes, they admit the challenge was valid → challenge claim is TRUE for them.
     debate::Claim challengeClaimUpdated = debateWrapper.getClaimById(challengeClaimId);
@@ -313,6 +322,15 @@ void ChallengeHandler::DeleteChallenge(const int& challenge_id, const int& user_
         challengeLinkId = outgoingChallenge.id();
         challengedClaimId = outgoingChallenge.connect_to();
     }
+
+    // The author is withdrawing their own challenge -- RETRACT, not CONCEDE.
+    // Guarded above: only the creator reaches this point. Logged against the
+    // challenge claim, which is the thing being taken back; the link is
+    // recorded in the payload since it is deleted as part of the same action.
+    debateWrapper.logMove(challengeClaim.debate_id(), user_id, "RETRACT",
+                          /*targetIsClaim=*/true, challenge_claim_id,
+                          "{\"challenge_relation_id\":" + std::to_string(challengeLinkId) +
+                          ",\"challenged_claim_id\":" + std::to_string(challengedClaimId) + "}");
 
     if (challengeLinkId != -1) {
         debateWrapper.deleteLinkById(challengeLinkId);

@@ -6,6 +6,7 @@
 #include "StatementDatabase.h"
 #include "DebateMembersDatabase.h"
 #include "LinkDatabase.h"
+#include "MoveDatabase.h"
 
 // ---------------------------------------
 // Class: DatabaseWrapper
@@ -23,7 +24,8 @@ public:
           debates(debatesDb),
           statements(debatesDb),
           debateMembers(debatesDb),
-          links(debatesDb) {}
+          links(debatesDb),
+          moves(debatesDb) {}
 
     // Initialize all tables
     bool ensureAllTables() {
@@ -31,7 +33,8 @@ public:
                debates.ensureTable() &&
                statements.ensureTable() &&
                debateMembers.ensureTable() &&
-               links.ensureTable();
+               links.ensureTable() &&
+               moves.ensureTable();
     }
 
     // Public database handlers - can call any of their functions
@@ -40,4 +43,6 @@ public:
     StatementDatabase statements;
     DebateMembersDatabase debateMembers;
     LinkDatabase links;
+    // Append-only action log. Parallel record only -- nothing reads it yet.
+    MoveDatabase moves;
 };
