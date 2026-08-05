@@ -232,11 +232,18 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_enter_debate_members.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_move_log.cc
 )
 
 add_executable(debate_tests
     ${UNIT_TEST_SOURCES}
     ${DB_SOURCES}
+    # MoveLogger hangs off event dispatch, so the move-log tests drive real
+    # DebateEvents through DebateModerator rather than calling handlers
+    # directly -- which needs the moderator and the response generators it
+    # builds pages with.
+    ${MODERATOR_SOURCES}
+    ${RENDERER_SOURCES}
     ${PB_SRC}
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
