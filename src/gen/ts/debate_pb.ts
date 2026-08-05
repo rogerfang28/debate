@@ -14,11 +14,9 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSK/AgoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSIwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlEiMKBnN0YXR1cxgLIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIQCghsaW5rX2lkcxgMIAMoBRI2Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5GkgKEVVzZXJTdGF0dXNlc0VudHJ5EgsKA2tleRgBIAEoCRIiCgV2YWx1ZRgCIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1czoCOAEiWQoKQ2xhaW1TdGF0ZRItCgl0aW1lc3RhbXAYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhwKBWNsYWltGAEgASgLMg0uZGViYXRlLkNsYWltItYBCgxSZWxhdGlvbnNoaXASJwoEbGluaxgBIAEoCzIZLmRlYmF0ZS5SZWxhdGlvbnNoaXAuTGluaxqcAQoETGluaxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUSIwoJbGlua190eXBlGAYgASgOMhAuZGViYXRlLkxpbmtUeXBlEhEKCWRlYmF0ZV9pZBgHIAEoBSLAAQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIUCgxpc19jaGFsbGVuZ2UYByABKAgSGwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBSpACgtDbGFpbVN0YXR1cxIQCgxVTkRFVEVSTUlORUQQABIOCgpUUlVFX0NMQUlNEAESDwoLRkFMU0VfQ0xBSU0QAio3CghMaW5rVHlwZRIKCgZOT1JNQUwQABIQCgxQQVJFTlRfQ0hJTEQQARINCglDSEFMTEVOR0UQAmIGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSL/AgoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSLgoKY3JlYXRlZF9hdBgOIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlQgIYARInCgZzdGF0dXMYCyABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXNCAhgBEhQKCGxpbmtfaWRzGAwgAygFQgIYARI6Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5QgIYARpIChFVc2VyU3RhdHVzZXNFbnRyeRILCgNrZXkYASABKAkSIgoFdmFsdWUYAiABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXM6AjgBIlkKCkNsYWltU3RhdGUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIcCgVjbGFpbRgBIAEoCzINLmRlYmF0ZS5DbGFpbSK7AwoMUmVsYXRpb25zaGlwEicKBGxpbmsYASABKAsyGS5kZWJhdGUuUmVsYXRpb25zaGlwLkxpbmsSCgoCaWQYAiABKAUSEQoJZGViYXRlX2lkGAMgASgFEhYKDmZyb21fY2xhaW1faWRzGAQgAygFEhUKC3RvX2NsYWltX2lkGAUgASgFSAASGAoOdG9fcmVsYXRpb25faWQYBiABKAVIABIiCgRyb2xlGAcgASgOMhQuZGViYXRlLlJlbGF0aW9uUm9sZRINCgViYXNpcxgIIAEoCRISCgpjcmVhdG9yX2lkGAkgASgFEi4KCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGpwBCgRMaW5rEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBRIjCglsaW5rX3R5cGUYBiABKA4yEC5kZWJhdGUuTGlua1R5cGUSEQoJZGViYXRlX2lkGAcgASgFQgQKAnRvIpoCCgRNb3ZlEgoKAmlkGAEgASgFEhEKCWRlYmF0ZV9pZBgCIAEoBRILCgNzZXEYAyABKAUSEAoIYWN0b3JfaWQYBCABKAUSHgoEdHlwZRgFIAEoDjIQLmRlYmF0ZS5Nb3ZlVHlwZRInCgt0YXJnZXRfdHlwZRgGIAEoDjISLmRlYmF0ZS5UYXJnZXRUeXBlEhEKCXRhcmdldF9pZBgHIAEoBRIZChFjcmVhdGVkX2NsYWltX2lkcxgIIAMoBRIcChRjcmVhdGVkX3JlbGF0aW9uX2lkcxgJIAMoBRIPCgdwYXlsb2FkGAogASgJEi4KCmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIocBChJDb21wdXRlZENsYWltU3RhdGUSEAoIY2xhaW1faWQYASABKAUSHgoGc3RhdHVzGAIgASgOMg4uZGViYXRlLlN0YXR1cxIYChBzdXBwb3J0aW5nX2NvdW50GAMgASgFEhYKDm9wcG9zaW5nX2NvdW50GAQgASgFEg0KBWxhYmVsGAUgASgJIlIKFUNvbXB1dGVkUmVsYXRpb25TdGF0ZRITCgtyZWxhdGlvbl9pZBgBIAEoBRIkCgVzdGF0ZRgCIAEoDjIVLmRlYmF0ZS5SZWxhdGlvblN0YXRlIvgBCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhgKDGlzX2NoYWxsZW5nZRgHIAEoCEICGAESHwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBUICGAEiUgoPR2V0U3RhdGVSZXF1ZXN0EhEKCWRlYmF0ZV9pZBgBIAEoBRIOCgZhdF9zZXEYAiABKAUSHAoUbGVuc19leGNsdWRlZF9jbGFpbXMYAyADKAUigQIKC0RlYmF0ZVN0YXRlEh4KBmRlYmF0ZRgBIAEoCzIOLmRlYmF0ZS5EZWJhdGUSHQoGY2xhaW1zGAIgAygLMg0uZGViYXRlLkNsYWltEicKCXJlbGF0aW9ucxgDIAMoCzIULmRlYmF0ZS5SZWxhdGlvbnNoaXASMAoMY2xhaW1fc3RhdGVzGAQgAygLMhouZGViYXRlLkNvbXB1dGVkQ2xhaW1TdGF0ZRI2Cg9yZWxhdGlvbl9zdGF0ZXMYBSADKAsyHS5kZWJhdGUuQ29tcHV0ZWRSZWxhdGlvblN0YXRlEg4KBmF0X3NlcRgGIAEoBRIQCghoZWFkX3NlcRgHIAEoBSpACgtDbGFpbVN0YXR1cxIQCgxVTkRFVEVSTUlORUQQABIOCgpUUlVFX0NMQUlNEAESDwoLRkFMU0VfQ0xBSU0QAio3CghMaW5rVHlwZRIKCgZOT1JNQUwQABIQCgxQQVJFTlRfQ0hJTEQQARINCglDSEFMTEVOR0UQAio/CgxSZWxhdGlvblJvbGUSFAoQUk9MRV9VTlNQRUNJRklFRBAAEgwKCFNVUFBPUlRTEAESCwoHT1BQT1NFUxACKs0BCghNb3ZlVHlwZRIZChVNT1ZFX1RZUEVfVU5TUEVDSUZJRUQQABIKCgZBU1NFUlQQARIKCgZPUFBPU0UQAhILCgdDT05DRURFEAMSCgoGQUNDRVBUEAQSCAoEUkVTVBAFEhAKDEZMQUdfVU5LTk9XThAGEgsKB1JFUExBQ0UQBxIKCgZESVNPV04QCBIKCgZSRU9QRU4QCRILCgdUSU1FT1VUEAoSCwoHUkVUUkFDVBALEgoKBlJFREFDVBAMEg4KCkNPTlRSQURJQ1QQDSpQCgpUYXJnZXRUeXBlEhsKF1RBUkdFVF9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMVEFSR0VUX0NMQUlNEAESEwoPVEFSR0VUX1JFTEFUSU9OEAIqwwEKBlN0YXR1cxIWChJTVEFUVVNfVU5TUEVDSUZJRUQQABIMCghTVEFORElORxABEgwKCEFDQ0VQVEVEEAISCAoET1BFThADEg8KC1VOU1VQUE9SVEVEEAQSDQoJQ09MTEFQU0VEEAUSDQoJQ09OVEVTVEVEEAYSDgoKVU5SRVNPTFZFRBAHEg0KCUFCQU5ET05FRBAIEg4KClNVUEVSU0VERUQQCRIMCghDSVJDVUxBUhAKEg8KC01JU0RJUkVDVEVEEAsqTgoNUmVsYXRpb25TdGF0ZRIeChpSRUxBVElPTl9TVEFURV9VTlNQRUNJRklFRBAAEggKBExJVkUQARIJCgVJTkVSVBACEggKBERFQUQQA2IGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
 
 /**
- * A single claim node in the debate graph
- *
  * @generated from message debate.Claim
  */
 export type Claim = Message<"debate.Claim"> & {
@@ -48,22 +46,43 @@ export type Claim = Message<"debate.Claim"> & {
   debateId: number;
 
   /**
-   * @generated from field: repeated debate.ClaimState history = 10;
+   * --- new ---
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 14;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * Version snapshots for the edit/undo mechanism. Goes away when claims
+   * become immutable (an edit becomes a new Claim + REPLACE move).
+   *
+   * @generated from field: repeated debate.ClaimState history = 10 [deprecated = true];
+   * @deprecated
    */
   history: ClaimState[];
 
   /**
-   * @generated from field: debate.ClaimStatus status = 11;
+   * Stored status. Superseded by `Status`, which is COMPUTED from the move
+   * log and never persisted. Do not read or write from new code.
+   *
+   * @generated from field: debate.ClaimStatus status = 11 [deprecated = true];
+   * @deprecated
    */
   status: ClaimStatus;
 
   /**
-   * @generated from field: repeated int32 link_ids = 12;
+   * Derivable by querying relations. Do not add to it from new code.
+   *
+   * @generated from field: repeated int32 link_ids = 12 [deprecated = true];
+   * @deprecated
    */
   linkIds: number[];
 
   /**
-   * @generated from field: map<string, debate.ClaimStatus> user_statuses = 13;
+   * Per-user stored status. Superseded by folding ACCEPT moves.
+   *
+   * @generated from field: map<string, debate.ClaimStatus> user_statuses = 13 [deprecated = true];
+   * @deprecated
    */
   userStatuses: { [key: string]: ClaimStatus };
 };
@@ -76,6 +95,8 @@ export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
   messageDesc(file_debate, 0);
 
 /**
+ * LEGACY. A version snapshot for the undo buffer.
+ *
  * @generated from message debate.ClaimState
  */
 export type ClaimState = Message<"debate.ClaimState"> & {
@@ -98,15 +119,83 @@ export const ClaimStateSchema: GenMessage<ClaimState> = /*@__PURE__*/
   messageDesc(file_debate, 1);
 
 /**
- * Wraps a Link to allow future extension without breaking the link schema.
- *
  * @generated from message debate.Relationship
  */
 export type Relationship = Message<"debate.Relationship"> & {
   /**
+   * legacy — see note above
+   *
    * @generated from field: debate.Relationship.Link link = 1;
    */
   link?: Relationship_Link;
+
+  /**
+   * @generated from field: int32 id = 2;
+   */
+  id: number;
+
+  /**
+   * @generated from field: int32 debate_id = 3;
+   */
+  debateId: number;
+
+  /**
+   * The from-set. Several entries = ALL required (a chain).
+   * Independent support = several SEPARATE Relationships to one target.
+   * AND/OR is structural — never add a flag for it.
+   *
+   * @generated from field: repeated int32 from_claim_ids = 4;
+   */
+  fromClaimIds: number[];
+
+  /**
+   * Exactly one target, never zero, never both. Targeting a relation is how
+   * "your evidence is real but it doesn't prove that" is expressed.
+   * proto3 cannot enforce at-least-one — the write path must validate it.
+   *
+   * @generated from oneof debate.Relationship.to
+   */
+  to: {
+    /**
+     * @generated from field: int32 to_claim_id = 5;
+     */
+    value: number;
+    case: "toClaimId";
+  } | {
+    /**
+     * @generated from field: int32 to_relation_id = 6;
+     */
+    value: number;
+    case: "toRelationId";
+  } | { case: undefined; value?: undefined };
+
+  /**
+   * Genuinely closed, so an enum is safe.
+   *
+   * @generated from field: debate.RelationRole role = 7;
+   */
+  role: RelationRole;
+
+  /**
+   * What KIND of connection — EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+   * NORMATIVE. A string, not an enum: the registry maps each name to exactly
+   * one of four defeat behaviours (collapse / unsupport / fork / don't
+   * propagate), so adding one must be a config edit, not a proto migration
+   * plus a client regen. Unknown names are rejected at write time.
+   *
+   * @generated from field: string basis = 8;
+   */
+  basis: string;
+
+  /**
+   * @generated from field: int32 creator_id = 9;
+   */
+  creatorId: number;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 10;
+   */
+  createdAt?: Timestamp;
 };
 
 /**
@@ -146,8 +235,6 @@ export type Relationship_Link = Message<"debate.Relationship.Link"> & {
   creatorId: number;
 
   /**
-   * add a type, normal, parent child, or challenge connection
-   *
    * @generated from field: debate.LinkType link_type = 6;
    */
   linkType: LinkType;
@@ -164,6 +251,148 @@ export type Relationship_Link = Message<"debate.Relationship.Link"> & {
  */
 export const Relationship_LinkSchema: GenMessage<Relationship_Link> = /*@__PURE__*/
   messageDesc(file_debate, 2, 0);
+
+/**
+ * @generated from message debate.Move
+ */
+export type Move = Message<"debate.Move"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: int32 debate_id = 2;
+   */
+  debateId: number;
+
+  /**
+   * monotonic per debate, assigned server-side
+   *
+   * @generated from field: int32 seq = 3;
+   */
+  seq: number;
+
+  /**
+   * @generated from field: int32 actor_id = 4;
+   */
+  actorId: number;
+
+  /**
+   * @generated from field: debate.MoveType type = 5;
+   */
+  type: MoveType;
+
+  /**
+   * @generated from field: debate.TargetType target_type = 6;
+   */
+  targetType: TargetType;
+
+  /**
+   * @generated from field: int32 target_id = 7;
+   */
+  targetId: number;
+
+  /**
+   * Ids this move brought into existence.
+   *
+   * @generated from field: repeated int32 created_claim_ids = 8;
+   */
+  createdClaimIds: number[];
+
+  /**
+   * @generated from field: repeated int32 created_relation_ids = 9;
+   */
+  createdRelationIds: number[];
+
+  /**
+   * Free-form structural detail. Does NOT carry claim text — text lives in
+   * the Claim row.
+   *
+   * NOTE: that only makes replay faithful once claims are genuinely
+   * immutable. Today editClaimText still overwrites the row in place, so
+   * replaying at an older seq shows the CURRENT text, not the text as it
+   * stood then. Resolved when an edit becomes REPLACE + a new Claim.
+   *
+   * @generated from field: string payload = 10;
+   */
+  payload: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 11;
+   */
+  createdAt?: Timestamp;
+};
+
+/**
+ * Describes the message debate.Move.
+ * Use `create(MoveSchema)` to create a new message.
+ */
+export const MoveSchema: GenMessage<Move> = /*@__PURE__*/
+  messageDesc(file_debate, 3);
+
+/**
+ * @generated from message debate.ComputedClaimState
+ */
+export type ComputedClaimState = Message<"debate.ComputedClaimState"> & {
+  /**
+   * @generated from field: int32 claim_id = 1;
+   */
+  claimId: number;
+
+  /**
+   * @generated from field: debate.Status status = 2;
+   */
+  status: Status;
+
+  /**
+   * display rule: counts, never scores
+   *
+   * @generated from field: int32 supporting_count = 3;
+   */
+  supportingCount: number;
+
+  /**
+   * @generated from field: int32 opposing_count = 4;
+   */
+  opposingCount: number;
+
+  /**
+   * "unchallenged so far" — never "verified"
+   *
+   * @generated from field: string label = 5;
+   */
+  label: string;
+};
+
+/**
+ * Describes the message debate.ComputedClaimState.
+ * Use `create(ComputedClaimStateSchema)` to create a new message.
+ */
+export const ComputedClaimStateSchema: GenMessage<ComputedClaimState> = /*@__PURE__*/
+  messageDesc(file_debate, 4);
+
+/**
+ * @generated from message debate.ComputedRelationState
+ */
+export type ComputedRelationState = Message<"debate.ComputedRelationState"> & {
+  /**
+   * @generated from field: int32 relation_id = 1;
+   */
+  relationId: number;
+
+  /**
+   * @generated from field: debate.RelationState state = 2;
+   */
+  state: RelationState;
+};
+
+/**
+ * Describes the message debate.ComputedRelationState.
+ * Use `create(ComputedRelationStateSchema)` to create a new message.
+ */
+export const ComputedRelationStateSchema: GenMessage<ComputedRelationState> = /*@__PURE__*/
+  messageDesc(file_debate, 5);
 
 /**
  * @generated from message debate.Debate
@@ -200,12 +429,26 @@ export type Debate = Message<"debate.Debate"> & {
   settings?: DebateSettings;
 
   /**
-   * @generated from field: bool is_challenge = 7;
+   * --- new ---
+   * No head_seq: the head of a debate is
+   *   SELECT MAX(SEQ) FROM MOVES WHERE DEBATE_ID = ?
+   * and a stored copy could only drift from it.
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 9;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * --- legacy: sub-debates are now ordinary relations in one graph ---
+   *
+   * @generated from field: bool is_challenge = 7 [deprecated = true];
+   * @deprecated
    */
   isChallenge: boolean;
 
   /**
-   * @generated from field: int32 parent_challenge_id = 8;
+   * @generated from field: int32 parent_challenge_id = 8 [deprecated = true];
+   * @deprecated
    */
   parentChallengeId: number;
 };
@@ -215,29 +458,109 @@ export type Debate = Message<"debate.Debate"> & {
  * Use `create(DebateSchema)` to create a new message.
  */
 export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
-  messageDesc(file_debate, 3);
+  messageDesc(file_debate, 6);
 
 /**
+ * @generated from message debate.GetStateRequest
+ */
+export type GetStateRequest = Message<"debate.GetStateRequest"> & {
+  /**
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+
+  /**
+   * History replay: evaluate against moves where seq <= at_seq.
+   * 0 or unset = latest.
+   *
+   * @generated from field: int32 at_seq = 2;
+   */
+  atSeq: number;
+
+  /**
+   * The reader's definitional lens: claim ids they have chosen NOT to view
+   * through. Relations holding an excluded definition in their from-set go
+   * INERT for this response only. Reader-side and private — writes nothing.
+   *
+   * @generated from field: repeated int32 lens_excluded_claims = 3;
+   */
+  lensExcludedClaims: number[];
+};
+
+/**
+ * Describes the message debate.GetStateRequest.
+ * Use `create(GetStateRequestSchema)` to create a new message.
+ */
+export const GetStateRequestSchema: GenMessage<GetStateRequest> = /*@__PURE__*/
+  messageDesc(file_debate, 7);
+
+/**
+ * @generated from message debate.DebateState
+ */
+export type DebateState = Message<"debate.DebateState"> & {
+  /**
+   * @generated from field: debate.Debate debate = 1;
+   */
+  debate?: Debate;
+
+  /**
+   * @generated from field: repeated debate.Claim claims = 2;
+   */
+  claims: Claim[];
+
+  /**
+   * @generated from field: repeated debate.Relationship relations = 3;
+   */
+  relations: Relationship[];
+
+  /**
+   * @generated from field: repeated debate.ComputedClaimState claim_states = 4;
+   */
+  claimStates: ComputedClaimState[];
+
+  /**
+   * @generated from field: repeated debate.ComputedRelationState relation_states = 5;
+   */
+  relationStates: ComputedRelationState[];
+
+  /**
+   * Computed per response, not stored: at_seq is what was evaluated, head_seq
+   * is MAX(seq). at_seq < head_seq means the reader is viewing history.
+   *
+   * @generated from field: int32 at_seq = 6;
+   */
+  atSeq: number;
+
+  /**
+   * @generated from field: int32 head_seq = 7;
+   */
+  headSeq: number;
+};
+
+/**
+ * Describes the message debate.DebateState.
+ * Use `create(DebateStateSchema)` to create a new message.
+ */
+export const DebateStateSchema: GenMessage<DebateState> = /*@__PURE__*/
+  messageDesc(file_debate, 8);
+
+/**
+ * LEGACY. Superseded by `Status`.
+ *
  * @generated from enum debate.ClaimStatus
  */
 export enum ClaimStatus {
   /**
-   * default, no resolution yet
-   *
    * @generated from enum value: UNDETERMINED = 0;
    */
   UNDETERMINED = 0,
 
   /**
-   * claim upheld / defended against challenge
-   *
    * @generated from enum value: TRUE_CLAIM = 1;
    */
   TRUE_CLAIM = 1,
 
   /**
-   * claim disproven by challenge
-   *
    * @generated from enum value: FALSE_CLAIM = 2;
    */
   FALSE_CLAIM = 2,
@@ -250,6 +573,10 @@ export const ClaimStatusSchema: GenEnum<ClaimStatus> = /*@__PURE__*/
   enumDesc(file_debate, 0);
 
 /**
+ * LEGACY. Superseded by RelationRole + basis.
+ *   NORMAL, PARENT_CHILD -> SUPPORTS
+ *   CHALLENGE            -> OPPOSES
+ *
  * @generated from enum debate.LinkType
  */
 export enum LinkType {
@@ -274,4 +601,265 @@ export enum LinkType {
  */
 export const LinkTypeSchema: GenEnum<LinkType> = /*@__PURE__*/
   enumDesc(file_debate, 1);
+
+/**
+ * @generated from enum debate.RelationRole
+ */
+export enum RelationRole {
+  /**
+   * @generated from enum value: ROLE_UNSPECIFIED = 0;
+   */
+  ROLE_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: SUPPORTS = 1;
+   */
+  SUPPORTS = 1,
+
+  /**
+   * a challenge
+   *
+   * @generated from enum value: OPPOSES = 2;
+   */
+  OPPOSES = 2,
+}
+
+/**
+ * Describes the enum debate.RelationRole.
+ */
+export const RelationRoleSchema: GenEnum<RelationRole> = /*@__PURE__*/
+  enumDesc(file_debate, 2);
+
+/**
+ * @generated from enum debate.MoveType
+ */
+export enum MoveType {
+  /**
+   * @generated from enum value: MOVE_TYPE_UNSPECIFIED = 0;
+   */
+  MOVE_TYPE_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: ASSERT = 1;
+   */
+  ASSERT = 1,
+
+  /**
+   * @generated from enum value: OPPOSE = 2;
+   */
+  OPPOSE = 2,
+
+  /**
+   * @generated from enum value: CONCEDE = 3;
+   */
+  CONCEDE = 3,
+
+  /**
+   * @generated from enum value: ACCEPT = 4;
+   */
+  ACCEPT = 4,
+
+  /**
+   * @generated from enum value: REST = 5;
+   */
+  REST = 5,
+
+  /**
+   * @generated from enum value: FLAG_UNKNOWN = 6;
+   */
+  FLAG_UNKNOWN = 6,
+
+  /**
+   * @generated from enum value: REPLACE = 7;
+   */
+  REPLACE = 7,
+
+  /**
+   * @generated from enum value: DISOWN = 8;
+   */
+  DISOWN = 8,
+
+  /**
+   * @generated from enum value: REOPEN = 9;
+   */
+  REOPEN = 9,
+
+  /**
+   * @generated from enum value: TIMEOUT = 10;
+   */
+  TIMEOUT = 10,
+
+  /**
+   * author withdraws; distinct from CONCEDE
+   *
+   * @generated from enum value: RETRACT = 11;
+   */
+  RETRACT = 11,
+
+  /**
+   * administrative removal; blanks text, keeps the node
+   *
+   * @generated from enum value: REDACT = 12;
+   */
+  REDACT = 12,
+
+  /**
+   * marks two claims mutually incompatible
+   *
+   * @generated from enum value: CONTRADICT = 13;
+   */
+  CONTRADICT = 13,
+}
+
+/**
+ * Describes the enum debate.MoveType.
+ */
+export const MoveTypeSchema: GenEnum<MoveType> = /*@__PURE__*/
+  enumDesc(file_debate, 3);
+
+/**
+ * @generated from enum debate.TargetType
+ */
+export enum TargetType {
+  /**
+   * @generated from enum value: TARGET_TYPE_UNSPECIFIED = 0;
+   */
+  TARGET_TYPE_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: TARGET_CLAIM = 1;
+   */
+  TARGET_CLAIM = 1,
+
+  /**
+   * @generated from enum value: TARGET_RELATION = 2;
+   */
+  TARGET_RELATION = 2,
+}
+
+/**
+ * Describes the enum debate.TargetType.
+ */
+export const TargetTypeSchema: GenEnum<TargetType> = /*@__PURE__*/
+  enumDesc(file_debate, 4);
+
+/**
+ * @generated from enum debate.Status
+ */
+export enum Status {
+  /**
+   * @generated from enum value: STATUS_UNSPECIFIED = 0;
+   */
+  STATUS_UNSPECIFIED = 0,
+
+  /**
+   * unchallenged so far — NOT verified
+   *
+   * @generated from enum value: STANDING = 1;
+   */
+  STANDING = 1,
+
+  /**
+   * agreed by all active adversarial parties
+   *
+   * @generated from enum value: ACCEPTED = 2;
+   */
+  ACCEPTED = 2,
+
+  /**
+   * @generated from enum value: OPEN = 3;
+   */
+  OPEN = 3,
+
+  /**
+   * argument failed — NOT disproven
+   *
+   * @generated from enum value: UNSUPPORTED = 4;
+   */
+  UNSUPPORTED = 4,
+
+  /**
+   * the only status that cascades
+   *
+   * @generated from enum value: COLLAPSED = 5;
+   */
+  COLLAPSED = 5,
+
+  /**
+   * @generated from enum value: CONTESTED = 6;
+   */
+  CONTESTED = 6,
+
+  /**
+   * @generated from enum value: UNRESOLVED = 7;
+   */
+  UNRESOLVED = 7,
+
+  /**
+   * @generated from enum value: ABANDONED = 8;
+   */
+  ABANDONED = 8,
+
+  /**
+   * @generated from enum value: SUPERSEDED = 9;
+   */
+  SUPERSEDED = 9,
+
+  /**
+   * a finding about support, not a rung on the ladder
+   *
+   * @generated from enum value: CIRCULAR = 10;
+   */
+  CIRCULAR = 10,
+
+  /**
+   * relations only
+   *
+   * @generated from enum value: MISDIRECTED = 11;
+   */
+  MISDIRECTED = 11,
+}
+
+/**
+ * Describes the enum debate.Status.
+ */
+export const StatusSchema: GenEnum<Status> = /*@__PURE__*/
+  enumDesc(file_debate, 5);
+
+/**
+ * @generated from enum debate.RelationState
+ */
+export enum RelationState {
+  /**
+   * @generated from enum value: RELATION_STATE_UNSPECIFIED = 0;
+   */
+  RELATION_STATE_UNSPECIFIED = 0,
+
+  /**
+   * every from-member viable
+   *
+   * @generated from enum value: LIVE = 1;
+   */
+  LIVE = 1,
+
+  /**
+   * a from-member is weak — carries nothing, but REVIVES
+   *
+   * @generated from enum value: INERT = 2;
+   */
+  INERT = 2,
+
+  /**
+   * successfully opposed; only REOPEN brings it back
+   *
+   * @generated from enum value: DEAD = 3;
+   */
+  DEAD = 3,
+}
+
+/**
+ * Describes the enum debate.RelationState.
+ */
+export const RelationStateSchema: GenEnum<RelationState> = /*@__PURE__*/
+  enumDesc(file_debate, 6);
 

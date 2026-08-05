@@ -5,59 +5,287 @@ package debate;
 import "google/protobuf/timestamp.proto";
 import "debate_settings.proto";
 
-// A single claim node in the debate graph
+// SEQUENCE NUMBERS LIVE ON `Move` AND NOWHERE ELSE.
+//
+// Claims, relations and debates deliberately carry no seq. Two reasons:
+//
+//   1. It cannot be populated. A move is written AFTER the thing it describes,
+//      so at claim-write time the seq does not exist yet. Storing it would mean
+//      write-claim, write-move, then go back and update the claim -- a second
+//      write to a row that is supposed to be immutable.
+//
+//   2. It would be a second copy. The ASSERT already records when a claim
+//      entered the debate, and MAX(seq) already gives a debate's head. A stored
+//      duplicate can only drift from the log, and the log is authoritative.
+//
+// Anything ordering-related is a query against MOVES, not a field here.
+
+// =============================================================
+//  CLAIM
+// =============================================================
+
 message Claim {
-  int32 id = 1;
-  string sentence = 2;
+  int32  id          = 1;
+  string sentence    = 2;
   string description = 3;
-  int32 creator_id = 8;
-  int32 debate_id = 9;
-  repeated ClaimState history = 10;
-  ClaimStatus status = 11;
-  repeated int32 link_ids = 12;
-  map<string, ClaimStatus> user_statuses = 13;
+  int32  creator_id  = 8;
+  int32  debate_id   = 9;
+
+  // --- new ---
+  google.protobuf.Timestamp created_at = 14;
+
+  // --- legacy: still written/read by current code, all superseded ---
+
+  // Version snapshots for the edit/undo mechanism. Goes away when claims
+  // become immutable (an edit becomes a new Claim + REPLACE move).
+  repeated ClaimState history = 10 [deprecated = true];
+
+  // Stored status. Superseded by `Status`, which is COMPUTED from the move
+  // log and never persisted. Do not read or write from new code.
+  ClaimStatus status = 11 [deprecated = true];
+
+  // Derivable by querying relations. Do not add to it from new code.
+  repeated int32 link_ids = 12 [deprecated = true];
+
+  // Per-user stored status. Superseded by folding ACCEPT moves.
+  map<string, ClaimStatus> user_statuses = 13 [deprecated = true];
 }
 
+// LEGACY. Superseded by `Status`.
 enum ClaimStatus {
-  UNDETERMINED = 0; // default, no resolution yet
-  TRUE_CLAIM = 1; // claim upheld / defended against challenge
-  FALSE_CLAIM = 2; // claim disproven by challenge
+  UNDETERMINED = 0;
+  TRUE_CLAIM   = 1;
+  FALSE_CLAIM  = 2;
 }
 
+// LEGACY. A version snapshot for the undo buffer.
 message ClaimState {
   google.protobuf.Timestamp timestamp = 2;
-  Claim claim = 1;
+  Claim                     claim     = 1;
 }
 
-// Wraps a Link to allow future extension without breaking the link schema.
+// =============================================================
+//  RELATIONSHIP
+//
+//  The nested `Link` (field 1) is the legacy shape: exactly one source,
+//  one target claim. It stays as-is and current code keeps using it.
+//
+//  Fields 2+ are the new shape: a directed hyperedge with a SET of source
+//  claims and a target that may be a claim OR another relation. A legacy
+//  link is just the single-source instance of the general case.
+//
+//  Both may be populated during migration. New code reads 2+; old code
+//  reads 1. When `Link` is retired, field 1 becomes `reserved`.
+// =============================================================
+
 message Relationship {
-  Link link = 1;
+  Link link = 1;   // legacy — see note above
 
   message Link {
-    int32 id = 1;
-    int32 connect_from = 2;
-    int32 connect_to = 3;
-    string connection = 4;
-    int32 creator_id = 5;
-    // add a type, normal, parent child, or challenge connection
-    LinkType link_type = 6;
-    int32 debate_id = 7;
+    int32     id           = 1;
+    int32     connect_from = 2;
+    int32     connect_to   = 3;
+    string    connection   = 4;
+    int32     creator_id   = 5;
+    LinkType  link_type    = 6;
+    int32     debate_id    = 7;
   }
+
+  // --- new ---
+
+  int32 id        = 2;
+  int32 debate_id = 3;
+
+  // The from-set. Several entries = ALL required (a chain).
+  // Independent support = several SEPARATE Relationships to one target.
+  // AND/OR is structural — never add a flag for it.
+  repeated int32 from_claim_ids = 4;
+
+  // Exactly one target, never zero, never both. Targeting a relation is how
+  // "your evidence is real but it doesn't prove that" is expressed.
+  // proto3 cannot enforce at-least-one — the write path must validate it.
+  oneof to {
+    int32 to_claim_id    = 5;
+    int32 to_relation_id = 6;
+  }
+
+  // Genuinely closed, so an enum is safe.
+  RelationRole role = 7;
+
+  // What KIND of connection — EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+  // NORMATIVE. A string, not an enum: the registry maps each name to exactly
+  // one of four defeat behaviours (collapse / unsupport / fork / don't
+  // propagate), so adding one must be a config edit, not a proto migration
+  // plus a client regen. Unknown names are rejected at write time.
+  string basis = 8;
+
+  int32                     creator_id = 9;
+  google.protobuf.Timestamp created_at = 10;
 }
 
+// LEGACY. Superseded by RelationRole + basis.
+//   NORMAL, PARENT_CHILD -> SUPPORTS
+//   CHALLENGE            -> OPPOSES
 enum LinkType {
-  NORMAL = 0;
+  NORMAL       = 0;
   PARENT_CHILD = 1;
-  CHALLENGE = 2;
+  CHALLENGE    = 2;
 }
+
+enum RelationRole {
+  ROLE_UNSPECIFIED = 0;
+  SUPPORTS         = 1;
+  OPPOSES          = 2;   // a challenge
+}
+
+// =============================================================
+//  MOVE LOG — the only authoritative record
+// =============================================================
+
+enum MoveType {
+  MOVE_TYPE_UNSPECIFIED = 0;
+  ASSERT       = 1;
+  OPPOSE       = 2;
+  CONCEDE      = 3;
+  ACCEPT       = 4;
+  REST         = 5;
+  FLAG_UNKNOWN = 6;
+  REPLACE      = 7;
+  DISOWN       = 8;
+  REOPEN       = 9;
+  TIMEOUT      = 10;
+  RETRACT      = 11;  // author withdraws; distinct from CONCEDE
+  REDACT       = 12;  // administrative removal; blanks text, keeps the node
+  CONTRADICT   = 13;  // marks two claims mutually incompatible
+}
+
+enum TargetType {
+  TARGET_TYPE_UNSPECIFIED = 0;
+  TARGET_CLAIM            = 1;
+  TARGET_RELATION         = 2;
+}
+
+message Move {
+  int32      id        = 1;
+  int32      debate_id = 2;
+  int32      seq       = 3;   // monotonic per debate, assigned server-side
+  int32      actor_id  = 4;
+  MoveType   type      = 5;
+
+  TargetType target_type = 6;
+  int32      target_id   = 7;
+
+  // Ids this move brought into existence.
+  repeated int32 created_claim_ids    = 8;
+  repeated int32 created_relation_ids = 9;
+
+  // Free-form structural detail. Does NOT carry claim text — text lives in
+  // the Claim row.
+  //
+  // NOTE: that only makes replay faithful once claims are genuinely
+  // immutable. Today editClaimText still overwrites the row in place, so
+  // replaying at an older seq shows the CURRENT text, not the text as it
+  // stood then. Resolved when an edit becomes REPLACE + a new Claim.
+  string payload = 10;
+
+  google.protobuf.Timestamp created_at = 11;
+}
+
+// =============================================================
+//  COMPUTED STATE — response-only, never persisted
+//
+//  Deliberately separate messages so a status field cannot creep onto
+//  Claim or Relationship.
+// =============================================================
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STANDING     = 1;   // unchallenged so far — NOT verified
+  ACCEPTED     = 2;   // agreed by all active adversarial parties
+  OPEN         = 3;
+  UNSUPPORTED  = 4;   // argument failed — NOT disproven
+  COLLAPSED    = 5;   // the only status that cascades
+  CONTESTED    = 6;
+  UNRESOLVED   = 7;
+  ABANDONED    = 8;
+  SUPERSEDED   = 9;
+  CIRCULAR     = 10;  // a finding about support, not a rung on the ladder
+  MISDIRECTED  = 11;  // relations only
+}
+
+// Precedence when conditions co-occur, highest wins:
+//   SUPERSEDED > COLLAPSED > MISDIRECTED > UNRESOLVED > CONTESTED
+//             > UNSUPPORTED > ABANDONED > OPEN > ACCEPTED > STANDING
+
+enum RelationState {
+  RELATION_STATE_UNSPECIFIED = 0;
+  LIVE  = 1;   // every from-member viable
+  INERT = 2;   // a from-member is weak — carries nothing, but REVIVES
+  DEAD  = 3;   // successfully opposed; only REOPEN brings it back
+}
+
+message ComputedClaimState {
+  int32  claim_id         = 1;
+  Status status           = 2;
+  int32  supporting_count = 3;   // display rule: counts, never scores
+  int32  opposing_count   = 4;
+  string label            = 5;   // "unchallenged so far" — never "verified"
+}
+
+message ComputedRelationState {
+  int32         relation_id = 1;
+  RelationState state       = 2;
+}
+
+// =============================================================
+//  DEBATE
+// =============================================================
 
 message Debate {
-  int32 id = 1;
-  int32 root_claim_id = 2;
-  string topic = 3;
-  repeated int32 debater_ids = 4;
-  int32 creator_id = 5;
-  debate.DebateSettings settings = 6;
-  bool is_challenge = 7;
-  int32 parent_challenge_id = 8;
+  int32                 id            = 1;
+  int32                 root_claim_id = 2;
+  string                topic         = 3;
+  repeated int32        debater_ids   = 4;
+  int32                 creator_id    = 5;
+  debate.DebateSettings settings      = 6;
+
+  // --- new ---
+  // No head_seq: the head of a debate is
+  //   SELECT MAX(SEQ) FROM MOVES WHERE DEBATE_ID = ?
+  // and a stored copy could only drift from it.
+  google.protobuf.Timestamp created_at = 9;
+
+  // --- legacy: sub-debates are now ordinary relations in one graph ---
+  bool  is_challenge        = 7 [deprecated = true];
+  int32 parent_challenge_id = 8 [deprecated = true];
+}
+
+// =============================================================
+//  WIRE
+// =============================================================
+
+message GetStateRequest {
+  int32 debate_id = 1;
+
+  // History replay: evaluate against moves where seq <= at_seq.
+  // 0 or unset = latest.
+  int32 at_seq = 2;
+
+  // The reader's definitional lens: claim ids they have chosen NOT to view
+  // through. Relations holding an excluded definition in their from-set go
+  // INERT for this response only. Reader-side and private — writes nothing.
+  repeated int32 lens_excluded_claims = 3;
+}
+
+message DebateState {
+  Debate                         debate          = 1;
+  repeated Claim                 claims          = 2;
+  repeated Relationship          relations       = 3;
+  repeated ComputedClaimState    claim_states    = 4;
+  repeated ComputedRelationState relation_states = 5;
+
+  // Computed per response, not stored: at_seq is what was evaluated, head_seq
+  // is MAX(seq). at_seq < head_seq means the reader is viewing history.
+  int32                          at_seq          = 6;
+  int32                          head_seq        = 7;
 }
