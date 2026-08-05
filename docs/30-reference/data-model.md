@@ -34,12 +34,20 @@ Claims live in `STATEMENTS`, with the whole `Claim` protobuf serialized into a `
 
 Links live in `LINKS` as ordinary typed columns (`CLAIM_ID_FROM`, `CLAIM_ID_TO`, `CONNECTION`, `CREATOR_ID`, `DEBATE_ID`, `LINK_TYPE`) — not as blobs.
 
-### Deletion is not deletion
+### Claims are disconnected, not deleted (by design)
 
-Worth knowing before reasoning about any query:
+**Deleting a claim never removes its row.** `DebateWrapper::deleteClaim` deletes every link touching the claim and deliberately leaves the `STATEMENTS` row in place — the delete call is commented out in source with that intent stated. The claim becomes *disconnected*: unreachable from the graph, so it vanishes from the UI, while the record of what was said survives.
 
-- **Deleting a claim does not remove its row.** `DebateWrapper::deleteClaim` deletes every link touching the claim and leaves the `STATEMENTS` row in place (the delete is commented out in source, deliberately). The claim becomes *orphaned* — unreachable from the graph, so it disappears from the UI, but still present in the table and still counted by any query that does not join through `LINKS`.
-- **Deleting a link is real.** `DELETE FROM LINKS WHERE ID = ?`.
+This is a design decision, not an oversight. Claims are things people asserted; removing them outright would erase the record.
+
+**Deleting a link is real**: `DELETE FROM LINKS WHERE ID = ?`.
+
+Two consequences worth knowing before writing a query or reasoning about the log:
+
+- Any query that does not join through `LINKS` still counts disconnected claims.
+- The claim's stored `status` is **not** updated when it is disconnected. Harmless today, since nothing renders a disconnected claim — but it is why the computed and stored models disagree on these claims (see [`backend.md`](backend.md)).
+
+This also aligns with `RETRACT` in the move log, which means "the author withdrew this" and likewise keeps the claim rather than destroying it.
 
 ## The move log (`MOVES`)
 

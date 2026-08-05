@@ -42,10 +42,17 @@ The large one. Status today is written into each claim and mutated in place; the
 - [ ] AI summaries
 - [ ] More debate constraints
 
-### Known defects
+### Unreachable UI
 
-- **"Save" on a claim edit can be silently undone by "Cancel".** Editing is only reachable inside a modification session, and submitting persists immediately without closing that session — so the still-visible Cancel restores the pre-edit snapshot and discards the saved change. Details in [`30-reference/backend.md`](30-reference/backend.md). Resolves when edits become `REPLACE` + a new immutable claim.
-- **Deleting a claim orphans it rather than removing it.** The row stays in `STATEMENTS`; only its links are deleted. Any query not joining through `LINKS` still counts it — see [`30-reference/data-model.md`](30-reference/data-model.md).
+Several flows exist and work server-side but have no route to them: the view that renders is `StepView`, and it has no navigation to `FullDebateView` or `SingleStatementView`.
+
+- **Challenging a claim** — the whole challenge panel
+- **Editing / modifying a claim** — `modifyClaimButton` renders only in the other views
+- **Selecting a link to challenge** — the selection state is fully built and rendered, but nothing consumes it
+
+This is the biggest single blocker. It gates `OPPOSE` reaching the log through real use, and it gates the relation-attack work that `UNSUPPORTED` depends on.
+
+*(Two things once listed here as defects are not. Deleting a claim leaves the row and cuts its links — a deliberate choice. The Save/Cancel edit flow is a staged two-level edit in which the outer Submit is the commit point. See [`30-reference/data-model.md`](30-reference/data-model.md) and [`30-reference/backend.md`](30-reference/backend.md).)*
 
 ### Shipped
 

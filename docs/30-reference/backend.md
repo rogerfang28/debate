@@ -84,7 +84,23 @@ Deletions are hooked in the **handlers**, not in `deleteClaim`/`deleteLinkById`,
 - `CANCEL_MODIFICATION_OF_CLAIM`
 - `REPLACE` on edit submit — see the defect below
 
-> **Open defect (not a logging problem).** Editing is only reachable inside a modification session, and `SubmitEditClaim` persists immediately while never clearing `modifying_current_claim`. The modify **Cancel** button stays rendered and restores the pre-session snapshot, discarding the saved edit. So a control labelled "Save" can be silently undone. `REPLACE` is unlogged because a logged `REPLACE` would assert a change a later cancel erases. Resolves when an edit becomes `REPLACE` + a new immutable claim.
+### Editing is a two-level, staged operation
+
+Worth understanding before adding `REPLACE` logging, because there are **two** submits and they do different things:
+
+| Control | Event | Effect |
+|---|---|---|
+| Inner **Save** on the edit box | `SUBMIT_EDIT_CLAIM` | writes the new text; closes only the edit box. The modification session stays open |
+| Outer **Submit** on the modify panel | `SUBMIT_MODIFICATION_OF_CLAIM` | clears `modifying_current_claim` — session closes, the edit stands |
+| Outer **Cancel** | `CANCEL_MODIFICATION_OF_CLAIM` | restores the snapshot taken at Start, discarding the session's edits |
+
+So `START_MODIFICATION_OF_CLAIM` snapshots into `history`, inner Save writes text, and the **outer Submit/Cancel is the real commit point**. Cancel discarding the session is the intended meaning, not data loss.
+
+That makes the outer Submit the natural place to log `REPLACE` when the time comes — logging on the inner Save would record a change the outer Cancel can still discard.
+
+One wrinkle if you touch this: inner Save persists straight to the database rather than staging in memory, so a concurrent reader could briefly observe an edit that is later discarded. Invisible single-user. Also `editClaimText` writes both the blob and the `TEXT` column while the restore path (`updateClaimInDB`) writes only the blob, so a cancelled edit leaves `TEXT` holding the discarded value; the UI reads the blob, so it is not user-visible today.
+
+**Currently unreachable:** `modifyClaimButton` renders only in `FullDebateView` and `SingleStatementView`, and the view that actually renders is `StepView`, which has no navigation to either. The whole edit/modify flow — like the challenge flow — cannot be triggered by a user today.
 
 ## Status engine — `StatusEngine`
 
