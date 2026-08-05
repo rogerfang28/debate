@@ -19,6 +19,20 @@ audience: everyone
 
 Keep this list ordered by priority. When an item ships, move it to **Shipped** with the date and link the docs that describe it.
 
+### In progress — moving status from stored to computed
+
+The large one. Status today is written into each claim and mutated in place; the goal is to compute it from an append-only log instead. Being done in parallel so nothing breaks: the log is written and the engine runs, but nothing reads either yet.
+
+- [x] Append-only `MOVES` table, seq per debate — [`30-reference/data-model.md`](30-reference/data-model.md)
+- [x] `MoveLogger` at the dispatch point — [`30-reference/backend.md`](30-reference/backend.md)
+- [x] `debate.proto` extended for hyperedges, moves and the 11 statuses — [`30-reference/protocol.md`](30-reference/protocol.md)
+- [x] `computeStatuses` as a pure function (`STANDING`, `OPEN`, `COLLAPSED`)
+- [x] Shadow mode — computed vs stored, logged and discarded
+- [ ] **Attacking a relation.** Every move written targets a claim, so `UNSUPPORTED` — the distinction the whole design rests on — has never entered the log. Needs a `TO_KIND` on `LINKS`, `addLink` to stop assuming both ends are claims, and relations to be clickable in the UI
+- [ ] The six statuses blocked on actions that do not exist: `ACCEPT`, `REST`, `FLAG_UNKNOWN`, `DISOWN`, `TIMEOUT`, and `REPLACE`
+- [ ] Participation history — join/leave are not recorded, so `REST` and `TIMEOUT` cannot tell who was present
+- [ ] Retire the legacy engine once the computed one is trusted
+
 ### Planned
 
 - [ ] Refactor
@@ -27,6 +41,11 @@ Keep this list ordered by priority. When an item ships, move it to **Shipped** w
 - [ ] Full multiplayer
 - [ ] AI summaries
 - [ ] More debate constraints
+
+### Known defects
+
+- **"Save" on a claim edit can be silently undone by "Cancel".** Editing is only reachable inside a modification session, and submitting persists immediately without closing that session — so the still-visible Cancel restores the pre-edit snapshot and discards the saved change. Details in [`30-reference/backend.md`](30-reference/backend.md). Resolves when edits become `REPLACE` + a new immutable claim.
+- **Deleting a claim orphans it rather than removing it.** The row stays in `STATEMENTS`; only its links are deleted. Any query not joining through `LINKS` still counts it — see [`30-reference/data-model.md`](30-reference/data-model.md).
 
 ### Shipped
 

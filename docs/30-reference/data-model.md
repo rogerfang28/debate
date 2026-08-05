@@ -4,18 +4,18 @@ title: Data Model Reference — SQLite & the Debate Graph
 status: partial
 last-updated: 2026-08-05
 audience: developers (implementation)
-source-of-truth-for: [debates.sqlite3 schema, users.sqlite3 schema, graph storage format]
+source-of-truth-for: [debates.sqlite3 schema, users.sqlite3 schema, graph storage format, MOVES table]
 ---
 
 # Data Model Reference — SQLite & the Debate Graph
 
-> **Status: partial.** Fill ⚠️ TODO sections from the actual schema (`.schema` output) when working here.
+> **Status: partial.** The `MOVES` table below is documented from source. Remaining ⚠️ TODO sections still need filling from actual `.schema` output.
 
 ## Databases
 
 | File | Contents |
 |---|---|
-| `debates.sqlite3` | Debate graphs: claims, links, challenges, resolution states |
+| `debates.sqlite3` | Debate graphs: claims, links, challenges, resolution states, and the move log |
 | `users.sqlite3` | User identity/auth data |
 
 Separation rationale: identity data and debate content have different lifecycles and sensitivity.
@@ -28,12 +28,46 @@ Conceptually (see [`../10-concepts.md`](../10-concepts.md)):
 - **Edges** = links with type `PARENT_CHILD` or `CHALLENGE` (only these two — see [`protocol.md`](protocol.md))
 - Challenges create **nested sub-debates**, so the structure is a recursive graph (tree-like)
 
+### How claims are stored
+
+Claims live in `STATEMENTS`, with the whole `Claim` protobuf serialized into a `STATEMENT_DATA` blob alongside a few real columns (`TEXT`, `CREATOR_ID`, `DEBATE_ID`, `ROOT_ID`). Because the blob *is* the storage format, proto field numbers are part of the schema — see the field-numbering discipline in [`protocol.md`](protocol.md).
+
+Links live in `LINKS` as ordinary typed columns (`CLAIM_ID_FROM`, `CLAIM_ID_TO`, `CONNECTION`, `CREATOR_ID`, `DEBATE_ID`, `LINK_TYPE`) — not as blobs.
+
+### Deletion is not deletion
+
+Worth knowing before reasoning about any query:
+
+- **Deleting a claim does not remove its row.** `DebateWrapper::deleteClaim` deletes every link touching the claim and leaves the `STATEMENTS` row in place (the delete is commented out in source, deliberately). The claim becomes *orphaned* — unreachable from the graph, so it disappears from the UI, but still present in the table and still counted by any query that does not join through `LINKS`.
+- **Deleting a link is real.** `DELETE FROM LINKS WHERE ID = ?`.
+
+## The move log (`MOVES`)
+
+Append-only record of what people did. Currently a **parallel record only** — nothing reads it to render or decide (see [`backend.md`](backend.md)).
+
+| Column | Notes |
+|---|---|
+| `ID` | `INTEGER PRIMARY KEY AUTOINCREMENT` |
+| `DEBATE_ID` | moves are debate-scoped, not claim-scoped |
+| `SEQ` | monotonic **per debate**, assigned server-side |
+| `ACTOR_ID` | who acted |
+| `TYPE` | text, e.g. `ASSERT` — see `MoveType` in [`protocol.md`](protocol.md) |
+| `TARGET_TYPE` | text, `claim` or `relation` |
+| `TARGET_ID` | id in whichever table `TARGET_TYPE` names |
+| `PAYLOAD` | free-form JSON of structural detail; never claim text |
+| `CREATED_AT` | ISO-8601, defaulted by SQLite |
+
+Constraints: `UNIQUE (DEBATE_ID, SEQ)`, plus index `IDX_MOVES_DEBATE_SEQ ON (DEBATE_ID, SEQ)` — replay order for one debate is always `(DEBATE_ID, SEQ)`.
+
+**`TYPE` and `TARGET_TYPE` are text, not integers**, so the log stays readable years later and survives enum renumbering. Unknown names decode to `UNSPECIFIED` rather than being guessed at.
+
+**`SEQ` is assigned inside the INSERT**, via `SELECT COALESCE(MAX(SEQ),0)+1 ... WHERE DEBATE_ID = ?`. A separate read-then-write would leave a window for two writers to claim the same seq, because `Database` serialises individual statements but not statement *pairs*. The `UNIQUE` constraint is the backstop.
+
 ⚠️ TODO (fill from source):
-- Actual table definitions (claims/nodes, links/edges, challenges, debates, resolution state columns)
+- Actual table definitions for `STATEMENTS`, `LINKS`, `DEBATES`, `DEBATE_MEMBERS`
 - How challenge lifecycle states (Being Constructed / Open / Resolved) are stored
-- How concession cascades are persisted (recomputed on read vs. materialized on write?)
 - Where aggregation shape (independent supports vs. required chain, design case 11) is stored
-- Indexes and any denormalization
+- Indexes on the non-`MOVES` tables, and any denormalization
 - Migration strategy (how schema changes are applied)
 
 ## Invariants
@@ -41,3 +75,7 @@ Conceptually (see [`../10-concepts.md`](../10-concepts.md)):
 - Every edge references existing node IDs.
 - Edge `type` ∈ {`PARENT_CHILD`, `CHALLENGE`} — no legacy types.
 - Abandoned branches are stored as **abandoned**, never silently as conceded (design case 8), including *which party* went silent.
+- **`MOVES` is append-only.** No `UPDATE`, no `DELETE`, ever. A correction is a new move.
+- **No status column in `MOVES`.** Status is computed; storing it here would recreate the contradiction the log exists to remove.
+- **`SEQ` is gapless and starts at 1 within each debate.** A hole makes replay order ambiguous. Verified by test, and by query: `SELECT DEBATE_ID FROM MOVES GROUP BY DEBATE_ID HAVING COUNT(*) <> MAX(SEQ)` must return nothing.
+- **A move write may never break the operation that triggered it.** Failures are logged and dropped while the log runs in parallel.
