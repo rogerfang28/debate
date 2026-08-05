@@ -534,6 +534,10 @@ user_engagement::DebateList DebateWrapper::FillUserDebateList(const int& user_id
     return debateListProto;
 }
 
+std::vector<debate::Move> DebateWrapper::getMovesForDebate(const int& debate_id) {
+    return databaseWrapper.moves.getMovesForDebate(debate_id);
+}
+
 void DebateWrapper::SaveVersionOfClaim(const int& claim_id) {
     // find the claim proto
     debate::Claim claimProto = getClaimById(claim_id);

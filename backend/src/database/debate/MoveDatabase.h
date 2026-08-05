@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../sqlite/Database.h"
+#include "debate.pb.h"
 #include <string>
+#include <vector>
 
 // ---------------------------------------
 // Class: MoveDatabase
@@ -48,6 +50,10 @@ public:
     // debugging while the log runs in parallel.
     int countMovesForDebate(int debateId);
     int lastSeqForDebate(int debateId);
+
+    // Every move for one debate, in replay order. Read-only: this is how the
+    // shadow comparison sees the log without anything depending on it.
+    std::vector<debate::Move> getMovesForDebate(int debateId);
 
 private:
     Database& db_;
