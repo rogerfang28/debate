@@ -22,6 +22,9 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
+#include <set>
+#include <thread>
+#include <atomic>
 #include <cstdio>
 #include <cstdlib>
 
@@ -163,6 +166,48 @@ TEST_F(MoveDatabaseTest, RefusesMovesWithNoDebate) {
     // sequence, so it must be rejected rather than stored as an orphan.
     EXPECT_FALSE(wrapper_->moves.appendMove(0, 100, "ASSERT", "claim", 10, ""));
     EXPECT_FALSE(wrapper_->moves.appendMove(-1, 100, "ASSERT", "claim", 10, ""));
+}
+
+TEST_F(MoveDatabaseTest, ConcurrentAppendsProduceNoDuplicateOrMissingSeq) {
+    // Sequence assignment happens inside a single INSERT...SELECT specifically
+    // so two writers cannot both read the same MAX(SEQ). That was previously
+    // an argument about SQLite semantics rather than a measurement, and the
+    // reasoning is not obviously safe: Database guards individual statements,
+    // but prepare() hands back a statement the caller steps outside the lock.
+    // So measure it.
+    constexpr int kThreads = 8;
+    constexpr int kPerThread = 25;
+    constexpr int kDebate = 99;
+
+    std::atomic<int> failures{0};
+    std::vector<std::thread> threads;
+    threads.reserve(kThreads);
+
+    for (int t = 0; t < kThreads; ++t) {
+        threads.emplace_back([&, t]() {
+            for (int i = 0; i < kPerThread; ++i) {
+                if (!wrapper_->moves.appendMove(kDebate, 100 + t, "ASSERT", "claim",
+                                                1000 + t * kPerThread + i, "")) {
+                    failures.fetch_add(1);
+                }
+            }
+        });
+    }
+    for (auto& th : threads) th.join();
+
+    EXPECT_EQ(failures.load(), 0) << "no append should fail under contention";
+
+    auto moves = readMoves(*db_, kDebate);
+    ASSERT_EQ(moves.size(), static_cast<size_t>(kThreads * kPerThread));
+
+    std::set<int> seqs;
+    for (const auto& m : moves) {
+        EXPECT_TRUE(seqs.insert(m.seq).second)
+            << "duplicate seq " << m.seq << " -- two writers claimed the same slot";
+    }
+    for (int i = 1; i <= kThreads * kPerThread; ++i) {
+        EXPECT_TRUE(seqs.count(i)) << "missing seq " << i << " -- the sequence has a hole";
+    }
 }
 
 TEST_F(MoveDatabaseTest, LogFailureDoesNotBreakTheOperation) {
@@ -356,6 +401,89 @@ TEST_F(MoveLogTest, ChallengingLogsAssertThenOpposeAgainstTheChallengedClaim) {
         << "OPPOSE must target the challenged claim";
     EXPECT_NE(moves[2].payload.find("relation_id"), std::string::npos)
         << "the challenge relation belongs in the payload";
+}
+
+TEST_F(MoveLogTest, ConcedingLogsAgainstTheChallengedClaim) {
+    // CONCEDE had never been observed firing anywhere -- not in the UI (the
+    // challenge view is unreachable) and not in any test. This is the first
+    // time it is actually exercised.
+    int debateId = createAndEnterDebate("Root claim");
+    const int rootClaimId = currentClaimId();
+
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addTarget = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    addTarget.mutable_add_claim_to_be_challenged()->set_claim_id(rootClaimId);
+    send(addTarget);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("Correlation, not cause");
+    submit.mutable_submit_challenge_claim()->set_challenge_description("");
+    send(submit);
+
+    // SubmitChallengeClaim leaves the user standing on the challenge claim, so
+    // its outgoing CHALLENGE link is the one to concede to.
+    const int challengeClaimId = currentClaimId();
+    const int challengeLinkId =
+        moderator_->getDebateWrapper().findOutgoingChallengeLink(challengeClaimId).link().id();
+    ASSERT_GT(challengeLinkId, 0);
+
+    const size_t before = readMoves(*db_, debateId).size();
+
+    auto concede = baseEvent(debate_event::CONCEDE_CHALLENGE);
+    concede.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
+    send(concede);
+
+    auto moves = readMoves(*db_, debateId);
+    ASSERT_EQ(moves.size(), before + 1)
+        << "conceding is one decision, not one per cascaded status change; shape was: "
+        << shapeOf(moves);
+
+    const auto& m = moves.back();
+    EXPECT_EQ(m.type, "CONCEDE");
+    EXPECT_EQ(m.targetType, "claim");
+    EXPECT_EQ(m.targetId, rootClaimId)
+        << "CONCEDE names the claim being given up, not the challenge";
+    EXPECT_NE(m.payload.find("challenge_relation_id"), std::string::npos);
+}
+
+TEST_F(MoveLogTest, DeletingAClaimWithChildrenAndLinksLogsExactlyOneRetract) {
+    // Deleting a claim tears down every link touching it, and can orphan a
+    // whole subtree. None of that is a separate user decision, so none of it
+    // may appear in the log as one.
+    int debateId = createAndEnterDebate("Root");
+    addChildClaim("Middle claim");
+
+    int middleId = 0;
+    {
+        auto moves = readMoves(*db_, debateId);
+        ASSERT_EQ(moves.size(), 3u);
+        middleId = moves[1].targetId;
+    }
+
+    // Give the middle claim a child of its own, so deleting it destroys two
+    // relations and orphans a claim.
+    auto goToMiddle = baseEvent(debate_event::GO_TO_CLAIM);
+    goToMiddle.mutable_go_to_claim()->set_claim_id(middleId);
+    send(goToMiddle);
+    addChildClaim("Grandchild claim");
+
+    const size_t before = readMoves(*db_, debateId).size();
+    ASSERT_EQ(before, 5u) << "root + middle + rel + grandchild + rel";
+
+    // Delete the middle claim, which has both a parent link and a child link.
+    auto goAgain = baseEvent(debate_event::GO_TO_CLAIM);
+    goAgain.mutable_go_to_claim()->set_claim_id(middleId);
+    send(goAgain);
+    auto del = baseEvent(debate_event::DELETE_CURRENT_STATEMENT);
+    send(del);
+
+    auto moves = readMoves(*db_, debateId);
+    EXPECT_EQ(moves.size(), before + 1)
+        << "exactly one RETRACT, no cascade rows; shape was: " << shapeOf(moves);
+    EXPECT_EQ(moves.back().type, "RETRACT");
+    EXPECT_EQ(moves.back().targetId, middleId);
 }
 
 TEST_F(MoveLogTest, NavigationAndUiStateProduceNoMoves) {
