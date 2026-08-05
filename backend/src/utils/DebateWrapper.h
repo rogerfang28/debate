@@ -72,24 +72,6 @@ public:
     int findDebateId(const int& claimId);
     user_engagement::DebateList FillUserDebateList(const int& user_id);
 
-    // --- Move log -------------------------------------------------------
-    // The single write path for the append-only action log. Every mutation
-    // calls this IN ADDITION to what it already does; nothing reads the log
-    // yet, so this is a parallel record.
-    //
-    // Deliberately returns void and swallows failures: a failed log write must
-    // never break a working feature during the parallel phase. Errors are
-    // logged instead.
-    //
-    // targetIsClaim distinguishes a claim target from a relation target --
-    // ids are drawn from different tables and are not interchangeable.
-    void logMove(const int& debate_id,
-                 const int& actor_id,
-                 const std::string& type,
-                 bool targetIsClaim,
-                 const int& target_id,
-                 const std::string& payload = "");
-
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
     void UpdateStatusOfAllClaimsInDebate(const int& debate_id);

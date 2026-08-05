@@ -78,13 +78,6 @@ void ConnectClaimsHandler::DeleteLinkById(
 
     Log::debug("[ConnectClaimsHandler] Deleting link id=" + std::to_string(linkId) + ", from claim id=" + std::to_string(fromClaimId) + ", to claim id=" + std::to_string(toClaimId));
 
-    // Log before the row is destroyed -- the link's debate id is unreadable
-    // afterwards. Deletion behaviour below is unchanged.
-    debateWrapper.logMove(linkProto.debate_id(), user_id, "RETRACT",
-                          /*targetIsClaim=*/false, linkId,
-                          "{\"from_claim_id\":" + std::to_string(fromClaimId) +
-                          ",\"to_claim_id\":" + std::to_string(toClaimId) + "}");
-
     // remove link id from both the parent claim and top-level link list
     debate::Claim parentClaim = debateWrapper.findClaimParent(fromClaimId);
     auto removeLinkId = [linkId](debate::Claim& claim) {

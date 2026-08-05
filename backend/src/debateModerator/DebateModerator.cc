@@ -4,6 +4,7 @@
 // #include "debate_list.pb.h"
 #include "user.pb.h"
 #include "../utils/pathUtils.h"
+#include "../moveLog/MoveLogger.h"
 #include <iostream>
 #include <vector>
 // add claim
@@ -123,7 +124,17 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
         event.set_type(debate_event::NONE);
     }
 
+    // Move log (parallel record -- nothing reads it yet). Split around the
+    // dispatch because an event describes intent while the log records outcome:
+    // deletions are only readable before, creations only after. All of the
+    // event-to-move mapping lives in MoveLogger; nothing here or in any handler
+    // knows what a move is.
+    MoveLogger::PreState movePre = MoveLogger::capture(event, user_id, debateWrapper);
+
     handleDebateEvent(user_id, event);
+
+    MoveLogger::logForEvent(event, user_id, movePre, debateWrapper, dbWrapper);
+
     moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
     return res;
 }
