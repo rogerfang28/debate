@@ -264,16 +264,29 @@ protected:
         std::remove((db_path_ + "-shm").c_str());
     }
 
-    debate_event::DebateEvent baseEvent(debate_event::EventType type) {
+    // Events are attributed per user, so anything multi-user has to build them
+    // for a named actor rather than the fixture's default.
+    debate_event::DebateEvent eventFor(int userId, const std::string& username,
+                                       debate_event::EventType type) {
         debate_event::DebateEvent e;
-        e.mutable_user()->set_user_id(aliceId_);
-        e.mutable_user()->set_username("alice");
+        e.mutable_user()->set_user_id(userId);
+        e.mutable_user()->set_username(username);
         e.mutable_user()->set_is_logged_in(true);
         e.set_type(type);
         return e;
     }
 
+    debate_event::DebateEvent baseEvent(debate_event::EventType type) {
+        return eventFor(aliceId_, "alice", type);
+    }
+
     void send(debate_event::DebateEvent& e) { moderator_->handleRequest(e); }
+
+    int currentClaimIdFor(int userId) {
+        return moderator_->getDebateWrapper()
+            .getUserProtobuf(userId)
+            .engagement().debating_info().current_claim().id();
+    }
 
     int currentDebateId() {
         return moderator_->getDebateWrapper()
@@ -686,6 +699,143 @@ TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
 
     EXPECT_EQ(computedFor(rootId), storedFor(rootId)) << "conceded claim";
     EXPECT_EQ(computedFor(challengeClaimId), storedFor(challengeClaimId)) << "challenge claim";
+}
+
+// Two real users, opposed, with the concession coming from the other side.
+//
+// This is the case the single-user tests cannot reach. The stored model is
+// per-user, so parity only means something once two people hold DIFFERENT
+// views of the same claim -- with one author the whole matrix is one column and
+// a rule that mixed users up would still pass. Here alice asserts, bob attacks,
+// and alice concedes, so every seed rule fires for a different actor than the
+// one that created the claim.
+//
+// It also compares the ENTIRE matrix rather than hand-picked cells: every claim
+// against every user known to either side. A rule that invents an opinion for
+// someone who holds none shows up here and nowhere else.
+TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
+    const int bobId = moderator_->createUserIfNotExist("bob");
+    ASSERT_GT(bobId, 0);
+    ASSERT_NE(bobId, aliceId_);
+
+    // --- alice builds her case ---
+    const int debateId = createAndEnterDebate("Nuclear power is the cheapest clean energy");
+    const int rootId = currentClaimId();
+    ASSERT_GT(rootId, 0);
+
+    addChildClaim("Capacity factor is over 90 percent");
+    int aliceChildId = 0;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "ASSERT" && m.targetType == "claim" && m.targetId != rootId) {
+            aliceChildId = m.targetId;
+        }
+    }
+    ASSERT_GT(aliceChildId, 0);
+
+    // --- bob joins and attacks alice's evidence ---
+    auto join = eventFor(bobId, "bob", debate_event::JOIN_DEBATE);
+    join.mutable_join_debate()->set_debate_id(debateId);
+    send(join);
+
+    auto bobEnter = eventFor(bobId, "bob", debate_event::ENTER_DEBATE);
+    bobEnter.mutable_enter_debate()->set_debate_id(debateId);
+    send(bobEnter);
+
+    auto bobGoto = eventFor(bobId, "bob", debate_event::GO_TO_CLAIM);
+    bobGoto.mutable_go_to_claim()->set_claim_id(aliceChildId);
+    send(bobGoto);
+
+    auto bobStart = eventFor(bobId, "bob", debate_event::START_CHALLENGE_CLAIM);
+    send(bobStart);
+    auto bobTarget = eventFor(bobId, "bob", debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    bobTarget.mutable_add_claim_to_be_challenged()->set_claim_id(aliceChildId);
+    send(bobTarget);
+    auto bobOpen = eventFor(bobId, "bob", debate_event::OPEN_ADD_CHALLENGE);
+    send(bobOpen);
+    auto bobSubmit = eventFor(bobId, "bob", debate_event::SUBMIT_CHALLENGE_CLAIM);
+    bobSubmit.mutable_submit_challenge_claim()->set_challenge_sentence(
+        "Capacity factor ignores construction cost");
+    bobSubmit.mutable_submit_challenge_claim()->set_challenge_description("");
+    send(bobSubmit);
+
+    const int bobChallengeId = currentClaimIdFor(bobId);
+    ASSERT_GT(bobChallengeId, 0);
+    ASSERT_NE(bobChallengeId, aliceChildId);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+    const std::vector<int> claimIds = {rootId, aliceChildId, bobChallengeId};
+    const std::set<std::string> users{"alice", "bob"};
+
+    // Compares the entire matrix -- every claim against every user -- and
+    // returns whether the two users' stored columns differ anywhere.
+    auto checkMatrix = [&](const char* moment) {
+        std::vector<debate::Claim> claims;
+        for (int id : claimIds) {
+            claims.push_back(dw.getClaimById(id));
+        }
+        std::vector<debate::Relationship> relations;
+        for (const auto& row : dw.getLinksForDebate(debateId)) {
+            relations.push_back(dw.getLinkById(std::get<0>(row)));
+        }
+        const std::vector<debate::Move> moves = dw.getMovesForDebate(debateId);
+
+        auto computed = StatusEngine::computeLegacyStatuses(
+            claims, relations, moves, {{aliceId_, "alice"}, {bobId, "bob"}});
+
+        // Both users must actually appear, or parity would be satisfied
+        // trivially by an engine that produced nothing at all.
+        EXPECT_TRUE(computed.by_user.count("alice")) << moment << ": alice holds no view";
+        EXPECT_TRUE(computed.by_user.count("bob")) << moment << ": bob holds no view";
+
+        auto storedFor = [&](int claimId, const std::string& user) {
+            debate::Claim c = dw.getClaimById(claimId);
+            auto it = c.user_statuses().find(user);
+            return it != c.user_statuses().end() ? it->second
+                                                 : debate::ClaimStatus::UNDETERMINED;
+        };
+        auto computedFor = [&](int claimId, const std::string& user) {
+            auto uit = computed.by_user.find(user);
+            if (uit == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+            auto cit = uit->second.find(claimId);
+            return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
+        };
+
+        std::cout << "\n=== " << moment << " ===\n"
+                  << "  claim  user   STORED         REBUILT\n";
+        bool differs = false;
+        for (int id : claimIds) {
+            for (const std::string& u : users) {
+                std::cout << "  " << id << "      " << u << (u.size() < 5 ? " " : "")
+                          << "\t" << legacyName(storedFor(id, u))
+                          << "\t" << legacyName(computedFor(id, u)) << "\n";
+                EXPECT_EQ(computedFor(id, u), storedFor(id, u))
+                    << moment << ": claim " << id << " as seen by " << u;
+            }
+            if (storedFor(id, "alice") != storedFor(id, "bob")) {
+                differs = true;
+            }
+        }
+        std::cout << "\n";
+        return differs;
+    };
+
+    // Moment 1: bob has attacked, alice has not answered. This is the only
+    // point where the two columns genuinely diverge, so it is where a rule that
+    // confused one user's view for another's would show up.
+    EXPECT_TRUE(checkMatrix("after bob's challenge, before alice answers"))
+        << "alice and bob agree everywhere, so no per-user behaviour is being exercised";
+
+    // --- alice concedes bob's challenge ---
+    const int challengeLinkId = dw.findOutgoingChallengeLink(bobChallengeId).link().id();
+    ASSERT_GT(challengeLinkId, 0);
+    auto concede = baseEvent(debate_event::CONCEDE_CHALLENGE);
+    concede.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
+    send(concede);
+
+    // Moment 2: conceding means alice adopts bob's view, so the columns are
+    // EXPECTED to converge here. Convergence is the correct outcome, not a
+    // weaker test -- the divergence was already checked above.
+    checkMatrix("after alice concedes");
 }
 
 TEST_F(MoveLogTest, SeparateDebatesKeepIndependentSequences) {
