@@ -33,6 +33,10 @@ enum ComponentType {
   GRAPH = 4;
   CONTAINER = 12;
   CLAIM_PARSER = 14;
+  // Renders a <select>. Options travel in `attributes` as "options" (a
+  // comma-separated list) and "value" (the initially selected one), reusing the
+  // existing escape hatch rather than adding fields only one type would use.
+  DROPDOWN = 15;
 }
 
 message Style {

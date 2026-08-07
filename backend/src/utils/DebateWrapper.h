@@ -24,12 +24,16 @@ public:
         const std::string& description,
         const int& user_id,
         const int& debate_id);
+    // `basis` is stored as the link's connection -- the field that until now
+    // held a hardcoded constant. Empty falls back to that old constant so
+    // existing callers keep their previous behaviour.
     int addClaimUnderParent(
-        const int& parentId, 
-        const std::string& claimText, 
+        const int& parentId,
+        const std::string& claimText,
         const std::string& connectionToParent,
         const int& user_id,
-        const int& debate_id);
+        const int& debate_id,
+        const std::string& basis = "");
     void changeDescriptionOfClaim(
         const int& claimId,
         const std::string& newDescription);

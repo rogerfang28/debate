@@ -103,7 +103,7 @@ protected:
     void addChild(int parentId, const std::string& text,
                   const std::string& connection) {
         AddClaimHandler::OpenAddChildClaim(userId_, *debate_);
-        AddClaimHandler::AddClaimUnderClaim(text, connection, userId_, *debate_);
+        AddClaimHandler::AddClaimUnderClaim(text, connection, "", userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 

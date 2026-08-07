@@ -196,6 +196,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             AddClaimHandler::AddClaimUnderClaim(
                 event.add_child_claim().claim(),
                 event.add_child_claim().description(),
+                event.add_child_claim().basis(),
                 user_id,
                 debateWrapper
             );

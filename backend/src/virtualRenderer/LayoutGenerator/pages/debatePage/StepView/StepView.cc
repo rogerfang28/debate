@@ -44,7 +44,7 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
 }
 
 // Builds the "Selected Claim" info panel: sentence, status, creator,
-// description, and contextual action buttons (Add Child + Delete for the
+// description, and contextual action buttons (Support + Delete for the
 // viewer's own claims, Challenge for others').
 static ui::Component BuildSelectedClaimPanel(
     int claimId,
@@ -167,9 +167,13 @@ static ui::Component BuildSelectedClaimPanel(
 
     const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
     if (isOwnClaim) {
+        // "Support", not "Add Child": a child claim is evidence offered FOR its
+        // parent, so the relationship is what the user is actually creating.
+        // The component id stays addChildClaimButton -- it is the wire to the
+        // existing event handler, not a label.
         ui::Component addChildButton = ComponentGenerator::createButton(
             "addChildClaimButton",
-            "Add Child",
+            "Support",
             "",
             "bg-blue-600",
             "hover:bg-blue-700",

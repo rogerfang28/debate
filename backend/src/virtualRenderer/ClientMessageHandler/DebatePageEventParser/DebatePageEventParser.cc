@@ -81,6 +81,10 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
                 submitEvent->set_claim(comp.value());
                 Log::debug("  Claim: " + comp.value());
             }
+            else if (comp.id() == "linkTypeSelect") {
+                submitEvent->set_basis(comp.value());
+                Log::debug("  Basis: " + comp.value());
+            }
         }
      }
      

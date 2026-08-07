@@ -44,6 +44,25 @@ public:
         const std::string& defaultValue = ""
     );
 
+    // Create a DROPDOWN component (renders as a <select>).
+    //
+    // `options` are the selectable values, in display order. They are sent as a
+    // comma-separated attribute, so an option containing a comma would split in
+    // two -- fine for the closed vocabularies this exists for, and worth
+    // revisiting the moment a caller needs free text.
+    static ui::Component createDropdown(
+        const std::string& id,
+        const std::vector<std::string>& options,
+        const std::string& selectedValue = "",
+        const std::string& name = "",
+        const std::string& bgColor = "bg-gray-800",
+        const std::string& textColor = "text-white",
+        const std::string& borderColor = "border-gray-600",
+        const std::string& padding = "p-3",
+        const std::string& rounded = "rounded",
+        const std::string& additionalClasses = ""
+    );
+
     // Create a CONTAINER component
     static ui::Component createContainer(
         const std::string& id,

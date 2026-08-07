@@ -154,11 +154,12 @@ int DebateWrapper::createClaim(
 }
 
 int DebateWrapper::addClaimUnderParent(
-    const int& parentId, 
-    const std::string& claimText, 
+    const int& parentId,
+    const std::string& claimText,
     const std::string& description,
     const int& user_id,
-    const int& debate_id) {
+    const int& debate_id,
+    const std::string& basis) {
 
     // debate::Claim parentClaimFromDB = getClaimById(parentId);
 
@@ -175,8 +176,13 @@ int DebateWrapper::addClaimUnderParent(
     (*childClaim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
 
     addClaimToDB(childClaim, user_id, debate_id);
-    addLink(parentId, childClaim.id(), "parent to child connection", user_id, debate_id, debate::LinkType::PARENT_CHILD);
-    Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with description: " + "parent child connection");
+
+    // The link's `connection` carries the basis. It previously held a fixed
+    // string that told a reader nothing, so nothing is lost by using it, and
+    // this is where the basis belongs until relations get their own row.
+    const std::string connection = basis.empty() ? "parent to child connection" : basis;
+    addLink(parentId, childClaim.id(), connection, user_id, debate_id, debate::LinkType::PARENT_CHILD);
+    Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with basis: " + connection);
     return childClaim.id();
 }
 

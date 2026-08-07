@@ -528,18 +528,18 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     " \003(\0132\r.ui.GraphNodeR\005nodes\022#\n\005edges\030\003 \003("
     "\0132\r.ui.GraphEdgeR\005edges\022(\n\020selected_node"
     "_id\030\004 \001(\tR\016selectedNodeId\022(\n\020selected_ed"
-    "ge_id\030\005 \001(\tR\016selectedEdgeId*i\n\rComponent"
+    "ge_id\030\005 \001(\tR\016selectedEdgeId*w\n\rComponent"
     "Type\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022"
     "\t\n\005INPUT\020\003\022\t\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014"
-    "CLAIM_PARSER\020\016*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022"
-    "\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n"
-    "\006INLINE\020\004b\006proto3"
+    "CLAIM_PARSER\020\016\022\014\n\010DROPDOWN\020\017*I\n\nLayoutTy"
+    "pe\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020"
+    "\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1577,
+    1591,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -558,7 +558,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descrip
   return file_level_enum_descriptors_layout_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ComponentType_internal_data_[] = {
-    327680u, 32u, 640u, };
+    327680u, 32u, 1664u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL LayoutType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_layout_2eproto);
   return file_level_enum_descriptors_layout_2eproto[1];

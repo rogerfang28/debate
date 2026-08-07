@@ -5369,6 +5369,7 @@ class AddChildClaim final : public ::google::protobuf::Message
   enum : int {
     kClaimFieldNumber = 1,
     kDescriptionFieldNumber = 2,
+    kBasisFieldNumber = 3,
   };
   // string claim = 1 [json_name = "claim"];
   void clear_claim() ;
@@ -5400,12 +5401,27 @@ class AddChildClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_description();
 
   public:
+  // string basis = 3 [json_name = "basis"];
+  void clear_basis() ;
+  const ::std::string& basis() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_basis(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_basis();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_basis();
+  void set_allocated_basis(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_basis() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_basis(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_basis();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.AddChildClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
-                                   0, 51,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 56,
                                    2>
       _table_;
 
@@ -5428,6 +5444,7 @@ class AddChildClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr claim_;
     ::google::protobuf::internal::ArenaStringPtr description_;
+    ::google::protobuf::internal::ArenaStringPtr basis_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6725,6 +6742,71 @@ inline void AddChildClaim::set_allocated_description(::std::string* PROTOBUF_NUL
     _impl_.description_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.description)
+}
+
+// string basis = 3 [json_name = "basis"];
+inline void AddChildClaim::clear_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& AddChildClaim::basis() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.AddChildClaim.basis)
+  return _internal_basis();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_basis(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.basis_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.basis)
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_basis()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_basis();
+  // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.basis)
+  return _s;
+}
+inline const ::std::string& AddChildClaim::_internal_basis() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.basis_.Get();
+}
+inline void AddChildClaim::_internal_set_basis(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.basis_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.basis)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.basis_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  return released;
+}
+inline void AddChildClaim::set_allocated_basis(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.basis_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.basis_.IsDefault()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.basis)
 }
 
 // -------------------------------------------------------------------

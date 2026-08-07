@@ -9,6 +9,7 @@ import ListComponent from "./componentTypes/ListComponent.tsx";
 import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
 import CardComponent from "./componentTypes/CardComponent.tsx";
 import InputComponent from "./componentTypes/InputComponent.tsx";
+import DropdownComponent from "./componentTypes/DropdownComponent.tsx";
 import GraphComponent from "./componentTypes/GraphComponent.tsx";
 import FormComponent from "./componentTypes/FormComponent.tsx";
 import TableComponent from "./componentTypes/TableComponent.tsx";
@@ -42,6 +43,7 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CONTAINER]: ContainerComponent,
   [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
+  [ComponentType.DROPDOWN]: DropdownComponent,
   [ComponentType.GRAPH]: GraphComponent,
   [ComponentType.FORM]: FormComponent,
   [ComponentType.TABLE]: TableComponent,

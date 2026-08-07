@@ -19,6 +19,11 @@ message EnterDebate {
 message AddChildClaim {
     string claim         = 1;
     string description   = 2;
+    // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+    // NORMATIVE. Lands on the relation, not the claim: it describes how the
+    // child bears on its parent, which is a property of the connection.
+    // Empty is allowed and means "unspecified".
+    string basis         = 3;
 }
 
 message DeleteChildClaim {

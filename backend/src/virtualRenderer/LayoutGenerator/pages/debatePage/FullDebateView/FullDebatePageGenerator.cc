@@ -1610,7 +1610,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
 
                                             ui::Component addChildClaim = ComponentGenerator::createButton(
                                                 "addChildClaimButton",
-                                                "Add Child Claim",
+                                                "Support",
                                                 "",
                                                 "bg-green-600",
                                                 "hover:bg-green-700",
@@ -1755,7 +1755,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             // Modal title
             ui::Component modalTitle = ComponentGenerator::createText(
                 "addChildClaimModalTitle",
-                "Add Child Claim",
+                "Add Supporting Claim",
                 "text-2xl",
                 "text-white",
                 "font-bold",
@@ -1812,6 +1812,34 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full mb-6 h-32"
             );
             ComponentGenerator::addChild(&modalContent, descriptionInput);
+
+            // Basis label
+            ui::Component basisLabel = ComponentGenerator::createText(
+                "linkTypeLabel",
+                "How does this support the claim?",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, basisLabel);
+
+            // Basis dropdown. These four are the closed set from debate.proto:
+            // each maps to one of four defeat behaviours, so the list is a
+            // vocabulary rather than a suggestion.
+            ui::Component basisDropdown = ComponentGenerator::createDropdown(
+                "linkTypeSelect",
+                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
+                "EVIDENTIAL",
+                "linkType",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, basisDropdown);
 
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(

@@ -5,7 +5,7 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const int& user_id, DebateWrapper& debateWrapper) {
+void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     // get user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
@@ -22,7 +22,8 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
         claim_text,
         description,
         user_id,
-        debate_id
+        debate_id,
+        basis
     );
     CloseAddChildClaim(user_id, debateWrapper);
 }

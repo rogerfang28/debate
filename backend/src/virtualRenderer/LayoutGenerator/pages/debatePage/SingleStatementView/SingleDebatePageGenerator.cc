@@ -1588,7 +1588,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
 
                                             ui::Component addChildClaim = ComponentGenerator::createButton(
                                                 "addChildClaimButton",
-                                                "Add Child Claim",
+                                                "Support",
                                                 "",
                                                 "bg-green-600",
                                                 "hover:bg-green-700",
@@ -1721,7 +1721,7 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             // Modal title
             ui::Component modalTitle = ComponentGenerator::createText(
                 "addChildClaimModalTitle",
-                "Add Child Claim",
+                "Add Supporting Claim",
                 "text-2xl",
                 "text-white",
                 "font-bold",
