@@ -19,29 +19,26 @@ const char* storedName(debate::ClaimStatus s) {
     }
 }
 
-// SHADOW MODE, PARITY COMPARISON.
+// The move log is now the SOURCE OF TRUTH for status on the read path.
 //
-// Rebuilds what the OLD engine would have stored, from the move log alone, and
-// reports every cell where the two disagree. The result is deliberately
-// DISCARDED: nothing renders or decides from it, so a wrong answer here cannot
-// reach a user, and the rendering path is untouched.
+// Statuses are recomputed from the log and written over the ones loaded from
+// the database, so what renders is derived, not stored. The stored values are
+// still what the old engine wrote and are left exactly as they are -- this
+// function mutates the in-memory collection only. Nothing is written back, so
+// the change is reversible by deleting this call, and a wrong answer here
+// cannot corrupt anything.
 //
-// This compares like with like -- per user, per claim, three values -- so a
-// disagreement is a real finding rather than an artefact of holding two
-// different models up against each other. Every mismatch is one of:
+// Disagreements are still logged. They should now be silent -- parity was
+// measured before this was switched on -- so anything appearing in the log is
+// a real regression rather than the expected noise it used to be.
 //
-//   * a rule reproduced wrongly in computeLegacyStatuses, or
-//   * a stored value the old engine left stale, since it never resets before
-//     propagating and so carries history a pure function cannot see.
-//
-// Both are worth knowing, and telling them apart is the point of the exercise.
-//
-// Debates with no moves are skipped outright. Everything created before the
-// log existed has nothing to replay, so comparing them would produce a steady
-// stream of disagreements that mean nothing.
-void logShadowStatusComparison(int debate_id,
-                               const debate::Collection& collection,
-                               DebateWrapper& debateWrapper) {
+// DEBATES WITH NO MOVES KEEP THEIR STORED STATUS. That skip used to be a
+// convenience for the comparison; here it is load-bearing. Everything created
+// before the log existed has nothing to replay, so recomputing would blank the
+// whole debate and render it as though nobody had ever taken a position.
+void applyComputedStatuses(int debate_id,
+                           debate::Collection& collection,
+                           DebateWrapper& debateWrapper) {
     const std::vector<debate::Move> moves = debateWrapper.getMovesForDebate(debate_id);
     if (moves.empty()) {
         return;  // predates the move log; nothing to reconcile
@@ -89,37 +86,61 @@ void logShadowStatusComparison(int debate_id,
 
         for (const std::string& user : users) {
             auto storedIt = claim.user_statuses().find(user);
-            const debate::ClaimStatus stored = storedIt != claim.user_statuses().end()
-                                                   ? storedIt->second
-                                                   : debate::ClaimStatus::UNDETERMINED;
+            const bool storedPresent = storedIt != claim.user_statuses().end();
+            const debate::ClaimStatus stored =
+                storedPresent ? storedIt->second : debate::ClaimStatus::UNDETERMINED;
 
             debate::ClaimStatus got = debate::ClaimStatus::UNDETERMINED;
+            bool gotPresent = false;
             auto userIt = computed.by_user.find(user);
             if (userIt != computed.by_user.end()) {
                 auto claimIt = userIt->second.find(claim.id());
                 if (claimIt != userIt->second.end()) {
                     got = claimIt->second;
+                    gotPresent = true;
                 }
             }
 
-            if (got == stored) {
+            // PRESENCE matters as much as value, and only once the result is
+            // actually rendered. The renderer falls back to "creator sees TRUE"
+            // when a claim has NO entry for the viewer, so an explicit
+            // UNDETERMINED and a missing entry are equal as values but render
+            // differently for a claim's own author. Comparing values alone --
+            // which is all shadow mode did -- cannot see that.
+            if (got == stored && gotPresent == storedPresent) {
                 ++agreed;
                 continue;
             }
             ++differed;
-            Log::info("[ShadowStatus] debate=" + std::to_string(debate_id) +
+            Log::info("[StatusEngine] debate=" + std::to_string(debate_id) +
                       " claim=" + std::to_string(claim.id()) + " user=" + user +
-                      " computed=" + storedName(got) +
-                      " stored=" + storedName(stored) +
-                      " (shadow only -- not used)");
+                      " computed=" + storedName(got) + (gotPresent ? "" : "(absent)") +
+                      " stored=" + storedName(stored) + (storedPresent ? "" : "(absent)") +
+                      " -- computed value is the one being rendered");
         }
     }
 
-    Log::info("[ShadowStatus] debate=" + std::to_string(debate_id) +
-               " moves=" + std::to_string(moves.size()) +
-               " claims=" + std::to_string(claims.size()) +
-               " agreed=" + std::to_string(agreed) +
-               " differed=" + std::to_string(differed));
+    // Apply. Each claim's map is REPLACED rather than merged: merging would let
+    // a stale stored entry survive wherever the engine produced nothing, which
+    // is exactly the case the log is supposed to settle, and would quietly make
+    // the rendered result a blend of two models instead of one.
+    for (auto& entry : *collection.mutable_claims_by_id()) {
+        debate::Claim& claim = entry.second;
+        claim.mutable_user_statuses()->clear();
+
+        for (const auto& userEntry : computed.by_user) {
+            auto claimIt = userEntry.second.find(claim.id());
+            if (claimIt != userEntry.second.end()) {
+                (*claim.mutable_user_statuses())[userEntry.first] = claimIt->second;
+            }
+        }
+    }
+
+    Log::info("[StatusEngine] debate=" + std::to_string(debate_id) +
+              " moves=" + std::to_string(moves.size()) +
+              " claims=" + std::to_string(claims.size()) +
+              " agreed=" + std::to_string(agreed) +
+              " differed=" + std::to_string(differed) + " (computed statuses applied)");
 }
 
 }  // namespace
@@ -174,9 +195,9 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 			+ ", connection=\"" + link.connection() + "\"");
 	}
     
-	// Shadow comparison. Runs beside the stored status and only logs; the
-	// collection returned below is untouched by it.
-	logShadowStatusComparison(debate_id, collection, debateWrapper);
+	// Status is derived from the move log, not read from the database. This
+	// rewrites the per-user statuses on the collection returned below.
+	applyComputedStatuses(debate_id, collection, debateWrapper);
 
 	return collection;
 }
