@@ -299,20 +299,39 @@ struct LegacyGraph {
 LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations) {
     LegacyGraph g;
     for (const auto& rel : relations) {
-        const debate::Relationship::Link& link = rel.link();
-        if (link.id() == 0) {
-            continue;  // new-shape relation; the old engine never saw these
+        if (rel.from_claim_ids_size() == 0) {
+            continue;  // RelationBuilder refuses these; a producer that didn't
         }
-        const int from = link.connect_from();
-        const int to = link.connect_to();
-        if (from <= 0 || to <= 0) {
+
+        // Relation-targeted relations are R3 and have no place in this graph:
+        // it is a claim->claim index by construction. Skipped explicitly rather
+        // than by falling through, because to_claim_id() on a relation-targeted
+        // relation quietly returns 0 -- it would look like an edge to claim 0
+        // rather than like something unhandled.
+        if (rel.to_case() != debate::Relationship::kToClaimId) {
             continue;
         }
-        if (link.link_type() == debate::LinkType::PARENT_CHILD) {
-            g.children[from].push_back(to);
-        } else if (link.link_type() == debate::LinkType::CHALLENGE) {
-            g.challengeIncoming[to].push_back(from);
-            g.challengeOutgoing[from].push_back(to);
+        const int to = rel.to_claim_id();
+        if (to <= 0) {
+            continue;
+        }
+
+        // Every member of the from-set relates to the target independently, so
+        // a multi-from relation contributes one edge per member. Today that is
+        // always one edge; writing the loop now means widening storage does not
+        // require revisiting this.
+        for (const int from : rel.from_claim_ids()) {
+            if (from <= 0) {
+                continue;
+            }
+            // ROLE_UNSPECIFIED (legacy NORMAL) falls through both branches and
+            // is dropped, exactly as the link_type version dropped it.
+            if (rel.role() == debate::SUPPORTS) {
+                g.children[from].push_back(to);
+            } else if (rel.role() == debate::OPPOSES) {
+                g.challengeIncoming[to].push_back(from);
+                g.challengeOutgoing[from].push_back(to);
+            }
         }
     }
     return g;
