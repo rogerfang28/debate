@@ -1,6 +1,7 @@
 #include "BuildCollection.h"
 #include "../../../utils/Log.h"
 #include "../../../statusEngine/StatusEngine.h"
+#include "../../../utils/RelationBuilder.h"
 #include "debate.pb.h"
 
 #include <map>
@@ -167,13 +168,10 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 	const std::vector<std::tuple<int, int, int, std::string, int, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
 	for (const auto& linkRow : linkRows) {
 		const int linkId = std::get<0>(linkRow);
-		debate::Relationship::Link* link = (*collection.mutable_links_by_id())[linkId].mutable_link();
-		link->set_id(linkId);
-		link->set_connect_from(std::get<1>(linkRow));
-		link->set_connect_to(std::get<2>(linkRow));
-		link->set_connection(std::get<3>(linkRow));
-		link->set_creator_id(std::get<4>(linkRow));
-		link->set_link_type(static_cast<debate::LinkType>(std::get<5>(linkRow)));
+		(*collection.mutable_links_by_id())[linkId] = RelationBuilder::fromLinkRow(
+			linkId, std::get<1>(linkRow), std::get<2>(linkRow),
+			std::get<3>(linkRow), std::get<4>(linkRow), std::get<5>(linkRow),
+			debate_id);
 	}
 
 	Log::debug("[BuildCollection] Final collection for debate " + std::to_string(debate_id)

@@ -65,6 +65,7 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/LinkDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
+    ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
     ${REPO_ROOT}/backend/src/statusEngine/StatusEngine.cc
     ${REPO_ROOT}/backend/src/database/debate/DatabaseWrapper.cc
     ${REPO_ROOT}/backend/src/utils/DebateWrapper.cc
@@ -235,6 +236,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
     ${CMAKE_SOURCE_DIR}/tests/test_move_log.cc
     ${CMAKE_SOURCE_DIR}/tests/test_status_engine.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
 )
 
 add_executable(debate_tests

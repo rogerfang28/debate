@@ -3,6 +3,7 @@
 #include <map>
 #include <algorithm>
 #include "Log.h"
+#include "RelationBuilder.h"
 #include "debate.pb.h"
 #include "user.pb.h"
 
@@ -454,14 +455,11 @@ debate::Relationship DebateWrapper::getLinkById(int linkId) {
 
     if (linkData.has_value()) {
         const auto& link = linkData.value();
-        debate::Relationship::Link* linkProto = relationshipProto.mutable_link();
-        linkProto->set_id(std::get<0>(link));
-        linkProto->set_connect_from(std::get<1>(link));
-        linkProto->set_connect_to(std::get<2>(link));
-        linkProto->set_connection(std::get<3>(link));
-        linkProto->set_creator_id(std::get<4>(link));
-        linkProto->set_link_type(static_cast<debate::LinkType>(std::get<5>(link)));
-        
+        relationshipProto = RelationBuilder::fromLinkRow(
+            std::get<0>(link), std::get<1>(link), std::get<2>(link),
+            std::get<3>(link), std::get<4>(link), std::get<5>(link));
+
+
         Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
             + " from Claim ID: " + std::to_string(std::get<1>(link))
             + " to Claim ID: " + std::to_string(std::get<2>(link))
@@ -804,15 +802,8 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
         allClaimIds.insert(fromId);
         allClaimIds.insert(toId);
 
-        debate::Relationship rel;
-        debate::Relationship::Link* link = rel.mutable_link();
-        link->set_id(linkId);
-        link->set_connect_from(fromId);
-        link->set_connect_to(toId);
-        link->set_connection(connection);
-        link->set_creator_id(creatorId);
-        link->set_link_type(static_cast<debate::LinkType>(linkType));
-        link->set_debate_id(debate_id);
+        debate::Relationship rel = RelationBuilder::fromLinkRow(
+            linkId, fromId, toId, connection, creatorId, linkType, debate_id);
 
         if (linkType == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
             childrenMap[fromId].push_back(rel);
