@@ -1779,6 +1779,34 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             );
             ComponentGenerator::addChild(&modalContent, descriptionInput);
 
+            // Basis label. Kept in step with the identical block in
+            // FullDebatePageGenerator: both modals feed the SAME parser branch,
+            // so a field missing from one silently sends an empty basis rather
+            // than failing visibly.
+            ui::Component basisLabel = ComponentGenerator::createText(
+                "linkTypeLabel",
+                "How does this support the claim?",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, basisLabel);
+
+            ui::Component basisDropdown = ComponentGenerator::createDropdown(
+                "linkTypeSelect",
+                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
+                "EVIDENTIAL",
+                "linkType",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, basisDropdown);
+
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(
                 "modalActions",
