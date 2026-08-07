@@ -3,6 +3,7 @@
 #include "debate.pb.h"
 
 #include <map>
+#include <string>
 #include <vector>
 
 // ---------------------------------------
@@ -40,5 +41,38 @@ struct Result {
 Result computeStatuses(const std::vector<debate::Claim>& claims,
                        const std::vector<debate::Relationship>& relations,
                        const std::vector<debate::Move>& moves);
+
+// ---------------------------------------
+// PARITY MODE
+// ---------------------------------------
+// Reproduces what the EXISTING engine would store, from the move log alone.
+//
+// This is not the target design -- computeStatuses above is. It exists to
+// answer one question first: does the log carry enough information to
+// reconstruct today's behaviour? Proving that before changing any behaviour
+// means a later difference is a decision, not an accident.
+//
+// So it deliberately copies the old model warts and all: three values, keyed
+// per user, and the same Rule A/B/C/D fixed point that DebateWrapper runs.
+//
+// EXACT PARITY IS NOT ALWAYS POSSIBLE, and the reason is worth knowing.
+// ComputeStatusForUser begins with `ns = currentStatus` -- the value already
+// stored -- and only overrides it when a rule fires, and PropagateClaimStatuses
+// never resets before iterating. So the old engine's output depends on the
+// accumulated history of every propagation run against that debate, not on the
+// graph. A pure function cannot reproduce state the log never recorded. This
+// seeds from the log and runs the same rules, which should agree for any
+// debate whose history is a clean forward sequence; where it disagrees, the
+// case is either a rule reproduced wrongly here or a claim whose stored status
+// is stale, and both are worth finding.
+struct LegacyResult {
+    // username -> claim id -> status, mirroring Claim.user_statuses.
+    std::map<std::string, std::map<int, debate::ClaimStatus>> by_user;
+};
+
+LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
+                                   const std::vector<debate::Relationship>& relations,
+                                   const std::vector<debate::Move>& moves,
+                                   const std::map<int, std::string>& usernames);
 
 }  // namespace StatusEngine

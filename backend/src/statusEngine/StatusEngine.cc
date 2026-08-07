@@ -259,4 +259,366 @@ Result computeStatuses(const std::vector<debate::Claim>& claims,
     return result;
 }
 
+// ---------------------------------------
+// PARITY MODE
+// ---------------------------------------
+
+namespace {
+
+// Pulls an integer out of the crude JSON the move logger writes, e.g.
+// {"challenging_claim_id":42}. A real parser is not warranted: MoveLogger is
+// the only writer, the shapes are fixed and flat, and every caller below
+// tolerates a miss by skipping the seed rather than guessing one.
+int payloadInt(const std::string& payload, const std::string& key) {
+    const std::string needle = "\"" + key + "\":";
+    const size_t at = payload.find(needle);
+    if (at == std::string::npos) {
+        return 0;
+    }
+    size_t i = at + needle.size();
+    while (i < payload.size() && (payload[i] == ' ' || payload[i] == '"')) {
+        ++i;
+    }
+    int value = 0;
+    bool any = false;
+    while (i < payload.size() && payload[i] >= '0' && payload[i] <= '9') {
+        value = value * 10 + (payload[i] - '0');
+        ++i;
+        any = true;
+    }
+    return any ? value : 0;
+}
+
+// The legacy graph indexes, built from the same link shape the old engine reads.
+struct LegacyGraph {
+    std::map<int, std::vector<int>> children;           // parent -> child ids
+    std::map<int, std::vector<int>> challengeIncoming;  // target -> challenger ids
+    std::map<int, std::vector<int>> challengeOutgoing;  // challenger -> target ids
+};
+
+LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations) {
+    LegacyGraph g;
+    for (const auto& rel : relations) {
+        const debate::Relationship::Link& link = rel.link();
+        if (link.id() == 0) {
+            continue;  // new-shape relation; the old engine never saw these
+        }
+        const int from = link.connect_from();
+        const int to = link.connect_to();
+        if (from <= 0 || to <= 0) {
+            continue;
+        }
+        if (link.link_type() == debate::LinkType::PARENT_CHILD) {
+            g.children[from].push_back(to);
+        } else if (link.link_type() == debate::LinkType::CHALLENGE) {
+            g.challengeIncoming[to].push_back(from);
+            g.challengeOutgoing[from].push_back(to);
+        }
+    }
+    return g;
+}
+
+// A working copy of user_statuses: claim id -> username -> status.
+using StatusTable = std::map<int, std::map<std::string, debate::ClaimStatus>>;
+
+debate::ClaimStatus lookup(const StatusTable& table, int claimId, const std::string& user,
+                           bool* found) {
+    auto cit = table.find(claimId);
+    if (cit != table.end()) {
+        auto uit = cit->second.find(user);
+        if (uit != cit->second.end()) {
+            *found = true;
+            return uit->second;
+        }
+    }
+    *found = false;
+    return debate::ClaimStatus::UNDETERMINED;
+}
+
+// A line-by-line copy of DebateWrapper::ComputeStatusForUser. Kept structurally
+// identical -- same rule order, same early breaks, same "missing entry means not
+// all-true" handling -- because the point is to detect where it disagrees, and a
+// tidier reimplementation would only produce differences that prove nothing.
+debate::ClaimStatus computeForUser(int claimId, const std::string& user,
+                                   debate::ClaimStatus currentStatus, const LegacyGraph& g,
+                                   const std::set<int>& conceded, const StatusTable& table) {
+    debate::ClaimStatus ns = currentStatus;
+
+    // Rule A/B: parent-child.
+    bool anyChildFalse = false;
+    bool allChildrenTrue = true;
+    auto childrenIt = g.children.find(claimId);
+    const bool hasChildren = childrenIt != g.children.end() && !childrenIt->second.empty();
+    if (childrenIt != g.children.end()) {
+        for (int childId : childrenIt->second) {
+            bool found = false;
+            const debate::ClaimStatus cs = lookup(table, childId, user, &found);
+            if (!found) {
+                allChildrenTrue = false;
+                continue;
+            }
+            if (cs == debate::ClaimStatus::FALSE_CLAIM) {
+                anyChildFalse = true;
+                break;
+            }
+            if (cs != debate::ClaimStatus::TRUE_CLAIM) {
+                allChildrenTrue = false;
+            }
+        }
+    }
+    if (anyChildFalse) {
+        ns = debate::ClaimStatus::FALSE_CLAIM;
+    } else if (hasChildren && allChildrenTrue && conceded.find(claimId) == conceded.end()) {
+        ns = debate::ClaimStatus::TRUE_CLAIM;
+    }
+
+    auto citIn = g.challengeIncoming.find(claimId);
+
+    // Rule C: an incoming challenge the user believes FALSE vindicates this claim.
+    if (citIn != g.challengeIncoming.end()) {
+        for (int challengerId : citIn->second) {
+            bool found = false;
+            if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::FALSE_CLAIM &&
+                found) {
+                ns = debate::ClaimStatus::TRUE_CLAIM;
+                break;
+            }
+        }
+    }
+
+    // Rule D: an incoming challenge the user believes TRUE defeats this claim.
+    // Runs after C, so when both fire D wins -- that ordering is the old
+    // engine's tie-break and is load-bearing.
+    if (citIn != g.challengeIncoming.end()) {
+        for (int challengerId : citIn->second) {
+            bool found = false;
+            if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::TRUE_CLAIM &&
+                found) {
+                ns = debate::ClaimStatus::FALSE_CLAIM;
+                break;
+            }
+        }
+    }
+
+    return ns;
+}
+
+}  // namespace
+
+LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
+                                   const std::vector<debate::Relationship>& relations,
+                                   const std::vector<debate::Move>& moves,
+                                   const std::map<int, std::string>& usernames) {
+    LegacyResult result;
+
+    std::set<int> known;
+    for (const auto& c : claims) {
+        if (c.id() > 0) {
+            known.insert(c.id());
+        }
+    }
+
+    const LegacyGraph g = buildLegacyGraph(relations);
+
+    std::vector<const debate::Move*> ordered;
+    ordered.reserve(moves.size());
+    for (const auto& m : moves) {
+        ordered.push_back(&m);
+    }
+    std::stable_sort(
+        ordered.begin(), ordered.end(),
+        [](const debate::Move* a, const debate::Move* b) { return a->seq() < b->seq(); });
+
+    // ---- Seed ----
+    //
+    // Replay only the DIRECT writes the handlers make to user_statuses. The
+    // propagation pass below reproduces everything else, so seeding anything
+    // derived here would double-count it.
+    StatusTable table;
+    std::set<int> conceded;
+
+    auto put = [&](int claimId, const std::string& user, debate::ClaimStatus s) {
+        if (claimId > 0 && known.count(claimId) && !user.empty()) {
+            table[claimId][user] = s;
+        }
+    };
+
+    for (const debate::Move* m : ordered) {
+        auto nameIt = usernames.find(m->actor_id());
+        if (nameIt == usernames.end() || nameIt->second.empty()) {
+            continue;  // cannot attribute a per-user view without a username
+        }
+        const std::string& user = nameIt->second;
+        const int target = m->target_id();
+
+        switch (m->type()) {
+            case debate::ASSERT:
+                // addClaimToDB and friends: the creator sees their own claim TRUE.
+                // Relation asserts write no status.
+                if (m->target_type() == debate::TARGET_CLAIM) {
+                    put(target, user, debate::ClaimStatus::TRUE_CLAIM);
+                }
+                break;
+
+            case debate::OPPOSE:
+                // SubmitChallengeClaim: the challenger sees the target FALSE.
+                // Their own challenge claim was already seeded by its ASSERT.
+                if (m->target_type() == debate::TARGET_CLAIM) {
+                    put(target, user, debate::ClaimStatus::FALSE_CLAIM);
+                }
+                break;
+
+            case debate::CONCEDE: {
+                // ConcedeChallenge writes four groups for the conceder.
+                const int challengingClaimId = payloadInt(m->payload(), "challenging_claim_id");
+
+                put(challengingClaimId, user, debate::ClaimStatus::TRUE_CLAIM);  // step 1
+                put(target, user, debate::ClaimStatus::FALSE_CLAIM);             // step 1b
+
+                // Step 1c: every PARENT_CHILD descendant of the challenge claim.
+                // Conceding accepts the whole supporting chain, not just its head.
+                if (challengingClaimId > 0) {
+                    std::set<int> visited{challengingClaimId};
+                    std::vector<int> queue{challengingClaimId};
+                    while (!queue.empty()) {
+                        const int current = queue.back();
+                        queue.pop_back();
+                        auto it = g.children.find(current);
+                        if (it == g.children.end()) {
+                            continue;
+                        }
+                        for (int childId : it->second) {
+                            if (visited.insert(childId).second) {
+                                put(childId, user, debate::ClaimStatus::TRUE_CLAIM);
+                                queue.push_back(childId);
+                            }
+                        }
+                    }
+                }
+
+                // Step 2: anything challenging the challenge claim is marked TRUE.
+                auto inIt = g.challengeIncoming.find(challengingClaimId);
+                if (inIt != g.challengeIncoming.end()) {
+                    for (int challengerId : inIt->second) {
+                        put(challengerId, user, debate::ClaimStatus::TRUE_CLAIM);
+                    }
+                }
+
+                // Step 3 passes the CHALLENGE claim as conceded, not the target,
+                // which is what blocks Rule B from re-deriving it.
+                if (challengingClaimId > 0) {
+                    conceded.insert(challengingClaimId);
+                }
+                break;
+            }
+
+            case debate::RETRACT:
+            default:
+                // RETRACT writes no status: the handler removes the row and its
+                // links, so the effect already shows up in `claims`/`relations`.
+                break;
+        }
+    }
+
+    // ---- Propagate ----
+    //
+    // BFS order from the root, then any claim the BFS never reached. The old
+    // engine takes the root from the Debate row; here it is inferred as the
+    // claim that is nobody's child, which agrees for every debate with a single
+    // root and is only an ordering hint in any case -- the loop runs to a fixed
+    // point, so order affects how many passes it takes, not where it lands.
+    std::set<int> isChild;
+    for (const auto& entry : g.children) {
+        for (int childId : entry.second) {
+            isChild.insert(childId);
+        }
+    }
+    std::vector<int> order;
+    std::set<int> placed;
+    for (int id : known) {
+        if (!isChild.count(id)) {
+            order.push_back(id);
+            placed.insert(id);
+        }
+    }
+    for (size_t i = 0; i < order.size(); ++i) {
+        auto it = g.children.find(order[i]);
+        if (it == g.children.end()) {
+            continue;
+        }
+        for (int childId : it->second) {
+            if (known.count(childId) && placed.insert(childId).second) {
+                order.push_back(childId);
+            }
+        }
+    }
+    for (int id : known) {
+        if (placed.insert(id).second) {
+            order.push_back(id);
+        }
+    }
+
+    // Fixed point, capped at 50 passes exactly as the old engine caps it.
+    // Writes land in `table` immediately, so a later claim in the same pass sees
+    // an earlier one's new value. That in-place behaviour is not incidental --
+    // the old engine re-reads each claim from the database mid-pass, so copying
+    // it into a snapshot here would converge differently.
+    bool changed = true;
+    int maxIterations = 50;
+    while (changed && maxIterations-- > 0) {
+        changed = false;
+
+        for (int claimId : order) {
+            // The old engine recomputes the user set per pass: a user is
+            // considered for this claim if they hold an opinion on it, on any
+            // child, or on either end of a challenge touching it. This is how a
+            // viewpoint spreads outward from the claims someone actually acted
+            // on, and narrowing it to seeded users alone would under-propagate.
+            std::set<std::string> users;
+            auto collect = [&](int otherId) {
+                auto it = table.find(otherId);
+                if (it != table.end()) {
+                    for (const auto& e : it->second) {
+                        users.insert(e.first);
+                    }
+                }
+            };
+            collect(claimId);
+            auto kids = g.children.find(claimId);
+            if (kids != g.children.end()) {
+                for (int id : kids->second) collect(id);
+            }
+            auto in = g.challengeIncoming.find(claimId);
+            if (in != g.challengeIncoming.end()) {
+                for (int id : in->second) collect(id);
+            }
+            auto out = g.challengeOutgoing.find(claimId);
+            if (out != g.challengeOutgoing.end()) {
+                for (int id : out->second) collect(id);
+            }
+
+            for (const std::string& user : users) {
+                bool found = false;
+                const debate::ClaimStatus cs = lookup(table, claimId, user, &found);
+                const debate::ClaimStatus ns =
+                    computeForUser(claimId, user, cs, g, conceded, table);
+                if (ns != cs) {
+                    table[claimId][user] = ns;
+                    changed = true;
+                }
+            }
+        }
+    }
+
+    // Transpose into username -> claim id -> status, the shape the stored
+    // per-user matrix is compared against.
+    for (const auto& claimEntry : table) {
+        for (const auto& userEntry : claimEntry.second) {
+            result.by_user[userEntry.first][claimEntry.first] = userEntry.second;
+        }
+    }
+
+    return result;
+}
+
 }  // namespace StatusEngine

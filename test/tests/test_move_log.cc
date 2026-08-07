@@ -25,6 +25,8 @@
 #include <set>
 #include <thread>
 #include <atomic>
+#include <iostream>
+#include <tuple>
 #include <cstdio>
 #include <cstdlib>
 
@@ -35,6 +37,7 @@
 #include "database/debate/DatabaseWrapper.h"
 #include "utils/DebateWrapper.h"
 #include "debateModerator/DebateModerator.h"
+#include "statusEngine/StatusEngine.h"
 
 namespace {
 
@@ -504,6 +507,185 @@ TEST_F(MoveLogTest, NavigationAndUiStateProduceNoMoves) {
 
     EXPECT_EQ(readMoves(*db_, debateId).size(), before)
         << "UI state and navigation are not moves";
+}
+
+// =====================================================================
+// Old engine vs new engine, on the case that actually diverges
+// =====================================================================
+//
+// Reported symptom: after challenging a claim, the challenged node shows
+// UNDETERMINED and its parent shows True. This test builds exactly that
+// scenario and prints both engines' answers so the difference is visible
+// rather than argued about.
+//
+// It deliberately asserts only what each engine DOES, not which is right --
+// that is a design question, and encoding an opinion here would just bake in
+// whichever answer was written first.
+
+namespace {
+
+const char* legacyName(debate::ClaimStatus s) {
+    switch (s) {
+        case debate::ClaimStatus::TRUE_CLAIM:  return "TRUE_CLAIM";
+        case debate::ClaimStatus::FALSE_CLAIM: return "FALSE_CLAIM";
+        default:                               return "UNDETERMINED";
+    }
+}
+
+}  // namespace
+
+TEST_F(MoveLogTest, ChallengeParity_StoredVsRebuiltFromLog) {
+    int debateId = createAndEnterDebate("Root claim");
+    const int rootId = currentClaimId();
+    ASSERT_GT(rootId, 0);
+
+    addChildClaim("Supporting evidence");
+    int childId = 0;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "ASSERT" && m.targetType == "claim" && m.targetId != rootId) {
+            childId = m.targetId;
+        }
+    }
+    ASSERT_GT(childId, 0);
+
+    // Challenge the CHILD -- the claim that supports the root.
+    auto goToChild = baseEvent(debate_event::GO_TO_CLAIM);
+    goToChild.mutable_go_to_claim()->set_claim_id(childId);
+    send(goToChild);
+
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addTarget = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    addTarget.mutable_add_claim_to_be_challenged()->set_claim_id(childId);
+    send(addTarget);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("That does not follow");
+    submit.mutable_submit_challenge_claim()->set_challenge_description("");
+    send(submit);
+
+    const int challengeClaimId = currentClaimId();
+    ASSERT_GT(challengeClaimId, 0);
+    ASSERT_NE(challengeClaimId, childId);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+
+    // --- What the OLD engine left in storage ---------------------------
+    // Per-viewer: the challenger's own view is what the handler writes, and it
+    // is what the renderer reads back.
+    auto storedFor = [&](int claimId) {
+        debate::Claim c = dw.getClaimById(claimId);
+        auto it = c.user_statuses().find("alice");
+        return it != c.user_statuses().end() ? it->second : debate::ClaimStatus::UNDETERMINED;
+    };
+
+    // --- What the parity engine rebuilds from the log alone ------------
+    std::vector<debate::Claim> claims;
+    for (int id : {rootId, childId, challengeClaimId}) {
+        claims.push_back(dw.getClaimById(id));
+    }
+    std::vector<debate::Relationship> relations;
+    for (const auto& row : dw.getLinksForDebate(debateId)) {
+        relations.push_back(dw.getLinkById(std::get<0>(row)));
+    }
+    std::vector<debate::Move> moves = dw.getMovesForDebate(debateId);
+    auto computed = StatusEngine::computeLegacyStatuses(claims, relations, moves,
+                                                       {{aliceId_, "alice"}});
+
+    auto computedFor = [&](int claimId) {
+        auto uit = computed.by_user.find("alice");
+        if (uit == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+        auto cit = uit->second.find(claimId);
+        return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
+    };
+
+    std::cout << "\n=== challenge on the child claim (alice's view) ===\n"
+              << "  role       id   STORED        REBUILT\n"
+              << "  root       " << rootId << "    " << legacyName(storedFor(rootId))
+              << "\t" << legacyName(computedFor(rootId)) << "\n"
+              << "  child      " << childId << "    " << legacyName(storedFor(childId))
+              << "\t" << legacyName(computedFor(childId)) << "\n"
+              << "  challenge  " << challengeClaimId << "    "
+              << legacyName(storedFor(challengeClaimId))
+              << "\t" << legacyName(computedFor(challengeClaimId)) << "\n\n";
+
+    // Parity is the whole point: rebuilt from the log must equal what the old
+    // engine stored, claim for claim. If one of these ever fails, the log is
+    // missing a fact the old engine had -- which is exactly what this test is
+    // here to catch before any behaviour is allowed to change.
+    EXPECT_EQ(computedFor(rootId), storedFor(rootId)) << "root";
+    EXPECT_EQ(computedFor(childId), storedFor(childId)) << "challenged child";
+    EXPECT_EQ(computedFor(challengeClaimId), storedFor(challengeClaimId)) << "challenge claim";
+}
+
+// Conceding is the seed with the most moving parts -- the handler writes four
+// separate groups of statuses, and all of them have to be rebuilt from a single
+// CONCEDE row plus its payload. It is also unreachable from the current UI, so
+// this test is the only thing holding that path honest.
+TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
+    int debateId = createAndEnterDebate("Root claim");
+    const int rootId = currentClaimId();
+    ASSERT_GT(rootId, 0);
+
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addTarget = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    addTarget.mutable_add_claim_to_be_challenged()->set_claim_id(rootId);
+    send(addTarget);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("Correlation, not cause");
+    submit.mutable_submit_challenge_claim()->set_challenge_description("");
+    send(submit);
+
+    const int challengeClaimId = currentClaimId();
+    ASSERT_GT(challengeClaimId, 0);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+    const int challengeLinkId = dw.findOutgoingChallengeLink(challengeClaimId).link().id();
+    ASSERT_GT(challengeLinkId, 0);
+
+    auto concede = baseEvent(debate_event::CONCEDE_CHALLENGE);
+    concede.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
+    send(concede);
+
+    auto storedFor = [&](int claimId) {
+        debate::Claim c = dw.getClaimById(claimId);
+        auto it = c.user_statuses().find("alice");
+        return it != c.user_statuses().end() ? it->second : debate::ClaimStatus::UNDETERMINED;
+    };
+
+    std::vector<debate::Claim> claims;
+    for (int id : {rootId, challengeClaimId}) {
+        claims.push_back(dw.getClaimById(id));
+    }
+    std::vector<debate::Relationship> relations;
+    for (const auto& row : dw.getLinksForDebate(debateId)) {
+        relations.push_back(dw.getLinkById(std::get<0>(row)));
+    }
+    std::vector<debate::Move> moves = dw.getMovesForDebate(debateId);
+    auto computed = StatusEngine::computeLegacyStatuses(claims, relations, moves,
+                                                       {{aliceId_, "alice"}});
+
+    auto computedFor = [&](int claimId) {
+        auto uit = computed.by_user.find("alice");
+        if (uit == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+        auto cit = uit->second.find(claimId);
+        return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
+    };
+
+    std::cout << "\n=== concede (alice's view) ===\n"
+              << "  role       id   STORED        REBUILT\n"
+              << "  root       " << rootId << "    " << legacyName(storedFor(rootId))
+              << "\t" << legacyName(computedFor(rootId)) << "\n"
+              << "  challenge  " << challengeClaimId << "    "
+              << legacyName(storedFor(challengeClaimId))
+              << "\t" << legacyName(computedFor(challengeClaimId)) << "\n\n";
+
+    EXPECT_EQ(computedFor(rootId), storedFor(rootId)) << "conceded claim";
+    EXPECT_EQ(computedFor(challengeClaimId), storedFor(challengeClaimId)) << "challenge claim";
 }
 
 TEST_F(MoveLogTest, SeparateDebatesKeepIndependentSequences) {

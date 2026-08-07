@@ -3,27 +3,13 @@
 #include "../../../statusEngine/StatusEngine.h"
 #include "debate.pb.h"
 
+#include <map>
+#include <set>
+#include <string>
 #include <tuple>
 #include <vector>
 
 namespace {
-
-const char* statusName(debate::Status s) {
-    switch (s) {
-        case debate::STANDING:    return "STANDING";
-        case debate::OPEN:        return "OPEN";
-        case debate::COLLAPSED:   return "COLLAPSED";
-        case debate::UNSUPPORTED: return "UNSUPPORTED";
-        case debate::ACCEPTED:    return "ACCEPTED";
-        case debate::CONTESTED:   return "CONTESTED";
-        case debate::UNRESOLVED:  return "UNRESOLVED";
-        case debate::ABANDONED:   return "ABANDONED";
-        case debate::SUPERSEDED:  return "SUPERSEDED";
-        case debate::CIRCULAR:    return "CIRCULAR";
-        case debate::MISDIRECTED: return "MISDIRECTED";
-        default:                  return "UNSPECIFIED";
-    }
-}
 
 const char* storedName(debate::ClaimStatus s) {
     switch (s) {
@@ -33,31 +19,22 @@ const char* storedName(debate::ClaimStatus s) {
     }
 }
 
-// Whether the computed status and the stored one are telling the same story.
+// SHADOW MODE, PARITY COMPARISON.
 //
-// The two models do not line up cleanly and are not meant to -- that mismatch
-// is what this comparison exists to measure. The stored value is also
-// per-viewer, while the computed one is global, so some disagreement is
-// structural rather than a bug. What is worth reading in the log is the shape
-// of the disagreement, not its volume.
-bool broadlyAgrees(debate::Status computed, debate::ClaimStatus stored) {
-    switch (computed) {
-        case debate::COLLAPSED:
-            return stored == debate::ClaimStatus::FALSE_CLAIM;
-        case debate::STANDING:
-            return stored == debate::ClaimStatus::TRUE_CLAIM ||
-                   stored == debate::ClaimStatus::UNDETERMINED;
-        case debate::OPEN:
-            // Under dispute has no counterpart in a true/false model.
-            return stored == debate::ClaimStatus::UNDETERMINED;
-        default:
-            return false;
-    }
-}
-
-// SHADOW MODE. Computes statuses from the move log beside the stored ones and
-// reports where they differ. The result is deliberately DISCARDED: nothing
-// renders or decides from it, so a wrong answer here cannot reach a user.
+// Rebuilds what the OLD engine would have stored, from the move log alone, and
+// reports every cell where the two disagree. The result is deliberately
+// DISCARDED: nothing renders or decides from it, so a wrong answer here cannot
+// reach a user, and the rendering path is untouched.
+//
+// This compares like with like -- per user, per claim, three values -- so a
+// disagreement is a real finding rather than an artefact of holding two
+// different models up against each other. Every mismatch is one of:
+//
+//   * a rule reproduced wrongly in computeLegacyStatuses, or
+//   * a stored value the old engine left stale, since it never resets before
+//     propagating and so carries history a pure function cannot see.
+//
+// Both are worth knowing, and telling them apart is the point of the exercise.
 //
 // Debates with no moves are skipped outright. Everything created before the
 // log existed has nothing to replay, so comparing them would produce a steady
@@ -82,26 +59,60 @@ void logShadowStatusComparison(int debate_id,
         relations.push_back(entry.second);
     }
 
-    const StatusEngine::Result computed =
-        StatusEngine::computeStatuses(claims, relations, moves);
+    // The engine is pure, so the id -> username mapping has to be supplied here.
+    std::map<int, std::string> usernames;
+    for (const auto& move : moves) {
+        const int actor = move.actor_id();
+        if (actor > 0 && !usernames.count(actor)) {
+            usernames[actor] = debateWrapper.getUserProtobuf(actor).username();
+        }
+    }
 
+    const StatusEngine::LegacyResult computed =
+        StatusEngine::computeLegacyStatuses(claims, relations, moves, usernames);
+
+    // Compare over the UNION of both tables. Walking only the stored side would
+    // hide the case that matters most -- the engine inventing an opinion for a
+    // user who has none -- and walking only the computed side hides the reverse.
     int agreed = 0;
     int differed = 0;
     for (const auto& claim : claims) {
-        auto it = computed.claim_status.find(claim.id());
-        if (it == computed.claim_status.end()) {
-            continue;
+        std::set<std::string> users;
+        for (const auto& e : claim.user_statuses()) {
+            users.insert(e.first);
         }
-        if (broadlyAgrees(it->second, claim.status())) {
-            ++agreed;
-            continue;
+        for (const auto& userEntry : computed.by_user) {
+            if (userEntry.second.count(claim.id())) {
+                users.insert(userEntry.first);
+            }
         }
-        ++differed;
-        Log::info("[ShadowStatus] debate=" + std::to_string(debate_id) +
-                   " claim=" + std::to_string(claim.id()) +
-                   " computed=" + statusName(it->second) +
-                   " stored=" + storedName(claim.status()) +
-                   " (shadow only -- not used)");
+
+        for (const std::string& user : users) {
+            auto storedIt = claim.user_statuses().find(user);
+            const debate::ClaimStatus stored = storedIt != claim.user_statuses().end()
+                                                   ? storedIt->second
+                                                   : debate::ClaimStatus::UNDETERMINED;
+
+            debate::ClaimStatus got = debate::ClaimStatus::UNDETERMINED;
+            auto userIt = computed.by_user.find(user);
+            if (userIt != computed.by_user.end()) {
+                auto claimIt = userIt->second.find(claim.id());
+                if (claimIt != userIt->second.end()) {
+                    got = claimIt->second;
+                }
+            }
+
+            if (got == stored) {
+                ++agreed;
+                continue;
+            }
+            ++differed;
+            Log::info("[ShadowStatus] debate=" + std::to_string(debate_id) +
+                      " claim=" + std::to_string(claim.id()) + " user=" + user +
+                      " computed=" + storedName(got) +
+                      " stored=" + storedName(stored) +
+                      " (shadow only -- not used)");
+        }
     }
 
     Log::info("[ShadowStatus] debate=" + std::to_string(debate_id) +
