@@ -107,7 +107,36 @@ protected:
         if (it != user_ids_.end()) return it->second;
         int id = moderator_->createUserIfNotExist(username);
         user_ids_[username] = id;
+        if (first_username_.empty()) {
+            first_username_ = username;
+        }
         return id;
+    }
+
+    // Which user a JSON dump should be rendered for.
+    //
+    // Statuses are PER USER, so a page dumped for a viewer who does not exist
+    // shows nothing useful -- downloadJson logs "Viewer user 'A' not found" and
+    // writes no file, which is worst of all on a FAILING step, where the dump
+    // is the only artefact left to read.
+    //
+    // `preferred` is the user the caller actually cares about (for a failing
+    // USER_VIEW, the user whose view disagreed). Scenarios name their own
+    // users -- "paul", "fauci", "A" -- so nothing can be hardcoded here.
+    std::string viewerForJson(const std::string& preferred = "") {
+        if (!preferred.empty() && user_ids_.count(preferred) > 0) {
+            return preferred;
+        }
+        // The first user the scenario created, which is usually whose case the
+        // debate is. Falls back to any known user, then to "A" so the call is
+        // still well-formed when no user exists at all.
+        if (!first_username_.empty()) {
+            return first_username_;
+        }
+        if (!user_ids_.empty()) {
+            return user_ids_.begin()->first;
+        }
+        return "A";
     }
 
 
@@ -315,7 +344,8 @@ protected:
         auto savePageJson = [&]() {
             if (debate_id > 0) {
                 std::string filename = "FAIL_" + scenario_name + "_step" + std::to_string(step_index) + ".json";
-                downloadJson(debate_id, "A", filename, "FAILED expectation at step " + std::to_string(step_index));
+                downloadJson(debate_id, viewerForJson(exp.username()), filename,
+                             "FAILED expectation at step " + std::to_string(step_index));
             }
         };
 
@@ -556,10 +586,7 @@ protected:
                     std::string outDir = "json_output/" + scenario.name();
                     std::filesystem::create_directories(outDir);
                     std::string filename = outDir + "/STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
-                    // Use first user as viewer (fallback to "A")
-                    std::string viewer = "A";
-                    if (!user_ids_.empty()) viewer = user_ids_.begin()->first;
-                    downloadJson(debate_id, viewer, filename, desc);
+                    downloadJson(debate_id, viewerForJson(action.username()), filename, desc);
                 }
             }
 
@@ -581,12 +608,7 @@ protected:
         // Save final state as JSON after scenario completes (pass or fail)
         if (debate_id > 0) {
             std::string filename = "FINAL_" + scenario.name() + ".json";
-            // Use the first user in the scenario as viewer (fallback to "A")
-            std::string viewer = "A";
-            if (!user_ids_.empty()) {
-                viewer = user_ids_.begin()->first;
-            }
-            downloadJson(debate_id, viewer, filename);
+            downloadJson(debate_id, viewerForJson(), filename);
         }
     }
 
@@ -604,6 +626,9 @@ protected:
     DatabaseWrapper* dbWrapper_ = nullptr;
     DebateWrapper* debateWrapper_ = nullptr;
     std::map<std::string, int> user_ids_;
+    // The first user the scenario created. user_ids_ is ordered by name, so it
+    // cannot answer "who came first" -- and alphabetical order is arbitrary.
+    std::string first_username_;
 
 
     // -----------------------------------------------------------------------
