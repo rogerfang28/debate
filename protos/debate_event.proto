@@ -115,6 +115,18 @@ message RemoveLinkToBeChallenged {
 message SubmitChallengeClaim {
     string challenge_sentence = 1;
     string challenge_description = 2;
+
+    // Additional challenge claims. challenge_sentence plus these form ONE
+    // OPPOSES relation with several from-claims -- "these together refute
+    // that" -- rather than several independent challenges. Blank entries are
+    // ignored.
+    repeated string extra_sentences = 3;
+
+    // What KIND of opposition this is -- EVIDENTIAL | AUTHORITY |
+    // DEFINITIONAL | NORMATIVE. A definitional challenge ("that is not what
+    // the word means") is a different move from an evidential one, and the
+    // basis is what records the difference. Empty means unspecified.
+    string basis = 4;
 }
 
 message GoToChallenge {

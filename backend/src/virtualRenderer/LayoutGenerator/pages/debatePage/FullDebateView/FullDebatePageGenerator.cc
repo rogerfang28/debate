@@ -1987,6 +1987,65 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeSentenceInput);
 
+            // Additional challenge claims.
+            //
+            // Filling more than one makes them ONE opposing relation with
+            // several from-claims -- "these together refute that" -- rather
+            // than several independent challenges. Blank boxes are ignored.
+            for (int extraIdx = 2; extraIdx <= 4; ++extraIdx) {
+                ui::Component extraChallenge = ComponentGenerator::createInput(
+                    "challengeSentenceInput" + std::to_string(extraIdx),
+                    "...and this too (optional)",
+                    "challengeSentence" + std::to_string(extraIdx),
+                    "bg-gray-700",
+                    "text-white",
+                    "border-gray-600",
+                    "p-3",
+                    "rounded",
+                    "w-full mb-2"
+                );
+                ComponentGenerator::addChild(&addChallengeModalContent, extraChallenge);
+            }
+
+            ui::Component challengeMultiHint = ComponentGenerator::createText(
+                "challengeMultiClaimHint",
+                "Fill more than one to say they refute the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeMultiHint);
+
+            // Basis label + dropdown.
+            //
+            // A challenge has a KIND too. "That is not what the word means"
+            // (DEFINITIONAL) is a different move from "the evidence says
+            // otherwise" (EVIDENTIAL), and only the basis records which.
+            ui::Component challengeBasisLabel = ComponentGenerator::createText(
+                "challengeLinkTypeLabel",
+                "On what grounds?",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisLabel);
+
+            ui::Component challengeBasisDropdown = ComponentGenerator::createDropdown(
+                "challengeLinkTypeSelect",
+                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
+                "EVIDENTIAL",
+                "challengeLinkType",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisDropdown);
+
             // Modal action buttons
             ui::Component addChallengeModalActions = ComponentGenerator::createContainer(
                 "addChallengeModalActions",

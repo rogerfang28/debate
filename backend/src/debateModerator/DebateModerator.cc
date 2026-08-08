@@ -316,12 +316,20 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::SUBMIT_CHALLENGE_CLAIM:
             Log::info("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
+        {
+            std::vector<std::string> challengeTexts;
+            challengeTexts.push_back(event.submit_challenge_claim().challenge_sentence());
+            for (const auto& extra : event.submit_challenge_claim().extra_sentences()) {
+                challengeTexts.push_back(extra);
+            }
             ChallengeHandler::SubmitChallengeClaim(
-                event.submit_challenge_claim().challenge_sentence(),
+                challengeTexts,
                 event.submit_challenge_claim().challenge_description(),
+                event.submit_challenge_claim().basis(),
                 user_id,
                 debateWrapper
             );
+        }
             break;
         case debate_event::GO_TO_CHALLENGE:
             Log::info("[DebateModerator] Event Type: GO_TO_CHALLENGE");

@@ -97,32 +97,66 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const std::string& challenge_description, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::string& challenge_description, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // find the current claim (it's challenging that one)
     int current_claim_id = userProto.engagement().debating_info().current_claim().id();
     int current_debate_id = userProto.engagement().debating_info().debate_id();
 
-    // NEW FLOW: also create a challenge claim in the same debate and connect it
-    // to the challenged claim with a CHALLENGE link.
-    int same_debate_challenge_claim_id = debateWrapper.createClaim(
-        challenge_sentence,
-        challenge_description.empty() ? "challenge claim" : challenge_description,
-        user_id,
-        current_debate_id
-    );
-    int same_debate_challenge_link_id = -1;
+    // Several sentences = ONE opposing relation with several from-claims:
+    // "these together refute that", not N independent challenges. The first
+    // row establishes the relation id; the rest join it.
+    //
+    // The link's connection carries the basis, matching how support relations
+    // store it. Empty falls back to the old fixed "challenge link" string so
+    // existing rows and callers are unaffected.
+    const std::string connection = basis.empty() ? "challenge link" : basis;
 
-    if (same_debate_challenge_claim_id != -1) {
-        same_debate_challenge_link_id = debateWrapper.addLink(
-            same_debate_challenge_claim_id,
+    int same_debate_challenge_claim_id = -1;
+    int same_debate_challenge_link_id = -1;
+    int challenge_relation_id = 0;
+
+    for (const std::string& sentence : challenge_sentences) {
+        if (sentence.find_first_not_of(" \t\r\n") == std::string::npos) {
+            continue;  // blank box
+        }
+        const int claim_id = debateWrapper.createClaim(
+            sentence,
+            // One description box, so it belongs to the first claim only --
+            // copying it onto every one would assert something unwritten.
+            same_debate_challenge_claim_id == -1
+                ? (challenge_description.empty() ? "challenge claim" : challenge_description)
+                : std::string("challenge claim"),
+            user_id,
+            current_debate_id
+        );
+        if (claim_id == -1) {
+            continue;
+        }
+
+        const int link_id = debateWrapper.addLink(
+            claim_id,
             current_claim_id,
-            "challenge link",
+            connection,
             user_id,
             current_debate_id,
-            debate::LinkType::CHALLENGE
+            debate::LinkType::CHALLENGE,
+            challenge_relation_id
         );
+
+        if (challenge_relation_id == 0) {
+            challenge_relation_id = link_id;  // its own relation; the rest join
+        }
+        if (same_debate_challenge_claim_id == -1) {
+            // Downstream code (cursor placement, concede lookup) expects a
+            // single challenge claim; the first is the one it means.
+            same_debate_challenge_claim_id = claim_id;
+            same_debate_challenge_link_id = link_id;
+        }
+    }
+
+    if (same_debate_challenge_claim_id != -1) {
         Log::debug(
             "[SubmitChallengeClaimHandler] Added same-debate challenge claim id=" +
             std::to_string(same_debate_challenge_claim_id) +

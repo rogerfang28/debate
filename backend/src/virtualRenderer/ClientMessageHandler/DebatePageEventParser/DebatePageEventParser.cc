@@ -197,6 +197,20 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
                 submitEvent->set_challenge_sentence(comp.value());
                 Log::debug("  Challenge sentence: " + comp.value());
             }
+            // Additional challenge claims -- challengeSentenceInput2, 3, ...
+            // Prefix-matched so the modal can offer more boxes without another
+            // branch here. Checked AFTER the exact match above, so the first
+            // box does not fall into this one.
+            else if (comp.id().rfind("challengeSentenceInput", 0) == 0) {
+                if (!comp.value().empty()) {
+                    submitEvent->add_extra_sentences(comp.value());
+                    Log::debug("  Extra challenge sentence: " + comp.value());
+                }
+            }
+            else if (comp.id() == "challengeLinkTypeSelect") {
+                submitEvent->set_basis(comp.value());
+                Log::debug("  Challenge basis: " + comp.value());
+            }
         }
     }
     else if (componentId.find("removeClaimFromChallengeButton_") == 0 && eventType == "onClick") {

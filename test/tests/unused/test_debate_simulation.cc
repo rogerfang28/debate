@@ -211,7 +211,7 @@ protected:
             user_->engagement().debating_info().current_claim().id(),
             userId_, *debate_);
         ChallengeHandler::OpenAddChallenge(userId_, *debate_);
-        ChallengeHandler::SubmitChallengeClaim(reason, userId_, *debate_);
+        ChallengeHandler::SubmitChallengeClaim({reason}, "challenge claim", "", userId_, *debate_);
         refreshCurrentUser();
     }
 
