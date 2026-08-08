@@ -5367,10 +5367,33 @@ class AddChildClaim final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kExtraClaimsFieldNumber = 4,
     kClaimFieldNumber = 1,
     kDescriptionFieldNumber = 2,
     kBasisFieldNumber = 3,
   };
+  // repeated string extra_claims = 4 [json_name = "extraClaims"];
+  int extra_claims_size() const;
+  private:
+  int _internal_extra_claims_size() const;
+
+  public:
+  void clear_extra_claims() ;
+  const ::std::string& extra_claims(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_extra_claims(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_extra_claims(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_extra_claims();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_extra_claims(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& extra_claims() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_extra_claims();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_extra_claims() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_extra_claims();
+
+  public:
   // string claim = 1 [json_name = "claim"];
   void clear_claim() ;
   const ::std::string& claim() const;
@@ -5420,8 +5443,8 @@ class AddChildClaim final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
-                                   0, 56,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 68,
                                    2>
       _table_;
 
@@ -5442,6 +5465,7 @@ class AddChildClaim final : public ::google::protobuf::Message
         const AddChildClaim& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> extra_claims_;
     ::google::protobuf::internal::ArenaStringPtr claim_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr basis_;
@@ -6619,7 +6643,7 @@ inline void AddChildClaim::clear_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
+                  0x00000002U);
 }
 inline const ::std::string& AddChildClaim::claim() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -6629,13 +6653,13 @@ inline const ::std::string& AddChildClaim::claim() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_claim(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   _impl_.claim_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.claim)
 }
 inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_claim()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::std::string* _s = _internal_mutable_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.claim)
   return _s;
@@ -6655,10 +6679,10 @@ inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_claim() 
 inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.claim)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   auto* released = _impl_.claim_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.claim_.Set("", GetArena());
@@ -6668,9 +6692,9 @@ inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_claim() {
 inline void AddChildClaim::set_allocated_claim(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
   _impl_.claim_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_.IsDefault()) {
@@ -6684,7 +6708,7 @@ inline void AddChildClaim::clear_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.description_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000004U);
 }
 inline const ::std::string& AddChildClaim::description() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -6694,13 +6718,13 @@ inline const ::std::string& AddChildClaim::description() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_description(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.description)
 }
 inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_description()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   ::std::string* _s = _internal_mutable_description();
   // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.description)
   return _s;
@@ -6720,10 +6744,10 @@ inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_descript
 inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   auto* released = _impl_.description_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.description_.Set("", GetArena());
@@ -6733,9 +6757,9 @@ inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_description() {
 inline void AddChildClaim::set_allocated_description(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   }
   _impl_.description_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.description_.IsDefault()) {
@@ -6744,12 +6768,84 @@ inline void AddChildClaim::set_allocated_description(::std::string* PROTOBUF_NUL
   // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.description)
 }
 
+// repeated string extra_claims = 4 [json_name = "extraClaims"];
+inline int AddChildClaim::_internal_extra_claims_size() const {
+  return _internal_extra_claims().size();
+}
+inline int AddChildClaim::extra_claims_size() const {
+  return _internal_extra_claims_size();
+}
+inline void AddChildClaim::clear_extra_claims() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.extra_claims_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::add_extra_claims()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_extra_claims()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:debate_event.AddChildClaim.extra_claims)
+  return _s;
+}
+inline const ::std::string& AddChildClaim::extra_claims(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.AddChildClaim.extra_claims)
+  return _internal_extra_claims().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_extra_claims(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.extra_claims)
+  return _internal_mutable_extra_claims()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void AddChildClaim::set_extra_claims(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_extra_claims()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.extra_claims)
+}
+template <typename Arg_, typename... Args_>
+inline void AddChildClaim::add_extra_claims(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_extra_claims(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:debate_event.AddChildClaim.extra_claims)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& AddChildClaim::extra_claims()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate_event.AddChildClaim.extra_claims)
+  return _internal_extra_claims();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+AddChildClaim::mutable_extra_claims() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:debate_event.AddChildClaim.extra_claims)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_extra_claims();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+AddChildClaim::_internal_extra_claims() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.extra_claims_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+AddChildClaim::_internal_mutable_extra_claims() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.extra_claims_;
+}
+
 // string basis = 3 [json_name = "basis"];
 inline void AddChildClaim::clear_basis() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.basis_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline const ::std::string& AddChildClaim::basis() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -6759,13 +6855,13 @@ inline const ::std::string& AddChildClaim::basis() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_basis(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   _impl_.basis_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.basis)
 }
 inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_basis()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::std::string* _s = _internal_mutable_basis();
   // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.basis)
   return _s;
@@ -6785,10 +6881,10 @@ inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_basis() 
 inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_basis() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.basis)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   auto* released = _impl_.basis_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.basis_.Set("", GetArena());
@@ -6798,9 +6894,9 @@ inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_basis() {
 inline void AddChildClaim::set_allocated_basis(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   _impl_.basis_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.basis_.IsDefault()) {

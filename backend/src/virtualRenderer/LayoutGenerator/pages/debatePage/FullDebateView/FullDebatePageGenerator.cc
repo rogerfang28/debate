@@ -1788,6 +1788,42 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&modalContent, claimSentenceInput);
 
+            // Additional supporting claims.
+            //
+            // Filling more than one makes them ONE relation with several
+            // from-claims -- "these together support the parent" -- rather than
+            // several independent supports. Blank boxes are ignored, so the
+            // single-claim case is unchanged: type in the first box only.
+            //
+            // A fixed number of boxes rather than an add-another button: the
+            // page is server-rendered per request, so a button would need a
+            // round trip per box. Worth revisiting once the modal is
+            // client-side.
+            for (int extraIdx = 2; extraIdx <= 4; ++extraIdx) {
+                ui::Component extraInput = ComponentGenerator::createInput(
+                    "claimSentenceInput" + std::to_string(extraIdx),
+                    "...and this too (optional)",
+                    "claimSentence" + std::to_string(extraIdx),
+                    "bg-gray-700",
+                    "text-white",
+                    "border-gray-600",
+                    "p-3",
+                    "rounded",
+                    "w-full mb-2"
+                );
+                ComponentGenerator::addChild(&modalContent, extraInput);
+            }
+
+            ui::Component multiHint = ComponentGenerator::createText(
+                "multiClaimHint",
+                "Fill more than one to say they support the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4"
+            );
+            ComponentGenerator::addChild(&modalContent, multiHint);
+
             // Description label
             ui::Component descriptionLabel = ComponentGenerator::createText(
                 "descriptionLabel",

@@ -193,13 +193,20 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::ADD_CHILD_CLAIM:
             Log::info("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
+        {
+            std::vector<std::string> claimTexts;
+            claimTexts.push_back(event.add_child_claim().claim());
+            for (const auto& extra : event.add_child_claim().extra_claims()) {
+                claimTexts.push_back(extra);
+            }
             AddClaimHandler::AddClaimUnderClaim(
-                event.add_child_claim().claim(),
+                claimTexts,
                 event.add_child_claim().description(),
                 event.add_child_claim().basis(),
                 user_id,
                 debateWrapper
             );
+        }
             break;
         case debate_event::REPORT_CLAIM:
             Log::info("[DebateModerator] Event Type: REPORT_CLAIM");

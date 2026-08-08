@@ -160,7 +160,9 @@ int DebateWrapper::addClaimUnderParent(
     const std::string& description,
     const int& user_id,
     const int& debate_id,
-    const std::string& basis) {
+    const std::string& basis,
+    int relation_id,
+    int* out_relation_id) {
 
     // debate::Claim parentClaimFromDB = getClaimById(parentId);
 
@@ -182,8 +184,19 @@ int DebateWrapper::addClaimUnderParent(
     // string that told a reader nothing, so nothing is lost by using it, and
     // this is where the basis belongs until relations get their own row.
     const std::string connection = basis.empty() ? "parent to child connection" : basis;
-    addLink(parentId, childClaim.id(), connection, user_id, debate_id, debate::LinkType::PARENT_CHILD);
-    Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " + std::to_string(childClaim.id()) + " with basis: " + connection);
+    const int linkId = addLink(parentId, childClaim.id(), connection, user_id, debate_id,
+                               debate::LinkType::PARENT_CHILD, relation_id);
+
+    // Report the relation this row belongs to, so a caller adding several
+    // claims to ONE relation can pass it back in for the rest. A row that is
+    // its own relation has RELATION_ID == its own id.
+    if (out_relation_id != nullptr) {
+        *out_relation_id = relation_id > 0 ? relation_id : linkId;
+    }
+
+    Log::debug("Added link between claim " + std::to_string(parentId) + " and new claim " +
+               std::to_string(childClaim.id()) + " with basis: " + connection +
+               " (relation " + std::to_string(relation_id > 0 ? relation_id : linkId) + ")");
     return childClaim.id();
 }
 
@@ -392,8 +405,8 @@ void DebateWrapper::editClaimText(
     databaseWrapper.statements.updateStatementContent(claimId, newText);
 }
 
-int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type) {
-    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id, static_cast<int>(link_type));
+int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type, int relation_id) {
+    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id, static_cast<int>(link_type), relation_id);
     if (linkId == -1) {
         Log::error("[DebateWrapper][ERR] Failed to add link from claim " + std::to_string(fromClaimId)
             + " to claim " + std::to_string(toClaimId));
@@ -431,11 +444,11 @@ std::vector<std::vector<uint8_t>> DebateWrapper::getStatementsForDebate(const in
     return databaseWrapper.statements.getStatementsForDebate(debate_id);
 }
 
-std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
+std::vector<std::tuple<int, int, int, std::string, int, int, int>> DebateWrapper::getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids) {
     return databaseWrapper.links.getLinksForDebateAndCreators(debate_id, creator_ids);
 }
 
-std::vector<std::tuple<int, int, int, std::string, int, int>> DebateWrapper::getLinksForDebate(const int& debate_id) {
+std::vector<std::tuple<int, int, int, std::string, int, int, int>> DebateWrapper::getLinksForDebate(const int& debate_id) {
     return databaseWrapper.links.getLinksForDebate(debate_id);
 }
 

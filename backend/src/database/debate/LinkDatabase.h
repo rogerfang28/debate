@@ -19,8 +19,13 @@ public:
 
     bool ensureTable();
 
-    // Create a new link between claims
-    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId = -1, int linkType = 0); // return link id
+    // Create a new link between claims.
+    //
+    // `relationId` groups rows belonging to ONE relation with several
+    // from-claims. Pass 0 (the default) and the row becomes its own relation --
+    // RELATION_ID is set to the new row's own ID. Pass the id returned by an
+    // earlier addLink to make this row another from-claim of that relation.
+    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId = -1, int linkType = 0, int relationId = 0); // return link id
     
     // Get all links from a specific claim
     std::vector<std::tuple<int, int, int, std::string, int>> getLinksFromClaim(int claimIdFrom); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)
@@ -31,11 +36,11 @@ public:
     // Get all links involving a specific claim (both from and to)
     std::vector<std::tuple<int, int, int, std::string, int>> getLinksForClaim(int claimId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)
 
-    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebate(int debateId);
-    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds);
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> getLinksForDebate(int debateId);
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds);
     
     // Get a specific link by its ID
-    std::optional<std::tuple<int, int, int, std::string, int, int>> getLinkById(int linkId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id, link_type)
+    std::optional<std::tuple<int, int, int, std::string, int, int, int>> getLinkById(int linkId); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id, link_type)
 
     int getLinkDebateId(int linkId);
     

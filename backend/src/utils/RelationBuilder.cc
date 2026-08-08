@@ -2,6 +2,8 @@
 
 #include "Log.h"
 
+#include <map>
+
 namespace RelationBuilder {
 
 debate::Relationship fromLinkRow(int linkId,
@@ -10,7 +12,8 @@ debate::Relationship fromLinkRow(int linkId,
                                  const std::string& connection,
                                  int creatorId,
                                  int linkType,
-                                 int debateId) {
+                                 int debateId,
+                                 int relationId) {
     debate::Relationship rel;
 
     // A relation with no from-claims is not a relation -- it is an edge with
@@ -64,7 +67,10 @@ debate::Relationship fromLinkRow(int linkId,
         relTo = fromClaimId;    // the parent, which is supported
     }
 
-    rel.set_id(linkId);
+    // The relation's identity is its RELATION_ID, not the row's own id. Rows
+    // that are their own relation carry RELATION_ID == ID, so this is the same
+    // value for them and the distinction only shows up once rows are grouped.
+    rel.set_id(relationId > 0 ? relationId : linkId);
     if (debateId != 0) {
         rel.set_debate_id(debateId);
     }
@@ -102,6 +108,72 @@ debate::Relationship fromLinkRow(int linkId,
     }
 
     return rel;
+}
+
+std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
+                                               int debateId) {
+    std::vector<debate::Relationship> out;
+    // Insertion order is preserved so output is stable across calls; a map
+    // keyed by relation id would silently reorder the graph between requests.
+    std::vector<int> order;
+    std::map<int, size_t> indexByRelation;
+
+    for (const LinkRow& row : rows) {
+        const int linkId = std::get<0>(row);
+        const int from = std::get<1>(row);
+        const int to = std::get<2>(row);
+        const std::string& connection = std::get<3>(row);
+        const int creator = std::get<4>(row);
+        const int linkType = std::get<5>(row);
+        const int storedRelationId = std::get<6>(row);
+        const int relationId = storedRelationId > 0 ? storedRelationId : linkId;
+
+        auto it = indexByRelation.find(relationId);
+        if (it == indexByRelation.end()) {
+            debate::Relationship rel = fromLinkRow(linkId, from, to, connection, creator,
+                                                   linkType, debateId, relationId);
+            if (rel.id() == 0) {
+                continue;  // refused: missing an endpoint
+            }
+            indexByRelation[relationId] = out.size();
+            out.push_back(std::move(rel));
+            order.push_back(relationId);
+            continue;
+        }
+
+        // Another from-claim of a relation already seen.
+        debate::Relationship& rel = out[it->second];
+
+        // The row's own ends may need the same swap fromLinkRow applies, so go
+        // through it rather than reaching for `from` directly -- that swap is
+        // exactly the thing that must not be reimplemented in two places.
+        const debate::Relationship extra = fromLinkRow(linkId, from, to, connection, creator,
+                                                       linkType, debateId, relationId);
+        if (extra.id() == 0 || extra.from_claim_ids_size() == 0) {
+            continue;
+        }
+
+        if (extra.to_claim_id() != rel.to_claim_id() || extra.role() != rel.role()) {
+            Log::warn("[RelationBuilder] Rows in relation " + std::to_string(relationId) +
+                      " disagree about target or role; keeping the first. Link " +
+                      std::to_string(linkId) + " ignored.");
+            continue;
+        }
+
+        const int addition = extra.from_claim_ids(0);
+        bool duplicate = false;
+        for (const int existing : rel.from_claim_ids()) {
+            if (existing == addition) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (!duplicate) {
+            rel.add_from_claim_ids(addition);
+        }
+    }
+
+    return out;
 }
 
 }  // namespace RelationBuilder

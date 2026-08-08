@@ -3,6 +3,8 @@
 #include "debate.pb.h"
 
 #include <string>
+#include <tuple>
+#include <vector>
 
 // ---------------------------------------
 // RelationBuilder
@@ -48,6 +50,26 @@ debate::Relationship fromLinkRow(int linkId,
                                  const std::string& connection,
                                  int creatorId,
                                  int linkType,
-                                 int debateId = 0);
+                                 int debateId = 0,
+                                 int relationId = 0);
+
+// One stored link row: the 7-tuple the LinkDatabase accessors return.
+//   (id, from, to, connection, creator, link_type, relation_id)
+using LinkRow = std::tuple<int, int, int, std::string, int, int, int>;
+
+// Collapses rows sharing a RELATION_ID into ONE Relationship whose
+// from_claim_ids holds every source.
+//
+// This is where a multi-from relation actually becomes one thing. Rows that
+// are their own relation come back unchanged, so a caller cannot tell whether
+// grouping happened -- which is the point: single- and multi-from relations
+// are the same shape.
+//
+// Rows in a group must agree on their target, role and basis; they were
+// written together by one action. If they disagree the FIRST row wins and a
+// warning is logged, because silently merging contradictory rows would produce
+// a relation nobody asserted.
+std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
+                                               int debateId = 0);
 
 }  // namespace RelationBuilder

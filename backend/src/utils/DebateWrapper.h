@@ -33,7 +33,9 @@ public:
         const std::string& connectionToParent,
         const int& user_id,
         const int& debate_id,
-        const std::string& basis = "");
+        const std::string& basis = "",
+        int relation_id = 0,
+        int* out_relation_id = nullptr);
     void changeDescriptionOfClaim(
         const int& claimId,
         const std::string& newDescription);
@@ -58,11 +60,13 @@ public:
     void updateUserProtobufBinary(const int& user_id, const std::vector<uint8_t>& protobufData);
     void updateUserProtobuf(const int& user_id, const user::User& userProto);
 
-    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type = debate::LinkType::NORMAL);
+    // `relation_id` groups rows that are ONE relation with several
+    // from-claims. 0 means "its own relation".
+    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type = debate::LinkType::NORMAL, int relation_id = 0);
     std::vector<std::vector<uint8_t>> getStatementsForDebate(const int& debate_id);
     std::vector<std::vector<uint8_t>> getStatementsForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
-    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebate(const int& debate_id);
-    std::vector<std::tuple<int, int, int, std::string, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> getLinksForDebate(const int& debate_id);
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> getLinksForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<int> findLinksUnder(const int& claimId);
     debate::Relationship getLinkById(int linkId);
     // Scans fromClaimId's link_ids for an outgoing CHALLENGE link (a link where

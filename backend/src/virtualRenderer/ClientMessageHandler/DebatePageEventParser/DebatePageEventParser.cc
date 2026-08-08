@@ -81,6 +81,17 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
                 submitEvent->set_claim(comp.value());
                 Log::debug("  Claim: " + comp.value());
             }
+            // Additional supporting claims. Ids are claimSentenceInput2,
+            // claimSentenceInput3, ... -- matched by prefix so the modal can
+            // offer more boxes without another branch here. Order is whatever
+            // the DOM scan produced; the from-set is unordered, so it does not
+            // matter which is which, only that they land in the same relation.
+            else if (comp.id().rfind("claimSentenceInput", 0) == 0) {
+                if (!comp.value().empty()) {
+                    submitEvent->add_extra_claims(comp.value());
+                    Log::debug("  Extra claim: " + comp.value());
+                }
+            }
             else if (comp.id() == "linkTypeSelect") {
                 submitEvent->set_basis(comp.value());
                 Log::debug("  Basis: " + comp.value());

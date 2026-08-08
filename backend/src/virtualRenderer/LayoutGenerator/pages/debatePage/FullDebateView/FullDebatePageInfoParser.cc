@@ -419,39 +419,64 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	std::unordered_map<int, std::unordered_set<int>> parentIdsByClaim;
 	std::unordered_map<int, std::unordered_set<int>> childIdsByClaim;
 
-	for (const auto& entry : linksById) {
-		const int linkId = entry.first;
-		const debate::Relationship::Link& link = entry.second;
+	// One tree link per FROM-CLAIM, not per relation.
+	//
+	// A relation with several from-claims is a single entry in the collection,
+	// and its legacy `link` sub-message holds only the first row. Reading that
+	// alone would silently drop every source but one. So the from-set is
+	// iterated, and each edge carries the RELATION id -- which is how the
+	// renderer knows to draw them as one junction rather than several.
+	for (const auto& relEntry : collectionProto.links_by_id()) {
+		const int relationId = relEntry.first;
+		const debate::Relationship& rel = relEntry.second;
+		const debate::Relationship::Link& link = rel.link();
 
-		if (claimIdSet.count(link.connect_from()) == 0 || claimIdSet.count(link.connect_to()) == 0) {
-			Log::warn(
-				"[ParseFullDebateViewInfo] Skipping tree link_id=" + std::to_string(linkId) +
-				" because endpoint claim is missing"
-			);
+		// Relation-targeted relations (R3) have no place in a claim tree.
+		if (rel.to_case() != debate::Relationship::kToClaimId) {
 			continue;
 		}
 
 		rendering_info::FullDebateTreeLinkType outType = rendering_info::FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED;
 		bool isChallenge = false;
-		if (link.link_type() == debate::LinkType::PARENT_CHILD) {
+		if (rel.role() == debate::SUPPORTS) {
 			outType = rendering_info::FULL_DEBATE_TREE_PARENT_CHILD;
-			childIdsByClaim[link.connect_from()].insert(link.connect_to());
-			parentIdsByClaim[link.connect_to()].insert(link.connect_from());
-		} else if (link.link_type() == debate::LinkType::CHALLENGE) {
+		} else if (rel.role() == debate::OPPOSES) {
 			outType = rendering_info::FULL_DEBATE_TREE_CHALLENGE;
 			isChallenge = true;
 		} else {
-			continue;
+			continue;  // ROLE_UNSPECIFIED (legacy NORMAL) is dropped, as before
 		}
 
-		rendering_info::FullDebateTreeLink* outLink = tree->add_links();
-		outLink->set_from_claim_id(link.connect_from());
-		outLink->set_to_claim_id(link.connect_to());
-		outLink->set_link_type(outType);
-		outLink->set_is_challenge(isChallenge);
-		outLink->set_link_id(linkId);
-		outLink->set_connection(link.connection());
-		outLink->set_creator_id(link.creator_id());
+		const int toClaimId = rel.to_claim_id();
+		for (const int fromClaimId : rel.from_claim_ids()) {
+			if (claimIdSet.count(fromClaimId) == 0 || claimIdSet.count(toClaimId) == 0) {
+				Log::warn(
+					"[ParseFullDebateViewInfo] Skipping tree edge in relation " +
+					std::to_string(relationId) + " because endpoint claim is missing"
+				);
+				continue;
+			}
+
+			// The adjacency maps stay PARENT -> CHILD, which is what the rest of
+			// this file and the BFS below expect. A SUPPORTS relation runs
+			// child -> parent, so the ends go in reversed.
+			if (!isChallenge) {
+				childIdsByClaim[toClaimId].insert(fromClaimId);
+				parentIdsByClaim[fromClaimId].insert(toClaimId);
+			}
+
+			rendering_info::FullDebateTreeLink* outLink = tree->add_links();
+			// Emitted in STORED orientation (parent -> child for support), which
+			// is what every consumer of FullDebateTreeLink still expects. The
+			// graph generator flips them when building relation-oriented edges.
+			outLink->set_from_claim_id(isChallenge ? fromClaimId : toClaimId);
+			outLink->set_to_claim_id(isChallenge ? toClaimId : fromClaimId);
+			outLink->set_link_type(outType);
+			outLink->set_is_challenge(isChallenge);
+			outLink->set_link_id(relationId);
+			outLink->set_connection(rel.basis());
+			outLink->set_creator_id(link.creator_id());
+		}
 	}
 
 	for (int claimId : claimIds) {

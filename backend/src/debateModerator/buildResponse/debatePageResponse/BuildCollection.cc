@@ -165,13 +165,12 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 		}
 	}
 
-	const std::vector<std::tuple<int, int, int, std::string, int, int>> linkRows = debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
-	for (const auto& linkRow : linkRows) {
-		const int linkId = std::get<0>(linkRow);
-		(*collection.mutable_links_by_id())[linkId] = RelationBuilder::fromLinkRow(
-			linkId, std::get<1>(linkRow), std::get<2>(linkRow),
-			std::get<3>(linkRow), std::get<4>(linkRow), std::get<5>(linkRow),
-			debate_id);
+	// Rows sharing a RELATION_ID collapse into ONE relation carrying every
+	// from-claim, so the collection is keyed by RELATION id, not row id.
+	const std::vector<RelationBuilder::LinkRow> linkRows =
+		debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
+	for (const auto& rel : RelationBuilder::fromLinkRows(linkRows, debate_id)) {
+		(*collection.mutable_links_by_id())[rel.id()] = rel;
 	}
 
 	Log::debug("[BuildCollection] Final collection for debate " + std::to_string(debate_id)

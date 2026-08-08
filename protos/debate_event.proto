@@ -17,8 +17,15 @@ message EnterDebate {
 }
 
 message AddChildClaim {
+    // The first supporting claim. Kept as field 1 so existing clients and any
+    // persisted event still parse.
     string claim         = 1;
     string description   = 2;
+
+    // Additional supporting claims. `claim` plus these form ONE relation with
+    // several from-claims -- "these together support the parent" -- rather than
+    // several independent supports. Blank entries are ignored.
+    repeated string extra_claims = 4;
     // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
     // NORMATIVE. Lands on the relation, not the claim: it describes how the
     // child bears on its parent, which is a property of the connection.

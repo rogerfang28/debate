@@ -158,7 +158,7 @@ TEST_F(EnterDebateMembersTest, AfterJoiningBobCanAddClaimAndSeeIt) {
     // Bob adds a child claim under root
     MoveUserHandler::GoToClaim(1, bob_id_, *debate_); // root claim
     AddClaimHandler::OpenAddChildClaim(bob_id_, *debate_);
-    AddClaimHandler::AddClaimUnderClaim("Bob's claim", "supports", "", bob_id_, *debate_);
+    AddClaimHandler::AddClaimUnderClaim({"Bob's claim"}, "supports", "", bob_id_, *debate_);
 
     // Verify the claim exists
     std::vector<int> childIds = debate_->findChildrenIds(1);
