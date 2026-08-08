@@ -2287,15 +2287,26 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         return it == metaByEndpoints.end() ? EdgeMeta{} : it->second;
     };
 
-    // Add parent-child / tree edges
+    // Support edges, emitted in RELATION orientation: the supporting claim is
+    // the source, what it supports is the target.
+    //
+    // That is the reverse of how the rows are stored (parent -> child) and the
+    // reverse of how these edges used to be emitted. The old direction could
+    // not express a hyperedge: several claims supporting one conclusion have to
+    // SHARE A TARGET so they converge on a single junction, and in parent ->
+    // child orientation sibling edges share a source and fan out instead.
+    //
+    // `treeChildren` is still parent -> children, so the ends are swapped here.
     int edgeIdx = 0;
     for (const auto& entry : treeChildren) {
         for (int childId : entry.second) {
             auto* gEdge = graphComp.add_edges();
             gEdge->set_id("e" + std::to_string(edgeIdx++));
-            gEdge->set_source(std::to_string(entry.first));
-            gEdge->set_target(std::to_string(childId));
-            gEdge->set_type("PARENT_CHILD");
+            gEdge->set_source(std::to_string(childId));      // the supporter
+            gEdge->set_target(std::to_string(entry.first));  // the supported
+            gEdge->set_type("SUPPORTS");
+            // Metadata is still keyed by the STORED endpoints, which have not
+            // moved -- only the direction we draw them in has.
             const EdgeMeta meta = metaFor(entry.first, childId);
             gEdge->set_basis(meta.basis);
             gEdge->set_relation_id(meta.relationId);

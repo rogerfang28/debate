@@ -103,15 +103,28 @@ const JUNCTION_PADDING_X = 8;
 // one -- see RelationBuilder, which deliberately does not launder it.
 const PLACEHOLDER_BASIS = "parent to child connection";
 
+// Edge-type predicates.
+//
+// "SUPPORTS" is what the backend emits now. "PARENT_CHILD" and "supports" are
+// accepted too: the first is the pre-relation name for the same edge, and a
+// stale cached page or a saved layout JSON can still carry it. Treating an
+// unrecognised type as support would silently mis-draw the tree, so the check
+// is an allow-list rather than "not a challenge".
+function isSupportEdge(type?: string): boolean {
+  return type === "SUPPORTS" || type === "PARENT_CHILD" || type === "supports";
+}
+
+function isChallengeEdge(type?: string): boolean {
+  return type === "CHALLENGE" || type === "challenges" || type === "OPPOSES";
+}
+
 // What the junction says. Falls back to the relation's ROLE when no basis
 // was ever chosen, so the node is never blank and never claims a basis
 // nobody selected.
 function junctionLabel(edge: GraphEdge): string {
   const basis = (edge.basis ?? "").trim();
   if (basis && basis !== PLACEHOLDER_BASIS) return basis;
-  return edge.type === "CHALLENGE" || edge.type === "challenges"
-    ? "OPPOSES"
-    : "SUPPORTS";
+  return isChallengeEdge(edge.type) ? "OPPOSES" : "SUPPORTS";
 }
 const ROOT_WIDTH = 180;
 const ROOT_HEIGHT = 88;
@@ -220,14 +233,23 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const nodeMap = new Map<string, GraphNode>();
     nodes.forEach((n) => nodeMap.set(n.id, { ...n }));
 
-    // Build children map from PARENT_CHILD edges
+    // Build the children map from SUPPORT edges.
+    //
+    // A support edge runs SUPPORTER -> SUPPORTED, which is UP the tree: the
+    // evidence points at the conclusion it backs. The layout draws top-down,
+    // so the ends are inverted here -- the supported claim owns its supporters
+    // as children.
+    //
+    // Root detection still works unchanged and for the right reason: the root
+    // is the claim that supports nothing, which is exactly the node that is
+    // never a source.
     const childrenMap = new Map<string, string[]>();
     const hasParent = new Set<string>();
     for (const e of edges) {
-      if (e.type === "PARENT_CHILD") {
-        if (!childrenMap.has(e.source)) childrenMap.set(e.source, []);
-        childrenMap.get(e.source)!.push(e.target);
-        hasParent.add(e.target);
+      if (isSupportEdge(e.type)) {
+        if (!childrenMap.has(e.target)) childrenMap.set(e.target, []);
+        childrenMap.get(e.target)!.push(e.source);
+        hasParent.add(e.source);
       }
     }
 
@@ -483,11 +505,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const tx = target.x ?? 200;
             const ty = target.y ?? 200;
 
-            const isChallenge =
-              group.type === "CHALLENGE" || group.type === "challenges";
+            const isChallenge = isChallengeEdge(group.type);
             const color = isChallenge
               ? EDGE_COLORS.challenges
-              : group.type === "PARENT_CHILD" || group.type === "supports"
+              : isSupportEdge(group.type)
                 ? EDGE_COLORS.PARENT_CHILD
                 : EDGE_COLORS.NORMAL;
             const dash = isChallenge ? "6,3" : "none";
