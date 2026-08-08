@@ -10,44 +10,57 @@
 // a producer that filled only one shape would give two callers different
 // answers about the same row -- the exact failure this file exists to prevent.
 
-TEST(RelationBuilderTest, ParentChildFillsBothShapesConsistently) {
+// PARENT_CHILD SWAPS ENDS. The row runs parent -> child, but the child is
+// evidence offered FOR the parent, so the relation runs child -> parent. This
+// is the single easiest thing to get backwards in the migration, and getting it
+// backwards renders the tree upside down.
+TEST(RelationBuilderTest, ParentChildSwapsEndsSoTheChildIsTheSupporter) {
+    // Row: parent 3 -> child 9.
     const debate::Relationship rel =
-        RelationBuilder::fromLinkRow(7, 3, 9, "EVIDENTIAL", 42,
+        RelationBuilder::fromLinkRow(7, /*parent=*/3, /*child=*/9, "EVIDENTIAL", 42,
                                      static_cast<int>(debate::LinkType::PARENT_CHILD), 5);
 
-    // Legacy shape, exactly as before.
+    // Legacy shape stays EXACTLY as stored -- unmigrated readers must not move.
     EXPECT_EQ(rel.link().id(), 7);
-    EXPECT_EQ(rel.link().connect_from(), 3);
-    EXPECT_EQ(rel.link().connect_to(), 9);
-    EXPECT_EQ(rel.link().connection(), "EVIDENTIAL");
-    EXPECT_EQ(rel.link().creator_id(), 42);
+    EXPECT_EQ(rel.link().connect_from(), 3) << "still the parent, as stored";
+    EXPECT_EQ(rel.link().connect_to(), 9) << "still the child, as stored";
     EXPECT_EQ(rel.link().link_type(), debate::LinkType::PARENT_CHILD);
     EXPECT_EQ(rel.link().debate_id(), 5);
 
-    // New shape, describing the same edge.
+    // New shape is SEMANTIC, and therefore reversed.
     EXPECT_EQ(rel.id(), 7);
     EXPECT_EQ(rel.debate_id(), 5);
     ASSERT_EQ(rel.from_claim_ids_size(), 1)
         << "storage has one CLAIM_ID_FROM column, so the list holds exactly one";
-    EXPECT_EQ(rel.from_claim_ids(0), 3);
+    EXPECT_EQ(rel.from_claim_ids(0), 9) << "the CHILD supports";
+    EXPECT_EQ(rel.to_claim_id(), 3) << "the PARENT is supported";
     EXPECT_EQ(rel.to_case(), debate::Relationship::kToClaimId);
-    EXPECT_EQ(rel.to_claim_id(), 9);
+    EXPECT_EQ(rel.role(), debate::SUPPORTS);
     EXPECT_EQ(rel.creator_id(), 42);
     EXPECT_EQ(rel.basis(), "EVIDENTIAL");
-    EXPECT_EQ(rel.role(), debate::SUPPORTS);
+
+    // Stated as its own assertion so a regression names the actual mistake.
+    EXPECT_NE(rel.from_claim_ids(0), rel.link().connect_from())
+        << "a parent-child relation must NOT copy the row's ends straight across";
 }
 
-TEST(RelationBuilderTest, ChallengeBecomesOpposes) {
+// CHALLENGE does NOT swap. The row already runs challenger -> challenged, which
+// is the direction of attack. Paired with the test above: the two link types
+// are handled differently on purpose, so neither can be "fixed" to match the
+// other without breaking the one that was right.
+TEST(RelationBuilderTest, ChallengeKeepsItsDirection) {
     const debate::Relationship rel =
-        RelationBuilder::fromLinkRow(11, 4, 2, "", 1,
+        RelationBuilder::fromLinkRow(11, /*challenger=*/4, /*challenged=*/2, "", 1,
                                      static_cast<int>(debate::LinkType::CHALLENGE), 5);
 
     EXPECT_EQ(rel.link().link_type(), debate::LinkType::CHALLENGE);
-    EXPECT_EQ(rel.role(), debate::OPPOSES)
-        << "CHALLENGE is the only link type that maps to OPPOSES";
+    EXPECT_EQ(rel.role(), debate::OPPOSES);
     ASSERT_EQ(rel.from_claim_ids_size(), 1);
-    EXPECT_EQ(rel.from_claim_ids(0), 4);
-    EXPECT_EQ(rel.to_claim_id(), 2);
+    EXPECT_EQ(rel.from_claim_ids(0), 4) << "the challenger attacks";
+    EXPECT_EQ(rel.to_claim_id(), 2) << "the challenged is attacked";
+
+    EXPECT_EQ(rel.from_claim_ids(0), rel.link().connect_from())
+        << "a challenge relation DOES copy the row's ends straight across";
 }
 
 // NORMAL must NOT become SUPPORTS.

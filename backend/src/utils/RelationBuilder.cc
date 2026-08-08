@@ -39,12 +39,37 @@ debate::Relationship fromLinkRow(int linkId,
     }
 
     // --- new shape ---
+    //
+    // THE ENDS ARE NOT ALWAYS THE SAME ENDS. The new shape is semantic: the
+    // from-set stands in `role` to the target. The stored row is structural.
+    // For one link type those disagree, and it is the single easiest thing to
+    // get backwards in this whole migration.
+    //
+    //   PARENT_CHILD  row runs parent -> child, but the child is evidence
+    //                 offered FOR the parent. So the relation runs
+    //                 from = [child], to = parent, role = SUPPORTS.
+    //                 The ends are SWAPPED relative to the row.
+    //
+    //   CHALLENGE     row runs challenger -> challenged, which is already the
+    //                 direction of attack. from = [challenger],
+    //                 to = challenged, role = OPPOSES. NOT swapped.
+    //
+    // This is also what makes a from-SET meaningful: several claims that
+    // together support one conclusion. The reverse -- one conclusion pointing
+    // at many pieces of its own evidence -- is not a thing anyone asserts.
+    int relFrom = fromClaimId;
+    int relTo = toClaimId;
+    if (static_cast<debate::LinkType>(linkType) == debate::LinkType::PARENT_CHILD) {
+        relFrom = toClaimId;    // the child, which does the supporting
+        relTo = fromClaimId;    // the parent, which is supported
+    }
+
     rel.set_id(linkId);
     if (debateId != 0) {
         rel.set_debate_id(debateId);
     }
-    rel.add_from_claim_ids(fromClaimId);  // exactly one, until storage widens
-    rel.set_to_claim_id(toClaimId);
+    rel.add_from_claim_ids(relFrom);  // exactly one, until storage widens
+    rel.set_to_claim_id(relTo);
     rel.set_creator_id(creatorId);
     rel.set_basis(connection);
 

@@ -327,8 +327,14 @@ LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations)
             // ROLE_UNSPECIFIED (legacy NORMAL) falls through both branches and
             // is dropped, exactly as the link_type version dropped it.
             if (rel.role() == debate::SUPPORTS) {
-                g.children[from].push_back(to);
+                // `children` is keyed PARENT -> children, and a SUPPORTS
+                // relation runs child -> parent, so the ends go in reversed.
+                // This map feeds Rule A/B, which ask "what are this claim's
+                // children?" -- getting it backwards would make every claim
+                // the child of its own evidence.
+                g.children[to].push_back(from);
             } else if (rel.role() == debate::OPPOSES) {
+                // Attacks already run challenger -> challenged; no swap.
                 g.challengeIncoming[to].push_back(from);
                 g.challengeOutgoing[from].push_back(to);
             }
