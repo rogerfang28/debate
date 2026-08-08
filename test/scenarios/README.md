@@ -53,7 +53,7 @@ action {
 | `GO_TO_CLAIM` | `claim_id` | Moves the cursor. **Required before adding or challenging** |
 | `OPEN_ADD_CHILD_CLAIM` | — | Optional; the add works without it |
 | `ADD_CHILD_CLAIM` | `claim_text`, `extra_claim_texts` (repeated), `claim_description`, `basis` | Adds supporting claim(s) under the cursor |
-| `SUBMIT_CHALLENGE_CLAIM` | `claim_text`, `challenge_description` | Challenges the claim at the cursor |
+| `SUBMIT_CHALLENGE_CLAIM` | `claim_text`, `extra_claim_texts` (repeated), `challenge_description`, `basis` | Challenges the claim at the cursor |
 | `CONCEDE_CHALLENGE` | — | Target is resolved automatically (see below) |
 
 Any other `EventType` name is accepted and dispatched, but the runner attaches **no payload**, so it only works for events that need none.
@@ -81,7 +81,16 @@ action {
 
 That is different from three separate `ADD_CHILD_CLAIM` steps, which create three independent relations. Use `RELATION_COUNT` to pin which you meant.
 
+**`SUBMIT_CHALLENGE_CLAIM` takes the same two fields, meaning the same things** — several sentences are ONE opposing relation ("these together refute that"), and `basis` says what kind of opposition it is.
+
 `basis` ∈ `EVIDENTIAL` | `AUTHORITY` | `DEFINITIONAL` | `NORMATIVE`. Empty is allowed and means unspecified.
+
+Setting it on a challenge is worth doing, because otherwise two quite different moves are stored identically:
+
+```
+basis: "EVIDENTIAL"    # "the evidence says otherwise" -- you are wrong about the world
+basis: "DEFINITIONAL"  # "that is not what the word means" -- you are wrong about the word
+```
 
 ---
 

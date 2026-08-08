@@ -247,6 +247,18 @@ protected:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 event.mutable_submit_challenge_claim()->set_challenge_description(
                     action.challenge_description().empty() ? "challenge claim" : action.challenge_description());
+                // Same two fields as ADD_CHILD_CLAIM, and they mean the same
+                // things: several sentences are ONE opposing relation with
+                // several from-claims, and the basis says what KIND of
+                // opposition it is. A DEFINITIONAL challenge ("that is not what
+                // the word means") is a different move from an EVIDENTIAL one,
+                // and without this a scenario could not express the difference.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_submit_challenge_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::CONCEDE_CHALLENGE:
                 event.mutable_concede_challenge()->set_challenge_link_id(

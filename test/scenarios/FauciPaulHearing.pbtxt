@@ -120,6 +120,10 @@ steps {
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Fauci's May 2021 journal recorded that he had always considered natural origin highly likely, that no one was certain, and that he was calling for a thorough investigation"
     challenge_description: "The journal is genuine. It does not show a hidden position."
+    # EVIDENTIAL: the counter is itself a document. Fauci is not disputing what
+    # the word "misled" means, he is producing a record that reads against the
+    # inference drawn from the earlier one.
+    basis: "EVIDENTIAL"
   }
 }
 
@@ -195,6 +199,12 @@ steps {
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Gain-of-function means only the narrow category defined in federal policy"
     challenge_description: "The funded work falls outside the regulated category."
+    # DEFINITIONAL: this is the whole point of the branch. Fauci disputes no
+    # fact -- he disputes what the term covers. Recording the basis is what
+    # distinguishes "you are wrong about the world" from "you are wrong about
+    # the word", which are different moves that the engine would otherwise
+    # store identically.
+    basis: "DEFINITIONAL"
   }
 }
 
