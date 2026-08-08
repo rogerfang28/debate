@@ -173,13 +173,35 @@ private:
             case debate_event::GO_TO_CLAIM:
                 event.mutable_go_to_claim()->set_claim_id(action.claim_id());
                 break;
+            // NOTE: this switch mirrors forgeEvent() in
+            // test/tests/test_scenario_runner.cc. The two are separate copies
+            // and have already drifted once -- extra_claim_texts and basis
+            // landed in the runner and not here, so importing a multi-from
+            // scenario silently produced single-claim relations with no basis.
+            // It did not error; it just built a quieter, wrong graph. Keep
+            // them in step, or merge them.
             case debate_event::ADD_CHILD_CLAIM:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
                 event.mutable_add_child_claim()->set_description(action.claim_description());
+                // Several texts = ONE relation with several from-claims.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_add_child_claim()->add_extra_claims(extra);
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_add_child_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 event.mutable_submit_challenge_claim()->set_challenge_description(action.challenge_description());
+                // Same two fields, same meanings: several sentences are ONE
+                // opposing relation, and basis says what kind of opposition.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_submit_challenge_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::CONCEDE_CHALLENGE:
                 event.mutable_concede_challenge()->set_challenge_link_id(
@@ -205,11 +227,37 @@ private:
             case debate_event::GO_TO_CLAIM:
                 std::cout << "  moved to claim " << action.claim_id() << std::endl;
                 break;
+            // The extra members and the basis are printed because they are the
+            // difference between one relation and several, and between a
+            // definitional challenge and an evidential one. A run that dropped
+            // them would otherwise look identical to one that kept them.
             case debate_event::ADD_CHILD_CLAIM:
-                std::cout << "  added child claim: \"" << action.claim_text() << "\"" << std::endl;
+                std::cout << "  added child claim: \"" << action.claim_text() << "\"";
+                for (const auto& extra : action.extra_claim_texts()) {
+                    std::cout << "\n                 + \"" << extra << "\"";
+                }
+                if (action.extra_claim_texts_size() > 0) {
+                    std::cout << "\n                 (one relation, "
+                              << (action.extra_claim_texts_size() + 1) << " from-claims)";
+                }
+                if (!action.basis().empty()) {
+                    std::cout << "  [" << action.basis() << "]";
+                }
+                std::cout << std::endl;
                 break;
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
-                std::cout << "  submitted challenge: \"" << action.claim_text() << "\"" << std::endl;
+                std::cout << "  submitted challenge: \"" << action.claim_text() << "\"";
+                for (const auto& extra : action.extra_claim_texts()) {
+                    std::cout << "\n                 + \"" << extra << "\"";
+                }
+                if (action.extra_claim_texts_size() > 0) {
+                    std::cout << "\n                 (one relation, "
+                              << (action.extra_claim_texts_size() + 1) << " from-claims)";
+                }
+                if (!action.basis().empty()) {
+                    std::cout << "  [" << action.basis() << "]";
+                }
+                std::cout << std::endl;
                 break;
             case debate_event::CONCEDE_CHALLENGE:
                 std::cout << "  conceded challenge" << std::endl;
