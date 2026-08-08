@@ -206,6 +206,13 @@ protected:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
                 event.mutable_add_child_claim()->set_description(
                     action.claim_description().empty() ? "test" : action.claim_description());
+                // Several texts = ONE relation with several from-claims.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_add_child_claim()->add_extra_claims(extra);
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_add_child_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
@@ -399,6 +406,80 @@ protected:
             }
             EXPECT_TRUE(linkExists(collection, lt, exp.from_claim_id(), exp.to_claim_id()))
                 << "[" << scenario_name << "] LINK_EXISTS "
+                << exp.from_claim_id() << " -> " << exp.to_claim_id();
+        }
+        // --- Relation-shape checks (the new hyperedge structure) ---
+        //
+        // These read from_claim_ids/to_claim_id/role rather than the legacy
+        // `link` sub-message. That distinction is the whole point: on a
+        // relation with several from-claims, `link` holds only the FIRST row,
+        // so LINK_EXISTS above cannot see the others. A check written against
+        // `link` would silently pass while ignoring most of the relation.
+        else if (exp.check_type() == "RELATION_COUNT") {
+            Log::test("  CHECK RELATION_COUNT expected=" + std::to_string(exp.expected_count()));
+            int actual = 0;
+            const auto role = parseLinkType(exp.link_type()) == debate::LinkType::CHALLENGE
+                                  ? debate::OPPOSES : debate::SUPPORTS;
+            for (const auto& entry : collection.links_by_id()) {
+                if (entry.second.role() == role) ++actual;
+            }
+            if (actual != exp.expected_count()) {
+                savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_EQ(actual, exp.expected_count())
+                << "[" << scenario_name << "] RELATION_COUNT " << exp.link_type();
+        }
+        else if (exp.check_type() == "RELATION_FROM_COUNT") {
+            // How many from-claims the relation targeting `to_claim_id` has.
+            Log::test("  CHECK RELATION_FROM_COUNT to=" + std::to_string(exp.to_claim_id()) +
+                      " expected=" + std::to_string(exp.expected_count()));
+            int actual = 0;
+            for (const auto& entry : collection.links_by_id()) {
+                const debate::Relationship& rel = entry.second;
+                if (rel.to_case() == debate::Relationship::kToClaimId &&
+                    rel.to_claim_id() == exp.to_claim_id() &&
+                    rel.role() == debate::SUPPORTS &&
+                    rel.from_claim_ids_size() > actual) {
+                    actual = rel.from_claim_ids_size();
+                }
+            }
+            if (actual != exp.expected_count()) {
+                savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_EQ(actual, exp.expected_count())
+                << "[" << scenario_name << "] RELATION_FROM_COUNT to=" << exp.to_claim_id();
+        }
+        else if (exp.check_type() == "RELATION_FROM_EXISTS") {
+            // from_claim_id is one of the sources of the relation targeting
+            // to_claim_id -- true for EVERY member, not just the first.
+            Log::test("  CHECK RELATION_FROM_EXISTS " + std::to_string(exp.from_claim_id()) +
+                      " -> " + std::to_string(exp.to_claim_id()));
+            bool found = false;
+            for (const auto& entry : collection.links_by_id()) {
+                const debate::Relationship& rel = entry.second;
+                if (rel.to_case() != debate::Relationship::kToClaimId ||
+                    rel.to_claim_id() != exp.to_claim_id()) {
+                    continue;
+                }
+                for (const int from : rel.from_claim_ids()) {
+                    if (from == exp.from_claim_id()) { found = true; break; }
+                }
+                if (found) break;
+            }
+            if (!found) {
+                savePageJson();
+                Log::error("  FAIL (from-claim not in any relation targeting it)");
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_TRUE(found)
+                << "[" << scenario_name << "] RELATION_FROM_EXISTS "
                 << exp.from_claim_id() << " -> " << exp.to_claim_id();
         }
         else if (exp.check_type() == "COLLECTION_SIZE") {
@@ -598,6 +679,16 @@ TEST_F(ScenarioRunner, ConcedePropagationTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ConcedePropagationTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ConcedePropagationTest.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+// ---------------------------------------------------------------------------
+// MultiFromRelation — several claims that TOGETHER support one conclusion,
+// alongside an ordinary single-from relation, so the two are distinguishable.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, MultiFromRelation) {
+    TestScenario s = LoadScenarioFromFile("scenarios/MultiFromRelation.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load MultiFromRelation.pbtxt";
+    executeScenario(s);
 }
 
 TEST_F(ScenarioRunner, MegaTest) {

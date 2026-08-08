@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file test_scenario.proto.
  */
 export const file_test_scenario: GenFile = /*@__PURE__*/
-  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJCCgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIkCgVzdGVwcxgCIAMoCzIVLmRlYmF0ZV90ZXN0LlRlc3RTdGVwImcKCFRlc3RTdGVwEicKBmFjdGlvbhgBIAEoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SMgoMZXhwZWN0YXRpb25zGAIgAygLMhwuZGViYXRlX3Rlc3QuVGVzdEV4cGVjdGF0aW9uIrsBCgpUZXN0QWN0aW9uEhAKCHVzZXJuYW1lGAEgASgJEhIKCmV2ZW50X3R5cGUYAiABKAkSFAoMZGViYXRlX3RvcGljGAMgASgJEhEKCWRlYmF0ZV9pZBgEIAEoBRIQCghjbGFpbV9pZBgFIAEoBRISCgpjbGFpbV90ZXh0GAYgASgJEhkKEWNsYWltX2Rlc2NyaXB0aW9uGAcgASgJEh0KFWNoYWxsZW5nZV9kZXNjcmlwdGlvbhgIIAEoCSLzAQoPVGVzdEV4cGVjdGF0aW9uEhIKCmNoZWNrX3R5cGUYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIY2xhaW1faWQYAyABKAUSFQoNZnJvbV9jbGFpbV9pZBgEIAEoBRITCgt0b19jbGFpbV9pZBgFIAEoBRIRCglsaW5rX3R5cGUYBiABKAkSHwoXZXhwZWN0ZWRfY2xhaW1fc2VudGVuY2UYByABKAkSFwoPZXhwZWN0ZWRfc3RhdHVzGAggASgJEhYKDmV4cGVjdGVkX2NvdW50GAkgASgFEhcKD2V4cGVjdGVkX2FjdGlvbhgKIAEoCWIGcHJvdG8z");
+  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJCCgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIkCgVzdGVwcxgCIAMoCzIVLmRlYmF0ZV90ZXN0LlRlc3RTdGVwImcKCFRlc3RTdGVwEicKBmFjdGlvbhgBIAEoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SMgoMZXhwZWN0YXRpb25zGAIgAygLMhwuZGViYXRlX3Rlc3QuVGVzdEV4cGVjdGF0aW9uIuUBCgpUZXN0QWN0aW9uEhAKCHVzZXJuYW1lGAEgASgJEhIKCmV2ZW50X3R5cGUYAiABKAkSFAoMZGViYXRlX3RvcGljGAMgASgJEhEKCWRlYmF0ZV9pZBgEIAEoBRIQCghjbGFpbV9pZBgFIAEoBRISCgpjbGFpbV90ZXh0GAYgASgJEhkKEWNsYWltX2Rlc2NyaXB0aW9uGAcgASgJEh0KFWNoYWxsZW5nZV9kZXNjcmlwdGlvbhgIIAEoCRIZChFleHRyYV9jbGFpbV90ZXh0cxgJIAMoCRINCgViYXNpcxgKIAEoCSLzAQoPVGVzdEV4cGVjdGF0aW9uEhIKCmNoZWNrX3R5cGUYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIY2xhaW1faWQYAyABKAUSFQoNZnJvbV9jbGFpbV9pZBgEIAEoBRITCgt0b19jbGFpbV9pZBgFIAEoBRIRCglsaW5rX3R5cGUYBiABKAkSHwoXZXhwZWN0ZWRfY2xhaW1fc2VudGVuY2UYByABKAkSFwoPZXhwZWN0ZWRfc3RhdHVzGAggASgJEhYKDmV4cGVjdGVkX2NvdW50GAkgASgFEhcKD2V4cGVjdGVkX2FjdGlvbhgKIAEoCWIGcHJvdG8z");
 
 /**
  * A complete test scenario: an ordered list of steps
@@ -130,6 +130,22 @@ export type TestAction = Message<"debate_test.TestAction"> & {
    * @generated from field: string challenge_description = 8;
    */
   challengeDescription: string;
+
+  /**
+   * Additional supporting claims for ADD_CHILD_CLAIM. claim_text plus these
+   * become ONE relation with several from-claims -- "these together support
+   * the parent" -- rather than several independent supports.
+   *
+   * @generated from field: repeated string extra_claim_texts = 9;
+   */
+  extraClaimTexts: string[];
+
+  /**
+   * for ADD_CHILD_CLAIM; empty means unspecified
+   *
+   * @generated from field: string basis = 10;
+   */
+  basis: string;
 };
 
 /**

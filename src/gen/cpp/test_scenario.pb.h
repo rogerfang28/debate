@@ -552,15 +552,39 @@ class TestAction final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kExtraClaimTextsFieldNumber = 9,
     kUsernameFieldNumber = 1,
     kEventTypeFieldNumber = 2,
     kDebateTopicFieldNumber = 3,
     kClaimTextFieldNumber = 6,
     kClaimDescriptionFieldNumber = 7,
     kChallengeDescriptionFieldNumber = 8,
+    kBasisFieldNumber = 10,
     kDebateIdFieldNumber = 4,
     kClaimIdFieldNumber = 5,
   };
+  // repeated string extra_claim_texts = 9 [json_name = "extraClaimTexts"];
+  int extra_claim_texts_size() const;
+  private:
+  int _internal_extra_claim_texts_size() const;
+
+  public:
+  void clear_extra_claim_texts() ;
+  const ::std::string& extra_claim_texts(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_extra_claim_texts(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_extra_claim_texts(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_extra_claim_texts();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_extra_claim_texts(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& extra_claim_texts() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_extra_claim_texts();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_extra_claim_texts() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_extra_claim_texts();
+
+  public:
   // string username = 1 [json_name = "username"];
   void clear_username() ;
   const ::std::string& username() const;
@@ -651,6 +675,21 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_challenge_description();
 
   public:
+  // string basis = 10 [json_name = "basis"];
+  void clear_basis() ;
+  const ::std::string& basis() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_basis(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_basis();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_basis();
+  void set_allocated_basis(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_basis() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_basis(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_basis();
+
+  public:
   // int32 debate_id = 4 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
@@ -675,8 +714,8 @@ class TestAction final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
-                                   0, 117,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 139,
                                    2>
       _table_;
 
@@ -697,12 +736,14 @@ class TestAction final : public ::google::protobuf::Message
         const TestAction& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> extra_claim_texts_;
     ::google::protobuf::internal::ArenaStringPtr username_;
     ::google::protobuf::internal::ArenaStringPtr event_type_;
     ::google::protobuf::internal::ArenaStringPtr debate_topic_;
     ::google::protobuf::internal::ArenaStringPtr claim_text_;
     ::google::protobuf::internal::ArenaStringPtr claim_description_;
     ::google::protobuf::internal::ArenaStringPtr challenge_description_;
+    ::google::protobuf::internal::ArenaStringPtr basis_;
     ::int32_t debate_id_;
     ::int32_t claim_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -1446,7 +1487,7 @@ inline void TestAction::clear_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.username_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
+                  0x00000002U);
 }
 inline const ::std::string& TestAction::username() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1456,13 +1497,13 @@ inline const ::std::string& TestAction::username() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_username(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   _impl_.username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.username)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_username()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::std::string* _s = _internal_mutable_username();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.username)
   return _s;
@@ -1482,10 +1523,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_username() 
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.username)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   auto* released = _impl_.username_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.username_.Set("", GetArena());
@@ -1495,9 +1536,9 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_username() {
 inline void TestAction::set_allocated_username(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
   _impl_.username_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.username_.IsDefault()) {
@@ -1511,7 +1552,7 @@ inline void TestAction::clear_event_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.event_type_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000004U);
 }
 inline const ::std::string& TestAction::event_type() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1521,13 +1562,13 @@ inline const ::std::string& TestAction::event_type() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_event_type(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   _impl_.event_type_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.event_type)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_event_type()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   ::std::string* _s = _internal_mutable_event_type();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.event_type)
   return _s;
@@ -1547,10 +1588,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_event_type(
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_event_type() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.event_type)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   auto* released = _impl_.event_type_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.event_type_.Set("", GetArena());
@@ -1560,9 +1601,9 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_event_type() {
 inline void TestAction::set_allocated_event_type(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   }
   _impl_.event_type_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.event_type_.IsDefault()) {
@@ -1576,7 +1617,7 @@ inline void TestAction::clear_debate_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_topic_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline const ::std::string& TestAction::debate_topic() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1586,13 +1627,13 @@ inline const ::std::string& TestAction::debate_topic() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_debate_topic(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   _impl_.debate_topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.debate_topic)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_debate_topic()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::std::string* _s = _internal_mutable_debate_topic();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.debate_topic)
   return _s;
@@ -1612,10 +1653,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_debate_topi
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_debate_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.debate_topic)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   auto* released = _impl_.debate_topic_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.debate_topic_.Set("", GetArena());
@@ -1625,9 +1666,9 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_debate_topic() {
 inline void TestAction::set_allocated_debate_topic(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   _impl_.debate_topic_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.debate_topic_.IsDefault()) {
@@ -1641,7 +1682,7 @@ inline void TestAction::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000100U);
 }
 inline ::int32_t TestAction::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.debate_id)
@@ -1649,7 +1690,7 @@ inline ::int32_t TestAction::debate_id() const {
 }
 inline void TestAction::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.debate_id)
 }
 inline ::int32_t TestAction::_internal_debate_id() const {
@@ -1666,7 +1707,7 @@ inline void TestAction::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000200U);
 }
 inline ::int32_t TestAction::claim_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.claim_id)
@@ -1674,7 +1715,7 @@ inline ::int32_t TestAction::claim_id() const {
 }
 inline void TestAction::set_claim_id(::int32_t value) {
   _internal_set_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.claim_id)
 }
 inline ::int32_t TestAction::_internal_claim_id() const {
@@ -1691,7 +1732,7 @@ inline void TestAction::clear_claim_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_text_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline const ::std::string& TestAction::claim_text() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1701,13 +1742,13 @@ inline const ::std::string& TestAction::claim_text() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_claim_text(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   _impl_.claim_text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.claim_text)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_claim_text()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::std::string* _s = _internal_mutable_claim_text();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.claim_text)
   return _s;
@@ -1727,10 +1768,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_claim_text(
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_claim_text() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.claim_text)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   auto* released = _impl_.claim_text_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.claim_text_.Set("", GetArena());
@@ -1740,9 +1781,9 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_claim_text() {
 inline void TestAction::set_allocated_claim_text(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   _impl_.claim_text_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_text_.IsDefault()) {
@@ -1756,7 +1797,7 @@ inline void TestAction::clear_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_description_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000020U);
 }
 inline const ::std::string& TestAction::claim_description() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1766,13 +1807,13 @@ inline const ::std::string& TestAction::claim_description() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_claim_description(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   _impl_.claim_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.claim_description)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_claim_description()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::std::string* _s = _internal_mutable_claim_description();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.claim_description)
   return _s;
@@ -1792,10 +1833,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_claim_descr
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.claim_description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   auto* released = _impl_.claim_description_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.claim_description_.Set("", GetArena());
@@ -1805,9 +1846,9 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_claim_description() 
 inline void TestAction::set_allocated_claim_description(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   _impl_.claim_description_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_description_.IsDefault()) {
@@ -1821,7 +1862,7 @@ inline void TestAction::clear_challenge_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenge_description_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline const ::std::string& TestAction::challenge_description() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1831,13 +1872,13 @@ inline const ::std::string& TestAction::challenge_description() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void TestAction::set_challenge_description(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   _impl_.challenge_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate_test.TestAction.challenge_description)
 }
 inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_challenge_description()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::std::string* _s = _internal_mutable_challenge_description();
   // @@protoc_insertion_point(field_mutable:debate_test.TestAction.challenge_description)
   return _s;
@@ -1857,10 +1898,10 @@ inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_challenge_d
 inline ::std::string* PROTOBUF_NULLABLE TestAction::release_challenge_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate_test.TestAction.challenge_description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   auto* released = _impl_.challenge_description_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.challenge_description_.Set("", GetArena());
@@ -1870,15 +1911,152 @@ inline ::std::string* PROTOBUF_NULLABLE TestAction::release_challenge_descriptio
 inline void TestAction::set_allocated_challenge_description(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   }
   _impl_.challenge_description_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.challenge_description_.IsDefault()) {
     _impl_.challenge_description_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.challenge_description)
+}
+
+// repeated string extra_claim_texts = 9 [json_name = "extraClaimTexts"];
+inline int TestAction::_internal_extra_claim_texts_size() const {
+  return _internal_extra_claim_texts().size();
+}
+inline int TestAction::extra_claim_texts_size() const {
+  return _internal_extra_claim_texts_size();
+}
+inline void TestAction::clear_extra_claim_texts() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.extra_claim_texts_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::add_extra_claim_texts()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_extra_claim_texts()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:debate_test.TestAction.extra_claim_texts)
+  return _s;
+}
+inline const ::std::string& TestAction::extra_claim_texts(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_test.TestAction.extra_claim_texts)
+  return _internal_extra_claim_texts().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_extra_claim_texts(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate_test.TestAction.extra_claim_texts)
+  return _internal_mutable_extra_claim_texts()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void TestAction::set_extra_claim_texts(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_extra_claim_texts()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:debate_test.TestAction.extra_claim_texts)
+}
+template <typename Arg_, typename... Args_>
+inline void TestAction::add_extra_claim_texts(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_extra_claim_texts(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:debate_test.TestAction.extra_claim_texts)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& TestAction::extra_claim_texts()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate_test.TestAction.extra_claim_texts)
+  return _internal_extra_claim_texts();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TestAction::mutable_extra_claim_texts() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:debate_test.TestAction.extra_claim_texts)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_extra_claim_texts();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+TestAction::_internal_extra_claim_texts() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.extra_claim_texts_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+TestAction::_internal_mutable_extra_claim_texts() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.extra_claim_texts_;
+}
+
+// string basis = 10 [json_name = "basis"];
+inline void TestAction::clear_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& TestAction::basis() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_test.TestAction.basis)
+  return _internal_basis();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TestAction::set_basis(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.basis_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_test.TestAction.basis)
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_basis()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_basis();
+  // @@protoc_insertion_point(field_mutable:debate_test.TestAction.basis)
+  return _s;
+}
+inline const ::std::string& TestAction::_internal_basis() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.basis_.Get();
+}
+inline void TestAction::_internal_set_basis(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.basis_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TestAction::release_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_test.TestAction.basis)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.basis_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TestAction::set_allocated_basis(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.basis_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.basis_.IsDefault()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.basis)
 }
 
 // -------------------------------------------------------------------

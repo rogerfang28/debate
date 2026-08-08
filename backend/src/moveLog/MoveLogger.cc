@@ -214,31 +214,47 @@ void logForEvent(const debate_event::DebateEvent& event,
         }
 
         case debate_event::ADD_CHILD_CLAIM: {
-            // Identify the new claim by difference rather than by assuming it
-            // is the highest id -- another user may be adding claims too.
+            // Identify the new claims by difference rather than by assuming they
+            // are the highest ids -- another user may be adding claims too.
+            //
+            // ALL of them, not the first. One event can now add several claims
+            // that together form one relation, and logging only the first left
+            // the rest with no ASSERT at all -- so they had no status to derive
+            // and rendered as Undetermined for their own author. This is the
+            // re-derivation fragility this file warns about, hit for real: the
+            // handler changed what it creates and nothing here failed to
+            // compile.
             std::vector<int> after = debateWrapper.findChildrenIds(pre.parentClaimId);
-            int newClaimId = 0;
+            std::vector<int> newClaimIds;
             for (int id : after) {
                 if (std::find(pre.childrenBefore.begin(), pre.childrenBefore.end(), id) ==
                     pre.childrenBefore.end()) {
-                    newClaimId = id;
-                    break;
+                    newClaimIds.push_back(id);
                 }
             }
-            if (newClaimId == 0) {
+            if (newClaimIds.empty()) {
                 Log::warn("[MoveLogger] ADD_CHILD_CLAIM produced no new child under " +
                           std::to_string(pre.parentClaimId) + "; nothing logged.");
                 break;
             }
 
-            append(databaseWrapper, pre.debateId, user_id, "ASSERT", true, newClaimId);
+            // Each claim is asserted in its own right; the relation that ties
+            // them together is asserted once, not once per member.
+            for (const int newClaimId : newClaimIds) {
+                append(databaseWrapper, pre.debateId, user_id, "ASSERT", true, newClaimId);
+            }
 
-            // The PARENT_CHILD relation that carries it.
-            const int relationId = findRelationBetween(debateWrapper, pre.parentClaimId, newClaimId);
+            const int relationId =
+                findRelationBetween(debateWrapper, pre.parentClaimId, newClaimIds.front());
             if (relationId > 0) {
+                std::string froms;
+                for (const int newClaimId : newClaimIds) {
+                    if (!froms.empty()) froms += ",";
+                    froms += std::to_string(newClaimId);
+                }
                 append(databaseWrapper, pre.debateId, user_id, "ASSERT", false, relationId,
                        "{\"from_claim_id\":" + std::to_string(pre.parentClaimId) +
-                       ",\"to_claim_id\":" + std::to_string(newClaimId) + "}");
+                       ",\"to_claim_ids\":[" + froms + "]}");
             }
             break;
         }

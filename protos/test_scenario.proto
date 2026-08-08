@@ -30,13 +30,21 @@ message TestAction {
   string claim_text = 6;        // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
   string claim_description = 7; // for ADD_CHILD_CLAIM
   string challenge_description = 8; // for SUBMIT_CHALLENGE_CLAIM
+
+  // Additional supporting claims for ADD_CHILD_CLAIM. claim_text plus these
+  // become ONE relation with several from-claims -- "these together support
+  // the parent" -- rather than several independent supports.
+  repeated string extra_claim_texts = 9;
+
+  string basis = 10;            // for ADD_CHILD_CLAIM; empty means unspecified
 }
 
 // A single expectation to verify after the action in this step runs
 message TestExpectation {
   string check_type = 1;     // CLAIM_EXISTS | CLAIM_SENTENCE | USER_VIEW |
                              // LINK_COUNT | LINK_EXISTS | ENGAGEMENT_STATE |
-                             // COLLECTION_SIZE
+                             // COLLECTION_SIZE | RELATION_COUNT |
+                             // RELATION_FROM_COUNT | RELATION_FROM_EXISTS
 
   // Target identifiers
   string username = 2;       // whose response collection to check
