@@ -158,6 +158,52 @@ ui::Component ComponentGenerator::createDropdown(
     return component;
 }
 
+ui::Component ComponentGenerator::createMultiInput(
+    const std::string& id,
+    const std::string& placeholder,
+    const std::string& extraPlaceholder,
+    const std::string& addLabel,
+    int maxInputs,
+    const std::string& bgColor,
+    const std::string& textColor,
+    const std::string& borderColor,
+    const std::string& padding,
+    const std::string& rounded,
+    const std::string& additionalClasses
+) {
+    ui::Component component;
+    component.set_id(id);
+    component.set_type(ui::ComponentType::MULTI_INPUT);
+
+    if (!placeholder.empty()) {
+        addAttribute(&component, "placeholder", placeholder);
+    }
+    if (!extraPlaceholder.empty()) {
+        addAttribute(&component, "extraPlaceholder", extraPlaceholder);
+    }
+    if (!addLabel.empty()) {
+        addAttribute(&component, "addLabel", addLabel);
+    }
+    addAttribute(&component, "maxInputs", std::to_string(maxInputs));
+
+    // The class list describes ONE box; the renderer applies it to each.
+    std::vector<std::string> classes;
+    if (!padding.empty()) classes.push_back(padding);
+    if (!bgColor.empty()) classes.push_back(bgColor);
+    if (!textColor.empty()) classes.push_back(textColor);
+    classes.push_back("border");
+    if (!borderColor.empty()) classes.push_back(borderColor);
+    if (!rounded.empty()) classes.push_back(rounded);
+    if (!additionalClasses.empty()) classes.push_back(additionalClasses);
+
+    std::string customClass = buildCustomClass(classes);
+    if (!customClass.empty()) {
+        component.mutable_style()->set_custom_class(customClass);
+    }
+
+    return component;
+}
+
 ui::Component ComponentGenerator::createContainer(
     const std::string& id,
     const std::string& layout,

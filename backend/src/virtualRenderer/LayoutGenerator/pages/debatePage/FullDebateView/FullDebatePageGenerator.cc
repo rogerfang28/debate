@@ -1775,52 +1775,28 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             ComponentGenerator::addChild(&modalContent, claimSentenceLabel);
 
             // Claim sentence input
-            ui::Component claimSentenceInput = ComponentGenerator::createInput(
+            ui::Component claimSentenceInput = ComponentGenerator::createMultiInput(
                 "claimSentenceInput",
                 "Enter the claim sentence...",
-                "claimSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-4"
+                "w-full"
             );
             ComponentGenerator::addChild(&modalContent, claimSentenceInput);
 
-            // Additional supporting claims.
-            //
-            // Filling more than one makes them ONE relation with several
-            // from-claims -- "these together support the parent" -- rather than
-            // several independent supports. Blank boxes are ignored, so the
-            // single-claim case is unchanged: type in the first box only.
-            //
-            // A fixed number of boxes rather than an add-another button: the
-            // page is server-rendered per request, so a button would need a
-            // round trip per box. Worth revisiting once the modal is
-            // client-side.
-            for (int extraIdx = 2; extraIdx <= 4; ++extraIdx) {
-                ui::Component extraInput = ComponentGenerator::createInput(
-                    "claimSentenceInput" + std::to_string(extraIdx),
-                    "...and this too (optional)",
-                    "claimSentence" + std::to_string(extraIdx),
-                    "bg-gray-700",
-                    "text-white",
-                    "border-gray-600",
-                    "p-3",
-                    "rounded",
-                    "w-full mb-2"
-                );
-                ComponentGenerator::addChild(&modalContent, extraInput);
-            }
-
             ui::Component multiHint = ComponentGenerator::createText(
                 "multiClaimHint",
-                "Fill more than one to say they support the claim together.",
+                "Add more than one to say they support the claim together.",
                 "text-xs",
                 "text-gray-400",
                 "",
-                "mb-4"
+                "mb-4 mt-1"
             );
             ComponentGenerator::addChild(&modalContent, multiHint);
 
@@ -1974,46 +1950,28 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
 
             // Challenge sentence input
-            ui::Component challengeSentenceInput = ComponentGenerator::createInput(
+            ui::Component challengeSentenceInput = ComponentGenerator::createMultiInput(
                 "challengeSentenceInput",
                 "Enter your challenge sentence...",
-                "challengeSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-6 h-32"
+                "w-full"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeSentenceInput);
 
-            // Additional challenge claims.
-            //
-            // Filling more than one makes them ONE opposing relation with
-            // several from-claims -- "these together refute that" -- rather
-            // than several independent challenges. Blank boxes are ignored.
-            for (int extraIdx = 2; extraIdx <= 4; ++extraIdx) {
-                ui::Component extraChallenge = ComponentGenerator::createInput(
-                    "challengeSentenceInput" + std::to_string(extraIdx),
-                    "...and this too (optional)",
-                    "challengeSentence" + std::to_string(extraIdx),
-                    "bg-gray-700",
-                    "text-white",
-                    "border-gray-600",
-                    "p-3",
-                    "rounded",
-                    "w-full mb-2"
-                );
-                ComponentGenerator::addChild(&addChallengeModalContent, extraChallenge);
-            }
-
             ui::Component challengeMultiHint = ComponentGenerator::createText(
                 "challengeMultiClaimHint",
-                "Fill more than one to say they refute the claim together.",
+                "Add more than one to say they refute the claim together.",
                 "text-xs",
                 "text-gray-400",
                 "",
-                "mb-4"
+                "mb-4 mt-1"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeMultiHint);
 
