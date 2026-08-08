@@ -1,0 +1,173 @@
+name: "FauciPaulHearing"
+
+# =============================================================================
+# The Fauci / Paul hearing — the EXPRESSIBLE SUBSET of the spec.
+#
+# This is a partial simulation, on purpose. The spec asks for several
+# mechanisms the engine does not have yet, and inventing approximations for
+# them would make the test report success where the tool cannot actually do
+# the thing. What is NOT covered is listed at the bottom of this file and in
+# the accompanying report; each omission is a real gap, not an oversight.
+#
+# What this DOES exercise, and what makes it worth running:
+#
+#   §3  r10 = [c11, c12] -> c10        a genuine 2-member from-set (the AND case)
+#   §4  r20 = [c21, c22, c23] -> c20   a 3-member from-set containing a DEFINITION
+#   §4  r22 = [c24] -> c23             the rival definition attacking the first
+#       basis values carried per relation (EVIDENTIAL / DEFINITIONAL)
+#
+# Claim ids below are the tool's, assigned sequentially. The spec's ids are
+# given in comments so the two can be lined up.
+# =============================================================================
+
+steps { action { username: "paul"  event_type: "CREATE_USER" } }
+steps { action { username: "fauci" event_type: "CREATE_USER" } }
+
+# =============================================================================
+# DEBATE 1 — sub-argument B: did he mislead the public?
+#   claim 1 = spec c10
+# =============================================================================
+steps {
+  action {
+    username: "paul"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Fauci was dishonest with the public about the virus's origin"
+  }
+}
+steps { action { username: "paul"  event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "paul"  event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "fauci" event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "fauci" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+# r10 = [c11, c12] -> c10, EVIDENTIAL.
+# THE AND CASE: the private note and the public statement are jointly
+# required. Neither alone establishes dishonesty, so they are ONE relation
+# with two from-members, not two independent supports.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In January 2020 Fauci's journal recorded experts saying the virus might not have arisen naturally"
+    extra_claim_texts: "Fauci publicly described a laboratory origin as implausible during that period"
+    claim_description: "jointly required: the private note and the public statement"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# --- assert the AND structure ---
+# claim 2 = spec c11, claim 3 = spec c12
+steps {
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 1 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 1 expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 1 }
+}
+
+# c13 — Fauci's May 2021 entry.
+#
+# DEVIATION FROM SPEC: r11 should target the RELATION r10 ("your evidence is
+# real but the inference fails"). Relation-targeted opposition does not exist
+# yet, so this attacks the CLAIM instead. That is a different assertion, and
+# the difference is exactly the golden rule the spec calls its most important
+# case. Recorded here rather than papered over.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "In May 2021 Fauci's journal recorded that he had always considered natural origin highly likely, that no one was completely certain, and that he was calling for a thorough investigation"
+  }
+}
+
+# claim 4 = spec c13. The evidence claims are untouched by the challenge.
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "paul" expected_status: "TRUE_CLAIM" }
+}
+
+# =============================================================================
+# DEBATE 2 — sub-argument C: the gain-of-function charge
+#   claim 5 = spec c20
+# =============================================================================
+steps {
+  action {
+    username: "paul"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Fauci lied to Congress about gain-of-function research"
+  }
+}
+steps { action { username: "paul"  event_type: "JOIN_DEBATE"  debate_id: 2 } }
+steps { action { username: "paul"  event_type: "ENTER_DEBATE" debate_id: 2 } }
+steps { action { username: "fauci" event_type: "JOIN_DEBATE"  debate_id: 2 } }
+steps { action { username: "fauci" event_type: "ENTER_DEBATE" debate_id: 2 } }
+
+# r20 = [c21, c22, c23] -> c20, EVIDENTIAL.
+# THE DEFINITION IS INSIDE THE FROM-SET. The same agreed facts support the
+# accusation only under a particular meaning of the term, so the definition
+# is a member of the relation rather than context sitting outside it.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "NIH grant funds supported coronavirus research at the Wuhan Institute of Virology"
+    extra_claim_texts: "Fauci denied under oath that the funded research was gain-of-function"
+    extra_claim_texts: "\"Gain-of-function\" means any research that enhances a viral property"
+    claim_description: "two agreed facts plus the definition that makes them add up to a lie"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# claims 6, 7, 8 = spec c21, c22, c23
+steps {
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 1 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 5 expected_count: 3 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 6 to_claim_id: 5 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 7 to_claim_id: 5 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 8 to_claim_id: 5 }
+}
+
+# r22 = [c24] -> c23, DEFINITIONAL. The rival definition attacks the first.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 8 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "\"Gain-of-function\" means only the narrow category defined in federal policy"
+  }
+}
+
+# claim 9 = spec c24. Both definitions remain present -- the tool picks
+# neither, which is refusal #7 in the spec.
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
+  expectations { check_type: "LINK_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+}
+
+# The two agreed facts are untouched by the definitional fight above them.
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "paul" expected_status: "TRUE_CLAIM" }
+}
+
+# =============================================================================
+# NOT COVERED — each is a real gap, listed so this file is not mistaken for
+# a full simulation of the spec:
+#
+#   OPPOSE targeting a RELATION (spec r6, r11) — no storage for a relation
+#     target, so the golden rule (§3: c10 -> UNSUPPORTED, not COLLAPSED)
+#     cannot be exercised at all
+#   Statuses CONTESTED / UNSUPPORTED / ACCEPTED / STANDING — the engine
+#     produces TRUE_CLAIM / FALSE_CLAIM / UNDETERMINED only
+#   Relation states LIVE / DEAD / INERT — not modelled
+#   Moves REST, ACCEPT, REOPEN — no such events
+#   Lenses (GetStateRequest.lens_excluded_claims) — not implemented, so §4's
+#     central test (same data, two readers, two answers) cannot run
+#   supporting_count / opposing_count — not computed
+#   Source nodes (spec c30) — no such concept
+#   Sub-arguments A and D — omitted; without CONTESTED and without relation
+#     targeting they would assert almost nothing
+# =============================================================================

@@ -691,6 +691,16 @@ TEST_F(ScenarioRunner, MultiFromRelation) {
     executeScenario(s);
 }
 
+// ---------------------------------------------------------------------------
+// FauciPaulHearing — the expressible subset of the real-world spec. Dumps a
+// JSON page per step so the built graph can be inspected, not just asserted.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciPaulHearing) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciPaulHearing.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciPaulHearing.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
 TEST_F(ScenarioRunner, MegaTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/MegaTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load MegaTest.pbtxt";
