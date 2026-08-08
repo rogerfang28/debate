@@ -23,6 +23,7 @@ interface GraphEdge {
   source: string;
   target: string;
   type?: string;       // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
+  basis?: string;      // EVIDENTIAL | AUTHORITY | DEFINITIONAL | NORMATIVE, or empty
 }
 
 interface DebateGraphProps extends BaseComponentProps {
@@ -79,6 +80,38 @@ function colorForAuthor(username: string): string {
 
 const NODE_WIDTH = 160;
 const NODE_HEIGHT = 80;
+
+// ── Junction (relation) nodes ─────────────────────────────────────────
+// A relation is drawn as its own small node sitting on the edge: every
+// source points AT the junction, and the junction points at the target.
+// The junction is what carries the relation's meaning (its basis), and it
+// is the thing an attack on the reasoning would eventually target.
+//
+// Junctions are placed at the MIDPOINT of the edge rather than being
+// inserted into the tree layout as real levels. Making them layout nodes
+// would double the depth of every tree and force the row spacing, subtree
+// widths and root detection to all be reworked -- for a node that carries
+// no children of its own. Positioning them geometrically keeps the tree
+// exactly as it was and costs nothing.
+const JUNCTION_HEIGHT = 18;
+const JUNCTION_CHAR_WIDTH = 6.2;
+const JUNCTION_PADDING_X = 8;
+
+// Relations created before the basis dropdown existed carry this fixed
+// string in the same column. It is not a basis and must not be displayed as
+// one -- see RelationBuilder, which deliberately does not launder it.
+const PLACEHOLDER_BASIS = "parent to child connection";
+
+// What the junction says. Falls back to the relation's ROLE when no basis
+// was ever chosen, so the node is never blank and never claims a basis
+// nobody selected.
+function junctionLabel(edge: GraphEdge): string {
+  const basis = (edge.basis ?? "").trim();
+  if (basis && basis !== PLACEHOLDER_BASIS) return basis;
+  return edge.type === "CHALLENGE" || edge.type === "challenges"
+    ? "OPPOSES"
+    : "SUPPORTS";
+}
 const ROOT_WIDTH = 180;
 const ROOT_HEIGHT = 88;
 const CHARS_PER_LINE = 20;
@@ -405,21 +438,64 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 ? EDGE_COLORS.PARENT_CHILD
                 : EDGE_COLORS.NORMAL;
             const dash = isChallenge ? "6,3" : "none";
+            const strokeWidth = isChallenge ? 2.5 : 1.5;
+
+            // The relation node sits midway along the edge. Sources feed INTO
+            // it, and it alone points at the target -- so only the second
+            // segment carries the arrowhead.
+            const jx = (sx + tx) / 2;
+            const jy = (sy + ty) / 2;
+            const label = junctionLabel(edge);
+            const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
 
             return (
-              <line
-                key={edge.id || i}
-                x1={sx}
-                y1={sy}
-                x2={tx}
-                y2={ty}
-                stroke={color}
-                strokeWidth={isChallenge ? 2.5 : 1.5}
-                strokeOpacity={0.7}
-                strokeDasharray={dash}
-                markerEnd={`url(#${component.id}-${isChallenge ? "arrow-challenge" : "arrow-support"})`}
-                style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
-              />
+              <g key={edge.id || i}>
+                <line
+                  x1={sx}
+                  y1={sy}
+                  x2={jx}
+                  y2={jy}
+                  stroke={color}
+                  strokeWidth={strokeWidth}
+                  strokeOpacity={0.7}
+                  strokeDasharray={dash}
+                  style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
+                />
+                <line
+                  x1={jx}
+                  y1={jy}
+                  x2={tx}
+                  y2={ty}
+                  stroke={color}
+                  strokeWidth={strokeWidth}
+                  strokeOpacity={0.7}
+                  strokeDasharray={dash}
+                  markerEnd={`url(#${component.id}-${isChallenge ? "arrow-challenge" : "arrow-support"})`}
+                  style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
+                />
+                <g transform={`translate(${jx},${jy})`} className="graph-junction">
+                  <rect
+                    x={-jw / 2}
+                    y={-JUNCTION_HEIGHT / 2}
+                    width={jw}
+                    height={JUNCTION_HEIGHT}
+                    rx={JUNCTION_HEIGHT / 2}
+                    fill="#0f172a"
+                    stroke={color}
+                    strokeWidth={1.5}
+                  />
+                  <text
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize={9}
+                    fontWeight={600}
+                    fill={color}
+                    style={{ pointerEvents: "none", letterSpacing: "0.03em" }}
+                  >
+                    {label}
+                  </text>
+                </g>
+              </g>
             );
           })}
 

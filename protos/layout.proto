@@ -80,6 +80,14 @@ message GraphEdge {
   string source = 2;      // Source node ID
   string target = 3;      // Target node ID
   string type = 4;        // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
+
+  // What KIND of connection this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+  // NORMATIVE. Labels the junction node the renderer draws for this edge.
+  //
+  // May be empty, and may hold the pre-dropdown placeholder string, because
+  // relations created before the basis existed have no real value. The renderer
+  // decides what to show for those; it is not this layer's job to invent one.
+  string basis = 5;
 }
 
 message GraphComponent {

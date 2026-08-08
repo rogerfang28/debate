@@ -170,6 +170,9 @@ inline constexpr GraphEdge::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         type_(
             &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        basis_(
+            &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()) {}
 
 template <typename>
@@ -443,15 +446,17 @@ const ::uint32_t
         4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_._has_bits_),
-        7, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.source_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.target_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.basis_),
         0,
         1,
         2,
         3,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_._has_bits_),
         8, // hasbit index offset
@@ -478,7 +483,7 @@ static const ::_pbi::MigrationSchema
         {64, sizeof(::ui::Size)},
         {71, sizeof(::ui::GraphNode)},
         {94, sizeof(::ui::GraphEdge)},
-        {105, sizeof(::ui::GraphComponent)},
+        {107, sizeof(::ui::GraphComponent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
@@ -521,25 +526,26 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\006status\022\035\n\ncreator_id\030\007 \001(\005R\tcreatorId\022\027"
     "\n\007is_root\030\010 \001(\010R\006isRoot\022\035\n\nis_current\030\t "
     "\001(\010R\tisCurrent\022)\n\020creator_username\030\n \001(\t"
-    "R\017creatorUsername\"_\n\tGraphEdge\022\016\n\002id\030\001 \001"
+    "R\017creatorUsername\"u\n\tGraphEdge\022\016\n\002id\030\001 \001"
     "(\tR\002id\022\026\n\006source\030\002 \001(\tR\006source\022\026\n\006target"
-    "\030\003 \001(\tR\006target\022\022\n\004type\030\004 \001(\tR\004type\"\276\001\n\016G"
-    "raphComponent\022\016\n\002id\030\001 \001(\tR\002id\022#\n\005nodes\030\002"
-    " \003(\0132\r.ui.GraphNodeR\005nodes\022#\n\005edges\030\003 \003("
-    "\0132\r.ui.GraphEdgeR\005edges\022(\n\020selected_node"
-    "_id\030\004 \001(\tR\016selectedNodeId\022(\n\020selected_ed"
-    "ge_id\030\005 \001(\tR\016selectedEdgeId*w\n\rComponent"
-    "Type\022\013\n\007UNKNOWN\020\000\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022"
-    "\t\n\005INPUT\020\003\022\t\n\005GRAPH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014"
-    "CLAIM_PARSER\020\016\022\014\n\010DROPDOWN\020\017*I\n\nLayoutTy"
-    "pe\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010FLEX_COL\020"
-    "\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "\030\003 \001(\tR\006target\022\022\n\004type\030\004 \001(\tR\004type\022\024\n\005ba"
+    "sis\030\005 \001(\tR\005basis\"\276\001\n\016GraphComponent\022\016\n\002i"
+    "d\030\001 \001(\tR\002id\022#\n\005nodes\030\002 \003(\0132\r.ui.GraphNod"
+    "eR\005nodes\022#\n\005edges\030\003 \003(\0132\r.ui.GraphEdgeR\005"
+    "edges\022(\n\020selected_node_id\030\004 \001(\tR\016selecte"
+    "dNodeId\022(\n\020selected_edge_id\030\005 \001(\tR\016selec"
+    "tedEdgeId*w\n\rComponentType\022\013\n\007UNKNOWN\020\000\022"
+    "\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t\n\005GRAP"
+    "H\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014CLAIM_PARSER\020\016\022\014\n\010"
+    "DROPDOWN\020\017*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010F"
+    "LEX_ROW\020\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INL"
+    "INE\020\004b\006proto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1591,
+    1613,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -3513,7 +3519,8 @@ PROTOBUF_NDEBUG_INLINE GraphEdge::Impl_::Impl_(
         id_(arena, from.id_),
         source_(arena, from.source_),
         target_(arena, from.target_),
-        type_(arena, from.type_) {}
+        type_(arena, from.type_),
+        basis_(arena, from.basis_) {}
 
 GraphEdge::GraphEdge(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -3538,7 +3545,8 @@ PROTOBUF_NDEBUG_INLINE GraphEdge::Impl_::Impl_(
         id_(arena),
         source_(arena),
         target_(arena),
-        type_(arena) {}
+        type_(arena),
+        basis_(arena) {}
 
 inline void GraphEdge::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -3558,6 +3566,7 @@ inline void GraphEdge::SharedDtor(MessageLite& self) {
   this_._impl_.source_.Destroy();
   this_._impl_.target_.Destroy();
   this_._impl_.type_.Destroy();
+  this_._impl_.basis_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -3604,16 +3613,16 @@ GraphEdge::GetClassData() const {
   return GraphEdge_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 39, 2>
+const ::_pbi::TcParseTable<3, 5, 0, 44, 2>
 GraphEdge::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     GraphEdge_class_data_.base(),
@@ -3623,10 +3632,7 @@ GraphEdge::_table_ = {
     ::_pbi::TcParser::GetTable<::ui::GraphEdge>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string type = 4 [json_name = "type"];
-    {::_pbi::TcParser::FastUS1,
-     {34, 3, 0,
-      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string id = 1 [json_name = "id"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
@@ -3639,6 +3645,16 @@ GraphEdge::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {26, 2, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_)}},
+    // string type = 4 [json_name = "type"];
+    {::_pbi::TcParser::FastUS1,
+     {34, 3, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_)}},
+    // string basis = 5 [json_name = "basis"];
+    {::_pbi::TcParser::FastUS1,
+     {42, 4, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.basis_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3650,15 +3666,18 @@ GraphEdge::_table_ = {
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // string type = 4 [json_name = "type"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.type_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string basis = 5 [json_name = "basis"];
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.basis_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\14\2\6\6\4\0\0\0"
+    "\14\2\6\6\4\5\0\0"
     "ui.GraphEdge"
     "id"
     "source"
     "target"
     "type"
+    "basis"
   }},
 };
 PROTOBUF_NOINLINE void GraphEdge::Clear() {
@@ -3669,7 +3688,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       _impl_.id_.ClearNonDefaultToEmpty();
     }
@@ -3681,6 +3700,9 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       _impl_.type_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      _impl_.basis_.ClearNonDefaultToEmpty();
     }
   }
   _impl_._has_bits_.Clear();
@@ -3746,6 +3768,16 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
   }
 
+  // string basis = 5 [json_name = "basis"];
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (!this_._internal_basis().empty()) {
+      const ::std::string& _s = this_._internal_basis();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "ui.GraphEdge.basis");
+      target = stream->WriteStringMaybeAliased(5, _s, target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3771,7 +3803,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_id().empty()) {
@@ -3800,6 +3832,13 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
                                         this_._internal_type());
       }
     }
+    // string basis = 5 [json_name = "basis"];
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!this_._internal_basis().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_basis());
+      }
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -3819,7 +3858,7 @@ void GraphEdge::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_id().empty()) {
         _this->_internal_set_id(from._internal_id());
@@ -3856,6 +3895,15 @@ void GraphEdge::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (!from._internal_basis().empty()) {
+        _this->_internal_set_basis(from._internal_basis());
+      } else {
+        if (_this->_impl_.basis_.IsDefault()) {
+          _this->_internal_set_basis("");
+        }
+      }
+    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
@@ -3880,6 +3928,7 @@ void GraphEdge::InternalSwap(GraphEdge* PROTOBUF_RESTRICT PROTOBUF_NONNULL other
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.source_, &other->_impl_.source_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.target_, &other->_impl_.target_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.type_, &other->_impl_.type_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.basis_, &other->_impl_.basis_, arena);
 }
 
 ::google::protobuf::Metadata GraphEdge::GetMetadata() const {

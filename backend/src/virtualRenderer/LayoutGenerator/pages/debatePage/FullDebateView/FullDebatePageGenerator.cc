@@ -2263,6 +2263,19 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
     }
 
+    // The graph edges below are assembled from BFS adjacency, which has lost
+    // which stored relation produced each one. Recover the basis by keying the
+    // tree's link list on its endpoints -- the same pair the adjacency uses.
+    std::map<std::pair<int, int>, std::string> basisByEndpoints;
+    for (int i = 0; i < tree.links_size(); ++i) {
+        const rendering_info::FullDebateTreeLink& link = tree.links(i);
+        basisByEndpoints[{link.from_claim_id(), link.to_claim_id()}] = link.connection();
+    }
+    auto basisFor = [&](int from, int to) -> std::string {
+        auto it = basisByEndpoints.find({from, to});
+        return it == basisByEndpoints.end() ? std::string() : it->second;
+    };
+
     // Add parent-child / tree edges
     int edgeIdx = 0;
     for (const auto& entry : treeChildren) {
@@ -2272,6 +2285,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             gEdge->set_source(std::to_string(entry.first));
             gEdge->set_target(std::to_string(childId));
             gEdge->set_type("PARENT_CHILD");
+            gEdge->set_basis(basisFor(entry.first, childId));
         }
     }
 
@@ -2282,6 +2296,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         gEdge->set_source(std::to_string(ce.first));
         gEdge->set_target(std::to_string(ce.second));
         gEdge->set_type("CHALLENGE");
+        gEdge->set_basis(basisFor(ce.first, ce.second));
     }
 
     // Set selected node to current claim if present
