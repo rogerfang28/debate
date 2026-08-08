@@ -2,7 +2,7 @@
 layer: 3
 title: Protocol Reference — Protocol Buffers Contract
 status: partial
-last-updated: 2026-08-05
+last-updated: 2026-08-07
 audience: developers (implementation)
 source-of-truth-for: [debate.proto, LinkType enum, RelationRole enum, MoveType enum, Status enum, client/server message envelopes, proto generation]
 ---
@@ -17,12 +17,14 @@ All communication between frontend and backend — including UI layouts — is P
 
 `debate.proto` currently carries **both** a legacy shape and a newer one. This is deliberate and temporary: the legacy shape is what every code path reads and writes today, and the new shape is additive so that nothing breaks while it is adopted.
 
-| Shape | Where | Written today? |
-|---|---|---|
-| Legacy — `Relationship.link`, one source → one target claim, typed by `LinkType` | field 1 of `Relationship` | **yes**, by all current code |
-| New — a from-**set**, a target that may be a claim *or another relation*, plus `role` and `basis` | fields 2+ of `Relationship` | **no**, nothing populates it yet |
+| Shape | Where | Written today? | Read today? |
+|---|---|---|---|
+| Legacy — `Relationship.link`, one source → one target claim, typed by `LinkType` | field 1 of `Relationship` | **yes** | **yes** — ~30 call sites |
+| New — a from-**set**, a target that may be a claim *or another relation*, plus `role` and `basis` | fields 2+ of `Relationship` | **yes**, since `RelationBuilder` | partly — `StatusEngine` only |
 
 A legacy link is the single-source instance of the general case, so the two are not in conflict. When `Relationship.link` is retired, field 1 becomes `reserved`.
+
+**Both shapes are filled from the same row, by `RelationBuilder` alone** — see [`backend.md`](backend.md). Dual-writing is what lets readers migrate one file at a time and be verified individually, instead of one cutover across ~30 sites. `from_claim_ids` holds exactly one entry until storage widens; see [`data-model.md`](data-model.md).
 
 ## `LinkType` enum (canonical for persisted data — do not drift)
 
@@ -41,12 +43,15 @@ The challenge-collapse algorithm consumes **exactly two** link types:
 
 ## `RelationRole` enum (new shape)
 
-| Value | Meaning |
-|---|---|
-| `SUPPORTS` | The from-set props the target up. Maps from legacy `NORMAL`, `PARENT_CHILD` |
-| `OPPOSES` | The from-set attacks the target. Maps from legacy `CHALLENGE` |
+| Value | Meaning | Maps from legacy |
+|---|---|---|
+| `ROLE_UNSPECIFIED` | No agreed meaning; readers drop these | `NORMAL` |
+| `SUPPORTS` | The from-set props the target up | `PARENT_CHILD` |
+| `OPPOSES` | The from-set attacks the target | `CHALLENGE` |
 
-Genuinely closed — there is no third option — so an enum is safe here.
+**`NORMAL` maps to `ROLE_UNSPECIFIED`, not `SUPPORTS`.** Three link types must survive as three roles. Every reader is `if (SUPPORTS) … else if (OPPOSES) … else continue`, so `NORMAL` links are dropped today — not drawn, not propagated. Collapsing two link types into one role destroys the distinction *before* the reader sees it, and no downstream branching recovers it. Enforced by `RelationBuilder` and pinned by test.
+
+**The ends are not always the stored ends.** A `PARENT_CHILD` row runs parent → child, but the relation runs `from=[child] → to=parent`, because the child is evidence *for* the parent. `CHALLENGE` is not swapped — it already runs in the direction of attack. See `RelationBuilder` in [`backend.md`](backend.md).
 
 ## `basis` (new shape, a string not an enum)
 
@@ -95,6 +100,24 @@ The legacy `ClaimStatus` (`UNDETERMINED` / `TRUE_CLAIM` / `FALSE_CLAIM`) is stil
 ## Field-numbering discipline
 
 Claims are persisted as **serialized blobs** (`STATEMENTS.STATEMENT_DATA`), so a field number is part of the storage format. Never renumber or retype an existing field, and never reuse a gap — `Claim` skips 4–7, which were used historically. Additive changes only.
+
+## UI layout protos (`layout.proto`)
+
+| Addition | Purpose |
+|---|---|
+| `ComponentType.DROPDOWN = 15` | Renders a `<select>`. Options travel in `attributes` as `options` (comma-separated) and `value` (initial selection) |
+| `GraphEdge.basis` | Labels the junction node drawn for this edge. May be empty or hold the pre-dropdown placeholder |
+| `GraphEdge.relation_id` | Which stored relation produced this edge. Edges sharing it draw **one** junction |
+
+`DROPDOWN` options ride in the existing `attributes` escape hatch rather than a new repeated field only one type would use. The cost is that an option containing a comma would split in two — fine for closed vocabularies, worth revisiting for free text.
+
+`relation_id` is what lets the renderer distinguish "these N claims together support the target" (one relation) from "each independently supports it" (N relations). Both are N edges into one target; without the id they are indistinguishable. See [`frontend.md`](frontend.md).
+
+## `AddChildClaim.basis`
+
+The add-child event carries the chosen basis. It lands on the **relation**, not the claim — it describes how the child bears on its parent, which is a property of the connection. Empty is allowed and means unspecified.
+
+Stored in the link's `CONNECTION` column, which previously held a fixed placeholder string — see [`data-model.md`](data-model.md).
 
 ## Message envelopes
 

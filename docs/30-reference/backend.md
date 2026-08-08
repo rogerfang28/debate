@@ -2,9 +2,9 @@
 layer: 3
 title: Backend Reference — C++ Server & Challenge-Collapse
 status: partial
-last-updated: 2026-08-05
+last-updated: 2026-08-07
 audience: developers (implementation)
-source-of-truth-for: [C++ server, /clientmessage endpoint, challenge-collapse algorithm, MoveLogger, StatusEngine, build & run]
+source-of-truth-for: [C++ server, /clientmessage endpoint, challenge-collapse algorithm, MoveLogger, StatusEngine, RelationBuilder, build & run]
 ---
 
 # Backend Reference — C++ Server
@@ -131,11 +131,50 @@ Two things easy to get backwards, both pinned by tests:
 
 `UNSUPPORTED` is the important one: it needs an `OPPOSE` against a *relation* (the golden rule — your evidence is real but doesn't prove your point), but every move written uses `TARGET_CLAIM`, and `basis` is never stored. That is not an engine gap; the fact has never been in the log.
 
-### Shadow mode
+### Parity mode — `computeLegacyStatuses`
 
-`BuildCollection` calls `computeStatuses` alongside the stored status, logs disagreements, and **discards the result** — nothing renders or decides from it. Debates with no moves are skipped, since anything created before the log has nothing to replay.
+A second pure entry point, added to answer one question before changing any behaviour: **does the log carry enough to reconstruct what the old engine already does?** Proving that first means a later difference is a decision rather than an accident.
 
-Disagreements are expected and are the point: the stored value is per-viewer while the computed one is global, so some divergence is structural. The shape of the disagreement is what is worth reading, not its volume.
+It deliberately copies the old model warts and all — three values, keyed per user, seeded from the direct writes the handlers make (`ASSERT`/`OPPOSE`/`CONCEDE`), then the same Rule A/B/C/D fixed point `DebateWrapper` runs.
+
+Two details are load-bearing and easy to miss:
+
+- **Updates land in place mid-pass (Gauss-Seidel, not Jacobi).** The old engine re-reads each claim from the database during a pass, so a later claim sees an earlier one's new value. Copying into a snapshot converges differently.
+- **The user set is recomputed per claim per pass**, from the claim plus its children and both ends of any challenge touching it. That is how one person's view spreads outward from the claims they acted on.
+
+**Exact parity is not guaranteed by construction.** `ComputeStatusForUser` starts from the value already stored and never resets, so its output depends on the accumulated history of every propagation run, not on the graph. A pure function cannot reproduce state the log never recorded. Measured rather than assumed — see below.
+
+### Status is now derived, not stored (read path)
+
+`BuildCollection` recomputes statuses from the log and **writes them over** the ones loaded from the database, so what renders is derived. Three things about how:
+
+- **Nothing is written back.** Stored values stay as the old engine left them. Reversible by deleting one call; a wrong answer cannot corrupt data.
+- **Each claim's `user_statuses` map is replaced, not merged.** Merging would let a stale stored entry survive wherever the engine produced nothing — exactly the case the log exists to settle — making the result a blend of two models.
+- **Debates with no moves keep their stored status.** This skip was a convenience during shadow mode; it is now load-bearing, since recomputing a pre-log debate would blank it entirely.
+
+Disagreements are still logged and should now be silent. The comparison checks **presence as well as value**: the renderer falls back to "creator sees TRUE" when a claim has *no* entry for the viewer, so an explicit `UNDETERMINED` and a missing entry are equal as values but render differently for a claim's own author — a divergence value-only comparison structurally cannot see.
+
+**Measured result: zero disagreements**, across live debates 7–11 and 15 and in tests covering challenge, concede, retract, and two users holding opposing views of every claim.
+
+## Relation construction — `RelationBuilder`
+
+`backend/src/utils/RelationBuilder.{h,cc}`. The **one** place a stored `LINKS` row becomes a `debate::Relationship`. Three files previously copy-pasted the same six setters, which is how a field ends up populated on two paths out of three.
+
+It fills **both** representations from one row — legacy `Relationship.link`, and the new `from_claim_ids`/`to_claim_id`/`role`/`basis`. Dual-write is what makes the migration survivable: readers move across one at a time and can be verified individually, and the app runs throughout.
+
+Three mappings that are not obvious, all pinned by test:
+
+| Stored link | Relation | Note |
+|---|---|---|
+| `PARENT_CHILD` (parent → child) | `from=[child]` → `to=parent`, `SUPPORTS` | **ends swapped** — the child is evidence *for* the parent |
+| `CHALLENGE` (challenger → challenged) | `from=[challenger]` → `to=challenged`, `OPPOSES` | not swapped — already the direction of attack |
+| `NORMAL` | `ROLE_UNSPECIFIED` | **not** `SUPPORTS` — see below |
+
+- **The swap is the single easiest thing to get backwards.** It is also what makes a from-*set* meaningful: several claims that together support one conclusion. The reverse — one conclusion pointing at many pieces of its own evidence — is not something anyone asserts.
+- **`NORMAL` must not fold into `SUPPORTS`.** Every reader is `if (PARENT_CHILD) … else if (CHALLENGE) … else continue`, so `NORMAL` links are dropped today: not drawn, not propagated. Collapsing three link types into two roles destroys that distinction *before* the reader sees it, and no downstream branching recovers it. `ConnectClaimsHandler` does write `NORMAL` links, so this is a live path.
+- **A relation missing an endpoint is refused outright**, returning an empty relation callers detect with the same `id() == 0` check they use for a missing row. Every consumer reaches for `from_claim_ids(0)`, and proto's repeated accessor does **not** bounds-check — index 0 of an empty field is undefined behaviour, not an exception.
+
+`from_claim_ids` always holds exactly one entry today: `LINKS` has a single `CLAIM_ID_FROM` column and structurally cannot hold more. The list is the shape callers should already be written against, so widening storage later touches this function and the schema rather than every consumer.
 
 ## Persistence
 
@@ -162,5 +201,9 @@ Tests live in `test/` with their own CMake project — see `test/README.md`.
 - Concession cascades are the only automatic state propagation; abandonment must never auto-resolve to concession (design case 8).
 - **`MoveLogger` is the only place that decides what a move is.** No handler writes to the log.
 - **A failed log write never breaks the operation that triggered it.** Verified by a test that drops the `MOVES` table and asserts claims can still be created.
-- **`computeStatuses` is pure and never reads stored status.**
-- **Nothing reads the move log to render or decide.** It is a parallel record until the engine takes over.
+- **`computeStatuses` and `computeLegacyStatuses` are pure and never read stored status.**
+- **The move log is the source of truth for status on the read path.** Statuses are recomputed and written over the loaded collection; nothing is written back to the database.
+- **Debates with no moves keep their stored status.** Recomputing one would blank it.
+- **`RelationBuilder` is the only place a stored row becomes a `Relationship`**, and it fills both shapes.
+- **Three link types map to three distinct roles.** Collapsing any two changes what renders and what propagates.
+- **`Log::info`/`debug` flush explicitly.** stdout is fully buffered when piped, so without it nothing appears through a redirect — which is when logs are read.

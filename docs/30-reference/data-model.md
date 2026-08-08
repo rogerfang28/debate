@@ -2,7 +2,7 @@
 layer: 3
 title: Data Model Reference — SQLite & the Debate Graph
 status: partial
-last-updated: 2026-08-05
+last-updated: 2026-08-07
 audience: developers (implementation)
 source-of-truth-for: [debates.sqlite3 schema, users.sqlite3 schema, graph storage format, MOVES table]
 ---
@@ -34,6 +34,12 @@ Claims live in `STATEMENTS`, with the whole `Claim` protobuf serialized into a `
 
 Links live in `LINKS` as ordinary typed columns (`CLAIM_ID_FROM`, `CLAIM_ID_TO`, `CONNECTION`, `CREATOR_ID`, `DEBATE_ID`, `LINK_TYPE`) — not as blobs.
 
+**`CONNECTION` now carries the relation's `basis`** (`EVIDENTIAL` / `AUTHORITY` / `DEFINITIONAL` / `NORMATIVE`), chosen in the add-supporting-claim dropdown. It previously held the fixed string `"parent to child connection"` on every parent-child row, which told a reader nothing.
+
+Rows created before the dropdown still hold that placeholder. It is **not** laundered into a real basis anywhere — a reader must be able to tell "nobody chose" from "someone chose `EVIDENTIAL`", and substituting a default would erase that permanently. `RelationBuilder` carries it through verbatim; the renderer treats it as absent and falls back to showing the role.
+
+**`LINKS` is single-from by construction.** One `CLAIM_ID_FROM` column means a relation can have exactly one from-claim, so `Relationship.from_claim_ids` always holds exactly one entry. Multi-from support (several claims that *together* support one conclusion) needs a schema change — this is the blocker, not the in-memory shape, which is already a list.
+
 ### Claims are disconnected, not deleted (by design)
 
 **Deleting a claim never removes its row.** `DebateWrapper::deleteClaim` deletes every link touching the claim and deliberately leaves the `STATEMENTS` row in place — the delete call is commented out in source with that intent stated. The claim becomes *disconnected*: unreachable from the graph, so it vanishes from the UI, while the record of what was said survives.
@@ -51,7 +57,7 @@ This also aligns with `RETRACT` in the move log, which means "the author withdre
 
 ## The move log (`MOVES`)
 
-Append-only record of what people did. Currently a **parallel record only** — nothing reads it to render or decide (see [`backend.md`](backend.md)).
+Append-only record of what people did. **The source of truth for status on the read path** — statuses are recomputed from it and written over the loaded collection, though nothing is written back to the database (see [`backend.md`](backend.md)).
 
 | Column | Notes |
 |---|---|
@@ -86,4 +92,5 @@ Constraints: `UNIQUE (DEBATE_ID, SEQ)`, plus index `IDX_MOVES_DEBATE_SEQ ON (DEB
 - **`MOVES` is append-only.** No `UPDATE`, no `DELETE`, ever. A correction is a new move.
 - **No status column in `MOVES`.** Status is computed; storing it here would recreate the contradiction the log exists to remove.
 - **`SEQ` is gapless and starts at 1 within each debate.** A hole makes replay order ambiguous. Verified by test, and by query: `SELECT DEBATE_ID FROM MOVES GROUP BY DEBATE_ID HAVING COUNT(*) <> MAX(SEQ)` must return nothing.
-- **A move write may never break the operation that triggered it.** Failures are logged and dropped while the log runs in parallel.
+- **A move write may never break the operation that triggered it.** Failures are logged and dropped. Note this is now a *rendering* risk as well as a bookkeeping one: a dropped move means a status the read path can no longer derive.
+- **`CONNECTION` is never rewritten to normalise a legacy placeholder.** Distinguishing "nobody chose a basis" from "someone chose one" is only possible while the placeholder survives verbatim.
