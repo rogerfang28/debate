@@ -2264,16 +2264,27 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     }
 
     // The graph edges below are assembled from BFS adjacency, which has lost
-    // which stored relation produced each one. Recover the basis by keying the
-    // tree's link list on its endpoints -- the same pair the adjacency uses.
-    std::map<std::pair<int, int>, std::string> basisByEndpoints;
+    // which stored relation produced each one. Recover both the basis and the
+    // relation id by keying the tree's link list on its endpoints -- the same
+    // pair the adjacency uses.
+    //
+    // The relation id is what lets the renderer group several edges into one
+    // junction. Endpoint keying is only sound while one pair of claims has at
+    // most one relation between them, which holds today; a from-SET arriving
+    // in the tree will need the id carried through adjacency instead.
+    struct EdgeMeta {
+        std::string basis;
+        int relationId = 0;
+    };
+    std::map<std::pair<int, int>, EdgeMeta> metaByEndpoints;
     for (int i = 0; i < tree.links_size(); ++i) {
         const rendering_info::FullDebateTreeLink& link = tree.links(i);
-        basisByEndpoints[{link.from_claim_id(), link.to_claim_id()}] = link.connection();
+        metaByEndpoints[{link.from_claim_id(), link.to_claim_id()}] =
+            EdgeMeta{link.connection(), link.link_id()};
     }
-    auto basisFor = [&](int from, int to) -> std::string {
-        auto it = basisByEndpoints.find({from, to});
-        return it == basisByEndpoints.end() ? std::string() : it->second;
+    auto metaFor = [&](int from, int to) -> EdgeMeta {
+        auto it = metaByEndpoints.find({from, to});
+        return it == metaByEndpoints.end() ? EdgeMeta{} : it->second;
     };
 
     // Add parent-child / tree edges
@@ -2285,7 +2296,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             gEdge->set_source(std::to_string(entry.first));
             gEdge->set_target(std::to_string(childId));
             gEdge->set_type("PARENT_CHILD");
-            gEdge->set_basis(basisFor(entry.first, childId));
+            const EdgeMeta meta = metaFor(entry.first, childId);
+            gEdge->set_basis(meta.basis);
+            gEdge->set_relation_id(meta.relationId);
         }
     }
 
@@ -2296,7 +2309,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         gEdge->set_source(std::to_string(ce.first));
         gEdge->set_target(std::to_string(ce.second));
         gEdge->set_type("CHALLENGE");
-        gEdge->set_basis(basisFor(ce.first, ce.second));
+        const EdgeMeta meta = metaFor(ce.first, ce.second);
+        gEdge->set_basis(meta.basis);
+        gEdge->set_relation_id(meta.relationId);
     }
 
     // Set selected node to current claim if present

@@ -1298,6 +1298,7 @@ class GraphEdge final : public ::google::protobuf::Message
     kTargetFieldNumber = 3,
     kTypeFieldNumber = 4,
     kBasisFieldNumber = 5,
+    kRelationIdFieldNumber = 6,
   };
   // string id = 1 [json_name = "id"];
   void clear_id() ;
@@ -1374,11 +1375,21 @@ class GraphEdge final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_basis();
 
   public:
+  // int32 relation_id = 6 [json_name = "relationId"];
+  void clear_relation_id() ;
+  ::int32_t relation_id() const;
+  void set_relation_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_relation_id() const;
+  void _internal_set_relation_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ui.GraphEdge)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
                                    0, 44,
                                    2>
       _table_;
@@ -1405,6 +1416,7 @@ class GraphEdge final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr target_;
     ::google::protobuf::internal::ArenaStringPtr type_;
     ::google::protobuf::internal::ArenaStringPtr basis_;
+    ::int32_t relation_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4372,6 +4384,31 @@ inline void GraphEdge::set_allocated_basis(::std::string* PROTOBUF_NULLABLE valu
     _impl_.basis_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.basis)
+}
+
+// int32 relation_id = 6 [json_name = "relationId"];
+inline void GraphEdge::clear_relation_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relation_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline ::int32_t GraphEdge::relation_id() const {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.relation_id)
+  return _internal_relation_id();
+}
+inline void GraphEdge::set_relation_id(::int32_t value) {
+  _internal_set_relation_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.relation_id)
+}
+inline ::int32_t GraphEdge::_internal_relation_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.relation_id_;
+}
+inline void GraphEdge::_internal_set_relation_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relation_id_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -88,6 +88,17 @@ message GraphEdge {
   // relations created before the basis existed have no real value. The renderer
   // decides what to show for those; it is not this layer's job to invent one.
   string basis = 5;
+
+  // Which stored relation produced this edge.
+  //
+  // A relation with several from-claims arrives as several edges that share
+  // this id, and the renderer draws ONE junction for the group -- that is what
+  // makes "these three claims TOGETHER support that one" visually distinct
+  // from three independent supports of the same claim. Without it the renderer
+  // cannot tell those apart, because both are N edges into one target.
+  //
+  // 0 when unknown; the renderer then treats the edge as its own relation.
+  int32 relation_id = 6;
 }
 
 message GraphComponent {

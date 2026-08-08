@@ -24,6 +24,7 @@ interface GraphEdge {
   target: string;
   type?: string;       // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
   basis?: string;      // EVIDENTIAL | AUTHORITY | DEFINITIONAL | NORMATIVE, or empty
+  relationId?: number; // edges sharing this belong to ONE relation; 0/absent = its own
 }
 
 interface DebateGraphProps extends BaseComponentProps {
@@ -356,6 +357,62 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   const nodeMap = new Map<string, GraphNode>();
   positionedNodes.forEach((n) => nodeMap.set(n.id, n));
 
+  // ── Group edges into the relations that produced them ────────────
+  //
+  // A relation with several from-claims arrives as several edges sharing a
+  // relationId, and must draw ONE junction with several incoming segments.
+  // That grouping is the whole point: N edges into one target could mean
+  // "these N together support it" (one relation) or "each of these
+  // independently supports it" (N relations), and the picture has to tell
+  // those apart. Without the id they are indistinguishable.
+  const relationGroups = useMemo(() => {
+    const byKey = new Map<
+      string,
+      {
+        key: string;
+        sources: GraphNode[];
+        target: GraphNode;
+        type?: string;
+        label: string;
+      }
+    >();
+
+    for (const edge of edges) {
+      const source = nodeMap.get(edge.source);
+      const target = nodeMap.get(edge.target);
+      // Endpoints outside the laid-out tree (an unreachable claim) have no
+      // position, so there is nothing to draw between.
+      if (!source || !target) continue;
+
+      // relationId 0/absent means the backend could not attribute this edge.
+      // Those stand alone rather than being merged with each other -- lumping
+      // unattributed edges together would invent a relation nobody asserted.
+      const key =
+        edge.relationId && edge.relationId > 0
+          ? `r${edge.relationId}`
+          : `e${edge.id}`;
+
+      const existing = byKey.get(key);
+      if (!existing) {
+        byKey.set(key, {
+          key,
+          sources: [source],
+          target,
+          type: edge.type,
+          label: junctionLabel(edge),
+        });
+        continue;
+      }
+      // Same relation, another from-claim. Guard against a repeated endpoint
+      // so a duplicated edge cannot draw two identical segments.
+      if (!existing.sources.some((s) => s.id === source.id)) {
+        existing.sources.push(source);
+      }
+    }
+
+    return [...byKey.values()];
+  }, [edges, positionedNodes]);
+
   return (
     <div
       id={component.id}
@@ -420,47 +477,54 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         </defs>
 
         <g className="graph-root">
-          {/* ── Edges ─────────────────────────────────────────────── */}
-          {edges.map((edge, i) => {
-            const source = nodeMap.get(edge.source);
-            const target = nodeMap.get(edge.target);
-            if (!source || !target) return null;
-
-            const sx = source.x ?? 100;
-            const sy = source.y ?? 100;
+          {/* ── Relations (edges + junction nodes) ────────────────── */}
+          {relationGroups.map((group) => {
+            const target = group.target;
             const tx = target.x ?? 200;
             const ty = target.y ?? 200;
 
-            const isChallenge = edge.type === "CHALLENGE" || edge.type === "challenges";
+            const isChallenge =
+              group.type === "CHALLENGE" || group.type === "challenges";
             const color = isChallenge
               ? EDGE_COLORS.challenges
-              : edge.type === "PARENT_CHILD" || edge.type === "supports"
+              : group.type === "PARENT_CHILD" || group.type === "supports"
                 ? EDGE_COLORS.PARENT_CHILD
                 : EDGE_COLORS.NORMAL;
             const dash = isChallenge ? "6,3" : "none";
             const strokeWidth = isChallenge ? 2.5 : 1.5;
 
-            // The relation node sits midway along the edge. Sources feed INTO
-            // it, and it alone points at the target -- so only the second
-            // segment carries the arrowhead.
-            const jx = (sx + tx) / 2;
-            const jy = (sy + ty) / 2;
-            const label = junctionLabel(edge);
+            // The junction sits midway between the sources' centre of mass and
+            // the target. With a single source that is exactly the edge
+            // midpoint, so one-from relations render precisely as they did
+            // before grouping existed.
+            const n = group.sources.length;
+            const cx = group.sources.reduce((s, node) => s + (node.x ?? 100), 0) / n;
+            const cy = group.sources.reduce((s, node) => s + (node.y ?? 100), 0) / n;
+            const jx = (cx + tx) / 2;
+            const jy = (cy + ty) / 2;
+
+            const label = group.label;
             const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
 
             return (
-              <g key={edge.id || i}>
-                <line
-                  x1={sx}
-                  y1={sy}
-                  x2={jx}
-                  y2={jy}
-                  stroke={color}
-                  strokeWidth={strokeWidth}
-                  strokeOpacity={0.7}
-                  strokeDasharray={dash}
-                  style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
-                />
+              <g key={group.key}>
+                {/* Every source feeds INTO the junction. No arrowheads here --
+                    the relation as a whole makes one claim about the target,
+                    so only the junction's outgoing segment is an assertion. */}
+                {group.sources.map((source) => (
+                  <line
+                    key={source.id}
+                    x1={source.x ?? 100}
+                    y1={source.y ?? 100}
+                    x2={jx}
+                    y2={jy}
+                    stroke={color}
+                    strokeWidth={strokeWidth}
+                    strokeOpacity={0.7}
+                    strokeDasharray={dash}
+                    style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
+                  />
+                ))}
                 <line
                   x1={jx}
                   y1={jy}
