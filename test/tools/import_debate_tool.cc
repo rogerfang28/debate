@@ -19,9 +19,11 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <set>
 #include <sstream>
 #include <string>
 
+#include "debate.pb.h"
 #include "debate_event.pb.h"
 #include "test_scenario.pb.h"
 #include "google/protobuf/text_format.h"
@@ -133,6 +135,17 @@ private:
         }
 
         int user_id = GetUserId(action.username());
+
+        // Snapshot before, so the claims this step creates can be identified by
+        // difference afterwards -- the handlers do not report what they made.
+        const bool creates_claims = (type == debate_event::CREATE_DEBATE ||
+                                     type == debate_event::ADD_CHILD_CLAIM ||
+                                     type == debate_event::SUBMIT_CHALLENGE_CLAIM);
+        std::set<int> claims_before;
+        if (creates_claims && debate_id_ > 0) {
+            claims_before = ClaimIdsInDebate(debate_id_);
+        }
+
         debate_event::DebateEvent event = ForgeEvent(action, type, user_id);
 
         if (type == debate_event::CONCEDE_CHALLENGE &&
@@ -144,8 +157,51 @@ private:
 
         moderator_.handleRequest(event);
 
+        // A scenario writes `debate_id: 1` because a test database is empty and
+        // the first debate really is 1. A LIVE database already has debates, so
+        // the debate this scenario just created is not 1 -- and taking the
+        // literal id means joining somebody else's debate and grafting the
+        // whole argument onto their claims. That is silent: every step still
+        // "succeeds".
+        //
+        // So the created debate is recorded here and the scenario's ids are
+        // translated in ForgeEvent. Debates are numbered by creation order in
+        // both worlds, which is what makes the mapping sound.
+        if (type == debate_event::CREATE_DEBATE) {
+            const std::vector<int> ids =
+                moderator_.getDebateWrapper().getUserDebateIds(user_id);
+            if (!ids.empty()) {
+                const int real_id = ids.back();
+                scenario_to_real_debate_[static_cast<int>(scenario_to_real_debate_.size()) + 1] =
+                    real_id;
+                debate_id_ = real_id;
+                if (real_id != static_cast<int>(scenario_to_real_debate_.size())) {
+                    std::cout << "  (scenario debate "
+                              << scenario_to_real_debate_.size() << " -> real debate "
+                              << real_id << ")" << std::endl;
+                }
+            }
+        }
+
         if (action.event_type() == "ENTER_DEBATE" || action.event_type() == "JOIN_DEBATE") {
-            if (action.debate_id() > 0) debate_id_ = action.debate_id();
+            if (action.debate_id() > 0) debate_id_ = RealDebateId(action.debate_id());
+        }
+
+        // Map the claims this step created onto the ids the scenario assumes.
+        //
+        // A scenario counts claims from 1 because a test database starts empty.
+        // In a live database the same claims get whatever ids are next, so
+        // GO_TO_CLAIM would otherwise navigate to a stranger's claim and hang
+        // the whole argument off it -- silently, since every step still
+        // succeeds. New ids are taken in ascending order, which matches the
+        // order a scenario numbers them.
+        if (creates_claims && debate_id_ > 0) {
+            const std::set<int> claims_after = ClaimIdsInDebate(debate_id_);
+            for (const int id : claims_after) {
+                if (claims_before.count(id) == 0) {
+                    scenario_to_real_claim_[next_scenario_claim_id_++] = id;
+                }
+            }
         }
 
         PrintStepDetail(action, type);
@@ -165,13 +221,13 @@ private:
                     action.debate_topic().empty() ? "Untitled Debate" : action.debate_topic());
                 break;
             case debate_event::ENTER_DEBATE:
-                event.mutable_enter_debate()->set_debate_id(action.debate_id());
+                event.mutable_enter_debate()->set_debate_id(RealDebateId(action.debate_id()));
                 break;
             case debate_event::JOIN_DEBATE:
-                event.mutable_join_debate()->set_debate_id(action.debate_id());
+                event.mutable_join_debate()->set_debate_id(RealDebateId(action.debate_id()));
                 break;
             case debate_event::GO_TO_CLAIM:
-                event.mutable_go_to_claim()->set_claim_id(action.claim_id());
+                event.mutable_go_to_claim()->set_claim_id(RealClaimId(action.claim_id()));
                 break;
             // NOTE: this switch mirrors forgeEvent() in
             // test/tests/test_scenario_runner.cc. The two are separate copies
@@ -269,14 +325,53 @@ private:
 
     DebateModerator& moderator_;
     std::map<std::string, int> user_ids_;
+    // Translates a scenario's debate id into the one actually created. Unknown
+    // ids pass through unchanged -- a scenario referring to a debate it never
+    // created is asking for a pre-existing one, and guessing would be worse
+    // than honouring it.
+    std::set<int> ClaimIdsInDebate(int debate_id) {
+        std::set<int> ids;
+        for (const auto& blob : moderator_.getDebateWrapper().getStatementsForDebate(debate_id)) {
+            debate::Claim claim;
+            if (claim.ParseFromArray(blob.data(), static_cast<int>(blob.size()))) {
+                ids.insert(claim.id());
+            }
+        }
+        return ids;
+    }
+
+    // Translates a scenario's claim id into the one actually created. Unknown
+    // ids pass through, so a scenario pointing at a pre-existing claim is
+    // honoured rather than guessed at.
+    int RealClaimId(int scenario_claim_id) const {
+        auto it = scenario_to_real_claim_.find(scenario_claim_id);
+        return it == scenario_to_real_claim_.end() ? scenario_claim_id : it->second;
+    }
+
+    int RealDebateId(int scenario_debate_id) const {
+        auto it = scenario_to_real_debate_.find(scenario_debate_id);
+        return it == scenario_to_real_debate_.end() ? scenario_debate_id : it->second;
+    }
+
     int debate_id_ = 0;
+    std::map<int, int> scenario_to_real_debate_;
+    std::map<int, int> scenario_to_real_claim_;
+    int next_scenario_claim_id_ = 1;
 };
 
 }  // namespace
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        std::cerr << "Usage: import_debate_tool <scenario.pbtxt> [db_path]" << std::endl;
+        std::cerr << "Usage: import_debate_tool <scenario.pbtxt> [db_path] [users_db_path]" << std::endl;
+        std::cerr << std::endl;
+        std::cerr << "  db_path        debates database. Defaults to DB_PATH, then the built-in path." << std::endl;
+        std::cerr << "  users_db_path  users database. Defaults to db_path." << std::endl;
+        std::cerr << std::endl;
+        std::cerr << "  Production splits these (backend/debates.sqlite3 + backend/users.sqlite3)." << std::endl;
+        std::cerr << "  Importing into a live database WITHOUT users_db_path creates the scenario's" << std::endl;
+        std::cerr << "  users in the debates file, where the server never looks -- so claims end up" << std::endl;
+        std::cerr << "  attributed to whoever happens to hold that id in the real users file." << std::endl;
         return 1;
     }
 
@@ -285,6 +380,11 @@ int main(int argc, char** argv) {
         std::string db_path = argv[2];
         _putenv_s("DB_PATH", db_path.c_str());
     }
+    // Users default to the debates file, which is what the test harness does
+    // and what this tool did originally. Pass it explicitly when importing into
+    // a live database, or the scenario's users are created somewhere the server
+    // does not read.
+    const std::string users_db_path = (argc >= 4) ? argv[3] : utils::getDatabasePath();
 
     Log::init(LogLevel::Warn);
 
@@ -299,12 +399,15 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "[import_debate_tool] Importing scenario '" << scenario.name() << "' ("
-               << scenario.steps_size() << " step(s)) into DB: " << utils::getDatabasePath() << std::endl;
+               << scenario.steps_size() << " step(s))" << std::endl;
+    std::cout << "                     debates: " << utils::getDatabasePath() << std::endl;
+    std::cout << "                     users:   " << users_db_path << std::endl;
 
-    // Users live in the same file as debates for the import tool; production
-    // splits them across debates.sqlite3 and users.sqlite3.
-    Database moderatorDb(utils::getDatabasePath());
-    DebateModerator moderator(moderatorDb);
+    // DebateModerator takes the USERS database and opens the debates one itself
+    // from DB_PATH, exactly as the server does. Keeping them separate here is
+    // what lets an import land in the same place the running server reads.
+    Database usersDb(users_db_path);
+    DebateModerator moderator(usersDb);
     ScenarioImporter importer(moderator);
     bool success = importer.Run(scenario);
 
