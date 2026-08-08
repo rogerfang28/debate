@@ -98,10 +98,11 @@ const JUNCTION_HEIGHT = 18;
 const JUNCTION_CHAR_WIDTH = 6.2;
 const JUNCTION_PADDING_X = 8;
 
-// Relations created before the basis dropdown existed carry this fixed
-// string in the same column. It is not a basis and must not be displayed as
-// one -- see RelationBuilder, which deliberately does not launder it.
-const PLACEHOLDER_BASIS = "parent to child connection";
+// Relations created before the basis dropdown existed carry a fixed string in
+// the same column -- one for support, one for challenge. Neither is a basis
+// and neither may be displayed as one; see RelationBuilder, which deliberately
+// does not launder them into real values.
+const PLACEHOLDER_BASES = ["parent to child connection", "challenge link"];
 
 // Edge-type predicates.
 //
@@ -123,7 +124,7 @@ function isChallengeEdge(type?: string): boolean {
 // nobody selected.
 function junctionLabel(edge: GraphEdge): string {
   const basis = (edge.basis ?? "").trim();
-  if (basis && basis !== PLACEHOLDER_BASIS) return basis;
+  if (basis && !PLACEHOLDER_BASES.includes(basis)) return basis;
   return isChallengeEdge(edge.type) ? "OPPOSES" : "SUPPORTS";
 }
 const ROOT_WIDTH = 180;
@@ -246,11 +247,24 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const childrenMap = new Map<string, string[]>();
     const hasParent = new Set<string>();
     for (const e of edges) {
-      if (isSupportEdge(e.type)) {
-        if (!childrenMap.has(e.target)) childrenMap.set(e.target, []);
+      // BOTH support and challenge edges give layout structure. A challenge
+      // claim has no parent-child path from the root, so leaving challenges out
+      // here drops every one of them from the tree -- they end up unpositioned
+      // and are never drawn.
+      //
+      // The two map identically because both already run source -> target with
+      // the source underneath: a supporter sits below what it supports, and a
+      // challenger below what it attacks.
+      if (!isSupportEdge(e.type) && !isChallengeEdge(e.type)) continue;
+
+      if (!childrenMap.has(e.target)) childrenMap.set(e.target, []);
+      // Guard against the same pair arriving twice (it did, until the backend
+      // stopped emitting a phantom support edge beside every challenge) --
+      // a duplicate would place the node twice and double the subtree width.
+      if (!childrenMap.get(e.target)!.includes(e.source)) {
         childrenMap.get(e.target)!.push(e.source);
-        hasParent.add(e.source);
       }
+      hasParent.add(e.source);
     }
 
     // Find root (node with no parent, prefer isRoot flag)

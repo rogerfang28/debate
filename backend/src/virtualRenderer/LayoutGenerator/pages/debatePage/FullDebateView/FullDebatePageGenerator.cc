@@ -2350,9 +2350,31 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     // child orientation sibling edges share a source and fan out instead.
     //
     // `treeChildren` is still parent -> children, so the ends are swapped here.
+    //
+    // CHALLENGE PAIRS ARE EXCLUDED. Challenges are deliberately pushed into the
+    // traversal adjacency so the BFS can reach challenge claims -- otherwise a
+    // challenge claim has no parent-child path from the root and would be
+    // dropped from the layout entirely. But that adjacency is also what
+    // treeChildren is built from, so without this filter every challenge is
+    // emitted TWICE: once here as a support edge, and again below as the
+    // challenge it actually is.
+    //
+    // The stored data was always correct -- LINKS holds only the CHALLENGE row.
+    // The duplicate was invisible while an edge was just a line; junction nodes
+    // made it show up as a phantom unlabelled "SUPPORTS" relation next to every
+    // challenge.
+    std::set<std::pair<int, int>> challengePairs;
+    for (const auto& ce : challengeEdges) {
+        challengePairs.insert({ce.first, ce.second});
+    }
+
     int edgeIdx = 0;
     for (const auto& entry : treeChildren) {
         for (int childId : entry.second) {
+            // Same orientation as the challenge edges below: challenger first.
+            if (challengePairs.count({childId, entry.first}) > 0) {
+                continue;
+            }
             auto* gEdge = graphComp.add_edges();
             gEdge->set_id("e" + std::to_string(edgeIdx++));
             gEdge->set_source(std::to_string(childId));      // the supporter
