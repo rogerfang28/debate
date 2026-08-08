@@ -95,6 +95,9 @@ const NODE_HEIGHT = 80;
 // no children of its own. Positioning them geometrically keeps the tree
 // exactly as it was and costs nothing.
 const JUNCTION_HEIGHT = 18;
+// Radius of the dot drawn when a relation has no basis. Small enough to read
+// as a joint in the line rather than as a claim of its own.
+const JUNCTION_DOT_RADIUS = 4;
 const JUNCTION_CHAR_WIDTH = 6.2;
 const JUNCTION_PADDING_X = 8;
 
@@ -119,13 +122,23 @@ function isChallengeEdge(type?: string): boolean {
   return type === "CHALLENGE" || type === "challenges" || type === "OPPOSES";
 }
 
-// What the junction says. Falls back to the relation's ROLE when no basis
-// was ever chosen, so the node is never blank and never claims a basis
+// What the junction says: its BASIS, or nothing.
+//
+// It deliberately does NOT fall back to the role. Support versus opposition is
+// already carried by colour -- grey for support, orange and dashed for a
+// challenge -- so writing "SUPPORTS" on the node repeats what the edge already
+// says. Worse, it puts two different vocabularies in one slot: a reader seeing
+// EVIDENTIAL on one junction and SUPPORTS on another would take them for
+// alternatives in the same list, when one is a basis and the other is a role.
+//
+// An empty label means no basis was ever chosen -- true of every relation
+// created before the basis dropdown existed. Those render as a small plain
+// dot, which reads as "a relation, unspecified" rather than claiming a basis
 // nobody selected.
 function junctionLabel(edge: GraphEdge): string {
   const basis = (edge.basis ?? "").trim();
   if (basis && !PLACEHOLDER_BASES.includes(basis)) return basis;
-  return isChallengeEdge(edge.type) ? "OPPOSES" : "SUPPORTS";
+  return "";
 }
 const ROOT_WIDTH = 180;
 const ROOT_HEIGHT = 88;
@@ -573,26 +586,42 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
                 />
                 <g transform={`translate(${jx},${jy})`} className="graph-junction">
-                  <rect
-                    x={-jw / 2}
-                    y={-JUNCTION_HEIGHT / 2}
-                    width={jw}
-                    height={JUNCTION_HEIGHT}
-                    rx={JUNCTION_HEIGHT / 2}
-                    fill="#0f172a"
-                    stroke={color}
-                    strokeWidth={1.5}
-                  />
-                  <text
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={9}
-                    fontWeight={600}
-                    fill={color}
-                    style={{ pointerEvents: "none", letterSpacing: "0.03em" }}
-                  >
-                    {label}
-                  </text>
+                  {label ? (
+                    <>
+                      <rect
+                        x={-jw / 2}
+                        y={-JUNCTION_HEIGHT / 2}
+                        width={jw}
+                        height={JUNCTION_HEIGHT}
+                        rx={JUNCTION_HEIGHT / 2}
+                        fill="#0f172a"
+                        stroke={color}
+                        strokeWidth={1.5}
+                      />
+                      <text
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize={9}
+                        fontWeight={600}
+                        fill={color}
+                        style={{ pointerEvents: "none", letterSpacing: "0.03em" }}
+                      >
+                        {label}
+                      </text>
+                    </>
+                  ) : (
+                    // No basis chosen: a plain dot. The relation is still a
+                    // node -- it has to be, so several sources can converge on
+                    // it and so it can be a target later -- but it makes no
+                    // claim about what KIND of connection it is. Support
+                    // versus opposition is already carried by the colour.
+                    <circle
+                      r={JUNCTION_DOT_RADIUS}
+                      fill="#0f172a"
+                      stroke={color}
+                      strokeWidth={1.5}
+                    />
+                  )}
                 </g>
               </g>
             );
