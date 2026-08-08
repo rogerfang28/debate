@@ -1,0 +1,34 @@
+name: "MultiFromSupport"
+
+steps { action { username: "A" event_type: "CREATE_USER" } }
+
+# claim 1 — the root
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Rent control raises rents" }
+}
+steps { action { username: "A" event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+# claims 2, 3, 4 — ONE relation with three from-claims
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Rents rose 12% in controlled zones"
+    extra_claim_texts: "Those zones saw no new construction"
+    extra_claim_texts: "Supply shortage drives price"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# One relation, three sources -- not three relations
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 1 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 1 expected_count: 3 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 4 to_claim_id: 1 }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "A" expected_status: "TRUE_CLAIM" }
+}

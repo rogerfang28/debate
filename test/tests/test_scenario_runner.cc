@@ -701,6 +701,12 @@ TEST_F(ScenarioRunner, FauciPaulHearing) {
     executeScenario(s, /*dump_json_per_step=*/true);
 }
 
+TEST_F(ScenarioRunner, MultiFromSupport) {
+    TestScenario s = LoadScenarioFromFile("scenarios/MultiFromSupport.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load MultiFromSupport.pbtxt";
+    executeScenario(s);
+}
+
 TEST_F(ScenarioRunner, MegaTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/MegaTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load MegaTest.pbtxt";
