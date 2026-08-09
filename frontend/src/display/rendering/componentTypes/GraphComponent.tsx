@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from "react";
 import * as d3 from "d3";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
@@ -351,19 +351,130 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   }, [nodes, edges, dims.width]);
 
   // ── Zoom & pan ────────────────────────────────────────────────────
+  //
+  // The behaviour is kept in a ref so every caller drives the SAME one.
+  // Previously the fit and reset buttons each constructed a throwaway
+  // d3.zoom() and called .transform on it, which moves the picture but leaves
+  // the ATTACHED behaviour still holding the old transform -- so the next drag
+  // or wheel snapped back to wherever the graph used to be.
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+
   useEffect(() => {
     const svg = d3.select(svgRef.current);
     if (!svg.node()) return;
 
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.2, 3])
+      // The floor used to be 0.2, which is not far enough out to fit a real
+      // debate: a 22-claim tree spans ~2600px in a ~460px pane and needs about
+      // 0.15. Fit-to-view computed a scale the zoom behaviour then refused to
+      // hold, so the graph sprang back on the next interaction.
+      .scaleExtent([0.02, 3])
       .on("zoom", (event) => {
         svg.select("g.graph-root").attr("transform", event.transform.toString());
       });
 
+    zoomRef.current = zoom;
     svg.call(zoom);
   }, []);
+
+  // Fit the whole graph into the pane. Shared by the button and the auto-fit
+  // below so there is one definition of "fitted".
+  const fitToView = useCallback((duration = 400) => {
+    const svg = d3.select(svgRef.current);
+    const zoom = zoomRef.current;
+    const rootNode = svg.select<SVGGElement>("g.graph-root").node();
+    if (!svg.node() || !zoom || !rootNode) return;
+
+    // Measure in the SVG's own coordinate space. The element is rendered
+    // responsively -- its viewBox is dims.width x dims.height regardless of how
+    // many CSS pixels it occupies -- so the fit must be computed against the
+    // viewBox, not against getBoundingClientRect.
+    const bounds = rootNode.getBBox();
+    if (!bounds.width || !bounds.height) return;
+
+    const padding = 40;
+    const scale = Math.min(
+      (dims.width - padding * 2) / bounds.width,
+      (dims.height - padding * 2) / bounds.height,
+      1.5 // never zoom IN past readable on a small debate
+    );
+    const tx = dims.width / 2 - (bounds.x + bounds.width / 2) * scale;
+    const ty = dims.height / 2 - (bounds.y + bounds.height / 2) * scale;
+    const target = d3.zoomIdentity.translate(tx, ty).scale(scale);
+
+    // Applied directly rather than through a transition.
+    // svg.transition().call(zoom.transform, …) silently did nothing here, so
+    // both buttons appeared dead. A transform that lands is worth more than one
+    // that animates, and this is also what makes the auto-fit below safe to run
+    // during the first paint.
+    if (duration > 0) {
+      svg.transition().duration(duration).call(zoom.transform, target);
+    }
+    zoom.transform(svg, target);
+  }, [dims.width, dims.height]);
+
+  // Held in a ref so the retry loop below can call the latest fitToView without
+  // taking it as a dependency -- see the note on the effect's dep list.
+  const fitToViewRef = useRef(fitToView);
+  fitToViewRef.current = fitToView;
+
+  // Auto-fit when the graph's SHAPE changes -- on first render, and whenever
+  // claims are added or removed.
+  //
+  // Without this the graph opens at 1:1 with the root at top-centre, so a real
+  // debate is mostly off-screen and the only clue is a scrollbar-less blank
+  // pane. Fit-to-view already existed as a button, but a view you must repair
+  // before you can read it should not need a button.
+  //
+  // Keyed on the node ids rather than the array, so ordinary re-renders (a
+  // status change, a selection) leave the viewer's own pan and zoom alone.
+  const shapeKey = positionedNodes.map((n) => n.id).join(",");
+  useLayoutEffect(() => {
+    if (!shapeKey) return;
+
+    // Fit synchronously first. useLayoutEffect runs after the DOM is updated
+    // but before paint, so the nodes are already laid out and getBBox() has
+    // real numbers -- which means the graph is never painted unfitted.
+    const rootNow = d3.select(svgRef.current).select<SVGGElement>("g.graph-root").node();
+    const boxNow = rootNow?.getBBox();
+    if (boxNow && boxNow.width > 0 && boxNow.height > 0) {
+      fitToViewRef.current(0);
+      return;
+    }
+
+
+    // Retried across a few frames rather than fitted once.
+    //
+    // getBBox() returns zeroes until the nodes have actually been laid out, and
+    // a single requestAnimationFrame is not reliably late enough -- the first
+    // attempt measured an empty box, bailed, and never tried again, which is
+    // why the graph still opened unfitted. Retrying until the box has a size
+    // costs a few frames and removes the race entirely.
+    let frame = 0;
+    let raf = 0;
+    const attempt = () => {
+      const rootNode = d3
+        .select(svgRef.current)
+        .select<SVGGElement>("g.graph-root")
+        .node();
+      const measured = rootNode?.getBBox();
+      if (measured && measured.width > 0 && measured.height > 0) {
+        fitToViewRef.current(0);
+        return;
+      }
+      if (++frame < 10) raf = requestAnimationFrame(attempt);
+    };
+    raf = requestAnimationFrame(attempt);
+    return () => cancelAnimationFrame(raf);
+    // Deliberately keyed on shapeKey ALONE.
+    //
+    // With fitToView in the deps this effect re-ran on every unrelated render,
+    // and each cleanup cancelled the pending frame before it could fire -- so
+    // the fit was scheduled repeatedly and never once executed. fitToView is
+    // read through a ref instead, so the retry survives re-renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shapeKey]);
 
   // ── Click handler — selects the claim server-side (SELECT_CLAIM), which
   // moves the "current claim" highlight to it on next render.
@@ -811,16 +922,15 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         <button
           onClick={() => {
             const svg = d3.select(svgRef.current);
+            const zoom = zoomRef.current;
+            if (!svg.node() || !zoom) return;
             svg
               .transition()
               .duration(300)
-              .call(
-                d3.zoom<SVGSVGElement, unknown>().transform,
-                d3.zoomIdentity.translate(0, 0).scale(1)
-              );
+              .call(zoom.transform, d3.zoomIdentity.translate(0, 0).scale(1));
           }}
           className="graph-zoom-btn"
-          title="Reset zoom"
+          title="Reset zoom to 100%"
           style={{
             width: "28px",
             height: "28px",
@@ -838,29 +948,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           ⟲
         </button>
         <button
-          onClick={() => {
-            const svg = d3.select(svgRef.current);
-            const root = svg.select<SVGGElement>("g.graph-root");
-            if (!root.node()) return;
-            const bounds = (root.node() as SVGGElement).getBBox();
-            const padding = 40;
-            const scale = Math.min(
-              (dims.width - padding * 2) / (bounds.width || 1),
-              (dims.height - padding * 2) / (bounds.height || 1),
-              2
-            );
-            const tx = dims.width / 2 - ((bounds.x || 0) + (bounds.width || 0) / 2) * scale;
-            const ty = dims.height / 2 - ((bounds.y || 0) + (bounds.height || 0) / 2) * scale;
-            svg
-              .transition()
-              .duration(400)
-              .call(
-                d3.zoom<SVGSVGElement, unknown>().transform,
-                d3.zoomIdentity.translate(tx, ty).scale(scale)
-              );
-          }}
+          onClick={() => fitToView()}
           className="graph-zoom-btn"
-          title="Fit to view"
+          title="Fit whole debate in view"
           style={{
             width: "28px",
             height: "28px",
