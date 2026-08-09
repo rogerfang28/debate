@@ -3,86 +3,103 @@ name: "FauciPaulHearingFull"
 # ============================================================================
 # THE FAUCI / PAUL DISPUTE -- as it actually stands.
 #
-# EVERY CLAIM IN THIS FILE CORRESPONDS TO SOMETHING THAT HAPPENED OR A
-# POSITION SOMEONE ACTUALLY TOOK. Nothing is invented. In particular there
-# are NO CONCEDE_CHALLENGE steps, because neither party has conceded
-# anything. The dispute is unresolved, and the scenario ends unresolved.
+# EVERY CLAIM CORRESPONDS TO SOMETHING THAT HAPPENED OR A POSITION SOMEONE
+# ACTUALLY TOOK. Nothing is invented. There are NO CONCEDE_CHALLENGE steps,
+# because neither party has conceded anything. The dispute is unresolved and
+# the scenario ends unresolved.
 #
-# That makes this a CONSTRUCTION test, not a propagation test. It exercises
-# multi-from relations, definitions inside from-sets, independent supports,
-# and challenge attachment. Concede propagation is covered by
-# ConcedePropagationTest.pbtxt -- do not add concessions here to get more
-# coverage, because any concession in this file would be fiction.
+# Every claim carries a plain-language description so a reader who has never
+# followed this story can understand what is being argued and why it matters.
+#
+# NOTE ON DESCRIPTIONS: `claim_description` is a single field, so where one
+# ADD_CHILD_CLAIM creates several claims via `extra_claim_texts` the
+# description most likely attaches only to the first. Descriptions here are
+# written to cover the whole group. If the runner drops them for the extras,
+# that is a gap worth closing -- every claim should be able to carry its own
+# explanation.
+#
+# This is a CONSTRUCTION test, not a propagation test. Concede propagation is
+# covered by ConcedePropagationTest.pbtxt. Do not add concessions here to get
+# more coverage -- any concession in this file would be fiction.
+#
+# ---------------------------------------------------------------------------
+# THE STORY IN SHORT
+#
+# Rand Paul, a senator, says Anthony Fauci lied to Congress in 2021 about
+# whether US government money paid for risky virus research in Wuhan, China.
+# Fauci says he told the truth, because the phrase Paul is using -- "gain-of-
+# function" -- has a specific regulatory meaning, and the research did not
+# meet it.
+#
+# Almost none of the underlying FACTS are in dispute. Both sides agree the
+# grant existed, agree what Fauci said, and agree what the key documents say.
+# The disagreement is about what those facts MEAN. That is what makes this a
+# good test: it is a real argument that cannot be settled by producing more
+# evidence.
+#
+# In July 2026 the fight escalated. Paul released 1,100+ pages of Fauci's
+# private journals and subpoenaed him. At the hearing Fauci invoked the Fifth
+# Amendment and answered nothing. In August the committee voted to hold him
+# in contempt.
 #
 # ---------------------------------------------------------------------------
 # TIMELINE OF RECORD
 #
-#   2014        NIAID awards a grant to EcoHealth Alliance, later renewed in
-#               2019, including a sub-award to the Wuhan Institute of
-#               Virology. Cancelled April 2020, later reinstated with
-#               conditions EcoHealth said it could not meet.
+#   2014        NIAID awards a grant to EcoHealth Alliance, renewed 2019,
+#               including a sub-award to the Wuhan Institute of Virology.
 #   2014-2017   Federal funding pause on certain gain-of-function work.
 #   2017        The pause is replaced with a review framework for "enhanced
-#               potential pandemic pathogens" (EPPP) -- pathogens already
-#               highly transmissible and virulent in humans that have been
-#               made more so.
+#               potential pandemic pathogens".
 #   May 2021    Fauci tells a Senate hearing: "The NIH has not ever and does
 #               not now fund gain-of-function research in the Wuhan Institute
 #               of Virology."
-#   Jul 2021    Paul accuses Fauci of lying to Congress, citing the criminal
-#               statute. Fauci calls the accusation false.
-#   Oct 2021    NIH Principal Deputy Director Lawrence Tabak writes to Rep.
-#               Comer describing a "limited experiment" in which mice
-#               infected with a chimeric SHC014-WIV1 bat coronavirus became
-#               sicker than those infected with WIV1, and stating EcoHealth
-#               failed to report that result promptly as the grant required.
-#               The letter also says the result was unexpected rather than an
-#               objective, and that the viruses could not have produced
-#               SARS-CoV-2. Both sides read this letter as vindicating them.
+#   Jul 2021    Paul accuses Fauci of lying to Congress. Fauci denies it.
+#   Oct 2021    NIH official Lawrence Tabak writes to Rep. Comer describing a
+#               "limited experiment" in which mice given a lab-made hybrid
+#               virus became sicker than mice given the original, and says
+#               EcoHealth failed to report it promptly. Both sides claim the
+#               letter vindicates them.
 #   Jun 2026    Paul subpoenas Fauci after Fauci withdraws from voluntary
 #               testimony.
-#   Jul 25-27   Paul releases 1,100+ pages of Fauci's journals covering
-#               December 2019 to December 2022. HHS Secretary Kennedy says
-#               the records were recovered from 11 government servers over
-#               eight months. Fauci was not notified before publication.
-#   Jul 29 2026 Fauci invokes the Fifth Amendment and declines to answer,
-#               reportedly 111 times.
-#   Aug 6 2026  The committee votes 8-5 to hold Fauci in contempt, along
-#               party lines. Paul sends the referral directly to the Justice
+#   Jul 2026    Paul releases 1,100+ pages of Fauci's journals (Dec 2019 to
+#               Dec 2022). HHS says they were recovered from 11 government
+#               servers over eight months. Fauci was not notified.
+#   Jul 29      Fauci invokes the Fifth Amendment, reportedly 111 times.
+#   Aug 6 2026  Committee votes 8-5 along party lines to hold him in
+#               contempt; the referral goes directly to the Justice
 #               Department, bypassing a Senate floor vote.
 #
-#   CURRENT STATUS: unresolved. No party has withdrawn any position. A legal
-#   fight over the scope of the Fifth Amendment claim appears likely.
+#   CURRENT STATUS: unresolved. No party has withdrawn any position.
 #
 # ---------------------------------------------------------------------------
-# WHAT THE ENGINE CANNOT EXPRESS (see section 6 of the scenario guide)
+# WHAT THE ENGINE CANNOT EXPRESS (section 6 of the scenario guide)
 #
-#   [SUB-A] OPPOSE targeting a RELATION. Several counters below dispute an
-#      INFERENCE while accepting the evidence -- Fauci does not deny the
-#      journals are his, and does not deny the Tabak letter says what it
-#      says. Those are attacks on the link and should yield UNSUPPORTED with
-#      the evidence untouched. Only claims can be targeted, so each is
-#      rendered as a claim-level challenge -- stronger than the case warrants.
+#   [SUB-A] OPPOSE targeting a RELATION. All four counters here dispute an
+#      INFERENCE while accepting the evidence. Fauci does not deny the grant,
+#      his own words, the journals, or what the Tabak letter says. Those are
+#      attacks on the link, and should leave the evidence standing while the
+#      conclusion becomes UNSUPPORTED. Only claims can be targeted, so each is
+#      rendered as a claim-level challenge -- stronger than anyone said.
 #
-#   [GAP-B] CONTESTED. Nothing here is resolved, and several branches have
-#      real surviving support on both sides. Three statuses cannot say so.
+#   [GAP-B] CONTESTED. Nothing here is resolved and both sides have surviving
+#      support. Three statuses cannot say so.
 #
-#   [GAP-C] ACCEPTED. Claims 3, 4, 10 and 11 are not disputed by either
-#      party. There is no way to mark common ground, so they look identical
-#      to claims nobody has examined.
+#   [GAP-C] ACCEPTED. Claims 3, 4, 10 and 11 are agreed by both parties.
+#      There is no way to mark common ground, so they look identical to
+#      claims nobody has examined.
 #
-#   [GAP-D] The definitional lens. The verdict on claim 2 should flip with
-#      the reader's choice between claim 5 and claim 6, writing nothing.
+#   [GAP-D] The definitional lens. The verdict on claim 2 should flip with the
+#      reader's choice between claim 5 and claim 6, writing nothing.
 #
-#   [GAP-E] The author lane. The provenance of the journals is disputed and
-#      should be debatable without threatening what they say.
+#   [GAP-E] The author lane. The journals' provenance is disputed and should
+#      be debatable without threatening what they say.
 #
 #   [GAP-F] The origin question (lab incident vs natural spillover) is
-#      OMITTED. It is CONTESTED in its purest form and is not a sub-claim of
+#      OMITTED -- CONTESTED in its purest form, and not a sub-claim of
 #      anything here. It needs its own scenario.
 #
-#   [GAP-G] There is no way to express that Fauci declined to engage -- which
-#      is what the 2026 hearing WAS. See BRANCH D.
+#   [GAP-G] No way to express that Fauci declined to engage, which is what
+#      the 2026 hearing WAS. See BRANCH D.
 #
 # 22 claims. Ids noted beside every action.
 # ============================================================================
@@ -91,6 +108,9 @@ steps { action { username: "paul"  event_type: "CREATE_USER" } }
 steps { action { username: "fauci" event_type: "CREATE_USER" } }
 
 # claim 1 -- the root. Paul's overall position.
+# NOTE: CREATE_DEBATE takes only `debate_topic`, so the root claim cannot
+# carry a description. Another gap -- the single most important claim in a
+# debate is the one that cannot be explained to a newcomer.
 steps {
   action {
     username: "paul"
@@ -122,6 +142,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Fauci's May 2021 testimony that NIH did not fund gain-of-function research at the Wuhan Institute was false"
+    claim_description: "The sharpest accusation in the dispute. Lying to Congress under oath is a federal crime, so this is not a claim that Fauci was mistaken -- it is a claim that he knowingly said something untrue. Fauci has denied it since 2021. Everything below turns on what the words gain-of-function mean."
     basis: "EVIDENTIAL"
   }
 }
@@ -131,19 +152,16 @@ steps {
 # THE CENTRAL MECHANISM.
 #
 # Claims 3 and 4 are NOT IN DISPUTE. Fauci has never denied the grant existed
-# or denied saying what he said. They establish claim 2 only under a
-# particular reading of the term, supplied by claim 5. Change claim 5 and the
+# or denied saying what he said. They establish claim 2 only under the
+# particular reading of the term supplied by claim 5. Change claim 5 and the
 # same undisputed facts stop supporting the accusation.
-#
-# Claim 5 is the definition NIH itself published on its website before
-# October 2021, which is why Paul can present it as the standard meaning
-# rather than one he invented.
 steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
 steps {
   action {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "NIAID awarded a grant to EcoHealth Alliance, renewed in 2019, that included a sub-award to the Wuhan Institute of Virology"
+    claim_description: "Three things, and the first two are agreed by everyone. First, the money trail: Fauci's agency funded a US non-profit, which passed part of the money to the Wuhan lab. Second, the sentence Fauci said under oath in May 2021, which is what the perjury charge is built on. Third, the definition -- and this is the one that is fought over. The wording used here is the definition NIH itself published on its website before late 2021, which is why Paul can present it as the standard meaning rather than one he invented. It is broad: any modification giving a virus new or enhanced activity counts."
     extra_claim_texts: "In May 2021 Senate testimony Fauci said the NIH has not ever and does not now fund gain-of-function research in the Wuhan Institute of Virology"
     extra_claim_texts: "Gain-of-function research means research that modifies a biological agent so that it confers new or enhanced activity to that agent"
     basis: "EVIDENTIAL"
@@ -161,19 +179,17 @@ steps {
 }
 
 # claim 6 -- [SUB-A] Fauci challenges the DEFINITION, not the facts.
-# His stated position throughout has been that the term has a specific
-# regulatory meaning and the funded work fell outside it.
 #
-# Marked DEFINITIONAL, which is exactly what it is: Fauci disputes no fact
-# here, only what the term covers. Without the basis the engine would store
-# this identically to an evidential challenge.
+# Marked DEFINITIONAL: Fauci disputes no fact here, only what the term
+# covers. Without the basis this would be stored identically to an
+# evidential challenge.
 steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 5 } }
 steps {
   action {
     username: "fauci"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The standard governing federal funding decisions is enhanced potential pandemic pathogen, meaning a pathogen already highly transmissible and virulent in humans that has been made more so"
-    challenge_description: "The applicable definition is the regulatory one, not a general one."
+    challenge_description: "The heart of Fauci's defence, and the reason this argument never ends. He is not disputing any fact -- he is saying Paul is using the wrong dictionary. In the rules that actually govern what the government may fund, the phrase has a narrow technical meaning: it applies to pathogens that are ALREADY dangerous to humans and have been made more dangerous. Bat viruses that cannot infect humans well do not qualify, however much they were modified. Fauci once called the term very nebulous in testimony, which both sides quote against each other."
     basis: "DEFINITIONAL"
   }
 }
@@ -185,6 +201,7 @@ steps {
     username: "fauci"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "In 2017 federal officials replaced the 2014 to 2017 funding pause with a review framework for enhanced potential pandemic pathogens"
+    claim_description: "Where the narrow definition comes from. After a three-year blanket pause on certain risky research, the government swapped it in 2017 for a system of extra review aimed at a specific category. NIH said in 2021 that the Wuhan studies did not need that extra review, because the bat viruses involved were genetically far from the virus that caused the pandemic. This is AUTHORITY-basis support -- it rests on what an institution says, not on data, which means attacking it can weaken the claim without making it false."
     extra_claim_texts: "NIH stated in 2021 that the Wuhan studies did not require that additional review because they involved bat coronaviruses genetically distant from the pandemic virus"
     basis: "AUTHORITY"
   }
@@ -202,8 +219,8 @@ steps {
 # BRANCH B -- the Tabak letter
 #
 # The single most contested document in the dispute, and the clearest case in
-# the whole file of UNDISPUTED EVIDENCE WITH A DISPUTED INFERENCE. Nobody
-# argues about what the letter says. Both sides cite it as vindication.
+# the file of UNDISPUTED EVIDENCE WITH A DISPUTED INFERENCE. Nobody argues
+# about what the letter says. Both sides cite it as vindication.
 # ============================================================================
 
 # claim 9 -- a SECOND, independent support for claim 2.
@@ -215,6 +232,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "The October 2021 NIH letter confirms the funded work enhanced a virus"
+    claim_description: "Paul's second and independent line of attack. Even setting the definition fight aside, he argues NIH's own letter admits the funded research made a virus more dangerous. This matters structurally: because it is a separate branch, defeating the definition argument would not defeat this one."
     basis: "EVIDENTIAL"
   }
 }
@@ -227,22 +245,20 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "In an October 2021 letter to Rep. Comer, NIH official Lawrence Tabak described a limited experiment in which mice infected with a chimeric SHC014-WIV1 bat coronavirus became sicker than those infected with WIV1"
+    claim_description: "The most quoted document in the whole affair, and nobody disputes a word of it. Scientists took two bat viruses and made a hybrid; mice given the hybrid got sicker than mice given the original. The letter also says the grantee broke the rules by not reporting that result promptly. Conservative outlets called it an admission that the US funded gain-of-function work; fact-checkers called it an unexpected result inside an approved study. Same document, opposite conclusions -- which is exactly why the argument continues."
     extra_claim_texts: "The same letter states EcoHealth Alliance failed to report that result promptly as the grant terms required"
     basis: "EVIDENTIAL"
   }
 }
 
 # claim 12 -- [SUB-A] the counter-reading of the same letter.
-# This disputes the INFERENCE, not the document. In the target design it
-# attacks the relation [10,11] -> 9 and claim 9 becomes UNSUPPORTED while
-# claims 10 and 11 stay standing.
 steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 9 } }
 steps {
   action {
     username: "fauci"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The same letter states the result was unexpected rather than an objective of the research, and that the viruses studied could not have produced SARS-CoV-2"
-    challenge_description: "The letter is not in dispute. What follows from it is."
+    challenge_description: "The other half of the same letter. It says the sicker mice were a surprise, not the goal -- which matters because gain-of-function rules are about what research SETS OUT to do. And it says these particular viruses were too genetically distant to have become the pandemic virus. So the document that Paul reads as a confession also contains the sentences Fauci's side reads as an exoneration. Note that this challenges the CONCLUSION drawn from the letter, not the letter itself."
     basis: "EVIDENTIAL"
   }
 }
@@ -267,6 +283,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Fauci's public statements about the virus's origin differed from his private view"
+    claim_description: "A separate accusation, aimed at the public rather than at Congress. In July 2026 Paul released more than 1,100 pages of Fauci's private journals and argued they show he privately entertained doubts he never voiced publicly. Note this is about honesty in general, not about the specific testimony in Branch A -- which is why it hangs off the root as its own branch."
     basis: "EVIDENTIAL"
   }
 }
@@ -281,6 +298,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Fauci's journals covering December 2019 to December 2022 record uncertainty about the origin of the virus"
+    claim_description: "Two facts that only work together. The journals alone show a man who was uncertain -- which is not dishonest. The public statements alone show a man stating a position -- also not dishonest. It is only the GAP between them that Paul says is damning. This is why the tool puts both in one relation: knock out either and the accusation loses its footing, because uncertainty and confidence are only a contradiction when they are about the same thing at the same time."
     extra_claim_texts: "Early in the pandemic Fauci publicly said the evidence pointed very, very strongly toward a natural origin"
     basis: "EVIDENTIAL"
   }
@@ -294,7 +312,7 @@ steps {
     username: "fauci"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Recording uncertainty privately while stating a leading hypothesis publicly is ordinary scientific caution rather than a contradiction"
-    challenge_description: "The journals are genuine. The inference from them does not follow."
+    challenge_description: "Nobody claims the journals are fake. The argument is about what the gap means. Saying one explanation is most likely, while privately noting you cannot be certain, is how scientists normally talk -- a best estimate is not a promise. On this reading there is no hidden second position, just the ordinary difference between a considered public statement and private thinking-out-loud."
     basis: "EVIDENTIAL"
   }
 }
@@ -306,8 +324,8 @@ steps {
 # target design that is ABANDONED -- silence recorded as silence, explicitly
 # not concession and explicitly not defeat. There is no way to say it here,
 # so the inference drawn FROM the silence is entered as an ordinary claim and
-# the objection to that inference as an ordinary challenge. That makes a
-# constitutional question look like a factual one.
+# the objection as an ordinary challenge. That makes a constitutional
+# question look like a factual one.
 # ============================================================================
 
 # claim 17 -- third independent support for the root
@@ -317,6 +335,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Fauci's refusal to answer the committee's questions indicates he could not answer them truthfully"
+    claim_description: "The newest layer, and the one that has nothing to do with virology. At the July 2026 hearing Fauci answered no questions at all. Paul's argument is that the silence is itself revealing -- that an innocent man would have answered. This is an inference from behaviour rather than from evidence, which is a different kind of claim from everything else in this file."
     basis: "EVIDENTIAL"
   }
 }
@@ -328,6 +347,7 @@ steps {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "At the July 29 2026 hearing Fauci invoked the Fifth Amendment and declined to answer the committee's questions"
+    claim_description: "What happened, and what a senator on the committee made of it. Fauci invoked his right against self-incrimination reportedly 111 times and answered nothing of substance. Senator Johnson said it would be almost impossible for him to answer truthfully without revealing what he had done. A week later the committee voted 8-5, along party lines, to hold Fauci in contempt of Congress and sent the referral straight to the Justice Department."
     extra_claim_texts: "Senator Johnson said it would be almost impossible for Fauci to answer the questions truthfully without demonstrating what he did"
     basis: "EVIDENTIAL"
   }
@@ -342,20 +362,21 @@ steps {
     username: "fauci"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Invoking the Fifth Amendment is a constitutional right from which no inference of wrongdoing follows"
-    challenge_description: "Silence under a right is not evidence."
+    challenge_description: "A legal principle rather than a fact. The Fifth Amendment protects a person from being forced to give evidence against themselves, and courts do not permit treating its use as an admission -- precisely because innocent people invoke it when the questioning is hostile. Note that no amount of evidence could settle this claim either way: it is an argument about what conclusions are permissible, not about what happened."
     basis: "NORMATIVE"
   }
 }
 
 # claims 21, 22 -- ONE relation, TWO from-claims supporting the objection.
-# These are the two reasons actually advanced: that answering carried real
-# legal exposure, and that the exposure was the point.
+# The two reasons actually advanced: that answering carried real legal
+# exposure, and that the exposure was the point.
 steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 20 } }
 steps {
   action {
     username: "fauci"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "The 2025 pardon covers conduct between 2014 and January 2025 and would not protect statements made in present-day testimony"
+    claim_description: "Why staying silent was not merely stubbornness. Fauci received a pre-emptive pardon in 2025 covering his pandemic-era conduct -- but a pardon only covers the past. Anything he said at the hearing itself would be new, unpardoned, and prosecutable if it were later called a misstatement. Senator Hassan argued that this was the design: keep questioning until something quotable slips out, then charge him for the new statement. Paul's response is that the pardon means Fauci had nothing to fear and should have answered."
     extra_claim_texts: "Senator Hassan said the aim was to wait for a misstatement not covered by the pardon and then bring charges over it"
     basis: "EVIDENTIAL"
   }
@@ -380,7 +401,7 @@ steps {
   expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 17 expected_count: 2 }
   expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 20 expected_count: 2 }
 
-  # every challenge is attached to the claim it actually targets
+  # every challenge attaches to the claim it actually targets
   expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 6  to_claim_id: 5  }
   expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 12 to_claim_id: 9  }
   expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 16 to_claim_id: 13 }
@@ -398,27 +419,25 @@ steps {
 # ============================================================================
 # THE SCENARIO ENDS HERE, UNRESOLVED -- because the dispute is unresolved.
 #
-# No CONCEDE_CHALLENGE step appears in this file. Neither party has withdrawn
-# a position. Adding one to exercise propagation would be inventing an event,
-# and a scenario built from a real dispute must not contain fabricated moves.
+# No CONCEDE_CHALLENGE step appears. Neither party has withdrawn a position.
+# Adding one to exercise propagation would be inventing an event.
 #
 # WHAT A PASS MEANS
 #   Six multi-from relations build correctly, including one holding a
 #   definition alongside the facts it qualifies. Three independent relations
 #   coexist on the root and two on claim 2. Four challenges attach to the
-#   claims they actually target. Undisputed evidence stands.
+#   claims they target. Undisputed evidence stands.
 #
 # WHAT A PASS DOES NOT MEAN
-#   The four counters in this file (claims 6, 12, 16, 20) all dispute an
-#   INFERENCE while accepting the evidence -- that is the shape of this entire
-#   dispute, and it is the one thing the engine cannot represent. Every one is
-#   rendered as a claim-level challenge instead, which says something stronger
-#   than any party actually said.
+#   All four counters (claims 6, 12, 16, 20) dispute an INFERENCE while
+#   accepting the evidence. That is the shape of this entire dispute, and it
+#   is the one thing the engine cannot represent. Each is rendered as a
+#   claim-level challenge, which says something stronger than any party said.
 #
-#   Nothing in the file distinguishes the four claims both parties agree on
-#   from claims nobody has examined. Nothing expresses that the origin
-#   question has real support on both sides. And nothing expresses that the
-#   2026 hearing consisted of a witness declining to speak.
+#   Nothing distinguishes the four claims both parties agree on from claims
+#   nobody has examined. Nothing expresses that the origin question has real
+#   support on both sides. Nothing expresses that the 2026 hearing consisted
+#   of a witness declining to speak.
 #
 #   A green run certifies the plumbing. It does not certify that the tool can
 #   hold this argument.
