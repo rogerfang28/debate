@@ -1,81 +1,96 @@
 name: "FauciPaulHearingFull"
 
 # ============================================================================
-# THE FAUCI / PAUL HEARING -- Senate Homeland Security and Governmental
-# Affairs Committee, July 29 2026.
+# THE FAUCI / PAUL DISPUTE -- as it actually stands.
 #
-# A real, live, contested public dispute mapped into the tool's structure.
-# The scenario takes no side. Both positions are entered as claims with their
-# strongest supporting material, and the tool declares no winner -- which is
-# the entire point of the design.
+# EVERY CLAIM IN THIS FILE CORRESPONDS TO SOMETHING THAT HAPPENED OR A
+# POSITION SOMEONE ACTUALLY TOOK. Nothing is invented. In particular there
+# are NO CONCEDE_CHALLENGE steps, because neither party has conceded
+# anything. The dispute is unresolved, and the scenario ends unresolved.
 #
-# BACKGROUND (verified against reporting, July-August 2026)
-#   - Paul, committee chairman, subpoenaed Fauci in June 2026 after Fauci
-#     withdrew from a voluntary testimony agreement.
-#   - Ahead of the hearing Paul released 1,100+ pages of Fauci's personal
-#     journals covering December 2019 to December 2022. HHS Secretary
-#     Kennedy said the records were recovered from 11 government servers over
-#     eight months and handed to Paul and Sen. Johnson. Neither HHS nor the
-#     committee notified Fauci before publication.
-#   - At the hearing Fauci invoked the Fifth Amendment and declined to answer
-#     any questions. He now faces a contempt vote.
-#   - The long-running charge concerns Fauci's May 2021 testimony: "The NIH
-#     has not ever and does not now fund gain-of-function research in the
-#     Wuhan Institute of Virology."
-#
-# WHY THIS CASE
-#   It stacks five mechanisms a naive argument tool gets wrong:
-#     1. A definitional dispute that decides a factual verdict
-#     2. Evidence that is undisputed but whose INFERENCE is disputed
-#     3. Provenance attacks that must not touch what a document says
-#     4. Refusal to engage -- silence that is neither concession nor defeat
-#     5. Independent supports where defeating one must not defeat the rest
+# That makes this a CONSTRUCTION test, not a propagation test. It exercises
+# multi-from relations, definitions inside from-sets, independent supports,
+# and challenge attachment. Concede propagation is covered by
+# ConcedePropagationTest.pbtxt -- do not add concessions here to get more
+# coverage, because any concession in this file would be fiction.
 #
 # ---------------------------------------------------------------------------
-# WHAT THE ENGINE CANNOT EXPRESS  (see section 6 of the scenario guide)
+# TIMELINE OF RECORD
 #
-#   [SUB-A] OPPOSE targeting a RELATION.
-#      Fauci's real move against the journals is "the entries are genuine,
-#      your inference from them fails." That attacks the link, and should
-#      yield UNSUPPORTED with the evidence untouched. Only claims can be
-#      targeted, so every such move below is substituted with a claim-level
-#      challenge -- strictly STRONGER than the case warrants.
+#   2014        NIAID awards a grant to EcoHealth Alliance, later renewed in
+#               2019, including a sub-award to the Wuhan Institute of
+#               Virology. Cancelled April 2020, later reinstated with
+#               conditions EcoHealth said it could not meet.
+#   2014-2017   Federal funding pause on certain gain-of-function work.
+#   2017        The pause is replaced with a review framework for "enhanced
+#               potential pandemic pathogens" (EPPP) -- pathogens already
+#               highly transmissible and virulent in humans that have been
+#               made more so.
+#   May 2021    Fauci tells a Senate hearing: "The NIH has not ever and does
+#               not now fund gain-of-function research in the Wuhan Institute
+#               of Virology."
+#   Jul 2021    Paul accuses Fauci of lying to Congress, citing the criminal
+#               statute. Fauci calls the accusation false.
+#   Oct 2021    NIH Principal Deputy Director Lawrence Tabak writes to Rep.
+#               Comer describing a "limited experiment" in which mice
+#               infected with a chimeric SHC014-WIV1 bat coronavirus became
+#               sicker than those infected with WIV1, and stating EcoHealth
+#               failed to report that result promptly as the grant required.
+#               The letter also says the result was unexpected rather than an
+#               objective, and that the viruses could not have produced
+#               SARS-CoV-2. Both sides read this letter as vindicating them.
+#   Jun 2026    Paul subpoenas Fauci after Fauci withdraws from voluntary
+#               testimony.
+#   Jul 25-27   Paul releases 1,100+ pages of Fauci's journals covering
+#               December 2019 to December 2022. HHS Secretary Kennedy says
+#               the records were recovered from 11 government servers over
+#               eight months. Fauci was not notified before publication.
+#   Jul 29 2026 Fauci invokes the Fifth Amendment and declines to answer,
+#               reportedly 111 times.
+#   Aug 6 2026  The committee votes 8-5 to hold Fauci in contempt, along
+#               party lines. Paul sends the referral directly to the Justice
+#               Department, bypassing a Senate floor vote.
 #
-#   [GAP-B] CONTESTED. Several branches here have real surviving support on
-#      both sides and no winner. With three statuses there is no way to
-#      say so.
+#   CURRENT STATUS: unresolved. No party has withdrawn any position. A legal
+#   fight over the scope of the Fifth Amendment claim appears likely.
 #
-#   [GAP-C] UNSUPPORTED and relation states. When a member of a multi-from
-#      relation is conceded, that relation should go INERT and its target
-#      should become UNSUPPORTED -- not proven, not disproven, revivable.
-#      Not expressible.
+# ---------------------------------------------------------------------------
+# WHAT THE ENGINE CANNOT EXPRESS (see section 6 of the scenario guide)
 #
-#   [GAP-D] Lenses. The gain-of-function verdict should flip with the
-#      reader's choice of definition, writing nothing. Here the definition is
-#      instead settled by concession, which is a different and cruder thing.
+#   [SUB-A] OPPOSE targeting a RELATION. Several counters below dispute an
+#      INFERENCE while accepting the evidence -- Fauci does not deny the
+#      journals are his, and does not deny the Tabak letter says what it
+#      says. Those are attacks on the link and should yield UNSUPPORTED with
+#      the evidence untouched. Only claims can be targeted, so each is
+#      rendered as a claim-level challenge -- stronger than the case warrants.
 #
-#   [GAP-E] The author lane. Credibility and provenance attacks must be fully
-#      debatable while being STRUCTURALLY INCAPABLE of changing a claim's
-#      truth. There is no lane, so the provenance challenge below wrongly
-#      threatens the evidence it targets.
+#   [GAP-B] CONTESTED. Nothing here is resolved, and several branches have
+#      real surviving support on both sides. Three statuses cannot say so.
 #
-#   [GAP-F] The origin question itself (lab incident vs natural spillover) is
-#      DELIBERATELY OMITTED. It is the CONTESTED case in its purest form --
-#      an intelligence community split, no resolution, records unavailable.
-#      Modelling it here would either fake a winner or hang it beneath a
-#      claim it is not a sub-claim of. It needs its own scenario once
-#      CONTESTED exists.
+#   [GAP-C] ACCEPTED. Claims 3, 4, 10 and 11 are not disputed by either
+#      party. There is no way to mark common ground, so they look identical
+#      to claims nobody has examined.
 #
-#   [GAP-G] REST / ACCEPT / REOPEN / TIMEOUT. Notably there is no way to
-#      express that Fauci declined to engage at all -- see BRANCH D.
+#   [GAP-D] The definitional lens. The verdict on claim 2 should flip with
+#      the reader's choice between claim 5 and claim 6, writing nothing.
 #
-# CLAIM IDS are sequential and noted beside every action. 23 claims total.
+#   [GAP-E] The author lane. The provenance of the journals is disputed and
+#      should be debatable without threatening what they say.
+#
+#   [GAP-F] The origin question (lab incident vs natural spillover) is
+#      OMITTED. It is CONTESTED in its purest form and is not a sub-claim of
+#      anything here. It needs its own scenario.
+#
+#   [GAP-G] There is no way to express that Fauci declined to engage -- which
+#      is what the 2026 hearing WAS. See BRANCH D.
+#
+# 22 claims. Ids noted beside every action.
 # ============================================================================
 
 steps { action { username: "paul"  event_type: "CREATE_USER" } }
 steps { action { username: "fauci" event_type: "CREATE_USER" } }
 
-# claim 1 -- the root accusation
+# claim 1 -- the root. Paul's overall position.
 steps {
   action {
     username: "paul"
@@ -97,14 +112,155 @@ steps {
 }
 
 # ============================================================================
-# BRANCH A -- did his public statements differ from his private view?
-#
-# Tests: a multi-from relation, a provenance attack, independent support.
+# BRANCH A -- the perjury charge and the definition it turns on
 # ============================================================================
 
-# claim 2 -- first of FOUR independent supports for the root.
-# Each of the four is a separate relation. Defeating one must leave the
-# others standing. This is the OR case, asserted after the concessions.
+# claim 2 -- first of three independent supports for the root
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's May 2021 testimony that NIH did not fund gain-of-function research at the Wuhan Institute was false"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# claims 3, 4, 5 -- ONE relation, THREE from-claims, the third a DEFINITION.
+#
+# THE CENTRAL MECHANISM.
+#
+# Claims 3 and 4 are NOT IN DISPUTE. Fauci has never denied the grant existed
+# or denied saying what he said. They establish claim 2 only under a
+# particular reading of the term, supplied by claim 5. Change claim 5 and the
+# same undisputed facts stop supporting the accusation.
+#
+# Claim 5 is the definition NIH itself published on its website before
+# October 2021, which is why Paul can present it as the standard meaning
+# rather than one he invented.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "NIAID awarded a grant to EcoHealth Alliance, renewed in 2019, that included a sub-award to the Wuhan Institute of Virology"
+    extra_claim_texts: "In May 2021 Senate testimony Fauci said the NIH has not ever and does not now fund gain-of-function research in the Wuhan Institute of Virology"
+    extra_claim_texts: "Gain-of-function research means research that modifies a biological agent so that it confers new or enhanced activity to that agent"
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 2 expected_count: 3 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 5 to_claim_id: 2 }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "paul" expected_status: "TRUE_CLAIM" }
+}
+
+# claim 6 -- [SUB-A] Fauci challenges the DEFINITION, not the facts.
+# His stated position throughout has been that the term has a specific
+# regulatory meaning and the funded work fell outside it.
+#
+# Marked DEFINITIONAL, which is exactly what it is: Fauci disputes no fact
+# here, only what the term covers. Without the basis the engine would store
+# this identically to an evidential challenge.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 5 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The standard governing federal funding decisions is enhanced potential pandemic pathogen, meaning a pathogen already highly transmissible and virulent in humans that has been made more so"
+    challenge_description: "The applicable definition is the regulatory one, not a general one."
+    basis: "DEFINITIONAL"
+  }
+}
+
+# claims 7, 8 -- AUTHORITY-basis support for the regulatory definition
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 6 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In 2017 federal officials replaced the 2014 to 2017 funding pause with a review framework for enhanced potential pandemic pathogens"
+    extra_claim_texts: "NIH stated in 2021 that the Wuhan studies did not require that additional review because they involved bat coronaviruses genetically distant from the pandemic virus"
+    basis: "AUTHORITY"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 8 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 6 expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 7 to_claim_id: 6 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 8 to_claim_id: 6 }
+  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+}
+
+# ============================================================================
+# BRANCH B -- the Tabak letter
+#
+# The single most contested document in the dispute, and the clearest case in
+# the whole file of UNDISPUTED EVIDENCE WITH A DISPUTED INFERENCE. Nobody
+# argues about what the letter says. Both sides cite it as vindication.
+# ============================================================================
+
+# claim 9 -- a SECOND, independent support for claim 2.
+# Separate ADD_CHILD_CLAIM on the same parent = separate relation = OR.
+# If the definitional branch fails, this one still stands on its own.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The October 2021 NIH letter confirms the funded work enhanced a virus"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# claims 10, 11 -- ONE relation, TWO from-claims. Neither party disputes
+# either of these. [GAP-C]
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 9 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In an October 2021 letter to Rep. Comer, NIH official Lawrence Tabak described a limited experiment in which mice infected with a chimeric SHC014-WIV1 bat coronavirus became sicker than those infected with WIV1"
+    extra_claim_texts: "The same letter states EcoHealth Alliance failed to report that result promptly as the grant terms required"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# claim 12 -- [SUB-A] the counter-reading of the same letter.
+# This disputes the INFERENCE, not the document. In the target design it
+# attacks the relation [10,11] -> 9 and claim 9 becomes UNSUPPORTED while
+# claims 10 and 11 stay standing.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 9 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The same letter states the result was unexpected rather than an objective of the research, and that the viruses studied could not have produced SARS-CoV-2"
+    challenge_description: "The letter is not in dispute. What follows from it is."
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 12 }
+  # claim 2 now has TWO independent supporting relations: [3,4,5] and [9]
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 9 to_claim_id: 2 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 9 expected_count: 2 }
+  expectations { check_type: "USER_VIEW" claim_id: 10 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 11 username: "paul" expected_status: "TRUE_CLAIM" }
+}
+
+# ============================================================================
+# BRANCH C -- the journals
+# ============================================================================
+
+# claim 13 -- second independent support for the root
 steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
 steps {
   action {
@@ -115,208 +271,43 @@ steps {
   }
 }
 
-# claims 3 and 4 -- ONE relation, TWO from-claims, JOINTLY required.
+# claims 14, 15 -- ONE relation, TWO from-claims, jointly required.
 # The private record alone shows only uncertainty, which is not dishonesty.
-# The public statement alone shows only a stated position. Only the two
-# TOGETHER support a divergence claim. This is why from_claim_ids is a list.
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+# The public statement alone shows only a stated position. Only together do
+# they support a divergence claim.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 13 } }
 steps {
   action {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci's journals from December 2019 to December 2022 record uncertainty about the origin of the virus"
+    claim_text: "Fauci's journals covering December 2019 to December 2022 record uncertainty about the origin of the virus"
     extra_claim_texts: "Early in the pandemic Fauci publicly said the evidence pointed very, very strongly toward a natural origin"
     basis: "EVIDENTIAL"
   }
 }
 
-steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 2 expected_count: 2 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 2 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 4 to_claim_id: 2 }
-  expectations { check_type: "USER_VIEW" claim_id: 3 username: "paul" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 4 username: "paul" expected_status: "TRUE_CLAIM" }
-}
-
-# claim 5 -- [GAP-E] the provenance attack.
-#
-# This targets HOW the journals were obtained, not WHAT THEY SAY. Authorship
-# is not disputed by anyone. In the target design this belongs in the author
-# lane: fully debatable, capable of flagging the source's handling, and
-# STRUCTURALLY UNABLE to change claim 3's truth.
-#
-# With no lane it becomes an ordinary challenge, which wrongly puts the
-# journals' contents at risk. If claim 3 ever flips to FALSE_CLAIM as a
-# result, that is the lane's absence doing damage -- not a correct outcome.
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 3 } }
+# claim 16 -- [SUB-A] the counter. Again an inference dispute: the journals'
+# authenticity is not questioned by anyone.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 13 } }
 steps {
   action {
     username: "fauci"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "The journals were recovered from government servers by HHS and published by the committee without notifying Fauci beforehand"
-    challenge_description: "Provenance and process, not content. Authorship is undisputed."
-    basis: "AUTHORITY"
-  }
-}
-
-# claim 6 -- a SECOND, independent support for claim 2.
-# Separate ADD_CHILD_CLAIM on the same parent = separate relation = OR.
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "A released email shows Fauci directed a scientist to report furin cleavage site concerns to the FBI and MI5"
-    basis: "EVIDENTIAL"
-  }
-}
-
-# claim 7 -- [SUB-A] Fauci's counter.
-# His actual position is that the inference fails, not that the record is
-# false: stating a leading hypothesis publicly while noting uncertainty
-# privately is ordinary scientific caution. That is an attack on the LINK
-# from [3,4] to 2. Rendered here as a claim-level challenge.
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 2 } }
-steps {
-  action {
-    username: "fauci"
-    event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "Stating a leading hypothesis in public while recording uncertainty in private is not a contradiction"
+    claim_text: "Recording uncertainty privately while stating a leading hypothesis publicly is ordinary scientific caution rather than a contradiction"
     challenge_description: "The journals are genuine. The inference from them does not follow."
     basis: "EVIDENTIAL"
   }
 }
 
-steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 7 }
-  # claim 2 now has TWO separate supporting relations -- [3,4] and [6]
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 6 to_claim_id: 2 }
-  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE" expected_count: 2 }
-}
-
 # ============================================================================
-# BRANCH B -- the perjury charge, and the definition it turns on
+# BRANCH D -- the 2026 hearing and the Fifth Amendment
 #
-# The heart of the case. The underlying facts are agreed by both parties.
-# The verdict depends entirely on what "gain-of-function" means.
-# ============================================================================
-
-# claim 8 -- second independent support for the root
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci's May 2021 denial that NIH funded gain-of-function research at the Wuhan Institute was false"
-    basis: "EVIDENTIAL"
-  }
-}
-
-# claims 9, 10, 11 -- ONE relation, THREE from-claims, the third a DEFINITION.
-#
-# THE CENTRAL MECHANISM OF THIS SCENARIO.
-#
-# Claims 9 and 10 are not in dispute -- both sides agree the grant existed
-# and agree what Fauci said. They establish "the denial was false" ONLY
-# under a particular reading of the term. Putting the definition inside the
-# from-set is what makes the equivocation visible: change claim 11 and the
-# same undisputed facts stop supporting the accusation.
-#
-# In prose this is invisible, because the phrase "gain-of-function" looks
-# constant while doing different work on each side.
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 8 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "NIAID awarded a grant to EcoHealth Alliance that included a sub-award to the Wuhan Institute of Virology"
-    extra_claim_texts: "In May 2021 Senate testimony Fauci said the NIH has not ever and does not now fund gain-of-function research in the Wuhan Institute of Virology"
-    extra_claim_texts: "Gain-of-function research means any research that enhances a viral property such as transmissibility or virulence"
-    basis: "EVIDENTIAL"
-  }
-}
-
-steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 11 }
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 8 expected_count: 3 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 9  to_claim_id: 8 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 10 to_claim_id: 8 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 11 to_claim_id: 8 }
-  expectations { check_type: "CLAIM_SENTENCE" claim_id: 11
-                 expected_claim_sentence: "Gain-of-function research means any research that enhances a viral property such as transmissibility or virulence" }
-}
-
-# claim 12 -- Fauci challenges the DEFINITION, conceding both facts.
-# This is the honest shape of his position: he does not dispute the grant or
-# his own words, only the meaning of the term he was asked about.
-#
-# The basis matters most here of anywhere in the file. Fauci disputes no
-# fact -- only what the term covers -- and DEFINITIONAL is what records that
-# "you are wrong about the word" is a different move from "you are wrong
-# about the world". Without it the engine stores both identically.
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 11 } }
-steps {
-  action {
-    username: "fauci"
-    event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "The governing federal standard is enhanced potential pandemic pathogen, meaning a pathogen already highly transmissible and virulent in humans that has been made more so"
-    challenge_description: "The applicable definition is the federal one, not a general one."
-    basis: "DEFINITIONAL"
-  }
-}
-
-# claims 13, 14 -- AUTHORITY-basis support for the narrow definition
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 12 } }
-steps {
-  action {
-    username: "fauci"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "In 2017 federal officials replaced the 2014 to 2017 funding pause with enhanced scrutiny for enhanced potential pandemic pathogens"
-    extra_claim_texts: "NIH stated in 2021 that the Wuhan studies did not require that extra review because they involved bat coronaviruses genetically distant from the pandemic virus"
-    basis: "AUTHORITY"
-  }
-}
-
-# claim 15 -- Paul's counter to the NIH position
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 14 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "The funded experiments produced chimeric viruses that do not occur in nature and showed increased pathogenicity in animal models"
-    challenge_description: "Whatever the label, the function was enhanced."
-    basis: "EVIDENTIAL"
-  }
-}
-
-# claim 16 -- a second independent support for claim 8.
-# Fauci himself called the term unsettled, which cuts against resting on a
-# narrow reading of it.
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 8 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci described the term gain-of-function as very nebulous in 2021 testimony"
-    basis: "EVIDENTIAL"
-  }
-}
-
-steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 16 }
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 12 expected_count: 2 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 13 to_claim_id: 12 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 14 to_claim_id: 12 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 16 to_claim_id: 8 }
-  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE" expected_count: 4 }
-}
-
-# ============================================================================
-# BRANCH C -- who actually made the funding decision
-#
-# A framing dispute. The money reached Wuhan; the characterisation of how is
-# contested.
+# [GAP-G] What actually happened is that Fauci declined to engage. In the
+# target design that is ABANDONED -- silence recorded as silence, explicitly
+# not concession and explicitly not defeat. There is no way to say it here,
+# so the inference drawn FROM the silence is entered as an ordinary claim and
+# the objection to that inference as an ordinary challenge. That makes a
+# constitutional question look like a factual one.
 # ============================================================================
 
 # claim 17 -- third independent support for the root
@@ -325,50 +316,13 @@ steps {
   action {
     username: "paul"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci chose to fund dangerous research in China"
+    claim_text: "Fauci's refusal to answer the committee's questions indicates he could not answer them truthfully"
     basis: "EVIDENTIAL"
   }
 }
 
-# claim 18 -- the counter
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 17 } }
-steps {
-  action {
-    username: "fauci"
-    event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "NIAID funds reached the Wuhan Institute through a sub-award administered by EcoHealth Alliance rather than a direct funding decision by Fauci"
-    challenge_description: "The money arriving is not in dispute. The word chose is."
-    basis: "DEFINITIONAL"
-  }
-}
-
-# ============================================================================
-# BRANCH D -- the Fifth Amendment
-#
-# The most structurally interesting part of the hearing, and the part the
-# engine handles worst.
-#
-# Fauci answered nothing. In the target design silence is its own outcome:
-# ABANDONED, recording WHO went quiet, explicitly distinct from concession
-# and explicitly distinct from defeat. Here there is no way to represent
-# "declined to engage" at all -- so Paul's inference from the silence is
-# entered as an ordinary claim and Fauci's objection as an ordinary
-# challenge, which makes a constitutional question look like a factual one.
-# ============================================================================
-
-# claim 19 -- fourth independent support for the root
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
-steps {
-  action {
-    username: "paul"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci's refusal to answer under oath indicates he could not answer truthfully"
-    basis: "EVIDENTIAL"
-  }
-}
-
-# claims 20, 21 -- ONE relation, TWO from-claims
-steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 19 } }
+# claims 18, 19 -- ONE relation, TWO from-claims
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 17 } }
 steps {
   action {
     username: "paul"
@@ -379,11 +333,10 @@ steps {
   }
 }
 
-# claim 22 -- the objection.
-# Note this is a NORMATIVE / legal-principle claim, not a factual one: no
-# evidence settles whether an inference from silence is legitimate. The
-# engine has no way to mark that distinction on a challenge.
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 19 } }
+# claim 20 -- the objection. A legal-principle claim: no evidence settles
+# whether an inference from silence is legitimate, so this is normative
+# rather than factual. The engine has no way to mark that on a challenge.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 17 } }
 steps {
   action {
     username: "fauci"
@@ -394,138 +347,79 @@ steps {
   }
 }
 
-# claim 23 -- supporting context for the objection
-steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 22 } }
+# claims 21, 22 -- ONE relation, TWO from-claims supporting the objection.
+# These are the two reasons actually advanced: that answering carried real
+# legal exposure, and that the exposure was the point.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 20 } }
 steps {
   action {
     username: "fauci"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Fauci's attorneys cited repeated public statements by the committee chairman that Fauci should be prosecuted and jailed"
+    claim_text: "The 2025 pardon covers conduct between 2014 and January 2025 and would not protect statements made in present-day testimony"
+    extra_claim_texts: "Senator Hassan said the aim was to wait for a misstatement not covered by the pardon and then bring charges over it"
     basis: "EVIDENTIAL"
   }
 }
 
-# ---- full structure assertion ---------------------------------------------
+# ---- full structure ------------------------------------------------------
 steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 23 }
-  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 11 }
-  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE"    expected_count: 6 }
-  # the root's four independent supports
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 22 }
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 10 }
+  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE"    expected_count: 4 }
+
+  # the root's three independent supports
   expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2  to_claim_id: 1 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 8  to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 13 to_claim_id: 1 }
   expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 17 to_claim_id: 1 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 19 to_claim_id: 1 }
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 19 expected_count: 2 }
+
+  # every multi-from relation in the file
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 2  expected_count: 3 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 6  expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 9  expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 13 expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 17 expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 20 expected_count: 2 }
+
+  # every challenge is attached to the claim it actually targets
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 6  to_claim_id: 5  }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 12 to_claim_id: 9  }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 16 to_claim_id: 13 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 20 to_claim_id: 17 }
+
+  # undisputed evidence stands
+  expectations { check_type: "USER_VIEW" claim_id: 3  username: "paul"  expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4  username: "paul"  expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 10 username: "paul"  expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 11 username: "paul"  expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 18 username: "paul"  expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 21 username: "fauci" expected_status: "TRUE_CLAIM" }
 }
 
 # ============================================================================
-# CONCESSIONS
+# THE SCENARIO ENDS HERE, UNRESOLVED -- because the dispute is unresolved.
 #
-# CONCEDE_CHALLENGE takes no argument. The runner selects, among CHALLENGE
-# links whose TARGET claim was created by the conceding user, the one with
-# the HIGHEST challenging-claim id -- the most recent challenge against
-# something that user said.
+# No CONCEDE_CHALLENGE step appears in this file. Neither party has withdrawn
+# a position. Adding one to exercise propagation would be inventing an event,
+# and a scenario built from a real dispute must not contain fabricated moves.
 #
-# Outstanding challenges against claims paul created:
-#     claim 5  -> claim 3    (provenance)
-#     claim 7  -> claim 2    (inference)
-#     claim 12 -> claim 11   (the definition)
-#     claim 18 -> claim 17   (chose to fund)
-#     claim 22 -> claim 19   (the Fifth)
-#
-# So paul's concessions fire in this order: 22, 18, 12, 7, 5.
-# ============================================================================
-
-# --- concession 1: paul concedes that no inference follows from the Fifth ---
-steps { action { username: "paul" event_type: "CONCEDE_CHALLENGE" } }
-
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 19 username: "paul" expected_status: "FALSE_CLAIM" }
-  # THE OR TEST. Claim 19 was one of FOUR independent supports for the root.
-  # Losing it must NOT disturb the other three, nor the evidence beneath it.
-  expectations { check_type: "USER_VIEW" claim_id: 20 username: "paul" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 21 username: "paul" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2  to_claim_id: 1 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 8  to_claim_id: 1 }
-  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 17 to_claim_id: 1 }
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 23 }
-}
-
-# --- concession 2: paul concedes the "chose to fund" framing ---------------
-steps { action { username: "paul" event_type: "CONCEDE_CHALLENGE" } }
-
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 17 username: "paul" expected_status: "FALSE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 9  username: "paul" expected_status: "TRUE_CLAIM" }
-}
-
-# --- concession 3: paul concedes the broad definition ----------------------
-#
-# THE KEY MOVE. Claim 11 is a member of the three-source relation
-# [9, 10, 11] -> 8. Conceding it removes the definition that made the two
-# undisputed facts add up to an accusation.
-steps { action { username: "paul" event_type: "CONCEDE_CHALLENGE" } }
-
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 11 username: "paul" expected_status: "FALSE_CLAIM" }
-  # THE FACTS MUST SURVIVE. Neither party ever disputed the grant or the
-  # testimony. If either of these flips, an attack on the DEFINITION has
-  # leaked into the EVIDENCE -- a real failure, not a limitation.
-  expectations { check_type: "USER_VIEW" claim_id: 9  username: "paul" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 10 username: "paul" expected_status: "TRUE_CLAIM" }
-  # the structure is unchanged by a concession
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 8 expected_count: 3 }
-  # claim 16 is an independent support for claim 8 and must be untouched
-  expectations { check_type: "USER_VIEW" claim_id: 16 username: "paul" expected_status: "TRUE_CLAIM" }
-}
-
-# [GAP-C] -- THE MOST IMPORTANT UNASSERTED RESULT IN THIS FILE.
-#
-# Claim 8 ("the denial was false") now rests on a relation one of whose three
-# members is false. In the target design:
-#     relation [9,10,11] -> 8   goes INERT
-#     claim 8                   becomes UNSUPPORTED
-# meaning: not proven and not disproven. Paul has not been shown wrong; he
-# has been shown not to have established it under the definition that
-# survived. And if the definition were reopened, the relation would revive
-# on its own with no further action.
-#
-# With three statuses there is no way to say any of that. Whatever the engine
-# reports for claim 8 after this step, RECORD IT -- the distance between that
-# and UNSUPPORTED is the exact measure of what the status engine still owes.
-#
-# Deliberately NOT asserted: FALSE_CLAIM would bless the wrong answer,
-# UNDETERMINED would be a guess.
-
-# --- fauci concedes: the only challenge against a fauci-created claim ------
-# claim 15 -> claim 14. Conceding removes the NIH position from the pair
-# [13, 14] -> 12 supporting the narrow definition.
-steps { action { username: "fauci" event_type: "CONCEDE_CHALLENGE" } }
-
-steps {
-  expectations { check_type: "USER_VIEW" claim_id: 14 username: "fauci" expected_status: "FALSE_CLAIM" }
-  expectations { check_type: "USER_VIEW" claim_id: 13 username: "fauci" expected_status: "TRUE_CLAIM" }
-  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 12 expected_count: 2 }
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 23 }
-}
-
-# ============================================================================
 # WHAT A PASS MEANS
+#   Six multi-from relations build correctly, including one holding a
+#   definition alongside the facts it qualifies. Three independent relations
+#   coexist on the root and two on claim 2. Four challenges attach to the
+#   claims they actually target. Undisputed evidence stands.
 #
-# Structural: multi-from relations build and survive concession; a definition
-# can sit inside a from-set; four independent relations coexist on one parent
-# and defeating one leaves the rest; concession propagates without disturbing
-# the graph; attacks on one member do not leak into its siblings.
+# WHAT A PASS DOES NOT MEAN
+#   The four counters in this file (claims 6, 12, 16, 20) all dispute an
+#   INFERENCE while accepting the evidence -- that is the shape of this entire
+#   dispute, and it is the one thing the engine cannot represent. Every one is
+#   rendered as a claim-level challenge instead, which says something stronger
+#   than any party actually said.
 #
-# WHAT A PASS DOES NOT MEAN. Five of the mechanisms this hearing actually
-# turns on are absent:
+#   Nothing in the file distinguishes the four claims both parties agree on
+#   from claims nobody has examined. Nothing expresses that the origin
+#   question has real support on both sides. And nothing expresses that the
+#   2026 hearing consisted of a witness declining to speak.
 #
-#   - the inference attack (Fauci's real position on the journals)
-#   - CONTESTED (the origin question, omitted entirely)
-#   - the definitional lens (settled here by concession instead)
-#   - the author lane (provenance wrongly threatens content)
-#   - silence as its own outcome, which is what the hearing WAS
-#
-# Every substitution above is cruder than the case requires. A green run
-# certifies the plumbing, not the design.
+#   A green run certifies the plumbing. It does not certify that the tool can
+#   hold this argument.
 # ============================================================================
