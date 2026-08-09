@@ -63,6 +63,9 @@ int resolveChallengeLinkIdForUser(DebateWrapper& debateWrapper, int debate_id, i
     int bestFromClaimId = -1;
     int bestLinkId = -1;
     auto allLinks = debateWrapper.getLinksForDebate(debate_id);
+    const std::string conceding_username =
+        debateWrapper.getUserProtobuf(conceding_user_id).username();
+
     for (const auto& linkTuple : allLinks) {
         int linkId = std::get<0>(linkTuple);
         int fromClaimId = std::get<1>(linkTuple);
@@ -70,11 +73,19 @@ int resolveChallengeLinkIdForUser(DebateWrapper& debateWrapper, int debate_id, i
         int linkType = std::get<5>(linkTuple);
         if (linkType != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
         debate::Claim targetClaim = debateWrapper.getClaimById(toClaimId);
-        if (targetClaim.id() != 0 && targetClaim.creator_id() == conceding_user_id) {
-            if (fromClaimId > bestFromClaimId) {
-                bestFromClaimId = fromClaimId;
-                bestLinkId = linkId;
-            }
+        if (targetClaim.id() == 0 || targetClaim.creator_id() != conceding_user_id) continue;
+
+        // Skip what this user already conceded -- otherwise repeated
+        // concessions all resolve to the same challenge. Mirrors the runner.
+        auto statusIt = targetClaim.user_statuses().find(conceding_username);
+        if (statusIt != targetClaim.user_statuses().end() &&
+            statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+            continue;
+        }
+
+        if (fromClaimId > bestFromClaimId) {
+            bestFromClaimId = fromClaimId;
+            bestLinkId = linkId;
         }
     }
     return bestLinkId;

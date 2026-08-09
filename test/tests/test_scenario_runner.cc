@@ -188,6 +188,9 @@ protected:
         int bestFromClaimId = -1;
         int bestLinkId = -1;
         auto allLinks = debateWrapper_->getLinksForDebate(debate_id);
+        const std::string conceding_username =
+            debateWrapper_->getUserProtobuf(conceding_user_id).username();
+
         for (const auto& linkTuple : allLinks) {
             int linkId = std::get<0>(linkTuple);
             int fromClaimId = std::get<1>(linkTuple);
@@ -195,11 +198,29 @@ protected:
             int linkType = std::get<5>(linkTuple);
             if (linkType != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
             debate::Claim targetClaim = debateWrapper_->getClaimById(toClaimId);
-            if (targetClaim.id() != 0 && targetClaim.creator_id() == conceding_user_id) {
-                if (fromClaimId > bestFromClaimId) {
-                    bestFromClaimId = fromClaimId;
-                    bestLinkId = linkId;
-                }
+            if (targetClaim.id() == 0 || targetClaim.creator_id() != conceding_user_id) continue;
+
+            // Skip what this user has ALREADY conceded.
+            //
+            // Without this the resolver is stateless and returns the same
+            // challenge every time, so a scenario with several concessions
+            // re-concedes one challenge instead of working through them. That
+            // is not a niche case: conceding once per outstanding challenge is
+            // the obvious way to write a multi-branch argument, and it silently
+            // did nothing.
+            //
+            // "Already conceded" is read off the target: conceding sets the
+            // challenged claim FALSE for the conceder, which is exactly the
+            // state being tested for.
+            auto statusIt = targetClaim.user_statuses().find(conceding_username);
+            if (statusIt != targetClaim.user_statuses().end() &&
+                statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+                continue;
+            }
+
+            if (fromClaimId > bestFromClaimId) {
+                bestFromClaimId = fromClaimId;
+                bestLinkId = linkId;
             }
         }
         return bestLinkId;
@@ -742,6 +763,16 @@ TEST_F(ScenarioRunner, MultiFromSupport) {
     TestScenario s = LoadScenarioFromFile("scenarios/MultiFromSupport.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load MultiFromSupport.pbtxt";
     executeScenario(s);
+}
+
+// ---------------------------------------------------------------------------
+// FauciPaulHearingFull — the fuller hearing: 23 claims, four independent
+// supports on the root, a definition inside a from-set, and five concessions.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciPaulHearingFull) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciPaulHearingFull.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciPaulHearingFull.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
 }
 
 TEST_F(ScenarioRunner, MegaTest) {
