@@ -68,12 +68,17 @@ public:
     //
     // Ids are <id>, <id>2, <id>3, ... so a backend parser can prefix-match
     // them without knowing how many the viewer created.
+    // `descriptionId` gives each row its OWN description box, ids paired by
+    // suffix with the claim boxes (descriptionInput / descriptionInput2 / ...).
+    // Empty means no description field at all.
     static ui::Component createMultiInput(
         const std::string& id,
         const std::string& placeholder = "",
         const std::string& extraPlaceholder = "",
         const std::string& addLabel = "+ Add another",
         int maxInputs = 10,
+        const std::string& descriptionId = "",
+        const std::string& descriptionPlaceholder = "",
         const std::string& bgColor = "bg-gray-800",
         const std::string& textColor = "text-white",
         const std::string& borderColor = "border-gray-600",

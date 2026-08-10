@@ -5,7 +5,7 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::string& description, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
+void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
     // first find where the user is in the debate
     // get user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
@@ -26,17 +26,20 @@ void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_t
     int relationId = 0;
     int firstClaimId = 0;
     int added = 0;
-    for (const std::string& text : claim_texts) {
+    // Each claim carries its OWN description, taken at the same index. Indexed
+    // against the original position rather than the count added so far, so
+    // skipping a blank row cannot shift later descriptions onto other claims.
+    for (size_t i = 0; i < claim_texts.size(); ++i) {
+        const std::string& text = claim_texts[i];
+        const std::string description =
+            i < descriptions.size() ? descriptions[i] : std::string();
         if (text.find_first_not_of(" \t\r\n") == std::string::npos) {
             continue;
         }
         const int newClaimID = debateWrapper.addClaimUnderParent(
             currentClaimID,  // parentId
             text,
-            // The description belongs to the claim, and there is only one
-            // description box, so it is attached to the first claim only
-            // rather than copied onto every one of them.
-            added == 0 ? description : std::string(),
+            description,
             user_id,
             debate_id,
             basis,

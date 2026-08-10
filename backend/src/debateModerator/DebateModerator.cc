@@ -195,13 +195,21 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: ADD_CHILD_CLAIM");
         {
             std::vector<std::string> claimTexts;
+            std::vector<std::string> claimDescriptions;
             claimTexts.push_back(event.add_child_claim().claim());
+            claimDescriptions.push_back(event.add_child_claim().description());
             for (const auto& extra : event.add_child_claim().extra_claims()) {
                 claimTexts.push_back(extra);
             }
+            // Padded so the two stay index-aligned even if the client sent
+            // fewer descriptions than claims.
+            for (const auto& d : event.add_child_claim().extra_descriptions()) {
+                claimDescriptions.push_back(d);
+            }
+            claimDescriptions.resize(claimTexts.size());
             AddClaimHandler::AddClaimUnderClaim(
                 claimTexts,
-                event.add_child_claim().description(),
+                claimDescriptions,
                 event.add_child_claim().basis(),
                 user_id,
                 debateWrapper
@@ -318,13 +326,19 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: SUBMIT_CHALLENGE_CLAIM");
         {
             std::vector<std::string> challengeTexts;
+            std::vector<std::string> challengeDescriptions;
             challengeTexts.push_back(event.submit_challenge_claim().challenge_sentence());
+            challengeDescriptions.push_back(event.submit_challenge_claim().challenge_description());
             for (const auto& extra : event.submit_challenge_claim().extra_sentences()) {
                 challengeTexts.push_back(extra);
             }
+            for (const auto& d : event.submit_challenge_claim().extra_descriptions()) {
+                challengeDescriptions.push_back(d);
+            }
+            challengeDescriptions.resize(challengeTexts.size());
             ChallengeHandler::SubmitChallengeClaim(
                 challengeTexts,
-                event.submit_challenge_claim().challenge_description(),
+                challengeDescriptions,
                 event.submit_challenge_claim().basis(),
                 user_id,
                 debateWrapper

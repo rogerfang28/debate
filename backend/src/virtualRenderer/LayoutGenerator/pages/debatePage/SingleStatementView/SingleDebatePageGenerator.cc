@@ -1747,6 +1747,8 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
                 "...and this too (optional)",
                 "+ Add another claim",
                 10,
+                "descriptionInput",
+                "Why this claim matters (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
@@ -1766,30 +1768,6 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             );
             ComponentGenerator::addChild(&modalContent, multiHint);
 
-            // Description label
-            ui::Component descriptionLabel = ComponentGenerator::createText(
-                "descriptionLabel",
-                "Description:",
-                "text-sm",
-                "text-white",
-                "font-semibold",
-                "mb-2"
-            );
-            ComponentGenerator::addChild(&modalContent, descriptionLabel);
-
-            // Description input (using input as textarea)
-            ui::Component descriptionInput = ComponentGenerator::createInput(
-                "descriptionInput",
-                "Enter the description...",
-                "description",
-                "bg-gray-700",
-                "text-white",
-                "border-gray-600",
-                "p-3",
-                "rounded",
-                "w-full mb-6 h-32"
-            );
-            ComponentGenerator::addChild(&modalContent, descriptionInput);
 
             // Basis label. Kept in step with the identical block in
             // FullDebatePageGenerator: both modals feed the SAME parser branch,
@@ -1922,6 +1900,8 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
                 "...and this too (optional)",
                 "+ Add another claim",
                 10,
+                "challengeDescriptionInput",
+                "Why this refutes it (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",

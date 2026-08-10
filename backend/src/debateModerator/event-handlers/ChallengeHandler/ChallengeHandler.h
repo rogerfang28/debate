@@ -15,7 +15,7 @@ public:
     // from-claims -- "these together refute that" -- not N independent
     // challenges. `basis` records what KIND of opposition it is and lands on
     // the relation. Blank sentences are skipped.
-    static void SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::string& challenge_description, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper);
+    static void SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper);
     static void ConcedeChallenge(const int& user_id, const int& challenge_link_id, DebateWrapper& debateWrapper);
     static void OpenAddChallenge(const int& user_id, DebateWrapper& debateWrapper);
     static void CloseAddChallenge(const int& user_id, DebateWrapper& debateWrapper);

@@ -6,6 +6,11 @@ interface MultiInputAttributes {
   extraPlaceholder?: string;
   addLabel?: string;
   maxInputs?: string;
+  // Optional second field per row. When descriptionId is set each row renders
+  // its OWN description box, so a claim's explanation belongs to that claim
+  // rather than to the group.
+  descriptionId?: string;
+  descriptionPlaceholder?: string;
   [key: string]: any;
 }
 
@@ -41,6 +46,8 @@ const MultiInputComponent: React.FC<MultiInputComponentProps> = ({ component, cl
   const extraPlaceholder = component.attributes?.extraPlaceholder ?? placeholder;
   const addLabel = component.attributes?.addLabel ?? "+ Add another";
   const maxInputs = Number(component.attributes?.maxInputs ?? 10) || 10;
+  const descriptionId = component.attributes?.descriptionId ?? "";
+  const descriptionPlaceholder = component.attributes?.descriptionPlaceholder ?? "";
 
   // The ids currently rendered, in order. The first is always the base id,
   // because the backend treats it as the primary field.
@@ -75,36 +82,63 @@ const MultiInputComponent: React.FC<MultiInputComponentProps> = ({ component, cl
 
   return (
     <div className="flex flex-col gap-2">
-      {ids.map((id, index) => (
-        <div key={id} className="flex items-center gap-2">
-          <input
-            id={id}
-            name={component.name}
-            type="text"
-            placeholder={index === 0 ? placeholder : extraPlaceholder}
-            className={className}
-            style={{ ...style, flex: 1 }}
-          />
-          {index > 0 && (
-            <button
-              type="button"
-              onClick={() => remove(id)}
-              aria-label="Remove this claim"
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "var(--text-muted)",
-                cursor: "pointer",
-                fontSize: "1.1rem",
-                lineHeight: 1,
-                padding: "0 0.25rem",
-              }}
-            >
-              ×
-            </button>
-          )}
-        </div>
-      ))}
+      {ids.map((id, index) => {
+        // The suffix is what pairs a claim with its description on the server:
+        // claimSentenceInput/descriptionInput, then ...Input2/...Input2, and so
+        // on. Pairing by suffix rather than by document order means a blank or
+        // removed row cannot shift a description onto the wrong claim.
+        const suffix = id.slice(baseId.length); // "" for the first row
+        const descId = descriptionId ? `${descriptionId}${suffix}` : "";
+        return (
+          <div
+            key={id}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.25rem",
+              paddingBottom: descId ? "0.5rem" : 0,
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <input
+                id={id}
+                name={component.name}
+                type="text"
+                placeholder={index === 0 ? placeholder : extraPlaceholder}
+                className={className}
+                style={{ ...style, flex: 1 }}
+              />
+              {index > 0 && (
+                <button
+                  type="button"
+                  onClick={() => remove(id)}
+                  aria-label="Remove this claim"
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "var(--text-muted)",
+                    cursor: "pointer",
+                    fontSize: "1.1rem",
+                    lineHeight: 1,
+                    padding: "0 0.25rem",
+                  }}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+            {descId && (
+              <input
+                id={descId}
+                type="text"
+                placeholder={descriptionPlaceholder}
+                className={className}
+                style={{ ...style, fontSize: "0.8rem", opacity: 0.9 }}
+              />
+            )}
+          </div>
+        );
+      })}
 
       {ids.length < maxInputs && (
         <button

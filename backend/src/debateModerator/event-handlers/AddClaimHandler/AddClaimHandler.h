@@ -10,7 +10,10 @@ public:
     // Several texts create ONE relation with several from-claims -- "these
     // together support the parent" -- not N independent supports. Blank
     // entries are skipped.
-    static void AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::string& connection_to_parent, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper);
+    // `descriptions` is aligned BY INDEX with `claim_texts`; a shorter list or
+    // an empty entry simply means that claim has no description. Each claim is
+    // its own assertion, so it carries its own explanation.
+    static void AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper);
     static void CloseAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
     static void OpenAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
 };

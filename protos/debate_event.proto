@@ -26,6 +26,16 @@ message AddChildClaim {
     // several from-claims -- "these together support the parent" -- rather than
     // several independent supports. Blank entries are ignored.
     repeated string extra_claims = 4;
+
+    // One description per entry in `extra_claims`, aligned BY INDEX.
+    // `description` above belongs to `claim`.
+    //
+    // Each claim is its own assertion and deserves its own explanation; a
+    // single shared description would either be attached to one claim
+    // arbitrarily or copied onto claims whose author never wrote it.
+    // The write path pads this so a missing entry means "no description"
+    // rather than shifting every later one onto the wrong claim.
+    repeated string extra_descriptions = 5;
     // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
     // NORMATIVE. Lands on the relation, not the claim: it describes how the
     // child bears on its parent, which is a property of the connection.
@@ -121,6 +131,10 @@ message SubmitChallengeClaim {
     // that" -- rather than several independent challenges. Blank entries are
     // ignored.
     repeated string extra_sentences = 3;
+
+    // One description per entry in `extra_sentences`, aligned BY INDEX.
+    // `challenge_description` belongs to `challenge_sentence`.
+    repeated string extra_descriptions = 5;
 
     // What KIND of opposition this is -- EVIDENTIAL | AUTHORITY |
     // DEFINITIONAL | NORMATIVE. A definitional challenge ("that is not what

@@ -259,6 +259,10 @@ protected:
                 // Several texts = ONE relation with several from-claims.
                 for (const auto& extra : action.extra_claim_texts()) {
                     event.mutable_add_child_claim()->add_extra_claims(extra);
+                    // A scenario has one claim_description field, so the extras
+                    // get none. Padded rather than omitted so the two repeated
+                    // fields stay index-aligned on the server.
+                    event.mutable_add_child_claim()->add_extra_descriptions("");
                 }
                 if (!action.basis().empty()) {
                     event.mutable_add_child_claim()->set_basis(action.basis());
@@ -276,6 +280,7 @@ protected:
                 // and without this a scenario could not express the difference.
                 for (const auto& extra : action.extra_claim_texts()) {
                     event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
+                    event.mutable_submit_challenge_claim()->add_extra_descriptions("");
                 }
                 if (!action.basis().empty()) {
                     event.mutable_submit_challenge_claim()->set_basis(action.basis());

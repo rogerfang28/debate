@@ -103,7 +103,7 @@ protected:
     void addChild(int parentId, const std::string& text,
                   const std::string& connection) {
         AddClaimHandler::OpenAddChildClaim(userId_, *debate_);
-        AddClaimHandler::AddClaimUnderClaim({text}, connection, "", userId_, *debate_);
+        AddClaimHandler::AddClaimUnderClaim({text}, {connection}, "", userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 
@@ -123,7 +123,7 @@ protected:
         // 3. Open add challenge modal
         ChallengeHandler::OpenAddChallenge(userId_, *debate_);
         // 4. Submit challenge -> creates challenge claim + CHALLENGE link
-        ChallengeHandler::SubmitChallengeClaim({reason}, "challenge claim", "", userId_, *debate_);
+        ChallengeHandler::SubmitChallengeClaim({reason}, {"challenge claim"}, "", userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 

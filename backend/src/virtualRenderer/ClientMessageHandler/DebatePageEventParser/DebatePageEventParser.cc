@@ -1,4 +1,7 @@
 #include "DebatePageEventParser.h"
+
+#include <cstring>
+#include <map>
 #include <iostream>
 #include "../../../utils/Log.h"
 
@@ -71,31 +74,45 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::ADD_CHILD_CLAIM);
         // find the claim and description from the message
         const auto& pageData = message.page_data().components();
-        for (const auto& comp : pageData) { 
-            auto* submitEvent = event.mutable_add_child_claim();
-            if (comp.id() == "descriptionInput") {
-                submitEvent->set_description(comp.value());
-                Log::debug("  Description: " + comp.value());
-            }
-            else if (comp.id() == "claimSentenceInput") {
-                submitEvent->set_claim(comp.value());
-                Log::debug("  Claim: " + comp.value());
-            }
-            // Additional supporting claims. Ids are claimSentenceInput2,
-            // claimSentenceInput3, ... -- matched by prefix so the modal can
-            // offer more boxes without another branch here. Order is whatever
-            // the DOM scan produced; the from-set is unordered, so it does not
-            // matter which is which, only that they land in the same relation.
-            else if (comp.id().rfind("claimSentenceInput", 0) == 0) {
-                if (!comp.value().empty()) {
-                    submitEvent->add_extra_claims(comp.value());
-                    Log::debug("  Extra claim: " + comp.value());
-                }
-            }
-            else if (comp.id() == "linkTypeSelect") {
+        auto* submitEvent = event.mutable_add_child_claim();
+
+        // Claims and descriptions are collected BY SUFFIX, not in DOM order.
+        //
+        // Each row in the modal is claimSentenceInput<N> plus
+        // descriptionInput<N>. Appending both in whatever order the DOM scan
+        // produced would misalign them the moment a row is left blank or
+        // removed -- a description would land on somebody else's claim. Keying
+        // on the shared suffix makes the pairing independent of order and of
+        // gaps.
+        std::map<std::string, std::string> claimsBySuffix;
+        std::map<std::string, std::string> descsBySuffix;
+
+        for (const auto& comp : pageData) {
+            if (comp.id().rfind("claimSentenceInput", 0) == 0) {
+                claimsBySuffix[comp.id().substr(strlen("claimSentenceInput"))] = comp.value();
+            } else if (comp.id().rfind("descriptionInput", 0) == 0) {
+                descsBySuffix[comp.id().substr(strlen("descriptionInput"))] = comp.value();
+            } else if (comp.id() == "linkTypeSelect") {
                 submitEvent->set_basis(comp.value());
                 Log::debug("  Basis: " + comp.value());
             }
+        }
+
+        // The unsuffixed row is the primary claim; the rest are extras, and
+        // each carries its own description at the same index.
+        submitEvent->set_claim(claimsBySuffix[""]);
+        submitEvent->set_description(descsBySuffix[""]);
+        Log::debug("  Claim: " + claimsBySuffix[""]);
+
+        for (const auto& entry : claimsBySuffix) {
+            if (entry.first.empty() || entry.second.empty()) continue;
+            submitEvent->add_extra_claims(entry.second);
+            // Padded rather than skipped, so index N of extra_descriptions
+            // always belongs to index N of extra_claims.
+            auto descIt = descsBySuffix.find(entry.first);
+            submitEvent->add_extra_descriptions(
+                descIt == descsBySuffix.end() ? std::string() : descIt->second);
+            Log::debug("  Extra claim: " + entry.second);
         }
      }
      
@@ -191,26 +208,35 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
         // find the challenge claim from the message
         const auto& pageData = message.page_data().components();
-        for (const auto& comp : pageData) { 
-            auto* submitEvent = event.mutable_submit_challenge_claim();
-            if (comp.id() == "challengeSentenceInput") {
-                submitEvent->set_challenge_sentence(comp.value());
-                Log::debug("  Challenge sentence: " + comp.value());
-            }
-            // Additional challenge claims -- challengeSentenceInput2, 3, ...
-            // Prefix-matched so the modal can offer more boxes without another
-            // branch here. Checked AFTER the exact match above, so the first
-            // box does not fall into this one.
-            else if (comp.id().rfind("challengeSentenceInput", 0) == 0) {
-                if (!comp.value().empty()) {
-                    submitEvent->add_extra_sentences(comp.value());
-                    Log::debug("  Extra challenge sentence: " + comp.value());
-                }
-            }
-            else if (comp.id() == "challengeLinkTypeSelect") {
+        auto* submitEvent = event.mutable_submit_challenge_claim();
+
+        // Same suffix pairing as ADD_CHILD_CLAIM above -- see the note there
+        // for why order-based collection misaligns descriptions.
+        std::map<std::string, std::string> sentencesBySuffix;
+        std::map<std::string, std::string> challengeDescsBySuffix;
+
+        for (const auto& comp : pageData) {
+            if (comp.id().rfind("challengeSentenceInput", 0) == 0) {
+                sentencesBySuffix[comp.id().substr(strlen("challengeSentenceInput"))] = comp.value();
+            } else if (comp.id().rfind("challengeDescriptionInput", 0) == 0) {
+                challengeDescsBySuffix[comp.id().substr(strlen("challengeDescriptionInput"))] = comp.value();
+            } else if (comp.id() == "challengeLinkTypeSelect") {
                 submitEvent->set_basis(comp.value());
                 Log::debug("  Challenge basis: " + comp.value());
             }
+        }
+
+        submitEvent->set_challenge_sentence(sentencesBySuffix[""]);
+        submitEvent->set_challenge_description(challengeDescsBySuffix[""]);
+        Log::debug("  Challenge sentence: " + sentencesBySuffix[""]);
+
+        for (const auto& entry : sentencesBySuffix) {
+            if (entry.first.empty() || entry.second.empty()) continue;
+            submitEvent->add_extra_sentences(entry.second);
+            auto descIt = challengeDescsBySuffix.find(entry.first);
+            submitEvent->add_extra_descriptions(
+                descIt == challengeDescsBySuffix.end() ? std::string() : descIt->second);
+            Log::debug("  Extra challenge sentence: " + entry.second);
         }
     }
     else if (componentId.find("removeClaimFromChallengeButton_") == 0 && eventType == "onClick") {

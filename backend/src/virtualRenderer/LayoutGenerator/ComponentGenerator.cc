@@ -164,6 +164,8 @@ ui::Component ComponentGenerator::createMultiInput(
     const std::string& extraPlaceholder,
     const std::string& addLabel,
     int maxInputs,
+    const std::string& descriptionId,
+    const std::string& descriptionPlaceholder,
     const std::string& bgColor,
     const std::string& textColor,
     const std::string& borderColor,
@@ -185,6 +187,12 @@ ui::Component ComponentGenerator::createMultiInput(
         addAttribute(&component, "addLabel", addLabel);
     }
     addAttribute(&component, "maxInputs", std::to_string(maxInputs));
+    if (!descriptionId.empty()) {
+        addAttribute(&component, "descriptionId", descriptionId);
+    }
+    if (!descriptionPlaceholder.empty()) {
+        addAttribute(&component, "descriptionPlaceholder", descriptionPlaceholder);
+    }
 
     // The class list describes ONE box; the renderer applies it to each.
     std::vector<std::string> classes;

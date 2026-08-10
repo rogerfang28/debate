@@ -138,7 +138,7 @@ TEST_F(DebateEventTest, FullEventFlow_CreateDebate_Enter_AddChild) {
     // Reads current_claim_id and debate_id from user engagement, adds claim
     AddClaimHandler::AddClaimUnderClaim(
         {"AI improves healthcare"}, // claim texts (one = one from-claim)
-        "supports",                 // connection to parent
+        {"supports"},               // description per claim
         "",                         // basis (unspecified)
         user_id_,
         *debate_
@@ -186,7 +186,7 @@ TEST_F(DebateEventTest, AddMultipleChildren_ViaEventPipeline) {
 
     for (int i = 0; i < 3; i++) {
         AddClaimHandler::OpenAddChildClaim(user_id_, *debate_);
-        AddClaimHandler::AddClaimUnderClaim({sentences[i]}, connections[i], "", user_id_, *debate_);
+        AddClaimHandler::AddClaimUnderClaim({sentences[i]}, {connections[i]}, "", user_id_, *debate_);
     }
 
     // Verify all 3 children exist
@@ -212,7 +212,7 @@ TEST_F(DebateEventTest, NavigateAndAddGrandchild_ViaEventPipeline) {
 
     // Add a child under root
     AddClaimHandler::OpenAddChildClaim(user_id_, *debate_);
-    AddClaimHandler::AddClaimUnderClaim({"Child claim"}, "supports", "", user_id_, *debate_);
+    AddClaimHandler::AddClaimUnderClaim({"Child claim"}, {"supports"}, "", user_id_, *debate_);
 
     int childId = debate_->findChildrenIds(1)[0];
 
@@ -224,7 +224,7 @@ TEST_F(DebateEventTest, NavigateAndAddGrandchild_ViaEventPipeline) {
 
     // Add a grandchild under the child
     AddClaimHandler::OpenAddChildClaim(user_id_, *debate_);
-    AddClaimHandler::AddClaimUnderClaim({"Grandchild claim"}, "supports", "", user_id_, *debate_);
+    AddClaimHandler::AddClaimUnderClaim({"Grandchild claim"}, {"supports"}, "", user_id_, *debate_);
 
     // Verify grandchild exists and is under the child (not root)
     std::vector<int> rootChildren = debate_->findChildrenIds(1);
@@ -266,7 +266,7 @@ TEST_F(DebateEventTest, UserEngagement_StateTransitions) {
               user_engagement::DebatingInfo::CurrentDebateAction::ADDING_CHILD_CLAIM);
 
     // After AddClaimUnderClaim: back to VIEWING_CLAIM (CloseAddChildClaim called)
-    AddClaimHandler::AddClaimUnderClaim({"Test claim"}, "supports", "", user_id_, *debate_);
+    AddClaimHandler::AddClaimUnderClaim({"Test claim"}, {"supports"}, "", user_id_, *debate_);
     u = refreshUser();
     EXPECT_EQ(u.engagement().debating_info().current_debate_action().action_type(),
               user_engagement::DebatingInfo::CurrentDebateAction::VIEWING_CLAIM);

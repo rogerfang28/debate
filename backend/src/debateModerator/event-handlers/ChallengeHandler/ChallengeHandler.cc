@@ -97,7 +97,7 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::string& challenge_description, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // find the current claim (it's challenging that one)
@@ -117,17 +117,18 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
     int same_debate_challenge_link_id = -1;
     int challenge_relation_id = 0;
 
-    for (const std::string& sentence : challenge_sentences) {
+    // Each challenge claim carries its OWN description, at the same index.
+    for (size_t i = 0; i < challenge_sentences.size(); ++i) {
+        const std::string& sentence = challenge_sentences[i];
+        const std::string description =
+            i < descriptions.size() && !descriptions[i].empty()
+                ? descriptions[i] : std::string("challenge claim");
         if (sentence.find_first_not_of(" \t\r\n") == std::string::npos) {
             continue;  // blank box
         }
         const int claim_id = debateWrapper.createClaim(
             sentence,
-            // One description box, so it belongs to the first claim only --
-            // copying it onto every one would assert something unwritten.
-            same_debate_challenge_claim_id == -1
-                ? (challenge_description.empty() ? "challenge claim" : challenge_description)
-                : std::string("challenge claim"),
+            description,
             user_id,
             current_debate_id
         );
