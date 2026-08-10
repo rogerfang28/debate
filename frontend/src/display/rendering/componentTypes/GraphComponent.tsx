@@ -140,6 +140,37 @@ function junctionLabel(edge: GraphEdge): string {
   if (basis && !PLACEHOLDER_BASES.includes(basis)) return basis;
   return "";
 }
+// ══════════════════════════════════════════════════════════════════════
+// EXPERIMENT: SEMANTIC ZOOM  ── everything for it is fenced by these
+// banners, so it can be removed by deleting the fenced blocks and the two
+// call sites they mention. Nothing outside them changed behaviour.
+//
+// The problem: at the zoom needed to fit a real debate, a node is ~55x28
+// css px and its text renders at ~3.8px. No font size fixes that -- a box
+// that small cannot hold a sentence. So instead of shrinking text, change
+// WHAT a node shows at each scale.
+//
+// Safe to drop text because reading already lives elsewhere: the side
+// panel shows the selected claim in full, and hovering any node shows a
+// tooltip. Zoomed out the graph becomes a map you navigate; zoomed in it
+// becomes a document you read.
+//
+// Toggle lives in the graph controls (⌸). Default ON so the difference is
+// visible; flip SEMANTIC_ZOOM_DEFAULT to false to ship the old look.
+// ══════════════════════════════════════════════════════════════════════
+const SEMANTIC_ZOOM_DEFAULT = true;
+
+type DetailTier = "map" | "compact" | "full";
+
+// Thresholds are in FINAL on-screen scale, so they mean the same thing
+// regardless of viewBox size.
+function tierForScale(scale: number): DetailTier {
+  if (scale < 0.5) return "map";
+  if (scale < 0.85) return "compact";
+  return "full";
+}
+// ══════════════════════ END EXPERIMENT (constants) ════════════════════
+
 const ROOT_WIDTH = 180;
 const ROOT_HEIGHT = 88;
 const CHARS_PER_LINE = 20;
@@ -202,6 +233,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ width: 800, height: 600 });
+
+  // ═══════════ EXPERIMENT: SEMANTIC ZOOM (state) ═══════════
+  const [semanticZoom, setSemanticZoom] = useState(SEMANTIC_ZOOM_DEFAULT);
+  // Only the TIER is kept in state, not the raw scale: re-rendering 22 nodes
+  // on every wheel tick would be wasteful, and nothing here cares about the
+  // exact number -- only which of three bands it falls in.
+  const [detailTier, setDetailTier] = useState<DetailTier>("full");
+  // ═══════════ END EXPERIMENT (state) ═══════════
   const [selectedId, setSelectedId] = useState<string | null>(component.selectedNodeId || null);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
@@ -372,6 +411,15 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       .scaleExtent([0.02, 3])
       .on("zoom", (event) => {
         svg.select("g.graph-root").attr("transform", event.transform.toString());
+        // ═══ EXPERIMENT: SEMANTIC ZOOM ─ report the tier, not the scale ═══
+        // Multiplied by the viewBox-to-css ratio so the thresholds are in real
+        // on-screen scale rather than viewBox units.
+        const el = svgRef.current;
+        const vb = el?.viewBox?.baseVal;
+        const ratio = vb && vb.width ? el!.getBoundingClientRect().width / vb.width : 1;
+        const next = tierForScale(event.transform.k * ratio);
+        setDetailTier((prev) => (prev === next ? prev : next));
+        // ═══ END EXPERIMENT ═══
       });
 
     zoomRef.current = zoom;
@@ -662,7 +710,12 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const jx = (cx + tx) / 2;
             const jy = (cy + ty) / 2;
 
-            const label = group.label;
+            // ═══ EXPERIMENT: SEMANTIC ZOOM ─ basis labels vanish on the map ═══
+            // At map scale a basis renders around 3px. The colour already says
+            // support vs challenge, so the pill becomes a dot like any other
+            // unlabelled relation.
+            const label =
+              semanticZoom && detailTier === "map" ? "" : group.label;
             const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
 
             return (
@@ -753,7 +806,17 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const fill = isChallenge ? "#3a2412" : colors.fill;
             const stroke = isCurrent ? "#fbbf24" : isChallenge ? "#f97316" : colors.stroke;
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : isChallenge ? 3 : 2;
-            const lines = wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
+            // ═══════════ EXPERIMENT: SEMANTIC ZOOM (per-node detail) ═══════════
+            // `tier` is "full" whenever the experiment is off, so every branch
+            // below collapses to the original behaviour.
+            const tier: DetailTier = semanticZoom ? detailTier : "full";
+            const lines =
+              tier === "map"
+                ? []
+                : tier === "compact"
+                  ? wrapText(node.text, CHARS_PER_LINE, 1)
+                  : wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
+            // ═══════════ END EXPERIMENT (per-node detail) ═══════════
             // Center the whole block (sentence + creator + status) based on
             // this node's actual line count, instead of reserving fixed
             // room for MAX_LINES -- keeps everything close together
@@ -858,27 +921,36 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     </text>
                   </g>
                 )}
-                {/* Created by */}
-                <text
-                  textAnchor="middle"
-                  y={creatorY}
-                  fill="var(--text-muted)"
-                  fontSize="8"
-                  style={{ pointerEvents: "none" }}
-                >
-                  Created by: {node.creatorUsername || `#${node.id}`}
-                </text>
-                {/* Status */}
-                <text
-                  textAnchor="middle"
-                  y={statusY}
-                  fill={statusColor}
-                  fontSize="8"
-                  fontWeight="600"
-                  style={{ pointerEvents: "none" }}
-                >
-                  {statusLabel}
-                </text>
+                {/* Created by / Status — only at "full".
+                    ═══ EXPERIMENT: SEMANTIC ZOOM ═══
+                    At 8px these are the first things to become illegible, and
+                    both are already carried by other channels: the author by
+                    the coloured badge above, the status by the node's own
+                    fill and border. Dropping them loses no information at a
+                    scale where they could not be read anyway. */}
+                {tier === "full" && (
+                  <>
+                    <text
+                      textAnchor="middle"
+                      y={creatorY}
+                      fill="var(--text-muted)"
+                      fontSize="8"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      Created by: {node.creatorUsername || `#${node.id}`}
+                    </text>
+                    <text
+                      textAnchor="middle"
+                      y={statusY}
+                      fill={statusColor}
+                      fontSize="8"
+                      fontWeight="600"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      {statusLabel}
+                    </text>
+                  </>
+                )}
               </g>
             );
           })}
@@ -919,6 +991,34 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           gap: "0.375rem",
         }}
       >
+        {/* ═══════════ EXPERIMENT: SEMANTIC ZOOM (toggle) ═══════════
+            Delete this button to remove the control; the feature then sits
+            permanently at SEMANTIC_ZOOM_DEFAULT. */}
+        <button
+          onClick={() => setSemanticZoom((v) => !v)}
+          className="graph-zoom-btn"
+          title={
+            semanticZoom
+              ? `Semantic zoom ON (${detailTier}) — click for classic view`
+              : "Semantic zoom OFF — click to simplify nodes when zoomed out"
+          }
+          style={{
+            width: "28px",
+            height: "28px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: semanticZoom ? "var(--accent-soft, #1e3a5f)" : "var(--surface-elevated)",
+            border: `1px solid ${semanticZoom ? "#60a5fa" : "var(--border-default)"}`,
+            borderRadius: "var(--radius-sm)",
+            cursor: "pointer",
+            color: semanticZoom ? "#60a5fa" : "var(--text-secondary)",
+            fontSize: "0.8125rem",
+          }}
+        >
+          ⌸
+        </button>
+        {/* ═══════════ END EXPERIMENT (toggle) ═══════════ */}
         <button
           onClick={() => {
             const svg = d3.select(svgRef.current);
