@@ -240,6 +240,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // on every wheel tick would be wasteful, and nothing here cares about the
   // exact number -- only which of three bands it falls in.
   const [detailTier, setDetailTier] = useState<DetailTier>("full");
+  // The scale itself is needed to counter-scale text. Quantised so a wheel
+  // gesture re-renders a handful of times rather than on every tick.
+  const [zoomScale, setZoomScale] = useState(1);
   // ═══════════ END EXPERIMENT (state) ═══════════
   const [selectedId, setSelectedId] = useState<string | null>(component.selectedNodeId || null);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
@@ -417,8 +420,15 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         const el = svgRef.current;
         const vb = el?.viewBox?.baseVal;
         const ratio = vb && vb.width ? el!.getBoundingClientRect().width / vb.width : 1;
-        const next = tierForScale(event.transform.k * ratio);
+        const effective = event.transform.k * ratio;
+        const next = tierForScale(effective);
         setDetailTier((prev) => (prev === next ? prev : next));
+        // 2% steps. Quantising at all is what keeps a drag from re-rendering
+        // every node on every frame; quantising COARSELY, though, is a lie at
+        // low zoom -- 5% steps rounded 0.118 down to 0.10, a 15% error, which
+        // was enough to push a legible label under the drop threshold.
+        const quantised = Math.round(effective * 50) / 50;
+        setZoomScale((prev) => (prev === quantised ? prev : quantised));
         // ═══ END EXPERIMENT ═══
       });
 
@@ -461,6 +471,26 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     }
     zoom.transform(svg, target);
   }, [dims.width, dims.height]);
+
+  // ═══ EXPERIMENT: SEMANTIC ZOOM ─ resize also changes effective scale ═══
+  // The tier and the counter-scale depend on zoom x (css width / viewBox
+  // width). A pane resize moves that ratio WITHOUT firing a zoom event, so the
+  // stored scale silently goes stale and the text is sized for the old pane --
+  // which is how a label ended up rendered at 60px. Recomputed here whenever
+  // the measured size changes.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const vb = el.viewBox?.baseVal;
+    const ratio = vb && vb.width ? el.getBoundingClientRect().width / vb.width : 1;
+    const effective = d3.zoomTransform(el).k * ratio;
+    if (!effective || !isFinite(effective)) return;
+    const next = tierForScale(effective);
+    setDetailTier((prev) => (prev === next ? prev : next));
+    const quantised = Math.round(effective * 50) / 50;
+    setZoomScale((prev) => (prev === quantised ? prev : quantised));
+  }, [dims.width, dims.height]);
+  // ═══ END EXPERIMENT ═══
 
   // Held in a ref so the retry loop below can call the latest fitToView without
   // taking it as a dependency -- see the note on the effect's dep list.
@@ -810,20 +840,48 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             // `tier` is "full" whenever the experiment is off, so every branch
             // below collapses to the original behaviour.
             const tier: DetailTier = semanticZoom ? detailTier : "full";
-            const lines =
-              tier === "map"
-                ? []
-                : tier === "compact"
-                  ? wrapText(node.text, CHARS_PER_LINE, 1)
-                  : wrapText(node.text, CHARS_PER_LINE, MAX_LINES);
+
+            // Text is COUNTER-SCALED below "full": the font grows as the graph
+            // shrinks, so a label stays about the same size on screen however
+            // far you zoom out. Simply hiding text made the zoomed-out view
+            // legible-by-omission, which is not the same as useful -- you could
+            // see the shape of the argument but not what any of it said.
+            //
+            // The trade is characters, not pixels: bigger glyphs in a fixed
+            // node mean fewer of them, so the label shortens as you zoom out
+            // rather than becoming unreadable.
+            const effScale = semanticZoom ? Math.max(zoomScale, 0.05) : 1;
+            // The cap matters: counter-scaling only works while the glyphs
+            // still fit the node, and the node is shrinking too. Past 6x the
+            // box is a few screen pixels wide and no font size rescues it.
+            const fontScale = tier === "full" ? 1 : Math.min(1 / effScale, 6);
+            const bodyFontSize = 10 * fontScale;
+            // Once the counter-scale is capped out, the on-screen size starts
+            // falling again. Below ~7px the label is noise rather than
+            // information, so drop it and let colour and shape carry the view.
+            const labelLegible = tier === "full" || bodyFontSize * effScale >= 7;
+            // 0.55em is about the average glyph width for this face.
+            const charsThatFit = Math.max(
+              4,
+              Math.floor((node.isRoot ? ROOT_WIDTH : NODE_WIDTH) / (bodyFontSize * 0.55)) - 1
+            );
+            const lines = !labelLegible
+              ? []
+              : tier === "full"
+                ? wrapText(node.text, CHARS_PER_LINE, MAX_LINES)
+                : wrapText(node.text, charsThatFit, 2);
             // ═══════════ END EXPERIMENT (per-node detail) ═══════════
             // Center the whole block (sentence + creator + status) based on
             // this node's actual line count, instead of reserving fixed
             // room for MAX_LINES -- keeps everything close together
             // regardless of how long the sentence is.
             const sentenceGap = 4;
-            const contentHeight = lines.length * LINE_HEIGHT + sentenceGap + 2 * LINE_HEIGHT;
-            const sentenceTop = -contentHeight / 2 + LINE_HEIGHT * 0.8;
+            const lineH = tier === "full" ? LINE_HEIGHT : LINE_HEIGHT * fontScale;
+            const contentHeight =
+              tier === "full"
+                ? lines.length * LINE_HEIGHT + sentenceGap + 2 * LINE_HEIGHT
+                : lines.length * lineH;
+            const sentenceTop = -contentHeight / 2 + lineH * 0.8;
             const creatorY = sentenceTop + (lines.length - 1) * LINE_HEIGHT + sentenceGap + LINE_HEIGHT;
             const statusY = creatorY + LINE_HEIGHT;
             const statusLabel =
@@ -884,12 +942,12 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 <text
                   textAnchor="middle"
                   fill="var(--text-primary)"
-                  fontSize="10"
+                  fontSize={bodyFontSize}
                   fontWeight="500"
                   style={{ pointerEvents: "none", userSelect: "none" }}
                 >
                   {lines.map((line, i) => (
-                    <tspan key={i} x={0} y={sentenceTop + i * LINE_HEIGHT}>
+                    <tspan key={i} x={0} y={sentenceTop + i * lineH}>
                       {line}
                     </tspan>
                   ))}
