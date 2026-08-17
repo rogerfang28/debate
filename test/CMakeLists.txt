@@ -237,6 +237,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_move_log.cc
     ${CMAKE_SOURCE_DIR}/tests/test_status_engine.cc
     ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_llm_client.cc
 )
 
 add_executable(debate_tests
@@ -259,6 +260,9 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
+# LlmClient is the shared door to the model; its tests stand a real httplib
+# server up in-process rather than mocking the transport.
+target_sources(debate_tests PRIVATE ${REPO_ROOT}/backend/src/utils/LlmClient.cc)
 
 # ============================================================
 # CTest integration

@@ -1,18 +1,12 @@
 #include "ClaimParserLLM.h"
+#include "LlmClient.h"
 #include "Log.h"
-#include "../server/httplib.h"
-#include <jsoncons/json.hpp>
-#include <sstream>
-#include <stdexcept>
+#include <string>
 
 namespace {
 
-// Same local LLM endpoint used by the reference claim-tree-viewer prototype.
-constexpr const char* kLlmHost = "192.168.86.124";
-constexpr int kLlmPort = 8002;
-constexpr const char* kLlmPath = "/v1/chat/completions";
-constexpr const char* kLlmModel = "Qwen3.6-35B-A3B-UD-Q3_K_XL.gguf";
-constexpr int kMaxTokens = 4000;
+// Endpoint, model and token budget now live in LlmClient, which defaults to the
+// same local model this always used.
 constexpr size_t kMaxArticleChars = 15000;
 
 // Mirrors claim-tree-viewer/backend/extract_prompt.txt. {article} is
@@ -102,25 +96,6 @@ Before returning, verify:
 Here is the article:
 {article})PROMPT";
 
-// Strips a ```json ... ``` (or bare ``` ... ```) fence if the LLM wrapped
-// its JSON output in one, despite being told not to.
-std::string StripCodeFence(const std::string& text) {
-    size_t start = text.find("```");
-    if (start == std::string::npos) {
-        return text;
-    }
-    size_t contentStart = text.find('\n', start);
-    if (contentStart == std::string::npos) {
-        return text;
-    }
-    contentStart += 1;
-    size_t end = text.find("```", contentStart);
-    if (end == std::string::npos) {
-        return text;
-    }
-    return text.substr(contentStart, end - contentStart);
-}
-
 } // namespace
 
 std::string ClaimParserLLM::BuildPrompt(const std::string& articleText) {
@@ -138,66 +113,18 @@ std::string ClaimParserLLM::BuildPrompt(const std::string& articleText) {
     return prompt;
 }
 
-std::string ClaimParserLLM::CallLLM(const std::string& prompt) {
-    jsoncons::json body;
-    body["model"] = kLlmModel;
-    body["max_tokens"] = kMaxTokens;
-    jsoncons::json message;
-    message["role"] = "user";
-    message["content"] = prompt;
-    body["messages"] = jsoncons::json::array();
-    body["messages"].push_back(message);
-
-    std::ostringstream bodyStream;
-    bodyStream << body;
-
-    httplib::Client cli(kLlmHost, kLlmPort);
-    cli.set_connection_timeout(10, 0);
-    cli.set_read_timeout(120, 0);
-
-    auto res = cli.Post(kLlmPath, bodyStream.str(), "application/json");
-    if (!res) {
-        throw std::runtime_error("ClaimParserLLM: request to LLM failed (no response, connection error)");
-    }
-    if (res->status != 200) {
-        throw std::runtime_error("ClaimParserLLM: LLM returned HTTP " + std::to_string(res->status) + ": " + res->body);
-    }
-    return res->body;
-}
-
-std::string ClaimParserLLM::ExtractJsonFromLLMResponse(const std::string& chatCompletionBody) {
-    jsoncons::json outer;
-    try {
-        outer = jsoncons::json::parse(chatCompletionBody);
-    } catch (const std::exception& e) {
-        throw std::runtime_error("ClaimParserLLM: LLM response envelope wasn't valid JSON: " + std::string(e.what()));
-    }
-
-    if (!outer.contains("choices") || outer["choices"].empty()) {
-        throw std::runtime_error("ClaimParserLLM: LLM response had no 'choices'");
-    }
-    std::string content = outer["choices"][0]["message"]["content"].as<std::string>();
-
-    std::string candidate = StripCodeFence(content);
-
-    jsoncons::json parsed;
-    try {
-        parsed = jsoncons::json::parse(candidate);
-    } catch (const std::exception& e) {
-        std::string preview = content.substr(0, 200);
-        throw std::runtime_error("ClaimParserLLM: LLM did not return valid JSON claims. First 200 chars: " + preview);
-    }
-
-    std::ostringstream out;
-    out << jsoncons::pretty_print(parsed);
-    return out.str();
-}
-
 std::string ClaimParserLLM::ExtractClaimsJson(const std::string& articleText) {
-    std::string prompt = BuildPrompt(articleText);
-    Log::info("[ClaimParserLLM] Sending article (" + std::to_string(articleText.size()) + " chars) to LLM for claim extraction");
-    std::string rawResponse = CallLLM(prompt);
-    std::string claimsJson = ExtractJsonFromLLMResponse(rawResponse);
-    Log::info("[ClaimParserLLM] Successfully parsed claim tree from LLM response");
+    Log::info("[ClaimParserLLM] Extracting claims from article (" +
+              std::to_string(articleText.size()) + " chars)");
+
+    LlmOptions options;
+    options.label = "claim-extraction";
+
+    // CompleteJson has already proven this parses; what it cannot know is
+    // whether the SHAPE is the one this prompt asked for. Callers get that
+    // check for free from the schema they read.
+    std::string claimsJson = LlmClient::CompleteJson(BuildPrompt(articleText), options);
+
+    Log::info("[ClaimParserLLM] Parsed claim tree from model response");
     return claimsJson;
 }
