@@ -1191,7 +1191,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "_to_timestamp\0302 \001(\0132!.debate_event.MoveU"
     "serToTimestampH\000R\023moveUserToTimestamp\022>\n"
     "\014select_claim\0303 \001(\0132\031.debate_event.Selec"
-    "tClaimH\000R\013selectClaimB\t\n\007payload*\273\n\n\tEve"
+    "tClaimH\000R\013selectClaimB\t\n\007payload*\355\n\n\tEve"
     "ntType\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NO"
     "NE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES"
     "\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022"
@@ -1225,7 +1225,8 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "\022 \n\034SUBMIT_MODIFICATION_OF_CLAIM\0201\022 \n\034CA"
     "NCEL_MODIFICATION_OF_CLAIM\0202\022\022\n\016GO_TO_OV"
     "ERVIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VIEW\0204\022\020\n\014"
-    "SELECT_CLAIM\0205b\006proto3"
+    "SELECT_CLAIM\0205\022\024\n\020SUMMARIZE_DEBATE\0206\022\032\n\026"
+    "DISMISS_DEBATE_SUMMARY\0207b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1235,7 +1236,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    5582,
+    5632,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1254,7 +1255,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3538944u, 0u, };
+    3670016u, 0u, };
 // ===================================================================
 
 class CreateDebate::_Internal {

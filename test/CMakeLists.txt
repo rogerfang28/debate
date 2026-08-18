@@ -83,6 +83,12 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the summarizer and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 
 # --- Moderator + response generators (needed by scenario runner) ---
@@ -167,6 +173,12 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the summarizer and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(debate_simulation ${COMMON_LIBS})
 
@@ -224,6 +236,12 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the summarizer and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(import_debate_tool ${IMPORT_TOOL_LIBS})
 
@@ -238,6 +256,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_status_engine.cc
     ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_llm_client.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_debate_text_formatter.cc
 )
 
 add_executable(debate_tests
@@ -258,11 +277,14 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the summarizer and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
-# LlmClient is the shared door to the model; its tests stand a real httplib
-# server up in-process rather than mocking the transport.
-target_sources(debate_tests PRIVATE ${REPO_ROOT}/backend/src/utils/LlmClient.cc)
 
 # ============================================================
 # CTest integration

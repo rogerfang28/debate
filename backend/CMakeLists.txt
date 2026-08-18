@@ -69,6 +69,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser/LoginPageEventParser.cc
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
@@ -85,6 +86,8 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/GoogleJWTVerifier.cc
      ${CMAKE_SOURCE_DIR}/src/utils/PasswordHasher.cc
      ${CMAKE_SOURCE_DIR}/src/utils/LlmClient.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateTextFormatter.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateSummarizer.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc

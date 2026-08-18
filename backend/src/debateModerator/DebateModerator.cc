@@ -29,6 +29,8 @@
 // modify claim
 #include "event-handlers/ModifyClaimHandler/ModifyClaimHandler.h"
 
+#include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
+
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
 #include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
@@ -182,6 +184,14 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::SELECT_CLAIM:
             Log::info("[DebateModerator] Event Type: SELECT_CLAIM");
             MoveUserHandler::SelectClaim(event.select_claim().claim_id(), user_id, debateWrapper);
+            break;
+        case debate_event::SUMMARIZE_DEBATE:
+            Log::info("[DebateModerator] Event Type: SUMMARIZE_DEBATE");
+            SummarizeDebateHandler::SummarizeDebate(user_id, debateWrapper);
+            break;
+        case debate_event::DISMISS_DEBATE_SUMMARY:
+            Log::info("[DebateModerator] Event Type: DISMISS_DEBATE_SUMMARY");
+            SummarizeDebateHandler::DismissSummary(user_id, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::info("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");

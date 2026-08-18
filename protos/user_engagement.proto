@@ -70,6 +70,28 @@ message DebatingInfo {
   }
 
   CurrentDebateAction current_debate_action = 11;
+
+  // The AI summary of the whole debate, produced on demand by the
+  // "Summarize Debate" button.
+  //
+  // Lives on the VIEWER rather than on the debate because it is a reading aid,
+  // not part of the argument: two people may summarize at different points and
+  // neither summary is the debate's own position. Storing it on the debate
+  // would also mean one user's click overwrites what another is reading.
+  //
+  // `text` and `error` are mutually exclusive -- a run either produced a
+  // summary or explained why it could not, and showing a stale summary beside
+  // a fresh error would misrepresent which one describes the debate now.
+  message DebateSummary {
+    string text = 1;
+    string error = 2;
+    // Head of the move log when the debate text was taken. Provenance only for
+    // now -- nothing compares it against the current head yet, so a summary can
+    // still be stale on screen without saying so. Recorded because the answer
+    // cannot be reconstructed after the fact.
+    int32 summarized_at_move_seq = 3;
+  }
+  DebateSummary debate_summary = 19;
   oneof additional_info {
     // could be none
     // TODO remove field, was used for user manual linking claims

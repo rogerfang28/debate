@@ -3,6 +3,7 @@
 #include "../FullDebateView/FullDebatePageGenerator.h"
 #include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -573,6 +574,132 @@ static ui::Component BuildTreeNode(
     return node;
 }
 
+// The AI summary panel: a button that asks the model to read the whole debate,
+// and the result once there is one.
+//
+// A debate is a graph, and past a dozen claims the graph stops answering "so
+// where does this actually stand" at a glance. That is what this is for -- and
+// why it sits at the top of the column, above the claim the user happens to
+// have selected.
+static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
+    const user_engagement::DebatingInfo::DebateSummary& summary =
+        viewerUser.engagement().debating_info().debate_summary();
+    const bool hasText = !summary.text().empty();
+    const bool hasError = !summary.error().empty();
+
+    ui::Component panel = ComponentGenerator::createContainer(
+        "debateSummaryPanel", "w-full", "bg-gray-800", "p-4", "",
+        "border border-gray-700", "rounded-lg", ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    ui::Component headerRow = ComponentGenerator::createContainer(
+        "debateSummaryHeaderRow", "flex gap-2", "", "", "", "", "", ""
+    );
+    (*headerRow.mutable_css())["display"] = "flex";
+    (*headerRow.mutable_css())["align-items"] = "center";
+    (*headerRow.mutable_css())["justify-content"] = "space-between";
+    (*headerRow.mutable_css())["gap"] = "0.5rem";
+
+    ui::Component heading = ComponentGenerator::createText(
+        "debateSummaryHeading", "AI Summary of Debate:", "text-xs", "text-gray-500",
+        "font-semibold uppercase tracking-wide", ""
+    );
+    ComponentGenerator::addChild(&headerRow, heading);
+
+    ui::Component buttonGroup = ComponentGenerator::createContainer(
+        "debateSummaryButtons", "flex gap-2", "", "", "", "", "", ""
+    );
+    (*buttonGroup.mutable_css())["display"] = "flex";
+    (*buttonGroup.mutable_css())["gap"] = "0.5rem";
+
+    // The label says what a second press does, because the debate moves and a
+    // summary taken five claims ago is not the summary of this debate.
+    ui::Component summarizeButton = ComponentGenerator::createButton(
+        "summarizeDebateButton", (hasText || hasError) ? "Re-summarize" : "Summarize Debate",
+        "", "bg-indigo-600", "hover:bg-indigo-700", "text-white",
+        "px-3 py-1.5", "rounded", "text-sm"
+    );
+    ComponentGenerator::addChild(&buttonGroup, summarizeButton);
+
+    if (hasText || hasError) {
+        ui::Component dismissButton = ComponentGenerator::createButton(
+            "dismissDebateSummaryButton", "Dismiss", "", "bg-gray-700",
+            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonGroup, dismissButton);
+    }
+
+    ComponentGenerator::addChild(&headerRow, buttonGroup);
+    ComponentGenerator::addChild(&panel, headerRow);
+
+    if (hasError) {
+        // The model's own words, not "something went wrong": when the local
+        // model is simply switched off, the reason IS the fix.
+        ui::Component errorText = ComponentGenerator::createText(
+            "debateSummaryError", summary.error(), "text-sm", "text-red-400", "", ""
+        );
+        (*errorText.mutable_css())["overflow-wrap"] = "anywhere";
+        ComponentGenerator::addChild(&panel, errorText);
+        return panel;
+    }
+
+    if (!hasText) {
+        ui::Component hint = ComponentGenerator::createText(
+            "debateSummaryHint",
+            "No summary yet. Press Summarize Debate to have the AI read the whole debate.",
+            "text-sm", "text-gray-400", "", ""
+        );
+        ComponentGenerator::addChild(&panel, hint);
+        return panel;
+    }
+
+    // One component per line. The renderer collapses whitespace like HTML, so
+    // a single text node would run the model's sections together into one
+    // paragraph and lose the structure the prompt asked for.
+    ui::Component body = ComponentGenerator::createContainer(
+        "debateSummaryBody", "w-full", "", "", "", "", "", ""
+    );
+    (*body.mutable_css())["display"] = "flex";
+    (*body.mutable_css())["flex-direction"] = "column";
+    (*body.mutable_css())["gap"] = "0.15rem";
+
+    std::istringstream lines(summary.text());
+    std::string line;
+    int lineIndex = 0;
+    while (std::getline(lines, line)) {
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+        const std::string id = "debateSummaryLine_" + std::to_string(lineIndex++);
+        if (line.empty()) {
+            ui::Component spacer = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
+            (*spacer.mutable_css())["height"] = "0.4rem";
+            ComponentGenerator::addChild(&body, spacer);
+            continue;
+        }
+
+        // The prompt asks for ALL-CAPS section headings; styling them is what
+        // makes the summary skimmable rather than a wall of text.
+        const bool isHeading = line.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos;
+        ui::Component textLine = ComponentGenerator::createText(
+            id, line, isHeading ? "text-xs" : "text-sm",
+            isHeading ? "text-gray-400" : "text-gray-100",
+            isHeading ? "font-semibold uppercase tracking-wide" : "", ""
+        );
+        (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
+        if (isHeading && lineIndex > 1) {
+            (*textLine.mutable_css())["margin-top"] = "0.35rem";
+        }
+        ComponentGenerator::addChild(&body, textLine);
+    }
+
+    ComponentGenerator::addChild(&panel, body);
+    return panel;
+}
+
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
 	const debate::Collection& collectionProto,
@@ -772,6 +899,9 @@ ui::Page StepView::GenerateStepViewPage(
 		fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
 	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
+
+	ui::Component debateSummaryPanel = BuildDebateSummaryPanel(viewerUser);
+	ComponentGenerator::addChild(&leftColumn, debateSummaryPanel);
 
 	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
 		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
