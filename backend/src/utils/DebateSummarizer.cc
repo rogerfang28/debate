@@ -28,57 +28,57 @@ namespace {
 //     then repeating itself in the second section. Walking one argument at a
 //     time -- claim, support, rebuttal, done -- is both what it does naturally
 //     and easier to follow than holding five open threads at once.
+//
+// Then it was cut to roughly a third. At 550 words it was accurate and nobody
+// would read it -- a quick summary that takes two minutes is not a quick
+// summary. Shortening by compressing the SAME coverage is what breaks it: the
+// model drops the explanations first and leaves a dense page of undefined
+// jargon. So the brief version narrows SCOPE instead -- fewer arguments, still
+// explained -- and carries one hard exception: the term the disagreement turns
+// on always gets defined, because the reader reaching the crux sentence and
+// finding gibberish is the one failure that makes the whole summary pointless.
 const char* kSummaryPromptTemplate =
-    R"PROMPT(You are explaining a structured debate to someone who has never heard of this topic and knows nothing about it.
+    R"PROMPT(You are giving someone a QUICK summary of a structured debate. They have never seen this topic and know nothing about it. They want to understand the gist in under a minute, not read an essay.
 
-Assume the reader is intelligent but completely uninformed. They do not know who the people are, what any technical term means, or why this matters. Make them understand the whole disagreement from scratch.
+BREVITY IS THE POINT. Someone who wanted the full argument would read the debate itself. Your job is to get them oriented fast.
 
 HOW TO READ THE DEBATE BELOW
 
 The debate is a graph, not an essay. Claims are supported and challenged by other claims.
 
 - Indentation means the indented block is offered FOR or AGAINST the line directly above it.
-- "SUPPORTED BY" means those claims are the reasons or evidence for the claim above.
-- "CHALLENGED BY" means those claims attack the claim above.
-- "all of the following TOGETHER" means those claims form ONE argument that needs every part to hold. If one part fails, the whole argument fails. Never present them as separate independent reasons.
-- "CHALLENGE AGAINST THE REASONING ABOVE" attacks the logic, not the facts. It accepts the evidence is true but denies it proves the conclusion.
-- "accepted" / "refuted" / "open" is where each claim stands. "DISPUTED" means the two sides disagree about that claim.
+- "SUPPORTED BY" means those claims are reasons for the claim above. "CHALLENGED BY" means they attack it.
+- "all of the following TOGETHER" means those claims are ONE argument needing every part. If one part fails, that whole line fails.
+- "CHALLENGE AGAINST THE REASONING ABOVE" accepts the facts but denies they prove the conclusion.
+- "accepted" / "refuted" / "open" is where a claim stands. "DISPUTED" means the participants disagree about it.
 - Lowercase names are the people arguing.
 
-WRITING RULES - FOLLOW THESE EXACTLY
+WRITING RULES
 
-1. Use simple, everyday words. Explain it the way you would out loud to a smart friend who has no background in this.
-2. Keep sentences short. Aim for under 20 words.
-3. Explain EVERY term a newcomer would not know, the first time you use it, in plain words in parentheses. This includes scientific terms, legal terms, laws, court doctrines, organisations, and every abbreviation.
-   NAME the thing AND explain it. Do not dodge a name to avoid having to explain it - "a government letter" and "a specific lab" leave the reader with nothing they could look up or repeat. Write the name, then explain it.
-   The debate often does not say what an organisation is, and you must not invent outside facts - so identify it by the role it plays IN THIS DEBATE. Write "the NIH (the US government body that awarded the research grant)". Write "EcoHealth Alliance (the organisation that got the grant and passed part of it to the Wuhan lab)". Write "the Fifth Amendment (the US legal right to refuse to answer questions that might incriminate you)".
-   Key technical terms carry the whole disagreement, so they always get a plain definition on first use: write "gain-of-function research (deliberately changing a virus to give it new or stronger abilities)".
+1. Simple everyday words. Short sentences, under 20 words.
+2. Explain any term a newcomer would not know, in a few words in parentheses, the first time you use it. Name a thing AND explain it - never a bare abbreviation, and never dodge a name to avoid explaining it. Identify things by the role they play in this debate; do not add outside facts.
+3. Because you are being brief, mention FEWER things - do not compress by dropping the explanations. It is better to cover two arguments properly than five in a way nobody can follow.
+   If a section has little to report, say it in ONE sentence and stop. Never pad a section by restating the same point in different words - on a debate with no objections, "nothing has been challenged" is the complete and correct answer for that section. A short section is a fact about the debate, not a gap to fill.
+   Above all: if the disagreement turns on the meaning of a term, that term MUST be explained in plain words. Leaving the crux term undefined is the worst thing this summary can do - the reader reaches the one sentence that matters and it is gibberish to them. If you have no room to explain a term, use plain words instead of the term.
+4. Do NOT decide who is right. Never call an argument strong, weak or convincing. The reader decides.
+5. Cover only the biggest points. Skip minor supporting details, skip side branches, skip anything a newcomer does not need to grasp the disagreement.
+6. Add nothing that is not in the debate below.
+7. Plain sentences. No markdown, no bullets, no bold.
 
-4. Identify each person the first time you name them, by the role the debate shows them playing, for example who is making the accusation and who is answering it. If the debate does not say what someone's job is, do not invent one.
-5. If the debate refers to an event, say in a few words what happened at it.
-6. Do NOT decide who is right. Never call an argument strong, weak, successful, convincing, damaging or decisive. Report what each side says and where it stands. The reader decides.
-7. Add nothing that is not in the debate below. No outside facts, no context you happen to know.
-8. Handle each line of argument once, completely, then move on. Never make the same point twice in different places. Do not open with a list of the arguments and then explain them again below.
+NEVER INVENT OPPOSITION. Only describe an objection if it actually appears under "CHALLENGED BY" or "CHALLENGE AGAINST THE REASONING ABOVE". If nothing is offered against a claim, say that plainly and stop. Inventing a critic is the worst error you can make here: it tells the reader the argument has been tested when nobody has laid a finger on it, which is the opposite of the truth.
 
-9. Plain paragraphs only. No markdown, no bullet points, no bold, no numbered lists.
+WRITE EXACTLY THESE THREE SHORT SECTIONS
 
-WRITE THE SUMMARY USING THESE EXACT HEADINGS
+THE QUESTION
+One or two sentences. What is being claimed, and who disputes it.
 
-WHAT THIS IS ABOUT
-Two or three simple sentences. What is the main thing being claimed, who is claiming it, and who disputes it. Explain any name or term a newcomer would not know.
+THE ARGUMENT
+Three or four sentences. Only the main lines of support, biggest first. If a line needs several claims together, say so in a few words - it matters that the whole line fails if one part does. Then, in one or two sentences, the main objections and whether they dispute the facts or dispute what the facts prove.
 
-THE ARGUMENTS, ONE AT A TIME
-Take each separate line of argument in turn, strongest first, and give each its own paragraph. For each one:
- - say what is being claimed, in plain words;
- - say what is offered as support for it;
- - if the debate marked those supports with "all of the following TOGETHER", you MUST say so. This is not optional and it is the easiest thing in the debate to lose. Name the parts and say plainly that the line needs every one of them, so if any single part is wrong the whole line collapses. Attach this only to the argument it belongs to, and name that argument's own parts - never borrow parts from a different argument. Leaving it out makes an argument look sturdier than it is;
- - then say how the other side answers it, and whether they are disputing a fact or accepting the facts while denying they prove the point.
-Finish each argument completely before starting the next, so the reader can follow one thread at a time. If a line of argument has drawn no objection, say so.
+WHAT IT COMES DOWN TO
+Two or three sentences. The single point the disagreement really turns on, and where things currently stand. If they are arguing about what a word means, name the word and give both meanings briefly.
 
-WHERE IT STANDS NOW
-What both sides agree on, what is still unresolved, and the exact point of disagreement. If they are disagreeing about what a word means, name the word and give each side's meaning in plain language.
-
-Aim for 400-550 words total. Do not sacrifice the explanations to stay short - a shorter summary that leaves the reader unable to follow it has failed.
+HARD LIMIT: 175 words total. Count them. A summary over 175 words has failed the task regardless of how good it is.
 
 Here is the debate:
 
@@ -141,21 +141,24 @@ WRITING RULES - FOLLOW THESE EXACTLY
 5. Add nothing that is not below. No outside facts.
 6. Plain paragraphs. No markdown, no bullet points, no bold.
 
-WRITE THE SUMMARY USING THESE EXACT HEADINGS
+BREVITY IS THE POINT. The reader clicked one claim and wants to know what it is, fast. Cover only the biggest points and skip minor detail. Because you are being brief, mention FEWER things rather than compressing by dropping the explanations.
 
-WHAT THIS CLAIM SAYS
-Restate the claim in plain words, and say who made it. If it uses any term a newcomer would not know, explain it here.
+If a section has little to report, say it in ONE sentence and stop. Never pad by restating the same point in different words - "nothing has been offered against it" is a complete answer.
 
-WHY IT MATTERS HERE
-What this claim is being used to support or attack, and what that bigger claim is. If it only works together with other claims, say so plainly, name them, and make clear that the step fails if any one of them fails. If nothing is built on it, say that it stands on its own.
+NEVER INVENT OPPOSITION. Only describe an objection if it actually appears under "CHALLENGED BY" or "CHALLENGE AGAINST THE REASONING ABOVE". If nothing is offered against a claim, say that plainly and stop. Inventing a critic is the worst error you can make here: it tells the reader the argument has been tested when nobody has laid a finger on it, which is the opposite of the truth.
 
-WHAT BACKS IT UP AND WHAT ATTACKS IT
-What is offered in support of this claim, and what is offered against it. For each attack, say whether it disputes a fact or accepts the facts while denying they prove the point. If nothing has been offered either way, say so plainly.
+WRITE EXACTLY THESE THREE SHORT SECTIONS
 
-WHERE IT STANDS
-Whether it is currently accepted, refuted or open, and for whom. If the participants disagree about it, say who takes which view and what the disagreement turns on.
+WHAT IT SAYS
+One or two sentences. The claim in plain words, and who made it. Explain any term a newcomer would not know.
 
-Aim for 150-250 words. Keep it shorter than a whole-debate summary - this is about one claim.
+WHAT IT IS DOING HERE
+One or two sentences. What bigger claim it supports or attacks. If it only works together with other claims, say so and make clear the step fails if any one of them fails. If nothing is built on it, say it stands on its own.
+
+HOW IT IS HOLDING UP
+Two or three sentences. The main things offered for and against it, and whether an objection disputes a fact or accepts the facts while denying they prove the point. Then whether it is accepted, refuted or open, and for whom.
+
+HARD LIMIT: 110 words total. Count them. A summary over 110 words has failed the task.
 
 Here is the claim and its surroundings:
 

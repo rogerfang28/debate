@@ -97,6 +97,11 @@ int main(int argc, char** argv) {
     std::cerr << "===== DEBATE TEXT (" << debateText.size() << " chars) =====\n"
               << debateText << "\n===== END DEBATE TEXT =====\n";
 
+    // The model call throws on timeout or a dead host. Uncaught, that leaves
+    // main via std::terminate and the process dies with a bare 0xC0000409,
+    // which reads like a memory-corruption crash rather than "the model did
+    // not answer in time" -- and cost me a while chasing the wrong bug.
+    try {
     std::string summary;
     if (promptFile.empty()) {
         summary = DebateSummarizer::Summarize(debateText);
@@ -119,5 +124,9 @@ int main(int argc, char** argv) {
     }
 
     std::cout << summary << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "summarize_tool: " << e.what() << "\n";
+        return 1;
+    }
     return 0;
 }
