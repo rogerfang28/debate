@@ -87,6 +87,7 @@ set(HANDLER_SOURCES
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -177,6 +178,7 @@ add_executable(debate_simulation
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -240,6 +242,7 @@ add_executable(import_debate_tool
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -281,6 +284,7 @@ add_executable(debate_tests
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )

@@ -1,6 +1,6 @@
 #include "SummarizeDebateHandler.h"
 
-#include "../../../utils/DebateSummarizer.h"
+#include "../../../utils/SummaryJobs.h"
 #include "../../../utils/DebateTextFormatter.h"
 #include "../../../utils/Log.h"
 #include "../../buildResponse/debatePageResponse/BuildCollection.h"
@@ -74,21 +74,46 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
     }
     summary->set_summarized_at_move_seq(headSeq);
 
-    try {
-        const std::string text = DebateSummarizer::Summarize(debateText);
-        if (text.empty()) {
-            summary->set_error("The model returned an empty summary.");
-        } else {
-            summary->set_text(text);
-        }
-    } catch (const std::exception& e) {
-        // Shown to the user verbatim: when the local model is simply switched
-        // off, "could not reach the model at ..." is the whole diagnosis, and
-        // hiding it behind "something went wrong" helps nobody.
-        Log::warn(std::string("[SummarizeDebateHandler] summary failed: ") + e.what());
-        summary->set_error(e.what());
+    // Hand off and return. Blocking here would hold the request thread for the
+    // whole model call -- tens of seconds to minutes on a real debate -- so the
+    // page would not come back until it finished and the user would be staring
+    // at a dead tab with no way to tell progress from a hang.
+    SummaryJobs::Start(user_id, debateText);
+    summary->set_pending(true);
+    summary->set_elapsed_seconds(0);
+
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
+void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper) {
+    const SummaryJobs::Snapshot snapshot = SummaryJobs::Collect(user_id);
+    if (!snapshot.running && !snapshot.finished) {
+        return;
     }
 
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    user_engagement::DebatingInfo::DebateSummary* summary =
+        userProto.mutable_engagement()->mutable_debating_info()->mutable_debate_summary();
+
+    if (snapshot.running) {
+        // Rewritten every poll so the elapsed counter actually moves.
+        summary->set_pending(true);
+        summary->set_elapsed_seconds(snapshot.elapsedSeconds);
+        debateWrapper.updateUserProtobuf(user_id, userProto);
+        return;
+    }
+
+    // Finished. This runs on the request thread, which is the only thread that
+    // touches the database -- the worker never does.
+    summary->set_pending(false);
+    summary->set_elapsed_seconds(0);
+    if (!snapshot.error.empty()) {
+        summary->clear_text();
+        summary->set_error(snapshot.error);
+    } else {
+        summary->clear_error();
+        summary->set_text(snapshot.text);
+    }
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 

@@ -88,6 +88,7 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/LlmClient.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateTextFormatter.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateSummarizer.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/SummaryJobs.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc

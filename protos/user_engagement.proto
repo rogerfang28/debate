@@ -90,6 +90,15 @@ message DebatingInfo {
     // still be stale on screen without saying so. Recorded because the answer
     // cannot be reconstructed after the fact.
     int32 summarized_at_move_seq = 3;
+
+    // A run is in flight. Rendered as progress rather than as a result, and
+    // never persisted as true across a restart -- see SummaryJobs, which owns
+    // the actual run and is the only thing that can know it is still alive.
+    bool pending = 4;
+    // Seconds the current run has been going, so the page can show motion. The
+    // model takes tens of seconds; without a number on screen a working model
+    // and a hung one look exactly alike.
+    int32 elapsed_seconds = 5;
   }
   DebateSummary debate_summary = 19;
   oneof additional_info {

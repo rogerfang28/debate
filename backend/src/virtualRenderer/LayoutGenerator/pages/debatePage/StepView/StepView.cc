@@ -584,8 +584,9 @@ static ui::Component BuildTreeNode(
 static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     const user_engagement::DebatingInfo::DebateSummary& summary =
         viewerUser.engagement().debating_info().debate_summary();
-    const bool hasText = !summary.text().empty();
-    const bool hasError = !summary.error().empty();
+    const bool pending = summary.pending();
+    const bool hasText = !pending && !summary.text().empty();
+    const bool hasError = !pending && !summary.error().empty();
 
     ui::Component panel = ComponentGenerator::createContainer(
         "debateSummaryPanel", "w-full", "bg-gray-800", "p-4", "",
@@ -617,14 +618,19 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
 
     // The label says what a second press does, because the debate moves and a
     // summary taken five claims ago is not the summary of this debate.
+    // While a run is going the button says so and stops inviting a second
+    // press -- pressing again cannot start anything (SummaryJobs refuses a
+    // concurrent run) and would only look broken.
     ui::Component summarizeButton = ComponentGenerator::createButton(
-        "summarizeDebateButton", (hasText || hasError) ? "Re-summarize" : "Summarize Debate",
-        "", "bg-indigo-600", "hover:bg-indigo-700", "text-white",
+        "summarizeDebateButton",
+        pending ? "Summarizing..." : ((hasText || hasError) ? "Re-summarize" : "Summarize Debate"),
+        "", pending ? "bg-gray-600" : "bg-indigo-600",
+        pending ? "hover:bg-gray-600" : "hover:bg-indigo-700", "text-white",
         "px-3 py-1.5", "rounded", "text-sm"
     );
     ComponentGenerator::addChild(&buttonGroup, summarizeButton);
 
-    if (hasText || hasError) {
+    if (!pending && (hasText || hasError)) {
         ui::Component dismissButton = ComponentGenerator::createButton(
             "dismissDebateSummaryButton", "Dismiss", "", "bg-gray-700",
             "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"
@@ -634,6 +640,30 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
 
     ComponentGenerator::addChild(&headerRow, buttonGroup);
     ComponentGenerator::addChild(&panel, headerRow);
+
+    if (pending) {
+        // The id is the signal the client polls on -- see Renderer.tsx, which
+        // re-requests the page while this component exists. Without it the
+        // background run would finish into a page nobody asked to redraw.
+        ui::Component progress = ComponentGenerator::createText(
+            "debateSummaryPending",
+            "Reading the debate and writing a summary... " +
+                std::to_string(summary.elapsed_seconds()) + "s elapsed",
+            "text-sm", "text-indigo-300", "", ""
+        );
+        ComponentGenerator::addChild(&panel, progress);
+
+        // Says the quiet part: this model is slow, and a user who is not told
+        // that will read thirty seconds of silence as a failure.
+        ui::Component hint = ComponentGenerator::createText(
+            "debateSummaryPendingHint",
+            "The local model usually takes 30-90 seconds. You can keep working; "
+            "the summary will appear here when it is done.",
+            "text-xs", "text-gray-500", "", ""
+        );
+        ComponentGenerator::addChild(&panel, hint);
+        return panel;
+    }
 
     if (hasError) {
         // The model's own words, not "something went wrong": when the local

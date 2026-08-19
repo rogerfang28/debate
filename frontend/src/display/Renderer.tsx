@@ -95,6 +95,28 @@ const Renderer: React.FC = () => {
     };
   }, []);
 
+  // ── Poll while a long-running AI job is in flight ─────────────────────
+  // The summary runs on a detached thread on the server, so the response that
+  // started it carries no result. Something has to come back and ask, or the
+  // finished summary sits on the server until the user happens to click
+  // something else.
+  //
+  // Keyed on a marker component the page itself emits (debateSummaryPending)
+  // rather than on a flag in this component: the UI is server-driven, so the
+  // server is what knows whether work is outstanding, and this stays generic
+  // enough for the next slow AI action to reuse.
+  useEffect(() => {
+    if (!data) return;
+    // Cheap containment check first -- walking the tree on every render would
+    // cost more than the string scan for a page this size.
+    if (!JSON.stringify(data).includes("debateSummaryPending")) return;
+
+    const timer = setTimeout(() => {
+      void reloadPage();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [data, reloadPage]);
+
   // Load from JSON file
   const handleLoadFromFile = useCallback(() => {
     fileInputRef.current?.click();

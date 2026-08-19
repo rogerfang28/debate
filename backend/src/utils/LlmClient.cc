@@ -17,7 +17,12 @@ constexpr int kDefaultPort = 8002;
 constexpr const char* kDefaultPath = "/v1/chat/completions";
 constexpr const char* kDefaultModel = "Qwen3.6-35B-A3B-UD-Q3_K_XL.gguf";
 constexpr int kDefaultMaxTokens = 4000;
-constexpr int kDefaultReadTimeoutSeconds = 120;
+// A 35B model answering a real debate took 35s on a small one and blew past
+// 120s on a larger one, so the old ceiling was below normal working time
+// rather than above it. Generous by design: the failure mode of waiting too
+// long is a slow answer, the failure mode of waiting too little is throwing
+// away work the model had nearly finished.
+constexpr int kDefaultReadTimeoutSeconds = 600;
 constexpr int kConnectTimeoutSeconds = 10;
 
 struct LlmConfig {
@@ -158,8 +163,19 @@ std::string LlmClient::Chat(const std::vector<LlmMessage>& messages, const LlmOp
                                std::chrono::steady_clock::now() - started).count();
 
     if (!res) {
-        throw std::runtime_error("LlmClient: " + options.label + " could not reach the model at " +
-                                 DescribeEndpoint() + " (connection error after " +
+        // "Could not reach" and "reached it, waited, got nothing" are opposite
+        // problems -- one means the host is down, the other means the model is
+        // slower than the timeout -- and reporting both as unreachable sent me
+        // hunting for a dead machine that was actually running and thinking.
+        const bool timedOut = res.error() == httplib::Error::Read;
+        const std::string what =
+            timedOut
+                ? " reached the model but got no response within " +
+                      std::to_string(cfg.readTimeoutSeconds) +
+                      "s (raise DEBATE_LLM_TIMEOUT_SEC if it is just slow) at "
+                : " could not reach the model at ";
+        throw std::runtime_error("LlmClient: " + options.label + what + DescribeEndpoint() +
+                                 " (" + httplib::to_string(res.error()) + " after " +
                                  std::to_string(elapsedMs) + "ms)");
     }
     if (res->status != 200) {

@@ -598,6 +598,8 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
     kTextFieldNumber = 1,
     kErrorFieldNumber = 2,
     kSummarizedAtMoveSeqFieldNumber = 3,
+    kPendingFieldNumber = 4,
+    kElapsedSecondsFieldNumber = 5,
   };
   // string text = 1 [json_name = "text"];
   void clear_text() ;
@@ -639,11 +641,31 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
   void _internal_set_summarized_at_move_seq(::int32_t value);
 
   public:
+  // bool pending = 4 [json_name = "pending"];
+  void clear_pending() ;
+  bool pending() const;
+  void set_pending(bool value);
+
+  private:
+  bool _internal_pending() const;
+  void _internal_set_pending(bool value);
+
+  public:
+  // int32 elapsed_seconds = 5 [json_name = "elapsedSeconds"];
+  void clear_elapsed_seconds() ;
+  ::int32_t elapsed_seconds() const;
+  void set_elapsed_seconds(::int32_t value);
+
+  private:
+  ::int32_t _internal_elapsed_seconds() const;
+  void _internal_set_elapsed_seconds(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.DebatingInfo.DebateSummary)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 60,
                                    2>
       _table_;
@@ -668,6 +690,8 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr text_;
     ::google::protobuf::internal::ArenaStringPtr error_;
     ::int32_t summarized_at_move_seq_;
+    bool pending_;
+    ::int32_t elapsed_seconds_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4428,6 +4452,56 @@ inline ::int32_t DebatingInfo_DebateSummary::_internal_summarized_at_move_seq() 
 inline void DebatingInfo_DebateSummary::_internal_set_summarized_at_move_seq(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.summarized_at_move_seq_ = value;
+}
+
+// bool pending = 4 [json_name = "pending"];
+inline void DebatingInfo_DebateSummary::clear_pending() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.pending_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool DebatingInfo_DebateSummary::pending() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.DebateSummary.pending)
+  return _internal_pending();
+}
+inline void DebatingInfo_DebateSummary::set_pending(bool value) {
+  _internal_set_pending(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.DebateSummary.pending)
+}
+inline bool DebatingInfo_DebateSummary::_internal_pending() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.pending_;
+}
+inline void DebatingInfo_DebateSummary::_internal_set_pending(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.pending_ = value;
+}
+
+// int32 elapsed_seconds = 5 [json_name = "elapsedSeconds"];
+inline void DebatingInfo_DebateSummary::clear_elapsed_seconds() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.elapsed_seconds_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::int32_t DebatingInfo_DebateSummary::elapsed_seconds() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.DebateSummary.elapsed_seconds)
+  return _internal_elapsed_seconds();
+}
+inline void DebatingInfo_DebateSummary::set_elapsed_seconds(::int32_t value) {
+  _internal_set_elapsed_seconds(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.DebateSummary.elapsed_seconds)
+}
+inline ::int32_t DebatingInfo_DebateSummary::_internal_elapsed_seconds() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.elapsed_seconds_;
+}
+inline void DebatingInfo_DebateSummary::_internal_set_elapsed_seconds(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.elapsed_seconds_ = value;
 }
 
 // -------------------------------------------------------------------

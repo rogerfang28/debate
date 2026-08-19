@@ -450,6 +450,12 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
 
     // std::string user = dbWrapper.users.getUsername(user_id);
 
+    // Fold in any background summary run BEFORE the user proto is read, so this
+    // response carries the current elapsed time or the finished text. This is
+    // what makes a detached worker visible to the page: the client re-requests
+    // while a run is pending, and each request advances what it sees.
+    SummarizeDebateHandler::RefreshSummaryState(user_id, debateWrapper);
+
     userProto = debateWrapper.getUserProtobuf(user_id);
 
     // Copy the engagement data

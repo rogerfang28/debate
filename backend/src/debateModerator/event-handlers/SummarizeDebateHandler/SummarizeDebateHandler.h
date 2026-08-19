@@ -14,4 +14,10 @@ public:
 
     // Clears the stored summary so the panel goes away.
     static void DismissSummary(const int& user_id, DebateWrapper& debateWrapper);
+
+    // Folds the state of any in-flight run into the viewer's stored summary:
+    // advances the elapsed counter while it runs, and writes the finished text
+    // or error once. Called on every debate page build, which is what turns a
+    // background run into something the page can show.
+    static void RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper);
 };
