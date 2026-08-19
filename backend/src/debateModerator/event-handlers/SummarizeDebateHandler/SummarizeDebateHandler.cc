@@ -78,33 +78,31 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
     // whole model call -- tens of seconds to minutes on a real debate -- so the
     // page would not come back until it finished and the user would be staring
     // at a dead tab with no way to tell progress from a hang.
-    SummaryJobs::Start(user_id, debateText);
+    SummaryJobs::Start(user_id, SummaryJobs::Kind::Debate, debateText);
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper) {
-    const SummaryJobs::Snapshot snapshot = SummaryJobs::Collect(user_id);
-    if (!snapshot.running && !snapshot.finished) {
-        return;
-    }
+namespace {
 
-    user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    user_engagement::DebatingInfo::DebateSummary* summary =
-        userProto.mutable_engagement()->mutable_debating_info()->mutable_debate_summary();
+// Applies one job's state to one summary field. Both summaries behave
+// identically once started, so the difference between them is which field and
+// which job -- not which logic.
+bool applySnapshot(const SummaryJobs::Snapshot& snapshot,
+                   user_engagement::DebatingInfo::DebateSummary* summary) {
+    if (!snapshot.running && !snapshot.finished) {
+        return false;
+    }
 
     if (snapshot.running) {
         // Rewritten every poll so the elapsed counter actually moves.
         summary->set_pending(true);
         summary->set_elapsed_seconds(snapshot.elapsedSeconds);
-        debateWrapper.updateUserProtobuf(user_id, userProto);
-        return;
+        return true;
     }
 
-    // Finished. This runs on the request thread, which is the only thread that
-    // touches the database -- the worker never does.
     summary->set_pending(false);
     summary->set_elapsed_seconds(0);
     if (!snapshot.error.empty()) {
@@ -114,6 +112,94 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
         summary->clear_error();
         summary->set_text(snapshot.text);
     }
+    return true;
+}
+
+} // namespace
+
+void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper) {
+    const SummaryJobs::Snapshot debateSnapshot =
+        SummaryJobs::Collect(user_id, SummaryJobs::Kind::Debate);
+    const SummaryJobs::Snapshot claimSnapshot =
+        SummaryJobs::Collect(user_id, SummaryJobs::Kind::Claim);
+    if (!debateSnapshot.running && !debateSnapshot.finished &&
+        !claimSnapshot.running && !claimSnapshot.finished) {
+        return;
+    }
+
+    // One read, one write, whatever changed. Collect() has already handed over
+    // any finished result, so skipping the write here would drop it for good.
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    user_engagement::DebatingInfo* info =
+        userProto.mutable_engagement()->mutable_debating_info();
+    bool changed = applySnapshot(debateSnapshot, info->mutable_debate_summary());
+    changed = applySnapshot(claimSnapshot, info->mutable_claim_summary()) || changed;
+    if (changed) {
+        debateWrapper.updateUserProtobuf(user_id, userProto);
+    }
+}
+
+void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user_id,
+                                            DebateWrapper& debateWrapper) {
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    const int debateId = userProto.engagement().debating_info().debate_id();
+
+    user_engagement::DebatingInfo* info =
+        userProto.mutable_engagement()->mutable_debating_info();
+    user_engagement::DebatingInfo::DebateSummary* summary = info->mutable_claim_summary();
+    summary->Clear();
+    info->set_claim_summary_claim_id(claim_id);
+
+    if (debateId <= 0 || claim_id <= 0) {
+        summary->set_error("No claim is selected.");
+        debateWrapper.updateUserProtobuf(user_id, userProto);
+        return;
+    }
+
+    const std::vector<int> memberIds = debateWrapper.findUsersInDebate(debateId);
+    const debate::Collection collection =
+        BuildCollection::BuildForDebateAndUsers(debateId, memberIds, debateWrapper);
+    if (collection.claims_by_id().find(claim_id) == collection.claims_by_id().end()) {
+        summary->set_error("That claim is not part of this debate.");
+        debateWrapper.updateUserProtobuf(user_id, userProto);
+        return;
+    }
+
+    std::map<int, std::string> usernames;
+    for (int memberId : memberIds) {
+        usernames[memberId] = debateWrapper.getUserProtobuf(memberId).username();
+    }
+    for (const auto& entry : collection.claims_by_id()) {
+        const int creatorId = entry.second.creator_id();
+        if (creatorId > 0 && usernames.find(creatorId) == usernames.end()) {
+            usernames[creatorId] = debateWrapper.getUserProtobuf(creatorId).username();
+        }
+    }
+
+    std::string topic;
+    const std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobuf(debateId);
+    debate::Debate debateProto;
+    if (!debateBytes.empty() &&
+        debateProto.ParseFromArray(debateBytes.data(), static_cast<int>(debateBytes.size()))) {
+        topic = debateProto.topic();
+    }
+
+    DebateTextFormatter::Options options;
+    options.topic = topic;
+    options.viewerUsername = userProto.username();
+    const std::string contextText =
+        DebateTextFormatter::FormatClaimContext(collection, usernames, options, claim_id);
+
+    SummaryJobs::Start(user_id, SummaryJobs::Kind::Claim, contextText);
+    summary->set_pending(true);
+    summary->set_elapsed_seconds(0);
+
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
+void SummarizeDebateHandler::DismissClaimSummary(const int& user_id, DebateWrapper& debateWrapper) {
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    userProto.mutable_engagement()->mutable_debating_info()->clear_claim_summary();
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 

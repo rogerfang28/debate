@@ -101,7 +101,7 @@ const Renderer: React.FC = () => {
   // finished summary sits on the server until the user happens to click
   // something else.
   //
-  // Keyed on a marker component the page itself emits (debateSummaryPending)
+  // Keyed on a marker component the page itself emits (*SummaryPending)
   // rather than on a flag in this component: the UI is server-driven, so the
   // server is what knows whether work is outstanding, and this stays generic
   // enough for the next slow AI action to reuse.
@@ -109,7 +109,9 @@ const Renderer: React.FC = () => {
     if (!data) return;
     // Cheap containment check first -- walking the tree on every render would
     // cost more than the string scan for a page this size.
-    if (!JSON.stringify(data).includes("debateSummaryPending")) return;
+    // Matches debateSummaryPending and claimSummaryPending -- any slow AI job
+    // that names its marker this way gets polled without further wiring.
+    if (!/"(?:[A-Za-z]+)SummaryPending"/.test(JSON.stringify(data))) return;
 
     const timer = setTimeout(() => {
       void reloadPage();

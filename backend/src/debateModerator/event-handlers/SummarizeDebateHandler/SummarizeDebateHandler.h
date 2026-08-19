@@ -20,4 +20,10 @@ public:
     // or error once. Called on every debate page build, which is what turns a
     // background run into something the page can show.
     static void RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper);
+
+    // Summarizes ONE claim: what it says, what it is holding up, what is
+    // offered for and against it, and where it stands.
+    static void SummarizeClaim(const int& claim_id, const int& user_id,
+                               DebateWrapper& debateWrapper);
+    static void DismissClaimSummary(const int& user_id, DebateWrapper& debateWrapper);
 };

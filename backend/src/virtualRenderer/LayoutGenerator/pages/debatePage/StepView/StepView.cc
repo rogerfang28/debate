@@ -581,6 +581,95 @@ static ui::Component BuildTreeNode(
 // where does this actually stand" at a glance. That is what this is for -- and
 // why it sits at the top of the column, above the claim the user happens to
 // have selected.
+// Renders one summary's contents -- pending, error, or the text itself -- into
+// `panel`. Shared by the debate summary and the per-claim summary: they differ
+// in what they summarize and where they sit, not in how a summary looks.
+//
+// `idPrefix` keeps component ids unique between the two, and `pendingMarkerId`
+// is what the client polls on while a run is going.
+static void AddSummaryBody(ui::Component* panel,
+                           const user_engagement::DebatingInfo::DebateSummary& summary,
+                           const std::string& idPrefix,
+                           const std::string& pendingMarkerId,
+                           const std::string& emptyHint,
+                           const std::string& pendingHint) {
+    if (summary.pending()) {
+        ui::Component progress = ComponentGenerator::createText(
+            pendingMarkerId,
+            pendingHint + " " + std::to_string(summary.elapsed_seconds()) + "s elapsed",
+            "text-sm", "text-indigo-300", "", ""
+        );
+        ComponentGenerator::addChild(panel, progress);
+        ui::Component hint = ComponentGenerator::createText(
+            idPrefix + "PendingHint",
+            "The local model usually takes 30-90 seconds. You can keep working; "
+            "it will appear here when it is done.",
+            "text-xs", "text-gray-500", "", ""
+        );
+        ComponentGenerator::addChild(panel, hint);
+        return;
+    }
+
+    if (!summary.error().empty()) {
+        ui::Component errorText = ComponentGenerator::createText(
+            idPrefix + "Error", summary.error(), "text-sm", "text-red-400", "", ""
+        );
+        (*errorText.mutable_css())["overflow-wrap"] = "anywhere";
+        ComponentGenerator::addChild(panel, errorText);
+        return;
+    }
+
+    if (summary.text().empty()) {
+        ui::Component hint = ComponentGenerator::createText(
+            idPrefix + "Hint", emptyHint, "text-sm", "text-gray-400", "", ""
+        );
+        ComponentGenerator::addChild(panel, hint);
+        return;
+    }
+
+    // One component per line. The renderer collapses whitespace like HTML, so a
+    // single text node would run the model's sections together into one
+    // paragraph and lose the structure the prompt asked for.
+    ui::Component body = ComponentGenerator::createContainer(
+        idPrefix + "Body", "w-full", "", "", "", "", "", ""
+    );
+    (*body.mutable_css())["display"] = "flex";
+    (*body.mutable_css())["flex-direction"] = "column";
+    (*body.mutable_css())["gap"] = "0.15rem";
+
+    std::istringstream lines(summary.text());
+    std::string line;
+    int lineIndex = 0;
+    while (std::getline(lines, line)) {
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+        const std::string id = idPrefix + "Line_" + std::to_string(lineIndex++);
+        if (line.empty()) {
+            ui::Component spacer = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
+            (*spacer.mutable_css())["height"] = "0.4rem";
+            ComponentGenerator::addChild(&body, spacer);
+            continue;
+        }
+
+        // The prompt asks for ALL-CAPS section headings; styling them is what
+        // makes the summary skimmable rather than a wall of text.
+        const bool isHeading = line.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos;
+        ui::Component textLine = ComponentGenerator::createText(
+            id, line, isHeading ? "text-xs" : "text-sm",
+            isHeading ? "text-gray-400" : "text-gray-100",
+            isHeading ? "font-semibold uppercase tracking-wide" : "", ""
+        );
+        (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
+        if (isHeading && lineIndex > 1) {
+            (*textLine.mutable_css())["margin-top"] = "0.35rem";
+        }
+        ComponentGenerator::addChild(&body, textLine);
+    }
+
+    ComponentGenerator::addChild(panel, body);
+}
+
 static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     const user_engagement::DebatingInfo::DebateSummary& summary =
         viewerUser.engagement().debating_info().debate_summary();
@@ -641,93 +730,86 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     ComponentGenerator::addChild(&headerRow, buttonGroup);
     ComponentGenerator::addChild(&panel, headerRow);
 
-    if (pending) {
-        // The id is the signal the client polls on -- see Renderer.tsx, which
-        // re-requests the page while this component exists. Without it the
-        // background run would finish into a page nobody asked to redraw.
-        ui::Component progress = ComponentGenerator::createText(
-            "debateSummaryPending",
-            "Reading the debate and writing a summary... " +
-                std::to_string(summary.elapsed_seconds()) + "s elapsed",
-            "text-sm", "text-indigo-300", "", ""
-        );
-        ComponentGenerator::addChild(&panel, progress);
+    AddSummaryBody(&panel, summary, "debateSummary", "debateSummaryPending",
+                   "No summary yet. Press Summarize Debate to have the AI read the whole debate.",
+                   "Reading the debate and writing a summary...");
 
-        // Says the quiet part: this model is slow, and a user who is not told
-        // that will read thirty seconds of silence as a failure.
-        ui::Component hint = ComponentGenerator::createText(
-            "debateSummaryPendingHint",
-            "The local model usually takes 30-90 seconds. You can keep working; "
-            "the summary will appear here when it is done.",
-            "text-xs", "text-gray-500", "", ""
-        );
-        ComponentGenerator::addChild(&panel, hint);
-        return panel;
-    }
-
-    if (hasError) {
-        // The model's own words, not "something went wrong": when the local
-        // model is simply switched off, the reason IS the fix.
-        ui::Component errorText = ComponentGenerator::createText(
-            "debateSummaryError", summary.error(), "text-sm", "text-red-400", "", ""
-        );
-        (*errorText.mutable_css())["overflow-wrap"] = "anywhere";
-        ComponentGenerator::addChild(&panel, errorText);
-        return panel;
-    }
-
-    if (!hasText) {
-        ui::Component hint = ComponentGenerator::createText(
-            "debateSummaryHint",
-            "No summary yet. Press Summarize Debate to have the AI read the whole debate.",
-            "text-sm", "text-gray-400", "", ""
-        );
-        ComponentGenerator::addChild(&panel, hint);
-        return panel;
-    }
-
-    // One component per line. The renderer collapses whitespace like HTML, so
-    // a single text node would run the model's sections together into one
-    // paragraph and lose the structure the prompt asked for.
-    ui::Component body = ComponentGenerator::createContainer(
-        "debateSummaryBody", "w-full", "", "", "", "", "", ""
-    );
-    (*body.mutable_css())["display"] = "flex";
-    (*body.mutable_css())["flex-direction"] = "column";
-    (*body.mutable_css())["gap"] = "0.15rem";
-
-    std::istringstream lines(summary.text());
-    std::string line;
-    int lineIndex = 0;
-    while (std::getline(lines, line)) {
-        if (!line.empty() && line.back() == '\r') {
-            line.pop_back();
-        }
-        const std::string id = "debateSummaryLine_" + std::to_string(lineIndex++);
-        if (line.empty()) {
-            ui::Component spacer = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
-            (*spacer.mutable_css())["height"] = "0.4rem";
-            ComponentGenerator::addChild(&body, spacer);
-            continue;
-        }
-
-        // The prompt asks for ALL-CAPS section headings; styling them is what
-        // makes the summary skimmable rather than a wall of text.
-        const bool isHeading = line.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos;
-        ui::Component textLine = ComponentGenerator::createText(
-            id, line, isHeading ? "text-xs" : "text-sm",
-            isHeading ? "text-gray-400" : "text-gray-100",
-            isHeading ? "font-semibold uppercase tracking-wide" : "", ""
-        );
-        (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
-        if (isHeading && lineIndex > 1) {
-            (*textLine.mutable_css())["margin-top"] = "0.35rem";
-        }
-        ComponentGenerator::addChild(&body, textLine);
-    }
-
-    ComponentGenerator::addChild(&panel, body);
     return panel;
+}
+
+// The per-claim summary, shown inside the selected-claim panel. Separate from
+// the whole-debate one because it answers a different question -- what is THIS
+// claim doing here -- and a reader may want both at once.
+static ui::Component BuildClaimSummarySection(const user::User& viewerUser, int selectedClaimId) {
+    const user_engagement::DebatingInfo& info = viewerUser.engagement().debating_info();
+    const user_engagement::DebatingInfo::DebateSummary& summary = info.claim_summary();
+
+    // A summary belongs to the claim it was asked about. Showing it beside a
+    // different claim would attach an explanation to the wrong sentence, which
+    // is worse than showing nothing.
+    const bool aboutThisClaim = info.claim_summary_claim_id() == selectedClaimId;
+    const bool pending = aboutThisClaim && summary.pending();
+    const bool hasContent =
+        aboutThisClaim && !pending && (!summary.text().empty() || !summary.error().empty());
+
+    ui::Component section = ComponentGenerator::createContainer(
+        "claimSummarySection", "w-full", "", "", "", "", "", ""
+    );
+    (*section.mutable_css())["display"] = "flex";
+    (*section.mutable_css())["flex-direction"] = "column";
+    (*section.mutable_css())["gap"] = "0.35rem";
+    (*section.mutable_css())["margin-top"] = "0.5rem";
+    (*section.mutable_css())["padding-top"] = "0.5rem";
+    (*section.mutable_css())["border-top"] = "1px solid #374151";
+
+    ui::Component headerRow = ComponentGenerator::createContainer(
+        "claimSummaryHeaderRow", "flex gap-2", "", "", "", "", "", ""
+    );
+    (*headerRow.mutable_css())["display"] = "flex";
+    (*headerRow.mutable_css())["align-items"] = "center";
+    (*headerRow.mutable_css())["justify-content"] = "space-between";
+    (*headerRow.mutable_css())["gap"] = "0.5rem";
+
+    ui::Component heading = ComponentGenerator::createText(
+        "claimSummaryHeading", "AI Summary of This Claim:", "text-xs", "text-gray-500",
+        "font-semibold uppercase tracking-wide", ""
+    );
+    ComponentGenerator::addChild(&headerRow, heading);
+
+    ui::Component buttons = ComponentGenerator::createContainer(
+        "claimSummaryButtons", "flex gap-2", "", "", "", "", "", ""
+    );
+    (*buttons.mutable_css())["display"] = "flex";
+    (*buttons.mutable_css())["gap"] = "0.5rem";
+
+    // The id carries the claim id, so the request is about the claim that was
+    // on screen when it was pressed rather than whatever is selected later.
+    ui::Component summarizeButton = ComponentGenerator::createButton(
+        "summarizeClaimButton_" + std::to_string(selectedClaimId),
+        pending ? "Summarizing..." : (hasContent ? "Re-summarize" : "Summarize This Claim"),
+        "", pending ? "bg-gray-600" : "bg-indigo-600",
+        pending ? "hover:bg-gray-600" : "hover:bg-indigo-700", "text-white",
+        "px-3 py-1.5", "rounded", "text-sm"
+    );
+    ComponentGenerator::addChild(&buttons, summarizeButton);
+
+    if (hasContent) {
+        ui::Component dismissButton = ComponentGenerator::createButton(
+            "dismissClaimSummaryButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"
+        );
+        ComponentGenerator::addChild(&buttons, dismissButton);
+    }
+
+    ComponentGenerator::addChild(&headerRow, buttons);
+    ComponentGenerator::addChild(&section, headerRow);
+
+    if (aboutThisClaim) {
+        AddSummaryBody(&section, summary, "claimSummary", "claimSummaryPending",
+                       "", "Reading this claim and its surroundings...");
+    }
+
+    return section;
 }
 
 ui::Page StepView::GenerateStepViewPage(
@@ -936,6 +1018,13 @@ ui::Page StepView::GenerateStepViewPage(
 	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
 		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
+	// Attached at the call site rather than inside BuildSelectedClaimPanel,
+	// which is defined further up the file and would otherwise need a forward
+	// declaration and a wider signature just to reach the viewer.
+	if (currentClaimId > 0) {
+		ComponentGenerator::addChild(&selectedClaimPanel,
+			BuildClaimSummarySection(viewerUser, currentClaimId));
+	}
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
 	// Render a single interactive paragraph tree for the entire debate,

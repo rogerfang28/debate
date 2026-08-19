@@ -32,4 +32,16 @@ public:
     static std::string Format(const debate::Collection& collection,
                               const std::map<int, std::string>& usernames,
                               const Options& options);
+
+    // One claim's neighbourhood: the chain of claims it is ultimately offered
+    // in support of, everything offered for and against it, and where it
+    // stands.
+    //
+    // Not the whole debate, because a summary of one claim should not be
+    // answering questions about a branch three levels away -- and on a large
+    // debate the focus claim would be a footnote in its own summary.
+    static std::string FormatClaimContext(const debate::Collection& collection,
+                                          const std::map<int, std::string>& usernames,
+                                          const Options& options,
+                                          int claimId);
 };

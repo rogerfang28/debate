@@ -17,6 +17,13 @@
 // persisted, by the request thread that collects it.
 class SummaryJobs {
 public:
+    // Which summary a run belongs to. Keyed separately so summarizing a claim
+    // never cancels or collides with a whole-debate run already going.
+    enum class Kind {
+        Debate,
+        Claim,
+    };
+
     struct Snapshot {
         bool running = false;
         int elapsedSeconds = 0;
@@ -30,11 +37,11 @@ public:
     // Starts a run for this user. A second call while one is running is
     // ignored -- double-clicking Summarize must not fire two model calls.
     // Returns false if a run was already in progress.
-    static bool Start(int userId, const std::string& debateText);
+    static bool Start(int userId, Kind kind, const std::string& debateText);
 
     // Reports whether a run is going, and hands over the result exactly once.
-    static Snapshot Collect(int userId);
+    static Snapshot Collect(int userId, Kind kind);
 
     // True if a run is in flight, without consuming anything.
-    static bool IsRunning(int userId);
+    static bool IsRunning(int userId, Kind kind);
 };

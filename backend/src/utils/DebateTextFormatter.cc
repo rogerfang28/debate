@@ -241,3 +241,115 @@ std::string DebateTextFormatter::Format(const debate::Collection& collection,
 
     return renderer.out.str();
 }
+
+std::string DebateTextFormatter::FormatClaimContext(const debate::Collection& collection,
+                                                    const std::map<int, std::string>& usernames,
+                                                    const Options& options,
+                                                    int claimId) {
+    Renderer renderer(collection, usernames, options.viewerUsername);
+
+    auto focusIt = collection.claims_by_id().find(claimId);
+    if (focusIt == collection.claims_by_id().end()) {
+        return "The selected claim is not part of this debate.";
+    }
+    const debate::Claim& focus = focusIt->second;
+
+    // Where the claim sits: follow it upward until nothing carries it further.
+    // This is what turns "some sentence" into "a step in an argument for X".
+    std::vector<const debate::Relationship*> upward;
+    std::set<int> seenUp;
+    int current = claimId;
+    while (seenUp.insert(current).second) {
+        const debate::Relationship* next = nullptr;
+        for (const auto& entry : collection.links_by_id()) {
+            const debate::Relationship& rel = entry.second;
+            if (rel.to_case() != debate::Relationship::kToClaimId) {
+                continue;
+            }
+            for (int fromId : rel.from_claim_ids()) {
+                if (fromId == current) {
+                    next = &rel;
+                    break;
+                }
+            }
+            if (next != nullptr) {
+                break;
+            }
+        }
+        if (next == nullptr) {
+            break;
+        }
+        upward.push_back(next);
+        current = next->to_claim_id();
+    }
+
+    renderer.out << "DEBATE";
+    if (!options.topic.empty()) {
+        renderer.out << ": " << options.topic;
+    }
+    renderer.out << "\n\n";
+
+    renderer.out << "THE CLAIM IN FOCUS\n";
+    renderer.out << "- [#" << focus.id() << "] " << focus.sentence() << "\n";
+    renderer.out << "  by " << nameFor(focus.creator_id(), usernames) << "; "
+                 << statusPhrase(focus, options.viewerUsername) << "\n";
+    if (!focus.description().empty()) {
+        renderer.out << "  note: " << focus.description() << "\n";
+    }
+    renderer.out << "\n";
+
+    renderer.out << "WHAT THIS CLAIM IS DOING IN THE DEBATE\n";
+    if (upward.empty()) {
+        renderer.out << "Nothing is built on this claim -- it is a top-level claim "
+                        "of the debate, not a step toward another one.\n";
+    } else {
+        int depth = 0;
+        for (const debate::Relationship* rel : upward) {
+            auto parentIt = collection.claims_by_id().find(rel->to_claim_id());
+            const std::string verb =
+                rel->role() == debate::OPPOSES ? "is offered AGAINST" : "is offered IN SUPPORT OF";
+            renderer.out << indent(depth) << verb << basisSuffix(*rel) << ":\n";
+            if (parentIt == collection.claims_by_id().end()) {
+                renderer.out << indent(depth + 1) << "- [#" << rel->to_claim_id()
+                             << "] (claim not available)\n";
+            } else {
+                renderer.out << indent(depth + 1) << "- [#" << parentIt->second.id() << "] "
+                             << parentIt->second.sentence() << "\n";
+                renderer.out << indent(depth + 1) << "  by "
+                             << nameFor(parentIt->second.creator_id(), usernames) << "; "
+                             << statusPhrase(parentIt->second, options.viewerUsername) << "\n";
+            }
+            // Siblings matter: if this claim is one part of a joint argument,
+            // then on its own it does not carry the parent at all, and a
+            // summary that omitted that would overstate what it does.
+            if (rel->from_claim_ids_size() > 1) {
+                renderer.out << indent(depth + 1)
+                             << "NOTE: this step only works TOGETHER with:\n";
+                for (int fromId : rel->from_claim_ids()) {
+                    if (fromId == claimId) {
+                        continue;
+                    }
+                    auto siblingIt = collection.claims_by_id().find(fromId);
+                    if (siblingIt != collection.claims_by_id().end()) {
+                        renderer.out << indent(depth + 2) << "- [#" << fromId << "] "
+                                     << siblingIt->second.sentence() << "\n";
+                    }
+                }
+                renderer.out << indent(depth + 1)
+                             << "If any one of them fails, this whole step fails.\n";
+            }
+            depth += 1;
+        }
+    }
+    renderer.out << "\n";
+
+    renderer.out << "WHAT IS OFFERED FOR AND AGAINST THIS CLAIM\n";
+    renderer.renderedClaims.insert(claimId);
+    const size_t before = renderer.out.str().size();
+    renderer.writeChildren(claimId, 0);
+    if (renderer.out.str().size() == before) {
+        renderer.out << "Nothing has been offered for or against it yet.\n";
+    }
+
+    return renderer.out.str();
+}

@@ -14,6 +14,13 @@ public:
     // Throws std::runtime_error if the model is unreachable or errors.
     static std::string Summarize(const std::string& debateText);
 
+    // Summarizes ONE claim from its neighbourhood, as produced by
+    // DebateTextFormatter::FormatClaimContext. Same audience and the same
+    // plain-language rules as the debate summary, but it answers a different
+    // question: not "where does this debate stand" but "what is this claim
+    // doing here, and is it holding up".
+    static std::string SummarizeClaim(const std::string& claimContextText);
+
     // Exposed for tests: the exact text sent to the model.
     static std::string BuildPrompt(const std::string& debateText);
 };

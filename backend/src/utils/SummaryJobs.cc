@@ -6,6 +6,7 @@
 #include <chrono>
 #include <exception>
 #include <map>
+#include <utility>
 #include <mutex>
 #include <thread>
 
@@ -24,17 +25,20 @@ std::mutex& mutex() {
     return m;
 }
 
-std::map<int, Job>& jobs() {
-    static std::map<int, Job> j;
+using JobKey = std::pair<int, SummaryJobs::Kind>;
+
+std::map<JobKey, Job>& jobs() {
+    static std::map<JobKey, Job> j;
     return j;
 }
 
 } // namespace
 
-bool SummaryJobs::Start(int userId, const std::string& debateText) {
+bool SummaryJobs::Start(int userId, Kind kind, const std::string& debateText) {
+    const JobKey key{userId, kind};
     {
         std::lock_guard<std::mutex> lock(mutex());
-        Job& job = jobs()[userId];
+        Job& job = jobs()[key];
         if (job.running) {
             Log::info("[SummaryJobs] user " + std::to_string(userId) +
                       " already has a summary running; ignoring the second request");
@@ -47,11 +51,12 @@ bool SummaryJobs::Start(int userId, const std::string& debateText) {
 
     // Detached: nothing joins this, and the result is picked up through the
     // registry rather than by waiting on the thread.
-    std::thread([userId, debateText]() {
+    std::thread([key, kind, debateText]() {
         std::string text;
         std::string error;
         try {
-            text = DebateSummarizer::Summarize(debateText);
+            text = kind == Kind::Claim ? DebateSummarizer::SummarizeClaim(debateText)
+                                       : DebateSummarizer::Summarize(debateText);
             if (text.empty()) {
                 error = "The model returned an empty summary.";
             }
@@ -66,7 +71,7 @@ bool SummaryJobs::Start(int userId, const std::string& debateText) {
         }
 
         std::lock_guard<std::mutex> lock(mutex());
-        Job& job = jobs()[userId];
+        Job& job = jobs()[key];
         job.running = false;
         job.finished = true;
         job.text = text;
@@ -76,9 +81,9 @@ bool SummaryJobs::Start(int userId, const std::string& debateText) {
     return true;
 }
 
-SummaryJobs::Snapshot SummaryJobs::Collect(int userId) {
+SummaryJobs::Snapshot SummaryJobs::Collect(int userId, Kind kind) {
     std::lock_guard<std::mutex> lock(mutex());
-    auto it = jobs().find(userId);
+    auto it = jobs().find(JobKey{userId, kind});
     if (it == jobs().end()) {
         return Snapshot{};
     }
@@ -104,8 +109,8 @@ SummaryJobs::Snapshot SummaryJobs::Collect(int userId) {
     return snapshot;
 }
 
-bool SummaryJobs::IsRunning(int userId) {
+bool SummaryJobs::IsRunning(int userId, Kind kind) {
     std::lock_guard<std::mutex> lock(mutex());
-    auto it = jobs().find(userId);
+    auto it = jobs().find(JobKey{userId, kind});
     return it != jobs().end() && it->second.running;
 }

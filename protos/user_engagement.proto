@@ -101,6 +101,16 @@ message DebatingInfo {
     int32 elapsed_seconds = 5;
   }
   DebateSummary debate_summary = 19;
+
+  // The same shape, for a summary of ONE claim rather than the whole debate.
+  // A separate field, not a reuse: the two answer different questions and a
+  // reader may well want both on screen at once, so one must not evict the
+  // other.
+  DebateSummary claim_summary = 20;
+  // Which claim claim_summary is about. Without it a summary would silently
+  // keep describing the claim you were looking at when you pressed the button,
+  // while you read it beside a different selected claim.
+  int32 claim_summary_claim_id = 21;
   oneof additional_info {
     // could be none
     // TODO remove field, was used for user manual linking claims

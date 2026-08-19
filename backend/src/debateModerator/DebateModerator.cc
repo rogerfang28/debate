@@ -189,6 +189,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: SUMMARIZE_DEBATE");
             SummarizeDebateHandler::SummarizeDebate(user_id, debateWrapper);
             break;
+        case debate_event::SUMMARIZE_CLAIM:
+            Log::info("[DebateModerator] Event Type: SUMMARIZE_CLAIM");
+            SummarizeDebateHandler::SummarizeClaim(event.summarize_claim().claim_id(), user_id,
+                                                   debateWrapper);
+            break;
+        case debate_event::DISMISS_CLAIM_SUMMARY:
+            Log::info("[DebateModerator] Event Type: DISMISS_CLAIM_SUMMARY");
+            SummarizeDebateHandler::DismissClaimSummary(user_id, debateWrapper);
+            break;
         case debate_event::DISMISS_DEBATE_SUMMARY:
             Log::info("[DebateModerator] Event Type: DISMISS_DEBATE_SUMMARY");
             SummarizeDebateHandler::DismissSummary(user_id, debateWrapper);

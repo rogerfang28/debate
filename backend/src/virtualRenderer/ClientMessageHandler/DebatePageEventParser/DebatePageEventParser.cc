@@ -20,6 +20,14 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "summarizeDebateButton" && eventType == "onClick") {
         event.set_type(debate_event::SUMMARIZE_DEBATE);
         Log::debug("  SUMMARIZE_DEBATE for user: " + std::to_string(user_id));
+    } else if (componentId.rfind("summarizeClaimButton_", 0) == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("summarizeClaimButton_"));
+        event.set_type(debate_event::SUMMARIZE_CLAIM);
+        event.mutable_summarize_claim()->set_claim_id(std::stoi(claimId));
+        Log::debug("  SUMMARIZE_CLAIM for user: " + std::to_string(user_id) + " claim " + claimId);
+    } else if (componentId == "dismissClaimSummaryButton" && eventType == "onClick") {
+        event.set_type(debate_event::DISMISS_CLAIM_SUMMARY);
+        Log::debug("  DISMISS_CLAIM_SUMMARY for user: " + std::to_string(user_id));
     } else if (componentId == "dismissDebateSummaryButton" && eventType == "onClick") {
         event.set_type(debate_event::DISMISS_DEBATE_SUMMARY);
         Log::debug("  DISMISS_DEBATE_SUMMARY for user: " + std::to_string(user_id));

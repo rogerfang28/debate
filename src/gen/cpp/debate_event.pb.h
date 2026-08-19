@@ -165,6 +165,10 @@ class SubmitEditClaimDescription;
 struct SubmitEditClaimDescriptionDefaultTypeInternal;
 extern SubmitEditClaimDescriptionDefaultTypeInternal _SubmitEditClaimDescription_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull SubmitEditClaimDescription_class_data_;
+class SummarizeClaim;
+struct SummarizeClaimDefaultTypeInternal;
+extern SummarizeClaimDefaultTypeInternal _SummarizeClaim_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull SummarizeClaim_class_data_;
 class UserAuthInfo;
 struct UserAuthInfoDefaultTypeInternal;
 extern UserAuthInfoDefaultTypeInternal _UserAuthInfo_default_instance_;
@@ -236,6 +240,8 @@ enum EventType : int {
   SELECT_CLAIM = 53,
   SUMMARIZE_DEBATE = 54,
   DISMISS_DEBATE_SUMMARY = 55,
+  SUMMARIZE_CLAIM = 56,
+  DISMISS_CLAIM_SUMMARY = 57,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -246,11 +252,11 @@ extern const uint32_t EventType_internal_data_[];
 inline constexpr EventType EventType_MIN =
     static_cast<EventType>(0);
 inline constexpr EventType EventType_MAX =
-    static_cast<EventType>(55);
+    static_cast<EventType>(57);
 inline bool EventType_IsValid(int value) {
-  return 0 <= value && value <= 55;
+  return 0 <= value && value <= 57;
 }
-inline constexpr int EventType_ARRAYSIZE = 55 + 1;
+inline constexpr int EventType_ARRAYSIZE = 57 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor();
 template <typename T>
 const ::std::string& EventType_Name(T value) {
@@ -261,7 +267,7 @@ const ::std::string& EventType_Name(T value) {
 }
 template <>
 inline const ::std::string& EventType_Name(EventType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 55>(
+  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 57>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(
@@ -330,7 +336,7 @@ class UserAuthInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const UserAuthInfo*>(
         &_UserAuthInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 27;
   friend void swap(UserAuthInfo& a, UserAuthInfo& b) { a.Swap(&b); }
   inline void Swap(UserAuthInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -492,6 +498,196 @@ class UserAuthInfo final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull UserAuthInfo_class_data_;
+// -------------------------------------------------------------------
+
+class SummarizeClaim final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.SummarizeClaim) */ {
+ public:
+  inline SummarizeClaim() : SummarizeClaim(nullptr) {}
+  ~SummarizeClaim() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SummarizeClaim* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SummarizeClaim));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SummarizeClaim(::google::protobuf::internal::ConstantInitialized);
+
+  inline SummarizeClaim(const SummarizeClaim& from) : SummarizeClaim(nullptr, from) {}
+  inline SummarizeClaim(SummarizeClaim&& from) noexcept
+      : SummarizeClaim(nullptr, ::std::move(from)) {}
+  inline SummarizeClaim& operator=(const SummarizeClaim& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SummarizeClaim& operator=(SummarizeClaim&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SummarizeClaim& default_instance() {
+    return *reinterpret_cast<const SummarizeClaim*>(
+        &_SummarizeClaim_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 21;
+  friend void swap(SummarizeClaim& a, SummarizeClaim& b) { a.Swap(&b); }
+  inline void Swap(SummarizeClaim* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SummarizeClaim* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SummarizeClaim* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SummarizeClaim>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SummarizeClaim& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SummarizeClaim& from) { SummarizeClaim::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SummarizeClaim* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.SummarizeClaim"; }
+
+  explicit SummarizeClaim(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  SummarizeClaim(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const SummarizeClaim& from);
+  SummarizeClaim(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, SummarizeClaim&& from) noexcept
+      : SummarizeClaim(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kClaimIdFieldNumber = 1,
+  };
+  // int32 claim_id = 1 [json_name = "claimId"];
+  void clear_claim_id() ;
+  ::int32_t claim_id() const;
+  void set_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_claim_id() const;
+  void _internal_set_claim_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.SummarizeClaim)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const SummarizeClaim& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t claim_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull SummarizeClaim_class_data_;
 // -------------------------------------------------------------------
 
 class SubmitEditClaimDescription final : public ::google::protobuf::Message
@@ -2249,7 +2445,7 @@ class LeaveDebate final : public ::google::protobuf::Message
     return *reinterpret_cast<const LeaveDebate*>(
         &_LeaveDebate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(LeaveDebate& a, LeaveDebate& b) { a.Swap(&b); }
   inline void Swap(LeaveDebate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2819,7 +3015,7 @@ class GoToChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const GoToChallenge*>(
         &_GoToChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 21;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(GoToChallenge& a, GoToChallenge& b) { a.Swap(&b); }
   inline void Swap(GoToChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3769,7 +3965,7 @@ class DeleteChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const DeleteChallenge*>(
         &_DeleteChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(DeleteChallenge& a, DeleteChallenge& b) { a.Swap(&b); }
   inline void Swap(DeleteChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4534,7 +4730,7 @@ class ConcedeChallenge final : public ::google::protobuf::Message
     return *reinterpret_cast<const ConcedeChallenge*>(
         &_ConcedeChallenge_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(ConcedeChallenge& a, ConcedeChallenge& b) { a.Swap(&b); }
   inline void Swap(ConcedeChallenge* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5624,7 +5820,7 @@ class MoveUserToTimestamp final : public ::google::protobuf::Message
     return *reinterpret_cast<const MoveUserToTimestamp*>(
         &_MoveUserToTimestamp_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(MoveUserToTimestamp& a, MoveUserToTimestamp& b) { a.Swap(&b); }
   inline void Swap(MoveUserToTimestamp* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5857,9 +6053,10 @@ class DebateEvent final : public ::google::protobuf::Message
     kLeaveDebate = 49,
     kMoveUserToTimestamp = 50,
     kSelectClaim = 51,
+    kSummarizeClaim = 52,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 28;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -5974,6 +6171,7 @@ class DebateEvent final : public ::google::protobuf::Message
     kLeaveDebateFieldNumber = 49,
     kMoveUserToTimestampFieldNumber = 50,
     kSelectClaimFieldNumber = 51,
+    kSummarizeClaimFieldNumber = 52,
   };
   // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
   bool has_user() const;
@@ -6490,6 +6688,25 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::SelectClaim* PROTOBUF_NONNULL _internal_mutable_select_claim();
 
   public:
+  // .debate_event.SummarizeClaim summarize_claim = 52 [json_name = "summarizeClaim"];
+  bool has_summarize_claim() const;
+  private:
+  bool _internal_has_summarize_claim() const;
+
+  public:
+  void clear_summarize_claim() ;
+  const ::debate_event::SummarizeClaim& summarize_claim() const;
+  [[nodiscard]] ::debate_event::SummarizeClaim* PROTOBUF_NULLABLE release_summarize_claim();
+  ::debate_event::SummarizeClaim* PROTOBUF_NONNULL mutable_summarize_claim();
+  void set_allocated_summarize_claim(::debate_event::SummarizeClaim* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_summarize_claim(::debate_event::SummarizeClaim* PROTOBUF_NULLABLE value);
+  ::debate_event::SummarizeClaim* PROTOBUF_NULLABLE unsafe_arena_release_summarize_claim();
+
+  private:
+  const ::debate_event::SummarizeClaim& _internal_summarize_claim() const;
+  ::debate_event::SummarizeClaim* PROTOBUF_NONNULL _internal_mutable_summarize_claim();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -6520,11 +6737,12 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_leave_debate();
   void set_has_move_user_to_timestamp();
   void set_has_select_claim();
+  void set_has_summarize_claim();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 28,
-                                   27, 0,
+  static const ::google::protobuf::internal::TcParseTable<2, 29,
+                                   28, 0,
                                    9>
       _table_;
 
@@ -6576,6 +6794,7 @@ class DebateEvent final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE leave_debate_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE move_user_to_timestamp_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE select_claim_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE summarize_claim_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -8351,6 +8570,35 @@ inline void SubmitChallengeClaim::set_allocated_basis(::std::string* PROTOBUF_NU
     _impl_.basis_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.basis)
+}
+
+// -------------------------------------------------------------------
+
+// SummarizeClaim
+
+// int32 claim_id = 1 [json_name = "claimId"];
+inline void SummarizeClaim::clear_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::int32_t SummarizeClaim::claim_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.SummarizeClaim.claim_id)
+  return _internal_claim_id();
+}
+inline void SummarizeClaim::set_claim_id(::int32_t value) {
+  _internal_set_claim_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:debate_event.SummarizeClaim.claim_id)
+}
+inline ::int32_t SummarizeClaim::_internal_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claim_id_;
+}
+inline void SummarizeClaim::_internal_set_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_id_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -11003,6 +11251,88 @@ inline ::debate_event::SelectClaim* PROTOBUF_NONNULL DebateEvent::mutable_select
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::SelectClaim* _msg = _internal_mutable_select_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.select_claim)
+  return _msg;
+}
+
+// .debate_event.SummarizeClaim summarize_claim = 52 [json_name = "summarizeClaim"];
+inline bool DebateEvent::has_summarize_claim() const {
+  return payload_case() == kSummarizeClaim;
+}
+inline bool DebateEvent::_internal_has_summarize_claim() const {
+  return payload_case() == kSummarizeClaim;
+}
+inline void DebateEvent::set_has_summarize_claim() {
+  _impl_._oneof_case_[0] = kSummarizeClaim;
+}
+inline void DebateEvent::clear_summarize_claim() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kSummarizeClaim) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.summarize_claim_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.summarize_claim_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::SummarizeClaim* PROTOBUF_NULLABLE DebateEvent::release_summarize_claim() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.summarize_claim)
+  if (payload_case() == kSummarizeClaim) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::SummarizeClaim*>(_impl_.payload_.summarize_claim_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.summarize_claim_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::SummarizeClaim& DebateEvent::_internal_summarize_claim() const {
+  return payload_case() == kSummarizeClaim ? static_cast<const ::debate_event::SummarizeClaim&>(*reinterpret_cast<::debate_event::SummarizeClaim*>(_impl_.payload_.summarize_claim_))
+                     : reinterpret_cast<const ::debate_event::SummarizeClaim&>(::debate_event::_SummarizeClaim_default_instance_);
+}
+inline const ::debate_event::SummarizeClaim& DebateEvent::summarize_claim() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.summarize_claim)
+  return _internal_summarize_claim();
+}
+inline ::debate_event::SummarizeClaim* PROTOBUF_NULLABLE DebateEvent::unsafe_arena_release_summarize_claim() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.summarize_claim)
+  if (payload_case() == kSummarizeClaim) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::SummarizeClaim*>(_impl_.payload_.summarize_claim_);
+    _impl_.payload_.summarize_claim_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_summarize_claim(
+    ::debate_event::SummarizeClaim* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_summarize_claim();
+    _impl_.payload_.summarize_claim_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.summarize_claim)
+}
+inline ::debate_event::SummarizeClaim* PROTOBUF_NONNULL DebateEvent::_internal_mutable_summarize_claim() {
+  if (payload_case() != kSummarizeClaim) {
+    clear_payload();
+    set_has_summarize_claim();
+    _impl_.payload_.summarize_claim_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::SummarizeClaim>(GetArena()));
+  }
+  return reinterpret_cast<::debate_event::SummarizeClaim*>(_impl_.payload_.summarize_claim_);
+}
+inline ::debate_event::SummarizeClaim* PROTOBUF_NONNULL DebateEvent::mutable_summarize_claim()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::SummarizeClaim* _msg = _internal_mutable_summarize_claim();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.summarize_claim)
   return _msg;
 }
 

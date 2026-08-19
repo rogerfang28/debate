@@ -143,6 +143,11 @@ message SubmitChallengeClaim {
     string basis = 4;
 }
 
+// Summarizes one claim rather than the whole debate.
+message SummarizeClaim {
+    int32 claim_id = 1;
+}
+
 message GoToChallenge {
     int32 challenge_id = 1;
 }
@@ -228,6 +233,8 @@ enum EventType {
     SELECT_CLAIM = 53;
     SUMMARIZE_DEBATE = 54;
     DISMISS_DEBATE_SUMMARY = 55;
+    SUMMARIZE_CLAIM = 56;
+    DISMISS_CLAIM_SUMMARY = 57;
 
 }
 
@@ -273,5 +280,6 @@ message DebateEvent {
     LeaveDebate leave_debate = 49;
     MoveUserToTimestamp move_user_to_timestamp = 50;
     SelectClaim select_claim = 51;
+    SummarizeClaim summarize_claim = 52;
   }
 }
