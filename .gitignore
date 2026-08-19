@@ -10,3 +10,4 @@ test/FINAL_*.json
 test/FAIL_*.json
 test/build/
 test/step_view_*.json
+demo-data/

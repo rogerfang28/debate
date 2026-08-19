@@ -8,7 +8,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiUrl = env.VITE_API_URL?.trim() || 'http://localhost:8080'
+  // Proxy target only. Deliberately NOT a VITE_ variable: anything with that
+  // prefix is baked into the client bundle, and the client posting to an
+  // absolute URL is what silently breaks login (the request succeeds, the
+  // session cookie is dropped as cross-origin). This lets a second instance --
+  // a public demo against a copied database, say -- point at a different
+  // backend while the browser still talks to its own origin.
+  const proxyTarget = process.env.DEBATE_PROXY_TARGET?.trim()
+  const apiUrl = proxyTarget || env.VITE_API_URL?.trim() || 'http://localhost:8080'
 
   return {
     root: __dirname,
