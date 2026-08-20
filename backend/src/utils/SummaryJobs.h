@@ -37,12 +37,18 @@ public:
         // several times while a summary generates, so anything staged on the
         // response is gone by the time the result comes back.
         int atMoveSeq = 0;
+        // Which claim a claim-summary run is about. On the job for the same
+        // reason as atMoveSeq: the viewer can select a different claim while
+        // this one generates, so "the claim being looked at" is not the same
+        // question as "the claim this result belongs to".
+        int claimId = 0;
     };
 
     // Starts a run for this user. A second call while one is running is
     // ignored -- double-clicking Summarize must not fire two model calls.
     // Returns false if a run was already in progress.
-    static bool Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq);
+    static bool Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq,
+                      int claimId = 0);
 
     // Reports whether a run is going, and hands over the result exactly once.
     static Snapshot Collect(int userId, Kind kind);

@@ -135,15 +135,20 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
         SummaryJobs::Collect(user_id, SummaryJobs::Kind::Debate);
     const SummaryJobs::Snapshot claimSnapshot =
         SummaryJobs::Collect(user_id, SummaryJobs::Kind::Claim);
-    const int claimId = info->claim_summary_claim_id();
+    // Two different claims, deliberately. A finished result belongs to the
+    // claim its run was started for; what the page should SHOW is a summary of
+    // the claim currently selected. Conflating them meant that summarizing a
+    // second claim hid the first -- the row was still in the table, nothing
+    // ever looked it up again.
+    const int selectedClaimId = info->current_claim().id();
 
     if (debateSnapshot.finished) {
         debateWrapper.saveSummary(user_id, debateId, kDebateKind, 0, debateSnapshot.text,
                                   debateSnapshot.error, debateSnapshot.atMoveSeq);
     }
     if (claimSnapshot.finished) {
-        debateWrapper.saveSummary(user_id, debateId, kClaimKind, claimId, claimSnapshot.text,
-                                  claimSnapshot.error, claimSnapshot.atMoveSeq);
+        debateWrapper.saveSummary(user_id, debateId, kClaimKind, claimSnapshot.claimId,
+                                  claimSnapshot.text, claimSnapshot.error, claimSnapshot.atMoveSeq);
     }
 
     // Rebuild the response's view from the store plus whatever is running. The
@@ -159,12 +164,14 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
                     info->mutable_debate_summary());
     }
 
-    if (claimId > 0) {
-        if (claimSnapshot.running) {
+    if (selectedClaimId > 0) {
+        info->set_claim_summary_claim_id(selectedClaimId);
+        // A run for a DIFFERENT claim must not show as progress on this one.
+        if (claimSnapshot.running && claimSnapshot.claimId == selectedClaimId) {
             applyRunningState(claimSnapshot, info->mutable_claim_summary());
         } else {
-            applyStored(debateWrapper.loadSummary(user_id, debateId, kClaimKind, claimId), headSeq,
-                        info->mutable_claim_summary());
+            applyStored(debateWrapper.loadSummary(user_id, debateId, kClaimKind, selectedClaimId),
+                        headSeq, info->mutable_claim_summary());
         }
     }
 
@@ -223,7 +230,7 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
         DebateTextFormatter::FormatClaimContext(collection, usernames, options, claim_id);
 
     SummaryJobs::Start(user_id, SummaryJobs::Kind::Claim, contextText,
-                       debateWrapper.headMoveSeq(debateId));
+                       debateWrapper.headMoveSeq(debateId), claim_id);
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);
 
@@ -233,7 +240,7 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
 void SummarizeDebateHandler::DismissClaimSummary(const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     user_engagement::DebatingInfo* info = userProto.mutable_engagement()->mutable_debating_info();
-    debateWrapper.deleteSummary(user_id, info->debate_id(), "claim", info->claim_summary_claim_id());
+    debateWrapper.deleteSummary(user_id, info->debate_id(), "claim", info->current_claim().id());
     info->clear_claim_summary();
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
