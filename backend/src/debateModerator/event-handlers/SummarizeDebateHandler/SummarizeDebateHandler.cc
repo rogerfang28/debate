@@ -129,6 +129,13 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
         return;
     }
 
+    // What the summary fields looked like coming in. Compared at the end so
+    // the user record is only rewritten when something actually changed --
+    // this runs on EVERY response, including a poll every two seconds, and
+    // writing the whole record each time is the amplification that moving
+    // summaries into their own table was meant to remove.
+    const std::string before = info->SerializeAsString();
+
     // Collect() hands a finished result over exactly once, so it must be
     // written now or it is lost.
     const SummaryJobs::Snapshot debateSnapshot =
@@ -180,7 +187,9 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
         }
     }
 
-    debateWrapper.updateUserProtobuf(user_id, userProto);
+    if (info->SerializeAsString() != before) {
+        debateWrapper.updateUserProtobuf(user_id, userProto);
+    }
 }
 
 void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user_id,

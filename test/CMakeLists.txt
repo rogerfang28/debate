@@ -286,6 +286,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_llm_client.cc
     ${CMAKE_SOURCE_DIR}/tests/test_debate_text_formatter.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_summary_store.cc
 )
 
 add_executable(debate_tests
