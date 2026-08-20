@@ -99,6 +99,10 @@ message DebatingInfo {
     // model takes tens of seconds; without a number on screen a working model
     // and a hung one look exactly alike.
     int32 elapsed_seconds = 5;
+    // How far the debate has moved since this summary was taken. Computed per
+    // response, never stored: staleness is a fact about NOW, and a stored copy
+    // would itself go stale.
+    int32 moves_behind = 6;
   }
   DebateSummary debate_summary = 19;
 

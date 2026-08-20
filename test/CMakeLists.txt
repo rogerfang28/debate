@@ -64,6 +64,7 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/DebateMembersDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/LinkDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/SummaryDatabase.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
     ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
     ${REPO_ROOT}/backend/src/statusEngine/StatusEngine.cc

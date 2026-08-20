@@ -627,6 +627,19 @@ static void AddSummaryBody(ui::Component* panel,
         return;
     }
 
+    // Now that summaries persist, one can outlive the debate it describes. Say
+    // so rather than letting it quietly misrepresent the current state.
+    if (summary.moves_behind() > 0) {
+        const int behind = summary.moves_behind();
+        ui::Component stale = ComponentGenerator::createText(
+            idPrefix + "Stale",
+            "This summary is " + std::to_string(behind) + (behind == 1 ? " move" : " moves") +
+                " out of date. Press Re-summarize for the current state.",
+            "text-xs", "text-amber-400", "", ""
+        );
+        ComponentGenerator::addChild(panel, stale);
+    }
+
     // One component per line. The renderer collapses whitespace like HTML, so a
     // single text node would run the model's sections together into one
     // paragraph and lose the structure the prompt asked for.

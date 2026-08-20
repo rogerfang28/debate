@@ -72,13 +72,11 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
             headSeq = move.seq();
         }
     }
-    summary->set_summarized_at_move_seq(headSeq);
-
     // Hand off and return. Blocking here would hold the request thread for the
     // whole model call -- tens of seconds to minutes on a real debate -- so the
     // page would not come back until it finished and the user would be staring
     // at a dead tab with no way to tell progress from a hang.
-    SummaryJobs::Start(user_id, SummaryJobs::Kind::Debate, debateText);
+    SummaryJobs::Start(user_id, SummaryJobs::Kind::Debate, debateText, headSeq);
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);
 
@@ -87,56 +85,90 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
 
 namespace {
 
-// Applies one job's state to one summary field. Both summaries behave
-// identically once started, so the difference between them is which field and
-// which job -- not which logic.
-bool applySnapshot(const SummaryJobs::Snapshot& snapshot,
-                   user_engagement::DebatingInfo::DebateSummary* summary) {
-    if (!snapshot.running && !snapshot.finished) {
-        return false;
-    }
+constexpr const char* kDebateKind = "debate";
+constexpr const char* kClaimKind = "claim";
 
-    if (snapshot.running) {
-        // Rewritten every poll so the elapsed counter actually moves.
-        summary->set_pending(true);
-        summary->set_elapsed_seconds(snapshot.elapsedSeconds);
-        return true;
-    }
+// Overlays one job's state onto the response's summary field.
+//
+// Pending state is deliberately NOT persisted. It belongs to a thread in this
+// process, so a stored "pending" would outlive the run that justified it; and
+// writing the elapsed counter every poll meant rewriting the whole user record
+// every two seconds. Only a FINISHED summary reaches the database.
+void applyRunningState(const SummaryJobs::Snapshot& snapshot,
+                       user_engagement::DebatingInfo::DebateSummary* summary) {
+    summary->set_pending(true);
+    summary->set_elapsed_seconds(snapshot.elapsedSeconds);
+}
 
+void applyStored(const SummaryDatabase::Record& record, int headSeq,
+                 user_engagement::DebatingInfo::DebateSummary* summary) {
+    if (!record.found) {
+        return;
+    }
     summary->set_pending(false);
     summary->set_elapsed_seconds(0);
-    if (!snapshot.error.empty()) {
-        summary->clear_text();
-        summary->set_error(snapshot.error);
+    summary->set_summarized_at_move_seq(record.atMoveSeq);
+    // Reported rather than hidden: the debate keeps moving, and a summary that
+    // silently describes an older state is worse than one that admits it.
+    summary->set_moves_behind(headSeq > record.atMoveSeq ? headSeq - record.atMoveSeq : 0);
+    if (!record.error.empty()) {
+        summary->set_error(record.error);
     } else {
-        summary->clear_error();
-        summary->set_text(snapshot.text);
+        summary->set_text(record.text);
     }
-    return true;
 }
 
 } // namespace
 
 void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapper& debateWrapper) {
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    user_engagement::DebatingInfo* info =
+        userProto.mutable_engagement()->mutable_debating_info();
+    const int debateId = info->debate_id();
+    if (debateId <= 0) {
+        return;
+    }
+
+    // Collect() hands a finished result over exactly once, so it must be
+    // written now or it is lost.
     const SummaryJobs::Snapshot debateSnapshot =
         SummaryJobs::Collect(user_id, SummaryJobs::Kind::Debate);
     const SummaryJobs::Snapshot claimSnapshot =
         SummaryJobs::Collect(user_id, SummaryJobs::Kind::Claim);
-    if (!debateSnapshot.running && !debateSnapshot.finished &&
-        !claimSnapshot.running && !claimSnapshot.finished) {
-        return;
+    const int claimId = info->claim_summary_claim_id();
+
+    if (debateSnapshot.finished) {
+        debateWrapper.saveSummary(user_id, debateId, kDebateKind, 0, debateSnapshot.text,
+                                  debateSnapshot.error, debateSnapshot.atMoveSeq);
+    }
+    if (claimSnapshot.finished) {
+        debateWrapper.saveSummary(user_id, debateId, kClaimKind, claimId, claimSnapshot.text,
+                                  claimSnapshot.error, claimSnapshot.atMoveSeq);
     }
 
-    // One read, one write, whatever changed. Collect() has already handed over
-    // any finished result, so skipping the write here would drop it for good.
-    user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    user_engagement::DebatingInfo* info =
-        userProto.mutable_engagement()->mutable_debating_info();
-    bool changed = applySnapshot(debateSnapshot, info->mutable_debate_summary());
-    changed = applySnapshot(claimSnapshot, info->mutable_claim_summary()) || changed;
-    if (changed) {
-        debateWrapper.updateUserProtobuf(user_id, userProto);
+    // Rebuild the response's view from the store plus whatever is running. The
+    // user record itself now carries no summary text at all.
+    const int headSeq = debateWrapper.headMoveSeq(debateId);
+    info->clear_debate_summary();
+    info->clear_claim_summary();
+
+    if (debateSnapshot.running) {
+        applyRunningState(debateSnapshot, info->mutable_debate_summary());
+    } else {
+        applyStored(debateWrapper.loadSummary(user_id, debateId, kDebateKind, 0), headSeq,
+                    info->mutable_debate_summary());
     }
+
+    if (claimId > 0) {
+        if (claimSnapshot.running) {
+            applyRunningState(claimSnapshot, info->mutable_claim_summary());
+        } else {
+            applyStored(debateWrapper.loadSummary(user_id, debateId, kClaimKind, claimId), headSeq,
+                        info->mutable_claim_summary());
+        }
+    }
+
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
 void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user_id,
@@ -190,7 +222,8 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
     const std::string contextText =
         DebateTextFormatter::FormatClaimContext(collection, usernames, options, claim_id);
 
-    SummaryJobs::Start(user_id, SummaryJobs::Kind::Claim, contextText);
+    SummaryJobs::Start(user_id, SummaryJobs::Kind::Claim, contextText,
+                       debateWrapper.headMoveSeq(debateId));
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);
 
@@ -199,12 +232,16 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
 
 void SummarizeDebateHandler::DismissClaimSummary(const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    userProto.mutable_engagement()->mutable_debating_info()->clear_claim_summary();
+    user_engagement::DebatingInfo* info = userProto.mutable_engagement()->mutable_debating_info();
+    debateWrapper.deleteSummary(user_id, info->debate_id(), "claim", info->claim_summary_claim_id());
+    info->clear_claim_summary();
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
 void SummarizeDebateHandler::DismissSummary(const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    const int debateId = userProto.engagement().debating_info().debate_id();
+    debateWrapper.deleteSummary(user_id, debateId, "debate", 0);
     userProto.mutable_engagement()->mutable_debating_info()->clear_debate_summary();
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }

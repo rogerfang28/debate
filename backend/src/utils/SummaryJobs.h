@@ -32,12 +32,17 @@ public:
         bool finished = false;
         std::string text;
         std::string error;
+        // Move-log head when the source text was taken. Carried on the JOB
+        // because the run outlives any single response: the page is rebuilt
+        // several times while a summary generates, so anything staged on the
+        // response is gone by the time the result comes back.
+        int atMoveSeq = 0;
     };
 
     // Starts a run for this user. A second call while one is running is
     // ignored -- double-clicking Summarize must not fire two model calls.
     // Returns false if a run was already in progress.
-    static bool Start(int userId, Kind kind, const std::string& debateText);
+    static bool Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq);
 
     // Reports whether a run is going, and hands over the result exactly once.
     static Snapshot Collect(int userId, Kind kind);

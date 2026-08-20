@@ -600,6 +600,7 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
     kSummarizedAtMoveSeqFieldNumber = 3,
     kPendingFieldNumber = 4,
     kElapsedSecondsFieldNumber = 5,
+    kMovesBehindFieldNumber = 6,
   };
   // string text = 1 [json_name = "text"];
   void clear_text() ;
@@ -661,11 +662,21 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
   void _internal_set_elapsed_seconds(::int32_t value);
 
   public:
+  // int32 moves_behind = 6 [json_name = "movesBehind"];
+  void clear_moves_behind() ;
+  ::int32_t moves_behind() const;
+  void set_moves_behind(::int32_t value);
+
+  private:
+  ::int32_t _internal_moves_behind() const;
+  void _internal_set_moves_behind(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.DebatingInfo.DebateSummary)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
                                    0, 60,
                                    2>
       _table_;
@@ -692,6 +703,7 @@ class DebatingInfo_DebateSummary final : public ::google::protobuf::Message
     ::int32_t summarized_at_move_seq_;
     bool pending_;
     ::int32_t elapsed_seconds_;
+    ::int32_t moves_behind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4531,6 +4543,31 @@ inline ::int32_t DebatingInfo_DebateSummary::_internal_elapsed_seconds() const {
 inline void DebatingInfo_DebateSummary::_internal_set_elapsed_seconds(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.elapsed_seconds_ = value;
+}
+
+// int32 moves_behind = 6 [json_name = "movesBehind"];
+inline void DebatingInfo_DebateSummary::clear_moves_behind() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.moves_behind_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline ::int32_t DebatingInfo_DebateSummary::moves_behind() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.DebateSummary.moves_behind)
+  return _internal_moves_behind();
+}
+inline void DebatingInfo_DebateSummary::set_moves_behind(::int32_t value) {
+  _internal_set_moves_behind(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.DebateSummary.moves_behind)
+}
+inline ::int32_t DebatingInfo_DebateSummary::_internal_moves_behind() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.moves_behind_;
+}
+inline void DebatingInfo_DebateSummary::_internal_set_moves_behind(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.moves_behind_ = value;
 }
 
 // -------------------------------------------------------------------

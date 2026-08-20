@@ -97,6 +97,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/SummaryDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveLogger.cc
     ${CMAKE_SOURCE_DIR}/src/utils/RelationBuilder.cc
     ${CMAKE_SOURCE_DIR}/src/statusEngine/StatusEngine.cc

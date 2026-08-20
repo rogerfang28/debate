@@ -16,6 +16,7 @@ struct Job {
     bool running = false;
     bool finished = false;
     std::chrono::steady_clock::time_point startedAt;
+    int atMoveSeq = 0;
     std::string text;
     std::string error;
 };
@@ -34,7 +35,7 @@ std::map<JobKey, Job>& jobs() {
 
 } // namespace
 
-bool SummaryJobs::Start(int userId, Kind kind, const std::string& debateText) {
+bool SummaryJobs::Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq) {
     const JobKey key{userId, kind};
     {
         std::lock_guard<std::mutex> lock(mutex());
@@ -47,6 +48,7 @@ bool SummaryJobs::Start(int userId, Kind kind, const std::string& debateText) {
         job = Job{};
         job.running = true;
         job.startedAt = std::chrono::steady_clock::now();
+        job.atMoveSeq = atMoveSeq;
     }
 
     // Detached: nothing joins this, and the result is picked up through the
@@ -102,6 +104,7 @@ SummaryJobs::Snapshot SummaryJobs::Collect(int userId, Kind kind) {
         snapshot.finished = true;
         snapshot.text = job.text;
         snapshot.error = job.error;
+        snapshot.atMoveSeq = job.atMoveSeq;
         // Handed over once. Leaving it would re-apply the same summary on every
         // later page build, silently overwriting a newer one.
         jobs().erase(it);

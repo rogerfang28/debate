@@ -889,3 +889,22 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
         }
     }
 }
+void DebateWrapper::saveSummary(const int& user_id, const int& debate_id, const std::string& kind,
+                                const int& claim_id, const std::string& text,
+                                const std::string& error, const int& at_move_seq) {
+    databaseWrapper.summaries.save(user_id, debate_id, kind, claim_id, text, error, at_move_seq);
+}
+
+SummaryDatabase::Record DebateWrapper::loadSummary(const int& user_id, const int& debate_id,
+                                                   const std::string& kind, const int& claim_id) {
+    return databaseWrapper.summaries.load(user_id, debate_id, kind, claim_id);
+}
+
+void DebateWrapper::deleteSummary(const int& user_id, const int& debate_id,
+                                  const std::string& kind, const int& claim_id) {
+    databaseWrapper.summaries.remove(user_id, debate_id, kind, claim_id);
+}
+
+int DebateWrapper::headMoveSeq(const int& debate_id) {
+    return databaseWrapper.moves.lastSeqForDebate(debate_id);
+}
