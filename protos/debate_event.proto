@@ -143,6 +143,13 @@ message SubmitChallengeClaim {
     string basis = 4;
 }
 
+// Builds a whole debate from a passage, using the topic to steer what the
+// root claim should be about.
+message GenerateDebate {
+    string topic = 1;
+    string passage = 2;
+}
+
 // Summarizes one claim rather than the whole debate.
 message SummarizeClaim {
     int32 claim_id = 1;
@@ -235,6 +242,9 @@ enum EventType {
     DISMISS_DEBATE_SUMMARY = 55;
     SUMMARIZE_CLAIM = 56;
     DISMISS_CLAIM_SUMMARY = 57;
+    GENERATE_DEBATE = 58;
+    CHALLENGE_WITH_AI = 59;
+    DISMISS_AI_NOTICE = 60;
 
 }
 
@@ -281,5 +291,6 @@ message DebateEvent {
     MoveUserToTimestamp move_user_to_timestamp = 50;
     SelectClaim select_claim = 51;
     SummarizeClaim summarize_claim = 52;
+    GenerateDebate generate_debate = 53;
   }
 }

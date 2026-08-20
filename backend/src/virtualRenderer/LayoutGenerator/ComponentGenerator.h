@@ -30,6 +30,18 @@ public:
         const std::string& additionalClasses = ""
     );
 
+    // Create a TEXTAREA component -- a multi-line input, for the times a
+    // single line is the wrong shape (pasting a passage, say).
+    static ui::Component createTextarea(
+        const std::string& id,
+        const std::string& placeholder = "",
+        const std::string& name = "",
+        int rows = 6,
+        const std::string& bgColor = "bg-gray-800",
+        const std::string& textColor = "text-white",
+        const std::string& borderColor = "border-gray-600"
+    );
+
     // Create an INPUT component
     static ui::Component createInput(
         const std::string& id,

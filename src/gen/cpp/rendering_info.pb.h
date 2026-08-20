@@ -35,6 +35,7 @@
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "debate.pb.h"
+#include "user_engagement.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -2576,6 +2577,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
   enum : int {
     kAvailableDebatesFieldNumber = 3,
     kViewerUsernameFieldNumber = 2,
+    kAiJobFieldNumber = 5,
     kViewerUserIdFieldNumber = 1,
     kCanCreateOrJoinDebatesFieldNumber = 4,
   };
@@ -2611,6 +2613,21 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_viewer_username();
 
   public:
+  // .user_engagement.AiJobStatus ai_job = 5 [json_name = "aiJob"];
+  bool has_ai_job() const;
+  void clear_ai_job() ;
+  const ::user_engagement::AiJobStatus& ai_job() const;
+  [[nodiscard]] ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE release_ai_job();
+  ::user_engagement::AiJobStatus* PROTOBUF_NONNULL mutable_ai_job();
+  void set_allocated_ai_job(::user_engagement::AiJobStatus* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_ai_job(::user_engagement::AiJobStatus* PROTOBUF_NULLABLE value);
+  ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE unsafe_arena_release_ai_job();
+
+  private:
+  const ::user_engagement::AiJobStatus& _internal_ai_job() const;
+  ::user_engagement::AiJobStatus* PROTOBUF_NONNULL _internal_mutable_ai_job();
+
+  public:
   // int32 viewer_user_id = 1 [json_name = "viewerUserId"];
   void clear_viewer_user_id() ;
   ::int32_t viewer_user_id() const;
@@ -2635,8 +2652,8 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   1, 60,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   2, 60,
                                    2>
       _table_;
 
@@ -2659,6 +2676,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::rendering_info::HomeDebateTopicRenderInfo > available_debates_;
     ::google::protobuf::internal::ArenaStringPtr viewer_username_;
+    ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE ai_job_;
     ::int32_t viewer_user_id_;
     bool can_create_or_join_debates_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6451,7 +6469,7 @@ inline void HomePageRenderingInfo::clear_viewer_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.viewer_user_id)
@@ -6459,7 +6477,7 @@ inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
 }
 inline void HomePageRenderingInfo::set_viewer_user_id(::int32_t value) {
   _internal_set_viewer_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.viewer_user_id)
 }
 inline ::int32_t HomePageRenderingInfo::_internal_viewer_user_id() const {
@@ -6597,7 +6615,7 @@ inline void HomePageRenderingInfo::clear_can_create_or_join_debates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.can_create_or_join_debates_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
@@ -6605,7 +6623,7 @@ inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
 }
 inline void HomePageRenderingInfo::set_can_create_or_join_debates(bool value) {
   _internal_set_can_create_or_join_debates(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
 }
 inline bool HomePageRenderingInfo::_internal_can_create_or_join_debates() const {
@@ -6615,6 +6633,99 @@ inline bool HomePageRenderingInfo::_internal_can_create_or_join_debates() const 
 inline void HomePageRenderingInfo::_internal_set_can_create_or_join_debates(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.can_create_or_join_debates_ = value;
+}
+
+// .user_engagement.AiJobStatus ai_job = 5 [json_name = "aiJob"];
+inline bool HomePageRenderingInfo::has_ai_job() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  PROTOBUF_ASSUME(!value || _impl_.ai_job_ != nullptr);
+  return value;
+}
+inline const ::user_engagement::AiJobStatus& HomePageRenderingInfo::_internal_ai_job() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::user_engagement::AiJobStatus* p = _impl_.ai_job_;
+  return p != nullptr ? *p : reinterpret_cast<const ::user_engagement::AiJobStatus&>(::user_engagement::_AiJobStatus_default_instance_);
+}
+inline const ::user_engagement::AiJobStatus& HomePageRenderingInfo::ai_job() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.ai_job)
+  return _internal_ai_job();
+}
+inline void HomePageRenderingInfo::unsafe_arena_set_allocated_ai_job(
+    ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ai_job_);
+  }
+  _impl_.ai_job_ = reinterpret_cast<::user_engagement::AiJobStatus*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rendering_info.HomePageRenderingInfo.ai_job)
+}
+inline ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE HomePageRenderingInfo::release_ai_job() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::AiJobStatus* released = _impl_.ai_job_;
+  _impl_.ai_job_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE HomePageRenderingInfo::unsafe_arena_release_ai_job() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:rendering_info.HomePageRenderingInfo.ai_job)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::AiJobStatus* temp = _impl_.ai_job_;
+  _impl_.ai_job_ = nullptr;
+  return temp;
+}
+inline ::user_engagement::AiJobStatus* PROTOBUF_NONNULL HomePageRenderingInfo::_internal_mutable_ai_job() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ai_job_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::user_engagement::AiJobStatus>(GetArena());
+    _impl_.ai_job_ = reinterpret_cast<::user_engagement::AiJobStatus*>(p);
+  }
+  return _impl_.ai_job_;
+}
+inline ::user_engagement::AiJobStatus* PROTOBUF_NONNULL HomePageRenderingInfo::mutable_ai_job()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::AiJobStatus* _msg = _internal_mutable_ai_job();
+  // @@protoc_insertion_point(field_mutable:rendering_info.HomePageRenderingInfo.ai_job)
+  return _msg;
+}
+inline void HomePageRenderingInfo::set_allocated_ai_job(::user_engagement::AiJobStatus* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ai_job_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+
+  _impl_.ai_job_ = reinterpret_cast<::user_engagement::AiJobStatus*>(value);
+  // @@protoc_insertion_point(field_set_allocated:rendering_info.HomePageRenderingInfo.ai_job)
 }
 
 // -------------------------------------------------------------------

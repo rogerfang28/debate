@@ -111,6 +111,67 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         ComponentGenerator::addChild(&submitTopicContainer, submitButton);
         ComponentGenerator::addChild(&main, submitTopicContainer);
 
+        // ---- Build a debate from a passage, with the AI -----------------
+        // Sits beside the manual topic box rather than replacing it: typing a
+        // topic and arguing it out yourself is still the main way in, and this
+        // is the shortcut for when you already have the source material.
+        ui::Component generateContainer = ComponentGenerator::createContainer(
+            "generateDebateContainer", "w-full max-w-md", "bg-gray-800", "p-4", "",
+            "border border-gray-700", "rounded-lg", ""
+        );
+        (*generateContainer.mutable_css())["display"] = "flex";
+        (*generateContainer.mutable_css())["flex-direction"] = "column";
+        (*generateContainer.mutable_css())["gap"] = "0.5rem";
+        (*generateContainer.mutable_css())["margin-top"] = "1rem";
+
+        ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createText(
+            "generateHeading", "Or build one from a passage with AI:", "text-xs", "text-gray-500",
+            "font-semibold uppercase tracking-wide", ""));
+
+        ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createInput(
+            "generateTopicInput", "What should the debate be about?", "topic",
+            "bg-gray-900", "text-white", "border-gray-600", "p-3", "rounded", "w-full"));
+
+        ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createTextarea(
+            "generatePassageInput",
+            "Paste an article or passage. The AI only uses what is written here.",
+            "passage", 8));
+
+        const user_engagement::AiJobStatus& aiJob = info.ai_job();
+        if (aiJob.pending()) {
+            // Marker id ends in SummaryPending so the existing poll picks it up
+            // -- the client polls on the WORK, and this is more of it.
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createText(
+                "generationSummaryPending",
+                "Reading the passage and building the debate... " +
+                    std::to_string(aiJob.elapsed_seconds()) + "s elapsed",
+                "text-sm", "text-indigo-300", "", ""));
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createText(
+                "generationPendingHint",
+                "This usually takes a minute or two. The debate appears in your list when it is done.",
+                "text-xs", "text-gray-500", "", ""));
+        } else {
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createButton(
+                "generateDebateButton", "Generate Debate", "", "bg-indigo-600",
+                "hover:bg-indigo-700", "text-white", "px-4 py-2", "rounded-lg", ""));
+        }
+
+        if (!aiJob.error().empty()) {
+            ui::Component err = ComponentGenerator::createText(
+                "generationError", aiJob.error(), "text-sm", "text-red-400", "", "");
+            (*err.mutable_css())["overflow-wrap"] = "anywhere";
+            ComponentGenerator::addChild(&generateContainer, err);
+        }
+        if (!aiJob.note().empty()) {
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createText(
+                "generationNote", aiJob.note(), "text-sm", "text-green-400", "", ""));
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createButton(
+                "dismissAiNoticeButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
+                "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+        }
+
+        ComponentGenerator::addChild(&main, generateContainer);
+
         // Join debate by ID container (inline layout)
         ui::Component joinDebateContainer = ComponentGenerator::createContainer(
             "joinDebateContainer",

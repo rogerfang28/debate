@@ -10,12 +10,26 @@ enum EngagementAction {
   ACTION_LOGIN    = 3;  // login page
 }
 
+// Progress and outcome of an AI job that is not a summary -- generating a
+// debate, or asking for challenges. Lives on the engagement rather than in a
+// page's own info because generation starts on the home page and finishes
+// inside a debate: the job outlives the page that began it.
+message AiJobStatus {
+  bool pending = 1;
+  int32 elapsed_seconds = 2;
+  string error = 3;
+  // What happened, once it has. Shown and then dismissed by the user.
+  string note = 4;
+}
+
 message UserEngagement {
   EngagementAction current_action = 1;
   oneof action_info {
     HomeInfo     home_info     = 2;
     DebatingInfo debating_info = 3;
   }
+
+  AiJobStatus ai_job = 4;
 }
 
 message HomeInfo {

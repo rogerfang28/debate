@@ -721,8 +721,19 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     // The label says what a second press does, because the debate moves and a
     // summary taken five claims ago is not the summary of this debate.
     // While a run is going the button says so and stops inviting a second
-    // press -- pressing again cannot start anything (SummaryJobs refuses a
+    // press -- pressing again cannot start anything (AiJobs refuses a
     // concurrent run) and would only look broken.
+    // Sits with the summary controls because both are "ask the AI about this
+    // debate" -- one describes it, the other tries to break it.
+    const user_engagement::AiJobStatus& aiJob = viewerUser.engagement().ai_job();
+    ui::Component challengeButton = ComponentGenerator::createButton(
+        "aiChallengeButton", aiJob.pending() ? "Working..." : "AI Challenge", "",
+        aiJob.pending() ? "bg-gray-600" : "bg-orange-700",
+        aiJob.pending() ? "hover:bg-gray-600" : "hover:bg-orange-800", "text-white",
+        "px-3 py-1.5", "rounded", "text-sm"
+    );
+    ComponentGenerator::addChild(&buttonGroup, challengeButton);
+
     ui::Component summarizeButton = ComponentGenerator::createButton(
         "summarizeDebateButton",
         pending ? "Summarizing..." : ((hasText || hasError) ? "Re-summarize" : "Summarize Debate"),
@@ -746,6 +757,29 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     // A marker that lives as long as ANY summary run does, so the client keeps
     // polling until every result has been collected -- including a claim
     // summary still generating while this panel already shows its answer.
+    if (aiJob.pending()) {
+        ui::Component working = ComponentGenerator::createText(
+            "aiChallengeSummaryPending",
+            "The AI is reading the debate and looking for weaknesses... " +
+                std::to_string(aiJob.elapsed_seconds()) + "s elapsed",
+            "text-sm", "text-orange-300", "", ""
+        );
+        ComponentGenerator::addChild(&panel, working);
+    }
+    if (!aiJob.note().empty()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "aiChallengeNote", aiJob.note(), "text-sm", "text-green-400", "", ""));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "dismissAiNoticeButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    if (!aiJob.error().empty()) {
+        ui::Component err = ComponentGenerator::createText(
+            "aiChallengeError", aiJob.error(), "text-sm", "text-red-400", "", "");
+        (*err.mutable_css())["overflow-wrap"] = "anywhere";
+        ComponentGenerator::addChild(&panel, err);
+    }
+
     if (viewerUser.engagement().debating_info().summary_running() && !summary.pending()) {
         ui::Component working = ComponentGenerator::createText(
             "backgroundSummaryPending", "An AI summary is still generating...",

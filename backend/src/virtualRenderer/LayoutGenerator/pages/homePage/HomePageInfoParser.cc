@@ -10,6 +10,9 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
     // info.set_viewer_user_id(userProto.user_id());
     // info.set_viewer_username(userProto.username());
     info.set_can_create_or_join_debates(!demo_mode::kReadOnlyMode);
+    // Carried through so the page can show a generation that is still running,
+    // or what the last one produced.
+    *info.mutable_ai_job() = userProto.engagement().ai_job();
 
     Log::debug(
         "[HomePageInfoParser] Parsing home debate list for user_id=" + std::to_string(userProto.user_id()) +

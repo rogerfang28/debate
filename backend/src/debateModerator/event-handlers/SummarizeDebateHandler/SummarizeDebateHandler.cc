@@ -1,6 +1,6 @@
 #include "SummarizeDebateHandler.h"
 
-#include "../../../utils/SummaryJobs.h"
+#include "../../../utils/AiJobs.h"
 #include "../../../utils/DebateTextFormatter.h"
 #include "../../../utils/Log.h"
 #include "../../buildResponse/debatePageResponse/BuildCollection.h"
@@ -76,7 +76,7 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
     // whole model call -- tens of seconds to minutes on a real debate -- so the
     // page would not come back until it finished and the user would be staring
     // at a dead tab with no way to tell progress from a hang.
-    SummaryJobs::Start(user_id, SummaryJobs::Kind::Debate, debateText, headSeq);
+    AiJobs::Start(user_id, AiJobs::Kind::Debate, debateText, headSeq);
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);
 
@@ -94,7 +94,7 @@ constexpr const char* kClaimKind = "claim";
 // process, so a stored "pending" would outlive the run that justified it; and
 // writing the elapsed counter every poll meant rewriting the whole user record
 // every two seconds. Only a FINISHED summary reaches the database.
-void applyRunningState(const SummaryJobs::Snapshot& snapshot,
+void applyRunningState(const AiJobs::Snapshot& snapshot,
                        user_engagement::DebatingInfo::DebateSummary* summary) {
     summary->set_pending(true);
     summary->set_elapsed_seconds(snapshot.elapsedSeconds);
@@ -138,10 +138,10 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
 
     // Collect() hands a finished result over exactly once, so it must be
     // written now or it is lost.
-    const SummaryJobs::Snapshot debateSnapshot =
-        SummaryJobs::Collect(user_id, SummaryJobs::Kind::Debate);
-    const SummaryJobs::Snapshot claimSnapshot =
-        SummaryJobs::Collect(user_id, SummaryJobs::Kind::Claim);
+    const AiJobs::Snapshot debateSnapshot =
+        AiJobs::Collect(user_id, AiJobs::Kind::Debate);
+    const AiJobs::Snapshot claimSnapshot =
+        AiJobs::Collect(user_id, AiJobs::Kind::Claim);
     // Two different claims, deliberately. A finished result belongs to the
     // claim its run was started for; what the page should SHOW is a summary of
     // the claim currently selected. Conflating them meant that summarizing a
@@ -243,7 +243,7 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
     const std::string contextText =
         DebateTextFormatter::FormatClaimContext(collection, usernames, options, claim_id);
 
-    SummaryJobs::Start(user_id, SummaryJobs::Kind::Claim, contextText,
+    AiJobs::Start(user_id, AiJobs::Kind::Claim, contextText,
                        debateWrapper.headMoveSeq(debateId), claim_id);
     summary->set_pending(true);
     summary->set_elapsed_seconds(0);

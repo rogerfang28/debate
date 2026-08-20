@@ -110,6 +110,42 @@ ui::Component ComponentGenerator::createInput(
     return component;
 }
 
+ui::Component ComponentGenerator::createTextarea(
+    const std::string& id,
+    const std::string& placeholder,
+    const std::string& name,
+    int rows,
+    const std::string& bgColor,
+    const std::string& textColor,
+    const std::string& borderColor
+) {
+    ui::Component component;
+    component.set_id(id);
+    component.set_type(ui::ComponentType::TEXTAREA);
+
+    if (!name.empty()) {
+        component.set_name(name);
+    }
+    if (!placeholder.empty()) {
+        addAttribute(&component, "placeholder", placeholder);
+    }
+    addAttribute(&component, "rows", std::to_string(rows));
+
+    std::vector<std::string> classes{"p-3"};
+    if (!bgColor.empty()) classes.push_back(bgColor);
+    if (!textColor.empty()) classes.push_back(textColor);
+    classes.push_back("border");
+    if (!borderColor.empty()) classes.push_back(borderColor);
+    classes.push_back("rounded");
+    classes.push_back("w-full");
+
+    const std::string customClass = buildCustomClass(classes);
+    if (!customClass.empty()) {
+        component.mutable_style()->set_custom_class(customClass);
+    }
+    return component;
+}
+
 ui::Component ComponentGenerator::createDropdown(
     const std::string& id,
     const std::vector<std::string>& options,

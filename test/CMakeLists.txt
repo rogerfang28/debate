@@ -87,10 +87,12 @@ set(HANDLER_SOURCES
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
+    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -180,10 +182,12 @@ add_executable(debate_simulation
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
+    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -246,10 +250,12 @@ add_executable(import_debate_tool
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
+    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -273,10 +279,12 @@ add_executable(summarize_tool
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
+    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
@@ -319,10 +327,12 @@ add_executable(debate_tests
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/SummaryJobs.cc
+    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )

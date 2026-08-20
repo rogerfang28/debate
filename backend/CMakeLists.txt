@@ -70,6 +70,7 @@ set(SRC_FILES
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
@@ -90,7 +91,8 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/DebateSummarizer.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateGenerator.cc
      ${CMAKE_SOURCE_DIR}/src/utils/GeneratedDebateBuilder.cc
-     ${CMAKE_SOURCE_DIR}/src/utils/SummaryJobs.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/AiChallenger.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/AiJobs.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/UserDatabase.cc

@@ -53,6 +53,10 @@ enum ComponentType {
   //
   // attributes: placeholder, extraPlaceholder, addLabel, maxInputs
   MULTI_INPUT = 16;
+
+  // A multi-line text box. ComponentRenderer has always mapped this type; the
+  // enum value simply never existed, so the mapping was unreachable.
+  TEXTAREA = 17;
 }
 
 message Style {

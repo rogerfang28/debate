@@ -21,6 +21,23 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
             }
         }
     } 
+    // * Build a whole debate from a passage, with the AI
+    else if (componentId == "generateDebateButton" && eventType == "onClick") {
+        event.set_type(debate_event::GENERATE_DEBATE);
+        auto* generate = event.mutable_generate_debate();
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "generateTopicInput") {
+                generate->set_topic(comp.value());
+            } else if (comp.id() == "generatePassageInput") {
+                generate->set_passage(comp.value());
+            }
+        }
+        Log::debug("  GENERATE_DEBATE: topic = " + generate->topic() + ", passage = " +
+                   std::to_string(generate->passage().size()) + " chars");
+    }
+    else if (componentId == "dismissAiNoticeButton" && eventType == "onClick") {
+        event.set_type(debate_event::DISMISS_AI_NOTICE);
+    }
     // * Clear all debates
     else if (componentId == "clearButton" && eventType == "onClick") {
         event.set_type(debate_event::CLEAR_DEBATES);

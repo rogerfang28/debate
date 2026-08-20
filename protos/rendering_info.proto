@@ -3,6 +3,7 @@ syntax = "proto3";
 package rendering_info;
 
 import "debate.proto";
+import "user_engagement.proto";
 
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
@@ -137,6 +138,11 @@ message HomePageRenderingInfo {
 
 	// Controls visibility of submit/join controls in viewer mode.
 	bool can_create_or_join_debates = 4;
+
+	// Progress of an AI job started from this page. Generation begins here and
+	// its result lands in the debate list, so the home page is where its
+	// progress and its outcome have to be shown.
+	user_engagement.AiJobStatus ai_job = 5;
 }
 
 message HomeDebateTopicRenderInfo {

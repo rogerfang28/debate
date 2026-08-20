@@ -2,7 +2,7 @@
 
 #include <string>
 
-// In-flight AI summary runs, keyed by user.
+// In-flight AI work, keyed by user and kind.
 //
 // The model takes tens of seconds to minutes on a real debate. Doing that on
 // the request thread means the page does not come back until it finishes, so
@@ -15,13 +15,15 @@
 // there is nothing to resume -- and a row saying "pending" that no thread is
 // working on would be a lie that survives restarts. The finished text IS
 // persisted, by the request thread that collects it.
-class SummaryJobs {
+class AiJobs {
 public:
     // Which summary a run belongs to. Keyed separately so summarizing a claim
     // never cancels or collides with a whole-debate run already going.
     enum class Kind {
-        Debate,
-        Claim,
+        Debate,      // summarize a whole debate
+        Claim,       // summarize one claim
+        Generation,  // build a debate from a passage
+        Challenge,   // propose challenges against a debate
     };
 
     struct Snapshot {

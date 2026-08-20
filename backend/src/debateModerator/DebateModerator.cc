@@ -30,6 +30,7 @@
 #include "event-handlers/ModifyClaimHandler/ModifyClaimHandler.h"
 
 #include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
+#include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
@@ -188,6 +189,20 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::SUMMARIZE_DEBATE:
             Log::info("[DebateModerator] Event Type: SUMMARIZE_DEBATE");
             SummarizeDebateHandler::SummarizeDebate(user_id, debateWrapper);
+            break;
+        case debate_event::GENERATE_DEBATE:
+            Log::info("[DebateModerator] Event Type: GENERATE_DEBATE");
+            AiAuthorHandler::GenerateDebate(event.generate_debate().topic(),
+                                            event.generate_debate().passage(), user_id,
+                                            debateWrapper);
+            break;
+        case debate_event::CHALLENGE_WITH_AI:
+            Log::info("[DebateModerator] Event Type: CHALLENGE_WITH_AI");
+            AiAuthorHandler::ChallengeWithAi(user_id, debateWrapper);
+            break;
+        case debate_event::DISMISS_AI_NOTICE:
+            Log::info("[DebateModerator] Event Type: DISMISS_AI_NOTICE");
+            AiAuthorHandler::DismissNotice(user_id, debateWrapper);
             break;
         case debate_event::SUMMARIZE_CLAIM:
             Log::info("[DebateModerator] Event Type: SUMMARIZE_CLAIM");
@@ -464,6 +479,10 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // what makes a detached worker visible to the page: the client re-requests
     // while a run is pending, and each request advances what it sees.
     SummarizeDebateHandler::RefreshSummaryState(user_id, debateWrapper);
+    // Generation and AI challenges finish on a worker; this is where their JSON
+    // becomes claims. It needs the moderator, not just the wrapper, because
+    // building goes back through event dispatch.
+    AiAuthorHandler::RefreshAiWork(user_id, *this);
 
     userProto = debateWrapper.getUserProtobuf(user_id);
 
