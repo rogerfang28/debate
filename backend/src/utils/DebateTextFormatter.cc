@@ -163,6 +163,18 @@ struct Renderer {
             writeClaim(fromId, depth + 1);
         }
 
+        if (joint) {
+            // Spelled out as a sentence, not left as a header the reader has to
+            // interpret. Prompting alone did not reliably carry this across --
+            // the note survived some runs and vanished in others -- and it is
+            // the one structural fact whose loss makes an argument look sturdier
+            // than it is. Stating the consequence in the source gives the model
+            // something to carry rather than something to infer.
+            out << indent(depth + 1) << "(this line of argument needs all "
+                << rel.from_claim_ids_size()
+                << " of the claims above; if any one of them fails, the whole line fails)\n";
+        }
+
         auto attacks = againstRelation.find(rel.id());
         if (attacks != againstRelation.end()) {
             for (const debate::Relationship* attack : attacks->second) {

@@ -37,10 +37,22 @@ namespace {
 // explained -- and carries one hard exception: the term the disagreement turns
 // on always gets defined, because the reader reaching the crux sentence and
 // finding gibberish is the one failure that makes the whole summary pointless.
+//
+// Then the Fauci case -- 22 claims -- showed a fixed word cap is the wrong
+// knob. 175 words is right for a three-claim debate and flattens a large one
+// into four sentences that drop whole branches. Length now scales with the
+// number of top-level lines of argument, and what gets cut when it runs long
+// is DETAIL INSIDE a line, never a line. Saying "cover only the biggest
+// points" made it worse, not better: it read as licence to drop branches.
+//
+// The trailing checklist earns its place. An explicit rule plus a worked
+// example still left technical terms bare; asking the model to re-read its own
+// output and fix them is what actually landed. It does not fix everything --
+// organisation names like NIH still come out unexplained more often than not.
 const char* kSummaryPromptTemplate =
     R"PROMPT(You are giving someone a QUICK summary of a structured debate. They have never seen this topic and know nothing about it. They want to understand the gist in under a minute, not read an essay.
 
-BREVITY IS THE POINT. Someone who wanted the full argument would read the debate itself. Your job is to get them oriented fast.
+BE COMPACT, BUT COMPLETE. Someone who wanted the full argument would read the debate itself, so keep it tight -- but a summary that silently leaves out a whole line of argument has failed no matter how short it is. Cut detail, never coverage.
 
 HOW TO READ THE DEBATE BELOW
 
@@ -59,9 +71,10 @@ WRITING RULES
 2. Explain any term a newcomer would not know, in a few words in parentheses, the first time you use it. Name a thing AND explain it - never a bare abbreviation, and never dodge a name to avoid explaining it. Identify things by the role they play in this debate; do not add outside facts.
 3. Because you are being brief, mention FEWER things - do not compress by dropping the explanations. It is better to cover two arguments properly than five in a way nobody can follow.
    If a section has little to report, say it in ONE sentence and stop. Never pad a section by restating the same point in different words - on a debate with no objections, "nothing has been challenged" is the complete and correct answer for that section. A short section is a fact about the debate, not a gap to fill.
+   If you are running long, cut DETAIL from a line of argument -- never cut the line itself, and never cut the note that its claims stand or fall together.
    Above all: if the disagreement turns on the meaning of a term, that term MUST be explained in plain words. Leaving the crux term undefined is the worst thing this summary can do - the reader reaches the one sentence that matters and it is gibberish to them. If you have no room to explain a term, use plain words instead of the term.
 4. Do NOT decide who is right. Never call an argument strong, weak or convincing. The reader decides.
-5. Cover only the biggest points. Skip minor supporting details, skip side branches, skip anything a newcomer does not need to grasp the disagreement.
+5. Before writing, work out how many distinct top-level lines of argument there are -- the separate branches offered directly for or against the main claim. You must include EVERY one of them. What you skip is detail INSIDE a line: individual pieces of evidence, minor sub-claims, side branches. Never skip a whole line.
 6. Add nothing that is not in the debate below.
 7. Plain sentences. No markdown, no bullets, no bold.
 
@@ -73,12 +86,20 @@ THE QUESTION
 One or two sentences. What is being claimed, and who disputes it.
 
 THE ARGUMENT
-Three or four sentences. Only the main lines of support, biggest first. If a line needs several claims together, say so in a few words - it matters that the whole line fails if one part does. Then, in one or two sentences, the main objections and whether they dispute the facts or dispute what the facts prove.
+Take each top-level line of argument in turn, biggest first, about two sentences each. Every line gets a mention, even if only a sentence. If a line needs several claims together, say so in a few words - it matters that the whole line fails if one part does. Then, in one or two sentences, the main objections and whether they dispute the facts or dispute what the facts prove.
 
 WHAT IT COMES DOWN TO
-Two or three sentences. The single point the disagreement really turns on, and where things currently stand. If they are arguing about what a word means, name the word and give both meanings briefly.
+Two to four sentences. The single point the disagreement really turns on. If they are arguing about what a word means, name the word and give both meanings briefly. Then say where things stand: name what both sides accept, and name what is still open or disputed between them. "They disagree about what the facts prove" is not enough on its own -- say which claims.
 
-HARD LIMIT: 175 words total. Count them. A summary over 175 words has failed the task regardless of how good it is.
+LENGTH SCALES WITH THE DEBATE. Give each distinct top-level line of argument about two sentences, on top of the two short framing sections. A debate with two lines of argument should land near 120 words; one with five or six lines should land near 300. Never drop a line of argument to hit a number -- coverage first, brevity second. Absolute ceiling 350 words.
+
+A big debate is exactly where a reader needs the structure, so on a long one these are not optional: say which arguments need several claims TOGETHER, and say which claims the two sides actually disagree about rather than only that they disagree.
+
+BEFORE YOU FINISH, RE-READ WHAT YOU WROTE AND FIX THESE:
+ - Any abbreviation or organisation name with no explanation next to it? Explain it by the role it plays in this debate.
+ - Any technical term a newcomer would not know, used without a plain-words definition?
+ - Any line of argument in the debate that you did not mention at all?
+ - Any argument marked TOGETHER whose claims you presented as separate reasons?
 
 Here is the debate:
 
