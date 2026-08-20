@@ -151,6 +151,11 @@ void SummarizeDebateHandler::RefreshSummaryState(const int& user_id, DebateWrapp
                                   claimSnapshot.text, claimSnapshot.error, claimSnapshot.atMoveSeq);
     }
 
+    // Tracks the WORK, not a panel. What the client polls on has to outlive
+    // whichever summary happens to finish first, or a concurrent run is left
+    // with nobody to collect it.
+    info->set_summary_running(debateSnapshot.running || claimSnapshot.running);
+
     // Rebuild the response's view from the store plus whatever is running. The
     // user record itself now carries no summary text at all.
     const int headSeq = debateWrapper.headMoveSeq(debateId);

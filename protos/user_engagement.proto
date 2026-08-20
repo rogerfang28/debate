@@ -115,6 +115,15 @@ message DebatingInfo {
   // keep describing the claim you were looking at when you pressed the button,
   // while you read it beside a different selected claim.
   int32 claim_summary_claim_id = 21;
+
+  // True while ANY summary run is in flight for this viewer.
+  //
+  // The client polls only while the page shows a pending marker, so the marker
+  // has to track the WORK, not one panel. With a debate and a claim summary
+  // running together, the first to finish removed the only marker on the page,
+  // polling stopped, and the second result sat uncollected until something else
+  // happened to hit the server.
+  bool summary_running = 22;
   oneof additional_info {
     // could be none
     // TODO remove field, was used for user manual linking claims

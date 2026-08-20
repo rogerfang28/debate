@@ -743,6 +743,17 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     ComponentGenerator::addChild(&headerRow, buttonGroup);
     ComponentGenerator::addChild(&panel, headerRow);
 
+    // A marker that lives as long as ANY summary run does, so the client keeps
+    // polling until every result has been collected -- including a claim
+    // summary still generating while this panel already shows its answer.
+    if (viewerUser.engagement().debating_info().summary_running() && !summary.pending()) {
+        ui::Component working = ComponentGenerator::createText(
+            "backgroundSummaryPending", "An AI summary is still generating...",
+            "text-xs", "text-indigo-300", "", ""
+        );
+        ComponentGenerator::addChild(&panel, working);
+    }
+
     AddSummaryBody(&panel, summary, "debateSummary", "debateSummaryPending",
                    "No summary yet. Press Summarize Debate to have the AI read the whole debate.",
                    "Reading the debate and writing a summary...");
