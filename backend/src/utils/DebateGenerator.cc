@@ -1,69 +1,96 @@
 #include "DebateGenerator.h"
 
-#include "LlmClient.h"
 #include "Log.h"
 
 namespace {
 
-// Truncation guard. A passage far past this stops being something the model
-// can hold in mind at once, and the resulting debate quietly covers only the
-// beginning of it.
+// A passage far past this stops being something the model can hold at once,
+// and the debate quietly covers only the beginning of it.
 constexpr size_t kMaxPassageChars = 15000;
 
 const char* kGeneratePromptTemplate =
-    R"PROMPT(You turn a passage into a structured debate.
+    R"PROMPT(You turn a passage into a debate, written as a scenario file.
 
-A debate here is not an essay. It is a graph: one central claim, and other claims offered FOR or AGAINST it. Your job is to pull that structure out of the passage below.
+A debate is a graph: one root claim, and other claims offered FOR or AGAINST it. You will write the sequence of actions that builds that graph.
 
-THE TOPIC THE USER WANTS DEBATED:
+THE TOPIC:
 {topic}
+
+OUTPUT FORMAT
+
+Protobuf text format. Every line is a step. Write ONLY the scenario, no markdown fence, no commentary.
+
+THE ROOT MUST BE AN ASSERTION, NOT A QUESTION. The topic above may be phrased as a question -- "Should cities lower speed limits?" -- and you must turn it into something that can be true or false: "Cities should lower urban speed limits to 20mph". A question cannot be accepted or refuted, so a debate rooted in one has nothing to argue about.
+
+The file always starts exactly like this, with that assertion as the debate topic:
+
+name: "GeneratedDebate"
+steps { action { username: "A" event_type: "CREATE_USER" } }
+steps { action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "THE ROOT CLAIM" } }
+steps { action { username: "A" event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+After that, every claim is added by moving to its target and adding under it:
+
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "a claim supporting claim 1"
+    claim_description: "optional context, or omit this line"
+    basis: "EVIDENTIAL"
+  }
+}
+
+To attack a claim instead of supporting it, use SUBMIT_CHALLENGE_CLAIM after moving to it:
+
+steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action {
+    username: "A"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "a claim arguing against claim 2"
+    challenge_description: "optional context, or omit this line"
+    basis: "EVIDENTIAL"
+  }
+}
+
+CLAIM NUMBERING -- THE THING TO GET RIGHT
+
+Claims are numbered in the order you create them, starting at 1.
+- Claim 1 is always the root, created by CREATE_DEBATE.
+- The first ADD_CHILD_CLAIM or SUBMIT_CHALLENGE_CLAIM makes claim 2, the next makes claim 3, and so on.
+- GO_TO_CLAIM must name a claim that ALREADY EXISTS. Never move to a number you have not created yet.
+Count carefully as you write. A wrong number attaches an argument to the wrong sentence.
+
+JOINT ARGUMENTS
+
+If several claims are needed TOGETHER -- the point collapses if any one of them is wrong -- put them in ONE action using extra_claim_texts:
+
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Supply fell"
+    extra_claim_texts: "Demand held steady"
+    basis: "EVIDENTIAL"
+  }
+}
+
+That creates two claims and ONE joint argument. Each extra_claim_texts line is another claim, so count them in the numbering.
+
+Only group when it is really true. Take one claim out: if what remains still gives a reason to believe the target, they are INDEPENDENT and each needs its own action. Separate measurements of the same thing are independent -- revenue rose, turnover fell, sick days fell: remove any one and the rest still argue the case.
 
 RULES FOR THE CLAIMS
 
-1. Every claim is ONE assertion that could be true or false. Split compound sentences into separate claims.
-2. Use only what the passage says. Do not add facts, figures or arguments from your own knowledge. If the passage does not support a branch, leave it out.
-3. Keep the passage's own numbers and attributions in the claim text where they carry the argument.
-4. A claim is a sentence, not a heading. "Revenue rose 1.4 percent during the trial" is a claim. "Revenue" is not.
-5. The description is optional context for a claim -- where a figure came from, or what it is measuring. Leave it empty if the claim speaks for itself.
-
-RULES FOR THE STRUCTURE
-
-6. Each argument attaches to exactly one target: the root, or a claim introduced by an earlier argument. Never target something that has not been introduced yet.
-7. Grouping several claims into one argument means they are JOINT: the point collapses if any single one is wrong. Most claims are NOT joint.
-8. Any argument holding more than one claim MUST carry a "joint_reason": one sentence saying what stops working if you remove a single claim from it. If you cannot write that sentence, they are independent -- give each its own argument.
-   Separate measurements of the same thing are INDEPENDENT: revenue held up, turnover fell, sick days fell. Remove any one and the rest still argue the case. Separate arguments.
-   A fact plus what makes it meaningful is JOINT: "staff worked unpaid on their day off" only bears on the trial if "the trial reported smaller benefits" is also true.
-9. Use "challenges" for anything the passage raises AGAINST a claim: objections, limitations, contrary findings, criticisms. A passage that discusses its own weaknesses should produce challenges, not just supports.
-10. basis is how the argument bears on its target. One of: EVIDENTIAL (data, studies, observation), AUTHORITY (who said it), DEFINITIONAL (what a term means), NORMATIVE (what ought to be). Use "" if none fits.
-
-OUTPUT
-
-Return ONLY JSON, no markdown fence, in exactly this shape:
-
-{
-  "root": {"text": "the central claim the debate is about", "description": ""},
-  "arguments": [
-    {
-      "target": "root",
-      "kind": "supports",
-      "basis": "EVIDENTIAL",
-      "joint_reason": "",
-      "claims": [
-        {"id": "c1", "text": "a claim supporting the root", "description": ""}
-      ]
-    },
-    {
-      "target": "c1",
-      "kind": "challenges",
-      "basis": "EVIDENTIAL",
-      "claims": [
-        {"id": "c2", "text": "a claim arguing against c1", "description": ""}
-      ]
-    }
-  ]
-}
-
-Every claim id must be unique. Targets must be "root" or an id from an EARLIER argument. Aim for 6 to 14 claims in total, and include at least one challenge if the passage offers any.
+1. Every claim is ONE assertion that could be true or false. Split compound sentences.
+2. Use only what the passage says. Do not add facts or arguments of your own.
+3. Keep the passage's numbers and attributions in the claim text.
+4. basis is one of EVIDENTIAL, AUTHORITY, DEFINITIONAL, NORMATIVE, or omit the line.
+5. Use SUBMIT_CHALLENGE_CLAIM for anything the passage raises against a claim -- objections, limitations, contrary findings. A passage that discusses its own weaknesses should produce challenges.
+6. Aim for 8 to 14 claims in total. Work through the WHOLE passage before you stop -- a passage with four distinct arguments should produce four, not two.
+7. Attach each claim to the most specific thing it bears on. A rebuttal to a criticism belongs under that criticism, not under the root. Hanging everything off the root loses the shape of the argument.
 
 THE PASSAGE:
 
@@ -81,7 +108,8 @@ std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::st
     const std::string topicKey = "{topic}";
     const size_t topicAt = prompt.find(topicKey);
     if (topicAt != std::string::npos) {
-        prompt.replace(topicAt, topicKey.size(), topic.empty() ? "(none given -- take it from the passage)" : topic);
+        prompt.replace(topicAt, topicKey.size(),
+                       topic.empty() ? "(none given -- take it from the passage)" : topic);
     }
     const std::string passageKey = "{passage}";
     const size_t passageAt = prompt.find(passageKey);
@@ -89,17 +117,4 @@ std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::st
         prompt.replace(passageAt, passageKey.size(), truncated);
     }
     return prompt;
-}
-
-std::string DebateGenerator::Generate(const std::string& topic, const std::string& passage) {
-    Log::info("[DebateGenerator] Generating a debate from " + std::to_string(passage.size()) +
-              " chars of passage");
-
-    LlmOptions options;
-    options.label = "debate-generation";
-    // Extraction, not invention: the prompt forbids adding anything the
-    // passage does not say, and latitude here is exactly how that gets broken.
-    options.temperature = 0.1;
-
-    return LlmClient::CompleteJson(BuildPrompt(topic, passage), options);
 }

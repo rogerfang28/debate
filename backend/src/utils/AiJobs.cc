@@ -77,8 +77,11 @@ bool AiJobs::Start(int userId, Kind kind, const std::string& debateText, int atM
                 // caller hands over a finished prompt and this just runs it.
                 // Their results are JSON that a request thread turns into
                 // claims -- the worker never touches the database.
-                case Kind::Generation:
+                // Challenge answers in JSON; generation answers with a
+                // scenario file, which is not JSON and must not be validated
+                // as though it were.
                 case Kind::Challenge:  text = LlmClient::CompleteJson(debateText, promptOptions(kind)); break;
+                case Kind::Generation: text = LlmClient::Complete(debateText, promptOptions(kind)); break;
             }
             if (text.empty()) {
                 error = "The model returned an empty summary.";

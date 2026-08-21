@@ -92,6 +92,7 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -187,6 +188,7 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -255,6 +257,7 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -284,6 +287,7 @@ add_executable(summarize_tool
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -333,6 +337,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc

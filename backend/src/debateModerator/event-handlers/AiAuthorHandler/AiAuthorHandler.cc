@@ -7,7 +7,7 @@
 #include "../../../utils/DebateGenerator.h"
 #include "../../../utils/DebateTextFormatter.h"
 #include "../../../utils/DebateWrapper.h"
-#include "../../../utils/GeneratedDebateBuilder.h"
+#include "../../../utils/ScenarioImporter.h"
 #include "../../../utils/Log.h"
 
 #include <exception>
@@ -134,23 +134,27 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
         if (!generation.error.empty()) {
             status->set_error(generation.error);
         } else {
-            // The build writes to the database, so it happens HERE, on the
-            // request thread, never on the worker.
-            const auto built = GeneratedDebateBuilder::Build(generation.text, user_id, moderator);
-            if (!built.ok) {
-                status->set_error(built.error);
+            // Parsing and replaying both write to the database, so both happen
+            // HERE, on the request thread, never on the worker.
+            bool parsed = false;
+            std::string parseError;
+            const debate_test::TestScenario scenario =
+                scenario::LoadFromText(generation.text, parsed, parseError);
+            if (!parsed) {
+                status->set_error(parseError);
             } else {
-                std::string note = "Generated a debate with " +
-                                   std::to_string(built.claimsCreated) + " claims.";
-                if (built.groupsSplit > 0) {
-                    // Said out loud rather than silently corrected: the user is
-                    // entitled to know the AI grouped claims it could not
-                    // justify, and that the tool took the cautious reading.
-                    note += " " + std::to_string(built.groupsSplit) +
-                            " group(s) claimed to be joint without saying why, so they were "
-                            "kept as separate arguments.";
+                scenario::Importer importer(moderator);
+                if (!importer.Run(scenario)) {
+                    // A scenario stops at its first bad step, so a partial
+                    // debate may exist. Saying so beats implying nothing
+                    // happened when the user can see a new debate in the list.
+                    status->set_error(
+                        "The AI's scenario failed partway through. Any debate it created is "
+                        "incomplete.");
+                } else {
+                    status->set_note("Generated a debate from " +
+                                     std::to_string(scenario.steps_size()) + " steps.");
                 }
-                status->set_note(note);
             }
         }
     }
