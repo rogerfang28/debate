@@ -93,6 +93,7 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/GeneratedDebateBuilder.cc
      ${CMAKE_SOURCE_DIR}/src/utils/AiChallenger.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ScenarioImporter.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/UrlFetcher.cc
      ${CMAKE_SOURCE_DIR}/src/utils/AiJobs.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ClaimParserLLM.cc
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/Database.cc

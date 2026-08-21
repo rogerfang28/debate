@@ -93,6 +93,7 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -189,6 +190,7 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -258,6 +260,7 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -288,6 +291,7 @@ add_executable(summarize_tool
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
@@ -309,6 +313,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_summary_store.cc
     ${CMAKE_SOURCE_DIR}/tests/test_generated_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_ai_challenger.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_url_fetcher.cc
 )
 
 add_executable(debate_tests
@@ -338,6 +343,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
