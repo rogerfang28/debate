@@ -23,6 +23,15 @@ namespace {
 //     needs every part. Hence the emphatic, non-optional rule.
 //   - A worked example naming real claims leaked those claims into unrelated
 //     arguments, so the example now demonstrates form, not content.
+//   - CONCISION COMES FROM THE SENTENCE COUNT, NOT FROM STYLE RULES. Asked to
+//     write tightly -- attribute once per argument, never restate the heading,
+//     delete sentences that only say the sides disagree, with a worked
+//     before/after -- the model produced a LONGER summary (260 words against
+//     234) and broke two of those rules in the output itself. Told instead to
+//     give each argument ONE sentence, it came back at 185 words with every
+//     argument still covered, folding each rebuttal into its own sentence
+//     ("Paul argues X, but Fauci says Y"). Countable instructions land here;
+//     stylistic ones do not.
 //   - Separate "case for" and "case against" sections were fought and then
 //     abandoned. The model kept answering each argument where it stated it and
 //     then repeating itself in the second section. Walking one argument at a
@@ -91,7 +100,7 @@ Take each top-level line of argument in turn, biggest first, about two sentences
 WHAT IT COMES DOWN TO
 Two to four sentences. The single point the disagreement really turns on. If they are arguing about what a word means, name the word and give both meanings briefly. Then say where things stand: name what both sides accept, and name what is still open or disputed between them. "They disagree about what the facts prove" is not enough on its own -- say which claims.
 
-LENGTH SCALES WITH THE DEBATE. Give each distinct top-level line of argument about two sentences, on top of the two short framing sections. A debate with two lines of argument should land near 120 words; one with five or six lines should land near 300. Never drop a line of argument to hit a number -- coverage first, brevity second. Absolute ceiling 350 words.
+LENGTH SCALES WITH THE DEBATE. Give each distinct top-level line of argument ONE sentence, on top of the two short framing sections. A debate with two lines of argument should land near 70 words; one with five or six lines should land near 150. Never drop a line of argument to hit a number -- coverage first, brevity second. Absolute ceiling 180 words.
 
 A big debate is exactly where a reader needs the structure, so on a long one these are not optional: say which arguments need several claims TOGETHER, and say which claims the two sides actually disagree about rather than only that they disagree.
 
