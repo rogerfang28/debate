@@ -114,3 +114,53 @@ TEST(UrlFetcherTest, KeepsParagraphBreaksSoSentencesDoNotRunTogether) {
     EXPECT_NE(text.find("Two."), std::string::npos);
     EXPECT_EQ(text.find("One.Two."), std::string::npos) << "a break must separate the paragraphs";
 }
+
+// A LIVE fetch, disabled by default.
+//
+// Every other test here is offline and deterministic: they check that the
+// guard refuses what it must refuse. But a guard that refuses everything would
+// pass all of them, so something has to prove the fetcher actually retrieves a
+// page. That needs the internet, which makes it unfit to run automatically --
+// a failure would mean "the network is down", not "the code is wrong".
+//
+// Run deliberately:
+//   debate_tests --gtest_also_run_disabled_tests --gtest_filter=*LiveFetch*
+TEST(UrlFetcherTest, DISABLED_LiveFetchOfAPublicPage) {
+    // example.com is the reliable public target, but its whole body is about
+    // 180 characters -- below the "is there an article here" floor. That it
+    // comes back with THAT error rather than a scheme or network one is itself
+    // the proof: the guard allowed it, TLS worked, the HTML was fetched and
+    // stripped, and only the length check turned it away.
+    const auto tiny = UrlFetcher::Fetch("https://example.com/");
+    EXPECT_FALSE(tiny.ok) << "example.com is too short to be an article";
+    EXPECT_NE(tiny.error.find("not enough readable text"), std::string::npos)
+        << "expected the length check to be what refused it, got: " << tiny.error;
+
+    // A page with real prose on it, to prove the happy path end to end.
+    const auto real = UrlFetcher::Fetch("https://en.wikipedia.org/wiki/Congestion_pricing");
+    if (!real.ok) {
+        GTEST_SKIP() << "no route to a text-heavy page: " << real.error;
+    }
+    EXPECT_GT(real.text.size(), 2000u) << "an article should yield real prose";
+    // Checking for any '<' would be wrong: &lt; decodes to a real '<' and
+    // belongs in the text. What must be gone is TAGS.
+    // "</" is excluded on purpose: a page that quotes escaped HTML decodes
+    // &lt;/div&gt; into that, and it is then legitimate text rather than markup.
+    for (const std::string& tag : {"<div", "<span", "<script", "<a href"}) {
+        EXPECT_EQ(real.text.find(tag), std::string::npos) << "markup survived: " << tag;
+    }
+    EXPECT_EQ(real.text.find("function("), std::string::npos) << "script bodies should be gone";
+    std::cout << "[live] " << real.text.size() << " chars from " << real.finalUrl << "\n"
+              << real.text.substr(0, 400) << std::endl;
+}
+
+// A '<' in prose is not a tag. Wikipedia's congestion-pricing article contains
+// comparisons like "less than 5 < 10", and the stripper treated each one as
+// the start of markup -- swallowing everything up to the next '>' along with
+// it, which quietly deletes real sentences.
+TEST(UrlFetcherTest, KeepsALessThanSignThatIsNotATag) {
+    const std::string text = UrlFetcher::HtmlToText("<p>Charges under 5 < 10 pounds apply.</p>");
+    EXPECT_NE(text.find("Charges under 5"), std::string::npos);
+    EXPECT_NE(text.find("10 pounds apply."), std::string::npos)
+        << "text after a bare '<' must survive; got: " << text;
+}

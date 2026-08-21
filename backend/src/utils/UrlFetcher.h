@@ -45,4 +45,9 @@ public:
 
     // Exposed for tests: crude HTML to text.
     static std::string HtmlToText(const std::string& html);
+
+private:
+    // Fetch() is a guard around this: it turns any exception into an error on
+    // the Result, so callers never have to handle one.
+    static Result FetchInner(const std::string& url);
 };

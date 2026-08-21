@@ -202,6 +202,20 @@ std::string UrlFetcher::HtmlToText(const std::string& html) {
         if (close == std::string::npos) {
             break;
         }
+
+        // A '<' is not necessarily a tag. Prose contains comparisons -- "under
+        // 5 < 10 pounds" -- and treating those as markup swallows everything up
+        // to the next '>', deleting real sentences invisibly. A real tag starts
+        // with a letter or a slash; anything else is text.
+        const char afterAngle = (open + 1 < html.size()) ? html[open + 1] : ' ';
+        const bool looksLikeTag =
+            std::isalpha(static_cast<unsigned char>(afterAngle)) || afterAngle == '/' ||
+            afterAngle == '!' || afterAngle == '?';
+        if (!looksLikeTag) {
+            stripped.push_back('<');
+            i = open + 1;
+            continue;
+        }
         // Block tags become breaks so sentences do not run together.
         if (lower.rfind("<p", 0) == 0 || lower.rfind("<br", 0) == 0 ||
             lower.rfind("<div", 0) == 0 || lower.rfind("<h1", 0) == 0 ||
@@ -217,6 +231,24 @@ std::string UrlFetcher::HtmlToText(const std::string& html) {
 }
 
 UrlFetcher::Result UrlFetcher::Fetch(const std::string& url) {
+    Result result;
+    try {
+        return FetchInner(url);
+    } catch (const std::exception& e) {
+        // httplib throws from its own constructor for an https URL when SSL is
+        // not compiled in, and can throw on malformed input. A fetch that fails
+        // must come back as an error the user can read, never as an exception
+        // unwinding through a request.
+        Log::warn(std::string("[UrlFetcher] Fetch threw: ") + e.what());
+        result.error = std::string("Could not fetch that link: ") + e.what();
+        return result;
+    } catch (...) {
+        result.error = "Could not fetch that link.";
+        return result;
+    }
+}
+
+UrlFetcher::Result UrlFetcher::FetchInner(const std::string& url) {
     Result result;
     std::string current = url;
 

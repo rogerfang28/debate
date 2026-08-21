@@ -26,6 +26,10 @@ set(VCPKG_INSTALLED "${VCPKG_ROOT}/installed/x64-mingw-static")
 # --- Compiler flags ---
 add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
 add_definitions(-D_WIN32_WINNT=0x0A00 -DWIN32_LEAN_AND_MEAN -DNOMINMAX)
+# Matches the backend. Without it httplib is built with no TLS, so any https
+# URL throws from the client constructor -- and every real article link is
+# https, which made the fetcher untestable here.
+add_definitions(-DCPPHTTPLIB_OPENSSL_SUPPORT)
 
 # --- Git commit hash (used by StepView/FullDebatePageGenerator for page title) ---
 execute_process(
@@ -153,6 +157,9 @@ set(COMMON_LIBS
     ${ABSL_LIBS}
     dbghelp
     -Wl,--end-group
+    ${VCPKG_INSTALLED}/lib/libssl.a
+    ${VCPKG_INSTALLED}/lib/libcrypto.a
+    crypt32
     ${VCPKG_INSTALLED}/lib/libsqlite3.a
     ${VCPKG_INSTALLED}/lib/libzs.a
     ws2_32
