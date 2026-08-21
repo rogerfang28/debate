@@ -96,6 +96,27 @@ void AiAuthorHandler::ChallengeWithAi(const int& user_id, DebateWrapper& debateW
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
+void AiAuthorHandler::CancelWork(const int& user_id, DebateWrapper& debateWrapper) {
+    // Every kind, because the button says "Cancel" and the user should not have
+    // to know which of four things is currently running.
+    AiJobs::Abandon(user_id, AiJobs::Kind::Generation);
+    AiJobs::Abandon(user_id, AiJobs::Kind::Challenge);
+    AiJobs::Abandon(user_id, AiJobs::Kind::Debate);
+    AiJobs::Abandon(user_id, AiJobs::Kind::Claim);
+
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    user_engagement::AiJobStatus* status = statusOf(userProto);
+    status->Clear();
+    status->set_note("Cancelled. The model may still be working, but nothing is waiting for it.");
+    // Summaries keep their own pending flags, which would otherwise leave the
+    // page polling for a result that will never be collected.
+    user_engagement::DebatingInfo* info = userProto.mutable_engagement()->mutable_debating_info();
+    info->set_summary_running(false);
+    info->mutable_debate_summary()->set_pending(false);
+    info->mutable_claim_summary()->set_pending(false);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
 void AiAuthorHandler::DismissNotice(const int& user_id, DebateWrapper& debateWrapper) {
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->clear_ai_job();

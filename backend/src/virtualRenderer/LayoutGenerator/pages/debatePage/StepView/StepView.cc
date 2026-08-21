@@ -757,6 +757,15 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
     // A marker that lives as long as ANY summary run does, so the client keeps
     // polling until every result has been collected -- including a claim
     // summary still generating while this panel already shows its answer.
+    // A run can take minutes on a local model. Without this the only way out of
+    // a mistaken click is to wait it out.
+    if (aiJob.pending() || summary.pending() ||
+        viewerUser.engagement().debating_info().summary_running()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "cancelAiWorkButton", "Cancel", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+
     if (aiJob.pending()) {
         ui::Component working = ComponentGenerator::createText(
             "aiChallengeSummaryPending",
@@ -973,7 +982,7 @@ ui::Page StepView::GenerateStepViewPage(
     (*leftColumn.mutable_css())["display"] = "flex";
     (*leftColumn.mutable_css())["flex-direction"] = "column";
     (*leftColumn.mutable_css())["gap"] = "1rem";
-	(*leftColumn.mutable_css())["flex"] = "1 1 auto";
+	(*leftColumn.mutable_css())["flex"] = "1 1 40%";
 	(*leftColumn.mutable_css())["min-width"] = "0";
 
 	ui::Component rightColumn = ComponentGenerator::createContainer(
@@ -988,8 +997,12 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	(*rightColumn.mutable_css())["display"] = "flex";
 	(*rightColumn.mutable_css())["flex-direction"] = "row";
-	(*rightColumn.mutable_css())["flex"] = "0 0 45%";
-	(*rightColumn.mutable_css())["min-width"] = "400px";
+	// The graph is the point of the tool, so it gets the larger share. It was
+	// 45% with a 400px floor, which in a narrow window left the argument itself
+	// rendering into ~314px -- narrow enough that a 22-claim debate could only
+	// be fitted by shrinking past the point where any label is drawn.
+	(*rightColumn.mutable_css())["flex"] = "1 1 60%";
+	(*rightColumn.mutable_css())["min-width"] = "420px";
 
 
 	/* Step list -- replaced by the "Selected Claim" panel below. Kept here

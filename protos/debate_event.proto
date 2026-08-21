@@ -245,6 +245,7 @@ enum EventType {
     GENERATE_DEBATE = 58;
     CHALLENGE_WITH_AI = 59;
     DISMISS_AI_NOTICE = 60;
+    CANCEL_AI_WORK = 61;
 
 }
 

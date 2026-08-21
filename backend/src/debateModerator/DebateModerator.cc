@@ -200,6 +200,10 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: CHALLENGE_WITH_AI");
             AiAuthorHandler::ChallengeWithAi(user_id, debateWrapper);
             break;
+        case debate_event::CANCEL_AI_WORK:
+            Log::info("[DebateModerator] Event Type: CANCEL_AI_WORK");
+            AiAuthorHandler::CancelWork(user_id, debateWrapper);
+            break;
         case debate_event::DISMISS_AI_NOTICE:
             Log::info("[DebateModerator] Event Type: DISMISS_AI_NOTICE");
             AiAuthorHandler::DismissNotice(user_id, debateWrapper);

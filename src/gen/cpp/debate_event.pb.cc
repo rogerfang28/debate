@@ -1273,7 +1273,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "debate_event.SummarizeClaimH\000R\016summarize"
     "Claim\022G\n\017generate_debate\0305 \001(\0132\034.debate_"
     "event.GenerateDebateH\000R\016generateDebateB\t"
-    "\n\007payload*\340\013\n\tEventType\022\032\n\026EVENT_KIND_UN"
+    "\n\007payload*\364\013\n\tEventType\022\032\n\026EVENT_KIND_UN"
     "SPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002"
     "\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020"
     "\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_P"
@@ -1310,8 +1310,8 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "RIZE_DEBATE\0206\022\032\n\026DISMISS_DEBATE_SUMMARY\020"
     "7\022\023\n\017SUMMARIZE_CLAIM\0208\022\031\n\025DISMISS_CLAIM_"
     "SUMMARY\0209\022\023\n\017GENERATE_DEBATE\020:\022\025\n\021CHALLE"
-    "NGE_WITH_AI\020;\022\025\n\021DISMISS_AI_NOTICE\020<b\006pr"
-    "oto3"
+    "NGE_WITH_AI\020;\022\025\n\021DISMISS_AI_NOTICE\020<\022\022\n\016"
+    "CANCEL_AI_WORK\020=b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1321,7 +1321,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    6004,
+    6024,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1340,7 +1340,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3997696u, 0u, };
+    4063232u, 0u, };
 // ===================================================================
 
 class CreateDebate::_Internal {

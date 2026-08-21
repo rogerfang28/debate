@@ -19,6 +19,7 @@ struct Job {
     std::chrono::steady_clock::time_point startedAt;
     int atMoveSeq = 0;
     int claimId = 0;
+    bool abandoned = false;
     std::string text;
     std::string error;
 };
@@ -98,6 +99,13 @@ bool AiJobs::Start(int userId, Kind kind, const std::string& debateText, int atM
 
         std::lock_guard<std::mutex> lock(mutex());
         Job& job = jobs()[key];
+        if (job.abandoned) {
+            // Nobody is waiting for this any more. Dropping it here is what
+            // stops an abandoned summary appearing minutes later next to
+            // whatever the user moved on to.
+            jobs().erase(key);
+            return;
+        }
         job.running = false;
         job.finished = true;
         job.text = text;
@@ -135,6 +143,22 @@ AiJobs::Snapshot AiJobs::Collect(int userId, Kind kind) {
         jobs().erase(it);
     }
     return snapshot;
+}
+
+void AiJobs::Abandon(int userId, Kind kind) {
+    std::lock_guard<std::mutex> lock(mutex());
+    auto it = jobs().find(JobKey{userId, kind});
+    if (it == jobs().end()) {
+        return;
+    }
+    if (it->second.running) {
+        // Left in the map, flagged. The worker still holds a reference to this
+        // key and will look for it when the model finally answers.
+        it->second.abandoned = true;
+        it->second.running = false;
+    } else {
+        jobs().erase(it);
+    }
 }
 
 bool AiJobs::IsRunning(int userId, Kind kind) {

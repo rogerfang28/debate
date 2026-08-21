@@ -35,6 +35,9 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         Log::debug("  GENERATE_DEBATE: topic = " + generate->topic() + ", passage = " +
                    std::to_string(generate->passage().size()) + " chars");
     }
+    else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
+        event.set_type(debate_event::CANCEL_AI_WORK);
+    }
     else if (componentId == "dismissAiNoticeButton" && eventType == "onClick") {
         event.set_type(debate_event::DISMISS_AI_NOTICE);
     }

@@ -57,4 +57,10 @@ public:
 
     // True if a run is in flight, without consuming anything.
     static bool IsRunning(int userId, Kind kind);
+
+    // Stops WAITING for a run. The worker thread cannot be interrupted -- it is
+    // blocked reading from a model that will reply in its own time -- so this
+    // marks the job abandoned and its result is dropped when it arrives. The
+    // user gets their page back immediately, which is the thing they wanted.
+    static void Abandon(int userId, Kind kind);
 };

@@ -146,6 +146,9 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
                 "Reading the passage and building the debate... " +
                     std::to_string(aiJob.elapsed_seconds()) + "s elapsed",
                 "text-sm", "text-indigo-300", "", ""));
+            ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createButton(
+                "cancelAiWorkButton", "Cancel", "", "bg-gray-700", "hover:bg-gray-600",
+                "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
             ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createText(
                 "generationPendingHint",
                 "This usually takes a minute or two. The debate appears in your list when it is done.",

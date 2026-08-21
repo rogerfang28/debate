@@ -20,6 +20,9 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "aiChallengeButton" && eventType == "onClick") {
         event.set_type(debate_event::CHALLENGE_WITH_AI);
         Log::debug("  CHALLENGE_WITH_AI for user: " + std::to_string(user_id));
+    } else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
+        event.set_type(debate_event::CANCEL_AI_WORK);
+        Log::debug("  CANCEL_AI_WORK for user: " + std::to_string(user_id));
     } else if (componentId == "dismissAiNoticeButton" && eventType == "onClick") {
         event.set_type(debate_event::DISMISS_AI_NOTICE);
         Log::debug("  DISMISS_AI_NOTICE for user: " + std::to_string(user_id));

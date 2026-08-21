@@ -438,6 +438,70 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
   // Fit the whole graph into the pane. Shared by the button and the auto-fit
   // below so there is one definition of "fitted".
+  // Below this on-screen scale a node is a few pixels wide and its label is
+  // dropped entirely, so the graph shows shapes and no words. Measured: a
+  // 22-claim debate in a 314px pane fits at 0.10, which renders nothing
+  // readable at all.
+  // ON-SCREEN scale, not transform scale. Those are different numbers: the
+  // SVG's viewBox is wider than the pane it renders into, so a transform of
+  // 0.35 came out as 0.153 on screen -- one truncated word per node. Measured
+  // on a 22-claim debate: 0.15 gives "Fauci...", 0.8 gives "Fauci's May 2021
+  // testimony that NIH...". 0.6 is the compromise -- several words per node
+  // with a useful number of nodes still in view.
+  const MIN_READABLE_SCALE = 0.6;
+
+  // Opening view. Deliberately NOT fit-to-view.
+  //
+  // Fitting everything is the right behaviour for the Fit button, where the
+  // user asked to see the whole shape. It is the wrong behaviour on arrival: a
+  // large debate fits only by shrinking past the point where any label can be
+  // drawn, so the first thing a reader sees is twenty-two blank boxes. Reading
+  // six claims and panning beats seeing twenty-two illegibly.
+  //
+  // So this fits if the result would be readable, and otherwise opens at a
+  // readable scale anchored on the root, which is where the argument starts.
+  const openReadable = useCallback(() => {
+    const svg = d3.select(svgRef.current);
+    const zoom = zoomRef.current;
+    const rootEl = svg.select<SVGGElement>("g.graph-root").node();
+    if (!svg.node() || !zoom || !rootEl) return;
+
+    const bounds = rootEl.getBBox();
+    if (!bounds.width || !bounds.height) return;
+
+    const padding = 40;
+    const fitScale = Math.min(
+      (dims.width - padding * 2) / bounds.width,
+      (dims.height - padding * 2) / bounds.height,
+      1.5
+    );
+
+    const elForFit = svgRef.current;
+    const vbForFit = elForFit?.viewBox?.baseVal;
+    const fitRatio =
+      vbForFit && vbForFit.width ? elForFit!.getBoundingClientRect().width / vbForFit.width : 1;
+    if (fitScale * fitRatio >= MIN_READABLE_SCALE) {
+      fitToViewRef.current(0);
+      return;
+    }
+
+    // Too big to fit legibly: anchor on the root claim instead. Centring the
+    // whole bounding box would put the middle of a wide tree on screen, which
+    // is rarely where the argument begins.
+    //
+    // Converted out of on-screen units into the transform's own, because the
+    // two differ by however much the viewBox is scaled into the pane.
+    const el = svgRef.current;
+    const vb = el?.viewBox?.baseVal;
+    const ratio = vb && vb.width ? el!.getBoundingClientRect().width / vb.width : 1;
+    const scale = ratio > 0 ? MIN_READABLE_SCALE / ratio : MIN_READABLE_SCALE;
+    const root = positionedNodes.find((n) => n.isRoot) ?? positionedNodes[0];
+    if (!root) return;
+    const tx = dims.width / 2 - (root.x ?? 0) * scale;
+    const ty = dims.height / 3 - (root.y ?? 0) * scale;
+    zoom.transform(svg, d3.zoomIdentity.translate(tx, ty).scale(scale));
+  }, [dims.width, dims.height, positionedNodes]);
+
   const fitToView = useCallback((duration = 400) => {
     const svg = d3.select(svgRef.current);
     const zoom = zoomRef.current;
@@ -496,6 +560,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // taking it as a dependency -- see the note on the effect's dep list.
   const fitToViewRef = useRef(fitToView);
   fitToViewRef.current = fitToView;
+  const openReadableRef = useRef(openReadable);
+  openReadableRef.current = openReadable;
 
   // Auto-fit when the graph's SHAPE changes -- on first render, and whenever
   // claims are added or removed.
@@ -517,7 +583,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const rootNow = d3.select(svgRef.current).select<SVGGElement>("g.graph-root").node();
     const boxNow = rootNow?.getBBox();
     if (boxNow && boxNow.width > 0 && boxNow.height > 0) {
-      fitToViewRef.current(0);
+      openReadableRef.current();
       return;
     }
 
@@ -538,7 +604,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         .node();
       const measured = rootNode?.getBBox();
       if (measured && measured.width > 0 && measured.height > 0) {
-        fitToViewRef.current(0);
+        openReadableRef.current();
         return;
       }
       if (++frame < 10) raf = requestAnimationFrame(attempt);

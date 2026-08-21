@@ -28,4 +28,7 @@ public:
 
     // Clears the "what happened" notice once the user has read it.
     static void DismissNotice(const int& user_id, DebateWrapper& debateWrapper);
+
+    // Stops waiting on whatever AI work is running for this user.
+    static void CancelWork(const int& user_id, DebateWrapper& debateWrapper);
 };
