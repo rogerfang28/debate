@@ -154,6 +154,7 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
                 } else {
                     status->set_note("Generated a debate from " +
                                      std::to_string(scenario.steps_size()) + " steps.");
+                    status->set_about_debate_id(importer.debate_id());
                 }
             }
         }
@@ -165,7 +166,10 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
         if (!challenge.error.empty()) {
             status->set_error(challenge.error);
         } else {
+            const int challengedDebateId =
+                userProto.engagement().debating_info().debate_id();
             const auto applied = AiChallenger::Apply(challenge.text, user_id, moderator);
+            status->set_about_debate_id(challengedDebateId);
             if (!applied.ok) {
                 status->set_error(applied.error);
             } else if (applied.challengesAdded == 0) {

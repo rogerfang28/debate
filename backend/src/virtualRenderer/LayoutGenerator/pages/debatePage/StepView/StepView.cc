@@ -766,7 +766,13 @@ static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
         );
         ComponentGenerator::addChild(&panel, working);
     }
-    if (!aiJob.note().empty()) {
+    // A notice describes work in ONE debate. Without this check, "Generated a
+    // debate from 20 steps" followed the user into an unrelated debate and made
+    // a hand-built one look AI-written.
+    const int viewingDebateId = viewerUser.engagement().debating_info().debate_id();
+    const bool noticeIsAboutThisDebate =
+        aiJob.about_debate_id() == 0 || aiJob.about_debate_id() == viewingDebateId;
+    if (!aiJob.note().empty() && noticeIsAboutThisDebate) {
         ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
             "aiChallengeNote", aiJob.note(), "text-sm", "text-green-400", "", ""));
         ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(

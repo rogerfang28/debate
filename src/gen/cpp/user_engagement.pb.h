@@ -2269,6 +2269,7 @@ class AiJobStatus final : public ::google::protobuf::Message
     kNoteFieldNumber = 4,
     kPendingFieldNumber = 1,
     kElapsedSecondsFieldNumber = 2,
+    kAboutDebateIdFieldNumber = 5,
   };
   // string error = 3 [json_name = "error"];
   void clear_error() ;
@@ -2320,11 +2321,21 @@ class AiJobStatus final : public ::google::protobuf::Message
   void _internal_set_elapsed_seconds(::int32_t value);
 
   public:
+  // int32 about_debate_id = 5 [json_name = "aboutDebateId"];
+  void clear_about_debate_id() ;
+  ::int32_t about_debate_id() const;
+  void set_about_debate_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_about_debate_id() const;
+  void _internal_set_about_debate_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.AiJobStatus)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 45,
                                    2>
       _table_;
@@ -2350,6 +2361,7 @@ class AiJobStatus final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr note_;
     bool pending_;
     ::int32_t elapsed_seconds_;
+    ::int32_t about_debate_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3968,6 +3980,31 @@ inline void AiJobStatus::set_allocated_note(::std::string* PROTOBUF_NULLABLE val
     _impl_.note_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user_engagement.AiJobStatus.note)
+}
+
+// int32 about_debate_id = 5 [json_name = "aboutDebateId"];
+inline void AiJobStatus::clear_about_debate_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.about_debate_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::int32_t AiJobStatus::about_debate_id() const {
+  // @@protoc_insertion_point(field_get:user_engagement.AiJobStatus.about_debate_id)
+  return _internal_about_debate_id();
+}
+inline void AiJobStatus::set_about_debate_id(::int32_t value) {
+  _internal_set_about_debate_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:user_engagement.AiJobStatus.about_debate_id)
+}
+inline ::int32_t AiJobStatus::_internal_about_debate_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.about_debate_id_;
+}
+inline void AiJobStatus::_internal_set_about_debate_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.about_debate_id_ = value;
 }
 
 // -------------------------------------------------------------------

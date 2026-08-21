@@ -20,6 +20,12 @@ message AiJobStatus {
   string error = 3;
   // What happened, once it has. Shown and then dismissed by the user.
   string note = 4;
+  // Which debate this outcome describes. The status lives on the engagement
+  // rather than in a page, because generation starts on the home page and
+  // finishes inside a debate -- but that meant a notice from one debate
+  // followed the user into the next, where "Generated a debate from 20 steps"
+  // made a hand-built debate look AI-written.
+  int32 about_debate_id = 5;
 }
 
 message UserEngagement {
