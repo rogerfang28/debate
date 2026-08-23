@@ -91,6 +91,9 @@ find_package(ZLIB REQUIRED)
 find_package(Threads REQUIRED)
 find_package(absl REQUIRED)
 find_package(utf8proc REQUIRED)
+# Header-only JSON library used by ClaimParserLLM. On Windows it resolves via the
+# global vcpkg include dir; here it needs its own target so the include path is set.
+find_package(jsoncons CONFIG REQUIRED)
 
 add_executable(debate_server
     ${CMAKE_SOURCE_DIR}/src/server/main.cc
@@ -111,6 +114,7 @@ target_link_libraries(debate_server
     absl::strings
     absl::synchronization
     utf8proc::utf8proc
+    jsoncons::jsoncons
 )
 
 set_target_properties(debate_server PROPERTIES
