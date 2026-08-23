@@ -12,6 +12,12 @@
       "runtimeExecutable": "cmd",
       "runtimeArgs": ["/c", "cd frontend && npm run dev -- --port 5172"],
       "port": 5172
+    },
+    {
+      "name": "frontend-5173",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd frontend && npm run dev -- --port 5173"],
+      "port": 5173
     }
   ]
 }

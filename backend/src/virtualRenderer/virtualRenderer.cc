@@ -21,12 +21,18 @@
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
 #include "../utils/GoogleJWTVerifier.h"
+#include "../utils/PasswordHasher.h"
 
 namespace {
 std::string buildAutoGuestUsername() {
     using namespace std::chrono;
     const auto timestampMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     return "guest_" + std::to_string(timestampMs);
+}
+
+// True if the string contains any whitespace (space, tab, newline, etc.).
+bool hasWhitespace(const std::string& s) {
+    return s.find_first_of(" \t\n\r\f\v") != std::string::npos;
 }
 }
 
@@ -39,18 +45,22 @@ std::string VirtualRenderer::getUsersDatabasePath() const {
         return configured.lexically_normal().string();
     }
 
-    // Share the same database file as DebateModerator's UserDatabase (identical
-    // USERS schema — ID/USERNAME/USER_DATA). Previously this pointed at a
-    // separate users.sqlite3 with its own auto-increment ID space, so a claim's
-    // creator_id (from the debate DB) and this VRUserDatabase lookup could
-    // resolve to two completely different people at the same numeric ID.
-    return utils::getDatabasePath();
+    // All user records live in their own users.sqlite3, separate from the
+    // debate data in debates.sqlite3. The DebateModerator is handed this exact
+    // same connection (VirtualRenderer ctor -> DebateModerator -> DatabaseWrapper),
+    // so every user ID comes from this one table and the debate DB's
+    // creator_id / DEBATE_MEMBERS.USER_ID reference these IDs consistently.
+    std::filesystem::path exeDir = utils::getExeDir();
+    std::filesystem::path dbPath = exeDir / ".." / ".." / "users.sqlite3";
+    dbPath = std::filesystem::weakly_canonical(dbPath);
+    return dbPath.string();
 }
 
 // Constructor
 VirtualRenderer::VirtualRenderer()
     : usersDb(getUsersDatabasePath()),
-      userDb(usersDb) {
+      userDb(usersDb),
+      moderator(usersDb) {
     Log::info("VirtualRenderer initialized.");
 }
 
@@ -98,7 +108,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     
     // change cookies accordingly
-    handleAuthEvents(evt, req, res);
+    std::string loginError = handleAuthEvents(evt, req, res);
 
     // Auto-login sets response cookies, but request cookies are still empty on first load.
     if (autoLoginResolvedUserId > 0 && !autoLoginResolvedUsername.empty() && !evt.user().is_logged_in()) {
@@ -117,6 +127,13 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
     }
 
+    // A failed username/password login leaves the user unauthenticated, so the
+    // moderator returns the login page anyway — but re-render it here with the
+    // error message and the attempted username prefilled.
+    if (!loginError.empty()) {
+        return LoginPageGenerator::GenerateLoginPage(loginError, evt.login().username());
+    }
+
     // parse user info to create layout based on it
     ui::Page page = LayoutGenerator::generateLayout(info, userDb);
     return page;
@@ -124,9 +141,10 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
 
 
-void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
+std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res) {
     int resolvedUserId = parseCookie::extractUserIdFromCookies(req);
     std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
+    std::string loginError;
 
     if (evt.type() == debate_event::LOGOUT) {
         Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
@@ -177,13 +195,61 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
                 authSucceeded = false;
             }
         } else {
-            // Legacy username-only flow
+            // Username-based flow.
             finalUsername = evt.login().username();
-            moderatorUserId = moderator.createUserIfNotExist(finalUsername);
-            userId = userDb.getUserId(finalUsername);
-            if (userId == -1) {
-                Log::info("[VirtualRenderer] User not found, creating new user.");
-                userId = createUserIfNotExist(finalUsername);
+            const std::string password = evt.login().password();
+
+            // "guest" and demo-mode logins are intentionally passwordless.
+            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest";
+
+            if (passwordless) {
+                moderatorUserId = moderator.createUserIfNotExist(finalUsername);
+                userId = userDb.getUserId(finalUsername);
+                if (userId == -1) {
+                    Log::info("[VirtualRenderer] User not found, creating new user.");
+                    userId = createUserIfNotExist(finalUsername);
+                }
+            } else if (finalUsername.empty() || password.empty()) {
+                Log::warn("[VirtualRenderer] Login missing username or password.");
+                authSucceeded = false;
+                loginError = "Please enter both a username and a password.";
+            } else if (hasWhitespace(finalUsername) || hasWhitespace(password)) {
+                Log::warn("[VirtualRenderer] Username or password contains whitespace.");
+                authSucceeded = false;
+                loginError = "Username and password cannot contain spaces.";
+            } else {
+                const int existingUserId = userDb.getUserId(finalUsername);
+                const bool isNewUser = (existingUserId == -1);
+                moderatorUserId = moderator.createUserIfNotExist(finalUsername);
+
+                if (isNewUser) {
+                    // Auto-register: create the account and set its password.
+                    userId = createUserIfNotExist(finalUsername);
+                    userDb.updateUserPassword(userId, PasswordHasher::hash(password));
+                    Log::info("[VirtualRenderer] Registered new user '" + finalUsername + "' with a password.");
+                } else {
+                    userId = existingUserId;
+                    // Read the stored hash from the user's protobuf.
+                    std::string storedHash;
+                    auto protoData = userDb.getUserProtobufByUsername(finalUsername);
+                    user::User existing;
+                    if (!protoData.empty() &&
+                        existing.ParseFromArray(protoData.data(), static_cast<int>(protoData.size()))) {
+                        storedHash = existing.password_hash();
+                    }
+
+                    if (storedHash.empty()) {
+                        // Pre-existing account with no password yet: set it on first use.
+                        userDb.updateUserPassword(userId, PasswordHasher::hash(password));
+                        Log::info("[VirtualRenderer] Set password for previously passwordless user '" + finalUsername + "'.");
+                    } else if (!PasswordHasher::verify(password, storedHash)) {
+                        Log::warn("[VirtualRenderer] Incorrect password for user '" + finalUsername + "'.");
+                        authSucceeded = false;
+                        loginError = "Incorrect username or password.";
+                    } else {
+                        Log::info("[VirtualRenderer] Password verified for user '" + finalUsername + "'.");
+                    }
+                }
             }
         }
 
@@ -202,6 +268,8 @@ void VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, const htt
     evt.mutable_user()->set_user_id(resolvedUserId);
     evt.mutable_user()->set_username(resolvedUsername);
     evt.mutable_user()->set_is_logged_in(!resolvedUsername.empty() && resolvedUserId > 0);
+
+    return loginError;
 }
 
 int VirtualRenderer::createUserIfNotExist(const std::string& username) {
@@ -310,7 +378,10 @@ void VirtualRenderer::updateGoogleSub(int user_id, const std::string& google_sub
     user.set_google_sub(google_sub);
     if (!email.empty()) user.set_email(email);
 
-    std::vector<uint8_t> updated(protoData.size());
+    // Size the buffer to the UPDATED user, not the original blob — adding
+    // google_sub/email makes it larger, and serializing into an undersized
+    // buffer truncates it, corrupting the stored protobuf (causes 404 on next load).
+    std::vector<uint8_t> updated(user.ByteSizeLong());
     user.SerializeToArray(updated.data(), updated.size());
     userDb.updateUserProtobuf(user_id, updated);
 

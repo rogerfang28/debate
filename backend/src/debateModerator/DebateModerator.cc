@@ -88,9 +88,9 @@ bool isClaimMetaSectionBlockedEvent(debate_event::EventType type) {
 }
 }
 
-DebateModerator::DebateModerator()
+DebateModerator::DebateModerator(Database& usersDb)
     : globalDb(utils::getDatabasePath()),
-      dbWrapper(globalDb),
+      dbWrapper(globalDb, usersDb),
       debateWrapper(dbWrapper)
 {
     dbWrapper.ensureAllTables();

@@ -63,14 +63,17 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
         return;
     }
 
-    // Create moderator (uses existing DB)
-    DebateModerator moderator;
-
-    // Standalone DB handle wired to the same DB_PATH as moderator, used only to
-    // reach a DebateWrapper for read-only collection building in tests
-    // (DebateModerator no longer exposes its internal DebateWrapper).
+    // DB handle wired to DB_PATH. Declared before the moderator so that it
+    // outlives it -- the moderator holds a reference to this connection.
     Database wrapperDb(db_path);
-    DatabaseWrapper wrapperDbWrapper(wrapperDb);
+
+    // Create moderator (uses existing DB)
+    DebateModerator moderator(wrapperDb);
+
+    // Used only to reach a DebateWrapper for read-only collection building in
+    // tests (DebateModerator no longer exposes its internal DebateWrapper).
+    // Debates and users share one file here; production splits them.
+    DatabaseWrapper wrapperDbWrapper(wrapperDb, wrapperDb);
     DebateWrapper debateWrapper(wrapperDbWrapper);
 
     // Find all users in the debate

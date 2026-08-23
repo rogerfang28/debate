@@ -6,8 +6,6 @@
 
 class VRUserDatabase;
 
-class VRUserDatabase;
-
 class FullDebatePageGenerator {
 public:
     static ui::Page GenerateFullDebatePage(

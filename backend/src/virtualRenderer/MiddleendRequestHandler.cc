@@ -1,15 +1,15 @@
 // has handle get or post or any request, calls virtual renderer
 #include "MiddleendRequestHandler.h"
 
-// #include "../../../src/gen/cpp/client_message.pb.h"
+// #include "client_message.pb.h"
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
 #include <fstream>
 
-#include "../../../src/gen/cpp/layout.pb.h"
-#include "../../../src/gen/cpp/client_message.pb.h"
-#include "../../../src/gen/cpp/user.pb.h"
-#include "../../../src/gen/cpp/user_engagement.pb.h"
+#include "layout.pb.h"
+#include "client_message.pb.h"
+#include "user.pb.h"
+#include "user_engagement.pb.h"
 #include "./virtualRenderer.h"
 #include <iostream>
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"

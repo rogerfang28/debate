@@ -453,13 +453,24 @@ static ui::Component BuildDebateStatusPanel(
 // Helper: Build a nested tree of CONTAINER components from the debate tree.
 // Each node becomes a CONTAINER with data-tree-node attribute.
 // Returns the root component for the subtree rooted at `claimId`.
+//
+// A claim's PARENT_CHILD descendants nest inline within the same paragraph,
+// depth-first, same as before. But when a claim is itself challenged, the
+// challenge is NOT nested inline -- it starts a brand new paragraph (its
+// sentence becomes that paragraph's first sentence), built with this same
+// function so its own descendants and any challenges against IT recurse the
+// same way. New paragraphs are appended to `paragraphs` in the order they're
+// discovered, i.e. depth-first: a branch's challenges (and challenges on
+// those challenges, arbitrarily deep) are fully resolved before moving on to
+// the next sibling branch, rather than draining level-by-level.
 static ui::Component BuildTreeNode(
     int claimId,
     const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
     const std::string& idPrefix,
     std::unordered_set<int>& visited,
-    int currentClaimId
+    int currentClaimId,
+    std::vector<ui::Component>& paragraphs
 ) {
     ui::Component node;
     node.set_id(idPrefix + "_node_" + std::to_string(claimId));
@@ -477,9 +488,8 @@ static ui::Component BuildTreeNode(
         sentence = claimIt->second.sentence();
     }
 
-    // Find children in the full_debate_tree: PARENT_CHILD children only, from
-    // the convenience adjacency list. Challenges are intentionally NOT nested
-    // in the paragraph tree for now.
+    // Find PARENT_CHILD children in the full_debate_tree, from the
+    // convenience adjacency list (challenges are handled separately below).
     std::vector<int> children;
     if (fullDebateInfo.has_full_debate_tree()) {
         const auto& tree = fullDebateInfo.full_debate_tree();
@@ -505,7 +515,8 @@ static ui::Component BuildTreeNode(
     ComponentGenerator::addAttribute(&label, "data-tree-label", "true");
     ComponentGenerator::addChild(&node, label);
 
-    // Recursively build children.
+    // Recursively build PARENT_CHILD children, depth-first, into this same
+    // paragraph.
     if (!children.empty()) {
         ui::Component childrenContainer;
         childrenContainer.set_id(idPrefix + "_children_" + std::to_string(claimId));
@@ -523,11 +534,36 @@ static ui::Component BuildTreeNode(
             visited.insert(childId);
             ui::Component childNode = BuildTreeNode(
                 childId, fullDebateInfo, collectionProto,
-                idPrefix, visited, currentClaimId
+                idPrefix, visited, currentClaimId, paragraphs
             );
             ComponentGenerator::addChild(&childrenContainer, childNode);
         }
         ComponentGenerator::addChild(&node, childrenContainer);
+    }
+
+    // Now that this claim's own subtree is fully built, spawn a new paragraph
+    // for each claim that challenges it -- depth-first, so each challenge's
+    // own subtree (and any further challenges against it) is fully resolved
+    // before moving on to the next challenger or sibling branch.
+    if (fullDebateInfo.has_full_debate_tree()) {
+        const auto& tree = fullDebateInfo.full_debate_tree();
+        for (const auto& link : tree.links()) {
+            if (!link.is_challenge() || link.to_claim_id() != claimId) continue;
+            int challengerId = link.from_claim_id();
+            if (visited.count(challengerId)) continue;
+            visited.insert(challengerId);
+            // Reserve this paragraph's position before recursing, so it lands
+            // before any paragraphs its own nested challenges spawn (pure
+            // pre-order: outer challenge first, then its challenges, in
+            // discovery order) instead of after them.
+            size_t insertIndex = paragraphs.size();
+            paragraphs.emplace_back();
+            ui::Component challengeParagraph = BuildTreeNode(
+                challengerId, fullDebateInfo, collectionProto,
+                idPrefix, visited, currentClaimId, paragraphs
+            );
+            paragraphs[insertIndex] = challengeParagraph;
+        }
     }
 
     return node;
@@ -765,12 +801,26 @@ ui::Page StepView::GenerateStepViewPage(
 
 		std::unordered_set<int> visited;
 		visited.insert(rootClaimId);
+		std::vector<ui::Component> paragraphs;
 		ui::Component treeRoot = BuildTreeNode(
 			rootClaimId, fullDebateInfo, collectionProto,
-			"debateTree", visited, currentClaimId
+			"debateTree", visited, currentClaimId, paragraphs
 		);
-		ComponentGenerator::addAttribute(&treeRoot, "data-tree-root", "true");
-		ComponentGenerator::addChild(&treeWrapper, treeRoot);
+		paragraphs.insert(paragraphs.begin(), treeRoot);
+
+		// One paragraph per entry: the main argument first, then one new
+		// paragraph per challenge encountered (depth-first), each starting
+		// with that challenge's own sentence.
+		for (size_t i = 0; i < paragraphs.size(); ++i) {
+			ui::Component& paragraph = paragraphs[i];
+			ComponentGenerator::addAttribute(&paragraph, "data-tree-root", "true");
+			if (i > 0) {
+				(*paragraph.mutable_css())["margin-top"] = "0.75rem";
+				(*paragraph.mutable_css())["padding-top"] = "0.75rem";
+				(*paragraph.mutable_css())["border-top"] = "1px dashed #4b5563";
+			}
+			ComponentGenerator::addChild(&treeWrapper, paragraph);
+		}
 		ComponentGenerator::addChild(&leftColumn, treeWrapper);
 	}
 

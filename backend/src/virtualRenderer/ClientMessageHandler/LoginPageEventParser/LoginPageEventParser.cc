@@ -49,16 +49,20 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
         }
         else {
             std::string username;
+            std::string password;
             const auto& pageData = message.page_data().components();
             for (const auto& comp : pageData) {
                 if (comp.id() == "usernameInput") {
                     username = comp.value();
-                    break;
+                } else if (comp.id() == "passwordInput") {
+                    password = comp.value();
                 }
             }
 
             loginEvent->set_username(username);
-            Log::debug("  Username: " + username);
+            loginEvent->set_password(password);
+            Log::debug("  Username: " + username + " (password " +
+                       (password.empty() ? "empty" : "provided") + ")");
         }
     }
     else {

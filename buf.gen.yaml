@@ -12,6 +12,9 @@ plugins:
       - target=ts
     out: src/gen/ts
 
-  # C++ backend
+  # C++ backend: all protos -> src/gen/cpp/
+  # This must stay src/gen/cpp -- backend/CMakeLists.txt and test/CMakeLists.txt
+  # both glob "${REPO_ROOT}/src/gen/cpp/*.pb.cc". Generating anywhere else means
+  # `npx buf generate` appears to succeed while the build keeps using stale code.
   - remote: buf.build/protocolbuffers/cpp:v33.4
-    out: src/gen/temp_cpp
+    out: src/gen/cpp
