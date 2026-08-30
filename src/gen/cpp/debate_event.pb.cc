@@ -198,6 +198,33 @@ struct SubmitChallengeClaimDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubmitChallengeClaimDefaultTypeInternal _SubmitChallengeClaim_default_instance_;
 
+inline constexpr StartTutorial::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        script_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR StartTutorial::StartTutorial(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(StartTutorial_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct StartTutorialDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR StartTutorialDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~StartTutorialDefaultTypeInternal() {}
+  union {
+    StartTutorial _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StartTutorialDefaultTypeInternal _StartTutorial_default_instance_;
+
 inline constexpr SelectClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1019,6 +1046,11 @@ const ::uint32_t
         1,
         0,
         0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::debate_event::StartTutorial, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::debate_event::StartTutorial, _impl_.script_),
+        0,
+        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_event::UserAuthInfo, _impl_._has_bits_),
         6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate_event::UserAuthInfo, _impl_.username_),
@@ -1030,7 +1062,7 @@ const ::uint32_t
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_._oneof_case_[0]),
-        35, // hasbit index offset
+        36, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.user_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.occurred_at_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.type_),
@@ -1062,9 +1094,11 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         0,
         1,
         2,
+        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -1124,8 +1158,9 @@ static const ::_pbi::MigrationSchema
         {161, sizeof(::debate_event::DeleteChallenge)},
         {166, sizeof(::debate_event::LeaveDebate)},
         {171, sizeof(::debate_event::MoveUserToTimestamp)},
-        {178, sizeof(::debate_event::UserAuthInfo)},
-        {187, sizeof(::debate_event::DebateEvent)},
+        {178, sizeof(::debate_event::StartTutorial)},
+        {183, sizeof(::debate_event::UserAuthInfo)},
+        {192, sizeof(::debate_event::DebateEvent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate_event::_CreateDebate_default_instance_._instance,
@@ -1156,6 +1191,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate_event::_DeleteChallenge_default_instance_._instance,
     &::debate_event::_LeaveDebate_default_instance_._instance,
     &::debate_event::_MoveUserToTimestamp_default_instance_._instance,
+    &::debate_event::_StartTutorial_default_instance_._instance,
     &::debate_event::_UserAuthInfo_default_instance_._instance,
     &::debate_event::_DebateEvent_default_instance_._instance,
 };
@@ -1213,105 +1249,109 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "veDebate\022\033\n\tdebate_id\030\001 \001(\005R\010debateId\"j\n"
     "\023MoveUserToTimestamp\022\031\n\010claim_id\030\001 \001(\005R\007"
     "claimId\0228\n\ttimestamp\030\002 \001(\0132\032.google.prot"
-    "obuf.TimestampR\ttimestamp\"e\n\014UserAuthInf"
-    "o\022\032\n\010username\030\001 \001(\tR\010username\022\027\n\007user_id"
-    "\030\002 \001(\005R\006userId\022 \n\014is_logged_in\030\003 \001(\010R\nis"
-    "LoggedIn\"\346\021\n\013DebateEvent\022.\n\004user\030\001 \001(\0132\032"
-    ".debate_event.UserAuthInfoR\004user\022;\n\013occu"
-    "rred_at\030\003 \001(\0132\032.google.protobuf.Timestam"
-    "pR\noccurredAt\022+\n\004type\030\004 \001(\0162\027.debate_eve"
-    "nt.EventTypeR\004type\022A\n\rcreate_debate\030\n \001("
-    "\0132\032.debate_event.CreateDebateH\000R\014createD"
-    "ebate\022A\n\rdelete_debate\030\014 \001(\0132\032.debate_ev"
-    "ent.DeleteDebateH\000R\014deleteDebate\022>\n\014ente"
-    "r_debate\030\r \001(\0132\031.debate_event.EnterDebat"
-    "eH\000R\013enterDebate\022E\n\017add_child_claim\030\020 \001("
-    "\0132\033.debate_event.AddChildClaimH\000R\raddChi"
-    "ldClaim\0229\n\013go_to_claim\030\024 \001(\0132\027.debate_ev"
-    "ent.GoToClaimH\000R\tgoToClaim\022N\n\022delete_chi"
-    "ld_claim\030\027 \001(\0132\036.debate_event.DeleteChil"
-    "dClaimH\000R\020deleteChildClaim\022m\n\035submit_edi"
-    "t_claim_description\030\031 \001(\0132(.debate_event"
-    ".SubmitEditClaimDescriptionH\000R\032submitEdi"
-    "tClaimDescription\022K\n\021submit_edit_claim\030\034"
-    " \001(\0132\035.debate_event.SubmitEditClaimH\000R\017s"
-    "ubmitEditClaim\022N\n\022connect_from_claim\030\036 \001"
-    "(\0132\036.debate_event.ConnectFromClaimH\000R\020co"
-    "nnectFromClaim\022H\n\020connect_to_claim\030\037 \001(\013"
-    "2\034.debate_event.ConnectToClaimH\000R\016connec"
-    "tToClaim\022W\n\025submit_connect_claims\030  \001(\0132"
-    "!.debate_event.SubmitConnectClaimsH\000R\023su"
-    "bmitConnectClaims\022;\n\013delete_link\030\" \001(\0132\030"
-    ".debate_event.DeleteLinkH\000R\ndeleteLink\022;"
-    "\n\013join_debate\030# \001(\0132\030.debate_event.JoinD"
-    "ebateH\000R\njoinDebate\022+\n\005login\030$ \001(\0132\023.deb"
-    "ate_event.LoginH\000R\005login\022b\n\032add_claim_to"
-    "_be_challenged\030& \001(\0132$.debate_event.AddC"
-    "laimToBeChallengedH\000R\026addClaimToBeChalle"
-    "nged\022_\n\031add_link_to_be_challenged\030\' \001(\0132"
-    "#.debate_event.AddLinkToBeChallengedH\000R\025"
-    "addLinkToBeChallenged\022Z\n\026submit_challeng"
-    "e_claim\030( \001(\0132\".debate_event.SubmitChall"
-    "engeClaimH\000R\024submitChallengeClaim\022E\n\017go_"
-    "to_challenge\030) \001(\0132\033.debate_event.GoToCh"
-    "allengeH\000R\rgoToChallenge\022M\n\021concede_chal"
-    "lenge\030* \001(\0132\036.debate_event.ConcedeChalle"
-    "ngeH\000R\020concedeChallenge\022k\n\035remove_claim_"
-    "to_be_challenged\030. \001(\0132\'.debate_event.Re"
-    "moveClaimToBeChallengedH\000R\031removeClaimTo"
-    "BeChallenged\022h\n\034remove_link_to_be_challe"
-    "nged\030/ \001(\0132&.debate_event.RemoveLinkToBe"
-    "ChallengedH\000R\030removeLinkToBeChallenged\022J"
-    "\n\020delete_challenge\0300 \001(\0132\035.debate_event."
-    "DeleteChallengeH\000R\017deleteChallenge\022>\n\014le"
-    "ave_debate\0301 \001(\0132\031.debate_event.LeaveDeb"
-    "ateH\000R\013leaveDebate\022X\n\026move_user_to_times"
-    "tamp\0302 \001(\0132!.debate_event.MoveUserToTime"
-    "stampH\000R\023moveUserToTimestamp\022>\n\014select_c"
-    "laim\0303 \001(\0132\031.debate_event.SelectClaimH\000R"
-    "\013selectClaim\022G\n\017summarize_claim\0304 \001(\0132\034."
-    "debate_event.SummarizeClaimH\000R\016summarize"
-    "Claim\022G\n\017generate_debate\0305 \001(\0132\034.debate_"
-    "event.GenerateDebateH\000R\016generateDebateB\t"
-    "\n\007payload*\364\013\n\tEventType\022\032\n\026EVENT_KIND_UN"
-    "SPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002"
-    "\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020"
-    "\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_P"
-    "ARENT\020\007\022\030\n\024OPEN_ADD_CHILD_CLAIM\020\010\022\023\n\017ADD"
-    "_CHILD_CLAIM\020\t\022\034\n\030DELETE_CURRENT_STATEME"
-    "NT\020\n\022\020\n\014REPORT_CLAIM\020\013\022\017\n\013GO_TO_CLAIM\020\014\022"
-    "\031\n\025CLOSE_ADD_CHILD_CLAIM\020\r\022\026\n\022CLOSE_REPO"
-    "RT_CLAIM\020\016\022\032\n\026SUBMIT_ADD_CHILD_CLAIM\020\017\022\026"
-    "\n\022DELETE_CHILD_CLAIM\020\020\022 \n\034START_EDIT_CLA"
-    "IM_DESCRIPTION\020\021\022!\n\035SUBMIT_EDIT_CLAIM_DE"
-    "SCRIPTION\020\022\022!\n\035CANCEL_EDIT_CLAIM_DESCRIP"
-    "TION\020\023\022\024\n\020START_EDIT_CLAIM\020\024\022\025\n\021SUBMIT_E"
-    "DIT_CLAIM\020\025\022\025\n\021CANCEL_EDIT_CLAIM\020\026\022\026\n\022CO"
-    "NNECT_FROM_CLAIM\020\027\022\024\n\020CONNECT_TO_CLAIM\020\030"
-    "\022\031\n\025SUBMIT_CONNECT_CLAIMS\020\031\022\031\n\025CANCEL_CO"
-    "NNECT_CLAIMS\020\032\022\017\n\013DELETE_LINK\020\033\022\017\n\013JOIN_"
-    "DEBATE\020\034\022\t\n\005LOGIN\020\035\022\n\n\006LOGOUT\020\036\022\031\n\025START"
-    "_CHALLENGE_CLAIM\020\037\022\036\n\032ADD_CLAIM_TO_BE_CH"
-    "ALLENGED\020 \022\035\n\031ADD_LINK_TO_BE_CHALLENGED\020"
-    "!\022\032\n\026SUBMIT_CHALLENGE_CLAIM\020\"\022\023\n\017GO_TO_C"
-    "HALLENGE\020#\022\025\n\021CONCEDE_CHALLENGE\020$\022\032\n\026CAN"
-    "CEL_CHALLENGE_CLAIM\020%\022\026\n\022OPEN_ADD_CHALLE"
-    "NGE\020&\022\027\n\023CLOSE_ADD_CHALLENGE\020\'\022!\n\035REMOVE"
-    "_CLAIM_TO_BE_CHALLENGED\020(\022 \n\034REMOVE_LINK"
-    "_TO_BE_CHALLENGED\020)\022\024\n\020DELETE_CHALLENGE\020"
-    "*\022!\n\035GO_TO_CHALLENGED_PARENT_CLAIM\020+\022\020\n\014"
-    "LEAVE_DEBATE\020,\022\"\n\036GO_TO_HISTORY_OF_CURRE"
-    "NT_CLAIM\020-\022\032\n\026MOVE_USER_TO_TIMESTAMP\020.\022\030"
-    "\n\024MOVE_USER_TO_PRESENT\020/\022\037\n\033START_MODIFI"
-    "CATION_OF_CLAIM\0200\022 \n\034SUBMIT_MODIFICATION"
-    "_OF_CLAIM\0201\022 \n\034CANCEL_MODIFICATION_OF_CL"
-    "AIM\0202\022\022\n\016GO_TO_OVERVIEW\0203\022\032\n\026GO_TO_FULL_"
-    "DEBATE_VIEW\0204\022\020\n\014SELECT_CLAIM\0205\022\024\n\020SUMMA"
-    "RIZE_DEBATE\0206\022\032\n\026DISMISS_DEBATE_SUMMARY\020"
-    "7\022\023\n\017SUMMARIZE_CLAIM\0208\022\031\n\025DISMISS_CLAIM_"
-    "SUMMARY\0209\022\023\n\017GENERATE_DEBATE\020:\022\025\n\021CHALLE"
-    "NGE_WITH_AI\020;\022\025\n\021DISMISS_AI_NOTICE\020<\022\022\n\016"
-    "CANCEL_AI_WORK\020=b\006proto3"
+    "obuf.TimestampR\ttimestamp\"\'\n\rStartTutori"
+    "al\022\026\n\006script\030\001 \001(\tR\006script\"e\n\014UserAuthIn"
+    "fo\022\032\n\010username\030\001 \001(\tR\010username\022\027\n\007user_i"
+    "d\030\002 \001(\005R\006userId\022 \n\014is_logged_in\030\003 \001(\010R\ni"
+    "sLoggedIn\"\254\022\n\013DebateEvent\022.\n\004user\030\001 \001(\0132"
+    "\032.debate_event.UserAuthInfoR\004user\022;\n\013occ"
+    "urred_at\030\003 \001(\0132\032.google.protobuf.Timesta"
+    "mpR\noccurredAt\022+\n\004type\030\004 \001(\0162\027.debate_ev"
+    "ent.EventTypeR\004type\022A\n\rcreate_debate\030\n \001"
+    "(\0132\032.debate_event.CreateDebateH\000R\014create"
+    "Debate\022A\n\rdelete_debate\030\014 \001(\0132\032.debate_e"
+    "vent.DeleteDebateH\000R\014deleteDebate\022>\n\014ent"
+    "er_debate\030\r \001(\0132\031.debate_event.EnterDeba"
+    "teH\000R\013enterDebate\022E\n\017add_child_claim\030\020 \001"
+    "(\0132\033.debate_event.AddChildClaimH\000R\raddCh"
+    "ildClaim\0229\n\013go_to_claim\030\024 \001(\0132\027.debate_e"
+    "vent.GoToClaimH\000R\tgoToClaim\022N\n\022delete_ch"
+    "ild_claim\030\027 \001(\0132\036.debate_event.DeleteChi"
+    "ldClaimH\000R\020deleteChildClaim\022m\n\035submit_ed"
+    "it_claim_description\030\031 \001(\0132(.debate_even"
+    "t.SubmitEditClaimDescriptionH\000R\032submitEd"
+    "itClaimDescription\022K\n\021submit_edit_claim\030"
+    "\034 \001(\0132\035.debate_event.SubmitEditClaimH\000R\017"
+    "submitEditClaim\022N\n\022connect_from_claim\030\036 "
+    "\001(\0132\036.debate_event.ConnectFromClaimH\000R\020c"
+    "onnectFromClaim\022H\n\020connect_to_claim\030\037 \001("
+    "\0132\034.debate_event.ConnectToClaimH\000R\016conne"
+    "ctToClaim\022W\n\025submit_connect_claims\030  \001(\013"
+    "2!.debate_event.SubmitConnectClaimsH\000R\023s"
+    "ubmitConnectClaims\022;\n\013delete_link\030\" \001(\0132"
+    "\030.debate_event.DeleteLinkH\000R\ndeleteLink\022"
+    ";\n\013join_debate\030# \001(\0132\030.debate_event.Join"
+    "DebateH\000R\njoinDebate\022+\n\005login\030$ \001(\0132\023.de"
+    "bate_event.LoginH\000R\005login\022b\n\032add_claim_t"
+    "o_be_challenged\030& \001(\0132$.debate_event.Add"
+    "ClaimToBeChallengedH\000R\026addClaimToBeChall"
+    "enged\022_\n\031add_link_to_be_challenged\030\' \001(\013"
+    "2#.debate_event.AddLinkToBeChallengedH\000R"
+    "\025addLinkToBeChallenged\022Z\n\026submit_challen"
+    "ge_claim\030( \001(\0132\".debate_event.SubmitChal"
+    "lengeClaimH\000R\024submitChallengeClaim\022E\n\017go"
+    "_to_challenge\030) \001(\0132\033.debate_event.GoToC"
+    "hallengeH\000R\rgoToChallenge\022M\n\021concede_cha"
+    "llenge\030* \001(\0132\036.debate_event.ConcedeChall"
+    "engeH\000R\020concedeChallenge\022k\n\035remove_claim"
+    "_to_be_challenged\030. \001(\0132\'.debate_event.R"
+    "emoveClaimToBeChallengedH\000R\031removeClaimT"
+    "oBeChallenged\022h\n\034remove_link_to_be_chall"
+    "enged\030/ \001(\0132&.debate_event.RemoveLinkToB"
+    "eChallengedH\000R\030removeLinkToBeChallenged\022"
+    "J\n\020delete_challenge\0300 \001(\0132\035.debate_event"
+    ".DeleteChallengeH\000R\017deleteChallenge\022>\n\014l"
+    "eave_debate\0301 \001(\0132\031.debate_event.LeaveDe"
+    "bateH\000R\013leaveDebate\022X\n\026move_user_to_time"
+    "stamp\0302 \001(\0132!.debate_event.MoveUserToTim"
+    "estampH\000R\023moveUserToTimestamp\022>\n\014select_"
+    "claim\0303 \001(\0132\031.debate_event.SelectClaimH\000"
+    "R\013selectClaim\022G\n\017summarize_claim\0304 \001(\0132\034"
+    ".debate_event.SummarizeClaimH\000R\016summariz"
+    "eClaim\022G\n\017generate_debate\0305 \001(\0132\034.debate"
+    "_event.GenerateDebateH\000R\016generateDebate\022"
+    "D\n\016start_tutorial\0306 \001(\0132\033.debate_event.S"
+    "tartTutorialH\000R\rstartTutorialB\t\n\007payload"
+    "*\256\014\n\tEventType\022\032\n\026EVENT_KIND_UNSPECIFIED"
+    "\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR"
+    "_DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_D"
+    "EBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030"
+    "\n\024OPEN_ADD_CHILD_CLAIM\020\010\022\023\n\017ADD_CHILD_CL"
+    "AIM\020\t\022\034\n\030DELETE_CURRENT_STATEMENT\020\n\022\020\n\014R"
+    "EPORT_CLAIM\020\013\022\017\n\013GO_TO_CLAIM\020\014\022\031\n\025CLOSE_"
+    "ADD_CHILD_CLAIM\020\r\022\026\n\022CLOSE_REPORT_CLAIM\020"
+    "\016\022\032\n\026SUBMIT_ADD_CHILD_CLAIM\020\017\022\026\n\022DELETE_"
+    "CHILD_CLAIM\020\020\022 \n\034START_EDIT_CLAIM_DESCRI"
+    "PTION\020\021\022!\n\035SUBMIT_EDIT_CLAIM_DESCRIPTION"
+    "\020\022\022!\n\035CANCEL_EDIT_CLAIM_DESCRIPTION\020\023\022\024\n"
+    "\020START_EDIT_CLAIM\020\024\022\025\n\021SUBMIT_EDIT_CLAIM"
+    "\020\025\022\025\n\021CANCEL_EDIT_CLAIM\020\026\022\026\n\022CONNECT_FRO"
+    "M_CLAIM\020\027\022\024\n\020CONNECT_TO_CLAIM\020\030\022\031\n\025SUBMI"
+    "T_CONNECT_CLAIMS\020\031\022\031\n\025CANCEL_CONNECT_CLA"
+    "IMS\020\032\022\017\n\013DELETE_LINK\020\033\022\017\n\013JOIN_DEBATE\020\034\022"
+    "\t\n\005LOGIN\020\035\022\n\n\006LOGOUT\020\036\022\031\n\025START_CHALLENG"
+    "E_CLAIM\020\037\022\036\n\032ADD_CLAIM_TO_BE_CHALLENGED\020"
+    " \022\035\n\031ADD_LINK_TO_BE_CHALLENGED\020!\022\032\n\026SUBM"
+    "IT_CHALLENGE_CLAIM\020\"\022\023\n\017GO_TO_CHALLENGE\020"
+    "#\022\025\n\021CONCEDE_CHALLENGE\020$\022\032\n\026CANCEL_CHALL"
+    "ENGE_CLAIM\020%\022\026\n\022OPEN_ADD_CHALLENGE\020&\022\027\n\023"
+    "CLOSE_ADD_CHALLENGE\020\'\022!\n\035REMOVE_CLAIM_TO"
+    "_BE_CHALLENGED\020(\022 \n\034REMOVE_LINK_TO_BE_CH"
+    "ALLENGED\020)\022\024\n\020DELETE_CHALLENGE\020*\022!\n\035GO_T"
+    "O_CHALLENGED_PARENT_CLAIM\020+\022\020\n\014LEAVE_DEB"
+    "ATE\020,\022\"\n\036GO_TO_HISTORY_OF_CURRENT_CLAIM\020"
+    "-\022\032\n\026MOVE_USER_TO_TIMESTAMP\020.\022\030\n\024MOVE_US"
+    "ER_TO_PRESENT\020/\022\037\n\033START_MODIFICATION_OF"
+    "_CLAIM\0200\022 \n\034SUBMIT_MODIFICATION_OF_CLAIM"
+    "\0201\022 \n\034CANCEL_MODIFICATION_OF_CLAIM\0202\022\022\n\016"
+    "GO_TO_OVERVIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VI"
+    "EW\0204\022\020\n\014SELECT_CLAIM\0205\022\024\n\020SUMMARIZE_DEBA"
+    "TE\0206\022\032\n\026DISMISS_DEBATE_SUMMARY\0207\022\023\n\017SUMM"
+    "ARIZE_CLAIM\0208\022\031\n\025DISMISS_CLAIM_SUMMARY\0209"
+    "\022\023\n\017GENERATE_DEBATE\020:\022\025\n\021CHALLENGE_WITH_"
+    "AI\020;\022\025\n\021DISMISS_AI_NOTICE\020<\022\022\n\016CANCEL_AI"
+    "_WORK\020=\022\022\n\016START_TUTORIAL\020>\022\021\n\rTUTORIAL_"
+    "NEXT\020\?\022\021\n\rTUTORIAL_EXIT\020@b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1321,13 +1361,13 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    6024,
+    6193,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
     descriptor_table_debate_5fevent_2eproto_deps,
     1,
-    30,
+    31,
     schemas,
     file_default_instances,
     TableStruct_debate_5fevent_2eproto::offsets,
@@ -1340,7 +1380,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    4063232u, 0u, };
+    4259840u, 0u, };
 // ===================================================================
 
 class CreateDebate::_Internal {
@@ -9365,6 +9405,281 @@ void MoveUserToTimestamp::InternalSwap(MoveUserToTimestamp* PROTOBUF_RESTRICT PR
 }
 // ===================================================================
 
+class StartTutorial::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<StartTutorial>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(StartTutorial, _impl_._has_bits_);
+};
+
+StartTutorial::StartTutorial(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StartTutorial_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate_event.StartTutorial)
+}
+PROTOBUF_NDEBUG_INLINE StartTutorial::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::debate_event::StartTutorial& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        script_(arena, from.script_) {}
+
+StartTutorial::StartTutorial(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const StartTutorial& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, StartTutorial_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  StartTutorial* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:debate_event.StartTutorial)
+}
+PROTOBUF_NDEBUG_INLINE StartTutorial::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        script_(arena) {}
+
+inline void StartTutorial::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+StartTutorial::~StartTutorial() {
+  // @@protoc_insertion_point(destructor:debate_event.StartTutorial)
+  SharedDtor(*this);
+}
+inline void StartTutorial::SharedDtor(MessageLite& self) {
+  StartTutorial& this_ = static_cast<StartTutorial&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.script_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL StartTutorial::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) StartTutorial(arena);
+}
+constexpr auto StartTutorial::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(StartTutorial),
+                                            alignof(StartTutorial));
+}
+constexpr auto StartTutorial::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_StartTutorial_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &StartTutorial::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<StartTutorial>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &StartTutorial::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<StartTutorial>(), &StartTutorial::ByteSizeLong,
+              &StartTutorial::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(StartTutorial, _impl_._cached_size_),
+          false,
+      },
+      &StartTutorial::kDescriptorMethods,
+      &descriptor_table_debate_5fevent_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull StartTutorial_class_data_ =
+        StartTutorial::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+StartTutorial::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&StartTutorial_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(StartTutorial_class_data_.tc_table);
+  return StartTutorial_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 41, 2>
+StartTutorial::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(StartTutorial, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    StartTutorial_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::StartTutorial>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string script = 1 [json_name = "script"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(StartTutorial, _impl_.script_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string script = 1 [json_name = "script"];
+    {PROTOBUF_FIELD_OFFSET(StartTutorial, _impl_.script_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\32\6\0\0\0\0\0\0"
+    "debate_event.StartTutorial"
+    "script"
+  }},
+};
+PROTOBUF_NOINLINE void StartTutorial::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate_event.StartTutorial)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.script_.ClearNonDefaultToEmpty();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL StartTutorial::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const StartTutorial& this_ = static_cast<const StartTutorial&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL StartTutorial::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const StartTutorial& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:debate_event.StartTutorial)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string script = 1 [json_name = "script"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_script().empty()) {
+      const ::std::string& _s = this_._internal_script();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.StartTutorial.script");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:debate_event.StartTutorial)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t StartTutorial::ByteSizeLong(const MessageLite& base) {
+  const StartTutorial& this_ = static_cast<const StartTutorial&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t StartTutorial::ByteSizeLong() const {
+  const StartTutorial& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:debate_event.StartTutorial)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // string script = 1 [json_name = "script"];
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_script().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_script());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void StartTutorial::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<StartTutorial*>(&to_msg);
+  auto& from = static_cast<const StartTutorial&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.StartTutorial)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!from._internal_script().empty()) {
+      _this->_internal_set_script(from._internal_script());
+    } else {
+      if (_this->_impl_.script_.IsDefault()) {
+        _this->_internal_set_script("");
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void StartTutorial::CopyFrom(const StartTutorial& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:debate_event.StartTutorial)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void StartTutorial::InternalSwap(StartTutorial* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.script_, &other->_impl_.script_, arena);
+}
+
+::google::protobuf::Metadata StartTutorial::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class UserAuthInfo::_Internal {
  public:
   using HasBits =
@@ -10088,6 +10403,19 @@ void DebateEvent::set_allocated_generate_debate(::debate_event::GenerateDebate* 
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.generate_debate)
 }
+void DebateEvent::set_allocated_start_tutorial(::debate_event::StartTutorial* PROTOBUF_NULLABLE start_tutorial) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (start_tutorial) {
+    ::google::protobuf::Arena* submessage_arena = start_tutorial->GetArena();
+    if (message_arena != submessage_arena) {
+      start_tutorial = ::google::protobuf::internal::GetOwnedMessage(message_arena, start_tutorial, submessage_arena);
+    }
+    set_has_start_tutorial();
+    _impl_.payload_.start_tutorial_ = start_tutorial;
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.start_tutorial)
+}
 DebateEvent::DebateEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, DebateEvent_class_data_.base()) {
@@ -10210,6 +10538,9 @@ DebateEvent::DebateEvent(
         break;
       case kGenerateDebate:
         _impl_.payload_.generate_debate_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.generate_debate_);
+        break;
+      case kStartTutorial:
+        _impl_.payload_.start_tutorial_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.start_tutorial_);
         break;
   }
 
@@ -10470,6 +10801,14 @@ void DebateEvent::clear_payload() {
       }
       break;
     }
+    case kStartTutorial: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.start_tutorial_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.start_tutorial_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -10521,17 +10860,17 @@ DebateEvent::GetClassData() const {
   return DebateEvent_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 30, 29, 0, 9>
+const ::_pbi::TcParseTable<2, 31, 30, 0, 9>
 DebateEvent::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_._has_bits_),
     0, // no _extensions_
-    53, 24,  // max_field_number, fast_idx_mask
+    54, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
     381117938,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    30,  // num_field_entries
-    29,  // num_aux_entries
+    31,  // num_field_entries
+    30,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     DebateEvent_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -10556,7 +10895,7 @@ DebateEvent::_table_ = {
   }}, {{
     34, 0, 2,
     3592, 14,
-    65520, 26,
+    65504, 26,
     65535, 65535
   }}, {{
     // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
@@ -10619,6 +10958,8 @@ DebateEvent::_table_ = {
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.summarize_claim_), _Internal::kOneofCaseOffset + 0, 27, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .debate_event.GenerateDebate generate_debate = 53 [json_name = "generateDebate"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.generate_debate_), _Internal::kOneofCaseOffset + 0, 28, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate_event.StartTutorial start_tutorial = 54 [json_name = "startTutorial"];
+    {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.start_tutorial_), _Internal::kOneofCaseOffset + 0, 29, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::debate_event::UserAuthInfo>()},
@@ -10650,6 +10991,7 @@ DebateEvent::_table_ = {
       {::_pbi::TcParser::GetTable<::debate_event::SelectClaim>()},
       {::_pbi::TcParser::GetTable<::debate_event::SummarizeClaim>()},
       {::_pbi::TcParser::GetTable<::debate_event::GenerateDebate>()},
+      {::_pbi::TcParser::GetTable<::debate_event::StartTutorial>()},
   }},
   {{
   }},
@@ -10883,6 +11225,12 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
           stream);
       break;
     }
+    case kStartTutorial: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          54, *this_._impl_.payload_.start_tutorial_, this_._impl_.payload_.start_tutorial_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -11091,6 +11439,12 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
     case kGenerateDebate: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.generate_debate_);
+      break;
+    }
+    // .debate_event.StartTutorial start_tutorial = 54 [json_name = "startTutorial"];
+    case kStartTutorial: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.start_tutorial_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -11365,6 +11719,14 @@ void DebateEvent::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.payload_.generate_debate_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.generate_debate_);
         } else {
           _this->_impl_.payload_.generate_debate_->MergeFrom(*from._impl_.payload_.generate_debate_);
+        }
+        break;
+      }
+      case kStartTutorial: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.start_tutorial_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.start_tutorial_);
+        } else {
+          _this->_impl_.payload_.start_tutorial_->MergeFrom(*from._impl_.payload_.start_tutorial_);
         }
         break;
       }

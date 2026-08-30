@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package tutorial;
+
+import "test_scenario.proto";
+
+// A guided walkthrough of the tool: a debate that builds itself one step at a
+// time, with a paragraph of explanation beside each step.
+//
+// A tutorial is a SCENARIO plus narration. It deliberately reuses
+// debate_test.TestAction rather than defining its own action vocabulary,
+// because the thing that replays a scenario -- scenario::Importer -- is the
+// same thing that replays a tutorial. A second way to say "add a claim" would
+// drift from the first, and the drift would show up as a tutorial that teaches
+// behaviour the real tool no longer has.
+//
+// Everything a tutorial says and does lives in one .pbtxt file under
+// backend/tutorials/. Writing a walkthrough of a different case -- Fauci,
+// say -- means adding a file there and nothing else: no C++ changes, no
+// rebuild.
+message Tutorial {
+  // Filename stem, and what the UI passes around to identify this tutorial.
+  string name = 1;
+  // Shown on the button and at the top of the guide box.
+  string title = 2;
+  // One line under the title, for the home page button.
+  string subtitle = 3;
+
+  repeated TutorialStep steps = 4;
+}
+
+// One step: something that happens, and the explanation of what you are now
+// looking at.
+//
+// The narration describes the state AFTER the action, not before it. Pressing
+// Next runs the action and then shows this step's text, so the reader always
+// reads about something already on screen rather than about something they
+// are promised next.
+message TutorialStep {
+  // What pressing Next does, in order.
+  //
+  // Repeated, because one thing a reader should SEE is often several things
+  // the engine has to DO -- an opponent arriving to disagree is a join, an
+  // enter, a navigation and a challenge. Giving each of those its own click
+  // would turn a four-step story into a twelve-click one, most of whose clicks
+  // change nothing on screen.
+  //
+  // May be empty: a step with no actions only explains, which is how the
+  // closing step works.
+  repeated debate_test.TestAction actions = 1;
+
+  // Short heading, e.g. "A challenge arrives".
+  string title = 2;
+
+  // The explanation, one entry per paragraph. Repeated rather than one string
+  // with newlines in it because protobuf text format has no multi-line string
+  // literal worth reading -- a paragraph per line keeps the .pbtxt editable by
+  // hand, which is the whole point of keeping tutorials in files.
+  repeated string body = 3;
+
+  // Optional: what the reader should look at. Rendered as a highlighted line
+  // under the body, e.g. "Watch the status change to DISPUTED."
+  string look_at = 4;
+}

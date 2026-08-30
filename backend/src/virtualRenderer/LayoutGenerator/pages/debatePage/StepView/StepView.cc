@@ -3,6 +3,7 @@
 #include "../FullDebateView/FullDebatePageGenerator.h"
 #include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
+#include "../../../../../utils/TutorialLibrary.h"
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -885,6 +886,125 @@ static ui::Component BuildClaimSummarySection(const user::User& viewerUser, int 
     return section;
 }
 
+
+// Builds the walkthrough guide box: where you are, what just happened, and the
+// button that makes the next thing happen.
+//
+// The words come from the .pbtxt on every render rather than from anything
+// stored on the user, so editing a script changes what a walkthrough already
+// in progress says. Only the reader's POSITION is saved.
+//
+// Returns false into `show` when the viewer is not in a walkthrough, or is in
+// one that belongs to a different debate -- opening another debate mid-tutorial
+// should not drag the guide box along, narrating steps about claims that are
+// not on screen.
+static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show) {
+    ui::Component panel;
+    show = false;
+
+    const user_engagement::TutorialStatus& state = viewerUser.engagement().tutorial();
+    if (!state.active()) {
+        return panel;
+    }
+    // Which debate the reader is actually looking at. FullDebateViewInfo does
+    // not carry the debate id, and the viewer's engagement is the authority on
+    // where they are anyway.
+    const int thisDebateId = viewerUser.engagement().debating_info().debate_id();
+    if (state.debate_id() > 0 && thisDebateId > 0 && state.debate_id() != thisDebateId) {
+        return panel;
+    }
+    show = true;
+
+    panel = ComponentGenerator::createContainer(
+        "tutorialPanel", "w-full", "bg-blue-950", "p-4", "",
+        "border border-blue-600", "rounded-lg", "");
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    bool ok = false;
+    std::string loadError;
+    const tutorial::Tutorial script = tutorials::Load(state.script(), ok, loadError);
+
+    if (!ok) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "tutorialLoadError", loadError, "text-sm", "text-red-400", "", ""));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialExitButton", "Leave tutorial", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+        return panel;
+    }
+
+    const int index = state.step_index();
+    const int total = script.steps_size();
+
+    ui::Component headerRow = ComponentGenerator::createContainer(
+        "tutorialHeaderRow", "w-full", "", "", "", "", "", "");
+    (*headerRow.mutable_css())["display"] = "flex";
+    (*headerRow.mutable_css())["flex-direction"] = "row";
+    (*headerRow.mutable_css())["justify-content"] = "space-between";
+    (*headerRow.mutable_css())["align-items"] = "center";
+    (*headerRow.mutable_css())["gap"] = "0.75rem";
+
+    ComponentGenerator::addChild(&headerRow, ComponentGenerator::createText(
+        "tutorialProgress",
+        script.title() + " -- step " + std::to_string(index + 1) + " of " +
+            std::to_string(total),
+        "text-xs", "text-blue-300", "font-semibold uppercase tracking-wide", ""));
+    ComponentGenerator::addChild(&headerRow, ComponentGenerator::createButton(
+        "tutorialExitButton", "Exit tutorial", "", "bg-gray-700", "hover:bg-gray-600",
+        "text-gray-300", "px-2 py-1", "rounded", "text-xs"));
+    ComponentGenerator::addChild(&panel, headerRow);
+
+    if (index >= 0 && index < total) {
+        const tutorial::TutorialStep& step = script.steps(index);
+        if (!step.title().empty()) {
+            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+                "tutorialStepTitle", step.title(), "text-lg", "text-white", "font-bold", ""));
+        }
+        int paragraph = 0;
+        for (const std::string& body : step.body()) {
+            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+                "tutorialBody_" + std::to_string(paragraph++), body,
+                "text-sm", "text-gray-200", "", ""));
+        }
+        if (!step.look_at().empty()) {
+            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+                "tutorialLookAt", "Look at: " + step.look_at(),
+                "text-sm", "text-yellow-300", "font-semibold", ""));
+        }
+    }
+
+    // An error replaces the Next button rather than sitting beside it: the
+    // walkthrough did not advance, and offering Next again would just fail
+    // again in the same place.
+    if (!state.error().empty()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "tutorialError", state.error(), "text-sm", "text-red-400", "", ""));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialExitButton", "Leave tutorial", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+        return panel;
+    }
+
+    if (state.finished()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "tutorialDone",
+            "That is the whole walkthrough. The debate it built is yours -- keep clicking "
+            "around it, or leave the tutorial and it stays in your list.",
+            "text-sm", "text-green-300", "", ""));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialExitButton", "Finish", "", "bg-green-600", "hover:bg-green-500",
+            "text-white", "px-4 py-2", "rounded-lg", ""));
+    } else {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialNextButton", "Next step", "", "bg-blue-600", "hover:bg-blue-700",
+            "text-white", "px-4 py-2", "rounded-lg", ""));
+    }
+
+    return panel;
+}
+
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
 	const debate::Collection& collectionProto,
@@ -952,6 +1072,16 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	ComponentGenerator::addChild(&topBar, goHomeButton);
 	ComponentGenerator::addChild(&container, topBar);
+
+	// Above the argument rather than beside it: the guide box is what the
+	// reader is following, and in the right-hand column it would compete with
+	// the graph for the same eye and lose.
+	bool showTutorial = false;
+	ui::Component tutorialPanel =
+		BuildTutorialPanel(viewerUser, showTutorial);
+	if (showTutorial) {
+		ComponentGenerator::addChild(&container, tutorialPanel);
+	}
 
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",

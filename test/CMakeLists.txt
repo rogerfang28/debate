@@ -92,6 +92,8 @@ set(HANDLER_SOURCES
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -192,6 +194,8 @@ add_executable(debate_simulation
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -239,6 +243,12 @@ set(IMPORT_TOOL_LIBS
     ${ABSL_LIBS}
     dbghelp
     -Wl,--end-group
+    # UrlFetcher compiles httplib with TLS, so every target that includes it
+    # needs OpenSSL -- not just the gtest binaries. This list did not, and the
+    # tool targets stopped linking the moment UrlFetcher joined their sources.
+    ${VCPKG_INSTALLED}/lib/libssl.a
+    ${VCPKG_INSTALLED}/lib/libcrypto.a
+    crypt32
     ${VCPKG_INSTALLED}/lib/libsqlite3.a
     ${VCPKG_INSTALLED}/lib/libzs.a
     ws2_32
@@ -262,6 +272,8 @@ add_executable(import_debate_tool
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -293,6 +305,8 @@ add_executable(summarize_tool
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -321,6 +335,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_generated_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_ai_challenger.cc
     ${CMAKE_SOURCE_DIR}/tests/test_url_fetcher.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_tutorial_library.cc
 )
 
 add_executable(debate_tests
@@ -345,6 +360,8 @@ add_executable(debate_tests
     # needs it -- and it drags in the summarizer and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc

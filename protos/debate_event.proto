@@ -246,7 +246,20 @@ enum EventType {
     CHALLENGE_WITH_AI = 59;
     DISMISS_AI_NOTICE = 60;
     CANCEL_AI_WORK = 61;
+    // Guided walkthrough. START replays the first step of a tutorial
+    // script; NEXT replays the one after it; EXIT leaves the walkthrough
+    // without deleting the debate it built, so the reader can keep poking
+    // at what they just watched being made.
+    START_TUTORIAL = 62;
+    TUTORIAL_NEXT = 63;
+    TUTORIAL_EXIT = 64;
 
+}
+
+// Which walkthrough to start. Empty name means the default one, so the
+// home page button does not have to know what tutorials exist.
+message StartTutorial {
+    string script = 1;
 }
 
 message UserAuthInfo {
@@ -293,5 +306,6 @@ message DebateEvent {
     SelectClaim select_claim = 51;
     SummarizeClaim summarize_claim = 52;
     GenerateDebate generate_debate = 53;
+    StartTutorial start_tutorial = 54;
   }
 }

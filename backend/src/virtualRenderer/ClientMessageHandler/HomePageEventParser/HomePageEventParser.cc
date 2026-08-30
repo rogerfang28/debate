@@ -35,6 +35,16 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         Log::debug("  GENERATE_DEBATE: topic = " + generate->topic() + ", passage = " +
                    std::to_string(generate->passage().size()) + " chars");
     }
+    // * Guided walkthrough. The id carries the script name after the underscore
+    // so the home page can offer several without the parser knowing any of them.
+    else if (componentId.rfind("startTutorialButton", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::START_TUTORIAL);
+        const std::string prefix = "startTutorialButton_";
+        if (componentId.rfind(prefix, 0) == 0) {
+            event.mutable_start_tutorial()->set_script(componentId.substr(prefix.size()));
+        }
+        Log::debug("  START_TUTORIAL: script = '" + event.start_tutorial().script() + "'");
+    }
     else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
         event.set_type(debate_event::CANCEL_AI_WORK);
     }

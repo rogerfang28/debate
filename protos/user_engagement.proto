@@ -28,6 +28,35 @@ message AiJobStatus {
   int32 about_debate_id = 5;
 }
 
+// Where the reader is in a guided walkthrough.
+//
+// Only the POSITION is stored -- which script, which step. The words shown in
+// the guide box are read from the .pbtxt on every render, so editing a
+// tutorial file changes what a half-finished walkthrough says without
+// migrating anybody's saved state. Storing the text here would freeze a copy
+// of it on each user and make the files stop being the source of truth.
+//
+// This lives on the engagement rather than on the debate for the same reason
+// the AI job status does: a walkthrough starts on the home page and continues
+// inside a debate, so it outlives either page.
+message TutorialStatus {
+  bool active = 1;
+  // Filename stem under backend/tutorials/.
+  string script = 2;
+  // Index of the step now on screen -- the one whose action has already run.
+  int32 step_index = 3;
+  int32 total_steps = 4;
+  // The debate the walkthrough built. Survives EXIT, so the reader can go back
+  // and take apart what they watched being assembled.
+  int32 debate_id = 5;
+  // Every step has run. The guide box shows its closing panel rather than a
+  // Next button.
+  bool finished = 6;
+  // A step that would not replay. Shown in place of the narration, because a
+  // walkthrough that silently stops advancing is worse than one that says why.
+  string error = 7;
+}
+
 message UserEngagement {
   EngagementAction current_action = 1;
   oneof action_info {
@@ -36,6 +65,7 @@ message UserEngagement {
   }
 
   AiJobStatus ai_job = 4;
+  TutorialStatus tutorial = 5;
 }
 
 message HomeInfo {

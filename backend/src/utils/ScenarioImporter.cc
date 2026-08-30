@@ -117,7 +117,44 @@ public:
         return true;
     }
 
+    // Replays one action outside a scenario loop -- the tutorial's step-per-
+    // click path. Same function the loop calls, so the two cannot drift.
+    bool RunOne(const TestAction& action, int step_index) {
+        return RunAction(action, step_index);
+    }
+
+    // Makes a scenario name resolve to an existing account. See
+    // Importer::AliasUser.
+    void SetAlias(const std::string& script_name, const std::string& real_username) {
+        user_aliases_[script_name] = real_username;
+    }
+
+    // Rebuilds the id maps for a debate an earlier importer built. See
+    // Importer::Attach for why sorting by claim id reproduces the numbering.
+    void AttachTo(int real_debate_id) {
+        debate_id_ = real_debate_id;
+        scenario_to_real_debate_[1] = real_debate_id;
+        scenario_to_real_claim_.clear();
+        next_scenario_claim_id_ = 1;
+        // ClaimIdsInDebate returns a std::set, so this is already ascending --
+        // which is creation order, which is the order a scenario numbers them.
+        for (const int real_id : ClaimIdsInDebate(real_debate_id)) {
+            scenario_to_real_claim_[next_scenario_claim_id_++] = real_id;
+        }
+    }
+
 private:
+    // A scenario name that has been pointed at a real account, e.g.
+    // "YOU" -> "guest". Applied to the username BEFORE anything else looks at
+    // it, so the forged event, the created user, and the concede resolution all
+    // agree on who acted. Aliasing by user id alone was not enough: the event
+    // carries a username too, and the two disagreeing produces a debate whose
+    // moves are attributed to a user who never existed.
+    std::string ResolveUsername(const std::string& script_name) const {
+        auto it = user_aliases_.find(script_name);
+        return it == user_aliases_.end() ? script_name : it->second;
+    }
+
     int GetUserId(const std::string& username) {
         auto it = user_ids_.find(username);
         if (it != user_ids_.end()) return it->second;
@@ -126,7 +163,13 @@ private:
         return id;
     }
 
-    bool RunAction(const TestAction& action, int step_index) {
+    bool RunAction(const TestAction& raw_action, int step_index) {
+        // Substitute aliases once, here, so every later read of username() --
+        // event forging, user creation, concede resolution -- sees the same
+        // name.
+        TestAction action = raw_action;
+        action.set_username(ResolveUsername(raw_action.username()));
+
         std::cout << "[STEP " << step_index << "] " << action.username()
                    << " -> " << action.event_type() << std::endl;
 
@@ -242,6 +285,14 @@ private:
             case debate_event::GO_TO_CLAIM:
                 event.mutable_go_to_claim()->set_claim_id(RealClaimId(action.claim_id()));
                 break;
+            // Selects a claim without leaving the graph view, where GO_TO_CLAIM
+            // drops you into the single-claim page. A walkthrough needs to point
+            // at a claim while the reader keeps looking at the whole argument,
+            // and without this case the id fell through to `default` and was
+            // silently dropped -- the event still fired, just at claim 0.
+            case debate_event::SELECT_CLAIM:
+                event.mutable_select_claim()->set_claim_id(RealClaimId(action.claim_id()));
+                break;
             // NOTE: this switch mirrors forgeEvent() in
             // test/tests/test_scenario_runner.cc. The two are separate copies
             // and have already drifted once -- extra_claim_texts and basis
@@ -343,6 +394,7 @@ private:
 
     DebateModerator& moderator_;
     std::map<std::string, int> user_ids_;
+    std::map<std::string, std::string> user_aliases_;
     // Translates a scenario's debate id into the one actually created. Unknown
     // ids pass through unchanged -- a scenario referring to a debate it never
     // created is asking for a pre-existing one, and guessing would be worse
@@ -420,6 +472,19 @@ Importer::~Importer() { delete state_; }
 bool Importer::Run(const TestScenario& scenario) {
     state_->steps = scenario.steps_size();
     return state_->impl.Run(scenario);
+}
+
+bool Importer::RunAction(const TestAction& action) {
+    // Step index is only ever printed, and a tutorial's steps arrive one per
+    // request with no loop counter to hand. Counting them here keeps the log
+    // readable without inventing a number the caller would have to carry.
+    return state_->impl.RunOne(action, state_->steps++);
+}
+
+void Importer::Attach(int real_debate_id) { state_->impl.AttachTo(real_debate_id); }
+
+void Importer::AliasUser(const std::string& script_name, const std::string& real_username) {
+    state_->impl.SetAlias(script_name, real_username);
 }
 
 int Importer::debate_id() const { return state_->impl.created_debate_id(); }

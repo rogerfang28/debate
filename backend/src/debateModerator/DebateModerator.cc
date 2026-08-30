@@ -31,6 +31,7 @@
 
 #include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
+#include "event-handlers/TutorialHandler/TutorialHandler.h"
 
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
@@ -203,6 +204,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::CANCEL_AI_WORK:
             Log::info("[DebateModerator] Event Type: CANCEL_AI_WORK");
             AiAuthorHandler::CancelWork(user_id, debateWrapper);
+            break;
+        case debate_event::START_TUTORIAL:
+            Log::info("[DebateModerator] Event Type: START_TUTORIAL");
+            TutorialHandler::Start(event.start_tutorial().script(), user_id, *this);
+            break;
+        case debate_event::TUTORIAL_NEXT:
+            Log::info("[DebateModerator] Event Type: TUTORIAL_NEXT");
+            TutorialHandler::Next(user_id, *this);
+            break;
+        case debate_event::TUTORIAL_EXIT:
+            Log::info("[DebateModerator] Event Type: TUTORIAL_EXIT");
+            TutorialHandler::Exit(user_id, debateWrapper);
             break;
         case debate_event::DISMISS_AI_NOTICE:
             Log::info("[DebateModerator] Event Type: DISMISS_AI_NOTICE");

@@ -1,0 +1,159 @@
+# A guided walkthrough: a debate that builds itself one click at a time.
+#
+# ---------------------------------------------------------------------------
+# HOW TO WRITE ONE OF THESE
+#
+# Copy this file, change the steps, done. No code changes, no rebuild -- the
+# script is re-read from disk on every render, so an edit shows up on the next
+# page refresh even mid-walkthrough. Every .pbtxt in this directory becomes a
+# button on the home page.
+#
+# The username "YOU" means the person reading the tutorial. Their real account
+# performs those actions, which is what makes the statuses on screen theirs.
+# Every other name is an ordinary account, created on demand.
+#
+# Claims are numbered from 1 in CREATION order: the debate's root claim is 1,
+# and each claim an action creates takes the next number. An ADD_CHILD_CLAIM
+# with two extra_claim_texts creates three claims and so uses up three numbers.
+# Those numbers are what claim_id refers to.
+#
+# A step is ONE thing the reader should see, which may take several actions to
+# bring about. Put all of them in the same step -- a click that changes nothing
+# on screen is a wasted click.
+#
+# The narration describes the state AFTER the step has run, because that is
+# what the reader is looking at while they read it.
+# ---------------------------------------------------------------------------
+
+name: "getting-started"
+title: "Watch a debate get built"
+subtitle: "Eight steps, about two minutes. Builds a real debate you keep."
+
+# ===========================================================================
+steps {
+  actions { username: "Sam" event_type: "CREATE_USER" }
+  actions {
+    username: "YOU"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Our office should switch to a four-day week."
+  }
+  actions { username: "YOU" event_type: "JOIN_DEBATE" debate_id: 1 }
+  actions { username: "YOU" event_type: "ENTER_DEBATE" debate_id: 1 }
+  # Sam joins now, quietly, so that the step where he disagrees is only about
+  # the disagreement.
+  actions { username: "Sam" event_type: "JOIN_DEBATE" debate_id: 1 }
+  actions { username: "Sam" event_type: "ENTER_DEBATE" debate_id: 1 }
+  # Leaves the reader on the graph view. GO_TO_CLAIM below switches to the
+  # single-claim page, which has no guide box on it, so every step that
+  # navigates has to come back here before it ends.
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+
+  title: "One claim to start with"
+  body: "A debate here is not a thread of replies. It is a single claim, with everything that bears on it hanging underneath."
+  body: "That claim is on screen now. Nothing supports it yet, so nobody has any reason to believe it -- including you."
+  look_at: "the single box in the graph."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Companies that trialled a four-day week kept their output steady."
+    claim_description: "Trials in Iceland, the UK and New Zealand reported roughly unchanged output on four days."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 2 }
+
+  title: "A reason to believe it"
+  body: "You have put a claim underneath the first one. The line between them means this claim supports the one above it."
+  body: "The label on that line says what KIND of support it is. EVIDENTIAL means it rests on facts. The others are authority, definition and value -- kept apart because they fail in completely different ways, and an argument that quietly swaps one for another is the most common way of cheating."
+  look_at: "the new box, and the EVIDENTIAL label on the line joining it to the claim above."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Staff at those companies reported far less burnout."
+    claim_description: "Self-reported wellbeing rose sharply in every published trial."
+    extra_claim_texts: "Sick days fell during the trials."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 3 }
+
+  title: "Two claims that only work together"
+  body: "This time you added two claims at once, and they arrived as ONE argument rather than two."
+  body: "This is the distinction the whole tool is built around. Two separate supports each stand on their own -- knock one down and the other still holds. A joint argument is a chain: if either half fails, the entire line fails with it."
+  body: "In most tools you cannot tell those two situations apart. Here the difference is drawn."
+  look_at: "the two new boxes, joined into a single line of argument rather than two separate ones."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "Sam" event_type: "GO_TO_CLAIM" claim_id: 2 }
+  actions {
+    username: "Sam"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The companies that volunteered for those trials were already unusually well run, so their results say little about ours."
+    challenge_description: "Selection effect: firms confident enough to trial a four-day week are not a random sample of firms."
+    basis: "EVIDENTIAL"
+  }
+  # Sam's navigation is his own; the reader stays on the graph and is pointed
+  # at the claim that just got challenged.
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 2 }
+
+  title: "Someone disagrees"
+  body: "Sam has challenged your first supporting claim. A challenge is itself a claim -- it can be supported, argued with, and challenged right back."
+  body: "Notice what did NOT happen. Your claim was not deleted and it did not turn false. Somebody disagreeing with you is not the same as you being wrong, and the tool refuses to treat it as though it were."
+  look_at: "the challenge now hanging off your first supporting claim."
+}
+
+# ===========================================================================
+steps {
+  # No actions: the previous step already selected this claim. A second beat of
+  # explanation about the same screen is worth a click; re-selecting what is
+  # already selected is not.
+
+  title: "Whose truth?"
+  body: "Your claim still reads True -- for you. Sam's challenge sits underneath it, unanswered."
+  body: "That is not the tool ducking the question. Every status here belongs to one person and is worked out from the moves that person has made. Sam disagreeing changes Sam's view of the claim, not yours. Nothing is ever quietly marked settled on your behalf."
+  body: "The line at the top of the page is what changed: it now tells you a claim of yours has been challenged, and that you owe it either an answer or a concession."
+  look_at: "the status of the selected claim, and the challenge notice at the top of the page."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "CONCEDE_CHALLENGE" }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 2 }
+
+  title: "Conceding"
+  body: "You have conceded. Your claim is now false for you, and Sam's challenge is true for you."
+  body: "Conceding is a move like any other -- it is appended to the log, and every status above it is recomputed from that log. Nothing is edited by hand, which is why you can always ask how a claim ended up the way it is."
+  look_at: "the status of the claim you just gave up."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 1 }
+
+  title: "What the concession cost"
+  body: "Conceding did not stop at the claim you gave up. The top claim reads False for you now as well."
+  body: "The rule is blunt: if anything directly beneath a claim is false for you, that claim is false for you too. Every status is recomputed up the whole graph from the move log after each move, so a single concession travels a long way."
+  body: "The joint pair from step three never failed and is still sitting there. It is simply not enough on its own to hold the top claim up while a conceded support hangs beside it."
+  look_at: "the status of the top claim -- and how far one concession reached."
+}
+
+# ===========================================================================
+steps {
+  title: "That is the tool"
+  body: "What you just watched is an ordinary debate. It stays in your list after you leave, so you can keep pulling it apart."
+  body: "Worth trying on it: Summarize Debate reads the whole thing and explains it back in plain words. AI Challenge hunts for weaknesses you missed. The Fit button frames the entire graph at once."
+  body: "To build one of your own, press Home and type a topic."
+}

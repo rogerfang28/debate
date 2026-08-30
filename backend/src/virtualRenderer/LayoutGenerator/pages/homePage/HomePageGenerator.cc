@@ -1,6 +1,7 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/DemoMode.h"
+#include "../../../../utils/TutorialLibrary.h"
 
 ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRenderingInfo& info) {
     ui::Page page;
@@ -68,6 +69,43 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         "text-center"
     );
     ComponentGenerator::addChild(&main, description);
+
+    // ---- Guided walkthroughs ----------------------------------------
+    // First thing under the description, because the tool's central idea --
+    // that an argument is a graph of claims, not a thread of replies -- is not
+    // guessable from an empty page with a topic box on it.
+    //
+    // One button per file in backend/tutorials/. Nothing here names a
+    // particular walkthrough, so adding one is a file and no code.
+    if (info.can_create_or_join_debates()) {
+        const std::vector<tutorials::Listing> walkthroughs = tutorials::List();
+        if (!walkthroughs.empty()) {
+            ui::Component tutorialContainer = ComponentGenerator::createContainer(
+                "tutorialContainer", "w-full max-w-md", "bg-gray-800", "p-4", "",
+                "border border-blue-700", "rounded-lg", ""
+            );
+            (*tutorialContainer.mutable_css())["display"] = "flex";
+            (*tutorialContainer.mutable_css())["flex-direction"] = "column";
+            (*tutorialContainer.mutable_css())["gap"] = "0.5rem";
+
+            ComponentGenerator::addChild(&tutorialContainer, ComponentGenerator::createText(
+                "tutorialHeading", "New here?", "text-xs",
+                "text-gray-500", "font-semibold uppercase tracking-wide", ""));
+
+            for (const tutorials::Listing& walkthrough : walkthroughs) {
+                ComponentGenerator::addChild(&tutorialContainer, ComponentGenerator::createButton(
+                    "startTutorialButton_" + walkthrough.name,
+                    walkthrough.title, "", "bg-blue-600", "hover:bg-blue-700", "text-white",
+                    "px-4 py-2", "rounded-lg", "transition w-full"));
+                if (!walkthrough.subtitle.empty()) {
+                    ComponentGenerator::addChild(&tutorialContainer, ComponentGenerator::createText(
+                        "tutorialSubtitle_" + walkthrough.name, walkthrough.subtitle,
+                        "text-xs", "text-gray-400", "", "text-center"));
+                }
+            }
+            ComponentGenerator::addChild(&main, tutorialContainer);
+        }
+    }
 
     if (info.can_create_or_join_debates()) {
         // Submit topic container (inline layout)

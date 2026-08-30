@@ -20,6 +20,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "aiChallengeButton" && eventType == "onClick") {
         event.set_type(debate_event::CHALLENGE_WITH_AI);
         Log::debug("  CHALLENGE_WITH_AI for user: " + std::to_string(user_id));
+    } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
+        event.set_type(debate_event::TUTORIAL_NEXT);
+        Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));
+    } else if (componentId == "tutorialExitButton" && eventType == "onClick") {
+        event.set_type(debate_event::TUTORIAL_EXIT);
+        Log::debug("  TUTORIAL_EXIT for user: " + std::to_string(user_id));
     } else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
         event.set_type(debate_event::CANCEL_AI_WORK);
         Log::debug("  CANCEL_AI_WORK for user: " + std::to_string(user_id));

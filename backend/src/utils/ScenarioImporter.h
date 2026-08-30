@@ -37,6 +37,30 @@ public:
     // pressing on, so a half-built debate is not mistaken for a whole one.
     bool Run(const debate_test::TestScenario& scenario);
 
+    // Replays ONE action rather than a whole scenario. The tutorial advances a
+    // step per click, so its steps arrive across separate requests instead of
+    // in a single loop -- but they must go through exactly the same code, or a
+    // walkthrough would teach behaviour imports do not have.
+    bool RunAction(const debate_test::TestAction& action);
+
+    // Re-points this importer at a debate an earlier importer built, rebuilding
+    // the scenario->real id maps from what is in the database.
+    //
+    // This is what lets a walkthrough survive a server restart, and it is why
+    // no tutorial state is held in memory between clicks. Claims are numbered
+    // by a scenario from 1 in creation order, and a debate's claim ids ascend
+    // in creation order too, so sorting the debate's claims reproduces the map
+    // exactly.
+    void Attach(int real_debate_id);
+
+    // Makes `script_name` in a scenario mean an existing real user.
+    //
+    // A tutorial is watched by a real person, so the actions attributed to
+    // "YOU" have to be performed BY them -- otherwise the walkthrough builds a
+    // debate between two strangers while the reader watches from outside it,
+    // and none of the statuses on screen are theirs.
+    void AliasUser(const std::string& script_name, const std::string& real_username);
+
     // The debate this run created, once it has created one.
     int debate_id() const;
     int steps_run() const;

@@ -71,6 +71,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/utils/TutorialLibrary.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
