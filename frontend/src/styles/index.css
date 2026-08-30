@@ -152,6 +152,30 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* --- Tutorial guide box ---
+   The sticky behaviour lives here rather than in the server's css map because
+   how much of the screen the box may occupy depends on the screen, and an
+   inline style cannot carry a media query. On a phone a 72vh guide leaves
+   almost nothing of the debate it is pointing at.
+
+   The panel's own `overflow` stays inline: ContainerComponent writes an inline
+   overflow on every container, and inline beats a class -- without it the box
+   would clip its own text with no way to scroll. */
+.tutorial-guide-sticky {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 40;
+  max-height: 72vh;
+}
+
+@media (max-height: 700px) {
+  .tutorial-guide-sticky { max-height: 62vh; }
+}
+
+@media (max-width: 640px) {
+  .tutorial-guide-sticky { max-height: 50vh; }
+}
+
 /* --- Page Root --- */
 .page-root {
   padding: 0;
@@ -159,7 +183,12 @@ a:hover {
   margin: 0;
   width: 100%;
   min-height: 100vh;
-  overflow: auto;
+  /* Deliberately visible, not auto. This element has min-height rather than
+     height, so it grows with its content and never scrolls -- the document
+     does. An overflow of auto still made it a scroll container, and a
+     position:sticky descendant sticks to its nearest scroll container, so
+     anything sticky inside a page was silently inert. */
+  overflow: visible;
 }
 
 .page-title {

@@ -951,7 +951,10 @@ static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show
     }
     show = true;
 
-    panel = ComponentGenerator::createContainer("tutorialPanel", "w-full", "", "", "", "", "", "");
+    // The sticky rules ride on a class, not the css map, so they can vary by
+    // screen size -- see .tutorial-guide-sticky in index.css.
+    panel = ComponentGenerator::createContainer(
+        "tutorialPanel", "w-full", "", "", "", "", "", "tutorial-guide-sticky");
     tutorialCss(&panel, {
         {"display", "flex"},
         {"flex-direction", "column"},
@@ -971,6 +974,12 @@ static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show
         {"border-radius", "0.75rem"},
         {"padding", "1rem 1.25rem"},
         {"box-shadow", "0 0 0 1px rgba(56,189,248,0.15), 0 10px 28px rgba(2,132,199,0.28)"},
+        // Scrollable inside itself once .tutorial-guide-sticky caps its height.
+        // The shorthand, never overflow-y: these rules ride in a protobuf map
+        // with no defined order, and ContainerComponent writes its own
+        // `overflow` afterwards from this exact key. A longhand here would be
+        // flattened by that shorthand -- the same trap the border hit.
+        {"overflow", "auto"},
     });
 
     bool ok = false;
@@ -1167,6 +1176,12 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		"gap-4"
 	);
+	// ContainerComponent gives every container overflow:hidden unless the css
+	// map overrides it, and an ancestor with any non-visible overflow becomes
+	// the scroll container a sticky descendant sticks to. This one never
+	// scrolls, so the tutorial panel would have stuck to a box that does not
+	// move -- which looks exactly like sticky not working.
+	(*container.mutable_css())["overflow"] = "visible";
 
 	ui::Component topBar = ComponentGenerator::createContainer(
 		"stepViewTopBar",
