@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 // Local copy of FullDebatePageGenerator.cc's ClaimStatusToLabel -- that one
@@ -898,6 +899,41 @@ static ui::Component BuildClaimSummarySection(const user::User& viewerUser, int 
 // one that belongs to a different debate -- opening another debate mid-tutorial
 // should not drag the guide box along, narrating steps about claims that are
 // not on screen.
+// Two small helpers so the guide box can set real CSS rather than fight the
+// Tailwind class strings. The renderer turns a component's css map into an
+// inline style, and inline style is what reliably wins here -- TextComponent
+// substitutes its own colour and font size for anything it is not given
+// explicitly.
+static void tutorialCss(ui::Component* component,
+                        const std::vector<std::pair<std::string, std::string>>& rules) {
+    for (const auto& rule : rules) {
+        (*component->mutable_css())[rule.first] = rule.second;
+    }
+}
+
+static ui::Component tutorialText(const std::string& id, const std::string& text,
+                                  const std::vector<std::pair<std::string, std::string>>& rules) {
+    ui::Component component = ComponentGenerator::createText(id, text, "", "", "", "");
+    tutorialCss(&component, rules);
+    return component;
+}
+
+// Builds the walkthrough guide box: where you are, what just happened, and the
+// button that makes the next thing happen.
+//
+// It is styled loudly on purpose. This box is the only thing on the page a
+// first-time reader is meant to follow, and it competes with a graph, a claim
+// panel and a summary panel for the same eye -- a quiet bordered rectangle
+// lost that competition.
+//
+// The words come from the .pbtxt on every render rather than from anything
+// stored on the user, so editing a script changes what a walkthrough already
+// in progress says. Only the reader's POSITION is saved.
+//
+// Returns false into `show` when the viewer is not in a walkthrough, or is in
+// one that belongs to a different debate -- opening another debate mid-tutorial
+// should not drag the guide box along, narrating steps about claims that are
+// not on screen.
 static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show) {
     ui::Component panel;
     show = false;
@@ -915,63 +951,135 @@ static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show
     }
     show = true;
 
-    panel = ComponentGenerator::createContainer(
-        "tutorialPanel", "w-full", "bg-blue-950", "p-4", "",
-        "border border-blue-600", "rounded-lg", "");
-    (*panel.mutable_css())["display"] = "flex";
-    (*panel.mutable_css())["flex-direction"] = "column";
-    (*panel.mutable_css())["gap"] = "0.5rem";
+    panel = ComponentGenerator::createContainer("tutorialPanel", "w-full", "", "", "", "", "", "");
+    tutorialCss(&panel, {
+        {"display", "flex"},
+        {"flex-direction", "column"},
+        {"gap", "0.75rem"},
+        {"background", "linear-gradient(135deg, #0c1f3d 0%, #14294f 55%, #0b1a33 100%)"},
+        // Each side separately, NOT `border` plus a `border-left` override.
+        // These rules travel in a protobuf map, whose iteration order is
+        // unspecified, and the renderer turns that map straight into a style
+        // object -- so the shorthand could be applied after the longhand and
+        // silently flatten the accent bar back to a 1px blue line. It did.
+        {"border-top", "1px solid #2563eb"},
+        {"border-right", "1px solid #2563eb"},
+        {"border-bottom", "1px solid #2563eb"},
+        // The accent bar down the side is what makes this read as a panel to
+        // follow rather than one more bordered box among the four on screen.
+        {"border-left", "5px solid #38bdf8"},
+        {"border-radius", "0.75rem"},
+        {"padding", "1rem 1.25rem"},
+        {"box-shadow", "0 0 0 1px rgba(56,189,248,0.15), 0 10px 28px rgba(2,132,199,0.28)"},
+    });
 
     bool ok = false;
     std::string loadError;
     const tutorial::Tutorial script = tutorials::Load(state.script(), ok, loadError);
 
     if (!ok) {
-        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-            "tutorialLoadError", loadError, "text-sm", "text-red-400", "", ""));
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialLoadError", loadError,
+            {{"color", "#fca5a5"}, {"font-size", "0.9rem"}}));
         ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
-            "tutorialExitButton", "Leave tutorial", "", "bg-gray-700", "hover:bg-gray-600",
-            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+            "tutorialExitButton_load", "Leave tutorial", "", "", "", "", "", "", "text-sm"));
         return panel;
     }
 
     const int index = state.step_index();
     const int total = script.steps_size();
 
+    // ---- Header: step pill, progress bar, exit ----------------------------
     ui::Component headerRow = ComponentGenerator::createContainer(
         "tutorialHeaderRow", "w-full", "", "", "", "", "", "");
-    (*headerRow.mutable_css())["display"] = "flex";
-    (*headerRow.mutable_css())["flex-direction"] = "row";
-    (*headerRow.mutable_css())["justify-content"] = "space-between";
-    (*headerRow.mutable_css())["align-items"] = "center";
-    (*headerRow.mutable_css())["gap"] = "0.75rem";
+    tutorialCss(&headerRow, {
+        {"display", "flex"}, {"flex-direction", "row"},
+        {"align-items", "center"}, {"gap", "0.75rem"},
+    });
 
-    ComponentGenerator::addChild(&headerRow, ComponentGenerator::createText(
+    ComponentGenerator::addChild(&headerRow, tutorialText(
         "tutorialProgress",
-        script.title() + " -- step " + std::to_string(index + 1) + " of " +
-            std::to_string(total),
-        "text-xs", "text-blue-300", "font-semibold uppercase tracking-wide", ""));
-    ComponentGenerator::addChild(&headerRow, ComponentGenerator::createButton(
-        "tutorialExitButton", "Exit tutorial", "", "bg-gray-700", "hover:bg-gray-600",
-        "text-gray-300", "px-2 py-1", "rounded", "text-xs"));
+        "STEP " + std::to_string(index + 1) + " OF " + std::to_string(total),
+        {{"background", "linear-gradient(90deg, #0ea5e9, #38bdf8)"},
+         {"color", "#04121f"},
+         {"font-size", "0.7rem"},
+         {"font-weight", "800"},
+         {"letter-spacing", "0.08em"},
+         {"padding", "0.2rem 0.65rem"},
+         {"border-radius", "9999px"},
+         {"white-space", "nowrap"},
+         {"margin", "0"},
+         {"flex", "0 0 auto"}}));
+
+    // A bar rather than only the "3 of 8" text: how much is left is the thing
+    // a reader wants to know before committing to a walkthrough, and a number
+    // makes them do the arithmetic.
+    ui::Component progressTrack = ComponentGenerator::createContainer(
+        "tutorialProgressTrack", "", "", "", "", "", "", "");
+    tutorialCss(&progressTrack, {
+        {"flex", "1 1 auto"}, {"height", "6px"},
+        {"background", "rgba(148, 197, 253, 0.18)"},
+        {"border-radius", "9999px"}, {"overflow", "hidden"},
+        {"min-width", "60px"},
+    });
+    ui::Component progressFill = ComponentGenerator::createContainer(
+        "tutorialProgressFill", "", "", "", "", "", "", "");
+    const int percent = total > 0 ? ((index + 1) * 100) / total : 0;
+    tutorialCss(&progressFill, {
+        {"width", std::to_string(percent) + "%"},
+        {"height", "6px"},
+        {"background", "linear-gradient(90deg, #38bdf8, #22d3ee)"},
+        {"border-radius", "9999px"},
+    });
+    ComponentGenerator::addChild(&progressTrack, progressFill);
+    ComponentGenerator::addChild(&headerRow, progressTrack);
+
+    ui::Component exitButton = ComponentGenerator::createButton(
+        "tutorialExitButton", "Exit", "", "", "", "", "", "", "text-xs");
+    tutorialCss(&exitButton, {
+        {"background", "transparent"},
+        {"color", "#93a9c9"},
+        {"border", "1px solid rgba(148, 197, 253, 0.3)"},
+        {"flex", "0 0 auto"},
+    });
+    ComponentGenerator::addChild(&headerRow, exitButton);
     ComponentGenerator::addChild(&panel, headerRow);
 
+    // ---- The step itself ---------------------------------------------------
     if (index >= 0 && index < total) {
         const tutorial::TutorialStep& step = script.steps(index);
         if (!step.title().empty()) {
-            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-                "tutorialStepTitle", step.title(), "text-lg", "text-white", "font-bold", ""));
+            ComponentGenerator::addChild(&panel, tutorialText("tutorialStepTitle", step.title(),
+                {{"color", "#f1f7ff"},
+                 {"font-size", "1.4rem"},
+                 {"font-weight", "800"},
+                 {"letter-spacing", "-0.01em"},
+                 {"line-height", "1.25"},
+                 {"margin", "0"}}));
         }
         int paragraph = 0;
         for (const std::string& body : step.body()) {
-            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            ComponentGenerator::addChild(&panel, tutorialText(
                 "tutorialBody_" + std::to_string(paragraph++), body,
-                "text-sm", "text-gray-200", "", ""));
+                {{"color", "#cbd9ee"}, {"font-size", "0.95rem"},
+                 {"line-height", "1.65"}, {"margin", "0"}}));
         }
         if (!step.look_at().empty()) {
-            ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-                "tutorialLookAt", "Look at: " + step.look_at(),
-                "text-sm", "text-yellow-300", "font-semibold", ""));
+            // Amber, and boxed. This is the one line that asks the reader to
+            // move their eyes off the panel, so it should not look like more
+            // prose.
+            ui::Component lookAt = ComponentGenerator::createContainer(
+                "tutorialLookAtBox", "", "", "", "", "", "", "");
+            tutorialCss(&lookAt, {
+                {"background", "rgba(250, 204, 21, 0.10)"},
+                {"border-left", "3px solid #facc15"},
+                {"border-radius", "0.375rem"},
+                {"padding", "0.5rem 0.75rem"},
+            });
+            ComponentGenerator::addChild(&lookAt, tutorialText(
+                "tutorialLookAt", "Look at " + step.look_at(),
+                {{"color", "#fde68a"}, {"font-size", "0.9rem"},
+                 {"font-weight", "600"}, {"margin", "0"}}));
+            ComponentGenerator::addChild(&panel, lookAt);
         }
     }
 
@@ -979,27 +1087,42 @@ static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show
     // walkthrough did not advance, and offering Next again would just fail
     // again in the same place.
     if (!state.error().empty()) {
-        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-            "tutorialError", state.error(), "text-sm", "text-red-400", "", ""));
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialError", state.error(),
+            {{"color", "#fca5a5"}, {"font-size", "0.9rem"}, {"margin", "0"}}));
         ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
-            "tutorialExitButton", "Leave tutorial", "", "bg-gray-700", "hover:bg-gray-600",
-            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+            "tutorialExitButton_error", "Leave tutorial", "", "", "", "", "", "", "text-sm"));
         return panel;
     }
 
     if (state.finished()) {
-        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-            "tutorialDone",
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialDone",
             "That is the whole walkthrough. The debate it built is yours -- keep clicking "
             "around it, or leave the tutorial and it stays in your list.",
-            "text-sm", "text-green-300", "", ""));
-        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
-            "tutorialExitButton", "Finish", "", "bg-green-600", "hover:bg-green-500",
-            "text-white", "px-4 py-2", "rounded-lg", ""));
+            {{"color", "#86efac"}, {"font-size", "0.95rem"}, {"margin", "0"}}));
+        ui::Component finish = ComponentGenerator::createButton(
+            "tutorialExitButton_finish", "Finish", "", "", "", "", "", "", "text-lg");
+        tutorialCss(&finish, {
+            {"background", "linear-gradient(90deg, #16a34a, #22c55e)"},
+            {"color", "#ffffff"},
+            {"border", "none"},
+            {"align-self", "flex-start"},
+            {"box-shadow", "0 4px 14px rgba(22, 163, 74, 0.45)"},
+        });
+        ComponentGenerator::addChild(&panel, finish);
     } else {
-        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
-            "tutorialNextButton", "Next step", "", "bg-blue-600", "hover:bg-blue-700",
-            "text-white", "px-4 py-2", "rounded-lg", ""));
+        // The one control the reader is meant to press, so it is the brightest
+        // thing in the box and says where it goes.
+        ui::Component next = ComponentGenerator::createButton(
+            "tutorialNextButton", "Next step  \xE2\x86\x92", "", "", "", "", "", "", "text-lg");
+        tutorialCss(&next, {
+            {"background", "linear-gradient(90deg, #2563eb, #0ea5e9)"},
+            {"color", "#ffffff"},
+            {"border", "none"},
+            {"align-self", "flex-start"},
+            {"font-weight", "700"},
+            {"box-shadow", "0 4px 16px rgba(37, 99, 235, 0.5)"},
+        });
+        ComponentGenerator::addChild(&panel, next);
     }
 
     return panel;

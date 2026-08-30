@@ -23,7 +23,12 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
         event.set_type(debate_event::TUTORIAL_NEXT);
         Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));
-    } else if (componentId == "tutorialExitButton" && eventType == "onClick") {
+    // Prefix, not equality: the guide box shows an exit in the header, a
+    // Finish when the walkthrough ends, and a "Leave tutorial" when a script
+    // will not load. They all mean the same event but must be DIFFERENT
+    // elements -- sharing one id put duplicate ids in the document, and the
+    // second one became unreachable to anything addressing it by id.
+    } else if (componentId.rfind("tutorialExitButton", 0) == 0 && eventType == "onClick") {
         event.set_type(debate_event::TUTORIAL_EXIT);
         Log::debug("  TUTORIAL_EXIT for user: " + std::to_string(user_id));
     } else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
