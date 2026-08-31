@@ -35,6 +35,7 @@ WHAT MAKES A GOOD CHALLENGE
 3. Say what is actually wrong: the sample does not support the claim, the number measures something else, a term shifts meaning between two claims, the conclusion needs an assumption nobody stated, the source is not in a position to know.
 4. Do NOT simply negate the claim. "Remote work does not raise productivity" is a contradiction, not a challenge.
 5. Do NOT invent facts, studies or figures. You may say a claim ASSUMES something, or that the stated evidence does not reach as far as the claim does. You may not supply evidence of your own.
+5b. When your objection is to WHAT THE EVIDENCE SHOWS rather than to the evidence itself -- the study is real but selection-biased, the letter is genuine but does not admit what they say it admits -- target the claim that states the conclusion, never the claim that states the evidence. Challenging the evidence claim asserts the document or event does not exist, which is not what you mean.
 6. Do not repeat a challenge the debate already makes. Read the existing ones first.
 7. If a claim is well supported and you have no real objection, leave it alone. Three sharp challenges beat eight weak ones.
 
@@ -53,7 +54,7 @@ Return ONLY JSON, no markdown fence:
   ]
 }
 
-target_claim_id must be a number that appears as [#id] in the debate below. basis is one of EVIDENTIAL (the evidence does not show this), AUTHORITY (the source is not in a position to know), DEFINITIONAL (the term is used in two senses), NORMATIVE (a value judgement presented as fact), or "" if none fits.
+target_claim_id must be a number that appears as [#id] in the debate below. basis is one of EVIDENTIAL (the evidence does not show this, or the method behind it cannot carry the conclusion), AUTHORITY (the source is not in a position to know, or has a motive, bias or conflict that undercuts its say-so), DEFINITIONAL (a term is used in two senses, or the case does not fall under the rule or category it is filed under), NORMATIVE (a value judgement presented as fact, or an argument about what may legitimately be inferred or what ought to be done), or "" if none fits.
 
 Return between 1 and 5 challenges. If there is genuinely nothing worth challenging, return {"challenges": []}.
 

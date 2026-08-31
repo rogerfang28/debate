@@ -87,8 +87,14 @@ RULES FOR THE CLAIMS
 1. Every claim is ONE assertion that could be true or false. Split compound sentences.
 2. Use only what the passage says. Do not add facts or arguments of your own.
 3. Keep the passage's numbers and attributions in the claim text.
-4. basis is one of EVIDENTIAL, AUTHORITY, DEFINITIONAL, NORMATIVE, or omit the line.
+4. basis says what KIND of reason the connection is, and picking the right one matters more than it looks:
+   EVIDENTIAL   -- rests on facts, measurements, documents, events.
+   AUTHORITY    -- rests on who says so: an official body, an expert, a court. Attacks on a source's bias, motive or standing are AUTHORITY too.
+   DEFINITIONAL -- rests on what a term means or whether a case falls under a rule or category.
+   NORMATIVE    -- rests on values: what ought to be done, or what may legitimately be concluded from something.
+   Omit the line only if none fits.
 5. Use SUBMIT_CHALLENGE_CLAIM for anything the passage raises against a claim -- objections, limitations, contrary findings. A passage that discusses its own weaknesses should produce challenges.
+5b. When two sides read the SAME fact differently -- a study both cite, a document both quote -- do not link the fact straight to a conclusion. State the reading as its own claim ("The letter shows the agency funded the work"), support THAT with the fact, and let the other side's reading challenge the reading. An objection like "selection bias" or "that is not what it admits" attacks a reading, never the fact itself, and it needs a claim to land on.
 6. Aim for 8 to 14 claims in total. Work through the WHOLE passage before you stop -- a passage with four distinct arguments should produce four, not two.
 7. Attach each claim to the most specific thing it bears on. A rebuttal to a criticism belongs under that criticism, not under the root. Hanging everything off the root loses the shape of the argument.
 
