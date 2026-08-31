@@ -70,7 +70,8 @@ inline constexpr Tutorial::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         subtitle_(
             &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
+            ::_pbi::ConstantInitialized()),
+        order_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR Tutorial::Tutorial(::_pbi::ConstantInitialized)
@@ -101,15 +102,17 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_._has_bits_),
-        7, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_.name_),
         PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_.title_),
         PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_.subtitle_),
         PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_.steps_),
+        PROTOBUF_FIELD_OFFSET(::tutorial::Tutorial, _impl_.order_),
         1,
         2,
         3,
         0,
+        4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::tutorial::TutorialStep, _impl_._has_bits_),
         7, // hasbit index offset
@@ -126,7 +129,7 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::tutorial::Tutorial)},
-        {11, sizeof(::tutorial::TutorialStep)},
+        {13, sizeof(::tutorial::TutorialStep)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::tutorial::_Tutorial_default_instance_._instance,
@@ -135,13 +138,14 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_tutorial_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\016tutorial.proto\022\010tutorial\032\023test_scenari"
-    "o.proto\"~\n\010Tutorial\022\022\n\004name\030\001 \001(\tR\004name\022"
-    "\024\n\005title\030\002 \001(\tR\005title\022\032\n\010subtitle\030\003 \001(\tR"
-    "\010subtitle\022,\n\005steps\030\004 \003(\0132\026.tutorial.Tuto"
-    "rialStepR\005steps\"\204\001\n\014TutorialStep\0221\n\007acti"
-    "ons\030\001 \003(\0132\027.debate_test.TestActionR\007acti"
-    "ons\022\024\n\005title\030\002 \001(\tR\005title\022\022\n\004body\030\003 \003(\tR"
-    "\004body\022\027\n\007look_at\030\004 \001(\tR\006lookAtb\006proto3"
+    "o.proto\"\224\001\n\010Tutorial\022\022\n\004name\030\001 \001(\tR\004name"
+    "\022\024\n\005title\030\002 \001(\tR\005title\022\032\n\010subtitle\030\003 \001(\t"
+    "R\010subtitle\022,\n\005steps\030\004 \003(\0132\026.tutorial.Tut"
+    "orialStepR\005steps\022\024\n\005order\030\005 \001(\005R\005order\"\204"
+    "\001\n\014TutorialStep\0221\n\007actions\030\001 \003(\0132\027.debat"
+    "e_test.TestActionR\007actions\022\024\n\005title\030\002 \001("
+    "\tR\005title\022\022\n\004body\030\003 \003(\tR\004body\022\027\n\007look_at\030"
+    "\004 \001(\tR\006lookAtb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_tutorial_2eproto_deps[1] = {
@@ -151,7 +155,7 @@ static ::absl::once_flag descriptor_table_tutorial_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_tutorial_2eproto = {
     false,
     false,
-    318,
+    341,
     descriptor_table_protodef_tutorial_2eproto,
     "tutorial.proto",
     &descriptor_table_tutorial_2eproto_once,
@@ -208,6 +212,7 @@ Tutorial::Tutorial(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.order_ = from._impl_.order_;
 
   // @@protoc_insertion_point(copy_constructor:tutorial.Tutorial)
 }
@@ -222,6 +227,7 @@ PROTOBUF_NDEBUG_INLINE Tutorial::Impl_::Impl_(
 
 inline void Tutorial::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.order_ = {};
 }
 Tutorial::~Tutorial() {
   // @@protoc_insertion_point(destructor:tutorial.Tutorial)
@@ -295,16 +301,16 @@ Tutorial::GetClassData() const {
   return Tutorial_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 1, 43, 2>
+const ::_pbi::TcParseTable<3, 5, 1, 43, 2>
 Tutorial::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Tutorial, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     Tutorial_class_data_.base(),
@@ -314,10 +320,7 @@ Tutorial::_table_ = {
     ::_pbi::TcParser::GetTable<::tutorial::Tutorial>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .tutorial.TutorialStep steps = 4 [json_name = "steps"];
-    {::_pbi::TcParser::FastMtR1,
-     {34, 0, 0,
-      PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.steps_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string name = 1 [json_name = "name"];
     {::_pbi::TcParser::FastUS1,
      {10, 1, 0,
@@ -330,6 +333,16 @@ Tutorial::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {26, 3, 0,
       PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.subtitle_)}},
+    // repeated .tutorial.TutorialStep steps = 4 [json_name = "steps"];
+    {::_pbi::TcParser::FastMtR1,
+     {34, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.steps_)}},
+    // int32 order = 5 [json_name = "order"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Tutorial, _impl_.order_), 4>(),
+     {40, 4, 0,
+      PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.order_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -341,6 +354,8 @@ Tutorial::_table_ = {
     {PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.subtitle_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // repeated .tutorial.TutorialStep steps = 4 [json_name = "steps"];
     {PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.steps_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // int32 order = 5 [json_name = "order"];
+    {PROTOBUF_FIELD_OFFSET(Tutorial, _impl_.order_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::tutorial::TutorialStep>()},
@@ -375,6 +390,7 @@ PROTOBUF_NOINLINE void Tutorial::Clear() {
       _impl_.subtitle_.ClearNonDefaultToEmpty();
     }
   }
+  _impl_.order_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -441,6 +457,15 @@ PROTOBUF_NOINLINE void Tutorial::Clear() {
     }
   }
 
+  // int32 order = 5 [json_name = "order"];
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (this_._internal_order() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
+              stream, this_._internal_order(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -466,7 +491,7 @@ PROTOBUF_NOINLINE void Tutorial::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     // repeated .tutorial.TutorialStep steps = 4 [json_name = "steps"];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size += 1UL * this_._internal_steps_size();
@@ -495,6 +520,13 @@ PROTOBUF_NOINLINE void Tutorial::Clear() {
                                         this_._internal_subtitle());
       }
     }
+    // int32 order = 5 [json_name = "order"];
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (this_._internal_order() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_order());
+      }
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -515,7 +547,7 @@ void Tutorial::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       _this->_internal_mutable_steps()->InternalMergeFromWithArena(
           ::google::protobuf::MessageLite::internal_visibility(), arena,
@@ -548,6 +580,11 @@ void Tutorial::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (from._internal_order() != 0) {
+        _this->_impl_.order_ = from._impl_.order_;
+      }
+    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
@@ -572,6 +609,7 @@ void Tutorial::InternalSwap(Tutorial* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) 
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.title_, &other->_impl_.title_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.subtitle_, &other->_impl_.subtitle_, arena);
+  swap(_impl_.order_, other->_impl_.order_);
 }
 
 ::google::protobuf::Metadata Tutorial::GetMetadata() const {

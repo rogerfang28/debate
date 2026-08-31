@@ -73,11 +73,14 @@ std::vector<Listing> List() {
         listing.name = name;
         listing.title = loaded.title().empty() ? name : loaded.title();
         listing.subtitle = loaded.subtitle();
+        listing.order = loaded.order();
         found.push_back(listing);
     }
 
-    std::sort(found.begin(), found.end(),
-              [](const Listing& a, const Listing& b) { return a.name < b.name; });
+    std::sort(found.begin(), found.end(), [](const Listing& a, const Listing& b) {
+        if (a.order != b.order) return a.order < b.order;
+        return a.name < b.name;
+    });
     return found;
 }
 

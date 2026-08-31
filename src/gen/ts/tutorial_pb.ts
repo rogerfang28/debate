@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file tutorial.proto.
  */
 export const file_tutorial: GenFile = /*@__PURE__*/
-  fileDesc("Cg50dXRvcmlhbC5wcm90bxIIdHV0b3JpYWwiYAoIVHV0b3JpYWwSDAoEbmFtZRgBIAEoCRINCgV0aXRsZRgCIAEoCRIQCghzdWJ0aXRsZRgDIAEoCRIlCgVzdGVwcxgEIAMoCzIWLnR1dG9yaWFsLlR1dG9yaWFsU3RlcCJmCgxUdXRvcmlhbFN0ZXASKAoHYWN0aW9ucxgBIAMoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAMoCRIPCgdsb29rX2F0GAQgASgJYgZwcm90bzM", [file_test_scenario]);
+  fileDesc("Cg50dXRvcmlhbC5wcm90bxIIdHV0b3JpYWwibwoIVHV0b3JpYWwSDAoEbmFtZRgBIAEoCRINCgV0aXRsZRgCIAEoCRIQCghzdWJ0aXRsZRgDIAEoCRIlCgVzdGVwcxgEIAMoCzIWLnR1dG9yaWFsLlR1dG9yaWFsU3RlcBINCgVvcmRlchgFIAEoBSJmCgxUdXRvcmlhbFN0ZXASKAoHYWN0aW9ucxgBIAMoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAMoCRIPCgdsb29rX2F0GAQgASgJYgZwcm90bzM", [file_test_scenario]);
 
 /**
  * A guided walkthrough of the tool: a debate that builds itself one step at a
@@ -58,6 +58,18 @@ export type Tutorial = Message<"tutorial.Tutorial"> & {
    * @generated from field: repeated tutorial.TutorialStep steps = 4;
    */
   steps: TutorialStep[];
+
+  /**
+   * Where this sits in the list on the home page. Lower comes first; ties fall
+   * back to the filename.
+   * 
+   * Without it the order is alphabetical, which put an advanced walkthrough
+   * above the one written for people who have never seen the tool. Which one a
+   * newcomer meets first is not something to leave to spelling.
+   *
+   * @generated from field: int32 order = 5;
+   */
+  order: number;
 };
 
 /**

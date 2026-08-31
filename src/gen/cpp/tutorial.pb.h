@@ -476,6 +476,7 @@ class Tutorial final : public ::google::protobuf::Message
     kNameFieldNumber = 1,
     kTitleFieldNumber = 2,
     kSubtitleFieldNumber = 3,
+    kOrderFieldNumber = 5,
   };
   // repeated .tutorial.TutorialStep steps = 4 [json_name = "steps"];
   int steps_size() const;
@@ -539,11 +540,21 @@ class Tutorial final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_subtitle();
 
   public:
+  // int32 order = 5 [json_name = "order"];
+  void clear_order() ;
+  ::int32_t order() const;
+  void set_order(::int32_t value);
+
+  private:
+  ::int32_t _internal_order() const;
+  void _internal_set_order(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:tutorial.Tutorial)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    1, 43,
                                    2>
       _table_;
@@ -569,6 +580,7 @@ class Tutorial final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr name_;
     ::google::protobuf::internal::ArenaStringPtr title_;
     ::google::protobuf::internal::ArenaStringPtr subtitle_;
+    ::int32_t order_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -842,6 +854,31 @@ inline ::google::protobuf::RepeatedPtrField<::tutorial::TutorialStep>* PROTOBUF_
 Tutorial::_internal_mutable_steps() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.steps_;
+}
+
+// int32 order = 5 [json_name = "order"];
+inline void Tutorial::clear_order() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::int32_t Tutorial::order() const {
+  // @@protoc_insertion_point(field_get:tutorial.Tutorial.order)
+  return _internal_order();
+}
+inline void Tutorial::set_order(::int32_t value) {
+  _internal_set_order(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:tutorial.Tutorial.order)
+}
+inline ::int32_t Tutorial::_internal_order() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.order_;
+}
+inline void Tutorial::_internal_set_order(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.order_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -27,6 +27,14 @@ message Tutorial {
   string subtitle = 3;
 
   repeated TutorialStep steps = 4;
+
+  // Where this sits in the list on the home page. Lower comes first; ties fall
+  // back to the filename.
+  //
+  // Without it the order is alphabetical, which put an advanced walkthrough
+  // above the one written for people who have never seen the tool. Which one a
+  // newcomer meets first is not something to leave to spelling.
+  int32 order = 5;
 }
 
 // One step: something that happens, and the explanation of what you are now

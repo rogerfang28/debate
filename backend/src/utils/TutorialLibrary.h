@@ -24,14 +24,16 @@ struct Listing {
     std::string name;      // filename stem, the id used everywhere else
     std::string title;
     std::string subtitle;
+    int order = 0;
 };
 
-// Every readable script, sorted by name. Unparseable files are skipped rather
-// than throwing -- one bad file should not take the home page down with it.
+// Every readable script, ordered by each script's own `order` field and then
+// by filename. Unparseable files are skipped rather than throwing -- one bad
+// file should not take the home page down with it.
 std::vector<Listing> List();
 
 // The walkthrough offered by default: the one named by DEBATE_TUTORIAL, or
-// else the alphabetically first. Empty if the directory has none.
+// else the first one List() returns. Empty if the directory has none.
 std::string DefaultName();
 
 // Loads one script. `ok` is false and `error` says why if it is missing or

@@ -28,6 +28,7 @@
 name: "getting-started"
 title: "Watch a debate get built"
 subtitle: "Eight steps, about two minutes. Builds a real debate you keep."
+order: 1
 
 # ===========================================================================
 steps {
