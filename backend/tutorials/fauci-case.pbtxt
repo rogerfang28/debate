@@ -2,9 +2,9 @@
 #
 # A second walkthrough for people who have done the first one. Where
 # getting-started teaches the mechanics on a small invented argument, this
-# builds a real, messy, unresolved dispute -- and it is the only place the
-# four BASES all appear, because this is an argument where the kind of a
-# reason matters as much as the reason.
+# builds a real, messy, unresolved dispute -- and it is where several kinds
+# of BASIS appear side by side, because this is an argument where the kind of
+# a reason matters as much as the reason.
 #
 # The claims are taken from the hand-built Fauci debate rather than invented,
 # so the shape here is the shape a person actually built by hand.
@@ -227,7 +227,7 @@ steps {
 
   title: "Stand back"
   body: "Three independent accusations under the root. Two of them challenged. One held up by a three-claim chain whose weakest link is a definition, and that definition is where the entire virology dispute actually lives."
-  body: "All four kinds of reason are now on screen: EVIDENTIAL for what was observed, AUTHORITY for who gets to decide, DEFINITIONAL for what a phrase means, NORMATIVE for what may be concluded. In an argument like this, the kind matters as much as the content -- most of the shouting comes from people answering one kind with another."
+  body: "Four kinds of reason are on screen: EVIDENTIAL for what was observed, AUTHORITY for who gets to decide, DEFINITIONAL for what a phrase means, NORMATIVE for what matters. In an argument like this, the kind matters as much as the content -- most of the shouting comes from people answering one kind with another."
   body: "Nothing is resolved, and nothing pretends to be. Every status here belongs to one person."
   look_at: "the whole graph, and how much of it depends on that one definitional link."
 }

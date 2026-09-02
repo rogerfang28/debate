@@ -70,7 +70,7 @@ steps {
 
   title: "A reason to believe it"
   body: "You have put a claim underneath the first one. The line between them means this claim supports the one above it."
-  body: "The label on that line says what KIND of support it is. EVIDENTIAL means it rests on facts. The others are authority, definition and value -- kept apart because they fail in completely different ways, and an argument that quietly swaps one for another is the most common way of cheating."
+  body: "The label on that line says what KIND of support it is. EVIDENTIAL means it rests on facts. There are other kinds -- who says so, what a term means, what ought to matter, how a cause works -- kept apart because they fail in completely different ways, and an argument that quietly swaps one for another is the most common way of cheating."
   look_at: "the new box, and the EVIDENTIAL label on the line joining it to the claim above."
 }
 

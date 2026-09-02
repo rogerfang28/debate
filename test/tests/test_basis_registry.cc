@@ -95,16 +95,22 @@ protected:
 
 TEST_F(RegistryFileTest, ReadsTheShippedRegistry) {
     use(shippedRegistry());
-    const std::vector<std::string> expected = {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL",
-                                               "NORMATIVE"};
+    const std::vector<std::string> expected = {"EVIDENTIAL", "AUTHORITY",  "DEFINITIONAL",
+                                               "NORMATIVE",  "CAUSAL",     "ANALOGICAL",
+                                               "INFERENTIAL"};
     EXPECT_EQ(bases::Names(), expected);
     EXPECT_EQ(bases::DefaultName(), "EVIDENTIAL");
     for (const auto& name : expected) {
         EXPECT_TRUE(bases::IsKnown(name)) << name;
-        // The refactor moved the rule, it did not change it: every shipped
-        // basis collapses, which is what every link did before.
+    }
+    // The original four keep the rule every link had before the registry
+    // existed. INFERENTIAL is the one shipped basis that does not collapse:
+    // a bad step leaves its conclusion unproven, not false.
+    for (const auto& name : {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE",
+                             "CAUSAL", "ANALOGICAL"}) {
         EXPECT_EQ(bases::PropagationFor(name), basis::COLLAPSE) << name;
     }
+    EXPECT_EQ(bases::PropagationFor("INFERENTIAL"), basis::UNSUPPORT);
 }
 
 TEST_F(RegistryFileTest, ExplainsItselfToAModelInItsOwnWords) {

@@ -49,7 +49,38 @@ bases {
 bases {
   name: "NORMATIVE"
   propagation: COLLAPSE
-  description: "Rests on values: what ought to be done, or what may legitimately be concluded from something."
-  as_support: "Given what matters, or what one is entitled to infer, the claim above follows."
-  as_challenge: "A value judgement is being presented as fact, or the inference drawn is not one the facts license."
+  description: "Rests on values: what ought to be done, or what matters more."
+  as_support: "Given what matters, the claim above follows."
+  as_challenge: "A value judgement is being presented as fact, or the value it rests on is one the other side does not share."
+}
+
+# The three below were found by asking, for a root claim, what a child could
+# BE to it -- and finding relationships the four above could only hold by
+# being stretched. Each fails in a way none of the others does, which is the
+# same test that justified the original four.
+
+bases {
+  name: "CAUSAL"
+  propagation: COLLAPSE
+  description: "Rests on a mechanism: how one thing brings about another."
+  as_support: "This is the process by which the cause produces the effect claimed above."
+  as_challenge: "The facts are as stated, but the mechanism does not operate here, or something else produced the effect."
+}
+
+bases {
+  name: "ANALOGICAL"
+  propagation: COLLAPSE
+  description: "Rests on a comparable case: a precedent, a parallel, a like-for-like example."
+  as_support: "A relevantly similar case went this way, so this one should too."
+  as_challenge: "The cases differ in the respect that matters, so the comparison does not carry."
+}
+
+# UNSUPPORT, not COLLAPSE: a bad inference leaves its conclusion unproven, it
+# does not make it false. This is the basis UNSUPPORT was built for.
+bases {
+  name: "INFERENTIAL"
+  propagation: UNSUPPORT
+  description: "Rests on the step itself: that the conclusion follows from what is already granted."
+  as_support: "Given the claims already on the table, this is what follows from them."
+  as_challenge: "The premises can all be true and the conclusion still not follow: a non sequitur, an irrelevance, or a step that proves less than it needs to."
 }
