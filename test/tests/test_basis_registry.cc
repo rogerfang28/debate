@@ -95,9 +95,11 @@ protected:
 
 TEST_F(RegistryFileTest, ReadsTheShippedRegistry) {
     use(shippedRegistry());
-    const std::vector<std::string> expected = {"EVIDENTIAL", "AUTHORITY",  "DEFINITIONAL",
-                                               "NORMATIVE",  "CAUSAL",     "ANALOGICAL",
-                                               "INFERENTIAL"};
+    // Five, and no more than five: the set is the minimum that does not bend
+    // an argument to fit it. A change here should come with the failure mode
+    // the new entry has that none of the others do.
+    const std::vector<std::string> expected = {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL",
+                                               "NORMATIVE", "INFERENTIAL"};
     EXPECT_EQ(bases::Names(), expected);
     EXPECT_EQ(bases::DefaultName(), "EVIDENTIAL");
     for (const auto& name : expected) {
@@ -106,8 +108,7 @@ TEST_F(RegistryFileTest, ReadsTheShippedRegistry) {
     // The original four keep the rule every link had before the registry
     // existed. INFERENTIAL is the one shipped basis that does not collapse:
     // a bad step leaves its conclusion unproven, not false.
-    for (const auto& name : {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE",
-                             "CAUSAL", "ANALOGICAL"}) {
+    for (const auto& name : {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"}) {
         EXPECT_EQ(bases::PropagationFor(name), basis::COLLAPSE) << name;
     }
     EXPECT_EQ(bases::PropagationFor("INFERENTIAL"), basis::UNSUPPORT);
