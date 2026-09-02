@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package basis;
+
+// The link kinds the tool knows -- the closed vocabulary that
+// Relationship.basis is drawn from.
+//
+// This used to live in the code, four times over: two prompts, four dropdowns,
+// and a status engine that ignored it. Now it is one file,
+// backend/config/bases.pbtxt, and everything that needs to know what a basis
+// IS reads it from there: the dropdowns list it, the prompts explain it to the
+// model in the registry's own words, the write path refuses names it does not
+// contain, and the status engine asks it how a failure travels.
+//
+// Adding a kind of reason is therefore an edit to that file. Nothing here
+// names EVIDENTIAL or any other particular basis.
+
+// How the status of the claim BELOW a link reaches the claim ABOVE it.
+//
+// For a SUPPORTS link "below" is the supporter and "above" the supported.
+// For an OPPOSES link "below" is the challenger and "above" the challenged.
+enum Propagation {
+  PROPAGATION_UNSPECIFIED = 0;
+
+  // A failed supporter takes the supported claim down with it; a successful
+  // challenger defeats its target outright. This is the rule every link
+  // followed before the registry existed, so it is what the shipped bases
+  // all use -- the refactor changed where the rule lives, not what it does.
+  COLLAPSE = 1;
+
+  // A failed supporter leaves the supported claim UNDETERMINED rather than
+  // false -- the reason is gone, but nothing was shown wrong. A successful
+  // challenger likewise pulls its target back to undetermined instead of
+  // refuting it. The shape for "your evidence does not prove that".
+  UNSUPPORT = 2;
+
+  // The link carries no status in either direction. It is drawn, and it says
+  // what kind of reason was offered, but nothing above it moves.
+  NONE = 3;
+}
+
+message Basis {
+  // Stored verbatim in Relationship.basis and shown on the link. Upper case by
+  // convention, so it reads as a label rather than a sentence.
+  string name = 1;
+
+  Propagation propagation = 2;
+
+  // One line: what kind of reason this is. Used wherever the name alone is
+  // too terse -- the prompt guide, and any UI that wants a hint.
+  string description = 3;
+
+  // What a SUPPORTS link of this kind asserts about the claim above it.
+  // Written for the model, in the second person it is addressed in.
+  string as_support = 4;
+
+  // What an OPPOSES link of this kind asserts. Kept separate from as_support
+  // because the two are not mirror images: an AUTHORITY support says "the
+  // body that decides has decided", and an AUTHORITY challenge is as often
+  // about motive as about standing.
+  string as_challenge = 5;
+
+  // Preselected in dropdowns and used where a prompt needs one example basis.
+  // Exactly one entry should set it; the first that does wins.
+  bool is_default = 6;
+}
+
+message BasisRegistry {
+  // In display order.
+  repeated Basis bases = 1;
+}

@@ -1,3 +1,4 @@
+#include "../../../../../utils/BasisRegistry.h"
 #include "FullDebatePageGenerator.h"
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
@@ -1814,13 +1815,12 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&modalContent, basisLabel);
 
-            // Basis dropdown. These four are the closed set from debate.proto:
-            // each maps to one of four defeat behaviours, so the list is a
-            // vocabulary rather than a suggestion.
+            // Basis dropdown: whatever backend/config/bases.pbtxt lists, in its
+            // order. Nothing here knows the names.
             ui::Component basisDropdown = ComponentGenerator::createDropdown(
                 "linkTypeSelect",
-                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
-                "EVIDENTIAL",
+                bases::Names(),
+                bases::DefaultName(),
                 "linkType",
                 "bg-gray-700",
                 "text-white",
@@ -1972,8 +1972,8 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
 
             ui::Component challengeBasisDropdown = ComponentGenerator::createDropdown(
                 "challengeLinkTypeSelect",
-                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
-                "EVIDENTIAL",
+                bases::Names(),
+                bases::DefaultName(),
                 "challengeLinkType",
                 "bg-gray-700",
                 "text-white",

@@ -1,4 +1,5 @@
 #include "ChallengeHandler.h"
+#include "../../../utils/BasisRegistry.h"
 
 #include <iostream>
 #include <set>
@@ -97,7 +98,9 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper) {
+    // Same rule as AddClaimUnderClaim: only a basis the registry knows is stored.
+    const std::string basis = bases::Sanitize(basis_in);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // find the current claim (it's challenging that one)

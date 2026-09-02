@@ -4,8 +4,14 @@
 #include "user.pb.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
+#include "../../../utils/BasisRegistry.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper) {
+void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper) {
+    // A basis the registry cannot explain is not stored: the dropdowns, the
+    // prompts and the status engine all read the registry, and a link carrying
+    // a name none of them know would be a link nobody can describe or reason
+    // about. Unknown becomes unspecified, with a warning.
+    const std::string basis = bases::Sanitize(basis_in);
     // first find where the user is in the debate
     // get user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);

@@ -1,3 +1,4 @@
+#include "../../../../../utils/BasisRegistry.h"
 #include "SingleDebatePageGenerator.h"
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
@@ -1785,8 +1786,8 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
 
             ui::Component basisDropdown = ComponentGenerator::createDropdown(
                 "linkTypeSelect",
-                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
-                "EVIDENTIAL",
+                bases::Names(),
+                bases::DefaultName(),
                 "linkType",
                 "bg-gray-700",
                 "text-white",
@@ -1938,8 +1939,8 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
 
             ui::Component challengeBasisDropdown = ComponentGenerator::createDropdown(
                 "challengeLinkTypeSelect",
-                {"EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE"},
-                "EVIDENTIAL",
+                bases::Names(),
+                bases::DefaultName(),
                 "challengeLinkType",
                 "bg-gray-700",
                 "text-white",

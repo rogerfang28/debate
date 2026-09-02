@@ -94,6 +94,7 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -196,6 +197,7 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -274,6 +276,7 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -307,6 +310,7 @@ add_executable(summarize_tool
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -336,6 +340,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_ai_challenger.cc
     ${CMAKE_SOURCE_DIR}/tests/test_url_fetcher.cc
     ${CMAKE_SOURCE_DIR}/tests/test_tutorial_library.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_basis_registry.cc
 )
 
 add_executable(debate_tests
@@ -362,6 +367,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc

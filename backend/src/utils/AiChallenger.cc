@@ -3,6 +3,7 @@
 #include "../debateModerator/DebateModerator.h"
 #include "DebateWrapper.h"
 #include "Log.h"
+#include "BasisRegistry.h"
 #include "debate_event.pb.h"
 
 #include <jsoncons/json.hpp>
@@ -49,12 +50,12 @@ Return ONLY JSON, no markdown fence:
       "target_claim_id": 42,
       "text": "the challenge, as a single claim that could itself be true or false",
       "description": "one sentence on what exactly is wrong, or empty",
-      "basis": "EVIDENTIAL"
+      "basis": "{default_basis}"
     }
   ]
 }
 
-target_claim_id must be a number that appears as [#id] in the debate below. basis is one of EVIDENTIAL (the evidence does not show this, or the method behind it cannot carry the conclusion), AUTHORITY (the source is not in a position to know, or has a motive, bias or conflict that undercuts its say-so), DEFINITIONAL (a term is used in two senses, or the case does not fall under the rule or category it is filed under), NORMATIVE (a value judgement presented as fact, or an argument about what may legitimately be inferred or what ought to be done), or "" if none fits.
+target_claim_id must be a number that appears as [#id] in the debate below. basis is one of {bases}, or "" if none fits.
 
 Return between 1 and 5 challenges. If there is genuinely nothing worth challenging, return {"challenges": []}.
 
@@ -66,6 +67,16 @@ THE DEBATE:
 
 std::string AiChallenger::BuildPrompt(const std::string& debateText) {
     std::string prompt = kChallengePromptTemplate;
+    // The registry explains its own kinds; see DebateGenerator for the same idea.
+    for (const char* key : {"{bases}", "{default_basis}"}) {
+        const std::string value = std::string(key) == "{bases}" ? bases::GuideInline()
+                                                                 : bases::DefaultName();
+        size_t at = 0;
+        while ((at = prompt.find(key, at)) != std::string::npos) {
+            prompt.replace(at, std::string(key).size(), value);
+            at += value.size();
+        }
+    }
     const std::string key = "{debate}";
     const size_t at = prompt.find(key);
     if (at != std::string::npos) {

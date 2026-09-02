@@ -1,4 +1,5 @@
 #include "DebateWrapper.h"
+#include "BasisRegistry.h"
 #include <iostream>
 #include <map>
 #include <algorithm>
@@ -729,30 +730,48 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     const std::set<int>& conceded_claims) {
     debate::ClaimStatus ns = currentStatus;
 
-    // Rule A/B: parent-child
+    // Rule A/B: parent-child.
+    //
+    // How a child's status reaches this claim is the link's basis's business,
+    // read from the registry: COLLAPSE is the rule every link had before the
+    // registry existed, UNSUPPORT withdraws the reason without refuting the
+    // claim, NONE means the link carries nothing. With every shipped basis on
+    // COLLAPSE this is the old computation exactly; the difference is that it
+    // can now be changed in bases.pbtxt.
     bool anyChildFalse = false;
     bool allChildrenTrue = true;
+    int countedChildren = 0;
     auto childrenIt = childrenMap.find(claimId);
-    bool hasChildren = childrenIt != childrenMap.end() && !childrenIt->second.empty();
     if (childrenIt != childrenMap.end()) {
         for (const auto& rel : childrenIt->second) {
+            const basis::Propagation prop = bases::PropagationFor(rel.basis());
+            if (prop == basis::NONE) continue;
+            ++countedChildren;
             debate::Claim cc = getClaimById(rel.link().connect_to());
             auto cit = cc.user_statuses().find(user);
             if (cit == cc.user_statuses().end()) { allChildrenTrue = false; continue; }
-            if (cit->second == debate::ClaimStatus::FALSE_CLAIM) { anyChildFalse = true; break; }
+            if (cit->second == debate::ClaimStatus::FALSE_CLAIM) {
+                if (prop == basis::COLLAPSE) { anyChildFalse = true; break; }
+                // UNSUPPORT: the reason is gone; the claim is not thereby wrong.
+                allChildrenTrue = false;
+                continue;
+            }
             if (cit->second != debate::ClaimStatus::TRUE_CLAIM) { allChildrenTrue = false; }
         }
     }
+    const bool hasChildren = countedChildren > 0;
     if (anyChildFalse) ns = debate::ClaimStatus::FALSE_CLAIM;
     else if (hasChildren && allChildrenTrue &&
              conceded_claims.find(claimId) == conceded_claims.end())
         ns = debate::ClaimStatus::TRUE_CLAIM;
 
-    // Rule C: incoming CHALLENGE is FALSE → this claim TRUE
+    // Rule C: incoming CHALLENGE is FALSE → this claim TRUE. A failed attack
+    // vindicates under COLLAPSE and UNSUPPORT alike; NONE links never count.
     auto citIn = challengeIncoming.find(claimId);
     if (citIn != challengeIncoming.end()) {
         bool anyFalse = false;
         for (const auto& rel : citIn->second) {
+            if (bases::PropagationFor(rel.basis()) == basis::NONE) continue;
             debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
             if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
@@ -760,15 +779,23 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
         if (anyFalse) ns = debate::ClaimStatus::TRUE_CLAIM;
     }
 
-    // Rule D: incoming CHALLENGE is TRUE → this claim FALSE
+    // Rule D: incoming CHALLENGE is TRUE → this claim FALSE under COLLAPSE, or
+    // merely no longer TRUE under UNSUPPORT. COLLAPSE wins if both kinds fire.
     if (citIn != challengeIncoming.end()) {
-        bool anyTrue = false;
+        bool anyTrueCollapse = false;
+        bool anyTrueUnsupport = false;
         for (const auto& rel : citIn->second) {
+            const basis::Propagation prop = bases::PropagationFor(rel.basis());
+            if (prop == basis::NONE) continue;
             debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
-            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) { anyTrue = true; break; }
+            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) {
+                if (prop == basis::COLLAPSE) { anyTrueCollapse = true; break; }
+                anyTrueUnsupport = true;
+            }
         }
-        if (anyTrue) ns = debate::ClaimStatus::FALSE_CLAIM;
+        if (anyTrueCollapse) ns = debate::ClaimStatus::FALSE_CLAIM;
+        else if (anyTrueUnsupport && ns == debate::ClaimStatus::TRUE_CLAIM) ns = debate::ClaimStatus::UNDETERMINED;
     }
 
     return ns;

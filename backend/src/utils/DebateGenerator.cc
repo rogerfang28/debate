@@ -1,6 +1,7 @@
 #include "DebateGenerator.h"
 
 #include "Log.h"
+#include "BasisRegistry.h"
 
 namespace {
 
@@ -39,7 +40,7 @@ steps {
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "a claim supporting claim 1"
     claim_description: "optional context, or omit this line"
-    basis: "EVIDENTIAL"
+    basis: "{default_basis}"
   }
 }
 
@@ -52,7 +53,7 @@ steps {
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "a claim arguing against claim 2"
     challenge_description: "optional context, or omit this line"
-    basis: "EVIDENTIAL"
+    basis: "{default_basis}"
   }
 }
 
@@ -74,7 +75,7 @@ steps {
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Supply fell"
     extra_claim_texts: "Demand held steady"
-    basis: "EVIDENTIAL"
+    basis: "{default_basis}"
   }
 }
 
@@ -87,12 +88,8 @@ RULES FOR THE CLAIMS
 1. Every claim is ONE assertion that could be true or false. Split compound sentences.
 2. Use only what the passage says. Do not add facts or arguments of your own.
 3. Keep the passage's numbers and attributions in the claim text.
-4. basis says what KIND of reason the connection is, and picking the right one matters more than it looks:
-   EVIDENTIAL   -- rests on facts, measurements, documents, events.
-   AUTHORITY    -- rests on who says so: an official body, an expert, a court. Attacks on a source's bias, motive or standing are AUTHORITY too.
-   DEFINITIONAL -- rests on what a term means or whether a case falls under a rule or category.
-   NORMATIVE    -- rests on values: what ought to be done, or what may legitimately be concluded from something.
-   Omit the line only if none fits.
+4. basis says what KIND of reason the connection is, and picking the right one matters more than it looks. The kinds are:
+{bases}   Omit the line only if none fits.
 5. Use SUBMIT_CHALLENGE_CLAIM for anything the passage raises against a claim -- objections, limitations, contrary findings. A passage that discusses its own weaknesses should produce challenges.
 5b. When two sides read the SAME fact differently -- a study both cite, a document both quote -- do not link the fact straight to a conclusion. State the reading as its own claim ("The letter shows the agency funded the work"), support THAT with the fact, and let the other side's reading challenge the reading. An objection like "selection bias" or "that is not what it admits" attacks a reading, never the fact itself, and it needs a claim to land on.
 6. Aim for 8 to 14 claims in total. Work through the WHOLE passage before you stop -- a passage with four distinct arguments should produce four, not two.
@@ -116,6 +113,18 @@ std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::st
     if (topicAt != std::string::npos) {
         prompt.replace(topicAt, topicKey.size(),
                        topic.empty() ? "(none given -- take it from the passage)" : topic);
+    }
+    // The kinds of reason come from the registry, in its own words, so a
+    // basis added to bases.pbtxt is explained to the model without anyone
+    // touching this file.
+    for (const char* key : {"{bases}", "{default_basis}"}) {
+        const std::string value = std::string(key) == "{bases}" ? bases::GuideAsList()
+                                                                 : bases::DefaultName();
+        size_t at = 0;
+        while ((at = prompt.find(key, at)) != std::string::npos) {
+            prompt.replace(at, std::string(key).size(), value);
+            at += value.size();
+        }
     }
     const std::string passageKey = "{passage}";
     const size_t passageAt = prompt.find(passageKey);
