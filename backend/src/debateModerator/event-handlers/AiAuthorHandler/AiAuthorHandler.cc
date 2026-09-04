@@ -8,6 +8,7 @@
 #include "../../../utils/DebateTextFormatter.h"
 #include "../../../utils/DebateWrapper.h"
 #include "../../../utils/ScenarioImporter.h"
+#include "../../../utils/ExtractedDebateBuilder.h"
 #include "../../../utils/Log.h"
 
 #include <exception>
@@ -155,28 +156,40 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
         if (!generation.error.empty()) {
             status->set_error(generation.error);
         } else {
-            // Parsing and replaying both write to the database, so both happen
+            // Parsing and building both write to the database, so both happen
             // HERE, on the request thread, never on the worker.
-            bool parsed = false;
-            std::string parseError;
-            const debate_test::TestScenario scenario =
-                scenario::LoadFromText(generation.text, parsed, parseError);
-            if (!parsed) {
-                status->set_error(parseError);
-            } else {
-                scenario::Importer importer(moderator);
-                if (!importer.Run(scenario)) {
-                    // A scenario stops at its first bad step, so a partial
-                    // debate may exist. Saying so beats implying nothing
-                    // happened when the user can see a new debate in the list.
-                    status->set_error(
-                        "The AI's scenario failed partway through. Any debate it created is "
-                        "incomplete.");
-                } else {
-                    status->set_note("Generated a debate from " +
-                                     std::to_string(scenario.steps_size()) + " steps.");
-                    status->set_about_debate_id(importer.debate_id());
+            //
+            // The model now writes a TREE rather than a step list. The whole
+            // tree is validated before anything is created, so a malformed
+            // generation leaves no debate behind at all -- where the old step
+            // list could stop halfway and leave a partial one for the user to
+            // find and delete.
+            const ExtractedDebateBuilder::Result built =
+                ExtractedDebateBuilder::Build(generation.text, user_id, moderator);
+            if (!built.ok) {
+                status->set_error(built.error);
+                if (built.debateId > 0) {
+                    // Validation passed but a write failed, which is the one
+                    // path that can still leave something behind.
+                    status->set_about_debate_id(built.debateId);
                 }
+            } else {
+                std::string note = "Generated a debate: " +
+                                   std::to_string(built.claimsCreated) + " claims, " +
+                                   std::to_string(built.argumentsCreated) + " arguments, " +
+                                   std::to_string(built.maxDepthReached) + " levels deep.";
+                if (built.groupsSplit > 0) {
+                    // Worth surfacing: it says the model grouped claims it could
+                    // not justify grouping, which is a fact about the generation.
+                    note += " " + std::to_string(built.groupsSplit) +
+                            " group(s) were split for having no stated reason to be joint.";
+                }
+                if (built.unknownBases > 0) {
+                    note += " " + std::to_string(built.unknownBases) +
+                            " argument(s) named a kind of reason that is not configured.";
+                }
+                status->set_note(note);
+                status->set_about_debate_id(built.debateId);
             }
         }
     }

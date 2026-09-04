@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package extraction;
+
+// An argument extracted from a passage, written as a TREE.
+//
+// This replaces the step-list the generator used to emit. A step list made the
+// model number its own claims and then navigate to those numbers, which meant
+// carrying a counter across thirty lines of its own output with no echo. It
+// did not carry it: a real run sent all nine of its navigations to claim 1,
+// because claim 1 is the only number that is always safe and a wrong guess
+// fails SILENTLY -- the file still parses and still replays, just wired wrong.
+//
+// Here the nesting IS the parent pointer. A claim's parent is the node it sits
+// inside, so there is nothing to track and nothing to miscount. Depth stops
+// being a bet the model can lose and becomes the default shape. A malformed
+// tree fails at the parser, loudly, instead of importing a quietly wrong graph.
+//
+// The shape mirrors debate::Relationship deliberately: an Argument is a
+// hyperedge -- several claims TOGETHER bearing on one target, with a role and
+// a basis. So "joint or independent", the distinction this whole tool exists
+// to draw, becomes a nesting choice rather than a rule to remember.
+
+enum Role {
+  ROLE_UNSPECIFIED = 0;
+  SUPPORTS = 1;
+  OPPOSES = 2;  // a challenge, which can itself be supported and challenged
+}
+
+// One reason bearing on the claim that contains it.
+message Argument {
+  Role role = 1;
+
+  // One of the names in backend/config/bases.pbtxt. Validated on import;
+  // an unknown name is dropped rather than stored, so a link always carries a
+  // basis the registry can explain.
+  string basis = 2;
+
+  // Why this is that KIND of reason, in the model's own words.
+  //
+  // Not decoration: naming the kind and then justifying it is the step that
+  // makes the choice deliberate rather than reflexive. A model that has to
+  // write "this rests on what the term means, not on what was measured"
+  // picks DEFINITIONAL over EVIDENTIAL far more often than one that picks
+  // from a list. Kept out of the debate itself -- it is reasoning about the
+  // link, not a claim anybody is making.
+  string why = 3;
+
+  // Several claims here are JOINT: this argument dies if any one of them is
+  // wrong. Separate Argument blocks on the same parent are INDEPENDENT.
+  repeated Claim claims = 4;
+
+  // Required to KEEP a group of several claims. Without it the group is split
+  // into independent arguments on import.
+  //
+  // The model groups by default and groups wrongly -- on one passage it
+  // returned four independent metrics as a single joint argument and never
+  // wrote a reason. Three prompt revisions did not move it, so the split is
+  // enforced in code and this field is what buys an exception.
+  string joint_reason = 5;
+}
+
+message Claim {
+  string text = 1;
+  string description = 2;
+
+  // The recursion. Every claim can carry its own reasons for and against, to
+  // any depth the passage supports.
+  repeated Argument arguments = 3;
+}
+
+message ExtractedDebate {
+  Claim root = 1;
+}

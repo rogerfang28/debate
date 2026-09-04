@@ -1,7 +1,7 @@
 #include "DebateGenerator.h"
 
-#include "Log.h"
 #include "BasisRegistry.h"
+#include "Log.h"
 
 namespace {
 
@@ -10,94 +10,119 @@ namespace {
 constexpr size_t kMaxPassageChars = 15000;
 
 const char* kGeneratePromptTemplate =
-    R"PROMPT(You turn a passage into a debate, written as a scenario file.
-
-A debate is a graph: one root claim, and other claims offered FOR or AGAINST it. You will write the sequence of actions that builds that graph.
+    R"PROMPT(You read a passage and write down the argument inside it, as a tree.
 
 THE TOPIC:
 {topic}
 
-OUTPUT FORMAT
+WHAT YOU ARE BUILDING
 
-Protobuf text format. Every line is a step. Write ONLY the scenario, no markdown fence, no commentary.
+One root claim, with everything the passage offers for and against it hanging
+underneath -- and everything it offers for and against THOSE, and so on.
 
-THE ROOT MUST BE AN ASSERTION, NOT A QUESTION. The topic above may be phrased as a question -- "Should cities lower speed limits?" -- and you must turn it into something that can be true or false: "Cities should lower urban speed limits to 20mph". A question cannot be accepted or refuted, so a debate rooted in one has nothing to argue about.
+The root must be an ASSERTION, not a question. The topic above may be phrased
+as a question -- "Should cities lower speed limits?" -- and you must turn it
+into something that can be true or false: "Cities should lower urban speed
+limits to 20mph". A question cannot be accepted or refuted, so a debate rooted
+in one has nothing to argue about.
 
-The file always starts exactly like this, with that assertion as the debate topic:
+HOW TO BUILD IT -- REPEAT THIS FOR EVERY CLAIM
 
-name: "GeneratedDebate"
-steps { action { username: "A" event_type: "CREATE_USER" } }
-steps { action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "THE ROOT CLAIM" } }
-steps { action { username: "A" event_type: "JOIN_DEBATE"  debate_id: 1 } }
-steps { action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 } }
+Starting with the root:
 
-After that, every claim is added by moving to its target and adding under it:
+  1. Read the passage again with THIS claim in mind, and only this claim.
+  2. Ask what the passage offers as a reason to BELIEVE it, and what it offers
+     AGAINST it.
+  3. Write each one as an argument under that claim. Say what KIND of reason it
+     is, and write one line saying why it is that kind.
+  4. Now do steps 1 to 3 for each claim you just wrote.
+  5. Stop for a claim when the passage says nothing further about it.
 
-steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 } }
-steps {
-  action {
-    username: "A"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "a claim supporting claim 1"
-    claim_description: "optional context, or omit this line"
+You are finished when no claim has anything left to say about it. Do not stop
+early because the tree looks big enough, and do not keep going by inventing
+material the passage does not contain.
+
+THE FORMAT
+
+Protobuf text format. A claim contains arguments; an argument contains claims.
+That nesting IS the structure -- there are no ids anywhere and nothing to
+count. A claim's parent is simply the block it sits inside.
+
+root {
+  text: "the assertion the passage is about"
+  arguments {
+    role: SUPPORTS
     basis: "{default_basis}"
+    why: "one line: why this is that kind of reason"
+    claims {
+      text: "a reason the passage gives to believe the claim above"
+      description: "context worth keeping, or omit this line"
+      arguments {
+        role: OPPOSES
+        basis: "{default_basis}"
+        why: "one line"
+        claims {
+          text: "something the passage raises against THAT claim, not against the root"
+        }
+      }
+    }
   }
 }
 
-To attack a claim instead of supporting it, use SUBMIT_CHALLENGE_CLAIM after moving to it:
+role is SUPPORTS or OPPOSES. An OPPOSES argument is a challenge, and a
+challenge is an ordinary claim: it can be supported and challenged in turn, so
+keep nesting under it exactly as you would anywhere else.
 
-steps { action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 2 } }
-steps {
-  action {
-    username: "A"
-    event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "a claim arguing against claim 2"
-    challenge_description: "optional context, or omit this line"
-    basis: "{default_basis}"
-  }
-}
+ONE ARGUMENT OR SEVERAL -- THE THING TO GET RIGHT
 
-CLAIM NUMBERING -- THE THING TO GET RIGHT
+Several claims inside ONE arguments block are JOINT: the argument dies if any
+one of them is wrong. Two separate arguments blocks under the same claim are
+INDEPENDENT: each stands on its own, and losing one leaves the other standing.
 
-Claims are numbered in the order you create them, starting at 1.
-- Claim 1 is always the root, created by CREATE_DEBATE.
-- The first ADD_CHILD_CLAIM or SUBMIT_CHALLENGE_CLAIM makes claim 2, the next makes claim 3, and so on.
-- GO_TO_CLAIM must name a claim that ALREADY EXISTS. Never move to a number you have not created yet.
-Count carefully as you write. A wrong number attaches an argument to the wrong sentence.
+Test it before you group. Take one claim out of the group. If what remains is
+still a reason to believe the parent, they are INDEPENDENT and each needs its
+own arguments block. Separate measurements of the same thing are nearly always
+independent -- revenue rose, sick days fell, turnover fell: remove any one and
+the rest still argue the case.
 
-JOINT ARGUMENTS
+If you do group, you must write joint_reason saying why they cannot be taken
+apart. A group with no joint_reason will be split into independent arguments.
 
-If several claims are needed TOGETHER -- the point collapses if any one of them is wrong -- put them in ONE action using extra_claim_texts:
+THE KINDS OF REASON
 
-steps {
-  action {
-    username: "A"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Supply fell"
-    extra_claim_texts: "Demand held steady"
-    basis: "{default_basis}"
-  }
-}
+{bases}
+RULES
 
-That creates two claims and ONE joint argument. Each extra_claim_texts line is another claim, so count them in the numbering.
-
-Only group when it is really true. Take one claim out: if what remains still gives a reason to believe the target, they are INDEPENDENT and each needs its own action. Separate measurements of the same thing are independent -- revenue rose, turnover fell, sick days fell: remove any one and the rest still argue the case.
-
-RULES FOR THE CLAIMS
-
-1. Every claim is ONE assertion that could be true or false. Split compound sentences.
-2. Use only what the passage says. Do not add facts or arguments of your own.
-3. Keep the passage's numbers and attributions in the claim text.
-4. basis says what KIND of reason the connection is, and picking the right one matters more than it looks. The kinds are:
-{bases}   Omit the line only if none fits.
-5. Use SUBMIT_CHALLENGE_CLAIM for anything the passage raises against a claim -- objections, limitations, contrary findings. A passage that discusses its own weaknesses should produce challenges.
-5b. When two sides read the SAME fact differently -- a study both cite, a document both quote -- do not link the fact straight to a conclusion. State the reading as its own claim ("The letter shows the agency funded the work"), support THAT with the fact, and let the other side's reading challenge the reading. An objection like "selection bias" or "that is not what it admits" attacks a reading, never the fact itself, and it needs a claim to land on.
-6. Aim for 8 to 14 claims in total. Work through the WHOLE passage before you stop -- a passage with four distinct arguments should produce four, not two.
-7. Attach each claim to the most specific thing it bears on. A rebuttal to a criticism belongs under that criticism, not under the root. Hanging everything off the root loses the shape of the argument.
+1. Every claim is ONE assertion that could be true or false. Split compound
+   sentences into separate claims.
+2. Use only what the passage says. Never invent a fact, a study, a figure or an
+   objection. If the passage raises no objection to a claim, it has none.
+3. Keep the passage's numbers and attributions inside the claim text.
+4. Attach every claim to the MOST SPECIFIC thing it bears on. A rebuttal to a
+   criticism goes under that criticism, not under the root.
+5. When two sides read the SAME fact differently -- a study both cite, a
+   document both quote -- do not hang the fact straight under the conclusion.
+   Write the READING as its own claim, support that reading with the fact, and
+   let the other side's reading OPPOSE the reading. An objection like "selection
+   bias" or "that is not what it admits" attacks a reading, never the fact.
+6. Aim for 8 to 20 claims, and work through the WHOLE passage. A passage with
+   four distinct arguments should produce four, not two.
+7. Write ONLY the tree. No markdown fence, no commentary before or after.
 
 THE PASSAGE:
 
 {passage})PROMPT";
+
+// Replaces every occurrence of `key`. The registry's guide is substituted the
+// same way the topic and passage are, so a basis added to bases.pbtxt reaches
+// the model without this file changing.
+void substitute(std::string& prompt, const std::string& key, const std::string& value) {
+    size_t at = 0;
+    while ((at = prompt.find(key, at)) != std::string::npos) {
+        prompt.replace(at, key.size(), value);
+        at += value.size();
+    }
+}
 
 } // namespace
 
@@ -108,28 +133,12 @@ std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::st
     }
 
     std::string prompt = kGeneratePromptTemplate;
-    const std::string topicKey = "{topic}";
-    const size_t topicAt = prompt.find(topicKey);
-    if (topicAt != std::string::npos) {
-        prompt.replace(topicAt, topicKey.size(),
-                       topic.empty() ? "(none given -- take it from the passage)" : topic);
-    }
-    // The kinds of reason come from the registry, in its own words, so a
-    // basis added to bases.pbtxt is explained to the model without anyone
-    // touching this file.
-    for (const char* key : {"{bases}", "{default_basis}"}) {
-        const std::string value = std::string(key) == "{bases}" ? bases::GuideAsList()
-                                                                 : bases::DefaultName();
-        size_t at = 0;
-        while ((at = prompt.find(key, at)) != std::string::npos) {
-            prompt.replace(at, std::string(key).size(), value);
-            at += value.size();
-        }
-    }
-    const std::string passageKey = "{passage}";
-    const size_t passageAt = prompt.find(passageKey);
-    if (passageAt != std::string::npos) {
-        prompt.replace(passageAt, passageKey.size(), truncated);
-    }
+    substitute(prompt, "{topic}",
+               topic.empty() ? "(none given -- take it from the passage)" : topic);
+    substitute(prompt, "{bases}", bases::GuideAsList());
+    substitute(prompt, "{default_basis}", bases::DefaultName());
+    // Last, so a passage that happens to contain a placeholder is not itself
+    // substituted into.
+    substitute(prompt, "{passage}", truncated);
     return prompt;
 }
