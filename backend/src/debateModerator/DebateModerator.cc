@@ -187,6 +187,10 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: SELECT_CLAIM");
             MoveUserHandler::SelectClaim(event.select_claim().claim_id(), user_id, debateWrapper);
             break;
+        case debate_event::SELECT_LINK:
+            Log::info("[DebateModerator] Event Type: SELECT_LINK");
+            MoveUserHandler::SelectLink(event.select_link().link_id(), user_id, debateWrapper);
+            break;
         case debate_event::SUMMARIZE_DEBATE:
             Log::info("[DebateModerator] Event Type: SUMMARIZE_DEBATE");
             SummarizeDebateHandler::SummarizeDebate(user_id, debateWrapper);

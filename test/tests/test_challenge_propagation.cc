@@ -690,3 +690,59 @@ TEST_F(PropagationTest, ChallengingTheLinkUndercutsWithoutRefuting) {
     EXPECT_TRUE(bobChild == claim(child).user_statuses().end() ||
                 bobChild->second != debate::ClaimStatus::FALSE_CLAIM);
 }
+
+// ============================================================
+// Selecting an ARGUMENT in the graph.
+//
+// Clicking a pill selects the relation and focuses the claim it is for, so
+// the panel and the challenge modal -- which read the links under the current
+// claim -- always have the selected one in hand. From there one click puts it
+// into a challenge: the modal opens with the argument already picked.
+// ============================================================
+TEST_F(PropagationTest, SelectingALinkFocusesItsClaimAndOneClickStartsAnUndercut) {
+    actAsAlice();
+    DebateHandler::AddDebate("Speed limits save lives", userId_, *debate_);
+    enterDebate(1);
+    addChild(1, "Crash deaths fell 23 percent", "");
+    const int child = debate_->findChildrenIds(1).back();
+    const std::vector<int> links = debate_->findLinksUnder(1);
+    ASSERT_EQ(links.size(), 1u);
+
+    // Bob is standing on the child when he clicks the pill above it.
+    actAsBob();
+    enterDebate(1);
+    goToClaim(child);
+    MoveUserHandler::SelectLink(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), 1)
+        << "selecting the argument focuses the claim it is for";
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), links[0]);
+
+    // The panel's one button.
+    ChallengeHandler::AddLinkToBeChallenged(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    const auto& debating = user_->engagement().debating_info();
+    EXPECT_EQ(debating.current_debate_action().action_type(),
+              user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
+    EXPECT_TRUE(debating.challenging_info().opened_challenge_modal());
+    ASSERT_EQ(debating.challenging_info().link_ids_size(), 1);
+    EXPECT_EQ(debating.challenging_info().link_ids(0), links[0]);
+
+    // Adding a link while already challenging does not restart anything.
+    ChallengeHandler::AddLinkToBeChallenged(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().challenging_info().link_ids_size(), 2);
+
+    // A claim selection ends the argument selection.
+    ChallengeHandler::CancelChallengeClaim(userId_, *debate_);
+    MoveUserHandler::SelectClaim(child, userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), 0);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), child);
+
+    // An unknown link selects nothing and leaves the cursor alone.
+    MoveUserHandler::SelectLink(9999, userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), 0);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), child);
+}

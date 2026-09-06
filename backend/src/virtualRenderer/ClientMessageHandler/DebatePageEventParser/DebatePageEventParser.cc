@@ -341,6 +341,22 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::SELECT_CLAIM);
         event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
     }
+    // A click on a relation pill in the graph. The id is the RELATION id.
+    else if (componentId.rfind("selectLinkNode_", 0) == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("selectLinkNode_"));
+        Log::debug("  SELECT_LINK for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::SELECT_LINK);
+        event.mutable_select_link()->set_link_id(std::stoi(linkId));
+    }
+    // The selected-argument panel's Challenge button. Its own id, not the
+    // modal's addLinkToChallengeButton_, so the two are never on one page
+    // with the same id; both mean "put this link into a challenge".
+    else if (componentId.rfind("challengeSelectedLinkButton_", 0) == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("challengeSelectedLinkButton_"));
+        Log::debug("  ADD_LINK_TO_BE_CHALLENGED (from panel) for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::ADD_LINK_TO_BE_CHALLENGED);
+        event.mutable_add_link_to_be_challenged()->set_link_id(std::stoi(linkId));
+    }
     else {
         Log::error("Unknown component/event combination on debate page: " 
                   + componentId + "/" + eventType);

@@ -3074,6 +3074,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     kChallengedUserIdFieldNumber = 17,
     kChallengerUserIdFieldNumber = 18,
     kClaimSummaryClaimIdFieldNumber = 21,
+    kSelectedLinkIdFieldNumber = 23,
     kConnectingInfoFieldNumber = 12,
     kChallengingInfoFieldNumber = 15,
   };
@@ -3303,6 +3304,16 @@ class DebatingInfo final : public ::google::protobuf::Message
   void _internal_set_claim_summary_claim_id(::int32_t value);
 
   public:
+  // int32 selected_link_id = 23 [json_name = "selectedLinkId"];
+  void clear_selected_link_id() ;
+  ::int32_t selected_link_id() const;
+  void set_selected_link_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_selected_link_id() const;
+  void _internal_set_selected_link_id(::int32_t value);
+
+  public:
   // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];
   bool has_connecting_info() const;
   private:
@@ -3351,7 +3362,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   inline bool has_additional_info() const;
   inline void clear_has_additional_info();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 19,
+  static const ::google::protobuf::internal::TcParseTable<5, 20,
                                    11, 78,
                                    2>
       _table_;
@@ -3390,6 +3401,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     ::int32_t challenged_user_id_;
     ::int32_t challenger_user_id_;
     ::int32_t claim_summary_claim_id_;
+    ::int32_t selected_link_id_;
     union AdditionalInfoUnion {
       constexpr AdditionalInfoUnion() : _constinit_{} {}
       ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -7177,6 +7189,31 @@ inline bool DebatingInfo::_internal_summary_running() const {
 inline void DebatingInfo::_internal_set_summary_running(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.summary_running_ = value;
+}
+
+// int32 selected_link_id = 23 [json_name = "selectedLinkId"];
+inline void DebatingInfo::clear_selected_link_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_link_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00020000U);
+}
+inline ::int32_t DebatingInfo::selected_link_id() const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.selected_link_id)
+  return _internal_selected_link_id();
+}
+inline void DebatingInfo::set_selected_link_id(::int32_t value) {
+  _internal_set_selected_link_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00020000U);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.selected_link_id)
+}
+inline ::int32_t DebatingInfo::_internal_selected_link_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.selected_link_id_;
+}
+inline void DebatingInfo::_internal_set_selected_link_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.selected_link_id_ = value;
 }
 
 // .user_engagement.DebatingInfo.ConnectingInfo connecting_info = 12 [json_name = "connectingInfo"];

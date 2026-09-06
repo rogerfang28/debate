@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate_event.proto.
  */
 export const file_debate_event: GenFile = /*@__PURE__*/
-  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIkCgxDcmVhdGVEZWJhdGUSFAoMZGViYXRlX3RvcGljGAIgASgJIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAUiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgFInQKDUFkZENoaWxkQ2xhaW0SDQoFY2xhaW0YASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSFAoMZXh0cmFfY2xhaW1zGAQgAygJEhoKEmV4dHJhX2Rlc2NyaXB0aW9ucxgFIAMoCRINCgViYXNpcxgDIAEoCSIkChBEZWxldGVDaGlsZENsYWltEhAKCGNsYWltX2lkGAIgASgFIlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgFEg8KB2Zyb21faWQYAyABKAUSDQoFdG9faWQYBCABKAUSEgoKY29ubmVjdGlvbhgFIAEoCSIdCglHb1RvQ2xhaW0SEAoIY2xhaW1faWQYAiABKAUiHwoLU2VsZWN0Q2xhaW0SEAoIY2xhaW1faWQYASABKAUiNQoaU3VibWl0RWRpdENsYWltRGVzY3JpcHRpb24SFwoPbmV3X2Rlc2NyaXB0aW9uGAEgASgJIiQKD1N1Ym1pdEVkaXRDbGFpbRIRCgluZXdfY2xhaW0YASABKAkiKQoQQ29ubmVjdEZyb21DbGFpbRIVCg1mcm9tX2NsYWltX2lkGAEgASgFIiUKDkNvbm5lY3RUb0NsYWltEhMKC3RvX2NsYWltX2lkGAIgASgFIlUKE1N1Ym1pdENvbm5lY3RDbGFpbXMSEgoKY29ubmVjdGlvbhgBIAEoCRIVCg1mcm9tX2NsYWltX2lkGAIgASgFEhMKC3RvX2NsYWltX2lkGAMgASgFIh0KCkRlbGV0ZUxpbmsSDwoHbGlua19pZBgBIAEoBSIfCgpKb2luRGViYXRlEhEKCWRlYmF0ZV9pZBgBIAEoBSJVCgVMb2dpbhIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd29yZBgCIAEoCRIZCg9nb29nbGVfaWRfdG9rZW4YAyABKAlIAEINCgthdXRoX21ldGhvZCIqChZBZGRDbGFpbVRvQmVDaGFsbGVuZ2VkEhAKCGNsYWltX2lkGAEgASgFIi0KGVJlbW92ZUNsYWltVG9CZUNoYWxsZW5nZWQSEAoIY2xhaW1faWQYASABKAUiKAoVQWRkTGlua1RvQmVDaGFsbGVuZ2VkEg8KB2xpbmtfaWQYASABKAUiKwoYUmVtb3ZlTGlua1RvQmVDaGFsbGVuZ2VkEg8KB2xpbmtfaWQYASABKAUilQEKFFN1Ym1pdENoYWxsZW5nZUNsYWltEhoKEmNoYWxsZW5nZV9zZW50ZW5jZRgBIAEoCRIdChVjaGFsbGVuZ2VfZGVzY3JpcHRpb24YAiABKAkSFwoPZXh0cmFfc2VudGVuY2VzGAMgAygJEhoKEmV4dHJhX2Rlc2NyaXB0aW9ucxgFIAMoCRINCgViYXNpcxgEIAEoCSIwCg5HZW5lcmF0ZURlYmF0ZRINCgV0b3BpYxgBIAEoCRIPCgdwYXNzYWdlGAIgASgJIiIKDlN1bW1hcml6ZUNsYWltEhAKCGNsYWltX2lkGAEgASgFIiUKDUdvVG9DaGFsbGVuZ2USFAoMY2hhbGxlbmdlX2lkGAEgASgFIkMKEENvbmNlZGVDaGFsbGVuZ2USFAoMY2hhbGxlbmdlX2lkGAEgASgFEhkKEWNoYWxsZW5nZV9saW5rX2lkGAIgASgFIicKD0RlbGV0ZUNoYWxsZW5nZRIUCgxjaGFsbGVuZ2VfaWQYASABKAUiIAoLTGVhdmVEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgFIlYKE01vdmVVc2VyVG9UaW1lc3RhbXASEAoIY2xhaW1faWQYASABKAUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCIfCg1TdGFydFR1dG9yaWFsEg4KBnNjcmlwdBgBIAEoCSJHCgxVc2VyQXV0aEluZm8SEAoIdXNlcm5hbWUYASABKAkSDwoHdXNlcl9pZBgCIAEoBRIUCgxpc19sb2dnZWRfaW4YAyABKAgisg4KC0RlYmF0ZUV2ZW50EigKBHVzZXIYASABKAsyGi5kZWJhdGVfZXZlbnQuVXNlckF1dGhJbmZvEi8KC29jY3VycmVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIlCgR0eXBlGAQgASgOMhcuZGViYXRlX2V2ZW50LkV2ZW50VHlwZRIzCg1jcmVhdGVfZGViYXRlGAogASgLMhouZGViYXRlX2V2ZW50LkNyZWF0ZURlYmF0ZUgAEjMKDWRlbGV0ZV9kZWJhdGUYDCABKAsyGi5kZWJhdGVfZXZlbnQuRGVsZXRlRGViYXRlSAASMQoMZW50ZXJfZGViYXRlGA0gASgLMhkuZGViYXRlX2V2ZW50LkVudGVyRGViYXRlSAASNgoPYWRkX2NoaWxkX2NsYWltGBAgASgLMhsuZGViYXRlX2V2ZW50LkFkZENoaWxkQ2xhaW1IABIuCgtnb190b19jbGFpbRgUIAEoCzIXLmRlYmF0ZV9ldmVudC5Hb1RvQ2xhaW1IABI8ChJkZWxldGVfY2hpbGRfY2xhaW0YFyABKAsyHi5kZWJhdGVfZXZlbnQuRGVsZXRlQ2hpbGRDbGFpbUgAElEKHXN1Ym1pdF9lZGl0X2NsYWltX2Rlc2NyaXB0aW9uGBkgASgLMiguZGViYXRlX2V2ZW50LlN1Ym1pdEVkaXRDbGFpbURlc2NyaXB0aW9uSAASOgoRc3VibWl0X2VkaXRfY2xhaW0YHCABKAsyHS5kZWJhdGVfZXZlbnQuU3VibWl0RWRpdENsYWltSAASPAoSY29ubmVjdF9mcm9tX2NsYWltGB4gASgLMh4uZGViYXRlX2V2ZW50LkNvbm5lY3RGcm9tQ2xhaW1IABI4ChBjb25uZWN0X3RvX2NsYWltGB8gASgLMhwuZGViYXRlX2V2ZW50LkNvbm5lY3RUb0NsYWltSAASQgoVc3VibWl0X2Nvbm5lY3RfY2xhaW1zGCAgASgLMiEuZGViYXRlX2V2ZW50LlN1Ym1pdENvbm5lY3RDbGFpbXNIABIvCgtkZWxldGVfbGluaxgiIAEoCzIYLmRlYmF0ZV9ldmVudC5EZWxldGVMaW5rSAASLwoLam9pbl9kZWJhdGUYIyABKAsyGC5kZWJhdGVfZXZlbnQuSm9pbkRlYmF0ZUgAEiQKBWxvZ2luGCQgASgLMhMuZGViYXRlX2V2ZW50LkxvZ2luSAASSgoaYWRkX2NsYWltX3RvX2JlX2NoYWxsZW5nZWQYJiABKAsyJC5kZWJhdGVfZXZlbnQuQWRkQ2xhaW1Ub0JlQ2hhbGxlbmdlZEgAEkgKGWFkZF9saW5rX3RvX2JlX2NoYWxsZW5nZWQYJyABKAsyIy5kZWJhdGVfZXZlbnQuQWRkTGlua1RvQmVDaGFsbGVuZ2VkSAASRAoWc3VibWl0X2NoYWxsZW5nZV9jbGFpbRgoIAEoCzIiLmRlYmF0ZV9ldmVudC5TdWJtaXRDaGFsbGVuZ2VDbGFpbUgAEjYKD2dvX3RvX2NoYWxsZW5nZRgpIAEoCzIbLmRlYmF0ZV9ldmVudC5Hb1RvQ2hhbGxlbmdlSAASOwoRY29uY2VkZV9jaGFsbGVuZ2UYKiABKAsyHi5kZWJhdGVfZXZlbnQuQ29uY2VkZUNoYWxsZW5nZUgAElAKHXJlbW92ZV9jbGFpbV90b19iZV9jaGFsbGVuZ2VkGC4gASgLMicuZGViYXRlX2V2ZW50LlJlbW92ZUNsYWltVG9CZUNoYWxsZW5nZWRIABJOChxyZW1vdmVfbGlua190b19iZV9jaGFsbGVuZ2VkGC8gASgLMiYuZGViYXRlX2V2ZW50LlJlbW92ZUxpbmtUb0JlQ2hhbGxlbmdlZEgAEjkKEGRlbGV0ZV9jaGFsbGVuZ2UYMCABKAsyHS5kZWJhdGVfZXZlbnQuRGVsZXRlQ2hhbGxlbmdlSAASMQoMbGVhdmVfZGViYXRlGDEgASgLMhkuZGViYXRlX2V2ZW50LkxlYXZlRGViYXRlSAASQwoWbW92ZV91c2VyX3RvX3RpbWVzdGFtcBgyIAEoCzIhLmRlYmF0ZV9ldmVudC5Nb3ZlVXNlclRvVGltZXN0YW1wSAASMQoMc2VsZWN0X2NsYWltGDMgASgLMhkuZGViYXRlX2V2ZW50LlNlbGVjdENsYWltSAASNwoPc3VtbWFyaXplX2NsYWltGDQgASgLMhwuZGViYXRlX2V2ZW50LlN1bW1hcml6ZUNsYWltSAASNwoPZ2VuZXJhdGVfZGViYXRlGDUgASgLMhwuZGViYXRlX2V2ZW50LkdlbmVyYXRlRGViYXRlSAASNQoOc3RhcnRfdHV0b3JpYWwYNiABKAsyGy5kZWJhdGVfZXZlbnQuU3RhcnRUdXRvcmlhbEgAQgkKB3BheWxvYWQqrgwKCUV2ZW50VHlwZRIaChZFVkVOVF9LSU5EX1VOU1BFQ0lGSUVEEAASCAoETk9ORRABEhEKDUNSRUFURV9ERUJBVEUQAhIRCg1DTEVBUl9ERUJBVEVTEAMSEQoNREVMRVRFX0RFQkFURRAEEhAKDEVOVEVSX0RFQkFURRAFEgsKB0dPX0hPTUUQBhIQCgxHT19UT19QQVJFTlQQBxIYChRPUEVOX0FERF9DSElMRF9DTEFJTRAIEhMKD0FERF9DSElMRF9DTEFJTRAJEhwKGERFTEVURV9DVVJSRU5UX1NUQVRFTUVOVBAKEhAKDFJFUE9SVF9DTEFJTRALEg8KC0dPX1RPX0NMQUlNEAwSGQoVQ0xPU0VfQUREX0NISUxEX0NMQUlNEA0SFgoSQ0xPU0VfUkVQT1JUX0NMQUlNEA4SGgoWU1VCTUlUX0FERF9DSElMRF9DTEFJTRAPEhYKEkRFTEVURV9DSElMRF9DTEFJTRAQEiAKHFNUQVJUX0VESVRfQ0xBSU1fREVTQ1JJUFRJT04QERIhCh1TVUJNSVRfRURJVF9DTEFJTV9ERVNDUklQVElPThASEiEKHUNBTkNFTF9FRElUX0NMQUlNX0RFU0NSSVBUSU9OEBMSFAoQU1RBUlRfRURJVF9DTEFJTRAUEhUKEVNVQk1JVF9FRElUX0NMQUlNEBUSFQoRQ0FOQ0VMX0VESVRfQ0xBSU0QFhIWChJDT05ORUNUX0ZST01fQ0xBSU0QFxIUChBDT05ORUNUX1RPX0NMQUlNEBgSGQoVU1VCTUlUX0NPTk5FQ1RfQ0xBSU1TEBkSGQoVQ0FOQ0VMX0NPTk5FQ1RfQ0xBSU1TEBoSDwoLREVMRVRFX0xJTksQGxIPCgtKT0lOX0RFQkFURRAcEgkKBUxPR0lOEB0SCgoGTE9HT1VUEB4SGQoVU1RBUlRfQ0hBTExFTkdFX0NMQUlNEB8SHgoaQUREX0NMQUlNX1RPX0JFX0NIQUxMRU5HRUQQIBIdChlBRERfTElOS19UT19CRV9DSEFMTEVOR0VEECESGgoWU1VCTUlUX0NIQUxMRU5HRV9DTEFJTRAiEhMKD0dPX1RPX0NIQUxMRU5HRRAjEhUKEUNPTkNFREVfQ0hBTExFTkdFECQSGgoWQ0FOQ0VMX0NIQUxMRU5HRV9DTEFJTRAlEhYKEk9QRU5fQUREX0NIQUxMRU5HRRAmEhcKE0NMT1NFX0FERF9DSEFMTEVOR0UQJxIhCh1SRU1PVkVfQ0xBSU1fVE9fQkVfQ0hBTExFTkdFRBAoEiAKHFJFTU9WRV9MSU5LX1RPX0JFX0NIQUxMRU5HRUQQKRIUChBERUxFVEVfQ0hBTExFTkdFECoSIQodR09fVE9fQ0hBTExFTkdFRF9QQVJFTlRfQ0xBSU0QKxIQCgxMRUFWRV9ERUJBVEUQLBIiCh5HT19UT19ISVNUT1JZX09GX0NVUlJFTlRfQ0xBSU0QLRIaChZNT1ZFX1VTRVJfVE9fVElNRVNUQU1QEC4SGAoUTU9WRV9VU0VSX1RPX1BSRVNFTlQQLxIfChtTVEFSVF9NT0RJRklDQVRJT05fT0ZfQ0xBSU0QMBIgChxTVUJNSVRfTU9ESUZJQ0FUSU9OX09GX0NMQUlNEDESIAocQ0FOQ0VMX01PRElGSUNBVElPTl9PRl9DTEFJTRAyEhIKDkdPX1RPX09WRVJWSUVXEDMSGgoWR09fVE9fRlVMTF9ERUJBVEVfVklFVxA0EhAKDFNFTEVDVF9DTEFJTRA1EhQKEFNVTU1BUklaRV9ERUJBVEUQNhIaChZESVNNSVNTX0RFQkFURV9TVU1NQVJZEDcSEwoPU1VNTUFSSVpFX0NMQUlNEDgSGQoVRElTTUlTU19DTEFJTV9TVU1NQVJZEDkSEwoPR0VORVJBVEVfREVCQVRFEDoSFQoRQ0hBTExFTkdFX1dJVEhfQUkQOxIVChFESVNNSVNTX0FJX05PVElDRRA8EhIKDkNBTkNFTF9BSV9XT1JLED0SEgoOU1RBUlRfVFVUT1JJQUwQPhIRCg1UVVRPUklBTF9ORVhUED8SEQoNVFVUT1JJQUxfRVhJVBBAYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("ChJkZWJhdGVfZXZlbnQucHJvdG8SDGRlYmF0ZV9ldmVudCIkCgxDcmVhdGVEZWJhdGUSFAoMZGViYXRlX3RvcGljGAIgASgJIiEKDERlbGV0ZURlYmF0ZRIRCglkZWJhdGVfaWQYASABKAUiIAoLRW50ZXJEZWJhdGUSEQoJZGViYXRlX2lkGAEgASgFInQKDUFkZENoaWxkQ2xhaW0SDQoFY2xhaW0YASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSFAoMZXh0cmFfY2xhaW1zGAQgAygJEhoKEmV4dHJhX2Rlc2NyaXB0aW9ucxgFIAMoCRINCgViYXNpcxgDIAEoCSIkChBEZWxldGVDaGlsZENsYWltEhAKCGNsYWltX2lkGAIgASgFIlYKDUFkZENvbm5lY3Rpb24SEQoJZGViYXRlX2lkGAIgASgFEg8KB2Zyb21faWQYAyABKAUSDQoFdG9faWQYBCABKAUSEgoKY29ubmVjdGlvbhgFIAEoCSIdCglHb1RvQ2xhaW0SEAoIY2xhaW1faWQYAiABKAUiHQoKU2VsZWN0TGluaxIPCgdsaW5rX2lkGAEgASgFIh8KC1NlbGVjdENsYWltEhAKCGNsYWltX2lkGAEgASgFIjUKGlN1Ym1pdEVkaXRDbGFpbURlc2NyaXB0aW9uEhcKD25ld19kZXNjcmlwdGlvbhgBIAEoCSIkCg9TdWJtaXRFZGl0Q2xhaW0SEQoJbmV3X2NsYWltGAEgASgJIikKEENvbm5lY3RGcm9tQ2xhaW0SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBSIlCg5Db25uZWN0VG9DbGFpbRITCgt0b19jbGFpbV9pZBgCIAEoBSJVChNTdWJtaXRDb25uZWN0Q2xhaW1zEhIKCmNvbm5lY3Rpb24YASABKAkSFQoNZnJvbV9jbGFpbV9pZBgCIAEoBRITCgt0b19jbGFpbV9pZBgDIAEoBSIdCgpEZWxldGVMaW5rEg8KB2xpbmtfaWQYASABKAUiHwoKSm9pbkRlYmF0ZRIRCglkZWJhdGVfaWQYASABKAUiVQoFTG9naW4SEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkSGQoPZ29vZ2xlX2lkX3Rva2VuGAMgASgJSABCDQoLYXV0aF9tZXRob2QiKgoWQWRkQ2xhaW1Ub0JlQ2hhbGxlbmdlZBIQCghjbGFpbV9pZBgBIAEoBSItChlSZW1vdmVDbGFpbVRvQmVDaGFsbGVuZ2VkEhAKCGNsYWltX2lkGAEgASgFIigKFUFkZExpbmtUb0JlQ2hhbGxlbmdlZBIPCgdsaW5rX2lkGAEgASgFIisKGFJlbW92ZUxpbmtUb0JlQ2hhbGxlbmdlZBIPCgdsaW5rX2lkGAEgASgFIpUBChRTdWJtaXRDaGFsbGVuZ2VDbGFpbRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYASABKAkSHQoVY2hhbGxlbmdlX2Rlc2NyaXB0aW9uGAIgASgJEhcKD2V4dHJhX3NlbnRlbmNlcxgDIAMoCRIaChJleHRyYV9kZXNjcmlwdGlvbnMYBSADKAkSDQoFYmFzaXMYBCABKAkiMAoOR2VuZXJhdGVEZWJhdGUSDQoFdG9waWMYASABKAkSDwoHcGFzc2FnZRgCIAEoCSIiCg5TdW1tYXJpemVDbGFpbRIQCghjbGFpbV9pZBgBIAEoBSIlCg1Hb1RvQ2hhbGxlbmdlEhQKDGNoYWxsZW5nZV9pZBgBIAEoBSJDChBDb25jZWRlQ2hhbGxlbmdlEhQKDGNoYWxsZW5nZV9pZBgBIAEoBRIZChFjaGFsbGVuZ2VfbGlua19pZBgCIAEoBSInCg9EZWxldGVDaGFsbGVuZ2USFAoMY2hhbGxlbmdlX2lkGAEgASgFIiAKC0xlYXZlRGViYXRlEhEKCWRlYmF0ZV9pZBgBIAEoBSJWChNNb3ZlVXNlclRvVGltZXN0YW1wEhAKCGNsYWltX2lkGAEgASgFEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiHwoNU3RhcnRUdXRvcmlhbBIOCgZzY3JpcHQYASABKAkiRwoMVXNlckF1dGhJbmZvEhAKCHVzZXJuYW1lGAEgASgJEg8KB3VzZXJfaWQYAiABKAUSFAoMaXNfbG9nZ2VkX2luGAMgASgIIuMOCgtEZWJhdGVFdmVudBIoCgR1c2VyGAEgASgLMhouZGViYXRlX2V2ZW50LlVzZXJBdXRoSW5mbxIvCgtvY2N1cnJlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJQoEdHlwZRgEIAEoDjIXLmRlYmF0ZV9ldmVudC5FdmVudFR5cGUSMwoNY3JlYXRlX2RlYmF0ZRgKIAEoCzIaLmRlYmF0ZV9ldmVudC5DcmVhdGVEZWJhdGVIABIzCg1kZWxldGVfZGViYXRlGAwgASgLMhouZGViYXRlX2V2ZW50LkRlbGV0ZURlYmF0ZUgAEjEKDGVudGVyX2RlYmF0ZRgNIAEoCzIZLmRlYmF0ZV9ldmVudC5FbnRlckRlYmF0ZUgAEjYKD2FkZF9jaGlsZF9jbGFpbRgQIAEoCzIbLmRlYmF0ZV9ldmVudC5BZGRDaGlsZENsYWltSAASLgoLZ29fdG9fY2xhaW0YFCABKAsyFy5kZWJhdGVfZXZlbnQuR29Ub0NsYWltSAASPAoSZGVsZXRlX2NoaWxkX2NsYWltGBcgASgLMh4uZGViYXRlX2V2ZW50LkRlbGV0ZUNoaWxkQ2xhaW1IABJRCh1zdWJtaXRfZWRpdF9jbGFpbV9kZXNjcmlwdGlvbhgZIAEoCzIoLmRlYmF0ZV9ldmVudC5TdWJtaXRFZGl0Q2xhaW1EZXNjcmlwdGlvbkgAEjoKEXN1Ym1pdF9lZGl0X2NsYWltGBwgASgLMh0uZGViYXRlX2V2ZW50LlN1Ym1pdEVkaXRDbGFpbUgAEjwKEmNvbm5lY3RfZnJvbV9jbGFpbRgeIAEoCzIeLmRlYmF0ZV9ldmVudC5Db25uZWN0RnJvbUNsYWltSAASOAoQY29ubmVjdF90b19jbGFpbRgfIAEoCzIcLmRlYmF0ZV9ldmVudC5Db25uZWN0VG9DbGFpbUgAEkIKFXN1Ym1pdF9jb25uZWN0X2NsYWltcxggIAEoCzIhLmRlYmF0ZV9ldmVudC5TdWJtaXRDb25uZWN0Q2xhaW1zSAASLwoLZGVsZXRlX2xpbmsYIiABKAsyGC5kZWJhdGVfZXZlbnQuRGVsZXRlTGlua0gAEi8KC2pvaW5fZGViYXRlGCMgASgLMhguZGViYXRlX2V2ZW50LkpvaW5EZWJhdGVIABIkCgVsb2dpbhgkIAEoCzITLmRlYmF0ZV9ldmVudC5Mb2dpbkgAEkoKGmFkZF9jbGFpbV90b19iZV9jaGFsbGVuZ2VkGCYgASgLMiQuZGViYXRlX2V2ZW50LkFkZENsYWltVG9CZUNoYWxsZW5nZWRIABJIChlhZGRfbGlua190b19iZV9jaGFsbGVuZ2VkGCcgASgLMiMuZGViYXRlX2V2ZW50LkFkZExpbmtUb0JlQ2hhbGxlbmdlZEgAEkQKFnN1Ym1pdF9jaGFsbGVuZ2VfY2xhaW0YKCABKAsyIi5kZWJhdGVfZXZlbnQuU3VibWl0Q2hhbGxlbmdlQ2xhaW1IABI2Cg9nb190b19jaGFsbGVuZ2UYKSABKAsyGy5kZWJhdGVfZXZlbnQuR29Ub0NoYWxsZW5nZUgAEjsKEWNvbmNlZGVfY2hhbGxlbmdlGCogASgLMh4uZGViYXRlX2V2ZW50LkNvbmNlZGVDaGFsbGVuZ2VIABJQCh1yZW1vdmVfY2xhaW1fdG9fYmVfY2hhbGxlbmdlZBguIAEoCzInLmRlYmF0ZV9ldmVudC5SZW1vdmVDbGFpbVRvQmVDaGFsbGVuZ2VkSAASTgoccmVtb3ZlX2xpbmtfdG9fYmVfY2hhbGxlbmdlZBgvIAEoCzImLmRlYmF0ZV9ldmVudC5SZW1vdmVMaW5rVG9CZUNoYWxsZW5nZWRIABI5ChBkZWxldGVfY2hhbGxlbmdlGDAgASgLMh0uZGViYXRlX2V2ZW50LkRlbGV0ZUNoYWxsZW5nZUgAEjEKDGxlYXZlX2RlYmF0ZRgxIAEoCzIZLmRlYmF0ZV9ldmVudC5MZWF2ZURlYmF0ZUgAEkMKFm1vdmVfdXNlcl90b190aW1lc3RhbXAYMiABKAsyIS5kZWJhdGVfZXZlbnQuTW92ZVVzZXJUb1RpbWVzdGFtcEgAEjEKDHNlbGVjdF9jbGFpbRgzIAEoCzIZLmRlYmF0ZV9ldmVudC5TZWxlY3RDbGFpbUgAEjcKD3N1bW1hcml6ZV9jbGFpbRg0IAEoCzIcLmRlYmF0ZV9ldmVudC5TdW1tYXJpemVDbGFpbUgAEjcKD2dlbmVyYXRlX2RlYmF0ZRg1IAEoCzIcLmRlYmF0ZV9ldmVudC5HZW5lcmF0ZURlYmF0ZUgAEjUKDnN0YXJ0X3R1dG9yaWFsGDYgASgLMhsuZGViYXRlX2V2ZW50LlN0YXJ0VHV0b3JpYWxIABIvCgtzZWxlY3RfbGluaxg3IAEoCzIYLmRlYmF0ZV9ldmVudC5TZWxlY3RMaW5rSABCCQoHcGF5bG9hZCq/DAoJRXZlbnRUeXBlEhoKFkVWRU5UX0tJTkRfVU5TUEVDSUZJRUQQABIICgROT05FEAESEQoNQ1JFQVRFX0RFQkFURRACEhEKDUNMRUFSX0RFQkFURVMQAxIRCg1ERUxFVEVfREVCQVRFEAQSEAoMRU5URVJfREVCQVRFEAUSCwoHR09fSE9NRRAGEhAKDEdPX1RPX1BBUkVOVBAHEhgKFE9QRU5fQUREX0NISUxEX0NMQUlNEAgSEwoPQUREX0NISUxEX0NMQUlNEAkSHAoYREVMRVRFX0NVUlJFTlRfU1RBVEVNRU5UEAoSEAoMUkVQT1JUX0NMQUlNEAsSDwoLR09fVE9fQ0xBSU0QDBIZChVDTE9TRV9BRERfQ0hJTERfQ0xBSU0QDRIWChJDTE9TRV9SRVBPUlRfQ0xBSU0QDhIaChZTVUJNSVRfQUREX0NISUxEX0NMQUlNEA8SFgoSREVMRVRFX0NISUxEX0NMQUlNEBASIAocU1RBUlRfRURJVF9DTEFJTV9ERVNDUklQVElPThAREiEKHVNVQk1JVF9FRElUX0NMQUlNX0RFU0NSSVBUSU9OEBISIQodQ0FOQ0VMX0VESVRfQ0xBSU1fREVTQ1JJUFRJT04QExIUChBTVEFSVF9FRElUX0NMQUlNEBQSFQoRU1VCTUlUX0VESVRfQ0xBSU0QFRIVChFDQU5DRUxfRURJVF9DTEFJTRAWEhYKEkNPTk5FQ1RfRlJPTV9DTEFJTRAXEhQKEENPTk5FQ1RfVE9fQ0xBSU0QGBIZChVTVUJNSVRfQ09OTkVDVF9DTEFJTVMQGRIZChVDQU5DRUxfQ09OTkVDVF9DTEFJTVMQGhIPCgtERUxFVEVfTElOSxAbEg8KC0pPSU5fREVCQVRFEBwSCQoFTE9HSU4QHRIKCgZMT0dPVVQQHhIZChVTVEFSVF9DSEFMTEVOR0VfQ0xBSU0QHxIeChpBRERfQ0xBSU1fVE9fQkVfQ0hBTExFTkdFRBAgEh0KGUFERF9MSU5LX1RPX0JFX0NIQUxMRU5HRUQQIRIaChZTVUJNSVRfQ0hBTExFTkdFX0NMQUlNECISEwoPR09fVE9fQ0hBTExFTkdFECMSFQoRQ09OQ0VERV9DSEFMTEVOR0UQJBIaChZDQU5DRUxfQ0hBTExFTkdFX0NMQUlNECUSFgoST1BFTl9BRERfQ0hBTExFTkdFECYSFwoTQ0xPU0VfQUREX0NIQUxMRU5HRRAnEiEKHVJFTU9WRV9DTEFJTV9UT19CRV9DSEFMTEVOR0VEECgSIAocUkVNT1ZFX0xJTktfVE9fQkVfQ0hBTExFTkdFRBApEhQKEERFTEVURV9DSEFMTEVOR0UQKhIhCh1HT19UT19DSEFMTEVOR0VEX1BBUkVOVF9DTEFJTRArEhAKDExFQVZFX0RFQkFURRAsEiIKHkdPX1RPX0hJU1RPUllfT0ZfQ1VSUkVOVF9DTEFJTRAtEhoKFk1PVkVfVVNFUl9UT19USU1FU1RBTVAQLhIYChRNT1ZFX1VTRVJfVE9fUFJFU0VOVBAvEh8KG1NUQVJUX01PRElGSUNBVElPTl9PRl9DTEFJTRAwEiAKHFNVQk1JVF9NT0RJRklDQVRJT05fT0ZfQ0xBSU0QMRIgChxDQU5DRUxfTU9ESUZJQ0FUSU9OX09GX0NMQUlNEDISEgoOR09fVE9fT1ZFUlZJRVcQMxIaChZHT19UT19GVUxMX0RFQkFURV9WSUVXEDQSEAoMU0VMRUNUX0NMQUlNEDUSFAoQU1VNTUFSSVpFX0RFQkFURRA2EhoKFkRJU01JU1NfREVCQVRFX1NVTU1BUlkQNxITCg9TVU1NQVJJWkVfQ0xBSU0QOBIZChVESVNNSVNTX0NMQUlNX1NVTU1BUlkQORITCg9HRU5FUkFURV9ERUJBVEUQOhIVChFDSEFMTEVOR0VfV0lUSF9BSRA7EhUKEURJU01JU1NfQUlfTk9USUNFEDwSEgoOQ0FOQ0VMX0FJX1dPUksQPRISCg5TVEFSVF9UVVRPUklBTBA+EhEKDVRVVE9SSUFMX05FWFQQPxIRCg1UVVRPUklBTF9FWElUEEASDwoLU0VMRUNUX0xJTksQQWIGcHJvdG8z", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message debate_event.CreateDebate
@@ -193,7 +193,27 @@ export const GoToClaimSchema: GenMessage<GoToClaim> = /*@__PURE__*/
  * Selects a claim as the viewer's "current claim" (for highlighting in the
  * map/tree) WITHOUT touching current_scope -- unlike GoToClaim, this never
  * navigates to the single-claim view.
+ * Select an ARGUMENT -- the relation between claims, the pill in the graph --
+ * the way SelectClaim selects a claim. Carries the RELATION id, which is what
+ * the challenge handler takes when the user goes on to challenge it.
  *
+ * @generated from message debate_event.SelectLink
+ */
+export type SelectLink = Message<"debate_event.SelectLink"> & {
+  /**
+   * @generated from field: int32 link_id = 1;
+   */
+  linkId: number;
+};
+
+/**
+ * Describes the message debate_event.SelectLink.
+ * Use `create(SelectLinkSchema)` to create a new message.
+ */
+export const SelectLinkSchema: GenMessage<SelectLink> = /*@__PURE__*/
+  messageDesc(file_debate_event, 7);
+
+/**
  * @generated from message debate_event.SelectClaim
  */
 export type SelectClaim = Message<"debate_event.SelectClaim"> & {
@@ -208,7 +228,7 @@ export type SelectClaim = Message<"debate_event.SelectClaim"> & {
  * Use `create(SelectClaimSchema)` to create a new message.
  */
 export const SelectClaimSchema: GenMessage<SelectClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 7);
+  messageDesc(file_debate_event, 8);
 
 /**
  * @generated from message debate_event.SubmitEditClaimDescription
@@ -225,7 +245,7 @@ export type SubmitEditClaimDescription = Message<"debate_event.SubmitEditClaimDe
  * Use `create(SubmitEditClaimDescriptionSchema)` to create a new message.
  */
 export const SubmitEditClaimDescriptionSchema: GenMessage<SubmitEditClaimDescription> = /*@__PURE__*/
-  messageDesc(file_debate_event, 8);
+  messageDesc(file_debate_event, 9);
 
 /**
  * @generated from message debate_event.SubmitEditClaim
@@ -242,7 +262,7 @@ export type SubmitEditClaim = Message<"debate_event.SubmitEditClaim"> & {
  * Use `create(SubmitEditClaimSchema)` to create a new message.
  */
 export const SubmitEditClaimSchema: GenMessage<SubmitEditClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 9);
+  messageDesc(file_debate_event, 10);
 
 /**
  * TODO remove field, was used for user manual linking claims
@@ -261,7 +281,7 @@ export type ConnectFromClaim = Message<"debate_event.ConnectFromClaim"> & {
  * Use `create(ConnectFromClaimSchema)` to create a new message.
  */
 export const ConnectFromClaimSchema: GenMessage<ConnectFromClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 10);
+  messageDesc(file_debate_event, 11);
 
 /**
  * TODO remove field, was used for user manual linking claims
@@ -280,7 +300,7 @@ export type ConnectToClaim = Message<"debate_event.ConnectToClaim"> & {
  * Use `create(ConnectToClaimSchema)` to create a new message.
  */
 export const ConnectToClaimSchema: GenMessage<ConnectToClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 11);
+  messageDesc(file_debate_event, 12);
 
 /**
  * TODO remove field, was used for user manual linking claims
@@ -309,7 +329,7 @@ export type SubmitConnectClaims = Message<"debate_event.SubmitConnectClaims"> & 
  * Use `create(SubmitConnectClaimsSchema)` to create a new message.
  */
 export const SubmitConnectClaimsSchema: GenMessage<SubmitConnectClaims> = /*@__PURE__*/
-  messageDesc(file_debate_event, 12);
+  messageDesc(file_debate_event, 13);
 
 /**
  * @generated from message debate_event.DeleteLink
@@ -326,7 +346,7 @@ export type DeleteLink = Message<"debate_event.DeleteLink"> & {
  * Use `create(DeleteLinkSchema)` to create a new message.
  */
 export const DeleteLinkSchema: GenMessage<DeleteLink> = /*@__PURE__*/
-  messageDesc(file_debate_event, 13);
+  messageDesc(file_debate_event, 14);
 
 /**
  * @generated from message debate_event.JoinDebate
@@ -343,7 +363,7 @@ export type JoinDebate = Message<"debate_event.JoinDebate"> & {
  * Use `create(JoinDebateSchema)` to create a new message.
  */
 export const JoinDebateSchema: GenMessage<JoinDebate> = /*@__PURE__*/
-  messageDesc(file_debate_event, 14);
+  messageDesc(file_debate_event, 15);
 
 /**
  * @generated from message debate_event.Login
@@ -376,7 +396,7 @@ export type Login = Message<"debate_event.Login"> & {
  * Use `create(LoginSchema)` to create a new message.
  */
 export const LoginSchema: GenMessage<Login> = /*@__PURE__*/
-  messageDesc(file_debate_event, 15);
+  messageDesc(file_debate_event, 16);
 
 /**
  * @generated from message debate_event.AddClaimToBeChallenged
@@ -393,7 +413,7 @@ export type AddClaimToBeChallenged = Message<"debate_event.AddClaimToBeChallenge
  * Use `create(AddClaimToBeChallengedSchema)` to create a new message.
  */
 export const AddClaimToBeChallengedSchema: GenMessage<AddClaimToBeChallenged> = /*@__PURE__*/
-  messageDesc(file_debate_event, 16);
+  messageDesc(file_debate_event, 17);
 
 /**
  * @generated from message debate_event.RemoveClaimToBeChallenged
@@ -410,7 +430,7 @@ export type RemoveClaimToBeChallenged = Message<"debate_event.RemoveClaimToBeCha
  * Use `create(RemoveClaimToBeChallengedSchema)` to create a new message.
  */
 export const RemoveClaimToBeChallengedSchema: GenMessage<RemoveClaimToBeChallenged> = /*@__PURE__*/
-  messageDesc(file_debate_event, 17);
+  messageDesc(file_debate_event, 18);
 
 /**
  * @generated from message debate_event.AddLinkToBeChallenged
@@ -427,7 +447,7 @@ export type AddLinkToBeChallenged = Message<"debate_event.AddLinkToBeChallenged"
  * Use `create(AddLinkToBeChallengedSchema)` to create a new message.
  */
 export const AddLinkToBeChallengedSchema: GenMessage<AddLinkToBeChallenged> = /*@__PURE__*/
-  messageDesc(file_debate_event, 18);
+  messageDesc(file_debate_event, 19);
 
 /**
  * @generated from message debate_event.RemoveLinkToBeChallenged
@@ -444,7 +464,7 @@ export type RemoveLinkToBeChallenged = Message<"debate_event.RemoveLinkToBeChall
  * Use `create(RemoveLinkToBeChallengedSchema)` to create a new message.
  */
 export const RemoveLinkToBeChallengedSchema: GenMessage<RemoveLinkToBeChallenged> = /*@__PURE__*/
-  messageDesc(file_debate_event, 19);
+  messageDesc(file_debate_event, 20);
 
 /**
  * @generated from message debate_event.SubmitChallengeClaim
@@ -494,7 +514,7 @@ export type SubmitChallengeClaim = Message<"debate_event.SubmitChallengeClaim"> 
  * Use `create(SubmitChallengeClaimSchema)` to create a new message.
  */
 export const SubmitChallengeClaimSchema: GenMessage<SubmitChallengeClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 20);
+  messageDesc(file_debate_event, 21);
 
 /**
  * Builds a whole debate from a passage, using the topic to steer what the
@@ -519,7 +539,7 @@ export type GenerateDebate = Message<"debate_event.GenerateDebate"> & {
  * Use `create(GenerateDebateSchema)` to create a new message.
  */
 export const GenerateDebateSchema: GenMessage<GenerateDebate> = /*@__PURE__*/
-  messageDesc(file_debate_event, 21);
+  messageDesc(file_debate_event, 22);
 
 /**
  * Summarizes one claim rather than the whole debate.
@@ -538,7 +558,7 @@ export type SummarizeClaim = Message<"debate_event.SummarizeClaim"> & {
  * Use `create(SummarizeClaimSchema)` to create a new message.
  */
 export const SummarizeClaimSchema: GenMessage<SummarizeClaim> = /*@__PURE__*/
-  messageDesc(file_debate_event, 22);
+  messageDesc(file_debate_event, 23);
 
 /**
  * @generated from message debate_event.GoToChallenge
@@ -555,7 +575,7 @@ export type GoToChallenge = Message<"debate_event.GoToChallenge"> & {
  * Use `create(GoToChallengeSchema)` to create a new message.
  */
 export const GoToChallengeSchema: GenMessage<GoToChallenge> = /*@__PURE__*/
-  messageDesc(file_debate_event, 23);
+  messageDesc(file_debate_event, 24);
 
 /**
  * @generated from message debate_event.ConcedeChallenge
@@ -577,7 +597,7 @@ export type ConcedeChallenge = Message<"debate_event.ConcedeChallenge"> & {
  * Use `create(ConcedeChallengeSchema)` to create a new message.
  */
 export const ConcedeChallengeSchema: GenMessage<ConcedeChallenge> = /*@__PURE__*/
-  messageDesc(file_debate_event, 24);
+  messageDesc(file_debate_event, 25);
 
 /**
  * @generated from message debate_event.DeleteChallenge
@@ -594,7 +614,7 @@ export type DeleteChallenge = Message<"debate_event.DeleteChallenge"> & {
  * Use `create(DeleteChallengeSchema)` to create a new message.
  */
 export const DeleteChallengeSchema: GenMessage<DeleteChallenge> = /*@__PURE__*/
-  messageDesc(file_debate_event, 25);
+  messageDesc(file_debate_event, 26);
 
 /**
  * @generated from message debate_event.LeaveDebate
@@ -611,7 +631,7 @@ export type LeaveDebate = Message<"debate_event.LeaveDebate"> & {
  * Use `create(LeaveDebateSchema)` to create a new message.
  */
 export const LeaveDebateSchema: GenMessage<LeaveDebate> = /*@__PURE__*/
-  messageDesc(file_debate_event, 26);
+  messageDesc(file_debate_event, 27);
 
 /**
  * @generated from message debate_event.MoveUserToTimestamp
@@ -633,7 +653,7 @@ export type MoveUserToTimestamp = Message<"debate_event.MoveUserToTimestamp"> & 
  * Use `create(MoveUserToTimestampSchema)` to create a new message.
  */
 export const MoveUserToTimestampSchema: GenMessage<MoveUserToTimestamp> = /*@__PURE__*/
-  messageDesc(file_debate_event, 27);
+  messageDesc(file_debate_event, 28);
 
 /**
  * Which walkthrough to start. Empty name means the default one, so the
@@ -653,7 +673,7 @@ export type StartTutorial = Message<"debate_event.StartTutorial"> & {
  * Use `create(StartTutorialSchema)` to create a new message.
  */
 export const StartTutorialSchema: GenMessage<StartTutorial> = /*@__PURE__*/
-  messageDesc(file_debate_event, 28);
+  messageDesc(file_debate_event, 29);
 
 /**
  * @generated from message debate_event.UserAuthInfo
@@ -682,7 +702,7 @@ export type UserAuthInfo = Message<"debate_event.UserAuthInfo"> & {
  * Use `create(UserAuthInfoSchema)` to create a new message.
  */
 export const UserAuthInfoSchema: GenMessage<UserAuthInfo> = /*@__PURE__*/
-  messageDesc(file_debate_event, 29);
+  messageDesc(file_debate_event, 30);
 
 /**
  * main message
@@ -882,6 +902,12 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
      */
     value: StartTutorial;
     case: "startTutorial";
+  } | {
+    /**
+     * @generated from field: debate_event.SelectLink select_link = 55;
+     */
+    value: SelectLink;
+    case: "selectLink";
   } | { case: undefined; value?: undefined };
 };
 
@@ -890,7 +916,7 @@ export type DebateEvent = Message<"debate_event.DebateEvent"> & {
  * Use `create(DebateEventSchema)` to create a new message.
  */
 export const DebateEventSchema: GenMessage<DebateEvent> = /*@__PURE__*/
-  messageDesc(file_debate_event, 30);
+  messageDesc(file_debate_event, 31);
 
 /**
  * enum
@@ -1238,6 +1264,13 @@ export enum EventType {
    * @generated from enum value: TUTORIAL_EXIT = 64;
    */
   TUTORIAL_EXIT = 64,
+
+  /**
+   * The graph's relation pills are selectable too; see SelectLink.
+   *
+   * @generated from enum value: SELECT_LINK = 65;
+   */
+  SELECT_LINK = 65,
 }
 
 /**

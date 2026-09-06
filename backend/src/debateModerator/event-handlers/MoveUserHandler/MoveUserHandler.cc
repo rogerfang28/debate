@@ -72,6 +72,7 @@ void MoveUserHandler::GoToClaim(const int& claim_id, const int& user_id, DebateW
     // save back to database;
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
+    userProto.mutable_engagement()->mutable_debating_info()->set_selected_link_id(0);
     // change scope
     userProto.mutable_current_scope()->mutable_single_claim()->set_current_claim_id(claim_id);
     debateWrapper.updateUserProtobuf(user_id, userProto);
@@ -83,6 +84,30 @@ void MoveUserHandler::SelectClaim(const int& claim_id, const int& user_id, Debat
     // Only update current_claim -- current_scope is intentionally untouched
     // so this never navigates away from whatever page the user is on.
     userProto.mutable_engagement()->mutable_debating_info()->mutable_current_claim()->set_id(claim_id);
+    // A claim selection ends any argument selection: the panel shows one thing.
+    userProto.mutable_engagement()->mutable_debating_info()->set_selected_link_id(0);
+    debateWrapper.updateUserProtobuf(user_id, userProto);
+}
+
+void MoveUserHandler::SelectLink(const int& link_id, const int& user_id, DebateWrapper& debateWrapper) {
+    Log::debug("[SelectLink] User " + std::to_string(user_id) + " selecting link id: " + std::to_string(link_id));
+    const debate::Relationship rel = debateWrapper.getLinkById(link_id);
+    if (rel.id() == 0) {
+        Log::warn("[SelectLink] Link " + std::to_string(link_id) + " not found; nothing selected");
+        return;
+    }
+    // The claim this argument is FOR (or, for an undercut, the claim the
+    // attacked argument was for). Focusing it means the links the panel and
+    // the challenge modal read -- the links under the current claim -- always
+    // include the selected one.
+    const int focusClaimId = rel.to_case() == debate::Relationship::kToClaimId
+        ? rel.to_claim_id() : rel.link().connect_to();
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    auto* debating = userProto.mutable_engagement()->mutable_debating_info();
+    if (focusClaimId > 0) {
+        debating->mutable_current_claim()->set_id(focusClaimId);
+    }
+    debating->set_selected_link_id(rel.id());  // the RELATION id, whichever row was clicked
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 

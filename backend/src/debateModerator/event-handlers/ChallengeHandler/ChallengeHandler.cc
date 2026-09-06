@@ -92,6 +92,19 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
+    // Putting a link into a challenge when no challenge is under way STARTS
+    // one, modal open, with the link already picked. That is what the
+    // selected-argument panel's Challenge button means; making it two clicks
+    // (start, then pick) would only be ceremony.
+    auto* debating = userProto.mutable_engagement()->mutable_debating_info();
+    if (debating->current_debate_action().action_type() !=
+        user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM) {
+        debating->mutable_current_debate_action()->set_action_type(
+            user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
+        debating->mutable_challenging_info()->set_opened_challenge_modal(true);
+        Log::debug("[AddLinkToBeChallengedHandler] Started a challenge for user: " + std::to_string(user_id));
+    }
+
     // set the challenging_info current_link to the link to be challenged
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->add_link_ids(link_id);
     Log::debug("[AddLinkToBeChallengedHandler] Set challenging_info current_link to link: " + std::to_string(link_id) + " for user: " + std::to_string(user_id));

@@ -19,5 +19,7 @@ public:
     static ui::Component FillCurrentClaimSection(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component AddAppropriateButtons(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
     static ui::Component AddAppropriateOverlays(const rendering_info::DebatePageRenderingInfo& info, const user::User& user, ui::Component mainLayout);
-    static ui::Component GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb = nullptr);
+    // `selectedNodeOverride`, when set, is what the graph highlights instead of
+    // the current claim -- "r<relationId>" for a selected argument pill.
+    static ui::Component GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb = nullptr, const std::string& selectedNodeOverride = "");
 };

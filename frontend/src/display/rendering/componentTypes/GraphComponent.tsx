@@ -632,6 +632,21 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     [selectedId, onNodeClick]
   );
 
+  // ── Junction click — selects the ARGUMENT server-side (SELECT_LINK). The
+  // group key is `r<relationId>`; what goes to the server is the relation id,
+  // which is also what the challenge handler takes if the user then challenges
+  // it. Same local echo as a node click, so the ring moves before the round
+  // trip lands.
+  const handleJunctionClick = useCallback(
+    (key: string, e: React.MouseEvent) => {
+      e.stopPropagation();
+      setSelectedId(key === selectedId ? null : key);
+      const syntheticId = `selectLinkNode_${key.slice(1)}`;
+      handleEvent(e as any, { id: syntheticId }, "onClick", syntheticId);
+    },
+    [selectedId]
+  );
+
   // ── No-data state ─────────────────────────────────────────────────
   if (nodes.length === 0 && edges.length === 0) {
     return (
@@ -678,6 +693,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         target: GraphNode;
         type?: string;
         label: string;
+        // Only an ATTRIBUTED relation (a real relation id) can be selected:
+        // the id is what the server needs to know which argument was meant.
+        selectable: boolean;
       }
     >();
 
@@ -704,6 +722,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           target,
           type: edge.type,
           label: junctionLabel(edge),
+          selectable: !!(edge.relationId && edge.relationId > 0),
         });
         continue;
       }
@@ -845,7 +864,37 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   markerEnd={`url(#${component.id}-${isChallenge ? "arrow-challenge" : "arrow-support"})`}
                   style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
                 />
-                <g transform={`translate(${jx},${jy})`} className="graph-junction">
+                <g
+                  transform={`translate(${jx},${jy})`}
+                  className="graph-junction"
+                  style={{ cursor: group.selectable ? "pointer" : "default" }}
+                  onClick={(e) => {
+                    if (group.selectable) handleJunctionClick(group.key, e);
+                  }}
+                >
+                  {/* Hit area. A pill is ~20px tall and shrinks with the zoom;
+                      without padding it is unclickable at Fit. Transparent, not
+                      "none": it must catch the click and draw nothing. */}
+                  <rect
+                    x={-jw / 2 - 8}
+                    y={-JUNCTION_HEIGHT / 2 - 8}
+                    width={jw + 16}
+                    height={JUNCTION_HEIGHT + 16}
+                    fill="transparent"
+                  />
+                  {selectedId === group.key && (
+                    <rect
+                      x={-jw / 2 - 5}
+                      y={-JUNCTION_HEIGHT / 2 - 5}
+                      width={jw + 10}
+                      height={JUNCTION_HEIGHT + 10}
+                      rx={(JUNCTION_HEIGHT + 10) / 2}
+                      fill="none"
+                      stroke="#fbbf24"
+                      strokeWidth={2}
+                      strokeDasharray="4,3"
+                    />
+                  )}
                   {label ? (
                     <>
                       <rect

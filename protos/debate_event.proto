@@ -61,6 +61,13 @@ message GoToClaim {
 // Selects a claim as the viewer's "current claim" (for highlighting in the
 // map/tree) WITHOUT touching current_scope -- unlike GoToClaim, this never
 // navigates to the single-claim view.
+// Select an ARGUMENT -- the relation between claims, the pill in the graph --
+// the way SelectClaim selects a claim. Carries the RELATION id, which is what
+// the challenge handler takes when the user goes on to challenge it.
+message SelectLink {
+  int32 link_id = 1;
+}
+
 message SelectClaim {
     int32 claim_id      = 1;
 }
@@ -253,6 +260,8 @@ enum EventType {
     START_TUTORIAL = 62;
     TUTORIAL_NEXT = 63;
     TUTORIAL_EXIT = 64;
+    // The graph's relation pills are selectable too; see SelectLink.
+    SELECT_LINK = 65;
 
 }
 
@@ -307,5 +316,6 @@ message DebateEvent {
     SummarizeClaim summarize_claim = 52;
     GenerateDebate generate_debate = 53;
     StartTutorial start_tutorial = 54;
+    SelectLink select_link = 55;
   }
 }

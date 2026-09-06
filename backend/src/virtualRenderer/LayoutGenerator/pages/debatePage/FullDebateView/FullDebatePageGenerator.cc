@@ -2106,7 +2106,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb, const std::string& selectedNodeOverride) {
 
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
@@ -2447,8 +2447,10 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         gEdge->set_relation_id(meta.relationId);
     }
 
-    // Set selected node to current claim if present
-    if (currentClaimId > 0) {
+    // Highlight the selected argument pill if there is one, else the current claim.
+    if (!selectedNodeOverride.empty()) {
+        graphComp.set_selected_node_id(selectedNodeOverride);
+    } else if (currentClaimId > 0) {
         graphComp.set_selected_node_id(std::to_string(currentClaimId));
     }
 

@@ -1,3 +1,4 @@
+#include "../../../../../utils/DemoMode.h"
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
@@ -245,6 +246,154 @@ static ui::Component BuildSelectedClaimPanel(
 // A challenge Ck -> T counts as "answered" if it was challenged back (some
 // challenge link points to Ck) or conceded (T's owner marked Ck TRUE_CLAIM,
 // which is exactly what ConcedeChallenge writes).
+// The panel for a selected ARGUMENT: the relation between claims, the pill in
+// the graph. It takes the claim panel's place -- same id, same shape -- so the
+// column shows one thing at a time. Everything here is read from the
+// collection, which carries each relation with its from-set, its target, its
+// basis, and any challenge aimed at the relation itself.
+static ui::Component BuildSelectedRelationPanel(
+    int relationId,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "selectedClaimPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-orange-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    auto relIt = collectionProto.links_by_id().find(relationId);
+    if (relIt == collectionProto.links_by_id().end()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "selectedRelationEmpty", "No argument selected.", "text-sm", "text-gray-400", "", ""));
+        return panel;
+    }
+    const debate::Relationship& rel = relIt->second;
+
+    auto sentenceOf = [&](int claimId) {
+        auto it = collectionProto.claims_by_id().find(claimId);
+        return it != collectionProto.claims_by_id().end()
+            ? it->second.sentence() : "claim " + std::to_string(claimId);
+    };
+    auto addField = [&](const std::string& idSuffix, const std::string& label,
+                        const std::string& value, const std::string& valueColor) {
+        ui::Component row = ComponentGenerator::createContainer(
+            "selectedRelation" + idSuffix + "Row", "", "", "", "", "", "", "");
+        (*row.mutable_css())["display"] = "flex";
+        (*row.mutable_css())["flex-direction"] = "column";
+        (*row.mutable_css())["gap"] = "0.15rem";
+        ComponentGenerator::addChild(&row, ComponentGenerator::createText(
+            "selectedRelation" + idSuffix + "Label", label, "text-xs", "text-gray-500",
+            "font-semibold uppercase tracking-wide", ""));
+        ui::Component valueText = ComponentGenerator::createText(
+            "selectedRelation" + idSuffix + "Value", value, "text-sm", valueColor, "", "");
+        (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&row, valueText);
+        ComponentGenerator::addChild(&panel, row);
+    };
+
+    const bool opposes = rel.role() == debate::OPPOSES;
+
+    // The target: a claim, or -- for an undercut -- another argument. Either
+    // way there is a claim to go back to.
+    std::string targetText;
+    int backToClaimId = 0;
+    if (rel.to_case() == debate::Relationship::kToClaimId) {
+        targetText = sentenceOf(rel.to_claim_id());
+        backToClaimId = rel.to_claim_id();
+    } else {
+        targetText = "another argument (the one for: " + sentenceOf(rel.link().connect_to()) + ")";
+        backToClaimId = rel.link().connect_to();
+    }
+    addField("Target", opposes ? "Selected Argument Against:" : "Selected Argument For:",
+             targetText, "text-white");
+
+    std::string sources;
+    for (int from : rel.from_claim_ids()) {
+        if (!sources.empty()) {
+            sources += "  +  ";
+        }
+        sources += sentenceOf(from);
+    }
+    addField("Sources", rel.from_claim_ids_size() > 1 ? "Offered Together:" : "Offered:",
+             sources, "text-white");
+
+    std::string basis = rel.basis();
+    if (basis.empty() || basis == "parent to child connection" || basis == "challenge link") {
+        basis = "(no kind of reason chosen)";
+    }
+    addField("Basis", "Kind of Reason:", basis, "text-white");
+
+    // Standing FOR THE VIEWER. An argument is undercut for whoever holds a
+    // challenge against it TRUE; for them it carries nothing. Others' attacks
+    // are shown as a count, since they change nothing for this viewer.
+    int attacks = 0;
+    bool undercut = false;
+    for (const auto& entry : collectionProto.links_by_id()) {
+        const debate::Relationship& other = entry.second;
+        if (other.to_case() != debate::Relationship::kToRelationId ||
+            other.to_relation_id() != relationId) {
+            continue;
+        }
+        ++attacks;
+        for (int from : other.from_claim_ids()) {
+            auto cIt = collectionProto.claims_by_id().find(from);
+            if (cIt != collectionProto.claims_by_id().end() &&
+                StepViewMapClaimStatusForUser(cIt->second, viewerUserId, viewerUsername) ==
+                    debate::ClaimStatus::TRUE_CLAIM) {
+                undercut = true;
+            }
+        }
+    }
+    if (undercut) {
+        addField("Standing", "Standing For You:",
+                 "Undercut -- you hold a challenge against this argument, so it carries nothing for you.",
+                 "text-red-300");
+    } else if (attacks > 0) {
+        addField("Standing", "Standing For You:",
+                 "Challenged by " + std::to_string(attacks) + " argument(s) you do not hold; still counts for you.",
+                 "text-yellow-300");
+    } else {
+        addField("Standing", "Standing For You:", "Standing -- nobody has challenged this argument.",
+                 "text-green-300");
+    }
+
+    std::string creatorUsername = userDb.getUsername(rel.creator_id());
+    if (creatorUsername.empty()) {
+        creatorUsername = "User " + std::to_string(rel.creator_id());
+    }
+    addField("Creator", "Offered by:", creatorUsername, "text-white");
+
+    ui::Component buttonRow = ComponentGenerator::createContainer(
+        "selectedRelationButtonRow", "flex gap-2", "", "", "", "", "", "");
+    (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
+    if (!demo_mode::kReadOnlyMode) {
+        // One click: opens the challenge modal with this argument picked.
+        ComponentGenerator::addChild(&buttonRow, ComponentGenerator::createButton(
+            "challengeSelectedLinkButton_" + std::to_string(relationId),
+            "Challenge this argument", "", "bg-orange-600", "hover:bg-orange-700",
+            "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    if (backToClaimId > 0) {
+        ComponentGenerator::addChild(&buttonRow, ComponentGenerator::createButton(
+            "selectClaimNode_" + std::to_string(backToClaimId),
+            "Back to the claim", "", "bg-gray-600", "hover:bg-gray-500",
+            "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    ComponentGenerator::addChild(&panel, buttonRow);
+    return panel;
+}
+
 static ui::Component BuildDebateStatusPanel(
     const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
@@ -1360,13 +1509,21 @@ ui::Page StepView::GenerateStepViewPage(
 	ui::Component debateSummaryPanel = BuildDebateSummaryPanel(viewerUser);
 	ComponentGenerator::addChild(&leftColumn, debateSummaryPanel);
 
-	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
-		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
-	);
+	// A selected ARGUMENT takes the claim panel's place. The selection is
+	// only honoured if the collection still has that relation -- a stale id
+	// after a deletion falls back to the claim rather than an empty card.
+	const int selectedLinkId = viewerUser.engagement().debating_info().selected_link_id();
+	const bool showRelation = selectedLinkId > 0 &&
+		collectionProto.links_by_id().count(selectedLinkId) > 0;
+	ui::Component selectedClaimPanel = showRelation
+		? BuildSelectedRelationPanel(
+			selectedLinkId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username())
+		: BuildSelectedClaimPanel(
+			currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username());
 	// Attached at the call site rather than inside BuildSelectedClaimPanel,
 	// which is defined further up the file and would otherwise need a forward
 	// declaration and a wider signature just to reach the viewer.
-	if (currentClaimId > 0) {
+	if (!showRelation && currentClaimId > 0) {
 		ComponentGenerator::addChild(&selectedClaimPanel,
 			BuildClaimSummarySection(viewerUser, currentClaimId));
 	}
@@ -1426,7 +1583,11 @@ ui::Page StepView::GenerateStepViewPage(
 		? currentClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
-	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale, &userDb);
+	// A selected argument is highlighted in the graph in place of the claim.
+	const int graphSelectedLink = viewerUser.engagement().debating_info().selected_link_id();
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(
+		fullDebateInfo, mapFocusClaimId, mapScale, &userDb,
+		graphSelectedLink > 0 ? "r" + std::to_string(graphSelectedLink) : std::string());
 	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
 		if (mapSection.children(childIndex).id() == "mapTitle") {
 			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
