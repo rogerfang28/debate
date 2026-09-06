@@ -96,6 +96,7 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -200,6 +201,7 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -280,6 +282,7 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -315,6 +318,7 @@ add_executable(summarize_tool
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
@@ -346,6 +350,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_tutorial_library.cc
     ${CMAKE_SOURCE_DIR}/tests/test_basis_registry.cc
     ${CMAKE_SOURCE_DIR}/tests/test_extracted_debate_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_connections_debate_builder.cc
 )
 
 add_executable(debate_tests
@@ -374,6 +379,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc

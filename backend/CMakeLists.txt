@@ -75,6 +75,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/utils/TutorialLibrary.cc
     ${CMAKE_SOURCE_DIR}/src/utils/BasisRegistry.cc
     ${CMAKE_SOURCE_DIR}/src/utils/ExtractedDebateBuilder.cc
+    ${CMAKE_SOURCE_DIR}/src/utils/ConnectionsDebateBuilder.cc
 
     # build response
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc

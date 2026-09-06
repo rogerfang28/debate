@@ -3,13 +3,151 @@
 #include "BasisRegistry.h"
 #include "Log.h"
 
+#include <sstream>
+
 namespace {
 
 // A passage far past this stops being something the model can hold at once,
 // and the debate quietly covers only the beginning of it.
 constexpr size_t kMaxPassageChars = 15000;
 
-const char* kGeneratePromptTemplate =
+// Replaces every occurrence of `key`.
+void substitute(std::string& prompt, const std::string& key, const std::string& value) {
+    size_t at = 0;
+    while ((at = prompt.find(key, at)) != std::string::npos) {
+        prompt.replace(at, key.size(), value);
+        at += value.size();
+    }
+}
+
+std::string truncated(const std::string& passage) {
+    if (passage.size() <= kMaxPassageChars) {
+        return passage;
+    }
+    return passage.substr(0, kMaxPassageChars) + "... [truncated]";
+}
+
+std::string topicOrHint(const std::string& topic) {
+    return topic.empty() ? "(none given -- take it from the passage)" : topic;
+}
+
+// ---------------------------------------------------------------------------
+// PHASE 1. Reading only. The output is a numbered list, which is about the
+// simplest thing a model can be asked to type -- and the compound-sentence and
+// no-invention rules live here, where the claims are made.
+// ---------------------------------------------------------------------------
+const char* kClaimsPromptTemplate =
+    R"PROMPT(You read a passage and list every claim it makes about a topic.
+
+THE TOPIC:
+{topic}
+
+WHAT COUNTS AS A CLAIM
+
+A claim is ONE assertion that could be true or false. Not a question, not a
+topic, not a summary -- a sentence someone could agree or disagree with.
+
+- Split compound sentences. "Deaths fell and journeys got slower" is two claims.
+- Include the claims the passage argues AGAINST as well as for. An objection is
+  a claim. A reply to an objection is a claim.
+- Keep the passage's numbers, dates and attributions inside the claim.
+- Use only what the passage says. Never add a fact, a figure or an objection
+  the passage does not contain.
+
+LINE 1 IS SPECIAL
+
+Line 1 must be the ROOT: the assertion the whole passage is about, stated so it
+can be true or false. If the topic is a question -- "Should cities lower speed
+limits?" -- turn it into a statement: "Cities should lower urban speed limits to
+20mph". If no topic was given, the root is the passage's central assertion.
+
+FORMAT
+
+One claim per line, numbered from 1. Nothing else: no heading, no commentary,
+no blank lines, no grouping, no explanation of why a claim matters.
+
+1. the root claim
+2. a claim
+3. a claim
+
+Aim for 8 to 20 lines. Work through the WHOLE passage; a passage with four
+distinct arguments should produce claims from all four.
+
+THE PASSAGE:
+
+{passage})PROMPT";
+
+// ---------------------------------------------------------------------------
+// PHASE 2. Structure only. The claims already exist and are numbered in front
+// of the model; it says which bears on which. One JSON object per line, so a
+// line that will not parse costs one link, not the result.
+// ---------------------------------------------------------------------------
+const char* kConnectionsPromptTemplate =
+    R"PROMPT(You are given the claims found in a passage, numbered. Say how they connect.
+
+THE TOPIC:
+{topic}
+
+THE CLAIMS
+
+{claims}
+WHAT A CONNECTION IS
+
+Claim 1 is the root. Every other claim bears on exactly ONE other claim, either
+as a reason to believe it (it SUPPORTS it) or as a reason to doubt it (it
+OPPOSES it). An OPPOSES connection is a challenge, and a challenged claim can be
+challenged in turn.
+
+Connect each claim to the MOST SPECIFIC claim it bears on, not to the root by
+default. A reply to an objection connects to the objection. Evidence for a
+reason connects to that reason. Only claims that bear on the root directly
+connect to claim 1.
+
+HOW TO DECIDE, FOR EACH CLAIM FROM 2 TO THE LAST
+
+  1. Which ONE claim does this bear on most directly?
+  2. Is it a reason to believe that claim, or a reason to doubt it?
+  3. What KIND of reason is it? Write one line saying why it is that kind.
+
+JOINT REASONS
+
+Sometimes several claims only work TOGETHER -- the point collapses if any one
+of them is wrong. Put those in ONE connection with several numbers in "from",
+and write joint_reason saying why they cannot be taken apart.
+
+Test before you group. Take one claim out. If what remains is still a reason to
+believe the target, they are separate connections. Separate measurements of the
+same thing are nearly always separate. A connection with several "from" and no
+joint_reason will be split into separate connections.
+
+THE KINDS OF REASON
+
+{bases}
+FORMAT
+
+One JSON object per line. Nothing else -- no heading, no commentary, no array
+brackets around the lines.
+
+{"from": [3], "to": 1, "role": "supports", "basis": "{default_basis}", "why": "one line: why this is that kind of reason"}
+{"from": [5], "to": 3, "role": "opposes", "basis": "{default_basis}", "why": "one line"}
+{"from": [7, 8], "to": 1, "role": "supports", "basis": "{default_basis}", "why": "one line", "joint_reason": "why 7 and 8 only work together"}
+
+Every claim from 2 to the last must appear in exactly one "from". Claim 1 never
+appears in a "from". Use only the numbers in the list above.
+
+BEFORE YOU FINISH
+
+Count. If the list has 14 claims, there must be a line whose "from" contains 2,
+a line whose "from" contains 3, and so on up to 14 -- thirteen placements, no
+claim missing, no claim twice. A claim that other claims point at still needs
+its own line saying where IT goes.)PROMPT";
+
+// ---------------------------------------------------------------------------
+// The one-call tree prompt this replaced. Still used by ExtractedDebateBuilder
+// for hand-written trees and by its tests; the generation path no longer runs
+// it.
+// ---------------------------------------------------------------------------
+const char* kTreePromptTemplate =
     R"PROMPT(You read a passage and write down the argument inside it, as a tree.
 
 THE TOPIC:
@@ -38,10 +176,6 @@ Starting with the root:
   4. Now do steps 1 to 3 for each claim you just wrote.
   5. Stop for a claim when the passage says nothing further about it.
 
-You are finished when no claim has anything left to say about it. Do not stop
-early because the tree looks big enough, and do not keep going by inventing
-material the passage does not contain.
-
 THE FORMAT
 
 Protobuf text format. A claim contains arguments; an argument contains claims.
@@ -56,89 +190,64 @@ root {
     why: "one line: why this is that kind of reason"
     claims {
       text: "a reason the passage gives to believe the claim above"
-      description: "context worth keeping, or omit this line"
       arguments {
         role: OPPOSES
         basis: "{default_basis}"
         why: "one line"
-        claims {
-          text: "something the passage raises against THAT claim, not against the root"
-        }
+        claims { text: "something the passage raises against THAT claim, not against the root" }
       }
     }
   }
 }
 
-role is SUPPORTS or OPPOSES. An OPPOSES argument is a challenge, and a
-challenge is an ordinary claim: it can be supported and challenged in turn, so
-keep nesting under it exactly as you would anywhere else.
-
-ONE ARGUMENT OR SEVERAL -- THE THING TO GET RIGHT
-
-Several claims inside ONE arguments block are JOINT: the argument dies if any
-one of them is wrong. Two separate arguments blocks under the same claim are
-INDEPENDENT: each stands on its own, and losing one leaves the other standing.
-
-Test it before you group. Take one claim out of the group. If what remains is
-still a reason to believe the parent, they are INDEPENDENT and each needs its
-own arguments block. Separate measurements of the same thing are nearly always
-independent -- revenue rose, sick days fell, turnover fell: remove any one and
-the rest still argue the case.
-
-If you do group, you must write joint_reason saying why they cannot be taken
-apart. A group with no joint_reason will be split into independent arguments.
+Several claims inside ONE arguments block are JOINT and need a joint_reason.
+Separate arguments blocks are INDEPENDENT.
 
 THE KINDS OF REASON
 
 {bases}
 RULES
 
-1. Every claim is ONE assertion that could be true or false. Split compound
-   sentences into separate claims.
-2. Use only what the passage says. Never invent a fact, a study, a figure or an
-   objection. If the passage raises no objection to a claim, it has none.
+1. Every claim is ONE assertion that could be true or false.
+2. Use only what the passage says.
 3. Keep the passage's numbers and attributions inside the claim text.
-4. Attach every claim to the MOST SPECIFIC thing it bears on. A rebuttal to a
-   criticism goes under that criticism, not under the root.
-5. When two sides read the SAME fact differently -- a study both cite, a
-   document both quote -- do not hang the fact straight under the conclusion.
-   Write the READING as its own claim, support that reading with the fact, and
-   let the other side's reading OPPOSE the reading. An objection like "selection
-   bias" or "that is not what it admits" attacks a reading, never the fact.
-6. Aim for 8 to 20 claims, and work through the WHOLE passage. A passage with
-   four distinct arguments should produce four, not two.
-7. Write ONLY the tree. No markdown fence, no commentary before or after.
+4. Attach every claim to the MOST SPECIFIC thing it bears on.
+5. Write ONLY the tree. No markdown fence, no commentary.
 
 THE PASSAGE:
 
 {passage})PROMPT";
 
-// Replaces every occurrence of `key`. The registry's guide is substituted the
-// same way the topic and passage are, so a basis added to bases.pbtxt reaches
-// the model without this file changing.
-void substitute(std::string& prompt, const std::string& key, const std::string& value) {
-    size_t at = 0;
-    while ((at = prompt.find(key, at)) != std::string::npos) {
-        prompt.replace(at, key.size(), value);
-        at += value.size();
-    }
-}
-
 } // namespace
 
-std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::string& passage) {
-    std::string truncated = passage;
-    if (truncated.size() > kMaxPassageChars) {
-        truncated = truncated.substr(0, kMaxPassageChars) + "... [truncated]";
-    }
-
-    std::string prompt = kGeneratePromptTemplate;
-    substitute(prompt, "{topic}",
-               topic.empty() ? "(none given -- take it from the passage)" : topic);
-    substitute(prompt, "{bases}", bases::GuideAsList());
-    substitute(prompt, "{default_basis}", bases::DefaultName());
+std::string DebateGenerator::BuildClaimsPrompt(const std::string& topic, const std::string& passage) {
+    std::string prompt = kClaimsPromptTemplate;
+    substitute(prompt, "{topic}", topicOrHint(topic));
     // Last, so a passage that happens to contain a placeholder is not itself
     // substituted into.
-    substitute(prompt, "{passage}", truncated);
+    substitute(prompt, "{passage}", truncated(passage));
+    return prompt;
+}
+
+std::string DebateGenerator::BuildConnectionsPrompt(const std::string& topic,
+                                                    const std::vector<std::string>& claims) {
+    std::ostringstream numbered;
+    for (size_t i = 0; i < claims.size(); ++i) {
+        numbered << (i + 1) << ". " << claims[i] << "\n";
+    }
+    std::string prompt = kConnectionsPromptTemplate;
+    substitute(prompt, "{topic}", topicOrHint(topic));
+    substitute(prompt, "{bases}", bases::GuideAsList());
+    substitute(prompt, "{default_basis}", bases::DefaultName());
+    substitute(prompt, "{claims}", numbered.str());
+    return prompt;
+}
+
+std::string DebateGenerator::BuildPrompt(const std::string& topic, const std::string& passage) {
+    std::string prompt = kTreePromptTemplate;
+    substitute(prompt, "{topic}", topicOrHint(topic));
+    substitute(prompt, "{bases}", bases::GuideAsList());
+    substitute(prompt, "{default_basis}", bases::DefaultName());
+    substitute(prompt, "{passage}", truncated(passage));
     return prompt;
 }

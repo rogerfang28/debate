@@ -9,6 +9,7 @@
 #include "../../../utils/DebateWrapper.h"
 #include "../../../utils/ScenarioImporter.h"
 #include "../../../utils/ExtractedDebateBuilder.h"
+#include "../../../utils/ConnectionsDebateBuilder.h"
 #include "../../../utils/Log.h"
 
 #include <exception>
@@ -36,9 +37,20 @@ void AiAuthorHandler::GenerateDebate(const std::string& topic, const std::string
         return;
     }
 
-    // The prompt is built here, on the request thread, and handed over whole.
-    // The worker runs a prompt; it does not know what a debate is.
-    AiJobs::Start(user_id, AiJobs::Kind::Generation, DebateGenerator::BuildPrompt(topic, passage), 0);
+    // Two model calls: list the claims, then connect them. The second prompt
+    // is built from the first answer on the worker thread; that lambda parses
+    // text and formats text and touches nothing else.
+    AiJobs::StartTwoStage(
+        user_id, AiJobs::Kind::Generation, DebateGenerator::BuildClaimsPrompt(topic, passage),
+        [topic](const std::string& claimsText) {
+            const std::vector<std::string> claims =
+                ConnectionsDebateBuilder::ParseClaims(claimsText);
+            if (claims.empty()) {
+                return std::string();
+            }
+            return DebateGenerator::BuildConnectionsPrompt(topic, claims);
+        },
+        0);
     status->set_pending(true);
     status->set_elapsed_seconds(0);
     debateWrapper.updateUserProtobuf(user_id, userProto);
@@ -164,13 +176,12 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
             // generation leaves no debate behind at all -- where the old step
             // list could stop halfway and leave a partial one for the user to
             // find and delete.
-            const ExtractedDebateBuilder::Result built =
-                ExtractedDebateBuilder::Build(generation.text, user_id, moderator);
+            // intermediate = the numbered claims, text = the connections.
+            const ConnectionsDebateBuilder::Result built = ConnectionsDebateBuilder::Build(
+                generation.intermediate, generation.text, user_id, moderator);
             if (!built.ok) {
                 status->set_error(built.error);
                 if (built.debateId > 0) {
-                    // Validation passed but a write failed, which is the one
-                    // path that can still leave something behind.
                     status->set_about_debate_id(built.debateId);
                 }
             } else {
@@ -178,15 +189,32 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
                                    std::to_string(built.claimsCreated) + " claims, " +
                                    std::to_string(built.argumentsCreated) + " arguments, " +
                                    std::to_string(built.maxDepthReached) + " levels deep.";
+                // Each of these says something about the generation, not the
+                // build, so the user should see them rather than a clean count.
+                if (!built.dropped.empty()) {
+                    note += " " + std::to_string(built.dropped.size()) +
+                            " connection(s) could not be used.";
+                }
+                if (built.attachedToRoot > 0) {
+                    note += " " + std::to_string(built.attachedToRoot) +
+                            " claim(s) were placed under the root by the builder because other "
+                            "claims depended on them but the AI never said where they go.";
+                }
+                if (!built.orphans.empty()) {
+                    note += " " + std::to_string(built.orphans.size()) +
+                            " claim(s) the AI found were left out because it did not say "
+                            "where they go.";
+                }
                 if (built.groupsSplit > 0) {
-                    // Worth surfacing: it says the model grouped claims it could
-                    // not justify grouping, which is a fact about the generation.
                     note += " " + std::to_string(built.groupsSplit) +
                             " group(s) were split for having no stated reason to be joint.";
                 }
                 if (built.unknownBases > 0) {
                     note += " " + std::to_string(built.unknownBases) +
-                            " argument(s) named a kind of reason that is not configured.";
+                            " connection(s) named a kind of reason that is not configured.";
+                }
+                for (const std::string& d : built.dropped) {
+                    Log::warn("[Connections] dropped: " + d);
                 }
                 status->set_note(note);
                 status->set_about_debate_id(built.debateId);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
 // In-flight AI work, keyed by user and kind.
@@ -33,6 +34,10 @@ public:
         // exactly one caller ever sees a given result.
         bool finished = false;
         std::string text;
+        // What the FIRST stage of a two-stage run produced. Generation lists
+        // the claims first and connects them second, and the request thread
+        // needs both halves to build the debate.
+        std::string intermediate;
         std::string error;
         // Move-log head when the source text was taken. Carried on the JOB
         // because the run outlives any single response: the page is rebuilt
@@ -51,6 +56,15 @@ public:
     // Returns false if a run was already in progress.
     static bool Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq,
                       int claimId = 0);
+
+    // Two model calls in one run. `firstPrompt` runs first; `secondPromptFrom`
+    // turns its answer into the second prompt, ON THE WORKER THREAD, so it must
+    // touch nothing but its argument (it may return "" to abort with an error).
+    // The first answer is handed back as Snapshot::intermediate, the second as
+    // Snapshot::text.
+    static bool StartTwoStage(int userId, Kind kind, const std::string& firstPrompt,
+                              std::function<std::string(const std::string&)> secondPromptFrom,
+                              int atMoveSeq = 0);
 
     // Reports whether a run is going, and hands over the result exactly once.
     static Snapshot Collect(int userId, Kind kind);

@@ -21,6 +21,7 @@ struct Job {
     int claimId = 0;
     bool abandoned = false;
     std::string text;
+    std::string intermediate;
     std::string error;
 };
 
@@ -43,6 +44,27 @@ using JobKey = std::pair<int, AiJobs::Kind>;
 std::map<JobKey, Job>& jobs() {
     static std::map<JobKey, Job> j;
     return j;
+}
+
+// Marks the run finished and stores its result, or drops it if nobody is
+// waiting. Shared by the one- and two-stage workers so the abandon rule cannot
+// drift between them.
+void finish(const JobKey& key, const std::string& text, const std::string& intermediate,
+            const std::string& error) {
+    std::lock_guard<std::mutex> lock(mutex());
+    Job& job = jobs()[key];
+    if (job.abandoned) {
+        // Nobody is waiting for this any more. Dropping it here is what stops
+        // an abandoned result appearing minutes later next to whatever the
+        // user moved on to.
+        jobs().erase(key);
+        return;
+    }
+    job.running = false;
+    job.finished = true;
+    job.text = text;
+    job.intermediate = intermediate;
+    job.error = error;
 }
 
 } // namespace
@@ -97,19 +119,60 @@ bool AiJobs::Start(int userId, Kind kind, const std::string& debateText, int atM
             error = "The summary failed for an unknown reason.";
         }
 
+        finish(key, text, "", error);
+    }).detach();
+
+    return true;
+}
+
+bool AiJobs::StartTwoStage(int userId, Kind kind, const std::string& firstPrompt,
+                           std::function<std::string(const std::string&)> secondPromptFrom,
+                           int atMoveSeq) {
+    const JobKey key{userId, kind};
+    {
         std::lock_guard<std::mutex> lock(mutex());
         Job& job = jobs()[key];
-        if (job.abandoned) {
-            // Nobody is waiting for this any more. Dropping it here is what
-            // stops an abandoned summary appearing minutes later next to
-            // whatever the user moved on to.
-            jobs().erase(key);
-            return;
+        if (job.running) {
+            Log::info("[AiJobs] user " + std::to_string(userId) +
+                      " already has a run going; ignoring the second request");
+            return false;
         }
-        job.running = false;
-        job.finished = true;
-        job.text = text;
-        job.error = error;
+        job = Job{};
+        job.running = true;
+        job.startedAt = std::chrono::steady_clock::now();
+        job.atMoveSeq = atMoveSeq;
+    }
+
+    std::thread([key, kind, firstPrompt, secondPromptFrom]() {
+        std::string first;
+        std::string second;
+        std::string error;
+        try {
+            LlmOptions options = promptOptions(kind);
+            options.label = options.label + "/1";
+            first = LlmClient::Complete(firstPrompt, options);
+            if (first.empty()) {
+                error = "The model returned nothing for the first stage.";
+            } else {
+                const std::string secondPrompt = secondPromptFrom(first);
+                if (secondPrompt.empty()) {
+                    error = "The first stage produced nothing the second stage could use.";
+                } else {
+                    options.label = promptOptions(kind).label + "/2";
+                    second = LlmClient::Complete(secondPrompt, options);
+                    if (second.empty()) {
+                        error = "The model returned nothing for the second stage.";
+                    }
+                }
+            }
+        } catch (const std::exception& e) {
+            // An exception leaving a detached thread terminates the server.
+            Log::warn(std::string("[AiJobs] two-stage run failed: ") + e.what());
+            error = e.what();
+        } catch (...) {
+            error = "The run failed for an unknown reason.";
+        }
+        finish(key, second, first, error);
     }).detach();
 
     return true;
@@ -135,6 +198,7 @@ AiJobs::Snapshot AiJobs::Collect(int userId, Kind kind) {
     if (job.finished) {
         snapshot.finished = true;
         snapshot.text = job.text;
+        snapshot.intermediate = job.intermediate;
         snapshot.error = job.error;
         snapshot.atMoveSeq = job.atMoveSeq;
         snapshot.claimId = job.claimId;

@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "debate_event.pb.h"
 #include "google/protobuf/text_format.h"
+#include "google/protobuf/io/tokenizer.h"
 
 #include <algorithm>
 #include <set>
@@ -36,6 +37,31 @@ std::string stripCodeFence(const std::string& text) {
     }
     return text.substr(contentStart, end - contentStart);
 }
+
+// Captures the parser's own complaint. Without this a malformed tree came back
+// as "not valid protobuf text format" and nothing else -- useless to the reader
+// and useless to whoever has to work out whether the PROMPT is at fault. A
+// model writes this input, so the reason it failed is the most valuable thing
+// the failure produces.
+class ParseErrors : public google::protobuf::io::ErrorCollector {
+public:
+    void RecordError(int line, google::protobuf::io::ColumnNumber column,
+                     absl::string_view message) override {
+        if (!first_.empty()) {
+            return;  // the first error is the real one; the rest are its wake
+        }
+        // Lines are zero-based here and one-based to everyone else.
+        first_ = "line " + std::to_string(line + 1) + ", column " +
+                 std::to_string(static_cast<int>(column) + 1) + ": " +
+                 std::string(message);
+    }
+    void RecordWarning(int, google::protobuf::io::ColumnNumber, absl::string_view) override {}
+
+    const std::string& first() const { return first_; }
+
+private:
+    std::string first_;
+};
 
 bool isBlank(const std::string& s) {
     return s.find_first_not_of(" \t\r\n") == std::string::npos;
@@ -148,12 +174,20 @@ std::vector<Group> groupsOf(const extraction::Argument& argument, int& groupsSpl
 
 bool ExtractedDebateBuilder::Parse(const std::string& text, extraction::ExtractedDebate& out,
                                    std::string& error) {
-    if (!google::protobuf::TextFormat::ParseFromString(stripCodeFence(text), &out)) {
+    ParseErrors errors;
+    google::protobuf::TextFormat::Parser parser;
+    parser.RecordErrorsTo(&errors);
+    if (!parser.ParseFromString(stripCodeFence(text), &out)) {
         // A model wrote this, so a parse failure is an expected outcome and the
         // reason has to reach the user rather than a log nobody reads. It is
         // also the GOOD failure: a malformed tree is refused, where a
         // mis-numbered step list used to import a quietly wrong graph.
-        error = "The generated tree was not valid protobuf text format.";
+        error = "The generated tree was not valid protobuf text format";
+        if (!errors.first().empty()) {
+            error += " (" + errors.first() + ")";
+        }
+        error += ".";
+        Log::warn("[ExtractedDebate] Parse failed: " + error);
         return false;
     }
     if (!out.has_root() || isBlank(out.root().text())) {
