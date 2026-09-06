@@ -237,10 +237,11 @@ TEST_F(ConnectionsBuildTest, BadConnectionsAreDroppedByNameAndTheRestBuilt) {
 {"from": [5], "to": 6, "role": "supports"}
 {"from": [6], "to": 5, "role": "supports"})");
     ASSERT_TRUE(r.ok) << r.error;
-    EXPECT_EQ(r.claimsCreated, 2) << "root plus the one good connection";
+    // root, 2, and the 5<->6 circle broken at 5 (a tie; the lower number).
+    EXPECT_EQ(r.claimsCreated, 4);
     // root as from, self-link, target 99, claim 42, claim 2 placed twice,
-    // and the 5<->6 cycle (two lines that never find a created target).
-    EXPECT_EQ(r.dropped.size(), 7u);
+    // and the one edge (5 -> 6) that would have closed the circle again.
+    EXPECT_EQ(r.dropped.size(), 6u);
     auto has = [&](const char* s) {
         for (const auto& d : r.dropped) if (d.find(s) != std::string::npos) return true;
         return false;
@@ -250,9 +251,75 @@ TEST_F(ConnectionsBuildTest, BadConnectionsAreDroppedByNameAndTheRestBuilt) {
     EXPECT_TRUE(has("claim 99"));
     EXPECT_TRUE(has("claim 42"));
     EXPECT_TRUE(has("already placed"));
-    EXPECT_TRUE(has("never created"));
-    // 3, 4, 5, 6, 7 never got a usable placement.
-    EXPECT_EQ(r.orphans, (std::vector<int>{3, 4, 5, 6, 7}));
+    EXPECT_TRUE(has("would close a cycle"));
+    EXPECT_EQ(r.cyclesBroken, 1);
+    // 3, 4, 7 never got a usable placement.
+    EXPECT_EQ(r.orphans, (std::vector<int>{3, 4, 7}));
+}
+
+// The failure a live run actually produced: 27 opposed 29, 29 opposed 28, 28
+// supported 27 -- a circle -- and three more claims hung off 29. Nothing in the
+// circle could ever be created, so all seven were lost. Now the circle is
+// broken at its most-targeted claim, which goes under the root; one edge is
+// dropped and says so; everything else is kept.
+TEST_F(ConnectionsBuildTest, ACircleIsBrokenAtItsMostTargetedClaimNotLostWhole) {
+    const auto r = build(kSpeedClaims,
+        R"({"from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [3], "to": 4, "role": "opposes", "basis": "EVIDENTIAL"}
+{"from": [4], "to": 5, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [5], "to": 3, "role": "opposes", "basis": "EVIDENTIAL"}
+{"from": [6], "to": 5, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [7], "to": 5, "role": "supports", "basis": "EVIDENTIAL"})");
+    ASSERT_TRUE(r.ok) << r.error;
+    EXPECT_EQ(r.claimsCreated, 7) << "every claim survives";
+    EXPECT_TRUE(r.orphans.empty());
+    EXPECT_EQ(r.cyclesBroken, 1);
+    EXPECT_EQ(r.attachedToRoot, 1);
+    ASSERT_EQ(r.dropped.size(), 1u);
+    EXPECT_NE(r.dropped[0].find("5 -> 3 would close a cycle"), std::string::npos) << r.dropped[0];
+
+    // 5 -- pointed at by 4, 6 and 7 -- is the one under the root; 4, 6, 7
+    // hang off it and 3 off 4. The circle's other members keep their places.
+    const int root = idOf(r.debateId, "20mph");
+    const int five = idOf(r.debateId, "Stopping distance");
+    const int four = idOf(r.debateId, "matched the city average");
+    const int three = idOf(r.debateId, "already getting safer");
+    bool fiveUnderRoot = false, fourUnderFive = false, threeOnFour = false;
+    for (const auto& l : links(r.debateId)) {
+        if (std::get<0>(l) == root && std::get<1>(l) == five) fiveUnderRoot = true;
+        if (std::get<0>(l) == five && std::get<1>(l) == four) fourUnderFive = true;
+        if (std::get<0>(l) == three && std::get<1>(l) == four) threeOnFour = true;  // challenge: challenger -> challenged
+    }
+    EXPECT_TRUE(fiveUnderRoot);
+    EXPECT_TRUE(fourUnderFive);
+    EXPECT_TRUE(threeOnFour);
+}
+
+// The root is the topic when the topic is an assertion. The model's own line
+// 1 drifted to the passage's headline fact ("Fauci invoked the Fifth") in a
+// live run whose topic was whether he should be held in contempt.
+TEST(WithRoot, PinsLineOneAndRenumbers) {
+    const std::string pinned = Builder::WithRoot(
+        "1. Fauci invoked his Fifth Amendment rights.\n2. Paul scheduled a contempt vote.\n",
+        "Fauci should be held in contempt of Congress.");
+    const auto claims = Builder::ParseClaims(pinned);
+    ASSERT_EQ(claims.size(), 2u);
+    EXPECT_EQ(claims[0], "Fauci should be held in contempt of Congress.");
+    EXPECT_EQ(claims[1], "Paul scheduled a contempt vote.");
+    // No root: untouched.
+    EXPECT_EQ(Builder::WithRoot("1. a\n2. b\n", ""), "1. a\n2. b\n");
+}
+
+TEST(RootFromTopic, AStatementIsTheRootAQuestionIsNot) {
+    EXPECT_EQ(DebateGenerator::RootFromTopic("Cities should lower urban speed limits to 20mph"),
+              "Cities should lower urban speed limits to 20mph");
+    EXPECT_EQ(DebateGenerator::RootFromTopic("  Fauci should be held in contempt.  "),
+              "Fauci should be held in contempt.");
+    EXPECT_EQ(DebateGenerator::RootFromTopic("Should cities lower speed limits?"), "");
+    EXPECT_EQ(DebateGenerator::RootFromTopic("Should cities lower speed limits"), "");
+    EXPECT_EQ(DebateGenerator::RootFromTopic("Is Fauci guilty"), "");
+    EXPECT_EQ(DebateGenerator::RootFromTopic("Why did Fauci invoke the Fifth"), "");
+    EXPECT_EQ(DebateGenerator::RootFromTopic(""), "");
 }
 
 // The failure a live run actually produced: the model connected 3 and 7 to

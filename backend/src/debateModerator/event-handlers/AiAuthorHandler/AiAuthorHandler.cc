@@ -42,7 +42,12 @@ void AiAuthorHandler::GenerateDebate(const std::string& topic, const std::string
     // text and formats text and touches nothing else.
     AiJobs::StartTwoStage(
         user_id, AiJobs::Kind::Generation, DebateGenerator::BuildClaimsPrompt(topic, passage),
-        [topic](const std::string& claimsText) {
+        [topic](std::string& claimsText) {
+            // When the topic is already an assertion it is the root, whatever
+            // the model typed on line 1. Rewritten in place so the same pinned
+            // list reaches both the second prompt and the builder.
+            claimsText = ConnectionsDebateBuilder::WithRoot(
+                claimsText, DebateGenerator::RootFromTopic(topic));
             const std::vector<std::string> claims =
                 ConnectionsDebateBuilder::ParseClaims(claimsText);
             if (claims.empty()) {
@@ -195,10 +200,15 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
                     note += " " + std::to_string(built.dropped.size()) +
                             " connection(s) could not be used.";
                 }
-                if (built.attachedToRoot > 0) {
-                    note += " " + std::to_string(built.attachedToRoot) +
+                if (built.attachedToRoot > built.cyclesBroken) {
+                    note += " " + std::to_string(built.attachedToRoot - built.cyclesBroken) +
                             " claim(s) were placed under the root by the builder because other "
                             "claims depended on them but the AI never said where they go.";
+                }
+                if (built.cyclesBroken > 0) {
+                    note += " " + std::to_string(built.cyclesBroken) +
+                            " claim(s) were placed under the root by the builder because the "
+                            "AI's connections went round in a circle.";
                 }
                 if (!built.orphans.empty()) {
                     note += " " + std::to_string(built.orphans.size()) +

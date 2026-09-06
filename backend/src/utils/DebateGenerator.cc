@@ -1,5 +1,7 @@
 #include "DebateGenerator.h"
 
+#include <cctype>
+
 #include "BasisRegistry.h"
 #include "Log.h"
 
@@ -219,6 +221,36 @@ THE PASSAGE:
 {passage})PROMPT";
 
 } // namespace
+
+std::string DebateGenerator::RootFromTopic(const std::string& topic) {
+    const size_t a = topic.find_first_not_of(" \t\r\n");
+    if (a == std::string::npos) {
+        return "";
+    }
+    const size_t b = topic.find_last_not_of(" \t\r\n");
+    std::string t = topic.substr(a, b - a + 1);
+    if (t.back() == '?') {
+        return "";
+    }
+    // The first word, lower-cased, against the words a question opens with.
+    std::string first;
+    for (char c : t) {
+        if (c == ' ' || c == ',' || c == ':') {
+            break;
+        }
+        first += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+    static const char* const kQuestionWords[] = {
+        "should", "is", "are", "was", "were", "does", "do", "did", "can", "could",
+        "will", "would", "has", "have", "had", "why", "how", "what", "which", "who",
+        "whom", "when", "where", "whether", "shall", "may", "might", "must"};
+    for (const char* w : kQuestionWords) {
+        if (first == w) {
+            return "";
+        }
+    }
+    return t;
+}
 
 std::string DebateGenerator::BuildClaimsPrompt(const std::string& topic, const std::string& passage) {
     std::string prompt = kClaimsPromptTemplate;

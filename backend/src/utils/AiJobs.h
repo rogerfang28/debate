@@ -60,10 +60,12 @@ public:
     // Two model calls in one run. `firstPrompt` runs first; `secondPromptFrom`
     // turns its answer into the second prompt, ON THE WORKER THREAD, so it must
     // touch nothing but its argument (it may return "" to abort with an error).
+    // `secondPromptFrom` may rewrite the first answer in place (the generator
+    // pins the root to the topic); what it leaves is what is stored.
     // The first answer is handed back as Snapshot::intermediate, the second as
     // Snapshot::text.
     static bool StartTwoStage(int userId, Kind kind, const std::string& firstPrompt,
-                              std::function<std::string(const std::string&)> secondPromptFrom,
+                              std::function<std::string(std::string&)> secondPromptFrom,
                               int atMoveSeq = 0);
 
     // Reports whether a run is going, and hands over the result exactly once.

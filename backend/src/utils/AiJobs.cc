@@ -126,7 +126,7 @@ bool AiJobs::Start(int userId, Kind kind, const std::string& debateText, int atM
 }
 
 bool AiJobs::StartTwoStage(int userId, Kind kind, const std::string& firstPrompt,
-                           std::function<std::string(const std::string&)> secondPromptFrom,
+                           std::function<std::string(std::string&)> secondPromptFrom,
                            int atMoveSeq) {
     const JobKey key{userId, kind};
     {

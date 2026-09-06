@@ -64,6 +64,13 @@ public:
         // placement is the builder's, not the model's. In one measured run a
         // forgotten claim 2 took five of fourteen claims down with it.
         int attachedToRoot = 0;
+        // Of those, the ones attached because the AI's connections went round
+        // in a circle (A under B, B under C, C under A). The circle is broken
+        // at its most-targeted claim, which goes under the root; the one edge
+        // that would close the circle again is dropped and reported. In one
+        // measured run a three-claim circle took seven of thirty claims with
+        // it before this.
+        int cyclesBroken = 0;
         int groupsSplit = 0;
         int unknownBases = 0;
         std::string error;
@@ -73,6 +80,13 @@ public:
     // "1)", "-", "*", "[1]") and of a code fence; blank lines are skipped.
     // Line 1 is the root by convention.
     static std::vector<std::string> ParseClaims(const std::string& text);
+
+    // The same list with line 1 replaced by `root`, re-numbered from 1. Empty
+    // `root` returns the text untouched. The topic the user typed is what the
+    // debate is about; when it is already an assertion it IS the root, and the
+    // model's own line 1 -- which drifts to the passage's headline fact in
+    // about one run in three -- is only a paraphrase of it at best.
+    static std::string WithRoot(const std::string& claimsText, const std::string& root);
 
     // Phase-2 text -> connections. One JSON object per line, or a JSON array
     // of them; each is parsed on its own so a bad one costs one link. Lines

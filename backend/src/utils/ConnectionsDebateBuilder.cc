@@ -164,6 +164,23 @@ std::vector<std::string> ConnectionsDebateBuilder::ParseClaims(const std::string
     return claims;
 }
 
+std::string ConnectionsDebateBuilder::WithRoot(const std::string& claimsText, const std::string& root) {
+    if (trim(root).empty()) {
+        return claimsText;
+    }
+    std::vector<std::string> claims = ParseClaims(claimsText);
+    if (claims.empty()) {
+        claims.push_back(trim(root));
+    } else {
+        claims[0] = trim(root);
+    }
+    std::ostringstream out;
+    for (size_t i = 0; i < claims.size(); ++i) {
+        out << (i + 1) << ". " << claims[i] << "\n";
+    }
+    return out.str();
+}
+
 std::vector<ConnectionsDebateBuilder::Connection> ConnectionsDebateBuilder::ParseConnections(
     const std::string& text, std::vector<std::string>& dropped) {
     std::vector<Connection> connections;
@@ -400,12 +417,34 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
             if (written[i]) {
                 continue;
             }
-            const Connection& c = usable[i];
+            Connection c = usable[i];  // a copy: a broken cycle can shrink `from`
             auto targetIt = realId.find(c.to);
             if (targetIt == realId.end()) {
                 continue;
             }
             const int parentId = targetIt->second;
+
+            // A cycle broken below has already created one of this connection's
+            // sources. It must not be created twice; the edge that would close
+            // the circle is the one that goes.
+            {
+                std::vector<int> fresh;
+                for (int f : c.from) {
+                    if (!realId.count(f)) {
+                        fresh.push_back(f);
+                    }
+                }
+                if (fresh.empty()) {
+                    written[i] = true;
+                    progress = true;
+                    result.dropped.push_back("claim " + std::to_string(c.from[0]) + " -> " +
+                                             std::to_string(c.to) + " would close a cycle; " +
+                                             std::to_string(c.from[0]) +
+                                             " was attached under the root instead");
+                    continue;
+                }
+                c.from = fresh;
+            }
 
             const std::string basis = bases::Sanitize(c.basis);
             if (basis.empty() && !trim(c.basis).empty()) {
@@ -470,6 +509,42 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
             result.argumentsCreated++;
             written[i] = true;
             progress = true;
+        }
+
+        // ---- Cycles.
+        //
+        // A pass that wrote nothing while connections remain means every one
+        // of them waits on a target that will never be created -- they wait on
+        // each other. Break the circle where it costs least: the claim the
+        // most connections point at goes under the root (a guess, reported as
+        // one), and the next pass unwinds the rest. Without this a three-claim
+        // circle took seven of thirty claims with it in a live run.
+        if (!progress) {
+            std::map<int, int> waiting;  // uncreated target -> connections needing it
+            for (size_t i = 0; i < usable.size(); ++i) {
+                const int t = usable[i].to;
+                if (!written[i] && !realId.count(t) && t >= 2 && t <= n) {
+                    waiting[t]++;
+                }
+            }
+            int pick = 0, most = 0;
+            for (const auto& w : waiting) {
+                if (w.second > most) {
+                    most = w.second;
+                    pick = w.first;
+                }
+            }
+            if (pick != 0) {
+                Connection hub;
+                hub.from = {pick};
+                hub.to = 1;
+                hub.opposes = false;
+                usable.push_back(hub);
+                written.push_back(false);
+                result.attachedToRoot++;
+                result.cyclesBroken++;
+                progress = true;
+            }
         }
     }
 

@@ -31,6 +31,13 @@ public:
     // Phase 1.
     static std::string BuildClaimsPrompt(const std::string& topic, const std::string& passage);
 
+    // The topic as the debate's root, if it can be one: a statement, not a
+    // question. "Cities should lower speed limits to 20mph" is returned as is;
+    // "Should cities lower speed limits?" and an empty topic return "" and the
+    // model's own line 1 stands. Used to pin line 1 of the claims list, since
+    // the model drifts to the passage's headline fact about one run in three.
+    static std::string RootFromTopic(const std::string& topic);
+
     // Phase 2. `claims` is the parsed phase-1 list, in order; claim i is
     // rendered as line i+1. The kinds of reason come from bases::GuideAsList(),
     // so a basis added to backend/config/bases.pbtxt is explained to the model
