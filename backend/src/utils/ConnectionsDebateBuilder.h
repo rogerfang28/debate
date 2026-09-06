@@ -21,8 +21,23 @@
 //
 // Everything is created through DebateModerator::handleRequest, so the move
 // log is written and statuses follow.
+//
+// AUTHORSHIP. Every claim is created by a synthetic account, AuthorName(),
+// not by the person who asked for the debate; that person is joined as a
+// member afterwards. Statuses here are per person and two rules drive them:
+// a claim's creator sees it True, and a challenge's creator sees its target
+// False. Put both sides of an extracted argument under the requester and
+// every challenge refutes its own author's claim -- the root read False on
+// the first real import, and the status panel was reporting, correctly, that
+// one person was contradicting themself. Under a neutral author the requester
+// sees everything Undetermined, which is what an extraction is: a map of the
+// argument, not anybody's position. They take a side by acting.
 class ConnectionsDebateBuilder {
 public:
+    // The account that authors every generated claim. One shared persona
+    // across all generated debates; it holds no positions anyone reads.
+    static std::string AuthorName();
+
     struct Connection {
         std::vector<int> from;  // 1-based claim numbers, as in the list
         int to = 0;

@@ -138,6 +138,8 @@ bool connectionFrom(const jsoncons::json& obj, ConnectionsDebateBuilder::Connect
 
 } // namespace
 
+std::string ConnectionsDebateBuilder::AuthorName() { return "Article"; }
+
 std::vector<std::string> ConnectionsDebateBuilder::ParseClaims(const std::string& text) {
     // Any of the list markers a model reaches for: "1.", "1)", "1:", "[1]",
     // "#1", "-", "*", "•". Stripped rather than required, because the numbering
@@ -332,15 +334,23 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
     }
 
     // ---- Create the debate. Only now; everything above was checkable first.
+    //
+    // Created AS the persona, not as the requester -- see the header. The
+    // requester is joined below so the debate is in their list.
     DebateWrapper& debateWrapper = moderator.getDebateWrapper();
-    const std::vector<int> debatesBefore = debateWrapper.getUserDebateIds(user_id);
+    const int author = moderator.createUserIfNotExist(AuthorName());
+    if (author <= 0) {
+        result.error = "Could not create the '" + AuthorName() + "' account that authors generated debates.";
+        return result;
+    }
+    const std::vector<int> debatesBefore = debateWrapper.getUserDebateIds(author);
     {
-        auto event = forge(user_id, debate_event::CREATE_DEBATE);
+        auto event = forge(author, debate_event::CREATE_DEBATE);
         event.mutable_create_debate()->set_debate_topic(claims[0]);
         moderator.handleRequest(event);
     }
     int debateId = 0;
-    for (int id : debateWrapper.getUserDebateIds(user_id)) {
+    for (int id : debateWrapper.getUserDebateIds(author)) {
         if (std::find(debatesBefore.begin(), debatesBefore.end(), id) == debatesBefore.end()) {
             debateId = id;
         }
@@ -354,9 +364,17 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
     // AddDebate does not put the author inside the debate, and the write
     // handlers act on where the user IS.
     {
-        auto event = forge(user_id, debate_event::ENTER_DEBATE);
+        auto event = forge(author, debate_event::ENTER_DEBATE);
         event.mutable_enter_debate()->set_debate_id(debateId);
         moderator.handleRequest(event);
+    }
+    // The requester becomes a member -- so the debate appears in their list --
+    // but authors nothing. Done before the claims are written, so even a write
+    // that fails partway leaves them holding what was built.
+    {
+        auto join = forge(user_id, debate_event::JOIN_DEBATE);
+        join.mutable_join_debate()->set_debate_id(debateId);
+        moderator.handleRequest(join);
     }
 
     std::set<int> existing = claimIdsIn(debateId, debateWrapper);
@@ -395,17 +413,17 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
             }
 
             {
-                auto event = forge(user_id, debate_event::GO_TO_CLAIM);
+                auto event = forge(author, debate_event::GO_TO_CLAIM);
                 event.mutable_go_to_claim()->set_claim_id(parentId);
                 moderator.handleRequest(event);
             }
             if (c.opposes) {
-                auto start = forge(user_id, debate_event::START_CHALLENGE_CLAIM);
+                auto start = forge(author, debate_event::START_CHALLENGE_CLAIM);
                 moderator.handleRequest(start);
-                auto mark = forge(user_id, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+                auto mark = forge(author, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
                 mark.mutable_add_claim_to_be_challenged()->set_claim_id(parentId);
                 moderator.handleRequest(mark);
-                auto submit = forge(user_id, debate_event::SUBMIT_CHALLENGE_CLAIM);
+                auto submit = forge(author, debate_event::SUBMIT_CHALLENGE_CLAIM);
                 auto* payload = submit.mutable_submit_challenge_claim();
                 payload->set_challenge_sentence(claims[c.from[0] - 1]);
                 payload->set_challenge_description(c.why);
@@ -416,7 +434,7 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
                 }
                 moderator.handleRequest(submit);
             } else {
-                auto event = forge(user_id, debate_event::ADD_CHILD_CLAIM);
+                auto event = forge(author, debate_event::ADD_CHILD_CLAIM);
                 auto* payload = event.mutable_add_child_claim();
                 payload->set_claim(claims[c.from[0] - 1]);
                 payload->set_description(c.why);

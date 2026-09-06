@@ -317,6 +317,39 @@ TEST_F(ConnectionsBuildTest, ASingleClaimIsARootOnlyDebate) {
     EXPECT_EQ(r.claimsCreated, 1);
 }
 
+// Authorship. The first real import put both sides under the requester, so
+// every challenge was True for its author and every challenged claim False
+// for the same person -- the root read False and the panel was right to say
+// so. A neutral author fixes the view: the requester is a member who holds no
+// positions, so the root is Undetermined for them, not False.
+TEST_F(ConnectionsBuildTest, EverythingIsAuthoredByArticleAndTheRequesterOnlyJoins) {
+    const auto r = build(kSpeedClaims,
+        R"({"from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [3], "to": 2, "role": "opposes", "basis": "INFERENTIAL"})");
+    ASSERT_TRUE(r.ok) << r.error;
+
+    const int article = moderator_->getUserId(Builder::AuthorName());
+    ASSERT_GT(article, 0);
+    EXPECT_NE(article, userId_);
+
+    // Every claim is the persona's.
+    for (const auto& blob : moderator_->getDebateWrapper().getStatementsForDebate(r.debateId)) {
+        debate::Claim c;
+        ASSERT_TRUE(c.ParseFromArray(blob.data(), static_cast<int>(blob.size())));
+        EXPECT_EQ(c.creator_id(), article) << c.sentence();
+    }
+
+    // The requester is a member -- the debate is in their list -- ...
+    const auto mine = moderator_->getDebateWrapper().getUserDebateIds(userId_);
+    EXPECT_NE(std::find(mine.begin(), mine.end(), r.debateId), mine.end());
+
+    // ... and holds no position: the root is NOT False for them, unlike the
+    // single-author import where their own challenge refuted their own claim.
+    const auto& statuses = moderator_->getDebateWrapper().getClaimById(idOf(r.debateId, "20mph")).user_statuses();
+    const auto it = statuses.find("author");  // the fixture's requester username
+    EXPECT_TRUE(it == statuses.end() || it->second != debate::ClaimStatus::FALSE_CLAIM);
+}
+
 TEST_F(ConnectionsBuildTest, TheBuildReachesTheMoveLog) {
     const auto r = build(kSpeedClaims,
         R"({"from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"})");
