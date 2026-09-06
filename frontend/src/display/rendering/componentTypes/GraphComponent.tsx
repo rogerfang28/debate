@@ -245,6 +245,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   const [zoomScale, setZoomScale] = useState(1);
   // ═══════════ END EXPERIMENT (state) ═══════════
   const [selectedId, setSelectedId] = useState<string | null>(component.selectedNodeId || null);
+  // The server is the authority on what is selected. Local state exists only
+  // so a click echoes before the round trip lands; without this sync a
+  // selection made OUTSIDE the graph -- a claim clicked in the paragraph
+  // tree -- left the graph believing the old pill was still selected, and
+  // the claim's highlight suppressed along with it.
+  useEffect(() => {
+    setSelectedId(component.selectedNodeId || null);
+  }, [component.selectedNodeId]);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
 
   const { nodes = [], edges = [] } = component;
