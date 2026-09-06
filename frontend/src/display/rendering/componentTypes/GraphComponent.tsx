@@ -832,6 +832,12 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const label =
               semanticZoom && detailTier === "map" ? "" : group.label;
             const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
+            // A selected pill wears the same solid yellow outline a current
+            // claim does, so "what is selected" reads the same for both kinds
+            // of node. Its own colour (support/challenge) stays in the text.
+            const isSelectedJunction = selectedId === group.key;
+            const junctionStroke = isSelectedJunction ? "#fbbf24" : color;
+            const junctionStrokeWidth = isSelectedJunction ? 3 : 1.5;
 
             return (
               <g key={group.key}>
@@ -882,19 +888,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     height={JUNCTION_HEIGHT + 16}
                     fill="transparent"
                   />
-                  {selectedId === group.key && (
-                    <rect
-                      x={-jw / 2 - 5}
-                      y={-JUNCTION_HEIGHT / 2 - 5}
-                      width={jw + 10}
-                      height={JUNCTION_HEIGHT + 10}
-                      rx={(JUNCTION_HEIGHT + 10) / 2}
-                      fill="none"
-                      stroke="#fbbf24"
-                      strokeWidth={2}
-                      strokeDasharray="4,3"
-                    />
-                  )}
                   {label ? (
                     <>
                       <rect
@@ -904,8 +897,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                         height={JUNCTION_HEIGHT}
                         rx={JUNCTION_HEIGHT / 2}
                         fill="#0f172a"
-                        stroke={color}
-                        strokeWidth={1.5}
+                        stroke={junctionStroke}
+                        strokeWidth={junctionStrokeWidth}
                       />
                       <text
                         textAnchor="middle"
@@ -927,8 +920,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     <circle
                       r={JUNCTION_DOT_RADIUS}
                       fill="#0f172a"
-                      stroke={color}
-                      strokeWidth={1.5}
+                      stroke={junctionStroke}
+                      strokeWidth={junctionStrokeWidth}
                     />
                   )}
                 </g>
@@ -943,7 +936,11 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const w = node.isRoot ? ROOT_WIDTH : NODE_WIDTH;
             const h = node.isRoot ? ROOT_HEIGHT : NODE_HEIGHT;
             const isSelected = node.id === selectedId;
-            const isCurrent = node.isCurrent;
+            // Selecting a pill also focuses the claim it argues for (so the
+            // panel and modal have it), but only ONE thing should wear the
+            // highlight -- the pill. The claim's own colours stay.
+            const linkSelected = !!selectedId && selectedId.startsWith("r");
+            const isCurrent = node.isCurrent && !linkSelected;
             const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
             const isChallenge = node.type === "challenge";
             // Challenge (root) claims get an orange-tinted body and border; the
