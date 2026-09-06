@@ -169,7 +169,8 @@ debate::Collection BuildCollection::BuildForDebateAndUsers(
 	// from-claim, so the collection is keyed by RELATION id, not row id.
 	const std::vector<RelationBuilder::LinkRow> linkRows =
 		debateWrapper.getLinksForDebateAndCreators(debate_id, users_involved_ids);
-	for (const auto& rel : RelationBuilder::fromLinkRows(linkRows, debate_id)) {
+	for (const auto& rel : RelationBuilder::fromLinkRows(
+	         linkRows, debate_id, debateWrapper.getRelationTargets(debate_id))) {
 		(*collection.mutable_links_by_id())[rel.id()] = rel;
 	}
 

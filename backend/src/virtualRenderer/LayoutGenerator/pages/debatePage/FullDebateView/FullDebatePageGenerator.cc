@@ -1,5 +1,7 @@
 #include "../../../../../utils/BasisRegistry.h"
 #include "FullDebatePageGenerator.h"
+#include <map>
+#include <set>
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
@@ -1926,6 +1928,71 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "mb-6"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
+
+            // WHAT IS BEING CHALLENGED. A challenge can attack the claim, or one
+            // of the ARGUMENTS for it: "your evidence is real, but it does not
+            // prove that". The links under the current claim are offered here;
+            // picking one aims the challenge at that argument -- an undercut --
+            // instead of at the claim. Server-driven like the rest of the page:
+            // the buttons post ADD_/REMOVE_LINK_TO_BE_CHALLENGED and the modal
+            // re-renders showing the choice. One challenge attacks one thing,
+            // so once an argument is picked the others are hidden until it is
+            // un-picked. The links come from debating_info, which the response
+            // generator fills with exactly the links under the current claim.
+            {
+                const int currentId = debatingInfo.current_claim().id();
+                std::set<int> chosenLinks;
+                for (int i = 0; i < debatingInfo.challenging_info().link_ids_size(); ++i) {
+                    chosenLinks.insert(debatingInfo.challenging_info().link_ids(i));
+                }
+                std::map<int, std::string> childSentence;
+                for (const auto& c : info.children_claims()) {
+                    childSentence[c.id()] = c.sentence();
+                }
+                ui::Component targetBox = ComponentGenerator::createContainer(
+                    "challengeTargetBox", "", "bg-gray-900", "p-3", "", "border border-gray-700", "rounded", "mb-4");
+                const std::string headline = chosenLinks.empty()
+                    ? "You are challenging the claim itself. Or pick an argument below to say its evidence does not prove the claim:"
+                    : "You are challenging an ARGUMENT for the claim, not the claim. Its evidence may be true; you are saying it does not prove this.";
+                ComponentGenerator::addChild(&targetBox, ComponentGenerator::createText(
+                    "challengeTargetHeadline", headline, "text-xs",
+                    chosenLinks.empty() ? "text-gray-400" : "text-orange-300", "", "mb-2"));
+                int offered = 0;
+                for (const auto& link : debatingInfo.links()) {
+                    if (link.connect_from() != currentId) {
+                        continue;  // support rows run parent -> child; only the arguments FOR this claim
+                    }
+                    const bool picked = chosenLinks.count(link.id()) > 0;
+                    if (!chosenLinks.empty() && !picked) {
+                        continue;
+                    }
+                    auto it = childSentence.find(link.connect_to());
+                    std::string label = it != childSentence.end()
+                        ? it->second : "claim " + std::to_string(link.connect_to());
+                    if (label.size() > 90) {
+                        label = label.substr(0, 87) + "...";
+                    }
+                    const std::string basis =
+                        (link.connection().empty() || link.connection() == "parent to child connection")
+                            ? std::string() : " [" + link.connection() + "]";
+                    ui::Component pick = ComponentGenerator::createButton(
+                        (picked ? "removeLinkFromChallengeButton_" : "addLinkToChallengeButton_") + std::to_string(link.id()),
+                        picked ? "Back to challenging the claim  (argument: " + label + basis + ")"
+                               : "Challenge the argument: " + label + basis,
+                        "",
+                        picked ? "bg-orange-700" : "bg-gray-700",
+                        picked ? "hover:bg-orange-800" : "hover:bg-gray-600",
+                        "text-white",
+                        "px-3 py-2",
+                        "rounded",
+                        "w-full text-left text-xs mb-1");
+                    ComponentGenerator::addChild(&targetBox, pick);
+                    ++offered;
+                }
+                if (offered > 0 || !chosenLinks.empty()) {
+                    ComponentGenerator::addChild(&addChallengeModalContent, targetBox);
+                }
+            }
 
             // Challenge sentence input
             ui::Component challengeSentenceInput = ComponentGenerator::createMultiInput(

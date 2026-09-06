@@ -627,3 +627,66 @@ TEST_F(PropagationTest, CreatorSeesOwnClaimAsTrue) {
     EXPECT_EQ(itBobOnAliceChild, childStatuses.end())
         << "Alice's child should NOT have a user_statuses entry for bob";
 }
+
+// ============================================================
+// Challenging the LINK, not the claim.
+//
+//   1 (alice: "Speed limits save lives")
+//   |  EVIDENTIAL
+//   2 (alice: "Crash deaths fell 23 percent")
+//
+// Bob does not dispute the number. He disputes that it proves anything --
+// "the boroughs were already getting safer" -- so he challenges the link.
+// For Bob that link then carries nothing: the root is no longer supported
+// for him, but it is not FALSE either, because nothing false was asserted.
+// For Alice, who does not hold Bob's challenge true, nothing changes.
+// Compare ChallengeLeaf_* above, where challenging the CLAIM makes the
+// root FALSE for the challenger.
+// ============================================================
+TEST_F(PropagationTest, ChallengingTheLinkUndercutsWithoutRefuting) {
+    actAsAlice();
+    DebateHandler::AddDebate("Speed limits save lives", userId_, *debate_);
+    enterDebate(1);
+    addChild(1, "Crash deaths fell 23 percent", "");
+    const int child = debate_->findChildrenIds(1).back();
+    ASSERT_GT(child, 0);
+
+    // Alice: root TRUE (its one child is TRUE for her).
+    debate_->PropagateClaimStatuses(1);
+    EXPECT_EQ(claim(1).user_statuses().at("alice"), debate::ClaimStatus::TRUE_CLAIM);
+
+    // Bob, standing on the root, puts the LINK into his challenge and submits.
+    actAsBob();
+    enterDebate(1);
+    goToClaim(1);
+    const std::vector<int> links = debate_->findLinksUnder(1);
+    ASSERT_EQ(links.size(), 1u);
+    ChallengeHandler::StartChallengeClaim(userId_, *debate_);
+    ChallengeHandler::AddLinkToBeChallenged(links[0], userId_, *debate_);
+    ChallengeHandler::OpenAddChallenge(userId_, *debate_);
+    ChallengeHandler::SubmitChallengeClaim({"The boroughs were already getting safer"},
+                                           {"undercut"}, "", userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+
+    // Stored as an attack on the relation, beside the claim it was for.
+    const int challengeClaim = user_->engagement().debating_info().current_claim().id();
+    ASSERT_GT(challengeClaim, 0);
+    const debate::Relationship rel = debate_->findOutgoingChallengeLink(challengeClaim);
+    ASSERT_NE(rel.id(), 0);
+    EXPECT_EQ(rel.to_case(), debate::Relationship::kToRelationId);
+    EXPECT_EQ(rel.to_relation_id(), links[0]);
+    EXPECT_EQ(rel.link().connect_to(), 1) << "legacy column: the claim the argument was for";
+    EXPECT_EQ(debate_->getRelationTargets(1).at(rel.link().id()), links[0]);
+
+    // Alice: unchanged. Bob: the root is NOT false -- and not true either.
+    const debate::Claim root = claim(1);
+    EXPECT_EQ(root.user_statuses().at("alice"), debate::ClaimStatus::TRUE_CLAIM);
+    auto bob = root.user_statuses().find("bob");
+    EXPECT_TRUE(bob == root.user_statuses().end() ||
+                bob->second == debate::ClaimStatus::UNDETERMINED)
+        << "an undercut removes a reason; it does not refute the claim";
+    // The child itself was never disputed.
+    auto bobChild = claim(child).user_statuses().find("bob");
+    EXPECT_TRUE(bobChild == claim(child).user_statuses().end() ||
+                bobChild->second != debate::ClaimStatus::FALSE_CLAIM);
+}

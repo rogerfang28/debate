@@ -279,3 +279,106 @@ TEST(StatusEngineTest, HandlesTheNewHyperedgeShape) {
     EXPECT_EQ(statusOf(r, 3), debate::COLLAPSED) << "the supported claim";
     EXPECT_EQ(statusOf(r, 2), debate::STANDING) << "the other member is untouched";
 }
+
+// ---------------------------------------------------------------------------
+// PARITY MODE: undercuts.
+//
+// A relation aimed at a relation is an attack on an argument, not a claim.
+// For the attacker the attacked edge carries nothing; for everyone else it is
+// unchanged. Paired with the claim-attack case so the two cannot be confused.
+// ---------------------------------------------------------------------------
+namespace {
+
+debate::Move moveBy(int seq, int actor, debate::MoveType type, debate::TargetType tt, int target) {
+    debate::Move m;
+    m.set_seq(seq);
+    m.set_actor_id(actor);
+    m.set_type(type);
+    m.set_target_type(tt);
+    m.set_target_id(target);
+    return m;
+}
+
+debate::ClaimStatus legacyOf(const StatusEngine::LegacyResult& r, const std::string& user,
+                             int claimId, bool* present) {
+    auto u = r.by_user.find(user);
+    if (u == r.by_user.end()) { *present = false; return debate::ClaimStatus::UNDETERMINED; }
+    auto c = u->second.find(claimId);
+    if (c == u->second.end()) { *present = false; return debate::ClaimStatus::UNDETERMINED; }
+    *present = true;
+    return c->second;
+}
+
+}  // namespace
+
+TEST(StatusEngineParity, AttackingTheLinkUndercutsForTheAttackerOnly) {
+    // 1 root and 2 its evidence, both alice's (actor 1); 3 is bob's (actor 2).
+    std::vector<debate::Claim> claims{claim(1), claim(2), claim(3)};
+
+    debate::Relationship support;             // [2] SUPPORTS 1
+    support.set_id(10);
+    support.add_from_claim_ids(2);
+    support.set_to_claim_id(1);
+    support.set_role(debate::SUPPORTS);
+    support.set_basis("EVIDENTIAL");
+
+    debate::Relationship undercut;            // [3] OPPOSES relation 10
+    undercut.set_id(11);
+    undercut.add_from_claim_ids(3);
+    undercut.set_to_relation_id(10);
+    undercut.set_role(debate::OPPOSES);
+    undercut.set_basis("INFERENTIAL");
+
+    std::vector<debate::Move> moves{
+        moveBy(1, 1, debate::ASSERT, debate::TARGET_CLAIM, 1),
+        moveBy(2, 1, debate::ASSERT, debate::TARGET_CLAIM, 2),
+        moveBy(3, 2, debate::ASSERT, debate::TARGET_CLAIM, 3),
+        moveBy(4, 2, debate::OPPOSE, debate::TARGET_RELATION, 10),
+    };
+    const std::map<int, std::string> users{{1, "alice"}, {2, "bob"}};
+
+    const auto r = StatusEngine::computeLegacyStatuses(claims, {support, undercut}, moves, users);
+    bool present = false;
+    // Alice: her evidence stands, so her root is TRUE.
+    EXPECT_EQ(legacyOf(r, "alice", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_TRUE(present);
+    // Bob: the link carries nothing for him -- the root is not supported, and
+    // it is not FALSE. Nothing false was asserted.
+    const debate::ClaimStatus bobRoot = legacyOf(r, "bob", 1, &present);
+    EXPECT_TRUE(!present || bobRoot == debate::ClaimStatus::UNDETERMINED);
+    // Bob never disputed the evidence itself.
+    const debate::ClaimStatus bobChild = legacyOf(r, "bob", 2, &present);
+    EXPECT_TRUE(!present || bobChild != debate::ClaimStatus::FALSE_CLAIM);
+}
+
+TEST(StatusEngineParity, AttackingTheClaimStillRefutesIt) {
+    // Same shape, but bob attacks claim 2 itself: the old rules apply and the
+    // root collapses for him.
+    std::vector<debate::Claim> claims{claim(1), claim(2), claim(3)};
+
+    debate::Relationship support;
+    support.set_id(10);
+    support.add_from_claim_ids(2);
+    support.set_to_claim_id(1);
+    support.set_role(debate::SUPPORTS);
+
+    debate::Relationship rebut;               // [3] OPPOSES claim 2
+    rebut.set_id(11);
+    rebut.add_from_claim_ids(3);
+    rebut.set_to_claim_id(2);
+    rebut.set_role(debate::OPPOSES);
+
+    std::vector<debate::Move> moves{
+        moveBy(1, 1, debate::ASSERT, debate::TARGET_CLAIM, 1),
+        moveBy(2, 1, debate::ASSERT, debate::TARGET_CLAIM, 2),
+        moveBy(3, 2, debate::ASSERT, debate::TARGET_CLAIM, 3),
+        moveBy(4, 2, debate::OPPOSE, debate::TARGET_CLAIM, 2),
+    };
+    const std::map<int, std::string> users{{1, "alice"}, {2, "bob"}};
+
+    const auto r = StatusEngine::computeLegacyStatuses(claims, {support, rebut}, moves, users);
+    bool present = false;
+    EXPECT_EQ(legacyOf(r, "bob", 2, &present), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(legacyOf(r, "bob", 1, &present), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(legacyOf(r, "alice", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
+}

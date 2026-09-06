@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <map>
 #include <tuple>
 #include "../sqlite/Database.h"
 
@@ -25,7 +26,21 @@ public:
     // from-claims. Pass 0 (the default) and the row becomes its own relation --
     // RELATION_ID is set to the new row's own ID. Pass the id returned by an
     // earlier addLink to make this row another from-claim of that relation.
-    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId = -1, int linkType = 0, int relationId = 0); // return link id
+    //
+    // `toLinkId` > 0 makes this row a challenge to an ARGUMENT rather than to a
+    // claim: it names the RELATION_ID of the link being attacked. CLAIM_ID_TO
+    // still holds the claim that argument was for, so every reader that knows
+    // only claims keeps working -- it sees a challenge standing next to that
+    // claim -- while readers that know relations see the real target.
+    int addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId = -1, int linkType = 0, int relationId = 0, int toLinkId = 0); // return link id
+
+    // The relation a row attacks, or 0 when it targets a claim like every row
+    // did before TO_LINK_ID existed.
+    int getLinkTargetRelation(int linkId);
+
+    // Every row in a debate that attacks a relation: row id -> relation id.
+    // Rows that target a claim are absent, so an empty map is the common case.
+    std::map<int, int> getRelationTargets(int debateId);
     
     // Get all links from a specific claim
     std::vector<std::tuple<int, int, int, std::string, int>> getLinksFromClaim(int claimIdFrom); // returns (link_id, claim_id_from, claim_id_to, connection, creator_id)

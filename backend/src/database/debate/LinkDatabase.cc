@@ -77,11 +77,25 @@ bool LinkDatabase::ensureTable() {
         }
     }
 
+    // TO_LINK_ID: a challenge aimed at an ARGUMENT, not a claim.
+    //
+    // "Your evidence is real but it does not prove that" attacks the link
+    // between two claims, not either claim. The row keeps CLAIM_ID_TO -- the
+    // claim the attacked argument was for -- so the many readers that only know
+    // claims still see a well-formed challenge near the right place, and this
+    // column names the RELATION_ID actually under attack. 0 means what every
+    // row meant before: the target is CLAIM_ID_TO itself.
+    if (!linkTableHasColumn(db_, "TO_LINK_ID")) {
+        if (!db_.execute("ALTER TABLE LINKS ADD COLUMN TO_LINK_ID INTEGER NOT NULL DEFAULT 0;")) {
+            return false;
+        }
+    }
+
     return true;
 }
 
-int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId, int linkType, int relationId) {
-    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, DEBATE_ID, LINK_TYPE, RELATION_ID) VALUES (?, ?, ?, ?, ?, ?, ?);";
+int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId, int linkType, int relationId, int toLinkId) {
+    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, DEBATE_ID, LINK_TYPE, RELATION_ID, TO_LINK_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -104,6 +118,7 @@ int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& con
         // Unknown until the row exists, since it defaults to the row's own id.
         sqlite3_bind_null(stmt, 7);
     }
+    sqlite3_bind_int(stmt, 8, toLinkId > 0 ? toLinkId : 0);
 
     int result = sqlite3_step(stmt);
     int linkId = -1;
@@ -329,6 +344,36 @@ int LinkDatabase::getLinkDebateId(int linkId) {
 
     sqlite3_finalize(stmt);
     return debateId;
+}
+
+int LinkDatabase::getLinkTargetRelation(int linkId) {
+    const char* sql = "SELECT TO_LINK_ID FROM LINKS WHERE ID = ?;";
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return 0;
+    }
+    sqlite3_bind_int(stmt, 1, linkId);
+    int target = 0;
+    if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+        target = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    return target > 0 ? target : 0;
+}
+
+std::map<int, int> LinkDatabase::getRelationTargets(int debateId) {
+    std::map<int, int> targets;
+    const char* sql = "SELECT ID, TO_LINK_ID FROM LINKS WHERE DEBATE_ID = ? AND TO_LINK_ID > 0;";
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return targets;
+    }
+    sqlite3_bind_int(stmt, 1, debateId);
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        targets[sqlite3_column_int(stmt, 0)] = sqlite3_column_int(stmt, 1);
+    }
+    sqlite3_finalize(stmt);
+    return targets;
 }
 
 bool LinkDatabase::updateLinkConnection(int linkId, const std::string& newConnection) {

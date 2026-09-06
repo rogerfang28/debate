@@ -294,6 +294,17 @@ struct LegacyGraph {
     std::map<int, std::vector<int>> children;           // parent -> child ids
     std::map<int, std::vector<int>> challengeIncoming;  // target -> challenger ids
     std::map<int, std::vector<int>> challengeOutgoing;  // challenger -> target ids
+
+    // UNDERCUTS. A relation can be attacked instead of a claim: "true or not,
+    // that does not bear on this". For a user who holds such an attack TRUE
+    // the attacked edge carries nothing -- it is skipped, not made false.
+    // relation id -> the claims attacking that relation.
+    std::map<int, std::vector<int>> attacksOnRelation;
+    // Which relation each edge above came from, so an edge can be checked
+    // against attacksOnRelation. (parent, child) for children; (challenger,
+    // target) for challenges.
+    std::map<std::pair<int, int>, int> childRelation;
+    std::map<std::pair<int, int>, int> attackRelation;
 };
 
 LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations) {
@@ -303,11 +314,19 @@ LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations)
             continue;  // RelationBuilder refuses these; a producer that didn't
         }
 
-        // Relation-targeted relations are R3 and have no place in this graph:
-        // it is a claim->claim index by construction. Skipped explicitly rather
-        // than by falling through, because to_claim_id() on a relation-targeted
-        // relation quietly returns 0 -- it would look like an edge to claim 0
-        // rather than like something unhandled.
+        // A relation aimed at a relation is an undercut. It is indexed by its
+        // target relation, never as a claim->claim edge -- to_claim_id() on it
+        // quietly returns 0 and would look like an edge to claim 0.
+        if (rel.to_case() == debate::Relationship::kToRelationId) {
+            if (rel.role() == debate::OPPOSES && rel.to_relation_id() > 0) {
+                for (const int from : rel.from_claim_ids()) {
+                    if (from > 0) {
+                        g.attacksOnRelation[rel.to_relation_id()].push_back(from);
+                    }
+                }
+            }
+            continue;
+        }
         if (rel.to_case() != debate::Relationship::kToClaimId) {
             continue;
         }
@@ -333,10 +352,12 @@ LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations)
                 // children?" -- getting it backwards would make every claim
                 // the child of its own evidence.
                 g.children[to].push_back(from);
+                g.childRelation[{to, from}] = rel.id();
             } else if (rel.role() == debate::OPPOSES) {
                 // Attacks already run challenger -> challenged; no swap.
                 g.challengeIncoming[to].push_back(from);
                 g.challengeOutgoing[from].push_back(to);
+                g.attackRelation[{from, to}] = rel.id();
             }
         }
     }
@@ -369,13 +390,33 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
                                    const std::set<int>& conceded, const StatusTable& table) {
     debate::ClaimStatus ns = currentStatus;
 
+    // An edge whose relation this user has undercut carries nothing for them.
+    // Mirrors DebateWrapper::ComputeStatusForUser's undercutFor.
+    auto undercut = [&](const std::map<std::pair<int, int>, int>& byEdge, int a, int b) {
+        auto edgeIt = byEdge.find({a, b});
+        if (edgeIt == byEdge.end()) return false;
+        auto at = g.attacksOnRelation.find(edgeIt->second);
+        if (at == g.attacksOnRelation.end()) return false;
+        for (int attacker : at->second) {
+            bool found = false;
+            if (lookup(table, attacker, user, &found) == debate::ClaimStatus::TRUE_CLAIM && found) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     // Rule A/B: parent-child.
     bool anyChildFalse = false;
     bool allChildrenTrue = true;
+    int countedChildren = 0;
     auto childrenIt = g.children.find(claimId);
-    const bool hasChildren = childrenIt != g.children.end() && !childrenIt->second.empty();
     if (childrenIt != g.children.end()) {
         for (int childId : childrenIt->second) {
+            if (undercut(g.childRelation, claimId, childId)) {
+                continue;
+            }
+            ++countedChildren;
             bool found = false;
             const debate::ClaimStatus cs = lookup(table, childId, user, &found);
             if (!found) {
@@ -391,6 +432,7 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
             }
         }
     }
+    const bool hasChildren = countedChildren > 0;
     if (anyChildFalse) {
         ns = debate::ClaimStatus::FALSE_CLAIM;
     } else if (hasChildren && allChildrenTrue && conceded.find(claimId) == conceded.end()) {
@@ -402,6 +444,7 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
     // Rule C: an incoming challenge the user believes FALSE vindicates this claim.
     if (citIn != g.challengeIncoming.end()) {
         for (int challengerId : citIn->second) {
+            if (undercut(g.attackRelation, challengerId, claimId)) continue;
             bool found = false;
             if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::FALSE_CLAIM &&
                 found) {
@@ -416,6 +459,7 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
     // engine's tie-break and is load-bearing.
     if (citIn != g.challengeIncoming.end()) {
         for (int challengerId : citIn->second) {
+            if (undercut(g.attackRelation, challengerId, claimId)) continue;
             bool found = false;
             if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::TRUE_CLAIM &&
                 found) {
@@ -498,7 +542,12 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
                 const int challengingClaimId = payloadInt(m->payload(), "challenging_claim_id");
 
                 put(challengingClaimId, user, debate::ClaimStatus::TRUE_CLAIM);  // step 1
-                put(target, user, debate::ClaimStatus::FALSE_CLAIM);             // step 1b
+                // Step 1b -- unless the conceded challenge undercut an ARGUMENT:
+                // giving that up admits the argument fails, not that the claim
+                // it was for is false. ConcedeChallenge skips it the same way.
+                if (payloadInt(m->payload(), "to_relation_id") == 0) {
+                    put(target, user, debate::ClaimStatus::FALSE_CLAIM);
+                }
 
                 // Step 1c: every PARENT_CHILD descendant of the challenge claim.
                 // Conceding accepts the whole supporting chain, not just its head.
@@ -620,6 +669,20 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
             auto out = g.challengeOutgoing.find(claimId);
             if (out != g.challengeOutgoing.end()) {
                 for (int id : out->second) collect(id);
+            }
+            // Whoever undercuts an edge touching this claim has a view here.
+            auto collectAttackers = [&](const std::map<std::pair<int, int>, int>& byEdge, int a, int b) {
+                auto edgeIt = byEdge.find({a, b});
+                if (edgeIt == byEdge.end()) return;
+                auto at = g.attacksOnRelation.find(edgeIt->second);
+                if (at == g.attacksOnRelation.end()) return;
+                for (int attacker : at->second) collect(attacker);
+            };
+            if (kids != g.children.end()) {
+                for (int id : kids->second) collectAttackers(g.childRelation, claimId, id);
+            }
+            if (in != g.challengeIncoming.end()) {
+                for (int id : in->second) collectAttackers(g.attackRelation, id, claimId);
             }
 
             for (const std::string& user : users) {

@@ -13,7 +13,8 @@ debate::Relationship fromLinkRow(int linkId,
                                  int creatorId,
                                  int linkType,
                                  int debateId,
-                                 int relationId) {
+                                 int relationId,
+                                 int toRelationId) {
     debate::Relationship rel;
 
     // A relation with no from-claims is not a relation -- it is an edge with
@@ -75,7 +76,14 @@ debate::Relationship fromLinkRow(int linkId,
         rel.set_debate_id(debateId);
     }
     rel.add_from_claim_ids(relFrom);  // exactly one, until storage widens
-    rel.set_to_claim_id(relTo);
+    if (toRelationId > 0) {
+        // An attack on an argument. The oneof holds the relation and NOT the
+        // claim, so a reader asking to_claim_id() gets 0 and to_case() says
+        // why -- rather than a claim id that looks like a target and is not.
+        rel.set_to_relation_id(toRelationId);
+    } else {
+        rel.set_to_claim_id(relTo);
+    }
     rel.set_creator_id(creatorId);
     rel.set_basis(connection);
 
@@ -111,7 +119,8 @@ debate::Relationship fromLinkRow(int linkId,
 }
 
 std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
-                                               int debateId) {
+                                               int debateId,
+                                               const std::map<int, int>& relationTargets) {
     std::vector<debate::Relationship> out;
     // Insertion order is preserved so output is stable across calls; a map
     // keyed by relation id would silently reorder the graph between requests.
@@ -127,11 +136,13 @@ std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
         const int linkType = std::get<5>(row);
         const int storedRelationId = std::get<6>(row);
         const int relationId = storedRelationId > 0 ? storedRelationId : linkId;
+        const auto targetIt = relationTargets.find(linkId);
+        const int toRelationId = targetIt == relationTargets.end() ? 0 : targetIt->second;
 
         auto it = indexByRelation.find(relationId);
         if (it == indexByRelation.end()) {
             debate::Relationship rel = fromLinkRow(linkId, from, to, connection, creator,
-                                                   linkType, debateId, relationId);
+                                                   linkType, debateId, relationId, toRelationId);
             if (rel.id() == 0) {
                 continue;  // refused: missing an endpoint
             }
@@ -148,12 +159,13 @@ std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
         // through it rather than reaching for `from` directly -- that swap is
         // exactly the thing that must not be reimplemented in two places.
         const debate::Relationship extra = fromLinkRow(linkId, from, to, connection, creator,
-                                                       linkType, debateId, relationId);
+                                                       linkType, debateId, relationId, toRelationId);
         if (extra.id() == 0 || extra.from_claim_ids_size() == 0) {
             continue;
         }
 
-        if (extra.to_claim_id() != rel.to_claim_id() || extra.role() != rel.role()) {
+        if (extra.to_claim_id() != rel.to_claim_id() ||
+            extra.to_relation_id() != rel.to_relation_id() || extra.role() != rel.role()) {
             Log::warn("[RelationBuilder] Rows in relation " + std::to_string(relationId) +
                       " disagree about target or role; keeping the first. Link " +
                       std::to_string(linkId) + " ignored.");

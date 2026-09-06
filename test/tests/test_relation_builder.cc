@@ -136,3 +136,35 @@ TEST(RelationBuilderTest, RelationTargetedRelationIsDistinguishable) {
     EXPECT_NE(rel.to_case(), debate::Relationship::kToClaimId)
         << "callers must branch on to_case(), never assume a claim target";
 }
+
+// A row can attack an ARGUMENT. Then the new shape says so through the oneof --
+// to_relation_id set, to_claim_id absent -- while the legacy Link still names
+// the claim that argument was for, so a claim-only reader has somewhere to
+// draw the challenge. Both halves matter: readers migrate one at a time.
+TEST(RelationBuilderTest, ARowCanTargetARelationAndBothShapesSayTheirPart) {
+    // Challenger 9 attacks relation 4 (stored beside claim 2, which relation 4 was for).
+    const debate::Relationship rel =
+        RelationBuilder::fromLinkRow(12, /*challenger=*/9, /*claim the argument was for=*/2,
+                                     "DEFINITIONAL", 1, static_cast<int>(debate::LinkType::CHALLENGE),
+                                     5, /*relationId=*/12, /*toRelationId=*/4);
+    EXPECT_EQ(rel.to_case(), debate::Relationship::kToRelationId);
+    EXPECT_EQ(rel.to_relation_id(), 4);
+    EXPECT_EQ(rel.to_claim_id(), 0) << "the oneof holds the relation, not a claim";
+    EXPECT_EQ(rel.role(), debate::OPPOSES);
+    ASSERT_EQ(rel.from_claim_ids_size(), 1);
+    EXPECT_EQ(rel.from_claim_ids(0), 9);
+    EXPECT_EQ(rel.link().connect_to(), 2) << "legacy readers still see a claim";
+
+    // Through fromLinkRows the target comes from the row-id map.
+    const std::vector<RelationBuilder::LinkRow> rows{
+        RelationBuilder::LinkRow{4, 2, 3, "EVIDENTIAL", 1, static_cast<int>(debate::LinkType::PARENT_CHILD), 4},
+        RelationBuilder::LinkRow{12, 9, 2, "DEFINITIONAL", 1, static_cast<int>(debate::LinkType::CHALLENGE), 12},
+    };
+    const auto rels = RelationBuilder::fromLinkRows(rows, 5, {{12, 4}});
+    ASSERT_EQ(rels.size(), 2u);
+    EXPECT_EQ(rels[0].to_case(), debate::Relationship::kToClaimId);
+    EXPECT_EQ(rels[1].to_case(), debate::Relationship::kToRelationId);
+    EXPECT_EQ(rels[1].to_relation_id(), 4);
+    // Without the map the same row is an ordinary challenge to claim 2.
+    EXPECT_EQ(RelationBuilder::fromLinkRows(rows, 5)[1].to_claim_id(), 2);
+}

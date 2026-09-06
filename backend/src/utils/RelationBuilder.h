@@ -2,6 +2,7 @@
 
 #include "debate.pb.h"
 
+#include <map>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -44,6 +45,12 @@ namespace RelationBuilder {
 // launder that placeholder into a basis it never was, it is carried through
 // as-is -- a caller reading `basis` can tell an unset one from a chosen one,
 // which it could not if this silently substituted a default.
+//
+// `toRelationId` > 0 means the row attacks an ARGUMENT: the relation with that
+// id, not a claim. The new shape then carries to_relation_id and no
+// to_claim_id, which is the oneof doing its job. The legacy Link keeps
+// connect_to = the stored claim (the one the attacked argument was for), so a
+// reader that knows only claims still has a claim to draw the challenge beside.
 debate::Relationship fromLinkRow(int linkId,
                                  int fromClaimId,
                                  int toClaimId,
@@ -51,7 +58,8 @@ debate::Relationship fromLinkRow(int linkId,
                                  int creatorId,
                                  int linkType,
                                  int debateId = 0,
-                                 int relationId = 0);
+                                 int relationId = 0,
+                                 int toRelationId = 0);
 
 // One stored link row: the 7-tuple the LinkDatabase accessors return.
 //   (id, from, to, connection, creator, link_type, relation_id)
@@ -69,7 +77,12 @@ using LinkRow = std::tuple<int, int, int, std::string, int, int, int>;
 // written together by one action. If they disagree the FIRST row wins and a
 // warning is logged, because silently merging contradictory rows would produce
 // a relation nobody asserted.
+//
+// `relationTargets` maps a ROW id to the relation it attacks, for the rows
+// that attack one (LinkDatabase::getRelationTargets). Rows absent from it
+// target their CLAIM_ID_TO, as every row did before TO_LINK_ID existed.
 std::vector<debate::Relationship> fromLinkRows(const std::vector<LinkRow>& rows,
-                                               int debateId = 0);
+                                               int debateId = 0,
+                                               const std::map<int, int>& relationTargets = {});
 
 }  // namespace RelationBuilder

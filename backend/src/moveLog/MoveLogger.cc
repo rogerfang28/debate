@@ -273,13 +273,22 @@ void logForEvent(const debate_event::DebateEvent& event,
 
             // Creating the challenge link IS the act of opposing, so it is an
             // OPPOSE against the challenged claim -- not an ASSERT of a relation.
-            debate::Relationship::Link challengeLink =
-                debateWrapper.findOutgoingChallengeLink(challengeClaimId).link();
+            // A challenge aimed at an ARGUMENT opposes that relation instead;
+            // the engine reads the target type and seeds no claim FALSE for it.
+            const debate::Relationship challengeRel =
+                debateWrapper.findOutgoingChallengeLink(challengeClaimId);
+            const debate::Relationship::Link& challengeLink = challengeRel.link();
             if (challengeLink.id() != 0) {
-                append(databaseWrapper, pre.debateId, user_id, "OPPOSE", true,
-                       challengeLink.connect_to(),
-                       "{\"relation_id\":" + std::to_string(challengeLink.id()) +
-                       ",\"challenging_claim_id\":" + std::to_string(challengeClaimId) + "}");
+                const std::string payload =
+                    "{\"relation_id\":" + std::to_string(challengeLink.id()) +
+                    ",\"challenging_claim_id\":" + std::to_string(challengeClaimId) + "}";
+                if (challengeRel.to_case() == debate::Relationship::kToRelationId) {
+                    append(databaseWrapper, pre.debateId, user_id, "OPPOSE", false,
+                           challengeRel.to_relation_id(), payload);
+                } else {
+                    append(databaseWrapper, pre.debateId, user_id, "OPPOSE", true,
+                           challengeLink.connect_to(), payload);
+                }
             }
             break;
         }
@@ -289,9 +298,20 @@ void logForEvent(const debate_event::DebateEvent& event,
             // distinct from RETRACT's "I am taking this back". Logged once --
             // the status cascade that follows is derived consequence, not a
             // series of separate user actions.
-            append(databaseWrapper, pre.debateId, user_id, "CONCEDE", true, pre.challengedClaimId,
-                   "{\"challenge_relation_id\":" + std::to_string(pre.challengeRelationId) +
-                   ",\"challenging_claim_id\":" + std::to_string(pre.challengingClaimId) + "}");
+            {
+                // If the conceded challenge undercut an argument, say so: the
+                // engine then does not mark the target claim FALSE on replay.
+                const debate::Relationship conceded =
+                    debateWrapper.getLinkById(pre.challengeRelationId);
+                const std::string undercut =
+                    conceded.to_case() == debate::Relationship::kToRelationId
+                        ? ",\"to_relation_id\":" + std::to_string(conceded.to_relation_id())
+                        : std::string();
+                append(databaseWrapper, pre.debateId, user_id, "CONCEDE", true, pre.challengedClaimId,
+                       "{\"challenge_relation_id\":" + std::to_string(pre.challengeRelationId) +
+                       ",\"challenging_claim_id\":" + std::to_string(pre.challengingClaimId) +
+                       undercut + "}");
+            }
             break;
         }
 

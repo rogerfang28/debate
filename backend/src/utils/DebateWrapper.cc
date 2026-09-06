@@ -406,8 +406,8 @@ void DebateWrapper::editClaimText(
     databaseWrapper.statements.updateStatementContent(claimId, newText);
 }
 
-int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type, int relation_id) {
-    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id, static_cast<int>(link_type), relation_id);
+int DebateWrapper::addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type, int relation_id, int to_link_id) {
+    int linkId = databaseWrapper.links.addLink(fromClaimId, toClaimId, connection, creator_id, debate_id, static_cast<int>(link_type), relation_id, to_link_id);
     if (linkId == -1) {
         Log::error("[DebateWrapper][ERR] Failed to add link from claim " + std::to_string(fromClaimId)
             + " to claim " + std::to_string(toClaimId));
@@ -471,7 +471,9 @@ debate::Relationship DebateWrapper::getLinkById(int linkId) {
         const auto& link = linkData.value();
         relationshipProto = RelationBuilder::fromLinkRow(
             std::get<0>(link), std::get<1>(link), std::get<2>(link),
-            std::get<3>(link), std::get<4>(link), std::get<5>(link));
+            std::get<3>(link), std::get<4>(link), std::get<5>(link),
+            /*debateId=*/0, std::get<6>(link),
+            databaseWrapper.links.getLinkTargetRelation(linkId));
 
 
         Log::debug("[DebateWrapper] Retrieved link ID: " + std::to_string(std::get<0>(link))
@@ -484,6 +486,10 @@ debate::Relationship DebateWrapper::getLinkById(int linkId) {
     }
 
     return relationshipProto;
+}
+
+std::map<int, int> DebateWrapper::getRelationTargets(const int& debate_id) {
+    return databaseWrapper.links.getRelationTargets(debate_id);
 }
 
 debate::Relationship DebateWrapper::findOutgoingChallengeLink(int fromClaimId) {
@@ -727,8 +733,29 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     const debate::ClaimStatus& currentStatus,
     const std::map<int, std::vector<debate::Relationship>>& childrenMap,
     const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
+    const std::map<int, std::vector<debate::Relationship>>& challengeOnRelation,
     const std::set<int>& conceded_claims) {
     debate::ClaimStatus ns = currentStatus;
+
+    // UNDERCUT. A challenge can target an argument -- the link -- instead of a
+    // claim: "true or not, that does not bear on this". For a user who holds
+    // such a challenge TRUE, the attacked link carries nothing, exactly as if
+    // its basis had propagation NONE. Nothing becomes false; a reason is
+    // removed. For everyone else the link works as before. This is the one
+    // rule that distinguishes attacking the evidence from attacking its
+    // relevance, and it applies to support and challenge links alike.
+    auto undercutFor = [&](const debate::Relationship& rel) {
+        auto at = challengeOnRelation.find(rel.id());
+        if (at == challengeOnRelation.end()) return false;
+        for (const auto& attack : at->second) {
+            debate::Claim ac = getClaimById(attack.link().connect_from());
+            auto uit = ac.user_statuses().find(user);
+            if (uit != ac.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     // Rule A/B: parent-child.
     //
@@ -745,7 +772,7 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     if (childrenIt != childrenMap.end()) {
         for (const auto& rel : childrenIt->second) {
             const basis::Propagation prop = bases::PropagationFor(rel.basis());
-            if (prop == basis::NONE) continue;
+            if (prop == basis::NONE || undercutFor(rel)) continue;
             ++countedChildren;
             debate::Claim cc = getClaimById(rel.link().connect_to());
             auto cit = cc.user_statuses().find(user);
@@ -771,7 +798,7 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
     if (citIn != challengeIncoming.end()) {
         bool anyFalse = false;
         for (const auto& rel : citIn->second) {
-            if (bases::PropagationFor(rel.basis()) == basis::NONE) continue;
+            if (bases::PropagationFor(rel.basis()) == basis::NONE || undercutFor(rel)) continue;
             debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
             if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
@@ -786,7 +813,7 @@ debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
         bool anyTrueUnsupport = false;
         for (const auto& rel : citIn->second) {
             const basis::Propagation prop = bases::PropagationFor(rel.basis());
-            if (prop == basis::NONE) continue;
+            if (prop == basis::NONE || undercutFor(rel)) continue;
             debate::Claim cc = getClaimById(rel.link().connect_from());
             auto uit = cc.user_statuses().find(user);
             if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) {
@@ -828,9 +855,15 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
     std::map<int, std::vector<debate::Relationship>> childrenMap;
     std::map<int, std::vector<debate::Relationship>> challengeIncoming;
     std::map<int, std::vector<debate::Relationship>> challengeOutgoing;
+    // relation id -> challenges aimed at that relation (undercuts). These rows
+    // are NOT in challengeIncoming: they attack an argument, not a claim, and
+    // Rule D on the claim would make the challenger's target FALSE, which is
+    // precisely what an undercut does not say.
+    std::map<int, std::vector<debate::Relationship>> challengeOnRelation;
     std::set<int> allClaimIds;
     allClaimIds.insert(rootId);
 
+    const std::map<int, int> relationTargets = getRelationTargets(debate_id);
     auto allLinks = getLinksForDebate(debate_id);
     for (const auto& linkTuple : allLinks) {
         int linkId = std::get<0>(linkTuple);
@@ -839,17 +872,27 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
         const std::string& connection = std::get<3>(linkTuple);
         int creatorId = std::get<4>(linkTuple);
         int linkType = std::get<5>(linkTuple);
+        int relationId = std::get<6>(linkTuple);
         allClaimIds.insert(fromId);
         allClaimIds.insert(toId);
 
+        const auto targetIt = relationTargets.find(linkId);
+        const int toRelation = targetIt == relationTargets.end() ? 0 : targetIt->second;
+
+        // Built with its RELATION id, so rows of one joint argument share an
+        // id and an undercut aimed at the argument finds every one of them.
         debate::Relationship rel = RelationBuilder::fromLinkRow(
-            linkId, fromId, toId, connection, creatorId, linkType, debate_id);
+            linkId, fromId, toId, connection, creatorId, linkType, debate_id, relationId, toRelation);
 
         if (linkType == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
             childrenMap[fromId].push_back(rel);
         } else if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeIncoming[toId].push_back(rel);
-            challengeOutgoing[fromId].push_back(rel);
+            if (toRelation > 0) {
+                challengeOnRelation[toRelation].push_back(rel);
+            } else {
+                challengeIncoming[toId].push_back(rel);
+                challengeOutgoing[fromId].push_back(rel);
+            }
         }
     }
 
@@ -898,13 +941,27 @@ void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<
                 debate::Claim c = getClaimById(rel.link().connect_to());
                 for (const auto& e : c.user_statuses()) users.insert(e.first);
             }
+            // Whoever attacks a link touching this claim holds a view that
+            // changes what this claim's children count for them.
+            auto attackersOf = [&](const std::vector<debate::Relationship>& rels) {
+                for (const auto& rel : rels) {
+                    auto at = challengeOnRelation.find(rel.id());
+                    if (at == challengeOnRelation.end()) continue;
+                    for (const auto& attack : at->second) {
+                        debate::Claim c = getClaimById(attack.link().connect_from());
+                        for (const auto& e : c.user_statuses()) users.insert(e.first);
+                    }
+                }
+            };
+            attackersOf(childrenMap[claimId]);
+            attackersOf(challengeIncoming[claimId]);
 
             for (const std::string& user : users) {
                 auto it = claim.user_statuses().find(user);
                 debate::ClaimStatus cs = (it != claim.user_statuses().end())
                     ? it->second : debate::ClaimStatus::UNDETERMINED;
                 debate::ClaimStatus ns = ComputeStatusForUser(
-                    claimId, user, cs, childrenMap, challengeIncoming, conceded_claims);
+                    claimId, user, cs, childrenMap, challengeIncoming, challengeOnRelation, conceded_claims);
 
                 if (ns != cs) {
                     debate::Claim updated = getClaimById(claimId);

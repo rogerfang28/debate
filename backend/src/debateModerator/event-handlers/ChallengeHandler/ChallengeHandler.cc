@@ -116,6 +116,40 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
     // existing rows and callers are unaffected.
     const std::string connection = basis.empty() ? "challenge link" : basis;
 
+    // A LINK in the challenge list means the target is an ARGUMENT, not a
+    // claim: "your evidence is real, but it does not prove that". The row is
+    // aimed at that relation, and CLAIM_ID_TO holds the claim the argument
+    // was for so readers that know only claims still draw the challenge
+    // beside the right claim. One challenge attacks one thing; if several
+    // links were collected the first is the target and the rest are ignored
+    // with a warning, since silently picking the last would be worse.
+    int target_relation_id = 0;
+    int argument_target_claim_id = 0;
+    {
+        const auto& challenging = userProto.engagement().debating_info().challenging_info();
+        if (challenging.link_ids_size() > 0) {
+            const debate::Relationship targetRel = debateWrapper.getLinkById(challenging.link_ids(0));
+            if (targetRel.id() != 0) {
+                target_relation_id = targetRel.id();
+                argument_target_claim_id =
+                    targetRel.to_case() == debate::Relationship::kToClaimId
+                        ? targetRel.to_claim_id() : targetRel.link().connect_to();
+                if (challenging.link_ids_size() > 1) {
+                    Log::warn("[SubmitChallengeClaimHandler] " +
+                              std::to_string(challenging.link_ids_size()) +
+                              " links collected; a challenge attacks one argument. Using relation " +
+                              std::to_string(target_relation_id));
+                }
+            } else {
+                Log::warn("[SubmitChallengeClaimHandler] Link " +
+                          std::to_string(challenging.link_ids(0)) +
+                          " not found; challenging the current claim instead");
+            }
+        }
+    }
+    const int challenged_claim_for_row =
+        target_relation_id > 0 ? argument_target_claim_id : current_claim_id;
+
     int same_debate_challenge_claim_id = -1;
     int same_debate_challenge_link_id = -1;
     int challenge_relation_id = 0;
@@ -141,12 +175,13 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
 
         const int link_id = debateWrapper.addLink(
             claim_id,
-            current_claim_id,
+            challenged_claim_for_row,
             connection,
             user_id,
             current_debate_id,
             debate::LinkType::CHALLENGE,
-            challenge_relation_id
+            challenge_relation_id,
+            target_relation_id
         );
 
         if (challenge_relation_id == 0) {
@@ -177,11 +212,18 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
     // No status updates needed here — the cascade in UpdateStatusOfAllClaimsInDebate
     // handles status based on challenge claim status.
 
-    // Record the challenger's view: they think the challenged claim is FALSE
-    debate::Claim challengedClaim = debateWrapper.getClaimById(current_claim_id);
-    user::User challengerProto = debateWrapper.getUserProtobuf(user_id);
-    (*challengedClaim.mutable_user_statuses())[challengerProto.username()] = debate::ClaimStatus::FALSE_CLAIM;
-    debateWrapper.updateClaimInDB(challengedClaim);
+    // Record the challenger's view: they think the challenged claim is FALSE.
+    // Not for an undercut -- attacking an argument asserts nothing about the
+    // claim it was for; it only stops that argument counting for the attacker.
+    if (target_relation_id == 0) {
+        debate::Claim challengedClaim = debateWrapper.getClaimById(current_claim_id);
+        user::User challengerProto = debateWrapper.getUserProtobuf(user_id);
+        (*challengedClaim.mutable_user_statuses())[challengerProto.username()] = debate::ClaimStatus::FALSE_CLAIM;
+        debateWrapper.updateClaimInDB(challengedClaim);
+    } else {
+        Log::debug("[SubmitChallengeClaimHandler] Challenge undercuts relation " +
+                   std::to_string(target_relation_id) + "; no claim marked FALSE");
+    }
 
     // Propagate statuses through the graph (per-user cascade)
     debateWrapper.PropagateClaimStatuses(current_debate_id);
@@ -216,7 +258,10 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
 
     // Use the challenge_link_id to directly look up the challenge link.
     // The link's connect_from = challenge claim ID, connect_to = challenged claim ID.
-    debate::Relationship::Link challengeLink = debateWrapper.getLinkById(challenge_link_id).link();
+    const debate::Relationship challengeRel = debateWrapper.getLinkById(challenge_link_id);
+    const debate::Relationship::Link challengeLink = challengeRel.link();
+    // An undercut attacks an argument, not the claim in connect_to().
+    const bool undercutsArgument = challengeRel.to_case() == debate::Relationship::kToRelationId;
     if (challenge_link_id <= 0 || challengeLink.id() == 0 || challengeLink.link_type() != debate::LinkType::CHALLENGE) {
         Log::error("[ConcedeChallengeHandler] Cannot find challenge with id " + std::to_string(challenge_link_id));
         CancelChallengeClaim(user_id, debateWrapper);
@@ -239,8 +284,10 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
 
     // Step 1b: Mark the challenged claim (the original claim being attacked) as FALSE_CLAIM
     // for the concessor — they admit their own claim was wrong.
+    // Skipped for an undercut: conceding "my argument does not prove it"
+    // does not concede the claim. StatusEngine's CONCEDE seed skips it too.
     debate::Claim challengedClaimUpdated = debateWrapper.getClaimById(challengedClaimId);
-    if (challengedClaimUpdated.id() != 0) {
+    if (!undercutsArgument && challengedClaimUpdated.id() != 0) {
         (*challengedClaimUpdated.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
         debateWrapper.updateClaimInDB(challengedClaimUpdated);
         Log::debug("[ConcedeChallengeHandler] User " + username + " concedes challenged claim " +

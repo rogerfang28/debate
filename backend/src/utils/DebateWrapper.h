@@ -63,7 +63,11 @@ public:
 
     // `relation_id` groups rows that are ONE relation with several
     // from-claims. 0 means "its own relation".
-    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type = debate::LinkType::NORMAL, int relation_id = 0);
+    // `to_link_id` > 0 aims a CHALLENGE row at an argument (that relation id)
+    // instead of at toClaimId; see LinkDatabase::addLink.
+    int addLink(int fromClaimId, int toClaimId, const std::string& connection, int creator_id, int debate_id, debate::LinkType link_type = debate::LinkType::NORMAL, int relation_id = 0, int to_link_id = 0);
+    // Row id -> relation id, for every row in the debate that attacks a relation.
+    std::map<int, int> getRelationTargets(const int& debate_id);
     std::vector<std::vector<uint8_t>> getStatementsForDebate(const int& debate_id);
     std::vector<std::vector<uint8_t>> getStatementsForDebateAndCreators(const int& debate_id, const std::vector<int>& creator_ids);
     std::vector<std::tuple<int, int, int, std::string, int, int, int>> getLinksForDebate(const int& debate_id);
@@ -118,5 +122,6 @@ private:
         const debate::ClaimStatus& currentStatus,
         const std::map<int, std::vector<debate::Relationship>>& childrenMap,
         const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
+        const std::map<int, std::vector<debate::Relationship>>& challengeOnRelation,
         const std::set<int>& conceded_claims);
 };

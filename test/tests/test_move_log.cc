@@ -853,3 +853,40 @@ TEST_F(MoveLogTest, SeparateDebatesKeepIndependentSequences) {
     EXPECT_EQ(b[0].seq, 1) << "the second debate must not inherit the first's sequence";
     EXPECT_NE(first, second);
 }
+
+TEST_F(MoveLogTest, ChallengingALinkLogsOpposeAgainstTheRelation) {
+    // "Your evidence is real but it does not prove that" attacks the LINK. The
+    // OPPOSE then names the relation, not a claim, and the engine seeds no
+    // claim FALSE for it -- which is the whole difference between undercutting
+    // an argument and refuting a claim.
+    int debateId = createAndEnterDebate("Root claim");
+    const int rootClaimId = currentClaimId();
+    addChildClaim("Crash deaths fell 23 percent");
+
+    auto goTo = baseEvent(debate_event::GO_TO_CLAIM);
+    goTo.mutable_go_to_claim()->set_claim_id(rootClaimId);
+    send(goTo);
+
+    const std::vector<int> links = moderator_->getDebateWrapper().findLinksUnder(rootClaimId);
+    ASSERT_EQ(links.size(), 1u);
+
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addLink = baseEvent(debate_event::ADD_LINK_TO_BE_CHALLENGED);
+    addLink.mutable_add_link_to_be_challenged()->set_link_id(links[0]);
+    send(addLink);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("Those boroughs were already getting safer");
+    submit.mutable_submit_challenge_claim()->set_challenge_description("");
+    send(submit);
+
+    auto moves = readMoves(*db_, debateId);
+    ASSERT_GE(moves.size(), 2u) << "shape was: " << shapeOf(moves);
+    const MoveRow& last = moves.back();
+    EXPECT_EQ(last.type, "OPPOSE");
+    EXPECT_EQ(last.targetType, "relation") << shapeOf(moves);
+    EXPECT_EQ(last.targetId, links[0]) << "the OPPOSE names the attacked relation";
+    EXPECT_NE(last.payload.find("challenging_claim_id"), std::string::npos);
+}
