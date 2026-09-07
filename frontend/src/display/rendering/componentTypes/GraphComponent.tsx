@@ -2,33 +2,16 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMe
 import * as d3 from "d3";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
-
-// ── Types matching the backend protobuf data ──────────────────────────
-
-interface GraphNode {
-  id: string;
-  text: string;
-  x?: number;
-  y?: number;
-  type?: string;       // "claim" | "evidence" | "challenge" | "counter" | ""
-  status?: string;     // "TRUE_CLAIM" | "FALSE_CLAIM" | "UNDETERMINED"
-  creatorId?: number;
-  creatorUsername?: string;
-  isRoot?: boolean;
-  isCurrent?: boolean;
-}
-
-interface GraphEdge {
-  id: string;
-  source: string;
-  target: string;
-  type?: string;       // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
-  basis?: string;      // EVIDENTIAL | AUTHORITY | DEFINITIONAL | NORMATIVE, or empty
-  relationId?: number; // edges sharing this belong to ONE relation; 0/absent = its own
-  // A challenge aimed at an ARGUMENT ends at that relation's junction, not at
-  // `target` (which still names the claim the argument was for, for placement).
-  targetRelationId?: number;
-}
+import type { GraphNode, GraphEdge } from "./graphLayout";
+import {
+  layoutDebate,
+  isSupportEdge,
+  isChallengeEdge,
+  JUNCTION_HEIGHT,
+  JUNCTION_DOT_RADIUS,
+  JUNCTION_CHAR_WIDTH,
+  JUNCTION_PADDING_X,
+} from "./graphLayout";
 
 interface DebateGraphProps extends BaseComponentProps {
   component: BaseComponentProps["component"] & {
@@ -85,64 +68,7 @@ function colorForAuthor(username: string): string {
 const NODE_WIDTH = 160;
 const NODE_HEIGHT = 80;
 
-// ── Junction (relation) nodes ─────────────────────────────────────────
-// A relation is drawn as its own small node sitting on the edge: every
-// source points AT the junction, and the junction points at the target.
-// The junction is what carries the relation's meaning (its basis), and it
-// is the thing an attack on the reasoning would eventually target.
-//
-// Junctions are placed at the MIDPOINT of the edge rather than being
-// inserted into the tree layout as real levels. Making them layout nodes
-// would double the depth of every tree and force the row spacing, subtree
-// widths and root detection to all be reworked -- for a node that carries
-// no children of its own. Positioning them geometrically keeps the tree
-// exactly as it was and costs nothing.
-const JUNCTION_HEIGHT = 18;
-// Radius of the dot drawn when a relation has no basis. Small enough to read
-// as a joint in the line rather than as a claim of its own.
-const JUNCTION_DOT_RADIUS = 4;
-const JUNCTION_CHAR_WIDTH = 6.2;
-const JUNCTION_PADDING_X = 8;
 
-// Relations created before the basis dropdown existed carry a fixed string in
-// the same column -- one for support, one for challenge. Neither is a basis
-// and neither may be displayed as one; see RelationBuilder, which deliberately
-// does not launder them into real values.
-const PLACEHOLDER_BASES = ["parent to child connection", "challenge link"];
-
-// Edge-type predicates.
-//
-// "SUPPORTS" is what the backend emits now. "PARENT_CHILD" and "supports" are
-// accepted too: the first is the pre-relation name for the same edge, and a
-// stale cached page or a saved layout JSON can still carry it. Treating an
-// unrecognised type as support would silently mis-draw the tree, so the check
-// is an allow-list rather than "not a challenge".
-function isSupportEdge(type?: string): boolean {
-  return type === "SUPPORTS" || type === "PARENT_CHILD" || type === "supports";
-}
-
-function isChallengeEdge(type?: string): boolean {
-  return type === "CHALLENGE" || type === "challenges" || type === "OPPOSES";
-}
-
-// What the junction says: its BASIS, or nothing.
-//
-// It deliberately does NOT fall back to the role. Support versus opposition is
-// already carried by colour -- grey for support, orange and dashed for a
-// challenge -- so writing "SUPPORTS" on the node repeats what the edge already
-// says. Worse, it puts two different vocabularies in one slot: a reader seeing
-// EVIDENTIAL on one junction and SUPPORTS on another would take them for
-// alternatives in the same list, when one is a basis and the other is a role.
-//
-// An empty label means no basis was ever chosen -- true of every relation
-// created before the basis dropdown existed. Those render as a small plain
-// dot, which reads as "a relation, unspecified" rather than claiming a basis
-// nobody selected.
-function junctionLabel(edge: GraphEdge): string {
-  const basis = (edge.basis ?? "").trim();
-  if (basis && !PLACEHOLDER_BASES.includes(basis)) return basis;
-  return "";
-}
 // ══════════════════════════════════════════════════════════════════════
 // EXPERIMENT: SEMANTIC ZOOM  ── everything for it is fenced by these
 // banners, so it can be removed by deleting the fenced blocks and the two
@@ -290,118 +216,11 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     return () => ro.disconnect();
   }, []);
 
-  // ── Compute tree layout positions ─────────────────────────────────
-  const GAP_X = 200;
-  const GAP_Y = 170;
-
-  const positionedNodes = useMemo(() => {
-    if (nodes.length === 0) return [];
-
-    const nodeMap = new Map<string, GraphNode>();
-    nodes.forEach((n) => nodeMap.set(n.id, { ...n }));
-
-    // Build the children map from SUPPORT edges.
-    //
-    // A support edge runs SUPPORTER -> SUPPORTED, which is UP the tree: the
-    // evidence points at the conclusion it backs. The layout draws top-down,
-    // so the ends are inverted here -- the supported claim owns its supporters
-    // as children.
-    //
-    // Root detection still works unchanged and for the right reason: the root
-    // is the claim that supports nothing, which is exactly the node that is
-    // never a source.
-    const childrenMap = new Map<string, string[]>();
-    const hasParent = new Set<string>();
-    for (const e of edges) {
-      // BOTH support and challenge edges give layout structure. A challenge
-      // claim has no parent-child path from the root, so leaving challenges out
-      // here drops every one of them from the tree -- they end up unpositioned
-      // and are never drawn.
-      //
-      // The two map identically because both already run source -> target with
-      // the source underneath: a supporter sits below what it supports, and a
-      // challenger below what it attacks.
-      if (!isSupportEdge(e.type) && !isChallengeEdge(e.type)) continue;
-
-      if (!childrenMap.has(e.target)) childrenMap.set(e.target, []);
-      // Guard against the same pair arriving twice (it did, until the backend
-      // stopped emitting a phantom support edge beside every challenge) --
-      // a duplicate would place the node twice and double the subtree width.
-      if (!childrenMap.get(e.target)!.includes(e.source)) {
-        childrenMap.get(e.target)!.push(e.source);
-      }
-      hasParent.add(e.source);
-    }
-
-    // Find root (node with no parent, prefer isRoot flag)
-    let rootId = nodes.find((n) => n.isRoot)?.id ?? "";
-    if (!rootId) {
-      rootId = nodes.find((n) => !hasParent.has(n.id))?.id ?? nodes[0]?.id ?? "";
-    }
-
-    // BFS to assign levels and order
-    const positioned: GraphNode[] = [];
-    const visited = new Set<string>();
-    let currentLevel = [rootId];
-
-    while (currentLevel.length > 0) {
-      const nextLevel: string[] = [];
-      for (const id of currentLevel) {
-        if (visited.has(id)) continue;
-        visited.add(id);
-        const node = nodeMap.get(id);
-        if (node) {
-          positioned.push(node);
-          const children = childrenMap.get(id) ?? [];
-          for (const c of children) {
-            if (!visited.has(c)) nextLevel.push(c);
-          }
-        }
-      }
-      currentLevel = nextLevel;
-    }
-
-    // Nodes not connected to the root (no PARENT_CHILD path from it) are
-    // dropped entirely for now, instead of floating in a row underneath.
-
-    // Compute subtree widths
-    const subtreeWidth = new Map<string, number>();
-    const computeWidth = (id: string): number => {
-      if (subtreeWidth.has(id)) return subtreeWidth.get(id)!;
-      const children = childrenMap.get(id) ?? [];
-      if (children.length === 0) {
-        subtreeWidth.set(id, GAP_X);
-        return GAP_X;
-      }
-      const total = children.reduce((sum, c) => sum + computeWidth(c), 0);
-      const w = Math.max(GAP_X, total);
-      subtreeWidth.set(id, w);
-      return w;
-    };
-    computeWidth(rootId);
-
-    // Place nodes: root at top center, children spread below
-    const totalWidth = computeWidth(rootId);
-    const xOffset = (dims.width - totalWidth) / 2;
-
-    const placeNode = (id: string, x: number, depth: number) => {
-      const node = nodeMap.get(id);
-      if (!node) return;
-      const w = subtreeWidth.get(id) ?? GAP_X;
-      node.x = x + w / 2;
-      node.y = 60 + depth * GAP_Y;
-      const children = childrenMap.get(id) ?? [];
-      let cx = x;
-      for (const c of children) {
-        const cw = subtreeWidth.get(c) ?? GAP_X;
-        placeNode(c, cx, depth + 1);
-        cx += cw;
-      }
-    };
-    placeNode(rootId, xOffset, 0);
-
-    return positioned;
-  }, [nodes, edges, dims.width]);
+  // ── Layout: claims and relations together (see layoutDebate) ──────
+  const { positionedNodes, relationGroups } = useMemo(
+    () => layoutDebate(nodes, edges, dims.width),
+    [nodes, edges, dims.width]
+  );
 
   // ── Zoom & pan ────────────────────────────────────────────────────
   //
@@ -683,105 +502,6 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     );
   }
 
-  // ── Compute positions for rendering ──────────────────────────────
-  const nodeMap = new Map<string, GraphNode>();
-  positionedNodes.forEach((n) => nodeMap.set(n.id, n));
-
-  // ── Group edges into the relations that produced them ────────────
-  //
-  // A relation with several from-claims arrives as several edges sharing a
-  // relationId, and must draw ONE junction with several incoming segments.
-  // That grouping is the whole point: N edges into one target could mean
-  // "these N together support it" (one relation) or "each of these
-  // independently supports it" (N relations), and the picture has to tell
-  // those apart. Without the id they are indistinguishable.
-  const relationGroups = useMemo(() => {
-    const byKey = new Map<
-      string,
-      {
-        key: string;
-        sources: GraphNode[];
-        target: GraphNode;
-        type?: string;
-        label: string;
-        // Only an ATTRIBUTED relation (a real relation id) can be selected:
-        // the id is what the server needs to know which argument was meant.
-        selectable: boolean;
-        // Set for an undercut: the key (`r<id>`) of the relation whose junction
-        // this group's line should end at.
-        targetRelationKey?: string;
-      }
-    >();
-
-    for (const edge of edges) {
-      const source = nodeMap.get(edge.source);
-      const target = nodeMap.get(edge.target);
-      // Endpoints outside the laid-out tree (an unreachable claim) have no
-      // position, so there is nothing to draw between.
-      if (!source || !target) continue;
-
-      // relationId 0/absent means the backend could not attribute this edge.
-      // Those stand alone rather than being merged with each other -- lumping
-      // unattributed edges together would invent a relation nobody asserted.
-      const key =
-        edge.relationId && edge.relationId > 0
-          ? `r${edge.relationId}`
-          : `e${edge.id}`;
-
-      const existing = byKey.get(key);
-      if (!existing) {
-        byKey.set(key, {
-          key,
-          sources: [source],
-          target,
-          type: edge.type,
-          label: junctionLabel(edge),
-          selectable: !!(edge.relationId && edge.relationId > 0),
-          targetRelationKey:
-            edge.targetRelationId && edge.targetRelationId > 0
-              ? `r${edge.targetRelationId}`
-              : undefined,
-        });
-        continue;
-      }
-      // Same relation, another from-claim. Guard against a repeated endpoint
-      // so a duplicated edge cannot draw two identical segments.
-      if (!existing.sources.some((s) => s.id === source.id)) {
-        existing.sources.push(source);
-      }
-    }
-
-    return [...byKey.values()];
-  }, [edges, positionedNodes]);
-
-  // ── Where each junction sits ──────────────────────────────────────
-  //
-  // A junction sits midway between its sources' centre of mass and its
-  // target. Ordinary relations target a claim; an UNDERCUT targets another
-  // relation's junction, so those are placed in a second pass once every
-  // claim-targeted junction has a position. An undercut whose target junction
-  // is not drawn falls back to the claim the argument was for.
-  const junctionPositions = useMemo(() => {
-    const pos = new Map<string, { x: number; y: number; tx: number; ty: number }>();
-    const place = (group: (typeof relationGroups)[number], tx: number, ty: number) => {
-      const n = group.sources.length;
-      const cx = group.sources.reduce((s, node) => s + (node.x ?? 100), 0) / n;
-      const cy = group.sources.reduce((s, node) => s + (node.y ?? 100), 0) / n;
-      pos.set(group.key, { x: (cx + tx) / 2, y: (cy + ty) / 2, tx, ty });
-    };
-    for (const group of relationGroups) {
-      if (!group.targetRelationKey) {
-        place(group, group.target.x ?? 200, group.target.y ?? 200);
-      }
-    }
-    for (const group of relationGroups) {
-      if (group.targetRelationKey) {
-        const at = pos.get(group.targetRelationKey);
-        place(group, at ? at.x : (group.target.x ?? 200), at ? at.y : (group.target.y ?? 200));
-      }
-    }
-    return pos;
-  }, [relationGroups]);
 
   return (
     <div
@@ -847,148 +567,135 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         </defs>
 
         <g className="graph-root">
-          {/* ── Relations (edges + junction nodes) ────────────────── */}
+          {/* ── Relation lines. All lines first, so every node -- claim box or
+              pill -- is drawn on top of them and hides the line ends. That is
+              what makes arrowheads unnecessary: rows carry the direction. */}
           {relationGroups.map((group) => {
-            // The end of this relation's line: a claim, or -- for an undercut --
-            // another relation's junction. Computed above, in dependency order.
-            const placed = junctionPositions.get(group.key);
-            const endsAtJunction = !!group.targetRelationKey && junctionPositions.has(group.targetRelationKey);
-            const tx = placed ? placed.tx : (group.target.x ?? 200);
-            const ty = placed ? placed.ty : (group.target.y ?? 200);
-
             const isChallenge = isChallengeEdge(group.type);
             const color = isChallenge
               ? EDGE_COLORS.challenges
               : isSupportEdge(group.type)
                 ? EDGE_COLORS.PARENT_CHILD
                 : EDGE_COLORS.NORMAL;
-            const dash = isChallenge ? "6,3" : "none";
-            const strokeWidth = isChallenge ? 2.5 : 1.5;
-
-            // The junction sits midway between the sources' centre of mass and
-            // the target. With a single source that is exactly the edge
-            // midpoint, so one-from relations render precisely as they did
-            // before grouping existed.
-            const n = group.sources.length;
-            const cx = group.sources.reduce((s, node) => s + (node.x ?? 100), 0) / n;
-            const cy = group.sources.reduce((s, node) => s + (node.y ?? 100), 0) / n;
-            const jx = placed ? placed.x : (cx + tx) / 2;
-            const jy = placed ? placed.y : (cy + ty) / 2;
-
-            // A line into a claim runs to the claim's centre and the box hides
-            // the overlap. A pill is small, so a line into a junction stops
-            // just short of it and the arrowhead lands on its rim.
-            let ex = tx;
-            let ey = ty;
-            if (endsAtJunction) {
-              const dx = tx - jx;
-              const dy = ty - jy;
-              const len = Math.hypot(dx, dy) || 1;
-              const back = JUNCTION_HEIGHT / 2 + 6;
-              ex = tx - (dx / len) * back;
-              ey = ty - (dy / len) * back;
-            }
-
-            // ═══ EXPERIMENT: SEMANTIC ZOOM ─ basis labels vanish on the map ═══
-            // At map scale a basis renders around 3px. The colour already says
-            // support vs challenge, so the pill becomes a dot like any other
-            // unlabelled relation.
-            const label =
-              semanticZoom && detailTier === "map" ? "" : group.label;
-            const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
-            // A selected pill wears the same solid yellow outline a current
-            // claim does, so "what is selected" reads the same for both kinds
-            // of node. Its own colour (support/challenge) stays in the text.
-            const isSelectedJunction = selectedId === group.key;
-            const junctionStroke = isSelectedJunction ? "#fbbf24" : color;
-            const junctionStrokeWidth = isSelectedJunction ? 3 : 1.5;
-
             return (
-              <g key={group.key}>
-                {/* Every source feeds INTO the junction. No arrowheads here --
-                    the relation as a whole makes one claim about the target,
-                    so only the junction's outgoing segment is an assertion. */}
+              <g key={`lines-${group.key}`}>
+                {/* Every source feeds INTO the pill: a plain segment, the same
+                    for evidence into a support and a challenger into a challenge. */}
                 {group.sources.map((source) => (
                   <line
                     key={source.id}
                     x1={source.x ?? 100}
                     y1={source.y ?? 100}
-                    x2={jx}
-                    y2={jy}
+                    x2={group.x}
+                    y2={group.y}
                     stroke={color}
-                    strokeWidth={strokeWidth}
+                    strokeWidth={1.5}
                     strokeOpacity={0.7}
-                    strokeDasharray={dash}
-                    style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
                   />
                 ))}
+                {/* The pill's own segment, into whatever it is about: a claim,
+                    or another pill. Dashed for a challenge. */}
                 <line
-                  x1={jx}
-                  y1={jy}
-                  x2={ex}
-                  y2={ey}
+                  x1={group.x}
+                  y1={group.y}
+                  x2={group.tx}
+                  y2={group.ty}
                   stroke={color}
-                  strokeWidth={strokeWidth}
+                  strokeWidth={isChallenge ? 2.5 : 1.5}
                   strokeOpacity={0.7}
-                  strokeDasharray={dash}
-                  markerEnd={`url(#${component.id}-${isChallenge ? "arrow-challenge" : "arrow-support"})`}
-                  style={{ transition: "x1 0.05s, y1 0.05s, x2 0.05s, y2 0.05s" }}
+                  strokeDasharray={isChallenge ? "6,3" : "none"}
                 />
-                <g
-                  transform={`translate(${jx},${jy})`}
-                  className="graph-junction"
-                  style={{ cursor: group.selectable ? "pointer" : "default" }}
-                  onClick={(e) => {
-                    if (group.selectable) handleJunctionClick(group.key, e);
-                  }}
-                >
-                  {/* Hit area. A pill is ~20px tall and shrinks with the zoom;
-                      without padding it is unclickable at Fit. Transparent, not
-                      "none": it must catch the click and draw nothing. */}
+              </g>
+            );
+          })}
+
+          {/* ── Pills (relation nodes) ─────────────────────────────── */}
+          {relationGroups.map((group) => {
+            const isChallenge = isChallengeEdge(group.type);
+            const color = isChallenge
+              ? EDGE_COLORS.challenges
+              : isSupportEdge(group.type)
+                ? EDGE_COLORS.PARENT_CHILD
+                : EDGE_COLORS.NORMAL;
+            // ═══ EXPERIMENT: SEMANTIC ZOOM ─ basis labels vanish on the map ═══
+            const label = semanticZoom && detailTier === "map" ? "" : group.label;
+            const jw = label.length * JUNCTION_CHAR_WIDTH + JUNCTION_PADDING_X * 2;
+            // A selected pill wears the same solid yellow outline a current
+            // claim does. Its own colour (support/challenge) stays in the text.
+            const isSelectedJunction = selectedId === group.key;
+            const junctionStroke = isSelectedJunction ? "#fbbf24" : color;
+            const junctionStrokeWidth = isSelectedJunction ? 3 : 1.5;
+            const ringW = (label ? jw : JUNCTION_DOT_RADIUS * 2) + 10;
+            const ringH = (label ? JUNCTION_HEIGHT : JUNCTION_DOT_RADIUS * 2) + 10;
+
+            return (
+              <g
+                key={group.key}
+                transform={`translate(${group.x},${group.y})`}
+                className="graph-junction"
+                style={{ cursor: group.selectable ? "pointer" : "default" }}
+                onClick={(e) => {
+                  if (group.selectable) handleJunctionClick(group.key, e);
+                }}
+              >
+                {/* Hit area. A pill is ~20px tall and shrinks with the zoom;
+                    without padding it is unclickable at Fit. Transparent, not
+                    "none": it must catch the click and draw nothing. */}
+                <rect
+                  x={-jw / 2 - 8}
+                  y={-JUNCTION_HEIGHT / 2 - 8}
+                  width={jw + 16}
+                  height={JUNCTION_HEIGHT + 16}
+                  fill="transparent"
+                />
+                {/* Undercut for the viewer: this argument carries nothing for
+                    them until the challenge against it is answered. */}
+                {group.undercutForViewer && (
                   <rect
-                    x={-jw / 2 - 8}
-                    y={-JUNCTION_HEIGHT / 2 - 8}
-                    width={jw + 16}
-                    height={JUNCTION_HEIGHT + 16}
-                    fill="transparent"
+                    x={-ringW / 2}
+                    y={-ringH / 2}
+                    width={ringW}
+                    height={ringH}
+                    rx={ringH / 2}
+                    fill="none"
+                    stroke={EDGE_COLORS.challenges}
+                    strokeWidth={2}
+                    strokeDasharray="4,3"
                   />
-                  {label ? (
-                    <>
-                      <rect
-                        x={-jw / 2}
-                        y={-JUNCTION_HEIGHT / 2}
-                        width={jw}
-                        height={JUNCTION_HEIGHT}
-                        rx={JUNCTION_HEIGHT / 2}
-                        fill="#0f172a"
-                        stroke={junctionStroke}
-                        strokeWidth={junctionStrokeWidth}
-                      />
-                      <text
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={9}
-                        fontWeight={600}
-                        fill={color}
-                        style={{ pointerEvents: "none", letterSpacing: "0.03em" }}
-                      >
-                        {label}
-                      </text>
-                    </>
-                  ) : (
-                    // No basis chosen: a plain dot. The relation is still a
-                    // node -- it has to be, so several sources can converge on
-                    // it and so it can be a target later -- but it makes no
-                    // claim about what KIND of connection it is. Support
-                    // versus opposition is already carried by the colour.
-                    <circle
-                      r={JUNCTION_DOT_RADIUS}
+                )}
+                {label ? (
+                  <>
+                    <rect
+                      x={-jw / 2}
+                      y={-JUNCTION_HEIGHT / 2}
+                      width={jw}
+                      height={JUNCTION_HEIGHT}
+                      rx={JUNCTION_HEIGHT / 2}
                       fill="#0f172a"
                       stroke={junctionStroke}
                       strokeWidth={junctionStrokeWidth}
                     />
-                  )}
-                </g>
+                    <text
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontSize={9}
+                      fontWeight={600}
+                      fill={color}
+                      style={{ pointerEvents: "none", letterSpacing: "0.03em" }}
+                    >
+                      {label}
+                    </text>
+                  </>
+                ) : (
+                  // No basis chosen: a plain dot. Still a node -- it has to be,
+                  // so sources converge on it and so it can be a target.
+                  <circle
+                    r={JUNCTION_DOT_RADIUS}
+                    fill="#0f172a"
+                    stroke={junctionStroke}
+                    strokeWidth={junctionStrokeWidth}
+                  />
+                )}
               </g>
             );
           })}

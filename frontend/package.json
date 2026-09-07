@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev:css": "tailwindcss -i ./src/styles/index.css -o ./dist/output.css --watch"
+    "dev:css": "tailwindcss -i ./src/styles/index.css -o ./dist/output.css --watch",
+    "test:layout": "esbuild src/display/rendering/componentTypes/graphLayout.test.ts --bundle --platform=node --format=cjs --log-level=warning --outfile=node_modules/.cache/graphLayout.test.cjs && node node_modules/.cache/graphLayout.test.cjs"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.12.1",
