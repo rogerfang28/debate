@@ -1907,6 +1907,9 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full max-w-2xl"
             );
 
+            // A link in the challenge list means the target is an argument.
+            const bool challengingArgument = debatingInfo.challenging_info().link_ids_size() > 0;
+
             // Modal title
             ui::Component addChallengeModalTitle = ComponentGenerator::createText(
                 "addChallengeModalTitle",
@@ -1921,7 +1924,9 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             // Instructions text
             ui::Component challengeInstructions = ComponentGenerator::createText(
                 "challengeInstructions",
-                "Should contradict or prove the statement you are challenging wrong or faulty",
+                challengingArgument
+                    ? "Say why the evidence offered, even if true, does not prove the claim"
+                    : "Should contradict or prove the statement you are challenging wrong or faulty",
                 "text-sm",
                 "text-gray-400",
                 "",
@@ -1929,69 +1934,38 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
 
-            // WHAT IS BEING CHALLENGED. A challenge can attack the claim, or one
-            // of the ARGUMENTS for it: "your evidence is real, but it does not
-            // prove that". The links under the current claim are offered here;
-            // picking one aims the challenge at that argument -- an undercut --
-            // instead of at the claim. Server-driven like the rest of the page:
-            // the buttons post ADD_/REMOVE_LINK_TO_BE_CHALLENGED and the modal
-            // re-renders showing the choice. One challenge attacks one thing,
-            // so once an argument is picked the others are hidden until it is
-            // un-picked. The links come from debating_info, which the response
-            // generator fills with exactly the links under the current claim.
+            // WHAT IS BEING CHALLENGED is whatever is selected -- a claim, or an
+            // argument (a pill) -- and the modal says which, in one line. It used
+            // to offer a list of the claim's arguments to pick from; that was
+            // the only way to aim at an argument before pills were selectable,
+            // and asking twice is worse than asking once.
             {
-                const int currentId = debatingInfo.current_claim().id();
-                std::set<int> chosenLinks;
-                for (int i = 0; i < debatingInfo.challenging_info().link_ids_size(); ++i) {
-                    chosenLinks.insert(debatingInfo.challenging_info().link_ids(i));
-                }
-                std::map<int, std::string> childSentence;
-                for (const auto& c : info.children_claims()) {
-                    childSentence[c.id()] = c.sentence();
-                }
-                ui::Component targetBox = ComponentGenerator::createContainer(
-                    "challengeTargetBox", "", "bg-gray-900", "p-3", "", "border border-gray-700", "rounded", "mb-4");
-                const std::string headline = chosenLinks.empty()
-                    ? "You are challenging the claim itself. Or pick an argument below to say its evidence does not prove the claim:"
-                    : "You are challenging an ARGUMENT for the claim, not the claim. Its evidence may be true; you are saying it does not prove this.";
-                ComponentGenerator::addChild(&targetBox, ComponentGenerator::createText(
-                    "challengeTargetHeadline", headline, "text-xs",
-                    chosenLinks.empty() ? "text-gray-400" : "text-orange-300", "", "mb-2"));
-                int offered = 0;
-                for (const auto& link : debatingInfo.links()) {
-                    if (link.connect_from() != currentId) {
-                        continue;  // support rows run parent -> child; only the arguments FOR this claim
+                std::string targetLine;
+                if (challengingArgument) {
+                    const int pickedLink = debatingInfo.challenging_info().link_ids(0);
+                    std::string offered;
+                    for (const auto& link : debatingInfo.links()) {
+                        if (link.id() != pickedLink) {
+                            continue;
+                        }
+                        for (const auto& c : info.children_claims()) {
+                            if (c.id() == link.connect_to()) {
+                                offered = c.sentence();
+                            }
+                        }
                     }
-                    const bool picked = chosenLinks.count(link.id()) > 0;
-                    if (!chosenLinks.empty() && !picked) {
-                        continue;
+                    targetLine = "Challenging the argument for \"" + debatingInfo.current_claim().sentence() + "\"";
+                    if (!offered.empty()) {
+                        targetLine += ", offered: " + offered;
                     }
-                    auto it = childSentence.find(link.connect_to());
-                    std::string label = it != childSentence.end()
-                        ? it->second : "claim " + std::to_string(link.connect_to());
-                    if (label.size() > 90) {
-                        label = label.substr(0, 87) + "...";
-                    }
-                    const std::string basis =
-                        (link.connection().empty() || link.connection() == "parent to child connection")
-                            ? std::string() : " [" + link.connection() + "]";
-                    ui::Component pick = ComponentGenerator::createButton(
-                        (picked ? "removeLinkFromChallengeButton_" : "addLinkToChallengeButton_") + std::to_string(link.id()),
-                        picked ? "Back to challenging the claim  (argument: " + label + basis + ")"
-                               : "Challenge the argument: " + label + basis,
-                        "",
-                        picked ? "bg-orange-700" : "bg-gray-700",
-                        picked ? "hover:bg-orange-800" : "hover:bg-gray-600",
-                        "text-white",
-                        "px-3 py-2",
-                        "rounded",
-                        "w-full text-left text-xs mb-1");
-                    ComponentGenerator::addChild(&targetBox, pick);
-                    ++offered;
+                } else {
+                    targetLine = "Challenging: " + debatingInfo.current_claim().sentence();
                 }
-                if (offered > 0 || !chosenLinks.empty()) {
-                    ComponentGenerator::addChild(&addChallengeModalContent, targetBox);
-                }
+                ui::Component targetText = ComponentGenerator::createText(
+                    "challengeTargetLine", targetLine, "text-sm",
+                    challengingArgument ? "text-orange-300" : "text-gray-300", "", "mb-4");
+                (*targetText.mutable_css())["overflow-wrap"] = "break-word";
+                ComponentGenerator::addChild(&addChallengeModalContent, targetText);
             }
 
             // Challenge sentence input

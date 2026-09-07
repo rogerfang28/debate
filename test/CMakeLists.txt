@@ -338,6 +338,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_enter_debate_members.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
     ${CMAKE_SOURCE_DIR}/tests/test_move_log.cc
     ${CMAKE_SOURCE_DIR}/tests/test_status_engine.cc
     ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
