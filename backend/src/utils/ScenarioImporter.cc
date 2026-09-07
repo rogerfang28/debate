@@ -293,6 +293,21 @@ private:
             case debate_event::SELECT_CLAIM:
                 event.mutable_select_claim()->set_claim_id(RealClaimId(action.claim_id()));
                 break;
+            // Challenge an ARGUMENT. The scenario names the link by its ends
+            // (the claim it is for, the claim offered for it); the stored link
+            // is looked up here, since ids differ between databases.
+            case debate_event::ADD_LINK_TO_BE_CHALLENGED: {
+                const int parent = RealClaimId(action.link_to_claim_id());
+                const int child = RealClaimId(action.link_from_claim_id());
+                int linkId = 0;
+                DebateWrapper& dw = moderator_.getDebateWrapper();
+                for (int id : dw.findLinksUnder(parent)) {
+                    const debate::Relationship::Link l = dw.getLinkById(id).link();
+                    if (l.connect_from() == parent && l.connect_to() == child) { linkId = id; break; }
+                }
+                event.mutable_add_link_to_be_challenged()->set_link_id(linkId);
+                break;
+            }
             // NOTE: this switch mirrors forgeEvent() in
             // test/tests/test_scenario_runner.cc. The two are separate copies
             // and have already drifted once -- extra_claim_texts and basis

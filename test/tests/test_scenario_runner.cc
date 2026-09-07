@@ -290,6 +290,19 @@ protected:
                 event.mutable_concede_challenge()->set_challenge_link_id(
                     resolveChallengeLinkIdForUser(debate_id, user_id));
                 break;
+            // Challenge an ARGUMENT, named by its ends. Mirrors ScenarioImporter;
+            // here scenario ids are real ids, so no mapping.
+            case debate_event::ADD_LINK_TO_BE_CHALLENGED: {
+                const int parent = action.link_to_claim_id();
+                const int child = action.link_from_claim_id();
+                int linkId = 0;
+                for (int id : debateWrapper_->findLinksUnder(parent)) {
+                    const debate::Relationship::Link l = debateWrapper_->getLinkById(id).link();
+                    if (l.connect_from() == parent && l.connect_to() == child) { linkId = id; break; }
+                }
+                event.mutable_add_link_to_be_challenged()->set_link_id(linkId);
+                break;
+            }
             default:
                 break;
         }
@@ -706,6 +719,14 @@ TEST_F(ScenarioRunner, TestA) {
     TestScenario s = LoadScenarioFromFile("scenarios/TestA.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load TestA.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+// UndercutTest -- a challenge aimed at an ARGUMENT (ADD_LINK_TO_BE_CHALLENGED
+// named by the link's ends), and the statuses it does and does not move.
+TEST_F(ScenarioRunner, UndercutTest) {
+    TestScenario s = LoadScenarioFromFile("scenarios/UndercutTest.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load UndercutTest.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/false);
 }
 
 TEST_F(ScenarioRunner, SeaLevelDebate) {

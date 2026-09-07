@@ -417,6 +417,119 @@ TEST_F(ConnectionsBuildTest, EverythingIsAuthoredByArticleAndTheRequesterOnlyJoi
     EXPECT_TRUE(it == statuses.end() || it->second != debate::ClaimStatus::FALSE_CLAIM);
 }
 
+// ---------------------------------------------------------------------------
+// Undercuts in the connections format: a line can attack another LINE.
+// ---------------------------------------------------------------------------
+TEST(ParseConnections, IdAndToLinkAreReadAndLinesAreNumbered) {
+    std::vector<std::string> dropped;
+    const auto cs = Builder::ParseConnections(
+        R"({"id": "a", "from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [3], "to_link": "a", "role": "opposes", "basis": "INFERENTIAL", "why": "true but irrelevant"}
+{"from": [4], "to_link": 1, "role": "opposes"})", dropped);
+    ASSERT_EQ(cs.size(), 3u) << (dropped.empty() ? "" : dropped[0]);
+    EXPECT_TRUE(dropped.empty());
+    EXPECT_EQ(cs[0].id, "a");
+    EXPECT_EQ(cs[0].seq, 1);
+    EXPECT_EQ(cs[1].to, 0) << "an undercut has no claim target";
+    EXPECT_EQ(cs[1].to_link, "a");
+    EXPECT_EQ(cs[1].seq, 2);
+    EXPECT_EQ(cs[2].to_link, "1") << "a bare number is kept as text and resolved later";
+}
+
+TEST(ParseConnections, ALineMayBearOnAClaimOrAnArgumentNotBoth) {
+    std::vector<std::string> dropped;
+    const auto cs = Builder::ParseConnections(
+        R"({"from": [3], "to": 1, "to_link": "a", "role": "opposes"}
+{"from": [4], "role": "opposes"})", dropped);
+    EXPECT_TRUE(cs.empty());
+    ASSERT_EQ(dropped.size(), 2u);
+    EXPECT_NE(dropped[0].find("both"), std::string::npos) << dropped[0];
+    EXPECT_NE(dropped[1].find("to_link"), std::string::npos) << dropped[1];
+}
+
+// The Fauci move: the grant record is real, but it does not show what the
+// charge says. The undercut is written as a challenge aimed at the ARGUMENT
+// -- the relation from 2 to 1 -- standing beside the claim it was for.
+TEST_F(ConnectionsBuildTest, AnUndercutIsWrittenAgainstTheArgumentNotTheClaim) {
+    const auto r = build(kSpeedClaims,
+        R"({"id": "a", "from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [3], "to_link": "a", "role": "opposes", "basis": "INFERENTIAL", "why": "the boroughs were already getting safer"})");
+    ASSERT_TRUE(r.ok) << r.error;
+    EXPECT_EQ(r.claimsCreated, 3);
+    EXPECT_EQ(r.argumentsCreated, 2);
+    EXPECT_EQ(r.undercuts, 1);
+    EXPECT_TRUE(r.dropped.empty()) << r.dropped[0];
+
+    const int root = idOf(r.debateId, "20mph");
+    const int deaths = idOf(r.debateId, "Crash deaths fell");
+    const int safer = idOf(r.debateId, "already getting safer");
+    int supportRelation = 0, challengeRow = 0;
+    for (const auto& l : links(r.debateId)) {
+        if (std::get<0>(l) == root && std::get<1>(l) == deaths) supportRelation = std::get<4>(l);
+        if (std::get<0>(l) == safer) challengeRow = std::get<4>(l);
+    }
+    ASSERT_GT(supportRelation, 0);
+    ASSERT_GT(challengeRow, 0);
+    const auto targets = moderator_->getDebateWrapper().getRelationTargets(r.debateId);
+    ASSERT_EQ(targets.size(), 1u) << "exactly one row attacks a relation";
+    EXPECT_EQ(targets.begin()->second, supportRelation) << "and it attacks the 2 -> 1 argument";
+    // Stored beside the claim the argument was for, so claim-only readers place it.
+    const debate::Relationship rel = moderator_->getDebateWrapper().findOutgoingChallengeLink(safer);
+    EXPECT_EQ(rel.to_case(), debate::Relationship::kToRelationId);
+    EXPECT_EQ(rel.to_relation_id(), supportRelation);
+    EXPECT_EQ(rel.link().connect_to(), root);
+}
+
+// An undercut can itself be undercut. The second one waits until the first
+// is written, then aims at the first's relation.
+TEST_F(ConnectionsBuildTest, AnUndercutOfAnUndercutChainsThroughItsId) {
+    const auto r = build(kSpeedClaims,
+        R"({"from": [4], "to_link": "b", "role": "opposes", "basis": "INFERENTIAL", "why": "written first, resolved last"}
+{"id": "a", "from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"id": "b", "from": [3], "to_link": "a", "role": "opposes", "basis": "INFERENTIAL"})");
+    ASSERT_TRUE(r.ok) << r.error;
+    EXPECT_EQ(r.claimsCreated, 4);
+    EXPECT_EQ(r.undercuts, 2);
+    EXPECT_TRUE(r.dropped.empty()) << r.dropped[0];
+
+    const int safer = idOf(r.debateId, "already getting safer");
+    const int matched = idOf(r.debateId, "matched the city average");
+    const debate::Relationship first = moderator_->getDebateWrapper().findOutgoingChallengeLink(safer);
+    const debate::Relationship second = moderator_->getDebateWrapper().findOutgoingChallengeLink(matched);
+    ASSERT_GT(first.id(), 0);
+    ASSERT_GT(second.id(), 0);
+    EXPECT_EQ(second.to_case(), debate::Relationship::kToRelationId);
+    EXPECT_EQ(second.to_relation_id(), first.id()) << "the second attacks the first's argument";
+    EXPECT_EQ(r.maxDepthReached, 3) << "root, 2 / undercut 3 / undercut 4";
+}
+
+TEST_F(ConnectionsBuildTest, BadUndercutsAreDroppedByNameAndTheRestBuilt) {
+    const auto r = build(kSpeedClaims,
+        R"({"id": "a", "from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"}
+{"from": [3], "to_link": "zzz", "role": "opposes"}
+{"from": [4], "to_link": "a", "role": "supports"}
+{"id": "j", "from": [5, 6], "to": 1, "role": "supports"}
+{"from": [7], "to_link": "j", "role": "opposes"})");
+    ASSERT_TRUE(r.ok) << r.error;
+    // 2 placed; 5 and 6 placed (split); 3, 4, 7 dropped.
+    EXPECT_EQ(r.claimsCreated, 4);
+    EXPECT_EQ(r.undercuts, 0);
+    auto has = [&](const char* s) {
+        for (const auto& d : r.dropped) if (d.find(s) != std::string::npos) return true;
+        return false;
+    };
+    EXPECT_TRUE(has("no line has as its id")) << "unknown target";
+    EXPECT_TRUE(has("\"supports\" an argument")) << "supporting an argument is not a move";
+    EXPECT_TRUE(has("joint line that was split")) << "no single argument to attack";
+    EXPECT_EQ(r.orphans, (std::vector<int>{3, 4, 7}));
+}
+
+TEST(GeneratorPrompts, ConnectionsPromptExplainsToLink) {
+    const std::string p = DebateGenerator::BuildConnectionsPrompt("t", {"root", "a", "b"});
+    EXPECT_NE(p.find("to_link"), std::string::npos);
+    EXPECT_NE(p.find("CHALLENGING AN ARGUMENT, NOT A CLAIM"), std::string::npos);
+}
+
 TEST_F(ConnectionsBuildTest, TheBuildReachesTheMoveLog) {
     const auto r = build(kSpeedClaims,
         R"({"from": [2], "to": 1, "role": "supports", "basis": "EVIDENTIAL"})");

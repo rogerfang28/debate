@@ -215,6 +215,10 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
                             " claim(s) the AI found were left out because it did not say "
                             "where they go.";
                 }
+                if (built.undercuts > 0) {
+                    note += " " + std::to_string(built.undercuts) +
+                            " challenge(s) are aimed at an argument rather than a claim.";
+                }
                 if (built.groupsSplit > 0) {
                     note += " " + std::to_string(built.groupsSplit) +
                             " group(s) were split for having no stated reason to be joint.";

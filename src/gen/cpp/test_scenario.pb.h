@@ -562,6 +562,8 @@ class TestAction final : public ::google::protobuf::Message
     kBasisFieldNumber = 10,
     kDebateIdFieldNumber = 4,
     kClaimIdFieldNumber = 5,
+    kLinkToClaimIdFieldNumber = 11,
+    kLinkFromClaimIdFieldNumber = 12,
   };
   // repeated string extra_claim_texts = 9 [json_name = "extraClaimTexts"];
   int extra_claim_texts_size() const;
@@ -710,11 +712,31 @@ class TestAction final : public ::google::protobuf::Message
   void _internal_set_claim_id(::int32_t value);
 
   public:
+  // int32 link_to_claim_id = 11 [json_name = "linkToClaimId"];
+  void clear_link_to_claim_id() ;
+  ::int32_t link_to_claim_id() const;
+  void set_link_to_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_link_to_claim_id() const;
+  void _internal_set_link_to_claim_id(::int32_t value);
+
+  public:
+  // int32 link_from_claim_id = 12 [json_name = "linkFromClaimId"];
+  void clear_link_from_claim_id() ;
+  ::int32_t link_from_claim_id() const;
+  void set_link_from_claim_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_link_from_claim_id() const;
+  void _internal_set_link_from_claim_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_test.TestAction)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 10,
+  static const ::google::protobuf::internal::TcParseTable<4, 12,
                                    0, 139,
                                    2>
       _table_;
@@ -746,6 +768,8 @@ class TestAction final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr basis_;
     ::int32_t debate_id_;
     ::int32_t claim_id_;
+    ::int32_t link_to_claim_id_;
+    ::int32_t link_from_claim_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2057,6 +2081,56 @@ inline void TestAction::set_allocated_basis(::std::string* PROTOBUF_NULLABLE val
     _impl_.basis_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.basis)
+}
+
+// int32 link_to_claim_id = 11 [json_name = "linkToClaimId"];
+inline void TestAction::clear_link_to_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_to_claim_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline ::int32_t TestAction::link_to_claim_id() const {
+  // @@protoc_insertion_point(field_get:debate_test.TestAction.link_to_claim_id)
+  return _internal_link_to_claim_id();
+}
+inline void TestAction::set_link_to_claim_id(::int32_t value) {
+  _internal_set_link_to_claim_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  // @@protoc_insertion_point(field_set:debate_test.TestAction.link_to_claim_id)
+}
+inline ::int32_t TestAction::_internal_link_to_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.link_to_claim_id_;
+}
+inline void TestAction::_internal_set_link_to_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_to_claim_id_ = value;
+}
+
+// int32 link_from_claim_id = 12 [json_name = "linkFromClaimId"];
+inline void TestAction::clear_link_from_claim_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_from_claim_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline ::int32_t TestAction::link_from_claim_id() const {
+  // @@protoc_insertion_point(field_get:debate_test.TestAction.link_from_claim_id)
+  return _internal_link_from_claim_id();
+}
+inline void TestAction::set_link_from_claim_id(::int32_t value) {
+  _internal_set_link_from_claim_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  // @@protoc_insertion_point(field_set:debate_test.TestAction.link_from_claim_id)
+}
+inline ::int32_t TestAction::_internal_link_from_claim_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.link_from_claim_id_;
+}
+inline void TestAction::_internal_set_link_from_claim_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.link_from_claim_id_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -122,6 +122,25 @@ believe the target, they are separate connections. Separate measurements of the
 same thing are nearly always separate. A connection with several "from" and no
 joint_reason will be split into separate connections.
 
+CHALLENGING AN ARGUMENT, NOT A CLAIM
+
+Some objections do not say a claim is false. They say: "true, but that does
+not show what you say it shows". A grant record is real, but the work it paid
+for does not meet the definition being used. A death rate did fall, but it was
+falling anyway. A witness did say it, but the witness is not credible on this.
+Such an objection attacks the CONNECTION between two claims, not either claim.
+
+Write those with "to_link" instead of "to". Give the connection being attacked
+an "id" (any short label), and point at it:
+
+{"id": "a", "from": [4], "to": 2, "role": "supports", "basis": "{default_basis}", "why": "..."}
+{"from": [9], "to_link": "a", "role": "opposes", "basis": "DEFINITIONAL", "why": "4 is true, but does not show 2 because ..."}
+
+An attack on a connection is always "opposes". Test before you use it: if the
+objection would still stand with the attacked claim proven true, it attacks the
+connection; if proving the claim true would answer the objection, it attacks
+the claim -- use "to".
+
 THE KINDS OF REASON
 
 {bases}
@@ -133,6 +152,8 @@ brackets around the lines.
 {"from": [3], "to": 1, "role": "supports", "basis": "{default_basis}", "why": "one line: why this is that kind of reason"}
 {"from": [5], "to": 3, "role": "opposes", "basis": "{default_basis}", "why": "one line"}
 {"from": [7, 8], "to": 1, "role": "supports", "basis": "{default_basis}", "why": "one line", "joint_reason": "why 7 and 8 only work together"}
+{"id": "a", "from": [9], "to": 1, "role": "supports", "basis": "{default_basis}", "why": "one line"}
+{"from": [10], "to_link": "a", "role": "opposes", "basis": "{default_basis}", "why": "one line: why 9, even if true, does not show 1"}
 
 Every claim from 2 to the last must appear in exactly one "from". Claim 1 never
 appears in a "from". Use only the numbers in the list above.

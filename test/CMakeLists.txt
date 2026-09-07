@@ -228,11 +228,13 @@ add_custom_target(copy_scenarios ALL
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/SeaLevelDebate.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/TestA.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/UndercutTest.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/UndercutTest.pbtxt"
     COMMENT "Copying scenario .pbtxt files to build directory"
     SOURCES "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/UndercutTest.pbtxt"
 )
 add_dependencies(debate_simulation copy_scenarios)
 

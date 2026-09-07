@@ -108,11 +108,28 @@ bool connectionFrom(const jsoncons::json& obj, ConnectionsDebateBuilder::Connect
         return false;
     }
 
-    if (!obj.contains("to") || !obj["to"].is_number()) {
-        why = "no numeric \"to\"";
+    auto scalarText = [&](const char* key) -> std::string {
+        if (!obj.contains(key)) return "";
+        const jsoncons::json& v = obj[key];
+        if (v.is_string()) return trim(v.as<std::string>());
+        if (v.is_number()) return std::to_string(v.as<int>());
+        return "";
+    };
+    out.id = scalarText("id");
+    out.to_link = scalarText("to_link");
+
+    // A connection bears on a claim ("to") or on an argument ("to_link"),
+    // never both and never neither.
+    const bool hasTo = obj.contains("to") && obj["to"].is_number();
+    if (hasTo && !out.to_link.empty()) {
+        why = "has both \"to\" and \"to_link\"; a connection bears on one thing";
         return false;
     }
-    out.to = obj["to"].as<int>();
+    if (!hasTo && out.to_link.empty()) {
+        why = "no numeric \"to\" (or \"to_link\")";
+        return false;
+    }
+    out.to = hasTo ? obj["to"].as<int>() : 0;
 
     const std::string role =
         obj.contains("role") && obj["role"].is_string() ? lower(obj["role"].as<std::string>()) : "";
@@ -196,6 +213,7 @@ std::vector<ConnectionsDebateBuilder::Connection> ConnectionsDebateBuilder::Pars
                     Connection c;
                     std::string why;
                     if (connectionFrom(obj, c, why)) {
+                        c.seq = static_cast<int>(connections.size()) + 1;  // position, from 1
                         connections.push_back(c);
                     } else {
                         dropped.push_back(why + ": " + obj.to_string().substr(0, 120));
@@ -226,6 +244,7 @@ std::vector<ConnectionsDebateBuilder::Connection> ConnectionsDebateBuilder::Pars
         Connection c;
         std::string why;
         if (connectionFrom(obj, c, why)) {
+            c.seq = static_cast<int>(connections.size()) + 1;  // position, from 1
             connections.push_back(c);
         } else {
             dropped.push_back(why + ": " + line.substr(0, 120));
@@ -256,6 +275,7 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
     // the claim. Root supports nothing. Numbers must be in the list.
     std::vector<Connection> usable;
     std::set<int> placed;
+    std::set<int> splitSeqs;  // joint lines that became several; not a valid undercut target
     for (Connection& c : raw) {
         auto summary = [&]() {
             std::ostringstream s;
@@ -265,7 +285,37 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
             return s.str();
         };
         bool bad = false;
-        if (c.to < 1 || c.to > n) {
+        if (!c.to_link.empty()) {
+            // An undercut. Resolve the attacked line: by its "id", else by its
+            // position. It must exist, not be this line, and this must be a
+            // challenge -- "supporting an argument" is not a move here; the
+            // way to back an argument is to support the claim it is for.
+            int target = 0;
+            for (const Connection& other : raw) {
+                if (!other.id.empty() && other.id == c.to_link) { target = other.seq; break; }
+            }
+            if (target == 0) {
+                bool numeric = !c.to_link.empty() &&
+                    std::all_of(c.to_link.begin(), c.to_link.end(), [](char ch) { return ch >= '0' && ch <= '9'; });
+                const int pos = numeric ? std::stoi(c.to_link) : 0;
+                if (pos >= 1 && pos <= static_cast<int>(raw.size())) target = pos;
+            }
+            if (target == 0) {
+                result.dropped.push_back("attacks connection \"" + c.to_link +
+                                         "\", which no line has as its id or position: " + summary());
+                continue;
+            }
+            if (target == c.seq) {
+                result.dropped.push_back("attacks itself: " + summary());
+                continue;
+            }
+            if (!c.opposes) {
+                result.dropped.push_back("\"supports\" an argument; to back an argument, support the "
+                                         "claim it is for: " + summary());
+                continue;
+            }
+            c.target_seq = target;
+        } else if (c.to < 1 || c.to > n) {
             result.dropped.push_back("targets claim " + std::to_string(c.to) +
                                      ", which is not in the list: " + summary());
             continue;
@@ -283,7 +333,7 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
                 bad = true;
                 break;
             }
-            if (f == c.to) {
+            if (c.to != 0 && f == c.to) {
                 result.dropped.push_back("connects claim " + std::to_string(f) + " to itself");
                 bad = true;
                 break;
@@ -305,6 +355,7 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
         // reading is independent, the opposite of the way it errs.
         if (c.from.size() > 1 && trim(c.joint_reason).empty()) {
             result.groupsSplit++;
+            splitSeqs.insert(c.seq);
             for (int f : c.from) {
                 Connection single = c;
                 single.from = {f};
@@ -319,6 +370,22 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
         usable.push_back(c);
     }
 
+    // An undercut aimed at a joint line that was split has no single argument
+    // to attack any more. Dropped and said so, rather than guessing a half.
+    {
+        std::vector<Connection> kept;
+        for (const Connection& c : usable) {
+            if (c.target_seq > 0 && splitSeqs.count(c.target_seq)) {
+                result.dropped.push_back("attacks connection " + std::to_string(c.target_seq) +
+                                         ", a joint line that was split; there is no one argument to attack");
+                for (int f : c.from) placed.erase(f);
+                continue;
+            }
+            kept.push_back(c);
+        }
+        usable.swap(kept);
+    }
+
     // ---- Hubs the model forgot.
     //
     // A claim that other connections target but that no connection places is
@@ -329,7 +396,7 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
     {
         std::set<int> targeted;
         for (const Connection& c : usable) {
-            targeted.insert(c.to);
+            if (c.to > 0) targeted.insert(c.to);
         }
         for (int k = 2; k <= n; ++k) {
             if (!placed.count(k) && targeted.count(k)) {
@@ -404,6 +471,13 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
     std::map<int, int> depth{{1, 0}};
     result.claimsCreated = 1;
 
+    // Per written line: the relation it created, and the claim it stands on.
+    // An undercut needs both from the line it attacks -- the relation to aim at,
+    // and the claim the modal has to be standing on to find that relation.
+    std::map<int, int> relationOfSeq;   // line -> relation id
+    std::map<int, int> standingOfSeq;   // line -> real id of the claim the argument is for
+    std::map<int, int> depthOfSeq;      // line -> depth of the claims it created
+
     // ---- Write connections in dependency order.
     //
     // A connection can be written once its target exists. Passes repeat until
@@ -418,11 +492,22 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
                 continue;
             }
             Connection c = usable[i];  // a copy: a broken cycle can shrink `from`
-            auto targetIt = realId.find(c.to);
-            if (targetIt == realId.end()) {
-                continue;
+            int parentId = 0;           // the claim to stand on when writing
+            int attackedRelation = 0;   // for an undercut: the relation to aim at
+            if (c.target_seq > 0) {
+                auto relIt = relationOfSeq.find(c.target_seq);
+                if (relIt == relationOfSeq.end()) {
+                    continue;  // the attacked line is not written yet
+                }
+                attackedRelation = relIt->second;
+                parentId = standingOfSeq[c.target_seq];
+            } else {
+                auto targetIt = realId.find(c.to);
+                if (targetIt == realId.end()) {
+                    continue;
+                }
+                parentId = targetIt->second;
             }
-            const int parentId = targetIt->second;
 
             // A cycle broken below has already created one of this connection's
             // sources. It must not be created twice; the edge that would close
@@ -459,9 +544,17 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
             if (c.opposes) {
                 auto start = forge(author, debate_event::START_CHALLENGE_CLAIM);
                 moderator.handleRequest(start);
-                auto mark = forge(author, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
-                mark.mutable_add_claim_to_be_challenged()->set_claim_id(parentId);
-                moderator.handleRequest(mark);
+                if (attackedRelation > 0) {
+                    // Aim at the argument, exactly as the modal does when a
+                    // pill is picked.
+                    auto mark = forge(author, debate_event::ADD_LINK_TO_BE_CHALLENGED);
+                    mark.mutable_add_link_to_be_challenged()->set_link_id(attackedRelation);
+                    moderator.handleRequest(mark);
+                } else {
+                    auto mark = forge(author, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+                    mark.mutable_add_claim_to_be_challenged()->set_claim_id(parentId);
+                    moderator.handleRequest(mark);
+                }
                 auto submit = forge(author, debate_event::SUBMIT_CHALLENGE_CLAIM);
                 auto* payload = submit.mutable_submit_challenge_claim();
                 payload->set_challenge_sentence(claims[c.from[0] - 1]);
@@ -500,13 +593,33 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
                 return result;
             }
             existing = after;
+            // Depth: one below the claim this bears on, or -- for an undercut --
+            // one below the claims of the argument it attacks, so an undercut
+            // of an undercut is deeper than the undercut, as it is drawn.
+            const int newDepth = c.target_seq > 0 ? depthOfSeq[c.target_seq] + 1 : depth[c.to] + 1;
             for (size_t k = 0; k < created.size(); ++k) {
                 realId[c.from[k]] = created[k];
-                depth[c.from[k]] = depth[c.to] + 1;
-                result.maxDepthReached = std::max(result.maxDepthReached, depth[c.from[k]]);
+                depth[c.from[k]] = newDepth;
+                result.maxDepthReached = std::max(result.maxDepthReached, newDepth);
+            }
+            if (c.seq > 0) depthOfSeq[c.seq] = newDepth;
+            // Remember what this line made, for any line that attacks it.
+            if (c.seq > 0) {
+                standingOfSeq[c.seq] = parentId;
+                debate::Relationship made = c.opposes
+                    ? debateWrapper.findOutgoingChallengeLink(created[0])
+                    : debate::Relationship();
+                if (!c.opposes) {
+                    for (int linkId : debateWrapper.findLinksUnder(parentId)) {
+                        const debate::Relationship rel = debateWrapper.getLinkById(linkId);
+                        if (rel.link().connect_to() == created[0]) { made = rel; break; }
+                    }
+                }
+                if (made.id() > 0) relationOfSeq[c.seq] = made.id();
             }
             result.claimsCreated += static_cast<int>(created.size());
             result.argumentsCreated++;
+            if (attackedRelation > 0) result.undercuts++;
             written[i] = true;
             progress = true;
         }
@@ -550,9 +663,14 @@ ConnectionsDebateBuilder::Result ConnectionsDebateBuilder::Build(const std::stri
 
     for (size_t i = 0; i < usable.size(); ++i) {
         if (!written[i]) {
-            result.dropped.push_back("targets claim " + std::to_string(usable[i].to) +
-                                     ", which was never created (a cycle, or its own "
-                                     "connection was dropped)");
+            if (usable[i].target_seq > 0) {
+                result.dropped.push_back("attacks connection " + std::to_string(usable[i].target_seq) +
+                                         ", which was never written");
+            } else {
+                result.dropped.push_back("targets claim " + std::to_string(usable[i].to) +
+                                         ", which was never created (a cycle, or its own "
+                                         "connection was dropped)");
+            }
         }
     }
     for (int k = 2; k <= n; ++k) {

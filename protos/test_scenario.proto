@@ -37,6 +37,14 @@ message TestAction {
   repeated string extra_claim_texts = 9;
 
   string basis = 10;            // for ADD_CHILD_CLAIM; empty means unspecified
+
+  // For ADD_LINK_TO_BE_CHALLENGED: the ARGUMENT to challenge, named by its two
+  // ends -- the claim it is for, and the claim offered for it. Link ids are
+  // not stable across databases, so whoever runs the scenario resolves the
+  // pair to the stored link. A challenge then submitted is an undercut: it
+  // says the argument does not follow, not that either claim is false.
+  int32 link_to_claim_id = 11;
+  int32 link_from_claim_id = 12;
 }
 
 // A single expectation to verify after the action in this step runs

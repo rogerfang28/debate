@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file test_scenario.proto.
  */
 export const file_test_scenario: GenFile = /*@__PURE__*/
-  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJCCgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIkCgVzdGVwcxgCIAMoCzIVLmRlYmF0ZV90ZXN0LlRlc3RTdGVwImcKCFRlc3RTdGVwEicKBmFjdGlvbhgBIAEoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SMgoMZXhwZWN0YXRpb25zGAIgAygLMhwuZGViYXRlX3Rlc3QuVGVzdEV4cGVjdGF0aW9uIuUBCgpUZXN0QWN0aW9uEhAKCHVzZXJuYW1lGAEgASgJEhIKCmV2ZW50X3R5cGUYAiABKAkSFAoMZGViYXRlX3RvcGljGAMgASgJEhEKCWRlYmF0ZV9pZBgEIAEoBRIQCghjbGFpbV9pZBgFIAEoBRISCgpjbGFpbV90ZXh0GAYgASgJEhkKEWNsYWltX2Rlc2NyaXB0aW9uGAcgASgJEh0KFWNoYWxsZW5nZV9kZXNjcmlwdGlvbhgIIAEoCRIZChFleHRyYV9jbGFpbV90ZXh0cxgJIAMoCRINCgViYXNpcxgKIAEoCSLzAQoPVGVzdEV4cGVjdGF0aW9uEhIKCmNoZWNrX3R5cGUYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIY2xhaW1faWQYAyABKAUSFQoNZnJvbV9jbGFpbV9pZBgEIAEoBRITCgt0b19jbGFpbV9pZBgFIAEoBRIRCglsaW5rX3R5cGUYBiABKAkSHwoXZXhwZWN0ZWRfY2xhaW1fc2VudGVuY2UYByABKAkSFwoPZXhwZWN0ZWRfc3RhdHVzGAggASgJEhYKDmV4cGVjdGVkX2NvdW50GAkgASgFEhcKD2V4cGVjdGVkX2FjdGlvbhgKIAEoCWIGcHJvdG8z");
+  fileDesc("ChN0ZXN0X3NjZW5hcmlvLnByb3RvEgtkZWJhdGVfdGVzdCJCCgxUZXN0U2NlbmFyaW8SDAoEbmFtZRgBIAEoCRIkCgVzdGVwcxgCIAMoCzIVLmRlYmF0ZV90ZXN0LlRlc3RTdGVwImcKCFRlc3RTdGVwEicKBmFjdGlvbhgBIAEoCzIXLmRlYmF0ZV90ZXN0LlRlc3RBY3Rpb24SMgoMZXhwZWN0YXRpb25zGAIgAygLMhwuZGViYXRlX3Rlc3QuVGVzdEV4cGVjdGF0aW9uIpsCCgpUZXN0QWN0aW9uEhAKCHVzZXJuYW1lGAEgASgJEhIKCmV2ZW50X3R5cGUYAiABKAkSFAoMZGViYXRlX3RvcGljGAMgASgJEhEKCWRlYmF0ZV9pZBgEIAEoBRIQCghjbGFpbV9pZBgFIAEoBRISCgpjbGFpbV90ZXh0GAYgASgJEhkKEWNsYWltX2Rlc2NyaXB0aW9uGAcgASgJEh0KFWNoYWxsZW5nZV9kZXNjcmlwdGlvbhgIIAEoCRIZChFleHRyYV9jbGFpbV90ZXh0cxgJIAMoCRINCgViYXNpcxgKIAEoCRIYChBsaW5rX3RvX2NsYWltX2lkGAsgASgFEhoKEmxpbmtfZnJvbV9jbGFpbV9pZBgMIAEoBSLzAQoPVGVzdEV4cGVjdGF0aW9uEhIKCmNoZWNrX3R5cGUYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIY2xhaW1faWQYAyABKAUSFQoNZnJvbV9jbGFpbV9pZBgEIAEoBRITCgt0b19jbGFpbV9pZBgFIAEoBRIRCglsaW5rX3R5cGUYBiABKAkSHwoXZXhwZWN0ZWRfY2xhaW1fc2VudGVuY2UYByABKAkSFwoPZXhwZWN0ZWRfc3RhdHVzGAggASgJEhYKDmV4cGVjdGVkX2NvdW50GAkgASgFEhcKD2V4cGVjdGVkX2FjdGlvbhgKIAEoCWIGcHJvdG8z");
 
 /**
  * A complete test scenario: an ordered list of steps
@@ -146,6 +146,22 @@ export type TestAction = Message<"debate_test.TestAction"> & {
    * @generated from field: string basis = 10;
    */
   basis: string;
+
+  /**
+   * For ADD_LINK_TO_BE_CHALLENGED: the ARGUMENT to challenge, named by its two
+   * ends -- the claim it is for, and the claim offered for it. Link ids are
+   * not stable across databases, so whoever runs the scenario resolves the
+   * pair to the stored link. A challenge then submitted is an undercut: it
+   * says the argument does not follow, not that either claim is false.
+   *
+   * @generated from field: int32 link_to_claim_id = 11;
+   */
+  linkToClaimId: number;
+
+  /**
+   * @generated from field: int32 link_from_claim_id = 12;
+   */
+  linkFromClaimId: number;
 };
 
 /**

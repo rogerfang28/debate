@@ -40,11 +40,21 @@ public:
 
     struct Connection {
         std::vector<int> from;  // 1-based claim numbers, as in the list
-        int to = 0;
+        int to = 0;             // the claim this bears on; 0 when it bears on an ARGUMENT
         bool opposes = false;
         std::string basis;
         std::string why;
         std::string joint_reason;
+
+        // UNDERCUTS. A connection can attack another CONNECTION -- "true, but
+        // it does not show that" -- instead of a claim. The attacked line names
+        // itself with "id"; the attacker points at it with "to_link". A bare
+        // number in to_link is read as the attacked line's position, counting
+        // from 1. Exactly one of `to` and `to_link` is set.
+        std::string id;
+        std::string to_link;
+        int seq = 0;         // parse order, from 1; what to_link resolves to
+        int target_seq = 0;  // the connection this one attacks, or 0
     };
 
     struct Result {
@@ -73,6 +83,8 @@ public:
         int cyclesBroken = 0;
         int groupsSplit = 0;
         int unknownBases = 0;
+        // Challenges aimed at an argument rather than at a claim.
+        int undercuts = 0;
         std::string error;
     };
 
