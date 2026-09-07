@@ -431,8 +431,20 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		const debate::Relationship& rel = relEntry.second;
 		const debate::Relationship::Link& link = rel.link();
 
-		// Relation-targeted relations (R3) have no place in a claim tree.
-		if (rel.to_case() != debate::Relationship::kToClaimId) {
+		// Where this relation lands in a CLAIM tree. A relation aimed at a
+		// claim lands on that claim. A challenge aimed at an ARGUMENT -- an
+		// undercut -- has no claim target of its own, but its row records the
+		// claim the attacked argument was for; it is drawn beside that claim,
+		// as a challenge, so the challenger's claim is placed and visible.
+		// Drawing it to the pill itself is the graph's job later; dropping it
+		// here made every undercut simply vanish from the page.
+		int toClaimId = 0;
+		if (rel.to_case() == debate::Relationship::kToClaimId) {
+			toClaimId = rel.to_claim_id();
+		} else if (rel.to_case() == debate::Relationship::kToRelationId &&
+		           rel.role() == debate::OPPOSES && link.connect_to() > 0) {
+			toClaimId = link.connect_to();
+		} else {
 			continue;
 		}
 
@@ -447,7 +459,6 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 			continue;  // ROLE_UNSPECIFIED (legacy NORMAL) is dropped, as before
 		}
 
-		const int toClaimId = rel.to_claim_id();
 		for (const int fromClaimId : rel.from_claim_ids()) {
 			if (claimIdSet.count(fromClaimId) == 0 || claimIdSet.count(toClaimId) == 0) {
 				Log::warn(

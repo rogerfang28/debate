@@ -257,7 +257,11 @@ TEST_F(ChallengeModalRenderTest, TheModalOpensForAClaimAndForAnArgumentAlike) {
     const std::vector<int> links = debate_->findLinksUnder(1);
     ASSERT_EQ(links.size(), 1u);
 
-    // Bob arrives, standing on the root, with no modal anywhere.
+    // Bob arrives, standing on the root, with no modal anywhere. Entering is
+    // not joining: the collection is built from MEMBERS' claims, so without
+    // membership bob's challenge would be filtered out before rendering.
+    debate_->addMemberToDebate(1, alice_);
+    debate_->addMemberToDebate(1, bob_);
     MoveUserHandler::EnterDebate(1, bob_, *debate_);
     MoveUserHandler::SelectClaim(1, bob_, *debate_);
     {
@@ -298,5 +302,21 @@ TEST_F(ChallengeModalRenderTest, TheModalOpensForAClaimAndForAnArgumentAlike) {
                   std::string::npos) << "the one line names the argument";
         EXPECT_NE(page.find("Say why the evidence offered"), std::string::npos);
         EXPECT_EQ(page.find("challengeTargetBox"), std::string::npos);
+    }
+
+    // Submit it. The undercut is aimed at the argument, which has no claim of
+    // its own in the tree -- it must still SHOW UP, placed beside the claim
+    // the argument was for. The first live attempt at this vanished entirely.
+    ChallengeHandler::SubmitChallengeClaim({"The boroughs were already getting safer"},
+                                           {"so the drop proves nothing"}, "", bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_EQ(page.find("challengeSentenceInput"), std::string::npos) << "the modal closed";
+        EXPECT_NE(page.find("The boroughs were already getting safer"), std::string::npos)
+            << "the challenge claim is on the page";
+        // And the root is NOT false for bob: an undercut removes a reason.
+        const debate::Claim root = debate_->getClaimById(1);
+        auto b = root.user_statuses().find("bob");
+        EXPECT_TRUE(b == root.user_statuses().end() || b->second != debate::ClaimStatus::FALSE_CLAIM);
     }
 }
