@@ -2349,12 +2349,13 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     struct EdgeMeta {
         std::string basis;
         int relationId = 0;
+        int targetRelationId = 0;  // an undercut ends at this relation's pill
     };
     std::map<std::pair<int, int>, EdgeMeta> metaByEndpoints;
     for (int i = 0; i < tree.links_size(); ++i) {
         const rendering_info::FullDebateTreeLink& link = tree.links(i);
         metaByEndpoints[{link.from_claim_id(), link.to_claim_id()}] =
-            EdgeMeta{link.connection(), link.link_id()};
+            EdgeMeta{link.connection(), link.link_id(), link.to_relation_id()};
     }
     auto metaFor = [&](int from, int to) -> EdgeMeta {
         auto it = metaByEndpoints.find({from, to});
@@ -2419,6 +2420,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         const EdgeMeta meta = metaFor(ce.first, ce.second);
         gEdge->set_basis(meta.basis);
         gEdge->set_relation_id(meta.relationId);
+        if (meta.targetRelationId > 0) {
+            gEdge->set_target_relation_id(meta.targetRelationId);
+        }
     }
 
     // Highlight the selected argument pill if there is one, else the current claim.

@@ -174,7 +174,8 @@ inline constexpr GraphEdge::Impl_::Impl_(
         basis_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        relation_id_{0} {}
+        relation_id_{0},
+        target_relation_id_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR GraphEdge::GraphEdge(::_pbi::ConstantInitialized)
@@ -447,19 +448,21 @@ const ::uint32_t
         4,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_._has_bits_),
-        9, // hasbit index offset
+        10, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.source_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.target_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.type_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.basis_),
         PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.relation_id_),
+        PROTOBUF_FIELD_OFFSET(::ui::GraphEdge, _impl_.target_relation_id_),
         0,
         1,
         2,
         3,
         4,
         5,
+        6,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::ui::GraphComponent, _impl_._has_bits_),
         8, // hasbit index offset
@@ -486,7 +489,7 @@ static const ::_pbi::MigrationSchema
         {64, sizeof(::ui::Size)},
         {71, sizeof(::ui::GraphNode)},
         {94, sizeof(::ui::GraphEdge)},
-        {109, sizeof(::ui::GraphComponent)},
+        {111, sizeof(::ui::GraphComponent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::ui::_Page_default_instance_._instance,
@@ -529,27 +532,29 @@ const char descriptor_table_protodef_layout_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "\006status\022\035\n\ncreator_id\030\007 \001(\005R\tcreatorId\022\027"
     "\n\007is_root\030\010 \001(\010R\006isRoot\022\035\n\nis_current\030\t "
     "\001(\010R\tisCurrent\022)\n\020creator_username\030\n \001(\t"
-    "R\017creatorUsername\"\226\001\n\tGraphEdge\022\016\n\002id\030\001 "
+    "R\017creatorUsername\"\304\001\n\tGraphEdge\022\016\n\002id\030\001 "
     "\001(\tR\002id\022\026\n\006source\030\002 \001(\tR\006source\022\026\n\006targe"
     "t\030\003 \001(\tR\006target\022\022\n\004type\030\004 \001(\tR\004type\022\024\n\005b"
     "asis\030\005 \001(\tR\005basis\022\037\n\013relation_id\030\006 \001(\005R\n"
-    "relationId\"\276\001\n\016GraphComponent\022\016\n\002id\030\001 \001("
-    "\tR\002id\022#\n\005nodes\030\002 \003(\0132\r.ui.GraphNodeR\005nod"
-    "es\022#\n\005edges\030\003 \003(\0132\r.ui.GraphEdgeR\005edges\022"
-    "(\n\020selected_node_id\030\004 \001(\tR\016selectedNodeI"
-    "d\022(\n\020selected_edge_id\030\005 \001(\tR\016selectedEdg"
-    "eId*\226\001\n\rComponentType\022\013\n\007UNKNOWN\020\000\022\010\n\004TE"
-    "XT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t\n\005GRAPH\020\004\022\r"
-    "\n\tCONTAINER\020\014\022\020\n\014CLAIM_PARSER\020\016\022\014\n\010DROPD"
-    "OWN\020\017\022\017\n\013MULTI_INPUT\020\020\022\014\n\010TEXTAREA\020\021*I\n\n"
-    "LayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020\001\022\014\n\010F"
-    "LEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006proto3"
+    "relationId\022,\n\022target_relation_id\030\007 \001(\005R\020"
+    "targetRelationId\"\276\001\n\016GraphComponent\022\016\n\002i"
+    "d\030\001 \001(\tR\002id\022#\n\005nodes\030\002 \003(\0132\r.ui.GraphNod"
+    "eR\005nodes\022#\n\005edges\030\003 \003(\0132\r.ui.GraphEdgeR\005"
+    "edges\022(\n\020selected_node_id\030\004 \001(\tR\016selecte"
+    "dNodeId\022(\n\020selected_edge_id\030\005 \001(\tR\016selec"
+    "tedEdgeId*\226\001\n\rComponentType\022\013\n\007UNKNOWN\020\000"
+    "\022\010\n\004TEXT\020\001\022\n\n\006BUTTON\020\002\022\t\n\005INPUT\020\003\022\t\n\005GRA"
+    "PH\020\004\022\r\n\tCONTAINER\020\014\022\020\n\014CLAIM_PARSER\020\016\022\014\n"
+    "\010DROPDOWN\020\017\022\017\n\013MULTI_INPUT\020\020\022\014\n\010TEXTAREA"
+    "\020\021*I\n\nLayoutType\022\t\n\005ABSLT\020\000\022\014\n\010FLEX_ROW\020"
+    "\001\022\014\n\010FLEX_COL\020\002\022\010\n\004GRID\020\003\022\n\n\006INLINE\020\004b\006p"
+    "roto3"
 };
 static ::absl::once_flag descriptor_table_layout_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_layout_2eproto = {
     false,
     false,
-    1679,
+    1725,
     descriptor_table_protodef_layout_2eproto,
     "layout.proto",
     &descriptor_table_layout_2eproto_once,
@@ -3539,7 +3544,13 @@ GraphEdge::GraphEdge(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  _impl_.relation_id_ = from._impl_.relation_id_;
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, relation_id_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, relation_id_),
+           offsetof(Impl_, target_relation_id_) -
+               offsetof(Impl_, relation_id_) +
+               sizeof(Impl_::target_relation_id_));
 
   // @@protoc_insertion_point(copy_constructor:ui.GraphEdge)
 }
@@ -3555,7 +3566,12 @@ PROTOBUF_NDEBUG_INLINE GraphEdge::Impl_::Impl_(
 
 inline void GraphEdge::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.relation_id_ = {};
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, relation_id_),
+           0,
+           offsetof(Impl_, target_relation_id_) -
+               offsetof(Impl_, relation_id_) +
+               sizeof(Impl_::target_relation_id_));
 }
 GraphEdge::~GraphEdge() {
   // @@protoc_insertion_point(destructor:ui.GraphEdge)
@@ -3619,16 +3635,16 @@ GraphEdge::GetClassData() const {
   return GraphEdge_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 6, 0, 44, 2>
+const ::_pbi::TcParseTable<3, 7, 0, 44, 2>
 GraphEdge::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_._has_bits_),
     0, // no _extensions_
-    6, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967232,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    6,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     GraphEdge_class_data_.base(),
@@ -3663,7 +3679,10 @@ GraphEdge::_table_ = {
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphEdge, _impl_.relation_id_), 5>(),
      {48, 5, 0,
       PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.relation_id_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // int32 target_relation_id = 7 [json_name = "targetRelationId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GraphEdge, _impl_.target_relation_id_), 6>(),
+     {56, 6, 0,
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_relation_id_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3679,6 +3698,8 @@ GraphEdge::_table_ = {
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.basis_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 relation_id = 6 [json_name = "relationId"];
     {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.relation_id_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 target_relation_id = 7 [json_name = "targetRelationId"];
+    {PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_relation_id_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -3716,7 +3737,11 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
       _impl_.basis_.ClearNonDefaultToEmpty();
     }
   }
-  _impl_.relation_id_ = 0;
+  if (BatchCheckHasBit(cached_has_bits, 0x00000060U)) {
+    ::memset(&_impl_.relation_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.target_relation_id_) -
+        reinterpret_cast<char*>(&_impl_.relation_id_)) + sizeof(_impl_.target_relation_id_));
+  }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3799,6 +3824,15 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
     }
   }
 
+  // int32 target_relation_id = 7 [json_name = "targetRelationId"];
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (this_._internal_target_relation_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<7>(
+              stream, this_._internal_target_relation_id(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -3824,7 +3858,7 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000007fU)) {
     // string id = 1 [json_name = "id"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_id().empty()) {
@@ -3867,6 +3901,13 @@ PROTOBUF_NOINLINE void GraphEdge::Clear() {
             this_._internal_relation_id());
       }
     }
+    // int32 target_relation_id = 7 [json_name = "targetRelationId"];
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (this_._internal_target_relation_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_target_relation_id());
+      }
+    }
   }
   return this_.MaybeComputeUnknownFieldsSize(total_size,
                                              &this_._impl_._cached_size_);
@@ -3886,7 +3927,7 @@ void GraphEdge::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000007fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_id().empty()) {
         _this->_internal_set_id(from._internal_id());
@@ -3937,6 +3978,11 @@ void GraphEdge::MergeImpl(::google::protobuf::MessageLite& to_msg,
         _this->_impl_.relation_id_ = from._impl_.relation_id_;
       }
     }
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+      if (from._internal_target_relation_id() != 0) {
+        _this->_impl_.target_relation_id_ = from._impl_.target_relation_id_;
+      }
+    }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
@@ -3962,7 +4008,12 @@ void GraphEdge::InternalSwap(GraphEdge* PROTOBUF_RESTRICT PROTOBUF_NONNULL other
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.target_, &other->_impl_.target_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.type_, &other->_impl_.type_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.basis_, &other->_impl_.basis_, arena);
-  swap(_impl_.relation_id_, other->_impl_.relation_id_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.target_relation_id_)
+      + sizeof(GraphEdge::_impl_.target_relation_id_)
+      - PROTOBUF_FIELD_OFFSET(GraphEdge, _impl_.relation_id_)>(
+          reinterpret_cast<char*>(&_impl_.relation_id_),
+          reinterpret_cast<char*>(&other->_impl_.relation_id_));
 }
 
 ::google::protobuf::Metadata GraphEdge::GetMetadata() const {

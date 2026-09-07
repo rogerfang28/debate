@@ -439,11 +439,13 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		// Drawing it to the pill itself is the graph's job later; dropping it
 		// here made every undercut simply vanish from the page.
 		int toClaimId = 0;
+		int toRelationId = 0;  // the argument attacked, for an undercut
 		if (rel.to_case() == debate::Relationship::kToClaimId) {
 			toClaimId = rel.to_claim_id();
 		} else if (rel.to_case() == debate::Relationship::kToRelationId &&
 		           rel.role() == debate::OPPOSES && link.connect_to() > 0) {
 			toClaimId = link.connect_to();
+			toRelationId = rel.to_relation_id();
 		} else {
 			continue;
 		}
@@ -487,6 +489,9 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 			outLink->set_link_id(relationId);
 			outLink->set_connection(rel.basis());
 			outLink->set_creator_id(link.creator_id());
+			if (toRelationId > 0) {
+				outLink->set_to_relation_id(toRelationId);
+			}
 		}
 	}
 

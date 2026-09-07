@@ -25,6 +25,9 @@ interface GraphEdge {
   type?: string;       // "supports" | "challenges" | "counters" | "PARENT_CHILD" | "CHALLENGE"
   basis?: string;      // EVIDENTIAL | AUTHORITY | DEFINITIONAL | NORMATIVE, or empty
   relationId?: number; // edges sharing this belong to ONE relation; 0/absent = its own
+  // A challenge aimed at an ARGUMENT ends at that relation's junction, not at
+  // `target` (which still names the claim the argument was for, for placement).
+  targetRelationId?: number;
 }
 
 interface DebateGraphProps extends BaseComponentProps {
@@ -704,6 +707,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         // Only an ATTRIBUTED relation (a real relation id) can be selected:
         // the id is what the server needs to know which argument was meant.
         selectable: boolean;
+        // Set for an undercut: the key (`r<id>`) of the relation whose junction
+        // this group's line should end at.
+        targetRelationKey?: string;
       }
     >();
 
@@ -731,6 +737,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           type: edge.type,
           label: junctionLabel(edge),
           selectable: !!(edge.relationId && edge.relationId > 0),
+          targetRelationKey:
+            edge.targetRelationId && edge.targetRelationId > 0
+              ? `r${edge.targetRelationId}`
+              : undefined,
         });
         continue;
       }
@@ -743,6 +753,35 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
     return [...byKey.values()];
   }, [edges, positionedNodes]);
+
+  // ── Where each junction sits ──────────────────────────────────────
+  //
+  // A junction sits midway between its sources' centre of mass and its
+  // target. Ordinary relations target a claim; an UNDERCUT targets another
+  // relation's junction, so those are placed in a second pass once every
+  // claim-targeted junction has a position. An undercut whose target junction
+  // is not drawn falls back to the claim the argument was for.
+  const junctionPositions = useMemo(() => {
+    const pos = new Map<string, { x: number; y: number; tx: number; ty: number }>();
+    const place = (group: (typeof relationGroups)[number], tx: number, ty: number) => {
+      const n = group.sources.length;
+      const cx = group.sources.reduce((s, node) => s + (node.x ?? 100), 0) / n;
+      const cy = group.sources.reduce((s, node) => s + (node.y ?? 100), 0) / n;
+      pos.set(group.key, { x: (cx + tx) / 2, y: (cy + ty) / 2, tx, ty });
+    };
+    for (const group of relationGroups) {
+      if (!group.targetRelationKey) {
+        place(group, group.target.x ?? 200, group.target.y ?? 200);
+      }
+    }
+    for (const group of relationGroups) {
+      if (group.targetRelationKey) {
+        const at = pos.get(group.targetRelationKey);
+        place(group, at ? at.x : (group.target.x ?? 200), at ? at.y : (group.target.y ?? 200));
+      }
+    }
+    return pos;
+  }, [relationGroups]);
 
   return (
     <div
@@ -810,9 +849,12 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         <g className="graph-root">
           {/* ── Relations (edges + junction nodes) ────────────────── */}
           {relationGroups.map((group) => {
-            const target = group.target;
-            const tx = target.x ?? 200;
-            const ty = target.y ?? 200;
+            // The end of this relation's line: a claim, or -- for an undercut --
+            // another relation's junction. Computed above, in dependency order.
+            const placed = junctionPositions.get(group.key);
+            const endsAtJunction = !!group.targetRelationKey && junctionPositions.has(group.targetRelationKey);
+            const tx = placed ? placed.tx : (group.target.x ?? 200);
+            const ty = placed ? placed.ty : (group.target.y ?? 200);
 
             const isChallenge = isChallengeEdge(group.type);
             const color = isChallenge
@@ -830,8 +872,22 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const n = group.sources.length;
             const cx = group.sources.reduce((s, node) => s + (node.x ?? 100), 0) / n;
             const cy = group.sources.reduce((s, node) => s + (node.y ?? 100), 0) / n;
-            const jx = (cx + tx) / 2;
-            const jy = (cy + ty) / 2;
+            const jx = placed ? placed.x : (cx + tx) / 2;
+            const jy = placed ? placed.y : (cy + ty) / 2;
+
+            // A line into a claim runs to the claim's centre and the box hides
+            // the overlap. A pill is small, so a line into a junction stops
+            // just short of it and the arrowhead lands on its rim.
+            let ex = tx;
+            let ey = ty;
+            if (endsAtJunction) {
+              const dx = tx - jx;
+              const dy = ty - jy;
+              const len = Math.hypot(dx, dy) || 1;
+              const back = JUNCTION_HEIGHT / 2 + 6;
+              ex = tx - (dx / len) * back;
+              ey = ty - (dy / len) * back;
+            }
 
             // ═══ EXPERIMENT: SEMANTIC ZOOM ─ basis labels vanish on the map ═══
             // At map scale a basis renders around 3px. The colour already says
@@ -869,8 +925,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 <line
                   x1={jx}
                   y1={jy}
-                  x2={tx}
-                  y2={ty}
+                  x2={ex}
+                  y2={ey}
                   stroke={color}
                   strokeWidth={strokeWidth}
                   strokeOpacity={0.7}

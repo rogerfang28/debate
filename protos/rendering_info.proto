@@ -117,6 +117,13 @@ message FullDebateTreeLink {
 	// Optional metadata copied from domain link/challenge rows.
 	string connection = 7;
 	int32 creator_id = 8;
+
+	// For a challenge aimed at an ARGUMENT rather than a claim: the relation
+	// (link_id of the attacked tree links) it attacks. to_claim_id then holds
+	// the claim that argument was for -- where the challenger is PLACED -- and
+	// this says where the line should END: at that relation's pill. 0 for
+	// every challenge aimed at a claim.
+	int32 to_relation_id = 9;
 }
 
 // One timeline step in the full-debate view.

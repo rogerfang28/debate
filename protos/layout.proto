@@ -119,6 +119,13 @@ message GraphEdge {
   //
   // 0 when unknown; the renderer then treats the edge as its own relation.
   int32 relation_id = 6;
+
+  // For a challenge aimed at an ARGUMENT: the relation whose junction (pill)
+  // this edge should end at, instead of the claim in `target`. `target` still
+  // names the claim that argument was for, so a renderer that knows nothing
+  // of relation targets still draws something sensible. 0 for edges aimed at
+  // a claim.
+  int32 target_relation_id = 7;
 }
 
 message GraphComponent {

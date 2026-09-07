@@ -1383,6 +1383,7 @@ class FullDebateTreeLink final : public ::google::protobuf::Message
     kLinkIdFieldNumber = 5,
     kChallengeIdFieldNumber = 6,
     kCreatorIdFieldNumber = 8,
+    kToRelationIdFieldNumber = 9,
   };
   // string connection = 7 [json_name = "connection"];
   void clear_connection() ;
@@ -1469,11 +1470,21 @@ class FullDebateTreeLink final : public ::google::protobuf::Message
   void _internal_set_creator_id(::int32_t value);
 
   public:
+  // int32 to_relation_id = 9 [json_name = "toRelationId"];
+  void clear_to_relation_id() ;
+  ::int32_t to_relation_id() const;
+  void set_to_relation_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_to_relation_id() const;
+  void _internal_set_to_relation_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:rendering_info.FullDebateTreeLink)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
                                    0, 60,
                                    2>
       _table_;
@@ -1503,6 +1514,7 @@ class FullDebateTreeLink final : public ::google::protobuf::Message
     ::int32_t link_id_;
     ::int32_t challenge_id_;
     ::int32_t creator_id_;
+    ::int32_t to_relation_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6299,6 +6311,31 @@ inline ::int32_t FullDebateTreeLink::_internal_creator_id() const {
 inline void FullDebateTreeLink::_internal_set_creator_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = value;
+}
+
+// int32 to_relation_id = 9 [json_name = "toRelationId"];
+inline void FullDebateTreeLink::clear_to_relation_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.to_relation_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline ::int32_t FullDebateTreeLink::to_relation_id() const {
+  // @@protoc_insertion_point(field_get:rendering_info.FullDebateTreeLink.to_relation_id)
+  return _internal_to_relation_id();
+}
+inline void FullDebateTreeLink::set_to_relation_id(::int32_t value) {
+  _internal_set_to_relation_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:rendering_info.FullDebateTreeLink.to_relation_id)
+}
+inline ::int32_t FullDebateTreeLink::_internal_to_relation_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.to_relation_id_;
+}
+inline void FullDebateTreeLink::_internal_set_to_relation_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.to_relation_id_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -314,6 +314,10 @@ TEST_F(ChallengeModalRenderTest, TheModalOpensForAClaimAndForAnArgumentAlike) {
         EXPECT_EQ(page.find("challengeSentenceInput"), std::string::npos) << "the modal closed";
         EXPECT_NE(page.find("The boroughs were already getting safer"), std::string::npos)
             << "the challenge claim is on the page";
+        // The graph edge for it names the attacked relation, so the renderer
+        // ends the line at that relation's pill rather than at the claim.
+        EXPECT_NE(page.find("target_relation_id: " + std::to_string(links[0])), std::string::npos)
+            << "the undercut edge points at the argument's pill";
         // And the root is NOT false for bob: an undercut removes a reason.
         const debate::Claim root = debate_->getClaimById(1);
         auto b = root.user_statuses().find("bob");
