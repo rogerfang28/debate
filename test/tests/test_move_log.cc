@@ -38,6 +38,8 @@
 #include "utils/DebateWrapper.h"
 #include "debateModerator/DebateModerator.h"
 #include "statusEngine/StatusEngine.h"
+#include "debateModerator/buildResponse/debatePageResponse/BuildCollection.h"
+#include <optional>
 
 namespace {
 
@@ -889,4 +891,203 @@ TEST_F(MoveLogTest, ChallengingALinkLogsOpposeAgainstTheRelation) {
     EXPECT_EQ(last.targetType, "relation") << shapeOf(moves);
     EXPECT_EQ(last.targetId, links[0]) << "the OPPOSE names the attacked relation";
     EXPECT_NE(last.payload.find("challenging_claim_id"), std::string::npos);
+}
+
+// =====================================================================
+// Undercuts, as the PAGE sees them.
+//
+// Every status on screen comes from replaying the move log (BuildCollection
+// applies StatusEngine's result), so these drive real events through the
+// moderator -- which is what writes the log -- and read the replay back.
+// Calling handlers directly would skip the log and test the wrong engine.
+// =====================================================================
+class UndercutFlowTest : public MoveLogTest {
+protected:
+    DebateWrapper& dw() { return moderator_->getDebateWrapper(); }
+
+    int userNamed(const std::string& name) {
+        const int id = moderator_->createUserIfNotExist(name);
+        EXPECT_GT(id, 0);
+        return id;
+    }
+    void joinAndEnter(int userId, const std::string& name, int debateId) {
+        auto join = eventFor(userId, name, debate_event::JOIN_DEBATE);
+        join.mutable_join_debate()->set_debate_id(debateId);
+        send(join);
+        auto enter = eventFor(userId, name, debate_event::ENTER_DEBATE);
+        enter.mutable_enter_debate()->set_debate_id(debateId);
+        send(enter);
+    }
+    void goTo(int userId, const std::string& name, int claimId) {
+        auto e = eventFor(userId, name, debate_event::GO_TO_CLAIM);
+        e.mutable_go_to_claim()->set_claim_id(claimId);
+        send(e);
+    }
+    // Adds `text` under `parent` as `name`; returns the new claim's id.
+    int support(int userId, const std::string& name, int parent, const std::string& text) {
+        goTo(userId, name, parent);
+        const std::vector<int> before = dw().findChildrenIds(parent);
+        auto e = eventFor(userId, name, debate_event::ADD_CHILD_CLAIM);
+        e.mutable_add_child_claim()->set_claim(text);
+        e.mutable_add_child_claim()->set_description("");
+        send(e);
+        for (int id : dw().findChildrenIds(parent)) {
+            if (std::find(before.begin(), before.end(), id) == before.end()) return id;
+        }
+        return 0;
+    }
+    // Challenges a CLAIM; returns the challenge claim's id.
+    int rebut(int userId, const std::string& name, int claimId, const std::string& text) {
+        goTo(userId, name, claimId);
+        auto start = eventFor(userId, name, debate_event::START_CHALLENGE_CLAIM);
+        send(start);
+        auto target = eventFor(userId, name, debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+        target.mutable_add_claim_to_be_challenged()->set_claim_id(claimId);
+        send(target);
+        auto open = eventFor(userId, name, debate_event::OPEN_ADD_CHALLENGE);
+        send(open);
+        auto submit = eventFor(userId, name, debate_event::SUBMIT_CHALLENGE_CLAIM);
+        submit.mutable_submit_challenge_claim()->set_challenge_sentence(text);
+        submit.mutable_submit_challenge_claim()->set_challenge_description("");
+        send(submit);
+        return currentClaimIdFor(userId);
+    }
+    // Challenges a LINK (an argument); `standingOn` is the claim the argument
+    // is for, where the user must be for the modal to find the link.
+    int undercut(int userId, const std::string& name, int standingOn, int linkId, const std::string& text) {
+        goTo(userId, name, standingOn);
+        auto start = eventFor(userId, name, debate_event::START_CHALLENGE_CLAIM);
+        send(start);
+        auto target = eventFor(userId, name, debate_event::ADD_LINK_TO_BE_CHALLENGED);
+        target.mutable_add_link_to_be_challenged()->set_link_id(linkId);
+        send(target);
+        auto open = eventFor(userId, name, debate_event::OPEN_ADD_CHALLENGE);
+        send(open);
+        auto submit = eventFor(userId, name, debate_event::SUBMIT_CHALLENGE_CLAIM);
+        submit.mutable_submit_challenge_claim()->set_challenge_sentence(text);
+        submit.mutable_submit_challenge_claim()->set_challenge_description("");
+        send(submit);
+        return currentClaimIdFor(userId);
+    }
+    void concede(int userId, const std::string& name, int challengeLinkId) {
+        auto e = eventFor(userId, name, debate_event::CONCEDE_CHALLENGE);
+        e.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
+        send(e);
+    }
+    int linkBetween(int parent, int child) {
+        for (int linkId : dw().findLinksUnder(parent)) {
+            const debate::Relationship::Link l = dw().getLinkById(linkId).link();
+            if (l.connect_from() == parent && l.connect_to() == child) return linkId;
+        }
+        return 0;
+    }
+    // What the page shows `user` for `claimId`: the replayed status, or none.
+    std::optional<debate::ClaimStatus> shown(int debateId, int claimId, const std::string& user) {
+        const debate::Collection c = BuildCollection::BuildForDebateAndUsers(
+            debateId, dw().findUsersInDebate(debateId), dw());
+        auto claimIt = c.claims_by_id().find(claimId);
+        if (claimIt == c.claims_by_id().end()) return std::nullopt;
+        auto it = claimIt->second.user_statuses().find(user);
+        if (it == claimIt->second.user_statuses().end()) return std::nullopt;
+        return it->second;
+    }
+    static bool undetermined(const std::optional<debate::ClaimStatus>& s) {
+        return !s.has_value() || *s == debate::ClaimStatus::UNDETERMINED;
+    }
+    static std::string show(const std::optional<debate::ClaimStatus>& s) {
+        if (!s) return "(none)";
+        return *s == debate::ClaimStatus::TRUE_CLAIM ? "TRUE" : *s == debate::ClaimStatus::FALSE_CLAIM ? "FALSE" : "UNDETERMINED";
+    }
+};
+
+// Cut one of two reasons: the claim stands on the other. Cut both: no reason
+// is left, and no reason is not a refutation -- Undetermined, never False.
+TEST_F(UndercutFlowTest, UndercutOneOfTwoReasonsAndTheClaimStandsOnTheOther) {
+    const int debateId = createAndEnterDebate("Speed limits save lives");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+
+    // Bob supplies BOTH reasons, so for Bob the root is True by Rule B.
+    const int deaths = support(bob, "bob", root, "Crash deaths fell 23 percent");
+    const int stopping = support(bob, "bob", root, "Stopping distance halves at 20mph");
+    ASSERT_GT(deaths, 0);
+    ASSERT_GT(stopping, 0);
+    ASSERT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+
+    // Bob undercuts his first reason's link.
+    undercut(bob, "bob", root, linkBetween(root, deaths), "Those boroughs were already getting safer");
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE") << "the other reason still holds the root up";
+    EXPECT_EQ(show(shown(debateId, deaths, "bob")), "TRUE") << "the undercut evidence itself is untouched";
+
+    // And the second. Now nothing feeds the root for Bob.
+    undercut(bob, "bob", root, linkBetween(root, stopping), "Stopping distance is not what kills");
+    const auto rootForBob = shown(debateId, root, "bob");
+    EXPECT_TRUE(undetermined(rootForBob)) << "no reason left is not a refutation; got " << show(rootForBob);
+    // Alice, who never held Bob's undercuts true, is unaffected.
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE");
+}
+
+// A challenge's own link can be undercut. For whoever holds that undercut, the
+// challenge stops attacking its target -- even though the challenge claim
+// itself stays true for them.
+TEST_F(UndercutFlowTest, UndercuttingAChallengesLinkDisarmsTheChallenge) {
+    const int debateId = createAndEnterDebate("Speed limits save lives");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    const int carol = userNamed("carol");
+    joinAndEnter(bob, "bob", debateId);
+    joinAndEnter(carol, "carol", debateId);
+
+    // Bob challenges the root: for Bob it is False by his own assertion.
+    const int challenge = rebut(bob, "bob", root, "Lower limits just move traffic to other streets");
+    ASSERT_GT(challenge, 0);
+    ASSERT_EQ(show(shown(debateId, root, "bob")), "FALSE");
+
+    // Carol supports Bob's challenge: for Carol it is True (Rule B), so the
+    // root is False for her too (Rule D) -- derived, not asserted.
+    ASSERT_GT(support(carol, "carol", challenge, "Traffic counts rose on the parallel avenue"), 0);
+    ASSERT_EQ(show(shown(debateId, challenge, "carol")), "TRUE");
+    ASSERT_EQ(show(shown(debateId, root, "carol")), "FALSE");
+
+    // Carol undercuts the CHALLENGE's link: true, but it does not bear on the root.
+    const int challengeLink = dw().findOutgoingChallengeLink(challenge).link().id();
+    ASSERT_GT(challengeLink, 0);
+    undercut(carol, "carol", root, challengeLink, "Displaced traffic is slower too, so lives are still saved");
+
+    EXPECT_EQ(show(shown(debateId, challenge, "carol")), "TRUE") << "the challenge claim is still true for Carol";
+    EXPECT_TRUE(undetermined(shown(debateId, root, "carol")))
+        << "but it no longer attacks the root for her; got " << show(shown(debateId, root, "carol"));
+    // Bob ASSERTED the root false when he challenged it; Carol's undercut is her view, not his.
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "FALSE");
+}
+
+// An undercut only bites while its claim is true for you. Get it rebutted and
+// concede, and the link you cut comes back to life.
+TEST_F(UndercutFlowTest, AConcededUndercutRestoresTheLink) {
+    const int debateId = createAndEnterDebate("Speed limits save lives");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+
+    // Bob supplies the one reason: the root is True for Bob...
+    const int deaths = support(bob, "bob", root, "Crash deaths fell 23 percent");
+    ASSERT_GT(deaths, 0);
+    ASSERT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+
+    // ...then has second thoughts and undercuts his own link.
+    const int cut = undercut(bob, "bob", root, linkBetween(root, deaths), "Those boroughs were already getting safer");
+    ASSERT_GT(cut, 0);
+    ASSERT_TRUE(undetermined(shown(debateId, root, "bob"))) << "the reason is cut; got " << show(shown(debateId, root, "bob"));
+
+    // Alice rebuts the undercut claim itself...
+    const int rebuttal = rebut(aliceId_, "alice", cut, "The safety trend was flat before the limit changed");
+    const int rebuttalLink = dw().findOutgoingChallengeLink(rebuttal).link().id();
+    ASSERT_GT(rebuttalLink, 0);
+
+    // ...and Bob concedes. His undercut is False for him now, so it cuts
+    // nothing: the link is back, and so is his reason.
+    concede(bob, "bob", rebuttalLink);
+    EXPECT_EQ(show(shown(debateId, cut, "bob")), "FALSE") << "the conceded undercut is false for Bob";
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE") << "the link is live again and the root stands on its reason";
 }
