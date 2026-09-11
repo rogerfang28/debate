@@ -1259,3 +1259,83 @@ TEST_F(MoveLogTest, AChallengeCarriesItsSource) {
     EXPECT_EQ(challenge.sources(0).url(), "https://example.org/inspection");
     EXPECT_EQ(challenge.sources(0).excerpt(), "") << "a link alone is a source";
 }
+
+
+// ---------------------------------------------------------------------------
+// Agreement: "I hold this true" from a reader's own view.
+// ---------------------------------------------------------------------------
+using AgreementFlowTest = UndercutFlowTest;
+
+TEST_F(AgreementFlowTest, AgreeingHoldsTheClaimTrueForTheReaderAndForNobodyElse) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    const int carol = userNamed("carol");
+    joinAndEnter(bob, "bob", debateId);
+    joinAndEnter(carol, "carol", debateId);
+
+    EXPECT_TRUE(undetermined(shown(debateId, root, "bob"))) << "no view yet";
+
+    auto agree = eventFor(bob, "bob", debate_event::ENDORSE_CLAIM);
+    agree.mutable_endorse_claim()->set_claim_id(root);
+    send(agree);
+
+    // Stored, logged, and replayed alike.
+    EXPECT_EQ(dw().getClaimById(root).user_statuses().at("bob"), debate::ClaimStatus::TRUE_CLAIM);
+    bool logged = false;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "ACCEPT" && m.actorId == bob && m.targetType == "claim" && m.targetId == root) logged = true;
+    }
+    EXPECT_TRUE(logged) << "an ACCEPT by bob against the root";
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE") << "the author's view is untouched";
+    EXPECT_TRUE(undetermined(shown(debateId, root, "carol"))) << "nobody else's either";
+
+    // Taking it back removes the entry, and the replay agrees.
+    auto withdraw = eventFor(bob, "bob", debate_event::UNENDORSE_CLAIM);
+    withdraw.mutable_unendorse_claim()->set_claim_id(root);
+    send(withdraw);
+
+    EXPECT_EQ(dw().getClaimById(root).user_statuses().count("bob"), 0u);
+    bool unlogged = false;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "UNACCEPT" && m.actorId == bob && m.targetId == root) unlogged = true;
+    }
+    EXPECT_TRUE(unlogged);
+    EXPECT_TRUE(undetermined(shown(debateId, root, "bob")));
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE");
+}
+
+// Agreement is a seed, not a verdict: the graph still rules. Bob agrees with
+// the root, then holds a challenge against it -- the challenge wins for Bob.
+TEST_F(AgreementFlowTest, ALaterChallengeOverridesAnEarlierAgreement) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+
+    auto agree = eventFor(bob, "bob", debate_event::ENDORSE_CLAIM);
+    agree.mutable_endorse_claim()->set_claim_id(root);
+    send(agree);
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+
+    rebut(bob, "bob", root, "The bridge passed inspection last month");
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "FALSE") << "his own challenge, held true, refutes it for him";
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE") << "and not for alice";
+}
+
+// Without a claim id, the move lands on the claim the user stands on.
+TEST_F(AgreementFlowTest, AgreeingWithNoClaimNamedMeansTheClaimTheUserStandsOn) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int child = support(aliceId_, "alice", root, "Engineers found cracks in the span");
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+    goTo(bob, "bob", child);
+
+    auto agree = eventFor(bob, "bob", debate_event::ENDORSE_CLAIM);
+    send(agree);
+    EXPECT_EQ(show(shown(debateId, child, "bob")), "TRUE");
+    // Rule B: the one reason he holds true carries the root for him.
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+}

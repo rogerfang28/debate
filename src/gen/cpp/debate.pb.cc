@@ -711,21 +711,21 @@ const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "IM\020\002*7\n\010LinkType\022\n\n\006NORMAL\020\000\022\020\n\014PARENT_C"
     "HILD\020\001\022\r\n\tCHALLENGE\020\002*\?\n\014RelationRole\022\024\n"
     "\020ROLE_UNSPECIFIED\020\000\022\014\n\010SUPPORTS\020\001\022\013\n\007OPP"
-    "OSES\020\002*\315\001\n\010MoveType\022\031\n\025MOVE_TYPE_UNSPECI"
+    "OSES\020\002*\333\001\n\010MoveType\022\031\n\025MOVE_TYPE_UNSPECI"
     "FIED\020\000\022\n\n\006ASSERT\020\001\022\n\n\006OPPOSE\020\002\022\013\n\007CONCED"
     "E\020\003\022\n\n\006ACCEPT\020\004\022\010\n\004REST\020\005\022\020\n\014FLAG_UNKNOW"
     "N\020\006\022\013\n\007REPLACE\020\007\022\n\n\006DISOWN\020\010\022\n\n\006REOPEN\020\t"
     "\022\013\n\007TIMEOUT\020\n\022\013\n\007RETRACT\020\013\022\n\n\006REDACT\020\014\022\016"
-    "\n\nCONTRADICT\020\r*P\n\nTargetType\022\033\n\027TARGET_T"
-    "YPE_UNSPECIFIED\020\000\022\020\n\014TARGET_CLAIM\020\001\022\023\n\017T"
-    "ARGET_RELATION\020\002*\303\001\n\006Status\022\026\n\022STATUS_UN"
-    "SPECIFIED\020\000\022\014\n\010STANDING\020\001\022\014\n\010ACCEPTED\020\002\022"
-    "\010\n\004OPEN\020\003\022\017\n\013UNSUPPORTED\020\004\022\r\n\tCOLLAPSED\020"
-    "\005\022\r\n\tCONTESTED\020\006\022\016\n\nUNRESOLVED\020\007\022\r\n\tABAN"
-    "DONED\020\010\022\016\n\nSUPERSEDED\020\t\022\014\n\010CIRCULAR\020\n\022\017\n"
-    "\013MISDIRECTED\020\013*N\n\rRelationState\022\036\n\032RELAT"
-    "ION_STATE_UNSPECIFIED\020\000\022\010\n\004LIVE\020\001\022\t\n\005INE"
-    "RT\020\002\022\010\n\004DEAD\020\003b\006proto3"
+    "\n\nCONTRADICT\020\r\022\014\n\010UNACCEPT\020\016*P\n\nTargetTy"
+    "pe\022\033\n\027TARGET_TYPE_UNSPECIFIED\020\000\022\020\n\014TARGE"
+    "T_CLAIM\020\001\022\023\n\017TARGET_RELATION\020\002*\303\001\n\006Statu"
+    "s\022\026\n\022STATUS_UNSPECIFIED\020\000\022\014\n\010STANDING\020\001\022"
+    "\014\n\010ACCEPTED\020\002\022\010\n\004OPEN\020\003\022\017\n\013UNSUPPORTED\020\004"
+    "\022\r\n\tCOLLAPSED\020\005\022\r\n\tCONTESTED\020\006\022\016\n\nUNRESO"
+    "LVED\020\007\022\r\n\tABANDONED\020\010\022\016\n\nSUPERSEDED\020\t\022\014\n"
+    "\010CIRCULAR\020\n\022\017\n\013MISDIRECTED\020\013*N\n\rRelation"
+    "State\022\036\n\032RELATION_STATE_UNSPECIFIED\020\000\022\010\n"
+    "\004LIVE\020\001\022\t\n\005INERT\020\002\022\010\n\004DEAD\020\003b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_2eproto_deps[2] = {
@@ -736,7 +736,7 @@ static ::absl::once_flag descriptor_table_debate_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_2eproto = {
     false,
     false,
-    3742,
+    3756,
     descriptor_table_protodef_debate_2eproto,
     "debate.proto",
     &descriptor_table_debate_2eproto_once,
@@ -773,7 +773,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL MoveType_descriptor()
   return file_level_enum_descriptors_debate_2eproto[3];
 }
 PROTOBUF_CONSTINIT const uint32_t MoveType_internal_data_[] = {
-    917504u, 0u, };
+    983040u, 0u, };
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL TargetType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_debate_2eproto);
   return file_level_enum_descriptors_debate_2eproto[4];

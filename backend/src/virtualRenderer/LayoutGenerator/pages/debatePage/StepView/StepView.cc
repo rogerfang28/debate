@@ -130,6 +130,20 @@ static ui::Component BuildSelectedClaimPanel(
     addField("Sentence", "Selected Claim:", claim.sentence(), false);
     debate::ClaimStatus viewerStatus = StepViewMapClaimStatusForUser(claim, viewerUserId, viewerUsername);
     addField("Status", "Status:", StepViewClaimStatusToLabel(viewerStatus), false);
+    // Who else holds this claim true. Whoever it belongs to is left out: it
+    // is theirs, and listing them would say nothing.
+    {
+        const std::string holder = userDb.getUsername(ClaimVoiceId(claim));
+        std::string agreed;
+        for (const auto& entry : claim.user_statuses()) {
+            if (entry.second != debate::ClaimStatus::TRUE_CLAIM || entry.first == holder) continue;
+            if (!agreed.empty()) agreed += ", ";
+            agreed += entry.first;
+        }
+        if (!agreed.empty()) {
+            addField("AgreedBy", "Agreed by:", agreed, false);
+        }
+    }
     std::string creatorUsername = userDb.getUsername(claim.creator_id());
     if (creatorUsername.empty()) {
         creatorUsername = "User " + std::to_string(claim.creator_id());
@@ -243,6 +257,23 @@ static ui::Component BuildSelectedClaimPanel(
             "text-sm"
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
+
+        // Agree, or take it back: the viewer's own view of someone else's
+        // claim. "Held true" is what the button reads, however it came to be
+        // true for them -- agreeing again would change nothing.
+        const bool holdsTrue = viewerStatus == debate::ClaimStatus::TRUE_CLAIM;
+        ui::Component agreeButton = ComponentGenerator::createButton(
+            (holdsTrue ? "unendorseClaimButton_" : "endorseClaimButton_") + std::to_string(claimId),
+            holdsTrue ? "Withdraw agreement" : "Agree",
+            "",
+            holdsTrue ? "bg-gray-600" : "bg-green-600",
+            holdsTrue ? "hover:bg-gray-700" : "hover:bg-green-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, agreeButton);
     }
 
     if (concedeChallengeLinkId > 0) {

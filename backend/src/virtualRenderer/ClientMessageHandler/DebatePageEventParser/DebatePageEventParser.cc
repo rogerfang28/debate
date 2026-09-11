@@ -312,6 +312,18 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::DELETE_CHALLENGE);
         event.mutable_delete_challenge()->set_challenge_id(std::stoi(challengeId));
     }
+    else if (componentId.find("endorseClaimButton_") == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("endorseClaimButton_"));
+        Log::debug("  ENDORSE_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::ENDORSE_CLAIM);
+        event.mutable_endorse_claim()->set_claim_id(std::stoi(claimId));
+    }
+    else if (componentId.find("unendorseClaimButton_") == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("unendorseClaimButton_"));
+        Log::debug("  UNENDORSE_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::UNENDORSE_CLAIM);
+        event.mutable_unendorse_claim()->set_claim_id(std::stoi(claimId));
+    }
     else if (componentId.find("concedeChallengeButton_") == 0 && eventType == "onClick"){
         std::string challengeLinkId = componentId.substr(strlen("concedeChallengeButton_"));
         Log::debug("  CONCEDE_CHALLENGE for user: " + std::to_string(user_id) + " challenge_link_id: " + challengeLinkId);

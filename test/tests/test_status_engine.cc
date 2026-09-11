@@ -382,3 +382,42 @@ TEST(StatusEngineParity, AttackingTheClaimStillRefutesIt) {
     EXPECT_EQ(legacyOf(r, "bob", 1, &present), debate::ClaimStatus::FALSE_CLAIM);
     EXPECT_EQ(legacyOf(r, "alice", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
 }
+
+
+// ---------------------------------------------------------------------------
+// ACCEPT / UNACCEPT: a reader's own view, seeded and withdrawn.
+// ---------------------------------------------------------------------------
+TEST(StatusEngineLegacyTest, AcceptSeedsTrueForTheAcceptorAndUnacceptRemovesIt) {
+    std::vector<debate::Claim> claims{claim(1)};
+    const std::map<int, std::string> users{{1, "alice"}, {2, "bob"}};
+
+    std::vector<debate::Move> moves{
+        moveBy(1, 1, debate::ASSERT, debate::TARGET_CLAIM, 1),
+        moveBy(2, 2, debate::ACCEPT, debate::TARGET_CLAIM, 1),
+    };
+    bool present = false;
+    auto r = StatusEngine::computeLegacyStatuses(claims, {}, moves, users);
+    EXPECT_EQ(legacyOf(r, "bob", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_TRUE(present);
+    EXPECT_EQ(legacyOf(r, "alice", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
+
+    moves.push_back(moveBy(3, 2, debate::UNACCEPT, debate::TARGET_CLAIM, 1));
+    r = StatusEngine::computeLegacyStatuses(claims, {}, moves, users);
+    legacyOf(r, "bob", 1, &present);
+    EXPECT_FALSE(present) << "withdrawn: bob has no entry, not a FALSE";
+    EXPECT_EQ(legacyOf(r, "alice", 1, &present), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_TRUE(present);
+}
+
+TEST(StatusEngineLegacyTest, AcceptOnARelationWritesNothing) {
+    std::vector<debate::Claim> claims{claim(1)};
+    const std::map<int, std::string> users{{1, "alice"}, {2, "bob"}};
+    std::vector<debate::Move> moves{
+        moveBy(1, 1, debate::ASSERT, debate::TARGET_CLAIM, 1),
+        moveBy(2, 2, debate::ACCEPT, debate::TARGET_RELATION, 10),
+    };
+    bool present = false;
+    const auto r = StatusEngine::computeLegacyStatuses(claims, {}, moves, users);
+    legacyOf(r, "bob", 1, &present);
+    EXPECT_FALSE(present);
+}

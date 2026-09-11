@@ -172,7 +172,7 @@ enum MoveType {
   ASSERT       = 1;
   OPPOSE       = 2;
   CONCEDE      = 3;
-  ACCEPT       = 4;
+  ACCEPT       = 4;   // "I hold this true": agreeing with a claim one did not make
   REST         = 5;
   FLAG_UNKNOWN = 6;
   REPLACE      = 7;
@@ -182,6 +182,7 @@ enum MoveType {
   RETRACT      = 11;  // author withdraws; distinct from CONCEDE
   REDACT       = 12;  // administrative removal; blanks text, keeps the node
   CONTRADICT   = 13;  // marks two claims mutually incompatible
+  UNACCEPT     = 14;  // takes back an ACCEPT; the user no longer holds it true
 }
 
 enum TargetType {

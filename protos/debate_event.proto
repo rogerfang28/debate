@@ -81,6 +81,20 @@ message SelectLink {
   int32 link_id = 1;
 }
 
+// "I agree": the user marks a claim they did not make as true from their
+// own view. It is a seed, not a verdict -- the graph rules then run for
+// them as for the author, so a challenge they later hold true still
+// overrides it. claim_id 0 means the claim the user is standing on.
+message EndorseClaim {
+  int32 claim_id = 1;
+}
+
+// Takes an EndorseClaim back. The user's entry on the claim is removed;
+// whatever the graph gives them afterwards is what they see.
+message UnendorseClaim {
+  int32 claim_id = 1;
+}
+
 message SelectClaim {
     int32 claim_id      = 1;
 }
@@ -285,6 +299,9 @@ enum EventType {
     TUTORIAL_EXIT = 64;
     // The graph's relation pills are selectable too; see SelectLink.
     SELECT_LINK = 65;
+    // "I agree" / "I take that back"; see EndorseClaim.
+    ENDORSE_CLAIM = 66;
+    UNENDORSE_CLAIM = 67;
 
 }
 
@@ -340,5 +357,7 @@ message DebateEvent {
     GenerateDebate generate_debate = 53;
     StartTutorial start_tutorial = 54;
     SelectLink select_link = 55;
+    EndorseClaim endorse_claim = 56;
+    UnendorseClaim unendorse_claim = 57;
   }
 }

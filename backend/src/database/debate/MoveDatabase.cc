@@ -115,6 +115,7 @@ debate::MoveType moveTypeFromName(const std::string& s) {
     if (s == "RETRACT")      return debate::RETRACT;
     if (s == "REDACT")       return debate::REDACT;
     if (s == "CONTRADICT")   return debate::CONTRADICT;
+    if (s == "UNACCEPT")     return debate::UNACCEPT;
     return debate::MOVE_TYPE_UNSPECIFIED;
 }
 

@@ -559,6 +559,22 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
                 }
                 break;
 
+            case debate::ACCEPT:
+                // EndorseHandler: the user holds someone else's claim true.
+                if (m->target_type() == debate::TARGET_CLAIM) {
+                    put(target, user, debate::ClaimStatus::TRUE_CLAIM);
+                }
+                break;
+
+            case debate::UNACCEPT:
+                // ...and takes it back. The entry goes; the rules below
+                // re-derive whatever the graph gives this user.
+                if (m->target_type() == debate::TARGET_CLAIM) {
+                    auto row = table.find(target);
+                    if (row != table.end()) row->second.erase(user);
+                }
+                break;
+
             case debate::CONCEDE: {
                 // ConcedeChallenge writes four groups for the conceder.
                 const int challengingClaimId = payloadInt(m->payload(), "challenging_claim_id");

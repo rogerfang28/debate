@@ -29,6 +29,7 @@
 // modify claim
 #include "event-handlers/ModifyClaimHandler/ModifyClaimHandler.h"
 
+#include "event-handlers/EndorseHandler/EndorseHandler.h"
 #include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 #include "event-handlers/TutorialHandler/TutorialHandler.h"
@@ -67,6 +68,8 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
         case debate_event::ADD_LINK_TO_BE_CHALLENGED:
         case debate_event::SUBMIT_CHALLENGE_CLAIM:
         case debate_event::CONCEDE_CHALLENGE:
+        case debate_event::ENDORSE_CLAIM:
+        case debate_event::UNENDORSE_CLAIM:
         case debate_event::CANCEL_CHALLENGE_CLAIM:
         case debate_event::OPEN_ADD_CHALLENGE:
         case debate_event::CLOSE_ADD_CHALLENGE:
@@ -425,6 +428,14 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 user_id,
                 debateWrapper
             );
+            break;
+        case debate_event::ENDORSE_CLAIM:
+            Log::info("[DebateModerator] Event Type: ENDORSE_CLAIM");
+            EndorseHandler::Endorse(user_id, event.endorse_claim().claim_id(), debateWrapper);
+            break;
+        case debate_event::UNENDORSE_CLAIM:
+            Log::info("[DebateModerator] Event Type: UNENDORSE_CLAIM");
+            EndorseHandler::Unendorse(user_id, event.unendorse_claim().claim_id(), debateWrapper);
             break;
         case debate_event::CONCEDE_CHALLENGE:
             Log::info("[DebateModerator] Event Type: CONCEDE_CHALLENGE");

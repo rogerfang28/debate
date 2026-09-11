@@ -110,6 +110,19 @@ PreState capture(const debate_event::DebateEvent& event,
             break;
         }
 
+        // --- Agreement: the claim named, or the one the user stands on.
+        case debate_event::ENDORSE_CLAIM:
+        case debate_event::UNENDORSE_CLAIM: {
+            const int given = event.type() == debate_event::ENDORSE_CLAIM
+                ? event.endorse_claim().claim_id()
+                : event.unendorse_claim().claim_id();
+            pre.targetClaimId = given > 0
+                ? given : currentClaimIdOf(debateWrapper.getUserProtobuf(user_id));
+            pre.debateId = debateWrapper.findDebateId(pre.targetClaimId);
+            pre.relevant = true;
+            break;
+        }
+
         // --- Deletions: everything below is unreadable once the row is gone.
         case debate_event::DELETE_CURRENT_STATEMENT: {
             user::User u = debateWrapper.getUserProtobuf(user_id);
@@ -319,6 +332,16 @@ void logForEvent(const debate_event::DebateEvent& event,
             }
             break;
         }
+
+        // Agreement is the user's own view of someone else's claim: ACCEPT
+        // holds it true, UNACCEPT takes that back. Logged once each; the
+        // cascade that follows is derived consequence.
+        case debate_event::ENDORSE_CLAIM:
+            append(databaseWrapper, pre.debateId, user_id, "ACCEPT", true, pre.targetClaimId);
+            break;
+        case debate_event::UNENDORSE_CLAIM:
+            append(databaseWrapper, pre.debateId, user_id, "UNACCEPT", true, pre.targetClaimId);
+            break;
 
         case debate_event::SUBMIT_CONNECT_CLAIMS: {
             const int relationId =
