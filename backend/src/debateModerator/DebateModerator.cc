@@ -262,13 +262,17 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 claimDescriptions.push_back(d);
             }
             claimDescriptions.resize(claimTexts.size());
+            debate::Source source;
+            source.set_url(event.add_child_claim().source_url());
+            source.set_excerpt(event.add_child_claim().source_excerpt());
             AddClaimHandler::AddClaimUnderClaim(
                 claimTexts,
                 claimDescriptions,
                 event.add_child_claim().basis(),
                 user_id,
                 debateWrapper,
-                resolveVoice(event.add_child_claim().voice())
+                resolveVoice(event.add_child_claim().voice()),
+                &source
             );
         }
             break;
@@ -392,13 +396,17 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 challengeDescriptions.push_back(d);
             }
             challengeDescriptions.resize(challengeTexts.size());
+            debate::Source source;
+            source.set_url(event.submit_challenge_claim().source_url());
+            source.set_excerpt(event.submit_challenge_claim().source_excerpt());
             ChallengeHandler::SubmitChallengeClaim(
                 challengeTexts,
                 challengeDescriptions,
                 event.submit_challenge_claim().basis(),
                 user_id,
                 debateWrapper,
-                resolveVoice(event.submit_challenge_claim().voice())
+                resolveVoice(event.submit_challenge_claim().voice()),
+                &source
             );
         }
             break;

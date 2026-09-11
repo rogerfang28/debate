@@ -132,6 +132,10 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             } else if (comp.id() == "claimVoiceInput") {
                 submitEvent->set_voice(comp.value());
                 Log::debug("  Voice: " + comp.value());
+            } else if (comp.id() == "claimSourceUrlInput") {
+                submitEvent->set_source_url(comp.value());
+            } else if (comp.id() == "claimSourceExcerptInput") {
+                submitEvent->set_source_excerpt(comp.value());
             }
         }
 
@@ -263,6 +267,10 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             } else if (comp.id() == "challengeVoiceInput") {
                 submitEvent->set_voice(comp.value());
                 Log::debug("  Challenge voice: " + comp.value());
+            } else if (comp.id() == "challengeSourceUrlInput") {
+                submitEvent->set_source_url(comp.value());
+            } else if (comp.id() == "challengeSourceExcerptInput") {
+                submitEvent->set_source_excerpt(comp.value());
             }
         }
 

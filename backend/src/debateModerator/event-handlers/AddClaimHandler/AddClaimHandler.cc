@@ -6,7 +6,7 @@
 #include "../../../utils/Log.h"
 #include "../../../utils/BasisRegistry.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id) {
+void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id, const debate::Source* source) {
     // A basis the registry cannot explain is not stored: the dropdowns, the
     // prompts and the status engine all read the registry, and a link carrying
     // a name none of them know would be a link nobody can describe or reason
@@ -51,7 +51,8 @@ void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_t
             basis,
             relationId,
             &relationId,
-            voice_id
+            voice_id,
+            source
         );
         if (added == 0) {
             firstClaimId = newClaimID;

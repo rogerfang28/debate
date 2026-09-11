@@ -24,6 +24,18 @@ import "debate_settings.proto";
 //  CLAIM
 // =============================================================
 
+// Where a claim was TAKEN FROM: an article, a transcript, a filing. A
+// source is not evidence for the claim -- evidence is another claim, joined
+// by a relation. It is where the words were found, so a reader can check
+// them. "The reporter says the bridge is unsafe" has the article as its
+// source; whether the bridge is unsafe is argued by other claims.
+message Source {
+  string url       = 1;
+  string excerpt   = 2;  // the words on the page, verbatim
+  string published = 3;  // free text: whatever date the source gives
+  bool first_hand  = 4;  // the voice saw it themselves, vs. reports it
+}
+
 message Claim {
   int32  id          = 1;
   string sentence    = 2;
@@ -43,6 +55,9 @@ message Claim {
   // every claim made before this field existed. `creator_id` stays the
   // entrant: it decides who may edit or delete the claim.
   int32 voice_id = 15;
+
+  // Where the claim was taken from, if anywhere. See Source.
+  repeated Source sources = 16;
 
   // --- legacy: still written/read by current code, all superseded ---
 

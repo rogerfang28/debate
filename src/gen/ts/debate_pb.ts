@@ -14,7 +14,51 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file debate.proto.
  */
 export const file_debate: GenFile = /*@__PURE__*/
-  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSKRAwoFQ2xhaW0SCgoCaWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIRCglkZWJhdGVfaWQYCSABKAUSLgoKY3JlYXRlZF9hdBgOIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEAoIdm9pY2VfaWQYDyABKAUSJwoHaGlzdG9yeRgKIAMoCzISLmRlYmF0ZS5DbGFpbVN0YXRlQgIYARInCgZzdGF0dXMYCyABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXNCAhgBEhQKCGxpbmtfaWRzGAwgAygFQgIYARI6Cg11c2VyX3N0YXR1c2VzGA0gAygLMh8uZGViYXRlLkNsYWltLlVzZXJTdGF0dXNlc0VudHJ5QgIYARpIChFVc2VyU3RhdHVzZXNFbnRyeRILCgNrZXkYASABKAkSIgoFdmFsdWUYAiABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXM6AjgBIlkKCkNsYWltU3RhdGUSLQoJdGltZXN0YW1wGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIcCgVjbGFpbRgBIAEoCzINLmRlYmF0ZS5DbGFpbSK7AwoMUmVsYXRpb25zaGlwEicKBGxpbmsYASABKAsyGS5kZWJhdGUuUmVsYXRpb25zaGlwLkxpbmsSCgoCaWQYAiABKAUSEQoJZGViYXRlX2lkGAMgASgFEhYKDmZyb21fY2xhaW1faWRzGAQgAygFEhUKC3RvX2NsYWltX2lkGAUgASgFSAASGAoOdG9fcmVsYXRpb25faWQYBiABKAVIABIiCgRyb2xlGAcgASgOMhQuZGViYXRlLlJlbGF0aW9uUm9sZRINCgViYXNpcxgIIAEoCRISCgpjcmVhdG9yX2lkGAkgASgFEi4KCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGpwBCgRMaW5rEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBRIjCglsaW5rX3R5cGUYBiABKA4yEC5kZWJhdGUuTGlua1R5cGUSEQoJZGViYXRlX2lkGAcgASgFQgQKAnRvIpoCCgRNb3ZlEgoKAmlkGAEgASgFEhEKCWRlYmF0ZV9pZBgCIAEoBRILCgNzZXEYAyABKAUSEAoIYWN0b3JfaWQYBCABKAUSHgoEdHlwZRgFIAEoDjIQLmRlYmF0ZS5Nb3ZlVHlwZRInCgt0YXJnZXRfdHlwZRgGIAEoDjISLmRlYmF0ZS5UYXJnZXRUeXBlEhEKCXRhcmdldF9pZBgHIAEoBRIZChFjcmVhdGVkX2NsYWltX2lkcxgIIAMoBRIcChRjcmVhdGVkX3JlbGF0aW9uX2lkcxgJIAMoBRIPCgdwYXlsb2FkGAogASgJEi4KCmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIocBChJDb21wdXRlZENsYWltU3RhdGUSEAoIY2xhaW1faWQYASABKAUSHgoGc3RhdHVzGAIgASgOMg4uZGViYXRlLlN0YXR1cxIYChBzdXBwb3J0aW5nX2NvdW50GAMgASgFEhYKDm9wcG9zaW5nX2NvdW50GAQgASgFEg0KBWxhYmVsGAUgASgJIlIKFUNvbXB1dGVkUmVsYXRpb25TdGF0ZRITCgtyZWxhdGlvbl9pZBgBIAEoBRIkCgVzdGF0ZRgCIAEoDjIVLmRlYmF0ZS5SZWxhdGlvblN0YXRlIvgBCgZEZWJhdGUSCgoCaWQYASABKAUSFQoNcm9vdF9jbGFpbV9pZBgCIAEoBRINCgV0b3BpYxgDIAEoCRITCgtkZWJhdGVyX2lkcxgEIAMoBRISCgpjcmVhdG9yX2lkGAUgASgFEigKCHNldHRpbmdzGAYgASgLMhYuZGViYXRlLkRlYmF0ZVNldHRpbmdzEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhgKDGlzX2NoYWxsZW5nZRgHIAEoCEICGAESHwoTcGFyZW50X2NoYWxsZW5nZV9pZBgIIAEoBUICGAEiUgoPR2V0U3RhdGVSZXF1ZXN0EhEKCWRlYmF0ZV9pZBgBIAEoBRIOCgZhdF9zZXEYAiABKAUSHAoUbGVuc19leGNsdWRlZF9jbGFpbXMYAyADKAUigQIKC0RlYmF0ZVN0YXRlEh4KBmRlYmF0ZRgBIAEoCzIOLmRlYmF0ZS5EZWJhdGUSHQoGY2xhaW1zGAIgAygLMg0uZGViYXRlLkNsYWltEicKCXJlbGF0aW9ucxgDIAMoCzIULmRlYmF0ZS5SZWxhdGlvbnNoaXASMAoMY2xhaW1fc3RhdGVzGAQgAygLMhouZGViYXRlLkNvbXB1dGVkQ2xhaW1TdGF0ZRI2Cg9yZWxhdGlvbl9zdGF0ZXMYBSADKAsyHS5kZWJhdGUuQ29tcHV0ZWRSZWxhdGlvblN0YXRlEg4KBmF0X3NlcRgGIAEoBRIQCghoZWFkX3NlcRgHIAEoBSpACgtDbGFpbVN0YXR1cxIQCgxVTkRFVEVSTUlORUQQABIOCgpUUlVFX0NMQUlNEAESDwoLRkFMU0VfQ0xBSU0QAio3CghMaW5rVHlwZRIKCgZOT1JNQUwQABIQCgxQQVJFTlRfQ0hJTEQQARINCglDSEFMTEVOR0UQAio/CgxSZWxhdGlvblJvbGUSFAoQUk9MRV9VTlNQRUNJRklFRBAAEgwKCFNVUFBPUlRTEAESCwoHT1BQT1NFUxACKs0BCghNb3ZlVHlwZRIZChVNT1ZFX1RZUEVfVU5TUEVDSUZJRUQQABIKCgZBU1NFUlQQARIKCgZPUFBPU0UQAhILCgdDT05DRURFEAMSCgoGQUNDRVBUEAQSCAoEUkVTVBAFEhAKDEZMQUdfVU5LTk9XThAGEgsKB1JFUExBQ0UQBxIKCgZESVNPV04QCBIKCgZSRU9QRU4QCRILCgdUSU1FT1VUEAoSCwoHUkVUUkFDVBALEgoKBlJFREFDVBAMEg4KCkNPTlRSQURJQ1QQDSpQCgpUYXJnZXRUeXBlEhsKF1RBUkdFVF9UWVBFX1VOU1BFQ0lGSUVEEAASEAoMVEFSR0VUX0NMQUlNEAESEwoPVEFSR0VUX1JFTEFUSU9OEAIqwwEKBlN0YXR1cxIWChJTVEFUVVNfVU5TUEVDSUZJRUQQABIMCghTVEFORElORxABEgwKCEFDQ0VQVEVEEAISCAoET1BFThADEg8KC1VOU1VQUE9SVEVEEAQSDQoJQ09MTEFQU0VEEAUSDQoJQ09OVEVTVEVEEAYSDgoKVU5SRVNPTFZFRBAHEg0KCUFCQU5ET05FRBAIEg4KClNVUEVSU0VERUQQCRIMCghDSVJDVUxBUhAKEg8KC01JU0RJUkVDVEVEEAsqTgoNUmVsYXRpb25TdGF0ZRIeChpSRUxBVElPTl9TVEFURV9VTlNQRUNJRklFRBAAEggKBExJVkUQARIJCgVJTkVSVBACEggKBERFQUQQA2IGcHJvdG8z", [file_google_protobuf_timestamp, file_debate_settings]);
+  fileDesc("CgxkZWJhdGUucHJvdG8SBmRlYmF0ZSJNCgZTb3VyY2USCwoDdXJsGAEgASgJEg8KB2V4Y2VycHQYAiABKAkSEQoJcHVibGlzaGVkGAMgASgJEhIKCmZpcnN0X2hhbmQYBCABKAgisgMKBUNsYWltEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhIKCmNyZWF0b3JfaWQYCCABKAUSEQoJZGViYXRlX2lkGAkgASgFEi4KCmNyZWF0ZWRfYXQYDiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhAKCHZvaWNlX2lkGA8gASgFEh8KB3NvdXJjZXMYECADKAsyDi5kZWJhdGUuU291cmNlEicKB2hpc3RvcnkYCiADKAsyEi5kZWJhdGUuQ2xhaW1TdGF0ZUICGAESJwoGc3RhdHVzGAsgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzQgIYARIUCghsaW5rX2lkcxgMIAMoBUICGAESOgoNdXNlcl9zdGF0dXNlcxgNIAMoCzIfLmRlYmF0ZS5DbGFpbS5Vc2VyU3RhdHVzZXNFbnRyeUICGAEaSAoRVXNlclN0YXR1c2VzRW50cnkSCwoDa2V5GAEgASgJEiIKBXZhbHVlGAIgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzOgI4ASJZCgpDbGFpbVN0YXRlEi0KCXRpbWVzdGFtcBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHAoFY2xhaW0YASABKAsyDS5kZWJhdGUuQ2xhaW0iuwMKDFJlbGF0aW9uc2hpcBInCgRsaW5rGAEgASgLMhkuZGViYXRlLlJlbGF0aW9uc2hpcC5MaW5rEgoKAmlkGAIgASgFEhEKCWRlYmF0ZV9pZBgDIAEoBRIWCg5mcm9tX2NsYWltX2lkcxgEIAMoBRIVCgt0b19jbGFpbV9pZBgFIAEoBUgAEhgKDnRvX3JlbGF0aW9uX2lkGAYgASgFSAASIgoEcm9sZRgHIAEoDjIULmRlYmF0ZS5SZWxhdGlvblJvbGUSDQoFYmFzaXMYCCABKAkSEgoKY3JlYXRvcl9pZBgJIAEoBRIuCgpjcmVhdGVkX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBqcAQoETGluaxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUSIwoJbGlua190eXBlGAYgASgOMhAuZGViYXRlLkxpbmtUeXBlEhEKCWRlYmF0ZV9pZBgHIAEoBUIECgJ0byKaAgoETW92ZRIKCgJpZBgBIAEoBRIRCglkZWJhdGVfaWQYAiABKAUSCwoDc2VxGAMgASgFEhAKCGFjdG9yX2lkGAQgASgFEh4KBHR5cGUYBSABKA4yEC5kZWJhdGUuTW92ZVR5cGUSJwoLdGFyZ2V0X3R5cGUYBiABKA4yEi5kZWJhdGUuVGFyZ2V0VHlwZRIRCgl0YXJnZXRfaWQYByABKAUSGQoRY3JlYXRlZF9jbGFpbV9pZHMYCCADKAUSHAoUY3JlYXRlZF9yZWxhdGlvbl9pZHMYCSADKAUSDwoHcGF5bG9hZBgKIAEoCRIuCgpjcmVhdGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKHAQoSQ29tcHV0ZWRDbGFpbVN0YXRlEhAKCGNsYWltX2lkGAEgASgFEh4KBnN0YXR1cxgCIAEoDjIOLmRlYmF0ZS5TdGF0dXMSGAoQc3VwcG9ydGluZ19jb3VudBgDIAEoBRIWCg5vcHBvc2luZ19jb3VudBgEIAEoBRINCgVsYWJlbBgFIAEoCSJSChVDb21wdXRlZFJlbGF0aW9uU3RhdGUSEwoLcmVsYXRpb25faWQYASABKAUSJAoFc3RhdGUYAiABKA4yFS5kZWJhdGUuUmVsYXRpb25TdGF0ZSL4AQoGRGViYXRlEgoKAmlkGAEgASgFEhUKDXJvb3RfY2xhaW1faWQYAiABKAUSDQoFdG9waWMYAyABKAkSEwoLZGViYXRlcl9pZHMYBCADKAUSEgoKY3JlYXRvcl9pZBgFIAEoBRIoCghzZXR0aW5ncxgGIAEoCzIWLmRlYmF0ZS5EZWJhdGVTZXR0aW5ncxIuCgpjcmVhdGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIYCgxpc19jaGFsbGVuZ2UYByABKAhCAhgBEh8KE3BhcmVudF9jaGFsbGVuZ2VfaWQYCCABKAVCAhgBIlIKD0dldFN0YXRlUmVxdWVzdBIRCglkZWJhdGVfaWQYASABKAUSDgoGYXRfc2VxGAIgASgFEhwKFGxlbnNfZXhjbHVkZWRfY2xhaW1zGAMgAygFIoECCgtEZWJhdGVTdGF0ZRIeCgZkZWJhdGUYASABKAsyDi5kZWJhdGUuRGViYXRlEh0KBmNsYWltcxgCIAMoCzINLmRlYmF0ZS5DbGFpbRInCglyZWxhdGlvbnMYAyADKAsyFC5kZWJhdGUuUmVsYXRpb25zaGlwEjAKDGNsYWltX3N0YXRlcxgEIAMoCzIaLmRlYmF0ZS5Db21wdXRlZENsYWltU3RhdGUSNgoPcmVsYXRpb25fc3RhdGVzGAUgAygLMh0uZGViYXRlLkNvbXB1dGVkUmVsYXRpb25TdGF0ZRIOCgZhdF9zZXEYBiABKAUSEAoIaGVhZF9zZXEYByABKAUqQAoLQ2xhaW1TdGF0dXMSEAoMVU5ERVRFUk1JTkVEEAASDgoKVFJVRV9DTEFJTRABEg8KC0ZBTFNFX0NMQUlNEAIqNwoITGlua1R5cGUSCgoGTk9STUFMEAASEAoMUEFSRU5UX0NISUxEEAESDQoJQ0hBTExFTkdFEAIqPwoMUmVsYXRpb25Sb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIMCghTVVBQT1JUUxABEgsKB09QUE9TRVMQAirNAQoITW92ZVR5cGUSGQoVTU9WRV9UWVBFX1VOU1BFQ0lGSUVEEAASCgoGQVNTRVJUEAESCgoGT1BQT1NFEAISCwoHQ09OQ0VERRADEgoKBkFDQ0VQVBAEEggKBFJFU1QQBRIQCgxGTEFHX1VOS05PV04QBhILCgdSRVBMQUNFEAcSCgoGRElTT1dOEAgSCgoGUkVPUEVOEAkSCwoHVElNRU9VVBAKEgsKB1JFVFJBQ1QQCxIKCgZSRURBQ1QQDBIOCgpDT05UUkFESUNUEA0qUAoKVGFyZ2V0VHlwZRIbChdUQVJHRVRfVFlQRV9VTlNQRUNJRklFRBAAEhAKDFRBUkdFVF9DTEFJTRABEhMKD1RBUkdFVF9SRUxBVElPThACKsMBCgZTdGF0dXMSFgoSU1RBVFVTX1VOU1BFQ0lGSUVEEAASDAoIU1RBTkRJTkcQARIMCghBQ0NFUFRFRBACEggKBE9QRU4QAxIPCgtVTlNVUFBPUlRFRBAEEg0KCUNPTExBUFNFRBAFEg0KCUNPTlRFU1RFRBAGEg4KClVOUkVTT0xWRUQQBxINCglBQkFORE9ORUQQCBIOCgpTVVBFUlNFREVEEAkSDAoIQ0lSQ1VMQVIQChIPCgtNSVNESVJFQ1RFRBALKk4KDVJlbGF0aW9uU3RhdGUSHgoaUkVMQVRJT05fU1RBVEVfVU5TUEVDSUZJRUQQABIICgRMSVZFEAESCQoFSU5FUlQQAhIICgRERUFEEANiBnByb3RvMw", [file_google_protobuf_timestamp, file_debate_settings]);
+
+/**
+ * Where a claim was TAKEN FROM: an article, a transcript, a filing. A
+ * source is not evidence for the claim -- evidence is another claim, joined
+ * by a relation. It is where the words were found, so a reader can check
+ * them. "The reporter says the bridge is unsafe" has the article as its
+ * source; whether the bridge is unsafe is argued by other claims.
+ *
+ * @generated from message debate.Source
+ */
+export type Source = Message<"debate.Source"> & {
+  /**
+   * @generated from field: string url = 1;
+   */
+  url: string;
+
+  /**
+   * the words on the page, verbatim
+   *
+   * @generated from field: string excerpt = 2;
+   */
+  excerpt: string;
+
+  /**
+   * free text: whatever date the source gives
+   *
+   * @generated from field: string published = 3;
+   */
+  published: string;
+
+  /**
+   * the voice saw it themselves, vs. reports it
+   *
+   * @generated from field: bool first_hand = 4;
+   */
+  firstHand: boolean;
+};
+
+/**
+ * Describes the message debate.Source.
+ * Use `create(SourceSchema)` to create a new message.
+ */
+export const SourceSchema: GenMessage<Source> = /*@__PURE__*/
+  messageDesc(file_debate, 0);
 
 /**
  * @generated from message debate.Claim
@@ -67,6 +111,13 @@ export type Claim = Message<"debate.Claim"> & {
   voiceId: number;
 
   /**
+   * Where the claim was taken from, if anywhere. See Source.
+   *
+   * @generated from field: repeated debate.Source sources = 16;
+   */
+  sources: Source[];
+
+  /**
    * Version snapshots for the edit/undo mechanism. Goes away when claims
    * become immutable (an edit becomes a new Claim + REPLACE move).
    *
@@ -106,7 +157,7 @@ export type Claim = Message<"debate.Claim"> & {
  * Use `create(ClaimSchema)` to create a new message.
  */
 export const ClaimSchema: GenMessage<Claim> = /*@__PURE__*/
-  messageDesc(file_debate, 0);
+  messageDesc(file_debate, 1);
 
 /**
  * LEGACY. A version snapshot for the undo buffer.
@@ -130,7 +181,7 @@ export type ClaimState = Message<"debate.ClaimState"> & {
  * Use `create(ClaimStateSchema)` to create a new message.
  */
 export const ClaimStateSchema: GenMessage<ClaimState> = /*@__PURE__*/
-  messageDesc(file_debate, 1);
+  messageDesc(file_debate, 2);
 
 /**
  * @generated from message debate.Relationship
@@ -217,7 +268,7 @@ export type Relationship = Message<"debate.Relationship"> & {
  * Use `create(RelationshipSchema)` to create a new message.
  */
 export const RelationshipSchema: GenMessage<Relationship> = /*@__PURE__*/
-  messageDesc(file_debate, 2);
+  messageDesc(file_debate, 3);
 
 /**
  * @generated from message debate.Relationship.Link
@@ -264,7 +315,7 @@ export type Relationship_Link = Message<"debate.Relationship.Link"> & {
  * Use `create(Relationship_LinkSchema)` to create a new message.
  */
 export const Relationship_LinkSchema: GenMessage<Relationship_Link> = /*@__PURE__*/
-  messageDesc(file_debate, 2, 0);
+  messageDesc(file_debate, 3, 0);
 
 /**
  * @generated from message debate.Move
@@ -343,7 +394,7 @@ export type Move = Message<"debate.Move"> & {
  * Use `create(MoveSchema)` to create a new message.
  */
 export const MoveSchema: GenMessage<Move> = /*@__PURE__*/
-  messageDesc(file_debate, 3);
+  messageDesc(file_debate, 4);
 
 /**
  * @generated from message debate.ComputedClaimState
@@ -384,7 +435,7 @@ export type ComputedClaimState = Message<"debate.ComputedClaimState"> & {
  * Use `create(ComputedClaimStateSchema)` to create a new message.
  */
 export const ComputedClaimStateSchema: GenMessage<ComputedClaimState> = /*@__PURE__*/
-  messageDesc(file_debate, 4);
+  messageDesc(file_debate, 5);
 
 /**
  * @generated from message debate.ComputedRelationState
@@ -406,7 +457,7 @@ export type ComputedRelationState = Message<"debate.ComputedRelationState"> & {
  * Use `create(ComputedRelationStateSchema)` to create a new message.
  */
 export const ComputedRelationStateSchema: GenMessage<ComputedRelationState> = /*@__PURE__*/
-  messageDesc(file_debate, 5);
+  messageDesc(file_debate, 6);
 
 /**
  * @generated from message debate.Debate
@@ -472,7 +523,7 @@ export type Debate = Message<"debate.Debate"> & {
  * Use `create(DebateSchema)` to create a new message.
  */
 export const DebateSchema: GenMessage<Debate> = /*@__PURE__*/
-  messageDesc(file_debate, 6);
+  messageDesc(file_debate, 7);
 
 /**
  * @generated from message debate.GetStateRequest
@@ -506,7 +557,7 @@ export type GetStateRequest = Message<"debate.GetStateRequest"> & {
  * Use `create(GetStateRequestSchema)` to create a new message.
  */
 export const GetStateRequestSchema: GenMessage<GetStateRequest> = /*@__PURE__*/
-  messageDesc(file_debate, 7);
+  messageDesc(file_debate, 8);
 
 /**
  * @generated from message debate.DebateState
@@ -556,7 +607,7 @@ export type DebateState = Message<"debate.DebateState"> & {
  * Use `create(DebateStateSchema)` to create a new message.
  */
 export const DebateStateSchema: GenMessage<DebateState> = /*@__PURE__*/
-  messageDesc(file_debate, 8);
+  messageDesc(file_debate, 9);
 
 /**
  * LEGACY. Superseded by `Status`.

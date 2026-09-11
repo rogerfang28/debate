@@ -1467,6 +1467,8 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     kChallengeDescriptionFieldNumber = 2,
     kBasisFieldNumber = 4,
     kVoiceFieldNumber = 6,
+    kSourceUrlFieldNumber = 7,
+    kSourceExcerptFieldNumber = 8,
   };
   // repeated string extra_sentences = 3 [json_name = "extraSentences"];
   int extra_sentences_size() const;
@@ -1572,12 +1574,42 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_voice();
 
   public:
+  // string source_url = 7 [json_name = "sourceUrl"];
+  void clear_source_url() ;
+  const ::std::string& source_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_url();
+  void set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_url();
+
+  public:
+  // string source_excerpt = 8 [json_name = "sourceExcerpt"];
+  void clear_source_excerpt() ;
+  const ::std::string& source_excerpt() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_excerpt(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_excerpt();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_excerpt();
+  void set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_excerpt() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_excerpt(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.SubmitChallengeClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   0, 124,
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
+                                   0, 156,
                                    2>
       _table_;
 
@@ -1604,6 +1636,8 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr challenge_description_;
     ::google::protobuf::internal::ArenaStringPtr basis_;
     ::google::protobuf::internal::ArenaStringPtr voice_;
+    ::google::protobuf::internal::ArenaStringPtr source_url_;
+    ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6270,6 +6304,8 @@ class AddChildClaim final : public ::google::protobuf::Message
     kDescriptionFieldNumber = 2,
     kBasisFieldNumber = 3,
     kVoiceFieldNumber = 6,
+    kSourceUrlFieldNumber = 7,
+    kSourceExcerptFieldNumber = 8,
   };
   // repeated string extra_claims = 4 [json_name = "extraClaims"];
   int extra_claims_size() const;
@@ -6375,12 +6411,42 @@ class AddChildClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_voice();
 
   public:
+  // string source_url = 7 [json_name = "sourceUrl"];
+  void clear_source_url() ;
+  const ::std::string& source_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_url();
+  void set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_url();
+
+  public:
+  // string source_excerpt = 8 [json_name = "sourceExcerpt"];
+  void clear_source_excerpt() ;
+  const ::std::string& source_excerpt() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_excerpt(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_excerpt();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_excerpt();
+  void set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_excerpt() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_excerpt(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.AddChildClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   0, 91,
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
+                                   0, 123,
                                    2>
       _table_;
 
@@ -6407,6 +6473,8 @@ class AddChildClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr basis_;
     ::google::protobuf::internal::ArenaStringPtr voice_;
+    ::google::protobuf::internal::ArenaStringPtr source_url_;
+    ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -8007,6 +8075,136 @@ inline void AddChildClaim::set_allocated_voice(::std::string* PROTOBUF_NULLABLE 
   // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.voice)
 }
 
+// string source_url = 7 [json_name = "sourceUrl"];
+inline void AddChildClaim::clear_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& AddChildClaim::source_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.AddChildClaim.source_url)
+  return _internal_source_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_source_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.source_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.source_url)
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_source_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_source_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.source_url)
+  return _s;
+}
+inline const ::std::string& AddChildClaim::_internal_source_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_url_.Get();
+}
+inline void AddChildClaim::_internal_set_source_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.source_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.source_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void AddChildClaim::set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.source_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_url_.IsDefault()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.source_url)
+}
+
+// string source_excerpt = 8 [json_name = "sourceExcerpt"];
+inline void AddChildClaim::clear_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& AddChildClaim::source_excerpt() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.AddChildClaim.source_excerpt)
+  return _internal_source_excerpt();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_source_excerpt(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.source_excerpt_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.source_excerpt)
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_source_excerpt()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_source_excerpt();
+  // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.source_excerpt)
+  return _s;
+}
+inline const ::std::string& AddChildClaim::_internal_source_excerpt() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_excerpt_.Get();
+}
+inline void AddChildClaim::_internal_set_source_excerpt(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_excerpt_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.source_excerpt)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.source_excerpt_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  return released;
+}
+inline void AddChildClaim::set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.source_excerpt_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_excerpt_.IsDefault()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.source_excerpt)
+}
+
 // string basis = 3 [json_name = "basis"];
 inline void AddChildClaim::clear_basis() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
@@ -9449,6 +9647,136 @@ inline void SubmitChallengeClaim::set_allocated_voice(::std::string* PROTOBUF_NU
     _impl_.voice_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.voice)
+}
+
+// string source_url = 7 [json_name = "sourceUrl"];
+inline void SubmitChallengeClaim::clear_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& SubmitChallengeClaim::source_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitChallengeClaim.source_url)
+  return _internal_source_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void SubmitChallengeClaim::set_source_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.source_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitChallengeClaim.source_url)
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::mutable_source_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_source_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitChallengeClaim.source_url)
+  return _s;
+}
+inline const ::std::string& SubmitChallengeClaim::_internal_source_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_url_.Get();
+}
+inline void SubmitChallengeClaim::_internal_set_source_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::_internal_mutable_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE SubmitChallengeClaim::release_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitChallengeClaim.source_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.source_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void SubmitChallengeClaim::set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.source_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_url_.IsDefault()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.source_url)
+}
+
+// string source_excerpt = 8 [json_name = "sourceExcerpt"];
+inline void SubmitChallengeClaim::clear_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline const ::std::string& SubmitChallengeClaim::source_excerpt() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitChallengeClaim.source_excerpt)
+  return _internal_source_excerpt();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void SubmitChallengeClaim::set_source_excerpt(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  _impl_.source_excerpt_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitChallengeClaim.source_excerpt)
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::mutable_source_excerpt()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ::std::string* _s = _internal_mutable_source_excerpt();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitChallengeClaim.source_excerpt)
+  return _s;
+}
+inline const ::std::string& SubmitChallengeClaim::_internal_source_excerpt() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_excerpt_.Get();
+}
+inline void SubmitChallengeClaim::_internal_set_source_excerpt(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::_internal_mutable_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_excerpt_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE SubmitChallengeClaim::release_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitChallengeClaim.source_excerpt)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000080U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  auto* released = _impl_.source_excerpt_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  return released;
+}
+inline void SubmitChallengeClaim::set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  }
+  _impl_.source_excerpt_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_excerpt_.IsDefault()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.source_excerpt)
 }
 
 // -------------------------------------------------------------------

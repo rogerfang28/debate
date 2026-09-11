@@ -141,7 +141,8 @@ int DebateWrapper::createClaim(
     const std::string& description,
     const int& user_id,
     const int& debate_id,
-    int voice_id) {
+    int voice_id,
+    const debate::Source* source) {
     debate::Claim claim;
     claim.set_sentence(claimText);
     claim.set_description(description);
@@ -149,6 +150,9 @@ int DebateWrapper::createClaim(
     claim.set_debate_id(debate_id);
     claim.set_status(debate::ClaimStatus::UNDETERMINED);
     claim.set_voice_id(voice_id);
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+        *claim.add_sources() = *source;
+    }
 
     // Whoever the claim belongs to sees it TRUE; addClaimToDB seeds that.
     addClaimToDB(claim, user_id, debate_id);
@@ -164,7 +168,8 @@ int DebateWrapper::addClaimUnderParent(
     const std::string& basis,
     int relation_id,
     int* out_relation_id,
-    int voice_id) {
+    int voice_id,
+    const debate::Source* source) {
 
     // debate::Claim parentClaimFromDB = getClaimById(parentId);
 
@@ -176,6 +181,9 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_debate_id(debate_id);
     childClaim.set_status(debate::ClaimStatus::UNDETERMINED);
     childClaim.set_voice_id(voice_id);
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+        *childClaim.add_sources() = *source;
+    }
 
     // Whoever the claim belongs to sees it TRUE; addClaimToDB seeds that.
     addClaimToDB(childClaim, user_id, debate_id);

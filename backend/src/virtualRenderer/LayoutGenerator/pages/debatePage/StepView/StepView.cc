@@ -152,6 +152,19 @@ static ui::Component BuildSelectedClaimPanel(
         claim.description().empty() ? "(no description)" : claim.description(),
         claim.description().empty()
     );
+    // Where the claim was taken from, when it was. Shown only when there is
+    // one: most claims are said directly and a "(no source)" line on each
+    // would be noise.
+    for (int i = 0; i < claim.sources_size(); ++i) {
+        const debate::Source& source = claim.sources(i);
+        const std::string suffix = i == 0 ? std::string() : std::to_string(i + 1);
+        if (!source.url().empty()) {
+            addField("Source" + suffix, "Source:", source.url(), false);
+        }
+        if (!source.excerpt().empty()) {
+            addField("SourceExcerpt" + suffix, "It says:", "\u201c" + source.excerpt() + "\u201d", true);
+        }
+    }
 
     ui::Component buttonRow = ComponentGenerator::createContainer(
         "selectedClaimButtonRow",

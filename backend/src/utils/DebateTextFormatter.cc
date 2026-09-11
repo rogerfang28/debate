@@ -123,6 +123,11 @@ struct Renderer {
         if (!claim.description().empty()) {
             out << indent(depth) << "  note: " << claim.description() << "\n";
         }
+        for (const auto& source : claim.sources()) {
+            out << indent(depth) << "  source: " << source.url();
+            if (!source.excerpt().empty()) out << " -- \"" << source.excerpt() << "\"";
+            out << "\n";
+        }
         if (repeat) {
             out << indent(depth) << "  (already shown above; not repeated)\n";
             return;
@@ -308,6 +313,11 @@ std::string DebateTextFormatter::FormatClaimContext(const debate::Collection& co
                  << statusPhrase(focus, options.viewerUsername) << "\n";
     if (!focus.description().empty()) {
         renderer.out << "  note: " << focus.description() << "\n";
+    }
+    for (const auto& source : focus.sources()) {
+        renderer.out << "  source: " << source.url();
+        if (!source.excerpt().empty()) renderer.out << " -- \"" << source.excerpt() << "\"";
+        renderer.out << "\n";
     }
     renderer.out << "\n";
 

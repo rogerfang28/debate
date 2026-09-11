@@ -118,6 +118,10 @@ class Relationship_Link;
 struct Relationship_LinkDefaultTypeInternal;
 extern Relationship_LinkDefaultTypeInternal _Relationship_Link_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull Relationship_Link_class_data_;
+class Source;
+struct SourceDefaultTypeInternal;
+extern SourceDefaultTypeInternal _Source_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull Source_class_data_;
 }  // namespace debate
 namespace google {
 namespace protobuf {
@@ -432,6 +436,247 @@ inline bool RelationState_Parse(
 
 // -------------------------------------------------------------------
 
+class Source final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate.Source) */ {
+ public:
+  inline Source() : Source(nullptr) {}
+  ~Source() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(Source* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Source));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Source(::google::protobuf::internal::ConstantInitialized);
+
+  inline Source(const Source& from) : Source(nullptr, from) {}
+  inline Source(Source&& from) noexcept
+      : Source(nullptr, ::std::move(from)) {}
+  inline Source& operator=(const Source& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Source& operator=(Source&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Source& default_instance() {
+    return *reinterpret_cast<const Source*>(
+        &_Source_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(Source& a, Source& b) { a.Swap(&b); }
+  inline void Swap(Source* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Source* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Source* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Source>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Source& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Source& from) { Source::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(Source* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate.Source"; }
+
+  explicit Source(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  Source(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Source& from);
+  Source(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, Source&& from) noexcept
+      : Source(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUrlFieldNumber = 1,
+    kExcerptFieldNumber = 2,
+    kPublishedFieldNumber = 3,
+    kFirstHandFieldNumber = 4,
+  };
+  // string url = 1 [json_name = "url"];
+  void clear_url() ;
+  const ::std::string& url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_url();
+  void set_allocated_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_url();
+
+  public:
+  // string excerpt = 2 [json_name = "excerpt"];
+  void clear_excerpt() ;
+  const ::std::string& excerpt() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_excerpt(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_excerpt();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_excerpt();
+  void set_allocated_excerpt(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_excerpt() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_excerpt(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_excerpt();
+
+  public:
+  // string published = 3 [json_name = "published"];
+  void clear_published() ;
+  const ::std::string& published() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_published(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_published();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_published();
+  void set_allocated_published(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_published() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_published(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_published();
+
+  public:
+  // bool first_hand = 4 [json_name = "firstHand"];
+  void clear_first_hand() ;
+  bool first_hand() const;
+  void set_first_hand(bool value);
+
+  private:
+  bool _internal_first_hand() const;
+  void _internal_set_first_hand(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate.Source)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 41,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const Source& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr url_;
+    ::google::protobuf::internal::ArenaStringPtr excerpt_;
+    ::google::protobuf::internal::ArenaStringPtr published_;
+    bool first_hand_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull Source_class_data_;
+// -------------------------------------------------------------------
+
 class Relationship_Link final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate.Relationship.Link) */ {
  public:
@@ -487,7 +732,7 @@ class Relationship_Link final : public ::google::protobuf::Message
     return *reinterpret_cast<const Relationship_Link*>(
         &_Relationship_Link_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(Relationship_Link& a, Relationship_Link& b) { a.Swap(&b); }
   inline void Swap(Relationship_Link* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -754,7 +999,7 @@ class GetStateRequest final : public ::google::protobuf::Message
     return *reinterpret_cast<const GetStateRequest*>(
         &_GetStateRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(GetStateRequest& a, GetStateRequest& b) { a.Swap(&b); }
   inline void Swap(GetStateRequest* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -977,7 +1222,7 @@ class ComputedRelationState final : public ::google::protobuf::Message
     return *reinterpret_cast<const ComputedRelationState*>(
         &_ComputedRelationState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(ComputedRelationState& a, ComputedRelationState& b) { a.Swap(&b); }
   inline void Swap(ComputedRelationState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1179,7 +1424,7 @@ class ComputedClaimState final : public ::google::protobuf::Message
     return *reinterpret_cast<const ComputedClaimState*>(
         &_ComputedClaimState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(ComputedClaimState& a, ComputedClaimState& b) { a.Swap(&b); }
   inline void Swap(ComputedClaimState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1466,7 +1711,7 @@ class Relationship final : public ::google::protobuf::Message
     kToRelationId = 6,
     TO_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(Relationship& a, Relationship& b) { a.Swap(&b); }
   inline void Swap(Relationship* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1802,7 +2047,7 @@ class Move final : public ::google::protobuf::Message
     return *reinterpret_cast<const Move*>(
         &_Move_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(Move& a, Move& b) { a.Swap(&b); }
   inline void Swap(Move* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2140,7 +2385,7 @@ class Debate final : public ::google::protobuf::Message
     return *reinterpret_cast<const Debate*>(
         &_Debate_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(Debate& a, Debate& b) { a.Swap(&b); }
   inline void Swap(Debate* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2450,7 +2695,7 @@ class Claim final : public ::google::protobuf::Message
     return *reinterpret_cast<const Claim*>(
         &_Claim_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(Claim& a, Claim& b) { a.Swap(&b); }
   inline void Swap(Claim* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2539,6 +2784,7 @@ class Claim final : public ::google::protobuf::Message
   enum : int {
     kHistoryFieldNumber = 10,
     kLinkIdsFieldNumber = 12,
+    kSourcesFieldNumber = 16,
     kSentenceFieldNumber = 2,
     kDescriptionFieldNumber = 3,
     kCreatedAtFieldNumber = 14,
@@ -2584,6 +2830,23 @@ class Claim final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_link_ids();
 
   public:
+  // repeated .debate.Source sources = 16 [json_name = "sources"];
+  int sources_size() const;
+  private:
+  int _internal_sources_size() const;
+
+  public:
+  void clear_sources() ;
+  ::debate::Source* PROTOBUF_NONNULL mutable_sources(int index);
+  ::google::protobuf::RepeatedPtrField<::debate::Source>* PROTOBUF_NONNULL mutable_sources();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::debate::Source>& _internal_sources() const;
+  ::google::protobuf::RepeatedPtrField<::debate::Source>* PROTOBUF_NONNULL _internal_mutable_sources();
+  public:
+  const ::debate::Source& sources(int index) const;
+  ::debate::Source* PROTOBUF_NONNULL add_sources();
+  const ::google::protobuf::RepeatedPtrField<::debate::Source>& sources() const;
   // string sentence = 2 [json_name = "sentence"];
   void clear_sentence() ;
   const ::std::string& sentence() const;
@@ -2698,8 +2961,8 @@ class Claim final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 11,
-                                   3, 61,
+  static const ::google::protobuf::internal::TcParseTable<4, 12,
+                                   4, 61,
                                    2>
       _table_;
 
@@ -2723,6 +2986,7 @@ class Claim final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::debate::ClaimState > history_;
     ::google::protobuf::RepeatedField<::int32_t> link_ids_;
     ::google::protobuf::internal::CachedSize _link_ids_cached_byte_size_;
+    ::google::protobuf::RepeatedPtrField< ::debate::Source > sources_;
     ::google::protobuf::internal::ArenaStringPtr sentence_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::Timestamp* PROTOBUF_NULLABLE created_at_;
@@ -2799,7 +3063,7 @@ class ClaimState final : public ::google::protobuf::Message
     return *reinterpret_cast<const ClaimState*>(
         &_ClaimState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(ClaimState& a, ClaimState& b) { a.Swap(&b); }
   inline void Swap(ClaimState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3011,7 +3275,7 @@ class DebateState final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebateState*>(
         &_DebateState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(DebateState& a, DebateState& b) { a.Swap(&b); }
   inline void Swap(DebateState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3264,6 +3528,230 @@ extern const ::google::protobuf::internal::ClassDataFull DebateState_class_data_
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
+// Source
+
+// string url = 1 [json_name = "url"];
+inline void Source::clear_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& Source::url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Source.url)
+  return _internal_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Source::set_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Source.url)
+}
+inline ::std::string* PROTOBUF_NONNULL Source::mutable_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_url();
+  // @@protoc_insertion_point(field_mutable:debate.Source.url)
+  return _s;
+}
+inline const ::std::string& Source::_internal_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.url_.Get();
+}
+inline void Source::_internal_set_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Source::_internal_mutable_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Source::release_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Source.url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Source::set_allocated_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.url_.IsDefault()) {
+    _impl_.url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Source.url)
+}
+
+// string excerpt = 2 [json_name = "excerpt"];
+inline void Source::clear_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.excerpt_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& Source::excerpt() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Source.excerpt)
+  return _internal_excerpt();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Source::set_excerpt(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.excerpt_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Source.excerpt)
+}
+inline ::std::string* PROTOBUF_NONNULL Source::mutable_excerpt()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_excerpt();
+  // @@protoc_insertion_point(field_mutable:debate.Source.excerpt)
+  return _s;
+}
+inline const ::std::string& Source::_internal_excerpt() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.excerpt_.Get();
+}
+inline void Source::_internal_set_excerpt(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.excerpt_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Source::_internal_mutable_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.excerpt_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Source::release_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Source.excerpt)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.excerpt_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.excerpt_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Source::set_allocated_excerpt(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.excerpt_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.excerpt_.IsDefault()) {
+    _impl_.excerpt_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Source.excerpt)
+}
+
+// string published = 3 [json_name = "published"];
+inline void Source::clear_published() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.published_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& Source::published() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Source.published)
+  return _internal_published();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Source::set_published(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.published_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Source.published)
+}
+inline ::std::string* PROTOBUF_NONNULL Source::mutable_published()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_published();
+  // @@protoc_insertion_point(field_mutable:debate.Source.published)
+  return _s;
+}
+inline const ::std::string& Source::_internal_published() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.published_.Get();
+}
+inline void Source::_internal_set_published(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.published_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Source::_internal_mutable_published() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.published_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Source::release_published() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Source.published)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.published_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.published_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Source::set_allocated_published(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.published_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.published_.IsDefault()) {
+    _impl_.published_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Source.published)
+}
+
+// bool first_hand = 4 [json_name = "firstHand"];
+inline void Source::clear_first_hand() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.first_hand_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline bool Source::first_hand() const {
+  // @@protoc_insertion_point(field_get:debate.Source.first_hand)
+  return _internal_first_hand();
+}
+inline void Source::set_first_hand(bool value) {
+  _internal_set_first_hand(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:debate.Source.first_hand)
+}
+inline bool Source::_internal_first_hand() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.first_hand_;
+}
+inline void Source::_internal_set_first_hand(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.first_hand_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // Claim
@@ -3273,7 +3761,7 @@ inline void Claim::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline ::int32_t Claim::id() const {
   // @@protoc_insertion_point(field_get:debate.Claim.id)
@@ -3281,7 +3769,7 @@ inline ::int32_t Claim::id() const {
 }
 inline void Claim::set_id(::int32_t value) {
   _internal_set_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:debate.Claim.id)
 }
 inline ::int32_t Claim::_internal_id() const {
@@ -3298,7 +3786,7 @@ inline void Claim::clear_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.sentence_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline const ::std::string& Claim::sentence() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -3308,13 +3796,13 @@ inline const ::std::string& Claim::sentence() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void Claim::set_sentence(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   _impl_.sentence_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate.Claim.sentence)
 }
 inline ::std::string* PROTOBUF_NONNULL Claim::mutable_sentence()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::std::string* _s = _internal_mutable_sentence();
   // @@protoc_insertion_point(field_mutable:debate.Claim.sentence)
   return _s;
@@ -3334,10 +3822,10 @@ inline ::std::string* PROTOBUF_NONNULL Claim::_internal_mutable_sentence() {
 inline ::std::string* PROTOBUF_NULLABLE Claim::release_sentence() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate.Claim.sentence)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   auto* released = _impl_.sentence_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.sentence_.Set("", GetArena());
@@ -3347,9 +3835,9 @@ inline ::std::string* PROTOBUF_NULLABLE Claim::release_sentence() {
 inline void Claim::set_allocated_sentence(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   _impl_.sentence_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.sentence_.IsDefault()) {
@@ -3363,7 +3851,7 @@ inline void Claim::clear_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.description_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline const ::std::string& Claim::description() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -3373,13 +3861,13 @@ inline const ::std::string& Claim::description() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void Claim::set_description(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:debate.Claim.description)
 }
 inline ::std::string* PROTOBUF_NONNULL Claim::mutable_description()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::std::string* _s = _internal_mutable_description();
   // @@protoc_insertion_point(field_mutable:debate.Claim.description)
   return _s;
@@ -3399,10 +3887,10 @@ inline ::std::string* PROTOBUF_NONNULL Claim::_internal_mutable_description() {
 inline ::std::string* PROTOBUF_NULLABLE Claim::release_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate.Claim.description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   auto* released = _impl_.description_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.description_.Set("", GetArena());
@@ -3412,9 +3900,9 @@ inline ::std::string* PROTOBUF_NULLABLE Claim::release_description() {
 inline void Claim::set_allocated_description(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   _impl_.description_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.description_.IsDefault()) {
@@ -3428,7 +3916,7 @@ inline void Claim::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000080U);
 }
 inline ::int32_t Claim::creator_id() const {
   // @@protoc_insertion_point(field_get:debate.Claim.creator_id)
@@ -3436,7 +3924,7 @@ inline ::int32_t Claim::creator_id() const {
 }
 inline void Claim::set_creator_id(::int32_t value) {
   _internal_set_creator_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:debate.Claim.creator_id)
 }
 inline ::int32_t Claim::_internal_creator_id() const {
@@ -3453,7 +3941,7 @@ inline void Claim::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline ::int32_t Claim::debate_id() const {
   // @@protoc_insertion_point(field_get:debate.Claim.debate_id)
@@ -3461,7 +3949,7 @@ inline ::int32_t Claim::debate_id() const {
 }
 inline void Claim::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:debate.Claim.debate_id)
 }
 inline ::int32_t Claim::_internal_debate_id() const {
@@ -3475,7 +3963,7 @@ inline void Claim::_internal_set_debate_id(::int32_t value) {
 
 // .google.protobuf.Timestamp created_at = 14 [json_name = "createdAt"];
 inline bool Claim::has_created_at() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
   PROTOBUF_ASSUME(!value || _impl_.created_at_ != nullptr);
   return value;
 }
@@ -3496,16 +3984,16 @@ inline void Claim::unsafe_arena_set_allocated_created_at(
   }
   _impl_.created_at_ = reinterpret_cast<::google::protobuf::Timestamp*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate.Claim.created_at)
 }
 inline ::google::protobuf::Timestamp* PROTOBUF_NULLABLE Claim::release_created_at() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::google::protobuf::Timestamp* released = _impl_.created_at_;
   _impl_.created_at_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -3525,7 +4013,7 @@ inline ::google::protobuf::Timestamp* PROTOBUF_NULLABLE Claim::unsafe_arena_rele
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:debate.Claim.created_at)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::google::protobuf::Timestamp* temp = _impl_.created_at_;
   _impl_.created_at_ = nullptr;
   return temp;
@@ -3540,7 +4028,7 @@ inline ::google::protobuf::Timestamp* PROTOBUF_NONNULL Claim::_internal_mutable_
 }
 inline ::google::protobuf::Timestamp* PROTOBUF_NONNULL Claim::mutable_created_at()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::google::protobuf::Timestamp* _msg = _internal_mutable_created_at();
   // @@protoc_insertion_point(field_mutable:debate.Claim.created_at)
   return _msg;
@@ -3557,9 +4045,9 @@ inline void Claim::set_allocated_created_at(::google::protobuf::Timestamp* PROTO
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
 
   _impl_.created_at_ = reinterpret_cast<::google::protobuf::Timestamp*>(value);
@@ -3571,7 +4059,7 @@ inline void Claim::clear_voice_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.voice_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000200U);
+                  0x00000400U);
 }
 inline ::int32_t Claim::voice_id() const {
   // @@protoc_insertion_point(field_get:debate.Claim.voice_id)
@@ -3579,7 +4067,7 @@ inline ::int32_t Claim::voice_id() const {
 }
 inline void Claim::set_voice_id(::int32_t value) {
   _internal_set_voice_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
   // @@protoc_insertion_point(field_set:debate.Claim.voice_id)
 }
 inline ::int32_t Claim::_internal_voice_id() const {
@@ -3589,6 +4077,62 @@ inline ::int32_t Claim::_internal_voice_id() const {
 inline void Claim::_internal_set_voice_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.voice_id_ = value;
+}
+
+// repeated .debate.Source sources = 16 [json_name = "sources"];
+inline int Claim::_internal_sources_size() const {
+  return _internal_sources().size();
+}
+inline int Claim::sources_size() const {
+  return _internal_sources_size();
+}
+inline void Claim::clear_sources() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sources_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::debate::Source* PROTOBUF_NONNULL Claim::mutable_sources(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:debate.Claim.sources)
+  return _internal_mutable_sources()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Source>* PROTOBUF_NONNULL Claim::mutable_sources()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_mutable_list:debate.Claim.sources)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_sources();
+}
+inline const ::debate::Source& Claim::sources(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Claim.sources)
+  return _internal_sources().Get(index);
+}
+inline ::debate::Source* PROTOBUF_NONNULL Claim::add_sources()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::debate::Source* _add =
+      _internal_mutable_sources()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_add:debate.Claim.sources)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Source>& Claim::sources() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:debate.Claim.sources)
+  return _internal_sources();
+}
+inline const ::google::protobuf::RepeatedPtrField<::debate::Source>&
+Claim::_internal_sources() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.sources_;
+}
+inline ::google::protobuf::RepeatedPtrField<::debate::Source>* PROTOBUF_NONNULL
+Claim::_internal_mutable_sources() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.sources_;
 }
 
 // repeated .debate.ClaimState history = 10 [json_name = "history", deprecated = true];
@@ -3652,7 +4196,7 @@ inline void Claim::clear_status() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.status_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000200U);
 }
 inline ::debate::ClaimStatus Claim::status() const {
   // @@protoc_insertion_point(field_get:debate.Claim.status)
@@ -3660,7 +4204,7 @@ inline ::debate::ClaimStatus Claim::status() const {
 }
 inline void Claim::set_status(::debate::ClaimStatus value) {
   _internal_set_status(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   // @@protoc_insertion_point(field_set:debate.Claim.status)
 }
 inline ::debate::ClaimStatus Claim::_internal_status() const {
@@ -3733,7 +4277,7 @@ inline void Claim::clear_user_statuses() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_statuses_.Clear();
   ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000400U);
+                  0x00000800U);
 }
 inline const ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>& Claim::_internal_user_statuses() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -3749,7 +4293,7 @@ inline ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>* PROTOBUF_N
 }
 inline ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>* PROTOBUF_NONNULL Claim::mutable_user_statuses()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000400U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000800U);
   // @@protoc_insertion_point(field_mutable_map:debate.Claim.user_statuses)
   return _internal_mutable_user_statuses();
 }

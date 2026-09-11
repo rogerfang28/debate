@@ -15,7 +15,7 @@ public:
     // its own assertion, so it carries its own explanation.
     // `voice_id`: whose claims these are when not the submitter's (0 = the
     // submitter's own). One voice covers every claim in the call.
-    static void AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper, int voice_id = 0);
+    static void AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis, const int& user_id, DebateWrapper& debateWrapper, int voice_id = 0, const debate::Source* source = nullptr);
     static void CloseAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
     static void OpenAddChildClaim(const int& user_id, DebateWrapper& debateWrapper);
 };

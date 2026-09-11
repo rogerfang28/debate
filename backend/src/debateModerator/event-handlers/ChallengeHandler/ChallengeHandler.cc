@@ -111,7 +111,7 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id, const debate::Source* source) {
     // Same rule as AddClaimUnderClaim: only a basis the registry knows is stored.
     const std::string basis = bases::Sanitize(basis_in);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
@@ -181,7 +181,8 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
             description,
             user_id,
             current_debate_id,
-            voice_id
+            voice_id,
+            source
         );
         if (claim_id == -1) {
             continue;

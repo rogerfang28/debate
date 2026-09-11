@@ -22,13 +22,15 @@ public:
     bool isRoot(const int& claimId);
     // `voice_id` is WHOSE claim it is when that is not `user_id` (see
     // ClaimVoice.h); 0 means the entrant speaks for themselves. Truth is
-    // seeded for the voice.
+    // seeded for the voice. `source`, if given and not blank, is recorded
+    // on the claim as where it was taken from.
     int createClaim(
         const std::string& claimText,
         const std::string& description,
         const int& user_id,
         const int& debate_id,
-        int voice_id = 0);
+        int voice_id = 0,
+        const debate::Source* source = nullptr);
     // `basis` is stored as the link's connection -- the field that until now
     // held a hardcoded constant. Empty falls back to that old constant so
     // existing callers keep their previous behaviour.
@@ -41,7 +43,8 @@ public:
         const std::string& basis = "",
         int relation_id = 0,
         int* out_relation_id = nullptr,
-        int voice_id = 0);
+        int voice_id = 0,
+        const debate::Source* source = nullptr);
     void changeDescriptionOfClaim(
         const int& claimId,
         const std::string& newDescription);

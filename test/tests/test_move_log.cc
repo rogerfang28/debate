@@ -1200,3 +1200,62 @@ TEST_F(MoveLogTest, AChallengeWithAVoiceRecordsTheVoicesOpinionNotTheEntrants) {
     EXPECT_EQ(view("alice", rootId), debate::ClaimStatus::TRUE_CLAIM);
     EXPECT_EQ(view("alice", challengeId), debate::ClaimStatus::UNDETERMINED);
 }
+
+
+// ---------------------------------------------------------------------------
+// Sources: where a claim was taken from rides on the claim.
+// ---------------------------------------------------------------------------
+TEST_F(MoveLogTest, AChildCarriesItsSourceAndAChildWithoutOneCarriesNone) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int rootId = currentClaimId();
+
+    auto sourced = baseEvent(debate_event::ADD_CHILD_CLAIM);
+    sourced.mutable_add_child_claim()->set_claim("The bridge is unsafe");
+    sourced.mutable_add_child_claim()->set_voice("the reporter");
+    sourced.mutable_add_child_claim()->set_source_url("https://example.org/bridge");
+    sourced.mutable_add_child_claim()->set_source_excerpt("engineers called the span unsafe");
+    send(sourced);
+
+    auto bare = baseEvent(debate_event::ADD_CHILD_CLAIM);
+    bare.mutable_add_child_claim()->set_claim("Traffic on it doubled");
+    send(bare);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+    debate::Claim withSource, without;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type != "ASSERT" || m.targetType != "claim" || m.targetId == rootId) continue;
+        const debate::Claim c = dw.getClaimById(m.targetId);
+        if (c.sentence() == "The bridge is unsafe") withSource = c; else without = c;
+    }
+    ASSERT_GT(withSource.id(), 0);
+    ASSERT_GT(without.id(), 0);
+
+    ASSERT_EQ(withSource.sources_size(), 1);
+    EXPECT_EQ(withSource.sources(0).url(), "https://example.org/bridge");
+    EXPECT_EQ(withSource.sources(0).excerpt(), "engineers called the span unsafe");
+    EXPECT_EQ(without.sources_size(), 0) << "blank source boxes add nothing";
+}
+
+TEST_F(MoveLogTest, AChallengeCarriesItsSource) {
+    createAndEnterDebate("The bridge should close");
+    const int rootId = currentClaimId();
+
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addTarget = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    addTarget.mutable_add_claim_to_be_challenged()->set_claim_id(rootId);
+    send(addTarget);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("The bridge passed inspection");
+    submit.mutable_submit_challenge_claim()->set_source_url("https://example.org/inspection");
+    send(submit);
+
+    const int challengeId = currentClaimId();
+    ASSERT_NE(challengeId, rootId);
+    const debate::Claim challenge = moderator_->getDebateWrapper().getClaimById(challengeId);
+    ASSERT_EQ(challenge.sources_size(), 1);
+    EXPECT_EQ(challenge.sources(0).url(), "https://example.org/inspection");
+    EXPECT_EQ(challenge.sources(0).excerpt(), "") << "a link alone is a source";
+}

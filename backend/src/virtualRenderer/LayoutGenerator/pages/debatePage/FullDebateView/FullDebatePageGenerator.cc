@@ -1858,6 +1858,42 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&modalContent, voiceInput);
 
+            // Source: where the claim was taken from, if anywhere. Not
+            // evidence -- that is a child claim -- but the place to check.
+            ui::Component sourceLabel = ComponentGenerator::createText(
+                "claimSourceLabel",
+                "Source (optional): where this was taken from",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceLabel);
+            ui::Component sourceUrlInput = ComponentGenerator::createInput(
+                "claimSourceUrlInput",
+                "Link",
+                "claimSourceUrl",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceUrlInput);
+            ui::Component sourceExcerptInput = ComponentGenerator::createInput(
+                "claimSourceExcerptInput",
+                "The words on the page, as written",
+                "claimSourceExcerpt",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceExcerptInput);
+
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(
                 "modalActions",
@@ -2072,6 +2108,40 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full mb-6"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeVoiceInput);
+
+            ui::Component challengeSourceLabel = ComponentGenerator::createText(
+                "challengeSourceLabel",
+                "Source (optional): where this was taken from",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceLabel);
+            ui::Component challengeSourceUrlInput = ComponentGenerator::createInput(
+                "challengeSourceUrlInput",
+                "Link",
+                "challengeSourceUrl",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceUrlInput);
+            ui::Component challengeSourceExcerptInput = ComponentGenerator::createInput(
+                "challengeSourceExcerptInput",
+                "The words on the page, as written",
+                "challengeSourceExcerpt",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceExcerptInput);
 
             // Modal action buttons
             ui::Component addChallengeModalActions = ComponentGenerator::createContainer(
