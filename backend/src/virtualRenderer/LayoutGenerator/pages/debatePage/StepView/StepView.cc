@@ -1,4 +1,5 @@
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/ClaimVoice.h"
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
@@ -41,7 +42,7 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
     if (it != userStatuses.end()) {
         return it->second;
     }
-    if (viewerUserId == claim.creator_id()) {
+    if (viewerUserId == ClaimVoiceId(claim)) {
         return debate::ClaimStatus::TRUE_CLAIM;
     }
     return debate::ClaimStatus::UNDETERMINED;
@@ -133,7 +134,18 @@ static ui::Component BuildSelectedClaimPanel(
     if (creatorUsername.empty()) {
         creatorUsername = "User " + std::to_string(claim.creator_id());
     }
-    addField("Creator", "Created by:", creatorUsername, false);
+    // A claim entered on someone else's behalf shows both: whose claim it is,
+    // and who typed it in. One entered by its own author shows one line.
+    if (claim.voice_id() > 0 && claim.voice_id() != claim.creator_id()) {
+        std::string voiceUsername = userDb.getUsername(claim.voice_id());
+        if (voiceUsername.empty()) {
+            voiceUsername = "User " + std::to_string(claim.voice_id());
+        }
+        addField("Voice", "Said by:", voiceUsername, false);
+        addField("Creator", "Entered by:", creatorUsername, false);
+    } else {
+        addField("Creator", "Created by:", creatorUsername, false);
+    }
     addField(
         "Description",
         "Description:",
@@ -162,14 +174,17 @@ static ui::Component BuildSelectedClaimPanel(
         if (link.is_challenge() && link.from_claim_id() == claimId) {
             auto challengedIt = collectionProto.claims_by_id().find(link.to_claim_id());
             if (challengedIt != collectionProto.claims_by_id().end() &&
-                viewerUserId > 0 && challengedIt->second.creator_id() == viewerUserId) {
+                viewerUserId > 0 && ClaimVoiceId(challengedIt->second) == viewerUserId) {
                 concedeChallengeLinkId = link.link_id();
             }
             break;
         }
     }
 
-    const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
+    // "Own" here means the claim is HELD by the viewer. A reader who entered
+    // the reporter's claim gets the Challenge button on it, not Support and
+    // Delete: it is the reporter's claim, and the reader's job is to test it.
+    const bool isOwnClaim = viewerUserId > 0 && ClaimVoiceId(claim) == viewerUserId;
     if (isOwnClaim) {
         // "Support", not "Add Child": a child claim is evidence offered FOR its
         // parent, so the relationship is what the user is actually creating.

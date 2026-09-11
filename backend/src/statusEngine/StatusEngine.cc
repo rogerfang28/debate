@@ -512,6 +512,14 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
         }
     };
 
+    // A claim entered on someone else's behalf ("the reporter says X") is
+    // held by that VOICE, not by whoever typed it. The claim carries the
+    // voice; an OPPOSE carries it in its payload.
+    std::map<int, int> voiceOfClaim;
+    for (const auto& c : claims) {
+        if (c.voice_id() > 0) voiceOfClaim[c.id()] = c.voice_id();
+    }
+
     for (const debate::Move* m : ordered) {
         auto nameIt = usernames.find(m->actor_id());
         if (nameIt == usernames.end() || nameIt->second.empty()) {
@@ -520,20 +528,34 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
         const std::string& user = nameIt->second;
         const int target = m->target_id();
 
+        // Whose opinion a move records: the voice's when one is named AND
+        // known by name, else the actor's.
+        auto speaker = [&](int voiceId) -> const std::string& {
+            if (voiceId > 0) {
+                auto v = usernames.find(voiceId);
+                if (v != usernames.end() && !v->second.empty()) return v->second;
+            }
+            return user;
+        };
+
         switch (m->type()) {
-            case debate::ASSERT:
-                // addClaimToDB and friends: the creator sees their own claim TRUE.
-                // Relation asserts write no status.
+            case debate::ASSERT: {
+                // addClaimToDB and friends: whoever the claim belongs to sees
+                // it TRUE. Relation asserts write no status.
                 if (m->target_type() == debate::TARGET_CLAIM) {
-                    put(target, user, debate::ClaimStatus::TRUE_CLAIM);
+                    auto v = voiceOfClaim.find(target);
+                    put(target, speaker(v == voiceOfClaim.end() ? 0 : v->second),
+                        debate::ClaimStatus::TRUE_CLAIM);
                 }
                 break;
+            }
 
             case debate::OPPOSE:
                 // SubmitChallengeClaim: the challenger sees the target FALSE.
                 // Their own challenge claim was already seeded by its ASSERT.
                 if (m->target_type() == debate::TARGET_CLAIM) {
-                    put(target, user, debate::ClaimStatus::FALSE_CLAIM);
+                    put(target, speaker(payloadInt(m->payload(), "voice_id")),
+                        debate::ClaimStatus::FALSE_CLAIM);
                 }
                 break;
 

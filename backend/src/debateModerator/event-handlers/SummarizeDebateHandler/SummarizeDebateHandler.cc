@@ -44,9 +44,11 @@ void SummarizeDebateHandler::SummarizeDebate(const int& user_id, DebateWrapper& 
     // Claim authors who are no longer members would otherwise render as
     // "User 7" in their own debate.
     for (const auto& entry : collection.claims_by_id()) {
-        const int creatorId = entry.second.creator_id();
-        if (creatorId > 0 && usernames.find(creatorId) == usernames.end()) {
-            usernames[creatorId] = debateWrapper.getUserProtobuf(creatorId).username();
+        // The entrant and, when named, the voice: the text prints the voice.
+        for (const int who : {entry.second.creator_id(), entry.second.voice_id()}) {
+            if (who > 0 && usernames.find(who) == usernames.end()) {
+                usernames[who] = debateWrapper.getUserProtobuf(who).username();
+            }
         }
     }
 
@@ -223,9 +225,11 @@ void SummarizeDebateHandler::SummarizeClaim(const int& claim_id, const int& user
         usernames[memberId] = debateWrapper.getUserProtobuf(memberId).username();
     }
     for (const auto& entry : collection.claims_by_id()) {
-        const int creatorId = entry.second.creator_id();
-        if (creatorId > 0 && usernames.find(creatorId) == usernames.end()) {
-            usernames[creatorId] = debateWrapper.getUserProtobuf(creatorId).username();
+        // The entrant and, when named, the voice: the text prints the voice.
+        for (const int who : {entry.second.creator_id(), entry.second.voice_id()}) {
+            if (who > 0 && usernames.find(who) == usernames.end()) {
+                usernames[who] = debateWrapper.getUserProtobuf(who).username();
+            }
         }
     }
 

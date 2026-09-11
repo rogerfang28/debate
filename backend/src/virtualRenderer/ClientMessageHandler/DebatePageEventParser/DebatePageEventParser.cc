@@ -129,6 +129,9 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             } else if (comp.id() == "linkTypeSelect") {
                 submitEvent->set_basis(comp.value());
                 Log::debug("  Basis: " + comp.value());
+            } else if (comp.id() == "claimVoiceInput") {
+                submitEvent->set_voice(comp.value());
+                Log::debug("  Voice: " + comp.value());
             }
         }
 
@@ -257,6 +260,9 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
             } else if (comp.id() == "challengeLinkTypeSelect") {
                 submitEvent->set_basis(comp.value());
                 Log::debug("  Challenge basis: " + comp.value());
+            } else if (comp.id() == "challengeVoiceInput") {
+                submitEvent->set_voice(comp.value());
+                Log::debug("  Challenge voice: " + comp.value());
             }
         }
 

@@ -279,9 +279,14 @@ void logForEvent(const debate_event::DebateEvent& event,
                 debateWrapper.findOutgoingChallengeLink(challengeClaimId);
             const debate::Relationship::Link& challengeLink = challengeRel.link();
             if (challengeLink.id() != 0) {
+                // The actor is who typed it; the OPPOSE is the VOICE's opinion
+                // when one was named, so the replay needs the voice here. (An
+                // ASSERT needs no such note: the claim itself carries voice_id.)
+                const int voiceId = debateWrapper.getClaimById(challengeClaimId).voice_id();
                 const std::string payload =
                     "{\"relation_id\":" + std::to_string(challengeLink.id()) +
-                    ",\"challenging_claim_id\":" + std::to_string(challengeClaimId) + "}";
+                    ",\"challenging_claim_id\":" + std::to_string(challengeClaimId) +
+                    (voiceId > 0 ? ",\"voice_id\":" + std::to_string(voiceId) : std::string()) + "}";
                 if (challengeRel.to_case() == debate::Relationship::kToRelationId) {
                     append(databaseWrapper, pre.debateId, user_id, "OPPOSE", false,
                            challengeRel.to_relation_id(), payload);

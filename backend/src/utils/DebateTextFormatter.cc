@@ -1,4 +1,5 @@
 #include "DebateTextFormatter.h"
+#include "ClaimVoice.h"
 
 #include <algorithm>
 #include <cctype>
@@ -117,7 +118,7 @@ struct Renderer {
         const bool repeat = !renderedClaims.insert(claimId).second;
 
         out << indent(depth) << "- [#" << claimId << "] " << claim.sentence() << "\n";
-        out << indent(depth) << "  by " << nameFor(claim.creator_id(), usernames)
+        out << indent(depth) << "  by " << nameFor(ClaimVoiceId(claim), usernames)
             << "; " << statusPhrase(claim, viewer) << "\n";
         if (!claim.description().empty()) {
             out << indent(depth) << "  note: " << claim.description() << "\n";
@@ -303,7 +304,7 @@ std::string DebateTextFormatter::FormatClaimContext(const debate::Collection& co
 
     renderer.out << "THE CLAIM IN FOCUS\n";
     renderer.out << "- [#" << focus.id() << "] " << focus.sentence() << "\n";
-    renderer.out << "  by " << nameFor(focus.creator_id(), usernames) << "; "
+    renderer.out << "  by " << nameFor(ClaimVoiceId(focus), usernames) << "; "
                  << statusPhrase(focus, options.viewerUsername) << "\n";
     if (!focus.description().empty()) {
         renderer.out << "  note: " << focus.description() << "\n";
@@ -328,7 +329,7 @@ std::string DebateTextFormatter::FormatClaimContext(const debate::Collection& co
                 renderer.out << indent(depth + 1) << "- [#" << parentIt->second.id() << "] "
                              << parentIt->second.sentence() << "\n";
                 renderer.out << indent(depth + 1) << "  by "
-                             << nameFor(parentIt->second.creator_id(), usernames) << "; "
+                             << nameFor(ClaimVoiceId(parentIt->second), usernames) << "; "
                              << statusPhrase(parentIt->second, options.viewerUsername) << "\n";
             }
             // Siblings matter: if this claim is one part of a joint argument,

@@ -20,11 +20,15 @@ public:
     void initNewDebate(const std::string& topic, const int& owner_id);
     debate::Claim findClaimParent(const int& claimId);
     bool isRoot(const int& claimId);
+    // `voice_id` is WHOSE claim it is when that is not `user_id` (see
+    // ClaimVoice.h); 0 means the entrant speaks for themselves. Truth is
+    // seeded for the voice.
     int createClaim(
         const std::string& claimText,
         const std::string& description,
         const int& user_id,
-        const int& debate_id);
+        const int& debate_id,
+        int voice_id = 0);
     // `basis` is stored as the link's connection -- the field that until now
     // held a hardcoded constant. Empty falls back to that old constant so
     // existing callers keep their previous behaviour.
@@ -36,7 +40,8 @@ public:
         const int& debate_id,
         const std::string& basis = "",
         int relation_id = 0,
-        int* out_relation_id = nullptr);
+        int* out_relation_id = nullptr,
+        int voice_id = 0);
     void changeDescriptionOfClaim(
         const int& claimId,
         const std::string& newDescription);

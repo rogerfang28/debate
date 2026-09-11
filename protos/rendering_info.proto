@@ -93,6 +93,9 @@ message FullDebateTreeNode {
 	// Convenience adjacency to simplify map rendering without extra joins.
 	repeated int32 parent_claim_ids = 6;
 	repeated int32 child_claim_ids = 7;
+
+	// Whose claim it is when not the entrant's (debate.Claim.voice_id); 0 = creator.
+	int32 voice_id = 8;
 }
 
 enum FullDebateTreeLinkType {

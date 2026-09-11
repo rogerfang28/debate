@@ -2546,6 +2546,7 @@ class Claim final : public ::google::protobuf::Message
     kCreatorIdFieldNumber = 8,
     kDebateIdFieldNumber = 9,
     kStatusFieldNumber = 11,
+    kVoiceIdFieldNumber = 15,
     kUserStatusesFieldNumber = 13,
   };
   // repeated .debate.ClaimState history = 10 [json_name = "history", deprecated = true];
@@ -2668,6 +2669,16 @@ class Claim final : public ::google::protobuf::Message
   void _internal_set_status(::debate::ClaimStatus value);
 
   public:
+  // int32 voice_id = 15 [json_name = "voiceId"];
+  void clear_voice_id() ;
+  ::int32_t voice_id() const;
+  void set_voice_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_voice_id() const;
+  void _internal_set_voice_id(::int32_t value);
+
+  public:
   // map<string, .debate.ClaimStatus> user_statuses = 13 [json_name = "userStatuses", deprecated = true];
   [[deprecated]]  int user_statuses_size() const;
   private:
@@ -2687,7 +2698,7 @@ class Claim final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 10,
+  static const ::google::protobuf::internal::TcParseTable<4, 11,
                                    3, 61,
                                    2>
       _table_;
@@ -2719,6 +2730,7 @@ class Claim final : public ::google::protobuf::Message
     ::int32_t creator_id_;
     ::int32_t debate_id_;
     int status_;
+    ::int32_t voice_id_;
     ::google::protobuf::internal::MapField<Claim_UserStatusesEntry_DoNotUse, ::std::string, ::debate::ClaimStatus,
                       ::google::protobuf::internal::WireFormatLite::TYPE_STRING,
                       ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>
@@ -3554,6 +3566,31 @@ inline void Claim::set_allocated_created_at(::google::protobuf::Timestamp* PROTO
   // @@protoc_insertion_point(field_set_allocated:debate.Claim.created_at)
 }
 
+// int32 voice_id = 15 [json_name = "voiceId"];
+inline void Claim::clear_voice_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline ::int32_t Claim::voice_id() const {
+  // @@protoc_insertion_point(field_get:debate.Claim.voice_id)
+  return _internal_voice_id();
+}
+inline void Claim::set_voice_id(::int32_t value) {
+  _internal_set_voice_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:debate.Claim.voice_id)
+}
+inline ::int32_t Claim::_internal_voice_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.voice_id_;
+}
+inline void Claim::_internal_set_voice_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_id_ = value;
+}
+
 // repeated .debate.ClaimState history = 10 [json_name = "history", deprecated = true];
 inline int Claim::_internal_history_size() const {
   return _internal_history().size();
@@ -3696,7 +3733,7 @@ inline void Claim::clear_user_statuses() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_statuses_.Clear();
   ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000200U);
+                  0x00000400U);
 }
 inline const ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>& Claim::_internal_user_statuses() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -3712,7 +3749,7 @@ inline ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>* PROTOBUF_N
 }
 inline ::google::protobuf::Map<::std::string, ::debate::ClaimStatus>* PROTOBUF_NONNULL Claim::mutable_user_statuses()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000200U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000400U);
   // @@protoc_insertion_point(field_mutable_map:debate.Claim.user_statuses)
   return _internal_mutable_user_statuses();
 }

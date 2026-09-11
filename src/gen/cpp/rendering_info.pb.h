@@ -2849,6 +2849,7 @@ class FullDebateTreeNode final : public ::google::protobuf::Message
     kClaimIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
     kStatusFieldNumber = 4,
+    kVoiceIdFieldNumber = 8,
   };
   // repeated .rendering_info.UserStatus user_statuses = 5 [json_name = "userStatuses"];
   int user_statuses_size() const;
@@ -2948,12 +2949,22 @@ class FullDebateTreeNode final : public ::google::protobuf::Message
   void _internal_set_status(::debate::ClaimStatus value);
 
   public:
+  // int32 voice_id = 8 [json_name = "voiceId"];
+  void clear_voice_id() ;
+  ::int32_t voice_id() const;
+  void set_voice_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_voice_id() const;
+  void _internal_set_voice_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:rendering_info.FullDebateTreeNode)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7,
-                                   1, 50,
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
+                                   1, 58,
                                    2>
       _table_;
 
@@ -2983,6 +2994,7 @@ class FullDebateTreeNode final : public ::google::protobuf::Message
     ::int32_t claim_id_;
     ::int32_t creator_id_;
     int status_;
+    ::int32_t voice_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6067,6 +6079,31 @@ inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
 FullDebateTreeNode::_internal_mutable_child_claim_ids() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.child_claim_ids_;
+}
+
+// int32 voice_id = 8 [json_name = "voiceId"];
+inline void FullDebateTreeNode::clear_voice_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline ::int32_t FullDebateTreeNode::voice_id() const {
+  // @@protoc_insertion_point(field_get:rendering_info.FullDebateTreeNode.voice_id)
+  return _internal_voice_id();
+}
+inline void FullDebateTreeNode::set_voice_id(::int32_t value) {
+  _internal_set_voice_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  // @@protoc_insertion_point(field_set:rendering_info.FullDebateTreeNode.voice_id)
+}
+inline ::int32_t FullDebateTreeNode::_internal_voice_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.voice_id_;
+}
+inline void FullDebateTreeNode::_internal_set_voice_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_id_ = value;
 }
 
 // -------------------------------------------------------------------

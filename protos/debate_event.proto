@@ -36,6 +36,13 @@ message AddChildClaim {
     // The write path pads this so a missing entry means "no description"
     // rather than shifting every later one onto the wrong claim.
     repeated string extra_descriptions = 5;
+
+    // Who is SAYING these claims, by name, when it is not the submitter --
+    // "the reporter", "Paul", "AP". A user is created for the name if none
+    // exists, and the claims are seeded true for that user, not for the
+    // submitter. Blank means the submitter speaks for themselves. One voice
+    // covers every claim in the event.
+    string voice = 6;
     // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
     // NORMATIVE. Lands on the relation, not the claim: it describes how the
     // child bears on its parent, which is a property of the connection.
@@ -148,6 +155,11 @@ message SubmitChallengeClaim {
     // the word means") is a different move from an evidential one, and the
     // basis is what records the difference. Empty means unspecified.
     string basis = 4;
+
+    // Who is making the challenge, by name, when it is not the submitter.
+    // Same rules as AddChildClaim.voice. The OPPOSE it writes against the
+    // challenged claim is the voice's opinion too, not the submitter's.
+    string voice = 6;
 }
 
 // Builds a whole debate from a passage, using the topic to steer what the

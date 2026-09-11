@@ -1,4 +1,5 @@
 #include "DebateWrapper.h"
+#include "ClaimVoice.h"
 #include "BasisRegistry.h"
 #include <iostream>
 #include <map>
@@ -139,18 +140,17 @@ int DebateWrapper::createClaim(
     const std::string& claimText,
     const std::string& description,
     const int& user_id,
-    const int& debate_id) {
+    const int& debate_id,
+    int voice_id) {
     debate::Claim claim;
     claim.set_sentence(claimText);
     claim.set_description(description);
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
     claim.set_status(debate::ClaimStatus::UNDETERMINED);
+    claim.set_voice_id(voice_id);
 
-    // Creator sees their own claim as TRUE_CLAIM
-    user::User creatorProto = getUserProtobuf(user_id);
-    (*claim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
-
+    // Whoever the claim belongs to sees it TRUE; addClaimToDB seeds that.
     addClaimToDB(claim, user_id, debate_id);
     return claim.id();
 }
@@ -163,7 +163,8 @@ int DebateWrapper::addClaimUnderParent(
     const int& debate_id,
     const std::string& basis,
     int relation_id,
-    int* out_relation_id) {
+    int* out_relation_id,
+    int voice_id) {
 
     // debate::Claim parentClaimFromDB = getClaimById(parentId);
 
@@ -174,11 +175,9 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
     childClaim.set_status(debate::ClaimStatus::UNDETERMINED);
+    childClaim.set_voice_id(voice_id);
 
-    // Creator sees their own claim as TRUE_CLAIM
-    user::User creatorProto = getUserProtobuf(user_id);
-    (*childClaim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
-
+    // Whoever the claim belongs to sees it TRUE; addClaimToDB seeds that.
     addClaimToDB(childClaim, user_id, debate_id);
 
     // The link's `connection` carries the basis. It previously held a fixed
@@ -204,8 +203,10 @@ int DebateWrapper::addClaimUnderParent(
 void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id) {
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
-    // Creator sees their own claims as TRUE_CLAIM by default
-    std::string username = databaseWrapper.users.getUsername(user_id);
+    // Whoever the claim BELONGS to sees it TRUE by default: the voice if one
+    // was named, else the entrant. A reader typing in "the reporter says X"
+    // has not said X, so nothing is written for them.
+    std::string username = databaseWrapper.users.getUsername(ClaimVoiceId(claim));
     if (!username.empty()) {
         (*claim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
     }

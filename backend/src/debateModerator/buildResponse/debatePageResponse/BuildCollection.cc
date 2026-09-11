@@ -65,6 +65,14 @@ void applyComputedStatuses(int debate_id,
             usernames[actor] = debateWrapper.getUserProtobuf(actor).username();
         }
     }
+    // A voice never makes a move itself, but it holds claims: the engine
+    // must be able to name it.
+    for (const auto& claim : claims) {
+        const int voice = claim.voice_id();
+        if (voice > 0 && !usernames.count(voice)) {
+            usernames[voice] = debateWrapper.getUserProtobuf(voice).username();
+        }
+    }
 
     const StatusEngine::LegacyResult computed =
         StatusEngine::computeLegacyStatuses(claims, relations, moves, usernames);

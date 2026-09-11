@@ -267,7 +267,8 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 claimDescriptions,
                 event.add_child_claim().basis(),
                 user_id,
-                debateWrapper
+                debateWrapper,
+                resolveVoice(event.add_child_claim().voice())
             );
         }
             break;
@@ -396,7 +397,8 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 challengeDescriptions,
                 event.submit_challenge_claim().basis(),
                 user_id,
-                debateWrapper
+                debateWrapper,
+                resolveVoice(event.submit_challenge_claim().voice())
             );
         }
             break;
@@ -573,6 +575,15 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
 //     }
 //     return user_id;
 // }
+
+int DebateModerator::resolveVoice(const std::string& name) {
+    const size_t first = name.find_first_not_of(" \t\r\n");
+    if (first == std::string::npos) {
+        return 0;
+    }
+    const size_t last = name.find_last_not_of(" \t\r\n");
+    return createUserIfNotExist(name.substr(first, last - first + 1));
+}
 
 int DebateModerator::createUserIfNotExist(const std::string& username) {
     int user_id = dbWrapper.users.getUserId(username);

@@ -34,6 +34,16 @@ message Claim {
   // --- new ---
   google.protobuf.Timestamp created_at = 14;
 
+  // WHOSE claim this is, when that is not the person who typed it in.
+  //
+  // A reader entering an article says "the reporter claims X". The reader
+  // does not hold X; the reporter does. So the claim's truth is seeded for
+  // the voice, not the entrant, and the voice's own tree is what the
+  // reader challenges. 0 means the entrant speaks for themselves, which is
+  // every claim made before this field existed. `creator_id` stays the
+  // entrant: it decides who may edit or delete the claim.
+  int32 voice_id = 15;
+
   // --- legacy: still written/read by current code, all superseded ---
 
   // Version snapshots for the edit/undo mechanism. Goes away when claims

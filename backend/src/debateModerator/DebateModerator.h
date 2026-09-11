@@ -22,6 +22,10 @@ public:
      }
      DebateWrapper& getDebateWrapper() { return debateWrapper; }
      int createUserIfNotExist(const std::string& username);
+     // A voice named on an event, resolved to a user id: blank means "the
+     // submitter" (0); a name that is nobody yet becomes a user. That user
+     // never logs in; it exists so a claim can be held by "the reporter".
+     int resolveVoice(const std::string& name);
 
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);

@@ -111,7 +111,7 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id) {
     // Same rule as AddClaimUnderClaim: only a basis the registry knows is stored.
     const std::string basis = bases::Sanitize(basis_in);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
@@ -180,7 +180,8 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
             sentence,
             description,
             user_id,
-            current_debate_id
+            current_debate_id,
+            voice_id
         );
         if (claim_id == -1) {
             continue;
@@ -228,9 +229,11 @@ void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& chal
     // Record the challenger's view: they think the challenged claim is FALSE.
     // Not for an undercut -- attacking an argument asserts nothing about the
     // claim it was for; it only stops that argument counting for the attacker.
+    // The opinion belongs to the VOICE when one was named: "Paul says that
+    // is false" records Paul's view, and the submitter's stays untouched.
     if (target_relation_id == 0) {
         debate::Claim challengedClaim = debateWrapper.getClaimById(current_claim_id);
-        user::User challengerProto = debateWrapper.getUserProtobuf(user_id);
+        user::User challengerProto = debateWrapper.getUserProtobuf(voice_id > 0 ? voice_id : user_id);
         (*challengedClaim.mutable_user_statuses())[challengerProto.username()] = debate::ClaimStatus::FALSE_CLAIM;
         debateWrapper.updateClaimInDB(challengedClaim);
     } else {

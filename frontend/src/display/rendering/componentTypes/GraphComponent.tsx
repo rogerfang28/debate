@@ -878,7 +878,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                       fontSize="8"
                       style={{ pointerEvents: "none" }}
                     >
-                      Created by: {node.creatorUsername || `#${node.id}`}
+                      By: {node.creatorUsername || `#${node.id}`}
                     </text>
                     <text
                       textAnchor="middle"

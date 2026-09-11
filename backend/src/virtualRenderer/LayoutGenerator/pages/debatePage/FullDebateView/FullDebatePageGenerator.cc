@@ -5,6 +5,7 @@
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "user.pb.h"
 #include "user_engagement.pb.h"
@@ -1833,6 +1834,30 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&modalContent, basisDropdown);
 
+            // Voice: whose claim this is, if not the submitter's own. Blank
+            // means "mine". The name becomes a user that holds the claim.
+            ui::Component voiceLabel = ComponentGenerator::createText(
+                "claimVoiceLabel",
+                "Said by (leave blank if this is your own claim)",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, voiceLabel);
+            ui::Component voiceInput = ComponentGenerator::createInput(
+                "claimVoiceInput",
+                "e.g. the reporter, Paul, AP",
+                "claimVoice",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, voiceInput);
+
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(
                 "modalActions",
@@ -2024,6 +2049,29 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full mb-6"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisDropdown);
+
+            // Voice: who is making this challenge, if not the submitter.
+            ui::Component challengeVoiceLabel = ComponentGenerator::createText(
+                "challengeVoiceLabel",
+                "Said by (leave blank if this is your own challenge)",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeVoiceLabel);
+            ui::Component challengeVoiceInput = ComponentGenerator::createInput(
+                "challengeVoiceInput",
+                "e.g. the reporter, Paul, AP",
+                "challengeVoice",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeVoiceInput);
 
             // Modal action buttons
             ui::Component addChallengeModalActions = ComponentGenerator::createContainer(
@@ -2323,10 +2371,13 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             case debate::ClaimStatus::UNDETERMINED:  gNode->set_status("UNDETERMINED"); break;
             default:                                  gNode->set_status("UNDETERMINED"); break;
         }
-        gNode->set_creator_id(node->creator_id());
+        // The graph names WHOSE claim it is -- the voice when one was named --
+        // since that is what the colour and initial on the node stand for.
+        const int holderId = node->voice_id() > 0 ? node->voice_id() : node->creator_id();
+        gNode->set_creator_id(holderId);
         if (userDb != nullptr) {
-            std::string creatorUsername = userDb->getUsername(node->creator_id());
-            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(node->creator_id())) : creatorUsername);
+            std::string creatorUsername = userDb->getUsername(holderId);
+            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(holderId)) : creatorUsername);
         }
         gNode->set_is_root(claimId == rootClaimId);
         gNode->set_is_current(claimId == currentClaimId);

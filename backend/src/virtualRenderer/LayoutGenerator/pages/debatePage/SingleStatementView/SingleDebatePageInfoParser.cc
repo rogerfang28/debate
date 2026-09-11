@@ -2,6 +2,7 @@
 #include "user_engagement.pb.h"
 #include "collection.pb.h"
 #include "../../../../../utils/Log.h"
+#include "../../../../../utils/ClaimVoice.h"
 #include <unordered_set>
 
 namespace {
@@ -33,7 +34,7 @@ debate::ClaimStatus MapClaimStatusForUser(
 	if (it != user_statuses.end()) {
 		return it->second;
 	}
-	if (viewer_user_id == claim.creator_id()) {
+	if (viewer_user_id == ClaimVoiceId(claim)) {
 		return debate::ClaimStatus::TRUE_CLAIM;
 	}
 	return debate::ClaimStatus::UNDETERMINED;

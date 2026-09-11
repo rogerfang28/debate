@@ -1091,3 +1091,112 @@ TEST_F(UndercutFlowTest, AConcededUndercutRestoresTheLink) {
     EXPECT_EQ(show(shown(debateId, cut, "bob")), "FALSE") << "the conceded undercut is false for Bob";
     EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE") << "the link is live again and the root stands on its reason";
 }
+
+
+// ---------------------------------------------------------------------------
+// Voice: a claim entered on someone else's behalf is held by THEM.
+// ---------------------------------------------------------------------------
+TEST_F(MoveLogTest, AChildWithAVoiceIsTrueForTheVoiceNotTheEntrant) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int rootId = currentClaimId();
+
+    auto e = baseEvent(debate_event::ADD_CHILD_CLAIM);
+    e.mutable_add_child_claim()->set_claim("The bridge is unsafe");
+    e.mutable_add_child_claim()->set_voice("  the reporter ");
+    send(e);
+
+    const int reporterId = wrapper_->users.getUserId("the reporter");
+    ASSERT_GT(reporterId, 0) << "naming a voice creates a user for it, trimmed";
+
+    int childId = 0;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "ASSERT" && m.targetType == "claim" && m.targetId != rootId) childId = m.targetId;
+    }
+    ASSERT_GT(childId, 0);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+    const debate::Claim child = dw.getClaimById(childId);
+    EXPECT_EQ(child.voice_id(), reporterId);
+    EXPECT_EQ(child.creator_id(), aliceId_) << "the entrant still owns the row";
+    ASSERT_EQ(child.user_statuses().count("the reporter"), 1u);
+    EXPECT_EQ(child.user_statuses().at("the reporter"), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(child.user_statuses().count("alice"), 0u) << "alice did not say it";
+
+    // The replay agrees: the ASSERT's actor is alice, the claim's holder is not.
+    std::vector<debate::Claim> claims{dw.getClaimById(rootId), child};
+    std::vector<debate::Relationship> relations;
+    for (const auto& row : dw.getLinksForDebate(debateId)) {
+        relations.push_back(dw.getLinkById(std::get<0>(row)));
+    }
+    const auto computed = StatusEngine::computeLegacyStatuses(
+        claims, relations, dw.getMovesForDebate(debateId),
+        {{aliceId_, "alice"}, {reporterId, "the reporter"}});
+    auto view = [&](const std::string& user, int claimId) {
+        auto u = computed.by_user.find(user);
+        if (u == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+        auto c = u->second.find(claimId);
+        return c == u->second.end() ? debate::ClaimStatus::UNDETERMINED : c->second;
+    };
+    EXPECT_EQ(view("the reporter", childId), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(view("alice", childId), debate::ClaimStatus::UNDETERMINED);
+}
+
+TEST_F(MoveLogTest, AChallengeWithAVoiceRecordsTheVoicesOpinionNotTheEntrants) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int rootId = currentClaimId();
+
+    // Paul, entered by alice, says the root is wrong.
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto addTarget = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    addTarget.mutable_add_claim_to_be_challenged()->set_claim_id(rootId);
+    send(addTarget);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("The bridge passed inspection");
+    submit.mutable_submit_challenge_claim()->set_voice("Paul");
+    send(submit);
+
+    const int paulId = wrapper_->users.getUserId("Paul");
+    ASSERT_GT(paulId, 0);
+    const int challengeId = currentClaimId();
+    ASSERT_NE(challengeId, rootId);
+
+    DebateWrapper& dw = moderator_->getDebateWrapper();
+    const debate::Claim root = dw.getClaimById(rootId);
+    const debate::Claim challenge = dw.getClaimById(challengeId);
+    EXPECT_EQ(challenge.voice_id(), paulId);
+    EXPECT_EQ(challenge.user_statuses().at("Paul"), debate::ClaimStatus::TRUE_CLAIM);
+    ASSERT_EQ(root.user_statuses().count("Paul"), 1u);
+    EXPECT_EQ(root.user_statuses().at("Paul"), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(root.user_statuses().at("alice"), debate::ClaimStatus::TRUE_CLAIM)
+        << "alice entered Paul's objection; she did not adopt it";
+
+    // The OPPOSE names the voice, so the replay lands the FALSE on Paul.
+    bool opposeNamesPaul = false;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "OPPOSE") {
+            opposeNamesPaul = m.payload.find("\"voice_id\":" + std::to_string(paulId)) != std::string::npos;
+        }
+    }
+    EXPECT_TRUE(opposeNamesPaul);
+
+    std::vector<debate::Relationship> relations;
+    for (const auto& row : dw.getLinksForDebate(debateId)) {
+        relations.push_back(dw.getLinkById(std::get<0>(row)));
+    }
+    const auto computed = StatusEngine::computeLegacyStatuses(
+        {root, challenge}, relations, dw.getMovesForDebate(debateId),
+        {{aliceId_, "alice"}, {paulId, "Paul"}});
+    auto view = [&](const std::string& user, int claimId) {
+        auto u = computed.by_user.find(user);
+        if (u == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+        auto c = u->second.find(claimId);
+        return c == u->second.end() ? debate::ClaimStatus::UNDETERMINED : c->second;
+    };
+    EXPECT_EQ(view("Paul", rootId), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(view("Paul", challengeId), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(view("alice", rootId), debate::ClaimStatus::TRUE_CLAIM);
+    EXPECT_EQ(view("alice", challengeId), debate::ClaimStatus::UNDETERMINED);
+}

@@ -2,6 +2,7 @@
 #include "user_engagement.pb.h"
 #include "collection.pb.h"
 #include "../../../../../utils/Log.h"
+#include "../../../../../utils/ClaimVoice.h"
 #include <algorithm>
 #include <map>
 #include <unordered_map>
@@ -41,8 +42,8 @@ debate::ClaimStatus MapClaimStatusForUser(
 	if (it != user_statuses.end()) {
 		return it->second;
 	}
-	// No per-user entry: if viewer is the creator, they see TRUE_CLAIM
-	if (viewer_user_id == claim.creator_id()) {
+	// No per-user entry: whoever the claim belongs to sees TRUE_CLAIM
+	if (viewer_user_id == ClaimVoiceId(claim)) {
 		return debate::ClaimStatus::TRUE_CLAIM;
 	}
 	// Otherwise default to UNDETERMINED
@@ -216,7 +217,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				        us->set_username(userProto.username());
 				        us->set_status(statusIt->second);
 				    } else {
-				        debate::ClaimStatus defaultStatus = (userProto.user_id() == childClaim.creator_id())
+				        debate::ClaimStatus defaultStatus = (userProto.user_id() == ClaimVoiceId(childClaim))
 				            ? debate::ClaimStatus::TRUE_CLAIM
 				            : debate::ClaimStatus::UNDETERMINED;
 				        rendering_info::UserStatus* us = outChild->add_user_statuses();
@@ -501,6 +502,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outNode->set_claim_id(claim.id());
 		outNode->set_sentence(claim.sentence());
 		outNode->set_creator_id(claim.creator_id());
+		outNode->set_voice_id(claim.voice_id());
 		// Use per-user status for tree nodes
 		outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
 
@@ -515,7 +517,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		        us->set_status(statusIt->second);
 		    } else {
 		        // Viewer has no entry — show their default status
-		        debate::ClaimStatus defaultStatus = (viewer_user_id == claim.creator_id())
+		        debate::ClaimStatus defaultStatus = (viewer_user_id == ClaimVoiceId(claim))
 		            ? debate::ClaimStatus::TRUE_CLAIM
 		            : debate::ClaimStatus::UNDETERMINED;
 		        rendering_info::UserStatus* us = outNode->add_user_statuses();
