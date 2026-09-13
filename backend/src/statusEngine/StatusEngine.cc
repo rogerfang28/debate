@@ -1,4 +1,5 @@
 #include "StatusEngine.h"
+#include "../utils/BasisRegistry.h"
 
 #include <algorithm>
 #include <deque>
@@ -305,6 +306,12 @@ struct LegacyGraph {
     // target) for challenges.
     std::map<std::pair<int, int>, int> childRelation;
     std::map<std::pair<int, int>, int> attackRelation;
+
+    // How each edge carries a status, from the basis registry: COLLAPSE (a
+    // false reason sinks the claim), UNSUPPORT (a false reason is just gone),
+    // NONE (the edge carries nothing). Same keys as the two maps above.
+    std::map<std::pair<int, int>, basis::Propagation> childProp;
+    std::map<std::pair<int, int>, basis::Propagation> attackProp;
 };
 
 LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations) {
@@ -353,11 +360,13 @@ LegacyGraph buildLegacyGraph(const std::vector<debate::Relationship>& relations)
                 // the child of its own evidence.
                 g.children[to].push_back(from);
                 g.childRelation[{to, from}] = rel.id();
+                g.childProp[{to, from}] = bases::PropagationFor(rel.basis());
             } else if (rel.role() == debate::OPPOSES) {
                 // Attacks already run challenger -> challenged; no swap.
                 g.challengeIncoming[to].push_back(from);
                 g.challengeOutgoing[from].push_back(to);
                 g.attackRelation[{from, to}] = rel.id();
+                g.attackProp[{from, to}] = bases::PropagationFor(rel.basis());
             }
         }
     }
@@ -406,14 +415,26 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
         return false;
     };
 
-    // Rule A/B: parent-child.
+    // How an edge carries a status, read from the registry when the graph
+    // was built. An edge with no entry (a producer that skipped the map) is
+    // COLLAPSE, the rule every link had before bases existed.
+    auto propOf = [](const std::map<std::pair<int, int>, basis::Propagation>& byEdge,
+                     int a, int b) {
+        auto it = byEdge.find({a, b});
+        return it == byEdge.end() ? basis::COLLAPSE : it->second;
+    };
+
+    // Rule A/B: parent-child. A NONE edge is not counted at all; an undercut
+    // one is not counted for this user. A FALSE child sinks the claim under
+    // COLLAPSE; under UNSUPPORT the reason is merely gone.
     bool anyChildFalse = false;
     bool allChildrenTrue = true;
     int countedChildren = 0;
     auto childrenIt = g.children.find(claimId);
     if (childrenIt != g.children.end()) {
         for (int childId : childrenIt->second) {
-            if (undercut(g.childRelation, claimId, childId)) {
+            const basis::Propagation prop = propOf(g.childProp, claimId, childId);
+            if (prop == basis::NONE || undercut(g.childRelation, claimId, childId)) {
                 continue;
             }
             ++countedChildren;
@@ -424,8 +445,12 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
                 continue;
             }
             if (cs == debate::ClaimStatus::FALSE_CLAIM) {
-                anyChildFalse = true;
-                break;
+                if (prop == basis::COLLAPSE) {
+                    anyChildFalse = true;
+                    break;
+                }
+                allChildrenTrue = false;
+                continue;
             }
             if (cs != debate::ClaimStatus::TRUE_CLAIM) {
                 allChildrenTrue = false;
@@ -441,9 +466,11 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
 
     auto citIn = g.challengeIncoming.find(claimId);
 
-    // Rule C: an incoming challenge the user believes FALSE vindicates this claim.
+    // Rule C: an incoming challenge the user believes FALSE vindicates this
+    // claim, under COLLAPSE and UNSUPPORT alike. NONE edges never count.
     if (citIn != g.challengeIncoming.end()) {
         for (int challengerId : citIn->second) {
+            if (propOf(g.attackProp, challengerId, claimId) == basis::NONE) continue;
             if (undercut(g.attackRelation, challengerId, claimId)) continue;
             bool found = false;
             if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::FALSE_CLAIM &&
@@ -454,18 +481,31 @@ debate::ClaimStatus computeForUser(int claimId, const std::string& user,
         }
     }
 
-    // Rule D: an incoming challenge the user believes TRUE defeats this claim.
-    // Runs after C, so when both fire D wins -- that ordering is the old
-    // engine's tie-break and is load-bearing.
+    // Rule D: an incoming challenge the user believes TRUE defeats this claim
+    // under COLLAPSE, or merely takes away its TRUE under UNSUPPORT. COLLAPSE
+    // wins if both kinds fire. Runs after C, so when both fire D wins -- that
+    // ordering is the old engine's tie-break and is load-bearing.
     if (citIn != g.challengeIncoming.end()) {
+        bool anyTrueCollapse = false;
+        bool anyTrueUnsupport = false;
         for (int challengerId : citIn->second) {
+            const basis::Propagation prop = propOf(g.attackProp, challengerId, claimId);
+            if (prop == basis::NONE) continue;
             if (undercut(g.attackRelation, challengerId, claimId)) continue;
             bool found = false;
             if (lookup(table, challengerId, user, &found) == debate::ClaimStatus::TRUE_CLAIM &&
                 found) {
-                ns = debate::ClaimStatus::FALSE_CLAIM;
-                break;
+                if (prop == basis::COLLAPSE) {
+                    anyTrueCollapse = true;
+                    break;
+                }
+                anyTrueUnsupport = true;
             }
+        }
+        if (anyTrueCollapse) {
+            ns = debate::ClaimStatus::FALSE_CLAIM;
+        } else if (anyTrueUnsupport && ns == debate::ClaimStatus::TRUE_CLAIM) {
+            ns = debate::ClaimStatus::UNDETERMINED;
         }
     }
 

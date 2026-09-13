@@ -327,3 +327,135 @@ bases { name: "EVIDENTIAL" propagation: UNSUPPORT is_default: true }
 }
 
 } // namespace
+
+
+// ---------------------------------------------------------------------------
+// The REPLAY engine obeys the registry too. Same shape as the stored-status
+// pair above, but nothing is stored: a graph and a move log go in, statuses
+// come out. This is the pair that has to hold once the stored path is gone.
+// ---------------------------------------------------------------------------
+#include "statusEngine/StatusEngine.h"
+
+namespace {
+
+debate::Move replayMove(int seq, int actor, debate::MoveType type, int claimId,
+                        const std::string& payload = "") {
+    debate::Move m;
+    m.set_seq(seq);
+    m.set_actor_id(actor);
+    m.set_type(type);
+    m.set_target_type(debate::TARGET_CLAIM);
+    m.set_target_id(claimId);
+    m.set_payload(payload);
+    return m;
+}
+
+debate::Relationship replayRelation(int id, int from, int to, debate::RelationRole role,
+                                    const std::string& basisName) {
+    debate::Relationship r;
+    r.set_id(id);
+    r.add_from_claim_ids(from);
+    r.set_to_claim_id(to);
+    r.set_role(role);
+    r.set_basis(basisName);
+    return r;
+}
+
+debate::ClaimStatus replayed(const StatusEngine::LegacyResult& r, const std::string& user,
+                             int claimId) {
+    auto u = r.by_user.find(user);
+    if (u == r.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
+    auto c = u->second.find(claimId);
+    return c == u->second.end() ? debate::ClaimStatus::UNDETERMINED : c->second;
+}
+
+// Alice asserts a root with one EVIDENTIAL reason; Bob challenges the reason;
+// Alice concedes. Returns the root as Alice sees it, replayed from the log.
+debate::ClaimStatus replayedRootForAliceAfterConceding() {
+    std::vector<debate::Claim> claims;
+    for (int id : {1, 2, 3}) { debate::Claim c; c.set_id(id); claims.push_back(c); }
+    const std::vector<debate::Relationship> relations{
+        replayRelation(10, 2, 1, debate::SUPPORTS, "EVIDENTIAL"),
+        replayRelation(11, 3, 2, debate::OPPOSES, "EVIDENTIAL"),
+    };
+    const std::vector<debate::Move> moves{
+        replayMove(1, 1, debate::ASSERT, 1),
+        replayMove(2, 1, debate::ASSERT, 2),
+        replayMove(3, 2, debate::ASSERT, 3),
+        replayMove(4, 2, debate::OPPOSE, 2, "{\"relation_id\":11,\"challenging_claim_id\":3}"),
+        replayMove(5, 1, debate::CONCEDE, 2, "{\"challenge_relation_id\":11,\"challenging_claim_id\":3}"),
+    };
+    const auto r = StatusEngine::computeLegacyStatuses(
+        claims, relations, moves, {{1, "alice"}, {2, "bob"}});
+    EXPECT_EQ(replayed(r, "alice", 2), debate::ClaimStatus::FALSE_CLAIM)
+        << "the concession itself, under any registry";
+    return replayed(r, "alice", 1);
+}
+
+}  // namespace
+
+TEST_F(RegistryFileTest, ReplayUnderCollapseAConcededReasonSinksTheRoot) {
+    use(shippedRegistry());
+    EXPECT_EQ(replayedRootForAliceAfterConceding(), debate::ClaimStatus::FALSE_CLAIM);
+}
+
+TEST_F(RegistryFileTest, ReplayUnderUnsupportAConcededReasonLeavesTheRootStanding) {
+    write(R"(
+bases { name: "EVIDENTIAL" propagation: UNSUPPORT is_default: true }
+)");
+    // The reason is gone, not refuted: Alice's own assertion of the root is
+    // all that is left, and that is TRUE, not FALSE.
+    EXPECT_EQ(replayedRootForAliceAfterConceding(), debate::ClaimStatus::TRUE_CLAIM);
+}
+
+// A challenge held TRUE on an UNSUPPORT edge takes the claim's TRUE away
+// without making it FALSE; on a COLLAPSE edge it refutes. Carol holds both
+// the root and Bob's challenge, so Rule D is what decides her view.
+TEST_F(RegistryFileTest, ReplayRuleDUnsupportDemotesToUndeterminedNotFalse) {
+    auto run = [&](const std::string& basisName) {
+        std::vector<debate::Claim> claims;
+        for (int id : {1, 3}) { debate::Claim c; c.set_id(id); claims.push_back(c); }
+        const std::vector<debate::Relationship> relations{
+            replayRelation(11, 3, 1, debate::OPPOSES, basisName),
+        };
+        const std::vector<debate::Move> moves{
+            replayMove(1, 1, debate::ASSERT, 1),
+            replayMove(2, 2, debate::ASSERT, 3),
+            replayMove(3, 2, debate::OPPOSE, 1, "{\"relation_id\":11,\"challenging_claim_id\":3}"),
+            replayMove(4, 3, debate::ACCEPT, 1),
+            replayMove(5, 3, debate::ACCEPT, 3),
+        };
+        const auto r = StatusEngine::computeLegacyStatuses(
+            claims, relations, moves, {{1, "alice"}, {2, "bob"}, {3, "carol"}});
+        return replayed(r, "carol", 1);
+    };
+    use(shippedRegistry());
+    EXPECT_EQ(run("EVIDENTIAL"), debate::ClaimStatus::FALSE_CLAIM) << "COLLAPSE refutes";
+    EXPECT_EQ(run("INFERENTIAL"), debate::ClaimStatus::UNDETERMINED) << "UNSUPPORT only takes the TRUE away";
+}
+
+// A NONE edge carries nothing in either direction.
+TEST_F(RegistryFileTest, ReplayANoneEdgeCarriesNothing) {
+    write(R"(
+bases { name: "EVIDENTIAL" propagation: COLLAPSE is_default: true }
+bases { name: "CONTAINS"   propagation: NONE }
+)");
+    std::vector<debate::Claim> claims;
+    for (int id : {1, 2}) { debate::Claim c; c.set_id(id); claims.push_back(c); }
+    const std::vector<debate::Relationship> relations{
+        replayRelation(10, 2, 1, debate::SUPPORTS, "CONTAINS"),
+    };
+    // Bob holds the child FALSE; under COLLAPSE that would sink the root for
+    // him. Under NONE the root is untouched -- he has no view on it at all.
+    const std::vector<debate::Move> moves{
+        replayMove(1, 1, debate::ASSERT, 1),
+        replayMove(2, 1, debate::ASSERT, 2),
+        replayMove(3, 2, debate::ASSERT, 3),
+        replayMove(4, 2, debate::OPPOSE, 2, "{\"relation_id\":11,\"challenging_claim_id\":3}"),
+    };
+    const auto r = StatusEngine::computeLegacyStatuses(
+        claims, relations, moves, {{1, "alice"}, {2, "bob"}});
+    EXPECT_EQ(replayed(r, "bob", 2), debate::ClaimStatus::FALSE_CLAIM);
+    EXPECT_EQ(replayed(r, "bob", 1), debate::ClaimStatus::UNDETERMINED);
+    EXPECT_EQ(replayed(r, "alice", 1), debate::ClaimStatus::TRUE_CLAIM);
+}
