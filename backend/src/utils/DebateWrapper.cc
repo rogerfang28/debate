@@ -63,7 +63,8 @@ std::vector<int> DebateWrapper::findUsersInDebate(const int& debate_id) {
     return databaseWrapper.debateMembers.getUserIdsForDebate(debate_id);
 }
 
-void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id) {
+void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_id, int voice_id,
+                                  const debate::Source* source) {
     debate::Debate debate;
     debate.set_topic(topic);
     debate.add_debater_ids(creator_id);
@@ -79,6 +80,10 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     rootClaim.set_creator_id(creator_id);
+    rootClaim.set_voice_id(voice_id);
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+        *rootClaim.add_sources() = *source;
+    }
 
     addClaimToDB(rootClaim, creator_id, newId);
     debate.set_root_claim_id(rootClaim.id());

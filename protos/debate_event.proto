@@ -6,6 +6,11 @@ import "google/protobuf/timestamp.proto";
 
 message CreateDebate {
     string debate_topic = 2;
+    // Whose claim the root is, when not the creator's own. A reader entering
+    // a case makes the root in the voice of whoever actually claims it.
+    string voice = 3;
+    string source_url = 4;
+    string source_excerpt = 5;
 }
 
 message DeleteDebate {

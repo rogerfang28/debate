@@ -246,6 +246,15 @@ protected:
             case debate_event::CREATE_DEBATE:
                 event.mutable_create_debate()->set_debate_topic(
                     action.debate_topic().empty() ? "Test Debate" : action.debate_topic());
+                if (!action.voice().empty()) {
+                    event.mutable_create_debate()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_create_debate()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_create_debate()->set_source_excerpt(action.source_excerpt());
+                }
                 break;
             case debate_event::ENTER_DEBATE:
                 event.mutable_enter_debate()->set_debate_id(action.debate_id());
@@ -270,6 +279,15 @@ protected:
                     // fields stay index-aligned on the server.
                     event.mutable_add_child_claim()->add_extra_descriptions("");
                 }
+                if (!action.voice().empty()) {
+                    event.mutable_add_child_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_add_child_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_add_child_claim()->set_source_excerpt(action.source_excerpt());
+                }
                 if (!action.basis().empty()) {
                     event.mutable_add_child_claim()->set_basis(action.basis());
                 }
@@ -287,6 +305,15 @@ protected:
                 for (const auto& extra : action.extra_claim_texts()) {
                     event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
                     event.mutable_submit_challenge_claim()->add_extra_descriptions("");
+                }
+                if (!action.voice().empty()) {
+                    event.mutable_submit_challenge_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_excerpt(action.source_excerpt());
                 }
                 if (!action.basis().empty()) {
                     event.mutable_submit_challenge_claim()->set_basis(action.basis());
@@ -805,6 +832,19 @@ TEST_F(ScenarioRunner, FauciPaulHearingFull) {
     TestScenario s = LoadScenarioFromFile("scenarios/FauciPaulHearingFull.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciPaulHearingFull.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+// ---------------------------------------------------------------------------
+// The Fauci hearing as a READER enters it: one member typing, every claim in
+// somebody else's voice with its source. The reference case for voices --
+// nobody but the reader is a member, yet every voice holds a view, and the
+// pardon step (INFERENTIAL) failing withdraws a reason without sinking the
+// root.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciCase) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciCase.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciCase.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/false);
 }
 
 TEST_F(ScenarioRunner, MegaTest) {

@@ -5108,6 +5108,9 @@ class CreateDebate final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kDebateTopicFieldNumber = 2,
+    kVoiceFieldNumber = 3,
+    kSourceUrlFieldNumber = 4,
+    kSourceExcerptFieldNumber = 5,
   };
   // string debate_topic = 2 [json_name = "debateTopic"];
   void clear_debate_topic() ;
@@ -5124,12 +5127,57 @@ class CreateDebate final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_debate_topic();
 
   public:
+  // string voice = 3 [json_name = "voice"];
+  void clear_voice() ;
+  const ::std::string& voice() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_voice(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_voice();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_voice();
+  void set_allocated_voice(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_voice() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_voice(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_voice();
+
+  public:
+  // string source_url = 4 [json_name = "sourceUrl"];
+  void clear_source_url() ;
+  const ::std::string& source_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_url();
+  void set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_url();
+
+  public:
+  // string source_excerpt = 5 [json_name = "sourceExcerpt"];
+  void clear_source_excerpt() ;
+  const ::std::string& source_excerpt() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_excerpt(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_excerpt();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_excerpt();
+  void set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_excerpt() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_excerpt(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.CreateDebate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
-                                   0, 46,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 75,
                                    2>
       _table_;
 
@@ -5151,6 +5199,9 @@ class CreateDebate final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr debate_topic_;
+    ::google::protobuf::internal::ArenaStringPtr voice_;
+    ::google::protobuf::internal::ArenaStringPtr source_url_;
+    ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -8127,6 +8178,201 @@ inline void CreateDebate::set_allocated_debate_topic(::std::string* PROTOBUF_NUL
     _impl_.debate_topic_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.debate_topic)
+}
+
+// string voice = 3 [json_name = "voice"];
+inline void CreateDebate::clear_voice() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& CreateDebate::voice() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.CreateDebate.voice)
+  return _internal_voice();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CreateDebate::set_voice(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.voice_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.CreateDebate.voice)
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::mutable_voice()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_voice();
+  // @@protoc_insertion_point(field_mutable:debate_event.CreateDebate.voice)
+  return _s;
+}
+inline const ::std::string& CreateDebate::_internal_voice() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.voice_.Get();
+}
+inline void CreateDebate::_internal_set_voice(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.voice_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::_internal_mutable_voice() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.voice_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CreateDebate::release_voice() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.CreateDebate.voice)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.voice_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.voice_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CreateDebate::set_allocated_voice(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.voice_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.voice_.IsDefault()) {
+    _impl_.voice_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.voice)
+}
+
+// string source_url = 4 [json_name = "sourceUrl"];
+inline void CreateDebate::clear_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& CreateDebate::source_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.CreateDebate.source_url)
+  return _internal_source_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CreateDebate::set_source_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.source_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.CreateDebate.source_url)
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::mutable_source_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_source_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.CreateDebate.source_url)
+  return _s;
+}
+inline const ::std::string& CreateDebate::_internal_source_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_url_.Get();
+}
+inline void CreateDebate::_internal_set_source_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::_internal_mutable_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CreateDebate::release_source_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.CreateDebate.source_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.source_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CreateDebate::set_allocated_source_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.source_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_url_.IsDefault()) {
+    _impl_.source_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.source_url)
+}
+
+// string source_excerpt = 5 [json_name = "sourceExcerpt"];
+inline void CreateDebate::clear_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& CreateDebate::source_excerpt() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.CreateDebate.source_excerpt)
+  return _internal_source_excerpt();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CreateDebate::set_source_excerpt(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.source_excerpt_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.CreateDebate.source_excerpt)
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::mutable_source_excerpt()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_source_excerpt();
+  // @@protoc_insertion_point(field_mutable:debate_event.CreateDebate.source_excerpt)
+  return _s;
+}
+inline const ::std::string& CreateDebate::_internal_source_excerpt() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_excerpt_.Get();
+}
+inline void CreateDebate::_internal_set_source_excerpt(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_excerpt_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::_internal_mutable_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_excerpt_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CreateDebate::release_source_excerpt() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.CreateDebate.source_excerpt)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.source_excerpt_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CreateDebate::set_allocated_source_excerpt(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.source_excerpt_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_excerpt_.IsDefault()) {
+    _impl_.source_excerpt_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.source_excerpt)
 }
 
 // -------------------------------------------------------------------

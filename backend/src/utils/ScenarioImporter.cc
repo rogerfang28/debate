@@ -294,6 +294,15 @@ private:
             case debate_event::CREATE_DEBATE:
                 event.mutable_create_debate()->set_debate_topic(
                     action.debate_topic().empty() ? "Untitled Debate" : action.debate_topic());
+                if (!action.voice().empty()) {
+                    event.mutable_create_debate()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_create_debate()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_create_debate()->set_source_excerpt(action.source_excerpt());
+                }
                 break;
             case debate_event::ENTER_DEBATE:
                 event.mutable_enter_debate()->set_debate_id(RealDebateId(action.debate_id()));
@@ -345,6 +354,15 @@ private:
                     // fields stay index-aligned on the server.
                     event.mutable_add_child_claim()->add_extra_descriptions("");
                 }
+                if (!action.voice().empty()) {
+                    event.mutable_add_child_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_add_child_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_add_child_claim()->set_source_excerpt(action.source_excerpt());
+                }
                 if (!action.basis().empty()) {
                     event.mutable_add_child_claim()->set_basis(action.basis());
                 }
@@ -357,6 +375,15 @@ private:
                 for (const auto& extra : action.extra_claim_texts()) {
                     event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
                     event.mutable_submit_challenge_claim()->add_extra_descriptions("");
+                }
+                if (!action.voice().empty()) {
+                    event.mutable_submit_challenge_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_excerpt(action.source_excerpt());
                 }
                 if (!action.basis().empty()) {
                     event.mutable_submit_challenge_claim()->set_basis(action.basis());
@@ -392,6 +419,9 @@ private:
             // them would otherwise look identical to one that kept them.
             case debate_event::ADD_CHILD_CLAIM:
                 std::cout << "  added child claim: \"" << action.claim_text() << "\"";
+                if (!action.voice().empty()) {
+                    std::cout << " (said by " << action.voice() << ")";
+                }
                 for (const auto& extra : action.extra_claim_texts()) {
                     std::cout << "\n                 + \"" << extra << "\"";
                 }

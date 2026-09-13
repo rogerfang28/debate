@@ -159,10 +159,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::NONE:
             Log::info("[DebateModerator] Event Type: NONE");
             break;
-        case debate_event::CREATE_DEBATE:
+        case debate_event::CREATE_DEBATE: {
             Log::info("[DebateModerator] Event Type: CREATE_DEBATE");
-            DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper);
+            debate::Source rootSource;
+            rootSource.set_url(event.create_debate().source_url());
+            rootSource.set_excerpt(event.create_debate().source_excerpt());
+            DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper,
+                                     resolveVoice(event.create_debate().voice()), &rootSource);
             break;
+        }
         case debate_event::CLEAR_DEBATES:
             Log::info("[DebateModerator] Event Type: CLEAR_DEBATES");
             DebateHandler::ClearDebates(user_id, debateWrapper);

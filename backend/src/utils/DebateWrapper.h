@@ -17,7 +17,10 @@ public:
     explicit DebateWrapper(DatabaseWrapper& databaseWrapper);
     std::vector<debate::Claim> findChildren(const std::string& parentId);
     debate::Claim getClaimById(const int& claimId);
-    void initNewDebate(const std::string& topic, const int& owner_id);
+    // `voice_id` and `source` are the root claim's, same meaning as on
+    // createClaim: whose claim it is, and where it was taken from.
+    void initNewDebate(const std::string& topic, const int& owner_id, int voice_id = 0,
+                       const debate::Source* source = nullptr);
     debate::Claim findClaimParent(const int& claimId);
     bool isRoot(const int& claimId);
     // `voice_id` is WHOSE claim it is when that is not `user_id` (see
