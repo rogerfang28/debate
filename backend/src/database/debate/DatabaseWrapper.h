@@ -7,7 +7,7 @@
 #include "DebateMembersDatabase.h"
 #include "LinkDatabase.h"
 #include "MoveDatabase.h"
-#include "SummaryDatabase.h"
+#include "ChatDatabase.h"
 
 // ---------------------------------------
 // Class: DatabaseWrapper
@@ -27,7 +27,7 @@ public:
           debateMembers(debatesDb),
           links(debatesDb),
           moves(debatesDb),
-          summaries(debatesDb) {}
+          chats(debatesDb) {}
 
     // Initialize all tables
     bool ensureAllTables() {
@@ -37,7 +37,7 @@ public:
                debateMembers.ensureTable() &&
                links.ensureTable() &&
                moves.ensureTable() &&
-               summaries.ensureTable();
+               chats.ensureTable();
     }
 
     // Public database handlers - can call any of their functions
@@ -48,7 +48,6 @@ public:
     LinkDatabase links;
     // Append-only action log. Parallel record only -- nothing reads it yet.
     MoveDatabase moves;
-    // AI summaries, one row per user per target. Deliberately not in the user
-    // protobuf -- see SummaryDatabase for why.
-    SummaryDatabase summaries;
+    // The AI chat transcripts, one row per message per user per debate.
+    ChatDatabase chats;
 };

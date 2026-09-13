@@ -17,9 +17,23 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         Log::debug("  GO_HOME for user: " + std::to_string(user_id));
-    } else if (componentId == "aiChallengeButton" && eventType == "onClick") {
-        event.set_type(debate_event::CHALLENGE_WITH_AI);
-        Log::debug("  CHALLENGE_WITH_AI for user: " + std::to_string(user_id));
+    // The AI chat: the Ask button, Ctrl+Enter in the box, or a quick prompt.
+    } else if ((componentId == "askChatButton" && eventType == "onClick") ||
+               (componentId == "chatQuestionInput" && eventType == "onSubmit")) {
+        event.set_type(debate_event::ASK_CHAT);
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "chatQuestionInput") {
+                event.mutable_ask_chat()->set_question(comp.value());
+            }
+        }
+        Log::debug("  ASK_CHAT for user: " + std::to_string(user_id));
+    } else if (componentId.rfind("chatQuickButton_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::ASK_CHAT);
+        event.mutable_ask_chat()->set_quick_prompt(componentId.substr(strlen("chatQuickButton_")));
+        Log::debug("  ASK_CHAT (quick) for user: " + std::to_string(user_id));
+    } else if (componentId == "clearChatButton" && eventType == "onClick") {
+        event.set_type(debate_event::CLEAR_CHAT);
+        Log::debug("  CLEAR_CHAT for user: " + std::to_string(user_id));
     } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
         event.set_type(debate_event::TUTORIAL_NEXT);
         Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));
@@ -37,20 +51,6 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "dismissAiNoticeButton" && eventType == "onClick") {
         event.set_type(debate_event::DISMISS_AI_NOTICE);
         Log::debug("  DISMISS_AI_NOTICE for user: " + std::to_string(user_id));
-    } else if (componentId == "summarizeDebateButton" && eventType == "onClick") {
-        event.set_type(debate_event::SUMMARIZE_DEBATE);
-        Log::debug("  SUMMARIZE_DEBATE for user: " + std::to_string(user_id));
-    } else if (componentId.rfind("summarizeClaimButton_", 0) == 0 && eventType == "onClick") {
-        const std::string claimId = componentId.substr(strlen("summarizeClaimButton_"));
-        event.set_type(debate_event::SUMMARIZE_CLAIM);
-        event.mutable_summarize_claim()->set_claim_id(std::stoi(claimId));
-        Log::debug("  SUMMARIZE_CLAIM for user: " + std::to_string(user_id) + " claim " + claimId);
-    } else if (componentId == "dismissClaimSummaryButton" && eventType == "onClick") {
-        event.set_type(debate_event::DISMISS_CLAIM_SUMMARY);
-        Log::debug("  DISMISS_CLAIM_SUMMARY for user: " + std::to_string(user_id));
-    } else if (componentId == "dismissDebateSummaryButton" && eventType == "onClick") {
-        event.set_type(debate_event::DISMISS_DEBATE_SUMMARY);
-        Log::debug("  DISMISS_DEBATE_SUMMARY for user: " + std::to_string(user_id));
     } else if (componentId == "seeOverviewButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_TO_OVERVIEW);
         Log::debug("  GO_TO_OVERVIEW for user: " + std::to_string(user_id));

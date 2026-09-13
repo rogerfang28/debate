@@ -70,7 +70,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/ClientMessageHandler/LoginPageEventParser/LoginPageEventParser.cc
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
-    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${CMAKE_SOURCE_DIR}/src/utils/TutorialLibrary.cc
@@ -94,10 +94,9 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/PasswordHasher.cc
      ${CMAKE_SOURCE_DIR}/src/utils/LlmClient.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateTextFormatter.cc
-     ${CMAKE_SOURCE_DIR}/src/utils/DebateSummarizer.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateChat.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateGenerator.cc
      ${CMAKE_SOURCE_DIR}/src/utils/GeneratedDebateBuilder.cc
-     ${CMAKE_SOURCE_DIR}/src/utils/AiChallenger.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ScenarioImporter.cc
      ${CMAKE_SOURCE_DIR}/src/utils/UrlFetcher.cc
      ${CMAKE_SOURCE_DIR}/src/utils/AiJobs.cc
@@ -109,7 +108,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/DebateMembersDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
-    ${CMAKE_SOURCE_DIR}/src/database/debate/SummaryDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/ChatDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveLogger.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveBackfill.cc
     ${CMAKE_SOURCE_DIR}/src/utils/RelationBuilder.cc

@@ -195,8 +195,12 @@ message GenerateDebate {
 }
 
 // Summarizes one claim rather than the whole debate.
-message SummarizeClaim {
-    int32 claim_id = 1;
+// A question for the AI chat about the debate the user is in. Either a typed
+// `question` or a `quick_prompt` key from DebateChat (summarize_debate,
+// summarize_claim, find_mistake, suggest_challenge); the quick prompt wins.
+message AskChat {
+    string question = 1;
+    string quick_prompt = 2;
 }
 
 message GoToChallenge {
@@ -282,12 +286,7 @@ enum EventType {
     GO_TO_OVERVIEW = 51;
     GO_TO_FULL_DEBATE_VIEW = 52;
     SELECT_CLAIM = 53;
-    SUMMARIZE_DEBATE = 54;
-    DISMISS_DEBATE_SUMMARY = 55;
-    SUMMARIZE_CLAIM = 56;
-    DISMISS_CLAIM_SUMMARY = 57;
     GENERATE_DEBATE = 58;
-    CHALLENGE_WITH_AI = 59;
     DISMISS_AI_NOTICE = 60;
     CANCEL_AI_WORK = 61;
     // Guided walkthrough. START replays the first step of a tutorial
@@ -302,6 +301,11 @@ enum EventType {
     // "I agree" / "I take that back"; see EndorseClaim.
     ENDORSE_CLAIM = 66;
     UNENDORSE_CLAIM = 67;
+    // The AI chat: a typed question or a quick prompt; forget the transcript.
+    ASK_CHAT = 68;
+    CLEAR_CHAT = 69;
+    // Summaries and the AI challenger, replaced by the chat.
+    reserved 54, 55, 56, 57, 59;
 
 }
 
@@ -323,6 +327,8 @@ message DebateEvent {
   UserAuthInfo user = 1;
   google.protobuf.Timestamp occurred_at = 3;
   EventType type = 4; 
+
+  reserved 52;  // SummarizeClaim, replaced by AskChat
 
   oneof payload {
     CreateDebate    create_debate    = 10;
@@ -353,7 +359,7 @@ message DebateEvent {
     LeaveDebate leave_debate = 49;
     MoveUserToTimestamp move_user_to_timestamp = 50;
     SelectClaim select_claim = 51;
-    SummarizeClaim summarize_claim = 52;
+    AskChat ask_chat = 58;
     GenerateDebate generate_debate = 53;
     StartTutorial start_tutorial = 54;
     SelectLink select_link = 55;

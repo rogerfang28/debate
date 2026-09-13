@@ -609,22 +609,16 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
     
 }
 
-void DebateWrapper::saveSummary(const int& user_id, const int& debate_id, const std::string& kind,
-                                const int& claim_id, const std::string& text,
-                                const std::string& error, const int& at_move_seq) {
-    databaseWrapper.summaries.save(user_id, debate_id, kind, claim_id, text, error, at_move_seq);
+void DebateWrapper::appendChatMessage(const int& user_id, const int& debate_id,
+                                      const std::string& role, const std::string& text) {
+    databaseWrapper.chats.append(user_id, debate_id, role, text);
 }
 
-SummaryDatabase::Record DebateWrapper::loadSummary(const int& user_id, const int& debate_id,
-                                                   const std::string& kind, const int& claim_id) {
-    return databaseWrapper.summaries.load(user_id, debate_id, kind, claim_id);
+std::vector<ChatDatabase::Message> DebateWrapper::chatTranscript(const int& user_id,
+                                                                 const int& debate_id) {
+    return databaseWrapper.chats.list(user_id, debate_id);
 }
 
-void DebateWrapper::deleteSummary(const int& user_id, const int& debate_id,
-                                  const std::string& kind, const int& claim_id) {
-    databaseWrapper.summaries.remove(user_id, debate_id, kind, claim_id);
-}
-
-int DebateWrapper::headMoveSeq(const int& debate_id) {
-    return databaseWrapper.moves.lastSeqForDebate(debate_id);
+void DebateWrapper::clearChat(const int& user_id, const int& debate_id) {
+    databaseWrapper.chats.clear(user_id, debate_id);
 }

@@ -236,6 +236,6 @@ steps {
 steps {
   title: "It is yours now"
   body: "This debate stays in your list. Challenge anything, concede anything, add the argument you think is missing."
-  body: "Two things worth trying on this one in particular. Summarize Debate will read the whole structure back to you in plain words. AI Challenge will look for the weaknesses neither side raised."
+  body: "Two things worth trying on this one in particular. The chat box at the top can summarize the debate or a claim, point out a weak step, or suggest a challenge -- all as text you can read before you act."
   body: "The hand-built version of this case has twenty-two claims and goes deeper on every branch. This was the shape of it."
 }

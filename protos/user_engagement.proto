@@ -121,59 +121,30 @@ message DebatingInfo {
 
   CurrentDebateAction current_debate_action = 11;
 
-  // The AI summary of the whole debate, produced on demand by the
-  // "Summarize Debate" button.
-  //
-  // Lives on the VIEWER rather than on the debate because it is a reading aid,
-  // not part of the argument: two people may summarize at different points and
-  // neither summary is the debate's own position. Storing it on the debate
-  // would also mean one user's click overwrites what another is reading.
-  //
-  // `text` and `error` are mutually exclusive -- a run either produced a
-  // summary or explained why it could not, and showing a stale summary beside
-  // a fresh error would misrepresent which one describes the debate now.
-  message DebateSummary {
-    string text = 1;
-    string error = 2;
-    // Head of the move log when the debate text was taken. Provenance only for
-    // now -- nothing compares it against the current head yet, so a summary can
-    // still be stale on screen without saying so. Recorded because the answer
-    // cannot be reconstructed after the fact.
-    int32 summarized_at_move_seq = 3;
+  // The old per-user summary fields; the AI chat replaced them.
+  reserved 19, 20, 21, 22;
 
-    // A run is in flight. Rendered as progress rather than as a result, and
-    // never persisted as true across a restart -- see SummaryJobs, which owns
-    // the actual run and is the only thing that can know it is still alive.
-    bool pending = 4;
-    // Seconds the current run has been going, so the page can show motion. The
-    // model takes tens of seconds; without a number on screen a working model
-    // and a hung one look exactly alike.
-    int32 elapsed_seconds = 5;
-    // How far the debate has moved since this summary was taken. Computed per
-    // response, never stored: staleness is a fact about NOW, and a stored copy
-    // would itself go stale.
-    int32 moves_behind = 6;
+  // One turn of the AI chat.
+  message ChatMessage {
+    string role = 1;  // "user" or "assistant"
+    string text = 2;
   }
-  DebateSummary debate_summary = 19;
 
-  // The same shape, for a summary of ONE claim rather than the whole debate.
-  // A separate field, not a reuse: the two answer different questions and a
-  // reader may well want both on screen at once, so one must not evict the
-  // other.
-  DebateSummary claim_summary = 20;
-  // Which claim claim_summary is about. Without it a summary would silently
-  // keep describing the claim you were looking at when you pressed the button,
-  // while you read it beside a different selected claim.
-  int32 claim_summary_claim_id = 21;
-
-  // True while ANY summary run is in flight for this viewer.
+  // The AI chat for the debate the user is in; see ChatHandler.
   //
-  // The client polls only while the page shows a pending marker, so the marker
-  // has to track the WORK, not one panel. With a debate and a claim summary
-  // running together, the first to finish removed the only marker on the page,
-  // polling stopped, and the second result sat uncollected until something else
-  // happened to hit the server.
-  bool summary_running = 22;
+  // The transcript lives in CHATS; this is a copy of its tail so the page
+  // can draw it from the user record, plus what a run in flight looks
+  // like. `pending` is never true across a restart -- AiJobs owns the run
+  // and is the only thing that knows it is still alive.
+  message ChatState {
+    bool pending = 1;
+    int32 elapsed_seconds = 2;
+    repeated ChatMessage messages = 3;
+    // Which debate `messages` belong to. When it is not the debate the user
+    // is in, the copy is stale and is reloaded from CHATS.
+    int32 debate_id = 4;
+  }
+  ChatState chat = 24;
 
   // The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
   // Selecting a relation also moves current_claim to the claim that argument

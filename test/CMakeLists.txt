@@ -68,7 +68,7 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/DebateMembersDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/LinkDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
-    ${REPO_ROOT}/backend/src/database/debate/SummaryDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/ChatDatabase.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveBackfill.cc
     ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
@@ -91,18 +91,17 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     # Dispatched from DebateModerator, so every target that links the moderator
-    # needs it -- and it drags in the summarizer and the shared model client.
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
@@ -197,18 +196,17 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     # Dispatched from DebateModerator, so every target that links the moderator
-    # needs it -- and it drags in the summarizer and the shared model client.
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
@@ -281,18 +279,17 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     # Dispatched from DebateModerator, so every target that links the moderator
-    # needs it -- and it drags in the summarizer and the shared model client.
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
@@ -301,42 +298,6 @@ add_executable(import_debate_tool
 )
 target_link_libraries(import_debate_tool ${IMPORT_TOOL_LIBS})
 
-# Prompt-tuning harness: same wiring as the import tool, but it only reads.
-add_executable(summarize_tool
-    ${CMAKE_SOURCE_DIR}/tools/summarize_tool.cc
-    ${DB_SOURCES}
-    ${MODERATOR_SOURCES}
-    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/BuildCollection.cc
-    ${PB_SRC}
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EndorseHandler/EndorseHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
-    # Dispatched from DebateModerator, so every target that links the moderator
-    # needs it -- and it drags in the summarizer and the shared model client.
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
-    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
-    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
-    ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
-    ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
-    ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
-    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
-    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
-    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
-    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
-    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
-)
-target_link_libraries(summarize_tool ${IMPORT_TOOL_LIBS})
 
 # ============================================================
 # UNIT TESTS — debate_tests (DebateEventTest + PropagationTest + EnterDebateMembersTest)
@@ -351,9 +312,8 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_llm_client.cc
     ${CMAKE_SOURCE_DIR}/tests/test_debate_text_formatter.cc
-    ${CMAKE_SOURCE_DIR}/tests/test_summary_store.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_chat.cc
     ${CMAKE_SOURCE_DIR}/tests/test_generated_debate_builder.cc
-    ${CMAKE_SOURCE_DIR}/tests/test_ai_challenger.cc
     ${CMAKE_SOURCE_DIR}/tests/test_url_fetcher.cc
     ${CMAKE_SOURCE_DIR}/tests/test_tutorial_library.cc
     ${CMAKE_SOURCE_DIR}/tests/test_basis_registry.cc
@@ -381,18 +341,17 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     # Dispatched from DebateModerator, so every target that links the moderator
-    # needs it -- and it drags in the summarizer and the shared model client.
-    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.cc
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
     ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/DebateSummarizer.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
-    ${REPO_ROOT}/backend/src/utils/AiChallenger.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
     ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc

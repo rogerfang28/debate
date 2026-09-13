@@ -23,7 +23,6 @@
 #include "debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.h"
 #include "debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.h"
 #include "../../backend/src/utils/DebateGenerator.h"
-#include "../../backend/src/utils/AiChallenger.h"
 
 #include <chrono>
 #include <cstdio>
@@ -192,21 +191,18 @@ TEST_F(RegistryFileTest, DefaultIsTheFlaggedEntryElseTheFirst) {
     EXPECT_EQ(bases::DefaultName(), "A");
 }
 
-// Both prompts pull the kinds from the registry at build time. A placeholder
+// The generator prompt pulls the kinds from the registry at build time. A placeholder
 // left unsubstituted would reach the model as literal "{bases}", and the model
 // would do something with it -- so the check is for the names AND for the
 // absence of the keys.
-TEST_F(RegistryFileTest, BothPromptsCarryTheRegistryAndNoPlaceholders) {
+TEST_F(RegistryFileTest, TheGeneratorPromptCarriesTheRegistryAndNoPlaceholders) {
     use(shippedRegistry());
     const std::string gen = DebateGenerator::BuildPrompt("a topic", "a passage");
-    const std::string chal = AiChallenger::BuildPrompt("[#1] a claim");
     for (const auto& name : bases::Names()) {
         EXPECT_NE(gen.find(name), std::string::npos) << "generator lacks " << name;
-        EXPECT_NE(chal.find(name), std::string::npos) << "challenger lacks " << name;
     }
     for (const char* key : {"{bases}", "{default_basis}"}) {
         EXPECT_EQ(gen.find(key), std::string::npos) << key;
-        EXPECT_EQ(chal.find(key), std::string::npos) << key;
     }
     // The default is what the examples use, so a reader of the prompt sees a
     // real basis name where the template said {default_basis}.

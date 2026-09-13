@@ -1,5 +1,6 @@
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../utils/ClaimVoice.h"
+#include "../../../../../utils/DebateChat.h"
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
@@ -722,316 +723,145 @@ static ui::Component BuildTreeNode(
     return node;
 }
 
-// The AI summary panel: a button that asks the model to read the whole debate,
-// and the result once there is one.
-//
-// A debate is a graph, and past a dozen claims the graph stops answering "so
-// where does this actually stand" at a glance. That is what this is for -- and
-// why it sits at the top of the column, above the claim the user happens to
-// have selected.
-// Renders one summary's contents -- pending, error, or the text itself -- into
-// `panel`. Shared by the debate summary and the per-claim summary: they differ
-// in what they summarize and where they sit, not in how a summary looks.
-//
-// `idPrefix` keeps component ids unique between the two, and `pendingMarkerId`
-// is what the client polls on while a run is going.
-static void AddSummaryBody(ui::Component* panel,
-                           const user_engagement::DebatingInfo::DebateSummary& summary,
-                           const std::string& idPrefix,
-                           const std::string& pendingMarkerId,
-                           const std::string& emptyHint,
-                           const std::string& pendingHint) {
-    if (summary.pending()) {
-        ui::Component progress = ComponentGenerator::createText(
-            pendingMarkerId,
-            pendingHint + " " + std::to_string(summary.elapsed_seconds()) + "s elapsed",
-            "text-sm", "text-indigo-300", "", ""
-        );
-        ComponentGenerator::addChild(panel, progress);
-        ui::Component hint = ComponentGenerator::createText(
-            idPrefix + "PendingHint",
-            "The local model usually takes 30-90 seconds. You can keep working; "
-            "it will appear here when it is done.",
-            "text-xs", "text-gray-500", "", ""
-        );
-        ComponentGenerator::addChild(panel, hint);
-        return;
-    }
-
-    if (!summary.error().empty()) {
-        ui::Component errorText = ComponentGenerator::createText(
-            idPrefix + "Error", summary.error(), "text-sm", "text-red-400", "", ""
-        );
-        (*errorText.mutable_css())["overflow-wrap"] = "anywhere";
-        ComponentGenerator::addChild(panel, errorText);
-        return;
-    }
-
-    if (summary.text().empty()) {
-        ui::Component hint = ComponentGenerator::createText(
-            idPrefix + "Hint", emptyHint, "text-sm", "text-gray-400", "", ""
-        );
-        ComponentGenerator::addChild(panel, hint);
-        return;
-    }
-
-    // Now that summaries persist, one can outlive the debate it describes. Say
-    // so rather than letting it quietly misrepresent the current state.
-    if (summary.moves_behind() > 0) {
-        const int behind = summary.moves_behind();
-        ui::Component stale = ComponentGenerator::createText(
-            idPrefix + "Stale",
-            "This summary is " + std::to_string(behind) + (behind == 1 ? " move" : " moves") +
-                " out of date. Press Re-summarize for the current state.",
-            "text-xs", "text-amber-400", "", ""
-        );
-        ComponentGenerator::addChild(panel, stale);
-    }
-
-    // One component per line. The renderer collapses whitespace like HTML, so a
-    // single text node would run the model's sections together into one
-    // paragraph and lose the structure the prompt asked for.
-    ui::Component body = ComponentGenerator::createContainer(
-        idPrefix + "Body", "w-full", "", "", "", "", "", ""
-    );
-    (*body.mutable_css())["display"] = "flex";
-    (*body.mutable_css())["flex-direction"] = "column";
-    (*body.mutable_css())["gap"] = "0.15rem";
-
-    std::istringstream lines(summary.text());
+// One block of prose as components: one TEXT per line, because the renderer
+// collapses whitespace like HTML and a single node would run the model's
+// paragraphs together.
+static void AddTextLines(ui::Component* parent, const std::string& idPrefix, const std::string& text,
+                         const std::string& colorClass) {
+    std::istringstream lines(text);
     std::string line;
     int lineIndex = 0;
     while (std::getline(lines, line)) {
-        if (!line.empty() && line.back() == '\r') {
-            line.pop_back();
-        }
-        const std::string id = idPrefix + "Line_" + std::to_string(lineIndex++);
+        if (!line.empty() && line.back() == '\r') line.pop_back();
+        const std::string id = idPrefix + "_" + std::to_string(lineIndex++);
         if (line.empty()) {
             ui::Component spacer = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
-            (*spacer.mutable_css())["height"] = "0.4rem";
-            ComponentGenerator::addChild(&body, spacer);
+            (*spacer.mutable_css())["height"] = "0.3rem";
+            ComponentGenerator::addChild(parent, spacer);
             continue;
         }
-
-        // The prompt asks for ALL-CAPS section headings; styling them is what
-        // makes the summary skimmable rather than a wall of text.
-        const bool isHeading = line.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos;
-        ui::Component textLine = ComponentGenerator::createText(
-            id, line, isHeading ? "text-xs" : "text-sm",
-            isHeading ? "text-gray-400" : "text-gray-100",
-            isHeading ? "font-semibold uppercase tracking-wide" : "", ""
-        );
+        ui::Component textLine = ComponentGenerator::createText(id, line, "text-sm", colorClass, "", "");
         (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
-        if (isHeading && lineIndex > 1) {
-            (*textLine.mutable_css())["margin-top"] = "0.35rem";
-        }
-        ComponentGenerator::addChild(&body, textLine);
+        ComponentGenerator::addChild(parent, textLine);
     }
-
-    ComponentGenerator::addChild(panel, body);
 }
 
-static ui::Component BuildDebateSummaryPanel(const user::User& viewerUser) {
-    const user_engagement::DebatingInfo::DebateSummary& summary =
-        viewerUser.engagement().debating_info().debate_summary();
-    const bool pending = summary.pending();
-    const bool hasText = !pending && !summary.text().empty();
-    const bool hasError = !pending && !summary.error().empty();
+// The AI chat. The one place the model speaks: a box for any question, quick
+// buttons for the questions readers ask most, and the conversation so far.
+// Everything it says is text -- it never writes a claim; the reader does.
+//
+// It sits at the top of the column, above the selected claim, because past a
+// dozen claims the graph stops answering "so where does this stand" at a
+// glance, and asking is faster than reading.
+static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
+    const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
 
     ui::Component panel = ComponentGenerator::createContainer(
-        "debateSummaryPanel", "w-full", "bg-gray-800", "p-4", "",
-        "border border-gray-700", "rounded-lg", ""
+        "chatPanel", "w-full", "bg-gray-800", "p-4", "", "border border-gray-700", "rounded-lg", ""
     );
     (*panel.mutable_css())["display"] = "flex";
     (*panel.mutable_css())["flex-direction"] = "column";
     (*panel.mutable_css())["gap"] = "0.5rem";
 
-    ui::Component headerRow = ComponentGenerator::createContainer(
-        "debateSummaryHeaderRow", "flex gap-2", "", "", "", "", "", ""
-    );
-    (*headerRow.mutable_css())["display"] = "flex";
-    (*headerRow.mutable_css())["align-items"] = "center";
-    (*headerRow.mutable_css())["justify-content"] = "space-between";
-    (*headerRow.mutable_css())["gap"] = "0.5rem";
-
     ui::Component heading = ComponentGenerator::createText(
-        "debateSummaryHeading", "AI Summary of Debate:", "text-xs", "text-gray-500",
+        "chatHeading", "Ask the AI about this debate:", "text-xs", "text-gray-500",
         "font-semibold uppercase tracking-wide", ""
     );
-    ComponentGenerator::addChild(&headerRow, heading);
+    ComponentGenerator::addChild(&panel, heading);
 
-    ui::Component buttonGroup = ComponentGenerator::createContainer(
-        "debateSummaryButtons", "flex gap-2", "", "", "", "", "", ""
-    );
-    (*buttonGroup.mutable_css())["display"] = "flex";
-    (*buttonGroup.mutable_css())["gap"] = "0.5rem";
-
-    // The label says what a second press does, because the debate moves and a
-    // summary taken five claims ago is not the summary of this debate.
-    // While a run is going the button says so and stops inviting a second
-    // press -- pressing again cannot start anything (AiJobs refuses a
-    // concurrent run) and would only look broken.
-    // Sits with the summary controls because both are "ask the AI about this
-    // debate" -- one describes it, the other tries to break it.
-    const user_engagement::AiJobStatus& aiJob = viewerUser.engagement().ai_job();
-    ui::Component challengeButton = ComponentGenerator::createButton(
-        "aiChallengeButton", aiJob.pending() ? "Working..." : "AI Challenge", "",
-        aiJob.pending() ? "bg-gray-600" : "bg-orange-700",
-        aiJob.pending() ? "hover:bg-gray-600" : "hover:bg-orange-800", "text-white",
-        "px-3 py-1.5", "rounded", "text-sm"
-    );
-    ComponentGenerator::addChild(&buttonGroup, challengeButton);
-
-    ui::Component summarizeButton = ComponentGenerator::createButton(
-        "summarizeDebateButton",
-        pending ? "Summarizing..." : ((hasText || hasError) ? "Re-summarize" : "Summarize Debate"),
-        "", pending ? "bg-gray-600" : "bg-indigo-600",
-        pending ? "hover:bg-gray-600" : "hover:bg-indigo-700", "text-white",
-        "px-3 py-1.5", "rounded", "text-sm"
-    );
-    ComponentGenerator::addChild(&buttonGroup, summarizeButton);
-
-    if (!pending && (hasText || hasError)) {
-        ui::Component dismissButton = ComponentGenerator::createButton(
-            "dismissDebateSummaryButton", "Dismiss", "", "bg-gray-700",
-            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"
+    // The conversation so far, last 20 turns.
+    if (chat.messages_size() > 0) {
+        ui::Component transcript = ComponentGenerator::createContainer(
+            "chatTranscript", "w-full", "", "", "", "", "", ""
         );
-        ComponentGenerator::addChild(&buttonGroup, dismissButton);
+        (*transcript.mutable_css())["display"] = "flex";
+        (*transcript.mutable_css())["flex-direction"] = "column";
+        (*transcript.mutable_css())["gap"] = "0.4rem";
+        (*transcript.mutable_css())["max-height"] = "24rem";
+        (*transcript.mutable_css())["overflow-y"] = "auto";
+
+        const int total = chat.messages_size();
+        const int first = total > 20 ? total - 20 : 0;
+        for (int i = first; i < total; ++i) {
+            const auto& m = chat.messages(i);
+            const bool mine = m.role() != "assistant";
+            ui::Component turn = ComponentGenerator::createContainer(
+                "chatTurn_" + std::to_string(i), "w-full", mine ? "" : "bg-gray-900",
+                mine ? "" : "p-2", "", "", mine ? "" : "rounded", ""
+            );
+            (*turn.mutable_css())["display"] = "flex";
+            (*turn.mutable_css())["flex-direction"] = "column";
+            ui::Component who = ComponentGenerator::createText(
+                "chatWho_" + std::to_string(i), mine ? "You" : "AI", "text-xs",
+                mine ? "text-indigo-300" : "text-green-300", "font-semibold", ""
+            );
+            ComponentGenerator::addChild(&turn, who);
+            AddTextLines(&turn, "chatLine_" + std::to_string(i), m.text(),
+                         mine ? "text-gray-300" : "text-gray-100");
+            ComponentGenerator::addChild(&transcript, turn);
+        }
+        ComponentGenerator::addChild(&panel, transcript);
     }
 
-    ComponentGenerator::addChild(&headerRow, buttonGroup);
-    ComponentGenerator::addChild(&panel, headerRow);
-
-    // A marker that lives as long as ANY summary run does, so the client keeps
-    // polling until every result has been collected -- including a claim
-    // summary still generating while this panel already shows its answer.
-    // A run can take minutes on a local model. Without this the only way out of
-    // a mistaken click is to wait it out.
-    if (aiJob.pending() || summary.pending() ||
-        viewerUser.engagement().debating_info().summary_running()) {
+    if (chat.pending()) {
+        // Marker id ends in Pending so the client polls while an answer is
+        // coming -- the client polls on the WORK.
+        ui::Component progress = ComponentGenerator::createText(
+            "chatPending",
+            "Thinking... " + std::to_string(chat.elapsed_seconds()) + "s elapsed",
+            "text-sm", "text-indigo-300", "", ""
+        );
+        ComponentGenerator::addChild(&panel, progress);
         ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
             "cancelAiWorkButton", "Cancel", "", "bg-gray-700", "hover:bg-gray-600",
             "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+        return panel;
     }
 
-    if (aiJob.pending()) {
-        ui::Component working = ComponentGenerator::createText(
-            "aiChallengeSummaryPending",
-            "The AI is reading the debate and looking for weaknesses... " +
-                std::to_string(aiJob.elapsed_seconds()) + "s elapsed",
-            "text-sm", "text-orange-300", "", ""
-        );
-        ComponentGenerator::addChild(&panel, working);
+    ComponentGenerator::addChild(&panel, ComponentGenerator::createTextarea(
+        "chatQuestionInput", "Ask anything about this debate. Ctrl+Enter sends.", "chatQuestion", 3));
+
+    ui::Component buttons = ComponentGenerator::createContainer(
+        "chatButtons", "flex gap-2 flex-wrap", "", "", "", "", "", ""
+    );
+    (*buttons.mutable_css())["display"] = "flex";
+    (*buttons.mutable_css())["flex-wrap"] = "wrap";
+    (*buttons.mutable_css())["gap"] = "0.5rem";
+    ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+        "askChatButton", "Ask", "", "bg-indigo-600", "hover:bg-indigo-700",
+        "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+
+    // The questions readers ask most, as buttons. The claim ones need a
+    // selected claim.
+    std::vector<std::string> quick{DebateChat::kSummarizeDebate, DebateChat::kFindMistake};
+    if (selectedClaimId > 0) {
+        quick.push_back(DebateChat::kSummarizeClaim);
+        quick.push_back(DebateChat::kSuggestChallenge);
     }
-    // A notice describes work in ONE debate. Without this check, "Generated a
-    // debate from 20 steps" followed the user into an unrelated debate and made
-    // a hand-built one look AI-written.
-    const int viewingDebateId = viewerUser.engagement().debating_info().debate_id();
-    const bool noticeIsAboutThisDebate =
-        aiJob.about_debate_id() == 0 || aiJob.about_debate_id() == viewingDebateId;
-    if (!aiJob.note().empty() && noticeIsAboutThisDebate) {
+    for (const std::string& key : quick) {
+        ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+            "chatQuickButton_" + key, DebateChat::LabelFor(key), "", "bg-gray-700",
+            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    if (chat.messages_size() > 0) {
+        ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+            "clearChatButton", "Clear chat", "", "bg-gray-800", "hover:bg-gray-700",
+            "text-gray-400", "px-3 py-1.5", "rounded border border-gray-600", "text-sm"));
+    }
+    ComponentGenerator::addChild(&panel, buttons);
+
+    const user_engagement::AiJobStatus& aiJob = viewerUser.engagement().ai_job();
+    if (!aiJob.note().empty()) {
         ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
-            "aiChallengeNote", aiJob.note(), "text-sm", "text-green-400", "", ""));
+            "chatNote", aiJob.note(), "text-xs", "text-gray-500", "", ""));
         ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
             "dismissAiNoticeButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
             "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
     }
-    if (!aiJob.error().empty()) {
-        ui::Component err = ComponentGenerator::createText(
-            "aiChallengeError", aiJob.error(), "text-sm", "text-red-400", "", "");
-        (*err.mutable_css())["overflow-wrap"] = "anywhere";
-        ComponentGenerator::addChild(&panel, err);
-    }
-
-    if (viewerUser.engagement().debating_info().summary_running() && !summary.pending()) {
-        ui::Component working = ComponentGenerator::createText(
-            "backgroundSummaryPending", "An AI summary is still generating...",
-            "text-xs", "text-indigo-300", "", ""
-        );
-        ComponentGenerator::addChild(&panel, working);
-    }
-
-    AddSummaryBody(&panel, summary, "debateSummary", "debateSummaryPending",
-                   "No summary yet. Press Summarize Debate to have the AI read the whole debate.",
-                   "Reading the debate and writing a summary...");
 
     return panel;
 }
 
-// The per-claim summary, shown inside the selected-claim panel. Separate from
-// the whole-debate one because it answers a different question -- what is THIS
-// claim doing here -- and a reader may want both at once.
-static ui::Component BuildClaimSummarySection(const user::User& viewerUser, int selectedClaimId) {
-    const user_engagement::DebatingInfo& info = viewerUser.engagement().debating_info();
-    const user_engagement::DebatingInfo::DebateSummary& summary = info.claim_summary();
-
-    // A summary belongs to the claim it was asked about. Showing it beside a
-    // different claim would attach an explanation to the wrong sentence, which
-    // is worse than showing nothing.
-    const bool aboutThisClaim = info.claim_summary_claim_id() == selectedClaimId;
-    const bool pending = aboutThisClaim && summary.pending();
-    const bool hasContent =
-        aboutThisClaim && !pending && (!summary.text().empty() || !summary.error().empty());
-
-    ui::Component section = ComponentGenerator::createContainer(
-        "claimSummarySection", "w-full", "", "", "", "", "", ""
-    );
-    (*section.mutable_css())["display"] = "flex";
-    (*section.mutable_css())["flex-direction"] = "column";
-    (*section.mutable_css())["gap"] = "0.35rem";
-    (*section.mutable_css())["margin-top"] = "0.5rem";
-    (*section.mutable_css())["padding-top"] = "0.5rem";
-    (*section.mutable_css())["border-top"] = "1px solid #374151";
-
-    ui::Component headerRow = ComponentGenerator::createContainer(
-        "claimSummaryHeaderRow", "flex gap-2", "", "", "", "", "", ""
-    );
-    (*headerRow.mutable_css())["display"] = "flex";
-    (*headerRow.mutable_css())["align-items"] = "center";
-    (*headerRow.mutable_css())["justify-content"] = "space-between";
-    (*headerRow.mutable_css())["gap"] = "0.5rem";
-
-    ui::Component heading = ComponentGenerator::createText(
-        "claimSummaryHeading", "AI Summary of This Claim:", "text-xs", "text-gray-500",
-        "font-semibold uppercase tracking-wide", ""
-    );
-    ComponentGenerator::addChild(&headerRow, heading);
-
-    ui::Component buttons = ComponentGenerator::createContainer(
-        "claimSummaryButtons", "flex gap-2", "", "", "", "", "", ""
-    );
-    (*buttons.mutable_css())["display"] = "flex";
-    (*buttons.mutable_css())["gap"] = "0.5rem";
-
-    // The id carries the claim id, so the request is about the claim that was
-    // on screen when it was pressed rather than whatever is selected later.
-    ui::Component summarizeButton = ComponentGenerator::createButton(
-        "summarizeClaimButton_" + std::to_string(selectedClaimId),
-        pending ? "Summarizing..." : (hasContent ? "Re-summarize" : "Summarize This Claim"),
-        "", pending ? "bg-gray-600" : "bg-indigo-600",
-        pending ? "hover:bg-gray-600" : "hover:bg-indigo-700", "text-white",
-        "px-3 py-1.5", "rounded", "text-sm"
-    );
-    ComponentGenerator::addChild(&buttons, summarizeButton);
-
-    if (hasContent) {
-        ui::Component dismissButton = ComponentGenerator::createButton(
-            "dismissClaimSummaryButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
-            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"
-        );
-        ComponentGenerator::addChild(&buttons, dismissButton);
-    }
-
-    ComponentGenerator::addChild(&headerRow, buttons);
-    ComponentGenerator::addChild(&section, headerRow);
-
-    if (aboutThisClaim) {
-        AddSummaryBody(&section, summary, "claimSummary", "claimSummaryPending",
-                       "", "Reading this claim and its surroundings...");
-    }
-
-    return section;
-}
 
 
 // Builds the walkthrough guide box: where you are, what just happened, and the
@@ -1503,8 +1333,8 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
-	ui::Component debateSummaryPanel = BuildDebateSummaryPanel(viewerUser);
-	ComponentGenerator::addChild(&leftColumn, debateSummaryPanel);
+	ui::Component chatPanel = BuildChatPanel(viewerUser, currentClaimId);
+	ComponentGenerator::addChild(&leftColumn, chatPanel);
 
 	// A selected ARGUMENT takes the claim panel's place. The selection is
 	// only honoured if the collection still has that relation -- a stale id
@@ -1517,13 +1347,6 @@ ui::Page StepView::GenerateStepViewPage(
 			selectedLinkId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username())
 		: BuildSelectedClaimPanel(
 			currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username());
-	// Attached at the call site rather than inside BuildSelectedClaimPanel,
-	// which is defined further up the file and would otherwise need a forward
-	// declaration and a wider signature just to reach the viewer.
-	if (!showRelation && currentClaimId > 0) {
-		ComponentGenerator::addChild(&selectedClaimPanel,
-			BuildClaimSummarySection(viewerUser, currentClaimId));
-	}
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 
 	// Render a single interactive paragraph tree for the entire debate,

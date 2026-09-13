@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJtCgtBaUpvYlN0YXR1cxIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIMCgRub3RlGAQgASgJEhcKD2Fib3V0X2RlYmF0ZV9pZBgFIAEoBSKNAQoOVHV0b3JpYWxTdGF0dXMSDgoGYWN0aXZlGAEgASgIEg4KBnNjcmlwdBgCIAEoCRISCgpzdGVwX2luZGV4GAMgASgFEhMKC3RvdGFsX3N0ZXBzGAQgASgFEhEKCWRlYmF0ZV9pZBgFIAEoBRIQCghmaW5pc2hlZBgGIAEoCBINCgVlcnJvchgHIAEoCSKjAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEiwKBmFpX2pvYhgEIAEoCzIcLnVzZXJfZW5nYWdlbWVudC5BaUpvYlN0YXR1cxIxCgh0dXRvcmlhbBgFIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5UdXRvcmlhbFN0YXR1c0INCgthY3Rpb25faW5mbyJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0InEKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSI6CgpEZWJhdGVMaXN0EiwKBnRvcGljcxgBIAMoCzIcLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVUb3BpYyKfDgoMRGViYXRpbmdJbmZvEhEKCWRlYmF0ZV9pZBgBIAEoBRIUCgxpc19jaGFsbGVuZ2UYECABKAgSHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCSABKAgSGgoSY2hhbGxlbmdlZF91c2VyX2lkGBEgASgFEhoKEmNoYWxsZW5nZXJfdXNlcl9pZBgSIAEoBRIxCg1jdXJyZW50X2NsYWltGAIgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAMgASgJEjAKDHBhcmVudF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgFIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAYgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgHIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYCCADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxJQChVjdXJyZW50X2RlYmF0ZV9hY3Rpb24YCyABKAsyMS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkN1cnJlbnREZWJhdGVBY3Rpb24SQwoOZGViYXRlX3N1bW1hcnkYEyABKAsyKy51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkRlYmF0ZVN1bW1hcnkSQgoNY2xhaW1fc3VtbWFyeRgUIAEoCzIrLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uRGViYXRlU3VtbWFyeRIeChZjbGFpbV9zdW1tYXJ5X2NsYWltX2lkGBUgASgFEhcKD3N1bW1hcnlfcnVubmluZxgWIAEoCBIYChBzZWxlY3RlZF9saW5rX2lkGBcgASgFEkcKD2Nvbm5lY3RpbmdfaW5mbxgMIAEoCzIsLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ29ubmVjdGluZ0luZm9IABJJChBjaGFsbGVuZ2luZ19pbmZvGA8gASgLMi0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DaGFsbGVuZ2luZ0luZm9IABqlAQoQTW9kaWZpY2F0aW9uSW5mbxIuCgpuZXdfY2xhaW1zGAEgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIsCgluZXdfbGlua3MYAiADKAsyGS51c2VyX2VuZ2FnZW1lbnQuTGlua0luZm8SGQoRZGVsZXRlZF9jbGFpbV9pZHMYAyADKAUSGAoQZGVsZXRlZF9saW5rX2lkcxgEIAMoBRq0AgoTQ3VycmVudERlYmF0ZUFjdGlvbhJRCgthY3Rpb25fdHlwZRgBIAEoDjI8LnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ3VycmVudERlYmF0ZUFjdGlvbi5BY3Rpb25UeXBlIskBCgpBY3Rpb25UeXBlEhsKF0FDVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASEQoNVklFV0lOR19DTEFJTRABEhYKEkFERElOR19DSElMRF9DTEFJTRACEhUKEUNPTk5FQ1RJTkdfQ0xBSU1TEAMSFQoRQ0hBTExFTkdJTkdfQ0xBSU0QBBIdChlFRElUSU5HX0NMQUlNX0RFU0NSSVBUSU9OEAUSEQoNRURJVElOR19DTEFJTRAGEhMKD1JFUE9SVElOR19DTEFJTRAHGowBCg1EZWJhdGVTdW1tYXJ5EgwKBHRleHQYASABKAkSDQoFZXJyb3IYAiABKAkSHgoWc3VtbWFyaXplZF9hdF9tb3ZlX3NlcRgDIAEoBRIPCgdwZW5kaW5nGAQgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgFIAEoBRIUCgxtb3Zlc19iZWhpbmQYBiABKAUaggEKDkNvbm5lY3RpbmdJbmZvEhUKDWZyb21fY2xhaW1faWQYASABKAUSEwoLdG9fY2xhaW1faWQYAiABKAUSEgoKY29ubmVjdGlvbhgDIAEoCRISCgpjb25uZWN0aW5nGAQgASgIEhwKFG9wZW5lZF9jb25uZWN0X21vZGFsGAUgASgIGnIKD0NoYWxsZW5naW5nSW5mbxIRCgljbGFpbV9pZHMYASADKAUSEAoIbGlua19pZHMYAiADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAMgASgJEh4KFm9wZW5lZF9jaGFsbGVuZ2VfbW9kYWwYBCABKAhCEQoPYWRkaXRpb25hbF9pbmZvImIKCUNsYWltSW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEiMKBnN0YXR1cxgEIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cyJoCghMaW5rSW5mbxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUiQQoNQ2hhbGxlbmdlSW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFKm0KEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fSE9NRRABEhMKD0FDVElPTl9ERUJBVElORxACEhAKDEFDVElPTl9MT0dJThADYgZwcm90bzM", [file_debate]);
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJtCgtBaUpvYlN0YXR1cxIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIMCgRub3RlGAQgASgJEhcKD2Fib3V0X2RlYmF0ZV9pZBgFIAEoBSKNAQoOVHV0b3JpYWxTdGF0dXMSDgoGYWN0aXZlGAEgASgIEg4KBnNjcmlwdBgCIAEoCRISCgpzdGVwX2luZGV4GAMgASgFEhMKC3RvdGFsX3N0ZXBzGAQgASgFEhEKCWRlYmF0ZV9pZBgFIAEoBRIQCghmaW5pc2hlZBgGIAEoCBINCgVlcnJvchgHIAEoCSKjAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEiwKBmFpX2pvYhgEIAEoCzIcLnVzZXJfZW5nYWdlbWVudC5BaUpvYlN0YXR1cxIxCgh0dXRvcmlhbBgFIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5UdXRvcmlhbFN0YXR1c0INCgthY3Rpb25faW5mbyJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0InEKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSI6CgpEZWJhdGVMaXN0EiwKBnRvcGljcxgBIAMoCzIcLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVUb3BpYyLQDQoMRGViYXRpbmdJbmZvEhEKCWRlYmF0ZV9pZBgBIAEoBRIUCgxpc19jaGFsbGVuZ2UYECABKAgSHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCSABKAgSGgoSY2hhbGxlbmdlZF91c2VyX2lkGBEgASgFEhoKEmNoYWxsZW5nZXJfdXNlcl9pZBgSIAEoBRIxCg1jdXJyZW50X2NsYWltGAIgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAMgASgJEjAKDHBhcmVudF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgFIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAYgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgHIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYCCADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxJQChVjdXJyZW50X2RlYmF0ZV9hY3Rpb24YCyABKAsyMS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkN1cnJlbnREZWJhdGVBY3Rpb24SNQoEY2hhdBgYIAEoCzInLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ2hhdFN0YXRlEhgKEHNlbGVjdGVkX2xpbmtfaWQYFyABKAUSRwoPY29ubmVjdGluZ19pbmZvGAwgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mb0gAEkkKEGNoYWxsZW5naW5nX2luZm8YDyABKAsyLS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYWxsZW5naW5nSW5mb0gAGqUBChBNb2RpZmljYXRpb25JbmZvEi4KCm5ld19jbGFpbXMYASADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEiwKCW5ld19saW5rcxgCIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxIZChFkZWxldGVkX2NsYWltX2lkcxgDIAMoBRIYChBkZWxldGVkX2xpbmtfaWRzGAQgAygFGrQCChNDdXJyZW50RGViYXRlQWN0aW9uElEKC2FjdGlvbl90eXBlGAEgASgOMjwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DdXJyZW50RGViYXRlQWN0aW9uLkFjdGlvblR5cGUiyQEKCkFjdGlvblR5cGUSGwoXQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIRCg1WSUVXSU5HX0NMQUlNEAESFgoSQURESU5HX0NISUxEX0NMQUlNEAISFQoRQ09OTkVDVElOR19DTEFJTVMQAxIVChFDSEFMTEVOR0lOR19DTEFJTRAEEh0KGUVESVRJTkdfQ0xBSU1fREVTQ1JJUFRJT04QBRIRCg1FRElUSU5HX0NMQUlNEAYSEwoPUkVQT1JUSU5HX0NMQUlNEAcaKQoLQ2hhdE1lc3NhZ2USDAoEcm9sZRgBIAEoCRIMCgR0ZXh0GAIgASgJGoUBCglDaGF0U3RhdGUSDwoHcGVuZGluZxgBIAEoCBIXCg9lbGFwc2VkX3NlY29uZHMYAiABKAUSOwoIbWVzc2FnZXMYAyADKAsyKS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYXRNZXNzYWdlEhEKCWRlYmF0ZV9pZBgEIAEoBRqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCEIRCg9hZGRpdGlvbmFsX2luZm9KBAgTEBRKBAgUEBVKBAgVEBZKBAgWEBciYgoJQ2xhaW1JbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSIwoGc3RhdHVzGAQgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzImgKCExpbmtJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJBCg1DaGFsbGVuZ2VJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUqbQoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9IT01FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAISEAoMQUNUSU9OX0xPR0lOEANiBnByb3RvMw", [file_debate]);
 
 /**
  * Progress and outcome of an AI job that is not a summary -- generating a
@@ -339,41 +339,9 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   currentDebateAction?: DebatingInfo_CurrentDebateAction;
 
   /**
-   * @generated from field: user_engagement.DebatingInfo.DebateSummary debate_summary = 19;
+   * @generated from field: user_engagement.DebatingInfo.ChatState chat = 24;
    */
-  debateSummary?: DebatingInfo_DebateSummary;
-
-  /**
-   * The same shape, for a summary of ONE claim rather than the whole debate.
-   * A separate field, not a reuse: the two answer different questions and a
-   * reader may well want both on screen at once, so one must not evict the
-   * other.
-   *
-   * @generated from field: user_engagement.DebatingInfo.DebateSummary claim_summary = 20;
-   */
-  claimSummary?: DebatingInfo_DebateSummary;
-
-  /**
-   * Which claim claim_summary is about. Without it a summary would silently
-   * keep describing the claim you were looking at when you pressed the button,
-   * while you read it beside a different selected claim.
-   *
-   * @generated from field: int32 claim_summary_claim_id = 21;
-   */
-  claimSummaryClaimId: number;
-
-  /**
-   * True while ANY summary run is in flight for this viewer.
-   * 
-   * The client polls only while the page shows a pending marker, so the marker
-   * has to track the WORK, not one panel. With a debate and a claim summary
-   * running together, the first to finish removed the only marker on the page,
-   * polling stopped, and the second result sat uncollected until something else
-   * happened to hit the server.
-   *
-   * @generated from field: bool summary_running = 22;
-   */
-  summaryRunning: boolean;
+  chat?: DebatingInfo_ChatState;
 
   /**
    * The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
@@ -534,75 +502,72 @@ export const DebatingInfo_CurrentDebateAction_ActionTypeSchema: GenEnum<Debating
   enumDesc(file_user_engagement, 6, 1, 0);
 
 /**
- * The AI summary of the whole debate, produced on demand by the
- * "Summarize Debate" button.
- * 
- * Lives on the VIEWER rather than on the debate because it is a reading aid,
- * not part of the argument: two people may summarize at different points and
- * neither summary is the debate's own position. Storing it on the debate
- * would also mean one user's click overwrites what another is reading.
- * 
- * `text` and `error` are mutually exclusive -- a run either produced a
- * summary or explained why it could not, and showing a stale summary beside
- * a fresh error would misrepresent which one describes the debate now.
+ * One turn of the AI chat.
  *
- * @generated from message user_engagement.DebatingInfo.DebateSummary
+ * @generated from message user_engagement.DebatingInfo.ChatMessage
  */
-export type DebatingInfo_DebateSummary = Message<"user_engagement.DebatingInfo.DebateSummary"> & {
+export type DebatingInfo_ChatMessage = Message<"user_engagement.DebatingInfo.ChatMessage"> & {
   /**
-   * @generated from field: string text = 1;
+   * "user" or "assistant"
+   *
+   * @generated from field: string role = 1;
+   */
+  role: string;
+
+  /**
+   * @generated from field: string text = 2;
    */
   text: string;
+};
 
-  /**
-   * @generated from field: string error = 2;
-   */
-  error: string;
+/**
+ * Describes the message user_engagement.DebatingInfo.ChatMessage.
+ * Use `create(DebatingInfo_ChatMessageSchema)` to create a new message.
+ */
+export const DebatingInfo_ChatMessageSchema: GenMessage<DebatingInfo_ChatMessage> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 6, 2);
 
+/**
+ * The AI chat for the debate the user is in; see ChatHandler.
+ * 
+ * The transcript lives in CHATS; this is a copy of its tail so the page
+ * can draw it from the user record, plus what a run in flight looks
+ * like. `pending` is never true across a restart -- AiJobs owns the run
+ * and is the only thing that knows it is still alive.
+ *
+ * @generated from message user_engagement.DebatingInfo.ChatState
+ */
+export type DebatingInfo_ChatState = Message<"user_engagement.DebatingInfo.ChatState"> & {
   /**
-   * Head of the move log when the debate text was taken. Provenance only for
-   * now -- nothing compares it against the current head yet, so a summary can
-   * still be stale on screen without saying so. Recorded because the answer
-   * cannot be reconstructed after the fact.
-   *
-   * @generated from field: int32 summarized_at_move_seq = 3;
-   */
-  summarizedAtMoveSeq: number;
-
-  /**
-   * A run is in flight. Rendered as progress rather than as a result, and
-   * never persisted as true across a restart -- see SummaryJobs, which owns
-   * the actual run and is the only thing that can know it is still alive.
-   *
-   * @generated from field: bool pending = 4;
+   * @generated from field: bool pending = 1;
    */
   pending: boolean;
 
   /**
-   * Seconds the current run has been going, so the page can show motion. The
-   * model takes tens of seconds; without a number on screen a working model
-   * and a hung one look exactly alike.
-   *
-   * @generated from field: int32 elapsed_seconds = 5;
+   * @generated from field: int32 elapsed_seconds = 2;
    */
   elapsedSeconds: number;
 
   /**
-   * How far the debate has moved since this summary was taken. Computed per
-   * response, never stored: staleness is a fact about NOW, and a stored copy
-   * would itself go stale.
-   *
-   * @generated from field: int32 moves_behind = 6;
+   * @generated from field: repeated user_engagement.DebatingInfo.ChatMessage messages = 3;
    */
-  movesBehind: number;
+  messages: DebatingInfo_ChatMessage[];
+
+  /**
+   * Which debate `messages` belong to. When it is not the debate the user
+   * is in, the copy is stale and is reloaded from CHATS.
+   *
+   * @generated from field: int32 debate_id = 4;
+   */
+  debateId: number;
 };
 
 /**
- * Describes the message user_engagement.DebatingInfo.DebateSummary.
- * Use `create(DebatingInfo_DebateSummarySchema)` to create a new message.
+ * Describes the message user_engagement.DebatingInfo.ChatState.
+ * Use `create(DebatingInfo_ChatStateSchema)` to create a new message.
  */
-export const DebatingInfo_DebateSummarySchema: GenMessage<DebatingInfo_DebateSummary> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6, 2);
+export const DebatingInfo_ChatStateSchema: GenMessage<DebatingInfo_ChatState> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 6, 3);
 
 /**
  * TODO remove field, was used for user manual linking claims
@@ -641,7 +606,7 @@ export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.
  * Use `create(DebatingInfo_ConnectingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ConnectingInfoSchema: GenMessage<DebatingInfo_ConnectingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6, 3);
+  messageDesc(file_user_engagement, 6, 4);
 
 /**
  * @generated from message user_engagement.DebatingInfo.ChallengingInfo
@@ -679,7 +644,7 @@ export type DebatingInfo_ChallengingInfo = Message<"user_engagement.DebatingInfo
  * Use `create(DebatingInfo_ChallengingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ChallengingInfoSchema: GenMessage<DebatingInfo_ChallengingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6, 4);
+  messageDesc(file_user_engagement, 6, 5);
 
 /**
  * @generated from message user_engagement.ClaimInfo

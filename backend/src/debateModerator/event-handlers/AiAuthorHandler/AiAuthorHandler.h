@@ -17,9 +17,6 @@ public:
     static void GenerateDebate(const std::string& topic, const std::string& passage,
                                const int& user_id, DebateWrapper& debateWrapper);
 
-    // Proposes challenges against the debate the user is in, and adds the ones
-    // it can place. Attributed to the user, like anything else they cause.
-    static void ChallengeWithAi(const int& user_id, DebateWrapper& debateWrapper);
 
     // Applies a finished generation or challenge run. Called on every response
     // build, like the summary equivalent -- this is where the model's JSON

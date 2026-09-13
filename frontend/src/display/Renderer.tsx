@@ -109,9 +109,9 @@ const Renderer: React.FC = () => {
     if (!data) return;
     // Cheap containment check first -- walking the tree on every render would
     // cost more than the string scan for a page this size.
-    // Matches debateSummaryPending and claimSummaryPending -- any slow AI job
+    // Matches chatPending and generationSummaryPending -- any slow AI job
     // that names its marker this way gets polled without further wiring.
-    if (!/"(?:[A-Za-z]+)SummaryPending"/.test(JSON.stringify(data))) return;
+    if (!/"(?:[A-Za-z]+SummaryPending|chatPending)"/.test(JSON.stringify(data))) return;
 
     const timer = setTimeout(() => {
       void reloadPage();

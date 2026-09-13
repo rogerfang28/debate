@@ -31,7 +31,7 @@
 
 #include "event-handlers/EndorseHandler/EndorseHandler.h"
 #include "../moveLog/MoveBackfill.h"
-#include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
+#include "event-handlers/ChatHandler/ChatHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 #include "event-handlers/TutorialHandler/TutorialHandler.h"
 
@@ -199,19 +199,20 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: SELECT_LINK");
             MoveUserHandler::SelectLink(event.select_link().link_id(), user_id, debateWrapper);
             break;
-        case debate_event::SUMMARIZE_DEBATE:
-            Log::info("[DebateModerator] Event Type: SUMMARIZE_DEBATE");
-            SummarizeDebateHandler::SummarizeDebate(user_id, debateWrapper);
+        case debate_event::ASK_CHAT:
+            Log::info("[DebateModerator] Event Type: ASK_CHAT");
+            ChatHandler::Ask(event.ask_chat().question(), event.ask_chat().quick_prompt(),
+                             user_id, debateWrapper);
+            break;
+        case debate_event::CLEAR_CHAT:
+            Log::info("[DebateModerator] Event Type: CLEAR_CHAT");
+            ChatHandler::Clear(user_id, debateWrapper);
             break;
         case debate_event::GENERATE_DEBATE:
             Log::info("[DebateModerator] Event Type: GENERATE_DEBATE");
             AiAuthorHandler::GenerateDebate(event.generate_debate().topic(),
                                             event.generate_debate().passage(), user_id,
                                             debateWrapper);
-            break;
-        case debate_event::CHALLENGE_WITH_AI:
-            Log::info("[DebateModerator] Event Type: CHALLENGE_WITH_AI");
-            AiAuthorHandler::ChallengeWithAi(user_id, debateWrapper);
             break;
         case debate_event::CANCEL_AI_WORK:
             Log::info("[DebateModerator] Event Type: CANCEL_AI_WORK");
@@ -232,19 +233,6 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::DISMISS_AI_NOTICE:
             Log::info("[DebateModerator] Event Type: DISMISS_AI_NOTICE");
             AiAuthorHandler::DismissNotice(user_id, debateWrapper);
-            break;
-        case debate_event::SUMMARIZE_CLAIM:
-            Log::info("[DebateModerator] Event Type: SUMMARIZE_CLAIM");
-            SummarizeDebateHandler::SummarizeClaim(event.summarize_claim().claim_id(), user_id,
-                                                   debateWrapper);
-            break;
-        case debate_event::DISMISS_CLAIM_SUMMARY:
-            Log::info("[DebateModerator] Event Type: DISMISS_CLAIM_SUMMARY");
-            SummarizeDebateHandler::DismissClaimSummary(user_id, debateWrapper);
-            break;
-        case debate_event::DISMISS_DEBATE_SUMMARY:
-            Log::info("[DebateModerator] Event Type: DISMISS_DEBATE_SUMMARY");
-            SummarizeDebateHandler::DismissSummary(user_id, debateWrapper);
             break;
         case debate_event::OPEN_ADD_CHILD_CLAIM:
             Log::info("[DebateModerator] Event Type: OPEN_ADD_CHILD_CLAIM");
@@ -521,14 +509,14 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
 
     // std::string user = dbWrapper.users.getUsername(user_id);
 
-    // Fold in any background summary run BEFORE the user proto is read, so this
-    // response carries the current elapsed time or the finished text. This is
-    // what makes a detached worker visible to the page: the client re-requests
+    // Fold in any background chat answer BEFORE the user proto is read, so this
+    // response carries the current elapsed time or the answer. This is what
+    // makes a detached worker visible to the page: the client re-requests
     // while a run is pending, and each request advances what it sees.
-    SummarizeDebateHandler::RefreshSummaryState(user_id, debateWrapper);
-    // Generation and AI challenges finish on a worker; this is where their JSON
-    // becomes claims. It needs the moderator, not just the wrapper, because
-    // building goes back through event dispatch.
+    ChatHandler::Refresh(user_id, debateWrapper);
+    // Generation finishes on a worker; this is where its output becomes
+    // claims. It needs the moderator, not just the wrapper, because building
+    // goes back through event dispatch.
     AiAuthorHandler::RefreshAiWork(user_id, *this);
 
     userProto = debateWrapper.getUserProtobuf(user_id);

@@ -2,7 +2,6 @@
 
 #include "../../DebateModerator.h"
 #include "../../buildResponse/debatePageResponse/BuildCollection.h"
-#include "../../../utils/AiChallenger.h"
 #include "../../../utils/AiJobs.h"
 #include "../../../utils/DebateGenerator.h"
 #include "../../../utils/DebateTextFormatter.h"
@@ -61,79 +60,19 @@ void AiAuthorHandler::GenerateDebate(const std::string& topic, const std::string
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void AiAuthorHandler::ChallengeWithAi(const int& user_id, DebateWrapper& debateWrapper) {
-    user::User userProto = debateWrapper.getUserProtobuf(user_id);
-    const int debateId = userProto.engagement().debating_info().debate_id();
-    user_engagement::AiJobStatus* status = statusOf(userProto);
-    status->Clear();
-
-    if (debateId <= 0) {
-        status->set_error("No debate is open.");
-        debateWrapper.updateUserProtobuf(user_id, userProto);
-        return;
-    }
-
-    const std::vector<int> memberIds = debateWrapper.findUsersInDebate(debateId);
-    const debate::Collection collection =
-        BuildCollection::BuildForDebateAndUsers(debateId, memberIds, debateWrapper);
-    if (collection.claims_by_id().empty()) {
-        status->set_error("This debate has no claims to challenge yet.");
-        debateWrapper.updateUserProtobuf(user_id, userProto);
-        return;
-    }
-
-    std::map<int, std::string> usernames;
-    for (int memberId : memberIds) {
-        usernames[memberId] = debateWrapper.getUserProtobuf(memberId).username();
-    }
-    for (const auto& entry : collection.claims_by_id()) {
-        // The entrant and, when named, the voice: the text prints the voice.
-        for (const int who : {entry.second.creator_id(), entry.second.voice_id()}) {
-            if (who > 0 && usernames.find(who) == usernames.end()) {
-                usernames[who] = debateWrapper.getUserProtobuf(who).username();
-            }
-        }
-    }
-
-    std::string topic;
-    const std::vector<uint8_t> debateBytes = debateWrapper.getDebateProtobuf(debateId);
-    debate::Debate debateProto;
-    if (!debateBytes.empty() &&
-        debateProto.ParseFromArray(debateBytes.data(), static_cast<int>(debateBytes.size()))) {
-        topic = debateProto.topic();
-    }
-
-    DebateTextFormatter::Options options;
-    options.topic = topic;
-    options.viewerUsername = userProto.username();
-    // The same rendering the summary reads. It numbers every claim, which is
-    // what lets the model point at one precisely instead of describing it.
-    const std::string debateText = DebateTextFormatter::Format(collection, usernames, options);
-
-    AiJobs::Start(user_id, AiJobs::Kind::Challenge, AiChallenger::BuildPrompt(debateText), 0);
-    status->set_pending(true);
-    status->set_elapsed_seconds(0);
-    debateWrapper.updateUserProtobuf(user_id, userProto);
-}
-
 void AiAuthorHandler::CancelWork(const int& user_id, DebateWrapper& debateWrapper) {
     // Every kind, because the button says "Cancel" and the user should not have
-    // to know which of four things is currently running.
+    // to know which thing is currently running.
     AiJobs::Abandon(user_id, AiJobs::Kind::Generation);
-    AiJobs::Abandon(user_id, AiJobs::Kind::Challenge);
-    AiJobs::Abandon(user_id, AiJobs::Kind::Debate);
-    AiJobs::Abandon(user_id, AiJobs::Kind::Claim);
+    AiJobs::Abandon(user_id, AiJobs::Kind::Chat);
 
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     user_engagement::AiJobStatus* status = statusOf(userProto);
     status->Clear();
     status->set_note("Cancelled. The model may still be working, but nothing is waiting for it.");
-    // Summaries keep their own pending flags, which would otherwise leave the
-    // page polling for a result that will never be collected.
-    user_engagement::DebatingInfo* info = userProto.mutable_engagement()->mutable_debating_info();
-    info->set_summary_running(false);
-    info->mutable_debate_summary()->set_pending(false);
-    info->mutable_claim_summary()->set_pending(false);
+    // The chat keeps its own pending flag, which would otherwise leave the
+    // page polling for an answer that will never be collected.
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_chat()->set_pending(false);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
@@ -147,8 +86,7 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
     DebateWrapper& debateWrapper = moderator.getDebateWrapper();
 
     const AiJobs::Snapshot generation = AiJobs::Collect(user_id, AiJobs::Kind::Generation);
-    const AiJobs::Snapshot challenge = AiJobs::Collect(user_id, AiJobs::Kind::Challenge);
-    if (!generation.running && !generation.finished && !challenge.running && !challenge.finished) {
+    if (!generation.running && !generation.finished) {
         return;
     }
 
@@ -156,8 +94,8 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
     user_engagement::AiJobStatus* status = statusOf(userProto);
     const std::string before = status->SerializeAsString();
 
-    if (generation.running || challenge.running) {
-        const AiJobs::Snapshot& live = generation.running ? generation : challenge;
+    if (generation.running) {
+        const AiJobs::Snapshot& live = generation;
         status->set_pending(true);
         status->set_elapsed_seconds(live.elapsedSeconds);
         status->clear_error();
@@ -234,32 +172,6 @@ void AiAuthorHandler::RefreshAiWork(const int& user_id, DebateModerator& moderat
                 }
                 status->set_note(note);
                 status->set_about_debate_id(built.debateId);
-            }
-        }
-    }
-
-    if (challenge.finished) {
-        status->set_pending(false);
-        status->set_elapsed_seconds(0);
-        if (!challenge.error.empty()) {
-            status->set_error(challenge.error);
-        } else {
-            const int challengedDebateId =
-                userProto.engagement().debating_info().debate_id();
-            const auto applied = AiChallenger::Apply(challenge.text, user_id, moderator);
-            status->set_about_debate_id(challengedDebateId);
-            if (!applied.ok) {
-                status->set_error(applied.error);
-            } else if (applied.challengesAdded == 0) {
-                status->set_note("The AI did not find anything it could challenge.");
-            } else {
-                std::string note = "Added " + std::to_string(applied.challengesAdded) +
-                                   " AI challenge(s).";
-                if (applied.skipped > 0) {
-                    note += " " + std::to_string(applied.skipped) +
-                            " were skipped for naming a claim that is not in this debate.";
-                }
-                status->set_note(note);
             }
         }
     }

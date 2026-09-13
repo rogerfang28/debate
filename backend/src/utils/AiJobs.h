@@ -2,6 +2,9 @@
 
 #include <functional>
 #include <string>
+#include <vector>
+
+#include "LlmClient.h"
 
 // In-flight AI work, keyed by user and kind.
 //
@@ -18,13 +21,11 @@
 // persisted, by the request thread that collects it.
 class AiJobs {
 public:
-    // Which summary a run belongs to. Keyed separately so summarizing a claim
-    // never cancels or collides with a whole-debate run already going.
+    // What a run is for. Keyed separately so a chat answer never cancels or
+    // collides with a generation already going.
     enum class Kind {
-        Debate,      // summarize a whole debate
-        Claim,       // summarize one claim
         Generation,  // build a debate from a passage
-        Challenge,   // propose challenges against a debate
+        Chat,        // answer a question about a debate
     };
 
     struct Snapshot {
@@ -56,6 +57,11 @@ public:
     // Returns false if a run was already in progress.
     static bool Start(int userId, Kind kind, const std::string& debateText, int atMoveSeq,
                       int claimId = 0);
+
+    // A chat turn: the whole conversation so far, system message first, last
+    // question last. Answers in prose. Returns false if a run was already
+    // in progress.
+    static bool StartChat(int userId, const std::vector<LlmMessage>& messages);
 
     // Two model calls in one run. `firstPrompt` runs first; `secondPromptFrom`
     // turns its answer into the second prompt, ON THE WORKER THREAD, so it must

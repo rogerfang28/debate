@@ -9,7 +9,7 @@
 #include <map>
 #include <set>
 #include "../database/debate/DatabaseWrapper.h"
-#include "../database/debate/SummaryDatabase.h"
+#include "../database/debate/ChatDatabase.h"
 #include "user_engagement.pb.h"
 
 class DebateWrapper {
@@ -97,18 +97,11 @@ public:
     // nothing computes or renders from it yet.
     std::vector<debate::Move> getMovesForDebate(const int& debate_id);
 
-    // Per-user AI summaries. Stored in their own table rather than on the user
-    // record; see SummaryDatabase for why.
-    void saveSummary(const int& user_id, const int& debate_id, const std::string& kind,
-                     const int& claim_id, const std::string& text, const std::string& error,
-                     const int& at_move_seq);
-    SummaryDatabase::Record loadSummary(const int& user_id, const int& debate_id,
-                                        const std::string& kind, const int& claim_id);
-    void deleteSummary(const int& user_id, const int& debate_id, const std::string& kind,
-                       const int& claim_id);
-    // MAX(seq) for a debate -- what a summary is stamped against so staleness
-    // can be reported.
-    int headMoveSeq(const int& debate_id);
+    // The AI chat: one user's conversation about one debate; see ChatHandler.
+    void appendChatMessage(const int& user_id, const int& debate_id, const std::string& role,
+                           const std::string& text);
+    std::vector<ChatDatabase::Message> chatTranscript(const int& user_id, const int& debate_id);
+    void clearChat(const int& user_id, const int& debate_id);
 
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
