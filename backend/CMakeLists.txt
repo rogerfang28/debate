@@ -111,6 +111,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/SummaryDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveLogger.cc
+    ${CMAKE_SOURCE_DIR}/src/moveLog/MoveBackfill.cc
     ${CMAKE_SOURCE_DIR}/src/utils/RelationBuilder.cc
     ${CMAKE_SOURCE_DIR}/src/statusEngine/StatusEngine.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/DatabaseWrapper.cc

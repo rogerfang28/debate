@@ -30,6 +30,7 @@
 #include "event-handlers/ModifyClaimHandler/ModifyClaimHandler.h"
 
 #include "event-handlers/EndorseHandler/EndorseHandler.h"
+#include "../moveLog/MoveBackfill.h"
 #include "event-handlers/SummarizeDebateHandler/SummarizeDebateHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 #include "event-handlers/TutorialHandler/TutorialHandler.h"
@@ -102,6 +103,10 @@ DebateModerator::DebateModerator(Database& usersDb)
       debateWrapper(dbWrapper)
 {
     dbWrapper.ensureAllTables();
+    // Debates from before the move log get one written from their stored
+    // statuses, once, so the page -- which renders from the log -- still
+    // shows them. A debate with any move is left alone.
+    MoveBackfill::BackfillAll(debateWrapper, dbWrapper);
     Log::info("[DebateModerator] Initialized.");
 }
 

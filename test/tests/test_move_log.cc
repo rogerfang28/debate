@@ -1394,3 +1394,73 @@ TEST_F(RetractFlowTest, DeletingAReasonTakesItsSupportAway) {
     EXPECT_TRUE(undetermined(shown(debateId, child, "bob"))) << "and the reason itself is gone";
     EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE") << "alice asserted the root herself";
 }
+
+
+// ---------------------------------------------------------------------------
+// Backfill: a debate with no move log gets one written from its stored
+// statuses, and the replay of that log shows what the stored side showed.
+// ---------------------------------------------------------------------------
+#include "moveLog/MoveBackfill.h"
+
+using BackfillTest = UndercutFlowTest;
+
+TEST_F(BackfillTest, ADebateWithoutALogGetsOneThatReplaysToItsStoredStatuses) {
+    // A real debate, played through the moderator so the stored statuses are
+    // what the old engine wrote: a reason, a challenge on it, a concession,
+    // and an outsider who agrees with the root.
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int reason = support(aliceId_, "alice", root, "Engineers found cracks in the span");
+    const int bob = userNamed("bob");
+    const int carol = userNamed("carol");
+    joinAndEnter(bob, "bob", debateId);
+    joinAndEnter(carol, "carol", debateId);
+    const int challenge = rebut(bob, "bob", reason, "Those cracks were cosmetic");
+    concede(aliceId_, "alice", linkBetween(challenge, reason));
+    auto agree = eventFor(carol, "carol", debate_event::ENDORSE_CLAIM);
+    agree.mutable_endorse_claim()->set_claim_id(root);
+    send(agree);
+
+    // Snapshot what is stored, then throw the real log away: this is now a
+    // debate from before the log existed.
+    std::map<int, std::map<std::string, debate::ClaimStatus>> stored;
+    for (int id : {root, reason, challenge}) {
+        for (const auto& e : dw().getClaimById(id).user_statuses()) stored[id][e.first] = e.second;
+    }
+    ASSERT_EQ(stored[reason]["alice"], debate::ClaimStatus::FALSE_CLAIM) << "conceded";
+    ASSERT_EQ(stored[root]["carol"], debate::ClaimStatus::TRUE_CLAIM) << "agreed";
+    {
+        sqlite3_stmt* stmt = db_->prepare("DELETE FROM MOVES WHERE DEBATE_ID = ?;");
+        ASSERT_NE(stmt, nullptr);
+        sqlite3_bind_int(stmt, 1, debateId);
+        ASSERT_EQ(sqlite3_step(stmt), SQLITE_DONE);
+        sqlite3_finalize(stmt);
+    }
+    ASSERT_TRUE(readMoves(*db_, debateId).empty());
+
+    const MoveBackfill::Report r = MoveBackfill::BackfillDebate(debateId, dw(), *wrapper_);
+    EXPECT_EQ(r.debatesTouched, 1);
+    EXPECT_GT(r.movesWritten, 0);
+    EXPECT_TRUE(r.unrepresentable.empty()) << r.unrepresentable[0];
+
+    // Every backfilled move says so.
+    for (const auto& m : readMoves(*db_, debateId)) {
+        EXPECT_NE(m.payload.find("\"backfilled\":1"), std::string::npos) << m.type;
+    }
+
+    // And the replay of the invented log shows every stored position.
+    for (const auto& claimEntry : stored) {
+        for (const auto& userEntry : claimEntry.second) {
+            if (userEntry.second == debate::ClaimStatus::UNDETERMINED) continue;
+            EXPECT_EQ(show(shown(debateId, claimEntry.first, userEntry.first)),
+                      userEntry.second == debate::ClaimStatus::TRUE_CLAIM ? "TRUE" : "FALSE")
+                << "claim " << claimEntry.first << " for " << userEntry.first;
+        }
+    }
+
+    // Running it again on a debate that now has a log changes nothing.
+    const size_t before = readMoves(*db_, debateId).size();
+    const MoveBackfill::Report again = MoveBackfill::BackfillDebate(debateId, dw(), *wrapper_);
+    EXPECT_EQ(again.debatesTouched, 0);
+    EXPECT_EQ(readMoves(*db_, debateId).size(), before);
+}

@@ -130,6 +130,19 @@ bool DebateDatabase::clearUserDebates(int userId) {
     return success;
 }
 
+std::vector<int> DebateDatabase::allDebateIds() {
+    std::vector<int> ids;
+    sqlite3_stmt* stmt = db_.prepare("SELECT ID FROM DEBATE ORDER BY ID;");
+    if (!stmt) {
+        return ids;
+    }
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        ids.push_back(sqlite3_column_int(stmt, 0));
+    }
+    sqlite3_finalize(stmt);
+    return ids;
+}
+
 bool DebateDatabase::debateExists(int debateId) {
     const char* sql = "SELECT 1 FROM DEBATE WHERE ID = ?;";
     
