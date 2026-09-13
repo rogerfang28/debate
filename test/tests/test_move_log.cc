@@ -1339,3 +1339,58 @@ TEST_F(AgreementFlowTest, AgreeingWithNoClaimNamedMeansTheClaimTheUserStandsOn) 
     // Rule B: the one reason he holds true carries the root for him.
     EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE");
 }
+
+
+// ---------------------------------------------------------------------------
+// Retraction: a deleted claim is out of the debate, and so is everything
+// that was done through it. The row stays; the log says it is gone.
+// ---------------------------------------------------------------------------
+using RetractFlowTest = UndercutFlowTest;
+
+TEST_F(RetractFlowTest, DeletingAChallengeUnrefutesItsTargetForTheChallenger) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+
+    const int challenge = rebut(bob, "bob", root, "The bridge passed inspection");
+    ASSERT_GT(challenge, 0);
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "FALSE") << "the challenge refutes it for bob";
+    EXPECT_EQ(show(shown(debateId, challenge, "bob")), "TRUE");
+
+    auto del = eventFor(bob, "bob", debate_event::DELETE_CHALLENGE);
+    del.mutable_delete_challenge()->set_challenge_id(challenge);
+    send(del);
+
+    bool retracted = false;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "RETRACT" && m.targetType == "claim" && m.targetId == challenge) retracted = true;
+    }
+    EXPECT_TRUE(retracted);
+    EXPECT_TRUE(undetermined(shown(debateId, root, "bob"))) << "the refutation went with the challenge";
+    EXPECT_TRUE(undetermined(shown(debateId, challenge, "bob"))) << "a retracted claim has no status for anyone";
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE");
+}
+
+TEST_F(RetractFlowTest, DeletingAReasonTakesItsSupportAway) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int child = support(aliceId_, "alice", root, "Engineers found cracks in the span");
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+
+    // Bob holds the reason, so the root stands on it for him.
+    auto agree = eventFor(bob, "bob", debate_event::ENDORSE_CLAIM);
+    agree.mutable_endorse_claim()->set_claim_id(child);
+    send(agree);
+    EXPECT_EQ(show(shown(debateId, root, "bob")), "TRUE");
+
+    goTo(aliceId_, "alice", root);
+    auto del = baseEvent(debate_event::DELETE_CHILD_CLAIM);
+    del.mutable_delete_child_claim()->set_claim_id(child);
+    send(del);
+
+    EXPECT_TRUE(undetermined(shown(debateId, root, "bob"))) << "no reason left for bob";
+    EXPECT_TRUE(undetermined(shown(debateId, child, "bob"))) << "and the reason itself is gone";
+    EXPECT_EQ(show(shown(debateId, root, "alice")), "TRUE") << "alice asserted the root herself";
+}

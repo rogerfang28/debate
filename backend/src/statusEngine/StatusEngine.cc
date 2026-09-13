@@ -520,15 +520,6 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
                                    const std::map<int, std::string>& usernames) {
     LegacyResult result;
 
-    std::set<int> known;
-    for (const auto& c : claims) {
-        if (c.id() > 0) {
-            known.insert(c.id());
-        }
-    }
-
-    const LegacyGraph g = buildLegacyGraph(relations);
-
     std::vector<const debate::Move*> ordered;
     ordered.reserve(moves.size());
     for (const auto& m : moves) {
@@ -537,6 +528,61 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
     std::stable_sort(
         ordered.begin(), ordered.end(),
         [](const debate::Move* a, const debate::Move* b) { return a->seq() < b->seq(); });
+
+    // ---- Retractions ----
+    //
+    // A RETRACT takes its target out of the debate: the claim (or relation)
+    // is no longer there, and nothing that was done through it counts. The
+    // stored row is deliberately kept -- deleteClaim never removes it -- so
+    // the collection still carries the claim, and it is the log that says it
+    // is gone. Nothing un-retracts, so order does not matter, only presence.
+    std::set<int> retractedClaims;
+    std::set<int> retractedRelations;
+    for (const debate::Move* m : ordered) {
+        if (m->type() != debate::RETRACT) continue;
+        if (m->target_type() == debate::TARGET_CLAIM) retractedClaims.insert(m->target_id());
+        if (m->target_type() == debate::TARGET_RELATION) retractedRelations.insert(m->target_id());
+    }
+
+    std::set<int> known;
+    for (const auto& c : claims) {
+        if (c.id() > 0 && !retractedClaims.count(c.id())) {
+            known.insert(c.id());
+        }
+    }
+
+    // A relation is gone if it was retracted itself, if either end of it was,
+    // or if it attacked a relation that was.
+    std::vector<debate::Relationship> live;
+    live.reserve(relations.size());
+    for (const auto& rel : relations) {
+        if (retractedRelations.count(rel.id())) continue;
+        if (rel.to_case() == debate::Relationship::kToClaimId &&
+            retractedClaims.count(rel.to_claim_id())) continue;
+        if (rel.to_case() == debate::Relationship::kToRelationId &&
+            retractedRelations.count(rel.to_relation_id())) continue;
+        bool fromGone = false;
+        for (const int from : rel.from_claim_ids()) {
+            if (retractedClaims.count(from)) { fromGone = true; break; }
+        }
+        if (fromGone) continue;
+        live.push_back(rel);
+    }
+
+    const LegacyGraph g = buildLegacyGraph(live);
+
+    // A move made THROUGH something retracted is void: an OPPOSE whose
+    // challenge claim was deleted no longer refutes anything, a CONCEDE of a
+    // challenge that is gone concedes nothing.
+    auto madeThroughRetracted = [&](const debate::Move* m) {
+        const int viaClaim = payloadInt(m->payload(), "challenging_claim_id");
+        if (viaClaim > 0 && retractedClaims.count(viaClaim)) return true;
+        const int viaRelation = payloadInt(m->payload(), "relation_id");
+        if (viaRelation > 0 && retractedRelations.count(viaRelation)) return true;
+        const int viaChallenge = payloadInt(m->payload(), "challenge_relation_id");
+        if (viaChallenge > 0 && retractedRelations.count(viaChallenge)) return true;
+        return false;
+    };
 
     // ---- Seed ----
     //
@@ -567,6 +613,9 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
         }
         const std::string& user = nameIt->second;
         const int target = m->target_id();
+        if (madeThroughRetracted(m)) {
+            continue;
+        }
 
         // Whose opinion a move records: the voice's when one is named AND
         // known by name, else the actor's.
@@ -666,8 +715,8 @@ LegacyResult computeLegacyStatuses(const std::vector<debate::Claim>& claims,
 
             case debate::RETRACT:
             default:
-                // RETRACT writes no status: the handler removes the row and its
-                // links, so the effect already shows up in `claims`/`relations`.
+                // RETRACT was folded in above: the target is out of `known` and
+                // `live`, and every move made through it is skipped.
                 break;
         }
     }

@@ -57,6 +57,26 @@ TestScenario LoadScenarioFromFile(const std::string& path, bool& ok) {
     return scenario;
 }
 
+// The challenge relations `user_id` has conceded, from the move log: each
+// CONCEDE carries the relation it gave up as `challenge_relation_id`.
+std::set<int> ConcededRelationsByUser(DebateWrapper& debateWrapper, int debate_id, int user_id) {
+    std::set<int> out;
+    for (const debate::Move& m : debateWrapper.getMovesForDebate(debate_id)) {
+        if (m.type() != debate::CONCEDE || m.actor_id() != user_id) continue;
+        const std::string needle = "\"challenge_relation_id\":";
+        const size_t at = m.payload().find(needle);
+        if (at == std::string::npos) continue;
+        int id = 0;
+        for (size_t i = at + needle.size(); i < m.payload().size(); ++i) {
+            const char ch = m.payload()[i];
+            if (ch < '0' || ch > '9') break;
+            id = id * 10 + (ch - '0');
+        }
+        if (id > 0) out.insert(id);
+    }
+    return out;
+}
+
 // Mirrors ScenarioRunner::resolveChallengeLinkIdForUser in test_scenario_runner.cc:
 // scenario files don't record which specific CHALLENGE link a concede targets, so we
 // resolve it here — the CHALLENGE link whose target claim was created by the
@@ -65,8 +85,8 @@ int resolveChallengeLinkIdForUser(DebateWrapper& debateWrapper, int debate_id, i
     int bestFromClaimId = -1;
     int bestLinkId = -1;
     auto allLinks = debateWrapper.getLinksForDebate(debate_id);
-    const std::string conceding_username =
-        debateWrapper.getUserProtobuf(conceding_user_id).username();
+    const std::set<int> concededRelations =
+        ConcededRelationsByUser(debateWrapper, debate_id, conceding_user_id);
 
     for (const auto& linkTuple : allLinks) {
         int linkId = std::get<0>(linkTuple);
@@ -78,10 +98,9 @@ int resolveChallengeLinkIdForUser(DebateWrapper& debateWrapper, int debate_id, i
         if (targetClaim.id() == 0 || targetClaim.creator_id() != conceding_user_id) continue;
 
         // Skip what this user already conceded -- otherwise repeated
-        // concessions all resolve to the same challenge. Mirrors the runner.
-        auto statusIt = targetClaim.user_statuses().find(conceding_username);
-        if (statusIt != targetClaim.user_statuses().end() &&
-            statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+        // concessions all resolve to the same challenge. Read off the move
+        // log, which is what records a concession. Mirrors the runner.
+        if (concededRelations.count(linkId)) {
             continue;
         }
 

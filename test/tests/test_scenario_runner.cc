@@ -188,8 +188,6 @@ protected:
         int bestFromClaimId = -1;
         int bestLinkId = -1;
         auto allLinks = debateWrapper_->getLinksForDebate(debate_id);
-        const std::string conceding_username =
-            debateWrapper_->getUserProtobuf(conceding_user_id).username();
 
         for (const auto& linkTuple : allLinks) {
             int linkId = std::get<0>(linkTuple);
@@ -209,12 +207,20 @@ protected:
             // the obvious way to write a multi-branch argument, and it silently
             // did nothing.
             //
-            // "Already conceded" is read off the target: conceding sets the
-            // challenged claim FALSE for the conceder, which is exactly the
-            // state being tested for.
-            auto statusIt = targetClaim.user_statuses().find(conceding_username);
-            if (statusIt != targetClaim.user_statuses().end() &&
-                statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
+            // "Already conceded" is read off the move log: each CONCEDE names
+            // the relation it gave up. Mirrors ScenarioImporter.
+            bool alreadyConceded = false;
+            for (const debate::Move& m : debateWrapper_->getMovesForDebate(debate_id)) {
+                if (m.type() != debate::CONCEDE || m.actor_id() != conceding_user_id) continue;
+                if (m.payload().find("\"challenge_relation_id\":" + std::to_string(linkId) + ",") !=
+                        std::string::npos ||
+                    m.payload().find("\"challenge_relation_id\":" + std::to_string(linkId) + "}") !=
+                        std::string::npos) {
+                    alreadyConceded = true;
+                    break;
+                }
+            }
+            if (alreadyConceded) {
                 continue;
             }
 
