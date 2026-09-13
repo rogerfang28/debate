@@ -1425,3 +1425,150 @@ TEST_F(BackfillTest, ADebateWithoutALogGetsOneThatReplaysToItsStoredStatuses) {
     EXPECT_EQ(again.debatesTouched, 0);
     EXPECT_EQ(readMoves(*db_, debateId).size(), before);
 }
+
+
+// ---------------------------------------------------------------------------
+// Holders answer challenges. A challenge on a claim is a challenge to
+// everyone who holds it true; each answers for themselves.
+// ---------------------------------------------------------------------------
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.h"
+#include "virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
+#include "database/virtualrenderer/VRUserDatabase.h"
+
+using HoldersAnswerTest = UndercutFlowTest;
+
+namespace {
+// The step view page as `name` sees it, standing on `claimId`, as text.
+std::string renderStepView(DebateWrapper& dw, Database& db, int debateId, int userId,
+                           const std::string& name, int claimId) {
+    const debate::Collection c = BuildCollection::BuildForDebateAndUsers(
+        debateId, dw.findUsersInDebate(debateId), dw);
+    rendering_info::FullDebateViewInfo info =
+        FullDebatePageInfoParser::ParseFullDebateViewInfo(c, userId, name, claimId);
+    VRUserDatabase userDb(db);
+    user::User viewer = dw.getUserProtobuf(userId);
+    return StepView::GenerateStepViewPage(info, c, userDb, viewer).DebugString();
+}
+}  // namespace
+
+TEST_F(HoldersAnswerTest, AReaderWhoAgreedWithAVoicesClaimGetsTheConcedeButtonOnItsChallenge) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    // The reporter's claim, entered by alice; Paul's objection, entered by alice.
+    auto said = baseEvent(debate_event::ADD_CHILD_CLAIM);
+    said.mutable_add_child_claim()->set_claim("The bridge is unsafe");
+    said.mutable_add_child_claim()->set_voice("the reporter");
+    send(said);
+    int reasonId = 0;
+    for (int id : dw().findChildrenIds(root)) reasonId = id;
+    ASSERT_GT(reasonId, 0);
+    goTo(aliceId_, "alice", reasonId);
+    auto start = baseEvent(debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto target = baseEvent(debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    target.mutable_add_claim_to_be_challenged()->set_claim_id(reasonId);
+    send(target);
+    auto open = baseEvent(debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = baseEvent(debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("The bridge passed inspection");
+    submit.mutable_submit_challenge_claim()->set_voice("Paul");
+    send(submit);
+    const int paulsChallenge = currentClaimId();
+    ASSERT_NE(paulsChallenge, reasonId);
+
+    // Bob joins, does not hold the reporter's claim: no Concede on the challenge.
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+    goTo(bob, "bob", paulsChallenge);
+    std::string page = renderStepView(dw(), *db_, debateId, bob, "bob", paulsChallenge);
+    EXPECT_EQ(page.find("concedeChallengeButton_"), std::string::npos) << "bob holds nothing here";
+
+    // Bob agrees with the reporter's claim. Paul's challenge is now his to answer.
+    auto agree = eventFor(bob, "bob", debate_event::ENDORSE_CLAIM);
+    agree.mutable_endorse_claim()->set_claim_id(reasonId);
+    send(agree);
+    page = renderStepView(dw(), *db_, debateId, bob, "bob", paulsChallenge);
+    EXPECT_NE(page.find("concedeChallengeButton_"), std::string::npos) << "a holder answers for himself";
+
+    // And the open-challenge report lists it under both holders: the reporter
+    // (who never logs in) and bob.
+    EXPECT_NE(page.find("debateStatusPerson_the reporter"), std::string::npos);
+    EXPECT_NE(page.find("debateStatusPerson_bob"), std::string::npos);
+    EXPECT_NE(page.find("You: 1 unanswered"), std::string::npos);
+
+    // Bob concedes: it leaves his list, stays on the reporter's.
+    concede(bob, "bob", linkBetween(paulsChallenge, reasonId));
+    page = renderStepView(dw(), *db_, debateId, bob, "bob", paulsChallenge);
+    EXPECT_EQ(page.find("debateStatusPerson_bob"), std::string::npos) << "bob answered";
+    EXPECT_NE(page.find("debateStatusPerson_the reporter"), std::string::npos) << "the reporter has not";
+}
+
+TEST_F(HoldersAnswerTest, TheEntrantOfAVoicesClaimKeepsDeleteAndGetsChallengeNotSupport) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    auto said = baseEvent(debate_event::ADD_CHILD_CLAIM);
+    said.mutable_add_child_claim()->set_claim("The bridge is unsafe");
+    said.mutable_add_child_claim()->set_voice("the reporter");
+    send(said);
+    int reasonId = 0;
+    for (int id : dw().findChildrenIds(root)) reasonId = id;
+    ASSERT_GT(reasonId, 0);
+
+    goTo(aliceId_, "alice", reasonId);
+    const std::string page = renderStepView(dw(), *db_, debateId, aliceId_, "alice", reasonId);
+    EXPECT_NE(page.find("deleteStatementButton"), std::string::npos) << "she typed it in";
+    EXPECT_NE(page.find("challengeClaimButton"), std::string::npos) << "it is not her claim";
+    EXPECT_EQ(page.find("\"addChildClaimButton\""), std::string::npos) << "she does not hold it, so no Support";
+}
+
+// A counter-challenge answers. Alice holds the root; bob challenges it; alice
+// challenges bob's challenge back. Her list is clear, bob's now has one.
+TEST_F(HoldersAnswerTest, ACounterChallengeAnswersAndMovesTheQuestionToTheOtherSide) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+    const int bobs = rebut(bob, "bob", root, "The bridge passed inspection");
+    goTo(aliceId_, "alice", root);
+    std::string page = renderStepView(dw(), *db_, debateId, aliceId_, "alice", root);
+    EXPECT_NE(page.find("You: 1 unanswered"), std::string::npos);
+
+    rebut(aliceId_, "alice", bobs, "That inspection was three years ago");
+    goTo(aliceId_, "alice", root);
+    page = renderStepView(dw(), *db_, debateId, aliceId_, "alice", root);
+    EXPECT_EQ(page.find("debateStatusPerson_alice"), std::string::npos) << "alice answered";
+    EXPECT_NE(page.find("debateStatusPerson_bob"), std::string::npos) << "now bob owes an answer";
+}
+
+// A joint challenge asserts every one of its claims, so each is TRUE for its
+// author -- the same fix ADD_CHILD_CLAIM got.
+TEST_F(HoldersAnswerTest, AJointChallengeAssertsEveryClaimNotJustTheFirst) {
+    const int debateId = createAndEnterDebate("The bridge should close");
+    const int root = currentClaimId();
+    const int bob = userNamed("bob");
+    joinAndEnter(bob, "bob", debateId);
+    goTo(bob, "bob", root);
+    auto start = eventFor(bob, "bob", debate_event::START_CHALLENGE_CLAIM);
+    send(start);
+    auto target = eventFor(bob, "bob", debate_event::ADD_CLAIM_TO_BE_CHALLENGED);
+    target.mutable_add_claim_to_be_challenged()->set_claim_id(root);
+    send(target);
+    auto open = eventFor(bob, "bob", debate_event::OPEN_ADD_CHALLENGE);
+    send(open);
+    auto submit = eventFor(bob, "bob", debate_event::SUBMIT_CHALLENGE_CLAIM);
+    submit.mutable_submit_challenge_claim()->set_challenge_sentence("It passed inspection");
+    submit.mutable_submit_challenge_claim()->add_extra_sentences("Traffic is light");
+    send(submit);
+
+    int asserts = 0;
+    for (const auto& m : readMoves(*db_, debateId)) {
+        if (m.type == "ASSERT" && m.targetType == "claim" && m.actorId == bob) ++asserts;
+    }
+    EXPECT_EQ(asserts, 2) << "one ASSERT per challenge claim";
+    for (const auto& row : dw().getLinksForDebate(debateId)) {
+        if (std::get<5>(row) != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
+        EXPECT_EQ(show(shown(debateId, std::get<1>(row), "bob")), "TRUE")
+            << "challenge claim " << std::get<1>(row);
+    }
+}

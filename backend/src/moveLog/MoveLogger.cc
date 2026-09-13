@@ -282,8 +282,6 @@ void logForEvent(const debate_event::DebateEvent& event,
                 break;
             }
 
-            append(databaseWrapper, pre.debateId, user_id, "ASSERT", true, challengeClaimId);
-
             // Creating the challenge link IS the act of opposing, so it is an
             // OPPOSE against the challenged claim -- not an ASSERT of a relation.
             // A challenge aimed at an ARGUMENT opposes that relation instead;
@@ -291,6 +289,27 @@ void logForEvent(const debate_event::DebateEvent& event,
             const debate::Relationship challengeRel =
                 debateWrapper.findOutgoingChallengeLink(challengeClaimId);
             const debate::Relationship::Link& challengeLink = challengeRel.link();
+
+            // EVERY claim of a joint challenge is asserted, not just the one
+            // the cursor landed on. The rows of one relation share its id, so
+            // the other members are the CHALLENGE rows with that RELATION_ID.
+            std::vector<int> asserted{challengeClaimId};
+            if (challengeRel.id() != 0) {
+                for (const auto& row : debateWrapper.getLinksForDebate(pre.debateId)) {
+                    const int from = std::get<1>(row);
+                    const int type = std::get<5>(row);
+                    const int relationId = std::get<6>(row);
+                    if (type == static_cast<int>(debate::LinkType::CHALLENGE) &&
+                        relationId == challengeRel.id() &&
+                        std::find(asserted.begin(), asserted.end(), from) == asserted.end()) {
+                        asserted.push_back(from);
+                    }
+                }
+            }
+            for (const int id : asserted) {
+                append(databaseWrapper, pre.debateId, user_id, "ASSERT", true, id);
+            }
+
             if (challengeLink.id() != 0) {
                 // The actor is who typed it; the OPPOSE is the VOICE's opinion
                 // when one was named, so the replay needs the voice here. (An
