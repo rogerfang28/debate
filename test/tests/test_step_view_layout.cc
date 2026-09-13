@@ -319,8 +319,10 @@ TEST_F(ChallengeModalRenderTest, TheModalOpensForAClaimAndForAnArgumentAlike) {
         EXPECT_NE(page.find("target_relation_id: " + std::to_string(links[0])), std::string::npos)
             << "the undercut edge points at the argument's pill";
         // And the root is NOT false for bob: an undercut removes a reason.
-        const debate::Claim root = debate_->getClaimById(1);
-        auto b = root.user_statuses().find("bob");
-        EXPECT_TRUE(b == root.user_statuses().end() || b->second != debate::ClaimStatus::FALSE_CLAIM);
+        const debate::Collection c =
+            BuildCollection::BuildForDebateAndUsers(1, debate_->findUsersInDebate(1), *debate_);
+        const auto& root = c.claims_by_id().at(1).user_statuses();
+        auto b = root.find("bob");
+        EXPECT_TRUE(b == root.end() || b->second != debate::ClaimStatus::FALSE_CLAIM);
     }
 }

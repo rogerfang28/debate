@@ -410,11 +410,11 @@ TEST_F(ConnectionsBuildTest, EverythingIsAuthoredByArticleAndTheRequesterOnlyJoi
     const auto mine = moderator_->getDebateWrapper().getUserDebateIds(userId_);
     EXPECT_NE(std::find(mine.begin(), mine.end(), r.debateId), mine.end());
 
-    // ... and holds no position: the root is NOT False for them, unlike the
+    // ... and holds no position: they made no move in it, unlike the
     // single-author import where their own challenge refuted their own claim.
-    const auto& statuses = moderator_->getDebateWrapper().getClaimById(idOf(r.debateId, "20mph")).user_statuses();
-    const auto it = statuses.find("author");  // the fixture's requester username
-    EXPECT_TRUE(it == statuses.end() || it->second != debate::ClaimStatus::FALSE_CLAIM);
+    for (const debate::Move& m : moderator_->getDebateWrapper().getMovesForDebate(r.debateId)) {
+        EXPECT_NE(m.actor_id(), userId_) << "the requester made a " << m.type() << " move";
+    }
 }
 
 // ---------------------------------------------------------------------------

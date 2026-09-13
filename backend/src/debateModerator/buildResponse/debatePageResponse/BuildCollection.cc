@@ -20,30 +20,18 @@ const char* storedName(debate::ClaimStatus s) {
     }
 }
 
-// The move log is now the SOURCE OF TRUTH for status on the read path.
+// Status comes from the move log, and from nowhere else.
 //
-// Statuses are recomputed from the log and written over the ones loaded from
-// the database, so what renders is derived, not stored. The stored values are
-// still what the old engine wrote and are left exactly as they are -- this
-// function mutates the in-memory collection only. Nothing is written back, so
-// the change is reversible by deleting this call, and a wrong answer here
-// cannot corrupt anything.
-//
-// Disagreements are still logged. They should now be silent -- parity was
-// measured before this was switched on -- so anything appearing in the log is
-// a real regression rather than the expected noise it used to be.
-//
-// DEBATES WITH NO MOVES KEEP THEIR STORED STATUS. That skip used to be a
-// convenience for the comparison; here it is load-bearing. Everything created
-// before the log existed has nothing to replay, so recomputing would blank the
-// whole debate and render it as though nobody had ever taken a position.
+// Nothing writes Claim.user_statuses any more. What is loaded from the
+// database is whatever a claim's blob happened to hold when it was last
+// serialized -- an old engine's leftovers, or nothing -- and is discarded
+// here. Every debate has a log: new ones from their first ASSERT, old ones
+// from MoveBackfill. The in-memory collection is what renders; nothing is
+// written back.
 void applyComputedStatuses(int debate_id,
                            debate::Collection& collection,
                            DebateWrapper& debateWrapper) {
     const std::vector<debate::Move> moves = debateWrapper.getMovesForDebate(debate_id);
-    if (moves.empty()) {
-        return;  // predates the move log; nothing to reconcile
-    }
 
     std::vector<debate::Claim> claims;
     claims.reserve(collection.claims_by_id().size());
@@ -77,66 +65,11 @@ void applyComputedStatuses(int debate_id,
     const StatusEngine::LegacyResult computed =
         StatusEngine::computeLegacyStatuses(claims, relations, moves, usernames);
 
-    // Compare over the UNION of both tables. Walking only the stored side would
-    // hide the case that matters most -- the engine inventing an opinion for a
-    // user who has none -- and walking only the computed side hides the reverse.
-    int agreed = 0;
-    int differed = 0;
-    for (const auto& claim : claims) {
-        std::set<std::string> users;
-        for (const auto& e : claim.user_statuses()) {
-            users.insert(e.first);
-        }
-        for (const auto& userEntry : computed.by_user) {
-            if (userEntry.second.count(claim.id())) {
-                users.insert(userEntry.first);
-            }
-        }
-
-        for (const std::string& user : users) {
-            auto storedIt = claim.user_statuses().find(user);
-            const bool storedPresent = storedIt != claim.user_statuses().end();
-            const debate::ClaimStatus stored =
-                storedPresent ? storedIt->second : debate::ClaimStatus::UNDETERMINED;
-
-            debate::ClaimStatus got = debate::ClaimStatus::UNDETERMINED;
-            bool gotPresent = false;
-            auto userIt = computed.by_user.find(user);
-            if (userIt != computed.by_user.end()) {
-                auto claimIt = userIt->second.find(claim.id());
-                if (claimIt != userIt->second.end()) {
-                    got = claimIt->second;
-                    gotPresent = true;
-                }
-            }
-
-            // PRESENCE matters as much as value, and only once the result is
-            // actually rendered. The renderer falls back to "creator sees TRUE"
-            // when a claim has NO entry for the viewer, so an explicit
-            // UNDETERMINED and a missing entry are equal as values but render
-            // differently for a claim's own author. Comparing values alone --
-            // which is all shadow mode did -- cannot see that.
-            if (got == stored && gotPresent == storedPresent) {
-                ++agreed;
-                continue;
-            }
-            ++differed;
-            Log::info("[StatusEngine] debate=" + std::to_string(debate_id) +
-                      " claim=" + std::to_string(claim.id()) + " user=" + user +
-                      " computed=" + storedName(got) + (gotPresent ? "" : "(absent)") +
-                      " stored=" + storedName(stored) + (storedPresent ? "" : "(absent)") +
-                      " -- computed value is the one being rendered");
-        }
-    }
-
-    // Apply. Each claim's map is REPLACED rather than merged: merging would let
-    // a stale stored entry survive wherever the engine produced nothing, which
-    // is exactly the case the log is supposed to settle, and would quietly make
-    // the rendered result a blend of two models instead of one.
+    // Each claim's map is REPLACED, never merged: a stale stored entry must
+    // not survive wherever the engine produced nothing.
     for (auto& entry : *collection.mutable_claims_by_id()) {
         debate::Claim& claim = entry.second;
         claim.mutable_user_statuses()->clear();
-
         for (const auto& userEntry : computed.by_user) {
             auto claimIt = userEntry.second.find(claim.id());
             if (claimIt != userEntry.second.end()) {
@@ -145,11 +78,9 @@ void applyComputedStatuses(int debate_id,
         }
     }
 
-    Log::info("[StatusEngine] debate=" + std::to_string(debate_id) +
-              " moves=" + std::to_string(moves.size()) +
-              " claims=" + std::to_string(claims.size()) +
-              " agreed=" + std::to_string(agreed) +
-              " differed=" + std::to_string(differed) + " (computed statuses applied)");
+    Log::debug("[StatusEngine] debate=" + std::to_string(debate_id) +
+               " moves=" + std::to_string(moves.size()) +
+               " claims=" + std::to_string(claims.size()) + " (statuses replayed from the log)");
 }
 
 }  // namespace

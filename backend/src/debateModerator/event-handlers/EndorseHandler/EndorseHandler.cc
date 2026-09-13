@@ -24,9 +24,8 @@ void EndorseHandler::Endorse(const int& user_id, int claim_id, DebateWrapper& de
                   " for user " + std::to_string(user_id));
         return;
     }
-    (*claim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-    debateWrapper.updateClaimInDB(claim);
-    debateWrapper.PropagateClaimStatuses(claim.debate_id());
+    // Nothing is written: the ACCEPT move the logger appends for this event
+    // is the record, and the page replays the log.
     Log::debug("[EndorseHandler] " + username + " agrees with claim " + std::to_string(claim.id()));
 }
 
@@ -38,8 +37,6 @@ void EndorseHandler::Unendorse(const int& user_id, int claim_id, DebateWrapper& 
                   " for user " + std::to_string(user_id));
         return;
     }
-    claim.mutable_user_statuses()->erase(username);
-    debateWrapper.updateClaimInDB(claim);
-    debateWrapper.PropagateClaimStatuses(claim.debate_id());
+    // Nothing is written: the UNACCEPT move is the record.
     Log::debug("[EndorseHandler] " + username + " withdraws agreement with claim " + std::to_string(claim.id()));
 }

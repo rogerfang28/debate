@@ -549,7 +549,7 @@ const char* legacyName(debate::ClaimStatus s) {
 
 }  // namespace
 
-TEST_F(MoveLogTest, ChallengeParity_StoredVsRebuiltFromLog) {
+TEST_F(MoveLogTest, ChallengingOnesOwnReasonRefutesItAndSinksTheRoot) {
     int debateId = createAndEnterDebate("Root claim");
     const int rootId = currentClaimId();
     ASSERT_GT(rootId, 0);
@@ -586,16 +586,6 @@ TEST_F(MoveLogTest, ChallengeParity_StoredVsRebuiltFromLog) {
 
     DebateWrapper& dw = moderator_->getDebateWrapper();
 
-    // --- What the OLD engine left in storage ---------------------------
-    // Per-viewer: the challenger's own view is what the handler writes, and it
-    // is what the renderer reads back.
-    auto storedFor = [&](int claimId) {
-        debate::Claim c = dw.getClaimById(claimId);
-        auto it = c.user_statuses().find("alice");
-        return it != c.user_statuses().end() ? it->second : debate::ClaimStatus::UNDETERMINED;
-    };
-
-    // --- What the parity engine rebuilds from the log alone ------------
     std::vector<debate::Claim> claims;
     for (int id : {rootId, childId, challengeClaimId}) {
         claims.push_back(dw.getClaimById(id));
@@ -615,30 +605,19 @@ TEST_F(MoveLogTest, ChallengeParity_StoredVsRebuiltFromLog) {
         return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
     };
 
-    std::cout << "\n=== challenge on the child claim (alice's view) ===\n"
-              << "  role       id   STORED        REBUILT\n"
-              << "  root       " << rootId << "    " << legacyName(storedFor(rootId))
-              << "\t" << legacyName(computedFor(rootId)) << "\n"
-              << "  child      " << childId << "    " << legacyName(storedFor(childId))
-              << "\t" << legacyName(computedFor(childId)) << "\n"
-              << "  challenge  " << challengeClaimId << "    "
-              << legacyName(storedFor(challengeClaimId))
-              << "\t" << legacyName(computedFor(challengeClaimId)) << "\n\n";
-
-    // Parity is the whole point: rebuilt from the log must equal what the old
-    // engine stored, claim for claim. If one of these ever fails, the log is
-    // missing a fact the old engine had -- which is exactly what this test is
-    // here to catch before any behaviour is allowed to change.
-    EXPECT_EQ(computedFor(rootId), storedFor(rootId)) << "root";
-    EXPECT_EQ(computedFor(childId), storedFor(childId)) << "challenged child";
-    EXPECT_EQ(computedFor(challengeClaimId), storedFor(challengeClaimId)) << "challenge claim";
+    // Alice's own challenge is TRUE for her, so her reason is FALSE, and a
+    // FALSE reason on a COLLAPSE edge sinks the root. These are the values
+    // the stored engine used to write; the log now yields them alone.
+    EXPECT_EQ(computedFor(challengeClaimId), debate::ClaimStatus::TRUE_CLAIM) << "challenge claim";
+    EXPECT_EQ(computedFor(childId), debate::ClaimStatus::FALSE_CLAIM) << "challenged child";
+    EXPECT_EQ(computedFor(rootId), debate::ClaimStatus::FALSE_CLAIM) << "root";
 }
 
 // Conceding is the seed with the most moving parts -- the handler writes four
 // separate groups of statuses, and all of them have to be rebuilt from a single
 // CONCEDE row plus its payload. It is also unreachable from the current UI, so
 // this test is the only thing holding that path honest.
-TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
+TEST_F(MoveLogTest, ConcedingAChallengeOnTheRootMakesItFalseForTheConceder) {
     int debateId = createAndEnterDebate("Root claim");
     const int rootId = currentClaimId();
     ASSERT_GT(rootId, 0);
@@ -666,12 +645,6 @@ TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
     concede.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
     send(concede);
 
-    auto storedFor = [&](int claimId) {
-        debate::Claim c = dw.getClaimById(claimId);
-        auto it = c.user_statuses().find("alice");
-        return it != c.user_statuses().end() ? it->second : debate::ClaimStatus::UNDETERMINED;
-    };
-
     std::vector<debate::Claim> claims;
     for (int id : {rootId, challengeClaimId}) {
         claims.push_back(dw.getClaimById(id));
@@ -691,16 +664,8 @@ TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
         return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
     };
 
-    std::cout << "\n=== concede (alice's view) ===\n"
-              << "  role       id   STORED        REBUILT\n"
-              << "  root       " << rootId << "    " << legacyName(storedFor(rootId))
-              << "\t" << legacyName(computedFor(rootId)) << "\n"
-              << "  challenge  " << challengeClaimId << "    "
-              << legacyName(storedFor(challengeClaimId))
-              << "\t" << legacyName(computedFor(challengeClaimId)) << "\n\n";
-
-    EXPECT_EQ(computedFor(rootId), storedFor(rootId)) << "conceded claim";
-    EXPECT_EQ(computedFor(challengeClaimId), storedFor(challengeClaimId)) << "challenge claim";
+    EXPECT_EQ(computedFor(challengeClaimId), debate::ClaimStatus::TRUE_CLAIM) << "challenge claim";
+    EXPECT_EQ(computedFor(rootId), debate::ClaimStatus::FALSE_CLAIM) << "conceded claim";
 }
 
 // Two real users, opposed, with the concession coming from the other side.
@@ -715,7 +680,7 @@ TEST_F(MoveLogTest, ConcedeParity_StoredVsRebuiltFromLog) {
 // It also compares the ENTIRE matrix rather than hand-picked cells: every claim
 // against every user known to either side. A rule that invents an opinion for
 // someone who holds none shows up here and nowhere else.
-TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
+TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrix) {
     const int bobId = moderator_->createUserIfNotExist("bob");
     ASSERT_GT(bobId, 0);
     ASSERT_NE(bobId, aliceId_);
@@ -768,9 +733,10 @@ TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
     const std::vector<int> claimIds = {rootId, aliceChildId, bobChallengeId};
     const std::set<std::string> users{"alice", "bob"};
 
-    // Compares the entire matrix -- every claim against every user -- and
-    // returns whether the two users' stored columns differ anywhere.
-    auto checkMatrix = [&](const char* moment) {
+    // Checks the entire matrix -- every claim against every user -- against
+    // what is expected at that moment, keyed (claim, user).
+    using Expected = std::map<std::pair<int, std::string>, debate::ClaimStatus>;
+    auto checkMatrix = [&](const char* moment, const Expected& expected) {
         std::vector<debate::Claim> claims;
         for (int id : claimIds) {
             claims.push_back(dw.getClaimById(id));
@@ -789,12 +755,6 @@ TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
         EXPECT_TRUE(computed.by_user.count("alice")) << moment << ": alice holds no view";
         EXPECT_TRUE(computed.by_user.count("bob")) << moment << ": bob holds no view";
 
-        auto storedFor = [&](int claimId, const std::string& user) {
-            debate::Claim c = dw.getClaimById(claimId);
-            auto it = c.user_statuses().find(user);
-            return it != c.user_statuses().end() ? it->second
-                                                 : debate::ClaimStatus::UNDETERMINED;
-        };
         auto computedFor = [&](int claimId, const std::string& user) {
             auto uit = computed.by_user.find(user);
             if (uit == computed.by_user.end()) return debate::ClaimStatus::UNDETERMINED;
@@ -802,30 +762,25 @@ TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
             return cit == uit->second.end() ? debate::ClaimStatus::UNDETERMINED : cit->second;
         };
 
-        std::cout << "\n=== " << moment << " ===\n"
-                  << "  claim  user   STORED         REBUILT\n";
-        bool differs = false;
         for (int id : claimIds) {
             for (const std::string& u : users) {
-                std::cout << "  " << id << "      " << u << (u.size() < 5 ? " " : "")
-                          << "\t" << legacyName(storedFor(id, u))
-                          << "\t" << legacyName(computedFor(id, u)) << "\n";
-                EXPECT_EQ(computedFor(id, u), storedFor(id, u))
+                EXPECT_EQ(computedFor(id, u), expected.at({id, u}))
                     << moment << ": claim " << id << " as seen by " << u;
             }
-            if (storedFor(id, "alice") != storedFor(id, "bob")) {
-                differs = true;
-            }
         }
-        std::cout << "\n";
-        return differs;
     };
 
-    // Moment 1: bob has attacked, alice has not answered. This is the only
-    // point where the two columns genuinely diverge, so it is where a rule that
-    // confused one user's view for another's would show up.
-    EXPECT_TRUE(checkMatrix("after bob's challenge, before alice answers"))
-        << "alice and bob agree everywhere, so no per-user behaviour is being exercised";
+    // Moment 1: bob has attacked, alice has not answered. The two columns
+    // genuinely diverge here, so this is where a rule that confused one
+    // user's view for another's would show up.
+    checkMatrix("after bob's challenge, before alice answers", {
+        {{rootId, "alice"}, debate::ClaimStatus::TRUE_CLAIM},
+        {{rootId, "bob"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{aliceChildId, "alice"}, debate::ClaimStatus::TRUE_CLAIM},
+        {{aliceChildId, "bob"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{bobChallengeId, "alice"}, debate::ClaimStatus::UNDETERMINED},
+        {{bobChallengeId, "bob"}, debate::ClaimStatus::TRUE_CLAIM},
+    });
 
     // --- alice concedes bob's challenge ---
     const int challengeLinkId = dw.findOutgoingChallengeLink(bobChallengeId).link().id();
@@ -834,10 +789,17 @@ TEST_F(MoveLogTest, TwoUserChallengeAndConcede_FullMatrixParity) {
     concede.mutable_concede_challenge()->set_challenge_link_id(challengeLinkId);
     send(concede);
 
-    // Moment 2: conceding means alice adopts bob's view, so the columns are
-    // EXPECTED to converge here. Convergence is the correct outcome, not a
-    // weaker test -- the divergence was already checked above.
-    checkMatrix("after alice concedes");
+    // Moment 2: conceding means alice adopts bob's view, so the columns
+    // converge. Convergence is the correct outcome, not a weaker test -- the
+    // divergence was already checked above.
+    checkMatrix("after alice concedes", {
+        {{rootId, "alice"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{rootId, "bob"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{aliceChildId, "alice"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{aliceChildId, "bob"}, debate::ClaimStatus::FALSE_CLAIM},
+        {{bobChallengeId, "alice"}, debate::ClaimStatus::TRUE_CLAIM},
+        {{bobChallengeId, "bob"}, debate::ClaimStatus::TRUE_CLAIM},
+    });
 }
 
 TEST_F(MoveLogTest, SeparateDebatesKeepIndependentSequences) {
@@ -1118,9 +1080,6 @@ TEST_F(MoveLogTest, AChildWithAVoiceIsTrueForTheVoiceNotTheEntrant) {
     const debate::Claim child = dw.getClaimById(childId);
     EXPECT_EQ(child.voice_id(), reporterId);
     EXPECT_EQ(child.creator_id(), aliceId_) << "the entrant still owns the row";
-    ASSERT_EQ(child.user_statuses().count("the reporter"), 1u);
-    EXPECT_EQ(child.user_statuses().at("the reporter"), debate::ClaimStatus::TRUE_CLAIM);
-    EXPECT_EQ(child.user_statuses().count("alice"), 0u) << "alice did not say it";
 
     // The replay agrees: the ASSERT's actor is alice, the claim's holder is not.
     std::vector<debate::Claim> claims{dw.getClaimById(rootId), child};
@@ -1167,11 +1126,6 @@ TEST_F(MoveLogTest, AChallengeWithAVoiceRecordsTheVoicesOpinionNotTheEntrants) {
     const debate::Claim root = dw.getClaimById(rootId);
     const debate::Claim challenge = dw.getClaimById(challengeId);
     EXPECT_EQ(challenge.voice_id(), paulId);
-    EXPECT_EQ(challenge.user_statuses().at("Paul"), debate::ClaimStatus::TRUE_CLAIM);
-    ASSERT_EQ(root.user_statuses().count("Paul"), 1u);
-    EXPECT_EQ(root.user_statuses().at("Paul"), debate::ClaimStatus::FALSE_CLAIM);
-    EXPECT_EQ(root.user_statuses().at("alice"), debate::ClaimStatus::TRUE_CLAIM)
-        << "alice entered Paul's objection; she did not adopt it";
 
     // The OPPOSE names the voice, so the replay lands the FALSE on Paul.
     bool opposeNamesPaul = false;
@@ -1280,8 +1234,7 @@ TEST_F(AgreementFlowTest, AgreeingHoldsTheClaimTrueForTheReaderAndForNobodyElse)
     agree.mutable_endorse_claim()->set_claim_id(root);
     send(agree);
 
-    // Stored, logged, and replayed alike.
-    EXPECT_EQ(dw().getClaimById(root).user_statuses().at("bob"), debate::ClaimStatus::TRUE_CLAIM);
+    // Logged, and shown.
     bool logged = false;
     for (const auto& m : readMoves(*db_, debateId)) {
         if (m.type == "ACCEPT" && m.actorId == bob && m.targetType == "claim" && m.targetId == root) logged = true;
@@ -1296,7 +1249,6 @@ TEST_F(AgreementFlowTest, AgreeingHoldsTheClaimTrueForTheReaderAndForNobodyElse)
     withdraw.mutable_unendorse_claim()->set_claim_id(root);
     send(withdraw);
 
-    EXPECT_EQ(dw().getClaimById(root).user_statuses().count("bob"), 0u);
     bool unlogged = false;
     for (const auto& m : readMoves(*db_, debateId)) {
         if (m.type == "UNACCEPT" && m.actorId == bob && m.targetId == root) unlogged = true;
@@ -1421,11 +1373,20 @@ TEST_F(BackfillTest, ADebateWithoutALogGetsOneThatReplaysToItsStoredStatuses) {
     agree.mutable_endorse_claim()->set_claim_id(root);
     send(agree);
 
-    // Snapshot what is stored, then throw the real log away: this is now a
-    // debate from before the log existed.
+    // Plant the statuses on the rows, the way the old engine left them, then
+    // throw the real log away: this is now a debate from before the log.
     std::map<int, std::map<std::string, debate::ClaimStatus>> stored;
     for (int id : {root, reason, challenge}) {
-        for (const auto& e : dw().getClaimById(id).user_statuses()) stored[id][e.first] = e.second;
+        debate::Claim c = dw().getClaimById(id);
+        c.mutable_user_statuses()->clear();
+        for (const char* user : {"alice", "bob", "carol"}) {
+            const auto s = shown(debateId, id, user);
+            if (s.has_value()) {
+                (*c.mutable_user_statuses())[user] = *s;
+                stored[id][user] = *s;
+            }
+        }
+        dw().updateClaimInDB(c);
     }
     ASSERT_EQ(stored[reason]["alice"], debate::ClaimStatus::FALSE_CLAIM) << "conceded";
     ASSERT_EQ(stored[root]["carol"], debate::ClaimStatus::TRUE_CLAIM) << "agreed";

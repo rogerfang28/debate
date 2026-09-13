@@ -1,6 +1,4 @@
 #include "DebateWrapper.h"
-#include "ClaimVoice.h"
-#include "BasisRegistry.h"
 #include <iostream>
 #include <map>
 #include <algorithm>
@@ -81,11 +79,6 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     debate::Claim rootClaim;
     rootClaim.set_sentence(topic);
     rootClaim.set_creator_id(creator_id);
-    rootClaim.set_status(debate::ClaimStatus::UNDETERMINED);
-
-    // Creator sees their own claim as TRUE_CLAIM
-    user::User creatorProto = getUserProtobuf(creator_id);
-    (*rootClaim.mutable_user_statuses())[creatorProto.username()] = debate::ClaimStatus::TRUE_CLAIM;
 
     addClaimToDB(rootClaim, creator_id, newId);
     debate.set_root_claim_id(rootClaim.id());
@@ -148,7 +141,6 @@ int DebateWrapper::createClaim(
     claim.set_description(description);
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
-    claim.set_status(debate::ClaimStatus::UNDETERMINED);
     claim.set_voice_id(voice_id);
     if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
         *claim.add_sources() = *source;
@@ -179,7 +171,6 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_description(description);
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
-    childClaim.set_status(debate::ClaimStatus::UNDETERMINED);
     childClaim.set_voice_id(voice_id);
     if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
         *childClaim.add_sources() = *source;
@@ -211,13 +202,8 @@ int DebateWrapper::addClaimUnderParent(
 void DebateWrapper::addClaimToDB(debate::Claim& claim, const int& user_id, const int& debate_id) {
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
-    // Whoever the claim BELONGS to sees it TRUE by default: the voice if one
-    // was named, else the entrant. A reader typing in "the reporter says X"
-    // has not said X, so nothing is written for them.
-    std::string username = databaseWrapper.users.getUsername(ClaimVoiceId(claim));
-    if (!username.empty()) {
-        (*claim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-    }
+    // No status is written. Who holds the claim true is the ASSERT move the
+    // logger appends for this event; the page replays the log.
     std::vector<uint8_t> serializedData(claim.ByteSizeLong());
     claim.SerializeToArray(serializedData.data(), serializedData.size());
     int newId = databaseWrapper.statements.addStatement(
@@ -623,365 +609,6 @@ void DebateWrapper::RestorePreviousVersionOfClaim(const int& claim_id) {
     
 }
 
-void DebateWrapper::UpdateStatusOfAllClaimsInDebate(const int& debate_id) {
-    // New model: UNDETERMINED (default), TRUE (defended), FALSE (disproven).
-    // No CHALLENGED status — challenge resolution is determined by
-    // the challenge claim's own status.
-    // For each claim with incoming CHALLENGE links:
-    //   - If any challenge claim is FALSE → target is FALSE (disproven)
-    //   - If any challenge claim is TRUE → target is TRUE (defended)
-    //   - If all challenge claims are UNDETERMINED → target stays UNDETERMINED
-    // Propagate FALSE up to ancestors.
-    debate::Debate debateProto;
-    std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
-    if (!debateData.empty()) {
-        debateProto.ParseFromArray(debateData.data(), debateData.size());
-    } else {
-        Log::error("[DebateWrapper][ERR] Debate with ID " + std::to_string(debate_id) + " not found.");
-        return;
-    }
-
-    // First pass: determine each claim's status based on incoming challenges.
-    std::vector<int> stack;
-    std::set<int> visited;
-    stack.push_back(debateProto.root_claim_id());
-
-    while (!stack.empty()) {
-        int currentClaimId = stack.back();
-        stack.pop_back();
-
-        if (visited.find(currentClaimId) != visited.end()) {
-            continue;
-        }
-
-        visited.insert(currentClaimId);
-        debate::Claim currentClaim = getClaimById(currentClaimId);
-
-        // Check incoming CHALLENGE links to determine status.
-        bool hasIncomingChallenge = false;
-        bool anyChallengeFalse = false;
-        bool anyChallengeTrue = false;
-        const auto links = databaseWrapper.links.getLinksForClaim(currentClaimId);
-        for (const auto& linkRow : links) {
-            const int linkTo = std::get<2>(linkRow);
-            if (linkTo != currentClaimId) {
-                continue;
-            }
-
-            const int linkId = std::get<0>(linkRow);
-            auto linkData = databaseWrapper.links.getLinkById(linkId);
-            if (!linkData.has_value()) {
-                continue;
-            }
-
-            const int linkType = std::get<5>(linkData.value());
-            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-                hasIncomingChallenge = true;
-                // The challenge claim is the connect_from side.
-                const int challengeClaimId = std::get<1>(linkRow);
-                debate::Claim challengeClaim = getClaimById(challengeClaimId);
-                if (challengeClaim.status() == debate::ClaimStatus::FALSE_CLAIM) {
-                    anyChallengeFalse = true;
-                } else if (challengeClaim.status() == debate::ClaimStatus::TRUE_CLAIM) {
-                    anyChallengeTrue = true;
-                }
-            }
-        }
-
-        if (hasIncomingChallenge) {
-            if (anyChallengeFalse) {
-                currentClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
-            } else if (anyChallengeTrue) {
-                currentClaim.set_status(debate::ClaimStatus::TRUE_CLAIM);
-            }
-            // If all challenges are UNDETERMINED, leave as UNDETERMINED.
-        }
-        // If no incoming challenges, leave as-is (UNDETERMINED default).
-        updateClaimInDB(currentClaim);
-
-        for (const auto& childId : findChildrenIds(currentClaimId)) {
-            if (visited.find(childId) == visited.end()) {
-                stack.push_back(childId);
-            }
-        }
-    }
-
-    // Second pass: propagate FALSE up to ancestors.
-    // If any child is FALSE, parent becomes FALSE too.
-    std::vector<int> toProcess;
-    toProcess.push_back(debateProto.root_claim_id());
-
-    for (size_t i = 0; i < toProcess.size(); ++i) {
-        int currentClaimId = toProcess[i];
-        debate::Claim currentClaim = getClaimById(currentClaimId);
-        std::vector<int> childrenIds = findChildrenIds(currentClaimId);
-
-        for (const auto& childId : childrenIds) {
-            toProcess.push_back(childId);
-        }
-
-        bool hasChildFalse = false;
-        for (const auto& childId : childrenIds) {
-            debate::Claim childClaim = getClaimById(childId);
-            if (childClaim.status() == debate::ClaimStatus::FALSE_CLAIM) {
-                hasChildFalse = true;
-                break;
-            }
-        }
-
-        if (hasChildFalse && currentClaim.status() != debate::ClaimStatus::FALSE_CLAIM) {
-            currentClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
-            updateClaimInDB(currentClaim);
-        }
-    }
-}
-
-debate::ClaimStatus DebateWrapper::ComputeStatusForUser(
-    const int& claimId,
-    const std::string& user,
-    const debate::ClaimStatus& currentStatus,
-    const std::map<int, std::vector<debate::Relationship>>& childrenMap,
-    const std::map<int, std::vector<debate::Relationship>>& challengeIncoming,
-    const std::map<int, std::vector<debate::Relationship>>& challengeOnRelation,
-    const std::set<int>& conceded_claims) {
-    debate::ClaimStatus ns = currentStatus;
-
-    // UNDERCUT. A challenge can target an argument -- the link -- instead of a
-    // claim: "true or not, that does not bear on this". For a user who holds
-    // such a challenge TRUE, the attacked link carries nothing, exactly as if
-    // its basis had propagation NONE. Nothing becomes false; a reason is
-    // removed. For everyone else the link works as before. This is the one
-    // rule that distinguishes attacking the evidence from attacking its
-    // relevance, and it applies to support and challenge links alike.
-    auto undercutFor = [&](const debate::Relationship& rel) {
-        auto at = challengeOnRelation.find(rel.id());
-        if (at == challengeOnRelation.end()) return false;
-        for (const auto& attack : at->second) {
-            debate::Claim ac = getClaimById(attack.link().connect_from());
-            auto uit = ac.user_statuses().find(user);
-            if (uit != ac.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    // Rule A/B: parent-child.
-    //
-    // How a child's status reaches this claim is the link's basis's business,
-    // read from the registry: COLLAPSE is the rule every link had before the
-    // registry existed, UNSUPPORT withdraws the reason without refuting the
-    // claim, NONE means the link carries nothing. With every shipped basis on
-    // COLLAPSE this is the old computation exactly; the difference is that it
-    // can now be changed in bases.pbtxt.
-    bool anyChildFalse = false;
-    bool allChildrenTrue = true;
-    int countedChildren = 0;
-    auto childrenIt = childrenMap.find(claimId);
-    if (childrenIt != childrenMap.end()) {
-        for (const auto& rel : childrenIt->second) {
-            const basis::Propagation prop = bases::PropagationFor(rel.basis());
-            if (prop == basis::NONE || undercutFor(rel)) continue;
-            ++countedChildren;
-            debate::Claim cc = getClaimById(rel.link().connect_to());
-            auto cit = cc.user_statuses().find(user);
-            if (cit == cc.user_statuses().end()) { allChildrenTrue = false; continue; }
-            if (cit->second == debate::ClaimStatus::FALSE_CLAIM) {
-                if (prop == basis::COLLAPSE) { anyChildFalse = true; break; }
-                // UNSUPPORT: the reason is gone; the claim is not thereby wrong.
-                allChildrenTrue = false;
-                continue;
-            }
-            if (cit->second != debate::ClaimStatus::TRUE_CLAIM) { allChildrenTrue = false; }
-        }
-    }
-    const bool hasChildren = countedChildren > 0;
-    if (anyChildFalse) ns = debate::ClaimStatus::FALSE_CLAIM;
-    else if (hasChildren && allChildrenTrue &&
-             conceded_claims.find(claimId) == conceded_claims.end())
-        ns = debate::ClaimStatus::TRUE_CLAIM;
-
-    // Rule C: incoming CHALLENGE is FALSE → this claim TRUE. A failed attack
-    // vindicates under COLLAPSE and UNSUPPORT alike; NONE links never count.
-    auto citIn = challengeIncoming.find(claimId);
-    if (citIn != challengeIncoming.end()) {
-        bool anyFalse = false;
-        for (const auto& rel : citIn->second) {
-            if (bases::PropagationFor(rel.basis()) == basis::NONE || undercutFor(rel)) continue;
-            debate::Claim cc = getClaimById(rel.link().connect_from());
-            auto uit = cc.user_statuses().find(user);
-            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::FALSE_CLAIM) { anyFalse = true; break; }
-        }
-        if (anyFalse) ns = debate::ClaimStatus::TRUE_CLAIM;
-    }
-
-    // Rule D: incoming CHALLENGE is TRUE → this claim FALSE under COLLAPSE, or
-    // merely no longer TRUE under UNSUPPORT. COLLAPSE wins if both kinds fire.
-    if (citIn != challengeIncoming.end()) {
-        bool anyTrueCollapse = false;
-        bool anyTrueUnsupport = false;
-        for (const auto& rel : citIn->second) {
-            const basis::Propagation prop = bases::PropagationFor(rel.basis());
-            if (prop == basis::NONE || undercutFor(rel)) continue;
-            debate::Claim cc = getClaimById(rel.link().connect_from());
-            auto uit = cc.user_statuses().find(user);
-            if (uit != cc.user_statuses().end() && uit->second == debate::ClaimStatus::TRUE_CLAIM) {
-                if (prop == basis::COLLAPSE) { anyTrueCollapse = true; break; }
-                anyTrueUnsupport = true;
-            }
-        }
-        if (anyTrueCollapse) ns = debate::ClaimStatus::FALSE_CLAIM;
-        else if (anyTrueUnsupport && ns == debate::ClaimStatus::TRUE_CLAIM) ns = debate::ClaimStatus::UNDETERMINED;
-    }
-
-    return ns;
-}
-
-void DebateWrapper::PropagateClaimStatuses(const int& debate_id, const std::set<int>& conceded_claims) {
-    // Propagation rules (per-user):
-    //   Rule A: FALSE + PARENT_CHILD → parent FALSE
-    //   Rule B: TRUE + PARENT_CHILD → parent TRUE (only if ALL children TRUE, and claim not conceded)
-    //   Rule C: FALSE + CHALLENGE (targeting this claim) → this claim TRUE
-    //   Rule D: TRUE + CHALLENGE (targeting this claim) → this claim FALSE
-    //
-    // Iterate until fixed point. Only set status for users who already have an entry
-    // on the claim (skip if currentStatus is UNDETERMINED and no rule fires).
-    //
-    // conceded_claims: claims explicitly set FALSE by the concede handler. These must
-    // not be overwritten to TRUE by Rule B (child-all-TRUE → parent-TRUE).
-
-    debate::Debate debateProto;
-    std::vector<uint8_t> debateData = databaseWrapper.debates.getDebateProtobuf(debate_id);
-    if (!debateData.empty()) {
-        debateProto.ParseFromArray(debateData.data(), debateData.size());
-    } else {
-        Log::error("[PropagateClaimStatuses] Debate " + std::to_string(debate_id) + " not found.");
-        return;
-    }
-
-    int rootId = debateProto.root_claim_id();
-
-    std::map<int, std::vector<debate::Relationship>> childrenMap;
-    std::map<int, std::vector<debate::Relationship>> challengeIncoming;
-    std::map<int, std::vector<debate::Relationship>> challengeOutgoing;
-    // relation id -> challenges aimed at that relation (undercuts). These rows
-    // are NOT in challengeIncoming: they attack an argument, not a claim, and
-    // Rule D on the claim would make the challenger's target FALSE, which is
-    // precisely what an undercut does not say.
-    std::map<int, std::vector<debate::Relationship>> challengeOnRelation;
-    std::set<int> allClaimIds;
-    allClaimIds.insert(rootId);
-
-    const std::map<int, int> relationTargets = getRelationTargets(debate_id);
-    auto allLinks = getLinksForDebate(debate_id);
-    for (const auto& linkTuple : allLinks) {
-        int linkId = std::get<0>(linkTuple);
-        int fromId = std::get<1>(linkTuple);
-        int toId = std::get<2>(linkTuple);
-        const std::string& connection = std::get<3>(linkTuple);
-        int creatorId = std::get<4>(linkTuple);
-        int linkType = std::get<5>(linkTuple);
-        int relationId = std::get<6>(linkTuple);
-        allClaimIds.insert(fromId);
-        allClaimIds.insert(toId);
-
-        const auto targetIt = relationTargets.find(linkId);
-        const int toRelation = targetIt == relationTargets.end() ? 0 : targetIt->second;
-
-        // Built with its RELATION id, so rows of one joint argument share an
-        // id and an undercut aimed at the argument finds every one of them.
-        debate::Relationship rel = RelationBuilder::fromLinkRow(
-            linkId, fromId, toId, connection, creatorId, linkType, debate_id, relationId, toRelation);
-
-        if (linkType == static_cast<int>(debate::LinkType::PARENT_CHILD)) {
-            childrenMap[fromId].push_back(rel);
-        } else if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            if (toRelation > 0) {
-                challengeOnRelation[toRelation].push_back(rel);
-            } else {
-                challengeIncoming[toId].push_back(rel);
-                challengeOutgoing[fromId].push_back(rel);
-            }
-        }
-    }
-
-    // Order: BFS from root
-    std::vector<int> topoOrder;
-    {
-        std::vector<int> bfs;
-        bfs.push_back(rootId);
-        for (size_t i = 0; i < bfs.size(); ++i) {
-            topoOrder.push_back(bfs[i]);
-            for (const auto& rel : childrenMap[bfs[i]]) {
-                int childId = rel.link().connect_to();
-                if (std::find(topoOrder.begin(), topoOrder.end(), childId) == topoOrder.end()) {
-                    bfs.push_back(childId);
-                }
-            }
-        }
-        for (int cid : allClaimIds) {
-            if (std::find(topoOrder.begin(), topoOrder.end(), cid) == topoOrder.end()) {
-                topoOrder.push_back(cid);
-            }
-        }
-    }
-
-    bool changed = true;
-    int maxIterations = 50;
-
-    while (changed && maxIterations-- > 0) {
-        changed = false;
-
-        for (int claimId : topoOrder) {
-            debate::Claim claim = getClaimById(claimId);
-            if (claim.id() == 0) continue;
-
-            std::set<std::string> users;
-            for (const auto& entry : claim.user_statuses()) users.insert(entry.first);
-            for (const auto& rel : childrenMap[claimId]) {
-                debate::Claim c = getClaimById(rel.link().connect_to());
-                for (const auto& e : c.user_statuses()) users.insert(e.first);
-            }
-            for (const auto& rel : challengeIncoming[claimId]) {
-                debate::Claim c = getClaimById(rel.link().connect_from());
-                for (const auto& e : c.user_statuses()) users.insert(e.first);
-            }
-            for (const auto& rel : challengeOutgoing[claimId]) {
-                debate::Claim c = getClaimById(rel.link().connect_to());
-                for (const auto& e : c.user_statuses()) users.insert(e.first);
-            }
-            // Whoever attacks a link touching this claim holds a view that
-            // changes what this claim's children count for them.
-            auto attackersOf = [&](const std::vector<debate::Relationship>& rels) {
-                for (const auto& rel : rels) {
-                    auto at = challengeOnRelation.find(rel.id());
-                    if (at == challengeOnRelation.end()) continue;
-                    for (const auto& attack : at->second) {
-                        debate::Claim c = getClaimById(attack.link().connect_from());
-                        for (const auto& e : c.user_statuses()) users.insert(e.first);
-                    }
-                }
-            };
-            attackersOf(childrenMap[claimId]);
-            attackersOf(challengeIncoming[claimId]);
-
-            for (const std::string& user : users) {
-                auto it = claim.user_statuses().find(user);
-                debate::ClaimStatus cs = (it != claim.user_statuses().end())
-                    ? it->second : debate::ClaimStatus::UNDETERMINED;
-                debate::ClaimStatus ns = ComputeStatusForUser(
-                    claimId, user, cs, childrenMap, challengeIncoming, challengeOnRelation, conceded_claims);
-
-                if (ns != cs) {
-                    debate::Claim updated = getClaimById(claimId);
-                    (*updated.mutable_user_statuses())[user] = ns;
-                    updateClaimInDB(updated);
-                    changed = true;
-                }
-            }
-        }
-    }
-}
 void DebateWrapper::saveSummary(const int& user_id, const int& debate_id, const std::string& kind,
                                 const int& claim_id, const std::string& text,
                                 const std::string& error, const int& at_move_seq) {
