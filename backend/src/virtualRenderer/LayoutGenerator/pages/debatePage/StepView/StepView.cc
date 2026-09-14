@@ -750,24 +750,19 @@ static void AddTextLines(ui::Component* parent, const std::string& idPrefix, con
 // buttons for the questions readers ask most, and the conversation so far.
 // Everything it says is text -- it never writes a claim; the reader does.
 //
-// It sits at the top of the column, above the selected claim, because past a
-// dozen claims the graph stops answering "so where does this stand" at a
-// glance, and asking is faster than reading.
+// It is docked to the corner of the screen rather than placed in the column:
+// past a dozen claims the graph stops answering "so where does this stand" at
+// a glance, and asking should be one click away from wherever the reader is.
 static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
     const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
 
+    // Docked to the corner of the screen, folded away with one click, so it
+    // is always to hand and never in the way. The client owns the fold.
     ui::Component panel = ComponentGenerator::createContainer(
-        "chatPanel", "w-full", "bg-gray-800", "p-4", "", "border border-gray-700", "rounded-lg", ""
+        "chatPanel", "w-full", "bg-gray-800", "p-3", "", "", "", ""
     );
-    (*panel.mutable_css())["display"] = "flex";
-    (*panel.mutable_css())["flex-direction"] = "column";
-    (*panel.mutable_css())["gap"] = "0.5rem";
-
-    ui::Component heading = ComponentGenerator::createText(
-        "chatHeading", "Ask the AI about this debate:", "text-xs", "text-gray-500",
-        "font-semibold uppercase tracking-wide", ""
-    );
-    ComponentGenerator::addChild(&panel, heading);
+    ComponentGenerator::addAttribute(&panel, "data-docked", "true");
+    ComponentGenerator::addAttribute(&panel, "data-docked-title", "Ask the AI about this debate");
 
     // The conversation so far, last 20 turns.
     if (chat.messages_size() > 0) {

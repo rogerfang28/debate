@@ -7,6 +7,7 @@ import ButtonComponent from "./componentTypes/ButtonComponent.tsx";
 import ImageComponent from "./componentTypes/ImageComponent.tsx";
 import ListComponent from "./componentTypes/ListComponent.tsx";
 import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
+import DockedPanelComponent from "./componentTypes/DockedPanelComponent.tsx";
 import CardComponent from "./componentTypes/CardComponent.tsx";
 import InputComponent from "./componentTypes/InputComponent.tsx";
 import DropdownComponent from "./componentTypes/DropdownComponent.tsx";
@@ -69,6 +70,16 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (component.type === ComponentType.CONTAINER && attributes["data-tree-root"] === "true") {
     return (
       <TreeRootComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
+  // A container pinned to the corner of the screen with a fold-away header.
+  if (component.type === ComponentType.CONTAINER && attributes["data-docked"] === "true") {
+    return (
+      <DockedPanelComponent
         component={component}
         className={className}
         style={inlineStyle}
