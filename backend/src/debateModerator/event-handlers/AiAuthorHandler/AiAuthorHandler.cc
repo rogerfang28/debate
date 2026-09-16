@@ -65,6 +65,7 @@ void AiAuthorHandler::CancelWork(const int& user_id, DebateWrapper& debateWrappe
     // to know which thing is currently running.
     AiJobs::Abandon(user_id, AiJobs::Kind::Generation);
     AiJobs::Abandon(user_id, AiJobs::Kind::Chat);
+    AiJobs::Abandon(user_id, AiJobs::Kind::Brief);
 
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
     user_engagement::AiJobStatus* status = statusOf(userProto);
@@ -73,6 +74,7 @@ void AiAuthorHandler::CancelWork(const int& user_id, DebateWrapper& debateWrappe
     // The chat keeps its own pending flag, which would otherwise leave the
     // page polling for an answer that will never be collected.
     userProto.mutable_engagement()->mutable_debating_info()->mutable_chat()->set_pending(false);
+    userProto.mutable_engagement()->mutable_debating_info()->mutable_brief()->set_pending(false);
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 

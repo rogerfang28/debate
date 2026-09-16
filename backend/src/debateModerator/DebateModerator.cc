@@ -32,6 +32,7 @@
 #include "event-handlers/EndorseHandler/EndorseHandler.h"
 #include "../moveLog/MoveBackfill.h"
 #include "event-handlers/ChatHandler/ChatHandler.h"
+#include "event-handlers/BriefHandler/BriefHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 #include "event-handlers/TutorialHandler/TutorialHandler.h"
 
@@ -212,6 +213,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::CLEAR_CHAT:
             Log::info("[DebateModerator] Event Type: CLEAR_CHAT");
             ChatHandler::Clear(user_id, debateWrapper);
+            break;
+        case debate_event::GO_TO_BRIEF:
+            Log::info("[DebateModerator] Event Type: GO_TO_BRIEF");
+            BriefHandler::Open(user_id, debateWrapper);
+            break;
+        case debate_event::GENERATE_BRIEF:
+            Log::info("[DebateModerator] Event Type: GENERATE_BRIEF");
+            BriefHandler::Generate(user_id, debateWrapper);
+            break;
+        case debate_event::OPEN_CLAIM_IN_DEBATE:
+            Log::info("[DebateModerator] Event Type: OPEN_CLAIM_IN_DEBATE");
+            BriefHandler::OpenClaimInDebate(event.select_claim().claim_id(), user_id, debateWrapper);
             break;
         case debate_event::GENERATE_DEBATE:
             Log::info("[DebateModerator] Event Type: GENERATE_DEBATE");
@@ -519,6 +532,9 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     // makes a detached worker visible to the page: the client re-requests
     // while a run is pending, and each request advances what it sees.
     ChatHandler::Refresh(user_id, debateWrapper);
+    // The Brief tab's words: a run in flight, or the stored ones for this
+    // debate, onto the record the same way.
+    BriefHandler::Refresh(user_id, debateWrapper);
     // Generation finishes on a worker; this is where its output becomes
     // claims. It needs the moderator, not just the wrapper, because building
     // goes back through event dispatch.

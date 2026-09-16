@@ -309,6 +309,13 @@ enum EventType {
     // The AI chat: a typed question or a quick prompt; forget the transcript.
     ASK_CHAT = 68;
     CLEAR_CHAT = 69;
+    // The Brief tab beside the Debate tab. GO_TO_BRIEF opens it; the Debate
+    // tab is GO_TO_OVERVIEW. GENERATE_BRIEF asks the model for the prose
+    // (the structure needs no model). OPEN_CLAIM_IN_DEBATE jumps from a line
+    // of the brief to that claim on the Debate tab; it carries select_claim.
+    GO_TO_BRIEF = 70;
+    GENERATE_BRIEF = 71;
+    OPEN_CLAIM_IN_DEBATE = 72;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 

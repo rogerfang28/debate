@@ -627,3 +627,12 @@ std::vector<ChatDatabase::Message> DebateWrapper::chatTranscript(const int& user
 void DebateWrapper::clearChat(const int& user_id, const int& debate_id) {
     databaseWrapper.chats.clear(user_id, debate_id);
 }
+
+bool DebateWrapper::briefFor(const int& debate_id, std::string* fingerprint, std::string* text) {
+    return databaseWrapper.briefs.load(debate_id, fingerprint, text);
+}
+
+void DebateWrapper::saveBrief(const int& debate_id, const std::string& fingerprint,
+                              const std::string& text) {
+    databaseWrapper.briefs.save(debate_id, fingerprint, text);
+}

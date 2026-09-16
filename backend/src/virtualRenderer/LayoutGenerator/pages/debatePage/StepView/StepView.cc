@@ -753,7 +753,7 @@ static void AddTextLines(ui::Component* parent, const std::string& idPrefix, con
 // It is docked to the corner of the screen rather than placed in the column:
 // past a dozen claims the graph stops answering "so where does this stand" at
 // a glance, and asking should be one click away from wherever the reader is.
-static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
+ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
     const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
 
     // Docked to the corner of the screen, folded away with one click, so it
@@ -870,6 +870,30 @@ static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedCl
 // one that belongs to a different debate -- opening another debate mid-tutorial
 // should not drag the guide box along, narrating steps about claims that are
 // not on screen.
+// The Debate | Brief tabs. Two buttons that look like tabs: the lit one has
+// the accent underline and white text, the other is quiet. Same ids on both
+// pages, so the parser has one wire per tab.
+ui::Component StepView::BuildDebateTabs(bool briefActive) {
+    ui::Component tabs = ComponentGenerator::createContainer("debateTabs", "", "", "", "", "", "", "");
+    (*tabs.mutable_css())["display"] = "flex";
+    (*tabs.mutable_css())["flex-direction"] = "row";
+    (*tabs.mutable_css())["gap"] = "0.25rem";
+    (*tabs.mutable_css())["align-items"] = "flex-end";
+    auto tab = [&](const std::string& id, const std::string& label, bool active) {
+        ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
+        (*b.mutable_css())["background"] = active ? "#1f2937" : "transparent";
+        (*b.mutable_css())["color"] = active ? "#f9fafb" : "#9ca3af";
+        (*b.mutable_css())["border"] = "none";
+        (*b.mutable_css())["border-bottom"] = active ? "2px solid #38bdf8" : "2px solid transparent";
+        (*b.mutable_css())["border-radius"] = "0.375rem 0.375rem 0 0";
+        (*b.mutable_css())["font-weight"] = active ? "700" : "500";
+        ComponentGenerator::addChild(&tabs, b);
+    };
+    tab("debateTabButton", "Debate", !briefActive);
+    tab("briefTabButton", "Brief", briefActive);
+    return tabs;
+}
+
 // Two small helpers so the guide box can set real CSS rather than fight the
 // Tailwind class strings. The renderer turns a component's css map into an
 // inline style, and inline style is what reliably wins here -- TextComponent
@@ -1166,8 +1190,11 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	(*topBar.mutable_css())["display"] = "flex";
 	(*topBar.mutable_css())["flex-direction"] = "row";
-	(*topBar.mutable_css())["justify-content"] = "flex-end";
-	(*topBar.mutable_css())["align-items"] = "flex-start";
+	(*topBar.mutable_css())["justify-content"] = "space-between";
+	(*topBar.mutable_css())["align-items"] = "center";
+	(*topBar.mutable_css())["flex-wrap"] = "wrap";
+	(*topBar.mutable_css())["gap"] = "0.5rem";
+	ComponentGenerator::addChild(&topBar, BuildDebateTabs(false));
 	ui::Component goHomeButton = ComponentGenerator::createButton(
 		"goHomeButton",
 		"Home",

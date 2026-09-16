@@ -466,6 +466,7 @@ class FullDebateScope final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
     kTopViewFieldNumber = 2,
+    kBriefViewFieldNumber = 3,
   };
   // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
@@ -487,11 +488,21 @@ class FullDebateScope final : public ::google::protobuf::Message
   void _internal_set_top_view(bool value);
 
   public:
+  // bool brief_view = 3 [json_name = "briefView"];
+  void clear_brief_view() ;
+  bool brief_view() const;
+  void set_brief_view(bool value);
+
+  private:
+  bool _internal_brief_view() const;
+  void _internal_set_brief_view(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.FullDebateScope)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
                                    0, 0,
                                    2>
       _table_;
@@ -515,6 +526,7 @@ class FullDebateScope final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::int32_t debate_id_;
     bool top_view_;
+    bool brief_view_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -889,6 +901,31 @@ inline bool FullDebateScope::_internal_top_view() const {
 inline void FullDebateScope::_internal_set_top_view(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.top_view_ = value;
+}
+
+// bool brief_view = 3 [json_name = "briefView"];
+inline void FullDebateScope::clear_brief_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.brief_view_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline bool FullDebateScope::brief_view() const {
+  // @@protoc_insertion_point(field_get:debate.FullDebateScope.brief_view)
+  return _internal_brief_view();
+}
+inline void FullDebateScope::set_brief_view(bool value) {
+  _internal_set_brief_view(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:debate.FullDebateScope.brief_view)
+}
+inline bool FullDebateScope::_internal_brief_view() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.brief_view_;
+}
+inline void FullDebateScope::_internal_set_brief_view(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.brief_view_ = value;
 }
 
 // -------------------------------------------------------------------

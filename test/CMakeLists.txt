@@ -69,6 +69,7 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/LinkDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/ChatDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/BriefDatabase.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveBackfill.cc
     ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
@@ -93,6 +94,7 @@ set(HANDLER_SOURCES
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the chat and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
@@ -100,6 +102,7 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
@@ -121,6 +124,7 @@ set(MODERATOR_SOURCES
 set(RENDERER_SOURCES
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/ComponentGenerator.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.cc
+    ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/BriefView/BriefView.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageGenerator.cc
     ${REPO_ROOT}/backend/src/database/virtualrenderer/VRUserDatabase.cc
@@ -198,6 +202,7 @@ add_executable(debate_simulation
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the chat and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
@@ -205,6 +210,7 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
@@ -283,6 +289,7 @@ add_executable(import_debate_tool
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the chat and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
@@ -290,6 +297,7 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
@@ -345,6 +353,7 @@ add_executable(debate_tests
     # Dispatched from DebateModerator, so every target that links the moderator
     # needs it -- and it drags in the chat and the shared model client.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
@@ -352,6 +361,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
     ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
     ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
     ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc

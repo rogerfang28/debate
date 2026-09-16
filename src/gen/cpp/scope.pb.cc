@@ -56,7 +56,8 @@ inline constexpr FullDebateScope::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         debate_id_{0},
-        top_view_{false} {}
+        top_view_{false},
+        brief_view_{false} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR FullDebateScope::FullDebateScope(::_pbi::ConstantInitialized)
@@ -121,11 +122,13 @@ const ::uint32_t
         1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate::FullDebateScope, _impl_._has_bits_),
-        5, // hasbit index offset
+        6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate::FullDebateScope, _impl_.debate_id_),
         PROTOBUF_FIELD_OFFSET(::debate::FullDebateScope, _impl_.top_view_),
+        PROTOBUF_FIELD_OFFSET(::debate::FullDebateScope, _impl_.brief_view_),
         0,
         1,
+        2,
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate::Scope, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::debate::Scope, _impl_._oneof_case_[0]),
@@ -143,7 +146,7 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::debate::SingleClaimScope)},
         {7, sizeof(::debate::FullDebateScope)},
-        {14, sizeof(::debate::Scope)},
+        {16, sizeof(::debate::Scope)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate::_SingleClaimScope_default_instance_._instance,
@@ -154,21 +157,22 @@ const char descriptor_table_protodef_scope_2eproto[] ABSL_ATTRIBUTE_SECTION_VARI
     protodesc_cold) = {
     "\n\013scope.proto\022\006debate\"Y\n\020SingleClaimScop"
     "e\022\033\n\tdebate_id\030\001 \001(\005R\010debateId\022(\n\020curren"
-    "t_claim_id\030\002 \001(\005R\016currentClaimId\"I\n\017Full"
+    "t_claim_id\030\002 \001(\005R\016currentClaimId\"h\n\017Full"
     "DebateScope\022\033\n\tdebate_id\030\001 \001(\005R\010debateId"
-    "\022\031\n\010top_view\030\002 \001(\010R\007topView\"\301\001\n\005Scope\022/\n"
-    "\tscopetype\030\001 \001(\0162\021.debate.ScopeTypeR\tsco"
-    "petype\022=\n\014single_claim\030\002 \001(\0132\030.debate.Si"
-    "ngleClaimScopeH\000R\013singleClaim\022:\n\013full_de"
-    "bate\030\003 \001(\0132\027.debate.FullDebateScopeH\000R\nf"
-    "ullDebateB\014\n\nscope_info*.\n\tScopeType\022\020\n\014"
-    "SINGLE_CLAIM\020\000\022\017\n\013FULL_DEBATE\020\001b\006proto3"
+    "\022\031\n\010top_view\030\002 \001(\010R\007topView\022\035\n\nbrief_vie"
+    "w\030\003 \001(\010R\tbriefView\"\301\001\n\005Scope\022/\n\tscopetyp"
+    "e\030\001 \001(\0162\021.debate.ScopeTypeR\tscopetype\022=\n"
+    "\014single_claim\030\002 \001(\0132\030.debate.SingleClaim"
+    "ScopeH\000R\013singleClaim\022:\n\013full_debate\030\003 \001("
+    "\0132\027.debate.FullDebateScopeH\000R\nfullDebate"
+    "B\014\n\nscope_info*.\n\tScopeType\022\020\n\014SINGLE_CL"
+    "AIM\020\000\022\017\n\013FULL_DEBATE\020\001b\006proto3"
 };
 static ::absl::once_flag descriptor_table_scope_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_scope_2eproto = {
     false,
     false,
-    439,
+    470,
     descriptor_table_protodef_scope_2eproto,
     "scope.proto",
     &descriptor_table_scope_2eproto_once,
@@ -521,9 +525,9 @@ inline void FullDebateScope::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   ::memset(reinterpret_cast<char*>(&_impl_) +
                offsetof(Impl_, debate_id_),
            0,
-           offsetof(Impl_, top_view_) -
+           offsetof(Impl_, brief_view_) -
                offsetof(Impl_, debate_id_) +
-               sizeof(Impl_::top_view_));
+               sizeof(Impl_::brief_view_));
 }
 FullDebateScope::~FullDebateScope() {
   // @@protoc_insertion_point(destructor:debate.FullDebateScope)
@@ -582,16 +586,16 @@ FullDebateScope::GetClassData() const {
   return FullDebateScope_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
 FullDebateScope::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_._has_bits_),
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     FullDebateScope_class_data_.base(),
@@ -601,14 +605,19 @@ FullDebateScope::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::FullDebateScope>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool top_view = 2 [json_name = "topView"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(FullDebateScope, _impl_.top_view_), 1>(),
-     {16, 1, 0,
-      PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.top_view_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // int32 debate_id = 1 [json_name = "debateId"];
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FullDebateScope, _impl_.debate_id_), 0>(),
      {8, 0, 0,
       PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.debate_id_)}},
+    // bool top_view = 2 [json_name = "topView"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(FullDebateScope, _impl_.top_view_), 1>(),
+     {16, 1, 0,
+      PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.top_view_)}},
+    // bool brief_view = 3 [json_name = "briefView"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(FullDebateScope, _impl_.brief_view_), 2>(),
+     {24, 2, 0,
+      PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.brief_view_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -616,6 +625,8 @@ FullDebateScope::_table_ = {
     {PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.debate_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
     // bool top_view = 2 [json_name = "topView"];
     {PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.top_view_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // bool brief_view = 3 [json_name = "briefView"];
+    {PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.brief_view_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
   }},
   // no aux_entries
   {{
@@ -629,10 +640,10 @@ PROTOBUF_NOINLINE void FullDebateScope::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     ::memset(&_impl_.debate_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.top_view_) -
-        reinterpret_cast<char*>(&_impl_.debate_id_)) + sizeof(_impl_.top_view_));
+        reinterpret_cast<char*>(&_impl_.brief_view_) -
+        reinterpret_cast<char*>(&_impl_.debate_id_)) + sizeof(_impl_.brief_view_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -675,6 +686,15 @@ PROTOBUF_NOINLINE void FullDebateScope::Clear() {
     }
   }
 
+  // bool brief_view = 3 [json_name = "briefView"];
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_brief_view() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          3, this_._internal_brief_view(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -700,7 +720,7 @@ PROTOBUF_NOINLINE void FullDebateScope::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     // int32 debate_id = 1 [json_name = "debateId"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (this_._internal_debate_id() != 0) {
@@ -711,6 +731,12 @@ PROTOBUF_NOINLINE void FullDebateScope::Clear() {
     // bool top_view = 2 [json_name = "topView"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (this_._internal_top_view() != 0) {
+        total_size += 2;
+      }
+    }
+    // bool brief_view = 3 [json_name = "briefView"];
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_brief_view() != 0) {
         total_size += 2;
       }
     }
@@ -733,7 +759,7 @@ void FullDebateScope::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (from._internal_debate_id() != 0) {
         _this->_impl_.debate_id_ = from._impl_.debate_id_;
@@ -742,6 +768,11 @@ void FullDebateScope::MergeImpl(::google::protobuf::MessageLite& to_msg,
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       if (from._internal_top_view() != 0) {
         _this->_impl_.top_view_ = from._impl_.top_view_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_brief_view() != 0) {
+        _this->_impl_.brief_view_ = from._impl_.brief_view_;
       }
     }
   }
@@ -763,8 +794,8 @@ void FullDebateScope::InternalSwap(FullDebateScope* PROTOBUF_RESTRICT PROTOBUF_N
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.top_view_)
-      + sizeof(FullDebateScope::_impl_.top_view_)
+      PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.brief_view_)
+      + sizeof(FullDebateScope::_impl_.brief_view_)
       - PROTOBUF_FIELD_OFFSET(FullDebateScope, _impl_.debate_id_)>(
           reinterpret_cast<char*>(&_impl_.debate_id_),
           reinterpret_cast<char*>(&other->_impl_.debate_id_));

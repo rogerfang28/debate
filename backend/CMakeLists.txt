@@ -71,6 +71,7 @@ set(SRC_FILES
 
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
     ${CMAKE_SOURCE_DIR}/src/utils/TutorialLibrary.cc
@@ -95,6 +96,7 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/LlmClient.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateTextFormatter.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateChat.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/DebateBrief.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateGenerator.cc
      ${CMAKE_SOURCE_DIR}/src/utils/GeneratedDebateBuilder.cc
      ${CMAKE_SOURCE_DIR}/src/utils/ScenarioImporter.cc
@@ -109,6 +111,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/LinkDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/ChatDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/BriefDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveLogger.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveBackfill.cc
     ${CMAKE_SOURCE_DIR}/src/utils/RelationBuilder.cc
@@ -128,6 +131,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.cc
+    ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/debatePage/BriefView/BriefView.cc
     ${CMAKE_SOURCE_DIR}/src/virtualRenderer/LayoutGenerator/pages/errorPage/ErrorPageGenerator.cc
 
     # event parsers

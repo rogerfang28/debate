@@ -26,6 +26,7 @@ public:
     enum class Kind {
         Generation,  // build a debate from a passage
         Chat,        // answer a question about a debate
+        Brief,       // write the words of a debate's Brief tab
     };
 
     struct Snapshot {

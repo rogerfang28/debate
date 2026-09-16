@@ -34,6 +34,21 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     } else if (componentId == "clearChatButton" && eventType == "onClick") {
         event.set_type(debate_event::CLEAR_CHAT);
         Log::debug("  CLEAR_CHAT for user: " + std::to_string(user_id));
+    // The two tabs at the top of a debate, and the Brief's own buttons.
+    } else if (componentId == "briefTabButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_BRIEF);
+        Log::debug("  GO_TO_BRIEF for user: " + std::to_string(user_id));
+    } else if (componentId == "debateTabButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_OVERVIEW);
+        Log::debug("  GO_TO_OVERVIEW (tab) for user: " + std::to_string(user_id));
+    } else if (componentId == "generateBriefButton" && eventType == "onClick") {
+        event.set_type(debate_event::GENERATE_BRIEF);
+        Log::debug("  GENERATE_BRIEF for user: " + std::to_string(user_id));
+    } else if (componentId.rfind("briefOpenClaim_", 0) == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("briefOpenClaim_"));
+        Log::debug("  OPEN_CLAIM_IN_DEBATE for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::OPEN_CLAIM_IN_DEBATE);
+        event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
     } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
         event.set_type(debate_event::TUTORIAL_NEXT);
         Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));

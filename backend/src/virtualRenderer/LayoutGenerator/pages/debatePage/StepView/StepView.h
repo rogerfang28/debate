@@ -15,4 +15,11 @@ public:
 		VRUserDatabase& userDb,
 		const user::User& viewerUser
 	);
+
+	// The docked AI chat. Shared with the Brief tab, which is the same
+	// debate seen another way and should answer the same questions.
+	static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId);
+
+	// The Debate | Brief tabs at the top of both pages. One is lit.
+	static ui::Component BuildDebateTabs(bool briefActive);
 };

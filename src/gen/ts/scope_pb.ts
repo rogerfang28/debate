@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file scope.proto.
  */
 export const file_scope: GenFile = /*@__PURE__*/
-  fileDesc("CgtzY29wZS5wcm90bxIGZGViYXRlIj8KEFNpbmdsZUNsYWltU2NvcGUSEQoJZGViYXRlX2lkGAEgASgFEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAUiNgoPRnVsbERlYmF0ZVNjb3BlEhEKCWRlYmF0ZV9pZBgBIAEoBRIQCgh0b3BfdmlldxgCIAEoCCKdAQoFU2NvcGUSJAoJc2NvcGV0eXBlGAEgASgOMhEuZGViYXRlLlNjb3BlVHlwZRIwCgxzaW5nbGVfY2xhaW0YAiABKAsyGC5kZWJhdGUuU2luZ2xlQ2xhaW1TY29wZUgAEi4KC2Z1bGxfZGViYXRlGAMgASgLMhcuZGViYXRlLkZ1bGxEZWJhdGVTY29wZUgAQgwKCnNjb3BlX2luZm8qLgoJU2NvcGVUeXBlEhAKDFNJTkdMRV9DTEFJTRAAEg8KC0ZVTExfREVCQVRFEAFiBnByb3RvMw");
+  fileDesc("CgtzY29wZS5wcm90bxIGZGViYXRlIj8KEFNpbmdsZUNsYWltU2NvcGUSEQoJZGViYXRlX2lkGAEgASgFEhgKEGN1cnJlbnRfY2xhaW1faWQYAiABKAUiSgoPRnVsbERlYmF0ZVNjb3BlEhEKCWRlYmF0ZV9pZBgBIAEoBRIQCgh0b3BfdmlldxgCIAEoCBISCgpicmllZl92aWV3GAMgASgIIp0BCgVTY29wZRIkCglzY29wZXR5cGUYASABKA4yES5kZWJhdGUuU2NvcGVUeXBlEjAKDHNpbmdsZV9jbGFpbRgCIAEoCzIYLmRlYmF0ZS5TaW5nbGVDbGFpbVNjb3BlSAASLgoLZnVsbF9kZWJhdGUYAyABKAsyFy5kZWJhdGUuRnVsbERlYmF0ZVNjb3BlSABCDAoKc2NvcGVfaW5mbyouCglTY29wZVR5cGUSEAoMU0lOR0xFX0NMQUlNEAASDwoLRlVMTF9ERUJBVEUQAWIGcHJvdG8z");
 
 /**
  * @generated from message debate.SingleClaimScope
@@ -51,6 +51,14 @@ export type FullDebateScope = Message<"debate.FullDebateScope"> & {
    * @generated from field: bool top_view = 2;
    */
   topView: boolean;
+
+  /**
+   * The Brief tab: the debate as a catch-up page rather than a graph.
+   * Only meaningful with top_view; the Debate tab clears it.
+   *
+   * @generated from field: bool brief_view = 3;
+   */
+  briefView: boolean;
 };
 
 /**

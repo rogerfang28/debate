@@ -10,6 +10,7 @@
 #include "./pages/debatePage/FullDebateView/FullDebatePageGenerator.h"
 #include "./pages/debatePage/FullDebateView/FullDebatePageInfoParser.h"
 #include "./pages/debatePage/StepView/StepView.h"
+#include "./pages/debatePage/BriefView/BriefView.h"
 #include "./pages/loginPage/LoginPageGenerator.h"
 #include "./pages/errorPage/ErrorPageGenerator.h"
 #include "../../utils/Log.h"
@@ -39,6 +40,10 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
             rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection(), info.user().user_id(), info.user().username(), info.user().engagement().debating_info().current_claim().id());
             if (info.user().current_scope().has_full_debate() &&
                 info.user().current_scope().full_debate().top_view()) {
+                if (info.user().current_scope().full_debate().brief_view()) {
+                    Log::info("[LayoutGenerator] brief_view=true, generating Brief page");
+                    return BriefView::GenerateBriefPage(fullDebateInfo, info.collection(), userDb, info.user());
+                }
                 Log::info("[LayoutGenerator] top_view=true, generating Step View page");
                 return StepView::GenerateStepViewPage(fullDebateInfo, info.collection(), userDb, info.user());
             }

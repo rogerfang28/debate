@@ -8,6 +8,7 @@
 #include "LinkDatabase.h"
 #include "MoveDatabase.h"
 #include "ChatDatabase.h"
+#include "BriefDatabase.h"
 
 // ---------------------------------------
 // Class: DatabaseWrapper
@@ -27,7 +28,8 @@ public:
           debateMembers(debatesDb),
           links(debatesDb),
           moves(debatesDb),
-          chats(debatesDb) {}
+          chats(debatesDb),
+          briefs(debatesDb) {}
 
     // Initialize all tables
     bool ensureAllTables() {
@@ -37,7 +39,8 @@ public:
                debateMembers.ensureTable() &&
                links.ensureTable() &&
                moves.ensureTable() &&
-               chats.ensureTable();
+               chats.ensureTable() &&
+               briefs.ensureTable();
     }
 
     // Public database handlers - can call any of their functions
@@ -50,4 +53,6 @@ public:
     MoveDatabase moves;
     // The AI chat transcripts, one row per message per user per debate.
     ChatDatabase chats;
+    // The Brief tab's words, one row per debate, shared by every reader.
+    BriefDatabase briefs;
 };

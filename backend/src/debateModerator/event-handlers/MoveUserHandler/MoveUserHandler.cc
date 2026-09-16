@@ -30,6 +30,7 @@ bool MoveUserHandler::EnterDebate(const int& debateId, const int& user_id, Debat
     userProto.mutable_current_scope()->set_scopetype(debate::FULL_DEBATE);
     userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
     userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(true);
+    userProto.mutable_current_scope()->mutable_full_debate()->set_brief_view(false);
     resetOngoingActivities(user_id, debateWrapper);
 
     // change the collection spec to be the current debate
@@ -163,6 +164,7 @@ void MoveUserHandler::GoToOverview(const int& user_id, DebateWrapper& debateWrap
         userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
     }
     userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(true);
+    userProto.mutable_current_scope()->mutable_full_debate()->set_brief_view(false);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
@@ -180,6 +182,7 @@ void MoveUserHandler::GoToFullDebateView(const int& user_id, DebateWrapper& deba
         userProto.mutable_current_scope()->mutable_full_debate()->set_debate_id(debateId);
     }
     userProto.mutable_current_scope()->mutable_full_debate()->set_top_view(false);
+    userProto.mutable_current_scope()->mutable_full_debate()->set_brief_view(false);
 
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }

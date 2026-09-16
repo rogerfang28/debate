@@ -106,6 +106,11 @@ public:
     std::vector<ChatDatabase::Message> chatTranscript(const int& user_id, const int& debate_id);
     void clearChat(const int& user_id, const int& debate_id);
 
+    // The Brief tab's words for a debate; see BriefHandler. briefFor returns
+    // false when none have been written.
+    bool briefFor(const int& debate_id, std::string* fingerprint, std::string* text);
+    void saveBrief(const int& debate_id, const std::string& fingerprint, const std::string& text);
+
     void SaveVersionOfClaim(const int& claim_id);
     void RestorePreviousVersionOfClaim(const int& claim_id);
     std::vector<int> findUsersInDebate(const int& debate_id);

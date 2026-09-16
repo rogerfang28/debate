@@ -146,6 +146,28 @@ message DebatingInfo {
   }
   ChatState chat = 24;
 
+  // The Brief tab's model run. The brief's WORDS are stored per debate in
+  // BRIEFS and shared by every reader; this is only what one reader's run
+  // in flight looks like, so the page can say "writing" and poll.
+  message BriefState {
+    bool pending = 1;
+    int32 elapsed_seconds = 2;
+    // Why the last run produced nothing, shown once and cleared by the next
+    // run. Empty when the last run worked.
+    string error = 3;
+    // Which debate the run in flight is writing about, and the fingerprint
+    // of the structure it was given -- the result is filed under both.
+    int32 debate_id = 4;
+    string fingerprint = 5;
+    // The stored words for the debate the user is in, mirrored from BRIEFS
+    // so the page can draw them from the user record (the chat transcript
+    // rides the same way). `prose_fingerprint` says which structure they
+    // describe; when the debate has moved on, the page says so.
+    string prose_json = 6;
+    string prose_fingerprint = 7;
+  }
+  BriefState brief = 25;
+
   // The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
   // Selecting a relation also moves current_claim to the claim that argument
   // is for, so the panel and the challenge modal always work from a claim

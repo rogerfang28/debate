@@ -33,6 +33,13 @@ LlmOptions promptOptions(AiJobs::Kind kind) {
         options.temperature = 0.3;
         return options;
     }
+    if (kind == AiJobs::Kind::Brief) {
+        options.label = "debate-brief";
+        // A verdict, a story and some names, from a structure it is handed.
+        // Prose latitude, same as the chat.
+        options.temperature = 0.3;
+        return options;
+    }
     options.label = "debate-generation";
     // Extraction from a given text, not invention. Latitude here is exactly
     // how a made-up claim gets into somebody's debate.

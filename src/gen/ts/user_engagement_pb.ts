@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJtCgtBaUpvYlN0YXR1cxIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIMCgRub3RlGAQgASgJEhcKD2Fib3V0X2RlYmF0ZV9pZBgFIAEoBSKNAQoOVHV0b3JpYWxTdGF0dXMSDgoGYWN0aXZlGAEgASgIEg4KBnNjcmlwdBgCIAEoCRISCgpzdGVwX2luZGV4GAMgASgFEhMKC3RvdGFsX3N0ZXBzGAQgASgFEhEKCWRlYmF0ZV9pZBgFIAEoBRIQCghmaW5pc2hlZBgGIAEoCBINCgVlcnJvchgHIAEoCSKjAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEiwKBmFpX2pvYhgEIAEoCzIcLnVzZXJfZW5nYWdlbWVudC5BaUpvYlN0YXR1cxIxCgh0dXRvcmlhbBgFIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5UdXRvcmlhbFN0YXR1c0INCgthY3Rpb25faW5mbyJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0InEKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSI6CgpEZWJhdGVMaXN0EiwKBnRvcGljcxgBIAMoCzIcLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVUb3BpYyLQDQoMRGViYXRpbmdJbmZvEhEKCWRlYmF0ZV9pZBgBIAEoBRIUCgxpc19jaGFsbGVuZ2UYECABKAgSHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCSABKAgSGgoSY2hhbGxlbmdlZF91c2VyX2lkGBEgASgFEhoKEmNoYWxsZW5nZXJfdXNlcl9pZBgSIAEoBRIxCg1jdXJyZW50X2NsYWltGAIgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAMgASgJEjAKDHBhcmVudF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgFIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAYgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgHIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYCCADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxJQChVjdXJyZW50X2RlYmF0ZV9hY3Rpb24YCyABKAsyMS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkN1cnJlbnREZWJhdGVBY3Rpb24SNQoEY2hhdBgYIAEoCzInLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ2hhdFN0YXRlEhgKEHNlbGVjdGVkX2xpbmtfaWQYFyABKAUSRwoPY29ubmVjdGluZ19pbmZvGAwgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mb0gAEkkKEGNoYWxsZW5naW5nX2luZm8YDyABKAsyLS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYWxsZW5naW5nSW5mb0gAGqUBChBNb2RpZmljYXRpb25JbmZvEi4KCm5ld19jbGFpbXMYASADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEiwKCW5ld19saW5rcxgCIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxIZChFkZWxldGVkX2NsYWltX2lkcxgDIAMoBRIYChBkZWxldGVkX2xpbmtfaWRzGAQgAygFGrQCChNDdXJyZW50RGViYXRlQWN0aW9uElEKC2FjdGlvbl90eXBlGAEgASgOMjwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DdXJyZW50RGViYXRlQWN0aW9uLkFjdGlvblR5cGUiyQEKCkFjdGlvblR5cGUSGwoXQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIRCg1WSUVXSU5HX0NMQUlNEAESFgoSQURESU5HX0NISUxEX0NMQUlNEAISFQoRQ09OTkVDVElOR19DTEFJTVMQAxIVChFDSEFMTEVOR0lOR19DTEFJTRAEEh0KGUVESVRJTkdfQ0xBSU1fREVTQ1JJUFRJT04QBRIRCg1FRElUSU5HX0NMQUlNEAYSEwoPUkVQT1JUSU5HX0NMQUlNEAcaKQoLQ2hhdE1lc3NhZ2USDAoEcm9sZRgBIAEoCRIMCgR0ZXh0GAIgASgJGoUBCglDaGF0U3RhdGUSDwoHcGVuZGluZxgBIAEoCBIXCg9lbGFwc2VkX3NlY29uZHMYAiABKAUSOwoIbWVzc2FnZXMYAyADKAsyKS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYXRNZXNzYWdlEhEKCWRlYmF0ZV9pZBgEIAEoBRqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCEIRCg9hZGRpdGlvbmFsX2luZm9KBAgTEBRKBAgUEBVKBAgVEBZKBAgWEBciYgoJQ2xhaW1JbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSIwoGc3RhdHVzGAQgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzImgKCExpbmtJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJBCg1DaGFsbGVuZ2VJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUqbQoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9IT01FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAISEAoMQUNUSU9OX0xPR0lOEANiBnByb3RvMw", [file_debate]);
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJtCgtBaUpvYlN0YXR1cxIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIMCgRub3RlGAQgASgJEhcKD2Fib3V0X2RlYmF0ZV9pZBgFIAEoBSKNAQoOVHV0b3JpYWxTdGF0dXMSDgoGYWN0aXZlGAEgASgIEg4KBnNjcmlwdBgCIAEoCRISCgpzdGVwX2luZGV4GAMgASgFEhMKC3RvdGFsX3N0ZXBzGAQgASgFEhEKCWRlYmF0ZV9pZBgFIAEoBRIQCghmaW5pc2hlZBgGIAEoCBINCgVlcnJvchgHIAEoCSKjAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEiwKBmFpX2pvYhgEIAEoCzIcLnVzZXJfZW5nYWdlbWVudC5BaUpvYlN0YXR1cxIxCgh0dXRvcmlhbBgFIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5UdXRvcmlhbFN0YXR1c0INCgthY3Rpb25faW5mbyJCCghIb21lSW5mbxI2ChFhdmFpbGFibGVfZGViYXRlcxgBIAEoCzIbLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVMaXN0InEKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCSI6CgpEZWJhdGVMaXN0EiwKBnRvcGljcxgBIAMoCzIcLnVzZXJfZW5nYWdlbWVudC5EZWJhdGVUb3BpYyKoDwoMRGViYXRpbmdJbmZvEhEKCWRlYmF0ZV9pZBgBIAEoBRIUCgxpc19jaGFsbGVuZ2UYECABKAgSHwoXbW9kaWZ5aW5nX2N1cnJlbnRfY2xhaW0YCSABKAgSGgoSY2hhbGxlbmdlZF91c2VyX2lkGBEgASgFEhoKEmNoYWxsZW5nZXJfdXNlcl9pZBgSIAEoBRIxCg1jdXJyZW50X2NsYWltGAIgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIhChljdXJyZW50X2NsYWltX2Rlc2NyaXB0aW9uGAMgASgJEjAKDHBhcmVudF9jbGFpbRgEIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLgoKcm9vdF9jbGFpbRgFIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SMwoPY2hpbGRyZW5fY2xhaW1zGAYgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIoCgVsaW5rcxgHIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxI6ChJjdXJyZW50X2NoYWxsZW5nZXMYCCADKAsyHi51c2VyX2VuZ2FnZW1lbnQuQ2hhbGxlbmdlSW5mbxJQChVjdXJyZW50X2RlYmF0ZV9hY3Rpb24YCyABKAsyMS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkN1cnJlbnREZWJhdGVBY3Rpb24SNQoEY2hhdBgYIAEoCzInLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ2hhdFN0YXRlEjcKBWJyaWVmGBkgASgLMigudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5CcmllZlN0YXRlEhgKEHNlbGVjdGVkX2xpbmtfaWQYFyABKAUSRwoPY29ubmVjdGluZ19pbmZvGAwgASgLMiwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5Db25uZWN0aW5nSW5mb0gAEkkKEGNoYWxsZW5naW5nX2luZm8YDyABKAsyLS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYWxsZW5naW5nSW5mb0gAGqUBChBNb2RpZmljYXRpb25JbmZvEi4KCm5ld19jbGFpbXMYASADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEiwKCW5ld19saW5rcxgCIAMoCzIZLnVzZXJfZW5nYWdlbWVudC5MaW5rSW5mbxIZChFkZWxldGVkX2NsYWltX2lkcxgDIAMoBRIYChBkZWxldGVkX2xpbmtfaWRzGAQgAygFGrQCChNDdXJyZW50RGViYXRlQWN0aW9uElEKC2FjdGlvbl90eXBlGAEgASgOMjwudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DdXJyZW50RGViYXRlQWN0aW9uLkFjdGlvblR5cGUiyQEKCkFjdGlvblR5cGUSGwoXQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIRCg1WSUVXSU5HX0NMQUlNEAESFgoSQURESU5HX0NISUxEX0NMQUlNEAISFQoRQ09OTkVDVElOR19DTEFJTVMQAxIVChFDSEFMTEVOR0lOR19DTEFJTRAEEh0KGUVESVRJTkdfQ0xBSU1fREVTQ1JJUFRJT04QBRIRCg1FRElUSU5HX0NMQUlNEAYSEwoPUkVQT1JUSU5HX0NMQUlNEAcaKQoLQ2hhdE1lc3NhZ2USDAoEcm9sZRgBIAEoCRIMCgR0ZXh0GAIgASgJGoUBCglDaGF0U3RhdGUSDwoHcGVuZGluZxgBIAEoCBIXCg9lbGFwc2VkX3NlY29uZHMYAiABKAUSOwoIbWVzc2FnZXMYAyADKAsyKS51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYXRNZXNzYWdlEhEKCWRlYmF0ZV9pZBgEIAEoBRqcAQoKQnJpZWZTdGF0ZRIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIRCglkZWJhdGVfaWQYBCABKAUSEwoLZmluZ2VycHJpbnQYBSABKAkSEgoKcHJvc2VfanNvbhgGIAEoCRIZChFwcm9zZV9maW5nZXJwcmludBgHIAEoCRqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCEIRCg9hZGRpdGlvbmFsX2luZm9KBAgTEBRKBAgUEBVKBAgVEBZKBAgWEBciYgoJQ2xhaW1JbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSIwoGc3RhdHVzGAQgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzImgKCExpbmtJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJBCg1DaGFsbGVuZ2VJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUqbQoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9IT01FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAISEAoMQUNUSU9OX0xPR0lOEANiBnByb3RvMw", [file_debate]);
 
 /**
  * Progress and outcome of an AI job that is not a summary -- generating a
@@ -66,13 +66,13 @@ export const AiJobStatusSchema: GenMessage<AiJobStatus> = /*@__PURE__*/
 
 /**
  * Where the reader is in a guided walkthrough.
- * 
+ *
  * Only the POSITION is stored -- which script, which step. The words shown in
  * the guide box are read from the .pbtxt on every render, so editing a
  * tutorial file changes what a half-finished walkthrough says without
  * migrating anybody's saved state. Storing the text here would freeze a copy
  * of it on each user and make the files stop being the source of truth.
- * 
+ *
  * This lives on the engagement rather than on the debate for the same reason
  * the AI job status does: a walkthrough starts on the home page and continues
  * inside a debate, so it outlives either page.
@@ -344,6 +344,11 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   chat?: DebatingInfo_ChatState;
 
   /**
+   * @generated from field: user_engagement.DebatingInfo.BriefState brief = 25;
+   */
+  brief?: DebatingInfo_BriefState;
+
+  /**
    * The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
    * Selecting a relation also moves current_claim to the claim that argument
    * is for, so the panel and the challenge modal always work from a claim
@@ -529,7 +534,7 @@ export const DebatingInfo_ChatMessageSchema: GenMessage<DebatingInfo_ChatMessage
 
 /**
  * The AI chat for the debate the user is in; see ChatHandler.
- * 
+ *
  * The transcript lives in CHATS; this is a copy of its tail so the page
  * can draw it from the user record, plus what a run in flight looks
  * like. `pending` is never true across a restart -- AiJobs owns the run
@@ -570,6 +575,68 @@ export const DebatingInfo_ChatStateSchema: GenMessage<DebatingInfo_ChatState> = 
   messageDesc(file_user_engagement, 6, 3);
 
 /**
+ * The Brief tab's model run. The brief's WORDS are stored per debate in
+ * BRIEFS and shared by every reader; this is only what one reader's run
+ * in flight looks like, so the page can say "writing" and poll.
+ *
+ * @generated from message user_engagement.DebatingInfo.BriefState
+ */
+export type DebatingInfo_BriefState = Message<"user_engagement.DebatingInfo.BriefState"> & {
+  /**
+   * @generated from field: bool pending = 1;
+   */
+  pending: boolean;
+
+  /**
+   * @generated from field: int32 elapsed_seconds = 2;
+   */
+  elapsedSeconds: number;
+
+  /**
+   * Why the last run produced nothing, shown once and cleared by the next
+   * run. Empty when the last run worked.
+   *
+   * @generated from field: string error = 3;
+   */
+  error: string;
+
+  /**
+   * Which debate the run in flight is writing about, and the fingerprint
+   * of the structure it was given -- the result is filed under both.
+   *
+   * @generated from field: int32 debate_id = 4;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: string fingerprint = 5;
+   */
+  fingerprint: string;
+
+  /**
+   * The stored words for the debate the user is in, mirrored from BRIEFS
+   * so the page can draw them from the user record (the chat transcript
+   * rides the same way). `prose_fingerprint` says which structure they
+   * describe; when the debate has moved on, the page says so.
+   *
+   * @generated from field: string prose_json = 6;
+   */
+  proseJson: string;
+
+  /**
+   * @generated from field: string prose_fingerprint = 7;
+   */
+  proseFingerprint: string;
+};
+
+/**
+ * Describes the message user_engagement.DebatingInfo.BriefState.
+ * Use `create(DebatingInfo_BriefStateSchema)` to create a new message.
+ */
+export const DebatingInfo_BriefStateSchema: GenMessage<DebatingInfo_BriefState> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 6, 4);
+
+/**
  * TODO remove field, was used for user manual linking claims
  *
  * @generated from message user_engagement.DebatingInfo.ConnectingInfo
@@ -606,7 +673,7 @@ export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.
  * Use `create(DebatingInfo_ConnectingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ConnectingInfoSchema: GenMessage<DebatingInfo_ConnectingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6, 4);
+  messageDesc(file_user_engagement, 6, 5);
 
 /**
  * @generated from message user_engagement.DebatingInfo.ChallengingInfo
@@ -644,7 +711,7 @@ export type DebatingInfo_ChallengingInfo = Message<"user_engagement.DebatingInfo
  * Use `create(DebatingInfo_ChallengingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ChallengingInfoSchema: GenMessage<DebatingInfo_ChallengingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6, 5);
+  messageDesc(file_user_engagement, 6, 6);
 
 /**
  * @generated from message user_engagement.ClaimInfo
