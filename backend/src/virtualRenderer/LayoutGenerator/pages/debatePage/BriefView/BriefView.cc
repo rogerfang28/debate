@@ -5,6 +5,7 @@
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../../../utils/DebateBrief.h"
 
+#include <set>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -151,8 +152,9 @@ ui::Page BriefView::GenerateBriefPage(
         if (wordsCurrent && !prose.verdict.empty()) {
             verdictWords = prose.verdict;
         } else if (hinge) {
+            const bool several = hinge->turn.find(',') != std::string::npos;
             verdictWords = "It hangs on this claim: \"" + (hinge->moves.empty() ? std::string() : hinge->moves.front().text) +
-                           "\" It has been challenged, and " + hinge->turn + " has not replied.";
+                           "\" It has been challenged, and " + hinge->turn + (several ? " have" : " has") + " not replied.";
         } else {
             verdictWords = "Nothing in this debate is currently challenged.";
         }
@@ -212,8 +214,24 @@ ui::Page BriefView::GenerateBriefPage(
     // ---- Sides ---------------------------------------------------------------------
     {
         ui::Component sides = card("briefSides", "Sides");
+        // Undecided is only worth naming for people who are PARTY to a
+        // dispute -- they challenged something without taking a side on the
+        // main claim. Everyone else on the undecided list is a voice quoted
+        // only for evidence (a statute, an agency, a reporter), and thirty
+        // of those in a row tell the reader nothing; they become a count.
+        std::set<std::string> challengers;
+        for (const DebateBrief::Site& site : facts.sites) {
+            for (const DebateBrief::Move& m : site.moves) {
+                if (m.challenge) challengers.insert(m.who);
+            }
+        }
         std::string trueNames, falseNames, undecided;
+        int evidenceOnly = 0;
         for (const DebateBrief::Stance& s : facts.stances) {
+            if (s.status == debate::UNDETERMINED && !challengers.count(s.who) && s.who != viewerName) {
+                ++evidenceOnly;
+                continue;
+            }
             std::string& bucket = s.status == debate::TRUE_CLAIM ? trueNames
                                 : s.status == debate::FALSE_CLAIM ? falseNames : undecided;
             if (!bucket.empty()) bucket += ", ";
@@ -231,6 +249,12 @@ ui::Page BriefView::GenerateBriefPage(
         row("briefSidesTrue", "Say it is true:", trueNames, "#86efac");
         row("briefSidesFalse", "Say it is false:", falseNames, "#fca5a5");
         row("briefSidesUndecided", "Undecided:", undecided, "#d1d5db");
+        if (evidenceOnly > 0) {
+            ComponentGenerator::addChild(&sides, text("briefSidesEvidenceOnly",
+                std::to_string(evidenceOnly) + (evidenceOnly == 1 ? " other voice is" : " other voices are") +
+                    " quoted only as sources of evidence and take no side.",
+                kMuted));
+        }
         if (trueNames.empty() && falseNames.empty() && undecided.empty()) {
             ComponentGenerator::addChild(&sides, text("briefSidesNone", "Nobody has taken a position yet.", kMuted));
         }
