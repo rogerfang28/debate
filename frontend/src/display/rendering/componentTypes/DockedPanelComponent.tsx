@@ -35,11 +35,16 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
     });
   };
 
-  // Keep the newest turn in view: the body scrolls to its end whenever the
-  // page is rebuilt while open.
+  // Keep the newest turn in view: the body scrolls to its end when a turn is
+  // added -- not on every rebuild, or the reader could never scroll back up
+  // while the page polls.
   const bodyRef = useRef<HTMLDivElement>(null);
+  const lastCount = useRef<number>(-1);
   useEffect(() => {
-    if (!collapsed && bodyRef.current) {
+    if (collapsed || !bodyRef.current) return;
+    const count = bodyRef.current.querySelectorAll("[id^=chatWho_]").length;
+    if (count !== lastCount.current) {
+      lastCount.current = count;
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
     }
   });
@@ -95,9 +100,10 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
           className={className}
           style={{
             ...style,
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5rem",
+            // Block, not flex: a flex column with a capped height SHRINKS its
+            // children to fit, which clipped every chat turn to one line.
+            // The body scrolls; its children keep their size.
+            display: "block",
             overflowY: "auto",
             minHeight: 0,
           }}

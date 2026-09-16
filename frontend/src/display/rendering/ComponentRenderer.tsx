@@ -59,11 +59,26 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
 
 const GoogleLoginButtonId = "googleLoginButton";
 
+function camelizeStyle(css: Record<string, string> | undefined): React.CSSProperties {
+  if (!css) return {};
+  const out: Record<string, string> = {};
+  for (const key of Object.keys(css)) {
+    const camel = key.startsWith("--") ? key : key.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+    out[camel] = css[key];
+  }
+  return out as React.CSSProperties;
+}
+
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (!component) return null;
 
   const className = buildClassName(component.style);
-  const inlineStyle: React.CSSProperties = component.css || {};
+  // The server writes CSS keys the way CSS spells them (flex-direction,
+  // max-height); React wants them camelCased (flexDirection, maxHeight) and
+  // silently drops the rest with a console warning. Every hyphenated rule
+  // the backend ever set was being ignored -- so the keys are converted here,
+  // once, for every component.
+  const inlineStyle: React.CSSProperties = camelizeStyle(component.css);
 
   // Check if this is a tree node (CONTAINER with data-tree-node attribute)
   const attributes = component.attributes || {};

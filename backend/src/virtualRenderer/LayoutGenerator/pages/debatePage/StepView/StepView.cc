@@ -772,8 +772,8 @@ static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedCl
         (*transcript.mutable_css())["display"] = "flex";
         (*transcript.mutable_css())["flex-direction"] = "column";
         (*transcript.mutable_css())["gap"] = "0.4rem";
-        (*transcript.mutable_css())["max-height"] = "24rem";
-        (*transcript.mutable_css())["overflow-y"] = "auto";
+        // No height cap here: the docked panel's body is the one scroller.
+        (*transcript.mutable_css())["margin-bottom"] = "0.5rem";
 
         const int total = chat.messages_size();
         const int first = total > 20 ? total - 20 : 0;
