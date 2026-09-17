@@ -870,16 +870,13 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
 // one that belongs to a different debate -- opening another debate mid-tutorial
 // should not drag the guide box along, narrating steps about claims that are
 // not on screen.
-// The chat as the right-hand column of the page: sticky, the height of the
-// window, its own scroller. The client owns the fold (see
-// DockedPanelComponent's "side" mode); this only sets the column's place.
+// The chat as the page's sidebar. The client pins it to the right edge of
+// the window and pushes the page over by its width (DockedPanelComponent's
+// "side" mode); this wrapper takes no room of its own.
 ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId) {
     ui::Component column = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
-    (*column.mutable_css())["flex"] = "0 0 auto";
-    (*column.mutable_css())["position"] = "sticky";
-    (*column.mutable_css())["top"] = "1rem";
-    (*column.mutable_css())["align-self"] = "flex-start";
-    (*column.mutable_css())["max-height"] = "calc(100vh - 2rem)";
+    (*column.mutable_css())["flex"] = "0 0 0px";
+    (*column.mutable_css())["width"] = "0";
     (*column.mutable_css())["overflow"] = "visible";
     ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId));
     return column;

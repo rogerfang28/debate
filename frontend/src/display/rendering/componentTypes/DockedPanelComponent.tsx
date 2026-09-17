@@ -4,41 +4,25 @@ import { BaseComponentProps } from "./TextComponent";
 
 // A CONTAINER with a header bar that folds it away. Two placements, chosen
 // by the server's data-docked attribute: "true" pins it to the bottom-right
-// corner over the page; "side" makes it a column of the page, the height of
-// the window, that folds to a narrow strip. data-docked-title names it;
-// everything inside is rendered as usual.
+// corner over the page; "side" pins it to the right EDGE of the window, the
+// full height, always in place while the page scrolls beside it -- a
+// sidebar, the way a chat app keeps its panel. The page is pushed left by
+// the panel's width so nothing sits under it. Folded, it is a thin strip.
+// data-docked-title names it; everything inside is rendered as usual.
 //
 // Whether it is folded is the reader's business, not the server's: it lives
 // in localStorage, so a page rebuilt every two seconds while the model thinks
 // does not pop the panel open again, and a reload keeps it where it was.
 const storageKey = (id: string) => `docked:${id}:collapsed`;
 
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState<boolean>(() =>
-    typeof window !== "undefined" && typeof window.matchMedia === "function"
-      ? window.matchMedia(query).matches
-      : true,
-  );
-  useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
-    const mql = window.matchMedia(query);
-    const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
-    setMatches(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, [query]);
-  return matches;
-}
+const SIDE_WIDTH = "24rem";
+const SIDE_FOLDED_WIDTH = "2.75rem";
 
 const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const id = component.id || "dockedPanel";
   const attributes = (component as any).attributes || {};
   const title: string = attributes["data-docked-title"] || "Panel";
-  // A side column only has room on a wide window. Below that it would wrap
-  // under the tallest column and sit a long scroll away, so it goes back to
-  // being the corner box.
-  const wide = useMediaQuery("(min-width: 1100px)");
-  const side = attributes["data-docked"] === "side" && wide;
+  const side = attributes["data-docked"] === "side";
   const nested = component.children || component.components || [];
 
   const [collapsed, setCollapsed] = useState<boolean>(() => {
@@ -58,6 +42,18 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
       return !was;
     });
   };
+
+  // The page makes room for the sidebar: body padding equal to its width,
+  // so the columns lay out beside it rather than under it. Undone when the
+  // panel leaves the page.
+  useEffect(() => {
+    if (!side) return;
+    const previous = document.body.style.paddingRight;
+    document.body.style.paddingRight = collapsed ? SIDE_FOLDED_WIDTH : SIDE_WIDTH;
+    return () => {
+      document.body.style.paddingRight = previous;
+    };
+  }, [side, collapsed]);
 
   // Keep the newest turn in view: the body scrolls to its end when a turn is
   // added -- not on every rebuild, or the reader could never scroll back up
@@ -79,14 +75,17 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
       style={
         side
           ? {
-              width: collapsed ? "12rem" : "24rem",
-              maxWidth: "calc(100vw - 3rem)",
-              height: collapsed ? "auto" : "calc(100vh - 2rem)",
+              position: "fixed",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: collapsed ? SIDE_FOLDED_WIDTH : SIDE_WIDTH,
+              maxWidth: "80vw",
               display: "flex",
               flexDirection: "column",
+              zIndex: 40,
               background: "#1f2937",
-              border: "1px solid #374151",
-              borderRadius: "0.75rem",
+              borderLeft: "1px solid #374151",
               overflow: "hidden",
             }
           : {
@@ -114,10 +113,10 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
           gap: "0.5rem",
           width: "100%",
-          padding: "0.6rem 0.9rem",
+          padding: side && collapsed ? "0.6rem 0" : "0.6rem 0.9rem",
+          justifyContent: side && collapsed ? "center" : "space-between",
           background: "#312e81",
           color: "#e0e7ff",
           border: "none",
@@ -129,8 +128,10 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
           textAlign: "left",
         }}
       >
-        <span>{title}</span>
-        <span aria-hidden="true">{side ? (collapsed ? "◀" : "▶") : collapsed ? "▲" : "▼"}</span>
+        {!(side && collapsed) && <span>{title}</span>}
+        <span aria-hidden="true" title={side && collapsed ? title : undefined}>
+          {side ? (collapsed ? "◀" : "▶") : collapsed ? "▲" : "▼"}
+        </span>
       </button>
       {!collapsed && (
         <div
