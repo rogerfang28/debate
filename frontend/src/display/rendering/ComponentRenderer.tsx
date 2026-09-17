@@ -91,8 +91,10 @@ const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
       />
     );
   }
-  // A container pinned to the corner of the screen with a fold-away header.
-  if (component.type === ComponentType.CONTAINER && attributes["data-docked"] === "true") {
+  // A container with a fold-away header: pinned to the corner of the screen
+  // ("true") or standing as a column of the page ("side").
+  if (component.type === ComponentType.CONTAINER &&
+      (attributes["data-docked"] === "true" || attributes["data-docked"] === "side")) {
     return (
       <DockedPanelComponent
         component={component}

@@ -112,12 +112,13 @@ ui::Page BriefView::GenerateBriefPage(
         "rounded", "transition-colors text-sm"));
     ComponentGenerator::addChild(&container, topBar);
 
-    // One readable column.
-    ui::Component column = ComponentGenerator::createContainer("briefColumn", "w-full", "", "", "", "", "", "");
-    // Left-aligned, not centred: the chat is docked to the right-hand
-    // corner, and a centred column on a wide screen would sit under it.
+    // The brief on the left, the chat as a column on the right.
+    ui::Component contentRow = ComponentGenerator::createContainer("briefContentRow", "w-full", "", "", "", "", "", "");
+    css(&contentRow, {{"display", "flex"}, {"flex-direction", "row"}, {"flex-wrap", "wrap"},
+                      {"align-items", "flex-start"}, {"gap", "1rem"}, {"overflow", "visible"}});
+    ui::Component column = ComponentGenerator::createContainer("briefColumn", "", "", "", "", "", "", "");
     css(&column, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "1rem"},
-                  {"max-width", "56rem"}, {"width", "100%"}, {"margin", "0"}});
+                  {"flex", "1 1 30rem"}, {"max-width", "60rem"}, {"min-width", "0"}});
 
     // ---- Title ------------------------------------------------------------------
     {
@@ -431,14 +432,15 @@ ui::Page BriefView::GenerateBriefPage(
         ComponentGenerator::addChild(&column, sources);
     }
 
-    ComponentGenerator::addChild(&container, column);
+    ComponentGenerator::addChild(&contentRow, column);
 
-    // The chat, docked, so "explain site 3" is one question away here too.
+    // The chat beside the brief, so "explain site 3" is one question away here too.
     int currentClaimId = fullDebateInfo.viewer_current_claim_id();
     if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
         currentClaimId = facts.rootClaimId;
     }
-    ComponentGenerator::addChild(&container, StepView::BuildChatPanel(viewerUser, currentClaimId));
+    ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId));
+    ComponentGenerator::addChild(&container, contentRow);
 
     ui::Component* root = page.add_components();
     root->CopyFrom(container);

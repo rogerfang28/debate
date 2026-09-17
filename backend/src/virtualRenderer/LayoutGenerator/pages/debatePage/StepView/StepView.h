@@ -20,6 +20,9 @@ public:
 	// debate seen another way and should answer the same questions.
 	static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId);
 
+	// The chat panel placed as a page's right-hand column.
+	static ui::Component BuildChatColumn(const user::User& viewerUser, int selectedClaimId);
+
 	// The Debate | Brief tabs at the top of both pages. One is lit.
 	static ui::Component BuildDebateTabs(bool briefActive);
 };

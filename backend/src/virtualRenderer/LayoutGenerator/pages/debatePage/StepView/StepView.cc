@@ -761,7 +761,7 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
     ui::Component panel = ComponentGenerator::createContainer(
         "chatPanel", "w-full", "bg-gray-800", "p-3", "", "", "", ""
     );
-    ComponentGenerator::addAttribute(&panel, "data-docked", "true");
+    ComponentGenerator::addAttribute(&panel, "data-docked", "side");
     ComponentGenerator::addAttribute(&panel, "data-docked-title", "Ask the AI about this debate");
 
     // The conversation so far, last 20 turns.
@@ -870,6 +870,21 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
 // one that belongs to a different debate -- opening another debate mid-tutorial
 // should not drag the guide box along, narrating steps about claims that are
 // not on screen.
+// The chat as the right-hand column of the page: sticky, the height of the
+// window, its own scroller. The client owns the fold (see
+// DockedPanelComponent's "side" mode); this only sets the column's place.
+ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId) {
+    ui::Component column = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
+    (*column.mutable_css())["flex"] = "0 0 auto";
+    (*column.mutable_css())["position"] = "sticky";
+    (*column.mutable_css())["top"] = "1rem";
+    (*column.mutable_css())["align-self"] = "flex-start";
+    (*column.mutable_css())["max-height"] = "calc(100vh - 2rem)";
+    (*column.mutable_css())["overflow"] = "visible";
+    ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId));
+    return column;
+}
+
 // The Debate | Brief tabs. Two buttons that look like tabs: the lit one has
 // the accent underline and white text, the other is quiet. Same ids on both
 // pages, so the parser has one wire per tab.
@@ -1231,7 +1246,9 @@ ui::Page StepView::GenerateStepViewPage(
 	);
     (*contentRow.mutable_css())["display"] = "flex";
     (*contentRow.mutable_css())["flex-direction"] = "row";
-    (*contentRow.mutable_css())["flex-wrap"] = "nowrap";
+    // Wraps so the chat column drops below the graph on a narrow screen
+    // rather than squeezing it.
+    (*contentRow.mutable_css())["flex-wrap"] = "wrap";
     (*contentRow.mutable_css())["align-items"] = "flex-start";
     (*contentRow.mutable_css())["gap"] = "1rem";
 
@@ -1248,7 +1265,7 @@ ui::Page StepView::GenerateStepViewPage(
     (*leftColumn.mutable_css())["display"] = "flex";
     (*leftColumn.mutable_css())["flex-direction"] = "column";
     (*leftColumn.mutable_css())["gap"] = "1rem";
-	(*leftColumn.mutable_css())["flex"] = "1 1 40%";
+	(*leftColumn.mutable_css())["flex"] = "1 1 24rem";
 	(*leftColumn.mutable_css())["min-width"] = "0";
 
 	ui::Component rightColumn = ComponentGenerator::createContainer(
@@ -1267,8 +1284,10 @@ ui::Page StepView::GenerateStepViewPage(
 	// 45% with a 400px floor, which in a narrow window left the argument itself
 	// rendering into ~314px -- narrow enough that a 22-claim debate could only
 	// be fitted by shrinking past the point where any label is drawn.
-	(*rightColumn.mutable_css())["flex"] = "1 1 60%";
-	(*rightColumn.mutable_css())["min-width"] = "420px";
+	// The graph takes whatever the claim panels and the chat leave, and
+	// fills it: no cap, so a wide screen gets a wide graph.
+	(*rightColumn.mutable_css())["flex"] = "2 1 28rem";
+	(*rightColumn.mutable_css())["min-width"] = "380px";
 
 
 	/* Step list -- replaced by the "Selected Claim" panel below. Kept here
@@ -1355,8 +1374,6 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
-	ui::Component chatPanel = BuildChatPanel(viewerUser, currentClaimId);
-	ComponentGenerator::addChild(&leftColumn, chatPanel);
 
 	// A selected ARGUMENT takes the claim panel's place. The selection is
 	// only honoured if the collection still has that relation -- a stale id
@@ -1436,12 +1453,20 @@ ui::Page StepView::GenerateStepViewPage(
 		}
 	}
 	(*mapSection.mutable_css())["margin-top"] = "0";
-	(*mapSection.mutable_css())["max-width"] = "760px";
 	(*mapSection.mutable_css())["width"] = "100%";
+	// The graph fills the window's height as well as its column: the chat
+	// beside it already stands the height of the window, and a graph that
+	// stops two-thirds of the way down left a hole under it.
+	for (auto& child : *mapSection.mutable_children()) {
+		if (child.id() == "mapTreeContainer") {
+			(*child.mutable_css())["min-height"] = "max(580px, calc(100vh - 11rem))";
+		}
+	}
 	ComponentGenerator::addChild(&rightColumn, mapSection);
 
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
+	ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.
