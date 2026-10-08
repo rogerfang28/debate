@@ -549,17 +549,9 @@ static ui::Component BuildDebateStatusPanel(
     );
     (*panel.mutable_css())["display"] = "flex";
     (*panel.mutable_css())["flex-direction"] = "column";
-    (*panel.mutable_css())["gap"] = "0.5rem";
-
-    ui::Component heading = ComponentGenerator::createText(
-        "debateStatusHeading",
-        "Open challenges, by person:",
-        "text-xs",
-        "text-gray-500",
-        "font-semibold uppercase tracking-wide",
-        ""
-    );
-    ComponentGenerator::addChild(&panel, heading);
+    (*panel.mutable_css())["gap"] = "0.4rem";
+    // A folding section of the inspector, titled by the client from this.
+    ComponentGenerator::addAttribute(&panel, "data-section", "Who owes a reply");
 
     const auto open = OpenChallengesByHolder(fullDebateInfo, collectionProto, userDb);
 
@@ -587,10 +579,12 @@ static ui::Component BuildDebateStatusPanel(
                 (isViewer ? " (counter-challenge, concede, or withdraw your agreement)" : ""),
             "text-sm",
             "text-white",
-            "font-semibold",
+            "font-medium",
             ""
         );
-        if (isViewer) (*line.mutable_css())["color"] = "var(--open)";
+        // Red: this person owes a reply (theme.html .owe).
+        (*line.mutable_css())["color"] = "var(--open)";
+        (*line.mutable_css())["margin-top"] = "0.35rem";
         ComponentGenerator::addChild(&panel, line);
 
         for (const OpenChallenge& oc : list) {
@@ -599,13 +593,16 @@ static ui::Component BuildDebateStatusPanel(
             if (it != collectionProto.claims_by_id().end()) sentence = it->second.sentence();
             ui::Component item = ComponentGenerator::createText(
                 "debateStatusChallenge_" + holder + "_" + std::to_string(oc.challengeClaimId),
-                "\xE2\x80\xA2 " + sentence,
-                "text-sm",
-                "text-gray-300",
+                sentence,
+                "text-xs",
+                "text-gray-400",
                 "",
-                "pl-3"
+                ""
             );
             (*item.mutable_css())["overflow-wrap"] = "break-word";
+            (*item.mutable_css())["padding"] = "2px 0 2px 14px";
+            (*item.mutable_css())["margin-left"] = "3px";
+            (*item.mutable_css())["border-left"] = "2px solid var(--line)";
             ComponentGenerator::addChild(&panel, item);
         }
     }
@@ -1196,12 +1193,11 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		"gap-4"
 	);
-	// ContainerComponent gives every container overflow:hidden unless the css
-	// map overrides it, and an ancestor with any non-visible overflow becomes
-	// the scroll container a sticky descendant sticks to. This one never
-	// scrolls, so the tutorial panel would have stuck to a box that does not
-	// move -- which looks exactly like sticky not working.
-	(*container.mutable_css())["overflow"] = "visible";
+	// The page is an app shell: the header, the guide box when there is one,
+	// then three regions -- the inspector, the argument, the chat -- that
+	// fill the window and scroll on their own. The server says which part is
+	// which; the client lays them out (index.css, ContainerComponent).
+	ComponentGenerator::addAttribute(&container, "data-layout", "shell");
 
 	ui::Component topBar = ComponentGenerator::createContainer(
 		"stepViewTopBar",
@@ -1244,13 +1240,6 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-    (*contentRow.mutable_css())["display"] = "flex";
-    (*contentRow.mutable_css())["flex-direction"] = "row";
-    // Wraps so the chat column drops below the graph on a narrow screen
-    // rather than squeezing it.
-    (*contentRow.mutable_css())["flex-wrap"] = "wrap";
-    (*contentRow.mutable_css())["align-items"] = "flex-start";
-    (*contentRow.mutable_css())["gap"] = "1rem";
 
 	ui::Component leftColumn = ComponentGenerator::createContainer(
 		"stepViewLeftColumn",
@@ -1262,11 +1251,8 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-    (*leftColumn.mutable_css())["display"] = "flex";
-    (*leftColumn.mutable_css())["flex-direction"] = "column";
-    (*leftColumn.mutable_css())["gap"] = "1rem";
-	(*leftColumn.mutable_css())["flex"] = "1 1 24rem";
-	(*leftColumn.mutable_css())["min-width"] = "0";
+	// The inspector: the selected claim pinned on top, folding sections under it.
+	ComponentGenerator::addAttribute(&leftColumn, "data-region", "inspector");
 
 	ui::Component rightColumn = ComponentGenerator::createContainer(
 		"stepViewRightColumn",
@@ -1278,16 +1264,9 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-	(*rightColumn.mutable_css())["display"] = "flex";
-	(*rightColumn.mutable_css())["flex-direction"] = "row";
-	// The graph is the point of the tool, so it gets the larger share. It was
-	// 45% with a 400px floor, which in a narrow window left the argument itself
-	// rendering into ~314px -- narrow enough that a 22-claim debate could only
-	// be fitted by shrinking past the point where any label is drawn.
-	// The graph takes whatever the claim panels and the chat leave, and
-	// fills it: no cap, so a wide screen gets a wide graph.
-	(*rightColumn.mutable_css())["flex"] = "2 1 28rem";
-	(*rightColumn.mutable_css())["min-width"] = "380px";
+	// The argument itself, two ways: the map (data-view="graph") and the
+	// paragraph tree (data-view="text"). The client shows one at a time.
+	ComponentGenerator::addAttribute(&rightColumn, "data-region", "main");
 
 
 	/* Step list -- replaced by the "Selected Claim" panel below. Kept here
@@ -1372,7 +1351,6 @@ ui::Page StepView::GenerateStepViewPage(
 	ui::Component debateStatusPanel = BuildDebateStatusPanel(
 		fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
-	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
 
 	// A selected ARGUMENT takes the claim panel's place. The selection is
@@ -1386,12 +1364,16 @@ ui::Page StepView::GenerateStepViewPage(
 			selectedLinkId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username())
 		: BuildSelectedClaimPanel(
 			currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username());
+	// The selected claim first (the client pins it), then the sections.
 	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
+	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
-	// Render a single interactive paragraph tree for the entire debate,
-	// underneath the step list within the left column.
-	if (rootClaimId > 0) {
-		ui::Component treeWrapper = ComponentGenerator::createContainer(
+	// A single interactive paragraph tree for the entire debate: the Text
+	// view of the main region, beside the map.
+	ui::Component treeWrapper;
+	const bool haveTree = rootClaimId > 0;
+	if (haveTree) {
+		treeWrapper = ComponentGenerator::createContainer(
 			"debateTreeWrapper",
 			"w-full",
 			"bg-gray-800/50",
@@ -1401,7 +1383,7 @@ ui::Page StepView::GenerateStepViewPage(
 			"rounded-lg",
 			""
 		);
-		(*treeWrapper.mutable_css())["margin-top"] = "1rem";
+		ComponentGenerator::addAttribute(&treeWrapper, "data-view", "text");
 
 		ui::Component treeHeader = ComponentGenerator::createText(
 			"debateTreeHeader",
@@ -1435,7 +1417,6 @@ ui::Page StepView::GenerateStepViewPage(
 			}
 			ComponentGenerator::addChild(&treeWrapper, paragraph);
 		}
-		ComponentGenerator::addChild(&leftColumn, treeWrapper);
 	}
 
 	const int mapFocusClaimId = currentClaimId > 0
@@ -1454,19 +1435,23 @@ ui::Page StepView::GenerateStepViewPage(
 	}
 	(*mapSection.mutable_css())["margin-top"] = "0";
 	(*mapSection.mutable_css())["width"] = "100%";
-	// The graph fills the window's height as well as its column: the chat
-	// beside it already stands the height of the window, and a graph that
-	// stops two-thirds of the way down left a hole under it.
-	for (auto& child : *mapSection.mutable_children()) {
-		if (child.id() == "mapTreeContainer") {
-			(*child.mutable_css())["min-height"] = "max(580px, calc(100vh - 11rem))";
-		}
-	}
+	// The map fills the main region: its height is the region's, not a
+	// minimum of its own (the client sizes it; GraphComponent follows).
+	ComponentGenerator::addAttribute(&mapSection, "data-view", "graph");
 	ComponentGenerator::addChild(&rightColumn, mapSection);
+	if (haveTree) {
+		ComponentGenerator::addChild(&rightColumn, treeWrapper);
+	}
+
+	// The chat as the third region, standing the window's height with its
+	// ask box at the bottom.
+	ui::Component chatColumn = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
+	ComponentGenerator::addAttribute(&chatColumn, "data-region", "chat");
+	ComponentGenerator::addChild(&chatColumn, BuildChatPanel(viewerUser, currentClaimId));
 
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
-	ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
+	ComponentGenerator::addChild(&contentRow, chatColumn);
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.

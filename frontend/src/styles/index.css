@@ -238,6 +238,405 @@ a:hover {
   .tutorial-guide-sticky { max-height: 50vh; }
 }
 
+/* ===================== Page layout (shell.html) =====================
+   The server marks a page's parts with attributes; these rules lay them
+   out. data-layout="shell" on the root: a header, any strip (the guide
+   box), then the regions, which take exactly the rest of the window and
+   each scroll on their own. The container whose children are the regions
+   is .shell-regions (ContainerComponent). */
+
+/* The header region, on every page. */
+[data-region="header"] {
+  min-height: 44px;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+[data-layout] > [data-region="header"] {
+  height: var(--header);
+  min-height: 0;
+  flex: none;
+  padding: 0 18px;
+  background: var(--panel);
+}
+
+[data-layout] > [data-region="header"] #siteHeaderNav {
+  flex-wrap: nowrap !important;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+[data-layout="shell"] {
+  height: 100vh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  padding: 0;
+  gap: 0;
+}
+
+/* Everything above the regions is a strip of its own height. */
+[data-layout="shell"] > * {
+  flex: none;
+}
+
+[data-layout="shell"] > .tutorial-guide-sticky {
+  position: relative;
+  top: auto;
+  width: auto;
+  max-height: 34vh;
+  margin: 14px 14px 0;
+}
+
+[data-layout] > .shell-regions {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr) 340px;
+  gap: 14px;
+  padding: 14px;
+}
+
+/* The chat folded: its region narrows to a strip. */
+@media (min-width: 1100px) {
+  [data-layout] > .shell-regions:has(> .region.chat .docked[data-folded="true"]) {
+    grid-template-columns: 320px minmax(0, 1fr) 44px;
+  }
+}
+
+.region {
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* ---- inspector: the selected claim pinned, sections scrolling under it ---- */
+.region.inspector .region-pin {
+  flex: none;
+  max-height: 60%;
+  overflow-y: auto;
+  border-bottom: 1px solid var(--line);
+}
+
+.region.inspector .region-pin > * {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 16px;
+}
+
+.region.inspector .region-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ---- a folding section (data-section) ---- */
+.section {
+  border-bottom: 1px solid var(--line);
+}
+
+.region .section {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0;
+}
+
+.section-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--text-2);
+  text-align: left;
+}
+
+.section-head:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+.section-head .caption {
+  color: inherit;
+}
+
+.section.open > .section-head {
+  color: var(--text);
+}
+
+.section-body {
+  padding: 0 16px 14px;
+}
+
+/* ---- main: the Graph | Text bar over one of the two views ---- */
+.region-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.drawer-toggle {
+  display: none !important;
+  margin-left: auto;
+}
+
+.region.main > [data-view] {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.region.main > #mapSection[data-view] {
+  min-height: 0 !important;
+}
+
+.region.main[data-show="graph"] > [data-view="text"],
+.region.main[data-show="text"] > [data-view="graph"] {
+  display: none !important;
+}
+
+.region.main > [data-view="graph"] {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.region.main > [data-view="text"] {
+  display: block;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+/* The map is the region's height, not a minimum of its own; the graph's
+   ResizeObserver follows the box. */
+.region.main [data-view="graph"] #mapTreeContainer {
+  flex: 1 1 0;
+  min-height: 0 !important;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden !important;
+}
+
+.region.main [data-view="graph"] .node-graph {
+  flex: 1 1 0;
+  min-height: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.region.main [data-view="graph"] .node-graph > svg {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- the docked chat (DockedPanelComponent): corner, side or region ---- */
+.docked {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.docked-head {
+  flex: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.docked-head:hover {
+  background: var(--panel-2);
+}
+
+.docked-chevron {
+  color: var(--text-3);
+}
+
+.docked.folded .docked-head {
+  border-bottom: 0;
+}
+
+.docked-body {
+  display: block;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.docked.corner {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 27rem;
+  max-width: calc(100vw - 2rem);
+  max-height: 75vh;
+  z-index: 50;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.docked.corner.folded {
+  width: 16rem;
+}
+
+.docked.side {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 24rem;
+  max-width: 80vw;
+  z-index: 40;
+  border-left: 1px solid var(--line);
+}
+
+.docked.side.folded {
+  width: 2.75rem;
+}
+
+.docked.side .docked-body {
+  flex: 1 1 auto;
+}
+
+.docked.side.folded .docked-head,
+.docked.region.folded .docked-head {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.docked.side.folded .docked-title,
+.docked.region.folded .docked-title {
+  display: none;
+}
+
+.docked.region {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.docked.region .docked-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.docked-turns {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px;
+}
+
+.docked-ask {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---- narrow: the inspector is a drawer, the chat the corner box ---- */
+@media (max-width: 1099px) {
+  [data-layout] > .shell-regions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-layout="shell"] .region.inspector {
+    position: fixed;
+    top: var(--header);
+    left: 0;
+    bottom: 0;
+    width: min(340px, 90vw);
+    z-index: 45;
+    border-radius: 0;
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-lg);
+  }
+
+  html[data-inspector-open] [data-layout="shell"] .region.inspector {
+    transform: none;
+  }
+
+  [data-layout] .region.chat {
+    display: contents;
+  }
+
+  .drawer-toggle {
+    display: inline-flex !important;
+  }
+
+  .docked.region {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    width: 27rem;
+    max-width: calc(100vw - 2rem);
+    max-height: 75vh;
+    z-index: 50;
+    flex: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .docked.region.folded {
+    width: 16rem;
+  }
+
+  .docked.region.folded .docked-head {
+    justify-content: space-between;
+    padding: 10px 14px;
+  }
+
+  .docked.region.folded .docked-title {
+    display: inline;
+  }
+}
+
 /* --- Page Root --- */
 .page-root {
   padding: 0;

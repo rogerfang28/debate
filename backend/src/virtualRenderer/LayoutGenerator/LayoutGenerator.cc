@@ -26,20 +26,17 @@ namespace {
 // The bar across the top of every page. Left: the tool's name, which goes
 // home. Right: "Sign in" for an anonymous visitor; a signed-in user's name
 // and a small "Sign out". Built here, once, rather than by each page, so
-// every page has the same one.
+// every page has the same one. It is the page's header region: the client
+// gives it its height and surface (data-region="header").
 ui::Component BuildSiteHeader(const user::User& user) {
     ui::Component header = ComponentGenerator::createContainer("siteHeader", "w-full", "", "", "", "", "", "");
+    ComponentGenerator::addAttribute(&header, "data-region", "header");
     auto& headerCss = *header.mutable_css();
     headerCss["display"] = "flex";
     headerCss["flex-direction"] = "row";
     headerCss["justify-content"] = "space-between";
     headerCss["align-items"] = "center";
-    headerCss["flex-wrap"] = "wrap";
     headerCss["gap"] = "0.75rem";
-    headerCss["width"] = "100%";
-    headerCss["align-self"] = "stretch";
-    headerCss["padding-bottom"] = "0.75rem";
-    headerCss["border-bottom"] = "1px solid var(--line)";
 
     // Left: the name, then the home tabs (Home | Explore | Your debates).
     // On the home page the current tab is lit the way the Debate | Brief
@@ -135,14 +132,33 @@ ui::Component BuildSignInModal(const user::User& user, const std::string& error,
 }
 
 // Every page's header goes first in its root container; the sign-in modal,
-// when it is open, goes last so it draws over everything else.
+// when it is open, goes last so it draws over everything else. A debate
+// page's Debate | Brief tabs (its top bar) move up into the header, after
+// the home tabs and a "/", so the page below is all argument.
 void AddHeaderAndSignIn(ui::Page& page, const user::User& user, const std::string& signInError,
                         const std::string& signInUsername) {
     if (page.components_size() == 0) {
         return;
     }
     ui::Component* root = page.mutable_components(0);
-    *root->add_children() = BuildSiteHeader(user);
+    ui::Component header = BuildSiteHeader(user);
+    for (int i = 0; i < root->children_size(); ++i) {
+        const std::string& id = root->children(i).id();
+        if (id != "stepViewTopBar" && id != "briefTopBar") continue;
+        for (auto& nav : *header.mutable_children()) {
+            if (nav.id() != "siteHeaderNav") continue;
+            ui::Component sep = ComponentGenerator::createText("siteHeaderSep", "/", "", "", "", "");
+            (*sep.mutable_css())["color"] = "var(--text-3)";
+            (*sep.mutable_css())["margin"] = "0 6px";
+            ComponentGenerator::addChild(&nav, sep);
+            for (const auto& child : root->children(i).children()) {
+                ComponentGenerator::addChild(&nav, child);
+            }
+        }
+        root->mutable_children()->DeleteSubrange(i, 1);
+        break;
+    }
+    *root->add_children() = header;
     for (int i = root->children_size() - 1; i > 0; --i) {
         root->mutable_children()->SwapElements(i, i - 1);
     }
