@@ -331,7 +331,13 @@ void addHomeTab(ui::Component* page, const std::vector<const Topic*>& topics,
         ComponentGenerator::addChild(page, link);
     }
 
-    ComponentGenerator::addChild(page, latestMoves(topics, now));
+    // Hidden for now: with every real debate imported in one sitting, the
+    // strip only ever shows the import. Flip this on once people make
+    // moves of their own.
+    constexpr bool kShowLatestMoves = false;
+    if (kShowLatestMoves) {
+        ComponentGenerator::addChild(page, latestMoves(topics, now));
+    }
 
     // Real cases only: a debate with fewer than 3 claims (mostly tests) is
     // left to Explore, unless there are no others.

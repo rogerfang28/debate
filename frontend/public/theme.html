@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debate Hub theme</title>
+<style>
+  /* ------------------------------------------------------------------
+     The proposed theme. One palette, one type scale, one set of parts.
+     Every page of the app would be built from these tokens; nothing
+     below reaches for a colour that is not a token.
+     ------------------------------------------------------------------ */
+  :root {
+    --bg:            #0f1117;   /* the page */
+    --panel:         #151823;   /* cards, panels, the sidebar */
+    --panel-2:       #1b1f2d;   /* raised: inputs, hover, modal */
+    --line:          rgba(255,255,255,0.08);
+    --line-strong:   rgba(255,255,255,0.16);
+
+    --text:          #e8eaed;
+    --text-2:        #a3a9b8;   /* secondary */
+    --text-3:        #6f7585;   /* muted, captions */
+
+    --accent:        #6d7cff;   /* one accent, used sparingly */
+    --accent-hover:  #8691ff;
+    --accent-soft:   rgba(109,124,255,0.14);
+
+    --open:          #f0625d;   /* a challenge waits */
+    --open-soft:     rgba(240,98,93,0.14);
+    --settled:       #3dcf8e;   /* nothing waits */
+    --settled-soft:  rgba(61,207,142,0.14);
+    --warn:          #f2b84b;
+
+    --radius:        10px;
+    --radius-sm:     6px;
+    --gap:           12px;
+    --font:          system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.55; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* layout of this test page only */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 24px 80px; }
+  .demo { margin: 36px 0; }
+  .demo > h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin: 0 0 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: center; }
+  .note { font-size: 13px; color: var(--text-3); margin: 8px 0 0; }
+
+  /* ---- type ---- */
+  h1 { font-size: 26px; font-weight: 650; line-height: 1.25; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .h2 { font-size: 19px; font-weight: 600; line-height: 1.3; margin: 0; }
+  .h3 { font-size: 15px; font-weight: 600; margin: 0; }
+  .caption { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
+  .body { font-size: 15px; color: var(--text); }
+  .body-2 { font-size: 14px; color: var(--text-2); }
+  .small { font-size: 13px; color: var(--text-3); }
+
+  /* ---- header + tabs ---- */
+  .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .brand { font-weight: 650; font-size: 15px; }
+  .tabs { display: flex; gap: 4px; }
+  .tab { padding: 6px 12px; border-radius: var(--radius-sm); color: var(--text-2); font-size: 14px; background: transparent; border: 0; cursor: pointer; font: inherit; }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .tab.active { color: var(--text); background: var(--panel-2); }
+
+  /* ---- buttons ---- */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--line-strong); background: transparent; color: var(--text); transition: background .12s, border-color .12s; }
+  .btn:hover { background: rgba(255,255,255,0.05); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent-hover); }
+  .btn.quiet { border-color: transparent; color: var(--text-2); }
+  .btn.quiet:hover { color: var(--text); }
+  .btn.danger { border-color: transparent; color: var(--open); }
+  .btn.danger:hover { background: var(--open-soft); }
+  .btn.sm { padding: 4px 10px; font-size: 13px; }
+  .btn:disabled { opacity: .45; cursor: default; }
+
+  /* ---- pills ---- */
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px; font-size: 13px; border: 1px solid var(--line); color: var(--text-2); background: transparent; cursor: pointer; font: inherit; }
+  .pill.on { background: var(--accent-soft); border-color: transparent; color: var(--accent-hover); }
+  .pill.open { background: var(--open-soft); border-color: transparent; color: var(--open); }
+  .pill.settled { background: var(--settled-soft); border-color: transparent; color: var(--settled); }
+
+  /* ---- dots ---- */
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); vertical-align: middle; }
+  .dot.open { background: var(--open); }
+  .dot.settled { background: var(--settled); }
+
+  /* ---- cards ---- */
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .card.hero { padding: 24px 26px; }
+  .card.accent-left { border-left: 3px solid var(--open); border-radius: var(--radius); }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+
+  /* ---- rows (lists) ---- */
+  .list { border-top: 1px solid var(--line); }
+  .item { display: flex; align-items: center; gap: 12px; padding: 11px 6px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .item:hover { background: rgba(255,255,255,0.03); }
+  .item .title { flex: 1; font-size: 14.5px; }
+  .item .meta { font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
+  .item .side { font-size: 13px; color: var(--text-2); white-space: nowrap; }
+
+  /* ---- inputs ---- */
+  .input, .textarea, .select { width: 100%; background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--text); padding: 9px 12px; font: inherit; font-size: 14px; }
+  .input:focus, .textarea:focus, .select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .input::placeholder, .textarea::placeholder { color: var(--text-3); }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; color: var(--text-2); }
+
+  /* ---- exchange (a battle site) ---- */
+  .exchange { border-left: 2px solid var(--line-strong); padding-left: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .exchange .who { font-weight: 600; }
+  .exchange .claim { color: #c7d2fe; }
+  .status-line { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .status-line.open { color: var(--open); }
+  .status-line.settled { color: var(--settled); }
+
+  /* ---- modal ---- */
+  .modal-wrap { background: rgba(0,0,0,0.5); border-radius: var(--radius); padding: 40px; display: flex; justify-content: center; }
+  .modal { background: var(--panel-2); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 22px 24px; width: 360px; }
+
+  /* ---- sidebar chat ---- */
+  .chat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); width: 360px; overflow: hidden; }
+  .chat .head { padding: 10px 14px; font-size: 13px; font-weight: 600; background: var(--panel-2); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+  .chat .turns { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+  .chat .you { color: var(--text-2); }
+  .chat .ai { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .chat .ask { padding: 12px 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+
+  /* ---- swatches ---- */
+  .swatch { width: 92px; }
+  .swatch div { height: 44px; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  .swatch span { display: block; font-size: 12px; color: var(--text-3); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Debate Hub theme</h1>
+  <p class="body-2">Everything the site is made of, in the proposed look. One accent colour, red for "someone owes a reply", green for settled, and grey for everything that is not a decision.</p>
+
+  <div class="demo">
+    <h2>Palette</h2>
+    <div class="row">
+      <div class="swatch"><div style="background:var(--bg)"></div><span>page</span></div>
+      <div class="swatch"><div style="background:var(--panel)"></div><span>panel</span></div>
+      <div class="swatch"><div style="background:var(--panel-2)"></div><span>raised</span></div>
+      <div class="swatch"><div style="background:var(--accent)"></div><span>accent</span></div>
+      <div class="swatch"><div style="background:var(--open)"></div><span>open</span></div>
+      <div class="swatch"><div style="background:var(--settled)"></div><span>settled</span></div>
+      <div class="swatch"><div style="background:var(--warn)"></div><span>warning</span></div>
+      <div class="swatch"><div style="background:var(--text)"></div><span>text</span></div>
+      <div class="swatch"><div style="background:var(--text-2)"></div><span>text 2</span></div>
+      <div class="swatch"><div style="background:var(--text-3)"></div><span>text 3</span></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Type</h2>
+    <div class="stack">
+      <h1 style="margin:0">Fauci was dishonest with Congress and the public about COVID-19.</h1>
+      <p class="h2">Battle sites</p>
+      <p class="h3">1. Does the pardon cancel the Fifth?</p>
+      <p class="caption">Who owes a reply</p>
+      <p class="body" style="margin:0">Body text. Everyone agrees on the money, the words under oath, and the mouse experiment.</p>
+      <p class="body-2" style="margin:0">Secondary text, for descriptions and explanations under a claim.</p>
+      <p class="small" style="margin:0">Muted text. Sources, timestamps, counts.</p>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Header and tabs</h2>
+    <div class="header">
+      <div style="display:flex;align-items:center;gap:20px">
+        <span class="brand">Debate Hub</span>
+        <div class="tabs"><button class="tab active">Home</button><button class="tab">Explore</button><button class="tab">Your debates</button></div>
+      </div>
+      <button class="btn sm">Sign in</button>
+    </div>
+    <p class="note">Signed in: the right side becomes the username in text 2 and a quiet "Sign out".</p>
+  </div>
+
+  <div class="demo">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="btn primary">Read the brief</button>
+      <button class="btn">Challenge</button>
+      <button class="btn">Agree</button>
+      <button class="btn quiet">Not now</button>
+      <button class="btn danger">Delete</button>
+      <button class="btn sm">Open in debate</button>
+      <button class="btn" disabled>Saving…</button>
+    </div>
+    <p class="note">One filled button per screen. Everything else is outlined or quiet.</p>
+  </div>
+
+  <div class="demo">
+    <h2>Pills and dots</h2>
+    <div class="row">
+      <button class="pill on">All</button><button class="pill">Open</button><button class="pill">Settled</button><button class="pill">Waiting on someone</button>
+      <span style="width:16px"></span>
+      <span class="pill open"><span class="dot open"></span>Paul's move</span>
+      <span class="pill settled"><span class="dot settled"></span>Settled</span>
+      <span class="pill"><span class="dot"></span>No stance yet</span>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Featured case</h2>
+    <div class="card hero stack">
+      <span class="caption">Featured case</span>
+      <h1 style="margin:0">Did Fauci lie to Congress about funding risky virus research in Wuhan?</h1>
+      <p class="body-2" style="margin:0">Everyone agrees on the money and the experiment. The fight is over what "gain-of-function" means, and neither side has answered the other on it.</p>
+      <div class="status-line open"><span class="dot open"></span>Unresolved. Paul and Fauci each owe a reply.</div>
+      <div><button class="btn primary">Read the brief</button></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Case list</h2>
+    <div class="list">
+      <div class="item"><span class="dot open"></span><div class="title">Should Fauci be held in contempt for taking the Fifth?<div class="meta">Law · 20 claims · 5 people · moved 3 weeks ago</div></div><span class="side">Paul's move</span></div>
+      <div class="item"><span class="dot open"></span><div class="title">Is remote work better for productivity?<div class="meta">Work · 14 claims · 3 people · moved yesterday</div></div><span class="side">Kim's move</span></div>
+      <div class="item"><span class="dot settled"></span><div class="title">Did the 2024 court ruling overreach?<div class="meta">Law · 9 claims · 2 people · settled last week</div></div><span class="side">Settled</span></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>A battle site</h2>
+    <div class="card accent-left stack">
+      <p class="h3">1. Does the pardon cancel the Fifth?</p>
+      <span class="small" style="color:var(--warn)">The whole case hangs on this one.</span>
+      <div class="exchange">
+        <div><span class="who">Paul:</span> <span class="claim">Fauci's Fifth Amendment privilege is unsupported because he holds an unlimited presidential pardon.</span></div>
+        <div><span class="who">Fauci's attorney challenged:</span> Fauci has a valid Fifth Amendment privilege and the right to assert it.</div>
+        <div><span class="who">Lankford challenged:</span> Invoking the Fifth Amendment is Fauci's constitutional right.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="status-line open"><span class="dot open"></span>Paul has not replied.</div>
+        <button class="btn sm">Open in debate</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Claim panel</h2>
+    <div class="card stack">
+      <span class="caption">Selected claim</span>
+      <p class="body" style="margin:0">Fauci has a valid Fifth Amendment privilege and the right to assert it.</p>
+      <div class="row" style="gap:20px">
+        <span class="small">Said by <span style="color:var(--text-2)">Fauci's attorney</span></span>
+        <span class="small">Status <span style="color:var(--text-2)">Undetermined</span></span>
+        <span class="small">Kind <span style="color:var(--text-2)">Authority</span></span>
+      </div>
+      <p class="small" style="margin:0">Source: cbsnews.com · "Dr. Fauci has a valid Fifth Amendment privilege, and he has the right to assert it."</p>
+      <div class="row"><button class="btn">Challenge</button><button class="btn">Agree</button><button class="btn quiet sm">Open source</button></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Inputs</h2>
+    <div class="stack" style="max-width:520px">
+      <div class="field"><label>Search</label><input class="input" placeholder="Search claims, people, or topics"></div>
+      <div class="field"><label>Your challenge</label><textarea class="textarea" rows="3" placeholder="One sentence you could be wrong about."></textarea></div>
+      <div class="field"><label>Kind of reason</label><select class="select"><option>Evidential</option><option>Authority</option><option>Definitional</option><option>Normative</option></select></div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Sign-in modal</h2>
+    <div class="modal-wrap">
+      <div class="modal stack">
+        <p class="h2">Sign in to challenge this claim</p>
+        <p class="body-2" style="margin:0">A new name makes an account. You'll come back to this page.</p>
+        <input class="input" placeholder="Username">
+        <input class="input" type="password" placeholder="Password">
+        <button class="btn primary" style="justify-content:center">Sign in</button>
+        <button class="btn" style="justify-content:center">Continue with Google</button>
+        <div class="row" style="justify-content:space-between"><button class="btn quiet sm">Continue as guest</button><button class="btn quiet sm">Not now</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Chat sidebar</h2>
+    <div class="chat">
+      <div class="head"><span>Ask about this debate</span><span style="color:var(--text-3)">▶</span></div>
+      <div class="turns">
+        <div class="you">Where is this case stuck?</div>
+        <div class="ai">On the definition of gain-of-function [#3]. Paul uses NIH's old website wording, Fauci the 2017 funding rule. Neither has answered the other's last move.</div>
+      </div>
+      <div class="ask">
+        <textarea class="textarea" rows="2" placeholder="Ask anything about this debate"></textarea>
+        <div class="row"><button class="btn primary sm">Ask</button><button class="pill">Summarize</button><button class="pill">Find a mistake</button></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
