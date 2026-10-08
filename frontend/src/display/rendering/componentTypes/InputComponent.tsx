@@ -1,5 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
+import { layoutClasses } from "../buildClassName";
 import handleEvent from "../../events/handleEvent";
 
 interface InputAttributes {
@@ -37,7 +38,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
           type={inputType}
           name={component.name}
           defaultChecked={component.value as boolean || false}
-          className={className}
+          className={layoutClasses(className)}
           style={style}
           {...component.attributes}
         />
@@ -51,8 +52,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
       {component.text && inputType !== 'hidden' && (
         <label
           htmlFor={component.id}
-          className="text-xs font-medium"
-          style={{ color: 'var(--text-secondary)' }}
+          className="field-label"
         >
           {component.text}
         </label>
@@ -63,7 +63,7 @@ const InputComponent: React.FC<InputComponentProps> = ({ component, className, s
         name={component.name}
         defaultValue={component.value as string || ""}
         placeholder={component.placeholder || ""}
-        className={className}
+        className={layoutClasses(className)}
         style={style}
         onKeyDown={handleKeyDown}
         autoComplete="off"

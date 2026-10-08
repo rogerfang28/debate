@@ -2,73 +2,82 @@
 
 /* ============================================
    Debate Tool — Design System
-   A clean, modern dark theme for structured
-   logical debate visualization.
+   The tokens, type and parts are the ones in public/theme.html: one palette,
+   one accent, red for "someone owes a reply", green for settled, and grey for
+   everything that is not a decision.
    ============================================ */
 
-/* --- CSS Custom Properties (Design Tokens) --- */
+/* --- Tokens (theme.html) --- */
 :root {
-  /* Surfaces */
-  --surface-bg: #0f1117;
-  --surface-card: #161822;
-  --surface-elevated: #1c1f2e;
-  --surface-input: #13151c;
-  --surface-hover: #1e2130;
-  --surface-active: #252839;
+  --bg:            #0f1117;   /* the page */
+  --panel:         #151823;   /* cards, panels, the sidebar */
+  --panel-2:       #1b1f2d;   /* raised: inputs, hover, modal */
+  --line:          rgba(255,255,255,0.08);
+  --line-strong:   rgba(255,255,255,0.16);
 
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --border-focus: rgba(99, 102, 241, 0.5);
+  --text:          #e8eaed;
+  --text-2:        #a3a9b8;   /* secondary */
+  --text-3:        #6f7585;   /* muted, captions */
 
-  /* Text */
-  --text-primary: #e8eaed;
-  --text-secondary: #9aa0b0;
-  --text-muted: #6b7280;
-  --text-accent: #818cf8;
-  --text-success: #34d399;
-  --text-warning: #fbbf24;
-  --text-danger: #f87171;
+  --accent:        #6d7cff;   /* one accent, used sparingly */
+  --accent-hover:  #8691ff;
+  --accent-soft:   rgba(109,124,255,0.14);
 
-  /* Accent colors */
-  --accent-indigo: #6366f1;
-  --accent-indigo-hover: #818cf8;
-  --accent-blue: #3b82f6;
-  --accent-blue-hover: #60a5fa;
-  --accent-green: #10b981;
-  --accent-green-hover: #34d399;
-  --accent-red: #ef4444;
-  --accent-red-hover: #f87171;
-  --accent-purple: #a855f7;
-  --accent-orange: #f97316;
-  --accent-yellow: #eab308;
-  --accent-teal: #14b8a6;
+  --open:          #f0625d;   /* a challenge waits */
+  --open-soft:     rgba(240,98,93,0.14);
+  --settled:       #3dcf8e;   /* nothing waits */
+  --settled-soft:  rgba(61,207,142,0.14);
+  --warn:          #f2b84b;
 
-  /* Spacing */
+  --radius:        10px;
+  --radius-sm:     6px;
+  --gap:           12px;
+  --header:        56px;
+  --font:          system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* The names components used before the theme, pointed at the tokens. */
+  --surface-bg: var(--bg);
+  --surface-card: var(--panel);
+  --surface-elevated: var(--panel-2);
+  --surface-input: var(--panel-2);
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --surface-active: rgba(255, 255, 255, 0.08);
+
+  --border-subtle: var(--line);
+  --border-default: var(--line);
+  --border-strong: var(--line-strong);
+  --border-focus: var(--accent);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--text-2);
+  --text-muted: var(--text-3);
+  --text-accent: var(--accent-hover);
+  --text-success: var(--settled);
+  --text-warning: var(--warn);
+  --text-danger: var(--open);
+
+  --accent-indigo: var(--accent);
+  --accent-indigo-hover: var(--accent-hover);
+  --accent-blue: var(--accent);
+  --accent-blue-hover: var(--accent-hover);
+  --accent-green: var(--settled);
+  --accent-red: var(--open);
+
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
-  --space-2xl: 3rem;
 
-  /* Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-md: var(--radius-sm);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.45);
 
-  /* Transitions */
-  --transition-fast: 150ms ease;
+  --transition-fast: 120ms ease;
   --transition-normal: 250ms ease;
-  --transition-slow: 400ms ease;
 }
 
 /* --- Base / Reset --- */
@@ -87,10 +96,11 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--surface-bg);
-  color: var(--text-primary);
-  line-height: 1.6;
+  font-family: var(--font);
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
   min-height: 100vh;
 }
 
@@ -105,11 +115,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-bg);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
+  background: var(--line-strong);
   border-radius: 4px;
 }
 
@@ -117,10 +127,10 @@ body {
   background: rgba(255, 255, 255, 0.22);
 }
 
-/* --- Typography --- */
+/* --- Typography (theme.html's type scale) --- */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--text);
   font-weight: 600;
   line-height: 1.3;
 }
@@ -130,26 +140,78 @@ p {
 }
 
 a {
-  color: var(--text-accent);
+  color: var(--accent);
   text-decoration: none;
-  transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--accent-indigo-hover);
   text-decoration: underline;
 }
 
-/* --- Selection --- */
+.t-h1 { font-size: 24px; font-weight: 650; line-height: 1.25; letter-spacing: -0.01em; }
+.t-h2 { font-size: 19px; font-weight: 600; line-height: 1.3; }
+.t-h3 { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.t-body { font-size: 15px; line-height: 1.55; }
+.t-body-2 { font-size: 14px; line-height: 1.55; }
+.t-small { font-size: 13px; line-height: 1.5; }
+.caption { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); line-height: 1.4; }
+
 ::selection {
-  background-color: rgba(99, 102, 241, 0.3);
-  color: var(--text-primary);
+  background-color: var(--accent-soft);
+  color: var(--text);
 }
 
-/* --- Focus Visible --- */
 :focus-visible {
-  outline: 2px solid var(--border-focus);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* --- The server's Tailwind-like class strings, on the theme ---
+   The server paints with Tailwind names (bg-gray-800, text-gray-400, ...).
+   These rules are unlayered, so they win over Tailwind's own utilities, and
+   they cover the names Tailwind never generated because it cannot see the
+   server's sources. Inline css from the server still wins over all of it. */
+
+/* surfaces */
+.bg-gray-900, .bg-gray-900\/60 { background-color: var(--bg); }
+.bg-gray-800, .bg-gray-800\/50, .bg-gray-800\/80, .bg-gray-800\/90, .bg-slate-800 { background-color: var(--panel); }
+.bg-gray-700, .bg-gray-600, .bg-gray-500, .bg-slate-700, .bg-slate-600 { background-color: var(--panel-2); }
+.bg-gray-900\/40 { background-color: transparent; }
+.bg-blue-600, .bg-blue-700, .bg-indigo-600 { background-color: var(--accent); }
+.bg-green-600, .bg-green-500, .bg-emerald-500 { background-color: var(--settled); }
+.bg-red-600, .bg-red-700, .bg-red-500, .bg-orange-600 { background-color: var(--open); }
+.bg-purple-900\/30 { background-color: var(--accent-soft); }
+
+/* lines */
+.border-gray-700, .border-gray-600, .border-slate-600 { border-color: var(--line); }
+.hover\:border-gray-600:hover { border-color: var(--line-strong); }
+.border-2.border-gray-700 { border-width: 1px; }
+.border-red-500, .border-orange-500 { border-color: var(--open); }
+.border-green-500 { border-color: var(--settled); }
+.border-blue-500, .border-purple-500, .border-purple-700 { border-color: var(--accent); }
+
+/* text */
+.text-white, .text-gray-100, .text-gray-200, .text-slate-200 { color: var(--text); }
+.text-gray-300, .text-gray-400, .text-slate-300, .text-slate-400 { color: var(--text-2); }
+.text-gray-500, .text-gray-600 { color: var(--text-3); }
+.text-indigo-300, .text-blue-300, .text-blue-400, .text-purple-300, .text-purple-400, .text-purple-500 { color: var(--accent-hover); }
+.text-green-300, .text-green-400, .text-green-500 { color: var(--settled); }
+.text-red-300, .text-red-400, .text-red-500, .text-orange-300, .text-orange-500 { color: var(--open); }
+.text-yellow-400 { color: var(--warn); }
+.hover\:text-white:hover, .hover\:text-gray-200:hover { color: var(--text); }
+
+/* corners */
+.rounded, .rounded-md { border-radius: var(--radius-sm); }
+.rounded-lg, .rounded-xl, .rounded-2xl { border-radius: var(--radius); }
+
+/* A panel standing directly in a full-screen overlay is a dialog: the
+   modal look from theme.html (raised, strong hairline). */
+.fixed.inset-0 > .bg-gray-800 {
+  background-color: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-lg);
 }
 
 /* --- Tutorial guide box ---
@@ -194,138 +256,86 @@ a:hover {
 .page-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text);
   padding: 1.5rem 2rem 1rem;
   margin: 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--line);
   flex-shrink: 0;
 }
 
-/* --- Component Base Styles --- */
-
-/* Buttons */
-button {
+/* --- Buttons (theme.html) ---
+   Every button is the outlined one unless told otherwise. ButtonComponent
+   picks a variant from the server's class hints: bg-blue/indigo is the one
+   filled primary, bg-red is danger, bg-gray-800/transparent is quiet,
+   rounded-full is a pill, text-xs/text-sm is small. */
+button,
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-sm);
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  gap: 6px;
+  padding: 7px 14px;
   font-family: inherit;
-  line-height: 1.25rem;
-  color: var(--text-primary);
-  background-color: var(--surface-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text);
+  background-color: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
   white-space: nowrap;
   user-select: none;
 }
 
 button:hover {
-  background-color: var(--surface-hover);
-  border-color: var(--border-strong);
-}
-
-button:active {
-  background-color: var(--surface-active);
-  transform: scale(0.98);
-}
-
-button:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  opacity: 0.45;
+  cursor: default;
   pointer-events: none;
 }
 
-/* Primary / accent button override */
-button.bg-blue-600,
-button[class*="bg-blue-"] {
-  background-color: var(--accent-blue);
-  border-color: transparent;
-  color: #fff;
-}
+.btn.primary { background-color: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background-color: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.quiet { border-color: transparent; color: var(--text-2); }
+.btn.quiet:hover { color: var(--text); }
+.btn.danger { border-color: transparent; color: var(--open); }
+.btn.danger:hover { background-color: var(--open-soft); }
+.btn.sm { padding: 4px 10px; font-size: 13px; }
 
-button[class*="bg-blue-"]:hover,
-button.hover\:bg-blue-700:hover {
-  background-color: var(--accent-blue-hover);
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 400;
+  border: 1px solid var(--line);
+  color: var(--text-2);
+  background-color: transparent;
 }
+.pill:hover { color: var(--text); background-color: rgba(255, 255, 255, 0.04); }
+.pill.on { background-color: var(--accent-soft); border-color: transparent; color: var(--accent-hover); }
 
-button[class*="bg-green-"] {
-  background-color: var(--accent-green);
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-green-"]:hover {
-  background-color: var(--accent-green-hover);
-}
-
-button[class*="bg-emerald-"] {
-  background-color: #10b981;
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-emerald-"]:hover {
-  background-color: #059669;
-}
-
-button[class*="bg-red-"] {
-  background-color: var(--accent-red);
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-red-"]:hover {
-  background-color: var(--accent-red-hover);
-}
-
-button[class*="bg-purple-"] {
-  background-color: var(--accent-purple);
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-slate-"] {
-  background-color: #334155;
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-orange-"] {
-  background-color: var(--accent-orange);
-  border-color: transparent;
-  color: #fff;
-}
-
-button[class*="bg-yellow-"] {
-  background-color: var(--accent-yellow);
-  border-color: transparent;
-  color: #1a1a1a;
-}
-
-/* Inputs */
+/* --- Inputs (theme.html .input) --- */
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
   display: block;
   width: 100%;
-  padding: 0.625rem 0.875rem;
-  font-size: 0.875rem;
+  padding: 9px 12px;
+  font-size: 14px;
   font-family: inherit;
   line-height: 1.5;
-  color: var(--text-primary);
-  background-color: var(--surface-input);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  color: var(--text);
+  background-color: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   appearance: none;
@@ -334,42 +344,39 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  border-color: var(--accent-indigo);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-muted);
+  color: var(--text-3);
 }
 
-/* Textarea-specific */
 textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 64px;
 }
 
-/* Checkbox / Radio */
+.field-label {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--accent-indigo);
+  accent-color: var(--accent);
   cursor: pointer;
 }
 
 /* --- Card Component --- */
 .card {
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.card:hover {
-  border-color: var(--border-default);
-  box-shadow: var(--shadow-md);
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
 }
 
 /* --- List Component --- */
@@ -383,28 +390,28 @@ ul, ol {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 14px;
 }
 
 th, td {
   padding: var(--space-sm) var(--space-md);
   text-align: left;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--line);
 }
 
 th {
-  color: var(--text-secondary);
+  color: var(--text-3);
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 tr:hover td {
-  background-color: var(--surface-hover);
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* --- Modal Overlay --- */
+/* --- Modal (theme.html .modal) --- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -412,16 +419,15 @@ tr:hover td {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.5);
   animation: fadeIn var(--transition-normal);
 }
 
 .modal-content {
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
-  padding: var(--space-xl);
+  background-color: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 22px 24px;
   max-width: 90vw;
   max-height: 85vh;
   overflow: auto;
@@ -437,27 +443,26 @@ tr:hover td {
 }
 
 .chat-message {
-  padding: var(--space-sm) var(--space-md);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  font-size: 0.875rem;
+  padding: 9px 11px;
+  background-color: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
 }
 
 .chat-message strong {
-  color: var(--text-accent);
+  color: var(--accent-hover);
   margin-right: var(--space-sm);
 }
 
 /* --- Node Graph --- */
 .node-graph {
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
-/* --- Loading Spinner --- */
+/* --- Animations --- */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -478,28 +483,12 @@ tr:hover td {
   }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* --- Utility: Fade-in animation --- */
 .fade-in {
   animation: fadeIn var(--transition-normal);
 }
 
-/* --- Utility: Slide-up animation --- */
 .slide-up {
   animation: slideUp var(--transition-normal);
-}
-
-/* --- SVG Graph Styles --- */
-svg line {
-  transition: stroke var(--transition-fast), stroke-width var(--transition-fast);
-}
-
-svg circle {
-  transition: fill var(--transition-fast), stroke var(--transition-fast);
 }
 
 /* --- Responsive --- */
@@ -513,23 +502,14 @@ svg circle {
     margin-bottom: var(--space-lg);
   }
 
-  button {
-    padding: 0.5rem 1rem;
-    font-size: 0.8125rem;
-  }
-
   .card {
     padding: var(--space-md);
   }
 }
 
 /* --- SVG Graph --- */
-.graph-node circle {
-  transition: fill 0.15s ease, stroke 0.15s ease, stroke-width 0.15s ease;
-}
-
-.graph-node:hover circle {
-  filter: brightness(1.2);
+.graph-node:hover rect {
+  filter: brightness(1.15);
 }
 
 .graph-tooltip {
@@ -537,13 +517,11 @@ svg circle {
 }
 
 .graph-zoom-btn:hover {
-  background: var(--surface-hover) !important;
-  border-color: var(--border-strong) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--line-strong) !important;
 }
 
 /* --- Map Section (legacy — kept for pbtxt compatibility) --- */
 #mapSection {
   min-height: fit-content !important;
 }
-
-

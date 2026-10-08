@@ -1,5 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
+import { layoutClasses } from "../buildClassName";
 import handleEvent from "../../events/handleEvent";
 
 interface TextareaComponentProps extends BaseComponentProps {
@@ -27,8 +28,7 @@ const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, classN
       {component.text && (
         <label
           htmlFor={component.id}
-          className="text-xs font-medium"
-          style={{ color: 'var(--text-secondary)' }}
+          className="field-label"
         >
           {component.text}
         </label>
@@ -37,10 +37,10 @@ const TextareaComponent: React.FC<TextareaComponentProps> = ({ component, classN
         id={component.id}
         name={component.name}
         defaultValue={component.value as string || ""}
-        className={className}
+        className={layoutClasses(className)}
         style={{
           ...style,
-          minHeight: '80px',
+          minHeight: '64px',
           resize: 'vertical',
         }}
         onKeyDown={handleKeyDown}

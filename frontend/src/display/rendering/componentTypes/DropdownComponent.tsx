@@ -1,5 +1,6 @@
 import React from "react";
 import { BaseComponentProps } from "./TextComponent";
+import { layoutClasses } from "../buildClassName";
 
 interface DropdownAttributes {
   options?: string;
@@ -38,8 +39,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ component, classN
       {component.text && (
         <label
           htmlFor={component.id}
-          className="text-xs font-medium"
-          style={{ color: 'var(--text-secondary)' }}
+          className="field-label"
         >
           {component.text}
         </label>
@@ -48,7 +48,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ component, classN
         id={component.id}
         name={component.name}
         defaultValue={selected}
-        className={className}
+        className={layoutClasses(className)}
         style={style}
       >
         {options.map((option) => (

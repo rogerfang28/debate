@@ -44,11 +44,13 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
             gap: "0.5rem",
             background: "transparent",
             border: "none",
-            borderTop: "1px solid #374151",
+            borderTop: "1px solid var(--line)",
+            borderRadius: 0,
+            justifyContent: "flex-start",
             width: "100%",
             padding: "0.75rem 0 0.25rem",
-            color: "#9ca3af",
-            fontSize: "0.8rem",
+            color: "var(--text-2)",
+            fontSize: "12px",
             fontWeight: 600,
             cursor: "pointer",
             textAlign: "left",
@@ -98,7 +100,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
               transition: "box-shadow 120ms",
               // A ring rather than a border colour: the server sets the
               // border as a shorthand, which a longhand would fight.
-              boxShadow: hover ? "0 0 0 1px #60a5fa" : "none",
+              boxShadow: hover ? "0 0 0 1px var(--accent)" : "none",
             }
           : {}),
       }}

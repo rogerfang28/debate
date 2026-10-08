@@ -25,21 +25,27 @@ interface DebateGraphProps extends BaseComponentProps {
 
 // ── Color / shape mappings ────────────────────────────────────────────
 
+// Theme tokens (index.css). Every node is the raised surface; its border
+// says where it stands: green settled, red open (held false / a challenge
+// waits), the accent for the main claim, a quiet line otherwise. The fill is
+// opaque on purpose -- nodes are drawn over the line ends and hide them.
 const STATUS_COLORS: Record<string, { fill: string; stroke: string }> = {
-  TRUE_CLAIM:     { fill: "#1e3a5f", stroke: "#34d399" },
-  FALSE_CLAIM:    { fill: "#3b1a1a", stroke: "#f87171" },
-  UNDETERMINED:  { fill: "#1e293b", stroke: "#9ca3af" },
+  TRUE_CLAIM:     { fill: "var(--panel-2)", stroke: "var(--settled)" },
+  FALSE_CLAIM:    { fill: "var(--panel-2)", stroke: "var(--open)" },
+  UNDETERMINED:  { fill: "var(--panel-2)", stroke: "var(--line-strong)" },
 };
 
-const DEFAULT_NODE_COLOR = { fill: "#1e293b", stroke: "#6366f1" };
+const DEFAULT_NODE_COLOR = { fill: "var(--panel-2)", stroke: "var(--accent)" };
+const ROOT_STROKE = "var(--accent)";
+const CURRENT_STROKE = "var(--warn)";
 
 const EDGE_COLORS: Record<string, string> = {
-  supports:   "#34d399",
-  challenges: "#f97316",
-  counters:   "#ef4444",
-  NORMAL:     "#64748b",
-  PARENT_CHILD: "#94a3b8",
-  CHALLENGE:  "#f97316",
+  supports:   "var(--settled)",
+  challenges: "var(--open)",
+  counters:   "var(--open)",
+  NORMAL:     "var(--text-3)",
+  PARENT_CHILD: "var(--text-3)",
+  CHALLENGE:  "var(--open)",
 };
 
 // ── Per-author color badge ─────────────────────────────────────────────
@@ -61,7 +67,7 @@ function hashString(s: string): number {
 }
 
 function colorForAuthor(username: string): string {
-  if (!username) return "#6b7280";
+  if (!username) return "var(--text-3)";
   return AUTHOR_PALETTE[hashString(username) % AUTHOR_PALETTE.length];
 }
 
@@ -542,7 +548,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-3)" />
           </marker>
           <marker
             id={`${component.id}-arrow-challenge`}
@@ -552,7 +558,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="#f97316" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--open)" />
           </marker>
           <marker
             id={`${component.id}-arrow-support`}
@@ -562,7 +568,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--settled)" />
           </marker>
         </defs>
 
@@ -623,7 +629,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             // A selected pill wears the same solid yellow outline a current
             // claim does. Its own colour (support/challenge) stays in the text.
             const isSelectedJunction = selectedId === group.key;
-            const junctionStroke = isSelectedJunction ? "#fbbf24" : color;
+            const junctionStroke = isSelectedJunction ? CURRENT_STROKE : color;
             const junctionStrokeWidth = isSelectedJunction ? 3 : 1.5;
             const ringW = (label ? jw : JUNCTION_DOT_RADIUS * 2) + 10;
             const ringH = (label ? JUNCTION_HEIGHT : JUNCTION_DOT_RADIUS * 2) + 10;
@@ -671,7 +677,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                       width={jw}
                       height={JUNCTION_HEIGHT}
                       rx={JUNCTION_HEIGHT / 2}
-                      fill="#0f172a"
+                      fill="var(--bg)"
                       stroke={junctionStroke}
                       strokeWidth={junctionStrokeWidth}
                     />
@@ -691,7 +697,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   // so sources converge on it and so it can be a target.
                   <circle
                     r={JUNCTION_DOT_RADIUS}
-                    fill="#0f172a"
+                    fill="var(--bg)"
                     stroke={junctionStroke}
                     strokeWidth={junctionStrokeWidth}
                   />
@@ -716,8 +722,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const isChallenge = node.type === "challenge";
             // Challenge (root) claims get an orange-tinted body and border; the
             // current/selected highlight still takes precedence when active.
-            const fill = isChallenge ? "#3a2412" : colors.fill;
-            const stroke = isCurrent ? "#fbbf24" : isChallenge ? "#f97316" : colors.stroke;
+            const fill = colors.fill;
+            const stroke = isCurrent
+              ? CURRENT_STROKE
+              : isChallenge
+                ? "var(--open)"
+                : node.isRoot && (node.status || "UNDETERMINED") === "UNDETERMINED"
+                  ? ROOT_STROKE
+                  : colors.stroke;
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : isChallenge ? 3 : 2;
             // ═══════════ EXPERIMENT: SEMANTIC ZOOM (per-node detail) ═══════════
             // `tier` is "full" whenever the experiment is off, so every branch
@@ -772,8 +784,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
               node.status === "FALSE_CLAIM" ? "Status: False" :
               "Status: Undetermined";
             const statusColor =
-              node.status === "TRUE_CLAIM" ? "#34d399" :
-              node.status === "FALSE_CLAIM" ? "#f87171" :
+              node.status === "TRUE_CLAIM" ? "var(--settled)" :
+              node.status === "FALSE_CLAIM" ? "var(--open)" :
               "var(--text-muted)";
 
             return (
@@ -803,7 +815,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     rx={14}
                     ry={14}
                     fill="none"
-                    stroke={isCurrent ? "#fbbf24" : colors.stroke}
+                    stroke={isCurrent ? CURRENT_STROKE : colors.stroke}
                     strokeWidth="2"
                     strokeOpacity="0.4"
                     filter={`url(#${component.id}-glow)`}
@@ -855,7 +867,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                       dominantBaseline="central"
                       fontSize="8"
                       fontWeight="700"
-                      fill="#0f1117"
+                      fill="var(--bg)"
                       style={{ userSelect: "none" }}
                     >
                       {node.creatorUsername.charAt(0).toUpperCase()}
@@ -949,11 +961,11 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: semanticZoom ? "var(--accent-soft, #1e3a5f)" : "var(--surface-elevated)",
-            border: `1px solid ${semanticZoom ? "#60a5fa" : "var(--border-default)"}`,
+            background: semanticZoom ? "var(--accent-soft)" : "var(--surface-elevated)",
+            border: `1px solid ${semanticZoom ? "var(--accent)" : "var(--border-default)"}`,
             borderRadius: "var(--radius-sm)",
             cursor: "pointer",
-            color: semanticZoom ? "#60a5fa" : "var(--text-secondary)",
+            color: semanticZoom ? "var(--accent-hover)" : "var(--text-secondary)",
             fontSize: "0.8125rem",
           }}
         >
@@ -1021,26 +1033,26 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           gap: "0.5rem",
           fontSize: "0.6875rem",
           color: "var(--text-muted)",
-          background: "rgba(15, 17, 23, 0.8)",
+          background: "var(--panel)",
           padding: "0.375rem 0.5rem",
           borderRadius: "var(--radius-sm)",
           border: "1px solid var(--border-subtle)",
         }}
       >
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#34d399", display: "inline-block" }} />
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--settled)", display: "inline-block" }} />
           True
         </span>
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#f87171", display: "inline-block" }} />
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--open)", display: "inline-block" }} />
           False
         </span>
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#9ca3af", display: "inline-block" }} />
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--text-3)", display: "inline-block" }} />
           Undetermined
         </span>
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <span style={{ width: 12, height: 2, background: "#f97316", display: "inline-block" }} />
+          <span style={{ width: 12, height: 0, borderTop: "2px dashed var(--open)", display: "inline-block" }} />
           Challenge
         </span>
         {uniqueAuthors.length > 0 && (

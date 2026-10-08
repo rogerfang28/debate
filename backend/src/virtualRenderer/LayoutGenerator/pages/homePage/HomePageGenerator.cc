@@ -48,14 +48,17 @@ ui::Component box(const std::string& id, const Rules& rules) {
 }
 
 const Rules kColumn = {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0"}};
+// The theme's tokens (index.css): captions, muted words, and the two
+// status colours -- red while someone owes a reply, green when settled.
 const Rules kCaption = {
-    {"color", "#9ca3af"}, {"font-size", "0.8rem"}, {"font-weight", "600"}, {"margin", "0"},
+    {"color", "var(--text-3)"}, {"font-size", "12px"}, {"font-weight", "600"}, {"margin", "0"},
+    {"letter-spacing", "0.06em"}, {"text-transform", "uppercase"},
 };
 const Rules kMuted = {
-    {"color", "#9ca3af"}, {"font-size", "0.85rem"}, {"font-weight", "400"}, {"line-height", "1.5"}, {"margin", "0"},
+    {"color", "var(--text-3)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"line-height", "1.5"}, {"margin", "0"},
 };
-const char* kOpenColor = "#ef4444";
-const char* kSettledColor = "#22c55e";
+const char* kOpenColor = "var(--open)";
+const char* kSettledColor = "var(--settled)";
 const char* kMiddot = "  \xC2\xB7  ";
 
 // Cut to at most maxBytes without splitting a UTF-8 character (a string
@@ -106,7 +109,7 @@ std::string turnOf(const Topic& t) {
 // A small round status dot: red while a challenge is open, green otherwise.
 ui::Component dot(const std::string& id, bool open) {
     ui::Component d = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
-    css(&d, {{"width", "0.55rem"}, {"height", "0.55rem"}, {"min-width", "0.55rem"},
+    css(&d, {{"width", "8px"}, {"height", "8px"}, {"min-width", "8px"},
              {"border-radius", "9999px"}, {"background", open ? kOpenColor : kSettledColor},
              {"flex", "0 0 auto"}, {"display", "block"}, {"gap", "0"}});
     return d;
@@ -115,18 +118,18 @@ ui::Component dot(const std::string& id, bool open) {
 // A quiet text-style button: a link that is a server press.
 ui::Component linkButton(const std::string& id, const std::string& label) {
     ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
-    css(&b, {{"background", "transparent"}, {"border", "none"}, {"color", "#60a5fa"},
-             {"cursor", "pointer"}, {"align-self", "flex-start"}, {"text-decoration", "underline"},
-             {"text-underline-offset", "3px"}});
+    css(&b, {{"background", "transparent"}, {"border", "none"}, {"color", "var(--accent)"},
+             {"cursor", "pointer"}, {"align-self", "flex-start"}, {"padding", "0"},
+             {"font-size", "13px"}, {"font-weight", "400"}});
     return b;
 }
 
 // A pill: a filter or a sort choice; the lit one is the current choice.
 ui::Component pill(const std::string& id, const std::string& label, bool active) {
     ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-xs rounded-full");
-    css(&b, {{"background", active ? "#1f2937" : "transparent"},
-             {"border", active ? "1px solid #38bdf8" : "1px solid #374151"},
-             {"color", active ? "#f9fafb" : "#9ca3af"}, {"cursor", "pointer"}});
+    css(&b, {{"background", active ? "var(--accent-soft)" : "transparent"},
+             {"border", active ? "1px solid transparent" : "1px solid var(--line)"},
+             {"color", active ? "var(--accent-hover)" : "var(--text-2)"}, {"cursor", "pointer"}});
     return b;
 }
 
@@ -139,7 +142,7 @@ ui::Component caseRow(const std::string& context, const Topic& t, long long now,
     const std::string id = idOf(t);
     ui::Component row = box("openBrief_" + context + "_" + id, {
         {"display", "flex"}, {"flex-direction", "row"}, {"align-items", "center"}, {"gap", "0.75rem"},
-        {"padding", "0.65rem 0.25rem"}, {"border-bottom", "1px solid #374151"},
+        {"padding", "11px 6px"}, {"border-bottom", "1px solid var(--line)"},
     });
     ComponentGenerator::addAttribute(&row, "data-click", "true");
     ComponentGenerator::addChild(&row, dot("caseDot_" + context + "_" + id, isOpen(t)));
@@ -148,7 +151,7 @@ ui::Component caseRow(const std::string& context, const Topic& t, long long now,
     css(&middle, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.15rem"},
                   {"flex", "1 1 auto"}, {"min-width", "0"}});
     ComponentGenerator::addChild(&middle, text("caseTitle_" + context + "_" + id, truncate(titleOf(t), 140),
-        {{"color", "#f3f4f6"}, {"font-size", "0.92rem"}, {"font-weight", "600"}, {"line-height", "1.35"},
+        {{"color", "var(--text)"}, {"font-size", "14.5px"}, {"font-weight", "400"}, {"line-height", "1.4"},
          {"margin", "0"}, {"white-space", "nowrap"}, {"overflow", "hidden"}, {"text-overflow", "ellipsis"}}));
     if (withMeta) {
         std::string meta = count(t.claim_count(), "claim", "claims") + kMiddot +
@@ -156,26 +159,26 @@ ui::Component caseRow(const std::string& context, const Topic& t, long long now,
         const std::string moved = ago(t.last_moved_at(), now);
         if (!moved.empty()) meta += std::string(kMiddot) + "moved " + moved;
         ComponentGenerator::addChild(&middle, text("caseMeta_" + context + "_" + id, meta,
-            {{"color", "#6b7280"}, {"font-size", "0.75rem"}, {"font-weight", "400"}, {"margin", "0"}}));
+            {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"font-weight", "400"}, {"margin", "0"}}));
     }
     int matchIndex = 0;
     for (const std::string& match : t.matched_claims()) {
         ComponentGenerator::addChild(&middle, text(
             "caseMatch_" + context + "_" + id + "_" + std::to_string(matchIndex++),
             "\"" + truncate(match, 150) + "\"",
-            {{"color", "#9ca3af"}, {"font-size", "0.75rem"}, {"font-weight", "400"}, {"margin", "0"},
+            {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"font-weight", "400"}, {"margin", "0"},
              {"font-style", "italic"}, {"white-space", "nowrap"}, {"overflow", "hidden"},
              {"text-overflow", "ellipsis"}}));
     }
     ComponentGenerator::addChild(&row, middle);
 
     ComponentGenerator::addChild(&row, text("caseTurn_" + context + "_" + id, turnOf(t),
-        {{"color", isOpen(t) ? "#fca5a5" : "#86efac"}, {"font-size", "0.8rem"}, {"font-weight", "500"},
+        {{"color", "var(--text-2)"}, {"font-size", "13px"}, {"font-weight", "400"},
          {"margin", "0"}, {"white-space", "nowrap"}, {"flex", "0 0 auto"}}));
     if (canDelete) {
         ui::Component del = ComponentGenerator::createButton(
             "deleteDebateButton_" + id, "Delete", "", "", "", "", "", "", "text-xs");
-        css(&del, {{"background", "transparent"}, {"border", "none"}, {"color", "#6b7280"},
+        css(&del, {{"background", "transparent"}, {"border", "none"}, {"color", "var(--text-3)"},
                    {"flex", "0 0 auto"}});
         ComponentGenerator::addChild(&row, del);
     }
@@ -232,14 +235,14 @@ std::string owingLine(const Topic& t) {
 ui::Component featuredCase(const Topic& t) {
     const std::string id = idOf(t);
     ui::Component hero = box("featuredCase", {
-        {"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.6rem"},
-        {"background", "#111827"}, {"border", "1px solid #374151"},
-        {"border-radius", "0.75rem"}, {"padding", "1.5rem 1.5rem 1.25rem"},
+        {"display", "flex"}, {"flex-direction", "column"}, {"gap", "10px"},
+        {"background", "var(--panel)"}, {"border", "1px solid var(--line)"},
+        {"border-radius", "var(--radius)"}, {"padding", "24px 26px"},
     });
     ComponentGenerator::addChild(&hero, text("featuredCaption", "Featured case", kCaption));
     ComponentGenerator::addChild(&hero, text("featuredClaim", truncate(titleOf(t), 300),
-        {{"color", "#f9fafb"}, {"font-size", "1.5rem"}, {"font-weight", "700"}, {"line-height", "1.3"},
-         {"margin", "0"}}));
+        {{"color", "var(--text)"}, {"font-size", "26px"}, {"font-weight", "650"}, {"line-height", "1.25"},
+         {"letter-spacing", "-0.01em"}, {"margin", "0"}}));
     if (!t.root_holder().empty()) {
         ComponentGenerator::addChild(&hero, text("featuredHolder", "Claimed by " + t.root_holder(), kMuted));
     }
@@ -249,7 +252,7 @@ ui::Component featuredCase(const Topic& t) {
         ? "Still unresolved. It hangs on \"" + truncate(t.hinge_text(), 160) + "\""
         : "No open challenges. Every challenge so far has an answer.";
     ComponentGenerator::addChild(&hero, text("featuredVerdict", verdict,
-        {{"color", "#d1d5db"}, {"font-size", "0.95rem"}, {"font-weight", "400"}, {"line-height", "1.5"},
+        {{"color", "var(--text-2)"}, {"font-size", "14px"}, {"font-weight", "400"}, {"line-height", "1.55"},
          {"margin", "0"}}));
 
     ui::Component status = box("featuredStatus", {
@@ -257,13 +260,13 @@ ui::Component featuredCase(const Topic& t) {
     });
     ComponentGenerator::addChild(&status, dot("featuredDot", isOpen(t)));
     ComponentGenerator::addChild(&status, text("featuredOwing", owingLine(t),
-        {{"color", isOpen(t) ? "#fca5a5" : "#86efac"}, {"font-size", "0.85rem"}, {"font-weight", "500"},
+        {{"color", isOpen(t) ? "var(--open)" : "var(--settled)"}, {"font-size", "14px"}, {"font-weight", "500"},
          {"margin", "0"}}));
     ComponentGenerator::addChild(&hero, status);
 
     ui::Component read = ComponentGenerator::createButton(
         "openBrief_featured_" + id, "Read the brief", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
-        "px-4 py-2", "rounded-lg", "text-sm");
+        "px-4 py-2", "rounded-lg", "");
     css(&read, {{"align-self", "flex-start"}, {"margin-top", "0.35rem"}});
     ComponentGenerator::addChild(&hero, read);
     return hero;
@@ -293,14 +296,14 @@ ui::Component latestMoves(const std::vector<const Topic*>& topics, long long now
         ComponentGenerator::addAttribute(&row, "data-click", "true");
         ComponentGenerator::addChild(&row, text("latestMoveText_" + std::to_string(n),
             line.move->who() + " " + line.move->verb() + " in " + truncate(titleOf(*line.topic), 70),
-            {{"color", "#d1d5db"}, {"font-size", "0.85rem"}, {"font-weight", "400"}, {"margin", "0"},
+            {{"color", "var(--text-2)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"},
              {"white-space", "nowrap"}, {"overflow", "hidden"}, {"text-overflow", "ellipsis"},
              {"min-width", "0"}, {"flex", "0 1 auto"}}));
         const std::string when = ago(line.move->at(), now);
         if (!when.empty()) {
             ComponentGenerator::addChild(&row, text("latestMoveWhen_" + std::to_string(n),
                 "\xC2\xB7 " + when,
-                {{"color", "#6b7280"}, {"font-size", "0.8rem"}, {"font-weight", "400"}, {"margin", "0"},
+                {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"font-weight", "400"}, {"margin", "0"},
                  {"white-space", "nowrap"}, {"flex", "0 0 auto"}}));
         }
         ComponentGenerator::addChild(&s, row);
@@ -382,12 +385,12 @@ void addExploreTab(ui::Component* page, const std::vector<const Topic*>& topics,
     ComponentGenerator::addChild(&inputWrap, input);
     ComponentGenerator::addChild(&search, inputWrap);
     ComponentGenerator::addChild(&search, ComponentGenerator::createButton(
-        "exploreSearchButton", "Search", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
-        "px-4 py-2", "rounded", "text-sm"));
+        "exploreSearchButton", "Search", "", "bg-gray-700", "hover:bg-gray-600", "text-white",
+        "px-4 py-2", "rounded", ""));
     if (!view.explore_query().empty()) {
         ui::Component clear = ComponentGenerator::createButton(
             "exploreClearSearch", "Clear", "", "", "", "", "", "", "text-sm");
-        css(&clear, {{"background", "transparent"}, {"border", "1px solid #374151"}, {"color", "#9ca3af"}});
+        css(&clear, {{"background", "transparent"}, {"border", "1px solid var(--line)"}, {"color", "var(--text-2)"}});
         ComponentGenerator::addChild(&search, clear);
     }
     ComponentGenerator::addChild(page, search);
@@ -407,7 +410,7 @@ void addExploreTab(ui::Component* page, const std::vector<const Topic*>& topics,
     ui::Component sorts = ComponentGenerator::createContainer("exploreSorts", "", "", "", "", "", "", "");
     css(&sorts, {{"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.4rem"}, {"align-items", "center"}});
     ComponentGenerator::addChild(&sorts, text("exploreSortLabel", "Sort by",
-        {{"color", "#6b7280"}, {"font-size", "0.78rem"}, {"font-weight", "400"}, {"margin", "0"}}));
+        {{"color", "var(--text-3)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"}}));
     ComponentGenerator::addChild(&sorts, pill("exploreSort_moved", "Latest move", !byClaims));
     ComponentGenerator::addChild(&sorts, pill("exploreSort_claims", "Most claims", byClaims));
     ComponentGenerator::addChild(&controls, sorts);
@@ -440,7 +443,7 @@ void addExploreTab(ui::Component* page, const std::vector<const Topic*>& topics,
     }
     ComponentGenerator::addChild(page, list);
     ComponentGenerator::addChild(page, text("exploreCount", count(static_cast<int>(shown.size()), "case", "cases"),
-        {{"color", "#6b7280"}, {"font-size", "0.8rem"}, {"font-weight", "400"}, {"margin", "0"}}));
+        {{"color", "var(--text-3)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"}}));
 }
 
 void addMineTab(ui::Component* page, const std::vector<const Topic*>& topics, long long now,
@@ -459,15 +462,15 @@ void addMineTab(ui::Component* page, const std::vector<const Topic*>& topics, lo
             const std::string key = idOf(*t) + "_" + std::to_string(owed.claim_id());
             ui::Component row = box("waitingRow_" + key, {
                 {"display", "flex"}, {"flex-direction", "row"}, {"align-items", "center"}, {"gap", "0.75rem"},
-                {"padding", "0.6rem 0.25rem"}, {"border-bottom", "1px solid #374151"},
+                {"padding", "11px 6px"}, {"border-bottom", "1px solid var(--line)"},
             });
             ComponentGenerator::addChild(&row, dot("waitingDot_" + key, true));
             ComponentGenerator::addChild(&row, text("waitingText_" + key,
                 "\"" + truncate(owed.text(), 110) + "\"" + kMiddot + "in " + truncate(titleOf(*t), 60),
-                {{"color", "#e5e7eb"}, {"font-size", "0.88rem"}, {"font-weight", "400"}, {"margin", "0"},
+                {{"color", "var(--text)"}, {"font-size", "14px"}, {"font-weight", "400"}, {"margin", "0"},
                  {"flex", "1 1 auto"}, {"min-width", "0"}, {"line-height", "1.4"}}));
             ComponentGenerator::addChild(&row, ComponentGenerator::createButton(
-                "answerChallenge_" + key, "Answer", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
+                "answerChallenge_" + key, "Answer", "", "bg-gray-700", "hover:bg-gray-600", "text-white",
                 "px-3 py-1", "rounded", "text-xs"));
             ComponentGenerator::addChild(&waiting, row);
             ++n;
@@ -527,8 +530,8 @@ ui::Component startDebate(const rendering_info::HomePageRenderingInfo& info, boo
         "border border-gray-700", "rounded-lg", "");
     css(&generateContainer, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.5rem"}});
     ComponentGenerator::addChild(&generateContainer, text("generateHeading",
-        "Or build one from a passage with AI:", {{"color", "#9ca3af"}, {"font-size", "0.8rem"},
-        {"font-weight", "600"}, {"margin", "0"}}));
+        "Or build one from a passage with AI:", {{"color", "var(--text-2)"}, {"font-size", "13px"},
+        {"font-weight", "500"}, {"margin", "0"}}));
     ComponentGenerator::addChild(&generateContainer, ComponentGenerator::createInput(
         "generateTopicInput", "What should the debate be about?", "topic",
         "bg-gray-900", "text-white", "border-gray-600", "p-3", "rounded", "w-full"));
@@ -630,7 +633,7 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
 
     // The build, small, at the foot of the page.
     ComponentGenerator::addChild(&column, text("homeFooter", "commit " GIT_COMMIT_HASH,
-        {{"color", "#4b5563"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "1rem 0 0"},
+        {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "1rem 0 0"},
          {"text-align", "center"}}));
 
     ComponentGenerator::addChild(&main, column);

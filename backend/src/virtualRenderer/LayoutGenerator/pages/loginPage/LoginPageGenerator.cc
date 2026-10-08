@@ -20,7 +20,7 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
         "border-gray-600",
         "p-3",
         "rounded",
-        "w-full max-w-sm",
+        "w-full",
         prefillUsername
     );
     ComponentGenerator::addChild(parent, usernameInput);
@@ -35,7 +35,7 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
         "border-gray-600",
         "p-3",
         "rounded",
-        "w-full max-w-sm"
+        "w-full"
     );
     ComponentGenerator::addAttribute(&passwordInput, "type", "password");
     ComponentGenerator::addChild(parent, passwordInput);
@@ -45,12 +45,12 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
         "signInSubmitButton",
         "Sign in",
         "submit",
-        "bg-green-600",
-        "hover:bg-green-500",
+        "bg-blue-600",
+        "hover:bg-blue-700",
         "text-white",
         "px-6 py-3",
         "rounded-lg",
-        "transition w-full max-w-sm"
+        "transition w-full"
     );
     ComponentGenerator::addChild(parent, submitButton);
 

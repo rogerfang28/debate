@@ -25,4 +25,7 @@ public:
 
 	// The Debate | Brief tabs at the top of both pages. One is lit.
 	static ui::Component BuildDebateTabs(bool briefActive);
+
+	// One tab button in the theme's look; the lit one is the current view.
+	static ui::Component BuildTab(const std::string& id, const std::string& label, bool lit);
 };

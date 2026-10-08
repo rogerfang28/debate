@@ -240,8 +240,8 @@ static ui::Component BuildSelectedClaimPanel(
             "addChildClaimButton",
             "Support",
             "",
-            "bg-blue-600",
-            "hover:bg-blue-700",
+            "bg-gray-700",
+            "hover:bg-gray-600",
             "text-white",
             "px-3 py-1.5",
             "rounded",
@@ -590,7 +590,7 @@ static ui::Component BuildDebateStatusPanel(
             "font-semibold",
             ""
         );
-        if (isViewer) (*line.mutable_css())["color"] = "#f97316";  // orange-500
+        if (isViewer) (*line.mutable_css())["color"] = "var(--open)";
         ComponentGenerator::addChild(&panel, line);
 
         for (const OpenChallenge& oc : list) {
@@ -845,12 +845,12 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
     for (const std::string& key : quick) {
         ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
             "chatQuickButton_" + key, DebateChat::LabelFor(key), "", "bg-gray-700",
-            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded-full", "text-sm"));
     }
     if (chat.messages_size() > 0) {
         ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
             "clearChatButton", "Clear chat", "", "bg-gray-800", "hover:bg-gray-700",
-            "text-gray-400", "px-3 py-1.5", "rounded border border-gray-600", "text-sm"));
+            "text-gray-400", "px-3 py-1.5", "rounded", "text-sm"));
     }
     ComponentGenerator::addChild(&panel, buttons);
 
@@ -898,21 +898,25 @@ ui::Component StepView::BuildDebateTabs(bool briefActive) {
     ui::Component tabs = ComponentGenerator::createContainer("debateTabs", "", "", "", "", "", "", "");
     (*tabs.mutable_css())["display"] = "flex";
     (*tabs.mutable_css())["flex-direction"] = "row";
-    (*tabs.mutable_css())["gap"] = "0.25rem";
-    (*tabs.mutable_css())["align-items"] = "flex-end";
-    auto tab = [&](const std::string& id, const std::string& label, bool active) {
-        ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
-        (*b.mutable_css())["background"] = active ? "#1f2937" : "transparent";
-        (*b.mutable_css())["color"] = active ? "#f9fafb" : "#9ca3af";
-        (*b.mutable_css())["border"] = "none";
-        (*b.mutable_css())["border-bottom"] = active ? "2px solid #38bdf8" : "2px solid transparent";
-        (*b.mutable_css())["border-radius"] = "0.375rem 0.375rem 0 0";
-        (*b.mutable_css())["font-weight"] = active ? "700" : "500";
-        ComponentGenerator::addChild(&tabs, b);
-    };
-    tab("debateTabButton", "Debate", !briefActive);
-    tab("briefTabButton", "Brief", briefActive);
+    (*tabs.mutable_css())["gap"] = "4px";
+    (*tabs.mutable_css())["align-items"] = "center";
+    ComponentGenerator::addChild(&tabs, BuildTab("debateTabButton", "Debate", !briefActive));
+    ComponentGenerator::addChild(&tabs, BuildTab("briefTabButton", "Brief", briefActive));
     return tabs;
+}
+
+// One tab, the theme's (theme.html .tab): quiet words, and the lit one on
+// the raised surface. The header's Home | Explore tabs are the same.
+ui::Component StepView::BuildTab(const std::string& id, const std::string& label, bool lit) {
+    ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "");
+    (*b.mutable_css())["background"] = lit ? "var(--panel-2)" : "transparent";
+    (*b.mutable_css())["color"] = lit ? "var(--text)" : "var(--text-2)";
+    (*b.mutable_css())["border"] = "none";
+    (*b.mutable_css())["border-radius"] = "var(--radius-sm)";
+    (*b.mutable_css())["padding"] = "6px 12px";
+    (*b.mutable_css())["font-size"] = "14px";
+    (*b.mutable_css())["font-weight"] = "500";
+    return b;
 }
 
 // Two small helpers so the guide box can set real CSS rather than fight the
@@ -1427,7 +1431,7 @@ ui::Page StepView::GenerateStepViewPage(
 			if (i > 0) {
 				(*paragraph.mutable_css())["margin-top"] = "0.75rem";
 				(*paragraph.mutable_css())["padding-top"] = "0.75rem";
-				(*paragraph.mutable_css())["border-top"] = "1px dashed #4b5563";
+				(*paragraph.mutable_css())["border-top"] = "1px dashed var(--line-strong)";
 			}
 			ComponentGenerator::addChild(&treeWrapper, paragraph);
 		}

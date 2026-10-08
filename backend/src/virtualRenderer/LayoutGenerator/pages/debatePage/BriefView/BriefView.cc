@@ -29,29 +29,40 @@ ui::Component text(const std::string& id, const std::string& words, const Rules&
     return component;
 }
 
+// The theme's tokens (index.css), so the Brief is painted from the same
+// palette as every other page: captions in text 3, prose in text 2.
 const Rules kCaption = {
-    {"color", "#9ca3af"}, {"font-size", "0.7rem"}, {"font-weight", "700"},
-    {"letter-spacing", "0.08em"}, {"text-transform", "uppercase"}, {"margin", "0"},
+    {"color", "var(--text-3)"}, {"font-size", "12px"}, {"font-weight", "600"},
+    {"letter-spacing", "0.06em"}, {"text-transform", "uppercase"}, {"margin", "0"},
 };
 const Rules kBody = {
-    {"color", "#e5e7eb"}, {"font-size", "0.95rem"}, {"line-height", "1.6"}, {"margin", "0"},
+    {"color", "var(--text-2)"}, {"font-size", "14px"}, {"line-height", "1.6"}, {"margin", "0"},
 };
 const Rules kMuted = {
-    {"color", "#9ca3af"}, {"font-size", "0.85rem"}, {"line-height", "1.5"}, {"margin", "0"},
+    {"color", "var(--text-3)"}, {"font-size", "13px"}, {"line-height", "1.5"}, {"margin", "0"},
 };
 
 // A bordered block with a caption. Every section of the page is one.
 ui::Component card(const std::string& id, const std::string& caption) {
     ui::Component c = ComponentGenerator::createContainer(id, "w-full", "", "", "", "", "", "");
     css(&c, {
-        {"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.6rem"},
-        {"background", "#111827"}, {"border", "1px solid #374151"},
-        {"border-radius", "0.75rem"}, {"padding", "1rem 1.25rem"},
+        {"display", "flex"}, {"flex-direction", "column"}, {"gap", "8px"},
+        {"background", "var(--panel)"}, {"border", "1px solid var(--line)"},
+        {"border-radius", "var(--radius)"}, {"padding", "16px 18px"},
     });
     if (!caption.empty()) {
         ComponentGenerator::addChild(&c, text(id + "Caption", caption, kCaption));
     }
     return c;
+}
+
+// A small round status dot (theme.html .dot): red while someone owes a
+// reply, green when answered, grey otherwise.
+ui::Component dot(const std::string& id, const std::string& color) {
+    ui::Component d = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
+    css(&d, {{"width", "8px"}, {"height", "8px"}, {"min-width", "8px"}, {"border-radius", "9999px"},
+             {"background", color}, {"flex", "0 0 auto"}, {"display", "block"}, {"gap", "0"}});
+    return d;
 }
 
 // One block of prose, one TEXT per line so paragraphs survive.
@@ -123,8 +134,8 @@ ui::Page BriefView::GenerateBriefPage(
         css(&title, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.25rem"}});
         ComponentGenerator::addChild(&title, text("briefTitleCaption", "The brief", kCaption));
         ComponentGenerator::addChild(&title, text("briefTitleText", facts.rootText,
-            {{"color", "#f9fafb"}, {"font-size", "1.4rem"}, {"font-weight", "700"},
-             {"line-height", "1.3"}, {"margin", "0"}}));
+            {{"color", "var(--text)"}, {"font-size", "24px"}, {"font-weight", "650"},
+             {"line-height", "1.25"}, {"letter-spacing", "-0.01em"}, {"margin", "4px 0 0"}}));
         if (!facts.rootHolder.empty()) {
             ComponentGenerator::addChild(&title, text("briefTitleWho", "Claimed by " + facts.rootHolder + ".", kMuted));
         }
@@ -134,7 +145,7 @@ ui::Page BriefView::GenerateBriefPage(
     // ---- Verdict ----------------------------------------------------------------
     {
         ui::Component verdict = card("briefVerdict", "");
-        css(&verdict, {{"border-left", "5px solid " + std::string(facts.openByHolder.empty() ? "#22c55e" : "#f97316")}});
+        css(&verdict, {{"border-left", "3px solid " + std::string(facts.openByHolder.empty() ? "var(--settled)" : "var(--open)")}});
         int openSites = 0;
         const DebateBrief::Site* hinge = nullptr;
         for (const DebateBrief::Site& s : facts.sites) {
@@ -143,8 +154,8 @@ ui::Page BriefView::GenerateBriefPage(
         }
         ComponentGenerator::addChild(&verdict, text("briefVerdictPill",
             openSites > 0 ? "Unresolved" : "No open challenges",
-            {{"color", openSites > 0 ? "#fdba74" : "#86efac"}, {"font-size", "0.8rem"},
-             {"font-weight", "800"}, {"letter-spacing", "0.08em"}, {"text-transform", "uppercase"}, {"margin", "0"}}));
+            {{"color", openSites > 0 ? "var(--open)" : "var(--settled)"}, {"font-size", "12px"},
+             {"font-weight", "600"}, {"letter-spacing", "0.06em"}, {"text-transform", "uppercase"}, {"margin", "0"}}));
 
         std::string verdictWords;
         if (wordsCurrent && !prose.verdict.empty()) {
@@ -157,7 +168,7 @@ ui::Page BriefView::GenerateBriefPage(
             verdictWords = "Nothing in this debate is currently challenged.";
         }
         ComponentGenerator::addChild(&verdict, text("briefVerdictText", verdictWords,
-            {{"color", "#f9fafb"}, {"font-size", "1.05rem"}, {"line-height", "1.55"}, {"font-weight", "500"}, {"margin", "0"}}));
+            {{"color", "var(--text)"}, {"font-size", "16px"}, {"line-height", "1.55"}, {"font-weight", "400"}, {"margin", "0"}}));
 
         // The model's part: asked for, in progress, or behind the debate.
         ui::Component aiRow = ComponentGenerator::createContainer("briefAiRow", "w-full", "", "", "", "", "", "");
@@ -167,7 +178,7 @@ ui::Page BriefView::GenerateBriefPage(
             // The id ends in Pending so the client polls while it writes.
             ComponentGenerator::addChild(&aiRow, text("briefPending",
                 "Writing the words... " + std::to_string(state.elapsed_seconds()) + "s elapsed",
-                {{"color", "#a5b4fc"}, {"font-size", "0.85rem"}, {"margin", "0"}}));
+                {{"color", "var(--accent-hover)"}, {"font-size", "13px"}, {"margin", "0"}}));
             ComponentGenerator::addChild(&aiRow, smallButton("cancelAiWorkButton", "Cancel"));
         } else {
             ComponentGenerator::addChild(&aiRow, smallButton("generateBriefButton",
@@ -175,18 +186,18 @@ ui::Page BriefView::GenerateBriefPage(
             if (haveWords && !wordsCurrent) {
                 ComponentGenerator::addChild(&aiRow, text("briefStale",
                     "The debate has changed since the words were written; the claims' own sentences are shown instead.",
-                    {{"color", "#fbbf24"}, {"font-size", "0.8rem"}, {"margin", "0"}}));
+                    {{"color", "var(--warn)"}, {"font-size", "13px"}, {"margin", "0"}}));
             }
             if (!state.error().empty()) {
                 ComponentGenerator::addChild(&aiRow, text("briefError", state.error(),
-                    {{"color", "#fca5a5"}, {"font-size", "0.8rem"}, {"margin", "0"}}));
+                    {{"color", "var(--open)"}, {"font-size", "13px"}, {"margin", "0"}}));
             }
         }
         ComponentGenerator::addChild(&verdict, aiRow);
         ComponentGenerator::addChild(&verdict, text("briefAiNote",
             "Who holds what, which challenges are open and whose move it is are computed from the debate. "
             "Only the verdict sentence, the story and the site names are written by the model.",
-            {{"color", "#6b7280"}, {"font-size", "0.75rem"}, {"line-height", "1.4"}, {"margin", "0"}}));
+            {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"line-height", "1.4"}, {"margin", "0"}}));
         ComponentGenerator::addChild(&column, verdict);
     }
 
@@ -240,13 +251,13 @@ ui::Page BriefView::GenerateBriefPage(
             ui::Component r = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
             css(&r, {{"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.6rem"}, {"align-items", "baseline"}, {"flex-wrap", "wrap"}});
             ComponentGenerator::addChild(&r, text(id + "Label", label,
-                {{"color", color}, {"font-size", "0.85rem"}, {"font-weight", "700"}, {"margin", "0"}, {"min-width", "8rem"}}));
+                {{"color", color}, {"font-size", "13px"}, {"font-weight", "500"}, {"margin", "0"}, {"min-width", "8rem"}}));
             ComponentGenerator::addChild(&r, text(id + "Names", names + ".", kBody));
             ComponentGenerator::addChild(&sides, r);
         };
-        row("briefSidesTrue", "Say it is true:", trueNames, "#86efac");
-        row("briefSidesFalse", "Say it is false:", falseNames, "#fca5a5");
-        row("briefSidesUndecided", "Undecided:", undecided, "#d1d5db");
+        row("briefSidesTrue", "Say it is true:", trueNames, "var(--settled)");
+        row("briefSidesFalse", "Say it is false:", falseNames, "var(--open)");
+        row("briefSidesUndecided", "Undecided:", undecided, "var(--text-3)");
         if (evidenceOnly > 0) {
             ComponentGenerator::addChild(&sides, text("briefSidesEvidenceOnly",
                 std::to_string(evidenceOnly) + (evidenceOnly == 1 ? " other voice is" : " other voices are") +
@@ -276,7 +287,7 @@ ui::Page BriefView::GenerateBriefPage(
             const std::string sid = std::to_string(site.id);
             ui::Component block = card("briefSite_" + sid, "");
             if (site.hinge) {
-                css(&block, {{"border-left", "5px solid #f97316"}});
+                css(&block, {{"border-left", "3px solid var(--open)"}});
             }
 
             std::string name;
@@ -287,18 +298,18 @@ ui::Page BriefView::GenerateBriefPage(
                 name = site.moves.front().text;
             }
             ComponentGenerator::addChild(&block, text("briefSiteName_" + sid, std::to_string(number) + ". " + name,
-                {{"color", "#f9fafb"}, {"font-size", "1.05rem"}, {"font-weight", "700"}, {"line-height", "1.35"}, {"margin", "0"}}));
+                {{"color", "var(--text)"}, {"font-size", "15px"}, {"font-weight", "600"}, {"line-height", "1.4"}, {"margin", "0"}}));
             if (site.hinge) {
                 ComponentGenerator::addChild(&block, text("briefSiteHinge_" + sid,
                     "The whole case hangs on this one.",
-                    {{"color", "#fdba74"}, {"font-size", "0.8rem"}, {"font-weight", "600"}, {"margin", "0"}}));
+                    {{"color", "var(--warn)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"}}));
             }
 
             // The exchange. The first line is the claim; then each challenge
             // to it, and each reply to a challenge.
             ui::Component exchange = ComponentGenerator::createContainer("briefSiteMoves_" + sid, "w-full", "", "", "", "", "", "");
             css(&exchange, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.35rem"},
-                            {"border-left", "2px solid #374151"}, {"padding-left", "0.75rem"}});
+                            {"border-left", "2px solid var(--line-strong)"}, {"padding-left", "12px"}});
             int moveIndex = 0;
             for (const DebateBrief::Move& m : site.moves) {
                 std::string verb;
@@ -310,33 +321,34 @@ ui::Page BriefView::GenerateBriefPage(
                 ComponentGenerator::addChild(&exchange, text(
                     "briefSiteMove_" + sid + "_" + std::to_string(moveIndex),
                     who + verb + ": " + m.text,
-                    {{"color", m.challenge ? "#e5e7eb" : "#c7d2fe"}, {"font-size", "0.92rem"},
+                    {{"color", m.challenge ? "var(--text)" : "#c7d2fe"}, {"font-size", "13.5px"},
                      {"line-height", "1.5"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
                 ++moveIndex;
             }
             ComponentGenerator::addChild(&block, exchange);
 
             // The dot, and one sentence.
-            std::string dot, dotWords, dotColor;
+            std::string dotWords, dotColor;
             if (site.open) {
-                dot = "\xF0\x9F\x94\xB4 ";
                 dotWords = (site.turn == viewerName ? "You have" : site.turn + (site.turn.find(',') == std::string::npos ? " has" : " have"))
                            + " not replied.";
-                dotColor = "#fca5a5";
+                dotColor = "var(--open)";
             } else if (site.outcome.find("conceded") != std::string::npos) {
-                dot = "\xE2\x9A\xAA ";
                 dotWords = site.outcome + ".";
-                dotColor = "#d1d5db";
+                dotColor = "var(--text-3)";
             } else {
-                dot = "\xF0\x9F\x9F\xA2 ";
                 dotWords = "Answered.";
-                dotColor = "#86efac";
+                dotColor = "var(--settled)";
             }
             ui::Component footer = ComponentGenerator::createContainer("briefSiteFooter_" + sid, "w-full", "", "", "", "", "", "");
             css(&footer, {{"display", "flex"}, {"flex-direction", "row"}, {"justify-content", "space-between"},
                           {"align-items", "center"}, {"flex-wrap", "wrap"}, {"gap", "0.5rem"}});
-            ComponentGenerator::addChild(&footer, text("briefSiteStatus_" + sid, dot + dotWords,
-                {{"color", dotColor}, {"font-size", "0.9rem"}, {"font-weight", "600"}, {"margin", "0"}}));
+            ui::Component status = ComponentGenerator::createContainer("briefSiteStatusLine_" + sid, "", "", "", "", "", "", "");
+            css(&status, {{"display", "flex"}, {"flex-direction", "row"}, {"align-items", "center"}, {"gap", "8px"}});
+            ComponentGenerator::addChild(&status, dot("briefSiteDot_" + sid, dotColor));
+            ComponentGenerator::addChild(&status, text("briefSiteStatus_" + sid, dotWords,
+                {{"color", dotColor}, {"font-size", "14px"}, {"font-weight", "500"}, {"margin", "0"}}));
+            ComponentGenerator::addChild(&footer, status);
             const int jumpTo = site.moves.empty() ? site.targetClaimId : site.moves.back().claimId;
             ComponentGenerator::addChild(&footer, smallButton("briefOpenClaim_" + std::to_string(jumpTo), "Open in debate"));
             ComponentGenerator::addChild(&block, footer);
@@ -378,7 +390,7 @@ ui::Page BriefView::GenerateBriefPage(
                     (isViewer ? "You" : holder) + ": " + std::to_string(list.size()) +
                         (list.size() == 1 ? " challenge waiting" : " challenges waiting") +
                         (isViewer ? " for your answer" : ""),
-                    {{"color", isViewer ? "#fdba74" : "#f9fafb"}, {"font-size", "0.92rem"}, {"font-weight", "700"}, {"margin", "0"}}));
+                    {{"color", isViewer ? "var(--open)" : "var(--text)"}, {"font-size", "14px"}, {"font-weight", "500"}, {"margin", "0"}}));
                 for (int challengeId : list) {
                     auto it = collectionProto.claims_by_id().find(challengeId);
                     if (it == collectionProto.claims_by_id().end()) continue;
@@ -409,7 +421,7 @@ ui::Page BriefView::GenerateBriefPage(
             const std::string who = m.who == viewerName ? "You" : m.who;
             ComponentGenerator::addChild(&timeline, text("briefTimeline_" + std::to_string(m.claimId),
                 std::to_string(n) + ". " + who + (m.challenge ? " challenged: " : " claimed: ") + m.text,
-                {{"color", m.challenge ? "#e5e7eb" : "#c7d2fe"}, {"font-size", "0.88rem"},
+                {{"color", m.challenge ? "var(--text-2)" : "#c7d2fe"}, {"font-size", "13.5px"},
                  {"line-height", "1.5"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
         }
         if (n == 0) {
@@ -424,7 +436,7 @@ ui::Page BriefView::GenerateBriefPage(
         int n = 0;
         for (const std::string& url : facts.sources) {
             ComponentGenerator::addChild(&sources, text("briefSource_" + std::to_string(n++), url,
-                {{"color", "#93c5fd"}, {"font-size", "0.85rem"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
+                {{"color", "var(--accent)"}, {"font-size", "13px"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
         }
         ComponentGenerator::addChild(&column, sources);
     }

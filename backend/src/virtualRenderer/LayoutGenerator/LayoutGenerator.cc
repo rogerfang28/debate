@@ -39,7 +39,7 @@ ui::Component BuildSiteHeader(const user::User& user) {
     headerCss["width"] = "100%";
     headerCss["align-self"] = "stretch";
     headerCss["padding-bottom"] = "0.75rem";
-    headerCss["border-bottom"] = "1px solid #374151";
+    headerCss["border-bottom"] = "1px solid var(--line)";
 
     // Left: the name, then the home tabs (Home | Explore | Your debates).
     // On the home page the current tab is lit the way the Debate | Brief
@@ -47,15 +47,18 @@ ui::Component BuildSiteHeader(const user::User& user) {
     ui::Component left = ComponentGenerator::createContainer("siteHeaderNav", "", "", "", "", "", "", "");
     (*left.mutable_css())["display"] = "flex";
     (*left.mutable_css())["flex-direction"] = "row";
-    (*left.mutable_css())["align-items"] = "flex-end";
+    (*left.mutable_css())["align-items"] = "center";
     (*left.mutable_css())["flex-wrap"] = "wrap";
     (*left.mutable_css())["gap"] = "0.25rem";
 
     ui::Component home = ComponentGenerator::createButton(
-        "goHomeButton", "Debate Hub", "", "bg-transparent", "hover:text-blue-300", "text-blue-400",
-        "px-0 py-1", "rounded", "text-lg font-bold");
+        "goHomeButton", "Debate Hub", "", "bg-transparent", "", "", "", "", "");
     (*home.mutable_css())["background"] = "transparent";
     (*home.mutable_css())["border"] = "none";
+    (*home.mutable_css())["padding"] = "0";
+    (*home.mutable_css())["color"] = "var(--text)";
+    (*home.mutable_css())["font-size"] = "15px";
+    (*home.mutable_css())["font-weight"] = "650";
     (*home.mutable_css())["margin-right"] = "0.75rem";
     ComponentGenerator::addChild(&left, home);
 
@@ -64,18 +67,7 @@ ui::Component BuildSiteHeader(const user::User& user) {
     const std::string active =
         onHome ? HomePageGenerator::ActiveTab(user.engagement().home_view(), visitor) : std::string();
     auto tab = [&](const std::string& id, const std::string& label, bool lit) {
-        ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
-        (*b.mutable_css())["background"] = lit ? "#1f2937" : "transparent";
-        (*b.mutable_css())["color"] = lit ? "#f9fafb" : "#9ca3af";
-        // Longhands only: a "border" shorthand beside "border-bottom" wins
-        // or loses by the order the style map happens to arrive in.
-        (*b.mutable_css())["border-top"] = "none";
-        (*b.mutable_css())["border-left"] = "none";
-        (*b.mutable_css())["border-right"] = "none";
-        (*b.mutable_css())["border-bottom"] = lit ? "2px solid #38bdf8" : "2px solid transparent";
-        (*b.mutable_css())["border-radius"] = "0.375rem 0.375rem 0 0";
-        (*b.mutable_css())["font-weight"] = lit ? "700" : "500";
-        ComponentGenerator::addChild(&left, b);
+        ComponentGenerator::addChild(&left, StepView::BuildTab(id, label, lit));
     };
     tab("homeTab_home", "Home", active == "home");
     tab("homeTab_explore", "Explore", active == "explore");
@@ -90,17 +82,16 @@ ui::Component BuildSiteHeader(const user::User& user) {
     (*account.mutable_css())["align-items"] = "center";
     (*account.mutable_css())["gap"] = "0.75rem";
     if (anonymous_user::IsAnonymousUsername(user.username())) {
+        // Outlined, small: the one filled button on a screen is the page's own.
         ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
-            "openSignInButton", "Sign in", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
-            "px-4 py-2", "rounded", "transition-colors text-sm"));
+            "openSignInButton", "Sign in", "", "bg-gray-700", "", "", "", "", "text-sm"));
     } else {
         ComponentGenerator::addChild(&account, ComponentGenerator::createText(
-            "headerUsername", user.username(), "text-sm", "text-gray-200", "font-medium", ""));
+            "headerUsername", user.username(), "text-sm", "text-gray-400", "", ""));
         // An auto-login build has no session to leave.
         if (!demo_mode::autoLogin) {
             ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
-                "logoutButton", "Sign out", "logout", "bg-gray-700", "hover:bg-gray-600", "text-gray-200",
-                "px-3 py-1.5", "rounded", "transition text-xs border border-gray-600"));
+                "logoutButton", "Sign out", "logout", "bg-transparent", "", "", "", "", "text-sm"));
         }
     }
     ComponentGenerator::addChild(&header, account);
@@ -119,26 +110,25 @@ ui::Component BuildSignInModal(const user::User& user, const std::string& error,
     (*overlay.mutable_css())["z-index"] = "60";
 
     ui::Component content = ComponentGenerator::createContainer(
-        "signInModalContent", "flex flex-col items-center gap-4", "bg-gray-800", "p-8", "",
+        "signInModalContent", "flex flex-col items-stretch gap-3", "bg-gray-800", "p-8", "",
         "border-2 border-gray-700", "rounded-lg", "w-full max-w-md");
 
     ComponentGenerator::addChild(&content, ComponentGenerator::createText(
-        "signInModalTitle", anonymous_user::SignInTitle(user.pending_action()), "text-2xl",
-        "text-white", "font-bold", "text-center"));
+        "signInModalTitle", anonymous_user::SignInTitle(user.pending_action()), "text-xl",
+        "text-white", "font-semibold", ""));
     ComponentGenerator::addChild(&content, ComponentGenerator::createText(
         "signInModalDescription",
         "Use a username and password (a new name makes an account), or Google. You will come back to this page.",
-        "text-sm", "text-gray-400", "", "text-center"));
+        "text-sm", "text-gray-400", "", ""));
     if (!error.empty()) {
         ComponentGenerator::addChild(&content, ComponentGenerator::createText(
-            "loginError", error, "text-sm", "text-red-400", "font-medium", "text-center"));
+            "loginError", error, "text-sm", "text-red-400", "font-medium", ""));
     }
 
     LoginPageGenerator::AddLoginForm(&content, prefillUsername);
 
     ComponentGenerator::addChild(&content, ComponentGenerator::createButton(
-        "closeSignInButton", "Not now", "", "bg-gray-700", "hover:bg-gray-600", "text-gray-200",
-        "px-3 py-1.5", "rounded", "transition text-xs"));
+        "closeSignInButton", "Not now", "", "bg-transparent", "", "", "", "", "text-xs self-end"));
 
     ComponentGenerator::addChild(&overlay, content);
     return overlay;
