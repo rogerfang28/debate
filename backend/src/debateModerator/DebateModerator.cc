@@ -7,6 +7,7 @@
 #include "../moveLog/MoveLogger.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 // add claim
 #include "event-handlers/AddClaimHandler/AddClaimHandler.h"
 // debate management
@@ -109,6 +110,65 @@ bool isAnonymousBlockedEvent(debate_event::EventType type) {
     }
 }
 
+// The presses that change a debate's content. A signed-in user who is not yet
+// a member of the debate they are in becomes one with the first of these:
+// membership is implicit, there is no Join button. (Opening a dialog or
+// cancelling one is not taking part; this is the list of what is.)
+bool isContributionEvent(debate_event::EventType type) {
+    switch (type) {
+        case debate_event::ADD_CHILD_CLAIM:
+        case debate_event::DELETE_CURRENT_STATEMENT:
+        case debate_event::DELETE_CHILD_CLAIM:
+        case debate_event::SUBMIT_EDIT_CLAIM_DESCRIPTION:
+        case debate_event::SUBMIT_EDIT_CLAIM:
+        case debate_event::SUBMIT_CONNECT_CLAIMS:
+        case debate_event::DELETE_LINK:
+        case debate_event::SUBMIT_CHALLENGE_CLAIM:
+        case debate_event::CONCEDE_CHALLENGE:
+        case debate_event::ENDORSE_CLAIM:
+        case debate_event::UNENDORSE_CLAIM:
+        case debate_event::DELETE_CHALLENGE:
+        case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
+            return true;
+        default:
+            return false;
+    }
+}
+
+// Events that only move a reader around, or touch their own record (chat,
+// sign-in, the Brief's words): no debate's claims, links, moves or members
+// change. Every other event clears the home shelf's cached cards.
+bool leavesDebatesUnchanged(debate_event::EventType type) {
+    switch (type) {
+        case debate_event::EVENT_KIND_UNSPECIFIED:
+        case debate_event::NONE:
+        case debate_event::LOGIN:
+        case debate_event::LOGOUT:
+        case debate_event::GO_HOME:
+        case debate_event::ENTER_DEBATE:
+        case debate_event::OPEN_DEBATE_BRIEF:
+        case debate_event::GO_TO_PARENT:
+        case debate_event::GO_TO_CLAIM:
+        case debate_event::SELECT_CLAIM:
+        case debate_event::SELECT_LINK:
+        case debate_event::GO_TO_CHALLENGE:
+        case debate_event::GO_TO_CHALLENGED_PARENT_CLAIM:
+        case debate_event::GO_TO_OVERVIEW:
+        case debate_event::GO_TO_FULL_DEBATE_VIEW:
+        case debate_event::GO_TO_BRIEF:
+        case debate_event::GENERATE_BRIEF:
+        case debate_event::OPEN_CLAIM_IN_DEBATE:
+        case debate_event::ASK_CHAT:
+        case debate_event::CLEAR_CHAT:
+        case debate_event::OPEN_SIGN_IN:
+        case debate_event::CLOSE_SIGN_IN:
+        case debate_event::DISMISS_AI_NOTICE:
+            return true;
+        default:
+            return false;
+    }
+}
+
 bool isClaimMetaSectionBlockedEvent(debate_event::EventType type) {
     switch (type) {
         case debate_event::REPORT_CLAIM:
@@ -186,6 +246,24 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
         event.set_type(debate_event::NONE);
     }
 
+    // Implicit membership: anyone signed in may enter any debate, and their
+    // first contribution makes them a member. Members' claims and stances
+    // are what a debate's collection is built from, so this comes before
+    // the event is handled.
+    if (!anonymous && isContributionEvent(event.type())) {
+        const user::User actor = debateWrapper.getUserProtobuf(user_id);
+        const int debateId = actor.engagement().debating_info().debate_id();
+        if (actor.engagement().current_action() == user_engagement::ACTION_DEBATING && debateId > 0) {
+            const std::vector<int> members = debateWrapper.findUsersInDebate(debateId);
+            if (std::find(members.begin(), members.end(), user_id) == members.end()) {
+                debateWrapper.addMemberToDebate(debateId, user_id);
+                Log::info("[DebateModerator] User " + std::to_string(user_id) + " joined debate " +
+                          std::to_string(debateId) + " implicitly (first contribution, event type " +
+                          std::to_string(event.type()) + ").");
+            }
+        }
+    }
+
     // Move log (parallel record -- nothing reads it yet). Split around the
     // dispatch because an event describes intent while the log records outcome:
     // deletions are only readable before, creations only after. All of the
@@ -194,6 +272,9 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     MoveLogger::PreState movePre = MoveLogger::capture(event, user_id, debateWrapper);
 
     handleDebateEvent(user_id, event);
+    if (!leavesDebatesUnchanged(event.type())) {
+        homeCardCache.clear();
+    }
 
     MoveLogger::logForEvent(event, user_id, movePre, debateWrapper, dbWrapper);
 
@@ -233,6 +314,13 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::ENTER_DEBATE:
             Log::info("[DebateModerator] Event Type: ENTER_DEBATE");
             MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user_id, debateWrapper);
+            break;
+        case debate_event::OPEN_DEBATE_BRIEF:
+            // A card on the home shelf: into the debate, onto its Brief tab.
+            Log::info("[DebateModerator] Event Type: OPEN_DEBATE_BRIEF");
+            if (MoveUserHandler::EnterDebate(event.enter_debate().debate_id(), user_id, debateWrapper)) {
+                BriefHandler::Open(user_id, debateWrapper);
+            }
             break;
         case debate_event::GO_HOME:
             Log::info("[DebateModerator] Event Type: GO_HOME");
@@ -605,6 +693,9 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
 
     // Copy the engagement data
     *responseMessage.mutable_user() = userProto;
+    // Older records never stored their own id; the page needs it (whose
+    // debates may be deleted).
+    responseMessage.mutable_user()->set_user_id(user_id);
 
     // Strip the credential before it can travel any further. Today this message
     // stays server-side -- MiddleendRequestHandler serialises only the ui::Page
@@ -620,7 +711,8 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
     switch (userProto.engagement().current_action()) {
         case user_engagement::ACTION_HOME:
             Log::info("[DebateModerator] Building HOME page response for user: " + std::to_string(user_id));
-            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper);
+            HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper,
+                                                             &homeCardCache);
             break;
             
         case user_engagement::ACTION_DEBATING:

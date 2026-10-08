@@ -1481,7 +1481,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "8 \001(\0132\032.debate_event.EndorseClaimH\000R\014end"
     "orseClaim\022G\n\017unendorse_claim\0309 \001(\0132\034.deb"
     "ate_event.UnendorseClaimH\000R\016unendorseCla"
-    "imB\t\n\007payloadJ\004\0104\0205*\216\r\n\tEventType\022\032\n\026EVE"
+    "imB\t\n\007payloadJ\004\0104\0205*\245\r\n\tEventType\022\032\n\026EVE"
     "NT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\rCREAT"
     "E_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDELETE_"
     "DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HOME\020\006\022"
@@ -1522,8 +1522,9 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "\023\n\017UNENDORSE_CLAIM\020C\022\014\n\010ASK_CHAT\020D\022\016\n\nCL"
     "EAR_CHAT\020E\022\017\n\013GO_TO_BRIEF\020F\022\022\n\016GENERATE_"
     "BRIEF\020G\022\030\n\024OPEN_CLAIM_IN_DEBATE\020H\022\020\n\014OPE"
-    "N_SIGN_IN\020I\022\021\n\rCLOSE_SIGN_IN\020J\"\004\0106\0206\"\004\0107"
-    "\0207\"\004\0108\0208\"\004\0109\0209\"\004\010;\020;b\006proto3"
+    "N_SIGN_IN\020I\022\021\n\rCLOSE_SIGN_IN\020J\022\025\n\021OPEN_D"
+    "EBATE_BRIEF\020K\"\004\0106\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004\010"
+    ";\020;b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1533,7 +1534,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    6908,
+    6931,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1552,7 +1553,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3538944u, 32u, 2097104u, };
+    3538944u, 32u, 4194256u, };
 // ===================================================================
 
 class CreateDebate::_Internal {

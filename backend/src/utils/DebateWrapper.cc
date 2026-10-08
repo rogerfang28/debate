@@ -251,8 +251,15 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
         debate::Debate debateProto;
         debateProto.ParseFromArray(debateData.data(), debateData.size());
         
+        // Only its creator may delete a debate.
+        if (debateProto.creator_id() != user_id) {
+            Log::warn("[DebateWrapper] User " + std::to_string(user_id) + " may not delete debate " +
+                      std::to_string(debateId) + ": only its creator can.");
+            return;
+        }
+
         // find all debatemembers and delete
-        databaseWrapper.debateMembers.removeAllMembersFromDebate(debateProto.root_claim_id());
+        databaseWrapper.debateMembers.removeAllMembersFromDebate(debateId);
         // delete all claims associated with the debate
         debate::Claim rootClaim = getClaimById(debateProto.root_claim_id());
         std::vector<int> claimsToDelete;
@@ -271,9 +278,9 @@ void DebateWrapper::deleteDebate(const int& debateId, const int& user_id) {
             deleteClaim(claimId);
         }
 
-        // Delete the debate entry from the DEBATE table
-        // debateDb.removeDebate(std::stoi(debateId), user);
-        databaseWrapper.debateMembers.removeMember(debateId, user_id);
+        // The home shelf lists every debate in the DEBATE table, so the row
+        // goes too (its claims stay in STATEMENTS, unlinked, as before).
+        databaseWrapper.debates.removeDebate(debateId, user_id);
     }
 }
 

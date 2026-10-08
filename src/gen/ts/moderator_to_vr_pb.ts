@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCJxCgtEZWJhdGVUb3BpYxIKCgJpZBgBIAEoBRINCgV0b3BpYxgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEhQKDGlzX2NoYWxsZW5nZRgEIAEoCBIdChVjbGFpbV9pdHNfY2hhbGxlbmdpbmcYBSABKAkiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC5tb2RlcmF0b3JfdG9fdnIuRGViYXRlVG9waWNiBnByb3RvMw", [file_user, file_collection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCKcAgoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJEhEKCXJvb3RfdGV4dBgGIAEoCRITCgtyb290X2hvbGRlchgHIAEoCRISCgp1bnJlc29sdmVkGAggASgIEhIKCmhpbmdlX3RleHQYCSABKAkSEwoLY2xhaW1fY291bnQYCiABKAUSFAoMc3RhbmNlX2NvdW50GAsgASgFEhwKFG9wZW5fY2hhbGxlbmdlX2NvdW50GAwgASgFEhAKCGludm9sdmVkGA0gAygJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -75,6 +75,61 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
    * @generated from field: string claim_its_challenging = 5;
    */
   claimItsChallenging: string;
+
+  /**
+   * The home shelf's card, computed from the debate's Brief structure
+   * (DebateBrief::Compute) when the home page is built.
+   *
+   * the main claim; empty if it has none
+   *
+   * @generated from field: string root_text = 6;
+   */
+  rootText: string;
+
+  /**
+   * who claims it (the root's voice)
+   *
+   * @generated from field: string root_holder = 7;
+   */
+  rootHolder: string;
+
+  /**
+   * some challenge is still unanswered
+   *
+   * @generated from field: bool unresolved = 8;
+   */
+  unresolved: boolean;
+
+  /**
+   * when unresolved: the claim it hangs on
+   *
+   * @generated from field: string hinge_text = 9;
+   */
+  hingeText: string;
+
+  /**
+   * @generated from field: int32 claim_count = 10;
+   */
+  claimCount: number;
+
+  /**
+   * people with a stance on the main claim
+   *
+   * @generated from field: int32 stance_count = 11;
+   */
+  stanceCount: number;
+
+  /**
+   * @generated from field: int32 open_challenge_count = 12;
+   */
+  openChallengeCount: number;
+
+  /**
+   * their names, stance order
+   *
+   * @generated from field: repeated string involved = 13;
+   */
+  involved: string[];
 };
 
 /**

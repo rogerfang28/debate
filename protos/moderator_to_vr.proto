@@ -19,6 +19,16 @@ message DebateTopic {
     int32 creator_id = 3;
     bool is_challenge = 4;
     string claim_its_challenging = 5;
+    // The home shelf's card, computed from the debate's Brief structure
+    // (DebateBrief::Compute) when the home page is built.
+    string root_text = 6;          // the main claim; empty if it has none
+    string root_holder = 7;        // who claims it (the root's voice)
+    bool unresolved = 8;           // some challenge is still unanswered
+    string hinge_text = 9;         // when unresolved: the claim it hangs on
+    int32 claim_count = 10;
+    int32 stance_count = 11;       // people with a stance on the main claim
+    int32 open_challenge_count = 12;
+    repeated string involved = 13; // their names, stance order
 }
 
 message DebateList {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include "moderator_to_vr.pb.h"
 #include "debate_event.pb.h"
@@ -37,6 +38,9 @@ private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
     moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const int& user_id);
     int validateAuth(debate_event::DebateEvent& event);
+    // The home shelf's cards, by debate id (see HomePageResponseGenerator).
+    // Cleared by any event that may change a debate.
+    std::map<int, moderator_to_vr::DebateTopic> homeCardCache;
     // database classes
     Database globalDb;
     DatabaseWrapper dbWrapper;

@@ -4,6 +4,123 @@
 #include "../../../../utils/AnonymousUser.h"
 #include "../../../../utils/TutorialLibrary.h"
 
+#include <algorithm>
+#include <utility>
+#include <vector>
+
+namespace {
+
+using Rules = std::vector<std::pair<std::string, std::string>>;
+
+void css(ui::Component* component, const Rules& rules) {
+    for (const auto& rule : rules) {
+        (*component->mutable_css())[rule.first] = rule.second;
+    }
+}
+
+ui::Component text(const std::string& id, const std::string& words, const Rules& rules) {
+    ui::Component component = ComponentGenerator::createText(id, words, "", "", "", "");
+    css(&component, rules);
+    return component;
+}
+
+const Rules kCaption = {
+    {"color", "#9ca3af"}, {"font-size", "0.7rem"}, {"font-weight", "700"},
+    {"letter-spacing", "0.08em"}, {"text-transform", "uppercase"}, {"margin", "0"},
+};
+const Rules kMuted = {
+    {"color", "#9ca3af"}, {"font-size", "0.85rem"}, {"line-height", "1.5"}, {"margin", "0"},
+};
+
+// Cards with fewer claims than this go in the folded section at the bottom:
+// mostly test debates ("test", "1", ...) and debates nobody has argued yet.
+constexpr int kShelfMinClaims = 3;
+
+// Cut to at most maxBytes without splitting a UTF-8 character (a string
+// field must stay valid UTF-8), at a word break when there is one nearby.
+std::string truncate(const std::string& s, size_t maxBytes) {
+    if (s.size() <= maxBytes) return s;
+    size_t cut = maxBytes;
+    while (cut > 0 && (static_cast<unsigned char>(s[cut]) & 0xC0) == 0x80) --cut;
+    const size_t space = s.rfind(' ', cut);
+    if (space != std::string::npos && space + 24 > cut) cut = space;
+    return s.substr(0, cut) + "...";
+}
+
+std::string count(int n, const std::string& one, const std::string& many) {
+    return std::to_string(n) + " " + (n == 1 ? one : many);
+}
+
+// One debate on the shelf: what is claimed and by whom, where it stands, how
+// big it is, who is in it. The whole card is one press (data-click): it
+// opens the debate on its Brief tab. Delete, for the creator only, is a quiet
+// control in the corner that the card's own press ignores.
+ui::Component debateCard(const rendering_info::HomeDebateTopicRenderInfo& topic, bool canDelete) {
+    const std::string id = std::to_string(topic.debate_root_claim_id());
+    ui::Component card = ComponentGenerator::createContainer("openDebateCard_" + id, "w-full", "", "", "", "", "", "");
+    ComponentGenerator::addAttribute(&card, "data-click", "true");
+    css(&card, {
+        {"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.45rem"},
+        {"background", "#111827"}, {"border", "1px solid #374151"},
+        {"border-radius", "0.75rem"}, {"padding", "1rem 1.25rem"},
+    });
+
+    // Title row: the main claim, and Delete at the far end.
+    ui::Component titleRow = ComponentGenerator::createContainer("debateCardTitleRow_" + id, "w-full", "", "", "", "", "", "");
+    css(&titleRow, {{"display", "flex"}, {"flex-direction", "row"}, {"justify-content", "space-between"},
+                    {"align-items", "flex-start"}, {"gap", "0.75rem"}});
+    const std::string title = topic.root_text().empty() ? topic.topic() : topic.root_text();
+    ComponentGenerator::addChild(&titleRow, text("debateCardTitle_" + id, truncate(title, 220),
+        {{"color", "#f9fafb"}, {"font-size", "1.05rem"}, {"font-weight", "700"},
+         {"line-height", "1.35"}, {"margin", "0"}, {"flex", "1 1 auto"}, {"min-width", "0"}}));
+    if (canDelete) {
+        ui::Component del = ComponentGenerator::createButton(
+            "deleteDebateButton_" + id, "Delete", "", "bg-transparent", "hover:text-red-400",
+            "text-gray-500", "px-2 py-1", "rounded", "text-xs");
+        css(&del, {{"background", "transparent"}, {"border", "none"}, {"flex", "0 0 auto"}});
+        ComponentGenerator::addChild(&titleRow, del);
+    }
+    ComponentGenerator::addChild(&card, titleRow);
+
+    if (!topic.root_holder().empty()) {
+        ComponentGenerator::addChild(&card, text("debateCardWho_" + id, "Claimed by " + topic.root_holder(), kMuted));
+    }
+
+    // Where it stands, computed the way the Brief's verdict is.
+    if (topic.unresolved()) {
+        ComponentGenerator::addChild(&card, text("debateCardState_" + id,
+            "Unresolved, hangs on: \"" + truncate(topic.hinge_text(), 110) + "\"",
+            {{"color", "#fdba74"}, {"font-size", "0.85rem"}, {"line-height", "1.45"}, {"margin", "0"}}));
+    } else {
+        ComponentGenerator::addChild(&card, text("debateCardState_" + id, "No open challenges",
+            {{"color", "#86efac"}, {"font-size", "0.85rem"}, {"margin", "0"}}));
+    }
+
+    ComponentGenerator::addChild(&card, text("debateCardCounts_" + id,
+        count(topic.claim_count(), "claim", "claims") + "  \xC2\xB7  " +
+        count(topic.stance_count(), "person with a stance", "people with a stance") + "  \xC2\xB7  " +
+        count(topic.open_challenge_count(), "open challenge", "open challenges"),
+        {{"color", "#6b7280"}, {"font-size", "0.78rem"}, {"margin", "0"}}));
+
+    if (topic.involved_size() > 0) {
+        std::string names;
+        int shown = 0;
+        for (const std::string& who : topic.involved()) {
+            if (shown == 5 || names.size() + who.size() > 80) break;
+            names += (shown > 0 ? ", " : "") + who;
+            ++shown;
+        }
+        if (topic.involved_size() > shown) {
+            names += " +" + std::to_string(topic.involved_size() - shown) + " more";
+        }
+        ComponentGenerator::addChild(&card, text("debateCardInvolved_" + id, "Involved: " + names,
+            {{"color", "#9ca3af"}, {"font-size", "0.78rem"}, {"margin", "0"}}));
+    }
+    return card;
+}
+
+}  // namespace
+
 ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRenderingInfo& info) {
     ui::Page page;
     page.set_page_id("home");
@@ -32,30 +149,21 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         "text-white"
     );
 
-    // Sign in / Sign out are on the site header, which LayoutGenerator puts
-    // above every page.
-
-    // Title
-    ui::Component title = ComponentGenerator::createText(
-        "title",
-        "Debate Hub",
-        "text-3xl",
-        "text-blue-400",
-        "font-bold",
-        ""
-    );
-    ComponentGenerator::addChild(&main, title);
+    // The site's name and Sign in / Sign out are on the header, which
+    // LayoutGenerator puts above every page.
 
     // Description
     ui::Component description = ComponentGenerator::createText(
         "description",
-        "Participate in debates by creating your own and proving your point, or joining existing ones.",
+        "Each card is one debate: its main claim, where it stands, and who is in it. Open one to read its brief.",
         "",
         "text-gray-300",
         "",
         "text-center"
     );
     ComponentGenerator::addChild(&main, description);
+
+    const bool visitor = anonymous_user::IsAnonymousUsername(info.viewer_username());
 
     // ---- Guided walkthroughs ----------------------------------------
     // First thing under the description, because the tool's central idea --
@@ -94,7 +202,16 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         }
     }
 
-    if (info.can_create_or_join_debates()) {
+    // A visitor gets one button instead of the forms: it opens the sign-in
+    // modal ("Sign in to start a debate"), and once they are signed in they
+    // are back here with the forms below.
+    if (info.can_create_or_join_debates() && visitor) {
+        ComponentGenerator::addChild(&main, ComponentGenerator::createButton(
+            "startDebateButton", "Start a debate", "", "bg-green-600", "hover:bg-green-500",
+            "text-white", "px-5 py-2", "rounded-lg", "transition"));
+    }
+
+    if (info.can_create_or_join_debates() && !visitor) {
         // Submit topic container (inline layout)
         ui::Component submitTopicContainer = ComponentGenerator::createContainer(
             "submitTopicContainer",
@@ -199,216 +316,73 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         }
 
         ComponentGenerator::addChild(&main, generateContainer);
-
-        // Join debate by ID container (inline layout)
-        ui::Component joinDebateContainer = ComponentGenerator::createContainer(
-            "joinDebateContainer",
-            "flex gap-2 w-full max-w-md",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
-
-        // Join debate input field
-        ui::Component joinDebateInput = ComponentGenerator::createInput(
-            "joinDebateInput",
-            "Enter debate ID...",
-            "debateId",
-            "bg-gray-800",
-            "text-white",
-            "border-gray-600",
-            "p-3",
-            "rounded",
-            "flex-1"
-        );
-        ComponentGenerator::addChild(&joinDebateContainer, joinDebateInput);
-
-        // Join button
-        ui::Component joinDebateButton = ComponentGenerator::createButton(
-            "joinDebateButton",
-            "Join",
-            "joinDebate",
-            "bg-blue-600",
-            "hover:bg-blue-500",
-            "text-white",
-            "px-4 py-2",
-            "rounded-lg",
-            "transition"
-        );
-        ComponentGenerator::addChild(&joinDebateContainer, joinDebateButton);
-        ComponentGenerator::addChild(&main, joinDebateContainer);
     }
 
-    // Topics card container - will be filled by FillDebateTopics
-    ui::Component topicsCard = ComponentGenerator::createContainer(
-        "topicsCard",
-        "w-full max-w-3xl",
-        "bg-gray-800",
-        "p-6",
-        "",
-        "border border-gray-700",
-        "rounded-lg",
-        ""
-    );
-
-    ui::Component topicsTitle = ComponentGenerator::createText(
-        "topicsTitle",
-        "Available Debates",
-        "text-xl",
-        "text-blue-300",
-        "font-semibold",
-        "mb-4"
-    );
-    ComponentGenerator::addChild(&topicsCard, topicsTitle);
-
-    // Empty topics list container - this will be populated by FillDebateTopics
-    ui::Component topicsList = ComponentGenerator::createContainer(
-        "topicsList",
-        "flex flex-col gap-3",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    );
-    ComponentGenerator::addChild(&topicsCard, topicsList);
-    ComponentGenerator::addChild(&main, topicsCard);
+    // The shelf - filled by FillDebateTopics.
+    ui::Component shelf = ComponentGenerator::createContainer("debateShelf", "w-full max-w-3xl", "", "", "", "", "", "");
+    css(&shelf, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.75rem"}, {"overflow", "visible"}});
+    ComponentGenerator::addChild(&shelf, text("debateShelfCaption", "Debates", kCaption));
+    ComponentGenerator::addChild(&main, shelf);
 
     return main;
 }
 
 ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePageRenderingInfo& info, ui::Component mainLayout) {
-    int currentUserId = info.viewer_user_id();
-
-    // Find the topicsList container within mainLayout
-    ui::Component* topicsList = nullptr;
+    ui::Component* shelf = nullptr;
     for (int i = 0; i < mainLayout.children_size(); i++) {
-        ui::Component* child = mainLayout.mutable_children(i);
-        if (child->id() == "topicsCard") {
-            // Found the topicsCard, now find topicsList inside it
-            for (int j = 0; j < child->children_size(); j++) {
-                ui::Component* grandchild = child->mutable_children(j);
-                if (grandchild->id() == "topicsList") {
-                    topicsList = grandchild;
-                    break;
-                }
-            }
+        if (mainLayout.children(i).id() == "debateShelf") {
+            shelf = mainLayout.mutable_children(i);
             break;
         }
     }
-
-    if (topicsList == nullptr) {
-        // If we can't find the topicsList, just return the layout unchanged
+    if (shelf == nullptr) {
         return mainLayout;
     }
 
-    // Populate topics list with user's debates
+    // Biggest first; the newest first among equals.
+    std::vector<const rendering_info::HomeDebateTopicRenderInfo*> topics;
     for (const auto& topic : info.available_debates()) {
-        const int debateRootClaimId = topic.debate_root_claim_id();
-        ui::Component debateItemContainer = ComponentGenerator::createContainer(
-            "debateItemContainer_" + std::to_string(debateRootClaimId),
-            "flex gap-2 items-center",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        );
+        topics.push_back(&topic);
+    }
+    std::stable_sort(topics.begin(), topics.end(), [](const auto* a, const auto* b) {
+        if (a->claim_count() != b->claim_count()) return a->claim_count() > b->claim_count();
+        return a->debate_root_claim_id() > b->debate_root_claim_id();
+    });
 
-        ui::Component debateItemWrapper = ComponentGenerator::createContainer(
-            "debateItemWrapper_" + std::to_string(debateRootClaimId),
-            "flex flex-col flex-1",
-            "bg-gray-700",
-            "p-4",
-            "",
-            "border border-gray-600",
-            "rounded",
-            ""
-        );
+    // Delete is the creator's alone, and never a visitor's.
+    const bool mayDelete = info.can_create_or_join_debates() &&
+                           !anonymous_user::IsAnonymousUsername(info.viewer_username());
+    auto canDelete = [&](const rendering_info::HomeDebateTopicRenderInfo& topic) {
+        return mayDelete && !topic.is_challenge() && info.viewer_user_id() > 0 &&
+               topic.creator_id() == info.viewer_user_id();
+    };
 
-        // Change from button to text for the debate topic
-        ui::Component debateItem = ComponentGenerator::createText(
-            "debateTopicText_" + std::to_string(debateRootClaimId),
-            topic.topic(),
-            "text-base",
-            "text-white",
-            "font-medium",
-            ""
-        );
-        ComponentGenerator::addChild(&debateItemWrapper, debateItem);
+    // The small ones fold away at the bottom. The client opens and closes the
+    // fold itself (data-fold); the server only says what is in it.
+    int smallCount = 0;
+    for (const auto* topic : topics) {
+        if (topic->claim_count() < kShelfMinClaims) ++smallCount;
+    }
+    ui::Component fold = ComponentGenerator::createContainer("smallDebatesFold", "w-full", "", "", "", "", "", "");
+    ComponentGenerator::addAttribute(&fold, "data-fold", "closed");
+    ComponentGenerator::addAttribute(&fold, "data-fold-title",
+        "Smaller and test debates (" + std::to_string(smallCount) + ")");
+    css(&fold, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.75rem"}});
 
-        if (topic.is_challenge()) {
-            ui::Component challengeInfo = ComponentGenerator::createText(
-                "challengeInfo_" + std::to_string(debateRootClaimId),
-                "This is a challenge to claim: " + topic.claim_its_challenging(),
-                "text-xs",
-                "text-yellow-400",
-                "italic",
-                "pt-1"
-            );
-            ComponentGenerator::addChild(&debateItemWrapper, challengeInfo);
+    for (const auto* topic : topics) {
+        ui::Component card = debateCard(*topic, canDelete(*topic));
+        if (topic->claim_count() < kShelfMinClaims) {
+            ComponentGenerator::addChild(&fold, card);
+        } else {
+            ComponentGenerator::addChild(shelf, card);
         }
+    }
 
-        ComponentGenerator::addChild(&debateItemContainer, debateItemWrapper);
-
-        // Add Enter button
-        ui::Component enterButton = ComponentGenerator::createButton(
-            "enterDebateTopicButton_" + std::to_string(debateRootClaimId),
-            "Enter",
-            "selectDebate",
-            "bg-blue-600",
-            "hover:bg-blue-500",
-            "text-white",
-            "px-6 py-2",
-            "rounded-lg",
-            "transition border border-blue-500 font-medium"
-        );
-        ComponentGenerator::addAttribute(&enterButton, "data-debate-id", std::to_string(debateRootClaimId));
-        ComponentGenerator::addChild(&debateItemContainer, enterButton);
-
-        // Show delete button if user owns the debate and it's not a challenge
-        // Show leave button if user doesn't own the debate
-        // Not for an anonymous visitor: they are a member of no debate (their
-        // list is every debate), so there is nothing to leave or delete.
-        if (!topic.is_challenge() && info.can_create_or_join_debates() &&
-            !anonymous_user::IsAnonymousUsername(info.viewer_username())) {
-            bool userOwnsDebate = (currentUserId == topic.creator_id());
-            
-            if (userOwnsDebate) {
-                ui::Component deleteDebateButton = ComponentGenerator::createButton(
-                    "deleteDebateButton_" + std::to_string(debateRootClaimId),
-                    "Delete",
-                    "",
-                    "bg-red-600",
-                    "hover:bg-red-700",
-                    "text-white",
-                    "px-4 py-2",
-                    "rounded",
-                    "transition border border-red-500"
-                );
-                ComponentGenerator::addChild(&debateItemContainer, deleteDebateButton);
-            } else {
-                ui::Component leaveDebateButton = ComponentGenerator::createButton(
-                    "leaveDebateButton_" + std::to_string(debateRootClaimId),
-                    "Leave",
-                    "",
-                    "bg-orange-600",
-                    "hover:bg-orange-700",
-                    "text-white",
-                    "px-4 py-2",
-                    "rounded",
-                    "transition border border-orange-500"
-                );
-                ComponentGenerator::addChild(&debateItemContainer, leaveDebateButton);
-            }
-        }
-
-        ComponentGenerator::addChild(topicsList, debateItemContainer);
+    if (topics.empty()) {
+        ComponentGenerator::addChild(shelf, text("debateShelfEmpty", "No debates yet.", kMuted));
+    }
+    if (smallCount > 0) {
+        ComponentGenerator::addChild(shelf, fold);
     }
 
     return mainLayout;

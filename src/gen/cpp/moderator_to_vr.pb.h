@@ -222,12 +222,42 @@ class DebateTopic final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kInvolvedFieldNumber = 13,
     kTopicFieldNumber = 2,
     kClaimItsChallengingFieldNumber = 5,
+    kRootTextFieldNumber = 6,
+    kRootHolderFieldNumber = 7,
+    kHingeTextFieldNumber = 9,
     kIdFieldNumber = 1,
     kCreatorIdFieldNumber = 3,
     kIsChallengeFieldNumber = 4,
+    kUnresolvedFieldNumber = 8,
+    kClaimCountFieldNumber = 10,
+    kStanceCountFieldNumber = 11,
+    kOpenChallengeCountFieldNumber = 12,
   };
+  // repeated string involved = 13 [json_name = "involved"];
+  int involved_size() const;
+  private:
+  int _internal_involved_size() const;
+
+  public:
+  void clear_involved() ;
+  const ::std::string& involved(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_involved(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_involved(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_involved();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_involved(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& involved() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_involved();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_involved() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_involved();
+
+  public:
   // string topic = 2 [json_name = "topic"];
   void clear_topic() ;
   const ::std::string& topic() const;
@@ -256,6 +286,51 @@ class DebateTopic final : public ::google::protobuf::Message
   const ::std::string& _internal_claim_its_challenging() const;
   PROTOBUF_ALWAYS_INLINE void _internal_set_claim_its_challenging(const ::std::string& value);
   ::std::string* PROTOBUF_NONNULL _internal_mutable_claim_its_challenging();
+
+  public:
+  // string root_text = 6 [json_name = "rootText"];
+  void clear_root_text() ;
+  const ::std::string& root_text() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_root_text(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_root_text();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_root_text();
+  void set_allocated_root_text(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_root_text() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_root_text(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_root_text();
+
+  public:
+  // string root_holder = 7 [json_name = "rootHolder"];
+  void clear_root_holder() ;
+  const ::std::string& root_holder() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_root_holder(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_root_holder();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_root_holder();
+  void set_allocated_root_holder(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_root_holder() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_root_holder(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_root_holder();
+
+  public:
+  // string hinge_text = 9 [json_name = "hingeText"];
+  void clear_hinge_text() ;
+  const ::std::string& hinge_text() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_hinge_text(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_hinge_text();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_hinge_text();
+  void set_allocated_hinge_text(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_hinge_text() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_hinge_text(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_hinge_text();
 
   public:
   // int32 id = 1 [json_name = "id"];
@@ -288,12 +363,52 @@ class DebateTopic final : public ::google::protobuf::Message
   void _internal_set_is_challenge(bool value);
 
   public:
+  // bool unresolved = 8 [json_name = "unresolved"];
+  void clear_unresolved() ;
+  bool unresolved() const;
+  void set_unresolved(bool value);
+
+  private:
+  bool _internal_unresolved() const;
+  void _internal_set_unresolved(bool value);
+
+  public:
+  // int32 claim_count = 10 [json_name = "claimCount"];
+  void clear_claim_count() ;
+  ::int32_t claim_count() const;
+  void set_claim_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_claim_count() const;
+  void _internal_set_claim_count(::int32_t value);
+
+  public:
+  // int32 stance_count = 11 [json_name = "stanceCount"];
+  void clear_stance_count() ;
+  ::int32_t stance_count() const;
+  void set_stance_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_stance_count() const;
+  void _internal_set_stance_count(::int32_t value);
+
+  public:
+  // int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+  void clear_open_challenge_count() ;
+  ::int32_t open_challenge_count() const;
+  void set_open_challenge_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_open_challenge_count() const;
+  void _internal_set_open_challenge_count(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:moderator_to_vr.DebateTopic)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
-                                   0, 62,
+  static const ::google::protobuf::internal::TcParseTable<4, 13,
+                                   0, 108,
                                    2>
       _table_;
 
@@ -314,11 +429,19 @@ class DebateTopic final : public ::google::protobuf::Message
         const DebateTopic& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> involved_;
     ::google::protobuf::internal::ArenaStringPtr topic_;
     ::google::protobuf::internal::ArenaStringPtr claim_its_challenging_;
+    ::google::protobuf::internal::ArenaStringPtr root_text_;
+    ::google::protobuf::internal::ArenaStringPtr root_holder_;
+    ::google::protobuf::internal::ArenaStringPtr hinge_text_;
     ::int32_t id_;
     ::int32_t creator_id_;
     bool is_challenge_;
+    bool unresolved_;
+    ::int32_t claim_count_;
+    ::int32_t stance_count_;
+    ::int32_t open_challenge_count_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1063,7 +1186,7 @@ inline void DebateTopic::clear_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000040U);
 }
 inline ::int32_t DebateTopic::id() const {
   // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.id)
@@ -1071,7 +1194,7 @@ inline ::int32_t DebateTopic::id() const {
 }
 inline void DebateTopic::set_id(::int32_t value) {
   _internal_set_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.id)
 }
 inline ::int32_t DebateTopic::_internal_id() const {
@@ -1088,7 +1211,7 @@ inline void DebateTopic::clear_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.topic_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
+                  0x00000002U);
 }
 inline const ::std::string& DebateTopic::topic() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1098,13 +1221,13 @@ inline const ::std::string& DebateTopic::topic() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void DebateTopic::set_topic(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   _impl_.topic_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.topic)
 }
 inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_topic()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   ::std::string* _s = _internal_mutable_topic();
   // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.topic)
   return _s;
@@ -1124,10 +1247,10 @@ inline ::std::string* PROTOBUF_NONNULL DebateTopic::_internal_mutable_topic() {
 inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_topic() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:moderator_to_vr.DebateTopic.topic)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   auto* released = _impl_.topic_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.topic_.Set("", GetArena());
@@ -1137,9 +1260,9 @@ inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_topic() {
 inline void DebateTopic::set_allocated_topic(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
   }
   _impl_.topic_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.topic_.IsDefault()) {
@@ -1153,7 +1276,7 @@ inline void DebateTopic::clear_creator_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.creator_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000080U);
 }
 inline ::int32_t DebateTopic::creator_id() const {
   // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.creator_id)
@@ -1161,7 +1284,7 @@ inline ::int32_t DebateTopic::creator_id() const {
 }
 inline void DebateTopic::set_creator_id(::int32_t value) {
   _internal_set_creator_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.creator_id)
 }
 inline ::int32_t DebateTopic::_internal_creator_id() const {
@@ -1178,7 +1301,7 @@ inline void DebateTopic::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000100U);
 }
 inline bool DebateTopic::is_challenge() const {
   // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.is_challenge)
@@ -1186,7 +1309,7 @@ inline bool DebateTopic::is_challenge() const {
 }
 inline void DebateTopic::set_is_challenge(bool value) {
   _internal_set_is_challenge(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.is_challenge)
 }
 inline bool DebateTopic::_internal_is_challenge() const {
@@ -1203,7 +1326,7 @@ inline void DebateTopic::clear_claim_its_challenging() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_its_challenging_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000004U);
 }
 inline const ::std::string& DebateTopic::claim_its_challenging() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -1213,13 +1336,13 @@ inline const ::std::string& DebateTopic::claim_its_challenging() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void DebateTopic::set_claim_its_challenging(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   _impl_.claim_its_challenging_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.claim_its_challenging)
 }
 inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_claim_its_challenging()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   ::std::string* _s = _internal_mutable_claim_its_challenging();
   // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.claim_its_challenging)
   return _s;
@@ -1239,10 +1362,10 @@ inline ::std::string* PROTOBUF_NONNULL DebateTopic::_internal_mutable_claim_its_
 inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_claim_its_challenging() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:moderator_to_vr.DebateTopic.claim_its_challenging)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   auto* released = _impl_.claim_its_challenging_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.claim_its_challenging_.Set("", GetArena());
@@ -1252,15 +1375,382 @@ inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_claim_its_challengi
 inline void DebateTopic::set_allocated_claim_its_challenging(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   }
   _impl_.claim_its_challenging_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.claim_its_challenging_.IsDefault()) {
     _impl_.claim_its_challenging_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.DebateTopic.claim_its_challenging)
+}
+
+// string root_text = 6 [json_name = "rootText"];
+inline void DebateTopic::clear_root_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_text_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& DebateTopic::root_text() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.root_text)
+  return _internal_root_text();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void DebateTopic::set_root_text(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.root_text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.root_text)
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_root_text()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_root_text();
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.root_text)
+  return _s;
+}
+inline const ::std::string& DebateTopic::_internal_root_text() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.root_text_.Get();
+}
+inline void DebateTopic::_internal_set_root_text(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_text_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::_internal_mutable_root_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.root_text_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_root_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moderator_to_vr.DebateTopic.root_text)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.root_text_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.root_text_.Set("", GetArena());
+  }
+  return released;
+}
+inline void DebateTopic::set_allocated_root_text(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.root_text_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.root_text_.IsDefault()) {
+    _impl_.root_text_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.DebateTopic.root_text)
+}
+
+// string root_holder = 7 [json_name = "rootHolder"];
+inline void DebateTopic::clear_root_holder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_holder_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& DebateTopic::root_holder() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.root_holder)
+  return _internal_root_holder();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void DebateTopic::set_root_holder(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.root_holder_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.root_holder)
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_root_holder()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_root_holder();
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.root_holder)
+  return _s;
+}
+inline const ::std::string& DebateTopic::_internal_root_holder() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.root_holder_.Get();
+}
+inline void DebateTopic::_internal_set_root_holder(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.root_holder_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::_internal_mutable_root_holder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.root_holder_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_root_holder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moderator_to_vr.DebateTopic.root_holder)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.root_holder_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.root_holder_.Set("", GetArena());
+  }
+  return released;
+}
+inline void DebateTopic::set_allocated_root_holder(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.root_holder_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.root_holder_.IsDefault()) {
+    _impl_.root_holder_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.DebateTopic.root_holder)
+}
+
+// bool unresolved = 8 [json_name = "unresolved"];
+inline void DebateTopic::clear_unresolved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.unresolved_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline bool DebateTopic::unresolved() const {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.unresolved)
+  return _internal_unresolved();
+}
+inline void DebateTopic::set_unresolved(bool value) {
+  _internal_set_unresolved(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.unresolved)
+}
+inline bool DebateTopic::_internal_unresolved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.unresolved_;
+}
+inline void DebateTopic::_internal_set_unresolved(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.unresolved_ = value;
+}
+
+// string hinge_text = 9 [json_name = "hingeText"];
+inline void DebateTopic::clear_hinge_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.hinge_text_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& DebateTopic::hinge_text() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.hinge_text)
+  return _internal_hinge_text();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void DebateTopic::set_hinge_text(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.hinge_text_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.hinge_text)
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_hinge_text()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_hinge_text();
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.hinge_text)
+  return _s;
+}
+inline const ::std::string& DebateTopic::_internal_hinge_text() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.hinge_text_.Get();
+}
+inline void DebateTopic::_internal_set_hinge_text(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.hinge_text_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::_internal_mutable_hinge_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.hinge_text_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE DebateTopic::release_hinge_text() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:moderator_to_vr.DebateTopic.hinge_text)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.hinge_text_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.hinge_text_.Set("", GetArena());
+  }
+  return released;
+}
+inline void DebateTopic::set_allocated_hinge_text(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.hinge_text_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.hinge_text_.IsDefault()) {
+    _impl_.hinge_text_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:moderator_to_vr.DebateTopic.hinge_text)
+}
+
+// int32 claim_count = 10 [json_name = "claimCount"];
+inline void DebateTopic::clear_claim_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_count_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline ::int32_t DebateTopic::claim_count() const {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.claim_count)
+  return _internal_claim_count();
+}
+inline void DebateTopic::set_claim_count(::int32_t value) {
+  _internal_set_claim_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.claim_count)
+}
+inline ::int32_t DebateTopic::_internal_claim_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.claim_count_;
+}
+inline void DebateTopic::_internal_set_claim_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.claim_count_ = value;
+}
+
+// int32 stance_count = 11 [json_name = "stanceCount"];
+inline void DebateTopic::clear_stance_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.stance_count_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline ::int32_t DebateTopic::stance_count() const {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.stance_count)
+  return _internal_stance_count();
+}
+inline void DebateTopic::set_stance_count(::int32_t value) {
+  _internal_set_stance_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.stance_count)
+}
+inline ::int32_t DebateTopic::_internal_stance_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.stance_count_;
+}
+inline void DebateTopic::_internal_set_stance_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.stance_count_ = value;
+}
+
+// int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+inline void DebateTopic::clear_open_challenge_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.open_challenge_count_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00001000U);
+}
+inline ::int32_t DebateTopic::open_challenge_count() const {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.open_challenge_count)
+  return _internal_open_challenge_count();
+}
+inline void DebateTopic::set_open_challenge_count(::int32_t value) {
+  _internal_set_open_challenge_count(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.open_challenge_count)
+}
+inline ::int32_t DebateTopic::_internal_open_challenge_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.open_challenge_count_;
+}
+inline void DebateTopic::_internal_set_open_challenge_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.open_challenge_count_ = value;
+}
+
+// repeated string involved = 13 [json_name = "involved"];
+inline int DebateTopic::_internal_involved_size() const {
+  return _internal_involved().size();
+}
+inline int DebateTopic::involved_size() const {
+  return _internal_involved_size();
+}
+inline void DebateTopic::clear_involved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.involved_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::add_involved()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s =
+      _internal_mutable_involved()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:moderator_to_vr.DebateTopic.involved)
+  return _s;
+}
+inline const ::std::string& DebateTopic::involved(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:moderator_to_vr.DebateTopic.involved)
+  return _internal_involved().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL DebateTopic::mutable_involved(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:moderator_to_vr.DebateTopic.involved)
+  return _internal_mutable_involved()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void DebateTopic::set_involved(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_involved()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:moderator_to_vr.DebateTopic.involved)
+}
+template <typename Arg_, typename... Args_>
+inline void DebateTopic::add_involved(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(
+      ::google::protobuf::MessageLite::internal_visibility(), GetArena(),
+      *_internal_mutable_involved(), ::std::forward<Arg_>(value),
+      args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:moderator_to_vr.DebateTopic.involved)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& DebateTopic::involved()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:moderator_to_vr.DebateTopic.involved)
+  return _internal_involved();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+DebateTopic::mutable_involved() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:moderator_to_vr.DebateTopic.involved)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_involved();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+DebateTopic::_internal_involved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.involved_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+DebateTopic::_internal_mutable_involved() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.involved_;
 }
 
 // -------------------------------------------------------------------

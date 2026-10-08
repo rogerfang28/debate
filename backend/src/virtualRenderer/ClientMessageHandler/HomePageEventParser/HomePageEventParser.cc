@@ -1,4 +1,5 @@
 #include "HomePageEventParser.h"
+#include <cstdlib>
 #include <iostream>
 #include "../../../utils/Log.h"
 
@@ -56,15 +57,22 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         event.set_type(debate_event::CLEAR_DEBATES);
     } 
 
-    // * Enter a debate, moves user to debate page
-    else if (componentId.find("enterDebateTopicButton_") == 0 && eventType == "onClick") {
-        event.set_type(debate_event::ENTER_DEBATE);
-        auto* enter = event.mutable_enter_debate();
-        std::string debateID = componentId.substr(23);
-        enter->set_debate_id(std::stoi(debateID));
-        Log::debug("  ENTER_DEBATE: debate_id = " + debateID);
-    } 
-    
+    // * A card on the shelf: enter that debate on its Brief tab
+    else if (componentId.rfind("openDebateCard_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::OPEN_DEBATE_BRIEF);
+        const std::string debateID = componentId.substr(std::string("openDebateCard_").size());
+        event.mutable_enter_debate()->set_debate_id(std::atoi(debateID.c_str()));
+        Log::debug("  OPEN_DEBATE_BRIEF: debate_id = " + debateID);
+    }
+
+    // * A visitor's "Start a debate": an empty create, which the moderator
+    // turns into the sign-in modal and replays (as a no-op) once they have
+    // signed in, leaving them at the create form.
+    else if (componentId == "startDebateButton" && eventType == "onClick") {
+        event.set_type(debate_event::CREATE_DEBATE);
+        event.mutable_create_debate();
+    }
+
     // * Delete a debate with id
     else if (componentId.find("deleteDebateButton_") == 0 && eventType == "onClick") {
         event.set_type(debate_event::DELETE_DEBATE);
@@ -72,27 +80,6 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         std::string debateID = componentId.substr(19);
         deleteDebate->set_debate_id(std::stoi(debateID));
         Log::debug("  DELETE_DEBATE: debate_id = " + debateID);
-    }
-
-    // * Join a debate with id
-    else if (componentId.find("joinDebateButton") == 0 && eventType == "onClick") {
-        event.set_type(debate_event::JOIN_DEBATE);
-        auto* joinDebate = event.mutable_join_debate();
-        for (const auto& comp : message.page_data().components()) {
-            if (comp.id() == "joinDebateInput") {
-                joinDebate->set_debate_id(std::stoi(comp.value()));
-                Log::debug("  JOIN_DEBATE: debate_id = " + comp.value());
-                break;
-            }
-        }
-    }
-
-    else if (componentId.find("leaveDebateButton_") == 0 && eventType == "onClick") {
-        event.set_type(debate_event::LEAVE_DEBATE);
-        auto* leaveDebate = event.mutable_leave_debate();
-        std::string debateID = componentId.substr(std::string("leaveDebateButton_").length());
-        leaveDebate->set_debate_id(std::stoi(debateID));
-        Log::debug("  LEAVE_DEBATE: debate_id = " + debateID);
     }
 
     // ! Logout event, which won't happen because virtual renderer handleAuthEvents is already doing it

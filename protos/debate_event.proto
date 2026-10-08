@@ -320,6 +320,9 @@ enum EventType {
     // shuts it (and forgets any action the visitor was signing in to do).
     OPEN_SIGN_IN = 73;
     CLOSE_SIGN_IN = 74;
+    // A card on the home shelf: enters that debate and opens its Brief tab in
+    // one press (ENTER_DEBATE then GO_TO_BRIEF). Carries enter_debate.
+    OPEN_DEBATE_BRIEF = 75;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 

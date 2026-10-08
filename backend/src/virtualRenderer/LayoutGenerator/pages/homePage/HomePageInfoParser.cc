@@ -7,7 +7,8 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
     const user::User& userProto = responseMessage.user();
     const moderator_to_vr::DebateList& debateList = responseMessage.debate_list();
 
-    // info.set_viewer_user_id(userProto.user_id());
+    // Who may delete which debate: its creator.
+    info.set_viewer_user_id(userProto.user_id());
     info.set_viewer_username(userProto.username());
     // A visitor sees create / join / walkthrough too: pressing one opens the
     // sign-in modal, and the press is replayed once they have signed in.
@@ -35,6 +36,14 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
         outTopic->set_creator_id(topic.creator_id());
         outTopic->set_is_challenge(topic.is_challenge());
         outTopic->set_claim_its_challenging(topic.claim_its_challenging());
+        outTopic->set_root_text(topic.root_text());
+        outTopic->set_root_holder(topic.root_holder());
+        outTopic->set_unresolved(topic.unresolved());
+        outTopic->set_hinge_text(topic.hinge_text());
+        outTopic->set_claim_count(topic.claim_count());
+        outTopic->set_stance_count(topic.stance_count());
+        outTopic->set_open_challenge_count(topic.open_challenge_count());
+        *outTopic->mutable_involved() = topic.involved();
     }
 
     return info;

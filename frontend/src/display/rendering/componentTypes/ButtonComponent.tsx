@@ -28,6 +28,12 @@ const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, s
        setShowConcedeConfirm(true);
        return;
      }
+     // Deleting a debate cannot be undone either, and on the home shelf its
+     // control sits on a card that is itself a press.
+     if (component.id?.startsWith("deleteDebateButton_") &&
+         !window.confirm("Delete this debate? This cannot be undone.")) {
+       return;
+     }
      fireClick(e);
   };
 

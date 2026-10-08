@@ -161,6 +161,15 @@ message HomeDebateTopicRenderInfo {
 	int32 creator_id = 3;
 	bool is_challenge = 4;
 	string claim_its_challenging = 5;
+	// The card on the home shelf; see moderator_to_vr.DebateTopic.
+	string root_text = 6;
+	string root_holder = 7;
+	bool unresolved = 8;
+	string hinge_text = 9;
+	int32 claim_count = 10;
+	int32 stance_count = 11;
+	int32 open_challenge_count = 12;
+	repeated string involved = 13;
 }
 
 message ClaimRenderInfo {
