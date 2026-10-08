@@ -134,6 +134,36 @@
   .swatch { width: 92px; }
   .swatch div { height: 44px; border-radius: var(--radius-sm); border: 1px solid var(--line); }
   .swatch span { display: block; font-size: 12px; color: var(--text-3); margin-top: 4px; }
+
+  /* ---- full-page layouts ---- */
+  .wide { max-width: 1400px; margin: 0 auto; padding: 0 24px 80px; }
+  .screen { border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
+  .screen .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 18px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .screen .body3 { display: grid; grid-template-columns: 300px minmax(0,1fr) 320px; gap: 14px; padding: 14px 18px; min-height: 560px; }
+  .screen .body2 { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 14px; padding: 14px 18px; min-height: 560px; }
+  .screen .body1 { padding: 18px; min-height: 420px; }
+  .side { display: flex; flex-direction: column; gap: 12px; }
+  .col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .sticky { align-self: start; position: sticky; top: 14px; }
+  .graphbox { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); min-height: 520px; position: relative; overflow: hidden; }
+  .graphbox .legend { position: absolute; top: 10px; left: 12px; display: flex; gap: 12px; font-size: 12px; color: var(--text-3); }
+  .graphbox svg { width: 100%; height: 520px; display: block; }
+  .node { fill: var(--panel-2); stroke: var(--line-strong); }
+  .node.root { stroke: var(--accent); stroke-width: 1.5; }
+  .node.open { stroke: var(--open); }
+  .node.settled { stroke: var(--settled); }
+  .node-t { fill: var(--text); font-size: 11px; font-family: var(--font); }
+  .node-s { fill: var(--text-3); font-size: 10px; font-family: var(--font); }
+  .edge { stroke: var(--line-strong); stroke-width: 1.2; fill: none; }
+  .edge.ch { stroke: var(--open); stroke-dasharray: 4 3; }
+  .junction { fill: var(--bg); stroke: var(--line-strong); }
+  .junction-t { fill: var(--text-3); font-size: 9px; font-family: var(--font); letter-spacing: .04em; }
+  .chat.full { width: auto; height: 100%; display: flex; flex-direction: column; min-height: 520px; }
+  .chat.full .turns { flex: 1; }
+  .kv { display: grid; grid-template-columns: 90px 1fr; gap: 4px 10px; font-size: 13px; }
+  .kv dt { color: var(--text-3); margin: 0; }
+  .kv dd { margin: 0; color: var(--text-2); }
+  .two { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 14px; }
 </style>
 </head>
 <body>
@@ -300,5 +330,205 @@
   </div>
 
 </div>
+<div class="wide">
+
+  <div class="demo">
+    <h2>Debate page</h2>
+    <div class="screen">
+      <div class="bar">
+        <div style="display:flex;align-items:center;gap:20px">
+          <span class="brand">Debate Hub</span>
+          <div class="tabs"><button class="tab">Home</button><button class="tab">Explore</button></div>
+          <span style="color:var(--text-3)">/</span>
+          <div class="tabs"><button class="tab active">Debate</button><button class="tab">Brief</button></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px"><span class="body-2">phase2-tester</span><button class="btn quiet sm">Sign out</button></div>
+      </div>
+      <div class="body3">
+        <div class="side">
+          <div class="card stack">
+            <span class="caption">Who owes a reply</span>
+            <div class="status-line open"><span class="dot open"></span>Paul: 3 unanswered</div>
+            <p class="small" style="margin:0 0 0 16px">Fauci has a valid Fifth Amendment privilege and the right to assert it.</p>
+            <p class="small" style="margin:0 0 0 16px">Invoking the Fifth Amendment is Fauci's constitutional right.</p>
+            <p class="small" style="margin:0 0 0 16px">Fauci always said natural origin was very highly likely&hellip;</p>
+            <div class="status-line open"><span class="dot open"></span>Peters: 1 unanswered</div>
+          </div>
+          <div class="card stack">
+            <span class="caption">Selected claim</span>
+            <p class="body" style="margin:0">Fauci's Fifth Amendment privilege is unsupported because he holds an unlimited presidential pardon.</p>
+            <dl class="kv"><dt>Status</dt><dd>Undetermined</dd><dt>Said by</dt><dd>Paul</dd><dt>Entered by</dt><dd>guest</dd><dt>Kind</dt><dd>Inferential</dd></dl>
+            <p class="small" style="margin:0">Source: cbsnews.com &middot; "citing a privilege that is unsupported because of your pardon"</p>
+            <div class="row"><button class="btn">Challenge</button><button class="btn">Agree</button><button class="btn quiet sm">Open source</button></div>
+          </div>
+          <div class="card stack">
+            <span class="caption">The argument, in words</span>
+            <p class="body-2" style="margin:0"><span style="color:var(--accent-hover)">Fauci should be held in contempt&hellip;</span> because Fauci refused to answer every question, and his privilege is unsupported because of the pardon, and it is against the law to obstruct&hellip;</p>
+            <p class="body-2" style="margin:0;border-top:1px dashed var(--line-strong);padding-top:8px">Against it: the sole reason Paul called Fauci was to get a quote that would vindicate his pledges&hellip;</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="graphbox">
+            <div class="legend"><span><span class="dot open"></span> open</span><span><span class="dot settled"></span> settled</span><span><span class="dot"></span> undetermined</span><span style="color:var(--open)">- - challenge</span></div>
+            <svg viewBox="0 0 760 520" aria-hidden="true">
+              <path class="edge" d="M380 110 V150"/>
+              <path class="edge" d="M380 150 H200 V200"/><path class="edge" d="M380 150 V200"/><path class="edge" d="M380 150 H560 V200"/>
+              <path class="edge" d="M200 255 V300"/><path class="edge" d="M560 255 V300"/>
+              <path class="edge ch" d="M200 355 V400"/><path class="edge ch" d="M110 355 V400"/>
+              <path class="edge ch" d="M560 355 V400"/>
+              <ellipse class="junction" cx="380" cy="150" rx="34" ry="11"/><text class="junction-t" x="380" y="153" text-anchor="middle">EVIDENTIAL</text>
+              <rect class="node root" x="280" y="60" width="200" height="50" rx="8"/><text class="node-t" x="380" y="80" text-anchor="middle">Fauci should be held in</text><text class="node-t" x="380" y="95" text-anchor="middle">contempt of Congress&hellip;</text>
+              <rect class="node" x="110" y="200" width="180" height="55" rx="8"/><text class="node-t" x="200" y="220" text-anchor="middle">Fauci refused to answer</text><text class="node-t" x="200" y="235" text-anchor="middle">every question&hellip;</text><text class="node-s" x="200" y="249" text-anchor="middle">Paul</text>
+              <rect class="node open" x="290" y="200" width="180" height="55" rx="8"/><text class="node-t" x="380" y="220" text-anchor="middle">Fauci's privilege is</text><text class="node-t" x="380" y="235" text-anchor="middle">unsupported (pardon)</text><text class="node-s" x="380" y="249" text-anchor="middle">Paul &middot; Paul's move</text>
+              <rect class="node" x="470" y="200" width="180" height="55" rx="8"/><text class="node-t" x="560" y="220" text-anchor="middle">It is against the law to</text><text class="node-t" x="560" y="235" text-anchor="middle">obstruct an investigation</text><text class="node-s" x="560" y="249" text-anchor="middle">Paul</text>
+              <rect class="node" x="110" y="300" width="180" height="55" rx="8"/><text class="node-t" x="200" y="320" text-anchor="middle">The pardon gave Fauci more</text><text class="node-t" x="200" y="335" text-anchor="middle">immunity than most get</text><text class="node-s" x="200" y="349" text-anchor="middle">Paul</text>
+              <rect class="node settled" x="470" y="300" width="180" height="55" rx="8"/><text class="node-t" x="560" y="320" text-anchor="middle">Refusing to answer is a</text><text class="node-t" x="560" y="335" text-anchor="middle">misdemeanor (2 U.S.C. 192)</text><text class="node-s" x="560" y="349" text-anchor="middle">Congress</text>
+              <rect class="node open" x="20" y="400" width="180" height="55" rx="8"/><text class="node-t" x="110" y="420" text-anchor="middle">Fauci has a valid Fifth</text><text class="node-t" x="110" y="435" text-anchor="middle">Amendment privilege</text><text class="node-s" x="110" y="449" text-anchor="middle">Fauci's attorney</text>
+              <rect class="node open" x="210" y="400" width="180" height="55" rx="8"/><text class="node-t" x="300" y="420" text-anchor="middle">Invoking the Fifth is</text><text class="node-t" x="300" y="435" text-anchor="middle">Fauci's constitutional right</text><text class="node-s" x="300" y="449" text-anchor="middle">Lankford</text>
+              <rect class="node open" x="470" y="400" width="180" height="55" rx="8"/><text class="node-t" x="560" y="420" text-anchor="middle">Contempt needs a full</text><text class="node-t" x="560" y="435" text-anchor="middle">Senate vote, not a committee</text><text class="node-s" x="560" y="449" text-anchor="middle">CRS</text>
+            </svg>
+          </div>
+        </div>
+        <div class="sticky">
+          <div class="chat full">
+            <div class="head"><span>Ask about this debate</span><span style="color:var(--text-3)">&#9654;</span></div>
+            <div class="turns">
+              <div class="you">Why is the pardon claim the hinge?</div>
+              <div class="ai">Because it is the only open challenge standing directly under the main claim [#1]. Three people have challenged it [#10, #11] and Paul has not replied to any of them.</div>
+              <div class="you">What would settle it?</div>
+              <div class="ai">A reply from Paul to the state-prosecution point, or a concession. Nothing in the debate yet does either.</div>
+            </div>
+            <div class="ask">
+              <textarea class="textarea" rows="2" placeholder="Ask anything about this debate"></textarea>
+              <div class="row"><button class="btn primary sm">Ask</button><button class="pill">Summarize</button><button class="pill">Find a mistake</button><button class="pill">Suggest a challenge</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Brief page</h2>
+    <div class="screen">
+      <div class="bar">
+        <div style="display:flex;align-items:center;gap:20px">
+          <span class="brand">Debate Hub</span>
+          <div class="tabs"><button class="tab">Home</button><button class="tab">Explore</button></div>
+          <span style="color:var(--text-3)">/</span>
+          <div class="tabs"><button class="tab">Debate</button><button class="tab active">Brief</button></div>
+        </div>
+        <button class="btn sm">Sign in</button>
+      </div>
+      <div class="body2">
+        <div class="col" style="max-width:860px">
+          <div>
+            <span class="caption">The brief</span>
+            <h1 style="margin:6px 0 2px">Fauci should be held in contempt of Congress for refusing to testify.</h1>
+            <span class="small">Claimed by Paul</span>
+          </div>
+          <div class="card accent-left stack">
+            <span class="caption" style="color:var(--open)">Unresolved</span>
+            <p class="body" style="margin:0;font-size:16px">It hangs on one question: can a pardoned witness still plead the Fifth? Three people say yes, and Paul has not answered any of them.</p>
+            <div class="row"><button class="btn sm">Rewrite the words with AI</button><span class="small">Structure computed from the debate; only the words come from the model.</span></div>
+          </div>
+          <div class="two">
+            <div class="card stack">
+              <span class="caption">The story</span>
+              <p class="body-2" style="margin:0">Paul subpoenaed Fauci over Wuhan research funding. Fauci took the Fifth on every question. The committee moved to hold Fauci in contempt.</p>
+            </div>
+            <div class="card stack">
+              <span class="caption">Sides</span>
+              <dl class="kv"><dt style="color:var(--settled)">True</dt><dd>Paul</dd><dt style="color:var(--open)">False</dt><dd>Fauci, Peters</dd><dt>Undecided</dt><dd>Lankford, Fauci's attorney</dd></dl>
+            </div>
+          </div>
+          <span class="caption">Battle sites</span>
+          <div class="card accent-left stack">
+            <p class="h3">1. Does the pardon cancel the Fifth?</p>
+            <span class="small" style="color:var(--warn)">The whole case hangs on this one.</span>
+            <div class="exchange">
+              <div><span class="who">Paul:</span> <span class="claim">Fauci's privilege is unsupported because he holds an unlimited presidential pardon.</span></div>
+              <div><span class="who">Fauci's attorney challenged:</span> Fauci has a valid Fifth Amendment privilege and the right to assert it.</div>
+              <div><span class="who">Lankford challenged:</span> Invoking the Fifth Amendment is Fauci's constitutional right.</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><div class="status-line open"><span class="dot open"></span>Paul has not replied.</div><button class="btn sm">Open in debate</button></div>
+          </div>
+          <div class="card stack">
+            <p class="h3">2. Was the hearing a setup?</p>
+            <div class="exchange">
+              <div><span class="who">Paul:</span> <span class="claim">Fauci should be held in contempt&hellip;</span></div>
+              <div><span class="who">Fauci challenged:</span> The sole reason Paul called Fauci was to get a quote vindicating his pledges that Fauci would end up behind bars.</div>
+              <div><span class="who">Paul replied:</span> The purpose was answers and an apology for funding dangerous research.</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><div class="status-line settled"><span class="dot settled"></span>Answered.</div><button class="btn sm">Open in debate</button></div>
+          </div>
+          <div class="list">
+            <div class="item"><span class="dot open"></span><div class="title">3. Were Democrats denied the records?</div><span class="side">Peters has not replied</span></div>
+            <div class="item"><span class="dot settled"></span><div class="title">4. Does the Lerner precedent hold?</div><span class="side">Answered</span></div>
+          </div>
+        </div>
+        <div class="sticky">
+          <div class="chat full">
+            <div class="head"><span>Ask about this debate</span><span style="color:var(--text-3)">&#9654;</span></div>
+            <div class="turns"><div class="you">Explain site 1 like I'm new.</div><div class="ai">Paul says a pardon means Fauci can't refuse to answer. Two senators and Fauci's lawyer say the right still stands. Paul hasn't replied, so the case is stuck there.</div></div>
+            <div class="ask"><textarea class="textarea" rows="2" placeholder="Ask anything about this debate"></textarea><div class="row"><button class="btn primary sm">Ask</button><button class="pill">Summarize</button><button class="pill">Who hasn't answered?</button></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Home</h2>
+    <div class="screen">
+      <div class="bar">
+        <div style="display:flex;align-items:center;gap:20px"><span class="brand">Debate Hub</span><div class="tabs"><button class="tab active">Home</button><button class="tab">Explore</button></div></div>
+        <button class="btn sm">Sign in</button>
+      </div>
+      <div class="body1" style="max-width:900px;margin:0 auto">
+        <div class="card hero stack">
+          <span class="caption">Featured case</span>
+          <h1 style="margin:0">Did Fauci lie to Congress about funding risky virus research in Wuhan?</h1>
+          <p class="body-2" style="margin:0">Everyone agrees on the money and the experiment. The fight is over what "gain-of-function" means, and neither side has answered the other on it.</p>
+          <div class="status-line open"><span class="dot open"></span>Unresolved. Paul and Fauci each owe a reply.</div>
+          <div class="row"><button class="btn primary">Read the brief</button><a class="small" href="#">New here? Watch one get built</a></div>
+        </div>
+        <p class="caption" style="margin:26px 0 8px">Other cases</p>
+        <div class="list">
+          <div class="item"><span class="dot open"></span><div class="title">Should Fauci be held in contempt for taking the Fifth?</div><span class="side">Paul's move</span></div>
+          <div class="item"><span class="dot open"></span><div class="title">Is remote work better for productivity?</div><span class="side">Kim's move</span></div>
+          <div class="item"><span class="dot settled"></span><div class="title">Did the 2024 court ruling overreach?</div><span class="side">Settled</span></div>
+          <div class="item"><span class="dot open"></span><div class="title">Should nuclear power be part of the energy transition?</div><span class="side">Ortiz's move</span></div>
+        </div>
+        <div class="row" style="justify-content:space-between;margin-top:14px"><a class="small" href="#">See all 13 in Explore</a><a class="small" href="#">Start a debate</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <h2>Explore</h2>
+    <div class="screen">
+      <div class="bar">
+        <div style="display:flex;align-items:center;gap:20px"><span class="brand">Debate Hub</span><div class="tabs"><button class="tab">Home</button><button class="tab active">Explore</button><button class="tab">Your debates</button></div></div>
+        <div style="display:flex;align-items:center;gap:12px"><span class="body-2">phase2-tester</span><button class="btn quiet sm">Sign out</button></div>
+      </div>
+      <div class="body1" style="max-width:900px;margin:0 auto">
+        <div class="row" style="flex-wrap:nowrap"><input class="input" placeholder="Search claims, people, or topics"><button class="btn">Search</button></div>
+        <div class="row" style="margin:12px 0 16px"><button class="pill on">All</button><button class="pill">Open</button><button class="pill">Settled</button><button class="pill">Waiting on someone</button><span style="flex:1"></span><span class="small">Sort: latest move &#9662;</span></div>
+        <div class="list">
+          <div class="item"><span class="dot open"></span><div class="title">Fauci was dishonest with Congress and the public about COVID-19.<div class="meta">68 claims &middot; 36 people &middot; moved 3 weeks ago</div></div><span class="side">Paul's move</span></div>
+          <div class="item"><span class="dot open"></span><div class="title">Should Fauci be held in contempt for taking the Fifth?<div class="meta">20 claims &middot; 5 people &middot; moved 3 weeks ago</div></div><span class="side">Paul's move</span></div>
+          <div class="item"><span class="dot open"></span><div class="title">The prosecution of David Morens for concealing COVID-19 records was justified.<div class="meta">18 claims &middot; 4 people &middot; moved a month ago</div></div><span class="side">Morens's move</span></div>
+          <div class="item"><span class="dot settled"></span><div class="title">Companies should move to a four-day week.<div class="meta">15 claims &middot; 3 people &middot; settled</div></div><span class="side">Settled</span></div>
+          <div class="item"><span class="dot open"></span><div class="title">Remote work increases productivity.<div class="meta">14 claims &middot; 3 people &middot; moved 2 months ago</div></div><span class="side">Lee's move</span></div>
+          <div class="item"><span class="dot settled"></span><div class="title">Cities should lower urban speed limits to 20 mph.<div class="meta">14 claims &middot; 2 people &middot; settled</div></div><span class="side">Settled</span></div>
+        </div>
+        <div class="row" style="justify-content:space-between;margin-top:14px"><span class="small">13 cases</span><a class="small" href="#">Start a debate</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </body>
+
 </html>
