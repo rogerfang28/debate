@@ -196,8 +196,9 @@ static ui::Component BuildSelectedClaimPanel(
     );
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
 
-    // A read-only viewer (an anonymous visitor, or a read-only demo build)
-    // sees the claim and none of the buttons that change it.
+    // A read-only demo build shows the claim and none of the buttons that
+    // change it. An anonymous visitor DOES see them: pressing one opens the
+    // sign-in modal, and the press is replayed once they have signed in.
     if (anonymous_user::IsReadOnlyViewer(viewerUsername)) {
         ComponentGenerator::addChild(&panel, buttonRow);
         return panel;
@@ -1214,19 +1215,9 @@ ui::Page StepView::GenerateStepViewPage(
 	(*topBar.mutable_css())["align-items"] = "center";
 	(*topBar.mutable_css())["flex-wrap"] = "wrap";
 	(*topBar.mutable_css())["gap"] = "0.5rem";
+	// The tabs sit directly under the site header (LayoutGenerator adds it
+	// above everything, with the way home and the account on it).
 	ComponentGenerator::addChild(&topBar, BuildDebateTabs(false));
-	ui::Component goHomeButton = ComponentGenerator::createButton(
-		"goHomeButton",
-		"Home",
-		"",
-		"bg-blue-600",
-		"hover:bg-blue-700",
-		"text-white",
-		"px-4 py-2",
-		"rounded",
-		"transition-colors text-sm"
-	);
-	ComponentGenerator::addChild(&topBar, goHomeButton);
 	ComponentGenerator::addChild(&container, topBar);
 
 	// Above the argument rather than beside it: the guide box is what the

@@ -220,7 +220,8 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&focusSection, focusingOnClaim);
     ComponentGenerator::addChild(&topSection, focusSection);
 
-    // Right top section - home button
+    // Right top section. Its Home button moved to the site header, which
+    // LayoutGenerator puts above every page.
     ui::Component rightTopSection = ComponentGenerator::createContainer(
         "rightTopSection",
         "flex flex-col gap-2",
@@ -232,18 +233,6 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
         "w-64"
     );
 
-    ui::Component goHomeButton = ComponentGenerator::createButton(
-        "goHomeButton",
-        "Home",
-        "",
-        "bg-blue-600",
-        "hover:bg-blue-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&rightTopSection, goHomeButton);
     ComponentGenerator::addChild(&topSection, rightTopSection);
     ComponentGenerator::addChild(&mainLayout, topSection);
 

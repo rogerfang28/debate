@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIvgBCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJEhUKDXBhc3N3b3JkX2hhc2gYCCABKAliBnByb3RvMw", [file_user_engagement, file_scope, file_collection]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIqYCCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJEhUKDXBhc3N3b3JkX2hhc2gYCCABKAkSFAoMc2lnbl9pbl9vcGVuGAkgASgIEhYKDnBlbmRpbmdfYWN0aW9uGAogASgMYgZwcm90bzM", [file_user_engagement, file_scope, file_collection]);
 
 /**
  * @generated from message user.User
@@ -64,6 +64,26 @@ export type User = Message<"user.User"> & {
    * @generated from field: string password_hash = 8;
    */
   passwordHash: string;
+
+  /**
+   * The sign-in modal, drawn over whatever page this user is on. Only an
+   * anonymous visitor ever has it open: the header's "Sign in" opens it, and
+   * so does pressing a button that would change a debate.
+   *
+   * @generated from field: bool sign_in_open = 9;
+   */
+  signInOpen: boolean;
+
+  /**
+   * What the visitor pressed that needs an account: a serialized
+   * debate_event.DebateEvent with its user cleared. Kept on the record so it
+   * survives the login round trip; on a successful sign-in it is taken off
+   * the visitor (before anything runs, so it can only run once) and replayed
+   * as the signed-in user. Empty when the modal was opened from the header.
+   *
+   * @generated from field: bytes pending_action = 10;
+   */
+  pendingAction: Uint8Array;
 };
 
 /**

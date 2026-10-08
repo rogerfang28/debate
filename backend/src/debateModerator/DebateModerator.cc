@@ -155,9 +155,29 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     }
 
     // Read from the user record, not the event: user_id is what acts.
-    if (isAnonymousBlockedEvent(event.type()) &&
-        anonymous_user::IsAnonymousUsername(dbWrapper.users.getUsername(user_id))) {
+    const bool anonymous = anonymous_user::IsAnonymousUsername(dbWrapper.users.getUsername(user_id));
+    if (isAnonymousBlockedEvent(event.type()) && anonymous) {
         Log::info("[DebateModerator] Anonymous visitor blocked event type: " + std::to_string(event.type()));
+        // Still never acted on as the visitor. A press that starts something
+        // (Challenge, Agree, Support, create...) is remembered on the
+        // visitor's record and the sign-in modal opens; after a successful
+        // sign-in the press is replayed as the signed-in user (see
+        // takePendingSignIn).
+        if (anonymous_user::OpensSignIn(event.type())) {
+            debate_event::DebateEvent remembered = event;
+            remembered.clear_user();
+            user::User visitor = debateWrapper.getUserProtobuf(user_id);
+            visitor.set_sign_in_open(true);
+            visitor.set_pending_action(remembered.SerializeAsString());
+            debateWrapper.updateUserProtobuf(user_id, visitor);
+            Log::info("[DebateModerator] Sign-in requested; remembered event type " +
+                      std::to_string(event.type()) + " for visitor " + std::to_string(user_id));
+        }
+        event.set_type(debate_event::NONE);
+    }
+    // The header's "Sign in" is a visitor's only: a signed-in user's record
+    // never carries the modal (it would greet them again at their next visit).
+    if (event.type() == debate_event::OPEN_SIGN_IN && !anonymous) {
         event.set_type(debate_event::NONE);
     }
 
@@ -277,6 +297,18 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: TUTORIAL_EXIT");
             TutorialHandler::Exit(user_id, debateWrapper);
             break;
+        case debate_event::OPEN_SIGN_IN:
+        case debate_event::CLOSE_SIGN_IN: {
+            // Opening from the header asks for nothing in particular; closing
+            // forgets whatever the visitor was signing in to do.
+            const bool open = event.type() == debate_event::OPEN_SIGN_IN;
+            Log::info(std::string("[DebateModerator] Event Type: ") + (open ? "OPEN_SIGN_IN" : "CLOSE_SIGN_IN"));
+            user::User userProto = debateWrapper.getUserProtobuf(user_id);
+            userProto.set_sign_in_open(open);
+            userProto.clear_pending_action();
+            debateWrapper.updateUserProtobuf(user_id, userProto);
+            break;
+        }
         case debate_event::DISMISS_AI_NOTICE:
             Log::info("[DebateModerator] Event Type: DISMISS_AI_NOTICE");
             AiAuthorHandler::DismissNotice(user_id, debateWrapper);
@@ -664,4 +696,63 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         Log::info("[DebateModerator] Created new user: " + username + " with user_id: " + std::to_string(user_id));
     }
     return user_id;
+}
+// A visitor has just signed in -- as a real account, or as "guest" -- and the
+// session now belongs to `userId`. Carries the visitor's place over (which
+// page, debate, claim, tab) so the user lands where they were, and takes the
+// press they were signing in to make OFF the visitor's record before anything
+// runs, so it can only ever run once and never as the visitor. Returns true
+// with `pending` filled, as the signed-in user, when there is one to replay.
+bool DebateModerator::takePendingSignIn(const int& visitorId, const int& userId,
+                                        debate_event::DebateEvent* pending) {
+    if (visitorId <= 0 || userId <= 0 || visitorId == userId) {
+        return false;
+    }
+    user::User visitor = debateWrapper.getUserProtobuf(visitorId);
+    user::User signedIn = debateWrapper.getUserProtobuf(userId);
+    if (!anonymous_user::IsAnonymousUsername(visitor.username()) ||
+        anonymous_user::IsAnonymousUsername(signedIn.username())) {
+        return false;
+    }
+    const std::string remembered = visitor.pending_action();
+
+    // The visitor's place, onto the signed-in record. The engagement's AI job
+    // and walkthrough stay the user's own; the chat is per person, so the
+    // visitor's copy is dropped and the user's own transcript loads instead.
+    user_engagement::UserEngagement* engagement = signedIn.mutable_engagement();
+    engagement->set_current_action(visitor.engagement().current_action());
+    engagement->clear_action_info();
+    if (visitor.engagement().has_debating_info()) {
+        *engagement->mutable_debating_info() = visitor.engagement().debating_info();
+        engagement->mutable_debating_info()->clear_chat();
+        engagement->mutable_debating_info()->mutable_brief()->set_pending(false);
+    } else if (visitor.engagement().has_home_info()) {
+        *engagement->mutable_home_info() = visitor.engagement().home_info();
+    }
+    *signedIn.mutable_current_scope() = visitor.current_scope();
+    *signedIn.mutable_collection_spec() = visitor.collection_spec();
+    signedIn.set_sign_in_open(false);
+    signedIn.clear_pending_action();
+
+    // The visitor's record forgets the press and the modal, and goes home:
+    // signing out later comes back to a visitor on the home page.
+    visitor.set_sign_in_open(false);
+    visitor.clear_pending_action();
+    visitor.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+    visitor.mutable_engagement()->mutable_home_info();
+    debateWrapper.updateUserProtobuf(visitorId, visitor);
+    debateWrapper.updateUserProtobuf(userId, signedIn);
+    Log::info("[DebateModerator] Visitor " + std::to_string(visitorId) + " signed in as user " +
+              std::to_string(userId) + " (" + signedIn.username() + "); position carried over.");
+
+    if (remembered.empty() || !pending->ParseFromString(remembered)) {
+        return false;
+    }
+    pending->mutable_user()->set_user_id(userId);
+    pending->mutable_user()->set_username(signedIn.username());
+    pending->mutable_user()->set_is_logged_in(true);
+    Log::info("[DebateModerator] Pending action type " + std::to_string(pending->type()) +
+              " taken from visitor " + std::to_string(visitorId) + " for replay as user " +
+              std::to_string(userId) + " (" + signedIn.username() + ").");
+    return true;
 }

@@ -1,6 +1,7 @@
 #include "HomePageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/DemoMode.h"
+#include "../../../../utils/AnonymousUser.h"
 #include "../../../../utils/TutorialLibrary.h"
 
 ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRenderingInfo& info) {
@@ -31,22 +32,8 @@ ui::Component HomePageGenerator::GenerateHomePageMainLayout(const rendering_info
         "text-white"
     );
 
-    const bool autoLogin = demo_mode::autoLogin;
-    if (!autoLogin) {
-        // Logout button in top right
-        ui::Component logoutButton = ComponentGenerator::createButton(
-            "logoutButton",
-            "Logout",
-            "logout",
-            "bg-gray-700",
-            "hover:bg-gray-600",
-            "text-white",
-            "px-4 py-2",
-            "rounded-lg",
-            "absolute top-4 right-4 transition border border-gray-600"
-        );
-        ComponentGenerator::addChild(&main, logoutButton);
-    }
+    // Sign in / Sign out are on the site header, which LayoutGenerator puts
+    // above every page.
 
     // Title
     ui::Component title = ComponentGenerator::createText(
@@ -386,7 +373,10 @@ ui::Component HomePageGenerator::FillDebateTopics(const rendering_info::HomePage
 
         // Show delete button if user owns the debate and it's not a challenge
         // Show leave button if user doesn't own the debate
-        if (!topic.is_challenge() && info.can_create_or_join_debates()) {
+        // Not for an anonymous visitor: they are a member of no debate (their
+        // list is every debate), so there is nothing to leave or delete.
+        if (!topic.is_challenge() && info.can_create_or_join_debates() &&
+            !anonymous_user::IsAnonymousUsername(info.viewer_username())) {
             bool userOwnsDebate = (currentUserId == topic.creator_id());
             
             if (userOwnsDebate) {

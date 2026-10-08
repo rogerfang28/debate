@@ -102,14 +102,11 @@ ui::Page BriefView::GenerateBriefPage(
         "briefMain", "min-h-screen flex flex-col items-stretch", "bg-gray-900", "p-6", "", "", "", "gap-4");
     (*container.mutable_css())["overflow"] = "visible";
 
-    // ---- Top bar: the tabs, and Home ----------------------------------------
+    // ---- Top bar: the tabs, under the site header (which has the way home) ----
     ui::Component topBar = ComponentGenerator::createContainer("briefTopBar", "w-full", "", "", "", "", "", "");
     css(&topBar, {{"display", "flex"}, {"flex-direction", "row"}, {"justify-content", "space-between"},
                   {"align-items", "center"}, {"flex-wrap", "wrap"}, {"gap", "0.5rem"}});
     ComponentGenerator::addChild(&topBar, StepView::BuildDebateTabs(true));
-    ComponentGenerator::addChild(&topBar, ComponentGenerator::createButton(
-        "goHomeButton", "Home", "", "bg-blue-600", "hover:bg-blue-700", "text-white", "px-4 py-2",
-        "rounded", "transition-colors text-sm"));
     ComponentGenerator::addChild(&container, topBar);
 
     // The brief on the left, the chat as a column on the right.

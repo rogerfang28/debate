@@ -8,7 +8,9 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
     const moderator_to_vr::DebateList& debateList = responseMessage.debate_list();
 
     // info.set_viewer_user_id(userProto.user_id());
-    // info.set_viewer_username(userProto.username());
+    info.set_viewer_username(userProto.username());
+    // A visitor sees create / join / walkthrough too: pressing one opens the
+    // sign-in modal, and the press is replayed once they have signed in.
     info.set_can_create_or_join_debates(!anonymous_user::IsReadOnlyViewer(userProto.username()));
     // Carried through so the page can show a generation that is still running,
     // or what the last one produced.

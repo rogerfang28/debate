@@ -316,6 +316,10 @@ enum EventType {
     GO_TO_BRIEF = 70;
     GENERATE_BRIEF = 71;
     OPEN_CLAIM_IN_DEBATE = 72;
+    // The sign-in modal: the header's "Sign in" opens it, its close button
+    // shuts it (and forgets any action the visitor was signing in to do).
+    OPEN_SIGN_IN = 73;
+    CLOSE_SIGN_IN = 74;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 

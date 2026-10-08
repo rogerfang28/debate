@@ -93,76 +93,92 @@ ui::Component LoginPageGenerator::GenerateLoginPageMainLayout(const std::string&
         ComponentGenerator::addChild(&main, demoButton);
     }
     else {
-          // Username input
-          ui::Component usernameInput = ComponentGenerator::createInput(
-              "usernameInput",
-              "Enter your username...",
-              "username",
-              "bg-gray-800",
-              "text-white",
-              "border-gray-600",
-              "p-3",
-              "rounded",
-              "w-full max-w-sm",
-              prefillUsername
-          );
-          ComponentGenerator::addChild(&main, usernameInput);
-
-          // Password input (masked via type="password")
-          ui::Component passwordInput = ComponentGenerator::createInput(
-              "passwordInput",
-              "Enter your password...",
-              "password",
-              "bg-gray-800",
-              "text-white",
-              "border-gray-600",
-              "p-3",
-              "rounded",
-              "w-full max-w-sm"
-          );
-          ComponentGenerator::addAttribute(&passwordInput, "type", "password");
-          ComponentGenerator::addChild(&main, passwordInput);
-
-          // Log In button (username + password)
-          ui::Component submitButton = ComponentGenerator::createButton(
-              "submitButton",
-              "Log In",
-              "submit",
-              "bg-green-600",
-              "hover:bg-green-500",
-              "text-white",
-              "px-6 py-3",
-              "rounded-lg",
-              "transition"
-          );
-          ComponentGenerator::addChild(&main, submitButton);
-
-          // Guest Mode button — signs in as username "guest"
-          ui::Component guestButton = ComponentGenerator::createButton(
-              "guestButton",
-              "Continue as Guest",
-              "guest",
-              "bg-gray-600",
-              "hover:bg-gray-500",
-              "text-white",
-              "px-6 py-3",
-              "rounded-lg",
-              "transition"
-          );
-          ComponentGenerator::addChild(&main, guestButton);
-
-          // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set)
-            if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
-                Log::info("[LoginPageGenerator] GOOGLE_CLIENT_ID is set, including googleLoginButton");
-                ui::Component googleButton = ComponentGenerator::createContainer(
-                    "googleLoginButton",
-                    "google-login"
-                );
-                ComponentGenerator::addChild(&main, googleButton);
-            } else {
-                Log::warn("[LoginPageGenerator] GOOGLE_CLIENT_ID is NOT set — googleLoginButton will NOT be included");
-            }
-        }
+        AddLoginForm(&main, prefillUsername, false);
+    }
 
     return main;
+}
+
+// The form itself: username, password, the sign-in button, "continue as
+// guest", and Google's button. The standalone login page and the sign-in
+// modal (drawn over any page) share it. In the modal the submit button has
+// its own id -- the home page already has a "submitButton" (its topic box)
+// -- and "continue as guest" is a quiet link under the rest, for someone who
+// wants to contribute without an account.
+void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& prefillUsername,
+                                      bool inModal) {
+    // Username input
+    ui::Component usernameInput = ComponentGenerator::createInput(
+        "usernameInput",
+        "Enter your username...",
+        "username",
+        "bg-gray-800",
+        "text-white",
+        "border-gray-600",
+        "p-3",
+        "rounded",
+        "w-full max-w-sm",
+        prefillUsername
+    );
+    ComponentGenerator::addChild(parent, usernameInput);
+
+    // Password input (masked via type="password")
+    ui::Component passwordInput = ComponentGenerator::createInput(
+        "passwordInput",
+        "Enter your password...",
+        "password",
+        "bg-gray-800",
+        "text-white",
+        "border-gray-600",
+        "p-3",
+        "rounded",
+        "w-full max-w-sm"
+    );
+    ComponentGenerator::addAttribute(&passwordInput, "type", "password");
+    ComponentGenerator::addChild(parent, passwordInput);
+
+    // Log In button (username + password)
+    ui::Component submitButton = ComponentGenerator::createButton(
+        inModal ? "signInSubmitButton" : "submitButton",
+        inModal ? "Sign in" : "Log In",
+        "submit",
+        "bg-green-600",
+        "hover:bg-green-500",
+        "text-white",
+        "px-6 py-3",
+        "rounded-lg",
+        inModal ? "transition w-full max-w-sm" : "transition"
+    );
+    ComponentGenerator::addChild(parent, submitButton);
+
+    // Guest Mode button — signs in as username "guest"
+    ui::Component guestButton = inModal
+        ? ComponentGenerator::createButton(
+              "guestButton", "Continue as guest", "guest", "bg-transparent",
+              "hover:text-gray-200", "text-gray-400", "px-2 py-1", "rounded", "text-xs underline")
+        : ComponentGenerator::createButton(
+              "guestButton", "Continue as Guest", "guest", "bg-gray-600", "hover:bg-gray-500",
+              "text-white", "px-6 py-3", "rounded-lg", "transition");
+
+    if (!inModal) {
+        ComponentGenerator::addChild(parent, guestButton);
+    }
+
+    // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set). The id is
+    // what the client keys Google's button on; the modal and the login page
+    // are never on screen together, so it is unique either way.
+    if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
+        Log::info("[LoginPageGenerator] GOOGLE_CLIENT_ID is set, including googleLoginButton");
+        ui::Component googleButton = ComponentGenerator::createContainer(
+            "googleLoginButton",
+            "google-login"
+        );
+        ComponentGenerator::addChild(parent, googleButton);
+    } else {
+        Log::warn("[LoginPageGenerator] GOOGLE_CLIENT_ID is NOT set — googleLoginButton will NOT be included");
+    }
+
+    if (inModal) {
+        ComponentGenerator::addChild(parent, guestButton);
+    }
 }

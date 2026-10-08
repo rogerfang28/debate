@@ -13,9 +13,131 @@
 #include "./pages/debatePage/BriefView/BriefView.h"
 #include "./pages/loginPage/LoginPageGenerator.h"
 #include "./pages/errorPage/ErrorPageGenerator.h"
+#include "./ComponentGenerator.h"
 #include "../../utils/Log.h"
+#include "../../utils/DemoMode.h"
+#include "../../utils/AnonymousUser.h"
 
-ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb) {
+namespace {
+
+// The bar across the top of every page. Left: the tool's name, which goes
+// home. Right: "Sign in" for an anonymous visitor; a signed-in user's name
+// and a small "Sign out". Built here, once, rather than by each page, so
+// every page has the same one.
+ui::Component BuildSiteHeader(const user::User& user) {
+    ui::Component header = ComponentGenerator::createContainer("siteHeader", "w-full", "", "", "", "", "", "");
+    auto& headerCss = *header.mutable_css();
+    headerCss["display"] = "flex";
+    headerCss["flex-direction"] = "row";
+    headerCss["justify-content"] = "space-between";
+    headerCss["align-items"] = "center";
+    headerCss["flex-wrap"] = "wrap";
+    headerCss["gap"] = "0.75rem";
+    headerCss["width"] = "100%";
+    headerCss["align-self"] = "stretch";
+    headerCss["padding-bottom"] = "0.75rem";
+    headerCss["border-bottom"] = "1px solid #374151";
+
+    ui::Component home = ComponentGenerator::createButton(
+        "goHomeButton", "Debate Hub", "", "bg-transparent", "hover:text-blue-300", "text-blue-400",
+        "px-0 py-1", "rounded", "text-lg font-bold");
+    (*home.mutable_css())["background"] = "transparent";
+    (*home.mutable_css())["border"] = "none";
+    ComponentGenerator::addChild(&header, home);
+
+    ui::Component account = ComponentGenerator::createContainer("siteHeaderAccount", "", "", "", "", "", "", "");
+    (*account.mutable_css())["display"] = "flex";
+    (*account.mutable_css())["flex-direction"] = "row";
+    (*account.mutable_css())["align-items"] = "center";
+    (*account.mutable_css())["gap"] = "0.75rem";
+    if (anonymous_user::IsAnonymousUsername(user.username())) {
+        ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
+            "openSignInButton", "Sign in", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
+            "px-4 py-2", "rounded", "transition-colors text-sm"));
+    } else {
+        ComponentGenerator::addChild(&account, ComponentGenerator::createText(
+            "headerUsername", user.username(), "text-sm", "text-gray-200", "font-medium", ""));
+        // An auto-login build has no session to leave.
+        if (!demo_mode::autoLogin) {
+            ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
+                "logoutButton", "Sign out", "logout", "bg-gray-700", "hover:bg-gray-600", "text-gray-200",
+                "px-3 py-1.5", "rounded", "transition text-xs border border-gray-600"));
+        }
+    }
+    ComponentGenerator::addChild(&header, account);
+    return header;
+}
+
+// The sign-in form in a modal over whatever page the visitor is on. Its
+// title says why it opened: what the visitor pressed (remembered on their
+// record, replayed once they sign in), or plain "Sign in" from the header.
+ui::Component BuildSignInModal(const user::User& user, const std::string& error,
+                               const std::string& prefillUsername) {
+    ui::Component overlay = ComponentGenerator::createContainer(
+        "signInModalOverlay", "fixed inset-0 flex items-center justify-center", "bg-black/50",
+        "", "", "", "", "z-50");
+    // Above the docked chat (40) and any page dialog (50).
+    (*overlay.mutable_css())["z-index"] = "60";
+
+    ui::Component content = ComponentGenerator::createContainer(
+        "signInModalContent", "flex flex-col items-center gap-4", "bg-gray-800", "p-8", "",
+        "border-2 border-gray-700", "rounded-lg", "w-full max-w-md");
+
+    ComponentGenerator::addChild(&content, ComponentGenerator::createText(
+        "signInModalTitle", anonymous_user::SignInTitle(user.pending_action()), "text-2xl",
+        "text-white", "font-bold", "text-center"));
+    ComponentGenerator::addChild(&content, ComponentGenerator::createText(
+        "signInModalDescription",
+        "Use a username and password (a new name makes an account), or Google. You will come back to this page.",
+        "text-sm", "text-gray-400", "", "text-center"));
+    if (!error.empty()) {
+        ComponentGenerator::addChild(&content, ComponentGenerator::createText(
+            "loginError", error, "text-sm", "text-red-400", "font-medium", "text-center"));
+    }
+
+    LoginPageGenerator::AddLoginForm(&content, prefillUsername, true);
+
+    ComponentGenerator::addChild(&content, ComponentGenerator::createButton(
+        "closeSignInButton", "Not now", "", "bg-gray-700", "hover:bg-gray-600", "text-gray-200",
+        "px-3 py-1.5", "rounded", "transition text-xs"));
+
+    ComponentGenerator::addChild(&overlay, content);
+    return overlay;
+}
+
+// Every page's header goes first in its root container; the sign-in modal,
+// when it is open, goes last so it draws over everything else.
+void AddHeaderAndSignIn(ui::Page& page, const user::User& user, const std::string& signInError,
+                        const std::string& signInUsername) {
+    if (page.components_size() == 0) {
+        return;
+    }
+    ui::Component* root = page.mutable_components(0);
+    *root->add_children() = BuildSiteHeader(user);
+    for (int i = root->children_size() - 1; i > 0; --i) {
+        root->mutable_children()->SwapElements(i, i - 1);
+    }
+    if (anonymous_user::IsAnonymousUsername(user.username()) &&
+        (user.sign_in_open() || !signInError.empty())) {
+        *root->add_children() = BuildSignInModal(user, signInError, signInUsername);
+    }
+}
+
+ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb);
+
+}  // namespace
+
+ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb,
+                                         const std::string& signInError, const std::string& signInUsername) {
+    ui::Page page = GeneratePage(info, userDb);
+    if (page.page_id() == "home" || page.page_id() == "debate") {
+        AddHeaderAndSignIn(page, info.user(), signInError, signInUsername);
+    }
+    return page;
+}
+
+namespace {
+ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb) {
     // ok so we need to decode the info and generate a page based on it
     // so we should check user engagement first
     const auto action = info.user().engagement().current_action();
@@ -67,3 +189,5 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     Log::info("[LayoutGenerator] engagement action: " + std::to_string(action));
     return ErrorPageGenerator::GenerateErrorPage();
 }
+}  // namespace
+

@@ -26,6 +26,12 @@ public:
      // submitter" (0); a name that is nobody yet becomes a user. That user
      // never logs in; it exists so a claim can be held by "the reporter".
      int resolveVoice(const std::string& name);
+     // An anonymous visitor (visitorId) has just signed in as userId: moves
+     // the visitor's place onto userId and takes the press they were signing
+     // in to make off the visitor's record. True with `pending` filled (as
+     // userId) when there is a press to replay through handleRequest.
+     bool takePendingSignIn(const int& visitorId, const int& userId,
+                            debate_event::DebateEvent* pending);
 
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);

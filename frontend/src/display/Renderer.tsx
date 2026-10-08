@@ -18,6 +18,19 @@ interface PageData {
   [key: string]: any;
 }
 
+// No session (a first load, or just signed out): rather than show the login
+// page, sign in silently as this browser's visitor -- the guest button's own
+// event, carrying the visitor name -- so what is painted is the site itself.
+// Signing in is the header's "Sign in" and the modal it opens.
+async function enterAsVisitor(): Promise<PageData | null> {
+  return postClientMessageToCPP({
+    componentId: "guestButton",
+    eventType: "onClick",
+    eventName: "onClick",
+    data: { _pageId: "login", visitorName: getOrCreateVisitorName() },
+  });
+}
+
 const Renderer: React.FC = () => {
   const [data, setData] = useState<PageData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,6 +63,14 @@ const Renderer: React.FC = () => {
   // avoids a redundant second full-page fetch (see applyPageData usage in
   // handleEvent.ts).
   const applyPageData = useCallback((page: PageData) => {
+    // Signing out answers with the login page: come back as the visitor.
+    if (page?.pageId === "login") {
+      void enterAsVisitor().then((visitorPage) => {
+        setData(visitorPage ?? page);
+        setError(null);
+      });
+      return;
+    }
     setData(page);
     setError(null);
   }, []);
@@ -74,17 +95,9 @@ const Renderer: React.FC = () => {
         setLoading(true);
         let info: PageData | null = await postClientMessageToCPP({});
         if (!mounted) return;
-        // No session: rather than show the login page, sign in silently as
-        // this browser's visitor -- the guest button's own event, carrying
-        // the visitor name -- so the first thing painted is the home page.
-        // The login page is still reachable from Logout.
+        // No session: come in as this browser's visitor (see enterAsVisitor).
         if (info?.pageId === "login") {
-          const visitorPage: PageData | null = await postClientMessageToCPP({
-            componentId: "guestButton",
-            eventType: "onClick",
-            eventName: "onClick",
-            data: { _pageId: "login", visitorName: getOrCreateVisitorName() },
-          });
+          const visitorPage: PageData | null = await enterAsVisitor();
           if (!mounted) return;
           if (visitorPage) info = visitorPage;
         }

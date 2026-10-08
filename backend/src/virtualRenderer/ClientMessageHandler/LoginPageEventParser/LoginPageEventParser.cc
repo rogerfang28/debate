@@ -3,18 +3,42 @@
 #include "../../../utils/DemoMode.h"
 #include "../../../utils/AnonymousUser.h"
 
+bool LoginPageEventParser::IsSessionComponent(const std::string& componentId) {
+    return componentId == "goHomeButton" || componentId == "openSignInButton" ||
+           componentId == "closeSignInButton" || componentId == "signInSubmitButton" ||
+           componentId == "guestButton" || componentId == "googleLoginButton" ||
+           componentId == "logoutButton";
+}
+
 debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     const std::string& componentId,
     const std::string& eventType,
     const client_message::ClientMessage& message
 ) {
     debate_event::DebateEvent event;
-    const bool isSubmitClick = (componentId == "submitButton" && eventType == "onClick");
+    // submitButton on the login page; signInSubmitButton in the sign-in modal
+    // (the home page has a submitButton of its own).
+    const bool isSubmitClick = ((componentId == "submitButton" || componentId == "signInSubmitButton") &&
+                                eventType == "onClick");
     const bool isDemoClick = (componentId == "demoButton" && eventType == "onClick");
     const bool isGuestClick = (componentId == "guestButton" && eventType == "onClick");
     const bool isGoogleClick = (componentId == "googleLoginButton" && eventType == "onGoogleLogin");
 
-    if (isGoogleClick) {
+    // The header and the sign-in modal, which are on every page.
+    if (componentId == "goHomeButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_HOME);
+    }
+    else if (componentId == "openSignInButton" && eventType == "onClick") {
+        event.set_type(debate_event::OPEN_SIGN_IN);
+    }
+    else if (componentId == "closeSignInButton" && eventType == "onClick") {
+        event.set_type(debate_event::CLOSE_SIGN_IN);
+    }
+    else if (componentId == "logoutButton" && eventType == "onClick") {
+        // Handled by VirtualRenderer::handleAuthEvents, which clears the cookie.
+        event.set_type(debate_event::LOGOUT);
+    }
+    else if (isGoogleClick) {
         // Google Sign-In: extract the google_id_token from the pageData components
         Log::debug("  GOOGLE LOGIN event triggered.");
         event.set_type(debate_event::LOGIN);

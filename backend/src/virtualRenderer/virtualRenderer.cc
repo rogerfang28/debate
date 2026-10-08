@@ -106,6 +106,11 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     
+    // Whose session this was before the request. When an anonymous visitor
+    // signs in (from the sign-in modal), their place and the press they were
+    // signing in to make are handed to the account they signed in as.
+    const int priorUserId = user_id;
+
     // change cookies accordingly
     std::string loginError = handleAuthEvents(evt, req, res);
 
@@ -116,12 +121,41 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         evt.mutable_user()->set_is_logged_in(true);
     }
     
-    moderator_to_vr::ModeratorToVRMessage info;
-    info = moderator.handleRequest(evt);
+    // A failed sign-in while a session is still alive -- a visitor's, from the
+    // sign-in modal: stay on the same page with the modal open and the error
+    // in it, rather than dropping them on the standalone login page.
+    if (!loginError.empty() && evt.type() == debate_event::LOGIN && evt.user().is_logged_in()) {
+        const std::string attemptedUsername = evt.login().username();
+        evt.set_type(debate_event::NONE);
+        moderator_to_vr::ModeratorToVRMessage stay = moderator.handleRequest(evt);
+        return LayoutGenerator::generateLayout(stay, userDb, loginError, attemptedUsername);
+    }
 
-    // After a successful login, transition user to HOME page
+    const bool signedInFromVisitor =
+        evt.type() == debate_event::LOGIN && evt.user().is_logged_in() &&
+        priorUserId > 0 && evt.user().user_id() != priorUserId &&
+        anonymous_user::IsAnonymousUsername(userDb.getUsername(priorUserId)) &&
+        !anonymous_user::IsAnonymousUsername(evt.user().username());
+
+    moderator_to_vr::ModeratorToVRMessage info;
+    debate_event::DebateEvent pending;
+    if (signedInFromVisitor &&
+        moderator.takePendingSignIn(priorUserId, evt.user().user_id(), &pending)) {
+        // The press the visitor was signing in to make, now as the signed-in
+        // user. It was taken off the visitor's record already, so this is the
+        // only time it runs; the moderator checks the acting user's own record,
+        // which is not anonymous.
+        Log::info("[VirtualRenderer] Replaying pending action type " + std::to_string(pending.type()) +
+                  " as " + evt.user().username() + " (user_id=" + std::to_string(evt.user().user_id()) + ")");
+        info = moderator.handleRequest(pending);
+    } else {
+        info = moderator.handleRequest(evt);
+    }
+
+    // After a successful Google login, transition user to HOME page -- unless
+    // a visitor signed in from where they were reading, who stays there.
     if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() &&
-        !evt.login().google_id_token().empty() && evt.user().is_logged_in()) {
+        !evt.login().google_id_token().empty() && evt.user().is_logged_in() && !signedInFromVisitor) {
         info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
         Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
     }
@@ -192,6 +226,7 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                 // valid fallback identity here. Leave any existing cookie-based
                 // session untouched instead of overwriting it with an empty user.
                 authSucceeded = false;
+                loginError = "Google sign-in failed. Please try again.";
             }
         } else {
             // Username-based flow.
