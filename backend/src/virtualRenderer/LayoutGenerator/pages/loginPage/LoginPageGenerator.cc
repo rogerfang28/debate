@@ -1,112 +1,15 @@
 #include "LoginPageGenerator.h"
 #include "../../../LayoutGenerator/ComponentGenerator.h"
-#include "../../../../utils/DemoMode.h"
 #include "../../../../utils/Log.h"
 
-ui::Page LoginPageGenerator::GenerateLoginPage(const std::string& errorMessage,
-                                               const std::string& prefillUsername) {
-    ui::Page page;
-    page.set_page_id("login");
-    page.set_title((demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Demo Login" : "Sign In")) + std::string(" | commit: ") + GIT_COMMIT_HASH);
+#include <cstdlib>
 
-    // Main container
-    ui::Component main = GenerateLoginPageMainLayout(errorMessage, prefillUsername);
-
-    ui::Component* pageLayout = page.add_components();
-    pageLayout->CopyFrom(main);
-    return page;
-}
-
-
-
-
-
-
-
-
-
-ui::Component LoginPageGenerator::GenerateLoginPageMainLayout(const std::string& errorMessage,
-                                                              const std::string& prefillUsername) {
-    // Main container
-    ui::Component main = ComponentGenerator::createContainer(
-        "main",
-        "min-h-screen flex flex-col items-center justify-center gap-6",
-        "bg-gray-900",
-        "p-8",
-        "",
-        "",
-        "",
-        "text-white"
-    );
-
-    // Title
-    ui::Component title = ComponentGenerator::createText(
-        "title",
-        demo_mode::autoLogin ? "Please Reload" : "Welcome!",
-        "text-3xl",
-        "text-blue-400",
-        "font-bold",
-        ""
-    );
-    ComponentGenerator::addChild(&main, title);
-
-    // Description
-    ui::Component description = ComponentGenerator::createText(
-        "description",
-        demo_mode::autoLogin ? "Please Reload" : (demo_mode::kDemoEnabled ? "Click Demo to continue." : "Log in with a username and password, sign in with Google, or continue as guest."),
-        "",
-        "text-gray-300",
-        "",
-        "text-center"
-    );
-    ComponentGenerator::addChild(&main, description);
-
-    // Error message (e.g. wrong password) — only shown when present.
-    if (!errorMessage.empty()) {
-        ui::Component error = ComponentGenerator::createText(
-            "loginError",
-            errorMessage,
-            "",
-            "text-red-400",
-            "font-medium",
-            "text-center"
-        );
-        ComponentGenerator::addChild(&main, error);
-    }
-
-    if (demo_mode::autoLogin) {
-        return main;
-    }
-
-    if (demo_mode::kDemoEnabled) {
-        ui::Component demoButton = ComponentGenerator::createButton(
-            "demoButton",
-            "Demo",
-            "demo",
-            "bg-blue-600",
-            "hover:bg-blue-500",
-            "text-white",
-            "px-6 py-3",
-            "rounded-lg",
-            "transition"
-        );
-        ComponentGenerator::addChild(&main, demoButton);
-    }
-    else {
-        AddLoginForm(&main, prefillUsername, false);
-    }
-
-    return main;
-}
-
-// The form itself: username, password, the sign-in button, "continue as
-// guest", and Google's button. The standalone login page and the sign-in
-// modal (drawn over any page) share it. In the modal the submit button has
-// its own id -- the home page already has a "submitButton" (its topic box)
-// -- and "continue as guest" is a quiet link under the rest, for someone who
-// wants to contribute without an account.
-void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& prefillUsername,
-                                      bool inModal) {
+// The sign-in modal's form: username, password, the sign-in button, Google's
+// button, and "continue as guest" as a quiet link under the rest, for someone
+// who wants to contribute without an account. The submit button is
+// signInSubmitButton because the home page already has a "submitButton" (its
+// topic box).
+void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& prefillUsername) {
     // Username input
     ui::Component usernameInput = ComponentGenerator::createInput(
         "usernameInput",
@@ -137,36 +40,22 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
     ComponentGenerator::addAttribute(&passwordInput, "type", "password");
     ComponentGenerator::addChild(parent, passwordInput);
 
-    // Log In button (username + password)
+    // Sign in button (username + password)
     ui::Component submitButton = ComponentGenerator::createButton(
-        inModal ? "signInSubmitButton" : "submitButton",
-        inModal ? "Sign in" : "Log In",
+        "signInSubmitButton",
+        "Sign in",
         "submit",
         "bg-green-600",
         "hover:bg-green-500",
         "text-white",
         "px-6 py-3",
         "rounded-lg",
-        inModal ? "transition w-full max-w-sm" : "transition"
+        "transition w-full max-w-sm"
     );
     ComponentGenerator::addChild(parent, submitButton);
 
-    // Guest Mode button — signs in as username "guest"
-    ui::Component guestButton = inModal
-        ? ComponentGenerator::createButton(
-              "guestButton", "Continue as guest", "guest", "bg-transparent",
-              "hover:text-gray-200", "text-gray-400", "px-2 py-1", "rounded", "text-xs underline")
-        : ComponentGenerator::createButton(
-              "guestButton", "Continue as Guest", "guest", "bg-gray-600", "hover:bg-gray-500",
-              "text-white", "px-6 py-3", "rounded-lg", "transition");
-
-    if (!inModal) {
-        ComponentGenerator::addChild(parent, guestButton);
-    }
-
-    // Google Sign-In button (only show if GOOGLE_CLIENT_ID is set). The id is
-    // what the client keys Google's button on; the modal and the login page
-    // are never on screen together, so it is unique either way.
+    // Google Sign-In button (only shown if GOOGLE_CLIENT_ID is set). The id is
+    // what the client keys Google's button on.
     if (std::getenv("GOOGLE_CLIENT_ID") != nullptr) {
         Log::info("[LoginPageGenerator] GOOGLE_CLIENT_ID is set, including googleLoginButton");
         ui::Component googleButton = ComponentGenerator::createContainer(
@@ -178,7 +67,8 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
         Log::warn("[LoginPageGenerator] GOOGLE_CLIENT_ID is NOT set — googleLoginButton will NOT be included");
     }
 
-    if (inModal) {
-        ComponentGenerator::addChild(parent, guestButton);
-    }
+    // "Continue as guest" -- signs in as the shared, writable "guest".
+    ComponentGenerator::addChild(parent, ComponentGenerator::createButton(
+        "guestButton", "Continue as guest", "guest", "bg-transparent",
+        "hover:text-gray-200", "text-gray-400", "px-2 py-1", "rounded", "text-xs underline"));
 }

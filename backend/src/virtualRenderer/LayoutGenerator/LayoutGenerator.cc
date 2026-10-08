@@ -95,7 +95,7 @@ ui::Component BuildSignInModal(const user::User& user, const std::string& error,
             "loginError", error, "text-sm", "text-red-400", "font-medium", "text-center"));
     }
 
-    LoginPageGenerator::AddLoginForm(&content, prefillUsername, true);
+    LoginPageGenerator::AddLoginForm(&content, prefillUsername);
 
     ComponentGenerator::addChild(&content, ComponentGenerator::createButton(
         "closeSignInButton", "Not now", "", "bg-gray-700", "hover:bg-gray-600", "text-gray-200",
@@ -177,12 +177,6 @@ ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserD
             rendering_info::DebatePageRenderingInfo debatePageInfo = DebatePageInfoParser::ParseFromUser(info.user(), info.collection());
             return DebatePageGenerator::GenerateSingleDebatePage(debatePageInfo, info.user());
         }
-    }
-
-    if (action == user_engagement::ACTION_LOGIN) {
-        // generate login page
-        Log::info("[LayoutGenerator] Generating Login Page");
-        return LoginPageGenerator::GenerateLoginPage();
     }
 
     Log::info("[LayoutGenerator] Unknown engagement action, generating error not found page with a go home button.");

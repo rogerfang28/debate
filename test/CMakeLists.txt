@@ -117,7 +117,6 @@ set(MODERATOR_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/DebateModerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
-    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/loginPageResponse/LoginPageResponseGenerator.cc
 )
 
 # --- Virtual renderer source files (step view / pbtxt generation) ---

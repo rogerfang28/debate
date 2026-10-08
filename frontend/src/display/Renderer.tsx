@@ -3,7 +3,6 @@ import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
-import { getOrCreateVisitorName } from "../utils/auth.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
@@ -18,18 +17,11 @@ interface PageData {
   [key: string]: any;
 }
 
-// No session (a first load, or just signed out): rather than show the login
-// page, sign in silently as this browser's visitor -- the guest button's own
-// event, carrying the visitor name -- so what is painted is the site itself.
-// Signing in is the header's "Sign in" and the modal it opens.
-async function enterAsVisitor(): Promise<PageData | null> {
-  return postClientMessageToCPP({
-    componentId: "guestButton",
-    eventType: "onClick",
-    eventName: "onClick",
-    data: { _pageId: "login", visitorName: getOrCreateVisitorName() },
-  });
-}
+// There is no login page. A request with no session (a first load, or just
+// signed out) is signed in by the server as this browser's visitor -- every
+// message carries the visitor name, see postClientMessageToCPP -- so what is
+// painted is always the site itself. Signing in is the header's "Sign in" and
+// the modal it opens.
 
 const Renderer: React.FC = () => {
   const [data, setData] = useState<PageData | null>(null);
@@ -63,14 +55,6 @@ const Renderer: React.FC = () => {
   // avoids a redundant second full-page fetch (see applyPageData usage in
   // handleEvent.ts).
   const applyPageData = useCallback((page: PageData) => {
-    // Signing out answers with the login page: come back as the visitor.
-    if (page?.pageId === "login") {
-      void enterAsVisitor().then((visitorPage) => {
-        setData(visitorPage ?? page);
-        setError(null);
-      });
-      return;
-    }
     setData(page);
     setError(null);
   }, []);
@@ -93,14 +77,8 @@ const Renderer: React.FC = () => {
       if (!mounted) return;
       try {
         setLoading(true);
-        let info: PageData | null = await postClientMessageToCPP({});
+        const info: PageData | null = await postClientMessageToCPP({});
         if (!mounted) return;
-        // No session: come in as this browser's visitor (see enterAsVisitor).
-        if (info?.pageId === "login") {
-          const visitorPage: PageData | null = await enterAsVisitor();
-          if (!mounted) return;
-          if (visitorPage) info = visitorPage;
-        }
         if (info) {
           setData(info);
           setError(null);

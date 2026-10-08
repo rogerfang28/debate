@@ -6,6 +6,7 @@ import {
   ComponentDataSchema,
 } from "../../../src/gen/ts/client_message_pb";
 import { PageSchema } from "../../../src/gen/ts/layout_pb";
+import { getOrCreateVisitorName } from "../utils/auth";
 
 export interface EventData {
   componentId?: string;
@@ -50,6 +51,16 @@ export default async function postClientMessageToCPP(
           type: "",
         })
       );
+
+    // Every message carries this browser's visitor name. The server reads it
+    // only when the request has no valid session (a first visit, a sign-out,
+    // an expired cookie), and signs the reader in as that visitor, so the
+    // same browser is always the same visitor.
+    if (!components.some((c) => c.id === "visitorName")) {
+      components.push(
+        create(ComponentDataSchema, { id: "visitorName", value: getOrCreateVisitorName(), type: "" })
+      );
+    }
 
     const pageData = create(PageDataSchema, {
       pageId,

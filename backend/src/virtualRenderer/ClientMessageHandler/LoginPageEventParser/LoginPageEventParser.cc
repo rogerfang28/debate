@@ -1,7 +1,6 @@
 #include "LoginPageEventParser.h"
 #include "../../../utils/Log.h"
 #include "../../../utils/DemoMode.h"
-#include "../../../utils/AnonymousUser.h"
 
 bool LoginPageEventParser::IsSessionComponent(const std::string& componentId) {
     return componentId == "goHomeButton" || componentId == "openSignInButton" ||
@@ -16,10 +15,8 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     const client_message::ClientMessage& message
 ) {
     debate_event::DebateEvent event;
-    // submitButton on the login page; signInSubmitButton in the sign-in modal
-    // (the home page has a submitButton of its own).
-    const bool isSubmitClick = ((componentId == "submitButton" || componentId == "signInSubmitButton") &&
-                                eventType == "onClick");
+    // The sign-in modal's submit (the home page has a submitButton of its own).
+    const bool isSubmitClick = (componentId == "signInSubmitButton" && eventType == "onClick");
     const bool isDemoClick = (componentId == "demoButton" && eventType == "onClick");
     const bool isGuestClick = (componentId == "guestButton" && eventType == "onClick");
     const bool isGoogleClick = (componentId == "googleLoginButton" && eventType == "onGoogleLogin");
@@ -61,19 +58,10 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     else if (isGuestClick) {
         Log::debug("  GUEST LOGIN event triggered.");
         event.set_type(debate_event::LOGIN);
-        // The same click, sent by the client on its own at first load with a
-        // visitorName it made up and kept: each first-time reader becomes
-        // their own read-only visitor instead of sharing "guest". A name that
-        // is not exactly the visitor shape is ignored.
-        std::string username = "guest";
-        for (const auto& comp : message.page_data().components()) {
-            if (comp.id() == "visitorName" &&
-                anonymous_user::IsWellFormedVisitorName(comp.value())) {
-                username = comp.value();
-                break;
-            }
-        }
-        event.mutable_login()->set_username(username);
+        // The shared, writable "guest". (Every message also carries the
+        // browser's visitorName, which is only read when there is no session:
+        // see VirtualRenderer::signInAsVisitor.)
+        event.mutable_login()->set_username("guest");
     }
     else if (isSubmitClick || isDemoClick) {
         Log::debug("  LOGIN event triggered.");

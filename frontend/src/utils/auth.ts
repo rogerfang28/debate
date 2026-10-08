@@ -47,13 +47,13 @@ export function isLoggedIn(): boolean {
 /**
  * Silent per-visitor identity.
  *
- * A first-time reader should land on the home page, not a login page. So when
- * the server answers the first load with the login page (no session cookie),
- * the client makes up a name like "visitor-a1b2c3d4", keeps it in
- * localStorage so the same reader comes back as the same visitor, and sends
- * the guest button's own login event with it. Each visitor is a separate user
- * on the server -- their own open debate, selected claim, and tab -- and the
- * server lets a visitor read everything and change nothing.
+ * A first-time reader lands on the home page; there is no login page. The
+ * client makes up a name like "visitor-a1b2c3d4", keeps it in localStorage so
+ * the same reader comes back as the same visitor, and sends it with every
+ * message (postClientMessageToCPP). When a request has no valid session the
+ * server signs it in as that visitor. Each visitor is a separate user on the
+ * server -- their own open debate, selected claim, and tab -- and the server
+ * lets a visitor read everything and change nothing.
  */
 const VISITOR_KEY = 'debate.visitorName';
 const VISITOR_SHAPE = /^visitor-[0-9a-f]{8}$/;

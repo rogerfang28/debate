@@ -44,6 +44,11 @@ private:
      int createUserWithGoogleInfo(const std::string& username, const std::string& google_sub, const std::string& email);
      void updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email);
      std::string getUsersDatabasePath() const;
+     // A request with no valid session: signs it in as a visitor (the
+     // browser's own visitorName when it sent a well-formed one, else a new
+     // one), sets the session cookies, and makes evt act as that visitor.
+     void signInAsVisitor(debate_event::DebateEvent& evt, const client_message::ClientMessage& message,
+                          const httplib::Request& req, httplib::Response& res);
     Database usersDb;
     VRUserDatabase userDb;
     DebateModerator moderator;

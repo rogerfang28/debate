@@ -39,7 +39,6 @@
 
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
-#include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
 #include "../utils/AnonymousUser.h"
@@ -202,9 +201,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     // Process the debate event and update the database accordingly
     int user_id = event.user().user_id();
     if (!event.user().is_logged_in()) {
-        Log::info("[DebateModerator] User not authenticated, redirecting to login page.");
+        // The virtual renderer signs every sessionless request in as a
+        // visitor before it gets here, so this is not reached from a browser.
+        // There is no login page any more: answer with the home shelf.
+        Log::warn("[DebateModerator] Request without a signed-in user; answering with the home page.");
         moderator_to_vr::ModeratorToVRMessage res;
-        LoginPageResponseGenerator::BuildLoginPageResponse(res);
+        res.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        HomePageResponseGenerator::BuildHomePageResponse(res, 0, debateWrapper);
         return res;
     }
     Log::info("[DebateModerator] Handling request for user: " + std::to_string(user_id));

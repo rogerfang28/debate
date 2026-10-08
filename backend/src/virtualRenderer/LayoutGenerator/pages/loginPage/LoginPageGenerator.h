@@ -3,19 +3,15 @@
 
 #include "layout.pb.h"
 
+// There is no login page: a reader without a session is signed in as a
+// visitor and lands on the home page, and signing in is the sign-in modal
+// (LayoutGenerator's BuildSignInModal). This is the modal's form.
 class LoginPageGenerator {
 public:
-    // errorMessage: shown in red above the form when non-empty (e.g. wrong password).
-    // prefillUsername: pre-populates the username field so a failed attempt
-    // doesn't force the user to retype it.
-    static ui::Page GenerateLoginPage(const std::string& errorMessage = "",
-                                      const std::string& prefillUsername = "");
-    static ui::Component GenerateLoginPageMainLayout(const std::string& errorMessage = "",
-                                                     const std::string& prefillUsername = "");
-    // The username / password / guest / Google form, shared by the login page
-    // and the sign-in modal. inModal gives the submit button the modal's own
-    // id (signInSubmitButton) and makes "continue as guest" a small link.
-    static void AddLoginForm(ui::Component* parent, const std::string& prefillUsername, bool inModal);
+    // The username / password / Google form, with "continue as guest" as a
+    // small link under it. prefillUsername pre-populates the username field
+    // so a failed attempt doesn't force the user to retype it.
+    static void AddLoginForm(ui::Component* parent, const std::string& prefillUsername);
 };
 
 #endif // LOGIN_PAGE_GENERATOR_H
