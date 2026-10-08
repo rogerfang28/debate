@@ -214,36 +214,14 @@ a:hover {
   box-shadow: var(--shadow-lg);
 }
 
-/* --- Tutorial guide box ---
-   The sticky behaviour lives here rather than in the server's css map because
-   how much of the screen the box may occupy depends on the screen, and an
-   inline style cannot carry a media query. On a phone a 72vh guide leaves
-   almost nothing of the debate it is pointing at.
-
-   The panel's own `overflow` stays inline: ContainerComponent writes an inline
-   overflow on every container, and inline beats a class -- without it the box
-   would clip its own text with no way to scroll. */
-.tutorial-guide-sticky {
-  position: sticky;
-  top: 0.5rem;
-  z-index: 40;
-  max-height: 72vh;
-}
-
-@media (max-height: 700px) {
-  .tutorial-guide-sticky { max-height: 62vh; }
-}
-
-@media (max-width: 640px) {
-  .tutorial-guide-sticky { max-height: 50vh; }
-}
-
 /* ===================== Page layout (shell.html) =====================
    The server marks a page's parts with attributes; these rules lay them
-   out. data-layout="shell" on the root: a header, any strip (the guide
-   box), then the regions, which take exactly the rest of the window and
-   each scroll on their own. The container whose children are the regions
-   is .shell-regions (ContainerComponent). */
+   out. data-layout="shell" on the root (the Debate page): a header, any
+   strip (the guide box), then three regions that take exactly the rest of
+   the window and each scroll on their own. data-layout="document" (the
+   Brief, Home, Explore): a header, then one scrolling reading column, with
+   the chat region beside it when there is one. The container whose
+   children are the regions is .shell-regions (ContainerComponent). */
 
 /* The header region, on every page. */
 [data-region="header"] {
@@ -266,7 +244,7 @@ a:hover {
   overflow-x: auto;
 }
 
-[data-layout="shell"] {
+[data-layout] {
   height: 100vh;
   min-height: 0;
   display: flex;
@@ -278,13 +256,14 @@ a:hover {
 }
 
 /* Everything above the regions is a strip of its own height. */
-[data-layout="shell"] > * {
+[data-layout] > * {
   flex: none;
 }
 
-[data-layout="shell"] > .tutorial-guide-sticky {
-  position: relative;
-  top: auto;
+/* The walkthrough's guide box: a strip above the regions, capped so the
+   argument it points at keeps most of the window. Its own overflow (inline,
+   from the server) lets it scroll inside the cap. */
+[data-layout] > .tutorial-guide-sticky {
   width: auto;
   max-height: 34vh;
   margin: 14px 14px 0;
@@ -300,10 +279,27 @@ a:hover {
   padding: 14px;
 }
 
+[data-layout="document"] > .shell-regions {
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+/* No chat (Home, Explore): the reading column alone, centred. */
+[data-layout="document"] > .shell-regions:not(:has(> .region.chat)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-layout="document"] > .shell-regions:not(:has(> .region.chat)) .region-col {
+  margin: 0 auto;
+}
+
 /* The chat folded: its region narrows to a strip. */
 @media (min-width: 1100px) {
-  [data-layout] > .shell-regions:has(> .region.chat .docked[data-folded="true"]) {
+  [data-layout="shell"] > .shell-regions:has(> .region.chat .docked[data-folded="true"]) {
     grid-template-columns: 320px minmax(0, 1fr) 44px;
+  }
+
+  [data-layout="document"] > .shell-regions:has(> .region.chat .docked[data-folded="true"]) {
+    grid-template-columns: minmax(0, 1fr) 44px;
   }
 }
 
@@ -316,6 +312,21 @@ a:hover {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+}
+
+/* ---- page: the document's reading column, the one scroller ---- */
+.region.page {
+  display: block;
+  overflow-y: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 4px 8px 40px 4px;
+}
+
+.region.page > .region-col {
+  width: 100%;
+  max-width: 820px;
 }
 
 /* ---- inspector: the selected claim pinned, sections scrolling under it ---- */
@@ -520,32 +531,11 @@ a:hover {
   width: 16rem;
 }
 
-.docked.side {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 24rem;
-  max-width: 80vw;
-  z-index: 40;
-  border-left: 1px solid var(--line);
-}
-
-.docked.side.folded {
-  width: 2.75rem;
-}
-
-.docked.side .docked-body {
-  flex: 1 1 auto;
-}
-
-.docked.side.folded .docked-head,
 .docked.region.folded .docked-head {
   justify-content: center;
   padding: 10px 0;
 }
 
-.docked.side.folded .docked-title,
 .docked.region.folded .docked-title {
   display: none;
 }

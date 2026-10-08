@@ -595,13 +595,17 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
 
     ui::Component main = ComponentGenerator::createContainer(
         "main", "min-h-screen flex flex-col items-center gap-6", "bg-gray-900", "p-8", "", "", "", "text-white");
+    // A document with no chat: the header, then one scrolling column.
+    ComponentGenerator::addAttribute(&main, "data-layout", "document");
 
     // The site's name, the tabs and Sign in / Sign out are on the header,
-    // which LayoutGenerator puts above every page.
+    // which LayoutGenerator puts above every page. The column is the page
+    // region; its css is the reading column's.
     ui::Component column = box("homeColumn", {
         {"display", "flex"}, {"flex-direction", "column"}, {"gap", "1.75rem"},
-        {"max-width", "48rem"}, {"overflow", "visible"},
+        {"max-width", "54rem"},
     });
+    ComponentGenerator::addAttribute(&column, "data-region", "page");
 
     const bool visitor = anonymous_user::IsAnonymousUsername(info.viewer_username());
     const std::string tab = ActiveTab(info.home_view(), visitor);
@@ -636,7 +640,11 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
         {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "1rem 0 0"},
          {"text-align", "center"}}));
 
-    ComponentGenerator::addChild(&main, column);
+    // The regions stand in a row of their own under the header; here the
+    // page region is the only one.
+    ui::Component content = ComponentGenerator::createContainer("homeContentRow", "w-full", "", "", "", "", "", "");
+    ComponentGenerator::addChild(&content, column);
+    ComponentGenerator::addChild(&main, content);
     *page.add_components() = main;
     return page;
 }

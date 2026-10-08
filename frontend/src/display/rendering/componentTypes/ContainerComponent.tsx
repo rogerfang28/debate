@@ -108,11 +108,21 @@ const MainRegion: React.FC<{ component: any; className?: string; style?: React.C
 };
 
 // Any other region. The inspector pins its first child (the selected claim)
-// and scrolls the rest beneath it.
+// and scrolls the rest beneath it. The page region (document mode) is the
+// scroller, and the server's css describes the reading column inside it.
 function renderRegion(region: string, component: any, className: string | undefined, style: React.CSSProperties | undefined) {
   const nested = component.children || component.components || [];
   const cls = `region ${region} ${className || ""}`;
   let body: React.ReactNode;
+  if (region === "page") {
+    return (
+      <div id={component.id} className={cls} data-region={region}>
+        <RegionContext.Provider value={region}>
+          <div className="region-col" style={style}>{renderChildren(nested)}</div>
+        </RegionContext.Provider>
+      </div>
+    );
+  }
   if (region === "inspector" && nested.length > 0) {
     body = (
       <>

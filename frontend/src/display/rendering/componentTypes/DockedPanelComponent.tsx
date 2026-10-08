@@ -6,15 +6,13 @@ import { RegionContext } from "./shellContext";
 // A CONTAINER with a header bar that folds it away. Where it stands is the
 // client's call, from the server's data-docked attribute and where the panel
 // sits:
-//   "true"                       -> corner: a box pinned to the bottom-right
-//                                   corner over the page.
 //   "side" in a chat region      -> region: it IS the page's chat region,
 //                                   the window's height, its turns scrolling
 //                                   above an ask box pinned at the bottom.
 //                                   Folded, the region narrows to a strip.
 //                                   Below 1100px it falls back to the corner.
-//   "side" anywhere else         -> side: pinned to the right edge of the
-//                                   window, the page pushed over by its width.
+//   anything else ("true")       -> corner: a box pinned to the bottom-right
+//                                   corner over the page.
 // data-docked-title names it; everything inside is rendered as usual. The
 // look is index.css's (.docked).
 //
@@ -23,16 +21,12 @@ import { RegionContext } from "./shellContext";
 // does not pop the panel open again, and a reload keeps it where it was.
 const storageKey = (id: string) => `docked:${id}:collapsed`;
 
-const SIDE_WIDTH = "24rem";
-const SIDE_FOLDED_WIDTH = "2.75rem";
-
 const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const id = component.id || "dockedPanel";
   const attributes = (component as any).attributes || {};
   const title: string = attributes["data-docked-title"] || "Panel";
   const region = useContext(RegionContext);
-  const placement =
-    attributes["data-docked"] === "side" ? (region === "chat" ? "region" : "side") : "corner";
+  const placement = attributes["data-docked"] === "side" && region === "chat" ? "region" : "corner";
   const nested = component.children || component.components || [];
 
   const [collapsed, setCollapsed] = useState<boolean>(() => {
@@ -53,18 +47,6 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
     });
   };
 
-  // The page makes room for the side panel: body padding equal to its
-  // width, so the columns lay out beside it rather than under it. Undone
-  // when the panel leaves the page.
-  useEffect(() => {
-    if (placement !== "side") return;
-    const previous = document.body.style.paddingRight;
-    document.body.style.paddingRight = collapsed ? SIDE_FOLDED_WIDTH : SIDE_WIDTH;
-    return () => {
-      document.body.style.paddingRight = previous;
-    };
-  }, [placement, collapsed]);
-
   // Keep the newest turn in view: the scroller goes to its end when a turn
   // is added -- not on every rebuild, or the reader could never scroll back
   // up while the page polls.
@@ -79,7 +61,7 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
     }
   });
 
-  const edge = placement !== "corner";
+  const edge = placement === "region";
   const chevron = edge ? (collapsed ? "◀" : "▶") : collapsed ? "▲" : "▼";
 
   // As a region the conversation scrolls on its own and the rest -- the ask

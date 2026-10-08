@@ -756,14 +756,14 @@ static void AddTextLines(ui::Component* parent, const std::string& idPrefix, con
 // buttons for the questions readers ask most, and the conversation so far.
 // Everything it says is text -- it never writes a claim; the reader does.
 //
-// It is docked to the corner of the screen rather than placed in the column:
-// past a dozen claims the graph stops answering "so where does this stand" at
-// a glance, and asking should be one click away from wherever the reader is.
+// It stands beside the argument rather than in it: past a dozen claims the
+// graph stops answering "so where does this stand" at a glance, and asking
+// should be one click away from wherever the reader is.
 ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
     const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
 
-    // Docked to the corner of the screen, folded away with one click, so it
-    // is always to hand and never in the way. The client owns the fold.
+    // Folded away with one click, so it is always to hand and never in the
+    // way. The client owns the fold and the placement.
     ui::Component panel = ComponentGenerator::createContainer(
         "chatPanel", "w-full", "bg-gray-800", "p-3", "", "", "", ""
     );
@@ -876,14 +876,12 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
 // one that belongs to a different debate -- opening another debate mid-tutorial
 // should not drag the guide box along, narrating steps about claims that are
 // not on screen.
-// The chat as the page's sidebar. The client pins it to the right edge of
-// the window and pushes the page over by its width (DockedPanelComponent's
-// "side" mode); this wrapper takes no room of its own.
+// The chat as a page's chat region: the window's height beside the debate
+// or the brief, its ask box at the bottom (the client lays it out; below
+// 1100px it falls back to the corner box).
 ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId) {
     ui::Component column = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
-    (*column.mutable_css())["flex"] = "0 0 0px";
-    (*column.mutable_css())["width"] = "0";
-    (*column.mutable_css())["overflow"] = "visible";
+    ComponentGenerator::addAttribute(&column, "data-region", "chat");
     ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId));
     return column;
 }
@@ -968,8 +966,8 @@ static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show
     }
     show = true;
 
-    // The sticky rules ride on a class, not the css map, so they can vary by
-    // screen size -- see .tutorial-guide-sticky in index.css.
+    // Its height cap rides on a class, not the css map: it is a strip above
+    // the page's regions -- see .tutorial-guide-sticky in index.css.
     panel = ComponentGenerator::createContainer(
         "tutorialPanel", "w-full", "", "", "", "", "", "tutorial-guide-sticky");
     tutorialCss(&panel, {
@@ -1443,15 +1441,9 @@ ui::Page StepView::GenerateStepViewPage(
 		ComponentGenerator::addChild(&rightColumn, treeWrapper);
 	}
 
-	// The chat as the third region, standing the window's height with its
-	// ask box at the bottom.
-	ui::Component chatColumn = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
-	ComponentGenerator::addAttribute(&chatColumn, "data-region", "chat");
-	ComponentGenerator::addChild(&chatColumn, BuildChatPanel(viewerUser, currentClaimId));
-
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
-	ComponentGenerator::addChild(&contentRow, chatColumn);
+	ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.

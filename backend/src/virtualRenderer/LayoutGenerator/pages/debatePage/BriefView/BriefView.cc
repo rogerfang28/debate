@@ -47,7 +47,11 @@ ui::Component card(const std::string& id, const std::string& caption) {
     ui::Component c = ComponentGenerator::createContainer(id, "w-full", "", "", "", "", "", "");
     css(&c, {
         {"display", "flex"}, {"flex-direction", "column"}, {"gap", "8px"},
-        {"background", "var(--panel)"}, {"border", "1px solid var(--line)"},
+        {"background", "var(--panel)"},
+        // Each side separately: a hinge card overrides border-left, and a
+        // "border" shorthand in the same unordered map could flatten it.
+        {"border-top", "1px solid var(--line)"}, {"border-right", "1px solid var(--line)"},
+        {"border-bottom", "1px solid var(--line)"}, {"border-left", "1px solid var(--line)"},
         {"border-radius", "var(--radius)"}, {"padding", "16px 18px"},
     });
     if (!caption.empty()) {
@@ -111,7 +115,9 @@ ui::Page BriefView::GenerateBriefPage(
 
     ui::Component container = ComponentGenerator::createContainer(
         "briefMain", "min-h-screen flex flex-col items-stretch", "bg-gray-900", "p-6", "", "", "", "gap-4");
-    (*container.mutable_css())["overflow"] = "visible";
+    // A document: one scrolling reading column with the chat beside it. The
+    // server says which part is which; the client lays them out.
+    ComponentGenerator::addAttribute(&container, "data-layout", "document");
 
     // ---- Top bar: the tabs, under the site header (which has the way home) ----
     ui::Component topBar = ComponentGenerator::createContainer("briefTopBar", "w-full", "", "", "", "", "", "");
@@ -120,13 +126,13 @@ ui::Page BriefView::GenerateBriefPage(
     ComponentGenerator::addChild(&topBar, StepView::BuildDebateTabs(true));
     ComponentGenerator::addChild(&container, topBar);
 
-    // The brief on the left, the chat as a column on the right.
+    // The brief on the left, the chat region on the right. The column is the
+    // page region; its css is the reading column's (820px, as shell.html).
     ui::Component contentRow = ComponentGenerator::createContainer("briefContentRow", "w-full", "", "", "", "", "", "");
-    css(&contentRow, {{"display", "flex"}, {"flex-direction", "row"}, {"flex-wrap", "wrap"},
-                      {"align-items", "flex-start"}, {"gap", "1rem"}, {"overflow", "visible"}});
     ui::Component column = ComponentGenerator::createContainer("briefColumn", "", "", "", "", "", "", "");
-    css(&column, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "1rem"},
-                  {"flex", "1 1 30rem"}, {"max-width", "60rem"}, {"min-width", "0"}});
+    ComponentGenerator::addAttribute(&column, "data-region", "page");
+    css(&column, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "14px"},
+                  {"max-width", "820px"}});
 
     // ---- Title ------------------------------------------------------------------
     {
