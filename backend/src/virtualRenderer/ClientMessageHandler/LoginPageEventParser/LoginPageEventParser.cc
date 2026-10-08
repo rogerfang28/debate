@@ -1,6 +1,7 @@
 #include "LoginPageEventParser.h"
 #include "../../../utils/Log.h"
 #include "../../../utils/DemoMode.h"
+#include "../../../utils/AnonymousUser.h"
 
 debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     const std::string& componentId,
@@ -36,7 +37,19 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
     else if (isGuestClick) {
         Log::debug("  GUEST LOGIN event triggered.");
         event.set_type(debate_event::LOGIN);
-        event.mutable_login()->set_username("guest");
+        // The same click, sent by the client on its own at first load with a
+        // visitorName it made up and kept: each first-time reader becomes
+        // their own read-only visitor instead of sharing "guest". A name that
+        // is not exactly the visitor shape is ignored.
+        std::string username = "guest";
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "visitorName" &&
+                anonymous_user::IsWellFormedVisitorName(comp.value())) {
+                username = comp.value();
+                break;
+            }
+        }
+        event.mutable_login()->set_username(username);
     }
     else if (isSubmitClick || isDemoClick) {
         Log::debug("  LOGIN event triggered.");

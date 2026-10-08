@@ -351,6 +351,10 @@ std::vector<int> DebateWrapper::getUserDebateIds(const int& user_id) {
     return databaseWrapper.debateMembers.getDebateIdsForUser(user_id);
 }
 
+std::vector<int> DebateWrapper::getAllDebateIds() {
+    return databaseWrapper.debates.allDebateIds();
+}
+
 std::vector<uint8_t> DebateWrapper::getDebateProtobuf(const int& debateId) {
     return databaseWrapper.debates.getDebateProtobuf(debateId);
 }

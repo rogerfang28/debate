@@ -1,4 +1,5 @@
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/AnonymousUser.h"
 #include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../utils/DebateChat.h"
 #include "StepView.h"
@@ -194,6 +195,13 @@ static ui::Component BuildSelectedClaimPanel(
         ""
     );
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
+
+    // A read-only viewer (an anonymous visitor, or a read-only demo build)
+    // sees the claim and none of the buttons that change it.
+    if (anonymous_user::IsReadOnlyViewer(viewerUsername)) {
+        ComponentGenerator::addChild(&panel, buttonRow);
+        return panel;
+    }
 
     // Who may do what on this claim:
     //   - the viewer HOLDS it (asserted it, it was entered in their voice, or
@@ -441,7 +449,7 @@ static ui::Component BuildSelectedRelationPanel(
     ui::Component buttonRow = ComponentGenerator::createContainer(
         "selectedRelationButtonRow", "flex gap-2", "", "", "", "", "", "");
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
-    if (!demo_mode::kReadOnlyMode) {
+    if (!anonymous_user::IsReadOnlyViewer(viewerUsername)) {
         // The claim panel's Challenge button, for an argument: one click opens
         // the challenge modal with this argument as the target.
         ComponentGenerator::addChild(&buttonRow, ComponentGenerator::createButton(

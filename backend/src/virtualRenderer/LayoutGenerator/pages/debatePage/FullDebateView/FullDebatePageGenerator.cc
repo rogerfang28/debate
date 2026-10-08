@@ -5,6 +5,7 @@
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/AnonymousUser.h"
 #include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "user.pb.h"
@@ -695,7 +696,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
     // Check if user is in modify mode
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         challengingClaim = false;
         modifyingCurrentClaim = false;
     }
@@ -1219,7 +1220,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
 
         // Concede button: visible when the current user's claim is being challenged
         // (i.e., user is the defender, not the attacker)
-        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (!userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             ui::Component concedeButton = ComponentGenerator::createButton(
                 "concedeChallengeButton_" + std::to_string(challengeLinkId),
                 "Concede",
@@ -1258,7 +1259,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
 
-        if (userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengedClaimId,
                 "Delete",
@@ -1311,7 +1312,7 @@ ui::Component FullDebatePageGenerator::FillCurrentClaimSection(const rendering_i
     bool editingClaim = (debatingInfo.current_debate_action().action_type() == 
                          user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM);
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         modifyingCurrentClaim = false;
         editingDescription = false;
         editingClaim = false;
@@ -1529,7 +1530,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                     for (int k = 0; k < rightContent->children_size(); k++) {
                         ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
                         if (modifyActionsContainer->id() == "modifyActionsContainer") {
-                            if (modifyingCurrentClaim && !demo_mode::kReadOnlyMode) {
+                            if (modifyingCurrentClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Cancel and Submit buttons
                                 ui::Component cancelModifyButton = ComponentGenerator::createButton(
                                     "cancelModifyClaimButton",
@@ -1556,7 +1557,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                                     "w-full transition-colors"
                                 );
                                 ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
-                            } else if (!demo_mode::kReadOnlyMode) {
+                            } else if (!anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Modify Claim button
                                 ui::Component modifyClaimButton = ComponentGenerator::createButton(
                                     "modifyClaimButton",
@@ -1582,7 +1583,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
     }
 
     // Only add buttons if not in editing mode
-    if (!editingDescription && !editingClaim && !demo_mode::kReadOnlyMode) {
+    if (!editingDescription && !editingClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
         // Find descriptionActions container and add appropriate buttons
         for (int i = 0; i < mainLayout.children_size(); i++) {
             ui::Component* contentArea = mainLayout.mutable_children(i);

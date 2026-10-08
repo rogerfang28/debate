@@ -16,6 +16,7 @@
 #include <vector>
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
+#include "../utils/AnonymousUser.h"
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
 #include "../utils/GoogleJWTVerifier.h"
@@ -197,8 +198,11 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             finalUsername = evt.login().username();
             const std::string password = evt.login().password();
 
-            // "guest" and demo-mode logins are intentionally passwordless.
-            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest";
+            // "guest", anonymous visitors, and demo-mode logins are
+            // intentionally passwordless. A visitor can change nothing, so
+            // there is nothing for a password to protect.
+            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest" ||
+                                      anonymous_user::IsAnonymousUsername(finalUsername);
 
             if (passwordless) {
                 moderatorUserId = moderator.createUserIfNotExist(finalUsername);

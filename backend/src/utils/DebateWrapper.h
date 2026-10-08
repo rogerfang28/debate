@@ -65,6 +65,9 @@ public:
     void deleteAllDebates(const int& user_id);
     void moveUserToClaim(const int& user_id, const int& claimId);
     std::vector<int> getUserDebateIds(const int& user_id);
+    // Every debate, oldest first. What an anonymous visitor's home page lists:
+    // a visitor is a member of nothing, and reading is open to everyone.
+    std::vector<int> getAllDebateIds();
     std::vector<uint8_t> getDebateProtobuf(const int& debateId);
     user::User getUserProtobuf(const int& user_id);
     std::vector<uint8_t> getUserProtobufBinary(const int& user_id);

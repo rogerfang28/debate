@@ -3,6 +3,7 @@ import { PageRenderer } from "./rendering/PageRenderer.tsx";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
+import { getOrCreateVisitorName } from "../utils/auth.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare global {
@@ -71,8 +72,22 @@ const Renderer: React.FC = () => {
       if (!mounted) return;
       try {
         setLoading(true);
-        const info: PageData | null = await postClientMessageToCPP({});
+        let info: PageData | null = await postClientMessageToCPP({});
         if (!mounted) return;
+        // No session: rather than show the login page, sign in silently as
+        // this browser's visitor -- the guest button's own event, carrying
+        // the visitor name -- so the first thing painted is the home page.
+        // The login page is still reachable from Logout.
+        if (info?.pageId === "login") {
+          const visitorPage: PageData | null = await postClientMessageToCPP({
+            componentId: "guestButton",
+            eventType: "onClick",
+            eventName: "onClick",
+            data: { _pageId: "login", visitorName: getOrCreateVisitorName() },
+          });
+          if (!mounted) return;
+          if (visitorPage) info = visitorPage;
+        }
         if (info) {
           setData(info);
           setError(null);

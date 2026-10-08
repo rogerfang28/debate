@@ -43,3 +43,40 @@ export function clearUser(): void {
 export function isLoggedIn(): boolean {
   return getUser() !== 'guest';
 }
+
+/**
+ * Silent per-visitor identity.
+ *
+ * A first-time reader should land on the home page, not a login page. So when
+ * the server answers the first load with the login page (no session cookie),
+ * the client makes up a name like "visitor-a1b2c3d4", keeps it in
+ * localStorage so the same reader comes back as the same visitor, and sends
+ * the guest button's own login event with it. Each visitor is a separate user
+ * on the server -- their own open debate, selected claim, and tab -- and the
+ * server lets a visitor read everything and change nothing.
+ */
+const VISITOR_KEY = 'debate.visitorName';
+const VISITOR_SHAPE = /^visitor-[0-9a-f]{8}$/;
+
+function makeVisitorName(): string {
+  const bytes = new Uint8Array(4);
+  crypto.getRandomValues(bytes);
+  return 'visitor-' + Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** The stored visitor name, or a new one (stored when storage allows). */
+export function getOrCreateVisitorName(): string {
+  try {
+    const stored = localStorage.getItem(VISITOR_KEY);
+    if (stored && VISITOR_SHAPE.test(stored)) return stored;
+  } catch {
+    // Storage blocked: a fresh name per load still lets the reader read.
+  }
+  const name = makeVisitorName();
+  try {
+    localStorage.setItem(VISITOR_KEY, name);
+  } catch {
+    // ignore
+  }
+  return name;
+}

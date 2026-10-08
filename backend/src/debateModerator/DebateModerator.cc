@@ -41,6 +41,7 @@
 #include "buildResponse/loginPageResponse/LoginPageResponseGenerator.h"
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
+#include "../utils/AnonymousUser.h"
 
 namespace {
 bool isViewerBlockedEvent(debate_event::EventType type) {
@@ -81,6 +82,27 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
         case debate_event::START_MODIFICATION_OF_CLAIM:
         case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
         case debate_event::CANCEL_MODIFICATION_OF_CLAIM:
+            return true;
+        default:
+            return false;
+    }
+}
+
+// What an anonymous visitor may not do, on top of everything a read-only
+// viewer may not do: join a debate (membership is a change), and the two
+// things that write a whole debate (AI generation, a walkthrough -- the
+// walkthrough replays a scenario as the viewer, every step of which would be
+// blocked anyway). Reading, moving around, the Brief, and the chat stay open:
+// none of them changes a debate.
+bool isAnonymousBlockedEvent(debate_event::EventType type) {
+    if (isViewerBlockedEvent(type)) {
+        return true;
+    }
+    switch (type) {
+        case debate_event::JOIN_DEBATE:
+        case debate_event::GENERATE_DEBATE:
+        case debate_event::START_TUTORIAL:
+        case debate_event::TUTORIAL_NEXT:
             return true;
         default:
             return false;
@@ -129,6 +151,13 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
 
     if (demo_mode::kReadOnlyMode && isViewerBlockedEvent(event.type())) {
         Log::info("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
+        event.set_type(debate_event::NONE);
+    }
+
+    // Read from the user record, not the event: user_id is what acts.
+    if (isAnonymousBlockedEvent(event.type()) &&
+        anonymous_user::IsAnonymousUsername(dbWrapper.users.getUsername(user_id))) {
+        Log::info("[DebateModerator] Anonymous visitor blocked event type: " + std::to_string(event.type()));
         event.set_type(debate_event::NONE);
     }
 

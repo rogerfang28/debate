@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "../../../utils/Log.h"
+#include "../../../utils/AnonymousUser.h"
 
 void HomePageResponseGenerator::BuildHomePageResponse(
     moderator_to_vr::ModeratorToVRMessage& responseMessage,
@@ -15,8 +16,12 @@ void HomePageResponseGenerator::BuildHomePageResponse(
     Log::debug("[HomePageResponseGenerator] Building Home Page response for user: "
               + std::to_string(user_id));
     
-    // find all debates with user
-    std::vector<int> debateIds = debateWrapper.getUserDebateIds(user_id);
+    // find all debates with user. An anonymous visitor is a member of none,
+    // and may read any, so their home page lists every debate.
+    const bool anonymous =
+        anonymous_user::IsAnonymousUsername(debateWrapper.getUserProtobuf(user_id).username());
+    std::vector<int> debateIds = anonymous ? debateWrapper.getAllDebateIds()
+                                           : debateWrapper.getUserDebateIds(user_id);
     Log::debug("[HomePageResponseGenerator] User " + std::to_string(user_id) + " is a member of "
               + std::to_string(debateIds.size()) + " debates.");
 
