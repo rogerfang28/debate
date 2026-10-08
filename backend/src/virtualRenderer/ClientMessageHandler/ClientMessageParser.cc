@@ -43,6 +43,11 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     if (LoginPageEventParser::IsSessionComponent(componentId)) {
         event = LoginPageEventParser::ParseLoginPageEvent(componentId, eventType, message);
     }
+    // The header's home tabs are on every page too; they mean the same
+    // thing as on the home page.
+    else if (componentId.rfind("homeTab_", 0) == 0) {
+        event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
+    }
     // Route based on page_id and delegate to specific parsers
     else if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);

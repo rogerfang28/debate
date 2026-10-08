@@ -66,6 +66,18 @@ message UserEngagement {
 
   AiJobStatus ai_job = 4;
   TutorialStatus tutorial = 5;
+  // Which home tab the reader is on, and their Explore search. Here rather
+  // than in HomeInfo because HomeInfo shares a oneof with DebatingInfo and is
+  // wiped by entering a debate: opening a case from Explore and coming back
+  // should find the same tab, search, filter and sort.
+  HomeView home_view = 6;
+}
+
+message HomeView {
+  string home_tab = 1;        // "home" (default, also "") | "explore" | "mine"
+  string explore_query = 2;   // case-insensitive substring of titles and claims
+  string explore_filter = 3;  // "" | "open" | "settled" | "waiting"
+  string explore_sort = 4;    // "moved" (default, also "") | "claims"
 }
 
 message HomeInfo {

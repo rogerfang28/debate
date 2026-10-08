@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCKcAgoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJEhEKCXJvb3RfdGV4dBgGIAEoCRITCgtyb290X2hvbGRlchgHIAEoCRISCgp1bnJlc29sdmVkGAggASgIEhIKCmhpbmdlX3RleHQYCSABKAkSEwoLY2xhaW1fY291bnQYCiABKAUSFAoMc3RhbmNlX2NvdW50GAsgASgFEhwKFG9wZW5fY2hhbGxlbmdlX2NvdW50GAwgASgFEhAKCGludm9sdmVkGA0gAygJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCKpBAoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJEhEKCXJvb3RfdGV4dBgGIAEoCRITCgtyb290X2hvbGRlchgHIAEoCRISCgp1bnJlc29sdmVkGAggASgIEhIKCmhpbmdlX3RleHQYCSABKAkSEwoLY2xhaW1fY291bnQYCiABKAUSFAoMc3RhbmNlX2NvdW50GAsgASgFEhwKFG9wZW5fY2hhbGxlbmdlX2NvdW50GAwgASgFEhAKCGludm9sdmVkGA0gAygJEhUKDWxhc3RfbW92ZWRfYXQYDiABKAMSFAoMcGVvcGxlX2NvdW50GA8gASgFEioKBW93aW5nGBAgAygLMhsubW9kZXJhdG9yX3RvX3ZyLk93aW5nUGFydHkSKAoEb3dlZBgRIAMoCzIaLm1vZGVyYXRvcl90b192ci5Pd2VkUmVwbHkSEgoKbWVtYmVyX2lkcxgSIAMoBRIxCgxyZWNlbnRfbW92ZXMYEyADKAsyGy5tb2RlcmF0b3JfdG9fdnIuUmVjZW50TW92ZRITCgtjbGFpbV90ZXh0cxgUIAMoCRIUCgxzZWFyY2hfbWF0Y2gYFSABKAgSFgoObWF0Y2hlZF9jbGFpbXMYFiADKAkiKAoKT3dpbmdQYXJ0eRILCgN3aG8YASABKAkSDQoFY291bnQYAiABKAUiOAoJT3dlZFJlcGx5EgsKA3dobxgBIAEoCRIQCghjbGFpbV9pZBgCIAEoBRIMCgR0ZXh0GAMgASgJIkAKClJlY2VudE1vdmUSCwoDd2hvGAEgASgJEgwKBHZlcmIYAiABKAkSCgoCYXQYAyABKAMSCwoDc2VxGAQgASgFIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -130,6 +130,68 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
    * @generated from field: repeated string involved = 13;
    */
   involved: string[];
+
+  /**
+   * When the debate last moved: the newest CREATED_AT in its move log, as
+   * Unix seconds. 0 when it has no moves.
+   *
+   * @generated from field: int64 last_moved_at = 14;
+   */
+  lastMovedAt: bigint;
+
+  /**
+   * Everyone with a claim or a stance in it (voices included).
+   *
+   * @generated from field: int32 people_count = 15;
+   */
+  peopleCount: number;
+
+  /**
+   * Who owes replies and how many, most first (DebateBrief openByHolder).
+   *
+   * @generated from field: repeated moderator_to_vr.OwingParty owing = 16;
+   */
+  owing: OwingParty[];
+
+  /**
+   * Every open challenge, with the holder who owes the reply.
+   *
+   * @generated from field: repeated moderator_to_vr.OwedReply owed = 17;
+   */
+  owed: OwedReply[];
+
+  /**
+   * @generated from field: repeated int32 member_ids = 18;
+   */
+  memberIds: number[];
+
+  /**
+   * The debate's newest moves, newest first (at most 4).
+   *
+   * @generated from field: repeated moderator_to_vr.RecentMove recent_moves = 19;
+   */
+  recentMoves: RecentMove[];
+
+  /**
+   * Cache only: every claim sentence, for Explore's search. Cleared on the
+   * copy that goes into a response.
+   *
+   * @generated from field: repeated string claim_texts = 20;
+   */
+  claimTexts: string[];
+
+  /**
+   * Response only, when the viewer has an Explore query: whether the debate
+   * matches it (title or any claim), and up to 2 matching claims.
+   *
+   * @generated from field: bool search_match = 21;
+   */
+  searchMatch: boolean;
+
+  /**
+   * @generated from field: repeated string matched_claims = 22;
+   */
+  matchedClaims: string[];
 };
 
 /**
@@ -138,6 +200,93 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
  */
 export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
   messageDesc(file_moderator_to_vr, 1);
+
+/**
+ * @generated from message moderator_to_vr.OwingParty
+ */
+export type OwingParty = Message<"moderator_to_vr.OwingParty"> & {
+  /**
+   * @generated from field: string who = 1;
+   */
+  who: string;
+
+  /**
+   * @generated from field: int32 count = 2;
+   */
+  count: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.OwingParty.
+ * Use `create(OwingPartySchema)` to create a new message.
+ */
+export const OwingPartySchema: GenMessage<OwingParty> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 2);
+
+/**
+ * @generated from message moderator_to_vr.OwedReply
+ */
+export type OwedReply = Message<"moderator_to_vr.OwedReply"> & {
+  /**
+   * @generated from field: string who = 1;
+   */
+  who: string;
+
+  /**
+   * @generated from field: int32 claim_id = 2;
+   */
+  claimId: number;
+
+  /**
+   * @generated from field: string text = 3;
+   */
+  text: string;
+};
+
+/**
+ * Describes the message moderator_to_vr.OwedReply.
+ * Use `create(OwedReplySchema)` to create a new message.
+ */
+export const OwedReplySchema: GenMessage<OwedReply> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 3);
+
+/**
+ * @generated from message moderator_to_vr.RecentMove
+ */
+export type RecentMove = Message<"moderator_to_vr.RecentMove"> & {
+  /**
+   * @generated from field: string who = 1;
+   */
+  who: string;
+
+  /**
+   * challenged | replied | claimed | agreed | conceded
+   *
+   * @generated from field: string verb = 2;
+   */
+  verb: string;
+
+  /**
+   * Unix seconds
+   *
+   * @generated from field: int64 at = 3;
+   */
+  at: bigint;
+
+  /**
+   * orders moves made in the same second
+   *
+   * @generated from field: int32 seq = 4;
+   */
+  seq: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.RecentMove.
+ * Use `create(RecentMoveSchema)` to create a new message.
+ */
+export const RecentMoveSchema: GenMessage<RecentMove> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 4);
 
 /**
  * @generated from message moderator_to_vr.DebateList
@@ -154,5 +303,5 @@ export type DebateList = Message<"moderator_to_vr.DebateList"> & {
  * Use `create(DebateListSchema)` to create a new message.
  */
 export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 2);
+  messageDesc(file_moderator_to_vr, 5);
 

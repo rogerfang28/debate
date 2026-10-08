@@ -18,6 +18,9 @@
 #include "../../utils/DemoMode.h"
 #include "../../utils/AnonymousUser.h"
 
+#include <cstdlib>
+#include <string>
+
 namespace {
 
 // The bar across the top of every page. Left: the tool's name, which goes
@@ -38,12 +41,48 @@ ui::Component BuildSiteHeader(const user::User& user) {
     headerCss["padding-bottom"] = "0.75rem";
     headerCss["border-bottom"] = "1px solid #374151";
 
+    // Left: the name, then the home tabs (Home | Explore | Your debates).
+    // On the home page the current tab is lit the way the Debate | Brief
+    // tabs are; inside a debate none is.
+    ui::Component left = ComponentGenerator::createContainer("siteHeaderNav", "", "", "", "", "", "", "");
+    (*left.mutable_css())["display"] = "flex";
+    (*left.mutable_css())["flex-direction"] = "row";
+    (*left.mutable_css())["align-items"] = "flex-end";
+    (*left.mutable_css())["flex-wrap"] = "wrap";
+    (*left.mutable_css())["gap"] = "0.25rem";
+
     ui::Component home = ComponentGenerator::createButton(
         "goHomeButton", "Debate Hub", "", "bg-transparent", "hover:text-blue-300", "text-blue-400",
         "px-0 py-1", "rounded", "text-lg font-bold");
     (*home.mutable_css())["background"] = "transparent";
     (*home.mutable_css())["border"] = "none";
-    ComponentGenerator::addChild(&header, home);
+    (*home.mutable_css())["margin-right"] = "0.75rem";
+    ComponentGenerator::addChild(&left, home);
+
+    const bool visitor = anonymous_user::IsAnonymousUsername(user.username());
+    const bool onHome = user.engagement().current_action() == user_engagement::ACTION_HOME;
+    const std::string active =
+        onHome ? HomePageGenerator::ActiveTab(user.engagement().home_view(), visitor) : std::string();
+    auto tab = [&](const std::string& id, const std::string& label, bool lit) {
+        ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
+        (*b.mutable_css())["background"] = lit ? "#1f2937" : "transparent";
+        (*b.mutable_css())["color"] = lit ? "#f9fafb" : "#9ca3af";
+        // Longhands only: a "border" shorthand beside "border-bottom" wins
+        // or loses by the order the style map happens to arrive in.
+        (*b.mutable_css())["border-top"] = "none";
+        (*b.mutable_css())["border-left"] = "none";
+        (*b.mutable_css())["border-right"] = "none";
+        (*b.mutable_css())["border-bottom"] = lit ? "2px solid #38bdf8" : "2px solid transparent";
+        (*b.mutable_css())["border-radius"] = "0.375rem 0.375rem 0 0";
+        (*b.mutable_css())["font-weight"] = lit ? "700" : "500";
+        ComponentGenerator::addChild(&left, b);
+    };
+    tab("homeTab_home", "Home", active == "home");
+    tab("homeTab_explore", "Explore", active == "explore");
+    if (!visitor) {
+        tab("homeTab_mine", "Your debates", active == "mine");
+    }
+    ComponentGenerator::addChild(&header, left);
 
     ui::Component account = ComponentGenerator::createContainer("siteHeaderAccount", "", "", "", "", "", "", "");
     (*account.mutable_css())["display"] = "flex";
@@ -130,6 +169,13 @@ ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserD
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb,
                                          const std::string& signInError, const std::string& signInUsername) {
     ui::Page page = GeneratePage(info, userDb);
+    // Every page sets a developer's title bar ("Debate Topic Entry | commit:
+    // ..."). It is shown only with DEBATE_DEV_CHROME=1 on the server; the
+    // commit is in the home page's footer instead.
+    const char* devChrome = std::getenv("DEBATE_DEV_CHROME");
+    if (devChrome == nullptr || std::string(devChrome) != "1") {
+        page.clear_title();
+    }
     if (page.page_id() == "home" || page.page_id() == "debate") {
         AddHeaderAndSignIn(page, info.user(), signInError, signInUsername);
     }

@@ -29,6 +29,43 @@ message DebateTopic {
     int32 stance_count = 11;       // people with a stance on the main claim
     int32 open_challenge_count = 12;
     repeated string involved = 13; // their names, stance order
+    // When the debate last moved: the newest CREATED_AT in its move log, as
+    // Unix seconds. 0 when it has no moves.
+    int64 last_moved_at = 14;
+    // Everyone with a claim or a stance in it (voices included).
+    int32 people_count = 15;
+    // Who owes replies and how many, most first (DebateBrief openByHolder).
+    repeated OwingParty owing = 16;
+    // Every open challenge, with the holder who owes the reply.
+    repeated OwedReply owed = 17;
+    repeated int32 member_ids = 18;
+    // The debate's newest moves, newest first (at most 4).
+    repeated RecentMove recent_moves = 19;
+    // Cache only: every claim sentence, for Explore's search. Cleared on the
+    // copy that goes into a response.
+    repeated string claim_texts = 20;
+    // Response only, when the viewer has an Explore query: whether the debate
+    // matches it (title or any claim), and up to 2 matching claims.
+    bool search_match = 21;
+    repeated string matched_claims = 22;
+}
+
+message OwingParty {
+    string who = 1;
+    int32 count = 2;
+}
+
+message OwedReply {
+    string who = 1;
+    int32 claim_id = 2;
+    string text = 3;
+}
+
+message RecentMove {
+    string who = 1;
+    string verb = 2;     // challenged | replied | claimed | agreed | conceded
+    int64 at = 3;        // Unix seconds
+    int32 seq = 4;       // orders moves made in the same second
 }
 
 message DebateList {

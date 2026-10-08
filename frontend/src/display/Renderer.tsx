@@ -23,7 +23,22 @@ interface PageData {
 // painted is always the site itself. Signing in is the header's "Sign in" and
 // the modal it opens.
 
+// Developer chrome (the "Load File" button) is hidden unless the URL has
+// ?dev=1 or localStorage has debateDevChrome=1. ?dev=1 also sets the flag, so
+// it survives the page's own navigation; ?dev=0 clears it.
+function devChromeEnabled(): boolean {
+  try {
+    const dev = new URLSearchParams(window.location.search).get("dev");
+    if (dev === "1") window.localStorage.setItem("debateDevChrome", "1");
+    if (dev === "0") window.localStorage.removeItem("debateDevChrome");
+    return dev === "1" || window.localStorage.getItem("debateDevChrome") === "1";
+  } catch {
+    return false;
+  }
+}
+
 const Renderer: React.FC = () => {
+  const [devChrome] = useState<boolean>(devChromeEnabled);
   const [data, setData] = useState<PageData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -158,7 +173,8 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen fade-in" style={{ background: 'var(--surface-bg)', color: 'var(--text-primary)' }}>
-      {/* Load from file — always visible, fixed bottom-right */}
+      {/* Load from file — developer chrome only (see devChromeEnabled), fixed bottom-right */}
+      {devChrome && (<>
       <input
         ref={fileInputRef}
         type="file"
@@ -182,6 +198,7 @@ const Renderer: React.FC = () => {
         </svg>
         Load File
       </button>
+      </>)}
 
       {loading && (
         <div

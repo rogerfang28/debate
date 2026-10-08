@@ -65,6 +65,65 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         Log::debug("  OPEN_DEBATE_BRIEF: debate_id = " + debateID);
     }
 
+    // * Any row or button that opens a debate on its Brief tab: the featured
+    // case, a latest move, a case row. openBrief_<where>_<debate id>.
+    else if (componentId.rfind("openBrief_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::OPEN_DEBATE_BRIEF);
+        const std::string debateID = componentId.substr(componentId.rfind('_') + 1);
+        event.mutable_enter_debate()->set_debate_id(std::atoi(debateID.c_str()));
+        Log::debug("  OPEN_DEBATE_BRIEF: debate_id = " + debateID);
+    }
+
+    // * The tabs: homeTab_<home|explore|mine>, optionally _<anything> after
+    // it so a second control for the same tab has an id of its own. The
+    // header's tabs reach here from every page (ClientMessageParser).
+    else if (componentId.rfind("homeTab_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_HOME_TAB);
+        std::string tab = componentId.substr(std::string("homeTab_").size());
+        tab = tab.substr(0, tab.find('_'));
+        event.mutable_home_tab()->set_tab(tab);
+        Log::debug("  GO_TO_HOME_TAB: tab = " + tab);
+    }
+
+    // * Explore: search (the button, or Enter in the box), clear, filter, sort.
+    else if ((componentId == "exploreSearchButton" && eventType == "onClick") ||
+             (componentId == "exploreSearchInput" && eventType == "onSubmit")) {
+        event.set_type(debate_event::EXPLORE_SEARCH);
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "exploreSearchInput") {
+                event.mutable_explore_search()->set_query(comp.value());
+                break;
+            }
+        }
+        event.mutable_explore_search();
+        Log::debug("  EXPLORE_SEARCH: query = '" + event.explore_search().query() + "'");
+    }
+    else if (componentId == "exploreClearSearch" && eventType == "onClick") {
+        event.set_type(debate_event::EXPLORE_SEARCH);
+        event.mutable_explore_search()->set_query("");
+    }
+    else if (componentId.rfind("exploreFilter_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::EXPLORE_FILTER);
+        const std::string value = componentId.substr(std::string("exploreFilter_").size());
+        event.mutable_explore_option()->set_value(value == "all" ? "" : value);
+    }
+    else if (componentId.rfind("exploreSort_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::EXPLORE_SORT);
+        event.mutable_explore_option()->set_value(componentId.substr(std::string("exploreSort_").size()));
+    }
+
+    // * "Answer" under Waiting on you: answerChallenge_<debate id>_<claim id>.
+    else if (componentId.rfind("answerChallenge_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::OPEN_DEBATE_CLAIM);
+        const std::string ids = componentId.substr(std::string("answerChallenge_").size());
+        const size_t split = ids.find('_');
+        event.mutable_open_debate_claim()->set_debate_id(std::atoi(ids.substr(0, split).c_str()));
+        if (split != std::string::npos) {
+            event.mutable_open_debate_claim()->set_claim_id(std::atoi(ids.substr(split + 1).c_str()));
+        }
+        Log::debug("  OPEN_DEBATE_CLAIM: " + ids);
+    }
+
     // * A visitor's "Start a debate": an empty create, which the moderator
     // turns into the sign-in modal and replays (as a no-op) once they have
     // signed in, leaving them at the create form.

@@ -23,7 +23,10 @@ debate_event::DebateEvent LoginPageEventParser::ParseLoginPageEvent(
 
     // The header and the sign-in modal, which are on every page.
     if (componentId == "goHomeButton" && eventType == "onClick") {
-        event.set_type(debate_event::GO_HOME);
+        // "Debate Hub" is the Home tab, whichever tab was last open (the
+        // header's Explore / Your debates go back to those).
+        event.set_type(debate_event::GO_TO_HOME_TAB);
+        event.mutable_home_tab()->set_tab("home");
     }
     else if (componentId == "openSignInButton" && eventType == "onClick") {
         event.set_type(debate_event::OPEN_SIGN_IN);

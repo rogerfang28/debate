@@ -44,7 +44,23 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
         outTopic->set_stance_count(topic.stance_count());
         outTopic->set_open_challenge_count(topic.open_challenge_count());
         *outTopic->mutable_involved() = topic.involved();
+        outTopic->set_last_moved_at(topic.last_moved_at());
+        outTopic->set_people_count(topic.people_count());
+        *outTopic->mutable_owing() = topic.owing();
+        // Only what the viewer owes: "Waiting on you".
+        for (const auto& owed : topic.owed()) {
+            if (!userProto.username().empty() && owed.who() == userProto.username()) {
+                *outTopic->add_owed_to_viewer() = owed;
+            }
+        }
+        for (const int member : topic.member_ids()) {
+            if (member == userProto.user_id()) outTopic->set_viewer_is_member(true);
+        }
+        *outTopic->mutable_recent_moves() = topic.recent_moves();
+        outTopic->set_search_match(topic.search_match());
+        *outTopic->mutable_matched_claims() = topic.matched_claims();
     }
+    *info.mutable_home_view() = userProto.engagement().home_view();
 
     return info;
 }

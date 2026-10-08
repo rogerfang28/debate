@@ -115,6 +115,10 @@ class HomeInfo;
 struct HomeInfoDefaultTypeInternal;
 extern HomeInfoDefaultTypeInternal _HomeInfo_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull HomeInfo_class_data_;
+class HomeView;
+struct HomeViewDefaultTypeInternal;
+extern HomeViewDefaultTypeInternal _HomeView_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull HomeView_class_data_;
 class LinkInfo;
 struct LinkInfoDefaultTypeInternal;
 extern LinkInfoDefaultTypeInternal _LinkInfo_default_instance_;
@@ -553,7 +557,7 @@ class LinkInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const LinkInfo*>(
         &_LinkInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(LinkInfo& a, LinkInfo& b) { a.Swap(&b); }
   inline void Swap(LinkInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -741,6 +745,252 @@ class LinkInfo final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull LinkInfo_class_data_;
 // -------------------------------------------------------------------
 
+class HomeView final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:user_engagement.HomeView) */ {
+ public:
+  inline HomeView() : HomeView(nullptr) {}
+  ~HomeView() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(HomeView* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(HomeView));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR HomeView(::google::protobuf::internal::ConstantInitialized);
+
+  inline HomeView(const HomeView& from) : HomeView(nullptr, from) {}
+  inline HomeView(HomeView&& from) noexcept
+      : HomeView(nullptr, ::std::move(from)) {}
+  inline HomeView& operator=(const HomeView& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline HomeView& operator=(HomeView&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const HomeView& default_instance() {
+    return *reinterpret_cast<const HomeView*>(
+        &_HomeView_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(HomeView& a, HomeView& b) { a.Swap(&b); }
+  inline void Swap(HomeView* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(HomeView* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  HomeView* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<HomeView>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const HomeView& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const HomeView& from) { HomeView::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(HomeView* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "user_engagement.HomeView"; }
+
+  explicit HomeView(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  HomeView(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const HomeView& from);
+  HomeView(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, HomeView&& from) noexcept
+      : HomeView(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kHomeTabFieldNumber = 1,
+    kExploreQueryFieldNumber = 2,
+    kExploreFilterFieldNumber = 3,
+    kExploreSortFieldNumber = 4,
+  };
+  // string home_tab = 1 [json_name = "homeTab"];
+  void clear_home_tab() ;
+  const ::std::string& home_tab() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_home_tab(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_home_tab();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_home_tab();
+  void set_allocated_home_tab(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_home_tab() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_home_tab(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_home_tab();
+
+  public:
+  // string explore_query = 2 [json_name = "exploreQuery"];
+  void clear_explore_query() ;
+  const ::std::string& explore_query() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_explore_query(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_explore_query();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_explore_query();
+  void set_allocated_explore_query(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_explore_query() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_explore_query(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_explore_query();
+
+  public:
+  // string explore_filter = 3 [json_name = "exploreFilter"];
+  void clear_explore_filter() ;
+  const ::std::string& explore_filter() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_explore_filter(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_explore_filter();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_explore_filter();
+  void set_allocated_explore_filter(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_explore_filter() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_explore_filter(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_explore_filter();
+
+  public:
+  // string explore_sort = 4 [json_name = "exploreSort"];
+  void clear_explore_sort() ;
+  const ::std::string& explore_sort() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_explore_sort(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_explore_sort();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_explore_sort();
+  void set_allocated_explore_sort(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_explore_sort() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_explore_sort(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_explore_sort();
+
+  public:
+  // @@protoc_insertion_point(class_scope:user_engagement.HomeView)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
+                                   0, 80,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const HomeView& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr home_tab_;
+    ::google::protobuf::internal::ArenaStringPtr explore_query_;
+    ::google::protobuf::internal::ArenaStringPtr explore_filter_;
+    ::google::protobuf::internal::ArenaStringPtr explore_sort_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_user_5fengagement_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull HomeView_class_data_;
+// -------------------------------------------------------------------
+
 class DebatingInfo_CurrentDebateAction final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:user_engagement.DebatingInfo.CurrentDebateAction) */ {
  public:
@@ -796,7 +1046,7 @@ class DebatingInfo_CurrentDebateAction final : public ::google::protobuf::Messag
     return *reinterpret_cast<const DebatingInfo_CurrentDebateAction*>(
         &_DebatingInfo_CurrentDebateAction_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(DebatingInfo_CurrentDebateAction& a, DebatingInfo_CurrentDebateAction& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_CurrentDebateAction* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1012,7 +1262,7 @@ class DebatingInfo_ConnectingInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_ConnectingInfo*>(
         &_DebatingInfo_ConnectingInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(DebatingInfo_ConnectingInfo& a, DebatingInfo_ConnectingInfo& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_ConnectingInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1255,7 +1505,7 @@ class DebatingInfo_ChatMessage final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_ChatMessage*>(
         &_DebatingInfo_ChatMessage_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(DebatingInfo_ChatMessage& a, DebatingInfo_ChatMessage& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_ChatMessage* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1467,7 +1717,7 @@ class DebatingInfo_ChallengingInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_ChallengingInfo*>(
         &_DebatingInfo_ChallengingInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(DebatingInfo_ChallengingInfo& a, DebatingInfo_ChallengingInfo& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_ChallengingInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1716,7 +1966,7 @@ class DebatingInfo_BriefState final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_BriefState*>(
         &_DebatingInfo_BriefState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(DebatingInfo_BriefState& a, DebatingInfo_BriefState& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_BriefState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -1998,7 +2248,7 @@ class DebateTopic final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebateTopic*>(
         &_DebateTopic_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(DebateTopic& a, DebateTopic& b) { a.Swap(&b); }
   inline void Swap(DebateTopic* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2246,7 +2496,7 @@ class ClaimInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const ClaimInfo*>(
         &_ClaimInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(ClaimInfo& a, ClaimInfo& b) { a.Swap(&b); }
   inline void Swap(ClaimInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2477,7 +2727,7 @@ class ChallengeInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const ChallengeInfo*>(
         &_ChallengeInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(ChallengeInfo& a, ChallengeInfo& b) { a.Swap(&b); }
   inline void Swap(ChallengeInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2944,7 +3194,7 @@ class DebatingInfo_ModificationInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_ModificationInfo*>(
         &_DebatingInfo_ModificationInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(DebatingInfo_ModificationInfo& a, DebatingInfo_ModificationInfo& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_ModificationInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3202,7 +3452,7 @@ class DebatingInfo_ChatState final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebatingInfo_ChatState*>(
         &_DebatingInfo_ChatState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(DebatingInfo_ChatState& a, DebatingInfo_ChatState& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo_ChatState* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3435,7 +3685,7 @@ class DebateList final : public ::google::protobuf::Message
     return *reinterpret_cast<const DebateList*>(
         &_DebateList_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(DebateList& a, DebateList& b) { a.Swap(&b); }
   inline void Swap(DebateList* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3632,7 +3882,7 @@ class HomeInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const HomeInfo*>(
         &_HomeInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(HomeInfo& a, HomeInfo& b) { a.Swap(&b); }
   inline void Swap(HomeInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -3832,7 +4082,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     kChallengingInfo = 15,
     ADDITIONAL_INFO_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(DebatingInfo& a, DebatingInfo& b) { a.Swap(&b); }
   inline void Swap(DebatingInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -4412,6 +4662,7 @@ class UserEngagement final : public ::google::protobuf::Message
   enum : int {
     kAiJobFieldNumber = 4,
     kTutorialFieldNumber = 5,
+    kHomeViewFieldNumber = 6,
     kCurrentActionFieldNumber = 1,
     kHomeInfoFieldNumber = 2,
     kDebatingInfoFieldNumber = 3,
@@ -4444,6 +4695,21 @@ class UserEngagement final : public ::google::protobuf::Message
   private:
   const ::user_engagement::TutorialStatus& _internal_tutorial() const;
   ::user_engagement::TutorialStatus* PROTOBUF_NONNULL _internal_mutable_tutorial();
+
+  public:
+  // .user_engagement.HomeView home_view = 6 [json_name = "homeView"];
+  bool has_home_view() const;
+  void clear_home_view() ;
+  const ::user_engagement::HomeView& home_view() const;
+  [[nodiscard]] ::user_engagement::HomeView* PROTOBUF_NULLABLE release_home_view();
+  ::user_engagement::HomeView* PROTOBUF_NONNULL mutable_home_view();
+  void set_allocated_home_view(::user_engagement::HomeView* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_home_view(::user_engagement::HomeView* PROTOBUF_NULLABLE value);
+  ::user_engagement::HomeView* PROTOBUF_NULLABLE unsafe_arena_release_home_view();
+
+  private:
+  const ::user_engagement::HomeView& _internal_home_view() const;
+  ::user_engagement::HomeView* PROTOBUF_NONNULL _internal_mutable_home_view();
 
   public:
   // .user_engagement.EngagementAction current_action = 1 [json_name = "currentAction"];
@@ -4504,8 +4770,8 @@ class UserEngagement final : public ::google::protobuf::Message
   inline bool has_action_info() const;
   inline void clear_has_action_info();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
-                                   4, 0,
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
+                                   5, 0,
                                    2>
       _table_;
 
@@ -4528,6 +4794,7 @@ class UserEngagement final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE ai_job_;
     ::user_engagement::TutorialStatus* PROTOBUF_NULLABLE tutorial_;
+    ::user_engagement::HomeView* PROTOBUF_NULLABLE home_view_;
     int current_action_;
     union ActionInfoUnion {
       constexpr ActionInfoUnion() : _constinit_{} {}
@@ -5033,7 +5300,7 @@ inline void UserEngagement::clear_current_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_action_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline ::user_engagement::EngagementAction UserEngagement::current_action() const {
   // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.current_action)
@@ -5041,7 +5308,7 @@ inline ::user_engagement::EngagementAction UserEngagement::current_action() cons
 }
 inline void UserEngagement::set_current_action(::user_engagement::EngagementAction value) {
   _internal_set_current_action(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:user_engagement.UserEngagement.current_action)
 }
 inline ::user_engagement::EngagementAction UserEngagement::_internal_current_action() const {
@@ -5415,6 +5682,105 @@ inline void UserEngagement::set_allocated_tutorial(::user_engagement::TutorialSt
   // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.tutorial)
 }
 
+// .user_engagement.HomeView home_view = 6 [json_name = "homeView"];
+inline bool UserEngagement::has_home_view() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  PROTOBUF_ASSUME(!value || _impl_.home_view_ != nullptr);
+  return value;
+}
+inline void UserEngagement::clear_home_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.home_view_ != nullptr) _impl_.home_view_->Clear();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::user_engagement::HomeView& UserEngagement::_internal_home_view() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::user_engagement::HomeView* p = _impl_.home_view_;
+  return p != nullptr ? *p : reinterpret_cast<const ::user_engagement::HomeView&>(::user_engagement::_HomeView_default_instance_);
+}
+inline const ::user_engagement::HomeView& UserEngagement::home_view() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.UserEngagement.home_view)
+  return _internal_home_view();
+}
+inline void UserEngagement::unsafe_arena_set_allocated_home_view(
+    ::user_engagement::HomeView* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.home_view_);
+  }
+  _impl_.home_view_ = reinterpret_cast<::user_engagement::HomeView*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.UserEngagement.home_view)
+}
+inline ::user_engagement::HomeView* PROTOBUF_NULLABLE UserEngagement::release_home_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::HomeView* released = _impl_.home_view_;
+  _impl_.home_view_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::user_engagement::HomeView* PROTOBUF_NULLABLE UserEngagement::unsafe_arena_release_home_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.UserEngagement.home_view)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::HomeView* temp = _impl_.home_view_;
+  _impl_.home_view_ = nullptr;
+  return temp;
+}
+inline ::user_engagement::HomeView* PROTOBUF_NONNULL UserEngagement::_internal_mutable_home_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.home_view_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::user_engagement::HomeView>(GetArena());
+    _impl_.home_view_ = reinterpret_cast<::user_engagement::HomeView*>(p);
+  }
+  return _impl_.home_view_;
+}
+inline ::user_engagement::HomeView* PROTOBUF_NONNULL UserEngagement::mutable_home_view()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::user_engagement::HomeView* _msg = _internal_mutable_home_view();
+  // @@protoc_insertion_point(field_mutable:user_engagement.UserEngagement.home_view)
+  return _msg;
+}
+inline void UserEngagement::set_allocated_home_view(::user_engagement::HomeView* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.home_view_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = value->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+
+  _impl_.home_view_ = reinterpret_cast<::user_engagement::HomeView*>(value);
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.UserEngagement.home_view)
+}
+
 inline bool UserEngagement::has_action_info() const {
   return action_info_case() != ACTION_INFO_NOT_SET;
 }
@@ -5424,6 +5790,270 @@ inline void UserEngagement::clear_has_action_info() {
 inline UserEngagement::ActionInfoCase UserEngagement::action_info_case() const {
   return UserEngagement::ActionInfoCase(_impl_._oneof_case_[0]);
 }
+// -------------------------------------------------------------------
+
+// HomeView
+
+// string home_tab = 1 [json_name = "homeTab"];
+inline void HomeView::clear_home_tab() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.home_tab_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& HomeView::home_tab() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.home_tab)
+  return _internal_home_tab();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_home_tab(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.home_tab_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.home_tab)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_home_tab()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_home_tab();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.home_tab)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_home_tab() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.home_tab_.Get();
+}
+inline void HomeView::_internal_set_home_tab(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.home_tab_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_home_tab() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.home_tab_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_home_tab() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.home_tab)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.home_tab_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.home_tab_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_home_tab(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.home_tab_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.home_tab_.IsDefault()) {
+    _impl_.home_tab_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.home_tab)
+}
+
+// string explore_query = 2 [json_name = "exploreQuery"];
+inline void HomeView::clear_explore_query() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_query_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline const ::std::string& HomeView::explore_query() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.explore_query)
+  return _internal_explore_query();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_explore_query(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  _impl_.explore_query_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.explore_query)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_explore_query()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ::std::string* _s = _internal_mutable_explore_query();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.explore_query)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_explore_query() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.explore_query_.Get();
+}
+inline void HomeView::_internal_set_explore_query(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_query_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_explore_query() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.explore_query_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_explore_query() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.explore_query)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  auto* released = _impl_.explore_query_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.explore_query_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_explore_query(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  }
+  _impl_.explore_query_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.explore_query_.IsDefault()) {
+    _impl_.explore_query_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.explore_query)
+}
+
+// string explore_filter = 3 [json_name = "exploreFilter"];
+inline void HomeView::clear_explore_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_filter_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& HomeView::explore_filter() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.explore_filter)
+  return _internal_explore_filter();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_explore_filter(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.explore_filter_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.explore_filter)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_explore_filter()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_explore_filter();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.explore_filter)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_explore_filter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.explore_filter_.Get();
+}
+inline void HomeView::_internal_set_explore_filter(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_filter_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_explore_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.explore_filter_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_explore_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.explore_filter)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.explore_filter_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.explore_filter_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_explore_filter(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.explore_filter_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.explore_filter_.IsDefault()) {
+    _impl_.explore_filter_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.explore_filter)
+}
+
+// string explore_sort = 4 [json_name = "exploreSort"];
+inline void HomeView::clear_explore_sort() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_sort_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& HomeView::explore_sort() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.explore_sort)
+  return _internal_explore_sort();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_explore_sort(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.explore_sort_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.explore_sort)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_explore_sort()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_explore_sort();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.explore_sort)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_explore_sort() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.explore_sort_.Get();
+}
+inline void HomeView::_internal_set_explore_sort(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.explore_sort_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_explore_sort() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.explore_sort_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_explore_sort() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.explore_sort)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.explore_sort_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.explore_sort_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_explore_sort(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.explore_sort_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.explore_sort_.IsDefault()) {
+    _impl_.explore_sort_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.explore_sort)
+}
+
 // -------------------------------------------------------------------
 
 // HomeInfo

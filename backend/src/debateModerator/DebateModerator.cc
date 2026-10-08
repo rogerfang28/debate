@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <functional>
 // add claim
 #include "event-handlers/AddClaimHandler/AddClaimHandler.h"
 // debate management
@@ -146,6 +147,11 @@ bool leavesDebatesUnchanged(debate_event::EventType type) {
         case debate_event::GO_HOME:
         case debate_event::ENTER_DEBATE:
         case debate_event::OPEN_DEBATE_BRIEF:
+        case debate_event::OPEN_DEBATE_CLAIM:
+        case debate_event::GO_TO_HOME_TAB:
+        case debate_event::EXPLORE_SEARCH:
+        case debate_event::EXPLORE_FILTER:
+        case debate_event::EXPLORE_SORT:
         case debate_event::GO_TO_PARENT:
         case debate_event::GO_TO_CLAIM:
         case debate_event::SELECT_CLAIM:
@@ -166,6 +172,17 @@ bool leavesDebatesUnchanged(debate_event::EventType type) {
         default:
             return false;
     }
+}
+
+// The home page's tabs and Explore's controls: go home, and remember the
+// choice on the reader's engagement.home_view (it outlives a visit to a
+// debate, so coming back finds the same tab and search).
+void updateHomeView(const int& user_id, DebateWrapper& debateWrapper,
+                    const std::function<void(user_engagement::HomeView*)>& change) {
+    MoveUserHandler::GoHome(user_id, debateWrapper);
+    user::User userProto = debateWrapper.getUserProtobuf(user_id);
+    change(userProto.mutable_engagement()->mutable_home_view());
+    debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
 bool isClaimMetaSectionBlockedEvent(debate_event::EventType type) {
@@ -328,6 +345,41 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::GO_HOME:
             Log::info("[DebateModerator] Event Type: GO_HOME");
             MoveUserHandler::GoHome(user_id, debateWrapper);
+            break;
+        case debate_event::GO_TO_HOME_TAB:
+            Log::info("[DebateModerator] Event Type: GO_TO_HOME_TAB (" + event.home_tab().tab() + ")");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_home_tab(event.home_tab().tab());
+            });
+            break;
+        case debate_event::EXPLORE_SEARCH:
+            Log::info("[DebateModerator] Event Type: EXPLORE_SEARCH");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_home_tab("explore");
+                view->set_explore_query(event.explore_search().query());
+            });
+            break;
+        case debate_event::EXPLORE_FILTER:
+            Log::info("[DebateModerator] Event Type: EXPLORE_FILTER (" + event.explore_option().value() + ")");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_home_tab("explore");
+                view->set_explore_filter(event.explore_option().value());
+            });
+            break;
+        case debate_event::EXPLORE_SORT:
+            Log::info("[DebateModerator] Event Type: EXPLORE_SORT (" + event.explore_option().value() + ")");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_home_tab("explore");
+                view->set_explore_sort(event.explore_option().value());
+            });
+            break;
+        case debate_event::OPEN_DEBATE_CLAIM:
+            // "Answer" under Your debates: into the debate, on the Debate tab,
+            // with the challenge that is waiting on the reader selected.
+            Log::info("[DebateModerator] Event Type: OPEN_DEBATE_CLAIM");
+            if (MoveUserHandler::EnterDebate(event.open_debate_claim().debate_id(), user_id, debateWrapper)) {
+                BriefHandler::OpenClaimInDebate(event.open_debate_claim().claim_id(), user_id, debateWrapper);
+            }
             break;
         case debate_event::GO_TO_PARENT:
             Log::info("[DebateModerator] Event Type: GO_TO_PARENT");
@@ -824,6 +876,7 @@ bool DebateModerator::takePendingSignIn(const int& visitorId, const int& userId,
     } else if (visitor.engagement().has_home_info()) {
         *engagement->mutable_home_info() = visitor.engagement().home_info();
     }
+    *engagement->mutable_home_view() = visitor.engagement().home_view();
     *signedIn.mutable_current_scope() = visitor.current_scope();
     *signedIn.mutable_collection_spec() = visitor.collection_spec();
     signedIn.set_sign_in_open(false);

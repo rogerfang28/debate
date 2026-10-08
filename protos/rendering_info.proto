@@ -4,6 +4,7 @@ package rendering_info;
 
 import "debate.proto";
 import "user_engagement.proto";
+import "moderator_to_vr.proto";
 
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
@@ -153,6 +154,9 @@ message HomePageRenderingInfo {
 	// its result lands in the debate list, so the home page is where its
 	// progress and its outcome have to be shown.
 	user_engagement.AiJobStatus ai_job = 5;
+
+	// The tab, search, filter and sort the reader chose (engagement.home_view).
+	user_engagement.HomeView home_view = 6;
 }
 
 message HomeDebateTopicRenderInfo {
@@ -170,6 +174,16 @@ message HomeDebateTopicRenderInfo {
 	int32 stance_count = 11;
 	int32 open_challenge_count = 12;
 	repeated string involved = 13;
+	// See moderator_to_vr.DebateTopic.
+	int64 last_moved_at = 14;
+	int32 people_count = 15;
+	repeated moderator_to_vr.OwingParty owing = 16;
+	// Only the open challenges the VIEWER owes a reply to.
+	repeated moderator_to_vr.OwedReply owed_to_viewer = 17;
+	bool viewer_is_member = 18;
+	repeated moderator_to_vr.RecentMove recent_moves = 19;
+	bool search_match = 20;
+	repeated string matched_claims = 21;
 }
 
 message ClaimRenderInfo {
