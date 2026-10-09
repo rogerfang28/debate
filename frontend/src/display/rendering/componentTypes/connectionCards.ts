@@ -124,7 +124,10 @@ export function navigationFor(
 
 // ── Connection cards ──────────────────────────────────────────────────
 
-export type CardTone = "challenge" | "parent" | "support";
+// A card is coloured like its claim's node (the graph passes the node's
+// own border colour): green held true, red held false or a challenge, a
+// quiet line otherwise. The kind of link is in the label, not the colour.
+const NEUTRAL_COLOR = "var(--line-strong)";
 
 const KIND_LABEL: Record<LinkKind, string> = {
   parent: "the claim this supports",
@@ -135,12 +138,10 @@ const KIND_LABEL: Record<LinkKind, string> = {
   undercut: "challenges an argument for this",
 };
 
-const toneOf = (kind: LinkKind): CardTone =>
-  kind === "parent" ? "parent" : kind === "support" ? "support" : "challenge";
-
 export interface CardTarget {
   id: string;
   kind: LinkKind;
+  color: string;  // the claim's node border colour, a CSS colour or var()
   who: string;
   text: string;
   x: number;  // the connected claim's centre, in pane pixels
@@ -196,9 +197,8 @@ function cardElement(host: HTMLElement, key: string, onPick: (id: string) => voi
   return el;
 }
 
-function fill(el: HTMLElement, tone: CardTone, who: string, kind: string, arrow: string, text: string, target: string) {
-  const cls = `graph-card graph-card-${tone}`;
-  if (el.className !== cls) el.className = cls;
+function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: string, text: string, target: string) {
+  if (el.style.getPropertyValue("--card-color") !== color) el.style.setProperty("--card-color", color);
   el.dataset.target = target;
   const set = (sel: string, value: string) => {
     const part = el.querySelector<HTMLElement>(sel)!;
@@ -259,7 +259,7 @@ export function placeConnectionCards(
       for (const c of shown) {
         const key = `c${c.t.id}`;
         const el = cardElement(host, key, onPick);
-        fill(el, toneOf(c.t.kind), c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id);
+        fill(el, c.t.color, c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id);
         keep.add(key);
         placed.push({ key, run, el, x: c.x, y: c.y, w: 0, h: 0 });
       }
@@ -269,7 +269,7 @@ export function placeConnectionCards(
         const el = cardElement(host, key, onPick);
         const n = rest.length;
         fill(
-          el, "support", `+${n} more`, "connections this way", arrowFor(rest[0].dx, rest[0].dy),
+          el, NEUTRAL_COLOR, `+${n} more`, "connections this way", arrowFor(rest[0].dx, rest[0].dy),
           `Fly to the nearest: ${rest[0].t.text}`, rest[0].t.id
         );
         keep.add(key);

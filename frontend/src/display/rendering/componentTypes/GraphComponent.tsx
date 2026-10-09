@@ -41,6 +41,17 @@ const DEFAULT_NODE_COLOR = { fill: "var(--panel-2)", stroke: "var(--accent)" };
 const ROOT_STROKE = "var(--accent)";
 const CURRENT_STROKE = "var(--warn)";
 
+// A node's border when nothing is highlighting it: a challenge is red
+// whatever its status, the main claim wears the accent until it is settled,
+// and anything else shows its status. The connection cards use the same
+// colour, so a card and the node it points at match.
+function restingStroke(node: GraphNode): string {
+  const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
+  if (node.type === "challenge") return "var(--open)";
+  if (node.isRoot && (node.status || "UNDETERMINED") === "UNDETERMINED") return ROOT_STROKE;
+  return colors.stroke;
+}
+
 const EDGE_COLORS: Record<string, string> = {
   supports:   "var(--settled)",
   challenges: "var(--open)",
@@ -738,7 +749,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       // selected claim's list of links, each sitting at the pane edge in
       // its claim's direction, so the list stays put while you read.
       const p = toPane(n);
-      targets.push({ id: c.id, kind: c.kind, who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
+      targets.push({ id: c.id, kind: c.kind, color: restingStroke(n), who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
     }
     placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id));
   };
@@ -1051,13 +1062,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             // Challenge (root) claims get an orange-tinted body and border; the
             // current/selected highlight still takes precedence when active.
             const fill = colors.fill;
-            const stroke = isCurrent
-              ? CURRENT_STROKE
-              : isChallenge
-                ? "var(--open)"
-                : node.isRoot && (node.status || "UNDETERMINED") === "UNDETERMINED"
-                  ? ROOT_STROKE
-                  : colors.stroke;
+            const stroke = isCurrent ? CURRENT_STROKE : restingStroke(node);
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : isChallenge ? 3 : 2;
             // ═══════════ EXPERIMENT: SEMANTIC ZOOM (per-node detail) ═══════════
             // `tier` is "full" whenever the experiment is off, so every branch

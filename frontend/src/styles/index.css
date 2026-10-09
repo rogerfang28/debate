@@ -933,8 +933,10 @@ tr:hover td {
   align-items: center;
   width: min(300px, calc(100% - 16px));
   padding: 9px 12px;
+  /* --card-color is the pointed-at node's border colour, set per card. */
+  --card-color: var(--line-strong);
   background: var(--panel-2);
-  border: 1.5px solid var(--line-strong);
+  border: 1.5px solid var(--card-color);
   border-radius: 12px;
   font-size: 13px;
   line-height: 1.35;
@@ -952,7 +954,7 @@ tr:hover td {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--text-3);
+  background: var(--card-color);
 }
 .graph-card-top {
   display: flex;
@@ -981,12 +983,6 @@ tr:hover td {
   white-space: normal;
   overflow-wrap: anywhere;
 }
-.graph-card-challenge { border-color: var(--open); }
-.graph-card-challenge .graph-card-dot { background: var(--open); }
-.graph-card-challenge .graph-card-kind { color: var(--open); }
-.graph-card-parent { border-color: var(--accent); }
-.graph-card-parent .graph-card-dot { background: var(--accent); }
-.graph-card-parent .graph-card-kind { color: var(--accent-hover); }
 
 /* --- Map Section (legacy — kept for pbtxt compatibility) --- */
 #mapSection {
