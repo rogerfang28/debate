@@ -74,6 +74,27 @@ function colorForAuthor(username: string): string {
 const NODE_WIDTH = 160;
 const NODE_HEIGHT = 80;
 
+// ── The camera, remembered ────────────────────────────────────────────
+//
+// Every click re-renders the page from a fresh server tree, and a remount
+// (a tab switch, Brief and back) starts the graph from scratch. The reader's
+// pan and zoom are theirs, so they are kept here, outside React, per graph:
+// keyed by the GRAPH component's id and the root claim's id, which together
+// name one debate's map (claim ids are unique across debates).
+//
+// A stored camera is reused only while the set of claims drawn is the one it
+// was taken over. When claims are added or removed the graph refits once, and
+// that becomes the stored camera. A selection, a status change or a poll
+// changes no node ids, so it never moves the camera.
+type Camera = { nodeSet: string; transform: d3.ZoomTransform };
+const cameras = new Map<string, Camera>();
+
+// The layout is computed at one fixed width, not the pane's. Positions then
+// depend on the debate alone, so a pane that changes width (the chat folded
+// or opened) keeps every claim where the camera expects it; the pane just
+// shows more or less around it.
+const LAYOUT_WIDTH = 800;
+
 
 // ══════════════════════════════════════════════════════════════════════
 // EXPERIMENT: SEMANTIC ZOOM  ── everything for it is fenced by these
@@ -214,7 +235,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
         if (width > 0 && height > 0) {
-          setDims({ width: Math.round(width), height: Math.round(height) });
+          const next = { width: Math.round(width), height: Math.round(height) };
+          // Same size, same object: no re-render, nothing downstream re-runs.
+          setDims((prev) => (prev.width === next.width && prev.height === next.height ? prev : next));
         }
       }
     });
@@ -224,9 +247,21 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
   // ── Layout: claims and relations together (see layoutDebate) ──────
   const { positionedNodes, relationGroups } = useMemo(
-    () => layoutDebate(nodes, edges, dims.width),
-    [nodes, edges, dims.width]
+    () => layoutDebate(nodes, edges, LAYOUT_WIDTH),
+    [nodes, edges]
   );
+
+  // Which camera this is, and the set of claims it was taken over.
+  const rootClaimId = (nodes.find((n) => n.isRoot) ?? nodes[0])?.id ?? "";
+  const cameraKey = `${component.id ?? "graph"}:${rootClaimId}`;
+  const nodeSet = useMemo(
+    () => positionedNodes.map((n) => n.id).sort().join(","),
+    [positionedNodes]
+  );
+  // Read by the zoom handler, which is attached once.
+  const cameraKeyRef = useRef(cameraKey);
+  const nodeSetRef = useRef(nodeSet);
+  const hasGraph = nodes.length > 0 || edges.length > 0;
 
   // ── Zoom & pan ────────────────────────────────────────────────────
   //
@@ -266,11 +301,18 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         const quantised = Math.round(effective * 50) / 50;
         setZoomScale((prev) => (prev === quantised ? prev : quantised));
         // ═══ END EXPERIMENT ═══
+      })
+      // Every pan or zoom that finishes -- the reader's, or the Fit and
+      // Reset buttons' -- is the camera to come back to.
+      .on("end", (event: { transform: d3.ZoomTransform }) => {
+        if (!nodeSetRef.current) return;
+        cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform: event.transform });
       });
 
     zoomRef.current = zoom;
     svg.call(zoom);
-  }, []);
+    // Attached once the svg exists: a graph that first arrives empty has none.
+  }, [hasGraph]);
 
   // Fit the whole graph into the pane. Shared by the button and the auto-fit
   // below so there is one definition of "fitted".
@@ -407,12 +449,29 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // pane. Fit-to-view already existed as a button, but a view you must repair
   // before you can read it should not need a button.
   //
-  // Keyed on the node ids rather than the array, so ordinary re-renders (a
-  // status change, a selection) leave the viewer's own pan and zoom alone.
-  const shapeKey = positionedNodes.map((n) => n.id).join(",");
+  // Keyed on the SET of node ids (and which debate), not the array, so
+  // ordinary re-renders -- a status change, a selection, the poll while an AI
+  // job runs -- leave the viewer's own pan and zoom alone. And when the graph
+  // is mounted again over the same claims, the camera the reader left is put
+  // back instead of a fresh fit (see `cameras`).
   useLayoutEffect(() => {
-    if (!shapeKey) return;
+    if (!nodeSet) return;
+    cameraKeyRef.current = cameraKey;
+    nodeSetRef.current = nodeSet;
 
+    const stored = cameras.get(cameraKey);
+    if (stored && stored.nodeSet === nodeSet) {
+      const svg = d3.select(svgRef.current);
+      const zoom = zoomRef.current;
+      if (svg.node() && zoom) {
+        // Fires the zoom handler, so the semantic-zoom tier follows.
+        zoom.transform(svg, stored.transform);
+        return;
+      }
+    }
+
+    // New claims, or none remembered: fit once. The zoom's "end" stores it.
+    //
     // Fit synchronously first. useLayoutEffect runs after the DOM is updated
     // but before paint, so the nodes are already laid out and getBBox() has
     // real numbers -- which means the graph is never painted unfitted.
@@ -447,14 +506,13 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     };
     raf = requestAnimationFrame(attempt);
     return () => cancelAnimationFrame(raf);
-    // Deliberately keyed on shapeKey ALONE.
+    // Deliberately keyed on the camera and the node set ALONE.
     //
     // With fitToView in the deps this effect re-ran on every unrelated render,
     // and each cleanup cancelled the pending frame before it could fire -- so
     // the fit was scheduled repeatedly and never once executed. fitToView is
     // read through a ref instead, so the retry survives re-renders.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shapeKey]);
+  }, [cameraKey, nodeSet]);
 
   // ── Click handler — selects the claim server-side (SELECT_CLAIM), which
   // moves the "current claim" highlight to it on next render.
