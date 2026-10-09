@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useState, useCallback, useRef } from "react";
 import { PageRenderer } from "./rendering/PageRenderer.tsx";
+import { snapshotScroll, restoreScroll, type ScrollSnapshot } from "./viewMemory.ts";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
@@ -50,13 +51,28 @@ const Renderer: React.FC = () => {
     dataRef.current = data;
   }, [data]);
 
+  // Every new page goes through here: where each scroller stands is noted
+  // just before it is applied, and put back right after it renders (before
+  // paint), so a re-render or the AI-job poll never moves what the reader
+  // was looking at. See viewMemory.ts.
+  const scrollSnap = useRef<ScrollSnapshot | null>(null);
+  const showPage = useCallback((page: PageData) => {
+    scrollSnap.current = snapshotScroll();
+    setData(page);
+  }, []);
+  useLayoutEffect(() => {
+    if (!scrollSnap.current) return;
+    restoreScroll(scrollSnap.current);
+    scrollSnap.current = null;
+  }, [data]);
+
   const reloadPage = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
       const info: PageData | null = await postClientMessageToCPP({});
       if (info) {
-        setData(info);
+        showPage(info);
       }
     } catch (err: unknown) {
       console.error("reloadPage: Failed to load data", err);
@@ -64,15 +80,15 @@ const Renderer: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showPage]);
 
   // Directly apply a page already returned by an event's own response --
   // avoids a redundant second full-page fetch (see applyPageData usage in
   // handleEvent.ts).
   const applyPageData = useCallback((page: PageData) => {
-    setData(page);
+    showPage(page);
     setError(null);
-  }, []);
+  }, [showPage]);
 
   // Expose global reload/apply functions for handleEvent.ts
   useEffect(() => {
