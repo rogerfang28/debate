@@ -294,7 +294,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // each frame's "end" stores the LANDING transform, so a remount mid-flight
   // comes back where the flight was going rather than halfway there.
   const flightRef = useRef<{ raf: number; target: d3.ZoomTransform } | null>(null);
-  // Repositions the off-screen cards against the live camera. Called on every
+  // Repositions the connection cards against the live camera. Called on every
   // zoom event (so every flight frame too) and after every render.
   const drawCardsRef = useRef<() => void>(() => {});
 
@@ -707,9 +707,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     for (const c of focus.connections) {
       const n = nodeById.get(c.id);
       if (!n) continue;
+      // Every connection gets a card, in view or not: the cards are the
+      // selected claim's list of links, each sitting at the pane edge in
+      // its claim's direction, so the list stays put while you read.
       const p = toPane(n);
-      // In view while its centre is: half a box at the edge is readable.
-      if (p.x >= 0 && p.x <= width && p.y >= 0 && p.y <= height) continue;
       targets.push({ id: c.id, kind: c.kind, who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
     }
     placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id));

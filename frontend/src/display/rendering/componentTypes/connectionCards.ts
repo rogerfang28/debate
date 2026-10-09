@@ -1,5 +1,5 @@
 // connectionCards.ts -- what the selected claim is connected to, how to walk
-// the map from it, and the cards that point at connections off-screen.
+// the map from it, and the cards that point at its connections.
 //
 // The first two are pure (relation groups in, ids out). The third writes plain
 // DOM into a host div that React renders empty and never touches again: the
@@ -122,7 +122,7 @@ export function navigationFor(
   return nav;
 }
 
-// ── Off-screen cards ──────────────────────────────────────────────────
+// ── Connection cards ──────────────────────────────────────────────────
 
 export type CardTone = "challenge" | "parent" | "support";
 
@@ -211,9 +211,10 @@ function fill(el: HTMLElement, tone: CardTone, who: string, kind: string, arrow:
   el.title = text;
 }
 
-// Draw one card per connection whose claim is off-screen, where the straight
-// line from the focus to it leaves the pane; then keep every card fully inside
-// the pane and push overlapping ones apart (fly.html's placeIndicators).
+// Draw one card per connection, at the point where the straight line from
+// the focus through its claim leaves the pane (so a claim that is in view
+// gets a card at the edge beyond it, pointing back at it); then keep every
+// card fully inside the pane and push overlapping ones apart.
 export function placeConnectionCards(
   host: HTMLElement,
   focus: { x: number; y: number } | null,
@@ -232,7 +233,7 @@ export function placeConnectionCards(
     const capacity = (run: Run) =>
       Math.min(MAX_PER_SIDE, run === "top" || run === "bottom" ? fitAlong(pane.width, cardW) : fitAlong(pane.height, EST_CARD_H));
 
-    // 1. The exit point and the side it is on, per off-screen connection.
+    // 1. The exit point and the side it is on, per connection.
     const bySide = new Map<Run, { t: CardTarget; x: number; y: number; dx: number; dy: number; dist: number }[]>();
     for (const t of targets) {
       const dx = t.x - focus.x, dy = t.y - focus.y;
