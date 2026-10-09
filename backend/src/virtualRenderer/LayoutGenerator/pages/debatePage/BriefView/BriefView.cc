@@ -105,14 +105,9 @@ ui::Page BriefView::GenerateBriefPage(
 
     const std::string viewerName = fullDebateInfo.viewer_username();
     auto nameOf = [&](int id) -> std::string { return id > 0 ? userDb.getUsername(id) : std::string(); };
+    // Everything on this page is computed from the debate. The model has one
+    // place in the tool, the chat, and it is beside this page, not on it.
     const DebateBrief::Facts facts = DebateBrief::Compute(collectionProto, nameOf);
-    const std::string fingerprint = DebateBrief::Fingerprint(facts);
-
-    // The words, if the model has written them for THIS structure.
-    const user_engagement::DebatingInfo::BriefState& state = viewerUser.engagement().debating_info().brief();
-    DebateBrief::Prose prose;
-    const bool haveWords = DebateBrief::DeserializeProse(state.prose_json(), &prose);
-    const bool wordsCurrent = haveWords && state.prose_fingerprint() == fingerprint;
 
     ui::Component container = ComponentGenerator::createContainer(
         "briefMain", "min-h-screen flex flex-col items-stretch", "bg-gray-900", "p-6", "", "", "", "gap-4");
@@ -165,9 +160,7 @@ ui::Page BriefView::GenerateBriefPage(
              {"font-weight", "600"}, {"letter-spacing", "0.06em"}, {"text-transform", "uppercase"}, {"margin", "0"}}));
 
         std::string verdictWords;
-        if (wordsCurrent && !prose.verdict.empty()) {
-            verdictWords = prose.verdict;
-        } else if (hinge) {
+        if (hinge) {
             const bool several = hinge->turn.find(',') != std::string::npos;
             verdictWords = "It hangs on this claim: \"" + (hinge->moves.empty() ? std::string() : hinge->moves.front().text) +
                            "\" It has been challenged, and " + hinge->turn + (several ? " have" : " has") + " not replied.";
@@ -177,33 +170,8 @@ ui::Page BriefView::GenerateBriefPage(
         ComponentGenerator::addChild(&verdict, text("briefVerdictText", verdictWords,
             {{"color", "var(--text)"}, {"font-size", "16px"}, {"line-height", "1.55"}, {"font-weight", "400"}, {"margin", "0"}}));
 
-        // The model's part: asked for, in progress, or behind the debate.
-        ui::Component aiRow = ComponentGenerator::createContainer("briefAiRow", "w-full", "", "", "", "", "", "");
-        css(&aiRow, {{"display", "flex"}, {"flex-direction", "row"}, {"flex-wrap", "wrap"},
-                     {"align-items", "center"}, {"gap", "0.5rem"}, {"margin-top", "0.25rem"}});
-        if (state.pending()) {
-            // The id ends in Pending so the client polls while it writes.
-            ComponentGenerator::addChild(&aiRow, text("briefPending",
-                "Writing the words... " + std::to_string(state.elapsed_seconds()) + "s elapsed",
-                {{"color", "var(--accent-hover)"}, {"font-size", "13px"}, {"margin", "0"}}));
-            ComponentGenerator::addChild(&aiRow, smallButton("cancelAiWorkButton", "Cancel"));
-        } else {
-            ComponentGenerator::addChild(&aiRow, smallButton("generateBriefButton",
-                haveWords ? "Rewrite the words with AI" : "Write the words with AI"));
-            if (haveWords && !wordsCurrent) {
-                ComponentGenerator::addChild(&aiRow, text("briefStale",
-                    "The debate has changed since the words were written; the claims' own sentences are shown instead.",
-                    {{"color", "var(--warn)"}, {"font-size", "13px"}, {"margin", "0"}}));
-            }
-            if (!state.error().empty()) {
-                ComponentGenerator::addChild(&aiRow, text("briefError", state.error(),
-                    {{"color", "var(--open)"}, {"font-size", "13px"}, {"margin", "0"}}));
-            }
-        }
-        ComponentGenerator::addChild(&verdict, aiRow);
-        ComponentGenerator::addChild(&verdict, text("briefAiNote",
-            "Who holds what, which challenges are open and whose move it is are computed from the debate. "
-            "Only the verdict sentence, the story and the site names are written by the model.",
+        ComponentGenerator::addChild(&verdict, text("briefComputedNote",
+            "Computed from the debate: who holds what, which challenges are open, and whose move it is.",
             {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"line-height", "1.4"}, {"margin", "0"}}));
         ComponentGenerator::addChild(&column, verdict);
     }
@@ -211,9 +179,7 @@ ui::Page BriefView::GenerateBriefPage(
     // ---- The story --------------------------------------------------------------
     {
         ui::Component story = card("briefStory", "The story");
-        if (wordsCurrent && !prose.story.empty()) {
-            addLines(&story, "briefStoryLine", prose.story, kBody);
-        } else {
+        {
             int open = 0;
             for (const DebateBrief::Site& s : facts.sites) if (s.open) ++open;
             std::ostringstream words;
@@ -309,10 +275,7 @@ ui::Page BriefView::GenerateBriefPage(
             }
 
             std::string name;
-            auto named = prose.siteNames.find(site.id);
-            if (wordsCurrent && named != prose.siteNames.end() && !named->second.empty()) {
-                name = named->second;
-            } else if (!site.moves.empty()) {
+            if (!site.moves.empty()) {
                 name = site.moves.front().text;
             }
             ComponentGenerator::addChild(&block, text("briefSiteName_" + sid, std::to_string(number) + ". " + name,
