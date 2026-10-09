@@ -199,8 +199,11 @@ static ui::Component BuildSelectedClaimPanel(
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
 
     // A read-only demo build shows the claim and none of the buttons that
-    // change it. An anonymous visitor DOES see them: pressing one opens the
-    // sign-in modal, and the press is replayed once they have signed in.
+    // change it. An anonymous visitor sees the ones that START something
+    // (Challenge, Support): pressing one opens the sign-in modal, and the
+    // press is replayed once they have signed in. Agree is the exception:
+    // it is a one-press record, so a visitor who cannot make it does not
+    // see it.
     if (anonymous_user::IsReadOnlyViewer(viewerUsername)) {
         ComponentGenerator::addChild(&panel, buttonRow);
         return panel;
@@ -282,18 +285,21 @@ static ui::Component BuildSelectedClaimPanel(
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
 
-        ui::Component agreeButton = ComponentGenerator::createButton(
-            "endorseClaimButton_" + std::to_string(claimId),
-            "Agree",
-            "",
-            "bg-green-600",
-            "hover:bg-green-700",
-            "text-white",
-            "px-3 py-1.5",
-            "rounded",
-            "text-sm"
-        );
-        ComponentGenerator::addChild(&buttonRow, agreeButton);
+        // Only someone who can record an agreement sees the button.
+        if (!anonymous_user::IsAnonymousUsername(viewerUsername)) {
+            ui::Component agreeButton = ComponentGenerator::createButton(
+                "endorseClaimButton_" + std::to_string(claimId),
+                "Agree",
+                "",
+                "bg-green-600",
+                "hover:bg-green-700",
+                "text-white",
+                "px-3 py-1.5",
+                "rounded",
+                "text-sm"
+            );
+            ComponentGenerator::addChild(&buttonRow, agreeButton);
+        }
     }
 
     if (viewerEntered) {
