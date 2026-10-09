@@ -102,6 +102,7 @@ bool isAnonymousBlockedEvent(debate_event::EventType type) {
     switch (type) {
         case debate_event::JOIN_DEBATE:
         case debate_event::GENERATE_DEBATE:
+        case debate_event::OPEN_CREATE_DEBATE:
         case debate_event::START_TUTORIAL:
         case debate_event::TUTORIAL_NEXT:
             return true;
@@ -312,6 +313,10 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::CREATE_DEBATE: {
             Log::info("[DebateModerator] Event Type: CREATE_DEBATE");
+            // The dialog has done its job either way.
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_create_open(false);
+            });
             debate::Source rootSource;
             rootSource.set_url(event.create_debate().source_url());
             rootSource.set_excerpt(event.create_debate().source_excerpt());
@@ -352,6 +357,15 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
                 view->set_home_tab(event.home_tab().tab());
             });
             break;
+        case debate_event::OPEN_CREATE_DEBATE:
+        case debate_event::CLOSE_CREATE_DEBATE: {
+            const bool open = event.type() == debate_event::OPEN_CREATE_DEBATE;
+            Log::info(std::string("[DebateModerator] Event Type: ") + (open ? "OPEN_CREATE_DEBATE" : "CLOSE_CREATE_DEBATE"));
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                view->set_create_open(open);
+            });
+            break;
+        }
         case debate_event::EXPLORE_SEARCH:
             Log::info("[DebateModerator] Event Type: EXPLORE_SEARCH");
             updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {

@@ -498,20 +498,39 @@ void addMineTab(ui::Component* page, const std::vector<const Topic*>& topics, lo
     ComponentGenerator::addChild(page, member);
 }
 
-// "Start a debate", at the bottom of every tab. A visitor's is one press
-// (an empty CREATE_DEBATE: the sign-in modal, then a no-op replay). A
-// signed-in user's opens, on the client, the create forms: a topic, or a
-// passage for the AI. It stays open while a generation is running or has
-// something to say.
-ui::Component startDebate(const rendering_info::HomePageRenderingInfo& info, bool visitor) {
-    if (visitor) {
-        return linkButton("startDebateButton", "Start a debate");
-    }
+// "Start a debate", at the bottom of every tab: one link. For a visitor
+// the press becomes the sign-in modal and is replayed after sign-in; for
+// a signed-in user it opens the create dialog below.
+ui::Component startDebate() {
+    return linkButton("startDebateButton", "Start a debate");
+}
+
+// Whether the create dialog should be on the page: asked for, or busy
+// generating, or with something to say about the last generation.
+bool createDialogOpen(const rendering_info::HomePageRenderingInfo& info) {
     const user_engagement::AiJobStatus& aiJob = info.ai_job();
     const bool busy = aiJob.pending() || !aiJob.error().empty() || !aiJob.note().empty();
-    ui::Component fold = box("startDebateFold", {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.75rem"}});
-    ComponentGenerator::addAttribute(&fold, "data-fold", busy ? "open" : "closed");
-    ComponentGenerator::addAttribute(&fold, "data-fold-title", "Start a debate");
+    return info.home_view().create_open() || busy;
+}
+
+// The create dialog: a topic to argue yourself, or a passage for the AI to
+// build from. Same overlay as the sign-in modal, so the two dialogs look
+// and behave alike.
+ui::Component createDebateModal(const rendering_info::HomePageRenderingInfo& info) {
+    const user_engagement::AiJobStatus& aiJob = info.ai_job();
+    ui::Component overlay = ComponentGenerator::createContainer(
+        "createDebateModalOverlay", "fixed inset-0 flex items-center justify-center", "bg-black/50",
+        "", "", "", "", "z-50");
+    (*overlay.mutable_css())["z-index"] = "60";
+    ui::Component fold = ComponentGenerator::createContainer(
+        "createDebateModalContent", "flex flex-col items-stretch gap-3", "bg-gray-800", "p-8", "",
+        "border-2 border-gray-700", "rounded-lg", "w-full max-w-md");
+    ComponentGenerator::addChild(&fold, ComponentGenerator::createText(
+        "createDebateModalTitle", "Start a debate", "text-xl", "text-white", "font-semibold", ""));
+    ComponentGenerator::addChild(&fold, ComponentGenerator::createText(
+        "createDebateModalDescription",
+        "One sentence someone could disagree with. You argue it; others challenge it.",
+        "text-sm", "text-gray-400", "", ""));
 
     // Submit topic container (inline layout)
     ui::Component submitTopicContainer = ComponentGenerator::createContainer(
@@ -577,7 +596,10 @@ ui::Component startDebate(const rendering_info::HomePageRenderingInfo& info, boo
             "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
     }
     ComponentGenerator::addChild(&fold, generateContainer);
-    return fold;
+    ComponentGenerator::addChild(&fold, ComponentGenerator::createButton(
+        "closeCreateDebateButton", "Not now", "", "bg-transparent", "", "", "", "", "text-xs self-end"));
+    ComponentGenerator::addChild(&overlay, fold);
+    return overlay;
 }
 
 }  // namespace
@@ -635,7 +657,7 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
     }
 
     if (info.can_create_or_join_debates()) {
-        ComponentGenerator::addChild(&column, startDebate(info, visitor));
+        ComponentGenerator::addChild(&column, startDebate());
     }
 
     // The foot of the page: what the site keeps about you, and the build.
@@ -654,6 +676,11 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
     ui::Component content = ComponentGenerator::createContainer("homeContentRow", "w-full", "", "", "", "", "", "");
     ComponentGenerator::addChild(&content, column);
     ComponentGenerator::addChild(&main, content);
+    // The create dialog draws over the page, a signed-in user's only; a
+    // visitor's press turned into the sign-in modal before it got here.
+    if (info.can_create_or_join_debates() && !visitor && createDialogOpen(info)) {
+        ComponentGenerator::addChild(&main, createDebateModal(info));
+    }
     *page.add_components() = main;
     return page;
 }

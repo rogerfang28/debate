@@ -891,6 +891,7 @@ class HomeView final : public ::google::protobuf::Message
     kExploreQueryFieldNumber = 2,
     kExploreFilterFieldNumber = 3,
     kExploreSortFieldNumber = 4,
+    kCreateOpenFieldNumber = 5,
   };
   // string home_tab = 1 [json_name = "homeTab"];
   void clear_home_tab() ;
@@ -952,11 +953,21 @@ class HomeView final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_explore_sort();
 
   public:
+  // bool create_open = 5 [json_name = "createOpen"];
+  void clear_create_open() ;
+  bool create_open() const;
+  void set_create_open(bool value);
+
+  private:
+  bool _internal_create_open() const;
+  void _internal_set_create_open(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.HomeView)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
                                    0, 80,
                                    2>
       _table_;
@@ -982,6 +993,7 @@ class HomeView final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr explore_query_;
     ::google::protobuf::internal::ArenaStringPtr explore_filter_;
     ::google::protobuf::internal::ArenaStringPtr explore_sort_;
+    bool create_open_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6052,6 +6064,31 @@ inline void HomeView::set_allocated_explore_sort(::std::string* PROTOBUF_NULLABL
     _impl_.explore_sort_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.explore_sort)
+}
+
+// bool create_open = 5 [json_name = "createOpen"];
+inline void HomeView::clear_create_open() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_open_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline bool HomeView::create_open() const {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.create_open)
+  return _internal_create_open();
+}
+inline void HomeView::set_create_open(bool value) {
+  _internal_set_create_open(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.create_open)
+}
+inline bool HomeView::_internal_create_open() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.create_open_;
+}
+inline void HomeView::_internal_set_create_open(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.create_open_ = value;
 }
 
 // -------------------------------------------------------------------

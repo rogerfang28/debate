@@ -336,6 +336,11 @@ enum EventType {
     // claim selected (ENTER_DEBATE then OPEN_CLAIM_IN_DEBATE). Carries
     // open_debate_claim.
     OPEN_DEBATE_CLAIM = 80;
+    // The create-a-debate dialog on the home page. A visitor's OPEN is
+    // remembered and replayed after sign-in, like any other press that
+    // starts something.
+    OPEN_CREATE_DEBATE = 81;
+    CLOSE_CREATE_DEBATE = 82;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 

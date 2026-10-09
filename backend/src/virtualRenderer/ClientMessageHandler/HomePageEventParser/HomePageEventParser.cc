@@ -124,12 +124,14 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         Log::debug("  OPEN_DEBATE_CLAIM: " + ids);
     }
 
-    // * A visitor's "Start a debate": an empty create, which the moderator
-    // turns into the sign-in modal and replays (as a no-op) once they have
-    // signed in, leaving them at the create form.
+    // * "Start a debate" opens the create dialog. A visitor's press is
+    // remembered by the moderator and replayed after sign-in, so they land
+    // in the open dialog as themselves.
     else if (componentId == "startDebateButton" && eventType == "onClick") {
-        event.set_type(debate_event::CREATE_DEBATE);
-        event.mutable_create_debate();
+        event.set_type(debate_event::OPEN_CREATE_DEBATE);
+    }
+    else if (componentId == "closeCreateDebateButton" && eventType == "onClick") {
+        event.set_type(debate_event::CLOSE_CREATE_DEBATE);
     }
 
     // * Delete a debate with id

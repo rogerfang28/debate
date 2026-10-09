@@ -78,6 +78,9 @@ message HomeView {
   string explore_query = 2;   // case-insensitive substring of titles and claims
   string explore_filter = 3;  // "" | "open" | "settled" | "waiting"
   string explore_sort = 4;    // "moved" (default, also "") | "claims"
+  // The create-a-debate dialog is open. Set by OPEN_CREATE_DEBATE, cleared
+  // by CLOSE_CREATE_DEBATE and by creating or generating a debate.
+  bool create_open = 5;
 }
 
 message HomeInfo {

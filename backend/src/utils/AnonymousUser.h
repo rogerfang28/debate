@@ -68,6 +68,7 @@ inline bool OpensSignIn(debate_event::EventType type) {
         case debate_event::START_MODIFICATION_OF_CLAIM:
         case debate_event::CREATE_DEBATE:
         case debate_event::GENERATE_DEBATE:
+        case debate_event::OPEN_CREATE_DEBATE:
         case debate_event::JOIN_DEBATE:
         case debate_event::START_TUTORIAL:
             return true;
@@ -100,6 +101,7 @@ inline std::string SignInTitle(const std::string& pendingAction) {
             return "Sign in to edit this claim";
         case debate_event::CREATE_DEBATE:
         case debate_event::GENERATE_DEBATE:
+        case debate_event::OPEN_CREATE_DEBATE:
             return "Sign in to start a debate";
         case debate_event::JOIN_DEBATE:
             return "Sign in to join this debate";

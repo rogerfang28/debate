@@ -1637,7 +1637,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "tion\030= \001(\0132\033.debate_event.ExploreOptionH"
     "\000R\rexploreOption\022K\n\021open_debate_claim\030> "
     "\001(\0132\035.debate_event.OpenDebateClaimH\000R\017op"
-    "enDebateClaimB\t\n\007payloadJ\004\0104\0205*\212\016\n\tEvent"
+    "enDebateClaimB\t\n\007payloadJ\004\0104\0205*\273\016\n\tEvent"
     "Type\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE"
     "\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003"
     "\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n"
@@ -1682,8 +1682,9 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "J\022\025\n\021OPEN_DEBATE_BRIEF\020K\022\022\n\016GO_TO_HOME_T"
     "AB\020L\022\022\n\016EXPLORE_SEARCH\020M\022\022\n\016EXPLORE_FILT"
     "ER\020N\022\020\n\014EXPLORE_SORT\020O\022\025\n\021OPEN_DEBATE_CL"
-    "AIM\020P\"\004\0106\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004\010;\020;b\006pro"
-    "to3"
+    "AIM\020P\022\026\n\022OPEN_CREATE_DEBATE\020Q\022\027\n\023CLOSE_C"
+    "REATE_DEBATE\020R\"\004\0106\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004"
+    "\010;\020;b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1693,7 +1694,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    7483,
+    7532,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1712,7 +1713,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3538944u, 32u, 134217680u, };
+    3538944u, 32u, 536870864u, };
 // ===================================================================
 
 class CreateDebate::_Internal {
