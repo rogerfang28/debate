@@ -48,14 +48,20 @@
   .node text { font-family:var(--font); fill:var(--text); font-size:11.5px; pointer-events:none; }
   .node .who { fill:var(--text-3); font-size:10px; }
   /* off-screen indicators */
-  .ind { position:absolute; display:flex; align-items:center; gap:7px; padding:5px 10px; background:var(--panel-2); border:1px solid var(--line-strong); border-radius:999px; font-size:12px; color:var(--text-2); cursor:pointer; white-space:nowrap; max-width:260px; box-shadow:0 2px 10px rgba(0,0,0,.35); transform:translate(-50%,-50%); }
-  .ind:hover { color:var(--text); border-color:var(--text-2); }
-  .ind .arrow { color:var(--text-3); font-size:12px; }
+  .ind { position:absolute; display:grid; grid-template-columns:auto 1fr auto; column-gap:9px; align-items:center; padding:9px 12px; width:300px; background:var(--panel-2); border:1.5px solid var(--text-3); border-radius:12px; font-size:13px; line-height:1.35; color:var(--text-2); cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,.55); transform:translate(-50%,-50%); }
+  .ind:hover { color:var(--text); border-color:var(--text); background:#222738; }
+  .ind .arrow { color:var(--text); font-size:18px; font-weight:700; grid-row:1 / span 2; }
+  .ind .top { display:flex; align-items:center; gap:7px; font-size:11.5px; }
   .ind .who { color:var(--text); font-weight:600; }
-  .ind .gist { overflow:hidden; text-overflow:ellipsis; max-width:150px; }
-  .ind .dot { width:7px; height:7px; border-radius:50%; background:var(--text-3); flex:none; }
+  .ind .kind { color:var(--text-3); }
+  .ind .gist { grid-column:2; color:var(--text); white-space:normal; }
+  .ind .dot { width:9px; height:9px; border-radius:50%; background:var(--text-3); flex:none; grid-row:1 / span 2; }
+  .ind.ch { border-color:var(--open); }
   .ind.ch .dot { background:var(--open); }
+  .ind.ch .kind { color:var(--open); }
+  .ind.up { border-color:var(--accent); }
   .ind.up .dot { background:var(--accent); }
+  .ind.up .kind { color:var(--accent-hover); }
   .hint { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:12px; color:var(--text-3); background:var(--panel); border:1px solid var(--line); padding:4px 10px; border-radius:999px; white-space:nowrap; }
   .keys { font-size:12px; color:var(--text-3); line-height:1.7; padding:10px 16px; border-top:1px solid var(--line); }
   .keys b { color:var(--text-2); font-weight:600; display:inline-block; min-width:70px; }
@@ -166,7 +172,7 @@ function placeIndicators() {
     const px = f.x + dx * t, py = f.y + dy * t;
     const m = byId(nb.id); const arrow = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '→' : '←') : (dy > 0 ? '↓' : '↑');
     const d = document.createElement('div'); d.className = 'ind' + (nb.kind.startsWith('challenge') ? ' ch' : '') + (nb.up ? ' up' : '');
-    d.innerHTML = `<span class="dot"></span><span class="who">${esc(m.who)}</span><span class="gist">${esc(m.text)}</span><span class="small">${nb.up ? 'parent' : nb.kind}</span><span class="arrow">${arrow}</span>`;
+    d.innerHTML = `<span class="dot"></span><span class="top"><span class="who">${esc(m.who)}</span><span class="kind">${nb.up ? 'the claim this supports' : nb.kind}</span></span><span class="arrow">${arrow}</span><span class="gist">${esc(m.text)}</span>`;
     d.title = m.text; d.onclick = () => select(nb.id); inds.appendChild(d);
     pills.push({ el: d, x: px, y: py, dx, dy });
   }
