@@ -12,6 +12,8 @@ import {
   JUNCTION_CHAR_WIDTH,
   JUNCTION_PADDING_X,
 } from "./graphLayout";
+import { focusOf, navigationFor, placeConnectionCards, lineKey } from "./connectionCards";
+import type { CardTarget } from "./connectionCards";
 
 interface DebateGraphProps extends BaseComponentProps {
   component: BaseComponentProps["component"] & {
@@ -88,6 +90,23 @@ const NODE_HEIGHT = 80;
 // changes no node ids, so it never moves the camera.
 type Camera = { nodeSet: string; transform: d3.ZoomTransform };
 const cameras = new Map<string, Camera>();
+
+// ── Fly-to ────────────────────────────────────────────────────────────
+//
+// Selecting a claim flies the camera to it. The claim the camera last went to
+// is remembered per graph, beside the camera, so the server's echo of a click
+// (the same selection, re-rendered) does not fly again, while a selection made
+// elsewhere -- the Brief's "Open in debate", the text view -- does, including
+// across a remount.
+const flownTo = new Map<string, string>();
+const FLY_MS = 450;
+// On-screen scale a flight lands at, converted into the transform's units
+// the same way the opening view converts MIN_READABLE_SCALE. 1 is above the
+// "full" semantic-zoom tier (0.85), so the node shows its sentence, author and
+// status rather than a counter-scaled two-line gist. Never zooms OUT: a reader
+// already closer than this stays where they are.
+const FLY_READABLE_SCALE = 1;
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 // The layout is computed at one fixed width, not the pane's. Positions then
 // depend on the debate alone, so a pane that changes width (the chat folded
@@ -271,6 +290,19 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // the ATTACHED behaviour still holding the old transform -- so the next drag
   // or wheel snapped back to wherever the graph used to be.
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  // The flight in progress: its frame and where it lands. While one runs,
+  // each frame's "end" stores the LANDING transform, so a remount mid-flight
+  // comes back where the flight was going rather than halfway there.
+  const flightRef = useRef<{ raf: number; target: d3.ZoomTransform } | null>(null);
+  // Repositions the off-screen cards against the live camera. Called on every
+  // zoom event (so every flight frame too) and after every render.
+  const drawCardsRef = useRef<() => void>(() => {});
+
+  const cancelFlight = useCallback(() => {
+    if (flightRef.current) cancelAnimationFrame(flightRef.current.raf);
+    flightRef.current = null;
+  }, []);
+  useEffect(() => cancelFlight, [cancelFlight]);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -283,8 +315,13 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       // 0.15. Fit-to-view computed a scale the zoom behaviour then refused to
       // hold, so the graph sprang back on the next interaction.
       .scaleExtent([0.02, 3])
+      // The reader's own drag or wheel takes the camera back from a flight.
+      .on("start", (event: { sourceEvent?: Event | null }) => {
+        if (event.sourceEvent) cancelFlight();
+      })
       .on("zoom", (event) => {
         svg.select("g.graph-root").attr("transform", event.transform.toString());
+        drawCardsRef.current();
         // ═══ EXPERIMENT: SEMANTIC ZOOM ─ report the tier, not the scale ═══
         // Multiplied by the viewBox-to-css ratio so the thresholds are in real
         // on-screen scale rather than viewBox units.
@@ -306,7 +343,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       // Reset buttons' -- is the camera to come back to.
       .on("end", (event: { transform: d3.ZoomTransform }) => {
         if (!nodeSetRef.current) return;
-        cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform: event.transform });
+        const transform = flightRef.current ? flightRef.current.target : event.transform;
+        cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform });
       });
 
     zoomRef.current = zoom;
@@ -385,6 +423,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const zoom = zoomRef.current;
     const rootNode = svg.select<SVGGElement>("g.graph-root").node();
     if (!svg.node() || !zoom || !rootNode) return;
+    cancelFlight();
 
     // Measure in the SVG's own coordinate space. The element is rendered
     // responsively -- its viewBox is dims.width x dims.height regardless of how
@@ -412,7 +451,79 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       svg.transition().duration(duration).call(zoom.transform, target);
     }
     zoom.transform(svg, target);
-  }, [dims.width, dims.height]);
+  }, [dims.width, dims.height, cancelFlight]);
+
+  // ── Fly to a claim ────────────────────────────────────────────────
+  //
+  // Animated by hand, one zoom.transform per frame, rather than through a d3
+  // transition (see fitToView on those). Each frame is a real zoom event, so
+  // the semantic-zoom tier and the off-screen cards follow the flight. The
+  // centre and the scale are eased separately, so the claim travels in a
+  // straight line to the middle of the pane while the zoom settles.
+  const nodeById = useMemo(
+    () => new Map(positionedNodes.map((n) => [n.id, n] as const)),
+    [positionedNodes]
+  );
+  const flyTo = useCallback(
+    (id: string) => {
+      const el = svgRef.current;
+      const zoom = zoomRef.current;
+      const node = nodeById.get(id);
+      if (!el || !zoom || !node) return;
+      const svg = d3.select(el);
+      cancelFlight();
+      svg.interrupt(); // a Fit or Reset transition still running would fight it
+
+      const vb = el.viewBox?.baseVal;
+      const ratio = vb && vb.width ? el.getBoundingClientRect().width / vb.width : 1;
+      const readable = ratio > 0 ? FLY_READABLE_SCALE / ratio : FLY_READABLE_SCALE;
+      const from = d3.zoomTransform(el);
+      const k0 = from.k;
+      const k1 = Math.min(3, Math.max(k0, readable));
+      const w = dims.width, h = dims.height;
+      const [c0x, c0y] = from.invert([w / 2, h / 2]);
+      const c1x = node.x ?? 0, c1y = node.y ?? 0;
+      const at = (cx: number, cy: number, k: number) =>
+        d3.zoomIdentity.translate(w / 2 - cx * k, h / 2 - cy * k).scale(k);
+      const target = at(c1x, c1y, k1);
+
+      // A hidden page gets (almost) no animation frames; nobody would see the
+      // flight anyway, so land at once instead of hanging halfway.
+      if (document.visibilityState === "hidden") {
+        zoom.transform(svg, target);
+        return;
+      }
+
+      const t0 = performance.now();
+      const step = (now: number) => {
+        // A frame's timestamp can predate t0 (it is the frame's start).
+        const t = Math.min(1, Math.max(0, (now - t0) / FLY_MS));
+        const e = easeOutCubic(t);
+        if (t >= 1) {
+          // Cleared first, so this last frame's "end" stores the camera as-is.
+          flightRef.current = null;
+          zoom.transform(svg, target);
+          if (nodeSetRef.current) {
+            cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform: target });
+          }
+          return;
+        }
+        flightRef.current = { raf: requestAnimationFrame(step), target };
+        zoom.transform(
+          svg,
+          at(c0x + (c1x - c0x) * e, c0y + (c1y - c0y) * e, k0 + (k1 - k0) * e)
+        );
+      };
+      flightRef.current = { raf: requestAnimationFrame(step), target };
+      // Stored up front, for the same reason the frames store the target.
+      if (nodeSetRef.current) {
+        cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform: target });
+      }
+    },
+    [nodeById, dims.width, dims.height, cancelFlight]
+  );
+  const flyToRef = useRef(flyTo);
+  flyToRef.current = flyTo;
 
   // ═══ EXPERIMENT: SEMANTIC ZOOM ─ resize also changes effective scale ═══
   // The tier and the counter-scale depend on zoom x (css width / viewBox
@@ -458,6 +569,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     if (!nodeSet) return;
     cameraKeyRef.current = cameraKey;
     nodeSetRef.current = nodeSet;
+    cancelFlight();
 
     const stored = cameras.get(cameraKey);
     if (stored && stored.nodeSet === nodeSet) {
@@ -518,13 +630,133 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // moves the "current claim" highlight to it on next render.
   const handleNodeClick = useCallback(
     (node: GraphNode, e: React.MouseEvent) => {
-      setSelectedId(node.id === selectedId ? null : node.id);
+      // Always selects. It used to toggle the local echo off on a second
+      // click, but the server keeps the claim selected either way, and with
+      // connections lit from the selection the toggle left the graph showing
+      // the current claim with none of its links.
+      setSelectedId(node.id);
       onNodeClick?.(node);
+      // Recorded before the round trip, so the server's echo does not fly again.
+      flownTo.set(cameraKey, node.id);
+      flyTo(node.id);
       const syntheticId = `selectClaimNode_${node.id}`;
       handleEvent(e as any, { id: syntheticId }, "onClick", syntheticId);
     },
-    [selectedId, onNodeClick]
+    [onNodeClick, cameraKey, flyTo]
   );
+
+  // A card, an arrow key or Escape: select a claim the way a click does
+  // (SELECT_CLAIM), and fly to it.
+  const selectAndFly = useCallback(
+    (id: string) => {
+      const node = nodeById.get(id);
+      if (!node) return;
+      setSelectedId(id);
+      onNodeClick?.(node);
+      flownTo.set(cameraKey, id);
+      flyTo(id);
+      const syntheticId = `selectClaimNode_${id}`;
+      handleEvent(null, { id: syntheticId }, "onClick", syntheticId);
+    },
+    [nodeById, onNodeClick, cameraKey, flyTo]
+  );
+  const selectAndFlyRef = useRef(selectAndFly);
+  selectAndFlyRef.current = selectAndFly;
+
+  // A selection that did not come from this graph -- the Brief's "Open in
+  // debate", a claim picked in the text view -- flies the camera there when it
+  // arrives. Runs after the camera effect above has restored or fitted, and
+  // only once the pane has its measured size: the first render's 800x600
+  // placeholder would centre the claim in the wrong place.
+  useEffect(() => {
+    const sel = component.selectedNodeId;
+    if (!sel || sel.startsWith("r") || !nodeSet || !nodeById.has(sel)) return;
+    const el = containerRef.current;
+    if (!el || Math.abs(el.clientWidth - dims.width) > 1 || Math.abs(el.clientHeight - dims.height) > 1) return;
+    const prev = flownTo.get(cameraKey);
+    flownTo.set(cameraKey, sel);
+    if (prev === sel) return;
+    // First sight of this map, on its root: the opening view already anchors there.
+    if (prev === undefined && sel === rootClaimId) return;
+    flyToRef.current(sel);
+  }, [component.selectedNodeId, cameraKey, nodeSet, nodeById, rootClaimId, dims.width, dims.height]);
+
+  // ── What the selection is connected to ────────────────────────────
+  const selectedClaimId = selectedId && !selectedId.startsWith("r") && nodeById.has(selectedId) ? selectedId : null;
+  const focus = useMemo(() => focusOf(selectedClaimId, relationGroups), [selectedClaimId, relationGroups]);
+
+  // Off-screen cards, drawn against the LIVE camera. Everything the zoom
+  // handler needs is read through this ref, since that handler is attached once.
+  const cardsHostRef = useRef<HTMLDivElement>(null);
+  drawCardsRef.current = () => {
+    const host = cardsHostRef.current;
+    const el = svgRef.current;
+    const pane = containerRef.current;
+    if (!host || !el || !pane) return;
+    const sel = selectedClaimId ? nodeById.get(selectedClaimId) : undefined;
+    if (!sel || !focus || pane.clientWidth === 0) {
+      placeConnectionCards(host, null, [], { width: 0, height: 0 }, () => {});
+      return;
+    }
+    const vb = el.viewBox?.baseVal;
+    const ratio = vb && vb.width ? el.getBoundingClientRect().width / vb.width : 1;
+    const t = d3.zoomTransform(el);
+    const toPane = (n: GraphNode) => ({ x: t.applyX(n.x ?? 0) * ratio, y: t.applyY(n.y ?? 0) * ratio });
+    const width = pane.clientWidth, height = pane.clientHeight;
+    const targets: CardTarget[] = [];
+    for (const c of focus.connections) {
+      const n = nodeById.get(c.id);
+      if (!n) continue;
+      const p = toPane(n);
+      // In view while its centre is: half a box at the edge is readable.
+      if (p.x >= 0 && p.x <= width && p.y >= 0 && p.y <= height) continue;
+      targets.push({ id: c.id, kind: c.kind, who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
+    }
+    placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id));
+  };
+  useLayoutEffect(() => {
+    drawCardsRef.current();
+  });
+
+  // ── Keyboard: walk the map ────────────────────────────────────────
+  // Live while the pane has focus or the pointer is over it. Arrow keys and
+  // Escape select through SELECT_CLAIM, like a click; F is the Fit button.
+  const hoverRef = useRef(false);
+  const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {});
+  keyHandlerRef.current = (e: KeyboardEvent) => {
+    const pane = containerRef.current;
+    if (!pane || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (pane.clientWidth === 0) return; // the text view is showing
+    const target = e.target as HTMLElement | null;
+    if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+    if (!hoverRef.current && !pane.contains(document.activeElement)) return;
+
+    const current = selectedClaimId ?? rootClaimId;
+    let next: string | undefined;
+    if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      const nav = navigationFor(current, relationGroups, nodeById);
+      next =
+        e.key === "ArrowUp" ? nav.parent :
+        e.key === "ArrowDown" ? nav.firstChild :
+        e.key === "ArrowLeft" ? nav.prevSibling : nav.nextSibling;
+      e.preventDefault(); // even at a dead end, the page should not scroll
+    } else if (e.key === "Escape") {
+      next = rootClaimId;
+      e.preventDefault();
+    } else if (e.key === "f" || e.key === "F") {
+      e.preventDefault();
+      fitToViewRef.current();
+      return;
+    } else {
+      return;
+    }
+    if (next) selectAndFlyRef.current(next);
+  };
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => keyHandlerRef.current(e);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // ── Junction click — selects the ARGUMENT server-side (SELECT_LINK). The
   // group key is `r<relationId>`; what goes to the server is the relation id,
@@ -578,8 +810,13 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         borderRadius: "var(--radius-lg)",
         overflow: "hidden",
         position: "relative",
+        outline: "none",
       }}
       ref={containerRef}
+      // Focusable, so the arrow keys work after a click on the map.
+      tabIndex={0}
+      onPointerEnter={() => { hoverRef.current = true; }}
+      onPointerLeave={() => { hoverRef.current = false; }}
     >
       <svg
         ref={svgRef}
@@ -641,6 +878,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
               : isSupportEdge(group.type)
                 ? EDGE_COLORS.PARENT_CHILD
                 : EDGE_COLORS.NORMAL;
+            // The selected claim's connections light up: the accent, or a
+            // brighter red for a challenge. Restyling only; nothing moves.
+            const litColor = isChallenge ? EDGE_COLORS.challenges : "var(--accent)";
+            const lit = (end: string) => !!focus?.litLines.has(lineKey(group.key, end));
             return (
               <g key={`lines-${group.key}`}>
                 {/* Every source feeds INTO the pill: a plain segment, the same
@@ -652,9 +893,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     y1={source.y ?? 100}
                     x2={group.x}
                     y2={group.y}
-                    stroke={color}
-                    strokeWidth={1.5}
-                    strokeOpacity={0.7}
+                    stroke={lit(source.id) ? litColor : color}
+                    strokeWidth={lit(source.id) ? 2.5 : 1.5}
+                    strokeOpacity={lit(source.id) ? 1 : 0.7}
                   />
                 ))}
                 {/* The pill's own segment, into whatever it is about: a claim,
@@ -664,9 +905,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   y1={group.y}
                   x2={group.tx}
                   y2={group.ty}
-                  stroke={color}
-                  strokeWidth={isChallenge ? 2.5 : 1.5}
-                  strokeOpacity={0.7}
+                  stroke={lit("out") ? litColor : color}
+                  strokeWidth={(isChallenge ? 2.5 : 1.5) + (lit("out") ? 1 : 0)}
+                  strokeOpacity={lit("out") ? 1 : 0.7}
                   strokeDasharray={isChallenge ? "6,3" : "none"}
                 />
               </g>
@@ -697,7 +938,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                 key={group.key}
                 transform={`translate(${group.x},${group.y})`}
                 className="graph-junction"
-                style={{ cursor: group.selectable ? "pointer" : "default" }}
+                opacity={focus && !focus.litGroups.has(group.key) && !isSelectedJunction ? 0.45 : 1}
+                style={{ cursor: group.selectable ? "pointer" : "default", transition: "opacity 150ms" }}
                 onClick={(e) => {
                   if (group.selectable) handleJunctionClick(group.key, e);
                 }}
@@ -846,11 +1088,15 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
               node.status === "FALSE_CLAIM" ? "var(--open)" :
               "var(--text-muted)";
 
+            // Claims unrelated to the selection step back.
+            const dimmed = !!focus && !isSelected && !focus.connectedIds.has(node.id);
             return (
               <g
                 key={node.id}
                 className="graph-node"
-                style={{ cursor: "pointer" }}
+                data-claim-id={node.id}
+                opacity={dimmed ? 0.45 : 1}
+                style={{ cursor: "pointer", transition: "opacity 150ms" }}
                 transform={`translate(${cx},${cy})`}
                 onClick={(e) => handleNodeClick(node, e)}
                 onPointerEnter={(e) => {
@@ -968,6 +1214,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         </g>
       </svg>
 
+      {/* Off-screen connection cards. Filled by placeConnectionCards, never
+          by React: they move with the camera on every frame. */}
+      <div ref={cardsHostRef} className="graph-cards" />
+
       {/* Tooltip */}
       {tooltip && (
         <div
@@ -1000,6 +1250,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           right: "0.75rem",
           display: "flex",
           gap: "0.375rem",
+          zIndex: 3,
         }}
       >
         {/* ═══════════ EXPERIMENT: SEMANTIC ZOOM (toggle) ═══════════
@@ -1035,6 +1286,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const svg = d3.select(svgRef.current);
             const zoom = zoomRef.current;
             if (!svg.node() || !zoom) return;
+            cancelFlight();
             svg
               .transition()
               .duration(300)
