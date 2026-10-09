@@ -1,8 +1,11 @@
 import React from "react";
 import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
+import { childKeys } from "../childKeys";
 
 const CardComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
+  const children = component.children || [];
+  const keys = childKeys(component.id, children);
   return (
     <div
       id={component.id}
@@ -17,8 +20,8 @@ const CardComponent: React.FC<BaseComponentProps> = ({ component, className, sty
         wordBreak: 'break-word' as const,
       }}
     >
-      {component.children?.map((child, idx: number) => (
-        <ComponentRenderer key={child.id || idx} component={child} />
+      {children.map((child, idx: number) => (
+        <ComponentRenderer key={keys[idx]} component={child} />
       ))}
     </div>
   );

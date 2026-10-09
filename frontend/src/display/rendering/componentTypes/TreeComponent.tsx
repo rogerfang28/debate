@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
+import { childKeys } from "../childKeys";
 
 /**
  * TreeComponent renders a nested debate tree with expand/collapse.
@@ -97,8 +98,8 @@ const TreeComponent: React.FC<BaseComponentProps> = ({ component, className, sty
             gap: '0.25rem',
           }}
         >
-          {(childrenContainer.children || []).map((child: any, idx: number) => (
-            <ComponentRenderer key={child.id || idx} component={child} />
+          {(childrenContainer.children || []).map((child: any, idx: number, all: any[]) => (
+            <ComponentRenderer key={childKeys(childrenContainer.id, all)[idx]} component={child} />
           ))}
         </div>
       )}

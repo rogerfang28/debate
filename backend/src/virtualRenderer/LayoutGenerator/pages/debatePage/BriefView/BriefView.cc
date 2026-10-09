@@ -328,7 +328,9 @@ ui::Page BriefView::GenerateBriefPage(
             ui::Component exchange = ComponentGenerator::createContainer("briefSiteMoves_" + sid, "w-full", "", "", "", "", "", "");
             css(&exchange, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.35rem"},
                             {"border-left", "2px solid var(--line-strong)"}, {"padding-left", "12px"}});
-            int moveIndex = 0;
+            // Each move keyed by its claim (unique within a site: a challenge
+            // is placed once), not its position, so a reply added mid-site
+            // does not renumber the moves after it.
             for (const DebateBrief::Move& m : site.moves) {
                 std::string verb;
                 if (m.challenge) {
@@ -337,11 +339,10 @@ ui::Page BriefView::GenerateBriefPage(
                 }
                 const std::string who = (m.who == viewerName ? "You" : m.who);
                 ComponentGenerator::addChild(&exchange, text(
-                    "briefSiteMove_" + sid + "_" + std::to_string(moveIndex),
+                    "briefSiteMove_" + sid + "_" + std::to_string(m.claimId),
                     who + verb + ": " + m.text,
                     {{"color", m.challenge ? "var(--text)" : "#c7d2fe"}, {"font-size", "13.5px"},
                      {"line-height", "1.5"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
-                ++moveIndex;
             }
             ComponentGenerator::addChild(&block, exchange);
 

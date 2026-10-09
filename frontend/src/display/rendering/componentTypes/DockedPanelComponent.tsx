@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
 import { RegionContext } from "./shellContext";
+import { childKeys } from "../childKeys";
 
 // A CONTAINER with a header bar that folds it away. Where it stands is the
 // client's call, from the server's data-docked attribute and where the panel
@@ -74,12 +75,12 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
       <div className="docked-body" style={style}>
         <div ref={scrollRef} className="docked-turns">
           {turns.map((child: any, idx: number) => (
-            <ComponentRenderer key={child.id || idx} component={child} />
+            <ComponentRenderer key={childKeys(id, turns)[idx]} component={child} />
           ))}
         </div>
         <div className="docked-ask">
           {ask.map((child: any, idx: number) => (
-            <ComponentRenderer key={child.id || idx} component={child} />
+            <ComponentRenderer key={childKeys(id, ask)[idx]} component={child} />
           ))}
         </div>
       </div>
@@ -88,7 +89,7 @@ const DockedPanelComponent: React.FC<BaseComponentProps> = ({ component, classNa
     body = (
       <div ref={scrollRef} className={`docked-body ${className || ""}`} style={style}>
         {nested.map((child: any, idx: number) => (
-          <ComponentRenderer key={child.id || idx} component={child} />
+          <ComponentRenderer key={childKeys(id, nested)[idx]} component={child} />
         ))}
       </div>
     );

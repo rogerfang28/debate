@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
+import { childKeys } from "../childKeys";
 
 // Colors cycle by nesting depth so a marker, its sentence's underline, and
 // the brackets wrapping its expanded children all share one color --
@@ -98,7 +99,7 @@ const ParagraphTreeComponent: React.FC<ParagraphTreeProps> = ({ component, depth
         <>
           <span style={{ color, opacity: 0.7, fontWeight: 700 }}>[</span>
           {childNodes.map((child: any, idx: number) => (
-            <ParagraphTreeComponent key={child.id || idx} component={child} depth={depth + 1} />
+            <ParagraphTreeComponent key={childKeys(component.id, childNodes)[idx]} component={child} depth={depth + 1} />
           ))}
           <span style={{ color, opacity: 0.7, fontWeight: 700 }}>]</span>
           {" "}

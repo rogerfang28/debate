@@ -3,6 +3,7 @@ import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
 import { RegionContext, readStored, writeStored } from "./shellContext";
+import { childKeys } from "../childKeys";
 
 // ---- Page layout: the server marks the parts, the client lays them out ----
 //
@@ -30,10 +31,14 @@ function dataAttributes(attributes: Record<string, string>): Record<string, stri
   return out;
 }
 
-const renderChildren = (nested: any[]) =>
-  nested.map((child: any, idx: number) => (
-    <ComponentRenderer key={child.id || idx} component={child} />
+// Keyed by id (see childKeys); `parentId` scopes the fallback for a child
+// that has none.
+const renderChildren = (nested: any[], parentId: string | undefined) => {
+  const keys = childKeys(parentId, nested);
+  return nested.map((child: any, idx: number) => (
+    <ComponentRenderer key={keys[idx]} component={child} />
   ));
+};
 
 // A folding section: a caption and a chevron over the panel's body. Open by
 // default only for "Who owes a reply" -- the one thing a reader needs at a
@@ -59,7 +64,7 @@ const SectionPanel: React.FC<{ component: any; className?: string; style?: React
       </button>
       {open && (
         <div className="section-body" style={style}>
-          {renderChildren(nested)}
+          {renderChildren(nested, component.id)}
         </div>
       )}
     </div>
@@ -102,7 +107,7 @@ const MainRegion: React.FC<{ component: any; className?: string; style?: React.C
           Selected claim
         </button>
       </div>
-      <RegionContext.Provider value="main">{renderChildren(nested)}</RegionContext.Provider>
+      <RegionContext.Provider value="main">{renderChildren(nested, component.id)}</RegionContext.Provider>
     </div>
   );
 };
@@ -118,7 +123,7 @@ function renderRegion(region: string, component: any, className: string | undefi
     return (
       <div id={component.id} className={cls} data-region={region}>
         <RegionContext.Provider value={region}>
-          <div className="region-col" style={style}>{renderChildren(nested)}</div>
+          <div className="region-col" style={style}>{renderChildren(nested, component.id)}</div>
         </RegionContext.Provider>
       </div>
     );
@@ -126,12 +131,12 @@ function renderRegion(region: string, component: any, className: string | undefi
   if (region === "inspector" && nested.length > 0) {
     body = (
       <>
-        <div className="region-pin">{renderChildren(nested.slice(0, 1))}</div>
-        {nested.length > 1 && <div className="region-scroll">{renderChildren(nested.slice(1))}</div>}
+        <div className="region-pin">{renderChildren(nested.slice(0, 1), component.id)}</div>
+        {nested.length > 1 && <div className="region-scroll">{renderChildren(nested.slice(1), component.id)}</div>}
       </>
     );
   } else {
-    body = renderChildren(nested);
+    body = renderChildren(nested, component.id);
   }
   return (
     <div id={component.id} className={cls} data-region={region} style={style}>
@@ -211,10 +216,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
           <span aria-hidden="true">{open ? "▼" : "▶"}</span>
           <span>{attributes["data-fold-title"] || "More"}</span>
         </button>
-        {open &&
-          nested.map((child: any, idx: number) => (
-            <ComponentRenderer key={child.id || idx} component={child} />
-          ))}
+        {open && renderChildren(nested, component.id)}
       </div>
     );
   }
@@ -258,9 +260,7 @@ const ContainerComponent: React.FC<BaseComponentProps> = ({ component, className
           : {}),
       }}
     >
-      {nested.map((child: any, idx: number) => (
-        <ComponentRenderer key={child.id || idx} component={child} />
-      ))}
+      {renderChildren(nested, component.id)}
     </div>
   );
 };
