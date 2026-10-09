@@ -100,6 +100,17 @@ const cameras = new Map<string, Camera>();
 // across a remount.
 const flownTo = new Map<string, string>();
 const FLY_MS = 450;
+// Fly-to is a mode: on, a click flies to the claim, lights its connections
+// and draws the edge cards; off, a click only selects, as the graph always
+// did. The choice is the viewer's, kept in their browser.
+const FLY_STORAGE_KEY = "debate.graphFly";
+const readFlyMode = (): boolean => {
+  try {
+    return localStorage.getItem(FLY_STORAGE_KEY) !== "off";
+  } catch {
+    return true;
+  }
+};
 // On-screen scale a flight lands at, converted into the transform's units
 // the same way the opening view converts MIN_READABLE_SCALE. 1 is above the
 // "full" semantic-zoom tier (0.85), so the node shows its sentence, author and
@@ -211,6 +222,19 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
   // ═══════════ EXPERIMENT: SEMANTIC ZOOM (state) ═══════════
   const [semanticZoom, setSemanticZoom] = useState(SEMANTIC_ZOOM_DEFAULT);
+  const [flyMode, setFlyMode] = useState(readFlyMode);
+  const flyModeRef = useRef(flyMode);
+  flyModeRef.current = flyMode;
+  const toggleFlyMode = useCallback(() => {
+    setFlyMode((v) => {
+      try {
+        localStorage.setItem(FLY_STORAGE_KEY, v ? "off" : "on");
+      } catch {
+        // storage blocked: the choice lasts for this page
+      }
+      return !v;
+    });
+  }, []);
   // Only the TIER is kept in state, not the raw scale: re-rendering 22 nodes
   // on every wheel tick would be wasteful, and nothing here cares about the
   // exact number -- only which of three bands it falls in.
@@ -469,7 +493,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       const el = svgRef.current;
       const zoom = zoomRef.current;
       const node = nodeById.get(id);
-      if (!el || !zoom || !node) return;
+      if (!el || !zoom || !node || !flyModeRef.current) return;
       const svg = d3.select(el);
       cancelFlight();
       svg.interrupt(); // a Fit or Reset transition still running would fight it
@@ -683,7 +707,10 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
 
   // ── What the selection is connected to ────────────────────────────
   const selectedClaimId = selectedId && !selectedId.startsWith("r") && nodeById.has(selectedId) ? selectedId : null;
-  const focus = useMemo(() => focusOf(selectedClaimId, relationGroups), [selectedClaimId, relationGroups]);
+  const focus = useMemo(
+    () => (flyMode ? focusOf(selectedClaimId, relationGroups) : null),
+    [flyMode, selectedClaimId, relationGroups]
+  );
 
   // Off-screen cards, drawn against the LIVE camera. Everything the zoom
   // handler needs is read through this ref, since that handler is attached once.
@@ -1254,6 +1281,31 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           zIndex: 3,
         }}
       >
+        <button
+          onClick={toggleFlyMode}
+          className="graph-zoom-btn"
+          title={
+            flyMode
+              ? "Fly-to ON: a click flies to the claim and shows its connections — click to turn off"
+              : "Fly-to OFF: a click only selects — click to turn on"
+          }
+          aria-pressed={flyMode}
+          style={{
+            width: "28px",
+            height: "28px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: flyMode ? "var(--accent-soft)" : "var(--surface-elevated)",
+            border: `1px solid ${flyMode ? "var(--accent)" : "var(--border-default)"}`,
+            borderRadius: "var(--radius-sm)",
+            cursor: "pointer",
+            color: flyMode ? "var(--accent-hover)" : "var(--text-secondary)",
+            fontSize: "0.8125rem",
+          }}
+        >
+          ⌖
+        </button>
         {/* ═══════════ EXPERIMENT: SEMANTIC ZOOM (toggle) ═══════════
             Delete this button to remove the control; the feature then sits
             permanently at SEMANTIC_ZOOM_DEFAULT. */}
