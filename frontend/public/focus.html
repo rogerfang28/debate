@@ -127,6 +127,13 @@ function grow(parent, depth) {
   }
 }
 grow(root, 1);
+// keep adding until the debate is genuinely big: a child on a random
+// claim that still has room, so depth and breadth both grow
+while (nodes.length < 62) {
+  const cands = nodes.filter(n => n.depth < 4 && n.kids.length < 5);
+  const p = cands[Math.floor(rnd() * cands.length)];
+  const id = add(p.id, p.depth >= 1 && rnd() < 0.35, p.depth + 1);
+}
 // open challenges: a challenge with no reply is "open" for the holder of its target
 for (const n of nodes) if (n.challenge && !n.kids.some(k => nodes[k - 1].challenge)) nodes[n.parent - 1].open = true;
 // subtree has an open fight?
