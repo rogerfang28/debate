@@ -354,6 +354,9 @@ void addHomeTab(ui::Component* page, const std::vector<const Topic*>& topics,
         }
     }
     sortByMoved(others);
+    // With one case there is nothing else to list; an empty section with a
+    // "see all 1" link under it reads as a bug.
+    if (others.empty()) return;
     ui::Component s = section("otherCases", "Other cases");
     for (size_t i = 0; i < others.size() && i < 5; ++i) {
         ComponentGenerator::addChild(&s, caseRow("other", *others[i], now, false, false));
