@@ -638,10 +638,16 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
         ComponentGenerator::addChild(&column, startDebate(info, visitor));
     }
 
-    // The build, small, at the foot of the page.
-    ComponentGenerator::addChild(&column, text("homeFooter", "commit " GIT_COMMIT_HASH,
-        {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "1rem 0 0"},
-         {"text-align", "center"}}));
+    // The foot of the page: what the site keeps about you, and the build.
+    ui::Component footer = ComponentGenerator::createContainer("homeFooter", "w-full", "", "", "", "", "", "");
+    css(&footer, {{"display", "flex"}, {"justify-content", "center"}, {"gap", "1rem"}, {"margin-top", "1rem"}});
+    ui::Component privacy = text("homePrivacyLink", "Privacy",
+        {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "0"}});
+    ComponentGenerator::addAttribute(&privacy, "data-href", "/privacy.html");
+    ComponentGenerator::addChild(&footer, privacy);
+    ComponentGenerator::addChild(&footer, text("homeBuild", "commit " GIT_COMMIT_HASH,
+        {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "0"}}));
+    ComponentGenerator::addChild(&column, footer);
 
     // The regions stand in a row of their own under the header; here the
     // page region is the only one.

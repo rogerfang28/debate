@@ -56,7 +56,12 @@ export function isLoggedIn(): boolean {
  * lets a visitor read everything and change nothing.
  */
 const VISITOR_KEY = 'debate.visitorName';
+const VISITOR_AT_KEY = 'debate.visitorAt';
 const VISITOR_SHAPE = /^visitor-[0-9a-f]{8}$/;
+// A visitor is a session, not an identity: the name is dropped after two
+// days so it never becomes a long-lived identifier. Visitors can only read,
+// so a new name costs the reader nothing. (See /privacy.html.)
+const VISITOR_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 function makeVisitorName(): string {
   const bytes = new Uint8Array(4);
@@ -68,13 +73,16 @@ function makeVisitorName(): string {
 export function getOrCreateVisitorName(): string {
   try {
     const stored = localStorage.getItem(VISITOR_KEY);
-    if (stored && VISITOR_SHAPE.test(stored)) return stored;
+    const at = Number(localStorage.getItem(VISITOR_AT_KEY) || 0);
+    const fresh = at > 0 && Date.now() - at < VISITOR_TTL_MS;
+    if (stored && VISITOR_SHAPE.test(stored) && fresh) return stored;
   } catch {
     // Storage blocked: a fresh name per load still lets the reader read.
   }
   const name = makeVisitorName();
   try {
     localStorage.setItem(VISITOR_KEY, name);
+    localStorage.setItem(VISITOR_AT_KEY, String(Date.now()));
   } catch {
     // ignore
   }

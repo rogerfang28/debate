@@ -52,6 +52,22 @@ const TextComponent: React.FC<BaseComponentProps> = ({ component, className, sty
     color = strong ? "var(--text)" : "var(--text-2)";
   }
 
+  // A text the server marks with data-href is a plain link: a page of the
+  // site (the privacy page) rather than an event.
+  const href: string | undefined = ((component as any).attributes || {})["data-href"];
+  if (href) {
+    return (
+      <a
+        id={component.id}
+        href={href}
+        className={cls ? `${scale} ${cls}` : scale}
+        style={{ ...style, ...(color !== undefined ? { color } : {}) }}
+      >
+        {text}
+      </a>
+    );
+  }
+
   const Tag = heading ? "h2" : "p";
   return (
     <Tag
