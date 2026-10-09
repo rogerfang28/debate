@@ -153,7 +153,7 @@ function placeIndicators() {
   inds.innerHTML = '';
   const r = svg.getBoundingClientRect(); const inset = 34;
   const toScreen = p => ({ x: cam.x + p.x * cam.k, y: cam.y + p.y * cam.k });
-  const f = toScreen(pos.get(focus)); let offscreen = 0;
+  const f = toScreen(pos.get(focus)); let offscreen = 0; const pills = [];
   for (const nb of neighbours(focus)) {
     const s = toScreen(pos.get(nb.id)); const halfW = W * cam.k / 2, halfH = H * cam.k / 2;
     const visible = s.x + halfW > 0 && s.x - halfW < r.width && s.y + halfH > 0 && s.y - halfH < r.height;
@@ -163,14 +163,35 @@ function placeIndicators() {
     if (dx > 0) t = Math.min(t, (r.width - inset - f.x) / dx); if (dx < 0) t = Math.min(t, (inset - f.x) / dx);
     if (dy > 0) t = Math.min(t, (r.height - inset - f.y) / dy); if (dy < 0) t = Math.min(t, (inset - f.y) / dy);
     if (!isFinite(t) || t < 0) t = 0;
-    let px = f.x + dx * t, py = f.y + dy * t;
-    px = Math.max(inset, Math.min(r.width - inset, px)); py = Math.max(inset, Math.min(r.height - inset, py));
+    const px = f.x + dx * t, py = f.y + dy * t;
     const m = byId(nb.id); const arrow = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '→' : '←') : (dy > 0 ? '↓' : '↑');
     const d = document.createElement('div'); d.className = 'ind' + (nb.kind.startsWith('challenge') ? ' ch' : '') + (nb.up ? ' up' : '');
-    d.style.left = px + 'px'; d.style.top = py + 'px';
     d.innerHTML = `<span class="dot"></span><span class="who">${esc(m.who)}</span><span class="gist">${esc(m.text)}</span><span class="small">${nb.up ? 'parent' : nb.kind}</span><span class="arrow">${arrow}</span>`;
     d.title = m.text; d.onclick = () => select(nb.id); inds.appendChild(d);
+    pills.push({ el: d, x: px, y: py, dx, dy });
   }
+  // Keep every pill fully on screen, then push overlapping pills apart.
+  // Pills are centred on (x, y); each has its own measured size.
+  const pad = 8;
+  for (const q of pills) { q.w = q.el.offsetWidth; q.h = q.el.offsetHeight; }
+  const clamp = q => { q.x = Math.max(pad + q.w / 2, Math.min(r.width - pad - q.w / 2, q.x)); q.y = Math.max(pad + q.h / 2, Math.min(r.height - pad - q.h / 2, q.y)); };
+  pills.forEach(clamp);
+  for (let pass = 0; pass < 12; pass++) {
+    let movedAny = false;
+    for (let i = 0; i < pills.length; i++) for (let j = i + 1; j < pills.length; j++) {
+      const a = pills[i], b = pills[j];
+      const ox = (a.w + b.w) / 2 + 6 - Math.abs(a.x - b.x), oy = (a.h + b.h) / 2 + 6 - Math.abs(a.y - b.y);
+      if (ox <= 0 || oy <= 0) continue;
+      movedAny = true;
+      // separate along the axis that needs the smaller shove; on a left/right
+      // edge that is vertical, on a top/bottom edge horizontal
+      if (oy < ox) { const s = a.y <= b.y ? 1 : -1; a.y -= s * oy / 2; b.y += s * oy / 2; }
+      else { const s = a.x <= b.x ? 1 : -1; a.x -= s * ox / 2; b.x += s * ox / 2; }
+      clamp(a); clamp(b);
+    }
+    if (!movedAny) break;
+  }
+  for (const q of pills) { q.el.style.left = q.x + 'px'; q.el.style.top = q.y + 'px'; }
   document.getElementById('status').textContent = `${nodes.length} claims · focus has ${neighbours(focus).length} connections, ${offscreen} off-screen`;
 }
 
