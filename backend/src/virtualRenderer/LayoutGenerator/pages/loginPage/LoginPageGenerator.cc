@@ -67,8 +67,8 @@ void LoginPageGenerator::AddLoginForm(ui::Component* parent, const std::string& 
         Log::warn("[LoginPageGenerator] GOOGLE_CLIENT_ID is NOT set — googleLoginButton will NOT be included");
     }
 
-    // "Continue as guest" -- signs in as the shared, writable "guest".
-    ComponentGenerator::addChild(parent, ComponentGenerator::createButton(
-        "guestButton", "Continue as guest", "guest", "bg-transparent",
-        "hover:text-gray-200", "text-gray-400", "px-2 py-1", "rounded", "text-xs underline"));
+    // No "continue as guest": every visitor is already signed in silently as
+    // their own read-only visitor, so the only reason to come here is to get
+    // an account that can act. The shared "guest" account still exists for
+    // scenario imports; nothing on the page offers it.
 }
