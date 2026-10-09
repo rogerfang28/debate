@@ -1,5 +1,6 @@
 #include "DebateTextFormatter.h"
 #include "ClaimVoice.h"
+#include "Ordered.h"
 
 #include <algorithm>
 #include <cctype>
@@ -43,12 +44,12 @@ std::string statusPhrase(const debate::Claim& claim, const std::string& viewerUs
     }
 
     std::vector<std::string> dissent;
-    for (const auto& entry : claim.user_statuses()) {
-        if (entry.first == viewerUsername) {
+    for (const auto* entry : ordered::Entries(claim.user_statuses())) {
+        if (entry->first == viewerUsername) {
             continue;
         }
-        if (entry.second != viewerStatus) {
-            dissent.push_back(entry.first + " has it " + describe(entry.second));
+        if (entry->second != viewerStatus) {
+            dissent.push_back(entry->first + " has it " + describe(entry->second));
         }
     }
 
@@ -94,8 +95,9 @@ struct Renderer {
              const std::map<int, std::string>& u,
              const std::string& v)
         : collection(c), usernames(u), viewer(v) {
-        for (const auto& entry : collection.links_by_id()) {
-            const debate::Relationship& rel = entry.second;
+        // By relation id, so each claim's replies come in the order made.
+        for (const auto* entry : ordered::Entries(collection.links_by_id())) {
+            const debate::Relationship& rel = entry->second;
             if (rel.to_case() == debate::Relationship::kToClaimId) {
                 incoming[rel.to_claim_id()].push_back(&rel);
             } else if (rel.to_case() == debate::Relationship::kToRelationId) {
@@ -279,8 +281,8 @@ std::string DebateTextFormatter::FormatClaimContext(const debate::Collection& co
     int current = claimId;
     while (seenUp.insert(current).second) {
         const debate::Relationship* next = nullptr;
-        for (const auto& entry : collection.links_by_id()) {
-            const debate::Relationship& rel = entry.second;
+        for (const auto* entry : ordered::Entries(collection.links_by_id())) {
+            const debate::Relationship& rel = entry->second;
             if (rel.to_case() != debate::Relationship::kToClaimId) {
                 continue;
             }

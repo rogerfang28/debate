@@ -2363,7 +2363,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     }
 
     // Build one layered tree by assigning a single parent to each node in BFS order.
-    std::unordered_map<int, std::vector<int>> treeChildren;
+    // An ordered map: the support edges below are emitted by walking it, and
+    // an unordered one would shuffle the graph's edge list between requests.
+    std::map<int, std::vector<int>> treeChildren;
     std::unordered_set<int> visited;
     std::queue<int> q;
 
@@ -2501,7 +2503,12 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         challengePairs.insert({ce.first, ce.second});
     }
 
-    int edgeIdx = 0;
+    // Edge ids come from the endpoints, not a running count: a count shifts
+    // every later id when one edge is added, and the id is the edge's
+    // identity on the client. One relation per pair of claims (see EdgeMeta).
+    auto edgeId = [](int source, int target) {
+        return "e" + std::to_string(source) + "_" + std::to_string(target);
+    };
     for (const auto& entry : treeChildren) {
         for (int childId : entry.second) {
             // Same orientation as the challenge edges below: challenger first.
@@ -2509,7 +2516,7 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
                 continue;
             }
             auto* gEdge = graphComp.add_edges();
-            gEdge->set_id("e" + std::to_string(edgeIdx++));
+            gEdge->set_id(edgeId(childId, entry.first));
             gEdge->set_source(std::to_string(childId));      // the supporter
             gEdge->set_target(std::to_string(entry.first));  // the supported
             gEdge->set_type("SUPPORTS");
@@ -2521,10 +2528,10 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
     }
 
-    // Add challenge edges
+    // Add challenge edges, in the tree's link order (relation id).
     for (const auto& ce : challengeEdges) {
         auto* gEdge = graphComp.add_edges();
-        gEdge->set_id("e" + std::to_string(edgeIdx++));
+        gEdge->set_id(edgeId(ce.first, ce.second));
         gEdge->set_source(std::to_string(ce.first));
         gEdge->set_target(std::to_string(ce.second));
         gEdge->set_type("CHALLENGE");

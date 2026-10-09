@@ -2,6 +2,7 @@
 #include "../../../utils/Log.h"
 #include "../../../statusEngine/StatusEngine.h"
 #include "../../../utils/RelationBuilder.h"
+#include "../../../utils/Ordered.h"
 #include "debate.pb.h"
 
 #include <map>
@@ -33,16 +34,18 @@ void applyComputedStatuses(int debate_id,
                            DebateWrapper& debateWrapper) {
     const std::vector<debate::Move> moves = debateWrapper.getMovesForDebate(debate_id);
 
+    // By id, so the engine sees the same input in the same order every time
+    // (the collection's maps iterate in an unspecified order).
     std::vector<debate::Claim> claims;
     claims.reserve(collection.claims_by_id().size());
-    for (const auto& entry : collection.claims_by_id()) {
-        claims.push_back(entry.second);
+    for (const int id : ordered::SortedClaimIds(collection)) {
+        claims.push_back(collection.claims_by_id().at(id));
     }
 
     std::vector<debate::Relationship> relations;
     relations.reserve(collection.links_by_id().size());
-    for (const auto& entry : collection.links_by_id()) {
-        relations.push_back(entry.second);
+    for (const int id : ordered::SortedLinkIds(collection)) {
+        relations.push_back(collection.links_by_id().at(id));
     }
 
     // The engine is pure, so the id -> username mapping has to be supplied here.

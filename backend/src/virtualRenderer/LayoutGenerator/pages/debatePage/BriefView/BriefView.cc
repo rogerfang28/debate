@@ -4,6 +4,7 @@
 #include "../../../ComponentGenerator.h"
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../../../utils/DebateBrief.h"
+#include "../../../../../utils/Ordered.h"
 
 #include <set>
 #include <sstream>
@@ -240,18 +241,29 @@ ui::Page BriefView::GenerateBriefPage(
                 if (m.challenge) challengers.insert(m.who);
             }
         }
-        std::string trueNames, falseNames, undecided;
+        // Each side's names by name, the same order as the Debate tab's lists
+        // (facts.stances keeps its own order: it is what the model is shown).
+        ordered::NameSet trueSet, falseSet, undecidedSet;
         int evidenceOnly = 0;
         for (const DebateBrief::Stance& s : facts.stances) {
             if (s.status == debate::UNDETERMINED && !challengers.count(s.who) && s.who != viewerName) {
                 ++evidenceOnly;
                 continue;
             }
-            std::string& bucket = s.status == debate::TRUE_CLAIM ? trueNames
-                                : s.status == debate::FALSE_CLAIM ? falseNames : undecided;
-            if (!bucket.empty()) bucket += ", ";
-            bucket += s.who == viewerName ? "you" : s.who;
+            (s.status == debate::TRUE_CLAIM ? trueSet
+             : s.status == debate::FALSE_CLAIM ? falseSet : undecidedSet).insert(s.who);
         }
+        auto joined = [&](const ordered::NameSet& names) {
+            std::string out;
+            for (const std::string& who : names) {
+                if (!out.empty()) out += ", ";
+                out += who == viewerName ? "you" : who;
+            }
+            return out;
+        };
+        const std::string trueNames = joined(trueSet);
+        const std::string falseNames = joined(falseSet);
+        const std::string undecided = joined(undecidedSet);
         auto row = [&](const std::string& id, const std::string& label, const std::string& names, const std::string& color) {
             if (names.empty()) return;
             ui::Component r = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
@@ -386,8 +398,8 @@ ui::Page BriefView::GenerateBriefPage(
         } else {
             std::vector<std::string> order;
             if (facts.openByHolder.count(viewerName)) order.push_back(viewerName);
-            for (const auto& entry : facts.openByHolder) {
-                if (entry.first != viewerName) order.push_back(entry.first);
+            for (const std::string& holder : ordered::SortedNames(facts.openByHolder)) {
+                if (holder != viewerName) order.push_back(holder);
             }
             for (const std::string& holder : order) {
                 const std::vector<int>& list = facts.openByHolder.at(holder);

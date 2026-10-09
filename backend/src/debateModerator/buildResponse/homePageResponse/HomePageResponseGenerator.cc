@@ -7,6 +7,7 @@
 #include <map>
 #include "../../../utils/Log.h"
 #include "../../../utils/DebateBrief.h"
+#include "../../../utils/Ordered.h"
 #include "../debatePageResponse/BuildCollection.h"
 #include <algorithm>
 #include <cctype>
@@ -206,13 +207,15 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         topicProto->set_people_count(static_cast<int>(people.size()));
 
         // Who owes replies, most first; and each open challenge with its text.
+        // People by name (case-insensitive), as on the debate page.
         std::vector<std::pair<std::string, int>> owing;
-        for (const auto& owed : facts.openByHolder) {
-            if (owed.second.empty()) continue;
-            owing.emplace_back(owed.first, static_cast<int>(owed.second.size()));
-            for (const int claimId : owed.second) {
+        for (const std::string& who : ordered::SortedNames(facts.openByHolder)) {
+            const std::vector<int>& list = facts.openByHolder.at(who);
+            if (list.empty()) continue;
+            owing.emplace_back(who, static_cast<int>(list.size()));
+            for (const int claimId : list) {
                 moderator_to_vr::OwedReply* reply = topicProto->add_owed();
-                reply->set_who(owed.first);
+                reply->set_who(who);
                 reply->set_claim_id(claimId);
                 auto claim = collection.claims_by_id().find(claimId);
                 if (claim != collection.claims_by_id().end()) reply->set_text(claim->second.sentence());
@@ -228,10 +231,7 @@ void HomePageResponseGenerator::BuildHomePageResponse(
 
         for (const int member : memberIds) topicProto->add_member_ids(member);
         // In the order they were made, so a search shows the earliest matches.
-        std::vector<int> claimIds;
-        for (const auto& entry : collection.claims_by_id()) claimIds.push_back(entry.first);
-        std::sort(claimIds.begin(), claimIds.end());
-        for (const int claimId : claimIds) {
+        for (const int claimId : ordered::SortedClaimIds(collection)) {
             topicProto->add_claim_texts(collection.claims_by_id().at(claimId).sentence());
         }
         fillFromMoveLog(topicProto, debateWrapper.getMovesForDebate(debateId), facts, nameOf);

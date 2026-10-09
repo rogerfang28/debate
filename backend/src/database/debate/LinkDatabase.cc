@@ -231,7 +231,7 @@ std::vector<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase:
         }
         sql << "?";
     }
-    sql << ");";
+    sql << ") ORDER BY ID;";
 
     sqlite3_stmt* stmt = db_.prepare(sql.str());
     if (!stmt) {
@@ -264,7 +264,7 @@ std::vector<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase:
 
 std::vector<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase::getLinksForDebate(int debateId) {
     std::vector<std::tuple<int, int, int, std::string, int, int, int>> links;
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE, RELATION_ID FROM LINKS WHERE DEBATE_ID = ?;";
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE, RELATION_ID FROM LINKS WHERE DEBATE_ID = ? ORDER BY ID;";
 
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {

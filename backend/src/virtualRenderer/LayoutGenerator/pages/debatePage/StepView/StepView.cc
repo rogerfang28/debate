@@ -2,6 +2,7 @@
 #include "../../../../../utils/AnonymousUser.h"
 #include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../utils/DebateChat.h"
+#include "../../../../../utils/Ordered.h"
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
@@ -139,10 +140,11 @@ static ui::Component BuildSelectedClaimPanel(
     {
         const std::string holder = userDb.getUsername(ClaimVoiceId(claim));
         std::string agreed;
-        for (const auto& entry : claim.user_statuses()) {
-            if (entry.second != debate::ClaimStatus::TRUE_CLAIM || entry.first == holder) continue;
+        // By name: user_statuses is a protobuf map, unspecified in order.
+        for (const auto* entry : ordered::Entries(claim.user_statuses())) {
+            if (entry->second != debate::ClaimStatus::TRUE_CLAIM || entry->first == holder) continue;
             if (!agreed.empty()) agreed += ", ";
-            agreed += entry.first;
+            agreed += entry->first;
         }
         if (!agreed.empty()) {
             addField("AgreedBy", "Agreed by:", agreed, false);
@@ -480,12 +482,16 @@ struct OpenChallenge {
     int targetClaimId = 0;
 };
 
-static std::map<std::string, std::vector<OpenChallenge>> OpenChallengesByHolder(
+// People by name (case-insensitive); each person's challenges in the order
+// the tree's links come, which is relation id, i.e. the order they were made.
+using OpenByHolder = std::map<std::string, std::vector<OpenChallenge>, ordered::NameLessFn>;
+
+static OpenByHolder OpenChallengesByHolder(
     const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
     VRUserDatabase& userDb
 ) {
-    std::map<std::string, std::vector<OpenChallenge>> open;
+    OpenByHolder open;
     if (!fullDebateInfo.has_full_debate_tree()) return open;
     const auto& tree = fullDebateInfo.full_debate_tree();
 

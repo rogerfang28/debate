@@ -4,6 +4,8 @@
 // #include "client_message.pb.h"
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <fstream>
 
 #include "layout.pb.h"
@@ -37,8 +39,18 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     ui::Page page = renderer.handleClientMessage(msg, req, res);
 
     // send proto back in the res
+    // Deterministic: map fields (css, attributes) are written sorted by key.
+    // Otherwise their wire order follows protobuf's per-instance hash seed,
+    // and two responses for the same state differ byte for byte.
     std::string page_data_serialized;
-    if (!page.SerializeToString(&page_data_serialized)) {
+    bool serialized = false;
+    {
+        google::protobuf::io::StringOutputStream stringStream(&page_data_serialized);
+        google::protobuf::io::CodedOutputStream codedStream(&stringStream);
+        codedStream.SetSerializationDeterministic(true);
+        serialized = page.SerializeToCodedStream(&codedStream) && !codedStream.HadError();
+    }
+    if (!serialized) {
         Log::error("❌ Failed to serialize Page response");
         res.status = 500;
         res.set_content("Failed to serialize Page response", "text/plain");
