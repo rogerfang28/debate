@@ -160,10 +160,10 @@ export function navigationFor(
 
 // ── Connection cards ──────────────────────────────────────────────────
 
-// A card is coloured like its claim's node (the graph passes the node's
-// own border colour): green held true, red held false or a challenge, a
-// quiet line otherwise. The kind of link is in the label, not the colour.
-const NEUTRAL_COLOR = "var(--line-strong)";
+// A card is coloured by its claim's STATUS (the graph passes the colour the
+// node's status line uses): green true, red false, grey undetermined. The
+// kind of link is in the label, not the colour.
+const NEUTRAL_COLOR = "var(--text-3)";
 
 const KIND_LABEL: Record<LinkKind, string> = {
   parent: "the claim this supports",
@@ -178,7 +178,7 @@ const KIND_LABEL: Record<LinkKind, string> = {
 export interface CardTarget {
   id: string;
   kind: LinkKind;
-  color: string;  // the claim's node border colour, a CSS colour or var()
+  color: string;  // the claim's status colour, a CSS colour or var()
   who: string;
   text: string;
   x: number;  // the connected claim's centre, in pane pixels

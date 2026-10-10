@@ -933,8 +933,8 @@ tr:hover td {
   align-items: center;
   width: min(300px, calc(100% - 16px));
   padding: 9px 12px;
-  /* --card-color is the pointed-at node's border colour, set per card. */
-  --card-color: var(--line-strong);
+  /* --card-color is the pointed-at claim's status colour, set per card. */
+  --card-color: var(--text-3);
   background: var(--panel-2);
   border: 1.5px solid var(--card-color);
   border-radius: 12px;

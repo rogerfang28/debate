@@ -41,10 +41,18 @@ const DEFAULT_NODE_COLOR = { fill: "var(--panel-2)", stroke: "var(--accent)" };
 const ROOT_STROKE = "var(--accent)";
 const CURRENT_STROKE = "var(--warn)";
 
+// The colour of a claim's status, as the node's "Status:" line and the
+// legend show it: green true, red false, grey undetermined. The connection
+// cards wear this, so a card says at a glance where its claim stands.
+function statusColorOf(node: GraphNode): string {
+  return node.status === "TRUE_CLAIM" ? "var(--settled)" :
+    node.status === "FALSE_CLAIM" ? "var(--open)" :
+    "var(--text-3)";
+}
+
 // A node's border when nothing is highlighting it: a challenge is red
 // whatever its status, the main claim wears the accent until it is settled,
-// and anything else shows its status. The connection cards use the same
-// colour, so a card and the node it points at match.
+// and anything else shows its status.
 function restingStroke(node: GraphNode): string {
   const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
   if (node.type === "challenge") return "var(--open)";
@@ -765,7 +773,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       // selected claim's list of links, each sitting at the pane edge in
       // its claim's direction, so the list stays put while you read.
       const p = toPane(n);
-      targets.push({ id: c.id, kind: c.kind, color: restingStroke(n), who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
+      targets.push({ id: c.id, kind: c.kind, color: statusColorOf(n), who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
     }
     placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id));
   };
@@ -1136,10 +1144,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
               node.status === "TRUE_CLAIM" ? "Status: True" :
               node.status === "FALSE_CLAIM" ? "Status: False" :
               "Status: Undetermined";
-            const statusColor =
-              node.status === "TRUE_CLAIM" ? "var(--settled)" :
-              node.status === "FALSE_CLAIM" ? "var(--open)" :
-              "var(--text-muted)";
+            const statusColor = statusColorOf(node);
 
             // Claims unrelated to the selection step back.
             const dimmed = !!focus && !isSelected && !focus.connectedIds.has(node.id);
