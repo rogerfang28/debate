@@ -10,12 +10,15 @@
 
 namespace {
 
-// Defaults are the local model the claim parser has always used, so an
-// unconfigured checkout keeps talking to exactly the same endpoint.
+// Defaults are the local model server that is normally up (Qwen 3.8 27B,
+// 4-bit, on port 8090), so an unconfigured checkout talks to it. The older
+// server (Qwen 3.6 35B-A3B on port 8002) shares the same GPU, so only one
+// runs at a time; backend/llm.old.env selects it. Both accept any model
+// name and answer with the model they have loaded.
 constexpr const char* kDefaultHost = "192.168.86.124";
-constexpr int kDefaultPort = 8002;
+constexpr int kDefaultPort = 8090;
 constexpr const char* kDefaultPath = "/v1/chat/completions";
-constexpr const char* kDefaultModel = "Qwen3.6-35B-A3B-UD-Q3_K_XL.gguf";
+constexpr const char* kDefaultModel = "qwen3.8-27b";
 constexpr int kDefaultMaxTokens = 4000;
 // A 35B model answering a real debate took 35s on a small one and blew past
 // 120s on a larger one, so the old ceiling was below normal working time
@@ -129,6 +132,12 @@ std::string LlmClient::Chat(const std::vector<LlmMessage>& messages, const LlmOp
     jsoncons::json body;
     body["model"] = model;
     body["max_tokens"] = maxTokens;
+    // Qwen 3.8 thinks by default, and its thinking counts against
+    // max_tokens: left on, a 4000-token budget can go entirely on thinking
+    // and come back with an empty content. The server puts the final
+    // answer in content and any thinking in reasoning_content, so this asks
+    // for the answer only. The older server ignores the key.
+    body["chat_template_kwargs"] = jsoncons::json::parse(R"({"enable_thinking": false})");
     if (options.temperature >= 0) {
         body["temperature"] = options.temperature;
     }
