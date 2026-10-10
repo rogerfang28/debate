@@ -28,9 +28,11 @@ interface DebateGraphProps extends BaseComponentProps {
 // ── Color / shape mappings ────────────────────────────────────────────
 
 // Theme tokens (index.css). Every node is the raised surface; its border
-// says where it stands: green settled, red open (held false / a challenge
-// waits), the accent for the main claim, a quiet line otherwise. The fill is
-// opaque on purpose -- nodes are drawn over the line ends and hide them.
+// says where it stands: green held true, red held false, the accent for the
+// main claim, a quiet line otherwise. A CHALLENGE claim is orange, body and
+// border, so "this is a challenge" never looks like "this is held false".
+// The fill is opaque on purpose -- nodes are drawn over the line ends and
+// hide them.
 const STATUS_COLORS: Record<string, { fill: string; stroke: string }> = {
   TRUE_CLAIM:     { fill: "var(--panel-2)", stroke: "var(--settled)" },
   FALSE_CLAIM:    { fill: "var(--panel-2)", stroke: "var(--open)" },
@@ -50,23 +52,23 @@ function statusColorOf(node: GraphNode): string {
     "var(--text-3)";
 }
 
-// A node's border when nothing is highlighting it: a challenge is red
+// A node's border when nothing is highlighting it: a challenge is orange
 // whatever its status, the main claim wears the accent until it is settled,
 // and anything else shows its status.
 function restingStroke(node: GraphNode): string {
   const colors = STATUS_COLORS[node.status || ""] || DEFAULT_NODE_COLOR;
-  if (node.type === "challenge") return "var(--open)";
+  if (node.type === "challenge") return "var(--challenge)";
   if (node.isRoot && (node.status || "UNDETERMINED") === "UNDETERMINED") return ROOT_STROKE;
   return colors.stroke;
 }
 
 const EDGE_COLORS: Record<string, string> = {
   supports:   "var(--settled)",
-  challenges: "var(--open)",
-  counters:   "var(--open)",
+  challenges: "var(--challenge)",
+  counters:   "var(--challenge)",
   NORMAL:     "var(--text-3)",
   PARENT_CHILD: "var(--text-3)",
-  CHALLENGE:  "var(--open)",
+  CHALLENGE:  "var(--challenge)",
 };
 
 // ── Per-author color badge ─────────────────────────────────────────────
@@ -920,7 +922,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="var(--open)" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--challenge)" />
           </marker>
           <marker
             id={`${component.id}-arrow-support`}
@@ -1089,7 +1091,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             const isChallenge = node.type === "challenge";
             // Challenge (root) claims get an orange-tinted body and border; the
             // current/selected highlight still takes precedence when active.
-            const fill = colors.fill;
+            const fill = isChallenge ? "var(--challenge-panel)" : colors.fill;
             const stroke = isCurrent ? CURRENT_STROKE : restingStroke(node);
             const strokeWidth = isCurrent ? 4 : isSelected ? 3 : isChallenge ? 3 : 2;
             // ═══════════ EXPERIMENT: SEMANTIC ZOOM (per-node detail) ═══════════
@@ -1445,7 +1447,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           Undetermined
         </span>
         <span style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-          <span style={{ width: 12, height: 0, borderTop: "2px dashed var(--open)", display: "inline-block" }} />
+          <span style={{ width: 12, height: 0, borderTop: "2px dashed var(--challenge)", display: "inline-block" }} />
           Challenge
         </span>
         {uniqueAuthors.length > 0 && (

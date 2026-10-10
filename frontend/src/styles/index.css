@@ -23,8 +23,11 @@
   --accent-hover:  #8691ff;
   --accent-soft:   rgba(109,124,255,0.14);
 
-  --open:          #f0625d;   /* a challenge waits */
+  --open:          #f0625d;   /* a challenge waits; a claim held false */
   --open-soft:     rgba(240,98,93,0.14);
+  --challenge:     #f97316;   /* a challenge itself: its claim, pill and line */
+  --challenge-soft: rgba(249,115,22,0.14);
+  --challenge-panel: #2a2119; /* --panel-2 tinted towards --challenge, opaque */
   --settled:       #3dcf8e;   /* nothing waits */
   --settled-soft:  rgba(61,207,142,0.14);
   --warn:          #f2b84b;
