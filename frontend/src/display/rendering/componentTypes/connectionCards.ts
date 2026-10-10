@@ -20,6 +20,10 @@ import { isChallengeEdge } from "./graphLayout";
 //     challenges), and the challengers of any ARGUMENT for it (undercuts whose
 //     targetId is this claim).
 // Co-sources of one relation are on the same side, so they are not connected.
+//
+// A PILL can be the focus too (its key, `r<id>`). It is connected to the
+// claim it is about, to its sources, and to the sources of any pill that
+// undercuts it.
 
 export type LinkKind =
   | "parent"      // this claim supports it
@@ -27,7 +31,8 @@ export type LinkKind =
   | "undercutOf"  // this claim challenges an argument for it
   | "support"     // it supports this claim
   | "challenge"   // it challenges this claim
-  | "undercut";   // it challenges an argument for this claim
+  | "undercut"    // it challenges an argument for this claim
+  | "undercutter"; // it challenges this argument (a pill is the focus)
 
 export interface Connection {
   id: string;
@@ -54,6 +59,30 @@ export function focusOf(selectedId: string | null, groups: RelationGroup[]): Foc
     connectedIds.add(id);
     connections.push({ id, kind });
   };
+
+  // The focus is a pill: the claim it is about, then its sources, then the
+  // challengers of the pill itself.
+  const pill = groups.find((g) => g.key === selectedId);
+  if (pill) {
+    const challenge = isChallengeEdge(pill.type);
+    add(pill.targetId, challenge ? (pill.targetRelationKey ? "undercutOf" : "challenged") : "parent");
+    litGroups.add(pill.key);
+    litLines.add(lineKey(pill.key, "out"));
+    for (const src of pill.sources) {
+      add(src.id, challenge ? "challenge" : "support");
+      litLines.add(lineKey(pill.key, src.id));
+    }
+    for (const g of groups) {
+      if (g.targetRelationKey !== pill.key) continue;
+      for (const src of g.sources) {
+        add(src.id, "undercutter");
+        litLines.add(lineKey(g.key, src.id));
+      }
+      litGroups.add(g.key);
+      litLines.add(lineKey(g.key, "out"));
+    }
+    return { connections, connectedIds, litGroups, litLines };
+  }
 
   // Upward first, so a claim's parent is its first connection.
   for (const g of groups) {
@@ -110,6 +139,13 @@ export function navigationFor(
       return (na.x ?? 0) - (nb.x ?? 0) || (na.y ?? 0) - (nb.y ?? 0);
     });
   };
+  const pill = groups.find((g) => g.key === id);
+  if (pill) {
+    const kids = pill.sources
+      .filter((s) => nodeById.has(s.id))
+      .sort((a, b) => (nodeById.get(a.id)!.x ?? 0) - (nodeById.get(b.id)!.x ?? 0));
+    return { parent: pill.targetId, firstChild: kids[0]?.id };
+  }
   const parent = parentOf(id);
   const kids = childrenOf(id);
   const nav: Navigation = { parent, firstChild: kids[0] };
@@ -136,6 +172,7 @@ const KIND_LABEL: Record<LinkKind, string> = {
   support: "support",
   challenge: "challenge",
   undercut: "challenges an argument for this",
+  undercutter: "challenges this argument",
 };
 
 export interface CardTarget {

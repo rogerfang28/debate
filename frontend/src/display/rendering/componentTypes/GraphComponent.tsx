@@ -499,11 +499,26 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     () => new Map(positionedNodes.map((n) => [n.id, n] as const)),
     [positionedNodes]
   );
+  // A pill (relation) is a place on the map too: it can be selected, flown
+  // to and have its connections lit, exactly like a claim.
+  const groupByKey = useMemo(
+    () => new Map(relationGroups.map((g) => [g.key, g] as const)),
+    [relationGroups]
+  );
+  const positionOf = useCallback(
+    (id: string): { x: number; y: number } | undefined => {
+      const n = nodeById.get(id);
+      if (n) return { x: n.x ?? 0, y: n.y ?? 0 };
+      const g = groupByKey.get(id);
+      return g ? { x: g.x, y: g.y } : undefined;
+    },
+    [nodeById, groupByKey]
+  );
   const flyTo = useCallback(
     (id: string) => {
       const el = svgRef.current;
       const zoom = zoomRef.current;
-      const node = nodeById.get(id);
+      const node = positionOf(id);
       if (!el || !zoom || !node || !flyModeRef.current) return;
       const svg = d3.select(el);
       cancelFlight();
@@ -555,7 +570,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         cameras.set(cameraKeyRef.current, { nodeSet: nodeSetRef.current, transform: target });
       }
     },
-    [nodeById, dims.width, dims.height, cancelFlight]
+    [positionOf, dims.width, dims.height, cancelFlight]
   );
   const flyToRef = useRef(flyTo);
   flyToRef.current = flyTo;
@@ -680,20 +695,20 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     [onNodeClick, cameraKey, flyTo]
   );
 
-  // A card, an arrow key or Escape: select a claim the way a click does
-  // (SELECT_CLAIM), and fly to it.
+  // A card, an arrow key or Escape: select a claim or a pill the way a click
+  // does (SELECT_CLAIM / SELECT_LINK), and fly to it.
   const selectAndFly = useCallback(
     (id: string) => {
       const node = nodeById.get(id);
-      if (!node) return;
+      if (!node && !groupByKey.has(id)) return;
       setSelectedId(id);
-      onNodeClick?.(node);
+      if (node) onNodeClick?.(node);
       flownTo.set(cameraKey, id);
       flyTo(id);
-      const syntheticId = `selectClaimNode_${id}`;
+      const syntheticId = node ? `selectClaimNode_${id}` : `selectLinkNode_${id.slice(1)}`;
       handleEvent(null, { id: syntheticId }, "onClick", syntheticId);
     },
-    [nodeById, onNodeClick, cameraKey, flyTo]
+    [nodeById, groupByKey, onNodeClick, cameraKey, flyTo]
   );
   const selectAndFlyRef = useRef(selectAndFly);
   selectAndFlyRef.current = selectAndFly;
@@ -705,7 +720,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // placeholder would centre the claim in the wrong place.
   useEffect(() => {
     const sel = component.selectedNodeId;
-    if (!sel || sel.startsWith("r") || !nodeSet || !nodeById.has(sel)) return;
+    if (!sel || !nodeSet || !(nodeById.has(sel) || groupByKey.has(sel))) return;
     const el = containerRef.current;
     if (!el || Math.abs(el.clientWidth - dims.width) > 1 || Math.abs(el.clientHeight - dims.height) > 1) return;
     const prev = flownTo.get(cameraKey);
@@ -714,13 +729,14 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     // First sight of this map, on its root: the opening view already anchors there.
     if (prev === undefined && sel === rootClaimId) return;
     flyToRef.current(sel);
-  }, [component.selectedNodeId, cameraKey, nodeSet, nodeById, rootClaimId, dims.width, dims.height]);
+  }, [component.selectedNodeId, cameraKey, nodeSet, nodeById, groupByKey, rootClaimId, dims.width, dims.height]);
 
   // ── What the selection is connected to ────────────────────────────
-  const selectedClaimId = selectedId && !selectedId.startsWith("r") && nodeById.has(selectedId) ? selectedId : null;
+  const selectedClaimId = selectedId && nodeById.has(selectedId) ? selectedId : null;
+  const focusId = selectedClaimId ?? (selectedId && groupByKey.has(selectedId) ? selectedId : null);
   const focus = useMemo(
-    () => (flyMode ? focusOf(selectedClaimId, relationGroups) : null),
-    [flyMode, selectedClaimId, relationGroups]
+    () => (flyMode ? focusOf(focusId, relationGroups) : null),
+    [flyMode, focusId, relationGroups]
   );
 
   // Off-screen cards, drawn against the LIVE camera. Everything the zoom
@@ -731,7 +747,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const el = svgRef.current;
     const pane = containerRef.current;
     if (!host || !el || !pane) return;
-    const sel = selectedClaimId ? nodeById.get(selectedClaimId) : undefined;
+    const sel = focusId ? positionOf(focusId) : undefined;
     if (!sel || !focus || pane.clientWidth === 0) {
       placeConnectionCards(host, null, [], { width: 0, height: 0 }, () => {});
       return;
@@ -739,7 +755,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     const vb = el.viewBox?.baseVal;
     const ratio = vb && vb.width ? el.getBoundingClientRect().width / vb.width : 1;
     const t = d3.zoomTransform(el);
-    const toPane = (n: GraphNode) => ({ x: t.applyX(n.x ?? 0) * ratio, y: t.applyY(n.y ?? 0) * ratio });
+    const toPane = (n: { x?: number; y?: number }) => ({ x: t.applyX(n.x ?? 0) * ratio, y: t.applyY(n.y ?? 0) * ratio });
     const width = pane.clientWidth, height = pane.clientHeight;
     const targets: CardTarget[] = [];
     for (const c of focus.connections) {
@@ -770,7 +786,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
     if (!hoverRef.current && !pane.contains(document.activeElement)) return;
 
-    const current = selectedClaimId ?? rootClaimId;
+    const current = focusId ?? rootClaimId;
     let next: string | undefined;
     if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
       const nav = navigationFor(current, relationGroups, nodeById);
@@ -805,11 +821,15 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   const handleJunctionClick = useCallback(
     (key: string, e: React.MouseEvent) => {
       e.stopPropagation();
-      setSelectedId(key === selectedId ? null : key);
+      // Always selects, like a claim click: the server keeps the pill
+      // selected either way.
+      setSelectedId(key);
+      flownTo.set(cameraKey, key);
+      flyTo(key);
       const syntheticId = `selectLinkNode_${key.slice(1)}`;
       handleEvent(e as any, { id: syntheticId }, "onClick", syntheticId);
     },
-    [selectedId]
+    [cameraKey, flyTo]
   );
 
   // ── No-data state ─────────────────────────────────────────────────
