@@ -1,8 +1,10 @@
 #include "parseCookie.h"
 #include "../../utils/Log.h"
+#include "../../utils/SessionToken.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include <optional>
 #include <string>
 
 namespace {
@@ -87,83 +89,77 @@ std::string cookieAttributesFromRequest(const httplib::Request& req) {
 }
 }
 
-// Helper to extract user_id from cookies
+namespace {
+
+constexpr const char* kSessionCookie = "session";
+// Before sessions were signed: plain values anyone could set. Never read;
+// expired whenever a session is set or cleared.
+constexpr const char* kLegacyCookies[] = {"user_id", "username"};
+
+// The value of the cookie with exactly this name, if the request has one.
+// Matching the whole name matters: a substring search would read "user_id"
+// out of "xuser_id", or a cookie's name out of another cookie's value.
+std::string cookieValue(const httplib::Request& req, const std::string& name) {
+    const std::string header = req.get_header_value("Cookie");
+    size_t start = 0;
+    while (start < header.size()) {
+        size_t end = header.find(';', start);
+        if (end == std::string::npos) end = header.size();
+        std::string pair = header.substr(start, end - start);
+        const size_t first = pair.find_first_not_of(' ');
+        pair = first == std::string::npos ? "" : pair.substr(first);
+        const size_t eq = pair.find('=');
+        if (eq != std::string::npos && pair.substr(0, eq) == name) {
+            return pair.substr(eq + 1);
+        }
+        start = end + 1;
+    }
+    return "";
+}
+
+std::optional<session_token::Session> sessionFrom(const httplib::Request& req) {
+    const std::string token = cookieValue(req, kSessionCookie);
+    if (token.empty()) return std::nullopt;
+    auto session = session_token::Verify(token, session_token::NowSeconds(), session_token::ServerSecret());
+    if (!session) {
+        Log::warn("[Auth] Session cookie is invalid or expired; treating the request as having no session.");
+    }
+    return session;
+}
+
+void expire(const httplib::Request& req, httplib::Response& res, const std::string& name) {
+    res.set_header("Set-Cookie", name + "=; Expires=Thu, 01 Jan 1970 00:00:00 GMT" +
+                                     cookieAttributesFromRequest(req));
+}
+
+}  // namespace
+
 int parseCookie::extractUserIdFromCookies(const httplib::Request& req) {
-    auto cookie_header = req.get_header_value("Cookie");
-    Log::info("[Auth] Cookie header: '" + cookie_header + "'");
-    
-    if (cookie_header.empty()) {
-        Log::info("[Auth] No cookie found, returning 0 (guest)");
-        return 0;
-    }
-
-    // Parse cookies looking for "user_id=<id>"
-    std::string prefix = "user_id=";
-    size_t pos = cookie_header.find(prefix);
-    if (pos == std::string::npos) {
-        Log::debug("[Auth] No 'user_id=' cookie found, returning 0 (guest)");
-        return 0;
-    }
-
-    size_t start = pos + prefix.length();
-    size_t end = cookie_header.find(';', start);
-    std::string userIdStr = (end == std::string::npos) 
-        ? cookie_header.substr(start)
-        : cookie_header.substr(start, end - start);
-
-    try {
-        int userId = std::stoi(userIdStr);
-        Log::debug("[Auth] Extracted user_id from cookie: " + std::to_string(userId));
-        return userId;
-    } catch (const std::exception& e) {
-        Log::error("[Auth] Failed to parse user_id: " + userIdStr);
-        return 0;
-    }
+    const auto session = sessionFrom(req);
+    return session ? session->userId : 0;
 }
 
 std::string parseCookie::extractUsernameFromCookies(const httplib::Request& req) {
-    auto cookie_header = req.get_header_value("Cookie");
-    // std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
-    
-    if (cookie_header.empty()) {
-        Log::debug("[Auth] No cookie found, returning ''");
-        return "";
-    }
-
-    // Parse cookies looking for "username=<name>"
-    std::string prefix = "username=";
-    size_t pos = cookie_header.find(prefix);
-    if (pos == std::string::npos) {
-        Log::debug("[Auth] No 'username=' cookie found, returning ''");
-        return "";
-    }
-
-    size_t start = pos + prefix.length();
-    size_t end = cookie_header.find(';', start);
-    std::string username = (end == std::string::npos) 
-        ? cookie_header.substr(start)
-        : cookie_header.substr(start, end - start);
-
-    Log::debug("[Auth] Extracted username from cookie: " + username);
-    return username;
+    const auto session = sessionFrom(req);
+    return session ? session->username : "";
 }
 
-void parseCookie::setCookieUsername(const httplib::Request& req, httplib::Response& res, std::string username) {
-    std::string cookie_value = "username=" + username + cookieAttributesFromRequest(req);
-    res.set_header("Set-Cookie", cookie_value);
-}
-
-void parseCookie::setCookieUserId(const httplib::Request& req, httplib::Response& res, int user_id) {
-    std::string cookie_value = "user_id=" + std::to_string(user_id) + cookieAttributesFromRequest(req);
-    res.set_header("Set-Cookie", cookie_value);
+void parseCookie::setSessionCookie(const httplib::Request& req, httplib::Response& res, int user_id,
+                                   const std::string& username) {
+    const std::string token = session_token::Sign(
+        user_id, username, session_token::NowSeconds() + session_token::kLifetimeSeconds,
+        session_token::ServerSecret());
+    // No Expires/Max-Age: the cookie goes when the browser closes, as the
+    // privacy page says. The 30 days are a ceiling inside the signed value.
+    res.set_header("Set-Cookie", std::string(kSessionCookie) + "=" + token + cookieAttributesFromRequest(req));
+    for (const char* legacy : kLegacyCookies) {
+        if (!cookieValue(req, legacy).empty()) expire(req, res, legacy);
+    }
 }
 
 void parseCookie::clearAuthCookies(const httplib::Request& req, httplib::Response& res) {
-    const std::string attributes = cookieAttributesFromRequest(req);
-    std::string expired_cookie = "user_id=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly";
-    expired_cookie += attributes;
-    res.set_header("Set-Cookie", expired_cookie);
-    expired_cookie = "username=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly";
-    expired_cookie += attributes;
-    res.set_header("Set-Cookie", expired_cookie);
+    expire(req, res, kSessionCookie);
+    for (const char* legacy : kLegacyCookies) {
+        expire(req, res, legacy);
+    }
 }

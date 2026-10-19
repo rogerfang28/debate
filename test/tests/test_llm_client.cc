@@ -133,9 +133,13 @@ TEST_F(LlmClientTest, SendsAnOpenAiChatCompletionRequest) {
     EXPECT_EQ(reply, "hello back") << "the assistant's text, not the envelope";
 
     const jsoncons::json sent = jsoncons::json::parse(server.last_request_body());
-    EXPECT_EQ(sent["model"].as<std::string>(), "Qwen3.6-35B-A3B-UD-Q3_K_XL.gguf")
-        << "defaults to the local model the claim parser has always used";
+    EXPECT_EQ(sent["model"].as<std::string>(), "qwen3.8-27b")
+        << "defaults to the model server that is normally up (Qwen 3.8)";
     EXPECT_EQ(sent["max_tokens"].as<int>(), 4000);
+    // Qwen 3.8 thinks by default and its thinking counts against max_tokens,
+    // so a reply could come back empty without this.
+    ASSERT_TRUE(sent.contains("chat_template_kwargs"));
+    EXPECT_FALSE(sent["chat_template_kwargs"]["enable_thinking"].as<bool>());
     ASSERT_EQ(sent["messages"].size(), 1u);
     EXPECT_EQ(sent["messages"][0]["role"].as<std::string>(), "user");
     EXPECT_EQ(sent["messages"][0]["content"].as<std::string>(), "hello there");

@@ -83,6 +83,7 @@ set(SRC_FILES
      ${CMAKE_SOURCE_DIR}/src/utils/DebateWrapper.cc
      ${CMAKE_SOURCE_DIR}/src/utils/GoogleJWTVerifier.cc
      ${CMAKE_SOURCE_DIR}/src/utils/PasswordHasher.cc
+     ${CMAKE_SOURCE_DIR}/src/utils/SessionToken.cc
      ${CMAKE_SOURCE_DIR}/src/utils/LlmClient.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateTextFormatter.cc
      ${CMAKE_SOURCE_DIR}/src/utils/DebateChat.cc
