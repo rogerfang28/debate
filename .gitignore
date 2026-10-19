@@ -16,3 +16,6 @@ demo-data/
 /debates.sqlite3
 /users.sqlite3
 *.sqlite3-journal
+
+# The local session-signing secret (backend/start-server.ps1 makes it)
+backend/session.secret

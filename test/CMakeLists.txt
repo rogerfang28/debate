@@ -328,6 +328,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_basis_registry.cc
     ${CMAKE_SOURCE_DIR}/tests/test_extracted_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_connections_debate_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_session_token.cc
 )
 
 add_executable(debate_tests
@@ -368,6 +369,7 @@ add_executable(debate_tests
     ${REPO_ROOT}/backend/src/utils/AiJobs.cc
     ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
     ${REPO_ROOT}/backend/src/utils/LlmClient.cc
+    ${REPO_ROOT}/backend/src/utils/SessionToken.cc
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
 

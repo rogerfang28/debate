@@ -13,8 +13,23 @@
 #include <iostream>
 #include "../utils/Log.h"
 #include "../utils/GoogleJWTVerifier.h"
+#include "../utils/SessionToken.h"
+#include <string>
 
 int main() {
+  // Sessions are signed with DEBATE_SESSION_SECRET. A production server
+  // (DEBATE_ENV=production) will not start without one: with a random
+  // per-run secret every restart would sign everyone out, and a missing
+  // setting should be loud, not quietly different. Elsewhere a random
+  // secret is fine and ServerSecret() says so in the log.
+  if (const char* env = std::getenv("DEBATE_ENV"); env != nullptr && std::string(env) == "production" &&
+      !session_token::SecretIsConfigured()) {
+    Log::error("[Session] DEBATE_ENV=production but DEBATE_SESSION_SECRET is missing or shorter than " +
+               std::to_string(session_token::kMinSecretLength) + " characters. Refusing to start.");
+    return 1;
+  }
+  session_token::ServerSecret();  // settle the secret, and log about it, before the first request
+
   httplib::Server svr;
   MiddleendRequestHandler handler;
 

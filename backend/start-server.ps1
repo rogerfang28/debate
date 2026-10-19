@@ -6,7 +6,8 @@
 # The two model servers share one GPU, so only one is ever up; pick the one
 # that is running. Each llm.*.env file holds the DEBATE_LLM_* variables the
 # backend reads (see src/utils/LlmClient.cc). GOOGLE_CLIENT_ID is taken from
-# frontend/.env.local so Google sign-in works without a second copy.
+# frontend/.env.local so Google sign-in works without a second copy, and
+# the session-signing secret from backend/session.secret (made if missing).
 #
 # Run from any directory. The server keeps the console; Ctrl+C stops it.
 param(
@@ -23,6 +24,18 @@ foreach ($line in Get-Content $envFile) {
     $name, $value = $line -split '=', 2
     Set-Item -Path "env:$($name.Trim())" -Value $value.Trim()
 }
+
+# Sessions are signed with DEBATE_SESSION_SECRET (src/utils/SessionToken.h).
+# Kept in backend/session.secret, made once and never committed, so a
+# restart does not sign everyone out.
+$secretFile = Join-Path $backend "session.secret"
+if (-not (Test-Path $secretFile)) {
+    $bytes = New-Object byte[] 32
+    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+    $hex = -join ($bytes | ForEach-Object { $_.ToString("x2") })
+    [System.IO.File]::WriteAllText($secretFile, $hex)
+}
+$env:DEBATE_SESSION_SECRET = (Get-Content $secretFile -Raw).Trim()
 
 $frontendEnv = Join-Path $root "frontend\.env.local"
 if (Test-Path $frontendEnv) {

@@ -98,8 +98,7 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
             createUserIfNotExist(username);
         }
 
-        parseCookie::setCookieUserId(req, res, moderatorUserId);
-        parseCookie::setCookieUsername(req, res, username);
+        parseCookie::setSessionCookie(req, res, moderatorUserId, username);
         user_id = moderatorUserId;
         autoLoginResolvedUserId = moderatorUserId;
         autoLoginResolvedUsername = username;
@@ -199,9 +198,9 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
     std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
     std::string loginError;
 
-    // The cookies name a session only if they name a user that exists, by
-    // the name the cookie was set with. Anything else (a stale id from
-    // another database, a hand-made cookie) is no session at all.
+    // A signed session is one this server issued, but it can still name a
+    // user that is gone (a database swapped or reset since). It counts only
+    // if it names a user that exists, by the name it was issued with.
     if (resolvedUserId > 0 &&
         (resolvedUsername.empty() || userDb.getUsername(resolvedUserId) != resolvedUsername)) {
         Log::warn("[VirtualRenderer] Cookie user_id=" + std::to_string(resolvedUserId) +
@@ -323,8 +322,7 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
 
         if (authSucceeded) {
             // Set cookies
-            parseCookie::setCookieUserId(req, res, moderatorUserId);
-            parseCookie::setCookieUsername(req, res, finalUsername);
+            parseCookie::setSessionCookie(req, res, moderatorUserId, finalUsername);
 
             // Apply authenticated identity for this same request
             resolvedUserId = moderatorUserId;
@@ -431,8 +429,7 @@ void VirtualRenderer::signInAsVisitor(debate_event::DebateEvent& evt,
     // expiring ones): the order of repeated headers is not kept, so an
     // expiry could otherwise land after the visitor's cookie and undo it.
     res.headers.erase("Set-Cookie");
-    parseCookie::setCookieUserId(req, res, userId);
-    parseCookie::setCookieUsername(req, res, name);
+    parseCookie::setSessionCookie(req, res, userId, name);
 
     evt.mutable_user()->set_user_id(userId);
     evt.mutable_user()->set_username(name);
