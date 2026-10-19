@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <chrono>
 #include <random>
+#include <stdexcept>
 #include <vector>
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
@@ -236,6 +237,23 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                     username = "google_user_" + userInfo.sub.substr(0, 8);
                 }
 
+                // An existing account by this name is this Google user's only
+                // if it is already linked to this Google account, or is an
+                // unclaimed one with no password. An account someone made
+                // with a password under this person's email, or one linked to
+                // a different Google account, belongs to someone else.
+                if (userDb.getUserId(username) != -1) {
+                    user::User existing;
+                    const auto blob = userDb.getUserProtobufByUsername(username);
+                    if (!blob.empty() && existing.ParseFromArray(blob.data(), static_cast<int>(blob.size()))) {
+                        const bool otherGoogle = !existing.google_sub().empty() && existing.google_sub() != userInfo.sub;
+                        const bool passwordOnly = existing.google_sub().empty() && !existing.password_hash().empty();
+                        if (otherGoogle || passwordOnly) {
+                            throw std::runtime_error("the account '" + username + "' belongs to someone else");
+                        }
+                    }
+                }
+
                 // Look up or create user with google_sub
                 moderatorUserId = moderator.createUserIfNotExist(username);
                 userId = userDb.getUserId(username);
@@ -263,11 +281,10 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             finalUsername = evt.login().username();
             const std::string password = evt.login().password();
 
-            // "guest", anonymous visitors, and demo-mode logins are
-            // intentionally passwordless. A visitor can change nothing, so
-            // there is nothing for a password to protect.
-            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest" ||
-                                      anonymous_user::IsAnonymousUsername(finalUsername);
+            // Only a demo build signs people in without a password. Visitors
+            // get their session from the visitor path, never from this form,
+            // and "guest" is an ordinary name now (the guest button is gone).
+            const bool passwordless = demo_mode::kDemoEnabled;
 
             if (passwordless) {
                 moderatorUserId = moderator.createUserIfNotExist(finalUsername);
@@ -284,6 +301,16 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                 Log::warn("[VirtualRenderer] Username or password contains whitespace.");
                 authSucceeded = false;
                 loginError = "Username and password cannot contain spaces.";
+            } else if (anonymous_user::IsAnonymousUsername(finalUsername)) {
+                Log::warn("[VirtualRenderer] Password sign-in refused for a visitor name.");
+                authSucceeded = false;
+                loginError = "Names starting with \"visitor-\" are reserved. Please choose another.";
+            } else if (userDb.getUserId(finalUsername) == -1 && finalUsername.find('@') != std::string::npos) {
+                // An email address as a new username would sit waiting for
+                // that person's Google sign-in. Emails are Google's.
+                Log::warn("[VirtualRenderer] Password registration refused for an email-shaped name.");
+                authSucceeded = false;
+                loginError = "Usernames can't contain @. To use your email, sign in with Google.";
             } else {
                 const int existingUserId = userDb.getUserId(finalUsername);
                 const bool isNewUser = (existingUserId == -1);
@@ -306,9 +333,16 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                     }
 
                     if (storedHash.empty()) {
-                        // Pre-existing account with no password yet: set it on first use.
-                        userDb.updateUserPassword(userId, PasswordHasher::hash(password));
-                        Log::info("[VirtualRenderer] Set password for previously passwordless user '" + finalUsername + "'.");
+                        // An account with no password cannot be opened with
+                        // one. It used to take whatever password came first,
+                        // so anyone who typed a Google user's email (or any
+                        // old passwordless name) took the account over.
+                        Log::warn("[VirtualRenderer] Password sign-in refused for passwordless account '" +
+                                  finalUsername + "'.");
+                        authSucceeded = false;
+                        loginError = existing.google_sub().empty()
+                            ? "This account doesn't have a password. Please choose a different username."
+                            : "This account signs in with Google.";
                     } else if (!PasswordHasher::verify(password, storedHash)) {
                         Log::warn("[VirtualRenderer] Incorrect password for user '" + finalUsername + "'.");
                         authSucceeded = false;
