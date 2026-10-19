@@ -1,0 +1,241 @@
+# The Fauci case, built one click at a time.
+#
+# A second walkthrough for people who have done the first one. Where
+# getting-started teaches the mechanics on a small invented argument, this
+# builds a real, messy, unresolved dispute -- and it is where several kinds
+# of BASIS appear side by side, because this is an argument where the kind of
+# a reason matters as much as the reason.
+#
+# The claims are taken from the hand-built Fauci debate rather than invented,
+# so the shape here is the shape a person actually built by hand.
+#
+# See getting-started.pbtxt for how to write one of these. In short: "YOU" is
+# the reader, claims are numbered from 1 in creation order, and one step is
+# one thing the reader should see.
+
+name: "fauci-case"
+title: "Work through the Fauci case"
+subtitle: "Twelve steps. A real dispute, and all four kinds of reason."
+order: 2
+
+# ===========================================================================
+steps {
+  actions { username: "Fauci" event_type: "CREATE_USER" }
+  actions {
+    username: "YOU"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Fauci was dishonest with Congress and the public about COVID-19"
+  }
+  actions { username: "YOU" event_type: "JOIN_DEBATE" debate_id: 1 }
+  actions { username: "YOU" event_type: "ENTER_DEBATE" debate_id: 1 }
+  actions { username: "Fauci" event_type: "JOIN_DEBATE" debate_id: 1 }
+  actions { username: "Fauci" event_type: "ENTER_DEBATE" debate_id: 1 }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+
+  title: "The accusation, as one sentence"
+  body: "This is a real dispute, and it is the kind that usually turns into people shouting past each other. Watch what happens when it is forced into a shape instead."
+  body: "You are arguing the accusation. Someone arguing Fauci's side has joined and will push back as you go."
+  body: "Notice the claim is an assertion, not a question. \"Was Fauci dishonest?\" cannot be true or false, so it cannot be argued -- it can only be discussed. Everything here has to be something you could be wrong about."
+  look_at: "the single claim. Everything else in this debate will hang off it."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's May 2021 testimony that NIH did not fund gain-of-function research at the Wuhan Institute was false"
+    claim_description: "The specific, checkable version of the accusation: not that he was evasive, but that one identifiable statement under oath was untrue."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 2 }
+
+  title: "The first of three separate accusations"
+  body: "\"He was dishonest\" is too vague to argue about, so it gets broken into specific charges. This is the first: one identifiable statement, under oath, alleged to be false."
+  body: "There will be two more, and they are INDEPENDENT of each other. If this one collapses entirely, the other two still stand."
+  look_at: "the new claim under the accusation."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 2 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "NIAID awarded a grant to EcoHealth Alliance, renewed in 2019, that included a sub-award to the Wuhan Institute of Virology"
+    claim_description: "The money. Not disputed by anyone."
+    extra_claim_texts: "In May 2021 Senate testimony Fauci said the NIH has not ever and does not now fund gain-of-function research in the Wuhan Institute of Virology"
+    extra_claim_texts: "Gain-of-function research means research that modifies a biological agent so that it confers new or enhanced activity to that agent"
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 5 }
+
+  title: "Three claims that only work together"
+  body: "The charge is really a syllogism: there was a grant, he denied funding this kind of work, and this is what that kind of work means. All three at once, or nothing."
+  body: "So they went in as ONE joint argument, not three separate supports. Take the definition away and the grant and the denial prove nothing at all -- they would just be two facts sitting next to each other."
+  body: "That matters enormously in a moment. A joint argument is only as strong as its weakest claim, and an opponent who can see the shape knows exactly which one to go after."
+  look_at: "the three new claims, joined into a single line rather than three."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "Fauci" event_type: "GO_TO_CLAIM" claim_id: 5 }
+  actions {
+    username: "Fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The standard governing federal funding decisions is enhanced potential pandemic pathogen, meaning a pathogen already highly transmissible and virulent in humans that has been made more so"
+    challenge_description: "Not a denial of any fact. A claim that the phrase in the testimony meant the narrow regulatory term, not the broad one."
+    basis: "DEFINITIONAL"
+  }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 5 }
+
+  title: "The whole case turns on one word"
+  body: "Fauci's side did not touch the grant and did not deny the words spoken. It went straight for the definition -- the weakest claim in the chain, and the one holding the other two up."
+  body: "Look at the label on this challenge: DEFINITIONAL. It is not saying \"your evidence is wrong\". It is saying \"you and I are using a term in two different senses\", which is a completely different kind of disagreement and cannot be settled by finding more evidence."
+  body: "This is the real Fauci dispute, in one link. Both sides agree on what was funded and what was said. They disagree about what a phrase means."
+  look_at: "the challenge on the definition, and the word DEFINITIONAL on it."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "Fauci" event_type: "GO_TO_CLAIM" claim_id: 6 }
+  actions {
+    username: "Fauci"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In 2017 federal officials replaced the 2014 to 2017 funding pause with a review framework for enhanced potential pandemic pathogens"
+    extra_claim_texts: "NIH stated in 2021 that the Wuhan studies did not require that additional review because they involved bat coronaviruses genetically distant from the pandemic virus"
+    basis: "AUTHORITY"
+  }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 6 }
+
+  title: "A different kind of reason"
+  body: "Fauci's side is now backing its definition -- and the label on this support is AUTHORITY, not EVIDENTIAL."
+  body: "The difference is real. EVIDENTIAL means \"here is what was observed\". AUTHORITY means \"the body whose job it is to decide has decided\". You beat evidence with better evidence; you beat an authority claim by showing the body was not actually the one that decides, or was not in a position to know."
+  body: "Marking which is which is the point. An argument that slides from one to the other while nobody is looking is the commonest way of appearing to have proved something."
+  look_at: "the word AUTHORITY on the new line, and compare it with the EVIDENTIAL links above."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 2 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The October 2021 NIH letter confirms the funded work enhanced a virus"
+    claim_description: "A second, separate reason to think the testimony was false -- one that does not depend on the definition argument at all."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 9 }
+
+  title: "A second route to the same charge"
+  body: "The definition fight might go either way, so here is a different reason to believe the same claim: a letter from the NIH describing what the funded work actually did."
+  body: "This is INDEPENDENT of the syllogism above. Two separate supports for the same claim. If the definition argument is lost outright, this one is untouched -- which is exactly what independence means and why it is drawn differently from a chain."
+  look_at: "the two separate lines now under the testimony claim."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "Fauci" event_type: "GO_TO_CLAIM" claim_id: 9 }
+  actions {
+    username: "Fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The same letter states the result was unexpected rather than an objective of the research, and that the viruses studied could not have produced SARS-CoV-2"
+    challenge_description: "Same document, opposite reading. The letter is not in dispute; what follows from it is."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 9 }
+
+  title: "Both sides are quoting the same letter"
+  body: "This challenge does not dispute the letter. It quotes it. The sentence about mice getting sicker is real, and so is the sentence saying that was a surprise rather than the goal."
+  body: "So the disagreement is not about the document. It is about what the document shows -- whether an unexpected result inside an approved study is the thing that was denied. Nobody here needs to be lying for both to be arguing in good faith."
+  body: "In a thread this looks like two people trading quotes. Here you can see they are pulling on the same object from opposite ends."
+  look_at: "the challenge sitting under the letter claim, and that it is EVIDENTIAL on both sides."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's public statements about the virus's origin differed from his private view"
+    claim_description: "His journals record uncertainty about the origin while he was publicly saying the evidence pointed strongly to a natural one."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "Fauci" event_type: "GO_TO_CLAIM" claim_id: 11 }
+  actions {
+    username: "Fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Recording uncertainty privately while stating a leading hypothesis publicly is ordinary scientific caution rather than a contradiction"
+    challenge_description: "Says the gap is the normal difference between a working doubt and a public best estimate."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 11 }
+
+  title: "The second accusation, answered immediately"
+  body: "A different charge entirely: not that a statement was false, but that his public confidence did not match his private doubt. It goes under the root, beside the first accusation, because it stands or falls on its own."
+  body: "Fauci's side answered in the same breath, and the answer is worth reading carefully. It does not deny the journals or the public statements. It says the gap between them is what doing science in public looks like."
+  look_at: "the second accusation under the root, with its challenge already attached."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "GO_TO_CLAIM" claim_id: 1 }
+  actions {
+    username: "YOU"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's refusal to answer the committee's questions indicates he could not answer them truthfully"
+    claim_description: "The 2026 hearing. An inference from behaviour rather than from any document."
+    basis: "EVIDENTIAL"
+  }
+  actions { username: "YOU" event_type: "GO_TO_OVERVIEW" }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 13 }
+
+  title: "The third accusation, and a different animal"
+  body: "This one has nothing to do with virology. At the July 2026 hearing Fauci answered nothing, and the argument is that the silence is itself revealing."
+  body: "It hangs off the root, not off the testimony claim, because it is a separate charge -- it would survive the other two being demolished."
+  look_at: "where this attached: beside the first accusation, not underneath it."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "Fauci" event_type: "GO_TO_CLAIM" claim_id: 13 }
+  actions {
+    username: "Fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Invoking the Fifth Amendment is a constitutional right from which no inference of wrongdoing follows"
+    challenge_description: "A claim about what conclusions are permissible, not about what happened. No amount of evidence could settle it either way."
+    basis: "NORMATIVE"
+  }
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 13 }
+
+  title: "The kind of claim evidence cannot touch"
+  body: "The fourth and last kind: NORMATIVE. This challenge does not dispute that Fauci stayed silent. It denies that you are entitled to conclude anything from it."
+  body: "No fact could settle this. It is an argument about what inferences are legitimate -- and courts take exactly this position, precisely because innocent people invoke the Fifth when the questioning is hostile."
+  body: "Marking it NORMATIVE tells you not to go looking for more evidence. You would be answering a question nobody asked."
+  look_at: "the word NORMATIVE, and that this challenge accepts every fact underneath it."
+}
+
+# ===========================================================================
+steps {
+  actions { username: "YOU" event_type: "SELECT_CLAIM" claim_id: 1 }
+
+  title: "Stand back"
+  body: "Three independent accusations under the root. Two of them challenged. One held up by a three-claim chain whose weakest link is a definition, and that definition is where the entire virology dispute actually lives."
+  body: "Four kinds of reason are on screen: EVIDENTIAL for what was observed, AUTHORITY for who gets to decide, DEFINITIONAL for what a phrase means, NORMATIVE for what matters. In an argument like this, the kind matters as much as the content -- most of the shouting comes from people answering one kind with another."
+  body: "Nothing is resolved, and nothing pretends to be. Every status here belongs to one person."
+  look_at: "the whole graph, and how much of it depends on that one definitional link."
+}
+
+# ===========================================================================
+steps {
+  title: "It is yours now"
+  body: "This debate stays in your list. Challenge anything, concede anything, add the argument you think is missing."
+  body: "Two things worth trying on this one in particular. The chat box at the top can summarize the debate or a claim, point out a weak step, or suggest a challenge -- all as text you can read before you act."
+  body: "The hand-built version of this case has twenty-two claims and goes deeper on every branch. This was the shape of it."
+}

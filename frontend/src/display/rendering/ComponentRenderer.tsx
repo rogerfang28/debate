@@ -7,8 +7,11 @@ import ButtonComponent from "./componentTypes/ButtonComponent.tsx";
 import ImageComponent from "./componentTypes/ImageComponent.tsx";
 import ListComponent from "./componentTypes/ListComponent.tsx";
 import ContainerComponent from "./componentTypes/ContainerComponent.tsx";
+import DockedPanelComponent from "./componentTypes/DockedPanelComponent.tsx";
 import CardComponent from "./componentTypes/CardComponent.tsx";
 import InputComponent from "./componentTypes/InputComponent.tsx";
+import DropdownComponent from "./componentTypes/DropdownComponent.tsx";
+import MultiInputComponent from "./componentTypes/MultiInputComponent.tsx";
 import GraphComponent from "./componentTypes/GraphComponent.tsx";
 import FormComponent from "./componentTypes/FormComponent.tsx";
 import TableComponent from "./componentTypes/TableComponent.tsx";
@@ -42,6 +45,8 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
   [ComponentType.CONTAINER]: ContainerComponent,
   [ComponentType.CARD]: CardComponent,
   [ComponentType.INPUT]: InputComponent,
+  [ComponentType.DROPDOWN]: DropdownComponent,
+  [ComponentType.MULTI_INPUT]: MultiInputComponent,
   [ComponentType.GRAPH]: GraphComponent,
   [ComponentType.FORM]: FormComponent,
   [ComponentType.TABLE]: TableComponent,
@@ -54,17 +59,44 @@ const componentMap: Partial<Record<ComponentType, React.ComponentType<any>>> = {
 
 const GoogleLoginButtonId = "googleLoginButton";
 
+function camelizeStyle(css: Record<string, string> | undefined): React.CSSProperties {
+  if (!css) return {};
+  const out: Record<string, string> = {};
+  for (const key of Object.keys(css)) {
+    const camel = key.startsWith("--") ? key : key.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+    out[camel] = css[key];
+  }
+  return out as React.CSSProperties;
+}
+
 const ComponentRenderer: React.FC<ComponentRendererProps> = ({ component }) => {
   if (!component) return null;
 
   const className = buildClassName(component.style);
-  const inlineStyle: React.CSSProperties = component.css || {};
+  // The server writes CSS keys the way CSS spells them (flex-direction,
+  // max-height); React wants them camelCased (flexDirection, maxHeight) and
+  // silently drops the rest with a console warning. Every hyphenated rule
+  // the backend ever set was being ignored -- so the keys are converted here,
+  // once, for every component.
+  const inlineStyle: React.CSSProperties = camelizeStyle(component.css);
 
   // Check if this is a tree node (CONTAINER with data-tree-node attribute)
   const attributes = component.attributes || {};
   if (component.type === ComponentType.CONTAINER && attributes["data-tree-root"] === "true") {
     return (
       <TreeRootComponent
+        component={component}
+        className={className}
+        style={inlineStyle}
+      />
+    );
+  }
+  // A container with a fold-away header: pinned to the corner of the screen
+  // ("true") or standing as a column of the page ("side").
+  if (component.type === ComponentType.CONTAINER &&
+      (attributes["data-docked"] === "true" || attributes["data-docked"] === "side")) {
+    return (
+      <DockedPanelComponent
         component={component}
         className={className}
         style={inlineStyle}

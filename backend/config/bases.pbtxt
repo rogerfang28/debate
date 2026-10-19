@@ -1,0 +1,77 @@
+# The kinds of reason a link can carry -- the vocabulary behind
+# Relationship.basis.
+#
+# This file IS the list. The dropdowns show what is here, in this order; the
+# AI prompts explain each kind to the model using the words here; the write
+# path rejects any basis name that is not here; and the status engine asks
+# `propagation` how a failure under a link reaches the claim above it.
+#
+# To add a kind of reason, add a block. No code changes. The file is re-read
+# when it changes, so a running server picks up an edit without a restart.
+#
+# `propagation` is one of:
+#   COLLAPSE   a failed supporter sinks the claim above; a winning challenger
+#              refutes its target. Every link behaved this way before this
+#              file existed, which is why all four below say it.
+#   UNSUPPORT  a failed supporter leaves the claim above undetermined rather
+#              than false; a winning challenger pulls its target back to
+#              undetermined rather than refuting it.
+#   NONE       the link says what kind of reason was offered and nothing more.
+#
+# Exactly one block should set is_default; it is what the dropdown opens on
+# and what the prompts use when they need an example.
+
+bases {
+  name: "EVIDENTIAL"
+  propagation: COLLAPSE
+  is_default: true
+  description: "Rests on facts: measurements, documents, events, what was observed."
+  as_support: "Here is what was observed, and it is a reason to believe the claim above."
+  as_challenge: "The evidence does not show this, or the method behind it cannot carry the conclusion."
+}
+
+bases {
+  name: "AUTHORITY"
+  propagation: COLLAPSE
+  description: "Rests on who says so: an official body, an expert, a court."
+  as_support: "The body whose job it is to decide has decided, or someone in a position to know has said so."
+  as_challenge: "The source is not in a position to know, or has a motive, bias or conflict that undercuts its say-so."
+}
+
+bases {
+  name: "DEFINITIONAL"
+  propagation: COLLAPSE
+  description: "Rests on what a term means, or whether a case falls under a rule or category."
+  as_support: "Given what the term means, or what the rule covers, the claim above holds."
+  as_challenge: "A term is being used in two senses, or the case does not fall under the rule or category it is filed under."
+}
+
+bases {
+  name: "NORMATIVE"
+  propagation: COLLAPSE
+  description: "Rests on values: what ought to be done, or what matters more."
+  as_support: "Given what matters, the claim above follows."
+  as_challenge: "A value judgement is being presented as fact, or the value it rests on is one the other side does not share."
+}
+
+# Found by asking, for a root claim, what a child could BE to it. The four
+# above cover what is observed, who says so, what a term means and what
+# matters -- and none of them covers whether the STEP from one claim to the
+# next is sound. That gap is where "your evidence is real but does not prove
+# that", "the cases are not alike" and "that does not follow" all live, and
+# before this entry each was being filed under a basis it did not belong to.
+#
+# The set is kept to the minimum that does not bend an argument to fit it.
+# Candidates that looked distinct -- a causal mechanism, an analogy to a
+# precedent -- turned out to be an EVIDENTIAL fact whose bearing on the claim
+# above is an inference, so their failures are this entry's failures.
+#
+# UNSUPPORT, not COLLAPSE: a bad inference leaves its conclusion unproven, it
+# does not make it false. This is the basis UNSUPPORT was built for.
+bases {
+  name: "INFERENTIAL"
+  propagation: UNSUPPORT
+  description: "Rests on the step itself: that the conclusion follows from what is already granted."
+  as_support: "Given the claims already on the table, this is what follows from them."
+  as_challenge: "The premises can all be true and the conclusion still not follow: a non sequitur, an irrelevance, or a step that proves less than it needs to."
+}

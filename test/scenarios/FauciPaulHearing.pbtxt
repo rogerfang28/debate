@@ -1,0 +1,291 @@
+name: "FauciPaulHearing"
+
+# ============================================================================
+# The Fauci / Paul hearing, expressed within what the engine can currently do.
+#
+# WHAT THIS TESTS
+#   1. A multi-from support relation  (private journal AND public statement --
+#      neither alone establishes dishonesty)
+#   2. A DEFINITION claim sitting INSIDE a from-set, so the same evidence only
+#      supports the accusation under a particular meaning of the term
+#   3. Independent (OR) support -- two separate relations onto the root
+#   4. AUTHORITY basis
+#   5. Challenge submission and concede propagation
+#
+# WHAT IT CANNOT TEST -- see section 6 of the scenario guide. Each of these is
+# a real part of the case that the engine cannot express today:
+#
+#   - OPPOSE targeting a RELATION. Fauci's actual move is "the journal is
+#     genuine, your inference from it fails." That is an attack on the link,
+#     not the claim, and should yield UNSUPPORTED rather than FALSE_CLAIM.
+#     Substituted here with a claim-level challenge, which is a STRONGER move
+#     than the case calls for.
+#   - CONTESTED. The origin question (lab vs natural) has real surviving
+#     evidence on both sides and no winner. With only three statuses there is
+#     no way to say "both stand." The origin sub-argument is therefore omitted
+#     entirely rather than misrepresented.
+#   - Lenses. The gain-of-function verdict should flip depending on which
+#     definition the reader adopts, with nothing written to the database.
+#     Not expressible; the definition is instead settled by concession, which
+#     is a different thing.
+#   - Relation states (LIVE / INERT / DEAD). When claim 9 is conceded, the
+#     relation [7,8,9] -> 6 should go INERT and revive if 9 is reopened.
+#   - REST / ACCEPT / REOPEN / TIMEOUT.
+#   - The author lane. Credibility attacks ("nut cake", the adviser
+#     indictment, how the journals were obtained) must be debatable without
+#     touching any claim's truth. There is no separate lane, so including them
+#     would let them propagate -- exactly the failure the design forbids.
+#     Omitted deliberately.
+#
+# CLAIM IDS are sequential and noted beside each action. Recount if you edit.
+# ============================================================================
+
+steps { action { username: "paul"  event_type: "CREATE_USER" } }
+steps { action { username: "fauci" event_type: "CREATE_USER" } }
+
+# claim 1 -- the root
+steps {
+  action {
+    username: "paul"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Fauci was dishonest about COVID-19"
+  }
+}
+
+steps { action { username: "paul"  event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "paul"  event_type: "ENTER_DEBATE" debate_id: 1 } }
+steps { action { username: "fauci" event_type: "JOIN_DEBATE"  debate_id: 1 } }
+steps { action { username: "fauci" event_type: "ENTER_DEBATE" debate_id: 1 } }
+
+steps {
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 1 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 1 }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "paul"  expected_action: "ACTION_DEBATING" }
+  expectations { check_type: "ENGAGEMENT_STATE" username: "fauci" expected_action: "ACTION_DEBATING" }
+}
+
+# ----------------------------------------------------------------------------
+# BRANCH 1 -- did he mislead the public?
+# ----------------------------------------------------------------------------
+
+# claim 2 -- first independent support for the root
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci misled the public about the virus's origin"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# claims 3 and 4 -- ONE relation with TWO from-claims.
+# The private journal entry and the public statement are JOINTLY required:
+# neither alone establishes dishonesty. This is the AND case, and it is the
+# reason from_claim_ids is a list.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's January 2020 journal recorded experts saying the virus might not have arisen naturally"
+    extra_claim_texts: "Fauci publicly described a laboratory origin as implausible in that period"
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 4 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2
+                 expected_claim_sentence: "Fauci misled the public about the virus's origin" }
+  # one relation, two sources -- NOT two relations
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 2 expected_count: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 2 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 4 to_claim_id: 2 }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "paul" expected_status: "TRUE_CLAIM" }
+}
+
+# claim 5 -- Fauci's counter.
+#
+# NOTE: in the target design this is OPPOSE targeting the RELATION [3,4] -> 2,
+# not the claim. Fauci does not dispute the journal; he disputes the inference
+# drawn from it. The correct outcome would be claim 2 -> UNSUPPORTED with
+# claims 3 and 4 untouched. The engine can only target claims, so this
+# challenges claim 2 directly -- a stronger move than the case warrants.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 2 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Fauci's May 2021 journal recorded that he had always considered natural origin highly likely, that no one was certain, and that he was calling for a thorough investigation"
+    challenge_description: "The journal is genuine. It does not show a hidden position."
+    # EVIDENTIAL: the counter is itself a document. Fauci is not disputing what
+    # the word "misled" means, he is producing a record that reads against the
+    # inference drawn from the earlier one.
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE" expected_count: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 5 to_claim_id: 2 }
+}
+
+# ----------------------------------------------------------------------------
+# BRANCH 2 -- did he lie to Congress about gain-of-function?
+#
+# This is the important branch. The facts are agreed by both parties; the
+# verdict turns entirely on one word.
+# ----------------------------------------------------------------------------
+
+# claim 6 -- a SECOND, separate relation onto the root.
+# Two separate ADD_CHILD_CLAIM calls on claim 1 = two independent relations.
+# Defeating one must not defeat the other. This is the OR case.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 1 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci lied to Congress about gain-of-function research"
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 6 }
+  # two independent relations target the root
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 6 to_claim_id: 1 }
+}
+
+# claims 7, 8, 9 -- ONE relation with THREE from-claims, and the third is a
+# DEFINITION.
+#
+# This is the mechanism the whole case turns on. The two facts are undisputed
+# by both parties. They establish "he lied" ONLY under a particular meaning of
+# "gain-of-function". Putting the definition inside the from-set is what makes
+# the equivocation visible: change the definition and the same facts stop
+# supporting the accusation.
+steps { action { username: "paul" event_type: "GO_TO_CLAIM" claim_id: 6 } }
+steps {
+  action {
+    username: "paul"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "NIH grant funds supported coronavirus research at the Wuhan Institute of Virology"
+    extra_claim_texts: "Fauci denied under oath that the funded research was gain-of-function"
+    extra_claim_texts: "Gain-of-function means any research that enhances a viral property"
+    basis: "EVIDENTIAL"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 9 }
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 6 expected_count: 3 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 7 to_claim_id: 6 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 8 to_claim_id: 6 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 9 to_claim_id: 6 }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 9
+                 expected_claim_sentence: "Gain-of-function means any research that enhances a viral property" }
+}
+
+# claim 10 -- Fauci challenges the DEFINITION, not the facts.
+# He concedes both agreed facts and attacks only the meaning of the term.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 9 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Gain-of-function means only the narrow category defined in federal policy"
+    challenge_description: "The funded work falls outside the regulated category."
+    # DEFINITIONAL: this is the whole point of the branch. Fauci disputes no
+    # fact -- he disputes what the term covers. Recording the basis is what
+    # distinguishes "you are wrong about the world" from "you are wrong about
+    # the word", which are different moves that the engine would otherwise
+    # store identically.
+    basis: "DEFINITIONAL"
+  }
+}
+
+# claim 11 -- AUTHORITY-basis support for the narrow definition.
+steps { action { username: "fauci" event_type: "GO_TO_CLAIM" claim_id: 10 } }
+steps {
+  action {
+    username: "fauci"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Federal biosafety policy defines the gain-of-function category narrowly"
+    basis: "AUTHORITY"
+  }
+}
+
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 11 }
+  expectations { check_type: "RELATION_COUNT" link_type: "CHALLENGE" expected_count: 2 }
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 5 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 10 to_claim_id: 9 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 11 to_claim_id: 10 }
+}
+
+# ----------------------------------------------------------------------------
+# CONCESSION
+#
+# CONCEDE_CHALLENGE takes no argument. The runner picks, among CHALLENGE links
+# whose TARGET claim was created by the conceding user, the one with the
+# highest challenging-claim id.
+#
+# Challenges outstanding, both against claims paul created:
+#     claim 5  -> claim 2   (the misleading-the-public branch)
+#     claim 10 -> claim 9   (the definition)
+# Highest challenging id is 10, so this concedes THE DEFINITION.
+# ----------------------------------------------------------------------------
+
+steps { action { username: "paul" event_type: "CONCEDE_CHALLENGE" } }
+
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "paul" expected_status: "FALSE_CLAIM" }
+  # the two agreed facts must be untouched -- only the definition was conceded
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 8 username: "paul" expected_status: "TRUE_CLAIM" }
+  # structure is unchanged by a concession
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 6 expected_count: 3 }
+}
+
+# NOTE -- the interesting divergence.
+# Claim 6 ("lied to Congress") rests on a relation one of whose members is now
+# false. In the target design that relation goes INERT and claim 6 becomes
+# UNSUPPORTED: not proven, not disproven, and revivable if the definition is
+# reopened. With three statuses there is no way to say that. Whatever the
+# engine reports for claim 6 here, record it after the first run -- the gap
+# between it and UNSUPPORTED is the measure of what is still missing.
+#
+# Deliberately NOT asserted, because asserting FALSE_CLAIM would bless the
+# wrong behaviour and asserting UNDETERMINED would guess.
+
+# Second concession -- now the highest remaining is claim 5 -> claim 2.
+steps { action { username: "paul" event_type: "CONCEDE_CHALLENGE" } }
+
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "paul" expected_status: "FALSE_CLAIM" }
+  # the journal entries themselves were never disputed and must still stand.
+  # If either of these flips, an attack on a claim has leaked into the
+  # evidence beneath it -- a real failure, not a limitation.
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 11 }
+}
+
+# ============================================================================
+# WHAT A PASS MEANS
+#
+# Structure: multi-from relations build correctly, a definition can sit inside
+# a from-set, independent relations coexist on one parent, and concession does
+# not disturb the graph.
+#
+# What a pass does NOT mean: that the case is handled. Three of the four
+# mechanisms this hearing actually needs -- attacking a link, holding two
+# positions as CONTESTED, and switching definitional lenses -- are absent
+# from the engine, and the substitutions above are strictly cruder than the
+# case requires.
+# ============================================================================

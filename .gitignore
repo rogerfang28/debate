@@ -10,3 +10,9 @@ test/FINAL_*.json
 test/FAIL_*.json
 test/build/
 test/step_view_*.json
+demo-data/
+
+# Stray databases from tests run before DB_PATH is pinned
+/debates.sqlite3
+/users.sqlite3
+*.sqlite3-journal

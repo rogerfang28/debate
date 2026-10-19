@@ -1,7 +1,12 @@
+#include "../../../../../utils/BasisRegistry.h"
 #include "FullDebatePageGenerator.h"
+#include <map>
+#include <set>
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/AnonymousUser.h"
+#include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "user.pb.h"
 #include "user_engagement.pb.h"
@@ -303,7 +308,8 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&focusSection, focusingOnClaim);
     ComponentGenerator::addChild(&topSection, focusSection);
 
-    // Right top section - home button
+    // Right top section. Its Home button moved to the site header, which
+    // LayoutGenerator puts above every page.
     ui::Component rightTopSection = ComponentGenerator::createContainer(
         "rightTopSection",
         "flex flex-col gap-2",
@@ -315,18 +321,6 @@ ui::Component FullDebatePageGenerator::GenerateSingleClaimLayout() {
         "w-64"
     );
 
-    ui::Component goHomeButton = ComponentGenerator::createButton(
-        "goHomeButton",
-        "Home",
-        "",
-        "bg-blue-600",
-        "hover:bg-blue-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&rightTopSection, goHomeButton);
     ComponentGenerator::addChild(&topSection, rightTopSection);
     ComponentGenerator::addChild(&mainLayout, topSection);
 
@@ -691,7 +685,7 @@ ui::Component FullDebatePageGenerator::FillChildClaims(const rendering_info::Deb
     // Check if user is in modify mode
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         challengingClaim = false;
         modifyingCurrentClaim = false;
     }
@@ -1215,7 +1209,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
 
         // Concede button: visible when the current user's claim is being challenged
         // (i.e., user is the defender, not the attacker)
-        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (!userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             ui::Component concedeButton = ComponentGenerator::createButton(
                 "concedeChallengeButton_" + std::to_string(challengeLinkId),
                 "Concede",
@@ -1254,7 +1248,7 @@ ui::Component FullDebatePageGenerator::FillChallenges(const rendering_info::Deba
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
 
-        if (userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengedClaimId,
                 "Delete",
@@ -1307,7 +1301,7 @@ ui::Component FullDebatePageGenerator::FillCurrentClaimSection(const rendering_i
     bool editingClaim = (debatingInfo.current_debate_action().action_type() == 
                          user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM);
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         modifyingCurrentClaim = false;
         editingDescription = false;
         editingClaim = false;
@@ -1525,7 +1519,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                     for (int k = 0; k < rightContent->children_size(); k++) {
                         ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
                         if (modifyActionsContainer->id() == "modifyActionsContainer") {
-                            if (modifyingCurrentClaim && !demo_mode::kReadOnlyMode) {
+                            if (modifyingCurrentClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Cancel and Submit buttons
                                 ui::Component cancelModifyButton = ComponentGenerator::createButton(
                                     "cancelModifyClaimButton",
@@ -1552,7 +1546,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
                                     "w-full transition-colors"
                                 );
                                 ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
-                            } else if (!demo_mode::kReadOnlyMode) {
+                            } else if (!anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Modify Claim button
                                 ui::Component modifyClaimButton = ComponentGenerator::createButton(
                                     "modifyClaimButton",
@@ -1578,7 +1572,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
     }
 
     // Only add buttons if not in editing mode
-    if (!editingDescription && !editingClaim && !demo_mode::kReadOnlyMode) {
+    if (!editingDescription && !editingClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
         // Find descriptionActions container and add appropriate buttons
         for (int i = 0; i < mainLayout.children_size(); i++) {
             ui::Component* contentArea = mainLayout.mutable_children(i);
@@ -1610,7 +1604,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateButtons(const rendering_inf
 
                                             ui::Component addChildClaim = ComponentGenerator::createButton(
                                                 "addChildClaimButton",
-                                                "Add Child Claim",
+                                                "Support",
                                                 "",
                                                 "bg-green-600",
                                                 "hover:bg-green-700",
@@ -1755,7 +1749,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             // Modal title
             ui::Component modalTitle = ComponentGenerator::createText(
                 "addChildClaimModalTitle",
-                "Add Child Claim",
+                "Add Supporting Claim",
                 "text-2xl",
                 "text-white",
                 "font-bold",
@@ -1775,43 +1769,120 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             ComponentGenerator::addChild(&modalContent, claimSentenceLabel);
 
             // Claim sentence input
-            ui::Component claimSentenceInput = ComponentGenerator::createInput(
+            ui::Component claimSentenceInput = ComponentGenerator::createMultiInput(
                 "claimSentenceInput",
                 "Enter the claim sentence...",
-                "claimSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
+                "descriptionInput",
+                "Why this claim matters (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-4"
+                "w-full"
             );
             ComponentGenerator::addChild(&modalContent, claimSentenceInput);
 
-            // Description label
-            ui::Component descriptionLabel = ComponentGenerator::createText(
-                "descriptionLabel",
-                "Description:",
+            ui::Component multiHint = ComponentGenerator::createText(
+                "multiClaimHint",
+                "Add more than one to say they support the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4 mt-1"
+            );
+            ComponentGenerator::addChild(&modalContent, multiHint);
+
+
+            // Basis label
+            ui::Component basisLabel = ComponentGenerator::createText(
+                "linkTypeLabel",
+                "How does this support the claim?",
                 "text-sm",
                 "text-white",
                 "font-semibold",
                 "mb-2"
             );
-            ComponentGenerator::addChild(&modalContent, descriptionLabel);
+            ComponentGenerator::addChild(&modalContent, basisLabel);
 
-            // Description input (using input as textarea)
-            ui::Component descriptionInput = ComponentGenerator::createInput(
-                "descriptionInput",
-                "Enter the description...",
-                "description",
+            // Basis dropdown: whatever backend/config/bases.pbtxt lists, in its
+            // order. Nothing here knows the names.
+            ui::Component basisDropdown = ComponentGenerator::createDropdown(
+                "linkTypeSelect",
+                bases::Names(),
+                bases::DefaultName(),
+                "linkType",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-6 h-32"
+                "w-full mb-6"
             );
-            ComponentGenerator::addChild(&modalContent, descriptionInput);
+            ComponentGenerator::addChild(&modalContent, basisDropdown);
+
+            // Voice: whose claim this is, if not the submitter's own. Blank
+            // means "mine". The name becomes a user that holds the claim.
+            ui::Component voiceLabel = ComponentGenerator::createText(
+                "claimVoiceLabel",
+                "Said by (leave blank if this is your own claim)",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, voiceLabel);
+            ui::Component voiceInput = ComponentGenerator::createInput(
+                "claimVoiceInput",
+                "e.g. the reporter, Paul, AP",
+                "claimVoice",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, voiceInput);
+
+            // Source: where the claim was taken from, if anywhere. Not
+            // evidence -- that is a child claim -- but the place to check.
+            ui::Component sourceLabel = ComponentGenerator::createText(
+                "claimSourceLabel",
+                "Source (optional): where this was taken from",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceLabel);
+            ui::Component sourceUrlInput = ComponentGenerator::createInput(
+                "claimSourceUrlInput",
+                "Link",
+                "claimSourceUrl",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceUrlInput);
+            ui::Component sourceExcerptInput = ComponentGenerator::createInput(
+                "claimSourceExcerptInput",
+                "The words on the page, as written",
+                "claimSourceExcerpt",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceExcerptInput);
 
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(
@@ -1842,8 +1913,8 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "submitAddChildClaimButton",
                 "Submit",
                 "",
-                "bg-green-600",
-                "hover:bg-green-700",
+                "bg-blue-600",
+                "hover:bg-blue-700",
                 "text-white",
                 "px-6 py-2",
                 "rounded",
@@ -1887,6 +1958,9 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full max-w-2xl"
             );
 
+            // A link in the challenge list means the target is an argument.
+            const bool challengingArgument = debatingInfo.challenging_info().link_ids_size() > 0;
+
             // Modal title
             ui::Component addChallengeModalTitle = ComponentGenerator::createText(
                 "addChallengeModalTitle",
@@ -1901,7 +1975,9 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             // Instructions text
             ui::Component challengeInstructions = ComponentGenerator::createText(
                 "challengeInstructions",
-                "Should contradict or prove the statement you are challenging wrong or faulty",
+                challengingArgument
+                    ? "Say why the evidence offered, even if true, does not prove the claim"
+                    : "Should contradict or prove the statement you are challenging wrong or faulty",
                 "text-sm",
                 "text-gray-400",
                 "",
@@ -1909,19 +1985,153 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
 
+            // WHAT IS BEING CHALLENGED is whatever is selected -- a claim, or an
+            // argument (a pill) -- and the modal says which, in one line. It used
+            // to offer a list of the claim's arguments to pick from; that was
+            // the only way to aim at an argument before pills were selectable,
+            // and asking twice is worse than asking once.
+            {
+                std::string targetLine;
+                if (challengingArgument) {
+                    const int pickedLink = debatingInfo.challenging_info().link_ids(0);
+                    std::string offered;
+                    for (const auto& link : debatingInfo.links()) {
+                        if (link.id() != pickedLink) {
+                            continue;
+                        }
+                        for (const auto& c : info.children_claims()) {
+                            if (c.id() == link.connect_to()) {
+                                offered = c.sentence();
+                            }
+                        }
+                    }
+                    targetLine = "Challenging the argument for \"" + debatingInfo.current_claim().sentence() + "\"";
+                    if (!offered.empty()) {
+                        targetLine += ", offered: " + offered;
+                    }
+                } else {
+                    targetLine = "Challenging: " + debatingInfo.current_claim().sentence();
+                }
+                ui::Component targetText = ComponentGenerator::createText(
+                    "challengeTargetLine", targetLine, "text-sm",
+                    challengingArgument ? "text-orange-300" : "text-gray-300", "", "mb-4");
+                (*targetText.mutable_css())["overflow-wrap"] = "break-word";
+                ComponentGenerator::addChild(&addChallengeModalContent, targetText);
+            }
+
             // Challenge sentence input
-            ui::Component challengeSentenceInput = ComponentGenerator::createInput(
+            ui::Component challengeSentenceInput = ComponentGenerator::createMultiInput(
                 "challengeSentenceInput",
                 "Enter your challenge sentence...",
-                "challengeSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
+                "challengeDescriptionInput",
+                "Why this refutes it (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-6 h-32"
+                "w-full"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeSentenceInput);
+
+            ui::Component challengeMultiHint = ComponentGenerator::createText(
+                "challengeMultiClaimHint",
+                "Add more than one to say they refute the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4 mt-1"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeMultiHint);
+
+            // Basis label + dropdown.
+            //
+            // A challenge has a KIND too. "That is not what the word means"
+            // (DEFINITIONAL) is a different move from "the evidence says
+            // otherwise" (EVIDENTIAL), and only the basis records which.
+            ui::Component challengeBasisLabel = ComponentGenerator::createText(
+                "challengeLinkTypeLabel",
+                "On what grounds?",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisLabel);
+
+            ui::Component challengeBasisDropdown = ComponentGenerator::createDropdown(
+                "challengeLinkTypeSelect",
+                bases::Names(),
+                bases::DefaultName(),
+                "challengeLinkType",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisDropdown);
+
+            // Voice: who is making this challenge, if not the submitter.
+            ui::Component challengeVoiceLabel = ComponentGenerator::createText(
+                "challengeVoiceLabel",
+                "Said by (leave blank if this is your own challenge)",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeVoiceLabel);
+            ui::Component challengeVoiceInput = ComponentGenerator::createInput(
+                "challengeVoiceInput",
+                "e.g. the reporter, Paul, AP",
+                "challengeVoice",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeVoiceInput);
+
+            ui::Component challengeSourceLabel = ComponentGenerator::createText(
+                "challengeSourceLabel",
+                "Source (optional): where this was taken from",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceLabel);
+            ui::Component challengeSourceUrlInput = ComponentGenerator::createInput(
+                "challengeSourceUrlInput",
+                "Link",
+                "challengeSourceUrl",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceUrlInput);
+            ui::Component challengeSourceExcerptInput = ComponentGenerator::createInput(
+                "challengeSourceExcerptInput",
+                "The words on the page, as written",
+                "challengeSourceExcerpt",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceExcerptInput);
 
             // Modal action buttons
             ui::Component addChallengeModalActions = ComponentGenerator::createContainer(
@@ -1952,8 +2162,8 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "submitChallengeModalButton",
                 "Submit",
                 "",
-                "bg-green-600",
-                "hover:bg-green-700",
+                "bg-blue-600",
+                "hover:bg-blue-700",
                 "text-white",
                 "px-6 py-2",
                 "rounded",
@@ -1978,7 +2188,7 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
     return mainLayout;
 }
 
-ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb) {
+ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::FullDebateViewInfo& fullDebateInfo, int currentClaimId, float mapScale, VRUserDatabase* userDb, const std::string& selectedNodeOverride) {
 
     ui::Component mapSection = ComponentGenerator::createContainer(
         "mapSection",
@@ -2153,7 +2363,9 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
     }
 
     // Build one layered tree by assigning a single parent to each node in BFS order.
-    std::unordered_map<int, std::vector<int>> treeChildren;
+    // An ordered map: the support edges below are emitted by walking it, and
+    // an unordered one would shuffle the graph's edge list between requests.
+    std::map<int, std::vector<int>> treeChildren;
     std::unordered_set<int> visited;
     std::queue<int> q;
 
@@ -2221,10 +2433,13 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
             case debate::ClaimStatus::UNDETERMINED:  gNode->set_status("UNDETERMINED"); break;
             default:                                  gNode->set_status("UNDETERMINED"); break;
         }
-        gNode->set_creator_id(node->creator_id());
+        // The graph names WHOSE claim it is -- the voice when one was named --
+        // since that is what the colour and initial on the node stand for.
+        const int holderId = node->voice_id() > 0 ? node->voice_id() : node->creator_id();
+        gNode->set_creator_id(holderId);
         if (userDb != nullptr) {
-            std::string creatorUsername = userDb->getUsername(node->creator_id());
-            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(node->creator_id())) : creatorUsername);
+            std::string creatorUsername = userDb->getUsername(holderId);
+            gNode->set_creator_username(creatorUsername.empty() ? ("User " + std::to_string(holderId)) : creatorUsername);
         }
         gNode->set_is_root(claimId == rootClaimId);
         gNode->set_is_current(claimId == currentClaimId);
@@ -2235,29 +2450,103 @@ ui::Component FullDebatePageGenerator::GenerateMapSection(const rendering_info::
         }
     }
 
-    // Add parent-child / tree edges
-    int edgeIdx = 0;
+    // The graph edges below are assembled from BFS adjacency, which has lost
+    // which stored relation produced each one. Recover both the basis and the
+    // relation id by keying the tree's link list on its endpoints -- the same
+    // pair the adjacency uses.
+    //
+    // The relation id is what lets the renderer group several edges into one
+    // junction. Endpoint keying is only sound while one pair of claims has at
+    // most one relation between them, which holds today; a from-SET arriving
+    // in the tree will need the id carried through adjacency instead.
+    struct EdgeMeta {
+        std::string basis;
+        int relationId = 0;
+        int targetRelationId = 0;  // an undercut ends at this relation's pill
+    };
+    std::map<std::pair<int, int>, EdgeMeta> metaByEndpoints;
+    for (int i = 0; i < tree.links_size(); ++i) {
+        const rendering_info::FullDebateTreeLink& link = tree.links(i);
+        metaByEndpoints[{link.from_claim_id(), link.to_claim_id()}] =
+            EdgeMeta{link.connection(), link.link_id(), link.to_relation_id()};
+    }
+    auto metaFor = [&](int from, int to) -> EdgeMeta {
+        auto it = metaByEndpoints.find({from, to});
+        return it == metaByEndpoints.end() ? EdgeMeta{} : it->second;
+    };
+
+    // Support edges, emitted in RELATION orientation: the supporting claim is
+    // the source, what it supports is the target.
+    //
+    // That is the reverse of how the rows are stored (parent -> child) and the
+    // reverse of how these edges used to be emitted. The old direction could
+    // not express a hyperedge: several claims supporting one conclusion have to
+    // SHARE A TARGET so they converge on a single junction, and in parent ->
+    // child orientation sibling edges share a source and fan out instead.
+    //
+    // `treeChildren` is still parent -> children, so the ends are swapped here.
+    //
+    // CHALLENGE PAIRS ARE EXCLUDED. Challenges are deliberately pushed into the
+    // traversal adjacency so the BFS can reach challenge claims -- otherwise a
+    // challenge claim has no parent-child path from the root and would be
+    // dropped from the layout entirely. But that adjacency is also what
+    // treeChildren is built from, so without this filter every challenge is
+    // emitted TWICE: once here as a support edge, and again below as the
+    // challenge it actually is.
+    //
+    // The stored data was always correct -- LINKS holds only the CHALLENGE row.
+    // The duplicate was invisible while an edge was just a line; junction nodes
+    // made it show up as a phantom unlabelled "SUPPORTS" relation next to every
+    // challenge.
+    std::set<std::pair<int, int>> challengePairs;
+    for (const auto& ce : challengeEdges) {
+        challengePairs.insert({ce.first, ce.second});
+    }
+
+    // Edge ids come from the endpoints, not a running count: a count shifts
+    // every later id when one edge is added, and the id is the edge's
+    // identity on the client. One relation per pair of claims (see EdgeMeta).
+    auto edgeId = [](int source, int target) {
+        return "e" + std::to_string(source) + "_" + std::to_string(target);
+    };
     for (const auto& entry : treeChildren) {
         for (int childId : entry.second) {
+            // Same orientation as the challenge edges below: challenger first.
+            if (challengePairs.count({childId, entry.first}) > 0) {
+                continue;
+            }
             auto* gEdge = graphComp.add_edges();
-            gEdge->set_id("e" + std::to_string(edgeIdx++));
-            gEdge->set_source(std::to_string(entry.first));
-            gEdge->set_target(std::to_string(childId));
-            gEdge->set_type("PARENT_CHILD");
+            gEdge->set_id(edgeId(childId, entry.first));
+            gEdge->set_source(std::to_string(childId));      // the supporter
+            gEdge->set_target(std::to_string(entry.first));  // the supported
+            gEdge->set_type("SUPPORTS");
+            // Metadata is still keyed by the STORED endpoints, which have not
+            // moved -- only the direction we draw them in has.
+            const EdgeMeta meta = metaFor(entry.first, childId);
+            gEdge->set_basis(meta.basis);
+            gEdge->set_relation_id(meta.relationId);
         }
     }
 
-    // Add challenge edges
+    // Add challenge edges, in the tree's link order (relation id).
     for (const auto& ce : challengeEdges) {
         auto* gEdge = graphComp.add_edges();
-        gEdge->set_id("e" + std::to_string(edgeIdx++));
+        gEdge->set_id(edgeId(ce.first, ce.second));
         gEdge->set_source(std::to_string(ce.first));
         gEdge->set_target(std::to_string(ce.second));
         gEdge->set_type("CHALLENGE");
+        const EdgeMeta meta = metaFor(ce.first, ce.second);
+        gEdge->set_basis(meta.basis);
+        gEdge->set_relation_id(meta.relationId);
+        if (meta.targetRelationId > 0) {
+            gEdge->set_target_relation_id(meta.targetRelationId);
+        }
     }
 
-    // Set selected node to current claim if present
-    if (currentClaimId > 0) {
+    // Highlight the selected argument pill if there is one, else the current claim.
+    if (!selectedNodeOverride.empty()) {
+        graphComp.set_selected_node_id(selectedNodeOverride);
+    } else if (currentClaimId > 0) {
         graphComp.set_selected_node_id(std::to_string(currentClaimId));
     }
 

@@ -1,4 +1,7 @@
 #include "DebatePageEventParser.h"
+
+#include <cstring>
+#include <map>
 #include <iostream>
 #include "../../../utils/Log.h"
 
@@ -14,6 +17,55 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
     if (componentId == "goHomeButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_HOME);
         Log::debug("  GO_HOME for user: " + std::to_string(user_id));
+    // The AI chat: the Ask button, Ctrl+Enter in the box, or a quick prompt.
+    } else if ((componentId == "askChatButton" && eventType == "onClick") ||
+               (componentId == "chatQuestionInput" && eventType == "onSubmit")) {
+        event.set_type(debate_event::ASK_CHAT);
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "chatQuestionInput") {
+                event.mutable_ask_chat()->set_question(comp.value());
+            }
+        }
+        Log::debug("  ASK_CHAT for user: " + std::to_string(user_id));
+    } else if (componentId.rfind("chatQuickButton_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::ASK_CHAT);
+        event.mutable_ask_chat()->set_quick_prompt(componentId.substr(strlen("chatQuickButton_")));
+        Log::debug("  ASK_CHAT (quick) for user: " + std::to_string(user_id));
+    } else if (componentId == "clearChatButton" && eventType == "onClick") {
+        event.set_type(debate_event::CLEAR_CHAT);
+        Log::debug("  CLEAR_CHAT for user: " + std::to_string(user_id));
+    // The two tabs at the top of a debate, and the Brief's own buttons.
+    } else if (componentId == "briefTabButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_BRIEF);
+        Log::debug("  GO_TO_BRIEF for user: " + std::to_string(user_id));
+    } else if (componentId == "debateTabButton" && eventType == "onClick") {
+        event.set_type(debate_event::GO_TO_OVERVIEW);
+        Log::debug("  GO_TO_OVERVIEW (tab) for user: " + std::to_string(user_id));
+    } else if (componentId == "generateBriefButton" && eventType == "onClick") {
+        event.set_type(debate_event::GENERATE_BRIEF);
+        Log::debug("  GENERATE_BRIEF for user: " + std::to_string(user_id));
+    } else if (componentId.rfind("briefOpenClaim_", 0) == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("briefOpenClaim_"));
+        Log::debug("  OPEN_CLAIM_IN_DEBATE for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::OPEN_CLAIM_IN_DEBATE);
+        event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
+    } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
+        event.set_type(debate_event::TUTORIAL_NEXT);
+        Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));
+    // Prefix, not equality: the guide box shows an exit in the header, a
+    // Finish when the walkthrough ends, and a "Leave tutorial" when a script
+    // will not load. They all mean the same event but must be DIFFERENT
+    // elements -- sharing one id put duplicate ids in the document, and the
+    // second one became unreachable to anything addressing it by id.
+    } else if (componentId.rfind("tutorialExitButton", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::TUTORIAL_EXIT);
+        Log::debug("  TUTORIAL_EXIT for user: " + std::to_string(user_id));
+    } else if (componentId == "cancelAiWorkButton" && eventType == "onClick") {
+        event.set_type(debate_event::CANCEL_AI_WORK);
+        Log::debug("  CANCEL_AI_WORK for user: " + std::to_string(user_id));
+    } else if (componentId == "dismissAiNoticeButton" && eventType == "onClick") {
+        event.set_type(debate_event::DISMISS_AI_NOTICE);
+        Log::debug("  DISMISS_AI_NOTICE for user: " + std::to_string(user_id));
     } else if (componentId == "seeOverviewButton" && eventType == "onClick") {
         event.set_type(debate_event::GO_TO_OVERVIEW);
         Log::debug("  GO_TO_OVERVIEW for user: " + std::to_string(user_id));
@@ -71,16 +123,52 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::ADD_CHILD_CLAIM);
         // find the claim and description from the message
         const auto& pageData = message.page_data().components();
-        for (const auto& comp : pageData) { 
-            auto* submitEvent = event.mutable_add_child_claim();
-            if (comp.id() == "descriptionInput") {
-                submitEvent->set_description(comp.value());
-                Log::debug("  Description: " + comp.value());
+        auto* submitEvent = event.mutable_add_child_claim();
+
+        // Claims and descriptions are collected BY SUFFIX, not in DOM order.
+        //
+        // Each row in the modal is claimSentenceInput<N> plus
+        // descriptionInput<N>. Appending both in whatever order the DOM scan
+        // produced would misalign them the moment a row is left blank or
+        // removed -- a description would land on somebody else's claim. Keying
+        // on the shared suffix makes the pairing independent of order and of
+        // gaps.
+        std::map<std::string, std::string> claimsBySuffix;
+        std::map<std::string, std::string> descsBySuffix;
+
+        for (const auto& comp : pageData) {
+            if (comp.id().rfind("claimSentenceInput", 0) == 0) {
+                claimsBySuffix[comp.id().substr(strlen("claimSentenceInput"))] = comp.value();
+            } else if (comp.id().rfind("descriptionInput", 0) == 0) {
+                descsBySuffix[comp.id().substr(strlen("descriptionInput"))] = comp.value();
+            } else if (comp.id() == "linkTypeSelect") {
+                submitEvent->set_basis(comp.value());
+                Log::debug("  Basis: " + comp.value());
+            } else if (comp.id() == "claimVoiceInput") {
+                submitEvent->set_voice(comp.value());
+                Log::debug("  Voice: " + comp.value());
+            } else if (comp.id() == "claimSourceUrlInput") {
+                submitEvent->set_source_url(comp.value());
+            } else if (comp.id() == "claimSourceExcerptInput") {
+                submitEvent->set_source_excerpt(comp.value());
             }
-            else if (comp.id() == "claimSentenceInput") {
-                submitEvent->set_claim(comp.value());
-                Log::debug("  Claim: " + comp.value());
-            }
+        }
+
+        // The unsuffixed row is the primary claim; the rest are extras, and
+        // each carries its own description at the same index.
+        submitEvent->set_claim(claimsBySuffix[""]);
+        submitEvent->set_description(descsBySuffix[""]);
+        Log::debug("  Claim: " + claimsBySuffix[""]);
+
+        for (const auto& entry : claimsBySuffix) {
+            if (entry.first.empty() || entry.second.empty()) continue;
+            submitEvent->add_extra_claims(entry.second);
+            // Padded rather than skipped, so index N of extra_descriptions
+            // always belongs to index N of extra_claims.
+            auto descIt = descsBySuffix.find(entry.first);
+            submitEvent->add_extra_descriptions(
+                descIt == descsBySuffix.end() ? std::string() : descIt->second);
+            Log::debug("  Extra claim: " + entry.second);
         }
      }
      
@@ -176,12 +264,42 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         event.set_type(debate_event::SUBMIT_CHALLENGE_CLAIM);
         // find the challenge claim from the message
         const auto& pageData = message.page_data().components();
-        for (const auto& comp : pageData) { 
-            auto* submitEvent = event.mutable_submit_challenge_claim();
-            if (comp.id() == "challengeSentenceInput") {
-                submitEvent->set_challenge_sentence(comp.value());
-                Log::debug("  Challenge sentence: " + comp.value());
+        auto* submitEvent = event.mutable_submit_challenge_claim();
+
+        // Same suffix pairing as ADD_CHILD_CLAIM above -- see the note there
+        // for why order-based collection misaligns descriptions.
+        std::map<std::string, std::string> sentencesBySuffix;
+        std::map<std::string, std::string> challengeDescsBySuffix;
+
+        for (const auto& comp : pageData) {
+            if (comp.id().rfind("challengeSentenceInput", 0) == 0) {
+                sentencesBySuffix[comp.id().substr(strlen("challengeSentenceInput"))] = comp.value();
+            } else if (comp.id().rfind("challengeDescriptionInput", 0) == 0) {
+                challengeDescsBySuffix[comp.id().substr(strlen("challengeDescriptionInput"))] = comp.value();
+            } else if (comp.id() == "challengeLinkTypeSelect") {
+                submitEvent->set_basis(comp.value());
+                Log::debug("  Challenge basis: " + comp.value());
+            } else if (comp.id() == "challengeVoiceInput") {
+                submitEvent->set_voice(comp.value());
+                Log::debug("  Challenge voice: " + comp.value());
+            } else if (comp.id() == "challengeSourceUrlInput") {
+                submitEvent->set_source_url(comp.value());
+            } else if (comp.id() == "challengeSourceExcerptInput") {
+                submitEvent->set_source_excerpt(comp.value());
             }
+        }
+
+        submitEvent->set_challenge_sentence(sentencesBySuffix[""]);
+        submitEvent->set_challenge_description(challengeDescsBySuffix[""]);
+        Log::debug("  Challenge sentence: " + sentencesBySuffix[""]);
+
+        for (const auto& entry : sentencesBySuffix) {
+            if (entry.first.empty() || entry.second.empty()) continue;
+            submitEvent->add_extra_sentences(entry.second);
+            auto descIt = challengeDescsBySuffix.find(entry.first);
+            submitEvent->add_extra_descriptions(
+                descIt == challengeDescsBySuffix.end() ? std::string() : descIt->second);
+            Log::debug("  Extra challenge sentence: " + entry.second);
         }
     }
     else if (componentId.find("removeClaimFromChallengeButton_") == 0 && eventType == "onClick") {
@@ -208,6 +326,18 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  DELETE_CHALLENGE for user: " + std::to_string(user_id) + " challenge ID: " + challengeId);
         event.set_type(debate_event::DELETE_CHALLENGE);
         event.mutable_delete_challenge()->set_challenge_id(std::stoi(challengeId));
+    }
+    else if (componentId.find("endorseClaimButton_") == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("endorseClaimButton_"));
+        Log::debug("  ENDORSE_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::ENDORSE_CLAIM);
+        event.mutable_endorse_claim()->set_claim_id(std::stoi(claimId));
+    }
+    else if (componentId.find("unendorseClaimButton_") == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("unendorseClaimButton_"));
+        Log::debug("  UNENDORSE_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::UNENDORSE_CLAIM);
+        event.mutable_unendorse_claim()->set_claim_id(std::stoi(claimId));
     }
     else if (componentId.find("concedeChallengeButton_") == 0 && eventType == "onClick"){
         std::string challengeLinkId = componentId.substr(strlen("concedeChallengeButton_"));
@@ -251,6 +381,22 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  SELECT_CLAIM for user: " + std::to_string(user_id) + " claim ID: " + claimId);
         event.set_type(debate_event::SELECT_CLAIM);
         event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
+    }
+    // A click on a relation pill in the graph. The id is the RELATION id.
+    else if (componentId.rfind("selectLinkNode_", 0) == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("selectLinkNode_"));
+        Log::debug("  SELECT_LINK for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::SELECT_LINK);
+        event.mutable_select_link()->set_link_id(std::stoi(linkId));
+    }
+    // The selected-argument panel's Challenge button. Its own id, not the
+    // modal's addLinkToChallengeButton_, so the two are never on one page
+    // with the same id; both mean "put this link into a challenge".
+    else if (componentId.rfind("challengeSelectedLinkButton_", 0) == 0 && eventType == "onClick") {
+        std::string linkId = componentId.substr(strlen("challengeSelectedLinkButton_"));
+        Log::debug("  ADD_LINK_TO_BE_CHALLENGED (from panel) for user: " + std::to_string(user_id) + " link ID: " + linkId);
+        event.set_type(debate_event::ADD_LINK_TO_BE_CHALLENGED);
+        event.mutable_add_link_to_be_challenged()->set_link_id(std::stoi(linkId));
     }
     else {
         Log::error("Unknown component/event combination on debate page: " 

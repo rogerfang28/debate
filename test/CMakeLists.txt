@@ -26,6 +26,10 @@ set(VCPKG_INSTALLED "${VCPKG_ROOT}/installed/x64-mingw-static")
 # --- Compiler flags ---
 add_compile_options(-Wno-deprecated -Wno-unused-variable -Wno-sign-compare)
 add_definitions(-D_WIN32_WINNT=0x0A00 -DWIN32_LEAN_AND_MEAN -DNOMINMAX)
+# Matches the backend. Without it httplib is built with no TLS, so any https
+# URL throws from the client constructor -- and every real article link is
+# https, which made the fetcher untestable here.
+add_definitions(-DCPPHTTPLIB_OPENSSL_SUPPORT)
 
 # --- Git commit hash (used by StepView/FullDebatePageGenerator for page title) ---
 execute_process(
@@ -63,6 +67,13 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/StatementDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/DebateMembersDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/LinkDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/ChatDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/BriefDatabase.cc
+    ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
+    ${REPO_ROOT}/backend/src/moveLog/MoveBackfill.cc
+    ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
+    ${REPO_ROOT}/backend/src/statusEngine/StatusEngine.cc
     ${REPO_ROOT}/backend/src/database/debate/DatabaseWrapper.cc
     ${REPO_ROOT}/backend/src/utils/DebateWrapper.cc
     ${REPO_ROOT}/backend/src/utils/Log.cc
@@ -75,10 +86,30 @@ set(HANDLER_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EndorseHandler/EndorseHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
+    ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
+    ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
+    ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 
 # --- Moderator + response generators (needed by scenario runner) ---
@@ -86,13 +117,13 @@ set(MODERATOR_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/DebateModerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
-    ${REPO_ROOT}/backend/src/debateModerator/buildResponse/loginPageResponse/LoginPageResponseGenerator.cc
 )
 
 # --- Virtual renderer source files (step view / pbtxt generation) ---
 set(RENDERER_SOURCES
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/ComponentGenerator.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/StepView/StepView.cc
+    ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/BriefView/BriefView.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageInfoParser.cc
     ${REPO_ROOT}/backend/src/virtualRenderer/LayoutGenerator/pages/debatePage/FullDebateView/FullDebatePageGenerator.cc
     ${REPO_ROOT}/backend/src/database/virtualrenderer/VRUserDatabase.cc
@@ -135,6 +166,9 @@ set(COMMON_LIBS
     ${ABSL_LIBS}
     dbghelp
     -Wl,--end-group
+    ${VCPKG_INSTALLED}/lib/libssl.a
+    ${VCPKG_INSTALLED}/lib/libcrypto.a
+    crypt32
     ${VCPKG_INSTALLED}/lib/libsqlite3.a
     ${VCPKG_INSTALLED}/lib/libzs.a
     ws2_32
@@ -159,10 +193,30 @@ add_executable(debate_simulation
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EndorseHandler/EndorseHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
+    ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
+    ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
+    ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(debate_simulation ${COMMON_LIBS})
 
@@ -180,11 +234,15 @@ add_custom_target(copy_scenarios ALL
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/SeaLevelDebate.pbtxt"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/TestA.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/UndercutTest.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/UndercutTest.pbtxt"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/scenarios/FauciCase.pbtxt" "${CMAKE_BINARY_DIR}/scenarios/FauciCase.pbtxt"
     COMMENT "Copying scenario .pbtxt files to build directory"
     SOURCES "${CMAKE_SOURCE_DIR}/scenarios/ComprehensiveTest.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/GlobalWarmingHoaxDebate.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/SeaLevelDebate.pbtxt"
                 "${CMAKE_SOURCE_DIR}/scenarios/TestA.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/UndercutTest.pbtxt"
+                "${CMAKE_SOURCE_DIR}/scenarios/FauciCase.pbtxt"
 )
 add_dependencies(debate_simulation copy_scenarios)
 
@@ -201,6 +259,12 @@ set(IMPORT_TOOL_LIBS
     ${ABSL_LIBS}
     dbghelp
     -Wl,--end-group
+    # UrlFetcher compiles httplib with TLS, so every target that includes it
+    # needs OpenSSL -- not just the gtest binaries. This list did not, and the
+    # tool targets stopped linking the moment UrlFetcher joined their sources.
+    ${VCPKG_INSTALLED}/lib/libssl.a
+    ${VCPKG_INSTALLED}/lib/libcrypto.a
+    crypt32
     ${VCPKG_INSTALLED}/lib/libsqlite3.a
     ${VCPKG_INSTALLED}/lib/libzs.a
     ws2_32
@@ -216,12 +280,33 @@ add_executable(import_debate_tool
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EndorseHandler/EndorseHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
+    ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
+    ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
+    ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(import_debate_tool ${IMPORT_TOOL_LIBS})
+
 
 # ============================================================
 # UNIT TESTS — debate_tests (DebateEventTest + PropagationTest + EnterDebateMembersTest)
@@ -230,20 +315,59 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_debate_create.cc
     ${CMAKE_SOURCE_DIR}/tests/test_enter_debate_members.cc
     ${CMAKE_SOURCE_DIR}/tests/test_challenge_propagation.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_step_view_layout.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_move_log.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_status_engine.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_relation_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_llm_client.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_debate_text_formatter.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_chat.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_generated_debate_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_url_fetcher.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_tutorial_library.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_basis_registry.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_extracted_debate_builder.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_connections_debate_builder.cc
 )
 
 add_executable(debate_tests
     ${UNIT_TEST_SOURCES}
     ${DB_SOURCES}
+    # MoveLogger hangs off event dispatch, so the move-log tests drive real
+    # DebateEvents through DebateModerator rather than calling handlers
+    # directly -- which needs the moderator and the response generators it
+    # builds pages with.
+    ${MODERATOR_SOURCES}
+    ${RENDERER_SOURCES}
     ${PB_SRC}
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DebateHandler/DebateHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EndorseHandler/EndorseHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/DeleteClaimHandler/DeleteClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/EditClaimHandler/EditClaimHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ConnectClaimsHandler/ConnectClaimsHandler.cc
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ModifyClaimHandler/ModifyClaimHandler.cc
+    # Dispatched from DebateModerator, so every target that links the moderator
+    # needs it -- and it drags in the chat and the shared model client.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ChatHandler/ChatHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${REPO_ROOT}/backend/src/utils/TutorialLibrary.cc
+    ${REPO_ROOT}/backend/src/utils/BasisRegistry.cc
+    ${REPO_ROOT}/backend/src/utils/ExtractedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ConnectionsDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/DebateChat.cc
+    ${REPO_ROOT}/backend/src/utils/DebateBrief.cc
+    ${REPO_ROOT}/backend/src/utils/DebateGenerator.cc
+    ${REPO_ROOT}/backend/src/utils/GeneratedDebateBuilder.cc
+    ${REPO_ROOT}/backend/src/utils/ScenarioImporter.cc
+    ${REPO_ROOT}/backend/src/utils/UrlFetcher.cc
+    ${REPO_ROOT}/backend/src/utils/AiJobs.cc
+    ${REPO_ROOT}/backend/src/utils/DebateTextFormatter.cc
+    ${REPO_ROOT}/backend/src/utils/LlmClient.cc
 )
 target_link_libraries(debate_tests ${COMMON_LIBS})
 

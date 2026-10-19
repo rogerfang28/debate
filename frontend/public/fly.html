@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fly-to test</title>
+<style>
+  :root {
+    --bg:#0f1117; --panel:#151823; --panel-2:#1b1f2d; --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.16);
+    --text:#e8eaed; --text-2:#a3a9b8; --text-3:#6f7585; --accent:#6d7cff; --accent-hover:#8691ff; --accent-soft:rgba(109,124,255,0.14);
+    --open:#f0625d; --open-soft:rgba(240,98,93,0.14); --settled:#3dcf8e; --warn:#f2b84b; --radius:10px; --radius-sm:6px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family:var(--font); font-size:14px; }
+  button { font: inherit; }
+  .app { height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+  .header { height:56px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 18px; background:var(--panel); border-bottom:1px solid var(--line); }
+  .brand { font-weight:650; font-size:15px; }
+  .main { flex:1; min-height:0; display:grid; grid-template-columns: 320px minmax(0,1fr); gap:14px; padding:14px; }
+  .region { min-height:0; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; }
+  .scroll { overflow-y:auto; min-height:0; flex:1; }
+  .caption { font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
+  .small { font-size:12.5px; color:var(--text-3); }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; cursor:pointer; border:1px solid var(--line-strong); background:transparent; color:var(--text); }
+  .btn:hover { background:rgba(255,255,255,0.05); }
+  .btn.quiet { border-color:transparent; color:var(--text-2); }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .bar { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; border-bottom:1px solid var(--line); flex:none; gap:10px; }
+  .sel { padding:12px 16px; border-bottom:1px solid var(--line); }
+  .sel p { margin:6px 0 0; font-size:14px; }
+  .link { padding:8px 16px; border-bottom:1px solid var(--line); cursor:pointer; display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--text-2); }
+  .link:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+  .link .k { font-size:11px; color:var(--text-3); white-space:nowrap; min-width:64px; padding-top:2px; }
+  .link .k.ch { color:var(--open); }
+  .graph { flex:1; min-height:0; position:relative; overflow:hidden; }
+  svg { width:100%; height:100%; display:block; }
+  .edge { stroke:var(--line-strong); stroke-width:1.3; fill:none; }
+  .edge.ch { stroke:var(--open); stroke-dasharray:4 3; }
+  .edge.lit { stroke:var(--accent); opacity:.9; stroke-width:2; }
+  .edge.lit.ch { stroke:var(--open); }
+  .node { cursor:pointer; }
+  .node rect { fill:var(--panel-2); stroke:var(--line-strong); rx:8; }
+  .node:hover rect { stroke:var(--text-2); }
+  .node.focus rect { stroke:var(--accent); stroke-width:2; }
+  .node.open rect { stroke:var(--open); }
+  .node.dim { opacity:.45; }
+  .node text { font-family:var(--font); fill:var(--text); font-size:11.5px; pointer-events:none; }
+  .node .who { fill:var(--text-3); font-size:10px; }
+  /* off-screen indicators */
+  .ind { position:absolute; display:grid; grid-template-columns:auto 1fr auto; column-gap:9px; align-items:center; padding:9px 12px; width:300px; background:var(--panel-2); border:1.5px solid var(--text-3); border-radius:12px; font-size:13px; line-height:1.35; color:var(--text-2); cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,.55); transform:translate(-50%,-50%); }
+  .ind:hover { color:var(--text); border-color:var(--text); background:#222738; }
+  .ind .arrow { color:var(--text); font-size:18px; font-weight:700; grid-row:1 / span 2; }
+  .ind .top { display:flex; align-items:center; gap:7px; font-size:11.5px; }
+  .ind .who { color:var(--text); font-weight:600; }
+  .ind .kind { color:var(--text-3); }
+  .ind .gist { grid-column:2; color:var(--text); white-space:normal; }
+  .ind .dot { width:9px; height:9px; border-radius:50%; background:var(--text-3); flex:none; grid-row:1 / span 2; }
+  .ind.ch { border-color:var(--open); }
+  .ind.ch .dot { background:var(--open); }
+  .ind.ch .kind { color:var(--open); }
+  .ind.up { border-color:var(--accent); }
+  .ind.up .dot { background:var(--accent); }
+  .ind.up .kind { color:var(--accent-hover); }
+  .hint { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:12px; color:var(--text-3); background:var(--panel); border:1px solid var(--line); padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .keys { font-size:12px; color:var(--text-3); line-height:1.7; padding:10px 16px; border-top:1px solid var(--line); }
+  .keys b { color:var(--text-2); font-weight:600; display:inline-block; min-width:70px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="row"><span class="brand">Debate Hub</span><span class="small">/ Fly-to test · the graph keeps its shape; the camera and the edge pills do the work</span></div>
+    <div class="row"><button class="btn quiet" id="fit">Fit everything</button><button class="btn quiet" id="toRoot">Main claim</button></div>
+  </div>
+  <div class="main">
+    <div class="region">
+      <div class="sel">
+        <span class="caption">Selected claim</span>
+        <p id="selText"></p>
+        <div class="row" style="margin-top:8px"><span class="small" id="selWho"></span></div>
+      </div>
+      <div class="caption" style="padding:10px 16px 4px">Connections</div>
+      <div class="scroll" id="links"></div>
+      <div class="keys"><b>↑</b> parent &nbsp; <b>↓</b> first child &nbsp; <b>← →</b> siblings<br><b>Esc</b> main claim &nbsp; <b>F</b> fit everything</div>
+    </div>
+    <div class="region">
+      <div class="bar"><span class="small" id="status"></span><span class="small">pills at the edge = connected claims just off-screen · click one to fly there</span></div>
+      <div class="graph" id="graph"><svg id="svg"><g id="g"></g></svg><div id="inds"></div><div class="hint">Click a node to fly to it · drag to pan · wheel to zoom</div></div>
+    </div>
+  </div>
+</div>
+<script>
+// ---------- the same fake 62-claim debate as focus.html ----------
+const people = ['Paul','Fauci','Peters','Lankford','Collins','Ebright','Andersen','Hassan','CRS','Tabak'];
+const stems = ['the pardon voids the Fifth','NIH funded the Wuhan work','the mice got sicker','the letter is an admission','the term is nebulous','state subpoenas are real','the vote skipped the floor','the diary shows doubt','the paper was prompted','Lerner was never prosecuted','the lab lacked BSL-3','the grant was reinstated','the definition changed in 2021','new testimony is unpardoned','the referral never reached DOJ','the market was the epicentre','three agencies lean lab','the authors deny it','the records were online','the hearing was a trap'];
+let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const nodes = []; const edges = [];
+function add(parent, challenge, depth) {
+  const id = nodes.length + 1; const who = people[Math.floor(rnd() * people.length)];
+  const text = (challenge ? 'But ' : '') + stems[Math.floor(rnd() * stems.length)] + (depth > 2 ? ', for reason ' + id : '') + '.';
+  nodes.push({ id, who, text, challenge, depth, parent, open: false, kids: [] });
+  if (parent) { edges.push({ from: id, to: parent, challenge }); nodes[parent - 1].kids.push(id); }
+  return id;
+}
+const root = add(null, false, 0); nodes[0].text = 'Fauci should be held in contempt of Congress for refusing to testify.'; nodes[0].who = 'Paul';
+function grow(parent, depth) { if (nodes.length >= 62 || depth > 4) return; const n = depth === 1 ? 4 : 1 + Math.floor(rnd() * 3); for (let i = 0; i < n && nodes.length < 62; i++) { const ch = depth > 1 && rnd() < 0.35; const id = add(parent, ch, depth); if (rnd() < 0.7) grow(id, depth + 1); } }
+grow(root, 1);
+while (nodes.length < 62) { const cands = nodes.filter(n => n.depth < 4 && n.kids.length < 5); const p = cands[Math.floor(rnd() * cands.length)]; add(p.id, p.depth >= 1 && rnd() < 0.35, p.depth + 1); }
+for (const n of nodes) if (n.challenge && !n.kids.some(k => nodes[k - 1].challenge)) nodes[n.parent - 1].open = true;
+const byId = id => nodes[id - 1];
+
+// ---------- one fixed layout, never changes ----------
+const W = 190, H = 54, GX = 26, GY = 110; const pos = new Map();
+(function layout() { let cursor = 0; function dfs(id, depth) { const n = byId(id); if (!n.kids.length) { pos.set(id, { x: cursor * (W + GX), y: depth * GY }); cursor++; return; } n.kids.forEach(k => dfs(k, depth + 1)); const xs = n.kids.map(k => pos.get(k).x); pos.set(id, { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: depth * GY }); } dfs(root, 0); })();
+
+// ---------- draw once ----------
+const svg = document.getElementById('svg'), g = document.getElementById('g'), inds = document.getElementById('inds'), graphEl = document.getElementById('graph');
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function wrap(text, max) { const w = text.split(' '); const lines = ['']; for (const x of w) { if ((lines[lines.length - 1] + ' ' + x).trim().length > max) lines.push(x); else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + x).trim(); } return lines.slice(0, 2); }
+(function drawAll() {
+  let out = '';
+  for (const e of edges) { const a = pos.get(e.from), b = pos.get(e.to); out += `<path class="edge${e.challenge ? ' ch' : ''}" data-from="${e.from}" data-to="${e.to}" d="M${a.x} ${a.y - H / 2} V${(a.y + b.y) / 2} H${b.x} V${b.y + H / 2}"/>`; }
+  for (const [id, p] of pos) { const n = byId(id); const lines = wrap(n.text, 30);
+    out += `<g class="node${n.open ? ' open' : ''}" data-id="${id}" transform="translate(${p.x - W / 2},${p.y - H / 2})"><rect width="${W}" height="${H}"/>`;
+    lines.forEach((l, i) => out += `<text x="${W / 2}" y="${18 + i * 13}" text-anchor="middle">${esc(l)}</text>`);
+    out += `<text class="who" x="${W / 2}" y="${H - 8}" text-anchor="middle">${esc(n.who)}${n.challenge ? ' · challenge' : ''}${n.open ? ' · owes a reply' : ''}</text></g>`; }
+  g.innerHTML = out;
+})();
+
+// ---------- camera ----------
+let cam = { x: 0, y: 0, k: 1 }; let focus = root; let anim = null;
+function applyCam() { g.setAttribute('transform', `translate(${cam.x},${cam.y}) scale(${cam.k})`); placeIndicators(); }
+function flyTo(target, k, ms = 450) {
+  const r = svg.getBoundingClientRect(); const from = { ...cam };
+  const to = { k, x: r.width / 2 - target.x * k, y: r.height / 2 - target.y * k };
+  if (anim) cancelAnimationFrame(anim);
+  const t0 = performance.now(); const ease = t => 1 - Math.pow(1 - t, 3);
+  const step = now => { const t = Math.min(1, (now - t0) / ms); const e = ease(t); cam = { x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, k: from.k + (to.k - from.k) * e }; applyCam(); if (t < 1) anim = requestAnimationFrame(step); else anim = null; };
+  anim = requestAnimationFrame(step);
+}
+function fitAll() { const r = svg.getBoundingClientRect(); const xs = [...pos.values()].map(p => p.x), ys = [...pos.values()].map(p => p.y); const minx = Math.min(...xs) - W, maxx = Math.max(...xs) + W, miny = Math.min(...ys) - H, maxy = Math.max(...ys) + H; const k = Math.min(r.width / (maxx - minx), r.height / (maxy - miny)) * 0.95; flyTo({ x: (minx + maxx) / 2, y: (miny + maxy) / 2 }, k, 500); }
+
+// ---------- selection ----------
+function neighbours(id) { const n = byId(id); const out = []; if (n.parent) out.push({ id: n.parent, kind: n.challenge ? 'challenges' : 'supports', up: true }); for (const k of n.kids) out.push({ id: k, kind: byId(k).challenge ? 'challenge' : 'support', up: false }); return out; }
+function select(id, fly = true) {
+  focus = id; const n = byId(id);
+  document.querySelectorAll('.node').forEach(el => { const nid = +el.dataset.id; el.classList.toggle('focus', nid === id); el.classList.toggle('dim', nid !== id && !neighbours(id).some(x => x.id === nid)); });
+  document.querySelectorAll('.edge').forEach(el => el.classList.toggle('lit', +el.dataset.from === id || +el.dataset.to === id));
+  document.getElementById('selText').textContent = n.text; document.getElementById('selWho').textContent = 'Said by ' + n.who + (n.open ? ' · owes a reply' : '');
+  const L = document.getElementById('links'); L.innerHTML = '';
+  for (const nb of neighbours(id)) { const m = byId(nb.id); const d = document.createElement('div'); d.className = 'link'; d.innerHTML = `<span class="k${nb.kind.startsWith('challenge') ? ' ch' : ''}">${nb.up ? '↑ ' + nb.kind : '↓ ' + nb.kind}</span><span>${esc(m.text)}<br><span class="small">${esc(m.who)}</span></span>`; d.onclick = () => select(nb.id); L.appendChild(d); }
+  if (fly) flyTo(pos.get(id), 1.15);
+  else placeIndicators();
+}
+
+// ---------- off-screen indicators ----------
+function placeIndicators() {
+  inds.innerHTML = '';
+  const r = svg.getBoundingClientRect(); const inset = 34;
+  const toScreen = p => ({ x: cam.x + p.x * cam.k, y: cam.y + p.y * cam.k });
+  const f = toScreen(pos.get(focus)); let offscreen = 0; const pills = [];
+  for (const nb of neighbours(focus)) {
+    const s = toScreen(pos.get(nb.id)); const halfW = W * cam.k / 2, halfH = H * cam.k / 2;
+    const visible = s.x + halfW > 0 && s.x - halfW < r.width && s.y + halfH > 0 && s.y - halfH < r.height;
+    if (visible) continue; offscreen++;
+    // where the line from the focus to the neighbour leaves the viewport (inset)
+    const dx = s.x - f.x, dy = s.y - f.y; let t = Infinity;
+    if (dx > 0) t = Math.min(t, (r.width - inset - f.x) / dx); if (dx < 0) t = Math.min(t, (inset - f.x) / dx);
+    if (dy > 0) t = Math.min(t, (r.height - inset - f.y) / dy); if (dy < 0) t = Math.min(t, (inset - f.y) / dy);
+    if (!isFinite(t) || t < 0) t = 0;
+    const px = f.x + dx * t, py = f.y + dy * t;
+    const m = byId(nb.id); const arrow = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '→' : '←') : (dy > 0 ? '↓' : '↑');
+    const d = document.createElement('div'); d.className = 'ind' + (nb.kind.startsWith('challenge') ? ' ch' : '') + (nb.up ? ' up' : '');
+    d.innerHTML = `<span class="dot"></span><span class="top"><span class="who">${esc(m.who)}</span><span class="kind">${nb.up ? 'the claim this supports' : nb.kind}</span></span><span class="arrow">${arrow}</span><span class="gist">${esc(m.text)}</span>`;
+    d.title = m.text; d.onclick = () => select(nb.id); inds.appendChild(d);
+    pills.push({ el: d, x: px, y: py, dx, dy });
+  }
+  // Keep every pill fully on screen, then push overlapping pills apart.
+  // Pills are centred on (x, y); each has its own measured size.
+  const pad = 8;
+  for (const q of pills) { q.w = q.el.offsetWidth; q.h = q.el.offsetHeight; }
+  const clamp = q => { q.x = Math.max(pad + q.w / 2, Math.min(r.width - pad - q.w / 2, q.x)); q.y = Math.max(pad + q.h / 2, Math.min(r.height - pad - q.h / 2, q.y)); };
+  pills.forEach(clamp);
+  for (let pass = 0; pass < 12; pass++) {
+    let movedAny = false;
+    for (let i = 0; i < pills.length; i++) for (let j = i + 1; j < pills.length; j++) {
+      const a = pills[i], b = pills[j];
+      const ox = (a.w + b.w) / 2 + 6 - Math.abs(a.x - b.x), oy = (a.h + b.h) / 2 + 6 - Math.abs(a.y - b.y);
+      if (ox <= 0 || oy <= 0) continue;
+      movedAny = true;
+      // separate along the axis that needs the smaller shove; on a left/right
+      // edge that is vertical, on a top/bottom edge horizontal
+      if (oy < ox) { const s = a.y <= b.y ? 1 : -1; a.y -= s * oy / 2; b.y += s * oy / 2; }
+      else { const s = a.x <= b.x ? 1 : -1; a.x -= s * ox / 2; b.x += s * ox / 2; }
+      clamp(a); clamp(b);
+    }
+    if (!movedAny) break;
+  }
+  for (const q of pills) { q.el.style.left = q.x + 'px'; q.el.style.top = q.y + 'px'; }
+  document.getElementById('status').textContent = `${nodes.length} claims · focus has ${neighbours(focus).length} connections, ${offscreen} off-screen`;
+}
+
+// ---------- interaction ----------
+svg.addEventListener('click', e => { const node = e.target.closest('.node'); if (node) select(+node.dataset.id); });
+let drag = null, moved = false;
+svg.addEventListener('mousedown', e => { drag = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y }; moved = false; });
+window.addEventListener('mousemove', e => { if (!drag) return; moved = true; cam.x = drag.cx + e.clientX - drag.x; cam.y = drag.cy + e.clientY - drag.y; applyCam(); });
+window.addEventListener('mouseup', () => { drag = null; });
+svg.addEventListener('wheel', e => { e.preventDefault(); const r = svg.getBoundingClientRect(); const mx = e.clientX - r.left, my = e.clientY - r.top; const k2 = Math.max(.15, Math.min(2.5, cam.k * (e.deltaY < 0 ? 1.12 : 1 / 1.12))); cam.x = mx - (mx - cam.x) * k2 / cam.k; cam.y = my - (my - cam.y) * k2 / cam.k; cam.k = k2; applyCam(); }, { passive: false });
+document.getElementById('fit').onclick = fitAll; document.getElementById('toRoot').onclick = () => select(root);
+window.addEventListener('keydown', e => { const f = byId(focus);
+  if (e.key === 'ArrowUp' && f.parent) select(f.parent); else if (e.key === 'ArrowDown' && f.kids.length) select(f.kids[0]);
+  else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && f.parent) { const sib = byId(f.parent).kids; const i = sib.indexOf(focus); const j = e.key === 'ArrowLeft' ? i - 1 : i + 1; if (sib[j]) select(sib[j]); }
+  else if (e.key === 'Escape') select(root); else if (e.key === 'f' || e.key === 'F') fitAll(); else return; e.preventDefault(); });
+new ResizeObserver(() => placeIndicators()).observe(graphEl);
+select(root, false); fitAll(); setTimeout(() => select(root), 600);
+</script>
+</body>
+</html>

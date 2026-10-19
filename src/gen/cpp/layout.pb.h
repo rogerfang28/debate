@@ -123,6 +123,9 @@ enum ComponentType : int {
   GRAPH = 4,
   CONTAINER = 12,
   CLAIM_PARSER = 14,
+  DROPDOWN = 15,
+  MULTI_INPUT = 16,
+  TEXTAREA = 17,
   ComponentType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   ComponentType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -133,11 +136,11 @@ extern const uint32_t ComponentType_internal_data_[];
 inline constexpr ComponentType ComponentType_MIN =
     static_cast<ComponentType>(0);
 inline constexpr ComponentType ComponentType_MAX =
-    static_cast<ComponentType>(14);
+    static_cast<ComponentType>(17);
 inline bool ComponentType_IsValid(int value) {
-  return 0 <= value && value <= 14 && ((20511u >> value) & 1) != 0;
+  return 0 <= value && value <= 17 && ((249887u >> value) & 1) != 0;
 }
-inline constexpr int ComponentType_ARRAYSIZE = 14 + 1;
+inline constexpr int ComponentType_ARRAYSIZE = 17 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL ComponentType_descriptor();
 template <typename T>
 const ::std::string& ComponentType_Name(T value) {
@@ -148,7 +151,7 @@ const ::std::string& ComponentType_Name(T value) {
 }
 template <>
 inline const ::std::string& ComponentType_Name(ComponentType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 14>(
+  return ::google::protobuf::internal::NameOfDenseEnum<ComponentType_descriptor, 0, 17>(
       static_cast<int>(value));
 }
 inline bool ComponentType_Parse(
@@ -1296,6 +1299,9 @@ class GraphEdge final : public ::google::protobuf::Message
     kSourceFieldNumber = 2,
     kTargetFieldNumber = 3,
     kTypeFieldNumber = 4,
+    kBasisFieldNumber = 5,
+    kRelationIdFieldNumber = 6,
+    kTargetRelationIdFieldNumber = 7,
   };
   // string id = 1 [json_name = "id"];
   void clear_id() ;
@@ -1357,12 +1363,47 @@ class GraphEdge final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_type();
 
   public:
+  // string basis = 5 [json_name = "basis"];
+  void clear_basis() ;
+  const ::std::string& basis() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_basis(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_basis();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_basis();
+  void set_allocated_basis(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_basis() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_basis(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_basis();
+
+  public:
+  // int32 relation_id = 6 [json_name = "relationId"];
+  void clear_relation_id() ;
+  ::int32_t relation_id() const;
+  void set_relation_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_relation_id() const;
+  void _internal_set_relation_id(::int32_t value);
+
+  public:
+  // int32 target_relation_id = 7 [json_name = "targetRelationId"];
+  void clear_target_relation_id() ;
+  ::int32_t target_relation_id() const;
+  void set_target_relation_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_target_relation_id() const;
+  void _internal_set_target_relation_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:ui.GraphEdge)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   0, 39,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
+                                   0, 44,
                                    2>
       _table_;
 
@@ -1387,6 +1428,9 @@ class GraphEdge final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr source_;
     ::google::protobuf::internal::ArenaStringPtr target_;
     ::google::protobuf::internal::ArenaStringPtr type_;
+    ::google::protobuf::internal::ArenaStringPtr basis_;
+    ::int32_t relation_id_;
+    ::int32_t target_relation_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4289,6 +4333,121 @@ inline void GraphEdge::set_allocated_type(::std::string* PROTOBUF_NULLABLE value
     _impl_.type_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.type)
+}
+
+// string basis = 5 [json_name = "basis"];
+inline void GraphEdge::clear_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& GraphEdge::basis() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.basis)
+  return _internal_basis();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void GraphEdge::set_basis(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.basis_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.basis)
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::mutable_basis()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_basis();
+  // @@protoc_insertion_point(field_mutable:ui.GraphEdge.basis)
+  return _s;
+}
+inline const ::std::string& GraphEdge::_internal_basis() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.basis_.Get();
+}
+inline void GraphEdge::_internal_set_basis(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.basis_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL GraphEdge::_internal_mutable_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.basis_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE GraphEdge::release_basis() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:ui.GraphEdge.basis)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.basis_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  return released;
+}
+inline void GraphEdge::set_allocated_basis(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.basis_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.basis_.IsDefault()) {
+    _impl_.basis_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:ui.GraphEdge.basis)
+}
+
+// int32 relation_id = 6 [json_name = "relationId"];
+inline void GraphEdge::clear_relation_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relation_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline ::int32_t GraphEdge::relation_id() const {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.relation_id)
+  return _internal_relation_id();
+}
+inline void GraphEdge::set_relation_id(::int32_t value) {
+  _internal_set_relation_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.relation_id)
+}
+inline ::int32_t GraphEdge::_internal_relation_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.relation_id_;
+}
+inline void GraphEdge::_internal_set_relation_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relation_id_ = value;
+}
+
+// int32 target_relation_id = 7 [json_name = "targetRelationId"];
+inline void GraphEdge::clear_target_relation_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_relation_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline ::int32_t GraphEdge::target_relation_id() const {
+  // @@protoc_insertion_point(field_get:ui.GraphEdge.target_relation_id)
+  return _internal_target_relation_id();
+}
+inline void GraphEdge::set_target_relation_id(::int32_t value) {
+  _internal_set_target_relation_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  // @@protoc_insertion_point(field_set:ui.GraphEdge.target_relation_id)
+}
+inline ::int32_t GraphEdge::_internal_target_relation_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.target_relation_id_;
+}
+inline void GraphEdge::_internal_set_target_relation_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.target_relation_id_ = value;
 }
 
 // -------------------------------------------------------------------

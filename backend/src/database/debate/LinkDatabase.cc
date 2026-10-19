@@ -58,11 +58,44 @@ bool LinkDatabase::ensureTable() {
         }
     }
 
+    // RELATION_ID groups rows that are ONE relation with several from-claims.
+    //
+    // A relation with three sources is three rows sharing a RELATION_ID, rather
+    // than a new table. Two reasons: every existing reader keeps working because
+    // each row is still a complete, valid single link -- it just sees three
+    // supports instead of one -- and the change is one additive column instead
+    // of a migration of live data into a new shape.
+    //
+    // Backfilled to the row's own ID, which says "each existing link is its own
+    // relation". That is exactly what they were.
+    if (!linkTableHasColumn(db_, "RELATION_ID")) {
+        if (!db_.execute("ALTER TABLE LINKS ADD COLUMN RELATION_ID INTEGER;")) {
+            return false;
+        }
+        if (!db_.execute("UPDATE LINKS SET RELATION_ID = ID WHERE RELATION_ID IS NULL;")) {
+            return false;
+        }
+    }
+
+    // TO_LINK_ID: a challenge aimed at an ARGUMENT, not a claim.
+    //
+    // "Your evidence is real but it does not prove that" attacks the link
+    // between two claims, not either claim. The row keeps CLAIM_ID_TO -- the
+    // claim the attacked argument was for -- so the many readers that only know
+    // claims still see a well-formed challenge near the right place, and this
+    // column names the RELATION_ID actually under attack. 0 means what every
+    // row meant before: the target is CLAIM_ID_TO itself.
+    if (!linkTableHasColumn(db_, "TO_LINK_ID")) {
+        if (!db_.execute("ALTER TABLE LINKS ADD COLUMN TO_LINK_ID INTEGER NOT NULL DEFAULT 0;")) {
+            return false;
+        }
+    }
+
     return true;
 }
 
-int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId, int linkType) {
-    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, DEBATE_ID, LINK_TYPE) VALUES (?, ?, ?, ?, ?, ?);";
+int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& connection, int creatorId, int debateId, int linkType, int relationId, int toLinkId) {
+    const char* sql = "INSERT INTO LINKS (CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, DEBATE_ID, LINK_TYPE, RELATION_ID, TO_LINK_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -79,12 +112,27 @@ int LinkDatabase::addLink(int claimIdFrom, int claimIdTo, const std::string& con
         sqlite3_bind_null(stmt, 5);
     }
     sqlite3_bind_int(stmt, 6, linkType);
+    if (relationId > 0) {
+        sqlite3_bind_int(stmt, 7, relationId);
+    } else {
+        // Unknown until the row exists, since it defaults to the row's own id.
+        sqlite3_bind_null(stmt, 7);
+    }
+    sqlite3_bind_int(stmt, 8, toLinkId > 0 ? toLinkId : 0);
 
     int result = sqlite3_step(stmt);
     int linkId = -1;
-    
+
     if (result == SQLITE_DONE) {
         linkId = static_cast<int>(sqlite3_last_insert_rowid(db_.handle()));
+        if (relationId <= 0) {
+            // A link that is its own relation. Done as a follow-up UPDATE
+            // because the id is only known after the INSERT; leaving
+            // RELATION_ID NULL would make "its own relation" a second case
+            // every reader has to remember to handle.
+            db_.execute("UPDATE LINKS SET RELATION_ID = ID WHERE ID = " +
+                        std::to_string(linkId) + ";");
+        }
     } else {
         Log::error("Failed to insert link: " + std::string(sqlite3_errmsg(db_.handle())));
     }
@@ -169,21 +217,21 @@ std::vector<std::tuple<int, int, int, std::string, int>> LinkDatabase::getLinksF
     return links;
 }
 
-std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds) {
-    std::vector<std::tuple<int, int, int, std::string, int, int>> links;
+std::vector<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase::getLinksForDebateAndCreators(int debateId, const std::vector<int>& creatorIds) {
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> links;
     if (creatorIds.empty()) {
         return links;
     }
 
     std::ostringstream sql;
-    sql << "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE FROM LINKS WHERE DEBATE_ID = ? AND CREATOR_ID IN (";
+    sql << "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE, RELATION_ID FROM LINKS WHERE DEBATE_ID = ? AND CREATOR_ID IN (";
     for (size_t i = 0; i < creatorIds.size(); ++i) {
         if (i > 0) {
             sql << ", ";
         }
         sql << "?";
     }
-    sql << ");";
+    sql << ") ORDER BY ID;";
 
     sqlite3_stmt* stmt = db_.prepare(sql.str());
     if (!stmt) {
@@ -202,17 +250,21 @@ std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getL
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
         int creatorId = sqlite3_column_int(stmt, 4);
         int linkType = sqlite3_column_int(stmt, 5);
+        // NULL only for a row written before the column existed and somehow
+        // missed the backfill; treat it as its own relation.
+        int relationId = sqlite3_column_type(stmt, 6) == SQLITE_NULL
+                             ? id : sqlite3_column_int(stmt, 6);
 
-        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId, linkType));
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId, linkType, relationId));
     }
 
     sqlite3_finalize(stmt);
     return links;
 }
 
-std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getLinksForDebate(int debateId) {
-    std::vector<std::tuple<int, int, int, std::string, int, int>> links;
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE FROM LINKS WHERE DEBATE_ID = ?;";
+std::vector<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase::getLinksForDebate(int debateId) {
+    std::vector<std::tuple<int, int, int, std::string, int, int, int>> links;
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE, RELATION_ID FROM LINKS WHERE DEBATE_ID = ? ORDER BY ID;";
 
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -228,16 +280,20 @@ std::vector<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getL
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
         int creatorId = sqlite3_column_int(stmt, 4);
         int linkType = sqlite3_column_int(stmt, 5);
+        // NULL only for a row written before the column existed and somehow
+        // missed the backfill; treat it as its own relation.
+        int relationId = sqlite3_column_type(stmt, 6) == SQLITE_NULL
+                             ? id : sqlite3_column_int(stmt, 6);
 
-        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId, linkType));
+        links.push_back(std::make_tuple(id, fromId, toId, connection ? connection : "", creatorId, linkType, relationId));
     }
 
     sqlite3_finalize(stmt);
     return links;
 }
 
-std::optional<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::getLinkById(int linkId) {
-    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE FROM LINKS WHERE ID = ?;";
+std::optional<std::tuple<int, int, int, std::string, int, int, int>> LinkDatabase::getLinkById(int linkId) {
+    const char* sql = "SELECT ID, CLAIM_ID_FROM, CLAIM_ID_TO, CONNECTION, CREATOR_ID, LINK_TYPE, RELATION_ID FROM LINKS WHERE ID = ?;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -253,12 +309,16 @@ std::optional<std::tuple<int, int, int, std::string, int, int>> LinkDatabase::ge
         const char* connection = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
         int creatorId = sqlite3_column_int(stmt, 4);
         int linkType = sqlite3_column_int(stmt, 5);
+        // NULL only for a row written before the column existed and somehow
+        // missed the backfill; treat it as its own relation.
+        int relationId = sqlite3_column_type(stmt, 6) == SQLITE_NULL
+                             ? id : sqlite3_column_int(stmt, 6);
         
         // Convert to std::string BEFORE finalizing the statement
         std::string connectionStr = connection ? std::string(connection) : "";
         
         sqlite3_finalize(stmt);
-        return std::make_tuple(id, fromId, toId, connectionStr, creatorId, linkType);
+        return std::make_tuple(id, fromId, toId, connectionStr, creatorId, linkType, relationId);
     }
 
     sqlite3_finalize(stmt);
@@ -284,6 +344,36 @@ int LinkDatabase::getLinkDebateId(int linkId) {
 
     sqlite3_finalize(stmt);
     return debateId;
+}
+
+int LinkDatabase::getLinkTargetRelation(int linkId) {
+    const char* sql = "SELECT TO_LINK_ID FROM LINKS WHERE ID = ?;";
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return 0;
+    }
+    sqlite3_bind_int(stmt, 1, linkId);
+    int target = 0;
+    if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_type(stmt, 0) != SQLITE_NULL) {
+        target = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    return target > 0 ? target : 0;
+}
+
+std::map<int, int> LinkDatabase::getRelationTargets(int debateId) {
+    std::map<int, int> targets;
+    const char* sql = "SELECT ID, TO_LINK_ID FROM LINKS WHERE DEBATE_ID = ? AND TO_LINK_ID > 0;";
+    sqlite3_stmt* stmt = db_.prepare(sql);
+    if (!stmt) {
+        return targets;
+    }
+    sqlite3_bind_int(stmt, 1, debateId);
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        targets[sqlite3_column_int(stmt, 0)] = sqlite3_column_int(stmt, 1);
+    }
+    sqlite3_finalize(stmt);
+    return targets;
 }
 
 bool LinkDatabase::updateLinkConnection(int linkId, const std::string& newConnection) {

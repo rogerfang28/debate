@@ -6,13 +6,17 @@ import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2"
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { ClaimStatus } from "./debate_pb";
 import { file_debate } from "./debate_pb";
+import type { AiJobStatus, HomeView } from "./user_engagement_pb";
+import { file_user_engagement } from "./user_engagement_pb";
+import type { OwedReply, OwingParty, RecentMove } from "./moderator_to_vr_pb";
+import { file_moderator_to_vr } from "./moderator_to_vr_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file rendering_info.proto.
  */
 export const file_rendering_info: GenFile = /*@__PURE__*/
-  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8iiQUKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRIRCglkZWJhdGVfaWQYAyABKAUSLQoKc2NvcGVfdHlwZRgEIAEoDjIZLnJlbmRlcmluZ19pbmZvLlNjb3BlVHlwZRIbChNpc19jaGFsbGVuZ2VfZGViYXRlGAUgASgIEjYKDWN1cnJlbnRfY2xhaW0YBiABKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgHIAEoCRI4Cg9jaGlsZHJlbl9jbGFpbXMYCCADKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SLQoFbGlua3MYCSADKAsyHi5yZW5kZXJpbmdfaW5mby5MaW5rUmVuZGVySW5mbxI/ChJjdXJyZW50X2NoYWxsZW5nZXMYCiADKAsyIy5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2VSZW5kZXJJbmZvEh8KF21vZGlmeWluZ19jdXJyZW50X2NsYWltGAsgASgIEjgKDmN1cnJlbnRfYWN0aW9uGAwgASgOMiAucmVuZGVyaW5nX2luZm8uRGViYXRlQWN0aW9uVHlwZRI9Cg9jb25uZWN0aW5nX2luZm8YDSABKAsyJC5yZW5kZXJpbmdfaW5mby5Db25uZWN0aW5nUmVuZGVySW5mbxI/ChBjaGFsbGVuZ2luZ19pbmZvGA4gASgLMiUucmVuZGVyaW5nX2luZm8uQ2hhbGxlbmdpbmdSZW5kZXJJbmZvIocCChJGdWxsRGViYXRlVmlld0luZm8SFgoOdmlld2VyX3VzZXJfaWQYASABKAUSFwoPdmlld2VyX3VzZXJuYW1lGAIgASgJEiQKBXN0ZXBzGAMgAygLMhUucmVuZGVyaW5nX2luZm8uU3RlcHMSOAoQZnVsbF9kZWJhdGVfdHJlZRgEIAEoCzIeLnJlbmRlcmluZ19pbmZvLkZ1bGxEZWJhdGVUcmVlEj8KEXBlcl91c2VyX3N0YXR1c2VzGAUgASgLMiQucmVuZGVyaW5nX2luZm8uUGVyVXNlckNsYWltU3RhdHVzZXMSHwoXdmlld2VyX2N1cnJlbnRfY2xhaW1faWQYBiABKAUipwIKFFBlclVzZXJDbGFpbVN0YXR1c2VzEkEKBXVzZXJzGAEgAygLMjIucmVuZGVyaW5nX2luZm8uUGVyVXNlckNsYWltU3RhdHVzZXMuVXNlckNsYWltVmlldxrLAQoNVXNlckNsYWltVmlldxIQCgh1c2VybmFtZRgBIAEoCRJdCg5jbGFpbV9zdGF0dXNlcxgCIAMoCzJFLnJlbmRlcmluZ19pbmZvLlBlclVzZXJDbGFpbVN0YXR1c2VzLlVzZXJDbGFpbVZpZXcuQ2xhaW1TdGF0dXNlc0VudHJ5GkkKEkNsYWltU3RhdHVzZXNFbnRyeRILCgNrZXkYASABKAUSIgoFdmFsdWUYAiABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXM6AjgBIo0BCg5GdWxsRGViYXRlVHJlZRIVCg1yb290X2NsYWltX2lkGAEgASgFEjEKBW5vZGVzGAIgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVOb2RlEjEKBWxpbmtzGAMgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVMaW5rItcBChJGdWxsRGViYXRlVHJlZU5vZGUSEAoIY2xhaW1faWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIjCgZzdGF0dXMYBCABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXMSMQoNdXNlcl9zdGF0dXNlcxgFIAMoCzIaLnJlbmRlcmluZ19pbmZvLlVzZXJTdGF0dXMSGAoQcGFyZW50X2NsYWltX2lkcxgGIAMoBRIXCg9jaGlsZF9jbGFpbV9pZHMYByADKAUi4AEKEkZ1bGxEZWJhdGVUcmVlTGluaxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEjkKCWxpbmtfdHlwZRgDIAEoDjImLnJlbmRlcmluZ19pbmZvLkZ1bGxEZWJhdGVUcmVlTGlua1R5cGUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEg8KB2xpbmtfaWQYBSABKAUSFAoMY2hhbGxlbmdlX2lkGAYgASgFEhIKCmNvbm5lY3Rpb24YByABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBSJCCgVTdGVwcxIQCghjbGFpbV9pZBgBIAEoBRIPCgdzdW1tYXJ5GAIgASgJEhYKDmxlYWZfcGFyYWdyYXBoGAMgASgJIrIBChVIb21lUGFnZVJlbmRlcmluZ0luZm8SFgoOdmlld2VyX3VzZXJfaWQYASABKAUSFwoPdmlld2VyX3VzZXJuYW1lGAIgASgJEkQKEWF2YWlsYWJsZV9kZWJhdGVzGAMgAygLMikucmVuZGVyaW5nX2luZm8uSG9tZURlYmF0ZVRvcGljUmVuZGVySW5mbxIiChpjYW5fY3JlYXRlX29yX2pvaW5fZGViYXRlcxgEIAEoCCKRAQoZSG9tZURlYmF0ZVRvcGljUmVuZGVySW5mbxIcChRkZWJhdGVfcm9vdF9jbGFpbV9pZBgBIAEoBRINCgV0b3BpYxgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEhQKDGlzX2NoYWxsZW5nZRgEIAEoCBIdChVjbGFpbV9pdHNfY2hhbGxlbmdpbmcYBSABKAkimwEKD0NsYWltUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEiMKBnN0YXR1cxgEIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cxIxCg11c2VyX3N0YXR1c2VzGAUgAygLMhoucmVuZGVyaW5nX2luZm8uVXNlclN0YXR1cyJDCgpVc2VyU3RhdHVzEhAKCHVzZXJuYW1lGAEgASgJEiMKBnN0YXR1cxgCIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cyJuCg5MaW5rUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUidwoTQ2hhbGxlbmdlUmVuZGVySW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRISCgpjcmVhdG9yX2lkGAQgASgFEhkKEWNoYWxsZW5nZV9saW5rX2lkGAUgASgFInQKFENvbm5lY3RpbmdSZW5kZXJJbmZvEhUKDWZyb21fY2xhaW1faWQYASABKAUSEwoLdG9fY2xhaW1faWQYAiABKAUSEgoKY29ubmVjdGluZxgDIAEoCBIcChRvcGVuZWRfY29ubmVjdF9tb2RhbBgEIAEoCCJcChVDaGFsbGVuZ2luZ1JlbmRlckluZm8SEQoJY2xhaW1faWRzGAEgAygFEhAKCGxpbmtfaWRzGAIgAygFEh4KFm9wZW5lZF9jaGFsbGVuZ2VfbW9kYWwYAyABKAgqhwEKFkZ1bGxEZWJhdGVUcmVlTGlua1R5cGUSKgomRlVMTF9ERUJBVEVfVFJFRV9MSU5LX1RZUEVfVU5TUEVDSUZJRUQQABIhCh1GVUxMX0RFQkFURV9UUkVFX1BBUkVOVF9DSElMRBABEh4KGkZVTExfREVCQVRFX1RSRUVfQ0hBTExFTkdFEAIqSgoJU2NvcGVUeXBlEhoKFlNDT1BFX1RZUEVfVU5TUEVDSUZJRUQQABIQCgxTSU5HTEVfQ0xBSU0QARIPCgtGVUxMX0RFQkFURRACKs8BChBEZWJhdGVBY3Rpb25UeXBlEhsKF0FDVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASEQoNVklFV0lOR19DTEFJTRABEhYKEkFERElOR19DSElMRF9DTEFJTRACEhUKEUNPTk5FQ1RJTkdfQ0xBSU1TEAMSFQoRQ0hBTExFTkdJTkdfQ0xBSU0QBBIdChlFRElUSU5HX0NMQUlNX0RFU0NSSVBUSU9OEAUSEQoNRURJVElOR19DTEFJTRAGEhMKD1JFUE9SVElOR19DTEFJTRAHYgZwcm90bzM", [file_debate]);
+  fileDesc("ChRyZW5kZXJpbmdfaW5mby5wcm90bxIOcmVuZGVyaW5nX2luZm8iiQUKF0RlYmF0ZVBhZ2VSZW5kZXJpbmdJbmZvEhYKDnZpZXdlcl91c2VyX2lkGAEgASgFEhcKD3ZpZXdlcl91c2VybmFtZRgCIAEoCRIRCglkZWJhdGVfaWQYAyABKAUSLQoKc2NvcGVfdHlwZRgEIAEoDjIZLnJlbmRlcmluZ19pbmZvLlNjb3BlVHlwZRIbChNpc19jaGFsbGVuZ2VfZGViYXRlGAUgASgIEjYKDWN1cnJlbnRfY2xhaW0YBiABKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgHIAEoCRI4Cg9jaGlsZHJlbl9jbGFpbXMYCCADKAsyHy5yZW5kZXJpbmdfaW5mby5DbGFpbVJlbmRlckluZm8SLQoFbGlua3MYCSADKAsyHi5yZW5kZXJpbmdfaW5mby5MaW5rUmVuZGVySW5mbxI/ChJjdXJyZW50X2NoYWxsZW5nZXMYCiADKAsyIy5yZW5kZXJpbmdfaW5mby5DaGFsbGVuZ2VSZW5kZXJJbmZvEh8KF21vZGlmeWluZ19jdXJyZW50X2NsYWltGAsgASgIEjgKDmN1cnJlbnRfYWN0aW9uGAwgASgOMiAucmVuZGVyaW5nX2luZm8uRGViYXRlQWN0aW9uVHlwZRI9Cg9jb25uZWN0aW5nX2luZm8YDSABKAsyJC5yZW5kZXJpbmdfaW5mby5Db25uZWN0aW5nUmVuZGVySW5mbxI/ChBjaGFsbGVuZ2luZ19pbmZvGA4gASgLMiUucmVuZGVyaW5nX2luZm8uQ2hhbGxlbmdpbmdSZW5kZXJJbmZvIocCChJGdWxsRGViYXRlVmlld0luZm8SFgoOdmlld2VyX3VzZXJfaWQYASABKAUSFwoPdmlld2VyX3VzZXJuYW1lGAIgASgJEiQKBXN0ZXBzGAMgAygLMhUucmVuZGVyaW5nX2luZm8uU3RlcHMSOAoQZnVsbF9kZWJhdGVfdHJlZRgEIAEoCzIeLnJlbmRlcmluZ19pbmZvLkZ1bGxEZWJhdGVUcmVlEj8KEXBlcl91c2VyX3N0YXR1c2VzGAUgASgLMiQucmVuZGVyaW5nX2luZm8uUGVyVXNlckNsYWltU3RhdHVzZXMSHwoXdmlld2VyX2N1cnJlbnRfY2xhaW1faWQYBiABKAUipwIKFFBlclVzZXJDbGFpbVN0YXR1c2VzEkEKBXVzZXJzGAEgAygLMjIucmVuZGVyaW5nX2luZm8uUGVyVXNlckNsYWltU3RhdHVzZXMuVXNlckNsYWltVmlldxrLAQoNVXNlckNsYWltVmlldxIQCgh1c2VybmFtZRgBIAEoCRJdCg5jbGFpbV9zdGF0dXNlcxgCIAMoCzJFLnJlbmRlcmluZ19pbmZvLlBlclVzZXJDbGFpbVN0YXR1c2VzLlVzZXJDbGFpbVZpZXcuQ2xhaW1TdGF0dXNlc0VudHJ5GkkKEkNsYWltU3RhdHVzZXNFbnRyeRILCgNrZXkYASABKAUSIgoFdmFsdWUYAiABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXM6AjgBIo0BCg5GdWxsRGViYXRlVHJlZRIVCg1yb290X2NsYWltX2lkGAEgASgFEjEKBW5vZGVzGAIgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVOb2RlEjEKBWxpbmtzGAMgAygLMiIucmVuZGVyaW5nX2luZm8uRnVsbERlYmF0ZVRyZWVMaW5rIukBChJGdWxsRGViYXRlVHJlZU5vZGUSEAoIY2xhaW1faWQYASABKAUSEAoIc2VudGVuY2UYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIjCgZzdGF0dXMYBCABKA4yEy5kZWJhdGUuQ2xhaW1TdGF0dXMSMQoNdXNlcl9zdGF0dXNlcxgFIAMoCzIaLnJlbmRlcmluZ19pbmZvLlVzZXJTdGF0dXMSGAoQcGFyZW50X2NsYWltX2lkcxgGIAMoBRIXCg9jaGlsZF9jbGFpbV9pZHMYByADKAUSEAoIdm9pY2VfaWQYCCABKAUi+AEKEkZ1bGxEZWJhdGVUcmVlTGluaxIVCg1mcm9tX2NsYWltX2lkGAEgASgFEhMKC3RvX2NsYWltX2lkGAIgASgFEjkKCWxpbmtfdHlwZRgDIAEoDjImLnJlbmRlcmluZ19pbmZvLkZ1bGxEZWJhdGVUcmVlTGlua1R5cGUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEg8KB2xpbmtfaWQYBSABKAUSFAoMY2hhbGxlbmdlX2lkGAYgASgFEhIKCmNvbm5lY3Rpb24YByABKAkSEgoKY3JlYXRvcl9pZBgIIAEoBRIWCg50b19yZWxhdGlvbl9pZBgJIAEoBSJCCgVTdGVwcxIQCghjbGFpbV9pZBgBIAEoBRIPCgdzdW1tYXJ5GAIgASgJEhYKDmxlYWZfcGFyYWdyYXBoGAMgASgJIo4CChVIb21lUGFnZVJlbmRlcmluZ0luZm8SFgoOdmlld2VyX3VzZXJfaWQYASABKAUSFwoPdmlld2VyX3VzZXJuYW1lGAIgASgJEkQKEWF2YWlsYWJsZV9kZWJhdGVzGAMgAygLMikucmVuZGVyaW5nX2luZm8uSG9tZURlYmF0ZVRvcGljUmVuZGVySW5mbxIiChpjYW5fY3JlYXRlX29yX2pvaW5fZGViYXRlcxgEIAEoCBIsCgZhaV9qb2IYBSABKAsyHC51c2VyX2VuZ2FnZW1lbnQuQWlKb2JTdGF0dXMSLAoJaG9tZV92aWV3GAYgASgLMhkudXNlcl9lbmdhZ2VtZW50LkhvbWVWaWV3IsQEChlIb21lRGViYXRlVG9waWNSZW5kZXJJbmZvEhwKFGRlYmF0ZV9yb290X2NsYWltX2lkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCRIRCglyb290X3RleHQYBiABKAkSEwoLcm9vdF9ob2xkZXIYByABKAkSEgoKdW5yZXNvbHZlZBgIIAEoCBISCgpoaW5nZV90ZXh0GAkgASgJEhMKC2NsYWltX2NvdW50GAogASgFEhQKDHN0YW5jZV9jb3VudBgLIAEoBRIcChRvcGVuX2NoYWxsZW5nZV9jb3VudBgMIAEoBRIQCghpbnZvbHZlZBgNIAMoCRIVCg1sYXN0X21vdmVkX2F0GA4gASgDEhQKDHBlb3BsZV9jb3VudBgPIAEoBRIqCgVvd2luZxgQIAMoCzIbLm1vZGVyYXRvcl90b192ci5Pd2luZ1BhcnR5EjIKDm93ZWRfdG9fdmlld2VyGBEgAygLMhoubW9kZXJhdG9yX3RvX3ZyLk93ZWRSZXBseRIYChB2aWV3ZXJfaXNfbWVtYmVyGBIgASgIEjEKDHJlY2VudF9tb3ZlcxgTIAMoCzIbLm1vZGVyYXRvcl90b192ci5SZWNlbnRNb3ZlEhQKDHNlYXJjaF9tYXRjaBgUIAEoCBIWCg5tYXRjaGVkX2NsYWltcxgVIAMoCSKbAQoPQ2xhaW1SZW5kZXJJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSIwoGc3RhdHVzGAQgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzEjEKDXVzZXJfc3RhdHVzZXMYBSADKAsyGi5yZW5kZXJpbmdfaW5mby5Vc2VyU3RhdHVzIkMKClVzZXJTdGF0dXMSEAoIdXNlcm5hbWUYASABKAkSIwoGc3RhdHVzGAIgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzIm4KDkxpbmtSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJ3ChNDaGFsbGVuZ2VSZW5kZXJJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhIKCmNyZWF0b3JfaWQYBCABKAUSGQoRY2hhbGxlbmdlX2xpbmtfaWQYBSABKAUidAoUQ29ubmVjdGluZ1JlbmRlckluZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW5nGAMgASgIEhwKFG9wZW5lZF9jb25uZWN0X21vZGFsGAQgASgIIlwKFUNoYWxsZW5naW5nUmVuZGVySW5mbxIRCgljbGFpbV9pZHMYASADKAUSEAoIbGlua19pZHMYAiADKAUSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgDIAEoCCqHAQoWRnVsbERlYmF0ZVRyZWVMaW5rVHlwZRIqCiZGVUxMX0RFQkFURV9UUkVFX0xJTktfVFlQRV9VTlNQRUNJRklFRBAAEiEKHUZVTExfREVCQVRFX1RSRUVfUEFSRU5UX0NISUxEEAESHgoaRlVMTF9ERUJBVEVfVFJFRV9DSEFMTEVOR0UQAipKCglTY29wZVR5cGUSGgoWU0NPUEVfVFlQRV9VTlNQRUNJRklFRBAAEhAKDFNJTkdMRV9DTEFJTRABEg8KC0ZVTExfREVCQVRFEAIqzwEKEERlYmF0ZUFjdGlvblR5cGUSGwoXQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIRCg1WSUVXSU5HX0NMQUlNEAESFgoSQURESU5HX0NISUxEX0NMQUlNEAISFQoRQ09OTkVDVElOR19DTEFJTVMQAxIVChFDSEFMTEVOR0lOR19DTEFJTRAEEh0KGUVESVRJTkdfQ0xBSU1fREVTQ1JJUFRJT04QBRIRCg1FRElUSU5HX0NMQUlNEAYSEwoPUkVQT1JUSU5HX0NMQUlNEAdiBnByb3RvMw", [file_debate, file_user_engagement, file_moderator_to_vr]);
 
 /**
  * The exact input needed to build the debate page UI.
@@ -292,6 +296,13 @@ export type FullDebateTreeNode = Message<"rendering_info.FullDebateTreeNode"> & 
    * @generated from field: repeated int32 child_claim_ids = 7;
    */
   childClaimIds: number[];
+
+  /**
+   * Whose claim it is when not the entrant's (debate.Claim.voice_id); 0 = creator.
+   *
+   * @generated from field: int32 voice_id = 8;
+   */
+  voiceId: number;
 };
 
 /**
@@ -352,6 +363,17 @@ export type FullDebateTreeLink = Message<"rendering_info.FullDebateTreeLink"> & 
    * @generated from field: int32 creator_id = 8;
    */
   creatorId: number;
+
+  /**
+   * For a challenge aimed at an ARGUMENT rather than a claim: the relation
+   * (link_id of the attacked tree links) it attacks. to_claim_id then holds
+   * the claim that argument was for -- where the challenger is PLACED -- and
+   * this says where the line should END: at that relation's pill. 0 for
+   * every challenge aimed at a claim.
+   *
+   * @generated from field: int32 to_relation_id = 9;
+   */
+  toRelationId: number;
 };
 
 /**
@@ -423,6 +445,22 @@ export type HomePageRenderingInfo = Message<"rendering_info.HomePageRenderingInf
    * @generated from field: bool can_create_or_join_debates = 4;
    */
   canCreateOrJoinDebates: boolean;
+
+  /**
+   * Progress of an AI job started from this page. Generation begins here and
+   * its result lands in the debate list, so the home page is where its
+   * progress and its outcome have to be shown.
+   *
+   * @generated from field: user_engagement.AiJobStatus ai_job = 5;
+   */
+  aiJob?: AiJobStatus;
+
+  /**
+   * The tab, search, filter and sort the reader chose (engagement.home_view).
+   *
+   * @generated from field: user_engagement.HomeView home_view = 6;
+   */
+  homeView?: HomeView;
 };
 
 /**
@@ -460,6 +498,92 @@ export type HomeDebateTopicRenderInfo = Message<"rendering_info.HomeDebateTopicR
    * @generated from field: string claim_its_challenging = 5;
    */
   claimItsChallenging: string;
+
+  /**
+   * The card on the home shelf; see moderator_to_vr.DebateTopic.
+   *
+   * @generated from field: string root_text = 6;
+   */
+  rootText: string;
+
+  /**
+   * @generated from field: string root_holder = 7;
+   */
+  rootHolder: string;
+
+  /**
+   * @generated from field: bool unresolved = 8;
+   */
+  unresolved: boolean;
+
+  /**
+   * @generated from field: string hinge_text = 9;
+   */
+  hingeText: string;
+
+  /**
+   * @generated from field: int32 claim_count = 10;
+   */
+  claimCount: number;
+
+  /**
+   * @generated from field: int32 stance_count = 11;
+   */
+  stanceCount: number;
+
+  /**
+   * @generated from field: int32 open_challenge_count = 12;
+   */
+  openChallengeCount: number;
+
+  /**
+   * @generated from field: repeated string involved = 13;
+   */
+  involved: string[];
+
+  /**
+   * See moderator_to_vr.DebateTopic.
+   *
+   * @generated from field: int64 last_moved_at = 14;
+   */
+  lastMovedAt: bigint;
+
+  /**
+   * @generated from field: int32 people_count = 15;
+   */
+  peopleCount: number;
+
+  /**
+   * @generated from field: repeated moderator_to_vr.OwingParty owing = 16;
+   */
+  owing: OwingParty[];
+
+  /**
+   * Only the open challenges the VIEWER owes a reply to.
+   *
+   * @generated from field: repeated moderator_to_vr.OwedReply owed_to_viewer = 17;
+   */
+  owedToViewer: OwedReply[];
+
+  /**
+   * @generated from field: bool viewer_is_member = 18;
+   */
+  viewerIsMember: boolean;
+
+  /**
+   * @generated from field: repeated moderator_to_vr.RecentMove recent_moves = 19;
+   */
+  recentMoves: RecentMove[];
+
+  /**
+   * @generated from field: bool search_match = 20;
+   */
+  searchMatch: boolean;
+
+  /**
+   * @generated from field: repeated string matched_claims = 21;
+   */
+  matchedClaims: string[];
 };
 
 /**

@@ -107,7 +107,36 @@ protected:
         if (it != user_ids_.end()) return it->second;
         int id = moderator_->createUserIfNotExist(username);
         user_ids_[username] = id;
+        if (first_username_.empty()) {
+            first_username_ = username;
+        }
         return id;
+    }
+
+    // Which user a JSON dump should be rendered for.
+    //
+    // Statuses are PER USER, so a page dumped for a viewer who does not exist
+    // shows nothing useful -- downloadJson logs "Viewer user 'A' not found" and
+    // writes no file, which is worst of all on a FAILING step, where the dump
+    // is the only artefact left to read.
+    //
+    // `preferred` is the user the caller actually cares about (for a failing
+    // USER_VIEW, the user whose view disagreed). Scenarios name their own
+    // users -- "paul", "fauci", "A" -- so nothing can be hardcoded here.
+    std::string viewerForJson(const std::string& preferred = "") {
+        if (!preferred.empty() && user_ids_.count(preferred) > 0) {
+            return preferred;
+        }
+        // The first user the scenario created, which is usually whose case the
+        // debate is. Falls back to any known user, then to "A" so the call is
+        // still well-formed when no user exists at all.
+        if (!first_username_.empty()) {
+            return first_username_;
+        }
+        if (!user_ids_.empty()) {
+            return user_ids_.begin()->first;
+        }
+        return "A";
     }
 
 
@@ -159,6 +188,7 @@ protected:
         int bestFromClaimId = -1;
         int bestLinkId = -1;
         auto allLinks = debateWrapper_->getLinksForDebate(debate_id);
+
         for (const auto& linkTuple : allLinks) {
             int linkId = std::get<0>(linkTuple);
             int fromClaimId = std::get<1>(linkTuple);
@@ -166,11 +196,37 @@ protected:
             int linkType = std::get<5>(linkTuple);
             if (linkType != static_cast<int>(debate::LinkType::CHALLENGE)) continue;
             debate::Claim targetClaim = debateWrapper_->getClaimById(toClaimId);
-            if (targetClaim.id() != 0 && targetClaim.creator_id() == conceding_user_id) {
-                if (fromClaimId > bestFromClaimId) {
-                    bestFromClaimId = fromClaimId;
-                    bestLinkId = linkId;
+            if (targetClaim.id() == 0 || targetClaim.creator_id() != conceding_user_id) continue;
+
+            // Skip what this user has ALREADY conceded.
+            //
+            // Without this the resolver is stateless and returns the same
+            // challenge every time, so a scenario with several concessions
+            // re-concedes one challenge instead of working through them. That
+            // is not a niche case: conceding once per outstanding challenge is
+            // the obvious way to write a multi-branch argument, and it silently
+            // did nothing.
+            //
+            // "Already conceded" is read off the move log: each CONCEDE names
+            // the relation it gave up. Mirrors ScenarioImporter.
+            bool alreadyConceded = false;
+            for (const debate::Move& m : debateWrapper_->getMovesForDebate(debate_id)) {
+                if (m.type() != debate::CONCEDE || m.actor_id() != conceding_user_id) continue;
+                if (m.payload().find("\"challenge_relation_id\":" + std::to_string(linkId) + ",") !=
+                        std::string::npos ||
+                    m.payload().find("\"challenge_relation_id\":" + std::to_string(linkId) + "}") !=
+                        std::string::npos) {
+                    alreadyConceded = true;
+                    break;
                 }
+            }
+            if (alreadyConceded) {
+                continue;
+            }
+
+            if (fromClaimId > bestFromClaimId) {
+                bestFromClaimId = fromClaimId;
+                bestLinkId = linkId;
             }
         }
         return bestLinkId;
@@ -190,6 +246,15 @@ protected:
             case debate_event::CREATE_DEBATE:
                 event.mutable_create_debate()->set_debate_topic(
                     action.debate_topic().empty() ? "Test Debate" : action.debate_topic());
+                if (!action.voice().empty()) {
+                    event.mutable_create_debate()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_create_debate()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_create_debate()->set_source_excerpt(action.source_excerpt());
+                }
                 break;
             case debate_event::ENTER_DEBATE:
                 event.mutable_enter_debate()->set_debate_id(action.debate_id());
@@ -206,16 +271,71 @@ protected:
                 event.mutable_add_child_claim()->set_claim(action.claim_text());
                 event.mutable_add_child_claim()->set_description(
                     action.claim_description().empty() ? "test" : action.claim_description());
+                // Several texts = ONE relation with several from-claims.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_add_child_claim()->add_extra_claims(extra);
+                    // A scenario has one claim_description field, so the extras
+                    // get none. Padded rather than omitted so the two repeated
+                    // fields stay index-aligned on the server.
+                    event.mutable_add_child_claim()->add_extra_descriptions("");
+                }
+                if (!action.voice().empty()) {
+                    event.mutable_add_child_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_add_child_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_add_child_claim()->set_source_excerpt(action.source_excerpt());
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_add_child_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::SUBMIT_CHALLENGE_CLAIM:
                 event.mutable_submit_challenge_claim()->set_challenge_sentence(action.claim_text());
                 event.mutable_submit_challenge_claim()->set_challenge_description(
                     action.challenge_description().empty() ? "challenge claim" : action.challenge_description());
+                // Same two fields as ADD_CHILD_CLAIM, and they mean the same
+                // things: several sentences are ONE opposing relation with
+                // several from-claims, and the basis says what KIND of
+                // opposition it is. A DEFINITIONAL challenge ("that is not what
+                // the word means") is a different move from an EVIDENTIAL one,
+                // and without this a scenario could not express the difference.
+                for (const auto& extra : action.extra_claim_texts()) {
+                    event.mutable_submit_challenge_claim()->add_extra_sentences(extra);
+                    event.mutable_submit_challenge_claim()->add_extra_descriptions("");
+                }
+                if (!action.voice().empty()) {
+                    event.mutable_submit_challenge_claim()->set_voice(action.voice());
+                }
+                if (!action.source_url().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_url(action.source_url());
+                }
+                if (!action.source_excerpt().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_excerpt(action.source_excerpt());
+                }
+                if (!action.basis().empty()) {
+                    event.mutable_submit_challenge_claim()->set_basis(action.basis());
+                }
                 break;
             case debate_event::CONCEDE_CHALLENGE:
                 event.mutable_concede_challenge()->set_challenge_link_id(
                     resolveChallengeLinkIdForUser(debate_id, user_id));
                 break;
+            // Challenge an ARGUMENT, named by its ends. Mirrors ScenarioImporter;
+            // here scenario ids are real ids, so no mapping.
+            case debate_event::ADD_LINK_TO_BE_CHALLENGED: {
+                const int parent = action.link_to_claim_id();
+                const int child = action.link_from_claim_id();
+                int linkId = 0;
+                for (int id : debateWrapper_->findLinksUnder(parent)) {
+                    const debate::Relationship::Link l = debateWrapper_->getLinkById(id).link();
+                    if (l.connect_from() == parent && l.connect_to() == child) { linkId = id; break; }
+                }
+                event.mutable_add_link_to_be_challenged()->set_link_id(linkId);
+                break;
+            }
             default:
                 break;
         }
@@ -308,7 +428,8 @@ protected:
         auto savePageJson = [&]() {
             if (debate_id > 0) {
                 std::string filename = "FAIL_" + scenario_name + "_step" + std::to_string(step_index) + ".json";
-                downloadJson(debate_id, "A", filename, "FAILED expectation at step " + std::to_string(step_index));
+                downloadJson(debate_id, viewerForJson(exp.username()), filename,
+                             "FAILED expectation at step " + std::to_string(step_index));
             }
         };
 
@@ -401,6 +522,80 @@ protected:
                 << "[" << scenario_name << "] LINK_EXISTS "
                 << exp.from_claim_id() << " -> " << exp.to_claim_id();
         }
+        // --- Relation-shape checks (the new hyperedge structure) ---
+        //
+        // These read from_claim_ids/to_claim_id/role rather than the legacy
+        // `link` sub-message. That distinction is the whole point: on a
+        // relation with several from-claims, `link` holds only the FIRST row,
+        // so LINK_EXISTS above cannot see the others. A check written against
+        // `link` would silently pass while ignoring most of the relation.
+        else if (exp.check_type() == "RELATION_COUNT") {
+            Log::test("  CHECK RELATION_COUNT expected=" + std::to_string(exp.expected_count()));
+            int actual = 0;
+            const auto role = parseLinkType(exp.link_type()) == debate::LinkType::CHALLENGE
+                                  ? debate::OPPOSES : debate::SUPPORTS;
+            for (const auto& entry : collection.links_by_id()) {
+                if (entry.second.role() == role) ++actual;
+            }
+            if (actual != exp.expected_count()) {
+                savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_EQ(actual, exp.expected_count())
+                << "[" << scenario_name << "] RELATION_COUNT " << exp.link_type();
+        }
+        else if (exp.check_type() == "RELATION_FROM_COUNT") {
+            // How many from-claims the relation targeting `to_claim_id` has.
+            Log::test("  CHECK RELATION_FROM_COUNT to=" + std::to_string(exp.to_claim_id()) +
+                      " expected=" + std::to_string(exp.expected_count()));
+            int actual = 0;
+            for (const auto& entry : collection.links_by_id()) {
+                const debate::Relationship& rel = entry.second;
+                if (rel.to_case() == debate::Relationship::kToClaimId &&
+                    rel.to_claim_id() == exp.to_claim_id() &&
+                    rel.role() == debate::SUPPORTS &&
+                    rel.from_claim_ids_size() > actual) {
+                    actual = rel.from_claim_ids_size();
+                }
+            }
+            if (actual != exp.expected_count()) {
+                savePageJson();
+                Log::error("  FAIL actual=" + std::to_string(actual));
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_EQ(actual, exp.expected_count())
+                << "[" << scenario_name << "] RELATION_FROM_COUNT to=" << exp.to_claim_id();
+        }
+        else if (exp.check_type() == "RELATION_FROM_EXISTS") {
+            // from_claim_id is one of the sources of the relation targeting
+            // to_claim_id -- true for EVERY member, not just the first.
+            Log::test("  CHECK RELATION_FROM_EXISTS " + std::to_string(exp.from_claim_id()) +
+                      " -> " + std::to_string(exp.to_claim_id()));
+            bool found = false;
+            for (const auto& entry : collection.links_by_id()) {
+                const debate::Relationship& rel = entry.second;
+                if (rel.to_case() != debate::Relationship::kToClaimId ||
+                    rel.to_claim_id() != exp.to_claim_id()) {
+                    continue;
+                }
+                for (const int from : rel.from_claim_ids()) {
+                    if (from == exp.from_claim_id()) { found = true; break; }
+                }
+                if (found) break;
+            }
+            if (!found) {
+                savePageJson();
+                Log::error("  FAIL (from-claim not in any relation targeting it)");
+            } else {
+                Log::test("  PASS");
+            }
+            EXPECT_TRUE(found)
+                << "[" << scenario_name << "] RELATION_FROM_EXISTS "
+                << exp.from_claim_id() << " -> " << exp.to_claim_id();
+        }
         else if (exp.check_type() == "COLLECTION_SIZE") {
             Log::test("  CHECK COLLECTION_SIZE expected=" + std::to_string(exp.expected_count()));
             if (collection.claims_by_id_size() != exp.expected_count()) {
@@ -475,10 +670,7 @@ protected:
                     std::string outDir = "json_output/" + scenario.name();
                     std::filesystem::create_directories(outDir);
                     std::string filename = outDir + "/STEP_" + scenario.name() + "_step" + std::to_string(step_index) + ".json";
-                    // Use first user as viewer (fallback to "A")
-                    std::string viewer = "A";
-                    if (!user_ids_.empty()) viewer = user_ids_.begin()->first;
-                    downloadJson(debate_id, viewer, filename, desc);
+                    downloadJson(debate_id, viewerForJson(action.username()), filename, desc);
                 }
             }
 
@@ -500,12 +692,7 @@ protected:
         // Save final state as JSON after scenario completes (pass or fail)
         if (debate_id > 0) {
             std::string filename = "FINAL_" + scenario.name() + ".json";
-            // Use the first user in the scenario as viewer (fallback to "A")
-            std::string viewer = "A";
-            if (!user_ids_.empty()) {
-                viewer = user_ids_.begin()->first;
-            }
-            downloadJson(debate_id, viewer, filename);
+            downloadJson(debate_id, viewerForJson(), filename);
         }
     }
 
@@ -523,6 +710,9 @@ protected:
     DatabaseWrapper* dbWrapper_ = nullptr;
     DebateWrapper* debateWrapper_ = nullptr;
     std::map<std::string, int> user_ids_;
+    // The first user the scenario created. user_ids_ is ordered by name, so it
+    // cannot answer "who came first" -- and alphabetical order is arbitrary.
+    std::string first_username_;
 
 
     // -----------------------------------------------------------------------
@@ -564,6 +754,14 @@ TEST_F(ScenarioRunner, TestA) {
     executeScenario(s, /*dump_json_per_step=*/true);
 }
 
+// UndercutTest -- a challenge aimed at an ARGUMENT (ADD_LINK_TO_BE_CHALLENGED
+// named by the link's ends), and the statuses it does and does not move.
+TEST_F(ScenarioRunner, UndercutTest) {
+    TestScenario s = LoadScenarioFromFile("scenarios/UndercutTest.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load UndercutTest.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/false);
+}
+
 TEST_F(ScenarioRunner, SeaLevelDebate) {
     TestScenario s = LoadScenarioFromFile("scenarios/SeaLevelDebate.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load SeaLevelDebate.pbtxt";
@@ -598,6 +796,55 @@ TEST_F(ScenarioRunner, ConcedePropagationTest) {
     TestScenario s = LoadScenarioFromFile("scenarios/ConcedePropagationTest.pbtxt");
     ASSERT_GT(s.steps_size(), 0) << "Failed to load ConcedePropagationTest.pbtxt";
     executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+// ---------------------------------------------------------------------------
+// MultiFromRelation — several claims that TOGETHER support one conclusion,
+// alongside an ordinary single-from relation, so the two are distinguishable.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, MultiFromRelation) {
+    TestScenario s = LoadScenarioFromFile("scenarios/MultiFromRelation.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load MultiFromRelation.pbtxt";
+    executeScenario(s);
+}
+
+// ---------------------------------------------------------------------------
+// FauciPaulHearing — the expressible subset of the real-world spec. Dumps a
+// JSON page per step so the built graph can be inspected, not just asserted.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciPaulHearing) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciPaulHearing.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciPaulHearing.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+TEST_F(ScenarioRunner, MultiFromSupport) {
+    TestScenario s = LoadScenarioFromFile("scenarios/MultiFromSupport.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load MultiFromSupport.pbtxt";
+    executeScenario(s);
+}
+
+// ---------------------------------------------------------------------------
+// FauciPaulHearingFull — the fuller hearing: 23 claims, four independent
+// supports on the root, a definition inside a from-set, and five concessions.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciPaulHearingFull) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciPaulHearingFull.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciPaulHearingFull.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/true);
+}
+
+// ---------------------------------------------------------------------------
+// The Fauci hearing as a READER enters it: one member typing, every claim in
+// somebody else's voice with its source. The reference case for voices --
+// nobody but the reader is a member, yet every voice holds a view, and the
+// pardon step (INFERENTIAL) failing withdraws a reason without sinking the
+// root.
+// ---------------------------------------------------------------------------
+TEST_F(ScenarioRunner, FauciCase) {
+    TestScenario s = LoadScenarioFromFile("scenarios/FauciCase.pbtxt");
+    ASSERT_GT(s.steps_size(), 0) << "Failed to load FauciCase.pbtxt";
+    executeScenario(s, /*dump_json_per_step=*/false);
 }
 
 TEST_F(ScenarioRunner, MegaTest) {

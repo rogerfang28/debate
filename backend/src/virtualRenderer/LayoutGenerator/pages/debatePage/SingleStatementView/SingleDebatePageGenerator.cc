@@ -1,7 +1,9 @@
+#include "../../../../../utils/BasisRegistry.h"
 #include "SingleDebatePageGenerator.h"
 #include "../../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../../utils/Log.h"
 #include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/AnonymousUser.h"
 #include "user.pb.h"
 #include "user_engagement.pb.h"
 
@@ -218,7 +220,8 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
     ComponentGenerator::addChild(&focusSection, focusingOnClaim);
     ComponentGenerator::addChild(&topSection, focusSection);
 
-    // Right top section - home button
+    // Right top section. Its Home button moved to the site header, which
+    // LayoutGenerator puts above every page.
     ui::Component rightTopSection = ComponentGenerator::createContainer(
         "rightTopSection",
         "flex flex-col gap-2",
@@ -230,18 +233,6 @@ ui::Component DebatePageGenerator::GenerateSingleClaimLayout() {
         "w-64"
     );
 
-    ui::Component goHomeButton = ComponentGenerator::createButton(
-        "goHomeButton",
-        "Home",
-        "",
-        "bg-blue-600",
-        "hover:bg-blue-700",
-        "text-white",
-        "px-4 py-2",
-        "rounded",
-        "transition-colors text-sm"
-    );
-    ComponentGenerator::addChild(&rightTopSection, goHomeButton);
     ComponentGenerator::addChild(&topSection, rightTopSection);
     ComponentGenerator::addChild(&mainLayout, topSection);
 
@@ -606,7 +597,7 @@ ui::Component DebatePageGenerator::FillChildClaims(const rendering_info::DebateP
     // Check if user is in modify mode
     bool modifyingCurrentClaim = debatingInfo.modifying_current_claim();
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         challengingClaim = false;
         modifyingCurrentClaim = false;
     }
@@ -1192,7 +1183,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         );
 
         // Concede button: visible when the current user's claim is being challenged
-        if (!userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (!userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             ui::Component concedeButton = ComponentGenerator::createButton(
                 "concedeChallengeButton_" + std::to_string(challengeLinkId),
                 "Concede",
@@ -1232,7 +1223,7 @@ ui::Component DebatePageGenerator::FillChallenges(const rendering_info::DebatePa
         ui::Component deleteChallengeButton;
         bool hasDeleteChallengeButton = false;
 
-        if (userOwnsChallenge && !demo_mode::kReadOnlyMode) {
+        if (userOwnsChallenge && !anonymous_user::IsReadOnlyViewer(user.username())) {
             deleteChallengeButton = ComponentGenerator::createButton(
                 "deleteChallengeButton_" + challengedClaimId,
                 "Delete",
@@ -1285,7 +1276,7 @@ ui::Component DebatePageGenerator::FillCurrentClaimSection(const rendering_info:
     bool editingClaim = (debatingInfo.current_debate_action().action_type() == 
                          user_engagement::DebatingInfo_CurrentDebateAction_ActionType_EDITING_CLAIM);
 
-    if (demo_mode::kReadOnlyMode) {
+    if (anonymous_user::IsReadOnlyViewer(user.username())) {
         modifyingCurrentClaim = false;
         editingDescription = false;
         editingClaim = false;
@@ -1503,7 +1494,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
                     for (int k = 0; k < rightContent->children_size(); k++) {
                         ui::Component* modifyActionsContainer = rightContent->mutable_children(k);
                         if (modifyActionsContainer->id() == "modifyActionsContainer") {
-                            if (modifyingCurrentClaim && !demo_mode::kReadOnlyMode) {
+                            if (modifyingCurrentClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Cancel and Submit buttons
                                 ui::Component cancelModifyButton = ComponentGenerator::createButton(
                                     "cancelModifyClaimButton",
@@ -1530,7 +1521,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
                                     "w-full transition-colors"
                                 );
                                 ComponentGenerator::addChild(modifyActionsContainer, submitModifyButton);
-                            } else if (!demo_mode::kReadOnlyMode) {
+                            } else if (!anonymous_user::IsReadOnlyViewer(user.username())) {
                                 // Show Modify Claim button
                                 ui::Component modifyClaimButton = ComponentGenerator::createButton(
                                     "modifyClaimButton",
@@ -1556,7 +1547,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
     }
 
     // Only add buttons if not in editing mode
-    if (!editingDescription && !editingClaim && !demo_mode::kReadOnlyMode) {
+    if (!editingDescription && !editingClaim && !anonymous_user::IsReadOnlyViewer(user.username())) {
         // Find descriptionActions container and add appropriate buttons
         for (int i = 0; i < mainLayout.children_size(); i++) {
             ui::Component* contentArea = mainLayout.mutable_children(i);
@@ -1588,7 +1579,7 @@ ui::Component DebatePageGenerator::AddAppropriateButtons(const rendering_info::D
 
                                             ui::Component addChildClaim = ComponentGenerator::createButton(
                                                 "addChildClaimButton",
-                                                "Add Child Claim",
+                                                "Support",
                                                 "",
                                                 "bg-green-600",
                                                 "hover:bg-green-700",
@@ -1721,7 +1712,7 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             // Modal title
             ui::Component modalTitle = ComponentGenerator::createText(
                 "addChildClaimModalTitle",
-                "Add Child Claim",
+                "Add Supporting Claim",
                 "text-2xl",
                 "text-white",
                 "font-bold",
@@ -1741,43 +1732,61 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             ComponentGenerator::addChild(&modalContent, claimSentenceLabel);
 
             // Claim sentence input
-            ui::Component claimSentenceInput = ComponentGenerator::createInput(
+            ui::Component claimSentenceInput = ComponentGenerator::createMultiInput(
                 "claimSentenceInput",
                 "Enter the claim sentence...",
-                "claimSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
+                "descriptionInput",
+                "Why this claim matters (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-4"
+                "w-full"
             );
             ComponentGenerator::addChild(&modalContent, claimSentenceInput);
 
-            // Description label
-            ui::Component descriptionLabel = ComponentGenerator::createText(
-                "descriptionLabel",
-                "Description:",
+            ui::Component multiHint = ComponentGenerator::createText(
+                "multiClaimHint",
+                "Add more than one to say they support the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4 mt-1"
+            );
+            ComponentGenerator::addChild(&modalContent, multiHint);
+
+
+            // Basis label. Kept in step with the identical block in
+            // FullDebatePageGenerator: both modals feed the SAME parser branch,
+            // so a field missing from one silently sends an empty basis rather
+            // than failing visibly.
+            ui::Component basisLabel = ComponentGenerator::createText(
+                "linkTypeLabel",
+                "How does this support the claim?",
                 "text-sm",
                 "text-white",
                 "font-semibold",
                 "mb-2"
             );
-            ComponentGenerator::addChild(&modalContent, descriptionLabel);
+            ComponentGenerator::addChild(&modalContent, basisLabel);
 
-            // Description input (using input as textarea)
-            ui::Component descriptionInput = ComponentGenerator::createInput(
-                "descriptionInput",
-                "Enter the description...",
-                "description",
+            ui::Component basisDropdown = ComponentGenerator::createDropdown(
+                "linkTypeSelect",
+                bases::Names(),
+                bases::DefaultName(),
+                "linkType",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-6 h-32"
+                "w-full mb-6"
             );
-            ComponentGenerator::addChild(&modalContent, descriptionInput);
+            ComponentGenerator::addChild(&modalContent, basisDropdown);
 
             // Modal action buttons
             ui::Component modalActions = ComponentGenerator::createContainer(
@@ -1876,18 +1885,61 @@ ui::Component DebatePageGenerator::AddAppropriateOverlays(const rendering_info::
             ComponentGenerator::addChild(&addChallengeModalContent, challengeInstructions);
 
             // Challenge sentence input
-            ui::Component challengeSentenceInput = ComponentGenerator::createInput(
+            ui::Component challengeSentenceInput = ComponentGenerator::createMultiInput(
                 "challengeSentenceInput",
                 "Enter your challenge sentence...",
-                "challengeSentence",
+                "...and this too (optional)",
+                "+ Add another claim",
+                10,
+                "challengeDescriptionInput",
+                "Why this refutes it (optional)",
                 "bg-gray-700",
                 "text-white",
                 "border-gray-600",
                 "p-3",
                 "rounded",
-                "w-full mb-6 h-32"
+                "w-full"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeSentenceInput);
+
+            ui::Component challengeMultiHint = ComponentGenerator::createText(
+                "challengeMultiClaimHint",
+                "Add more than one to say they refute the claim together.",
+                "text-xs",
+                "text-gray-400",
+                "",
+                "mb-4 mt-1"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeMultiHint);
+
+            // Basis label + dropdown.
+            //
+            // A challenge has a KIND too. "That is not what the word means"
+            // (DEFINITIONAL) is a different move from "the evidence says
+            // otherwise" (EVIDENTIAL), and only the basis records which.
+            ui::Component challengeBasisLabel = ComponentGenerator::createText(
+                "challengeLinkTypeLabel",
+                "On what grounds?",
+                "text-sm",
+                "text-white",
+                "font-semibold",
+                "mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisLabel);
+
+            ui::Component challengeBasisDropdown = ComponentGenerator::createDropdown(
+                "challengeLinkTypeSelect",
+                bases::Names(),
+                bases::DefaultName(),
+                "challengeLinkType",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-6"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeBasisDropdown);
 
             // Modal action buttons
             ui::Component addChallengeModalActions = ComponentGenerator::createContainer(

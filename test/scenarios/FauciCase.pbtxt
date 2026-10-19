@@ -1,0 +1,733 @@
+name: "FauciCase"
+
+# =============================================================================
+# The Fauci hearing, as a reader would enter it.
+#
+# One person -- "guest", the reader -- types everything in. Nothing is the reader's own
+# claim: every claim is said by someone in the two CBS reports (the hearing
+# live blog of July 29, 2026 and the diary story of July 28), entered in
+# that person's voice with the article as its source. The voices never log
+# in; the reader is a member, they are not.
+#
+# Claim ids, in creation order:
+#
+#   1  Paul       Fauci should be held in contempt of Congress (root)
+#   2  Paul       Fauci refused every question after being directed to testify
+#   3  Paul       The Fifth Amendment privilege is unsupported because of the pardon   [INFERENTIAL]
+#   4  Paul       The pardon gave Fauci more immunity than most people get
+#   5  Paul       Obstructing an investigation of Congress is against the law     [AUTHORITY]
+#   6  Lankford   Congress held Lois Lerner in contempt for testifying then taking the Fifth  [AUTHORITY]
+#   7  Fauci      Paul's sole reason for the hearing is to vindicate his pledge that Fauci ends up behind bars  (challenges 1)
+#   8  Fauci      Paul released the unredacted diary to embarrass and intimidate
+#   9  Fauci      Paul has repeatedly pledged in public that Fauci would end up behind bars
+#  10  attorney   Fauci has a valid Fifth Amendment privilege and the right to assert it  (challenges 3)
+#  11  Lankford   Invoking the Fifth Amendment is Fauci's constitutional right  (challenges 3)
+#  12  Peters     The hearing legitimizes a conclusion Paul reached years ago  (challenges 1)
+#  13  Peters     In 2021 Paul called for Fauci to be fired and arrested, and featured him in fundraising
+#  14  Peters     The committee has denied the minority access to the investigation's records
+#  15  Paul       All of the investigation's records were posted on a website; no Democrat asked for the code  (challenges 14)
+#  16  Paul       The hearing's purpose was answers and an apology for funding dangerous research in China  (challenges 7)
+#  17  Paul       NIAID funded research in a Wuhan lab that lacked acceptable safety standards
+#  18  Fauci      The viruses studied under the NIH grant were so far from SARS-CoV-2 they could not have become it  (challenges 17)
+#  19  Paul       Fauci privately doubted the natural-origin story while publicly calling a lab leak implausible  (challenges 18)
+#  20  Fauci      I always said natural origin was very highly likely, and called for a thorough investigation  (challenges 19)
+#
+# What the replay must show at the end:
+#   - Paul holds the root; Fauci and Peters hold it false; Lankford holds neither.
+#   - The pardon step (3) is false for Lankford and the attorney, and since it
+#     is INFERENTIAL that only withdraws support -- it does not sink the root.
+#   - Nobody but the reader is a member, yet every voice has a view.
+# =============================================================================
+
+steps {
+  action {
+    username: "guest"
+    event_type: "CREATE_USER"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "CREATE_DEBATE"
+    debate_topic: "Fauci should be held in contempt of Congress for refusing to testify at the Senate Homeland Security Committee hearing."
+    voice: "Paul"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "this committee has scheduled a vote next week on a resolution certifying your contempt"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "JOIN_DEBATE"
+    debate_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ENTER_DEBATE"
+    debate_id: 1
+  }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "guest" expected_status: "UNDETERMINED" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci refused to answer every question from senators after being directed to testify."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Fauci continued to invoke his Fifth Amendment rights to every question from senators."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 1 to_claim_id: 2 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Fauci's Fifth Amendment privilege is unsupported because he holds an unlimited presidential pardon."
+    voice: "Paul"
+    basis: "INFERENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Because you refuse to answer, citing a privilege that is unsupported because of your pardon"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 1 to_claim_id: 3 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 3
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The presidential pardon has given Fauci more immunity than most people get."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Paul said the presidential pardon has given Fauci more immunity than most people get."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 4 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 3 to_claim_id: 4 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "It is against the law to obstruct an investigation of Congress."
+    voice: "Paul"
+    basis: "AUTHORITY"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "It's against the law to obstruct an investigation of Congress. There will be repercussions to your refusal to testify today."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 5 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 1 to_claim_id: 5 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Congress held Lois Lerner in contempt after she gave an opening statement and then took the Fifth, on the ground that you cannot do both."
+    voice: "Lankford"
+    basis: "AUTHORITY"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Lois Lerner came and testified, gave an opening statement, and then took the Fifth Amendment. The committee then held her in contempt for that, saying you can't do both."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 6 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 1 to_claim_id: 6 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 6 username: "Lankford" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The sole reason Paul called Fauci before the committee is to get him to say something that would vindicate Paul's public pledges that Fauci would end up behind bars."
+    voice: "Fauci"
+    basis: "NORMATIVE"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "the sole reason he is calling me before this committee is to get me to say something, anything, that could vindicate his repeated public pledges that I end up, in his words, quote, 'behind bars'"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 7 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 7 to_claim_id: 1 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "Fauci" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Fauci" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 7
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Paul publicly released Fauci's unredacted personal diary, aimed at embarrassing and intimidating him."
+    voice: "Fauci"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "his publicly releasing my unredacted personal diary, aimed at embarrassing and intimidating me"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 8 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 7 to_claim_id: 8 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 8 username: "Fauci" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 7
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Paul has repeatedly and publicly pledged that Fauci would end up behind bars."
+    voice: "Fauci"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "his repeated public pledges that I end up, in his words, quote, 'behind bars'"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 9 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 7 to_claim_id: 9 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 9 username: "Fauci" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 3
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 3
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Fauci has a valid Fifth Amendment privilege and the right to assert it."
+    voice: "Fauci's attorney"
+    basis: "AUTHORITY"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Dr. Fauci has a valid Fifth Amendment privilege, and he has the right to assert it. That's what I was trying to tell the committee."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 10 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 10 to_claim_id: 3 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 10 username: "Fauci's attorney" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Fauci's attorney" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 3
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 3
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Invoking the Fifth Amendment is Fauci's constitutional right."
+    voice: "Lankford"
+    basis: "AUTHORITY"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Sen. James Lankford, a Republican from Oklahoma, acknowledged Fauci's constitutional right to invoke the Fifth"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 11 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 11 to_claim_id: 3 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 11 username: "Lankford" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Lankford" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Lankford" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 1
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The hearing legitimizes a predetermined conclusion Paul reached years ago, under the guise of a committee investigation."
+    voice: "Peters"
+    basis: "NORMATIVE"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "This hearing appears to be a culmination of months of bias and selected efforts by the majority, under the guise of a committee investigation, to basically legitimize a predetermined conclusion that was reached years ago"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 12 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 12 to_claim_id: 1 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 12 username: "Peters" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Peters" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 12
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In 2021 Paul called for Fauci to be fired and arrested, and has featured him in fundraising emails and on the cover of his book."
+    voice: "Peters"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "In 2021, the chairman has called for today's witness to be fired, to be arrested. ... He has even featured the witness prominently in fundraising emails and on the cover of his book."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 13 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 12 to_claim_id: 13 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 13 username: "Peters" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 12
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The committee has denied the minority access to the investigation's records."
+    voice: "Peters"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "The accusation that the committee has denied access to the minority's records is categorically false"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 14 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 12 to_claim_id: 14 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 14 username: "Peters" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 14
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 14
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "All of the investigation's records were posted on a website, and no Democrat ever asked for the access code."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "Paul said all of the information was posted on a website, but no Democrats ever asked for the access code."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 15 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 15 to_claim_id: 14 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 15 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 14 username: "Paul" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 7
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 7
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The hearing's purpose was to get answers and an apology for why U.S. taxpayers funded dangerous research at a lab in China without adequate safety standards."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "The American people deserve to know why dangerous research was funded by NIAID in a totalitarian country in a lab that lacked acceptable safety standards."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 16 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 16 to_claim_id: 7 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 16 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 7 username: "Paul" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 16
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "NIAID funded research in a lab in China that lacked acceptable safety standards."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "why dangerous research was funded by NIAID in a totalitarian country in a lab that lacked acceptable safety standards"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 17 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 16 to_claim_id: 17 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 17 username: "Paul" expected_status: "TRUE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 17
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 17
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The viruses studied under the NIH grant were molecularly so far removed from SARS-CoV-2 that they could not have turned into it."
+    voice: "Fauci"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/live-updates/anthony-fauci-rand-paul-covid-origins-senate/"
+    source_excerpt: "the viruses that were studied under the NIH grant, for the kinds of experiments that were done, molecularly were so far removed from SARS-CoV-2 that they could not have turned it into SARS-CoV-2 even if they tried"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 18 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 18 to_claim_id: 17 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 18 username: "Fauci" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 17 username: "Fauci" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 18
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 18
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Fauci privately doubted the natural-origin account while telling the public a lab leak was implausible."
+    voice: "Paul"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/news/anthony-fauci-rand-paul-diary-release/"
+    source_excerpt: "Paul on Monday accused Fauci of saying one thing to \"Dear Diary\" while telling the public \"it's implausible that it came from the lab\""
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 19 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 19 to_claim_id: 18 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 19 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 18 username: "Paul" expected_status: "FALSE_CLAIM" }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 19
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 19
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Fauci always said natural origin was very highly likely, and once a lab leak was being discussed he said no one was certain and called for a thorough investigation."
+    voice: "Fauci"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.cbsnews.com/news/anthony-fauci-rand-paul-diary-release/"
+    source_excerpt: "I had always said that the very highly likelihood is that the virus originated naturally from an animal reservoir jumping to a human. However ... I have been saying that no one is 100% certain of the origin including me and so I am calling for a thorough investigation."
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 20 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 20 to_claim_id: 19 link_type: "CHALLENGE" }
+  expectations { check_type: "USER_VIEW" claim_id: 20 username: "Fauci" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 19 username: "Fauci" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Fauci" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Peters" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "Lankford" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Fauci's attorney" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "Paul" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 17 username: "Fauci" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 18 username: "Paul" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 19 username: "Fauci" expected_status: "FALSE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "guest" expected_status: "UNDETERMINED" }
+}

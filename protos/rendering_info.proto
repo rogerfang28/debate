@@ -3,6 +3,8 @@ syntax = "proto3";
 package rendering_info;
 
 import "debate.proto";
+import "user_engagement.proto";
+import "moderator_to_vr.proto";
 
 // The exact input needed to build the debate page UI.
 message DebatePageRenderingInfo {
@@ -92,6 +94,9 @@ message FullDebateTreeNode {
 	// Convenience adjacency to simplify map rendering without extra joins.
 	repeated int32 parent_claim_ids = 6;
 	repeated int32 child_claim_ids = 7;
+
+	// Whose claim it is when not the entrant's (debate.Claim.voice_id); 0 = creator.
+	int32 voice_id = 8;
 }
 
 enum FullDebateTreeLinkType {
@@ -116,6 +121,13 @@ message FullDebateTreeLink {
 	// Optional metadata copied from domain link/challenge rows.
 	string connection = 7;
 	int32 creator_id = 8;
+
+	// For a challenge aimed at an ARGUMENT rather than a claim: the relation
+	// (link_id of the attacked tree links) it attacks. to_claim_id then holds
+	// the claim that argument was for -- where the challenger is PLACED -- and
+	// this says where the line should END: at that relation's pill. 0 for
+	// every challenge aimed at a claim.
+	int32 to_relation_id = 9;
 }
 
 // One timeline step in the full-debate view.
@@ -137,6 +149,14 @@ message HomePageRenderingInfo {
 
 	// Controls visibility of submit/join controls in viewer mode.
 	bool can_create_or_join_debates = 4;
+
+	// Progress of an AI job started from this page. Generation begins here and
+	// its result lands in the debate list, so the home page is where its
+	// progress and its outcome have to be shown.
+	user_engagement.AiJobStatus ai_job = 5;
+
+	// The tab, search, filter and sort the reader chose (engagement.home_view).
+	user_engagement.HomeView home_view = 6;
 }
 
 message HomeDebateTopicRenderInfo {
@@ -145,6 +165,25 @@ message HomeDebateTopicRenderInfo {
 	int32 creator_id = 3;
 	bool is_challenge = 4;
 	string claim_its_challenging = 5;
+	// The card on the home shelf; see moderator_to_vr.DebateTopic.
+	string root_text = 6;
+	string root_holder = 7;
+	bool unresolved = 8;
+	string hinge_text = 9;
+	int32 claim_count = 10;
+	int32 stance_count = 11;
+	int32 open_challenge_count = 12;
+	repeated string involved = 13;
+	// See moderator_to_vr.DebateTopic.
+	int64 last_moved_at = 14;
+	int32 people_count = 15;
+	repeated moderator_to_vr.OwingParty owing = 16;
+	// Only the open challenges the VIEWER owes a reply to.
+	repeated moderator_to_vr.OwedReply owed_to_viewer = 17;
+	bool viewer_is_member = 18;
+	repeated moderator_to_vr.RecentMove recent_moves = 19;
+	bool search_match = 20;
+	repeated string matched_claims = 21;
 }
 
 message ClaimRenderInfo {

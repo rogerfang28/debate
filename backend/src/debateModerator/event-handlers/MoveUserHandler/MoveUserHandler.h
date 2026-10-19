@@ -12,6 +12,9 @@ public:
     // touching current_scope -- unlike GoToClaim, this never navigates to the
     // single-claim view.
     static void SelectClaim(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
+    // Selects an ARGUMENT (a relation) and moves current_claim to the claim
+    // that argument is for. Like SelectClaim, never changes current_scope.
+    static void SelectLink(const int& link_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaim(const int& user_id, DebateWrapper& debateWrapper);
     static void GoToChallenge(const int& claim_id, const int& user_id, DebateWrapper& debateWrapper);
     static void GoToParentClaimOfDebate(const int& user_id, DebateWrapper& debateWrapper);

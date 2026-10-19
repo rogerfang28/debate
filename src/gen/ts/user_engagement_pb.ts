@@ -12,7 +12,129 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user_engagement.proto.
  */
 export const file_user_engagement: GenFile = /*@__PURE__*/
-  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCLCAQoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAQg0KC2FjdGlvbl9pbmZvIkIKCEhvbWVJbmZvEjYKEWF2YWlsYWJsZV9kZWJhdGVzGAEgASgLMhsudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZUxpc3QicQoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwudXNlcl9lbmdhZ2VtZW50LkRlYmF0ZVRvcGljIrQLCgxEZWJhdGluZ0luZm8SEQoJZGViYXRlX2lkGAEgASgFEhQKDGlzX2NoYWxsZW5nZRgQIAEoCBIfChdtb2RpZnlpbmdfY3VycmVudF9jbGFpbRgJIAEoCBIaChJjaGFsbGVuZ2VkX3VzZXJfaWQYESABKAUSGgoSY2hhbGxlbmdlcl91c2VyX2lkGBIgASgFEjEKDWN1cnJlbnRfY2xhaW0YAiABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEiEKGWN1cnJlbnRfY2xhaW1fZGVzY3JpcHRpb24YAyABKAkSMAoMcGFyZW50X2NsYWltGAQgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIuCgpyb290X2NsYWltGAUgASgLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIzCg9jaGlsZHJlbl9jbGFpbXMYBiADKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEigKBWxpbmtzGAcgAygLMhkudXNlcl9lbmdhZ2VtZW50LkxpbmtJbmZvEjoKEmN1cnJlbnRfY2hhbGxlbmdlcxgIIAMoCzIeLnVzZXJfZW5nYWdlbWVudC5DaGFsbGVuZ2VJbmZvElAKFWN1cnJlbnRfZGViYXRlX2FjdGlvbhgLIAEoCzIxLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ3VycmVudERlYmF0ZUFjdGlvbhJHCg9jb25uZWN0aW5nX2luZm8YDCABKAsyLC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNvbm5lY3RpbmdJbmZvSAASSQoQY2hhbGxlbmdpbmdfaW5mbxgPIAEoCzItLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ2hhbGxlbmdpbmdJbmZvSAAapQEKEE1vZGlmaWNhdGlvbkluZm8SLgoKbmV3X2NsYWltcxgBIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SLAoJbmV3X2xpbmtzGAIgAygLMhkudXNlcl9lbmdhZ2VtZW50LkxpbmtJbmZvEhkKEWRlbGV0ZWRfY2xhaW1faWRzGAMgAygFEhgKEGRlbGV0ZWRfbGlua19pZHMYBCADKAUatAIKE0N1cnJlbnREZWJhdGVBY3Rpb24SUQoLYWN0aW9uX3R5cGUYASABKA4yPC51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkN1cnJlbnREZWJhdGVBY3Rpb24uQWN0aW9uVHlwZSLJAQoKQWN0aW9uVHlwZRIbChdBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEhEKDVZJRVdJTkdfQ0xBSU0QARIWChJBRERJTkdfQ0hJTERfQ0xBSU0QAhIVChFDT05ORUNUSU5HX0NMQUlNUxADEhUKEUNIQUxMRU5HSU5HX0NMQUlNEAQSHQoZRURJVElOR19DTEFJTV9ERVNDUklQVElPThAFEhEKDUVESVRJTkdfQ0xBSU0QBhITCg9SRVBPUlRJTkdfQ0xBSU0QBxqCAQoOQ29ubmVjdGluZ0luZm8SFQoNZnJvbV9jbGFpbV9pZBgBIAEoBRITCgt0b19jbGFpbV9pZBgCIAEoBRISCgpjb25uZWN0aW9uGAMgASgJEhIKCmNvbm5lY3RpbmcYBCABKAgSHAoUb3BlbmVkX2Nvbm5lY3RfbW9kYWwYBSABKAgacgoPQ2hhbGxlbmdpbmdJbmZvEhEKCWNsYWltX2lkcxgBIAMoBRIQCghsaW5rX2lkcxgCIAMoBRIaChJjaGFsbGVuZ2Vfc2VudGVuY2UYAyABKAkSHgoWb3BlbmVkX2NoYWxsZW5nZV9tb2RhbBgEIAEoCEIRCg9hZGRpdGlvbmFsX2luZm8iYgoJQ2xhaW1JbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSIwoGc3RhdHVzGAQgASgOMhMuZGViYXRlLkNsYWltU3RhdHVzImgKCExpbmtJbmZvEgoKAmlkGAEgASgFEhQKDGNvbm5lY3RfZnJvbRgCIAEoBRISCgpjb25uZWN0X3RvGAMgASgFEhIKCmNvbm5lY3Rpb24YBCABKAkSEgoKY3JlYXRvcl9pZBgFIAEoBSJBCg1DaGFsbGVuZ2VJbmZvEgoKAmlkGAEgASgFEhAKCHNlbnRlbmNlGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUqbQoQRW5nYWdlbWVudEFjdGlvbhIhCh1FTkdBR0VNRU5UX0FDVElPTl9VTlNQRUNJRklFRBAAEg8KC0FDVElPTl9IT01FEAESEwoPQUNUSU9OX0RFQkFUSU5HEAISEAoMQUNUSU9OX0xPR0lOEANiBnByb3RvMw", [file_debate]);
+  fileDesc("ChV1c2VyX2VuZ2FnZW1lbnQucHJvdG8SD3VzZXJfZW5nYWdlbWVudCJtCgtBaUpvYlN0YXR1cxIPCgdwZW5kaW5nGAEgASgIEhcKD2VsYXBzZWRfc2Vjb25kcxgCIAEoBRINCgVlcnJvchgDIAEoCRIMCgRub3RlGAQgASgJEhcKD2Fib3V0X2RlYmF0ZV9pZBgFIAEoBSKNAQoOVHV0b3JpYWxTdGF0dXMSDgoGYWN0aXZlGAEgASgIEg4KBnNjcmlwdBgCIAEoCRISCgpzdGVwX2luZGV4GAMgASgFEhMKC3RvdGFsX3N0ZXBzGAQgASgFEhEKCWRlYmF0ZV9pZBgFIAEoBRIQCghmaW5pc2hlZBgGIAEoCBINCgVlcnJvchgHIAEoCSLRAgoOVXNlckVuZ2FnZW1lbnQSOQoOY3VycmVudF9hY3Rpb24YASABKA4yIS51c2VyX2VuZ2FnZW1lbnQuRW5nYWdlbWVudEFjdGlvbhIuCglob21lX2luZm8YAiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZUluZm9IABI2Cg1kZWJhdGluZ19pbmZvGAMgASgLMh0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mb0gAEiwKBmFpX2pvYhgEIAEoCzIcLnVzZXJfZW5nYWdlbWVudC5BaUpvYlN0YXR1cxIxCgh0dXRvcmlhbBgFIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5UdXRvcmlhbFN0YXR1cxIsCglob21lX3ZpZXcYBiABKAsyGS51c2VyX2VuZ2FnZW1lbnQuSG9tZVZpZXdCDQoLYWN0aW9uX2luZm8idgoISG9tZVZpZXcSEAoIaG9tZV90YWIYASABKAkSFQoNZXhwbG9yZV9xdWVyeRgCIAEoCRIWCg5leHBsb3JlX2ZpbHRlchgDIAEoCRIUCgxleHBsb3JlX3NvcnQYBCABKAkSEwoLY3JlYXRlX29wZW4YBSABKAgiQgoISG9tZUluZm8SNgoRYXZhaWxhYmxlX2RlYmF0ZXMYASABKAsyGy51c2VyX2VuZ2FnZW1lbnQuRGViYXRlTGlzdCJxCgtEZWJhdGVUb3BpYxIKCgJpZBgBIAEoBRINCgV0b3BpYxgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEhQKDGlzX2NoYWxsZW5nZRgEIAEoCBIdChVjbGFpbV9pdHNfY2hhbGxlbmdpbmcYBSABKAkiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC51c2VyX2VuZ2FnZW1lbnQuRGViYXRlVG9waWMiqA8KDERlYmF0aW5nSW5mbxIRCglkZWJhdGVfaWQYASABKAUSFAoMaXNfY2hhbGxlbmdlGBAgASgIEh8KF21vZGlmeWluZ19jdXJyZW50X2NsYWltGAkgASgIEhoKEmNoYWxsZW5nZWRfdXNlcl9pZBgRIAEoBRIaChJjaGFsbGVuZ2VyX3VzZXJfaWQYEiABKAUSMQoNY3VycmVudF9jbGFpbRgCIAEoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SIQoZY3VycmVudF9jbGFpbV9kZXNjcmlwdGlvbhgDIAEoCRIwCgxwYXJlbnRfY2xhaW0YBCABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEi4KCnJvb3RfY2xhaW0YBSABKAsyGi51c2VyX2VuZ2FnZW1lbnQuQ2xhaW1JbmZvEjMKD2NoaWxkcmVuX2NsYWltcxgGIAMoCzIaLnVzZXJfZW5nYWdlbWVudC5DbGFpbUluZm8SKAoFbGlua3MYByADKAsyGS51c2VyX2VuZ2FnZW1lbnQuTGlua0luZm8SOgoSY3VycmVudF9jaGFsbGVuZ2VzGAggAygLMh4udXNlcl9lbmdhZ2VtZW50LkNoYWxsZW5nZUluZm8SUAoVY3VycmVudF9kZWJhdGVfYWN0aW9uGAsgASgLMjEudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DdXJyZW50RGViYXRlQWN0aW9uEjUKBGNoYXQYGCABKAsyJy51c2VyX2VuZ2FnZW1lbnQuRGViYXRpbmdJbmZvLkNoYXRTdGF0ZRI3CgVicmllZhgZIAEoCzIoLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQnJpZWZTdGF0ZRIYChBzZWxlY3RlZF9saW5rX2lkGBcgASgFEkcKD2Nvbm5lY3RpbmdfaW5mbxgMIAEoCzIsLnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ29ubmVjdGluZ0luZm9IABJJChBjaGFsbGVuZ2luZ19pbmZvGA8gASgLMi0udXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DaGFsbGVuZ2luZ0luZm9IABqlAQoQTW9kaWZpY2F0aW9uSW5mbxIuCgpuZXdfY2xhaW1zGAEgAygLMhoudXNlcl9lbmdhZ2VtZW50LkNsYWltSW5mbxIsCgluZXdfbGlua3MYAiADKAsyGS51c2VyX2VuZ2FnZW1lbnQuTGlua0luZm8SGQoRZGVsZXRlZF9jbGFpbV9pZHMYAyADKAUSGAoQZGVsZXRlZF9saW5rX2lkcxgEIAMoBRq0AgoTQ3VycmVudERlYmF0ZUFjdGlvbhJRCgthY3Rpb25fdHlwZRgBIAEoDjI8LnVzZXJfZW5nYWdlbWVudC5EZWJhdGluZ0luZm8uQ3VycmVudERlYmF0ZUFjdGlvbi5BY3Rpb25UeXBlIskBCgpBY3Rpb25UeXBlEhsKF0FDVElPTl9UWVBFX1VOU1BFQ0lGSUVEEAASEQoNVklFV0lOR19DTEFJTRABEhYKEkFERElOR19DSElMRF9DTEFJTRACEhUKEUNPTk5FQ1RJTkdfQ0xBSU1TEAMSFQoRQ0hBTExFTkdJTkdfQ0xBSU0QBBIdChlFRElUSU5HX0NMQUlNX0RFU0NSSVBUSU9OEAUSEQoNRURJVElOR19DTEFJTRAGEhMKD1JFUE9SVElOR19DTEFJTRAHGikKC0NoYXRNZXNzYWdlEgwKBHJvbGUYASABKAkSDAoEdGV4dBgCIAEoCRqFAQoJQ2hhdFN0YXRlEg8KB3BlbmRpbmcYASABKAgSFwoPZWxhcHNlZF9zZWNvbmRzGAIgASgFEjsKCG1lc3NhZ2VzGAMgAygLMikudXNlcl9lbmdhZ2VtZW50LkRlYmF0aW5nSW5mby5DaGF0TWVzc2FnZRIRCglkZWJhdGVfaWQYBCABKAUanAEKCkJyaWVmU3RhdGUSDwoHcGVuZGluZxgBIAEoCBIXCg9lbGFwc2VkX3NlY29uZHMYAiABKAUSDQoFZXJyb3IYAyABKAkSEQoJZGViYXRlX2lkGAQgASgFEhMKC2ZpbmdlcnByaW50GAUgASgJEhIKCnByb3NlX2pzb24YBiABKAkSGQoRcHJvc2VfZmluZ2VycHJpbnQYByABKAkaggEKDkNvbm5lY3RpbmdJbmZvEhUKDWZyb21fY2xhaW1faWQYASABKAUSEwoLdG9fY2xhaW1faWQYAiABKAUSEgoKY29ubmVjdGlvbhgDIAEoCRISCgpjb25uZWN0aW5nGAQgASgIEhwKFG9wZW5lZF9jb25uZWN0X21vZGFsGAUgASgIGnIKD0NoYWxsZW5naW5nSW5mbxIRCgljbGFpbV9pZHMYASADKAUSEAoIbGlua19pZHMYAiADKAUSGgoSY2hhbGxlbmdlX3NlbnRlbmNlGAMgASgJEh4KFm9wZW5lZF9jaGFsbGVuZ2VfbW9kYWwYBCABKAhCEQoPYWRkaXRpb25hbF9pbmZvSgQIExAUSgQIFBAVSgQIFRAWSgQIFhAXImIKCUNsYWltSW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFEiMKBnN0YXR1cxgEIAEoDjITLmRlYmF0ZS5DbGFpbVN0YXR1cyJoCghMaW5rSW5mbxIKCgJpZBgBIAEoBRIUCgxjb25uZWN0X2Zyb20YAiABKAUSEgoKY29ubmVjdF90bxgDIAEoBRISCgpjb25uZWN0aW9uGAQgASgJEhIKCmNyZWF0b3JfaWQYBSABKAUiQQoNQ2hhbGxlbmdlSW5mbxIKCgJpZBgBIAEoBRIQCghzZW50ZW5jZRgCIAEoCRISCgpjcmVhdG9yX2lkGAMgASgFKm0KEEVuZ2FnZW1lbnRBY3Rpb24SIQodRU5HQUdFTUVOVF9BQ1RJT05fVU5TUEVDSUZJRUQQABIPCgtBQ1RJT05fSE9NRRABEhMKD0FDVElPTl9ERUJBVElORxACEhAKDEFDVElPTl9MT0dJThADYgZwcm90bzM", [file_debate]);
+
+/**
+ * Progress and outcome of an AI job that is not a summary -- generating a
+ * debate, or asking for challenges. Lives on the engagement rather than in a
+ * page's own info because generation starts on the home page and finishes
+ * inside a debate: the job outlives the page that began it.
+ *
+ * @generated from message user_engagement.AiJobStatus
+ */
+export type AiJobStatus = Message<"user_engagement.AiJobStatus"> & {
+  /**
+   * @generated from field: bool pending = 1;
+   */
+  pending: boolean;
+
+  /**
+   * @generated from field: int32 elapsed_seconds = 2;
+   */
+  elapsedSeconds: number;
+
+  /**
+   * @generated from field: string error = 3;
+   */
+  error: string;
+
+  /**
+   * What happened, once it has. Shown and then dismissed by the user.
+   *
+   * @generated from field: string note = 4;
+   */
+  note: string;
+
+  /**
+   * Which debate this outcome describes. The status lives on the engagement
+   * rather than in a page, because generation starts on the home page and
+   * finishes inside a debate -- but that meant a notice from one debate
+   * followed the user into the next, where "Generated a debate from 20 steps"
+   * made a hand-built debate look AI-written.
+   *
+   * @generated from field: int32 about_debate_id = 5;
+   */
+  aboutDebateId: number;
+};
+
+/**
+ * Describes the message user_engagement.AiJobStatus.
+ * Use `create(AiJobStatusSchema)` to create a new message.
+ */
+export const AiJobStatusSchema: GenMessage<AiJobStatus> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 0);
+
+/**
+ * Where the reader is in a guided walkthrough.
+ *
+ * Only the POSITION is stored -- which script, which step. The words shown in
+ * the guide box are read from the .pbtxt on every render, so editing a
+ * tutorial file changes what a half-finished walkthrough says without
+ * migrating anybody's saved state. Storing the text here would freeze a copy
+ * of it on each user and make the files stop being the source of truth.
+ *
+ * This lives on the engagement rather than on the debate for the same reason
+ * the AI job status does: a walkthrough starts on the home page and continues
+ * inside a debate, so it outlives either page.
+ *
+ * @generated from message user_engagement.TutorialStatus
+ */
+export type TutorialStatus = Message<"user_engagement.TutorialStatus"> & {
+  /**
+   * @generated from field: bool active = 1;
+   */
+  active: boolean;
+
+  /**
+   * Filename stem under backend/tutorials/.
+   *
+   * @generated from field: string script = 2;
+   */
+  script: string;
+
+  /**
+   * Index of the step now on screen -- the one whose action has already run.
+   *
+   * @generated from field: int32 step_index = 3;
+   */
+  stepIndex: number;
+
+  /**
+   * @generated from field: int32 total_steps = 4;
+   */
+  totalSteps: number;
+
+  /**
+   * The debate the walkthrough built. Survives EXIT, so the reader can go back
+   * and take apart what they watched being assembled.
+   *
+   * @generated from field: int32 debate_id = 5;
+   */
+  debateId: number;
+
+  /**
+   * Every step has run. The guide box shows its closing panel rather than a
+   * Next button.
+   *
+   * @generated from field: bool finished = 6;
+   */
+  finished: boolean;
+
+  /**
+   * A step that would not replay. Shown in place of the narration, because a
+   * walkthrough that silently stops advancing is worse than one that says why.
+   *
+   * @generated from field: string error = 7;
+   */
+  error: string;
+};
+
+/**
+ * Describes the message user_engagement.TutorialStatus.
+ * Use `create(TutorialStatusSchema)` to create a new message.
+ */
+export const TutorialStatusSchema: GenMessage<TutorialStatus> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 1);
 
 /**
  * @generated from message user_engagement.UserEngagement
@@ -39,6 +161,26 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
     value: DebatingInfo;
     case: "debatingInfo";
   } | { case: undefined; value?: undefined };
+
+  /**
+   * @generated from field: user_engagement.AiJobStatus ai_job = 4;
+   */
+  aiJob?: AiJobStatus;
+
+  /**
+   * @generated from field: user_engagement.TutorialStatus tutorial = 5;
+   */
+  tutorial?: TutorialStatus;
+
+  /**
+   * Which home tab the reader is on, and their Explore search. Here rather
+   * than in HomeInfo because HomeInfo shares a oneof with DebatingInfo and is
+   * wiped by entering a debate: opening a case from Explore and coming back
+   * should find the same tab, search, filter and sort.
+   *
+   * @generated from field: user_engagement.HomeView home_view = 6;
+   */
+  homeView?: HomeView;
 };
 
 /**
@@ -46,7 +188,55 @@ export type UserEngagement = Message<"user_engagement.UserEngagement"> & {
  * Use `create(UserEngagementSchema)` to create a new message.
  */
 export const UserEngagementSchema: GenMessage<UserEngagement> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 0);
+  messageDesc(file_user_engagement, 2);
+
+/**
+ * @generated from message user_engagement.HomeView
+ */
+export type HomeView = Message<"user_engagement.HomeView"> & {
+  /**
+   * "home" (default, also "") | "explore" | "mine"
+   *
+   * @generated from field: string home_tab = 1;
+   */
+  homeTab: string;
+
+  /**
+   * case-insensitive substring of titles and claims
+   *
+   * @generated from field: string explore_query = 2;
+   */
+  exploreQuery: string;
+
+  /**
+   * "" | "open" | "settled" | "waiting"
+   *
+   * @generated from field: string explore_filter = 3;
+   */
+  exploreFilter: string;
+
+  /**
+   * "moved" (default, also "") | "claims"
+   *
+   * @generated from field: string explore_sort = 4;
+   */
+  exploreSort: string;
+
+  /**
+   * The create-a-debate dialog is open. Set by OPEN_CREATE_DEBATE, cleared
+   * by CLOSE_CREATE_DEBATE and by creating or generating a debate.
+   *
+   * @generated from field: bool create_open = 5;
+   */
+  createOpen: boolean;
+};
+
+/**
+ * Describes the message user_engagement.HomeView.
+ * Use `create(HomeViewSchema)` to create a new message.
+ */
+export const HomeViewSchema: GenMessage<HomeView> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 3);
 
 /**
  * @generated from message user_engagement.HomeInfo
@@ -65,7 +255,7 @@ export type HomeInfo = Message<"user_engagement.HomeInfo"> & {
  * Use `create(HomeInfoSchema)` to create a new message.
  */
 export const HomeInfoSchema: GenMessage<HomeInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 1);
+  messageDesc(file_user_engagement, 4);
 
 /**
  * @generated from message user_engagement.DebateTopic
@@ -102,7 +292,7 @@ export type DebateTopic = Message<"user_engagement.DebateTopic"> & {
  * Use `create(DebateTopicSchema)` to create a new message.
  */
 export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 2);
+  messageDesc(file_user_engagement, 5);
 
 /**
  * @generated from message user_engagement.DebateList
@@ -119,7 +309,7 @@ export type DebateList = Message<"user_engagement.DebateList"> & {
  * Use `create(DebateListSchema)` to create a new message.
  */
 export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 3);
+  messageDesc(file_user_engagement, 6);
 
 /**
  * @generated from message user_engagement.DebatingInfo
@@ -207,6 +397,26 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
   currentDebateAction?: DebatingInfo_CurrentDebateAction;
 
   /**
+   * @generated from field: user_engagement.DebatingInfo.ChatState chat = 24;
+   */
+  chat?: DebatingInfo_ChatState;
+
+  /**
+   * @generated from field: user_engagement.DebatingInfo.BriefState brief = 25;
+   */
+  brief?: DebatingInfo_BriefState;
+
+  /**
+   * The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
+   * Selecting a relation also moves current_claim to the claim that argument
+   * is for, so the panel and the challenge modal always work from a claim
+   * that the selected argument hangs off. Cleared by any claim selection.
+   *
+   * @generated from field: int32 selected_link_id = 23;
+   */
+  selectedLinkId: number;
+
+  /**
    * @generated from oneof user_engagement.DebatingInfo.additional_info
    */
   additionalInfo: {
@@ -236,7 +446,7 @@ export type DebatingInfo = Message<"user_engagement.DebatingInfo"> & {
  * Use `create(DebatingInfoSchema)` to create a new message.
  */
 export const DebatingInfoSchema: GenMessage<DebatingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4);
+  messageDesc(file_user_engagement, 7);
 
 /**
  * @generated from message user_engagement.DebatingInfo.ModificationInfo
@@ -268,7 +478,7 @@ export type DebatingInfo_ModificationInfo = Message<"user_engagement.DebatingInf
  * Use `create(DebatingInfo_ModificationInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ModificationInfoSchema: GenMessage<DebatingInfo_ModificationInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4, 0);
+  messageDesc(file_user_engagement, 7, 0);
 
 /**
  * @generated from message user_engagement.DebatingInfo.CurrentDebateAction
@@ -285,7 +495,7 @@ export type DebatingInfo_CurrentDebateAction = Message<"user_engagement.Debating
  * Use `create(DebatingInfo_CurrentDebateActionSchema)` to create a new message.
  */
 export const DebatingInfo_CurrentDebateActionSchema: GenMessage<DebatingInfo_CurrentDebateAction> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4, 1);
+  messageDesc(file_user_engagement, 7, 1);
 
 /**
  * @generated from enum user_engagement.DebatingInfo.CurrentDebateAction.ActionType
@@ -352,7 +562,137 @@ export enum DebatingInfo_CurrentDebateAction_ActionType {
  * Describes the enum user_engagement.DebatingInfo.CurrentDebateAction.ActionType.
  */
 export const DebatingInfo_CurrentDebateAction_ActionTypeSchema: GenEnum<DebatingInfo_CurrentDebateAction_ActionType> = /*@__PURE__*/
-  enumDesc(file_user_engagement, 4, 1, 0);
+  enumDesc(file_user_engagement, 7, 1, 0);
+
+/**
+ * One turn of the AI chat.
+ *
+ * @generated from message user_engagement.DebatingInfo.ChatMessage
+ */
+export type DebatingInfo_ChatMessage = Message<"user_engagement.DebatingInfo.ChatMessage"> & {
+  /**
+   * "user" or "assistant"
+   *
+   * @generated from field: string role = 1;
+   */
+  role: string;
+
+  /**
+   * @generated from field: string text = 2;
+   */
+  text: string;
+};
+
+/**
+ * Describes the message user_engagement.DebatingInfo.ChatMessage.
+ * Use `create(DebatingInfo_ChatMessageSchema)` to create a new message.
+ */
+export const DebatingInfo_ChatMessageSchema: GenMessage<DebatingInfo_ChatMessage> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 7, 2);
+
+/**
+ * The AI chat for the debate the user is in; see ChatHandler.
+ *
+ * The transcript lives in CHATS; this is a copy of its tail so the page
+ * can draw it from the user record, plus what a run in flight looks
+ * like. `pending` is never true across a restart -- AiJobs owns the run
+ * and is the only thing that knows it is still alive.
+ *
+ * @generated from message user_engagement.DebatingInfo.ChatState
+ */
+export type DebatingInfo_ChatState = Message<"user_engagement.DebatingInfo.ChatState"> & {
+  /**
+   * @generated from field: bool pending = 1;
+   */
+  pending: boolean;
+
+  /**
+   * @generated from field: int32 elapsed_seconds = 2;
+   */
+  elapsedSeconds: number;
+
+  /**
+   * @generated from field: repeated user_engagement.DebatingInfo.ChatMessage messages = 3;
+   */
+  messages: DebatingInfo_ChatMessage[];
+
+  /**
+   * Which debate `messages` belong to. When it is not the debate the user
+   * is in, the copy is stale and is reloaded from CHATS.
+   *
+   * @generated from field: int32 debate_id = 4;
+   */
+  debateId: number;
+};
+
+/**
+ * Describes the message user_engagement.DebatingInfo.ChatState.
+ * Use `create(DebatingInfo_ChatStateSchema)` to create a new message.
+ */
+export const DebatingInfo_ChatStateSchema: GenMessage<DebatingInfo_ChatState> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 7, 3);
+
+/**
+ * The Brief tab's model run. The brief's WORDS are stored per debate in
+ * BRIEFS and shared by every reader; this is only what one reader's run
+ * in flight looks like, so the page can say "writing" and poll.
+ *
+ * @generated from message user_engagement.DebatingInfo.BriefState
+ */
+export type DebatingInfo_BriefState = Message<"user_engagement.DebatingInfo.BriefState"> & {
+  /**
+   * @generated from field: bool pending = 1;
+   */
+  pending: boolean;
+
+  /**
+   * @generated from field: int32 elapsed_seconds = 2;
+   */
+  elapsedSeconds: number;
+
+  /**
+   * Why the last run produced nothing, shown once and cleared by the next
+   * run. Empty when the last run worked.
+   *
+   * @generated from field: string error = 3;
+   */
+  error: string;
+
+  /**
+   * Which debate the run in flight is writing about, and the fingerprint
+   * of the structure it was given -- the result is filed under both.
+   *
+   * @generated from field: int32 debate_id = 4;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: string fingerprint = 5;
+   */
+  fingerprint: string;
+
+  /**
+   * The stored words for the debate the user is in, mirrored from BRIEFS
+   * so the page can draw them from the user record (the chat transcript
+   * rides the same way). `prose_fingerprint` says which structure they
+   * describe; when the debate has moved on, the page says so.
+   *
+   * @generated from field: string prose_json = 6;
+   */
+  proseJson: string;
+
+  /**
+   * @generated from field: string prose_fingerprint = 7;
+   */
+  proseFingerprint: string;
+};
+
+/**
+ * Describes the message user_engagement.DebatingInfo.BriefState.
+ * Use `create(DebatingInfo_BriefStateSchema)` to create a new message.
+ */
+export const DebatingInfo_BriefStateSchema: GenMessage<DebatingInfo_BriefState> = /*@__PURE__*/
+  messageDesc(file_user_engagement, 7, 4);
 
 /**
  * TODO remove field, was used for user manual linking claims
@@ -391,7 +731,7 @@ export type DebatingInfo_ConnectingInfo = Message<"user_engagement.DebatingInfo.
  * Use `create(DebatingInfo_ConnectingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ConnectingInfoSchema: GenMessage<DebatingInfo_ConnectingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4, 2);
+  messageDesc(file_user_engagement, 7, 5);
 
 /**
  * @generated from message user_engagement.DebatingInfo.ChallengingInfo
@@ -429,7 +769,7 @@ export type DebatingInfo_ChallengingInfo = Message<"user_engagement.DebatingInfo
  * Use `create(DebatingInfo_ChallengingInfoSchema)` to create a new message.
  */
 export const DebatingInfo_ChallengingInfoSchema: GenMessage<DebatingInfo_ChallengingInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 4, 3);
+  messageDesc(file_user_engagement, 7, 6);
 
 /**
  * @generated from message user_engagement.ClaimInfo
@@ -461,7 +801,7 @@ export type ClaimInfo = Message<"user_engagement.ClaimInfo"> & {
  * Use `create(ClaimInfoSchema)` to create a new message.
  */
 export const ClaimInfoSchema: GenMessage<ClaimInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 5);
+  messageDesc(file_user_engagement, 8);
 
 /**
  * @generated from message user_engagement.LinkInfo
@@ -498,7 +838,7 @@ export type LinkInfo = Message<"user_engagement.LinkInfo"> & {
  * Use `create(LinkInfoSchema)` to create a new message.
  */
 export const LinkInfoSchema: GenMessage<LinkInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 6);
+  messageDesc(file_user_engagement, 9);
 
 /**
  * @generated from message user_engagement.ChallengeInfo
@@ -525,7 +865,7 @@ export type ChallengeInfo = Message<"user_engagement.ChallengeInfo"> & {
  * Use `create(ChallengeInfoSchema)` to create a new message.
  */
 export const ChallengeInfoSchema: GenMessage<ChallengeInfo> = /*@__PURE__*/
-  messageDesc(file_user_engagement, 7);
+  messageDesc(file_user_engagement, 10);
 
 /**
  * @generated from enum user_engagement.EngagementAction

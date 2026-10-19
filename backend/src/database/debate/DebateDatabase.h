@@ -27,6 +27,8 @@ public:
     bool removeDebate(int debateId, int userId);
     bool clearUserDebates(int userId);
     bool debateExists(int debateId);
+    // Every debate id, ascending. For maintenance passes over the whole store.
+    std::vector<int> allDebateIds();
 
 private:
     Database& db_;

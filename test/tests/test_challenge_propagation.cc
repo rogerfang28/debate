@@ -6,7 +6,6 @@
 //   1. Build a debate tree (via DebateHandler, AddClaimHandler, etc.)
 //   2. Issue a challenge (via ChallengeHandler::SubmitChallengeClaim)
 //   3. Verify status propagation through the graph
-//   4. Test cascade via UpdateStatusOfAllClaimsInDebate
 //
 // On the refactor branch, ClaimStatus is: UNDETERMINED, TRUE_CLAIM, FALSE_CLAIM.
 // There is no CHALLENGED status. Challenge resolution is determined by
@@ -103,7 +102,7 @@ protected:
     void addChild(int parentId, const std::string& text,
                   const std::string& connection) {
         AddClaimHandler::OpenAddChildClaim(userId_, *debate_);
-        AddClaimHandler::AddClaimUnderClaim(text, connection, userId_, *debate_);
+        AddClaimHandler::AddClaimUnderClaim({text}, {connection}, "", userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 
@@ -123,7 +122,7 @@ protected:
         // 3. Open add challenge modal
         ChallengeHandler::OpenAddChallenge(userId_, *debate_);
         // 4. Submit challenge -> creates challenge claim + CHALLENGE link
-        ChallengeHandler::SubmitChallengeClaim(reason, "challenge claim", userId_, *debate_);
+        ChallengeHandler::SubmitChallengeClaim({reason}, {"challenge claim"}, "", userId_, *debate_);
         *user_ = debate_->getUserProtobuf(userId_);
     }
 
@@ -262,87 +261,6 @@ TEST_F(PropagationTest, ChallengeLeaf_CreatesChallengeClaimAndLink) {
 }
 
 // ============================================================
-// TEST 2: UpdateStatusOfAllClaimsInDebate — challenge claim status
-// determines target claim status
-// ============================================================
-// After challenging, the challenge claim has status UNDETERMINED by default.
-// The cascade (UpdateStatusOfAllClaimsInDebate) reads challenge claim status:
-//   - Challenge claim FALSE_CLAIM → target becomes FALSE_CLAIM
-//   - Challenge claim TRUE_CLAIM  → target becomes TRUE_CLAIM
-//   - Challenge claim UNDETERMINED → target stays UNDETERMINED
-// ============================================================
-TEST_F(PropagationTest, UpdateStatus_ChallengeClaimStatusPropagates) {
-    actAsAlice();
-
-    // Build tree: root(1) → child(2)
-    DebateHandler::AddDebate("Challenge propagation test", userId_, *debate_);
-    enterDebate(1);
-    addChild(1, "Child claim", "supports");
-    int childId = debate_->findChildrenIds(1).back();
-
-    // All undetermined
-    EXPECT_EQ(claim(1).status(), debate::ClaimStatus::UNDETERMINED);
-    EXPECT_EQ(claim(childId).status(), debate::ClaimStatus::UNDETERMINED);
-
-    // Bob challenges the child
-    actAsBob();
-    enterDebate(1);
-    goToClaim(childId);
-    challengeCurrentClaim("Child is wrong");
-
-    // Find the challenge claim (highest ID claim that isn't 1 or childId)
-    int challengeClaimId = -1;
-    auto links = debate_->getLinksForDebate(1);
-    for (const auto& link : links) {
-        int linkType = std::get<5>(link);
-        if (linkType == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeClaimId = std::get<1>(link);  // from = challenge claim
-            break;
-        }
-    }
-    ASSERT_NE(challengeClaimId, -1) << "Should find a challenge claim";
-
-    // Challenge claim starts as UNDETERMINED → target stays UNDETERMINED
-    debate_->UpdateStatusOfAllClaimsInDebate(1);
-    EXPECT_EQ(claim(childId).status(), debate::ClaimStatus::UNDETERMINED)
-        << "Target stays UNDETERMINED when challenge claim is UNDETERMINED";
-
-    // Set challenge claim to FALSE_CLAIM → target becomes FALSE_CLAIM
-    debate::Claim challengeClaim = claim(challengeClaimId);
-    challengeClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
-    debate_->updateClaimInDB(challengeClaim);
-
-    debate_->UpdateStatusOfAllClaimsInDebate(1);
-    EXPECT_EQ(claim(childId).status(), debate::ClaimStatus::FALSE_CLAIM)
-        << "Target becomes FALSE_CLAIM when challenge claim is FALSE_CLAIM";
-
-    // FALSE propagates up to ancestors
-    EXPECT_EQ(claim(1).status(), debate::ClaimStatus::FALSE_CLAIM)
-        << "Root should also become FALSE_CLAIM (propagated up from child)";
-
-    // Set challenge claim to TRUE_CLAIM → target becomes TRUE_CLAIM
-    challengeClaim = claim(challengeClaimId);
-    challengeClaim.set_status(debate::ClaimStatus::TRUE_CLAIM);
-    debate_->updateClaimInDB(challengeClaim);
-
-    debate_->UpdateStatusOfAllClaimsInDebate(1);
-    EXPECT_EQ(claim(childId).status(), debate::ClaimStatus::TRUE_CLAIM)
-        << "Target becomes TRUE_CLAIM when challenge claim is TRUE_CLAIM";
-
-    // Root stays FALSE_CLAIM — the cascade only recalculates based on
-    // incoming challenge links. Since the challenge claim is now TRUE,
-    // the target becomes TRUE, but the root's status from the previous
-    // FALSE propagation is not automatically reverted. The cascade
-    // recalculates from scratch each time, but the challenge claim's
-    // status is now TRUE, so the child is TRUE. The root has no direct
-    // incoming challenge link, so Pass 1 leaves it as-is (FALSE from
-    // prior iteration). In a real scenario, the full recomputation
-    // would need to reset all statuses first.
-    // For now, verify the child is correctly TRUE_CLAIM.
-    // Root status depends on full recomputation behavior.
-}
-
-// ============================================================
 // TEST 3: Challenge a root claim → only root affected
 // ============================================================
 TEST_F(PropagationTest, ChallengeRoot_OnlyRootAffected) {
@@ -405,11 +323,6 @@ TEST_F(PropagationTest, MultipleChallenges_OnSameClaim) {
         }
     }
     EXPECT_EQ(challengeCount, 2) << "Should have 2 CHALLENGE links";
-
-    // Both challenge claims are UNDETERMINED → target stays UNDETERMINED
-    debate_->UpdateStatusOfAllClaimsInDebate(1);
-    EXPECT_EQ(claim(evidenceA).status(), debate::ClaimStatus::UNDETERMINED)
-        << "Target stays UNDETERMINED when all challenges are UNDETERMINED";
 }
 
 // ============================================================
@@ -441,189 +354,57 @@ TEST_F(PropagationTest, ConcedeChallenge_ClearsUserState) {
 }
 
 // ============================================================
-// TEST 5b: Concede challenge → challenge claim TRUE, challenged claim FALSE
-// for the concessor
+// Selecting an ARGUMENT in the graph.
+//
+// Clicking a pill selects the relation and focuses the claim it is for, so
+// the panel and the challenge modal -- which read the links under the current
+// claim -- always have the selected one in hand. From there one click puts it
+// into a challenge: the modal opens with the argument already picked.
 // ============================================================
-// Scenario: Alice creates claim 2. Bob challenges claim 2 (creates claim 4→2).
-// Alice concedes to Bob's challenge (claim 4). So 4/A = TRUE, 2/A = FALSE.
-TEST_F(PropagationTest, ConcedeChallenge_UpdatesUserStatuses) {
+TEST_F(PropagationTest, SelectingALinkFocusesItsClaimAndOneClickStartsAnUndercut) {
     actAsAlice();
-    DebateHandler::AddDebate("Concede status test", userId_, *debate_);
+    DebateHandler::AddDebate("Speed limits save lives", userId_, *debate_);
     enterDebate(1);
-    addChild(1, "Claim to defend", "supports");
-    int targetClaim = debate_->findChildrenIds(1).back();  // claim 2
+    addChild(1, "Crash deaths fell 23 percent", "");
+    const int child = debate_->findChildrenIds(1).back();
+    const std::vector<int> links = debate_->findLinksUnder(1);
+    ASSERT_EQ(links.size(), 1u);
 
-    // Bob challenges claim 2 (creates claim 4 with CHALLENGE link 4→2)
+    // Bob is standing on the child when he clicks the pill above it.
     actAsBob();
     enterDebate(1);
-    goToClaim(targetClaim);
-    challengeCurrentClaim("I challenge this claim");
+    goToClaim(child);
+    MoveUserHandler::SelectLink(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), 1)
+        << "selecting the argument focuses the claim it is for";
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), links[0]);
 
-    // Find the challenge claim ID (Bob's challenge)
-    auto links = debate_->getLinksForDebate(1);
-    int challengeClaimId = -1;
-    for (const auto& link : links) {
-        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeClaimId = std::get<1>(link);  // from = challenge claim
-            break;
-        }
-    }
-    ASSERT_NE(challengeClaimId, -1) << "Should find a challenge claim";
+    // The panel's one button.
+    ChallengeHandler::AddLinkToBeChallenged(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    const auto& debating = user_->engagement().debating_info();
+    EXPECT_EQ(debating.current_debate_action().action_type(),
+              user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
+    EXPECT_TRUE(debating.challenging_info().opened_challenge_modal());
+    ASSERT_EQ(debating.challenging_info().link_ids_size(), 1);
+    EXPECT_EQ(debating.challenging_info().link_ids(0), links[0]);
 
-    // Alice concedes to Bob's challenge on her claim 2
-    actAsAlice();
-    concede();
+    // Adding a link while already challenging does not restart anything.
+    ChallengeHandler::AddLinkToBeChallenged(links[0], userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().challenging_info().link_ids_size(), 2);
 
-    // After concession:
-    // 1. Challenge claim (4) should be TRUE_CLAIM for alice (she admits it was right)
-    debate::Claim challengeClaimAfter = claim(challengeClaimId);
-    auto itChallenge = challengeClaimAfter.user_statuses().find("alice");
-    ASSERT_NE(itChallenge, challengeClaimAfter.user_statuses().end())
-        << "Challenge claim should have a user_statuses entry for alice";
-    EXPECT_EQ(itChallenge->second, debate::ClaimStatus::TRUE_CLAIM)
-        << "Challenge claim should be TRUE_CLAIM for alice after concession";
+    // A claim selection ends the argument selection.
+    ChallengeHandler::CancelChallengeClaim(userId_, *debate_);
+    MoveUserHandler::SelectClaim(child, userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), 0);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), child);
 
-    // 2. Challenged claim (2) should be FALSE_CLAIM for alice (she admits her claim was wrong)
-    debate::Claim challengedClaimAfter = claim(targetClaim);
-    auto itChallenged = challengedClaimAfter.user_statuses().find("alice");
-    ASSERT_NE(itChallenged, challengedClaimAfter.user_statuses().end())
-        << "Challenged claim should have a user_statuses entry for alice";
-    EXPECT_EQ(itChallenged->second, debate::ClaimStatus::FALSE_CLAIM)
-        << "Challenged claim should be FALSE_CLAIM for alice after concession";
-
-    // 3. Bob's view: he created the challenge claim, so it stays TRUE for him.
-    //    The concession only affects Alice's (the concessor's) user_statuses.
-    auto itBobOnChallenge = challengeClaimAfter.user_statuses().find("bob");
-    ASSERT_NE(itBobOnChallenge, challengeClaimAfter.user_statuses().end())
-        << "Challenge claim should have a user_statuses entry for bob (creator)";
-    EXPECT_EQ(itBobOnChallenge->second, debate::ClaimStatus::TRUE_CLAIM)
-        << "Bob should see his own challenge claim as TRUE_CLAIM";
-}
-
-// ============================================================
-// TEST 6: Challenge → delete challenge → statuses recomputed
-// ============================================================
-// After deleting a challenge claim + its CHALLENGE link,
-// recomputing statuses should restore UNDETERMINED to all claims
-// that are no longer challenged.
-// ============================================================
-TEST_F(PropagationTest, DeleteChallenge_RestoresUndeterminedStatus) {
-    actAsAlice();
-    DebateHandler::AddDebate("Delete challenge test", userId_, *debate_);
-    enterDebate(1);
-    addChild(1, "Debatable claim", "supports");
-    int childId = debate_->findChildrenIds(1).back();
-
-    // Bob challenges child
-    actAsBob();
-    enterDebate(1);
-    goToClaim(childId);
-    challengeCurrentClaim("This is wrong");
-
-    // Find the challenge claim and its link
-    auto links = debate_->getLinksForDebate(1);
-    int challengeClaimId = -1;
-    int challengeLinkId = -1;
-    for (const auto& link : links) {
-        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeLinkId  = std::get<0>(link);
-            challengeClaimId = std::get<1>(link);  // from = challenge claim
-            break;
-        }
-    }
-    ASSERT_NE(challengeLinkId, -1) << "Should find a CHALLENGE link";
-    ASSERT_NE(challengeClaimId, -1) << "Should find a challenge claim";
-
-    // Set challenge claim to FALSE so target becomes FALSE
-    debate::Claim challengeClaim = claim(challengeClaimId);
-    challengeClaim.set_status(debate::ClaimStatus::FALSE_CLAIM);
-    debate_->updateClaimInDB(challengeClaim);
-    debate_->UpdateStatusOfAllClaimsInDebate(1);
-
-    // Verify propagation happened
-    EXPECT_EQ(claim(childId).status(), debate::ClaimStatus::FALSE_CLAIM);
-    EXPECT_EQ(claim(1).status(), debate::ClaimStatus::FALSE_CLAIM);
-
-    // Delete the challenge claim + link (as the creator — Bob)
-    // DeleteChallenge removes the CHALLENGE link.
-    ChallengeHandler::DeleteChallenge(challengeClaimId, userId_, *debate_);
-
-    // Note: deleteClaim() currently only removes links, not the claim
-    // itself from the DB (the DB delete is commented out in DebateWrapper).
-    // So the challenge claim still exists but is orphaned (no links).
-
-    // After deleting the challenge link, verify it's gone.
-    auto linksAfter = debate_->getLinksForDebate(1);
-    int challengeLinksAfter = 0;
-    for (const auto& link : linksAfter) {
-        if (std::get<5>(link) == static_cast<int>(debate::LinkType::CHALLENGE)) {
-            challengeLinksAfter++;
-        }
-    }
-    EXPECT_EQ(challengeLinksAfter, 0) << "All CHALLENGE links should be removed";
-}
-
-// ============================================================
-// TEST 7: On creation, claim is marked TRUE_CLAIM for the creator
-// ============================================================
-// When Alice creates a debate root claim, the claim's user_statuses map
-// should have { "alice" => TRUE_CLAIM }.
-// When Bob adds a child claim, that child should have { "bob" => TRUE_CLAIM }.
-// Alice's view of Bob's child should be UNDETERMINED (not in her user_statuses).
-// ============================================================
-TEST_F(PropagationTest, CreatorSeesOwnClaimAsTrue) {
-    actAsAlice();
-
-    // Alice creates a debate — root claim should be TRUE_CLAIM for alice
-    DebateHandler::AddDebate("Per-user status test", userId_, *debate_);
-    int debateId = 1;
-
-    // Verify root claim
-    debate::Claim rootClaim = claim(1);
-    const auto& rootStatuses = rootClaim.user_statuses();
-    EXPECT_EQ(rootStatuses.size(), 1)
-        << "Root claim should have exactly 1 user_statuses entry";
-    auto it = rootStatuses.find("alice");
-    ASSERT_NE(it, rootStatuses.end())
-        << "Root claim should have an entry for 'alice'";
-    EXPECT_EQ(it->second, debate::ClaimStatus::TRUE_CLAIM)
-        << "Creator should see own claim as TRUE_CLAIM";
-
-    // Alice adds a child claim — should also be TRUE_CLAIM for alice
-    enterDebate(debateId);
-    addChild(1, "Alice's child claim", "supports");
-    int childId = debate_->findChildrenIds(1).back();
-
-    debate::Claim childClaim = claim(childId);
-    const auto& childStatuses = childClaim.user_statuses();
-    EXPECT_EQ(childStatuses.size(), 1)
-        << "Child claim should have exactly 1 user_statuses entry";
-    auto itChild = childStatuses.find("alice");
-    ASSERT_NE(itChild, childStatuses.end())
-        << "Child claim should have an entry for 'alice'";
-    EXPECT_EQ(itChild->second, debate::ClaimStatus::TRUE_CLAIM)
-        << "Creator should see own child claim as TRUE_CLAIM";
-
-    // Bob enters the debate and adds his own child
-    actAsBob();
-    enterDebate(debateId);
-    goToClaim(1);
-    addChild(1, "Bob's child claim", "supports");
-    int bobChildId = debate_->findChildrenIds(1).back();
-
-    // Bob's child should be TRUE_CLAIM for bob
-    debate::Claim bobChildClaim = claim(bobChildId);
-    const auto& bobChildStatuses = bobChildClaim.user_statuses();
-    EXPECT_EQ(bobChildStatuses.size(), 1)
-        << "Bob's child claim should have exactly 1 user_statuses entry";
-    auto itBob = bobChildStatuses.find("bob");
-    ASSERT_NE(itBob, bobChildStatuses.end())
-        << "Bob's child claim should have an entry for 'bob'";
-    EXPECT_EQ(itBob->second, debate::ClaimStatus::TRUE_CLAIM)
-        << "Bob should see his own child claim as TRUE_CLAIM";
-
-    // Alice's child should NOT have an entry for bob (different user)
-    auto itBobOnAliceChild = childStatuses.find("bob");
-    EXPECT_EQ(itBobOnAliceChild, childStatuses.end())
-        << "Alice's child should NOT have a user_statuses entry for bob";
+    // An unknown link selects nothing and leaves the cursor alone.
+    MoveUserHandler::SelectLink(9999, userId_, *debate_);
+    *user_ = debate_->getUserProtobuf(userId_);
+    EXPECT_EQ(user_->engagement().debating_info().selected_link_id(), 0);
+    EXPECT_EQ(user_->engagement().debating_info().current_claim().id(), child);
 }

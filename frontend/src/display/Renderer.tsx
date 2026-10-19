@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useState, useCallback, useRef } from "react";
 import { PageRenderer } from "./rendering/PageRenderer.tsx";
+import { snapshotScroll, restoreScroll, type ScrollSnapshot } from "./viewMemory.ts";
 import postClientMessageToCPP from "../backendCommunicator/postClientMessageToCPP.ts";
-import getPageFromCPP from "../backendCommunicator/getPageFromCPP.ts";
 import { fromJson } from "@bufbuild/protobuf";
 import { PageSchema } from "../../../src/gen/ts/layout_pb.ts";
 
@@ -14,25 +14,32 @@ declare global {
   }
 }
 
-/**
- * Parse /debate/:debateId/:username from the current URL pathname.
- * Returns { debateId, username } or null if not a shared link.
- */
-function parseSharedLink(): { debateId: string; username: string } | null {
-  const pathname = window.location.pathname;
-  // Match /debate/123/username or /debate/123/username/
-  const match = pathname.match(/^\/debate\/([^/]+)\/([^/]+)\/?$/);
-  if (match) {
-    return { debateId: match[1], username: match[2] };
-  }
-  return null;
-}
-
 interface PageData {
   [key: string]: any;
 }
 
+// There is no login page. A request with no session (a first load, or just
+// signed out) is signed in by the server as this browser's visitor -- every
+// message carries the visitor name, see postClientMessageToCPP -- so what is
+// painted is always the site itself. Signing in is the header's "Sign in" and
+// the modal it opens.
+
+// Developer chrome (the "Load File" button) is hidden unless the URL has
+// ?dev=1 or localStorage has debateDevChrome=1. ?dev=1 also sets the flag, so
+// it survives the page's own navigation; ?dev=0 clears it.
+function devChromeEnabled(): boolean {
+  try {
+    const dev = new URLSearchParams(window.location.search).get("dev");
+    if (dev === "1") window.localStorage.setItem("debateDevChrome", "1");
+    if (dev === "0") window.localStorage.removeItem("debateDevChrome");
+    return dev === "1" || window.localStorage.getItem("debateDevChrome") === "1";
+  } catch {
+    return false;
+  }
+}
+
 const Renderer: React.FC = () => {
+  const [devChrome] = useState<boolean>(devChromeEnabled);
   const [data, setData] = useState<PageData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,13 +51,28 @@ const Renderer: React.FC = () => {
     dataRef.current = data;
   }, [data]);
 
+  // Every new page goes through here: where each scroller stands is noted
+  // just before it is applied, and put back right after it renders (before
+  // paint), so a re-render or the AI-job poll never moves what the reader
+  // was looking at. See viewMemory.ts.
+  const scrollSnap = useRef<ScrollSnapshot | null>(null);
+  const showPage = useCallback((page: PageData) => {
+    scrollSnap.current = snapshotScroll();
+    setData(page);
+  }, []);
+  useLayoutEffect(() => {
+    if (!scrollSnap.current) return;
+    restoreScroll(scrollSnap.current);
+    scrollSnap.current = null;
+  }, [data]);
+
   const reloadPage = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
       const info: PageData | null = await postClientMessageToCPP({});
       if (info) {
-        setData(info);
+        showPage(info);
       }
     } catch (err: unknown) {
       console.error("reloadPage: Failed to load data", err);
@@ -58,15 +80,15 @@ const Renderer: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showPage]);
 
   // Directly apply a page already returned by an event's own response --
   // avoids a redundant second full-page fetch (see applyPageData usage in
   // handleEvent.ts).
   const applyPageData = useCallback((page: PageData) => {
-    setData(page);
+    showPage(page);
     setError(null);
-  }, []);
+  }, [showPage]);
 
   // Expose global reload/apply functions for handleEvent.ts
   useEffect(() => {
@@ -78,7 +100,7 @@ const Renderer: React.FC = () => {
     };
   }, [reloadPage, applyPageData]);
 
-  // Fetch page on mount — supports shared links (/debate/:id/:username)
+  // Fetch page on mount only — subsequent refreshes are event-driven via reloadPage()
   useEffect(() => {
     let mounted = true;
 
@@ -86,27 +108,11 @@ const Renderer: React.FC = () => {
       if (!mounted) return;
       try {
         setLoading(true);
-
-        const shared = parseSharedLink();
-        if (shared) {
-          // Shared link: GET /api?id=X&username=Y (protobuf)
-          const info = await getPageFromCPP({ pageId: shared.debateId, username: shared.username });
-          if (!mounted) return;
-          if (info) {
-            setData(info);
-            setError(null);
-            return;
-          } else {
-            setError("Failed to load debate. The user may not exist or the debate may have been deleted.");
-          }
-        } else {
-          // Normal app flow: POST /clientmessage
-          const info: PageData | null = await postClientMessageToCPP({});
-          if (!mounted) return;
-          if (info) {
-            setData(info);
-            setError(null);
-          }
+        const info: PageData | null = await postClientMessageToCPP({});
+        if (!mounted) return;
+        if (info) {
+          setData(info);
+          setError(null);
         }
       } catch (err: unknown) {
         if (!mounted) return;
@@ -125,6 +131,30 @@ const Renderer: React.FC = () => {
       mounted = false;
     };
   }, []);
+
+  // ── Poll while a long-running AI job is in flight ─────────────────────
+  // The summary runs on a detached thread on the server, so the response that
+  // started it carries no result. Something has to come back and ask, or the
+  // finished summary sits on the server until the user happens to click
+  // something else.
+  //
+  // Keyed on a marker component the page itself emits (*SummaryPending)
+  // rather than on a flag in this component: the UI is server-driven, so the
+  // server is what knows whether work is outstanding, and this stays generic
+  // enough for the next slow AI action to reuse.
+  useEffect(() => {
+    if (!data) return;
+    // Cheap containment check first -- walking the tree on every render would
+    // cost more than the string scan for a page this size.
+    // Matches chatPending and generationSummaryPending -- any slow AI job
+    // that names its marker this way gets polled without further wiring.
+    if (!/"(?:[A-Za-z]+SummaryPending|chatPending|briefPending)"/.test(JSON.stringify(data))) return;
+
+    const timer = setTimeout(() => {
+      void reloadPage();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [data, reloadPage]);
 
   // Load from JSON file
   const handleLoadFromFile = useCallback(() => {
@@ -159,7 +189,8 @@ const Renderer: React.FC = () => {
 
   return (
     <div className="min-h-screen fade-in" style={{ background: 'var(--surface-bg)', color: 'var(--text-primary)' }}>
-      {/* Load from file — always visible, fixed bottom-right */}
+      {/* Load from file — developer chrome only (see devChromeEnabled), fixed bottom-right */}
+      {devChrome && (<>
       <input
         ref={fileInputRef}
         type="file"
@@ -179,10 +210,11 @@ const Renderer: React.FC = () => {
         title="Load layout from JSON file"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2v-4M17 8l-5-5-5 5M12 3v12" />
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
         </svg>
         Load File
       </button>
+      </>)}
 
       {loading && (
         <div

@@ -1,0 +1,117 @@
+name: "MultiFromRelation"
+
+# =============================================================================
+# Multi-from relations: several claims that TOGETHER support one conclusion.
+#
+#   1 (root: "Rent control causes high rents", creator A)
+#   ├── relation R1  {2, 3, 4} --EVIDENTIAL--> 1     (ONE relation, THREE froms)
+#   └── relation R2  {5}       --AUTHORITY---> 1     (a separate, ordinary one)
+#
+# The distinction this pins down: R1 is "these three together support the
+# root", which is NOT the same claim as "each of these three independently
+# supports the root". Both are three claims under one parent; only the
+# relation grouping tells them apart.
+#
+# Note LINK_COUNT and LINK_EXISTS below read the LEGACY `link` sub-message,
+# which on a grouped relation holds only its FIRST row. They are asserted here
+# deliberately, to pin what the legacy view degrades to rather than to leave it
+# undefined.
+# =============================================================================
+
+steps {
+  action { username: "A" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Rent control causes high rents" }
+}
+steps {
+  action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+
+# --- R1: three claims, ONE relation ---
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Rents rose 12% in controlled zones"
+    extra_claim_texts: "Those zones saw no new construction"
+    extra_claim_texts: "Supply shortage drives price"
+    claim_description: "three findings that only support the conclusion together"
+    basis: "EVIDENTIAL"
+  }
+}
+
+# --- R2: an ordinary single-from relation alongside it ---
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The city economist says so"
+    basis: "AUTHORITY"
+  }
+}
+
+# =============================================================================
+# EXPECTATIONS
+# =============================================================================
+
+# Four claims were created, so the collection has 5 including the root.
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 5 }
+}
+steps {
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 2 expected_claim_sentence: "Rents rose 12% in controlled zones" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 3 expected_claim_sentence: "Those zones saw no new construction" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 4 expected_claim_sentence: "Supply shortage drives price" }
+  expectations { check_type: "CLAIM_SENTENCE" claim_id: 5 expected_claim_sentence: "The city economist says so" }
+}
+
+# --- The point of the scenario ---
+# TWO relations, not four: {2,3,4} is one, {5} is another.
+steps {
+  expectations { check_type: "RELATION_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+}
+
+# The relation targeting the root carries three from-claims.
+steps {
+  expectations { check_type: "RELATION_FROM_COUNT" to_claim_id: 1 expected_count: 3 }
+}
+
+# EVERY member is a source of a relation targeting the root -- including the
+# second and third, which the legacy `link` view cannot see.
+steps {
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 2 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 3 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 4 to_claim_id: 1 }
+  expectations { check_type: "RELATION_FROM_EXISTS" from_claim_id: 5 to_claim_id: 1 }
+}
+
+# --- What the LEGACY view degrades to ---
+# One entry per relation, each showing only its first row. So two links, and
+# only claim 2 (not 3 or 4) is visible as a child of the root through `link`.
+steps {
+  expectations { check_type: "LINK_COUNT" link_type: "PARENT_CHILD" expected_count: 2 }
+}
+steps {
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" link_type: "PARENT_CHILD" from_claim_id: 1 to_claim_id: 5 }
+}
+
+# --- Status is unaffected: A created them all, so A sees them all TRUE ---
+steps {
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 4 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 5 username: "A" expected_status: "TRUE_CLAIM" }
+}

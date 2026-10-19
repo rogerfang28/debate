@@ -5,12 +5,21 @@
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
 
-void DebateHandler::AddDebate(const std::string& debateTopic, const int& user_id, DebateWrapper& debateWrapper) {
+void DebateHandler::AddDebate(const std::string& debateTopic, const int& user_id, DebateWrapper& debateWrapper,
+                              int voice_id, const debate::Source* source) {
 
     Log::debug("[AddDebateHandler] AddDebate called for user: "
               + std::to_string(user_id) + ", topic: " + debateTopic);
 
-    debateWrapper.initNewDebate(debateTopic, user_id);
+    // A debate needs a main claim. An empty create is also what a visitor's
+    // "Start a debate" replays after signing in: it lands them on the home
+    // page, at the form, with nothing made yet.
+    if (debateTopic.find_first_not_of(" \t\r\n") == std::string::npos) {
+        Log::info("[AddDebateHandler] Empty topic; no debate created.");
+        return;
+    }
+
+    debateWrapper.initNewDebate(debateTopic, user_id, voice_id, source);
 }
 
 

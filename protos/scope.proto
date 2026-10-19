@@ -18,6 +18,9 @@ message FullDebateScope {
 	// The debate currently in focus.
 	int32 debate_id = 1;
 	bool top_view = 2;
+	// The Brief tab: the debate as a catch-up page rather than a graph.
+	// Only meaningful with top_view; the Debate tab clears it.
+	bool brief_view = 3;
 }
 
 message Scope {

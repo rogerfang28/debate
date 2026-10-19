@@ -6,6 +6,11 @@ import "google/protobuf/timestamp.proto";
 
 message CreateDebate {
     string debate_topic = 2;
+    // Whose claim the root is, when not the creator's own. A reader entering
+    // a case makes the root in the voice of whoever actually claims it.
+    string voice = 3;
+    string source_url = 4;
+    string source_excerpt = 5;
 }
 
 message DeleteDebate {
@@ -17,8 +22,43 @@ message EnterDebate {
 }
 
 message AddChildClaim {
+    // The first supporting claim. Kept as field 1 so existing clients and any
+    // persisted event still parse.
     string claim         = 1;
     string description   = 2;
+
+    // Additional supporting claims. `claim` plus these form ONE relation with
+    // several from-claims -- "these together support the parent" -- rather than
+    // several independent supports. Blank entries are ignored.
+    repeated string extra_claims = 4;
+
+    // One description per entry in `extra_claims`, aligned BY INDEX.
+    // `description` above belongs to `claim`.
+    //
+    // Each claim is its own assertion and deserves its own explanation; a
+    // single shared description would either be attached to one claim
+    // arbitrarily or copied onto claims whose author never wrote it.
+    // The write path pads this so a missing entry means "no description"
+    // rather than shifting every later one onto the wrong claim.
+    repeated string extra_descriptions = 5;
+
+    // Who is SAYING these claims, by name, when it is not the submitter --
+    // "the reporter", "Paul", "AP". A user is created for the name if none
+    // exists, and the claims are seeded true for that user, not for the
+    // submitter. Blank means the submitter speaks for themselves. One voice
+    // covers every claim in the event.
+    string voice = 6;
+
+    // Where the claims were taken from, if anywhere: the page, and the
+    // words on it. Blank means none. One source covers every claim in the
+    // event. See debate.Source for what a source is and is not.
+    string source_url = 7;
+    string source_excerpt = 8;
+    // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+    // NORMATIVE. Lands on the relation, not the claim: it describes how the
+    // child bears on its parent, which is a property of the connection.
+    // Empty is allowed and means "unspecified".
+    string basis         = 3;
 }
 
 message DeleteChildClaim {
@@ -39,6 +79,27 @@ message GoToClaim {
 // Selects a claim as the viewer's "current claim" (for highlighting in the
 // map/tree) WITHOUT touching current_scope -- unlike GoToClaim, this never
 // navigates to the single-claim view.
+// Select an ARGUMENT -- the relation between claims, the pill in the graph --
+// the way SelectClaim selects a claim. Carries the RELATION id, which is what
+// the challenge handler takes when the user goes on to challenge it.
+message SelectLink {
+  int32 link_id = 1;
+}
+
+// "I agree": the user marks a claim they did not make as true from their
+// own view. It is a seed, not a verdict -- the graph rules then run for
+// them as for the author, so a challenge they later hold true still
+// overrides it. claim_id 0 means the claim the user is standing on.
+message EndorseClaim {
+  int32 claim_id = 1;
+}
+
+// Takes an EndorseClaim back. The user's entry on the claim is removed;
+// whatever the graph gives them afterwards is what they see.
+message UnendorseClaim {
+  int32 claim_id = 1;
+}
+
 message SelectClaim {
     int32 claim_id      = 1;
 }
@@ -103,6 +164,48 @@ message RemoveLinkToBeChallenged {
 message SubmitChallengeClaim {
     string challenge_sentence = 1;
     string challenge_description = 2;
+
+    // Additional challenge claims. challenge_sentence plus these form ONE
+    // OPPOSES relation with several from-claims -- "these together refute
+    // that" -- rather than several independent challenges. Blank entries are
+    // ignored.
+    repeated string extra_sentences = 3;
+
+    // One description per entry in `extra_sentences`, aligned BY INDEX.
+    // `challenge_description` belongs to `challenge_sentence`.
+    repeated string extra_descriptions = 5;
+
+    // What KIND of opposition this is -- EVIDENTIAL | AUTHORITY |
+    // DEFINITIONAL | NORMATIVE. A definitional challenge ("that is not what
+    // the word means") is a different move from an evidential one, and the
+    // basis is what records the difference. Empty means unspecified.
+    string basis = 4;
+
+    // Who is making the challenge, by name, when it is not the submitter.
+    // Same rules as AddChildClaim.voice. The OPPOSE it writes against the
+    // challenged claim is the voice's opinion too, not the submitter's.
+    string voice = 6;
+
+    // Where the challenge was taken from, if anywhere. Same rules as
+    // AddChildClaim.source_url / source_excerpt.
+    string source_url = 7;
+    string source_excerpt = 8;
+}
+
+// Builds a whole debate from a passage, using the topic to steer what the
+// root claim should be about.
+message GenerateDebate {
+    string topic = 1;
+    string passage = 2;
+}
+
+// Summarizes one claim rather than the whole debate.
+// A question for the AI chat about the debate the user is in. Either a typed
+// `question` or a `quick_prompt` key from DebateChat (summarize_debate,
+// summarize_claim, find_mistake, suggest_challenge); the quick prompt wins.
+message AskChat {
+    string question = 1;
+    string quick_prompt = 2;
 }
 
 message GoToChallenge {
@@ -188,7 +291,85 @@ enum EventType {
     GO_TO_OVERVIEW = 51;
     GO_TO_FULL_DEBATE_VIEW = 52;
     SELECT_CLAIM = 53;
+    GENERATE_DEBATE = 58;
+    DISMISS_AI_NOTICE = 60;
+    CANCEL_AI_WORK = 61;
+    // Guided walkthrough. START replays the first step of a tutorial
+    // script; NEXT replays the one after it; EXIT leaves the walkthrough
+    // without deleting the debate it built, so the reader can keep poking
+    // at what they just watched being made.
+    START_TUTORIAL = 62;
+    TUTORIAL_NEXT = 63;
+    TUTORIAL_EXIT = 64;
+    // The graph's relation pills are selectable too; see SelectLink.
+    SELECT_LINK = 65;
+    // "I agree" / "I take that back"; see EndorseClaim.
+    ENDORSE_CLAIM = 66;
+    UNENDORSE_CLAIM = 67;
+    // The AI chat: a typed question or a quick prompt; forget the transcript.
+    ASK_CHAT = 68;
+    CLEAR_CHAT = 69;
+    // The Brief tab beside the Debate tab. GO_TO_BRIEF opens it; the Debate
+    // tab is GO_TO_OVERVIEW. GENERATE_BRIEF asks the model for the prose
+    // (the structure needs no model). OPEN_CLAIM_IN_DEBATE jumps from a line
+    // of the brief to that claim on the Debate tab; it carries select_claim.
+    GO_TO_BRIEF = 70;
+    GENERATE_BRIEF = 71;
+    OPEN_CLAIM_IN_DEBATE = 72;
+    // The sign-in modal: the header's "Sign in" opens it, its close button
+    // shuts it (and forgets any action the visitor was signing in to do).
+    OPEN_SIGN_IN = 73;
+    CLOSE_SIGN_IN = 74;
+    // A card on the home shelf: enters that debate and opens its Brief tab in
+    // one press (ENTER_DEBATE then GO_TO_BRIEF). Carries enter_debate.
+    OPEN_DEBATE_BRIEF = 75;
+    // The home page's tabs (Home | Explore | Your debates) and Explore's
+    // search, filter and sort. Each goes home and stores the choice on the
+    // user's engagement.home_view. GO_TO_HOME_TAB carries home_tab;
+    // EXPLORE_SEARCH carries explore_search; EXPLORE_FILTER and EXPLORE_SORT
+    // carry explore_option.
+    GO_TO_HOME_TAB = 76;
+    EXPLORE_SEARCH = 77;
+    EXPLORE_FILTER = 78;
+    EXPLORE_SORT = 79;
+    // "Answer" under Your debates: enters a debate on its Debate tab with one
+    // claim selected (ENTER_DEBATE then OPEN_CLAIM_IN_DEBATE). Carries
+    // open_debate_claim.
+    OPEN_DEBATE_CLAIM = 80;
+    // The create-a-debate dialog on the home page. A visitor's OPEN is
+    // remembered and replayed after sign-in, like any other press that
+    // starts something.
+    OPEN_CREATE_DEBATE = 81;
+    CLOSE_CREATE_DEBATE = 82;
+    // Summaries and the AI challenger, replaced by the chat.
+    reserved 54, 55, 56, 57, 59;
 
+}
+
+// Which walkthrough to start. Empty name means the default one, so the
+// home page button does not have to know what tutorials exist.
+message StartTutorial {
+    string script = 1;
+}
+
+// "home" | "explore" | "mine".
+message HomeTab {
+    string tab = 1;
+}
+
+message ExploreSearch {
+    string query = 1;
+}
+
+// EXPLORE_FILTER: "" | "open" | "settled" | "waiting".
+// EXPLORE_SORT: "moved" | "claims".
+message ExploreOption {
+    string value = 1;
+}
+
+message OpenDebateClaim {
+    int32 debate_id = 1;
+    int32 claim_id = 2;
 }
 
 message UserAuthInfo {
@@ -203,6 +384,8 @@ message DebateEvent {
   UserAuthInfo user = 1;
   google.protobuf.Timestamp occurred_at = 3;
   EventType type = 4; 
+
+  reserved 52;  // SummarizeClaim, replaced by AskChat
 
   oneof payload {
     CreateDebate    create_debate    = 10;
@@ -233,5 +416,15 @@ message DebateEvent {
     LeaveDebate leave_debate = 49;
     MoveUserToTimestamp move_user_to_timestamp = 50;
     SelectClaim select_claim = 51;
+    AskChat ask_chat = 58;
+    GenerateDebate generate_debate = 53;
+    StartTutorial start_tutorial = 54;
+    SelectLink select_link = 55;
+    EndorseClaim endorse_claim = 56;
+    UnendorseClaim unendorse_claim = 57;
+    HomeTab home_tab = 59;
+    ExploreSearch explore_search = 60;
+    ExploreOption explore_option = 61;
+    OpenDebateClaim open_debate_claim = 62;
   }
 }

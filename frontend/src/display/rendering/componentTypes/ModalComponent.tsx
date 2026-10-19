@@ -1,39 +1,22 @@
 import React from "react";
 import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
+import { childKeys } from "../childKeys";
 
+// The overlay and the dialog are theme.html's modal: .modal-overlay and
+// .modal-content in index.css carry the look.
 const ModalComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
+  const children = component.children || [];
+  const keys = childKeys(component.id, children);
   return (
     <div
       id={component.id}
       className={`modal-overlay ${className || ''}`}
-      style={{
-        ...style,
-        position: 'fixed',
-        inset: 0,
-        zIndex: 50,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.6)',
-        backdropFilter: 'blur(4px)',
-      }}
+      style={style}
     >
-      <div
-        className="modal-content slide-up"
-        style={{
-          background: 'var(--surface-card)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-xl)',
-          padding: 'var(--space-xl)',
-          maxWidth: '90vw',
-          maxHeight: '85vh',
-          overflow: 'auto',
-          boxShadow: 'var(--shadow-lg)',
-        }}
-      >
-        {component.children?.map((child, idx: number) => (
-          <ComponentRenderer key={child.id || idx} component={child} />
+      <div className="modal-content slide-up">
+        {children.map((child, idx: number) => (
+          <ComponentRenderer key={keys[idx]} component={child} />
         ))}
       </div>
     </div>

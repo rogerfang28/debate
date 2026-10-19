@@ -219,10 +219,12 @@ class User final : public ::google::protobuf::Message
     kGoogleSubFieldNumber = 6,
     kEmailFieldNumber = 7,
     kPasswordHashFieldNumber = 8,
+    kPendingActionFieldNumber = 10,
     kEngagementFieldNumber = 3,
     kCurrentScopeFieldNumber = 4,
     kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
+    kSignInOpenFieldNumber = 9,
   };
   // string username = 2 [json_name = "username"];
   void clear_username() ;
@@ -284,6 +286,21 @@ class User final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_password_hash();
 
   public:
+  // bytes pending_action = 10 [json_name = "pendingAction"];
+  void clear_pending_action() ;
+  const ::std::string& pending_action() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_pending_action(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_pending_action();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_pending_action();
+  void set_allocated_pending_action(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_pending_action() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_pending_action(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_pending_action();
+
+  public:
   // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
   bool has_engagement() const;
   void clear_engagement() ;
@@ -339,11 +356,21 @@ class User final : public ::google::protobuf::Message
   void _internal_set_user_id(::int32_t value);
 
   public:
+  // bool sign_in_open = 9 [json_name = "signInOpen"];
+  void clear_sign_in_open() ;
+  bool sign_in_open() const;
+  void set_sign_in_open(bool value);
+
+  private:
+  bool _internal_sign_in_open() const;
+  void _internal_set_sign_in_open(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user.User)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
                                    3, 62,
                                    2>
       _table_;
@@ -369,10 +396,12 @@ class User final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr google_sub_;
     ::google::protobuf::internal::ArenaStringPtr email_;
     ::google::protobuf::internal::ArenaStringPtr password_hash_;
+    ::google::protobuf::internal::ArenaStringPtr pending_action_;
     ::user_engagement::UserEngagement* PROTOBUF_NULLABLE engagement_;
     ::debate::Scope* PROTOBUF_NULLABLE current_scope_;
     ::debate::CollectionSpecification* PROTOBUF_NULLABLE collection_spec_;
     ::int32_t user_id_;
+    bool sign_in_open_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -402,7 +431,7 @@ inline void User::clear_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline ::int32_t User::user_id() const {
   // @@protoc_insertion_point(field_get:user.User.user_id)
@@ -410,7 +439,7 @@ inline ::int32_t User::user_id() const {
 }
 inline void User::set_user_id(::int32_t value) {
   _internal_set_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:user.User.user_id)
 }
 inline ::int32_t User::_internal_user_id() const {
@@ -489,7 +518,7 @@ inline void User::set_allocated_username(::std::string* PROTOBUF_NULLABLE value)
 
 // .user_engagement.UserEngagement engagement = 3 [json_name = "engagement"];
 inline bool User::has_engagement() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
   PROTOBUF_ASSUME(!value || _impl_.engagement_ != nullptr);
   return value;
 }
@@ -510,16 +539,16 @@ inline void User::unsafe_arena_set_allocated_engagement(
   }
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.engagement)
 }
 inline ::user_engagement::UserEngagement* PROTOBUF_NULLABLE User::release_engagement() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::UserEngagement* released = _impl_.engagement_;
   _impl_.engagement_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -539,7 +568,7 @@ inline ::user_engagement::UserEngagement* PROTOBUF_NULLABLE User::unsafe_arena_r
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.engagement)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::UserEngagement* temp = _impl_.engagement_;
   _impl_.engagement_ = nullptr;
   return temp;
@@ -554,7 +583,7 @@ inline ::user_engagement::UserEngagement* PROTOBUF_NONNULL User::_internal_mutab
 }
 inline ::user_engagement::UserEngagement* PROTOBUF_NONNULL User::mutable_engagement()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::UserEngagement* _msg = _internal_mutable_engagement();
   // @@protoc_insertion_point(field_mutable:user.User.engagement)
   return _msg;
@@ -571,9 +600,9 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* PR
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
 
   _impl_.engagement_ = reinterpret_cast<::user_engagement::UserEngagement*>(value);
@@ -582,7 +611,7 @@ inline void User::set_allocated_engagement(::user_engagement::UserEngagement* PR
 
 // .debate.Scope current_scope = 4 [json_name = "currentScope"];
 inline bool User::has_current_scope() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
   PROTOBUF_ASSUME(!value || _impl_.current_scope_ != nullptr);
   return value;
 }
@@ -603,16 +632,16 @@ inline void User::unsafe_arena_set_allocated_current_scope(
   }
   _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.current_scope)
 }
 inline ::debate::Scope* PROTOBUF_NULLABLE User::release_current_scope() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::debate::Scope* released = _impl_.current_scope_;
   _impl_.current_scope_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -632,7 +661,7 @@ inline ::debate::Scope* PROTOBUF_NULLABLE User::unsafe_arena_release_current_sco
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.current_scope)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::debate::Scope* temp = _impl_.current_scope_;
   _impl_.current_scope_ = nullptr;
   return temp;
@@ -647,7 +676,7 @@ inline ::debate::Scope* PROTOBUF_NONNULL User::_internal_mutable_current_scope()
 }
 inline ::debate::Scope* PROTOBUF_NONNULL User::mutable_current_scope()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::debate::Scope* _msg = _internal_mutable_current_scope();
   // @@protoc_insertion_point(field_mutable:user.User.current_scope)
   return _msg;
@@ -664,9 +693,9 @@ inline void User::set_allocated_current_scope(::debate::Scope* PROTOBUF_NULLABLE
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   }
 
   _impl_.current_scope_ = reinterpret_cast<::debate::Scope*>(value);
@@ -675,7 +704,7 @@ inline void User::set_allocated_current_scope(::debate::Scope* PROTOBUF_NULLABLE
 
 // .debate.CollectionSpecification collection_spec = 5 [json_name = "collectionSpec"];
 inline bool User::has_collection_spec() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
   PROTOBUF_ASSUME(!value || _impl_.collection_spec_ != nullptr);
   return value;
 }
@@ -696,16 +725,16 @@ inline void User::unsafe_arena_set_allocated_collection_spec(
   }
   _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user.User.collection_spec)
 }
 inline ::debate::CollectionSpecification* PROTOBUF_NULLABLE User::release_collection_spec() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::debate::CollectionSpecification* released = _impl_.collection_spec_;
   _impl_.collection_spec_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -725,7 +754,7 @@ inline ::debate::CollectionSpecification* PROTOBUF_NULLABLE User::unsafe_arena_r
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user.User.collection_spec)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::debate::CollectionSpecification* temp = _impl_.collection_spec_;
   _impl_.collection_spec_ = nullptr;
   return temp;
@@ -740,7 +769,7 @@ inline ::debate::CollectionSpecification* PROTOBUF_NONNULL User::_internal_mutab
 }
 inline ::debate::CollectionSpecification* PROTOBUF_NONNULL User::mutable_collection_spec()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::debate::CollectionSpecification* _msg = _internal_mutable_collection_spec();
   // @@protoc_insertion_point(field_mutable:user.User.collection_spec)
   return _msg;
@@ -757,9 +786,9 @@ inline void User::set_allocated_collection_spec(::debate::CollectionSpecificatio
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
 
   _impl_.collection_spec_ = reinterpret_cast<::debate::CollectionSpecification*>(value);
@@ -959,6 +988,96 @@ inline void User::set_allocated_password_hash(::std::string* PROTOBUF_NULLABLE v
     _impl_.password_hash_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user.User.password_hash)
+}
+
+// bool sign_in_open = 9 [json_name = "signInOpen"];
+inline void User::clear_sign_in_open() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sign_in_open_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000200U);
+}
+inline bool User::sign_in_open() const {
+  // @@protoc_insertion_point(field_get:user.User.sign_in_open)
+  return _internal_sign_in_open();
+}
+inline void User::set_sign_in_open(bool value) {
+  _internal_set_sign_in_open(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  // @@protoc_insertion_point(field_set:user.User.sign_in_open)
+}
+inline bool User::_internal_sign_in_open() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.sign_in_open_;
+}
+inline void User::_internal_set_sign_in_open(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.sign_in_open_ = value;
+}
+
+// bytes pending_action = 10 [json_name = "pendingAction"];
+inline void User::clear_pending_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.pending_action_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& User::pending_action() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user.User.pending_action)
+  return _internal_pending_action();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void User::set_pending_action(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.pending_action_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user.User.pending_action)
+}
+inline ::std::string* PROTOBUF_NONNULL User::mutable_pending_action()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_pending_action();
+  // @@protoc_insertion_point(field_mutable:user.User.pending_action)
+  return _s;
+}
+inline const ::std::string& User::_internal_pending_action() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.pending_action_.Get();
+}
+inline void User::_internal_set_pending_action(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.pending_action_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL User::_internal_mutable_pending_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.pending_action_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE User::release_pending_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user.User.pending_action)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.pending_action_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.pending_action_.Set("", GetArena());
+  }
+  return released;
+}
+inline void User::set_allocated_pending_action(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.pending_action_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.pending_action_.IsDefault()) {
+    _impl_.pending_action_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user.User.pending_action)
 }
 
 #ifdef __GNUC__

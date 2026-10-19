@@ -2,6 +2,8 @@
 #include "user_engagement.pb.h"
 #include "collection.pb.h"
 #include "../../../../../utils/Log.h"
+#include "../../../../../utils/ClaimVoice.h"
+#include "../../../../../utils/Ordered.h"
 #include <unordered_set>
 
 namespace {
@@ -33,7 +35,7 @@ debate::ClaimStatus MapClaimStatusForUser(
 	if (it != user_statuses.end()) {
 		return it->second;
 	}
-	if (viewer_user_id == claim.creator_id()) {
+	if (viewer_user_id == ClaimVoiceId(claim)) {
 		return debate::ClaimStatus::TRUE_CLAIM;
 	}
 	return debate::ClaimStatus::UNDETERMINED;
@@ -145,9 +147,10 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 
 	// debate::Claim currentClaimProto = currentClaimIt->second;
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()));
-	for (const auto& linkEntry : collectionProto.links_by_id()) {
-		const int linkId = linkEntry.first;
-		const debate::Relationship::Link& linkProto = linkEntry.second.link();
+	// By relation id: links_by_id is a protobuf map (unspecified order), and
+	// these lists reach the page in the order built.
+	for (const int linkId : ordered::SortedLinkIds(collectionProto)) {
+		const debate::Relationship::Link& linkProto = collectionProto.links_by_id().at(linkId).link();
 		if (linkProto.connect_from() != currentClaimProto.id()) {
 			continue;
 		}
@@ -169,10 +172,10 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 				outChild->set_creator_id(childClaim.creator_id());
 				outChild->set_status(MapClaimStatusForUser(childClaim, userProto.user_id(), userProto.username()));
 				// Populate per-user status rectangles on child claim
-				for (const auto& s : childClaim.user_statuses()) {
+				for (const auto* s : ordered::Entries(childClaim.user_statuses())) {
 					rendering_info::UserStatus* us = outChild->add_user_statuses();
-					us->set_username(s.first);
-					us->set_status(s.second);
+					us->set_username(s->first);
+					us->set_status(s->second);
 				}
 				visibleClaimIds.insert(childClaim.id());
 			} else {
@@ -192,9 +195,8 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 		", visible_claim_count=" + std::to_string(visibleClaimIds.size())
 	);
 	int outputLinkIndex = 0;
-	for (const auto& entry : collectionProto.links_by_id()) {
-		const int linkId = entry.first;
-		const debate::Relationship::Link& link = entry.second.link();
+	for (const int linkId : ordered::SortedLinkIds(collectionProto)) {
+		const debate::Relationship::Link& link = collectionProto.links_by_id().at(linkId).link();
 		const bool fromVisible = visibleClaimIds.count(link.connect_from()) > 0;
 		const bool toVisible = visibleClaimIds.count(link.connect_to()) > 0;
 		const bool isParentChild = (link.link_type() == debate::LinkType::PARENT_CHILD);
@@ -232,7 +234,8 @@ rendering_info::DebatePageRenderingInfo DebatePageInfoParser::ParseFromUser(user
 	// Find challenge links pointing to current claim from collection
 	Log::debug("[DebatePageInfoParser] Scanning for CHALLENGE links pointing to current_claim_id=" + std::to_string(currentClaimId) + ", total_links_in_collection=" + std::to_string(collectionProto.links_by_id_size()));
 	int challengeLinkCount = 0;
-	for (const auto& entry : collectionProto.links_by_id()) {
+	for (const auto* linkEntry : ordered::Entries(collectionProto.links_by_id())) {
+		const auto& entry = *linkEntry;
 		challengeLinkCount++;
 		const debate::Relationship::Link& link = entry.second.link();
 		Log::debug("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));

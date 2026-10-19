@@ -4,12 +4,11 @@
 // #include "client_message.pb.h"
 #include "../utils/pathUtils.h"
 #include <google/protobuf/text_format.h>
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
 #include <fstream>
 
 #include "layout.pb.h"
-#include "client_message.pb.h"
-#include "user.pb.h"
-#include "user_engagement.pb.h"
 #include "./virtualRenderer.h"
 #include <iostream>
 #include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
@@ -40,48 +39,19 @@ void MiddleendRequestHandler::handleRequest(const httplib::Request& req, httplib
     ui::Page page = renderer.handleClientMessage(msg, req, res);
 
     // send proto back in the res
+    // Deterministic: map fields (css, attributes) are written sorted by key.
+    // Otherwise their wire order follows protobuf's per-instance hash seed,
+    // and two responses for the same state differ byte for byte.
     std::string page_data_serialized;
-    if (!page.SerializeToString(&page_data_serialized)) {
-        Log::error("Failed to serialize Page response");
-        res.status = 500;
-        res.set_content("Failed to serialize Page response", "text/plain");
-        return;
+    bool serialized = false;
+    {
+        google::protobuf::io::StringOutputStream stringStream(&page_data_serialized);
+        google::protobuf::io::CodedOutputStream codedStream(&stringStream);
+        codedStream.SetSerializationDeterministic(true);
+        serialized = page.SerializeToCodedStream(&codedStream) && !codedStream.HadError();
     }
-    res.status = 200;
-    res.set_content(page_data_serialized, "application/x-protobuf");
-}
-
-void MiddleendRequestHandler::handleGetRequest(const httplib::Request& req, httplib::Response& res) {
-    // Extract query params: ?id=<debate_id>&username=<username>
-    std::string debate_id_str = req.get_param_value("id");
-    std::string username = req.get_param_value("username");
-
-    Log::info("[GET /api/] id=" + debate_id_str + " username=" + username);
-
-    if (debate_id_str.empty() || username.empty()) {
-        Log::error("[GET /api/] Missing id or username query param");
-        res.status = 400;
-        res.set_content("{\"error\": \"Missing 'id' or 'username' query parameter\"}", "text/plain");
-        return;
-    }
-
-    // Parse debate_id
-    int debate_id = 0;
-    try {
-        debate_id = std::stoi(debate_id_str);
-    } catch (const std::exception& e) {
-        Log::error("[GET /api/] Invalid debate_id: " + debate_id_str);
-        res.status = 400;
-        res.set_content("{\"error\": \"Invalid debate_id parameter\"}", "text/plain");
-        return;
-    }
-
-    // Load debate page through new method
-    ui::Page page = renderer.handleDebatePageLoad(username, debate_id);
-
-    std::string page_data_serialized;
-    if (!page.SerializeToString(&page_data_serialized)) {
-        Log::error("Failed to serialize Page response");
+    if (!serialized) {
+        Log::error("❌ Failed to serialize Page response");
         res.status = 500;
         res.set_content("Failed to serialize Page response", "text/plain");
         return;

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus mode test</title>
+<style>
+  :root {
+    --bg:#0f1117; --panel:#151823; --panel-2:#1b1f2d; --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.16);
+    --text:#e8eaed; --text-2:#a3a9b8; --text-3:#6f7585; --accent:#6d7cff; --accent-hover:#8691ff; --accent-soft:rgba(109,124,255,0.14);
+    --open:#f0625d; --open-soft:rgba(240,98,93,0.14); --settled:#3dcf8e; --warn:#f2b84b; --radius:10px; --radius-sm:6px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family:var(--font); font-size:14px; }
+  button { font: inherit; }
+  .app { height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+  .header { height:56px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 18px; background:var(--panel); border-bottom:1px solid var(--line); }
+  .brand { font-weight:650; font-size:15px; }
+  .main { flex:1; min-height:0; display:grid; grid-template-columns: 320px minmax(0,1fr); gap:14px; padding:14px; }
+  .region { min-height:0; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; }
+  .inspector .fixed { padding:14px 16px; border-bottom:1px solid var(--line); }
+  .scroll { overflow-y:auto; min-height:0; flex:1; }
+  .caption { font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
+  .small { font-size:12.5px; color:var(--text-3); }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; cursor:pointer; border:1px solid var(--line-strong); background:transparent; color:var(--text); }
+  .btn:hover { background:rgba(255,255,255,0.05); }
+  .btn.quiet { border-color:transparent; color:var(--text-2); }
+  .pill { padding:3px 10px; border-radius:999px; font-size:12.5px; border:1px solid var(--line); color:var(--text-2); background:transparent; cursor:pointer; }
+  .pill.on { background:var(--accent-soft); border-color:transparent; color:var(--accent-hover); }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--text-3); flex:none; }
+  .dot.open { background:var(--open); }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .bar { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; border-bottom:1px solid var(--line); flex:none; gap:10px; }
+  .crumbs { display:flex; align-items:center; gap:4px; font-size:12.5px; color:var(--text-3); flex-wrap:wrap; padding:6px 14px; border-bottom:1px solid var(--line); min-height:30px; }
+  .crumbs button { background:transparent; border:0; color:var(--text-2); cursor:pointer; padding:2px 4px; border-radius:4px; font-size:12.5px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .crumbs button:hover { color:var(--text); background:rgba(255,255,255,0.05); }
+  .crumbs .here { color:var(--text); }
+  .graph { flex:1; min-height:0; position:relative; }
+  svg { width:100%; height:100%; display:block; }
+  .edge { stroke:var(--line-strong); stroke-width:1.3; fill:none; }
+  .edge.ch { stroke:var(--open); stroke-dasharray:4 3; }
+  .edge.spine { stroke:var(--accent); opacity:.5; }
+  .node { cursor:pointer; }
+  .node rect { fill:var(--panel-2); stroke:var(--line-strong); rx:8; transition: stroke .15s; }
+  .node:hover rect { stroke:var(--text-2); }
+  .node.focus rect { stroke:var(--accent); stroke-width:2; }
+  .node.open rect { stroke:var(--open); }
+  .node.spine rect { fill:var(--panel); }
+  .node text { font-family:var(--font); fill:var(--text); font-size:11.5px; pointer-events:none; }
+  .node .who { fill:var(--text-3); font-size:10px; }
+  .chip { cursor:pointer; }
+  .chip rect { fill:var(--bg); stroke:var(--line-strong); rx:10; }
+  .chip:hover rect { stroke:var(--text-2); }
+  .chip text { font-family:var(--font); fill:var(--text-2); font-size:10.5px; pointer-events:none; }
+  .chip.open circle { fill:var(--open); }
+  .search { width:100%; background:var(--panel-2); border:1px solid var(--line); border-radius:var(--radius-sm); color:var(--text); padding:8px 10px; font:inherit; font-size:13px; }
+  .search:focus { outline:none; border-color:var(--accent); }
+  .result { padding:7px 8px; border-radius:var(--radius-sm); cursor:pointer; font-size:13px; color:var(--text-2); display:flex; gap:8px; align-items:flex-start; }
+  .result:hover { background:rgba(255,255,255,0.05); color:var(--text); }
+  .result .dot { margin-top:5px; }
+  .keys { font-size:12px; color:var(--text-3); line-height:1.7; }
+  .keys b { color:var(--text-2); font-weight:600; display:inline-block; min-width:92px; }
+  .sel { padding:12px 16px; border-bottom:1px solid var(--line); }
+  .sel p { margin:6px 0 0; font-size:14px; }
+  #g { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .hint { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:12px; color:var(--text-3); background:var(--panel); border:1px solid var(--line); padding:4px 10px; border-radius:999px; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="row"><span class="brand">Debate Hub</span><span class="small">/ Focus mode test · a fake 62-claim debate</span></div>
+    <div class="row"><button class="pill on" id="modeFocus">Focus</button><button class="pill" id="modeAll">Everything</button></div>
+  </div>
+  <div class="main">
+    <div class="region inspector">
+      <div class="sel">
+        <span class="caption">Focused claim</span>
+        <p id="selText"></p>
+        <div class="row" style="margin-top:8px"><span class="small" id="selWho"></span><span class="small" id="selStatus"></span></div>
+      </div>
+      <div class="fixed">
+        <input class="search" id="search" placeholder="Find a claim or a person…">
+      </div>
+      <div class="scroll" id="results"></div>
+      <div class="fixed keys" style="border-top:1px solid var(--line); border-bottom:0">
+        <b>↑</b> parent &nbsp; <b>↓</b> first child<br>
+        <b>← →</b> siblings &nbsp; <b>Enter</b> expand all chips<br>
+        <b>Esc</b> back to the main claim &nbsp; <b>/</b> search
+      </div>
+    </div>
+    <div class="region">
+      <div class="bar">
+        <div class="row">
+          <span class="small" id="shown"></span>
+        </div>
+        <div class="row"><button class="btn quiet" id="fit">Fit</button><button class="btn quiet" id="toRoot">Main claim</button></div>
+      </div>
+      <div class="crumbs" id="crumbs"></div>
+      <div class="graph"><svg id="svg"><g id="g"></g></svg><div class="hint">Click a node to focus it · click a chip to open it · drag to pan · wheel to zoom</div></div>
+    </div>
+  </div>
+</div>
+<script>
+// ---------- a fake debate: 62 claims, deterministic ----------
+const people = ['Paul','Fauci','Peters','Lankford','Collins','Ebright','Andersen','Hassan','CRS','Tabak'];
+const stems = ['the pardon voids the Fifth','NIH funded the Wuhan work','the mice got sicker','the letter is an admission','the term is nebulous','state subpoenas are real','the vote skipped the floor','the diary shows doubt','the paper was prompted','Lerner was never prosecuted','the lab lacked BSL-3','the grant was reinstated','the definition changed in 2021','new testimony is unpardoned','the referral never reached DOJ','the market was the epicentre','three agencies lean lab','the authors deny it','the records were online','the hearing was a trap'];
+let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const nodes = []; const edges = []; // edge: {from, to, challenge}
+function add(parent, challenge, depth) {
+  const id = nodes.length + 1;
+  const who = people[Math.floor(rnd() * people.length)];
+  const text = (challenge ? 'But ' : '') + stems[Math.floor(rnd() * stems.length)] + (depth > 2 ? ', for reason ' + id : '') + '.';
+  nodes.push({ id, who, text, challenge, depth, parent, open: false, kids: [] });
+  if (parent) { edges.push({ from: id, to: parent, challenge }); nodes[parent - 1].kids.push(id); }
+  return id;
+}
+const root = add(null, false, 0); nodes[0].text = 'Fauci should be held in contempt of Congress for refusing to testify.'; nodes[0].who = 'Paul';
+function grow(parent, depth) {
+  if (nodes.length >= 62 || depth > 4) return;
+  const n = depth === 1 ? 4 : 1 + Math.floor(rnd() * 3);
+  for (let i = 0; i < n && nodes.length < 62; i++) {
+    const ch = depth > 1 && rnd() < 0.35;
+    const id = add(parent, ch, depth);
+    if (rnd() < 0.7) grow(id, depth + 1);
+  }
+}
+grow(root, 1);
+// keep adding until the debate is genuinely big: a child on a random
+// claim that still has room, so depth and breadth both grow
+while (nodes.length < 62) {
+  const cands = nodes.filter(n => n.depth < 4 && n.kids.length < 5);
+  const p = cands[Math.floor(rnd() * cands.length)];
+  const id = add(p.id, p.depth >= 1 && rnd() < 0.35, p.depth + 1);
+}
+// open challenges: a challenge with no reply is "open" for the holder of its target
+for (const n of nodes) if (n.challenge && !n.kids.some(k => nodes[k - 1].challenge)) nodes[n.parent - 1].open = true;
+// subtree has an open fight?
+function hasOpen(id) { const n = nodes[id - 1]; return n.open || n.kids.some(hasOpen); }
+const byId = id => nodes[id - 1];
+
+// ---------- state ----------
+let mode = 'focus'; let focus = root; const expanded = new Set();
+const svg = document.getElementById('svg'), g = document.getElementById('g');
+let cam = { x: 0, y: 0, k: 1 };
+const W = 190, H = 54, GX = 26, GY = 90;
+
+function spineOf(id) { const s = []; for (let n = byId(id); n; n = n.parent ? byId(n.parent) : null) s.unshift(n.id); return s; }
+
+// ---------- layout ----------
+function layoutFocus() {
+  const placed = new Map(); const spine = spineOf(focus);
+  // spine stacked above the focused node
+  spine.forEach((id, i) => placed.set(id, { x: 0, y: (i - (spine.length - 1)) * GY, kind: id === focus ? 'focus' : 'spine' }));
+  // children of the focused node in a row; each child shows a chip for its own kids unless expanded
+  const kids = byId(focus).kids;
+  const rowW = kids.length * (W + GX) - GX;
+  kids.forEach((id, i) => {
+    placed.set(id, { x: -rowW / 2 + i * (W + GX) + W / 2, y: GY, kind: 'child' });
+    if (expanded.has(id)) {
+      const gk = byId(id).kids; const gw = gk.length * (W + GX) - GX; const cx = placed.get(id).x;
+      gk.forEach((gid, j) => placed.set(gid, { x: cx - gw / 2 + j * (W + GX) + W / 2, y: 2 * GY, kind: 'grand' }));
+    }
+  });
+  return placed;
+}
+function layoutAll() {
+  const placed = new Map(); let cursor = 0;
+  function dfs(id, depth) {
+    const n = byId(id); const start = cursor;
+    if (n.kids.length === 0) { placed.set(id, { x: cursor * (W + GX), y: depth * GY, kind: 'child' }); cursor++; return; }
+    n.kids.forEach(k => dfs(k, depth + 1));
+    const xs = n.kids.map(k => placed.get(k).x); placed.set(id, { x: (Math.min(...xs) + Math.max(...xs)) / 2, y: depth * GY, kind: 'child' });
+  }
+  dfs(root, 0);
+  // centre on 0
+  const xs = [...placed.values()].map(p => p.x); const mid = (Math.min(...xs) + Math.max(...xs)) / 2;
+  for (const p of placed.values()) p.x -= mid;
+  placed.get(focus).kind = 'focus';
+  return placed;
+}
+
+// ---------- draw ----------
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function wrap(text, max) { const w = text.split(' '); const lines = ['']; for (const x of w) { if ((lines[lines.length - 1] + ' ' + x).trim().length > max) lines.push(x); else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + x).trim(); } return lines.slice(0, 2); }
+function draw() {
+  const placed = mode === 'focus' ? layoutFocus() : layoutAll();
+  let out = '';
+  // edges
+  for (const e of edges) {
+    const a = placed.get(e.from), b = placed.get(e.to); if (!a || !b) continue;
+    const spine = mode === 'focus' && a.kind === 'spine' && b.kind === 'spine' || (mode === 'focus' && (a.kind === 'focus' || b.kind === 'focus') && (a.kind === 'spine' || b.kind === 'spine'));
+    out += `<path class="edge${e.challenge ? ' ch' : ''}${spine ? ' spine' : ''}" d="M${a.x} ${a.y - H / 2} V${(a.y + b.y) / 2} H${b.x} V${b.y + H / 2}"/>`;
+  }
+  // nodes
+  for (const [id, p] of placed) {
+    const n = byId(id); const lines = wrap(n.text, 30);
+    out += `<g class="node ${p.kind}${n.open ? ' open' : ''}" data-id="${id}" transform="translate(${p.x - W / 2},${p.y - H / 2})"><rect width="${W}" height="${H}"/>`;
+    lines.forEach((l, i) => out += `<text x="${W / 2}" y="${18 + i * 13}" text-anchor="middle">${esc(l)}</text>`);
+    out += `<text class="who" x="${W / 2}" y="${H - 8}" text-anchor="middle">${esc(n.who)}${n.challenge ? ' · challenge' : ''}${n.open ? ' · owes a reply' : ''}</text></g>`;
+    // chips for folded children (focus mode only, on child/grand nodes that are not expanded)
+    if (mode === 'focus' && (p.kind === 'child' || p.kind === 'grand') && n.kids.length && !expanded.has(id)) {
+      const sup = n.kids.filter(k => !byId(k).challenge).length, ch = n.kids.filter(k => byId(k).challenge).length;
+      const label = [sup ? `+${sup} support${sup > 1 ? 's' : ''}` : '', ch ? `+${ch} challenge${ch > 1 ? 's' : ''}` : ''].filter(Boolean).join(' · ');
+      const openIn = n.kids.some(hasOpen);
+      out += `<g class="chip${openIn ? ' open' : ''}" data-chip="${id}" transform="translate(${p.x - 70},${p.y + H / 2 + 6})"><rect width="140" height="20"/>${openIn ? `<circle cx="12" cy="10" r="3.5"/>` : ''}<text x="${openIn ? 22 : 10}" y="14">${esc(label)}</text></g>`;
+    }
+    // in focus mode, the spine's other children are folded into one chip beside each spine node
+    if (mode === 'focus' && p.kind === 'spine') {
+      const others = n.kids.filter(k => !placed.has(k)); if (others.length) {
+        const openIn = others.some(hasOpen);
+        out += `<g class="chip${openIn ? ' open' : ''}" data-chip="${id}" data-side="1" transform="translate(${p.x + W / 2 + 10},${p.y - 10})"><rect width="110" height="20"/>${openIn ? `<circle cx="12" cy="10" r="3.5"/>` : ''}<text x="${openIn ? 22 : 10}" y="14">+${others.length} more here</text></g>`;
+      }
+    }
+  }
+  g.innerHTML = out;
+  document.getElementById('shown').textContent = `${placed.size} of ${nodes.length} claims shown`;
+  // inspector
+  const f = byId(focus);
+  document.getElementById('selText').textContent = f.text;
+  document.getElementById('selWho').textContent = 'Said by ' + f.who;
+  document.getElementById('selStatus').textContent = f.open ? '· owes a reply' : (f.challenge ? '· a challenge' : '');
+  // crumbs
+  const c = document.getElementById('crumbs'); c.innerHTML = '';
+  spineOf(focus).forEach((id, i, arr) => {
+    const b = document.createElement('button'); b.textContent = byId(id).text; b.className = i === arr.length - 1 ? 'here' : ''; b.onclick = () => setFocus(id); c.appendChild(b);
+    if (i < arr.length - 1) { const s = document.createElement('span'); s.textContent = '›'; c.appendChild(s); }
+  });
+  if (mode === 'focus') centreOn(focus, placed); else applyCam();
+}
+function centreOn(id, placed) {
+  const p = placed.get(id); const r = svg.getBoundingClientRect();
+  cam.x = r.width / 2 - p.x * cam.k; cam.y = r.height / 2 - (p.y + GY / 2) * cam.k; applyCam();
+}
+function applyCam() { g.setAttribute('transform', `translate(${cam.x},${cam.y}) scale(${cam.k})`); }
+function setFocus(id) { focus = id; draw(); }
+
+// ---------- interaction ----------
+svg.addEventListener('click', e => {
+  const chip = e.target.closest('.chip'); if (chip) { const id = +chip.dataset.chip; if (chip.dataset.side) setFocus(id); else { expanded.add(id); draw(); } return; }
+  const node = e.target.closest('.node'); if (node) setFocus(+node.dataset.id);
+});
+let drag = null;
+svg.addEventListener('mousedown', e => { drag = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y }; g.style.transition = 'none'; });
+window.addEventListener('mousemove', e => { if (!drag) return; cam.x = drag.cx + e.clientX - drag.x; cam.y = drag.cy + e.clientY - drag.y; applyCam(); });
+window.addEventListener('mouseup', () => { drag = null; g.style.transition = ''; });
+svg.addEventListener('wheel', e => { e.preventDefault(); const r = svg.getBoundingClientRect(); const mx = e.clientX - r.left, my = e.clientY - r.top; const k2 = Math.max(.25, Math.min(2.5, cam.k * (e.deltaY < 0 ? 1.12 : 1 / 1.12))); cam.x = mx - (mx - cam.x) * k2 / cam.k; cam.y = my - (my - cam.y) * k2 / cam.k; cam.k = k2; g.style.transition = 'none'; applyCam(); setTimeout(() => g.style.transition = '', 0); }, { passive: false });
+document.getElementById('fit').onclick = () => { cam.k = mode === 'focus' ? 1 : 0.45; draw(); };
+document.getElementById('toRoot').onclick = () => setFocus(root);
+document.getElementById('modeFocus').onclick = () => { mode = 'focus'; document.getElementById('modeFocus').classList.add('on'); document.getElementById('modeAll').classList.remove('on'); cam.k = 1; draw(); };
+document.getElementById('modeAll').onclick = () => { mode = 'all'; document.getElementById('modeAll').classList.add('on'); document.getElementById('modeFocus').classList.remove('on'); cam.k = 0.45; draw(); const placed = layoutAll(); centreOn(root, placed); };
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') { if (e.key === 'Escape') e.target.blur(); return; }
+  const f = byId(focus);
+  if (e.key === 'ArrowUp' && f.parent) setFocus(f.parent);
+  else if (e.key === 'ArrowDown' && f.kids.length) setFocus(f.kids[0]);
+  else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && f.parent) { const sib = byId(f.parent).kids; const i = sib.indexOf(focus); const j = e.key === 'ArrowLeft' ? i - 1 : i + 1; if (sib[j]) setFocus(sib[j]); }
+  else if (e.key === 'Enter') { byId(focus).kids.forEach(k => expanded.add(k)); draw(); }
+  else if (e.key === 'Escape') setFocus(root);
+  else if (e.key === '/') { e.preventDefault(); document.getElementById('search').focus(); }
+  else return;
+  e.preventDefault();
+});
+const search = document.getElementById('search'), results = document.getElementById('results');
+function renderResults() {
+  const q = search.value.trim().toLowerCase(); results.innerHTML = '';
+  const hits = q ? nodes.filter(n => n.text.toLowerCase().includes(q) || n.who.toLowerCase().includes(q)) : nodes.filter(n => n.open);
+  if (!q) { const h = document.createElement('div'); h.className = 'caption'; h.style.padding = '10px 16px 4px'; h.textContent = 'Who owes a reply'; results.appendChild(h); }
+  hits.slice(0, 40).forEach(n => { const d = document.createElement('div'); d.className = 'result'; d.innerHTML = `<span class="dot${n.open ? ' open' : ''}"></span><span>${esc(n.text)}<br><span class="small">${esc(n.who)}</span></span>`; d.onclick = () => setFocus(n.id); results.appendChild(d); });
+}
+search.addEventListener('input', renderResults);
+renderResults(); draw();
+</script>
+</body>
+</html>

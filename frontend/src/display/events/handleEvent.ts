@@ -1,5 +1,6 @@
 import postClientMessageToCPP from "../../backendCommunicator/postClientMessageToCPP.ts";
 import getEntirePage from "../getEntirePage.ts";
+import { draftsSentBy } from "../viewMemory.ts";
 
 // Google sign-in callback — set by GoogleLoginComponent
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,6 +80,9 @@ export default async function handleEvent(
 
     // Collect only form input values from the page (not div textContent)
     const pageData = getEntirePage(component.id);
+    // The value is collected; if this event is what sends a kept draft (the
+    // chat's Ask), the draft is spent and must not come back on next render.
+    draftsSentBy(component.id || "", String(eventName));
 
     const page = await postClientMessageToCPP({
       componentId: component.id || "unknown",

@@ -153,6 +153,17 @@ enum MoveType {
   DISOWN = 7;       // "I did not assert or imply that" -- itself opposable
   REOPEN = 8;       // revisit a settled branch; requires new grounds
   TIMEOUT = 9;      // written when someone goes quiet; never user-pressed
+
+  // The author withdraws their own claim or relation: "I am taking this back."
+  // Deliberately distinct from CONCEDE, which means "you defeated this" -- the
+  // two must read differently to a reader. The element is not removed; it is
+  // marked withdrawn and renders faded.
+  RETRACT = 10;
+
+  // Administrative removal: moderation, personal information. Blanks the text
+  // while keeping the node and all its relations intact, so the surrounding
+  // argument structure still resolves. Not an argument move -- an admin action.
+  REDACT = 11;
 }
 
 // A logged action. THE ONLY THING STORED.

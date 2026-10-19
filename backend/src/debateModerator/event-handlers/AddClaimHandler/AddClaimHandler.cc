@@ -4,8 +4,14 @@
 #include "user.pb.h"
 #include "../../../utils/pathUtils.h"
 #include "../../../utils/Log.h"
+#include "../../../utils/BasisRegistry.h"
 
-void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const std::string& description, const int& user_id, DebateWrapper& debateWrapper) {
+void AddClaimHandler::AddClaimUnderClaim(const std::vector<std::string>& claim_texts, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id, const debate::Source* source) {
+    // A basis the registry cannot explain is not stored: the dropdowns, the
+    // prompts and the status engine all read the registry, and a link carrying
+    // a name none of them know would be a link nobody can describe or reason
+    // about. Unknown becomes unspecified, with a warning.
+    const std::string basis = bases::Sanitize(basis_in);
     // first find where the user is in the debate
     // get user protobuf
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
@@ -17,13 +23,48 @@ void AddClaimHandler::AddClaimUnderClaim(const std::string& claim_text, const st
 
     // DebateWrapper debateWrapper;
 
-    int newClaimID = debateWrapper.addClaimUnderParent(
-        currentClaimID, // parentId
-        claim_text,
-        description,
-        user_id,
-        debate_id
-    );
+    // Several claim texts = ONE relation with several from-claims: "these
+    // together support that", not N independent supports. The first row
+    // establishes the relation id; the rest join it.
+    //
+    // Blank entries are skipped rather than becoming empty claims -- the UI
+    // offers a fixed number of boxes and most will go unused.
+    int relationId = 0;
+    int firstClaimId = 0;
+    int added = 0;
+    // Each claim carries its OWN description, taken at the same index. Indexed
+    // against the original position rather than the count added so far, so
+    // skipping a blank row cannot shift later descriptions onto other claims.
+    for (size_t i = 0; i < claim_texts.size(); ++i) {
+        const std::string& text = claim_texts[i];
+        const std::string description =
+            i < descriptions.size() ? descriptions[i] : std::string();
+        if (text.find_first_not_of(" \t\r\n") == std::string::npos) {
+            continue;
+        }
+        const int newClaimID = debateWrapper.addClaimUnderParent(
+            currentClaimID,  // parentId
+            text,
+            description,
+            user_id,
+            debate_id,
+            basis,
+            relationId,
+            &relationId,
+            voice_id,
+            source
+        );
+        if (added == 0) {
+            firstClaimId = newClaimID;
+        }
+        ++added;
+    }
+
+    if (added == 0) {
+        Log::warn("[AddClaimHandler] No non-empty claim text submitted; nothing added.");
+    }
+    (void)firstClaimId;
+
     CloseAddChildClaim(user_id, debateWrapper);
 }
 

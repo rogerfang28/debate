@@ -1,0 +1,86 @@
+name: "UndercutTest"
+
+# =============================================================================
+# Challenging an ARGUMENT, not a claim.
+#
+#   1 (root: "Speed limits save lives", creator A)
+#   └── 2 ("Crash deaths fell 23 percent", creator A, EVIDENTIAL for 1)
+#         ⊘ 3 ("Those boroughs were already getting safer", creator B)
+#             -- aimed at the 2 -> 1 argument, not at claim 2
+#
+# B does not dispute the number. B says it does not show what A says it shows.
+# So for B the argument carries nothing: the root is not supported for B, and
+# it is not refuted either. Claim 2 is untouched. A's view does not change.
+# =============================================================================
+
+steps {
+  action { username: "A" event_type: "CREATE_USER" }
+}
+steps {
+  action { username: "B" event_type: "CREATE_USER" }
+}
+
+steps {
+  action { username: "A" event_type: "CREATE_DEBATE" debate_topic: "Speed limits save lives" }
+}
+steps {
+  action { username: "A" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "A" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "B" event_type: "JOIN_DEBATE" debate_id: 1 }
+}
+steps {
+  action { username: "B" event_type: "ENTER_DEBATE" debate_id: 1 }
+}
+
+# A offers the evidence.
+steps {
+  action { username: "A" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action {
+    username: "A"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Crash deaths fell 23 percent in the trial boroughs"
+    claim_description: "the number"
+    basis: "EVIDENTIAL"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 2 }
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 1 to_claim_id: 2 link_type: "PARENT_CHILD" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+}
+
+# B undercuts the ARGUMENT from 2 to 1: the number is real, but proves nothing.
+steps {
+  action { username: "B" event_type: "GO_TO_CLAIM" claim_id: 1 }
+}
+steps {
+  action { username: "B" event_type: "START_CHALLENGE_CLAIM" }
+}
+steps {
+  action { username: "B" event_type: "ADD_LINK_TO_BE_CHALLENGED" link_to_claim_id: 1 link_from_claim_id: 2 }
+}
+steps {
+  action { username: "B" event_type: "OPEN_ADD_CHALLENGE" }
+}
+steps {
+  action {
+    username: "B"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Those boroughs were already getting safer before the change"
+    challenge_description: "true number, wrong inference"
+    basis: "INFERENTIAL"
+  }
+  expectations { check_type: "CLAIM_EXISTS" claim_id: 3 }
+  # Stored beside the claim the argument was for, as a challenge row.
+  expectations { check_type: "LINK_EXISTS" from_claim_id: 3 to_claim_id: 1 link_type: "CHALLENGE" }
+  # Nothing was called false: not the evidence, not the root.
+  expectations { check_type: "USER_VIEW" claim_id: 2 username: "B" expected_status: "UNDETERMINED" }
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "B" expected_status: "UNDETERMINED" }
+  # A never held B's undercut true; A's root still stands.
+  expectations { check_type: "USER_VIEW" claim_id: 1 username: "A" expected_status: "TRUE_CLAIM" }
+  expectations { check_type: "USER_VIEW" claim_id: 3 username: "B" expected_status: "TRUE_CLAIM" }
+}

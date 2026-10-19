@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file layout.proto.
  */
 export const file_layout: GenFile = /*@__PURE__*/
-  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IrYDCglDb21wb25lbnQSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIfCgR0eXBlGAMgASgOMhEudWkuQ29tcG9uZW50VHlwZRIMCgR0ZXh0GAQgASgJEh8KCGNoaWxkcmVuGAUgAygLMg0udWkuQ29tcG9uZW50EhgKBXN0eWxlGAYgASgLMgkudWkuU3R5bGUSIwoDY3NzGAggAygLMhYudWkuQ29tcG9uZW50LkNzc0VudHJ5EjEKCmF0dHJpYnV0ZXMYByADKAsyHS51aS5Db21wb25lbnQuQXR0cmlidXRlc0VudHJ5EhwKBW5vZGVzGAogAygLMg0udWkuR3JhcGhOb2RlEhwKBWVkZ2VzGAsgAygLMg0udWkuR3JhcGhFZGdlEhgKEHNlbGVjdGVkX25vZGVfaWQYDCABKAkSGAoQc2VsZWN0ZWRfZWRnZV9pZBgNIAEoCRoqCghDc3NFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIh0KBVN0eWxlEhQKDGN1c3RvbV9jbGFzcxgBIAEoCSIuCghQb3NpdGlvbhIJCgF4GAEgASgCEgkKAXkYAiABKAISDAoEdW5pdBgDIAEoCSIlCgRTaXplEg0KBXdpZHRoGAEgASgJEg4KBmhlaWdodBgCIAEoCSKsAQoJR3JhcGhOb2RlEgoKAmlkGAEgASgJEgwKBHRleHQYAiABKAkSCQoBeBgDIAEoARIJCgF5GAQgASgBEgwKBHR5cGUYBSABKAkSDgoGc3RhdHVzGAYgASgJEhIKCmNyZWF0b3JfaWQYByABKAUSDwoHaXNfcm9vdBgIIAEoCBISCgppc19jdXJyZW50GAkgASgIEhgKEGNyZWF0b3JfdXNlcm5hbWUYCiABKAkiRQoJR3JhcGhFZGdlEgoKAmlkGAEgASgJEg4KBnNvdXJjZRgCIAEoCRIOCgZ0YXJnZXQYAyABKAkSDAoEdHlwZRgEIAEoCSKMAQoOR3JhcGhDb21wb25lbnQSCgoCaWQYASABKAkSHAoFbm9kZXMYAiADKAsyDS51aS5HcmFwaE5vZGUSHAoFZWRnZXMYAyADKAsyDS51aS5HcmFwaEVkZ2USGAoQc2VsZWN0ZWRfbm9kZV9pZBgEIAEoCRIYChBzZWxlY3RlZF9lZGdlX2lkGAUgASgJKmkKDUNvbXBvbmVudFR5cGUSCwoHVU5LTk9XThAAEggKBFRFWFQQARIKCgZCVVRUT04QAhIJCgVJTlBVVBADEgkKBUdSQVBIEAQSDQoJQ09OVEFJTkVSEAwSEAoMQ0xBSU1fUEFSU0VSEA4qSQoKTGF5b3V0VHlwZRIJCgVBQlNMVBAAEgwKCEZMRVhfUk9XEAESDAoIRkxFWF9DT0wQAhIICgRHUklEEAMSCgoGSU5MSU5FEARiBnByb3RvMw");
+  fileDesc("CgxsYXlvdXQucHJvdG8SAnVpIkkKBFBhZ2USDwoHcGFnZV9pZBgBIAEoCRINCgV0aXRsZRgCIAEoCRIhCgpjb21wb25lbnRzGAMgAygLMg0udWkuQ29tcG9uZW50IrYDCglDb21wb25lbnQSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIfCgR0eXBlGAMgASgOMhEudWkuQ29tcG9uZW50VHlwZRIMCgR0ZXh0GAQgASgJEh8KCGNoaWxkcmVuGAUgAygLMg0udWkuQ29tcG9uZW50EhgKBXN0eWxlGAYgASgLMgkudWkuU3R5bGUSIwoDY3NzGAggAygLMhYudWkuQ29tcG9uZW50LkNzc0VudHJ5EjEKCmF0dHJpYnV0ZXMYByADKAsyHS51aS5Db21wb25lbnQuQXR0cmlidXRlc0VudHJ5EhwKBW5vZGVzGAogAygLMg0udWkuR3JhcGhOb2RlEhwKBWVkZ2VzGAsgAygLMg0udWkuR3JhcGhFZGdlEhgKEHNlbGVjdGVkX25vZGVfaWQYDCABKAkSGAoQc2VsZWN0ZWRfZWRnZV9pZBgNIAEoCRoqCghDc3NFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIh0KBVN0eWxlEhQKDGN1c3RvbV9jbGFzcxgBIAEoCSIuCghQb3NpdGlvbhIJCgF4GAEgASgCEgkKAXkYAiABKAISDAoEdW5pdBgDIAEoCSIlCgRTaXplEg0KBXdpZHRoGAEgASgJEg4KBmhlaWdodBgCIAEoCSKsAQoJR3JhcGhOb2RlEgoKAmlkGAEgASgJEgwKBHRleHQYAiABKAkSCQoBeBgDIAEoARIJCgF5GAQgASgBEgwKBHR5cGUYBSABKAkSDgoGc3RhdHVzGAYgASgJEhIKCmNyZWF0b3JfaWQYByABKAUSDwoHaXNfcm9vdBgIIAEoCBISCgppc19jdXJyZW50GAkgASgIEhgKEGNyZWF0b3JfdXNlcm5hbWUYCiABKAkihQEKCUdyYXBoRWRnZRIKCgJpZBgBIAEoCRIOCgZzb3VyY2UYAiABKAkSDgoGdGFyZ2V0GAMgASgJEgwKBHR5cGUYBCABKAkSDQoFYmFzaXMYBSABKAkSEwoLcmVsYXRpb25faWQYBiABKAUSGgoSdGFyZ2V0X3JlbGF0aW9uX2lkGAcgASgFIowBCg5HcmFwaENvbXBvbmVudBIKCgJpZBgBIAEoCRIcCgVub2RlcxgCIAMoCzINLnVpLkdyYXBoTm9kZRIcCgVlZGdlcxgDIAMoCzINLnVpLkdyYXBoRWRnZRIYChBzZWxlY3RlZF9ub2RlX2lkGAQgASgJEhgKEHNlbGVjdGVkX2VkZ2VfaWQYBSABKAkqlgEKDUNvbXBvbmVudFR5cGUSCwoHVU5LTk9XThAAEggKBFRFWFQQARIKCgZCVVRUT04QAhIJCgVJTlBVVBADEgkKBUdSQVBIEAQSDQoJQ09OVEFJTkVSEAwSEAoMQ0xBSU1fUEFSU0VSEA4SDAoIRFJPUERPV04QDxIPCgtNVUxUSV9JTlBVVBAQEgwKCFRFWFRBUkVBEBEqSQoKTGF5b3V0VHlwZRIJCgVBQlNMVBAAEgwKCEZMRVhfUk9XEAESDAoIRkxFWF9DT0wQAhIICgRHUklEEAMSCgoGSU5MSU5FEARiBnByb3RvMw");
 
 /**
  * @generated from message ui.Page
@@ -325,6 +325,44 @@ export type GraphEdge = Message<"ui.GraphEdge"> & {
    * @generated from field: string type = 4;
    */
   type: string;
+
+  /**
+   * What KIND of connection this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
+   * NORMATIVE. Labels the junction node the renderer draws for this edge.
+   * 
+   * May be empty, and may hold the pre-dropdown placeholder string, because
+   * relations created before the basis existed have no real value. The renderer
+   * decides what to show for those; it is not this layer's job to invent one.
+   *
+   * @generated from field: string basis = 5;
+   */
+  basis: string;
+
+  /**
+   * Which stored relation produced this edge.
+   * 
+   * A relation with several from-claims arrives as several edges that share
+   * this id, and the renderer draws ONE junction for the group -- that is what
+   * makes "these three claims TOGETHER support that one" visually distinct
+   * from three independent supports of the same claim. Without it the renderer
+   * cannot tell those apart, because both are N edges into one target.
+   * 
+   * 0 when unknown; the renderer then treats the edge as its own relation.
+   *
+   * @generated from field: int32 relation_id = 6;
+   */
+  relationId: number;
+
+  /**
+   * For a challenge aimed at an ARGUMENT: the relation whose junction (pill)
+   * this edge should end at, instead of the claim in `target`. `target` still
+   * names the claim that argument was for, so a renderer that knows nothing
+   * of relation targets still draws something sensible. 0 for edges aimed at
+   * a claim.
+   *
+   * @generated from field: int32 target_relation_id = 7;
+   */
+  targetRelationId: number;
 };
 
 /**
@@ -419,6 +457,43 @@ export enum ComponentType {
    * @generated from enum value: CLAIM_PARSER = 14;
    */
   CLAIM_PARSER = 14,
+
+  /**
+   * Renders a <select>. Options travel in `attributes` as "options" (a
+   * comma-separated list) and "value" (the initially selected one), reusing the
+   * existing escape hatch rather than adding fields only one type would use.
+   *
+   * @generated from enum value: DROPDOWN = 15;
+   */
+  DROPDOWN = 15,
+
+  /**
+   * A text input the viewer can duplicate: one box plus an "add another"
+   * button that appends more, client-side.
+   * 
+   * Growing the list is deliberately NOT a server round trip. The page is
+   * re-rendered per request, so a server-driven version would have to carry
+   * every typed value back out and echo it into the new markup, or lose the
+   * user's text each time they added a box. Nothing else needs to change,
+   * because getEntirePage collects `input[id]` generically -- boxes the
+   * client adds are picked up with no protocol change at all.
+   * 
+   * Ids follow <id>, <id>2, <id>3, ... which is what the backend parsers
+   * already prefix-match on.
+   * 
+   * attributes: placeholder, extraPlaceholder, addLabel, maxInputs
+   *
+   * @generated from enum value: MULTI_INPUT = 16;
+   */
+  MULTI_INPUT = 16,
+
+  /**
+   * A multi-line text box. ComponentRenderer has always mapped this type; the
+   * enum value simply never existed, so the mapping was unreachable.
+   *
+   * @generated from enum value: TEXTAREA = 17;
+   */
+  TEXTAREA = 17,
 }
 
 /**

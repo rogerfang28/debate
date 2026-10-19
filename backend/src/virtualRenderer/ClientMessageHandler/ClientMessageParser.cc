@@ -38,8 +38,18 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     Log::debug("  Component ID: " + componentId);
     Log::debug("  Event Type: " + eventType);
     
+    // The header and the sign-in modal are on every page, so their buttons
+    // mean the same thing whichever page sent them: one parser for all.
+    if (LoginPageEventParser::IsSessionComponent(componentId)) {
+        event = LoginPageEventParser::ParseLoginPageEvent(componentId, eventType, message);
+    }
+    // The header's home tabs are on every page too; they mean the same
+    // thing as on the home page.
+    else if (componentId.rfind("homeTab_", 0) == 0) {
+        event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
+    }
     // Route based on page_id and delegate to specific parsers
-    if (pageId == "home") {
+    else if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     } else if (pageId == "debate") {
         event = DebatePageEventParser::ParseDebatePageEvent(componentId, eventType, user_id, message);

@@ -2,6 +2,7 @@ import React from "react";
 import ComponentRenderer from "../ComponentRenderer";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
+import { childKeys } from "../childKeys";
 
 interface FormComponentProps extends BaseComponentProps {
   component: BaseComponentProps['component'] & {
@@ -38,8 +39,8 @@ const FormComponent: React.FC<FormComponentProps> = ({ component, className, sty
       onSubmit={handleSubmit}
       {...component.attributes}
     >
-      {component.children?.map((child, idx: number) => (
-        <ComponentRenderer key={child.id || idx} component={child} />
+      {(component.children || []).map((child, idx: number, all) => (
+        <ComponentRenderer key={childKeys(component.id, all)[idx]} component={child} />
       ))}
     </form>
   );

@@ -40,7 +40,7 @@ bool DebateMembersDatabase::addMember(int debateId, int userId) {
 
 std::vector<int> DebateMembersDatabase::getDebateIdsForUser(int userId) {
     std::vector<int> debateIds;
-    const char* sql = "SELECT DEBATE_ID FROM DEBATE_MEMBERS WHERE USER_ID = ?;";
+    const char* sql = "SELECT DEBATE_ID FROM DEBATE_MEMBERS WHERE USER_ID = ? ORDER BY DEBATE_ID;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {
@@ -60,7 +60,7 @@ std::vector<int> DebateMembersDatabase::getDebateIdsForUser(int userId) {
 
 std::vector<int> DebateMembersDatabase::getUserIdsForDebate(int debateId) {
     std::vector<int> userIds;
-    const char* sql = "SELECT USER_ID FROM DEBATE_MEMBERS WHERE DEBATE_ID = ?;";
+    const char* sql = "SELECT USER_ID FROM DEBATE_MEMBERS WHERE DEBATE_ID = ? ORDER BY USER_ID;";
     
     sqlite3_stmt* stmt = db_.prepare(sql);
     if (!stmt) {

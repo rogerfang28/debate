@@ -8,6 +8,11 @@ declare global {
   }
 }
 
+// GSI is initialized once per page load. The button is rendered again each
+// time this component mounts -- the sign-in modal mounts it every time it
+// opens -- but calling initialize() again makes GSI complain.
+let gsiInitialized = false;
+
 const GoogleLoginComponent: React.FC<BaseComponentProps> = ({ component }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const initializedRef = useRef(false);
@@ -28,15 +33,18 @@ const GoogleLoginComponent: React.FC<BaseComponentProps> = ({ component }) => {
     // from an earlier mount.
     const renderGoogleButton = () => {
       if (!containerRef.current || !window.google) return;
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: (response: { credential: string }) => {
-          window.googleLoginCallback?.(response.credential);
-        },
-        error_callback: () => {
-          console.error("[GoogleAuth] Google sign-in error");
-        },
-      });
+      if (!gsiInitialized) {
+        gsiInitialized = true;
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: (response: { credential: string }) => {
+            window.googleLoginCallback?.(response.credential);
+          },
+          error_callback: () => {
+            console.error("[GoogleAuth] Google sign-in error");
+          },
+        });
+      }
 
       window.google.accounts.id.renderButton(containerRef.current, {
         theme: "filled_blue",

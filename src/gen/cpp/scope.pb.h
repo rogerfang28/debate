@@ -265,7 +265,7 @@ class SingleClaimScope final : public ::google::protobuf::Message
     kDebateIdFieldNumber = 1,
     kCurrentClaimIdFieldNumber = 2,
   };
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -275,7 +275,7 @@ class SingleClaimScope final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // int32 current_claim_id = 2;
+  // int32 current_claim_id = 2 [json_name = "currentClaimId"];
   void clear_current_claim_id() ;
   ::int32_t current_claim_id() const;
   void set_current_claim_id(::int32_t value);
@@ -466,8 +466,9 @@ class FullDebateScope final : public ::google::protobuf::Message
   enum : int {
     kDebateIdFieldNumber = 1,
     kTopViewFieldNumber = 2,
+    kBriefViewFieldNumber = 3,
   };
-  // int32 debate_id = 1;
+  // int32 debate_id = 1 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
   void set_debate_id(::int32_t value);
@@ -477,7 +478,7 @@ class FullDebateScope final : public ::google::protobuf::Message
   void _internal_set_debate_id(::int32_t value);
 
   public:
-  // bool top_view = 2;
+  // bool top_view = 2 [json_name = "topView"];
   void clear_top_view() ;
   bool top_view() const;
   void set_top_view(bool value);
@@ -487,11 +488,21 @@ class FullDebateScope final : public ::google::protobuf::Message
   void _internal_set_top_view(bool value);
 
   public:
+  // bool brief_view = 3 [json_name = "briefView"];
+  void clear_brief_view() ;
+  bool brief_view() const;
+  void set_brief_view(bool value);
+
+  private:
+  bool _internal_brief_view() const;
+  void _internal_set_brief_view(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:debate.FullDebateScope)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2,
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
                                    0, 0,
                                    2>
       _table_;
@@ -515,6 +526,7 @@ class FullDebateScope final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::int32_t debate_id_;
     bool top_view_;
+    bool brief_view_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -675,7 +687,7 @@ class Scope final : public ::google::protobuf::Message
     kSingleClaimFieldNumber = 2,
     kFullDebateFieldNumber = 3,
   };
-  // .debate.ScopeType scopetype = 1;
+  // .debate.ScopeType scopetype = 1 [json_name = "scopetype"];
   void clear_scopetype() ;
   ::debate::ScopeType scopetype() const;
   void set_scopetype(::debate::ScopeType value);
@@ -685,7 +697,7 @@ class Scope final : public ::google::protobuf::Message
   void _internal_set_scopetype(::debate::ScopeType value);
 
   public:
-  // .debate.SingleClaimScope single_claim = 2;
+  // .debate.SingleClaimScope single_claim = 2 [json_name = "singleClaim"];
   bool has_single_claim() const;
   private:
   bool _internal_has_single_claim() const;
@@ -704,7 +716,7 @@ class Scope final : public ::google::protobuf::Message
   ::debate::SingleClaimScope* PROTOBUF_NONNULL _internal_mutable_single_claim();
 
   public:
-  // .debate.FullDebateScope full_debate = 3;
+  // .debate.FullDebateScope full_debate = 3 [json_name = "fullDebate"];
   bool has_full_debate() const;
   private:
   bool _internal_has_full_debate() const;
@@ -787,7 +799,7 @@ extern const ::google::protobuf::internal::ClassDataFull Scope_class_data_;
 
 // SingleClaimScope
 
-// int32 debate_id = 1;
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void SingleClaimScope::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -812,7 +824,7 @@ inline void SingleClaimScope::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// int32 current_claim_id = 2;
+// int32 current_claim_id = 2 [json_name = "currentClaimId"];
 inline void SingleClaimScope::clear_current_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_claim_id_ = 0;
@@ -841,7 +853,7 @@ inline void SingleClaimScope::_internal_set_current_claim_id(::int32_t value) {
 
 // FullDebateScope
 
-// int32 debate_id = 1;
+// int32 debate_id = 1 [json_name = "debateId"];
 inline void FullDebateScope::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
@@ -866,7 +878,7 @@ inline void FullDebateScope::_internal_set_debate_id(::int32_t value) {
   _impl_.debate_id_ = value;
 }
 
-// bool top_view = 2;
+// bool top_view = 2 [json_name = "topView"];
 inline void FullDebateScope::clear_top_view() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.top_view_ = false;
@@ -891,11 +903,36 @@ inline void FullDebateScope::_internal_set_top_view(bool value) {
   _impl_.top_view_ = value;
 }
 
+// bool brief_view = 3 [json_name = "briefView"];
+inline void FullDebateScope::clear_brief_view() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.brief_view_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline bool FullDebateScope::brief_view() const {
+  // @@protoc_insertion_point(field_get:debate.FullDebateScope.brief_view)
+  return _internal_brief_view();
+}
+inline void FullDebateScope::set_brief_view(bool value) {
+  _internal_set_brief_view(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:debate.FullDebateScope.brief_view)
+}
+inline bool FullDebateScope::_internal_brief_view() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.brief_view_;
+}
+inline void FullDebateScope::_internal_set_brief_view(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.brief_view_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Scope
 
-// .debate.ScopeType scopetype = 1;
+// .debate.ScopeType scopetype = 1 [json_name = "scopetype"];
 inline void Scope::clear_scopetype() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.scopetype_ = 0;
@@ -920,7 +957,7 @@ inline void Scope::_internal_set_scopetype(::debate::ScopeType value) {
   _impl_.scopetype_ = value;
 }
 
-// .debate.SingleClaimScope single_claim = 2;
+// .debate.SingleClaimScope single_claim = 2 [json_name = "singleClaim"];
 inline bool Scope::has_single_claim() const {
   return scope_info_case() == kSingleClaim;
 }
@@ -1002,7 +1039,7 @@ inline ::debate::SingleClaimScope* PROTOBUF_NONNULL Scope::mutable_single_claim(
   return _msg;
 }
 
-// .debate.FullDebateScope full_debate = 3;
+// .debate.FullDebateScope full_debate = 3 [json_name = "fullDebate"];
 inline bool Scope::has_full_debate() const {
   return scope_info_case() == kFullDebate;
 }

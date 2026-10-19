@@ -11,10 +11,12 @@ bool envFlagEnabled(const char* name) {
     if (value == nullptr || value[0] == '\0') {
         return false;
     }
+
     std::string normalized(value);
     std::transform(normalized.begin(), normalized.end(), normalized.begin(), [](unsigned char ch) {
         return static_cast<char>(std::tolower(ch));
     });
+
     return normalized == "1" || normalized == "true" || normalized == "yes" || normalized == "on";
 }
 
@@ -85,24 +87,30 @@ std::string cookieAttributesFromRequest(const httplib::Request& req) {
 }
 }
 
+// Helper to extract user_id from cookies
 int parseCookie::extractUserIdFromCookies(const httplib::Request& req) {
     auto cookie_header = req.get_header_value("Cookie");
     Log::info("[Auth] Cookie header: '" + cookie_header + "'");
+    
     if (cookie_header.empty()) {
         Log::info("[Auth] No cookie found, returning 0 (guest)");
         return 0;
     }
+
+    // Parse cookies looking for "user_id=<id>"
     std::string prefix = "user_id=";
     size_t pos = cookie_header.find(prefix);
     if (pos == std::string::npos) {
         Log::debug("[Auth] No 'user_id=' cookie found, returning 0 (guest)");
         return 0;
     }
+
     size_t start = pos + prefix.length();
     size_t end = cookie_header.find(';', start);
     std::string userIdStr = (end == std::string::npos) 
         ? cookie_header.substr(start)
         : cookie_header.substr(start, end - start);
+
     try {
         int userId = std::stoi(userIdStr);
         Log::debug("[Auth] Extracted user_id from cookie: " + std::to_string(userId));
@@ -115,21 +123,27 @@ int parseCookie::extractUserIdFromCookies(const httplib::Request& req) {
 
 std::string parseCookie::extractUsernameFromCookies(const httplib::Request& req) {
     auto cookie_header = req.get_header_value("Cookie");
+    // std::cout << "[Auth] Cookie header: '" << cookie_header << "'\n";
+    
     if (cookie_header.empty()) {
         Log::debug("[Auth] No cookie found, returning ''");
         return "";
     }
+
+    // Parse cookies looking for "username=<name>"
     std::string prefix = "username=";
     size_t pos = cookie_header.find(prefix);
     if (pos == std::string::npos) {
         Log::debug("[Auth] No 'username=' cookie found, returning ''");
         return "";
     }
+
     size_t start = pos + prefix.length();
     size_t end = cookie_header.find(';', start);
     std::string username = (end == std::string::npos) 
         ? cookie_header.substr(start)
         : cookie_header.substr(start, end - start);
+
     Log::debug("[Auth] Extracted username from cookie: " + username);
     return username;
 }

@@ -26,18 +26,133 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace moderator_to_vr {
 
+inline constexpr RecentMove::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        who_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        verb_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        at_{::int64_t{0}},
+        seq_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RecentMove::RecentMove(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(RecentMove_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RecentMoveDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RecentMoveDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RecentMoveDefaultTypeInternal() {}
+  union {
+    RecentMove _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RecentMoveDefaultTypeInternal _RecentMove_default_instance_;
+
+inline constexpr OwingParty::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        who_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        count_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR OwingParty::OwingParty(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(OwingParty_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct OwingPartyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OwingPartyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OwingPartyDefaultTypeInternal() {}
+  union {
+    OwingParty _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OwingPartyDefaultTypeInternal _OwingParty_default_instance_;
+
+inline constexpr OwedReply::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        who_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        claim_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR OwedReply::OwedReply(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(OwedReply_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct OwedReplyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OwedReplyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OwedReplyDefaultTypeInternal() {}
+  union {
+    OwedReply _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OwedReplyDefaultTypeInternal _OwedReply_default_instance_;
+
 inline constexpr DebateTopic::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        involved_{},
+        owing_{},
+        owed_{},
+        member_ids_{},
+        _member_ids_cached_byte_size_{0},
+        recent_moves_{},
+        claim_texts_{},
+        matched_claims_{},
         topic_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         claim_its_challenging_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        root_text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        root_holder_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        hinge_text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         id_{0},
         creator_id_{0},
-        is_challenge_{false} {}
+        claim_count_{0},
+        stance_count_{0},
+        is_challenge_{false},
+        unresolved_{false},
+        search_match_{false},
+        open_challenge_count_{0},
+        last_moved_at_{::int64_t{0}},
+        people_count_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR DebateTopic::DebateTopic(::_pbi::ConstantInitialized)
@@ -129,17 +244,78 @@ const ::uint32_t
         2,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_._has_bits_),
-        8, // hasbit index offset
+        25, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.id_),
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.topic_),
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.creator_id_),
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.is_challenge_),
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.claim_its_challenging_),
-        2,
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.root_text_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.root_holder_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.unresolved_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.hinge_text_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.claim_count_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.stance_count_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.open_challenge_count_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.involved_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.last_moved_at_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.people_count_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.owing_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.owed_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.member_ids_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.recent_moves_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.claim_texts_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.search_match_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateTopic, _impl_.matched_claims_),
+        12,
+        7,
+        13,
+        16,
+        8,
+        9,
+        10,
+        17,
+        11,
+        14,
+        15,
+        19,
         0,
+        20,
+        21,
+        1,
+        2,
         3,
         4,
+        5,
+        18,
+        6,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwingParty, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwingParty, _impl_.who_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwingParty, _impl_.count_),
+        0,
         1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwedReply, _impl_._has_bits_),
+        6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwedReply, _impl_.who_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwedReply, _impl_.claim_id_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::OwedReply, _impl_.text_),
+        0,
+        2,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::RecentMove, _impl_._has_bits_),
+        7, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::RecentMove, _impl_.who_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::RecentMove, _impl_.verb_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::RecentMove, _impl_.at_),
+        PROTOBUF_FIELD_OFFSET(::moderator_to_vr::RecentMove, _impl_.seq_),
+        0,
+        1,
+        2,
+        3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::moderator_to_vr::DebateList, _impl_._has_bits_),
         4, // hasbit index offset
@@ -151,25 +327,55 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::moderator_to_vr::ModeratorToVRMessage)},
         {9, sizeof(::moderator_to_vr::DebateTopic)},
-        {22, sizeof(::moderator_to_vr::DebateList)},
+        {56, sizeof(::moderator_to_vr::OwingParty)},
+        {63, sizeof(::moderator_to_vr::OwedReply)},
+        {72, sizeof(::moderator_to_vr::RecentMove)},
+        {83, sizeof(::moderator_to_vr::DebateList)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::moderator_to_vr::_ModeratorToVRMessage_default_instance_._instance,
     &::moderator_to_vr::_DebateTopic_default_instance_._instance,
+    &::moderator_to_vr::_OwingParty_default_instance_._instance,
+    &::moderator_to_vr::_OwedReply_default_instance_._instance,
+    &::moderator_to_vr::_RecentMove_default_instance_._instance,
     &::moderator_to_vr::_DebateList_default_instance_._instance,
 };
 const char descriptor_table_protodef_moderator_5fto_5fvr_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\025moderator_to_vr.proto\022\017moderator_to_vr"
-    "\032\nuser.proto\032\020collection.proto\"\212\001\n\024Moder"
-    "atorToVRMessage\022\030\n\004user\030\001 \001(\0132\n.user.Use"
-    "r\022&\n\ncollection\030\002 \001(\0132\022.debate.Collectio"
-    "n\0220\n\013debate_list\030\003 \001(\0132\033.moderator_to_vr"
-    ".DebateList\"q\n\013DebateTopic\022\n\n\002id\030\001 \001(\005\022\r"
-    "\n\005topic\030\002 \001(\t\022\022\n\ncreator_id\030\003 \001(\005\022\024\n\014is_"
-    "challenge\030\004 \001(\010\022\035\n\025claim_its_challenging"
-    "\030\005 \001(\t\":\n\nDebateList\022,\n\006topics\030\001 \003(\0132\034.m"
-    "oderator_to_vr.DebateTopicb\006proto3"
+    "\032\nuser.proto\032\020collection.proto\"\250\001\n\024Moder"
+    "atorToVRMessage\022\036\n\004user\030\001 \001(\0132\n.user.Use"
+    "rR\004user\0222\n\ncollection\030\002 \001(\0132\022.debate.Col"
+    "lectionR\ncollection\022<\n\013debate_list\030\003 \001(\013"
+    "2\033.moderator_to_vr.DebateListR\ndebateLis"
+    "t\"\254\006\n\013DebateTopic\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005top"
+    "ic\030\002 \001(\tR\005topic\022\035\n\ncreator_id\030\003 \001(\005R\tcre"
+    "atorId\022!\n\014is_challenge\030\004 \001(\010R\013isChalleng"
+    "e\0222\n\025claim_its_challenging\030\005 \001(\tR\023claimI"
+    "tsChallenging\022\033\n\troot_text\030\006 \001(\tR\010rootTe"
+    "xt\022\037\n\013root_holder\030\007 \001(\tR\nrootHolder\022\036\n\nu"
+    "nresolved\030\010 \001(\010R\nunresolved\022\035\n\nhinge_tex"
+    "t\030\t \001(\tR\thingeText\022\037\n\013claim_count\030\n \001(\005R"
+    "\nclaimCount\022!\n\014stance_count\030\013 \001(\005R\013stanc"
+    "eCount\0220\n\024open_challenge_count\030\014 \001(\005R\022op"
+    "enChallengeCount\022\032\n\010involved\030\r \003(\tR\010invo"
+    "lved\022\"\n\rlast_moved_at\030\016 \001(\003R\013lastMovedAt"
+    "\022!\n\014people_count\030\017 \001(\005R\013peopleCount\0221\n\005o"
+    "wing\030\020 \003(\0132\033.moderator_to_vr.OwingPartyR"
+    "\005owing\022.\n\004owed\030\021 \003(\0132\032.moderator_to_vr.O"
+    "wedReplyR\004owed\022\035\n\nmember_ids\030\022 \003(\005R\tmemb"
+    "erIds\022>\n\014recent_moves\030\023 \003(\0132\033.moderator_"
+    "to_vr.RecentMoveR\013recentMoves\022\037\n\013claim_t"
+    "exts\030\024 \003(\tR\nclaimTexts\022!\n\014search_match\030\025"
+    " \001(\010R\013searchMatch\022%\n\016matched_claims\030\026 \003("
+    "\tR\rmatchedClaims\"4\n\nOwingParty\022\020\n\003who\030\001 "
+    "\001(\tR\003who\022\024\n\005count\030\002 \001(\005R\005count\"L\n\tOwedRe"
+    "ply\022\020\n\003who\030\001 \001(\tR\003who\022\031\n\010claim_id\030\002 \001(\005R"
+    "\007claimId\022\022\n\004text\030\003 \001(\tR\004text\"T\n\nRecentMo"
+    "ve\022\020\n\003who\030\001 \001(\tR\003who\022\022\n\004verb\030\002 \001(\tR\004verb"
+    "\022\016\n\002at\030\003 \001(\003R\002at\022\020\n\003seq\030\004 \001(\005R\003seq\"B\n\nDe"
+    "bateList\0224\n\006topics\030\001 \003(\0132\034.moderator_to_"
+    "vr.DebateTopicR\006topicsb\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_moderator_5fto_5fvr_2eproto_deps[2] = {
@@ -180,13 +386,13 @@ static ::absl::once_flag descriptor_table_moderator_5fto_5fvr_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_moderator_5fto_5fvr_2eproto = {
     false,
     false,
-    394,
+    1350,
     descriptor_table_protodef_moderator_5fto_5fvr_2eproto,
     "moderator_to_vr.proto",
     &descriptor_table_moderator_5fto_5fvr_2eproto_once,
     descriptor_table_moderator_5fto_5fvr_2eproto_deps,
     2,
-    3,
+    6,
     schemas,
     file_default_instances,
     TableStruct_moderator_5fto_5fvr_2eproto::offsets,
@@ -352,26 +558,26 @@ ModeratorToVRMessage::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // .user.User user = 1;
+    // .user.User user = 1 [json_name = "user"];
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_)}},
-    // .debate.Collection collection = 2;
+    // .debate.Collection collection = 2 [json_name = "collection"];
     {::_pbi::TcParser::FastMtS1,
      {18, 1, 1,
       PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.collection_)}},
-    // .moderator_to_vr.DebateList debate_list = 3;
+    // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
     {::_pbi::TcParser::FastMtS1,
      {26, 2, 2,
       PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .user.User user = 1;
+    // .user.User user = 1 [json_name = "user"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.user_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .debate.Collection collection = 2;
+    // .debate.Collection collection = 2 [json_name = "collection"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.collection_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .moderator_to_vr.DebateList debate_list = 3;
+    // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
     {PROTOBUF_FIELD_OFFSET(ModeratorToVRMessage, _impl_.debate_list_), _Internal::kHasBitsOffset + 2, 2, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -427,21 +633,21 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // .user.User user = 1;
+  // .user.User user = 1 [json_name = "user"];
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         1, *this_._impl_.user_, this_._impl_.user_->GetCachedSize(), target,
         stream);
   }
 
-  // .debate.Collection collection = 2;
+  // .debate.Collection collection = 2 [json_name = "collection"];
   if (CheckHasBit(cached_has_bits, 0x00000002U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         2, *this_._impl_.collection_, this_._impl_.collection_->GetCachedSize(), target,
         stream);
   }
 
-  // .moderator_to_vr.DebateList debate_list = 3;
+  // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
   if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
         3, *this_._impl_.debate_list_, this_._impl_.debate_list_->GetCachedSize(), target,
@@ -474,17 +680,17 @@ PROTOBUF_NOINLINE void ModeratorToVRMessage::Clear() {
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // .user.User user = 1;
+    // .user.User user = 1 [json_name = "user"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.user_);
     }
-    // .debate.Collection collection = 2;
+    // .debate.Collection collection = 2 [json_name = "collection"];
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.collection_);
     }
-    // .moderator_to_vr.DebateList debate_list = 3;
+    // .moderator_to_vr.DebateList debate_list = 3 [json_name = "debateList"];
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       total_size += 1 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.debate_list_);
@@ -588,8 +794,19 @@ PROTOBUF_NDEBUG_INLINE DebateTopic::Impl_::Impl_(
     [[maybe_unused]] const ::moderator_to_vr::DebateTopic& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        involved_{visibility, arena, from.involved_},
+        owing_{visibility, arena, from.owing_},
+        owed_{visibility, arena, from.owed_},
+        member_ids_{visibility, arena, from.member_ids_},
+        _member_ids_cached_byte_size_{0},
+        recent_moves_{visibility, arena, from.recent_moves_},
+        claim_texts_{visibility, arena, from.claim_texts_},
+        matched_claims_{visibility, arena, from.matched_claims_},
         topic_(arena, from.topic_),
-        claim_its_challenging_(arena, from.claim_its_challenging_) {}
+        claim_its_challenging_(arena, from.claim_its_challenging_),
+        root_text_(arena, from.root_text_),
+        root_holder_(arena, from.root_holder_),
+        hinge_text_(arena, from.hinge_text_) {}
 
 DebateTopic::DebateTopic(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -608,9 +825,9 @@ DebateTopic::DebateTopic(
                offsetof(Impl_, id_),
            reinterpret_cast<const char*>(&from._impl_) +
                offsetof(Impl_, id_),
-           offsetof(Impl_, is_challenge_) -
+           offsetof(Impl_, people_count_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::is_challenge_));
+               sizeof(Impl_::people_count_));
 
   // @@protoc_insertion_point(copy_constructor:moderator_to_vr.DebateTopic)
 }
@@ -618,17 +835,28 @@ PROTOBUF_NDEBUG_INLINE DebateTopic::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
+        involved_{visibility, arena},
+        owing_{visibility, arena},
+        owed_{visibility, arena},
+        member_ids_{visibility, arena},
+        _member_ids_cached_byte_size_{0},
+        recent_moves_{visibility, arena},
+        claim_texts_{visibility, arena},
+        matched_claims_{visibility, arena},
         topic_(arena),
-        claim_its_challenging_(arena) {}
+        claim_its_challenging_(arena),
+        root_text_(arena),
+        root_holder_(arena),
+        hinge_text_(arena) {}
 
 inline void DebateTopic::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char*>(&_impl_) +
                offsetof(Impl_, id_),
            0,
-           offsetof(Impl_, is_challenge_) -
+           offsetof(Impl_, people_count_) -
                offsetof(Impl_, id_) +
-               sizeof(Impl_::is_challenge_));
+               sizeof(Impl_::people_count_));
 }
 DebateTopic::~DebateTopic() {
   // @@protoc_insertion_point(destructor:moderator_to_vr.DebateTopic)
@@ -643,6 +871,9 @@ inline void DebateTopic::SharedDtor(MessageLite& self) {
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.topic_.Destroy();
   this_._impl_.claim_its_challenging_.Destroy();
+  this_._impl_.root_text_.Destroy();
+  this_._impl_.root_holder_.Destroy();
+  this_._impl_.hinge_text_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -652,8 +883,44 @@ inline void* PROTOBUF_NONNULL DebateTopic::PlacementNew_(
   return ::new (mem) DebateTopic(arena);
 }
 constexpr auto DebateTopic::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(DebateTopic),
-                                            alignof(DebateTopic));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.involved_) +
+          decltype(DebateTopic::_impl_.involved_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owing_) +
+          decltype(DebateTopic::_impl_.owing_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owed_) +
+          decltype(DebateTopic::_impl_.owed_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.member_ids_) +
+          decltype(DebateTopic::_impl_.member_ids_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.recent_moves_) +
+          decltype(DebateTopic::_impl_.recent_moves_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_texts_) +
+          decltype(DebateTopic::_impl_.claim_texts_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.matched_claims_) +
+          decltype(DebateTopic::_impl_.matched_claims_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(DebateTopic), alignof(DebateTopic), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&DebateTopic::PlacementNew_,
+                                 sizeof(DebateTopic),
+                                 alignof(DebateTopic));
+  }
 }
 constexpr auto DebateTopic::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -689,18 +956,18 @@ DebateTopic::GetClassData() const {
   return DebateTopic_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 62, 2>
+const ::_pbi::TcParseTable<5, 22, 3, 141, 2>
 DebateTopic::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    22, 248,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4290772992,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    22,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     DebateTopic_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -709,48 +976,167 @@ DebateTopic::_table_ = {
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // int32 id = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.id_), 2>(),
-     {8, 2, 0,
+    // int32 id = 1 [json_name = "id"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.id_), 12>(),
+     {8, 12, 0,
       PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_)}},
-    // string topic = 2;
+    // string topic = 2 [json_name = "topic"];
     {::_pbi::TcParser::FastUS1,
-     {18, 0, 0,
+     {18, 7, 0,
       PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.topic_)}},
-    // int32 creator_id = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.creator_id_), 3>(),
-     {24, 3, 0,
+    // int32 creator_id = 3 [json_name = "creatorId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.creator_id_), 13>(),
+     {24, 13, 0,
       PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.creator_id_)}},
-    // bool is_challenge = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebateTopic, _impl_.is_challenge_), 4>(),
-     {32, 4, 0,
+    // bool is_challenge = 4 [json_name = "isChallenge"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebateTopic, _impl_.is_challenge_), 16>(),
+     {32, 16, 0,
       PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_)}},
-    // string claim_its_challenging = 5;
+    // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
     {::_pbi::TcParser::FastUS1,
-     {42, 1, 0,
+     {42, 8, 0,
       PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_its_challenging_)}},
+    // string root_text = 6 [json_name = "rootText"];
+    {::_pbi::TcParser::FastUS1,
+     {50, 9, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.root_text_)}},
+    // string root_holder = 7 [json_name = "rootHolder"];
+    {::_pbi::TcParser::FastUS1,
+     {58, 10, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.root_holder_)}},
+    // bool unresolved = 8 [json_name = "unresolved"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(DebateTopic, _impl_.unresolved_), 17>(),
+     {64, 17, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.unresolved_)}},
+    // string hinge_text = 9 [json_name = "hingeText"];
+    {::_pbi::TcParser::FastUS1,
+     {74, 11, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.hinge_text_)}},
+    // int32 claim_count = 10 [json_name = "claimCount"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.claim_count_), 14>(),
+     {80, 14, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_count_)}},
+    // int32 stance_count = 11 [json_name = "stanceCount"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.stance_count_), 15>(),
+     {88, 15, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.stance_count_)}},
+    // int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.open_challenge_count_), 19>(),
+     {96, 19, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.open_challenge_count_)}},
+    // repeated string involved = 13 [json_name = "involved"];
+    {::_pbi::TcParser::FastUR1,
+     {106, 0, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.involved_)}},
+    // int64 last_moved_at = 14 [json_name = "lastMovedAt"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(DebateTopic, _impl_.last_moved_at_), 20>(),
+     {112, 20, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.last_moved_at_)}},
+    // int32 people_count = 15 [json_name = "peopleCount"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DebateTopic, _impl_.people_count_), 21>(),
+     {120, 21, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.people_count_)}},
+    // repeated .moderator_to_vr.OwingParty owing = 16 [json_name = "owing"];
+    {::_pbi::TcParser::FastMtR2,
+     {386, 1, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owing_)}},
+    // repeated .moderator_to_vr.OwedReply owed = 17 [json_name = "owed"];
+    {::_pbi::TcParser::FastMtR2,
+     {394, 2, 1,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owed_)}},
+    // repeated int32 member_ids = 18 [json_name = "memberIds"];
+    {::_pbi::TcParser::FastV32P2,
+     {402, 3, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.member_ids_)}},
+    // repeated .moderator_to_vr.RecentMove recent_moves = 19 [json_name = "recentMoves"];
+    {::_pbi::TcParser::FastMtR2,
+     {410, 4, 2,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.recent_moves_)}},
+    // repeated string claim_texts = 20 [json_name = "claimTexts"];
+    {::_pbi::TcParser::FastUR2,
+     {418, 5, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_texts_)}},
+    // bool search_match = 21 [json_name = "searchMatch"];
+    {::_pbi::TcParser::FastV8S2,
+     {424, 18, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.search_match_)}},
+    // repeated string matched_claims = 22 [json_name = "matchedClaims"];
+    {::_pbi::TcParser::FastUR2,
+     {434, 6, 0,
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.matched_claims_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
-    // int32 id = 1;
-    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // string topic = 2;
-    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.topic_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // int32 creator_id = 3;
-    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.creator_id_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // bool is_challenge = 4;
-    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
-    // string claim_its_challenging = 5;
-    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_its_challenging_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 id = 1 [json_name = "id"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_), _Internal::kHasBitsOffset + 12, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string topic = 2 [json_name = "topic"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.topic_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 creator_id = 3 [json_name = "creatorId"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.creator_id_), _Internal::kHasBitsOffset + 13, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // bool is_challenge = 4 [json_name = "isChallenge"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_), _Internal::kHasBitsOffset + 16, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_its_challenging_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string root_text = 6 [json_name = "rootText"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.root_text_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string root_holder = 7 [json_name = "rootHolder"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.root_holder_), _Internal::kHasBitsOffset + 10, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // bool unresolved = 8 [json_name = "unresolved"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.unresolved_), _Internal::kHasBitsOffset + 17, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string hinge_text = 9 [json_name = "hingeText"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.hinge_text_), _Internal::kHasBitsOffset + 11, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 claim_count = 10 [json_name = "claimCount"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_count_), _Internal::kHasBitsOffset + 14, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 stance_count = 11 [json_name = "stanceCount"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.stance_count_), _Internal::kHasBitsOffset + 15, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.open_challenge_count_), _Internal::kHasBitsOffset + 19, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // repeated string involved = 13 [json_name = "involved"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.involved_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    // int64 last_moved_at = 14 [json_name = "lastMovedAt"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.last_moved_at_), _Internal::kHasBitsOffset + 20, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 people_count = 15 [json_name = "peopleCount"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.people_count_), _Internal::kHasBitsOffset + 21, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // repeated .moderator_to_vr.OwingParty owing = 16 [json_name = "owing"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owing_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .moderator_to_vr.OwedReply owed = 17 [json_name = "owed"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.owed_), _Internal::kHasBitsOffset + 2, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated int32 member_ids = 18 [json_name = "memberIds"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.member_ids_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedInt32)},
+    // repeated .moderator_to_vr.RecentMove recent_moves = 19 [json_name = "recentMoves"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.recent_moves_), _Internal::kHasBitsOffset + 4, 2, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated string claim_texts = 20 [json_name = "claimTexts"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.claim_texts_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    // bool search_match = 21 [json_name = "searchMatch"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.search_match_), _Internal::kHasBitsOffset + 18, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // repeated string matched_claims = 22 [json_name = "matchedClaims"];
+    {PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.matched_claims_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
   }},
-  // no aux_entries
   {{
-    "\33\0\5\0\0\25\0\0"
+      {::_pbi::TcParser::GetTable<::moderator_to_vr::OwingParty>()},
+      {::_pbi::TcParser::GetTable<::moderator_to_vr::OwedReply>()},
+      {::_pbi::TcParser::GetTable<::moderator_to_vr::RecentMove>()},
+  }},
+  {{
+    "\33\0\5\0\0\25\11\13\0\12\0\0\0\10\0\0\0\0\0\0\13\0\16\0"
     "moderator_to_vr.DebateTopic"
     "topic"
     "claim_its_challenging"
+    "root_text"
+    "root_holder"
+    "hinge_text"
+    "involved"
+    "claim_texts"
+    "matched_claims"
   }},
 };
 PROTOBUF_NOINLINE void DebateTopic::Clear() {
@@ -761,18 +1147,55 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _impl_.involved_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _impl_.owing_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      _impl_.owed_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
+      _impl_.member_ids_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000010U)) {
+      _impl_.recent_moves_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000020U)) {
+      _impl_.claim_texts_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+      _impl_.matched_claims_.Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       _impl_.topic_.ClearNonDefaultToEmpty();
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000f00U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       _impl_.claim_its_challenging_.ClearNonDefaultToEmpty();
     }
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+      _impl_.root_text_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+      _impl_.root_holder_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000800U)) {
+      _impl_.hinge_text_.ClearNonDefaultToEmpty();
+    }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001cU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000f000U)) {
     ::memset(&_impl_.id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.is_challenge_) -
-        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.is_challenge_));
+        reinterpret_cast<char*>(&_impl_.stance_count_) -
+        reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.stance_count_));
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x003f0000U)) {
+    ::memset(&_impl_.is_challenge_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.people_count_) -
+        reinterpret_cast<char*>(&_impl_.is_challenge_)) + sizeof(_impl_.people_count_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -797,8 +1220,8 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // int32 id = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  // int32 id = 1 [json_name = "id"];
+  if (CheckHasBit(cached_has_bits, 0x00001000U)) {
     if (this_._internal_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
@@ -806,8 +1229,8 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
     }
   }
 
-  // string topic = 2;
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  // string topic = 2 [json_name = "topic"];
+  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
     if (!this_._internal_topic().empty()) {
       const ::std::string& _s = this_._internal_topic();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -816,8 +1239,8 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
     }
   }
 
-  // int32 creator_id = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+  // int32 creator_id = 3 [json_name = "creatorId"];
+  if (CheckHasBit(cached_has_bits, 0x00002000U)) {
     if (this_._internal_creator_id() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
@@ -825,8 +1248,8 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
     }
   }
 
-  // bool is_challenge = 4;
-  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+  // bool is_challenge = 4 [json_name = "isChallenge"];
+  if (CheckHasBit(cached_has_bits, 0x00010000U)) {
     if (this_._internal_is_challenge() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -834,13 +1257,186 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
     }
   }
 
-  // string claim_its_challenging = 5;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     if (!this_._internal_claim_its_challenging().empty()) {
       const ::std::string& _s = this_._internal_claim_its_challenging();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.claim_its_challenging");
       target = stream->WriteStringMaybeAliased(5, _s, target);
+    }
+  }
+
+  // string root_text = 6 [json_name = "rootText"];
+  if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+    if (!this_._internal_root_text().empty()) {
+      const ::std::string& _s = this_._internal_root_text();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.root_text");
+      target = stream->WriteStringMaybeAliased(6, _s, target);
+    }
+  }
+
+  // string root_holder = 7 [json_name = "rootHolder"];
+  if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+    if (!this_._internal_root_holder().empty()) {
+      const ::std::string& _s = this_._internal_root_holder();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.root_holder");
+      target = stream->WriteStringMaybeAliased(7, _s, target);
+    }
+  }
+
+  // bool unresolved = 8 [json_name = "unresolved"];
+  if (CheckHasBit(cached_has_bits, 0x00020000U)) {
+    if (this_._internal_unresolved() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          8, this_._internal_unresolved(), target);
+    }
+  }
+
+  // string hinge_text = 9 [json_name = "hingeText"];
+  if (CheckHasBit(cached_has_bits, 0x00000800U)) {
+    if (!this_._internal_hinge_text().empty()) {
+      const ::std::string& _s = this_._internal_hinge_text();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.hinge_text");
+      target = stream->WriteStringMaybeAliased(9, _s, target);
+    }
+  }
+
+  // int32 claim_count = 10 [json_name = "claimCount"];
+  if (CheckHasBit(cached_has_bits, 0x00004000U)) {
+    if (this_._internal_claim_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<10>(
+              stream, this_._internal_claim_count(), target);
+    }
+  }
+
+  // int32 stance_count = 11 [json_name = "stanceCount"];
+  if (CheckHasBit(cached_has_bits, 0x00008000U)) {
+    if (this_._internal_stance_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<11>(
+              stream, this_._internal_stance_count(), target);
+    }
+  }
+
+  // int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+  if (CheckHasBit(cached_has_bits, 0x00080000U)) {
+    if (this_._internal_open_challenge_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<12>(
+              stream, this_._internal_open_challenge_count(), target);
+    }
+  }
+
+  // repeated string involved = 13 [json_name = "involved"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    for (int i = 0, n = this_._internal_involved_size(); i < n; ++i) {
+      const auto& s = this_._internal_involved().Get(i);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.involved");
+      target = stream->WriteString(13, s, target);
+    }
+  }
+
+  // int64 last_moved_at = 14 [json_name = "lastMovedAt"];
+  if (CheckHasBit(cached_has_bits, 0x00100000U)) {
+    if (this_._internal_last_moved_at() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<14>(
+              stream, this_._internal_last_moved_at(), target);
+    }
+  }
+
+  // int32 people_count = 15 [json_name = "peopleCount"];
+  if (CheckHasBit(cached_has_bits, 0x00200000U)) {
+    if (this_._internal_people_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<15>(
+              stream, this_._internal_people_count(), target);
+    }
+  }
+
+  // repeated .moderator_to_vr.OwingParty owing = 16 [json_name = "owing"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_owing_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_owing().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              16, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated .moderator_to_vr.OwedReply owed = 17 [json_name = "owed"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_owed_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_owed().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              17, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated int32 member_ids = 18 [json_name = "memberIds"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
+    {
+      int byte_size = this_._impl_._member_ids_cached_byte_size_.Get();
+      if (byte_size > 0) {
+        target = stream->WriteInt32Packed(
+            18, this_._internal_member_ids(), byte_size, target);
+      }
+    }
+  }
+
+  // repeated .moderator_to_vr.RecentMove recent_moves = 19 [json_name = "recentMoves"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000010U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_recent_moves_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_recent_moves().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              19, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated string claim_texts = 20 [json_name = "claimTexts"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000020U)) {
+    for (int i = 0, n = this_._internal_claim_texts_size(); i < n; ++i) {
+      const auto& s = this_._internal_claim_texts().Get(i);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.claim_texts");
+      target = stream->WriteString(20, s, target);
+    }
+  }
+
+  // bool search_match = 21 [json_name = "searchMatch"];
+  if (CheckHasBit(cached_has_bits, 0x00040000U)) {
+    if (this_._internal_search_match() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          21, this_._internal_search_match(), target);
+    }
+  }
+
+  // repeated string matched_claims = 22 [json_name = "matchedClaims"];
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+    for (int i = 0, n = this_._internal_matched_claims_size(); i < n; ++i) {
+      const auto& s = this_._internal_matched_claims().Get(i);
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.DebateTopic.matched_claims");
+      target = stream->WriteString(22, s, target);
     }
   }
 
@@ -869,39 +1465,166 @@ PROTOBUF_NOINLINE void DebateTopic::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    // string topic = 2;
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
+    // repeated string involved = 13 [json_name = "involved"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      total_size +=
+          1 * ::google::protobuf::internal::FromIntSize(this_._internal_involved().size());
+      for (int i = 0, n = this_._internal_involved().size(); i < n; ++i) {
+        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+            this_._internal_involved().Get(i));
+      }
+    }
+    // repeated .moderator_to_vr.OwingParty owing = 16 [json_name = "owing"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      total_size += 2UL * this_._internal_owing_size();
+      for (const auto& msg : this_._internal_owing()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated .moderator_to_vr.OwedReply owed = 17 [json_name = "owed"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      total_size += 2UL * this_._internal_owed_size();
+      for (const auto& msg : this_._internal_owed()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated int32 member_ids = 18 [json_name = "memberIds"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
+      total_size +=
+          ::_pbi::WireFormatLite::Int32SizeWithPackedTagSize(
+              this_._internal_member_ids(), 2,
+              this_._impl_._member_ids_cached_byte_size_);
+    }
+    // repeated .moderator_to_vr.RecentMove recent_moves = 19 [json_name = "recentMoves"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000010U)) {
+      total_size += 2UL * this_._internal_recent_moves_size();
+      for (const auto& msg : this_._internal_recent_moves()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated string claim_texts = 20 [json_name = "claimTexts"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000020U)) {
+      total_size +=
+          2 * ::google::protobuf::internal::FromIntSize(this_._internal_claim_texts().size());
+      for (int i = 0, n = this_._internal_claim_texts().size(); i < n; ++i) {
+        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+            this_._internal_claim_texts().Get(i));
+      }
+    }
+    // repeated string matched_claims = 22 [json_name = "matchedClaims"];
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+      total_size +=
+          2 * ::google::protobuf::internal::FromIntSize(this_._internal_matched_claims().size());
+      for (int i = 0, n = this_._internal_matched_claims().size(); i < n; ++i) {
+        total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+            this_._internal_matched_claims().Get(i));
+      }
+    }
+    // string topic = 2 [json_name = "topic"];
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (!this_._internal_topic().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_topic());
       }
     }
-    // string claim_its_challenging = 5;
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x0000ff00U)) {
+    // string claim_its_challenging = 5 [json_name = "claimItsChallenging"];
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (!this_._internal_claim_its_challenging().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_claim_its_challenging());
       }
     }
-    // int32 id = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    // string root_text = 6 [json_name = "rootText"];
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+      if (!this_._internal_root_text().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_root_text());
+      }
+    }
+    // string root_holder = 7 [json_name = "rootHolder"];
+    if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+      if (!this_._internal_root_holder().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_root_holder());
+      }
+    }
+    // string hinge_text = 9 [json_name = "hingeText"];
+    if (CheckHasBit(cached_has_bits, 0x00000800U)) {
+      if (!this_._internal_hinge_text().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_hinge_text());
+      }
+    }
+    // int32 id = 1 [json_name = "id"];
+    if (CheckHasBit(cached_has_bits, 0x00001000U)) {
       if (this_._internal_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_id());
       }
     }
-    // int32 creator_id = 3;
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    // int32 creator_id = 3 [json_name = "creatorId"];
+    if (CheckHasBit(cached_has_bits, 0x00002000U)) {
       if (this_._internal_creator_id() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_creator_id());
       }
     }
-    // bool is_challenge = 4;
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    // int32 claim_count = 10 [json_name = "claimCount"];
+    if (CheckHasBit(cached_has_bits, 0x00004000U)) {
+      if (this_._internal_claim_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_claim_count());
+      }
+    }
+    // int32 stance_count = 11 [json_name = "stanceCount"];
+    if (CheckHasBit(cached_has_bits, 0x00008000U)) {
+      if (this_._internal_stance_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_stance_count());
+      }
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x003f0000U)) {
+    // bool is_challenge = 4 [json_name = "isChallenge"];
+    if (CheckHasBit(cached_has_bits, 0x00010000U)) {
       if (this_._internal_is_challenge() != 0) {
         total_size += 2;
+      }
+    }
+    // bool unresolved = 8 [json_name = "unresolved"];
+    if (CheckHasBit(cached_has_bits, 0x00020000U)) {
+      if (this_._internal_unresolved() != 0) {
+        total_size += 2;
+      }
+    }
+    // bool search_match = 21 [json_name = "searchMatch"];
+    if (CheckHasBit(cached_has_bits, 0x00040000U)) {
+      if (this_._internal_search_match() != 0) {
+        total_size += 3;
+      }
+    }
+    // int32 open_challenge_count = 12 [json_name = "openChallengeCount"];
+    if (CheckHasBit(cached_has_bits, 0x00080000U)) {
+      if (this_._internal_open_challenge_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_open_challenge_count());
+      }
+    }
+    // int64 last_moved_at = 14 [json_name = "lastMovedAt"];
+    if (CheckHasBit(cached_has_bits, 0x00100000U)) {
+      if (this_._internal_last_moved_at() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_last_moved_at());
+      }
+    }
+    // int32 people_count = 15 [json_name = "peopleCount"];
+    if (CheckHasBit(cached_has_bits, 0x00200000U)) {
+      if (this_._internal_people_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_people_count());
       }
     }
   }
@@ -917,14 +1640,48 @@ void DebateTopic::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:moderator_to_vr.DebateTopic)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_involved()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_involved());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _this->_internal_mutable_owing()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_owing());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
+      _this->_internal_mutable_owed()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_owed());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
+      _this->_internal_mutable_member_ids()->MergeFrom(from._internal_member_ids());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000010U)) {
+      _this->_internal_mutable_recent_moves()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_recent_moves());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000020U)) {
+      _this->_internal_mutable_claim_texts()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_claim_texts());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000040U)) {
+      _this->_internal_mutable_matched_claims()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_matched_claims());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (!from._internal_topic().empty()) {
         _this->_internal_set_topic(from._internal_topic());
       } else {
@@ -933,7 +1690,9 @@ void DebateTopic::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x0000ff00U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (!from._internal_claim_its_challenging().empty()) {
         _this->_internal_set_claim_its_challenging(from._internal_claim_its_challenging());
       } else {
@@ -942,19 +1701,83 @@ void DebateTopic::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+      if (!from._internal_root_text().empty()) {
+        _this->_internal_set_root_text(from._internal_root_text());
+      } else {
+        if (_this->_impl_.root_text_.IsDefault()) {
+          _this->_internal_set_root_text("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+      if (!from._internal_root_holder().empty()) {
+        _this->_internal_set_root_holder(from._internal_root_holder());
+      } else {
+        if (_this->_impl_.root_holder_.IsDefault()) {
+          _this->_internal_set_root_holder("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000800U)) {
+      if (!from._internal_hinge_text().empty()) {
+        _this->_internal_set_hinge_text(from._internal_hinge_text());
+      } else {
+        if (_this->_impl_.hinge_text_.IsDefault()) {
+          _this->_internal_set_hinge_text("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00001000U)) {
       if (from._internal_id() != 0) {
         _this->_impl_.id_ = from._impl_.id_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (CheckHasBit(cached_has_bits, 0x00002000U)) {
       if (from._internal_creator_id() != 0) {
         _this->_impl_.creator_id_ = from._impl_.creator_id_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (CheckHasBit(cached_has_bits, 0x00004000U)) {
+      if (from._internal_claim_count() != 0) {
+        _this->_impl_.claim_count_ = from._impl_.claim_count_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00008000U)) {
+      if (from._internal_stance_count() != 0) {
+        _this->_impl_.stance_count_ = from._impl_.stance_count_;
+      }
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x003f0000U)) {
+    if (CheckHasBit(cached_has_bits, 0x00010000U)) {
       if (from._internal_is_challenge() != 0) {
         _this->_impl_.is_challenge_ = from._impl_.is_challenge_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00020000U)) {
+      if (from._internal_unresolved() != 0) {
+        _this->_impl_.unresolved_ = from._impl_.unresolved_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00040000U)) {
+      if (from._internal_search_match() != 0) {
+        _this->_impl_.search_match_ = from._impl_.search_match_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00080000U)) {
+      if (from._internal_open_challenge_count() != 0) {
+        _this->_impl_.open_challenge_count_ = from._impl_.open_challenge_count_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00100000U)) {
+      if (from._internal_last_moved_at() != 0) {
+        _this->_impl_.last_moved_at_ = from._impl_.last_moved_at_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00200000U)) {
+      if (from._internal_people_count() != 0) {
+        _this->_impl_.people_count_ = from._impl_.people_count_;
       }
     }
   }
@@ -977,17 +1800,1086 @@ void DebateTopic::InternalSwap(DebateTopic* PROTOBUF_RESTRICT PROTOBUF_NONNULL o
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.involved_.InternalSwap(&other->_impl_.involved_);
+  _impl_.owing_.InternalSwap(&other->_impl_.owing_);
+  _impl_.owed_.InternalSwap(&other->_impl_.owed_);
+  _impl_.member_ids_.InternalSwap(&other->_impl_.member_ids_);
+  _impl_.recent_moves_.InternalSwap(&other->_impl_.recent_moves_);
+  _impl_.claim_texts_.InternalSwap(&other->_impl_.claim_texts_);
+  _impl_.matched_claims_.InternalSwap(&other->_impl_.matched_claims_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.topic_, &other->_impl_.topic_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.claim_its_challenging_, &other->_impl_.claim_its_challenging_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.root_text_, &other->_impl_.root_text_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.root_holder_, &other->_impl_.root_holder_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.hinge_text_, &other->_impl_.hinge_text_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.is_challenge_)
-      + sizeof(DebateTopic::_impl_.is_challenge_)
+      PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.people_count_)
+      + sizeof(DebateTopic::_impl_.people_count_)
       - PROTOBUF_FIELD_OFFSET(DebateTopic, _impl_.id_)>(
           reinterpret_cast<char*>(&_impl_.id_),
           reinterpret_cast<char*>(&other->_impl_.id_));
 }
 
 ::google::protobuf::Metadata DebateTopic::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class OwingParty::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<OwingParty>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(OwingParty, _impl_._has_bits_);
+};
+
+OwingParty::OwingParty(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OwingParty_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:moderator_to_vr.OwingParty)
+}
+PROTOBUF_NDEBUG_INLINE OwingParty::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::moderator_to_vr::OwingParty& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        who_(arena, from.who_) {}
+
+OwingParty::OwingParty(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const OwingParty& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OwingParty_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  OwingParty* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.count_ = from._impl_.count_;
+
+  // @@protoc_insertion_point(copy_constructor:moderator_to_vr.OwingParty)
+}
+PROTOBUF_NDEBUG_INLINE OwingParty::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        who_(arena) {}
+
+inline void OwingParty::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.count_ = {};
+}
+OwingParty::~OwingParty() {
+  // @@protoc_insertion_point(destructor:moderator_to_vr.OwingParty)
+  SharedDtor(*this);
+}
+inline void OwingParty::SharedDtor(MessageLite& self) {
+  OwingParty& this_ = static_cast<OwingParty&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.who_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL OwingParty::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) OwingParty(arena);
+}
+constexpr auto OwingParty::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(OwingParty),
+                                            alignof(OwingParty));
+}
+constexpr auto OwingParty::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_OwingParty_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &OwingParty::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<OwingParty>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &OwingParty::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<OwingParty>(), &OwingParty::ByteSizeLong,
+              &OwingParty::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(OwingParty, _impl_._cached_size_),
+          false,
+      },
+      &OwingParty::kDescriptorMethods,
+      &descriptor_table_moderator_5fto_5fvr_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull OwingParty_class_data_ =
+        OwingParty::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+OwingParty::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&OwingParty_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(OwingParty_class_data_.tc_table);
+  return OwingParty_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 38, 2>
+OwingParty::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(OwingParty, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    OwingParty_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::moderator_to_vr::OwingParty>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 count = 2 [json_name = "count"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(OwingParty, _impl_.count_), 1>(),
+     {16, 1, 0,
+      PROTOBUF_FIELD_OFFSET(OwingParty, _impl_.count_)}},
+    // string who = 1 [json_name = "who"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(OwingParty, _impl_.who_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string who = 1 [json_name = "who"];
+    {PROTOBUF_FIELD_OFFSET(OwingParty, _impl_.who_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 count = 2 [json_name = "count"];
+    {PROTOBUF_FIELD_OFFSET(OwingParty, _impl_.count_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\32\3\0\0\0\0\0\0"
+    "moderator_to_vr.OwingParty"
+    "who"
+  }},
+};
+PROTOBUF_NOINLINE void OwingParty::Clear() {
+// @@protoc_insertion_point(message_clear_start:moderator_to_vr.OwingParty)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.who_.ClearNonDefaultToEmpty();
+  }
+  _impl_.count_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL OwingParty::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const OwingParty& this_ = static_cast<const OwingParty&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL OwingParty::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const OwingParty& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:moderator_to_vr.OwingParty)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string who = 1 [json_name = "who"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_who().empty()) {
+      const ::std::string& _s = this_._internal_who();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.OwingParty.who");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // int32 count = 2 [json_name = "count"];
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_count(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:moderator_to_vr.OwingParty)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t OwingParty::ByteSizeLong(const MessageLite& base) {
+  const OwingParty& this_ = static_cast<const OwingParty&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t OwingParty::ByteSizeLong() const {
+  const OwingParty& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:moderator_to_vr.OwingParty)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // string who = 1 [json_name = "who"];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_who().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_who());
+      }
+    }
+    // int32 count = 2 [json_name = "count"];
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_count());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void OwingParty::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<OwingParty*>(&to_msg);
+  auto& from = static_cast<const OwingParty&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:moderator_to_vr.OwingParty)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_who().empty()) {
+        _this->_internal_set_who(from._internal_who());
+      } else {
+        if (_this->_impl_.who_.IsDefault()) {
+          _this->_internal_set_who("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_count() != 0) {
+        _this->_impl_.count_ = from._impl_.count_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void OwingParty::CopyFrom(const OwingParty& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:moderator_to_vr.OwingParty)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void OwingParty::InternalSwap(OwingParty* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.who_, &other->_impl_.who_, arena);
+  swap(_impl_.count_, other->_impl_.count_);
+}
+
+::google::protobuf::Metadata OwingParty::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class OwedReply::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<OwedReply>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(OwedReply, _impl_._has_bits_);
+};
+
+OwedReply::OwedReply(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OwedReply_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:moderator_to_vr.OwedReply)
+}
+PROTOBUF_NDEBUG_INLINE OwedReply::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::moderator_to_vr::OwedReply& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        who_(arena, from.who_),
+        text_(arena, from.text_) {}
+
+OwedReply::OwedReply(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const OwedReply& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OwedReply_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  OwedReply* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.claim_id_ = from._impl_.claim_id_;
+
+  // @@protoc_insertion_point(copy_constructor:moderator_to_vr.OwedReply)
+}
+PROTOBUF_NDEBUG_INLINE OwedReply::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        who_(arena),
+        text_(arena) {}
+
+inline void OwedReply::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.claim_id_ = {};
+}
+OwedReply::~OwedReply() {
+  // @@protoc_insertion_point(destructor:moderator_to_vr.OwedReply)
+  SharedDtor(*this);
+}
+inline void OwedReply::SharedDtor(MessageLite& self) {
+  OwedReply& this_ = static_cast<OwedReply&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.who_.Destroy();
+  this_._impl_.text_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL OwedReply::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) OwedReply(arena);
+}
+constexpr auto OwedReply::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(OwedReply),
+                                            alignof(OwedReply));
+}
+constexpr auto OwedReply::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_OwedReply_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &OwedReply::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<OwedReply>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &OwedReply::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<OwedReply>(), &OwedReply::ByteSizeLong,
+              &OwedReply::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(OwedReply, _impl_._cached_size_),
+          false,
+      },
+      &OwedReply::kDescriptorMethods,
+      &descriptor_table_moderator_5fto_5fvr_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull OwedReply_class_data_ =
+        OwedReply::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+OwedReply::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&OwedReply_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(OwedReply_class_data_.tc_table);
+  return OwedReply_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 41, 2>
+OwedReply::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(OwedReply, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    OwedReply_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::moderator_to_vr::OwedReply>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string who = 1 [json_name = "who"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.who_)}},
+    // int32 claim_id = 2 [json_name = "claimId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(OwedReply, _impl_.claim_id_), 2>(),
+     {16, 2, 0,
+      PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.claim_id_)}},
+    // string text = 3 [json_name = "text"];
+    {::_pbi::TcParser::FastUS1,
+     {26, 1, 0,
+      PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.text_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string who = 1 [json_name = "who"];
+    {PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.who_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 claim_id = 2 [json_name = "claimId"];
+    {PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.claim_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string text = 3 [json_name = "text"];
+    {PROTOBUF_FIELD_OFFSET(OwedReply, _impl_.text_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\31\3\0\4\0\0\0\0"
+    "moderator_to_vr.OwedReply"
+    "who"
+    "text"
+  }},
+};
+PROTOBUF_NOINLINE void OwedReply::Clear() {
+// @@protoc_insertion_point(message_clear_start:moderator_to_vr.OwedReply)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.who_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.text_.ClearNonDefaultToEmpty();
+    }
+  }
+  _impl_.claim_id_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL OwedReply::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const OwedReply& this_ = static_cast<const OwedReply&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL OwedReply::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const OwedReply& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:moderator_to_vr.OwedReply)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string who = 1 [json_name = "who"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_who().empty()) {
+      const ::std::string& _s = this_._internal_who();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.OwedReply.who");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // int32 claim_id = 2 [json_name = "claimId"];
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_claim_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_claim_id(), target);
+    }
+  }
+
+  // string text = 3 [json_name = "text"];
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_text().empty()) {
+      const ::std::string& _s = this_._internal_text();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.OwedReply.text");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:moderator_to_vr.OwedReply)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t OwedReply::ByteSizeLong(const MessageLite& base) {
+  const OwedReply& this_ = static_cast<const OwedReply&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t OwedReply::ByteSizeLong() const {
+  const OwedReply& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:moderator_to_vr.OwedReply)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    // string who = 1 [json_name = "who"];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_who().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_who());
+      }
+    }
+    // string text = 3 [json_name = "text"];
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_text().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_text());
+      }
+    }
+    // int32 claim_id = 2 [json_name = "claimId"];
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_claim_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_claim_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void OwedReply::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<OwedReply*>(&to_msg);
+  auto& from = static_cast<const OwedReply&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:moderator_to_vr.OwedReply)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_who().empty()) {
+        _this->_internal_set_who(from._internal_who());
+      } else {
+        if (_this->_impl_.who_.IsDefault()) {
+          _this->_internal_set_who("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_text().empty()) {
+        _this->_internal_set_text(from._internal_text());
+      } else {
+        if (_this->_impl_.text_.IsDefault()) {
+          _this->_internal_set_text("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_claim_id() != 0) {
+        _this->_impl_.claim_id_ = from._impl_.claim_id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void OwedReply::CopyFrom(const OwedReply& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:moderator_to_vr.OwedReply)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void OwedReply::InternalSwap(OwedReply* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.who_, &other->_impl_.who_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
+  swap(_impl_.claim_id_, other->_impl_.claim_id_);
+}
+
+::google::protobuf::Metadata OwedReply::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RecentMove::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<RecentMove>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RecentMove, _impl_._has_bits_);
+};
+
+RecentMove::RecentMove(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, RecentMove_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:moderator_to_vr.RecentMove)
+}
+PROTOBUF_NDEBUG_INLINE RecentMove::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::moderator_to_vr::RecentMove& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        who_(arena, from.who_),
+        verb_(arena, from.verb_) {}
+
+RecentMove::RecentMove(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const RecentMove& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, RecentMove_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RecentMove* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, at_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, at_),
+           offsetof(Impl_, seq_) -
+               offsetof(Impl_, at_) +
+               sizeof(Impl_::seq_));
+
+  // @@protoc_insertion_point(copy_constructor:moderator_to_vr.RecentMove)
+}
+PROTOBUF_NDEBUG_INLINE RecentMove::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        who_(arena),
+        verb_(arena) {}
+
+inline void RecentMove::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, at_),
+           0,
+           offsetof(Impl_, seq_) -
+               offsetof(Impl_, at_) +
+               sizeof(Impl_::seq_));
+}
+RecentMove::~RecentMove() {
+  // @@protoc_insertion_point(destructor:moderator_to_vr.RecentMove)
+  SharedDtor(*this);
+}
+inline void RecentMove::SharedDtor(MessageLite& self) {
+  RecentMove& this_ = static_cast<RecentMove&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.who_.Destroy();
+  this_._impl_.verb_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL RecentMove::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) RecentMove(arena);
+}
+constexpr auto RecentMove::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(RecentMove),
+                                            alignof(RecentMove));
+}
+constexpr auto RecentMove::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_RecentMove_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &RecentMove::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<RecentMove>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &RecentMove::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<RecentMove>(), &RecentMove::ByteSizeLong,
+              &RecentMove::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(RecentMove, _impl_._cached_size_),
+          false,
+      },
+      &RecentMove::kDescriptorMethods,
+      &descriptor_table_moderator_5fto_5fvr_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull RecentMove_class_data_ =
+        RecentMove::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+RecentMove::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&RecentMove_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(RecentMove_class_data_.tc_table);
+  return RecentMove_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 42, 2>
+RecentMove::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RecentMove, _impl_._has_bits_),
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    RecentMove_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::moderator_to_vr::RecentMove>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 seq = 4 [json_name = "seq"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RecentMove, _impl_.seq_), 3>(),
+     {32, 3, 0,
+      PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.seq_)}},
+    // string who = 1 [json_name = "who"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.who_)}},
+    // string verb = 2 [json_name = "verb"];
+    {::_pbi::TcParser::FastUS1,
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.verb_)}},
+    // int64 at = 3 [json_name = "at"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(RecentMove, _impl_.at_), 2>(),
+     {24, 2, 0,
+      PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.at_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string who = 1 [json_name = "who"];
+    {PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.who_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string verb = 2 [json_name = "verb"];
+    {PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.verb_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int64 at = 3 [json_name = "at"];
+    {PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.at_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int32 seq = 4 [json_name = "seq"];
+    {PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.seq_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\32\3\4\0\0\0\0\0"
+    "moderator_to_vr.RecentMove"
+    "who"
+    "verb"
+  }},
+};
+PROTOBUF_NOINLINE void RecentMove::Clear() {
+// @@protoc_insertion_point(message_clear_start:moderator_to_vr.RecentMove)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.who_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.verb_.ClearNonDefaultToEmpty();
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000cU)) {
+    ::memset(&_impl_.at_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.seq_) -
+        reinterpret_cast<char*>(&_impl_.at_)) + sizeof(_impl_.seq_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL RecentMove::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const RecentMove& this_ = static_cast<const RecentMove&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL RecentMove::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const RecentMove& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:moderator_to_vr.RecentMove)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string who = 1 [json_name = "who"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_who().empty()) {
+      const ::std::string& _s = this_._internal_who();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.RecentMove.who");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  // string verb = 2 [json_name = "verb"];
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_verb().empty()) {
+      const ::std::string& _s = this_._internal_verb();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "moderator_to_vr.RecentMove.verb");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // int64 at = 3 [json_name = "at"];
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_at() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<3>(
+              stream, this_._internal_at(), target);
+    }
+  }
+
+  // int32 seq = 4 [json_name = "seq"];
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (this_._internal_seq() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
+              stream, this_._internal_seq(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:moderator_to_vr.RecentMove)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t RecentMove::ByteSizeLong(const MessageLite& base) {
+  const RecentMove& this_ = static_cast<const RecentMove&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t RecentMove::ByteSizeLong() const {
+  const RecentMove& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:moderator_to_vr.RecentMove)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    // string who = 1 [json_name = "who"];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_who().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_who());
+      }
+    }
+    // string verb = 2 [json_name = "verb"];
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_verb().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_verb());
+      }
+    }
+    // int64 at = 3 [json_name = "at"];
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_at() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_at());
+      }
+    }
+    // int32 seq = 4 [json_name = "seq"];
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (this_._internal_seq() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_seq());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void RecentMove::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<RecentMove*>(&to_msg);
+  auto& from = static_cast<const RecentMove&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:moderator_to_vr.RecentMove)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_who().empty()) {
+        _this->_internal_set_who(from._internal_who());
+      } else {
+        if (_this->_impl_.who_.IsDefault()) {
+          _this->_internal_set_who("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_verb().empty()) {
+        _this->_internal_set_verb(from._internal_verb());
+      } else {
+        if (_this->_impl_.verb_.IsDefault()) {
+          _this->_internal_set_verb("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_at() != 0) {
+        _this->_impl_.at_ = from._impl_.at_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (from._internal_seq() != 0) {
+        _this->_impl_.seq_ = from._impl_.seq_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void RecentMove::CopyFrom(const RecentMove& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:moderator_to_vr.RecentMove)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RecentMove::InternalSwap(RecentMove* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.who_, &other->_impl_.who_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.verb_, &other->_impl_.verb_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.seq_)
+      + sizeof(RecentMove::_impl_.seq_)
+      - PROTOBUF_FIELD_OFFSET(RecentMove, _impl_.at_)>(
+          reinterpret_cast<char*>(&_impl_.at_),
+          reinterpret_cast<char*>(&other->_impl_.at_));
+}
+
+::google::protobuf::Metadata RecentMove::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -1130,14 +3022,14 @@ DebateList::_table_ = {
     ::_pbi::TcParser::GetTable<::moderator_to_vr::DebateList>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // repeated .moderator_to_vr.DebateTopic topics = 1;
+    // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
     {::_pbi::TcParser::FastMtR1,
      {10, 0, 0,
       PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated .moderator_to_vr.DebateTopic topics = 1;
+    // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
     {PROTOBUF_FIELD_OFFSET(DebateList, _impl_.topics_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
@@ -1180,7 +3072,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // repeated .moderator_to_vr.DebateTopic topics = 1;
+  // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
     for (unsigned i = 0, n = static_cast<unsigned>(
                              this_._internal_topics_size());
@@ -1218,7 +3110,7 @@ PROTOBUF_NOINLINE void DebateList::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
    {
-    // repeated .moderator_to_vr.DebateTopic topics = 1;
+    // repeated .moderator_to_vr.DebateTopic topics = 1 [json_name = "topics"];
     cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       total_size += 1UL * this_._internal_topics_size();

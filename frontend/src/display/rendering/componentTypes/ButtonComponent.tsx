@@ -1,6 +1,37 @@
 import React, { useState } from "react";
 import { BaseComponentProps } from "./TextComponent";
 import handleEvent from "../../events/handleEvent";
+import { layoutClasses } from "../buildClassName";
+
+// The theme's button (theme.html .btn), picked from the server's class hints.
+// The server says "bg-blue-600 text-sm"; the theme says what that looks like:
+//   bg-blue / bg-indigo        -> primary, the one filled button on a screen
+//   bg-red                     -> danger (red words, no fill)
+//   bg-gray-800 / transparent  -> quiet (no border)
+//   no colour at all           -> quiet (its inline css usually paints it)
+//   anything else              -> outlined
+//   rounded-full               -> a pill
+//   text-xs / text-sm          -> small
+// The paint classes are dropped; layout classes (w-full, self-start) stay.
+export function buttonClassName(className?: string): string {
+  const c = className || "";
+  const small = /(^|\s)text-(xs|sm)(\s|$)/.test(c);
+  let look: string;
+  if (/(^|\s)rounded-full(\s|$)/.test(c)) {
+    look = "pill";
+  } else if (/(^|\s)bg-(blue|indigo)-/.test(c)) {
+    look = "btn primary";
+  } else if (/(^|\s)bg-red-/.test(c)) {
+    look = "btn danger";
+  } else if (/(^|\s)bg-(gray-800|transparent)(\s|$)/.test(c) || !/(^|\s)bg-/.test(c)) {
+    look = "btn quiet";
+  } else {
+    look = "btn";
+  }
+  if (small && look !== "pill") look += " sm";
+  const layout = layoutClasses(c);
+  return layout ? `${look} ${layout}` : look;
+}
 
 const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const [showConcedeConfirm, setShowConcedeConfirm] = useState(false);
@@ -28,39 +59,25 @@ const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, s
        setShowConcedeConfirm(true);
        return;
      }
+     // Deleting a debate cannot be undone either, and on the home shelf its
+     // control sits on a card that is itself a press.
+     if (component.id?.startsWith("deleteDebateButton_") &&
+         !window.confirm("Delete this debate? This cannot be undone.")) {
+       return;
+     }
      fireClick(e);
   };
-
-  const isSmall = className?.includes('text-xs') || className?.includes('text-sm');
-  const isLarge = className?.includes('text-lg') || className?.includes('text-xl');
-  const isRounded = className?.includes('rounded-full');
 
   return (
     <>
       <button
         id={component.id}
-        className={className}
+        className={buttonClassName(className)}
         style={{
-          ...style,
-          padding: isSmall
-            ? '0.375rem 0.875rem'
-            : isLarge
-              ? '0.75rem 1.5rem'
-              : '0.625rem 1.25rem',
-          borderRadius: isRounded ? '9999px' : 'var(--radius-md)',
-          fontSize: isSmall
-            ? '0.8125rem'
-            : isLarge
-              ? '1rem'
-              : '0.875rem',
-          fontWeight: 500,
           maxWidth: '100%',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          ...style,
         }}
         onClick={handleClick}
       >
@@ -68,65 +85,30 @@ const ButtonComponent: React.FC<BaseComponentProps> = ({ component, className, s
       </button>
       {showConcedeConfirm && (
         <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0, 0, 0, 0.6)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
+          className="modal-overlay"
+          style={{ zIndex: 1000 }}
           onClick={() => setShowConcedeConfirm(false)}
         >
           <div
-            style={{
-              background: "#1f2937",
-              border: "1px solid #374151",
-              borderRadius: "0.5rem",
-              padding: "1.5rem",
-              maxWidth: "24rem",
-              width: "90%",
-              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.5)",
-            }}
+            className="modal-content"
+            style={{ maxWidth: "24rem", width: "90%" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ color: "#ffffff", fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>
+            <div className="t-h3" style={{ marginBottom: "0.5rem" }}>
               Concede this challenge?
             </div>
-            <div style={{ color: "#9ca3af", fontSize: "0.875rem", marginBottom: "1.25rem" }}>
+            <div className="t-body-2" style={{ color: "var(--text-2)", marginBottom: "1.25rem" }}>
               This will mark your claim as false and cannot be undone.
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
-              <button
-                onClick={() => setShowConcedeConfirm(false)}
-                style={{
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.375rem",
-                  fontSize: "0.875rem",
-                  fontWeight: 500,
-                  background: "#374151",
-                  color: "#ffffff",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
+              <button className="btn quiet" onClick={() => setShowConcedeConfirm(false)}>
                 Cancel
               </button>
               <button
+                className="btn danger"
                 onClick={(e) => {
                   setShowConcedeConfirm(false);
                   fireClick(e);
-                }}
-                style={{
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.375rem",
-                  fontSize: "0.875rem",
-                  fontWeight: 500,
-                  background: "#dc2626",
-                  color: "#ffffff",
-                  border: "none",
-                  cursor: "pointer",
                 }}
               >
                 Concede

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include "../database/sqlite/Database.h"
 #include "../database/virtualrenderer/VRUserDatabase.h"
@@ -39,20 +38,17 @@ public:
     // and mutates evt.user() accordingly. Returns a user-facing error message
     // if a login attempt failed (e.g. wrong password); empty string otherwise.
     std::string handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
-
-     // Get user ID by username (public access for GET handler)
-     int getUserId(const std::string& username) { return userDb.getUserId(username); }
-     int createUser(const std::string& username, std::vector<uint8_t> data) { return userDb.createUser(username, data); }
-     bool updateUserProtobuf(int user_id, const std::vector<uint8_t>& data) { return userDb.updateUserProtobuf(user_id, data); }
-
-     // Load a debate page for a shared link: creates user, enters debate, returns page
-     ui::Page handleDebatePageLoad(const std::string& username, int debate_id);
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
      int createUserIfNotExist(const std::string& username);
      int createUserWithGoogleInfo(const std::string& username, const std::string& google_sub, const std::string& email);
      void updateGoogleSub(int user_id, const std::string& google_sub, const std::string& email);
      std::string getUsersDatabasePath() const;
+     // A request with no valid session: signs it in as a visitor (the
+     // browser's own visitorName when it sent a well-formed one, else a new
+     // one), sets the session cookies, and makes evt act as that visitor.
+     void signInAsVisitor(debate_event::DebateEvent& evt, const client_message::ClientMessage& message,
+                          const httplib::Request& req, httplib::Response& res);
     Database usersDb;
     VRUserDatabase userDb;
     DebateModerator moderator;

@@ -30,6 +30,18 @@ public:
         const std::string& additionalClasses = ""
     );
 
+    // Create a TEXTAREA component -- a multi-line input, for the times a
+    // single line is the wrong shape (pasting a passage, say).
+    static ui::Component createTextarea(
+        const std::string& id,
+        const std::string& placeholder = "",
+        const std::string& name = "",
+        int rows = 6,
+        const std::string& bgColor = "bg-gray-800",
+        const std::string& textColor = "text-white",
+        const std::string& borderColor = "border-gray-600"
+    );
+
     // Create an INPUT component
     static ui::Component createInput(
         const std::string& id,
@@ -42,6 +54,49 @@ public:
         const std::string& rounded = "rounded",
         const std::string& additionalClasses = "",
         const std::string& defaultValue = ""
+    );
+
+    // Create a DROPDOWN component (renders as a <select>).
+    //
+    // `options` are the selectable values, in display order. They are sent as a
+    // comma-separated attribute, so an option containing a comma would split in
+    // two -- fine for the closed vocabularies this exists for, and worth
+    // revisiting the moment a caller needs free text.
+    static ui::Component createDropdown(
+        const std::string& id,
+        const std::vector<std::string>& options,
+        const std::string& selectedValue = "",
+        const std::string& name = "",
+        const std::string& bgColor = "bg-gray-800",
+        const std::string& textColor = "text-white",
+        const std::string& borderColor = "border-gray-600",
+        const std::string& padding = "p-3",
+        const std::string& rounded = "rounded",
+        const std::string& additionalClasses = ""
+    );
+
+    // Create a MULTI_INPUT component: one text box plus an "add another"
+    // button that appends more, client-side.
+    //
+    // Ids are <id>, <id>2, <id>3, ... so a backend parser can prefix-match
+    // them without knowing how many the viewer created.
+    // `descriptionId` gives each row its OWN description box, ids paired by
+    // suffix with the claim boxes (descriptionInput / descriptionInput2 / ...).
+    // Empty means no description field at all.
+    static ui::Component createMultiInput(
+        const std::string& id,
+        const std::string& placeholder = "",
+        const std::string& extraPlaceholder = "",
+        const std::string& addLabel = "+ Add another",
+        int maxInputs = 10,
+        const std::string& descriptionId = "",
+        const std::string& descriptionPlaceholder = "",
+        const std::string& bgColor = "bg-gray-800",
+        const std::string& textColor = "text-white",
+        const std::string& borderColor = "border-gray-600",
+        const std::string& padding = "p-3",
+        const std::string& rounded = "rounded",
+        const std::string& additionalClasses = ""
     );
 
     // Create a CONTAINER component

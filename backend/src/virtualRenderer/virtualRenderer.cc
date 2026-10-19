@@ -7,17 +7,16 @@
 #include "debate_event.pb.h"
 #include "./ClientMessageHandler/ClientMessageParser.h"
 #include "./LayoutGenerator/LayoutGenerator.h"
-#include "./LayoutGenerator/pages/loginPage/LoginPageGenerator.h"
-#include "./LayoutGenerator/pages/errorPage/ErrorPageGenerator.h"
-// #include "../debate/main/EventHandler.h"
 #include "../server/httplib.h"
 #include <iostream>
 #include <cstdlib>
 #include <filesystem>
 #include <chrono>
+#include <random>
 #include <vector>
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
+#include "../utils/AnonymousUser.h"
 #include "../utils/pathUtils.h"
 #include "./utils/parseCookie.h"
 #include "../utils/GoogleJWTVerifier.h"
@@ -28,6 +27,18 @@ std::string buildAutoGuestUsername() {
     using namespace std::chrono;
     const auto timestampMs = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     return "guest_" + std::to_string(timestampMs);
+}
+
+// A visitor name of the client's shape: "visitor-" and 8 hex digits.
+std::string makeVisitorName() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> hex(0, 15);
+    std::string name = anonymous_user::kVisitorPrefix;
+    for (int i = 0; i < 8; ++i) {
+        name += "0123456789abcdef"[hex(gen)];
+    }
+    return name;
 }
 
 // True if the string contains any whitespace (space, tab, newline, etc.).
@@ -107,6 +118,11 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
     debate_event::DebateEvent evt = ClientMessageParser::parseMessage(client_message, user_id);
     
+    // Whose session this was before the request. When an anonymous visitor
+    // signs in (from the sign-in modal), their place and the press they were
+    // signing in to make are handed to the account they signed in as.
+    const int priorUserId = user_id;
+
     // change cookies accordingly
     std::string loginError = handleAuthEvents(evt, req, res);
 
@@ -116,22 +132,59 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         evt.mutable_user()->set_username(autoLoginResolvedUsername);
         evt.mutable_user()->set_is_logged_in(true);
     }
-    
-    moderator_to_vr::ModeratorToVRMessage info;
-    info = moderator.handleRequest(evt);
 
-    // After a successful login, transition user to HOME page
-    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() &&
-        !evt.login().google_id_token().empty() && evt.user().is_logged_in()) {
-        info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
-        Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
+    // No valid session -- a first visit, a sign-out, a missing, expired or
+    // unknown cookie. There is no login page: the reader is signed in as a
+    // visitor, and what they asked for is not acted on as anybody (it came
+    // from no one). A sign-out lands home; a failed sign-in stays a LOGIN so
+    // it is answered below with the modal and its error.
+    if (!evt.user().is_logged_in()) {
+        const debate_event::EventType asked = evt.type();
+        signInAsVisitor(evt, client_message, req, res);
+        if (asked == debate_event::LOGOUT) {
+            evt.set_type(debate_event::GO_HOME);
+        } else if (asked != debate_event::LOGIN) {
+            evt.set_type(debate_event::NONE);
+        }
     }
 
-    // A failed username/password login leaves the user unauthenticated, so the
-    // moderator returns the login page anyway — but re-render it here with the
-    // error message and the attempted username prefilled.
-    if (!loginError.empty()) {
-        return LoginPageGenerator::GenerateLoginPage(loginError, evt.login().username());
+    // A failed sign-in while a session is still alive -- a visitor's, from the
+    // sign-in modal: stay on the same page with the modal open and the error
+    // in it, rather than dropping them on the standalone login page.
+    if (!loginError.empty() && evt.type() == debate_event::LOGIN && evt.user().is_logged_in()) {
+        const std::string attemptedUsername = evt.login().username();
+        evt.set_type(debate_event::NONE);
+        moderator_to_vr::ModeratorToVRMessage stay = moderator.handleRequest(evt);
+        return LayoutGenerator::generateLayout(stay, userDb, loginError, attemptedUsername);
+    }
+
+    const bool signedInFromVisitor =
+        evt.type() == debate_event::LOGIN && evt.user().is_logged_in() &&
+        priorUserId > 0 && evt.user().user_id() != priorUserId &&
+        anonymous_user::IsAnonymousUsername(userDb.getUsername(priorUserId)) &&
+        !anonymous_user::IsAnonymousUsername(evt.user().username());
+
+    moderator_to_vr::ModeratorToVRMessage info;
+    debate_event::DebateEvent pending;
+    if (signedInFromVisitor &&
+        moderator.takePendingSignIn(priorUserId, evt.user().user_id(), &pending)) {
+        // The press the visitor was signing in to make, now as the signed-in
+        // user. It was taken off the visitor's record already, so this is the
+        // only time it runs; the moderator checks the acting user's own record,
+        // which is not anonymous.
+        Log::info("[VirtualRenderer] Replaying pending action type " + std::to_string(pending.type()) +
+                  " as " + evt.user().username() + " (user_id=" + std::to_string(evt.user().user_id()) + ")");
+        info = moderator.handleRequest(pending);
+    } else {
+        info = moderator.handleRequest(evt);
+    }
+
+    // After a successful Google login, transition user to HOME page -- unless
+    // a visitor signed in from where they were reading, who stays there.
+    if (evt.type() == debate_event::LOGIN && evt.login().has_google_id_token() &&
+        !evt.login().google_id_token().empty() && evt.user().is_logged_in() && !signedInFromVisitor) {
+        info.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        Log::info("[VirtualRenderer] Google login successful — transitioning user to ACTION_HOME");
     }
 
     // parse user info to create layout based on it
@@ -145,6 +198,17 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
     int resolvedUserId = parseCookie::extractUserIdFromCookies(req);
     std::string resolvedUsername = parseCookie::extractUsernameFromCookies(req);
     std::string loginError;
+
+    // The cookies name a session only if they name a user that exists, by
+    // the name the cookie was set with. Anything else (a stale id from
+    // another database, a hand-made cookie) is no session at all.
+    if (resolvedUserId > 0 &&
+        (resolvedUsername.empty() || userDb.getUsername(resolvedUserId) != resolvedUsername)) {
+        Log::warn("[VirtualRenderer] Cookie user_id=" + std::to_string(resolvedUserId) +
+                  " does not match a user; treating the request as having no session.");
+        resolvedUserId = 0;
+        resolvedUsername = "";
+    }
 
     if (evt.type() == debate_event::LOGOUT) {
         Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
@@ -193,14 +257,18 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                 // valid fallback identity here. Leave any existing cookie-based
                 // session untouched instead of overwriting it with an empty user.
                 authSucceeded = false;
+                loginError = "Google sign-in failed. Please try again.";
             }
         } else {
             // Username-based flow.
             finalUsername = evt.login().username();
             const std::string password = evt.login().password();
 
-            // "guest" and demo-mode logins are intentionally passwordless.
-            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest";
+            // "guest", anonymous visitors, and demo-mode logins are
+            // intentionally passwordless. A visitor can change nothing, so
+            // there is nothing for a password to protect.
+            const bool passwordless = demo_mode::kDemoEnabled || finalUsername == "guest" ||
+                                      anonymous_user::IsAnonymousUsername(finalUsername);
 
             if (passwordless) {
                 moderatorUserId = moderator.createUserIfNotExist(finalUsername);
@@ -293,56 +361,6 @@ int VirtualRenderer::createUserIfNotExist(const std::string& username) {
     return user_id;
 }
 
-ui::Page VirtualRenderer::handleDebatePageLoad(const std::string& username, int debate_id) {
-    Log::info("[VirtualRenderer] handleDebatePageLoad: username=" + username + " debate_id=" + std::to_string(debate_id));
-
-    // 1. Create user in BOTH databases so MoveUserHandler::EnterDebate can find it
-    int user_id = userDb.getUserId(username);
-    if (user_id == -1) {
-        user::User newUser;
-        newUser.set_username(username);
-        newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
-
-        std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
-        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
-        user_id = userDb.createUser(username, serializedNewUser);
-
-        newUser.set_user_id(user_id);
-        serializedNewUser.resize(newUser.ByteSizeLong());
-        newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
-        userDb.updateUserProtobuf(user_id, serializedNewUser);
-        Log::info("[VirtualRenderer] Created user in VR DB: " + username + " (id=" + std::to_string(user_id) + ")");
-    } else {
-        Log::info("[VirtualRenderer] User already in VR DB: " + username + " (id=" + std::to_string(user_id) + ")");
-    }
-
-    // Also ensure user exists in the main DebateModerator DB (dbWrapper.users)
-    int moderatorUserId = moderator.createUserIfNotExist(username);
-    if (moderatorUserId != user_id) {
-        Log::info("[VirtualRenderer] User ID mismatch: VR DB=" + std::to_string(user_id) + " vs Moderator DB=" + std::to_string(moderatorUserId));
-    }
-    Log::info("[VirtualRenderer] Moderator DB user_id: " + std::to_string(moderatorUserId));
-
-    // 2. Send ENTER_DEBATE event to load the debate
-    debate_event::DebateEvent evt;
-    evt.set_type(debate_event::ENTER_DEBATE);
-    evt.mutable_enter_debate()->set_debate_id(debate_id);
-    evt.mutable_user()->set_user_id(moderatorUserId);
-    evt.mutable_user()->set_username(username);
-    evt.mutable_user()->set_is_logged_in(true);
-
-    moderator_to_vr::ModeratorToVRMessage info = moderator.handleRequest(evt);
-
-    // 3. Check if debate exists — collection has no claims if debate doesn't exist
-    if (info.collection().claims_by_id_size() == 0) {
-        Log::warn("[VirtualRenderer] Debate " + std::to_string(debate_id) + " does not exist for user " + username);
-        return ErrorPageGenerator::GenerateErrorPage();
-    }
-
-    // 4. Generate layout page
-    return LayoutGenerator::generateLayout(info, userDb);
-}
-
 int VirtualRenderer::createUserWithGoogleInfo(const std::string& username, const std::string& google_sub, const std::string& email) {
     int user_id = userDb.getUserId(username);
     if (user_id == -1) {
@@ -386,4 +404,39 @@ void VirtualRenderer::updateGoogleSub(int user_id, const std::string& google_sub
     userDb.updateUserProtobuf(user_id, updated);
 
     Log::info("[VirtualRenderer] Updated google_sub for user_id=" + std::to_string(user_id));
+}
+
+void VirtualRenderer::signInAsVisitor(debate_event::DebateEvent& evt,
+                                      const client_message::ClientMessage& message,
+                                      const httplib::Request& req, httplib::Response& res) {
+    // The browser keeps its visitor name in localStorage and sends it with
+    // every message, so a reader who comes back (or signs out) is the same
+    // visitor as before. A name not of exactly that shape is ignored.
+    std::string name;
+    for (const auto& comp : message.page_data().components()) {
+        if (comp.id() == "visitorName" && anonymous_user::IsWellFormedVisitorName(comp.value())) {
+            name = comp.value();
+            break;
+        }
+    }
+    if (name.empty()) {
+        name = makeVisitorName();
+    }
+
+    const int userId = moderator.createUserIfNotExist(name);
+    if (userDb.getUserId(name) == -1) {
+        createUserIfNotExist(name);
+    }
+    // Replace any cookie this response already carries (a sign-out's
+    // expiring ones): the order of repeated headers is not kept, so an
+    // expiry could otherwise land after the visitor's cookie and undo it.
+    res.headers.erase("Set-Cookie");
+    parseCookie::setCookieUserId(req, res, userId);
+    parseCookie::setCookieUsername(req, res, name);
+
+    evt.mutable_user()->set_user_id(userId);
+    evt.mutable_user()->set_username(name);
+    evt.mutable_user()->set_is_logged_in(true);
+    Log::info("[VirtualRenderer] No session; signed in as visitor " + name + " (user_id=" +
+              std::to_string(userId) + ")");
 }

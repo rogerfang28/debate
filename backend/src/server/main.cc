@@ -53,11 +53,6 @@ int main() {
     handler.handleRequest(req, res);
   });
 
-  // GET /api/ with ?id=<debate_id>&username=<username>
-  svr.Get("/api", [&handler](const httplib::Request& req, httplib::Response& res) {
-    handler.handleGetRequest(req, res);
-  });
-
   // ---------- Start server ----------
   const char* HOST = std::getenv("DEBATE_SERVER_HOST");
   if (HOST == nullptr || HOST[0] == '\0') {

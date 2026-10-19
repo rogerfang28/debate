@@ -79,7 +79,11 @@ void Log::info(const std::string& msg) {
         << "\033[0m\n";
 
     std::lock_guard<std::mutex> lock(logMutex);
-    std::cout << oss.str();
+    // Flushed explicitly: stdout is fully buffered whenever it is a pipe rather
+    // than a console, so without this nothing appears until 4KB has piled up or
+    // the process exits -- which is precisely when logs are being read through
+    // a redirect and matter most.
+    std::cout << oss.str() << std::flush;
 }
 
 void Log::debug(const std::string& msg) {
@@ -91,5 +95,5 @@ void Log::debug(const std::string& msg) {
         << "\033[0m\n";
 
     std::lock_guard<std::mutex> lock(logMutex);
-    std::cout << oss.str();
+    std::cout << oss.str() << std::flush;
 }

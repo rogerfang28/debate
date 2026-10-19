@@ -1,4 +1,5 @@
 #include "ChallengeHandler.h"
+#include "../../../utils/BasisRegistry.h"
 
 #include <iostream>
 #include <set>
@@ -91,38 +92,125 @@ void ChallengeHandler::AddLinkToBeChallenged(const int& link_id, const int& user
     // get the user from the database
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
+    // Putting a link into a challenge when no challenge is under way STARTS
+    // one, modal open, with the link already picked. That is what the
+    // selected-argument panel's Challenge button means; making it two clicks
+    // (start, then pick) would only be ceremony.
+    auto* debating = userProto.mutable_engagement()->mutable_debating_info();
+    if (debating->current_debate_action().action_type() !=
+        user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM) {
+        debating->mutable_current_debate_action()->set_action_type(
+            user_engagement::DebatingInfo::CurrentDebateAction::CHALLENGING_CLAIM);
+        debating->mutable_challenging_info()->set_opened_challenge_modal(true);
+        Log::debug("[AddLinkToBeChallengedHandler] Started a challenge for user: " + std::to_string(user_id));
+    }
+
     // set the challenging_info current_link to the link to be challenged
     userProto.mutable_engagement()->mutable_debating_info()->mutable_challenging_info()->add_link_ids(link_id);
     Log::debug("[AddLinkToBeChallengedHandler] Set challenging_info current_link to link: " + std::to_string(link_id) + " for user: " + std::to_string(user_id));
     debateWrapper.updateUserProtobuf(user_id, userProto);
 }
 
-void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentence, const std::string& challenge_description, const int& user_id, DebateWrapper& debateWrapper) {
+void ChallengeHandler::SubmitChallengeClaim(const std::vector<std::string>& challenge_sentences, const std::vector<std::string>& descriptions, const std::string& basis_in, const int& user_id, DebateWrapper& debateWrapper, int voice_id, const debate::Source* source) {
+    // Same rule as AddClaimUnderClaim: only a basis the registry knows is stored.
+    const std::string basis = bases::Sanitize(basis_in);
     user::User userProto = debateWrapper.getUserProtobuf(user_id);
 
     // find the current claim (it's challenging that one)
     int current_claim_id = userProto.engagement().debating_info().current_claim().id();
     int current_debate_id = userProto.engagement().debating_info().debate_id();
 
-    // NEW FLOW: also create a challenge claim in the same debate and connect it
-    // to the challenged claim with a CHALLENGE link.
-    int same_debate_challenge_claim_id = debateWrapper.createClaim(
-        challenge_sentence,
-        challenge_description.empty() ? "challenge claim" : challenge_description,
-        user_id,
-        current_debate_id
-    );
-    int same_debate_challenge_link_id = -1;
+    // Several sentences = ONE opposing relation with several from-claims:
+    // "these together refute that", not N independent challenges. The first
+    // row establishes the relation id; the rest join it.
+    //
+    // The link's connection carries the basis, matching how support relations
+    // store it. Empty falls back to the old fixed "challenge link" string so
+    // existing rows and callers are unaffected.
+    const std::string connection = basis.empty() ? "challenge link" : basis;
 
-    if (same_debate_challenge_claim_id != -1) {
-        same_debate_challenge_link_id = debateWrapper.addLink(
-            same_debate_challenge_claim_id,
-            current_claim_id,
-            "challenge link",
+    // A LINK in the challenge list means the target is an ARGUMENT, not a
+    // claim: "your evidence is real, but it does not prove that". The row is
+    // aimed at that relation, and CLAIM_ID_TO holds the claim the argument
+    // was for so readers that know only claims still draw the challenge
+    // beside the right claim. One challenge attacks one thing; if several
+    // links were collected the first is the target and the rest are ignored
+    // with a warning, since silently picking the last would be worse.
+    int target_relation_id = 0;
+    int argument_target_claim_id = 0;
+    {
+        const auto& challenging = userProto.engagement().debating_info().challenging_info();
+        if (challenging.link_ids_size() > 0) {
+            const debate::Relationship targetRel = debateWrapper.getLinkById(challenging.link_ids(0));
+            if (targetRel.id() != 0) {
+                target_relation_id = targetRel.id();
+                argument_target_claim_id =
+                    targetRel.to_case() == debate::Relationship::kToClaimId
+                        ? targetRel.to_claim_id() : targetRel.link().connect_to();
+                if (challenging.link_ids_size() > 1) {
+                    Log::warn("[SubmitChallengeClaimHandler] " +
+                              std::to_string(challenging.link_ids_size()) +
+                              " links collected; a challenge attacks one argument. Using relation " +
+                              std::to_string(target_relation_id));
+                }
+            } else {
+                Log::warn("[SubmitChallengeClaimHandler] Link " +
+                          std::to_string(challenging.link_ids(0)) +
+                          " not found; challenging the current claim instead");
+            }
+        }
+    }
+    const int challenged_claim_for_row =
+        target_relation_id > 0 ? argument_target_claim_id : current_claim_id;
+
+    int same_debate_challenge_claim_id = -1;
+    int same_debate_challenge_link_id = -1;
+    int challenge_relation_id = 0;
+
+    // Each challenge claim carries its OWN description, at the same index.
+    for (size_t i = 0; i < challenge_sentences.size(); ++i) {
+        const std::string& sentence = challenge_sentences[i];
+        const std::string description =
+            i < descriptions.size() && !descriptions[i].empty()
+                ? descriptions[i] : std::string("challenge claim");
+        if (sentence.find_first_not_of(" \t\r\n") == std::string::npos) {
+            continue;  // blank box
+        }
+        const int claim_id = debateWrapper.createClaim(
+            sentence,
+            description,
             user_id,
             current_debate_id,
-            debate::LinkType::CHALLENGE
+            voice_id,
+            source
         );
+        if (claim_id == -1) {
+            continue;
+        }
+
+        const int link_id = debateWrapper.addLink(
+            claim_id,
+            challenged_claim_for_row,
+            connection,
+            user_id,
+            current_debate_id,
+            debate::LinkType::CHALLENGE,
+            challenge_relation_id,
+            target_relation_id
+        );
+
+        if (challenge_relation_id == 0) {
+            challenge_relation_id = link_id;  // its own relation; the rest join
+        }
+        if (same_debate_challenge_claim_id == -1) {
+            // Downstream code (cursor placement, concede lookup) expects a
+            // single challenge claim; the first is the one it means.
+            same_debate_challenge_claim_id = claim_id;
+            same_debate_challenge_link_id = link_id;
+        }
+    }
+
+    if (same_debate_challenge_claim_id != -1) {
         Log::debug(
             "[SubmitChallengeClaimHandler] Added same-debate challenge claim id=" +
             std::to_string(same_debate_challenge_claim_id) +
@@ -136,17 +224,10 @@ void ChallengeHandler::SubmitChallengeClaim(const std::string& challenge_sentenc
         );
     }
 
-    // No status updates needed here — the cascade in UpdateStatusOfAllClaimsInDebate
-    // handles status based on challenge claim status.
-
-    // Record the challenger's view: they think the challenged claim is FALSE
-    debate::Claim challengedClaim = debateWrapper.getClaimById(current_claim_id);
-    user::User challengerProto = debateWrapper.getUserProtobuf(user_id);
-    (*challengedClaim.mutable_user_statuses())[challengerProto.username()] = debate::ClaimStatus::FALSE_CLAIM;
-    debateWrapper.updateClaimInDB(challengedClaim);
-
-    // Propagate statuses through the graph (per-user cascade)
-    debateWrapper.PropagateClaimStatuses(current_debate_id);
+    // No status is written here. The challenger's view -- the challenged
+    // claim is FALSE for them, or for the voice they named; nothing at all
+    // for an undercut -- is the OPPOSE move the logger appends for this
+    // event, and the page replays the log.
 
     // close the challenging modal and reset stuff
     CancelChallengeClaim(user_id, debateWrapper);
@@ -178,7 +259,10 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
 
     // Use the challenge_link_id to directly look up the challenge link.
     // The link's connect_from = challenge claim ID, connect_to = challenged claim ID.
-    debate::Relationship::Link challengeLink = debateWrapper.getLinkById(challenge_link_id).link();
+    const debate::Relationship challengeRel = debateWrapper.getLinkById(challenge_link_id);
+    const debate::Relationship::Link challengeLink = challengeRel.link();
+    // An undercut attacks an argument, not the claim in connect_to().
+    const bool undercutsArgument = challengeRel.to_case() == debate::Relationship::kToRelationId;
     if (challenge_link_id <= 0 || challengeLink.id() == 0 || challengeLink.link_type() != debate::LinkType::CHALLENGE) {
         Log::error("[ConcedeChallengeHandler] Cannot find challenge with id " + std::to_string(challenge_link_id));
         CancelChallengeClaim(user_id, debateWrapper);
@@ -191,82 +275,10 @@ void ChallengeHandler::ConcedeChallenge(const int& user_id, const int& challenge
     Log::debug("[ConcedeChallengeHandler] Found challenge link " + std::to_string(challenge_link_id) +
               ": from=" + std::to_string(challengeClaimId) + " to=" + std::to_string(challengedClaimId));
 
-    // Step 1: Mark the challenge claim as TRUE_CLAIM for the concessor.
-    // When User A concedes, they admit the challenge was valid → challenge claim is TRUE for them.
-    debate::Claim challengeClaimUpdated = debateWrapper.getClaimById(challengeClaimId);
-    (*challengeClaimUpdated.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-    debateWrapper.updateClaimInDB(challengeClaimUpdated);
-    Log::debug("[ConcedeChallengeHandler] User " + username + " conceded challenge claim " +
-              std::to_string(challengeClaimId) + " → TRUE_CLAIM");
-
-    // Step 1b: Mark the challenged claim (the original claim being attacked) as FALSE_CLAIM
-    // for the concessor — they admit their own claim was wrong.
-    debate::Claim challengedClaimUpdated = debateWrapper.getClaimById(challengedClaimId);
-    if (challengedClaimUpdated.id() != 0) {
-        (*challengedClaimUpdated.mutable_user_statuses())[username] = debate::ClaimStatus::FALSE_CLAIM;
-        debateWrapper.updateClaimInDB(challengedClaimUpdated);
-        Log::debug("[ConcedeChallengeHandler] User " + username + " concedes challenged claim " +
-                  std::to_string(challengedClaimId) + " → FALSE_CLAIM");
-    }
-
-    // Step 1c: Mark all PARENT_CHILD descendants of the challenge claim as TRUE for concessor.
-    // When user concedes, they agree the entire challenge chain is correct —
-    // not just the root challenge claim, but every child (evidence) under it.
-    {
-        std::set<int> visited;
-        std::vector<int> queue = {challengeClaimId};
-        visited.insert(challengeClaimId);
-        while (!queue.empty()) {
-            int currentId = queue.back();
-            queue.pop_back();
-            auto allLinksForChildren = debateWrapper.getLinksForDebate(debateId);
-            for (const auto& linkTuple : allLinksForChildren) {
-                int fromId = std::get<1>(linkTuple);
-                int toId = std::get<2>(linkTuple);
-                int lType = std::get<5>(linkTuple);
-                if (lType == static_cast<int>(debate::LinkType::PARENT_CHILD) && fromId == currentId) {
-                    if (visited.find(toId) == visited.end()) {
-                        visited.insert(toId);
-                        debate::Claim childClaim = debateWrapper.getClaimById(toId);
-                        if (childClaim.id() != 0) {
-                            (*childClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-                            debateWrapper.updateClaimInDB(childClaim);
-                            Log::debug("[ConcedeChallengeHandler] Child claim " + std::to_string(toId) +
-                                      " → TRUE for " + username);
-                        }
-                        queue.push_back(toId);
-                    }
-                }
-            }
-        }
-    }
-
-    // Step 2: Find downstream challenges of the conceded claim and set them to TRUE.
-    // When A concedes to challenge 8 (targeting 7), any claim that challenges 8 is vindicated.
-    if (debateId > 0) {
-        auto allLinks2 = debateWrapper.getLinksForDebate(debateId);
-        for (const auto& linkTuple : allLinks2) {
-            int fromClaimId = std::get<1>(linkTuple);
-            int toClaimId = std::get<2>(linkTuple);
-            int linkType = std::get<5>(linkTuple);
-            if (linkType == static_cast<int>(debate::LinkType::CHALLENGE) && toClaimId == challengeClaimId) {
-                // fromClaimId challenges the conceded claim → vindicated
-                debate::Claim downstreamClaim = debateWrapper.getClaimById(fromClaimId);
-                if (downstreamClaim.id() != 0) {
-                    (*downstreamClaim.mutable_user_statuses())[username] = debate::ClaimStatus::TRUE_CLAIM;
-                    debateWrapper.updateClaimInDB(downstreamClaim);
-                    Log::debug("[ConcedeChallengeHandler] Downstream challenge " + std::to_string(fromClaimId) +
-                              " → TRUE for " + username);
-                }
-            }
-        }
-    }
-
-    // Step 3: Propagate — cascades status changes to all affected users.
-    if (debateId > 0) {
-        std::set<int> conceded_claims = {challengeClaimId};
-        debateWrapper.PropagateClaimStatuses(debateId, conceded_claims);
-    }
+    // No status is written here. What conceding means for the conceder --
+    // the challenge and everything under it TRUE, the challenged claim FALSE
+    // unless the challenge was an undercut -- is the CONCEDE move the logger
+    // appends for this event, and the page replays the log.
 
     // clear the user's challenging state
     CancelChallengeClaim(user_id, debateWrapper);

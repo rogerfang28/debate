@@ -17,4 +17,15 @@ message User {
   // PBKDF2-encoded password ("pbkdf2$<iters>$<salt_hex>$<hash_hex>").
   // Empty means no password has been set for this account yet.
   string password_hash = 8;
+
+  // The sign-in modal, drawn over whatever page this user is on. Only an
+  // anonymous visitor ever has it open: the header's "Sign in" opens it, and
+  // so does pressing a button that would change a debate.
+  bool sign_in_open = 9;
+  // What the visitor pressed that needs an account: a serialized
+  // debate_event.DebateEvent with its user cleared. Kept on the record so it
+  // survives the login round trip; on a successful sign-in it is taken off
+  // the visitor (before anything runs, so it can only run once) and replayed
+  // as the signed-in user. Empty when the modal was opened from the header.
+  bytes pending_action = 10;
 }

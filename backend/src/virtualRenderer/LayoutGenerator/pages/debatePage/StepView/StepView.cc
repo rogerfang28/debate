@@ -1,11 +1,21 @@
+#include "../../../../../utils/DemoMode.h"
+#include "../../../../../utils/AnonymousUser.h"
+#include "../../../../../utils/ClaimVoice.h"
+#include "../../../../../utils/DebateChat.h"
+#include "../../../../../utils/Ordered.h"
 #include "StepView.h"
 #include "../../../ComponentGenerator.h"
 #include "../FullDebateView/FullDebatePageGenerator.h"
 #include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
+#include "../../../../../utils/TutorialLibrary.h"
+#include <map>
+#include <set>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 // Local copy of FullDebatePageGenerator.cc's ClaimStatusToLabel -- that one
@@ -37,14 +47,14 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
     if (it != userStatuses.end()) {
         return it->second;
     }
-    if (viewerUserId == claim.creator_id()) {
+    if (viewerUserId == ClaimVoiceId(claim)) {
         return debate::ClaimStatus::TRUE_CLAIM;
     }
     return debate::ClaimStatus::UNDETERMINED;
 }
 
 // Builds the "Selected Claim" info panel: sentence, status, creator,
-// description, and contextual action buttons (Add Child + Delete for the
+// description, and contextual action buttons (Support + Delete for the
 // viewer's own claims, Challenge for others').
 static ui::Component BuildSelectedClaimPanel(
     int claimId,
@@ -125,17 +135,56 @@ static ui::Component BuildSelectedClaimPanel(
     addField("Sentence", "Selected Claim:", claim.sentence(), false);
     debate::ClaimStatus viewerStatus = StepViewMapClaimStatusForUser(claim, viewerUserId, viewerUsername);
     addField("Status", "Status:", StepViewClaimStatusToLabel(viewerStatus), false);
+    // Who else holds this claim true. Whoever it belongs to is left out: it
+    // is theirs, and listing them would say nothing.
+    {
+        const std::string holder = userDb.getUsername(ClaimVoiceId(claim));
+        std::string agreed;
+        // By name: user_statuses is a protobuf map, unspecified in order.
+        for (const auto* entry : ordered::Entries(claim.user_statuses())) {
+            if (entry->second != debate::ClaimStatus::TRUE_CLAIM || entry->first == holder) continue;
+            if (!agreed.empty()) agreed += ", ";
+            agreed += entry->first;
+        }
+        if (!agreed.empty()) {
+            addField("AgreedBy", "Agreed by:", agreed, false);
+        }
+    }
     std::string creatorUsername = userDb.getUsername(claim.creator_id());
     if (creatorUsername.empty()) {
         creatorUsername = "User " + std::to_string(claim.creator_id());
     }
-    addField("Creator", "Created by:", creatorUsername, false);
+    // A claim entered on someone else's behalf shows both: whose claim it is,
+    // and who typed it in. One entered by its own author shows one line.
+    if (claim.voice_id() > 0 && claim.voice_id() != claim.creator_id()) {
+        std::string voiceUsername = userDb.getUsername(claim.voice_id());
+        if (voiceUsername.empty()) {
+            voiceUsername = "User " + std::to_string(claim.voice_id());
+        }
+        addField("Voice", "Said by:", voiceUsername, false);
+        addField("Creator", "Entered by:", creatorUsername, false);
+    } else {
+        addField("Creator", "Created by:", creatorUsername, false);
+    }
     addField(
         "Description",
         "Description:",
         claim.description().empty() ? "(no description)" : claim.description(),
         claim.description().empty()
     );
+    // Where the claim was taken from, when it was. Shown only when there is
+    // one: most claims are said directly and a "(no source)" line on each
+    // would be noise.
+    for (int i = 0; i < claim.sources_size(); ++i) {
+        const debate::Source& source = claim.sources(i);
+        const std::string suffix = i == 0 ? std::string() : std::to_string(i + 1);
+        if (!source.url().empty()) {
+            addField("Source" + suffix, "Source:", source.url(), false);
+        }
+        if (!source.excerpt().empty()) {
+            addField("SourceExcerpt" + suffix, "It says:", "\u201c" + source.excerpt() + "\u201d", true);
+        }
+    }
 
     ui::Component buttonRow = ComponentGenerator::createContainer(
         "selectedClaimButtonRow",
@@ -149,30 +198,53 @@ static ui::Component BuildSelectedClaimPanel(
     );
     (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
 
-    // A "Concede" button shows when the selected claim is itself a challenge
-    // claim (from_claim_id == claimId, is_challenge) and the claim it
-    // challenges was created by the viewer -- i.e. someone is challenging
-    // the viewer's own claim, and the viewer is looking at that challenge.
+    // A read-only demo build, and an anonymous visitor, see the claim and
+    // none of the buttons that change it: a visitor can read, and signs in
+    // (top right) to take part. The server still refuses a visitor's
+    // press, so hiding the buttons is presentation, not the guard.
+    if (anonymous_user::IsReadOnlyViewer(viewerUsername) || anonymous_user::IsAnonymousUsername(viewerUsername)) {
+        ComponentGenerator::addChild(&panel, buttonRow);
+        return panel;
+    }
+
+    // Who may do what on this claim:
+    //   - the viewer HOLDS it (asserted it, it was entered in their voice, or
+    //     they agreed with it): they Support it, and if someone challenges it
+    //     they answer for themselves. Holding is what the replayed status
+    //     says, so a voice's claim that a reader agreed with is the reader's
+    //     to defend too. The original holder has no special standing.
+    //   - the viewer does not hold it: they Challenge it, or Agree with it.
+    //   - the viewer ENTERED it: they may Delete it, whoever holds it.
+    const bool viewerHolds = viewerStatus == debate::ClaimStatus::TRUE_CLAIM;
+    const bool viewerEntered = viewerUserId > 0 && claim.creator_id() == viewerUserId;
+    const bool viewerIsVoice = viewerUserId > 0 && ClaimVoiceId(claim) == viewerUserId;
+
+    // Concede: the selected claim is a challenge, and the viewer holds the
+    // claim it challenges.
     int concedeChallengeLinkId = -1;
     for (const auto& link : fullDebateInfo.full_debate_tree().links()) {
         if (link.is_challenge() && link.from_claim_id() == claimId) {
             auto challengedIt = collectionProto.claims_by_id().find(link.to_claim_id());
-            if (challengedIt != collectionProto.claims_by_id().end() &&
-                viewerUserId > 0 && challengedIt->second.creator_id() == viewerUserId) {
+            if (challengedIt != collectionProto.claims_by_id().end() && viewerUserId > 0 &&
+                StepViewMapClaimStatusForUser(challengedIt->second, viewerUserId, viewerUsername) ==
+                    debate::ClaimStatus::TRUE_CLAIM) {
                 concedeChallengeLinkId = link.link_id();
             }
             break;
         }
     }
 
-    const bool isOwnClaim = viewerUserId > 0 && claim.creator_id() == viewerUserId;
-    if (isOwnClaim) {
+    if (viewerHolds) {
+        // "Support", not "Add Child": a child claim is evidence offered FOR its
+        // parent, so the relationship is what the user is actually creating.
+        // The component id stays addChildClaimButton -- it is the wire to the
+        // existing event handler, not a label.
         ui::Component addChildButton = ComponentGenerator::createButton(
             "addChildClaimButton",
-            "Add Child",
+            "Support",
             "",
-            "bg-blue-600",
-            "hover:bg-blue-700",
+            "bg-gray-700",
+            "hover:bg-gray-600",
             "text-white",
             "px-3 py-1.5",
             "rounded",
@@ -180,18 +252,21 @@ static ui::Component BuildSelectedClaimPanel(
         );
         ComponentGenerator::addChild(&buttonRow, addChildButton);
 
-        ui::Component deleteButton = ComponentGenerator::createButton(
-            "deleteStatementButton",
-            "Delete",
-            "",
-            "bg-red-600",
-            "hover:bg-red-700",
-            "text-white",
-            "px-3 py-1.5",
-            "rounded",
-            "text-sm"
-        );
-        ComponentGenerator::addChild(&buttonRow, deleteButton);
+        // A holder who did not make the claim can stop holding it.
+        if (!viewerIsVoice) {
+            ui::Component withdrawButton = ComponentGenerator::createButton(
+                "unendorseClaimButton_" + std::to_string(claimId),
+                "Withdraw agreement",
+                "",
+                "bg-gray-600",
+                "hover:bg-gray-700",
+                "text-white",
+                "px-3 py-1.5",
+                "rounded",
+                "text-sm"
+            );
+            ComponentGenerator::addChild(&buttonRow, withdrawButton);
+        }
     } else {
         // challengeClaimButton now enters challenging mode AND opens the
         // challenge modal in one step (see ChallengeHandler::StartChallengeClaim).
@@ -207,6 +282,34 @@ static ui::Component BuildSelectedClaimPanel(
             "text-sm"
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
+
+        ui::Component agreeButton = ComponentGenerator::createButton(
+            "endorseClaimButton_" + std::to_string(claimId),
+            "Agree",
+            "",
+            "bg-green-600",
+            "hover:bg-green-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, agreeButton);
+    }
+
+    if (viewerEntered) {
+        ui::Component deleteButton = ComponentGenerator::createButton(
+            "deleteStatementButton",
+            "Delete",
+            "",
+            "bg-red-600",
+            "hover:bg-red-700",
+            "text-white",
+            "px-3 py-1.5",
+            "rounded",
+            "text-sm"
+        );
+        ComponentGenerator::addChild(&buttonRow, deleteButton);
     }
 
     if (concedeChallengeLinkId > 0) {
@@ -238,6 +341,202 @@ static ui::Component BuildSelectedClaimPanel(
 // A challenge Ck -> T counts as "answered" if it was challenged back (some
 // challenge link points to Ck) or conceded (T's owner marked Ck TRUE_CLAIM,
 // which is exactly what ConcedeChallenge writes).
+// The panel for a selected ARGUMENT: the relation between claims, the pill in
+// the graph. Deliberately the claim panel's twin -- same id, same fields in
+// the same order, same one Challenge button -- so selecting a pill feels like
+// selecting a claim. Only the words differ: what is offered, for what, of
+// what kind, and whether it still counts for the viewer.
+static ui::Component BuildSelectedRelationPanel(
+    int relationId,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    ui::Component panel = ComponentGenerator::createContainer(
+        "selectedClaimPanel",
+        "w-full",
+        "bg-gray-800",
+        "p-4",
+        "",
+        "border border-gray-700",
+        "rounded-lg",
+        ""
+    );
+    (*panel.mutable_css())["display"] = "flex";
+    (*panel.mutable_css())["flex-direction"] = "column";
+    (*panel.mutable_css())["gap"] = "0.5rem";
+
+    auto relIt = collectionProto.links_by_id().find(relationId);
+    if (relIt == collectionProto.links_by_id().end()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "selectedClaimEmpty", "No argument selected.", "text-sm", "text-gray-400", "", ""));
+        return panel;
+    }
+    const debate::Relationship& rel = relIt->second;
+
+    auto sentenceOf = [&](int claimId) {
+        auto it = collectionProto.claims_by_id().find(claimId);
+        return it != collectionProto.claims_by_id().end()
+            ? it->second.sentence() : "claim " + std::to_string(claimId);
+    };
+    auto addField = [&](const std::string& idSuffix, const std::string& label,
+                        const std::string& value, bool italic) {
+        ui::Component row = ComponentGenerator::createContainer(
+            "selectedRelation" + idSuffix + "Row", "", "", "", "", "", "", "");
+        (*row.mutable_css())["display"] = "flex";
+        (*row.mutable_css())["flex-direction"] = "column";
+        (*row.mutable_css())["gap"] = "0.15rem";
+        ComponentGenerator::addChild(&row, ComponentGenerator::createText(
+            "selectedRelation" + idSuffix + "Label", label, "text-xs", "text-gray-500",
+            "font-semibold uppercase tracking-wide", ""));
+        ui::Component valueText = ComponentGenerator::createText(
+            "selectedRelation" + idSuffix + "Value", value, "text-sm", "text-white", "",
+            italic ? "italic" : "");
+        (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        ComponentGenerator::addChild(&row, valueText);
+        ComponentGenerator::addChild(&panel, row);
+    };
+
+    // What is offered, and for (or against) what. Reads as one sentence, the
+    // way the claim panel's first field reads as the claim.
+    std::string offered;
+    for (int from : rel.from_claim_ids()) {
+        if (!offered.empty()) {
+            offered += "  +  ";
+        }
+        offered += sentenceOf(from);
+    }
+    const bool opposes = rel.role() == debate::OPPOSES;
+    std::string target = rel.to_case() == debate::Relationship::kToClaimId
+        ? sentenceOf(rel.to_claim_id())
+        : "the argument for: " + sentenceOf(rel.link().connect_to());
+    addField("Sentence", "Selected Argument:",
+             offered + (opposes ? "  --  against: " : "  --  for: ") + target, false);
+
+    // Status FOR THE VIEWER, in the claim panel's slot. An argument is undercut
+    // for whoever holds a challenge against it TRUE; for them it carries
+    // nothing. Others' challenges are a count, since they change nothing here.
+    int attacks = 0;
+    bool undercut = false;
+    for (const auto& entry : collectionProto.links_by_id()) {
+        const debate::Relationship& other = entry.second;
+        if (other.to_case() != debate::Relationship::kToRelationId ||
+            other.to_relation_id() != relationId) {
+            continue;
+        }
+        ++attacks;
+        for (int from : other.from_claim_ids()) {
+            auto cIt = collectionProto.claims_by_id().find(from);
+            if (cIt != collectionProto.claims_by_id().end() &&
+                StepViewMapClaimStatusForUser(cIt->second, viewerUserId, viewerUsername) ==
+                    debate::ClaimStatus::TRUE_CLAIM) {
+                undercut = true;
+            }
+        }
+    }
+    addField("Status", "Status:",
+             undercut ? "Undercut (you hold a challenge against it)"
+             : attacks > 0 ? "Challenged (" + std::to_string(attacks) + "), still counts for you"
+             : "Standing", false);
+
+    std::string creatorUsername = userDb.getUsername(rel.creator_id());
+    if (creatorUsername.empty()) {
+        creatorUsername = "User " + std::to_string(rel.creator_id());
+    }
+    addField("Creator", "Created by:", creatorUsername, false);
+
+    std::string basis = rel.basis();
+    const bool noBasis = basis.empty() || basis == "parent to child connection" || basis == "challenge link";
+    addField("Basis", "Kind of reason:", noBasis ? "(none chosen)" : basis, noBasis);
+
+    ui::Component buttonRow = ComponentGenerator::createContainer(
+        "selectedRelationButtonRow", "flex gap-2", "", "", "", "", "", "");
+    (*buttonRow.mutable_css())["margin-top"] = "0.5rem";
+    if (!anonymous_user::IsReadOnlyViewer(viewerUsername) && !anonymous_user::IsAnonymousUsername(viewerUsername)) {
+        // The claim panel's Challenge button, for an argument: one click opens
+        // the challenge modal with this argument as the target.
+        ComponentGenerator::addChild(&buttonRow, ComponentGenerator::createButton(
+            "challengeSelectedLinkButton_" + std::to_string(relationId),
+            "Challenge", "", "bg-orange-600", "hover:bg-orange-700",
+            "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    ComponentGenerator::addChild(&panel, buttonRow);
+    return panel;
+}
+
+// Open challenges, by person.
+//
+// A challenge on a claim is a challenge to EVERYONE who holds that claim
+// true: whoever asserted it, whoever it was entered in the voice of, and
+// whoever agreed with it. Each holder answers for themselves. So the report
+// is per holder: the challenges on claims they hold that they have not
+// answered. A holder has answered when they no longer hold the claim (they
+// conceded, or withdrew their agreement), or when they have challenged the
+// challenge back.
+//
+// A voice never logs in, so its list only shrinks when the reader records
+// something the voice actually did -- which is the point: the list shows
+// where each person has gone quiet.
+struct OpenChallenge {
+    int challengeClaimId = 0;
+    int targetClaimId = 0;
+};
+
+// People by name (case-insensitive); each person's challenges in the order
+// the tree's links come, which is relation id, i.e. the order they were made.
+using OpenByHolder = std::map<std::string, std::vector<OpenChallenge>, ordered::NameLessFn>;
+
+static OpenByHolder OpenChallengesByHolder(
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb
+) {
+    OpenByHolder open;
+    if (!fullDebateInfo.has_full_debate_tree()) return open;
+    const auto& tree = fullDebateInfo.full_debate_tree();
+
+    // Whose claim a challenge is, by name: the voice if one was named.
+    auto holderOf = [&](int claimId) -> std::string {
+        auto it = collectionProto.claims_by_id().find(claimId);
+        if (it == collectionProto.claims_by_id().end()) return std::string();
+        return userDb.getUsername(ClaimVoiceId(it->second));
+    };
+
+    // Who has challenged each claim back, by name.
+    std::unordered_map<int, std::set<std::string>> counteredBy;
+    for (const auto& link : tree.links()) {
+        if (!link.is_challenge()) continue;
+        const std::string by = holderOf(link.from_claim_id());
+        if (!by.empty()) counteredBy[link.to_claim_id()].insert(by);
+    }
+
+    for (const auto& link : tree.links()) {
+        if (!link.is_challenge()) continue;
+        const int challengeClaimId = link.from_claim_id();
+        const int targetClaimId = link.to_claim_id();
+        auto targetIt = collectionProto.claims_by_id().find(targetClaimId);
+        auto challengeIt = collectionProto.claims_by_id().find(challengeClaimId);
+        if (targetIt == collectionProto.claims_by_id().end() ||
+            challengeIt == collectionProto.claims_by_id().end()) continue;
+
+        for (const auto& entry : targetIt->second.user_statuses()) {
+            const std::string& holder = entry.first;
+            if (entry.second != debate::ClaimStatus::TRUE_CLAIM) continue;
+            if (holder == holderOf(challengeClaimId)) continue;  // their own challenge
+            auto c = counteredBy.find(challengeClaimId);
+            if (c != counteredBy.end() && c->second.count(holder)) continue;  // answered
+            // A challenge the holder already sees as false is answered too:
+            // their own counter, held true, made it so.
+            auto view = challengeIt->second.user_statuses().find(holder);
+            if (view != challengeIt->second.user_statuses().end() &&
+                view->second == debate::ClaimStatus::FALSE_CLAIM) continue;
+            open[holder].push_back({challengeClaimId, targetClaimId});
+        }
+    }
+    return open;
+}
+
 static ui::Component BuildDebateStatusPanel(
     const rendering_info::FullDebateViewInfo& fullDebateInfo,
     const debate::Collection& collectionProto,
@@ -257,194 +556,62 @@ static ui::Component BuildDebateStatusPanel(
     );
     (*panel.mutable_css())["display"] = "flex";
     (*panel.mutable_css())["flex-direction"] = "column";
-    (*panel.mutable_css())["gap"] = "0.5rem";
+    (*panel.mutable_css())["gap"] = "0.4rem";
+    // A folding section of the inspector, titled by the client from this.
+    ComponentGenerator::addAttribute(&panel, "data-section", "Who owes a reply");
 
-    ui::Component heading = ComponentGenerator::createText(
-        "debateStatusHeading",
-        "Current Status of Debate:",
-        "text-xs",
-        "text-gray-500",
-        "font-semibold uppercase tracking-wide",
-        ""
-    );
-    ComponentGenerator::addChild(&panel, heading);
+    const auto open = OpenChallengesByHolder(fullDebateInfo, collectionProto, userDb);
 
-    std::vector<int> myChallengesToRespond;  // live challenges targeting the viewer's claims
-    std::vector<int> myPendingChallenges;    // live challenges the viewer made, awaiting a response
-    bool anyLiveChallenge = false;
-
-    if (fullDebateInfo.has_full_debate_tree()) {
-        const auto& tree = fullDebateInfo.full_debate_tree();
-
-        // PARENT_CHILD children of each claim, e.g. an evidence claim added
-        // under a challenge -- needed below to look through evidence when
-        // deciding whether a challenge has been "answered".
-        std::unordered_map<int, std::vector<int>> childrenOf;
-        for (const auto& link : tree.links()) {
-            if (!link.is_challenge()) {
-                childrenOf[link.from_claim_id()].push_back(link.to_claim_id());
-            }
-        }
-
-        // Any claim that has itself been challenged back has been "answered"
-        // and is no longer live.
-        std::unordered_set<int> challengedBack;
-        for (const auto& link : tree.links()) {
-            if (link.is_challenge()) {
-                challengedBack.insert(link.to_claim_id());
-            }
-        }
-
-        // A challenge is "answered" if IT, or any PARENT_CHILD descendant of
-        // it (e.g. an evidence claim attached to it), was itself challenged
-        // back or conceded. Challenges often target a claim's evidence
-        // rather than the claim itself, so the direct id alone isn't enough.
-        auto isAnswered = [&](int challengeClaimId, const std::string& targetOwnerName) {
-            std::vector<int> stack = {challengeClaimId};
-            std::unordered_set<int> visited;
-            while (!stack.empty()) {
-                int id = stack.back();
-                stack.pop_back();
-                if (!visited.insert(id).second) continue;
-
-                if (challengedBack.count(id)) return true;
-
-                auto it = collectionProto.claims_by_id().find(id);
-                if (it != collectionProto.claims_by_id().end()) {
-                    const auto& statuses = it->second.user_statuses();
-                    auto statusIt = statuses.find(targetOwnerName);
-                    if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::TRUE_CLAIM) {
-                        return true;  // conceded
-                    }
-                }
-
-                auto childIt = childrenOf.find(id);
-                if (childIt != childrenOf.end()) {
-                    for (int child : childIt->second) stack.push_back(child);
-                }
-            }
-            return false;
-        };
-
-        for (const auto& link : tree.links()) {
-            if (!link.is_challenge()) continue;
-            int challengeClaimId = link.from_claim_id();
-            int targetClaimId = link.to_claim_id();
-
-            auto targetIt = collectionProto.claims_by_id().find(targetClaimId);
-            if (targetIt == collectionProto.claims_by_id().end()) continue;
-            int targetOwnerId = targetIt->second.creator_id();
-            std::string targetOwnerName = userDb.getUsername(targetOwnerId);
-
-            if (isAnswered(challengeClaimId, targetOwnerName)) continue;
-
-            auto challengeIt = collectionProto.claims_by_id().find(challengeClaimId);
-            int challengeCreatorId = (challengeIt != collectionProto.claims_by_id().end())
-                ? challengeIt->second.creator_id() : -1;
-
-            anyLiveChallenge = true;
-            if (viewerUserId > 0 && targetOwnerId == viewerUserId) {
-                // Someone is challenging the viewer's claim -> viewer must respond.
-                myChallengesToRespond.push_back(challengeClaimId);
-            } else if (viewerUserId > 0 && challengeCreatorId == viewerUserId) {
-                // The viewer made this challenge -> waiting on the opponent.
-                myPendingChallenges.push_back(challengeClaimId);
-            }
-        }
+    if (open.empty()) {
+        ui::Component none = ComponentGenerator::createText(
+            "debateStatusText", "No open challenges.", "text-sm", "", "", "");
+        ComponentGenerator::addChild(&panel, none);
+        return panel;
     }
 
-    // With no live challenges, the root claim's status decides who's ahead:
-    //   - viewer IS the root creator and their root claim is FALSE -> they
-    //     conceded/lost an exchange and must go on the offensive or lose.
-    //   - viewer is NOT the root creator and the creator's root claim is FALSE
-    //     -> the creator conceded, so the viewer is winning and just needs the
-    //     opponent to stay silent.
-    bool mustWinBack = false;  // defender is losing
-    bool aboutToWin = false;   // attacker is winning
-    if (!anyLiveChallenge && fullDebateInfo.has_full_debate_tree()) {
-        int rootId = fullDebateInfo.full_debate_tree().root_claim_id();
-        auto rootIt = collectionProto.claims_by_id().find(rootId);
-        if (rootIt != collectionProto.claims_by_id().end() && viewerUserId > 0) {
-            int rootCreatorId = rootIt->second.creator_id();
-            const auto& statuses = rootIt->second.user_statuses();
-            if (rootCreatorId == viewerUserId) {
-                auto statusIt = statuses.find(viewerUsername);
-                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
-                    mustWinBack = true;
-                }
-            } else {
-                std::string rootCreatorName = userDb.getUsername(rootCreatorId);
-                auto statusIt = statuses.find(rootCreatorName);
-                if (statusIt != statuses.end() && statusIt->second == debate::ClaimStatus::FALSE_CLAIM) {
-                    aboutToWin = true;
-                }
-            }
-        }
+    // The viewer first, then everyone else by name.
+    std::vector<std::string> order;
+    if (open.count(viewerUsername)) order.push_back(viewerUsername);
+    for (const auto& entry : open) {
+        if (entry.first != viewerUsername) order.push_back(entry.first);
     }
 
-    // TextComponent applies an inline color that would override a Tailwind
-    // text-color class, so the status color is set via the css map (inline)
-    // instead. Empty string leaves TextComponent's default color in place.
-    std::string statusText;
-    std::string statusColorHex;
-    if (!anyLiveChallenge) {
-        if (mustWinBack) {
-            statusText = "No current challenges. If you don't challenge your opponent, you will lose the debate.";
-            statusColorHex = "#f97316";  // orange-500
-        } else if (aboutToWin) {
-            statusText = "No current challenges. If your opponent doesn't challenge you, you will win the debate.";
-            statusColorHex = "#22c55e";  // green-500
-        } else {
-            statusText = "No current challenges.";
-            statusColorHex = "";
-        }
-    } else if (!myChallengesToRespond.empty()) {
-        statusText = myChallengesToRespond.size() > 1
-            ? "Your opponent has challenged your claims. Respond to each challenge with a counter-challenge, or concede:"
-            : "Your opponent has challenged your claim. Respond with a counter-challenge, or concede:";
-        statusColorHex = "#f97316";  // orange-500
-    } else if (!myPendingChallenges.empty()) {
-        statusText = myPendingChallenges.size() > 1
-            ? "Waiting for your opponent to respond to your challenges:"
-            : "Waiting for your opponent to respond to your challenge:";
-        statusColorHex = "";
-    } else {
-        statusText = "Waiting for your opponent to respond.";
-        statusColorHex = "";
-    }
-
-    ui::Component statusLine = ComponentGenerator::createText(
-        "debateStatusText",
-        statusText,
-        "text-sm",
-        "",
-        "",
-        ""
-    );
-    if (!statusColorHex.empty()) {
-        (*statusLine.mutable_css())["color"] = statusColorHex;
-    }
-    ComponentGenerator::addChild(&panel, statusLine);
-
-    // List whichever set of challenges the status line refers to.
-    const std::vector<int>& challengesToList =
-        !myChallengesToRespond.empty() ? myChallengesToRespond : myPendingChallenges;
-    for (int challengeClaimId : challengesToList) {
-        std::string sentence;
-        auto it = collectionProto.claims_by_id().find(challengeClaimId);
-        if (it != collectionProto.claims_by_id().end()) {
-            sentence = it->second.sentence();
-        }
-        ui::Component item = ComponentGenerator::createText(
-            "debateStatusChallenge_" + std::to_string(challengeClaimId),
-            "\xE2\x80\xA2 " + sentence,
+    for (const std::string& holder : order) {
+        const auto& list = open.at(holder);
+        const bool isViewer = holder == viewerUsername;
+        const std::string who = isViewer ? "You" : holder;
+        ui::Component line = ComponentGenerator::createText(
+            "debateStatusPerson_" + holder,
+            who + ": " + std::to_string(list.size()) + " unanswered" +
+                (isViewer ? " (counter-challenge, concede, or withdraw your agreement)" : ""),
             "text-sm",
             "text-white",
-            "",
+            "font-medium",
             ""
         );
-        (*item.mutable_css())["overflow-wrap"] = "break-word";
-        ComponentGenerator::addChild(&panel, item);
+        // Red: this person owes a reply (theme.html .owe).
+        (*line.mutable_css())["color"] = "var(--open)";
+        (*line.mutable_css())["margin-top"] = "0.35rem";
+        ComponentGenerator::addChild(&panel, line);
+
+        for (const OpenChallenge& oc : list) {
+            std::string sentence;
+            auto it = collectionProto.claims_by_id().find(oc.challengeClaimId);
+            if (it != collectionProto.claims_by_id().end()) sentence = it->second.sentence();
+            ui::Component item = ComponentGenerator::createText(
+                "debateStatusChallenge_" + holder + "_" + std::to_string(oc.challengeClaimId),
+                sentence,
+                "text-xs",
+                "text-gray-400",
+                "",
+                ""
+            );
+            (*item.mutable_css())["overflow-wrap"] = "break-word";
+            (*item.mutable_css())["padding"] = "2px 0 2px 14px";
+            (*item.mutable_css())["margin-left"] = "3px";
+            (*item.mutable_css())["border-left"] = "2px solid var(--line)";
+            ComponentGenerator::addChild(&panel, item);
+        }
     }
 
     return panel;
@@ -569,6 +736,429 @@ static ui::Component BuildTreeNode(
     return node;
 }
 
+// One block of prose as components: one TEXT per line, because the renderer
+// collapses whitespace like HTML and a single node would run the model's
+// paragraphs together.
+static void AddTextLines(ui::Component* parent, const std::string& idPrefix, const std::string& text,
+                         const std::string& colorClass) {
+    std::istringstream lines(text);
+    std::string line;
+    int lineIndex = 0;
+    while (std::getline(lines, line)) {
+        if (!line.empty() && line.back() == '\r') line.pop_back();
+        const std::string id = idPrefix + "_" + std::to_string(lineIndex++);
+        if (line.empty()) {
+            ui::Component spacer = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
+            (*spacer.mutable_css())["height"] = "0.3rem";
+            ComponentGenerator::addChild(parent, spacer);
+            continue;
+        }
+        ui::Component textLine = ComponentGenerator::createText(id, line, "text-sm", colorClass, "", "");
+        (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
+        ComponentGenerator::addChild(parent, textLine);
+    }
+}
+
+// The AI chat. The one place the model speaks: a box for any question, quick
+// buttons for the questions readers ask most, and the conversation so far.
+// Everything it says is text -- it never writes a claim; the reader does.
+//
+// It stands beside the argument rather than in it: past a dozen claims the
+// graph stops answering "so where does this stand" at a glance, and asking
+// should be one click away from wherever the reader is.
+ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
+    const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
+
+    // Folded away with one click, so it is always to hand and never in the
+    // way. The client owns the fold and the placement.
+    ui::Component panel = ComponentGenerator::createContainer(
+        "chatPanel", "w-full", "bg-gray-800", "p-3", "", "", "", ""
+    );
+    ComponentGenerator::addAttribute(&panel, "data-docked", "side");
+    ComponentGenerator::addAttribute(&panel, "data-docked-title", "Ask the AI about this debate");
+
+    // The conversation so far, last 20 turns.
+    if (chat.messages_size() > 0) {
+        ui::Component transcript = ComponentGenerator::createContainer(
+            "chatTranscript", "w-full", "", "", "", "", "", ""
+        );
+        (*transcript.mutable_css())["display"] = "flex";
+        (*transcript.mutable_css())["flex-direction"] = "column";
+        (*transcript.mutable_css())["gap"] = "0.4rem";
+        // No height cap here: the docked panel's body is the one scroller.
+        (*transcript.mutable_css())["margin-bottom"] = "0.5rem";
+
+        const int total = chat.messages_size();
+        const int first = total > 20 ? total - 20 : 0;
+        for (int i = first; i < total; ++i) {
+            const auto& m = chat.messages(i);
+            const bool mine = m.role() != "assistant";
+            ui::Component turn = ComponentGenerator::createContainer(
+                "chatTurn_" + std::to_string(i), "w-full", mine ? "" : "bg-gray-900",
+                mine ? "" : "p-2", "", "", mine ? "" : "rounded", ""
+            );
+            (*turn.mutable_css())["display"] = "flex";
+            (*turn.mutable_css())["flex-direction"] = "column";
+            ui::Component who = ComponentGenerator::createText(
+                "chatWho_" + std::to_string(i), mine ? "You" : "AI", "text-xs",
+                mine ? "text-indigo-300" : "text-green-300", "font-semibold", ""
+            );
+            ComponentGenerator::addChild(&turn, who);
+            AddTextLines(&turn, "chatLine_" + std::to_string(i), m.text(),
+                         mine ? "text-gray-300" : "text-gray-100");
+            ComponentGenerator::addChild(&transcript, turn);
+        }
+        ComponentGenerator::addChild(&panel, transcript);
+    }
+
+    if (chat.pending()) {
+        // Marker id ends in Pending so the client polls while an answer is
+        // coming -- the client polls on the WORK.
+        ui::Component progress = ComponentGenerator::createText(
+            "chatPending",
+            "Thinking... " + std::to_string(chat.elapsed_seconds()) + "s elapsed",
+            "text-sm", "text-indigo-300", "", ""
+        );
+        ComponentGenerator::addChild(&panel, progress);
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "cancelAiWorkButton", "Cancel", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+        return panel;
+    }
+
+    ComponentGenerator::addChild(&panel, ComponentGenerator::createTextarea(
+        "chatQuestionInput", "Ask anything about this debate. Ctrl+Enter sends.", "chatQuestion", 3));
+
+    ui::Component buttons = ComponentGenerator::createContainer(
+        "chatButtons", "flex gap-2 flex-wrap", "", "", "", "", "", ""
+    );
+    (*buttons.mutable_css())["display"] = "flex";
+    (*buttons.mutable_css())["flex-wrap"] = "wrap";
+    (*buttons.mutable_css())["gap"] = "0.5rem";
+    ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+        "askChatButton", "Ask", "", "bg-indigo-600", "hover:bg-indigo-700",
+        "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+
+    // The questions readers ask most, as buttons. The claim ones need a
+    // selected claim.
+    std::vector<std::string> quick{DebateChat::kSummarizeDebate, DebateChat::kFindMistake};
+    if (selectedClaimId > 0) {
+        quick.push_back(DebateChat::kSummarizeClaim);
+        quick.push_back(DebateChat::kSuggestChallenge);
+    }
+    for (const std::string& key : quick) {
+        ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+            "chatQuickButton_" + key, DebateChat::LabelFor(key), "", "bg-gray-700",
+            "hover:bg-gray-600", "text-gray-200", "px-3 py-1.5", "rounded-full", "text-sm"));
+    }
+    if (chat.messages_size() > 0) {
+        ComponentGenerator::addChild(&buttons, ComponentGenerator::createButton(
+            "clearChatButton", "Clear chat", "", "bg-gray-800", "hover:bg-gray-700",
+            "text-gray-400", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+    ComponentGenerator::addChild(&panel, buttons);
+
+    const user_engagement::AiJobStatus& aiJob = viewerUser.engagement().ai_job();
+    if (!aiJob.note().empty()) {
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createText(
+            "chatNote", aiJob.note(), "text-xs", "text-gray-500", "", ""));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "dismissAiNoticeButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
+            "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
+    }
+
+    return panel;
+}
+
+
+
+// Builds the walkthrough guide box: where you are, what just happened, and the
+// button that makes the next thing happen.
+//
+// The words come from the .pbtxt on every render rather than from anything
+// stored on the user, so editing a script changes what a walkthrough already
+// in progress says. Only the reader's POSITION is saved.
+//
+// Returns false into `show` when the viewer is not in a walkthrough, or is in
+// one that belongs to a different debate -- opening another debate mid-tutorial
+// should not drag the guide box along, narrating steps about claims that are
+// not on screen.
+// The chat as a page's chat region: the window's height beside the debate
+// or the brief, its ask box at the bottom (the client lays it out; below
+// 1100px it falls back to the corner box).
+ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId) {
+    ui::Component column = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
+    ComponentGenerator::addAttribute(&column, "data-region", "chat");
+    ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId));
+    return column;
+}
+
+// The Debate | Brief tabs. Two buttons that look like tabs: the lit one has
+// the accent underline and white text, the other is quiet. Same ids on both
+// pages, so the parser has one wire per tab.
+ui::Component StepView::BuildDebateTabs(bool briefActive) {
+    ui::Component tabs = ComponentGenerator::createContainer("debateTabs", "", "", "", "", "", "", "");
+    (*tabs.mutable_css())["display"] = "flex";
+    (*tabs.mutable_css())["flex-direction"] = "row";
+    (*tabs.mutable_css())["gap"] = "4px";
+    (*tabs.mutable_css())["align-items"] = "center";
+    ComponentGenerator::addChild(&tabs, BuildTab("debateTabButton", "Debate", !briefActive));
+    ComponentGenerator::addChild(&tabs, BuildTab("briefTabButton", "Brief", briefActive));
+    return tabs;
+}
+
+// One tab, the theme's (theme.html .tab): quiet words, and the lit one on
+// the raised surface. The header's Home | Explore tabs are the same.
+ui::Component StepView::BuildTab(const std::string& id, const std::string& label, bool lit) {
+    ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "");
+    (*b.mutable_css())["background"] = lit ? "var(--panel-2)" : "transparent";
+    (*b.mutable_css())["color"] = lit ? "var(--text)" : "var(--text-2)";
+    (*b.mutable_css())["border"] = "none";
+    (*b.mutable_css())["border-radius"] = "var(--radius-sm)";
+    (*b.mutable_css())["padding"] = "6px 12px";
+    (*b.mutable_css())["font-size"] = "14px";
+    (*b.mutable_css())["font-weight"] = "500";
+    return b;
+}
+
+// Two small helpers so the guide box can set real CSS rather than fight the
+// Tailwind class strings. The renderer turns a component's css map into an
+// inline style, and inline style is what reliably wins here -- TextComponent
+// substitutes its own colour and font size for anything it is not given
+// explicitly.
+static void tutorialCss(ui::Component* component,
+                        const std::vector<std::pair<std::string, std::string>>& rules) {
+    for (const auto& rule : rules) {
+        (*component->mutable_css())[rule.first] = rule.second;
+    }
+}
+
+static ui::Component tutorialText(const std::string& id, const std::string& text,
+                                  const std::vector<std::pair<std::string, std::string>>& rules) {
+    ui::Component component = ComponentGenerator::createText(id, text, "", "", "", "");
+    tutorialCss(&component, rules);
+    return component;
+}
+
+// Builds the walkthrough guide box: where you are, what just happened, and the
+// button that makes the next thing happen.
+//
+// It is styled loudly on purpose. This box is the only thing on the page a
+// first-time reader is meant to follow, and it competes with a graph, a claim
+// panel and a summary panel for the same eye -- a quiet bordered rectangle
+// lost that competition.
+//
+// The words come from the .pbtxt on every render rather than from anything
+// stored on the user, so editing a script changes what a walkthrough already
+// in progress says. Only the reader's POSITION is saved.
+//
+// Returns false into `show` when the viewer is not in a walkthrough, or is in
+// one that belongs to a different debate -- opening another debate mid-tutorial
+// should not drag the guide box along, narrating steps about claims that are
+// not on screen.
+static ui::Component BuildTutorialPanel(const user::User& viewerUser, bool& show) {
+    ui::Component panel;
+    show = false;
+
+    const user_engagement::TutorialStatus& state = viewerUser.engagement().tutorial();
+    if (!state.active()) {
+        return panel;
+    }
+    // Which debate the reader is actually looking at. FullDebateViewInfo does
+    // not carry the debate id, and the viewer's engagement is the authority on
+    // where they are anyway.
+    const int thisDebateId = viewerUser.engagement().debating_info().debate_id();
+    if (state.debate_id() > 0 && thisDebateId > 0 && state.debate_id() != thisDebateId) {
+        return panel;
+    }
+    show = true;
+
+    // Its height cap rides on a class, not the css map: it is a strip above
+    // the page's regions -- see .tutorial-guide-sticky in index.css.
+    panel = ComponentGenerator::createContainer(
+        "tutorialPanel", "w-full", "", "", "", "", "", "tutorial-guide-sticky");
+    tutorialCss(&panel, {
+        {"display", "flex"},
+        {"flex-direction", "column"},
+        {"gap", "0.75rem"},
+        {"background", "linear-gradient(135deg, #0c1f3d 0%, #14294f 55%, #0b1a33 100%)"},
+        // Each side separately, NOT `border` plus a `border-left` override.
+        // These rules travel in a protobuf map, whose iteration order is
+        // unspecified, and the renderer turns that map straight into a style
+        // object -- so the shorthand could be applied after the longhand and
+        // silently flatten the accent bar back to a 1px blue line. It did.
+        {"border-top", "1px solid #2563eb"},
+        {"border-right", "1px solid #2563eb"},
+        {"border-bottom", "1px solid #2563eb"},
+        // The accent bar down the side is what makes this read as a panel to
+        // follow rather than one more bordered box among the four on screen.
+        {"border-left", "5px solid #38bdf8"},
+        {"border-radius", "0.75rem"},
+        {"padding", "1rem 1.25rem"},
+        {"box-shadow", "0 0 0 1px rgba(56,189,248,0.15), 0 10px 28px rgba(2,132,199,0.28)"},
+        // Scrollable inside itself once .tutorial-guide-sticky caps its height.
+        // The shorthand, never overflow-y: these rules ride in a protobuf map
+        // with no defined order, and ContainerComponent writes its own
+        // `overflow` afterwards from this exact key. A longhand here would be
+        // flattened by that shorthand -- the same trap the border hit.
+        {"overflow", "auto"},
+    });
+
+    bool ok = false;
+    std::string loadError;
+    const tutorial::Tutorial script = tutorials::Load(state.script(), ok, loadError);
+
+    if (!ok) {
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialLoadError", loadError,
+            {{"color", "#fca5a5"}, {"font-size", "0.9rem"}}));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialExitButton_load", "Leave tutorial", "", "", "", "", "", "", "text-sm"));
+        return panel;
+    }
+
+    const int index = state.step_index();
+    const int total = script.steps_size();
+
+    // ---- Header: step pill, progress bar, exit ----------------------------
+    ui::Component headerRow = ComponentGenerator::createContainer(
+        "tutorialHeaderRow", "w-full", "", "", "", "", "", "");
+    tutorialCss(&headerRow, {
+        {"display", "flex"}, {"flex-direction", "row"},
+        {"align-items", "center"}, {"gap", "0.75rem"},
+    });
+
+    ComponentGenerator::addChild(&headerRow, tutorialText(
+        "tutorialProgress",
+        "STEP " + std::to_string(index + 1) + " OF " + std::to_string(total),
+        {{"background", "linear-gradient(90deg, #0ea5e9, #38bdf8)"},
+         {"color", "#04121f"},
+         {"font-size", "0.7rem"},
+         {"font-weight", "800"},
+         {"letter-spacing", "0.08em"},
+         {"padding", "0.2rem 0.65rem"},
+         {"border-radius", "9999px"},
+         {"white-space", "nowrap"},
+         {"margin", "0"},
+         {"flex", "0 0 auto"}}));
+
+    // A bar rather than only the "3 of 8" text: how much is left is the thing
+    // a reader wants to know before committing to a walkthrough, and a number
+    // makes them do the arithmetic.
+    ui::Component progressTrack = ComponentGenerator::createContainer(
+        "tutorialProgressTrack", "", "", "", "", "", "", "");
+    tutorialCss(&progressTrack, {
+        {"flex", "1 1 auto"}, {"height", "6px"},
+        {"background", "rgba(148, 197, 253, 0.18)"},
+        {"border-radius", "9999px"}, {"overflow", "hidden"},
+        {"min-width", "60px"},
+    });
+    ui::Component progressFill = ComponentGenerator::createContainer(
+        "tutorialProgressFill", "", "", "", "", "", "", "");
+    const int percent = total > 0 ? ((index + 1) * 100) / total : 0;
+    tutorialCss(&progressFill, {
+        {"width", std::to_string(percent) + "%"},
+        {"height", "6px"},
+        {"background", "linear-gradient(90deg, #38bdf8, #22d3ee)"},
+        {"border-radius", "9999px"},
+    });
+    ComponentGenerator::addChild(&progressTrack, progressFill);
+    ComponentGenerator::addChild(&headerRow, progressTrack);
+
+    ui::Component exitButton = ComponentGenerator::createButton(
+        "tutorialExitButton", "Exit", "", "", "", "", "", "", "text-xs");
+    tutorialCss(&exitButton, {
+        {"background", "transparent"},
+        {"color", "#93a9c9"},
+        {"border", "1px solid rgba(148, 197, 253, 0.3)"},
+        {"flex", "0 0 auto"},
+    });
+    ComponentGenerator::addChild(&headerRow, exitButton);
+    ComponentGenerator::addChild(&panel, headerRow);
+
+    // ---- The step itself ---------------------------------------------------
+    if (index >= 0 && index < total) {
+        const tutorial::TutorialStep& step = script.steps(index);
+        if (!step.title().empty()) {
+            ComponentGenerator::addChild(&panel, tutorialText("tutorialStepTitle", step.title(),
+                {{"color", "#f1f7ff"},
+                 {"font-size", "1.4rem"},
+                 {"font-weight", "800"},
+                 {"letter-spacing", "-0.01em"},
+                 {"line-height", "1.25"},
+                 {"margin", "0"}}));
+        }
+        int paragraph = 0;
+        for (const std::string& body : step.body()) {
+            ComponentGenerator::addChild(&panel, tutorialText(
+                "tutorialBody_" + std::to_string(paragraph++), body,
+                {{"color", "#cbd9ee"}, {"font-size", "0.95rem"},
+                 {"line-height", "1.65"}, {"margin", "0"}}));
+        }
+        if (!step.look_at().empty()) {
+            // Amber, and boxed. This is the one line that asks the reader to
+            // move their eyes off the panel, so it should not look like more
+            // prose.
+            ui::Component lookAt = ComponentGenerator::createContainer(
+                "tutorialLookAtBox", "", "", "", "", "", "", "");
+            tutorialCss(&lookAt, {
+                {"background", "rgba(250, 204, 21, 0.10)"},
+                {"border-left", "3px solid #facc15"},
+                {"border-radius", "0.375rem"},
+                {"padding", "0.5rem 0.75rem"},
+            });
+            ComponentGenerator::addChild(&lookAt, tutorialText(
+                "tutorialLookAt", "Look at " + step.look_at(),
+                {{"color", "#fde68a"}, {"font-size", "0.9rem"},
+                 {"font-weight", "600"}, {"margin", "0"}}));
+            ComponentGenerator::addChild(&panel, lookAt);
+        }
+    }
+
+    // An error replaces the Next button rather than sitting beside it: the
+    // walkthrough did not advance, and offering Next again would just fail
+    // again in the same place.
+    if (!state.error().empty()) {
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialError", state.error(),
+            {{"color", "#fca5a5"}, {"font-size", "0.9rem"}, {"margin", "0"}}));
+        ComponentGenerator::addChild(&panel, ComponentGenerator::createButton(
+            "tutorialExitButton_error", "Leave tutorial", "", "", "", "", "", "", "text-sm"));
+        return panel;
+    }
+
+    if (state.finished()) {
+        ComponentGenerator::addChild(&panel, tutorialText("tutorialDone",
+            "That is the whole walkthrough. The debate it built is yours -- keep clicking "
+            "around it, or leave the tutorial and it stays in your list.",
+            {{"color", "#86efac"}, {"font-size", "0.95rem"}, {"margin", "0"}}));
+        ui::Component finish = ComponentGenerator::createButton(
+            "tutorialExitButton_finish", "Finish", "", "", "", "", "", "", "text-lg");
+        tutorialCss(&finish, {
+            {"background", "linear-gradient(90deg, #16a34a, #22c55e)"},
+            {"color", "#ffffff"},
+            {"border", "none"},
+            {"align-self", "flex-start"},
+            {"box-shadow", "0 4px 14px rgba(22, 163, 74, 0.45)"},
+        });
+        ComponentGenerator::addChild(&panel, finish);
+    } else {
+        // The one control the reader is meant to press, so it is the brightest
+        // thing in the box and says where it goes.
+        ui::Component next = ComponentGenerator::createButton(
+            "tutorialNextButton", "Next step  \xE2\x86\x92", "", "", "", "", "", "", "text-lg");
+        tutorialCss(&next, {
+            {"background", "linear-gradient(90deg, #2563eb, #0ea5e9)"},
+            {"color", "#ffffff"},
+            {"border", "none"},
+            {"align-self", "flex-start"},
+            {"font-weight", "700"},
+            {"box-shadow", "0 4px 16px rgba(37, 99, 235, 0.5)"},
+        });
+        ComponentGenerator::addChild(&panel, next);
+    }
+
+    return panel;
+}
+
 ui::Page StepView::GenerateStepViewPage(
 	const rendering_info::FullDebateViewInfo& fullDebateInfo,
 	const debate::Collection& collectionProto,
@@ -608,6 +1198,11 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		"gap-4"
 	);
+	// The page is an app shell: the header, the guide box when there is one,
+	// then three regions -- the inspector, the argument, the chat -- that
+	// fill the window and scroll on their own. The server says which part is
+	// which; the client lays them out (index.css, ContainerComponent).
+	ComponentGenerator::addAttribute(&container, "data-layout", "shell");
 
 	ui::Component topBar = ComponentGenerator::createContainer(
 		"stepViewTopBar",
@@ -621,21 +1216,24 @@ ui::Page StepView::GenerateStepViewPage(
 	);
 	(*topBar.mutable_css())["display"] = "flex";
 	(*topBar.mutable_css())["flex-direction"] = "row";
-	(*topBar.mutable_css())["justify-content"] = "flex-end";
-	(*topBar.mutable_css())["align-items"] = "flex-start";
-	ui::Component goHomeButton = ComponentGenerator::createButton(
-		"goHomeButton",
-		"Home",
-		"",
-		"bg-blue-600",
-		"hover:bg-blue-700",
-		"text-white",
-		"px-4 py-2",
-		"rounded",
-		"transition-colors text-sm"
-	);
-	ComponentGenerator::addChild(&topBar, goHomeButton);
+	(*topBar.mutable_css())["justify-content"] = "space-between";
+	(*topBar.mutable_css())["align-items"] = "center";
+	(*topBar.mutable_css())["flex-wrap"] = "wrap";
+	(*topBar.mutable_css())["gap"] = "0.5rem";
+	// The tabs sit directly under the site header (LayoutGenerator adds it
+	// above everything, with the way home and the account on it).
+	ComponentGenerator::addChild(&topBar, BuildDebateTabs(false));
 	ComponentGenerator::addChild(&container, topBar);
+
+	// Above the argument rather than beside it: the guide box is what the
+	// reader is following, and in the right-hand column it would compete with
+	// the graph for the same eye and lose.
+	bool showTutorial = false;
+	ui::Component tutorialPanel =
+		BuildTutorialPanel(viewerUser, showTutorial);
+	if (showTutorial) {
+		ComponentGenerator::addChild(&container, tutorialPanel);
+	}
 
 	ui::Component contentRow = ComponentGenerator::createContainer(
 		"stepViewContentRow",
@@ -647,11 +1245,6 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-    (*contentRow.mutable_css())["display"] = "flex";
-    (*contentRow.mutable_css())["flex-direction"] = "row";
-    (*contentRow.mutable_css())["flex-wrap"] = "nowrap";
-    (*contentRow.mutable_css())["align-items"] = "flex-start";
-    (*contentRow.mutable_css())["gap"] = "1rem";
 
 	ui::Component leftColumn = ComponentGenerator::createContainer(
 		"stepViewLeftColumn",
@@ -663,11 +1256,8 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-    (*leftColumn.mutable_css())["display"] = "flex";
-    (*leftColumn.mutable_css())["flex-direction"] = "column";
-    (*leftColumn.mutable_css())["gap"] = "1rem";
-	(*leftColumn.mutable_css())["flex"] = "1 1 auto";
-	(*leftColumn.mutable_css())["min-width"] = "0";
+	// The inspector: the selected claim pinned on top, folding sections under it.
+	ComponentGenerator::addAttribute(&leftColumn, "data-region", "inspector");
 
 	ui::Component rightColumn = ComponentGenerator::createContainer(
 		"stepViewRightColumn",
@@ -679,10 +1269,9 @@ ui::Page StepView::GenerateStepViewPage(
 		"",
 		""
 	);
-	(*rightColumn.mutable_css())["display"] = "flex";
-	(*rightColumn.mutable_css())["flex-direction"] = "row";
-	(*rightColumn.mutable_css())["flex"] = "0 0 45%";
-	(*rightColumn.mutable_css())["min-width"] = "400px";
+	// The argument itself, two ways: the map (data-view="graph") and the
+	// paragraph tree (data-view="text"). The client shows one at a time.
+	ComponentGenerator::addAttribute(&rightColumn, "data-region", "main");
 
 
 	/* Step list -- replaced by the "Selected Claim" panel below. Kept here
@@ -767,17 +1356,29 @@ ui::Page StepView::GenerateStepViewPage(
 	ui::Component debateStatusPanel = BuildDebateStatusPanel(
 		fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
 	);
+
+
+	// A selected ARGUMENT takes the claim panel's place. The selection is
+	// only honoured if the collection still has that relation -- a stale id
+	// after a deletion falls back to the claim rather than an empty card.
+	const int selectedLinkId = viewerUser.engagement().debating_info().selected_link_id();
+	const bool showRelation = selectedLinkId > 0 &&
+		collectionProto.links_by_id().count(selectedLinkId) > 0;
+	ui::Component selectedClaimPanel = showRelation
+		? BuildSelectedRelationPanel(
+			selectedLinkId, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username())
+		: BuildSelectedClaimPanel(
+			currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username());
+	// The selected claim first (the client pins it), then the sections.
+	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
 	ComponentGenerator::addChild(&leftColumn, debateStatusPanel);
 
-	ui::Component selectedClaimPanel = BuildSelectedClaimPanel(
-		currentClaimId, fullDebateInfo, collectionProto, userDb, fullDebateInfo.viewer_user_id(), fullDebateInfo.viewer_username()
-	);
-	ComponentGenerator::addChild(&leftColumn, selectedClaimPanel);
-
-	// Render a single interactive paragraph tree for the entire debate,
-	// underneath the step list within the left column.
-	if (rootClaimId > 0) {
-		ui::Component treeWrapper = ComponentGenerator::createContainer(
+	// A single interactive paragraph tree for the entire debate: the Text
+	// view of the main region, beside the map.
+	ui::Component treeWrapper;
+	const bool haveTree = rootClaimId > 0;
+	if (haveTree) {
+		treeWrapper = ComponentGenerator::createContainer(
 			"debateTreeWrapper",
 			"w-full",
 			"bg-gray-800/50",
@@ -787,7 +1388,7 @@ ui::Page StepView::GenerateStepViewPage(
 			"rounded-lg",
 			""
 		);
-		(*treeWrapper.mutable_css())["margin-top"] = "1rem";
+		ComponentGenerator::addAttribute(&treeWrapper, "data-view", "text");
 
 		ui::Component treeHeader = ComponentGenerator::createText(
 			"debateTreeHeader",
@@ -817,30 +1418,39 @@ ui::Page StepView::GenerateStepViewPage(
 			if (i > 0) {
 				(*paragraph.mutable_css())["margin-top"] = "0.75rem";
 				(*paragraph.mutable_css())["padding-top"] = "0.75rem";
-				(*paragraph.mutable_css())["border-top"] = "1px dashed #4b5563";
+				(*paragraph.mutable_css())["border-top"] = "1px dashed var(--line-strong)";
 			}
 			ComponentGenerator::addChild(&treeWrapper, paragraph);
 		}
-		ComponentGenerator::addChild(&leftColumn, treeWrapper);
 	}
 
 	const int mapFocusClaimId = currentClaimId > 0
 		? currentClaimId
 		: (fullDebateInfo.steps_size() > 0 ? fullDebateInfo.steps(0).claim_id() : 0);
 	const float mapScale = 0.82f;
-	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(fullDebateInfo, mapFocusClaimId, mapScale, &userDb);
+	// A selected argument is highlighted in the graph in place of the claim.
+	const int graphSelectedLink = viewerUser.engagement().debating_info().selected_link_id();
+	ui::Component mapSection = FullDebatePageGenerator::GenerateMapSection(
+		fullDebateInfo, mapFocusClaimId, mapScale, &userDb,
+		graphSelectedLink > 0 ? "r" + std::to_string(graphSelectedLink) : std::string());
 	for (int childIndex = mapSection.children_size() - 1; childIndex >= 0; --childIndex) {
 		if (mapSection.children(childIndex).id() == "mapTitle") {
 			mapSection.mutable_children()->DeleteSubrange(childIndex, 1);
 		}
 	}
 	(*mapSection.mutable_css())["margin-top"] = "0";
-	(*mapSection.mutable_css())["max-width"] = "760px";
 	(*mapSection.mutable_css())["width"] = "100%";
+	// The map fills the main region: its height is the region's, not a
+	// minimum of its own (the client sizes it; GraphComponent follows).
+	ComponentGenerator::addAttribute(&mapSection, "data-view", "graph");
 	ComponentGenerator::addChild(&rightColumn, mapSection);
+	if (haveTree) {
+		ComponentGenerator::addChild(&rightColumn, treeWrapper);
+	}
 
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
+	ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.

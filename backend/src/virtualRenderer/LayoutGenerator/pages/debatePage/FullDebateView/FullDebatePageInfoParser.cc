@@ -2,6 +2,8 @@
 #include "user_engagement.pb.h"
 #include "collection.pb.h"
 #include "../../../../../utils/Log.h"
+#include "../../../../../utils/ClaimVoice.h"
+#include "../../../../../utils/Ordered.h"
 #include <algorithm>
 #include <map>
 #include <unordered_map>
@@ -41,8 +43,8 @@ debate::ClaimStatus MapClaimStatusForUser(
 	if (it != user_statuses.end()) {
 		return it->second;
 	}
-	// No per-user entry: if viewer is the creator, they see TRUE_CLAIM
-	if (viewer_user_id == claim.creator_id()) {
+	// No per-user entry: whoever the claim belongs to sees TRUE_CLAIM
+	if (viewer_user_id == ClaimVoiceId(claim)) {
 		return debate::ClaimStatus::TRUE_CLAIM;
 	}
 	// Otherwise default to UNDETERMINED
@@ -184,9 +186,10 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 
 	// debate::Claim currentClaimProto = currentClaimIt->second;
 	Log::info("[DebatePageInfoParser] Current claim ID: " + std::to_string(currentClaimProto.id()));
-	for (const auto& linkEntry : collectionProto.links_by_id()) {
-		const int linkId = linkEntry.first;
-		const debate::Relationship::Link& linkProto = linkEntry.second.link();
+	// By relation id throughout: links_by_id is a protobuf map, whose order
+	// is unspecified, and these lists reach the page in the order built.
+	for (const int linkId : ordered::SortedLinkIds(collectionProto)) {
+		const debate::Relationship::Link& linkProto = collectionProto.links_by_id().at(linkId).link();
 		if (linkProto.connect_from() != currentClaimProto.id()) {
 			continue;
 		}
@@ -216,7 +219,7 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				        us->set_username(userProto.username());
 				        us->set_status(statusIt->second);
 				    } else {
-				        debate::ClaimStatus defaultStatus = (userProto.user_id() == childClaim.creator_id())
+				        debate::ClaimStatus defaultStatus = (userProto.user_id() == ClaimVoiceId(childClaim))
 				            ? debate::ClaimStatus::TRUE_CLAIM
 				            : debate::ClaimStatus::UNDETERMINED;
 				        rendering_info::UserStatus* us = outChild->add_user_statuses();
@@ -225,11 +228,11 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 				    }
 				}
 				// Add other users' statuses
-				for (const auto& s : childClaim.user_statuses()) {
-				    if (s.first == userProto.username()) continue;  // already added above
+				for (const auto* s : ordered::Entries(childClaim.user_statuses())) {
+				    if (s->first == userProto.username()) continue;  // already added above
 				    rendering_info::UserStatus* us = outChild->add_user_statuses();
-				    us->set_username(s.first);
-				    us->set_status(s.second);
+				    us->set_username(s->first);
+				    us->set_status(s->second);
 				}
 				visibleClaimIds.insert(childClaim.id());
 			} else {
@@ -249,9 +252,8 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 		", visible_claim_count=" + std::to_string(visibleClaimIds.size())
 	);
 	int outputLinkIndex = 0;
-	for (const auto& entry : collectionProto.links_by_id()) {
-		const int linkId = entry.first;
-		const debate::Relationship::Link& link = entry.second.link();
+	for (const int linkId : ordered::SortedLinkIds(collectionProto)) {
+		const debate::Relationship::Link& link = collectionProto.links_by_id().at(linkId).link();
 		const bool fromVisible = visibleClaimIds.count(link.connect_from()) > 0;
 		const bool toVisible = visibleClaimIds.count(link.connect_to()) > 0;
 		const bool isParentChild = (link.link_type() == debate::LinkType::PARENT_CHILD);
@@ -289,7 +291,8 @@ rendering_info::DebatePageRenderingInfo FullDebatePageInfoParser::ParseFromUser(
 	// Find challenge links pointing to current claim from collection
 	Log::debug("[DebatePageInfoParser] Scanning for CHALLENGE links pointing to current_claim_id=" + std::to_string(currentClaimId) + ", total_links_in_collection=" + std::to_string(collectionProto.links_by_id_size()));
 	int challengeLinkCount = 0;
-	for (const auto& entry : collectionProto.links_by_id()) {
+	for (const auto* linkEntry : ordered::Entries(collectionProto.links_by_id())) {
+		const auto& entry = *linkEntry;
 		challengeLinkCount++;
 		const debate::Relationship::Link& link = entry.second.link();
 		Log::debug("[DebatePageInfoParser] Checking link #" + std::to_string(challengeLinkCount) + ": id=" + std::to_string(entry.first) + ", link_type=" + std::to_string(link.link_type()) + ", from=" + std::to_string(link.connect_from()) + ", to=" + std::to_string(link.connect_to()));
@@ -419,39 +422,82 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	std::unordered_map<int, std::unordered_set<int>> parentIdsByClaim;
 	std::unordered_map<int, std::unordered_set<int>> childIdsByClaim;
 
-	for (const auto& entry : linksById) {
-		const int linkId = entry.first;
-		const debate::Relationship::Link& link = entry.second;
+	// One tree link per FROM-CLAIM, not per relation.
+	//
+	// A relation with several from-claims is a single entry in the collection,
+	// and its legacy `link` sub-message holds only the first row. Reading that
+	// alone would silently drop every source but one. So the from-set is
+	// iterated, and each edge carries the RELATION id -- which is how the
+	// renderer knows to draw them as one junction rather than several.
+	//
+	// In relation-id order: the tree's links feed the graph's edges, the Text
+	// view's paragraphs and "Who owes a reply", all in the order given here.
+	for (const int relationId : ordered::SortedLinkIds(collectionProto)) {
+		const debate::Relationship& rel = collectionProto.links_by_id().at(relationId);
+		const debate::Relationship::Link& link = rel.link();
 
-		if (claimIdSet.count(link.connect_from()) == 0 || claimIdSet.count(link.connect_to()) == 0) {
-			Log::warn(
-				"[ParseFullDebateViewInfo] Skipping tree link_id=" + std::to_string(linkId) +
-				" because endpoint claim is missing"
-			);
+		// Where this relation lands in a CLAIM tree. A relation aimed at a
+		// claim lands on that claim. A challenge aimed at an ARGUMENT -- an
+		// undercut -- has no claim target of its own, but its row records the
+		// claim the attacked argument was for; it is drawn beside that claim,
+		// as a challenge, so the challenger's claim is placed and visible.
+		// Drawing it to the pill itself is the graph's job later; dropping it
+		// here made every undercut simply vanish from the page.
+		int toClaimId = 0;
+		int toRelationId = 0;  // the argument attacked, for an undercut
+		if (rel.to_case() == debate::Relationship::kToClaimId) {
+			toClaimId = rel.to_claim_id();
+		} else if (rel.to_case() == debate::Relationship::kToRelationId &&
+		           rel.role() == debate::OPPOSES && link.connect_to() > 0) {
+			toClaimId = link.connect_to();
+			toRelationId = rel.to_relation_id();
+		} else {
 			continue;
 		}
 
 		rendering_info::FullDebateTreeLinkType outType = rendering_info::FULL_DEBATE_TREE_LINK_TYPE_UNSPECIFIED;
 		bool isChallenge = false;
-		if (link.link_type() == debate::LinkType::PARENT_CHILD) {
+		if (rel.role() == debate::SUPPORTS) {
 			outType = rendering_info::FULL_DEBATE_TREE_PARENT_CHILD;
-			childIdsByClaim[link.connect_from()].insert(link.connect_to());
-			parentIdsByClaim[link.connect_to()].insert(link.connect_from());
-		} else if (link.link_type() == debate::LinkType::CHALLENGE) {
+		} else if (rel.role() == debate::OPPOSES) {
 			outType = rendering_info::FULL_DEBATE_TREE_CHALLENGE;
 			isChallenge = true;
 		} else {
-			continue;
+			continue;  // ROLE_UNSPECIFIED (legacy NORMAL) is dropped, as before
 		}
 
-		rendering_info::FullDebateTreeLink* outLink = tree->add_links();
-		outLink->set_from_claim_id(link.connect_from());
-		outLink->set_to_claim_id(link.connect_to());
-		outLink->set_link_type(outType);
-		outLink->set_is_challenge(isChallenge);
-		outLink->set_link_id(linkId);
-		outLink->set_connection(link.connection());
-		outLink->set_creator_id(link.creator_id());
+		for (const int fromClaimId : rel.from_claim_ids()) {
+			if (claimIdSet.count(fromClaimId) == 0 || claimIdSet.count(toClaimId) == 0) {
+				Log::warn(
+					"[ParseFullDebateViewInfo] Skipping tree edge in relation " +
+					std::to_string(relationId) + " because endpoint claim is missing"
+				);
+				continue;
+			}
+
+			// The adjacency maps stay PARENT -> CHILD, which is what the rest of
+			// this file and the BFS below expect. A SUPPORTS relation runs
+			// child -> parent, so the ends go in reversed.
+			if (!isChallenge) {
+				childIdsByClaim[toClaimId].insert(fromClaimId);
+				parentIdsByClaim[fromClaimId].insert(toClaimId);
+			}
+
+			rendering_info::FullDebateTreeLink* outLink = tree->add_links();
+			// Emitted in STORED orientation (parent -> child for support), which
+			// is what every consumer of FullDebateTreeLink still expects. The
+			// graph generator flips them when building relation-oriented edges.
+			outLink->set_from_claim_id(isChallenge ? fromClaimId : toClaimId);
+			outLink->set_to_claim_id(isChallenge ? toClaimId : fromClaimId);
+			outLink->set_link_type(outType);
+			outLink->set_is_challenge(isChallenge);
+			outLink->set_link_id(relationId);
+			outLink->set_connection(rel.basis());
+			outLink->set_creator_id(link.creator_id());
+			if (toRelationId > 0) {
+				outLink->set_to_relation_id(toRelationId);
+			}
+		}
 	}
 
 	for (int claimId : claimIds) {
@@ -460,6 +506,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		outNode->set_claim_id(claim.id());
 		outNode->set_sentence(claim.sentence());
 		outNode->set_creator_id(claim.creator_id());
+		outNode->set_voice_id(claim.voice_id());
 		// Use per-user status for tree nodes
 		outNode->set_status(MapClaimStatusForUser(claim, viewer_user_id, viewer_username));
 
@@ -474,7 +521,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		        us->set_status(statusIt->second);
 		    } else {
 		        // Viewer has no entry — show their default status
-		        debate::ClaimStatus defaultStatus = (viewer_user_id == claim.creator_id())
+		        debate::ClaimStatus defaultStatus = (viewer_user_id == ClaimVoiceId(claim))
 		            ? debate::ClaimStatus::TRUE_CLAIM
 		            : debate::ClaimStatus::UNDETERMINED;
 		        rendering_info::UserStatus* us = outNode->add_user_statuses();
@@ -483,11 +530,11 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 		    }
 		}
 		// Add other users' statuses
-		for (const auto& s : claim.user_statuses()) {
-		    if (s.first == viewer_username) continue;  // already added above
+		for (const auto* s : ordered::Entries(claim.user_statuses())) {
+		    if (s->first == viewer_username) continue;  // already added above
 		    rendering_info::UserStatus* us = outNode->add_user_statuses();
-		    us->set_username(s.first);
-		    us->set_status(s.second);
+		    us->set_username(s->first);
+		    us->set_status(s->second);
 		}
 
 		auto parentIt = parentIdsByClaim.find(claimId);
@@ -620,7 +667,7 @@ rendering_info::FullDebateViewInfo FullDebatePageInfoParser::ParseFullDebateView
 	// Build per-user claim status matrix for visualization.
 	{
 		rendering_info::PerUserClaimStatuses* perUser = info.mutable_per_user_statuses();
-		std::unordered_map<std::string, std::map<int, debate::ClaimStatus>> userMap;
+		std::map<std::string, std::map<int, debate::ClaimStatus>, ordered::NameLessFn> userMap;
 		for (const auto& claimEntry : collectionProto.claims_by_id()) {
 			const int claimId = claimEntry.first;
 			const debate::Claim& claim = claimEntry.second;

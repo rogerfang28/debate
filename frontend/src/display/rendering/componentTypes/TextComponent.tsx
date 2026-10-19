@@ -20,45 +20,63 @@ export interface BaseComponentProps {
   style?: React.CSSProperties;
 }
 
+const has = (className: string, pattern: string) =>
+  new RegExp(`(^|\\s)(?:${pattern})(\\s|$)`).test(className);
+
+// The theme's type scale (theme.html), chosen by the server's size class.
+// The uppercase label pattern (text-xs text-gray-500 font-semibold uppercase)
+// is the caption. Nothing is promoted to a heading for being short: a size
+// class says how big a text is, not its length.
+function typeScale(className: string): { scale: string; heading: boolean } {
+  if (has(className, "uppercase")) return { scale: "caption", heading: false };
+  if (has(className, "text-(?:3xl|4xl|5xl|6xl)")) return { scale: "t-h1", heading: true };
+  if (has(className, "text-(?:2xl|xl)")) return { scale: "t-h2", heading: true };
+  if (has(className, "text-lg")) return { scale: "t-h3", heading: false };
+  if (has(className, "text-base")) return { scale: "t-body", heading: false };
+  if (has(className, "text-xs")) return { scale: "t-small", heading: false };
+  return { scale: "t-body-2", heading: false };
+}
+
+// A colour class (text-gray-400, text-white, text-red-400 ...) is painted by
+// index.css; only a text without one gets a colour from here.
+const COLOR_CLASS = "text-(?:white|black|transparent|[a-z]+-\\d+(?:/\\d+)?)";
+
 const TextComponent: React.FC<BaseComponentProps> = ({ component, className, style }) => {
   const text = component.text || "";
+  const cls = className || "";
+  const { scale, heading } = typeScale(cls);
+  const strong = heading || has(cls, "font-(?:bold|semibold)");
 
-  // Detect if text looks like a heading (short, no period, or marked)
-  const isHeading = text.length < 80 && !text.endsWith('.') && !text.endsWith(',');
-  const isMuted = className?.includes('text-gray-') || className?.includes('text-muted');
+  let color: string | undefined = style?.color as string | undefined;
+  if (color === undefined && !has(cls, COLOR_CLASS) && scale !== "caption") {
+    color = strong ? "var(--text)" : "var(--text-2)";
+  }
 
-  if (isHeading && !isMuted) {
+  // A text the server marks with data-href is a plain link: a page of the
+  // site (the privacy page) rather than an event.
+  const href: string | undefined = ((component as any).attributes || {})["data-href"];
+  if (href) {
     return (
-      <h3
+      <a
         id={component.id}
-        className={className}
-        style={{
-          fontWeight: 600,
-          fontSize: '1rem',
-          lineHeight: 1.4,
-          marginBottom: '0.25rem',
-          ...style,
-          color: style?.color ?? 'var(--text-primary)',
-        }}
+        href={href}
+        className={cls ? `${scale} ${cls}` : scale}
+        style={{ ...style, ...(color !== undefined ? { color } : {}) }}
       >
         {text}
-      </h3>
+      </a>
     );
   }
 
+  const Tag = heading ? "h2" : "p";
   return (
-    <p
+    <Tag
       id={component.id}
-      className={className}
-      style={{
-        fontSize: '0.875rem',
-        lineHeight: 1.6,
-        ...style,
-        color: style?.color ?? (isMuted ? 'var(--text-muted)' : 'var(--text-secondary)'),
-      }}
+      className={cls ? `${scale} ${cls}` : scale}
+      style={{ ...style, ...(color !== undefined ? { color } : {}) }}
     >
       {text}
-    </p>
+    </Tag>
   );
 };
 

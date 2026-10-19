@@ -158,3 +158,171 @@ void downloadJson(int debate_id, const std::string& viewer_username = "A",
         Log::error("[downloadJson] Failed to open output file: " + out_file);
     }
 }
+
+// ---------------------------------------------------------------------------
+// The challenge modal, rendered through the real path.
+//
+// A browser is the wrong instrument for "does the modal come up": it depends
+// on a pane being visible and a server being alive. This drives the handlers a
+// click would drive and renders the page a click would get, then reads what is
+// in it. Two cases, deliberately the same shape: challenging a claim, and
+// challenging an argument picked by its pill.
+// ---------------------------------------------------------------------------
+#include "debateModerator/event-handlers/DebateHandler/DebateHandler.h"
+#include "debateModerator/event-handlers/MoveUserHandler/MoveUserHandler.h"
+#include "debateModerator/event-handlers/AddClaimHandler/AddClaimHandler.h"
+#include "debateModerator/event-handlers/ChallengeHandler/ChallengeHandler.h"
+#include "debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
+#include <cstdio>
+
+namespace {
+
+user::User modalTestUser(const std::string& name) {
+    user::User u;
+    u.set_username(name);
+    u.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+    return u;
+}
+
+std::vector<uint8_t> modalTestBytes(const user::User& u) {
+    std::vector<uint8_t> data(u.ByteSizeLong());
+    u.SerializeToArray(data.data(), static_cast<int>(data.size()));
+    return data;
+}
+
+class ChallengeModalRenderTest : public ::testing::Test {
+protected:
+    void SetUp() override {
+        dbPath_ = "test_modal_render.sqlite3";
+        std::remove(dbPath_.c_str());
+        db_ = new Database(dbPath_);
+        wrapper_ = new DatabaseWrapper(*db_, *db_);
+        debate_ = new DebateWrapper(*wrapper_);
+        ASSERT_TRUE(wrapper_->ensureAllTables());
+        alice_ = wrapper_->users.createUser("alice", modalTestBytes(modalTestUser("alice")));
+        bob_ = wrapper_->users.createUser("bob", modalTestBytes(modalTestUser("bob")));
+        ASSERT_GT(alice_, 0);
+        ASSERT_GT(bob_, 0);
+        user::User a = modalTestUser("alice"); a.set_user_id(alice_);
+        user::User b = modalTestUser("bob");   b.set_user_id(bob_);
+        wrapper_->users.updateUserProtobuf(alice_, modalTestBytes(a));
+        wrapper_->users.updateUserProtobuf(bob_, modalTestBytes(b));
+    }
+    void TearDown() override {
+        delete debate_;
+        delete wrapper_;
+        delete db_;
+        std::remove(dbPath_.c_str());
+        std::remove((dbPath_ + "-wal").c_str());
+        std::remove((dbPath_ + "-shm").c_str());
+    }
+
+    // The page a viewer would get, as text, so its ids and labels can be read.
+    std::string render(int viewerId, const std::string& viewerName) {
+        const std::vector<int> users = debate_->findUsersInDebate(1);
+        const debate::Collection collection =
+            BuildCollection::BuildForDebateAndUsers(1, users, *debate_);
+        const rendering_info::FullDebateViewInfo info =
+            FullDebatePageInfoParser::ParseFullDebateViewInfo(collection, viewerId, viewerName);
+        VRUserDatabase userDb(*db_);
+        // The page reads the current claim's sentence and the links under it
+        // from the viewer's debating_info, which the response generator fills
+        // per request -- the stored user carries only ids. Go through it, as
+        // the server does, or the modal renders against an empty copy.
+        const user::User stored = debate_->getUserProtobuf(viewerId);
+        moderator_to_vr::ModeratorToVRMessage response;
+        DebatePageResponseGenerator::BuildDebatePageResponse(response, viewerId, stored, *debate_);
+        user::User viewer = stored;
+        *viewer.mutable_engagement()->mutable_debating_info() =
+            response.user().engagement().debating_info();
+        return StepView::GenerateStepViewPage(info, collection, userDb, viewer).DebugString();
+    }
+
+    std::string dbPath_;
+    Database* db_ = nullptr;
+    DatabaseWrapper* wrapper_ = nullptr;
+    DebateWrapper* debate_ = nullptr;
+    int alice_ = 0;
+    int bob_ = 0;
+};
+
+}  // namespace
+
+TEST_F(ChallengeModalRenderTest, TheModalOpensForAClaimAndForAnArgumentAlike) {
+    // Alice: a root with one piece of evidence under it.
+    DebateHandler::AddDebate("Speed limits save lives", alice_, *debate_);
+    MoveUserHandler::EnterDebate(1, alice_, *debate_);
+    AddClaimHandler::OpenAddChildClaim(alice_, *debate_);
+    AddClaimHandler::AddClaimUnderClaim({"Crash deaths fell 23 percent"}, {""}, "", alice_, *debate_);
+    const std::vector<int> links = debate_->findLinksUnder(1);
+    ASSERT_EQ(links.size(), 1u);
+
+    // Bob arrives, standing on the root, with no modal anywhere. Entering is
+    // not joining: the collection is built from MEMBERS' claims, so without
+    // membership bob's challenge would be filtered out before rendering.
+    debate_->addMemberToDebate(1, alice_);
+    debate_->addMemberToDebate(1, bob_);
+    MoveUserHandler::EnterDebate(1, bob_, *debate_);
+    MoveUserHandler::SelectClaim(1, bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_NE(page.find("challengeClaimButton"), std::string::npos) << "the claim card's Challenge button";
+        EXPECT_EQ(page.find("challengeSentenceInput"), std::string::npos) << "no modal before a click";
+    }
+
+    // The claim card's Challenge button: the modal, aimed at the claim.
+    ChallengeHandler::StartChallengeClaim(bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_NE(page.find("challengeSentenceInput"), std::string::npos) << "the modal is up";
+        EXPECT_NE(page.find("Challenging: Speed limits save lives"), std::string::npos) << page.substr(0, 0);
+        EXPECT_EQ(page.find("Challenging the argument"), std::string::npos);
+        EXPECT_EQ(page.find("challengeTargetBox"), std::string::npos) << "the picker list is gone";
+    }
+    ChallengeHandler::CancelChallengeClaim(bob_, *debate_);
+    EXPECT_EQ(render(bob_, "bob").find("challengeSentenceInput"), std::string::npos) << "cancel closes it";
+
+    // The pill: select it, and the card is the argument's, same shape as a claim's.
+    MoveUserHandler::SelectLink(links[0], bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_NE(page.find("Selected Argument:"), std::string::npos);
+        EXPECT_NE(page.find("Crash deaths fell 23 percent  --  for: Speed limits save lives"), std::string::npos);
+        EXPECT_NE(page.find("challengeSelectedLinkButton_" + std::to_string(links[0])), std::string::npos)
+            << "the argument card's Challenge button";
+        EXPECT_EQ(page.find("challengeSentenceInput"), std::string::npos);
+    }
+
+    // The argument card's Challenge button: the modal, aimed at the argument.
+    ChallengeHandler::AddLinkToBeChallenged(links[0], bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_NE(page.find("challengeSentenceInput"), std::string::npos) << "the modal is up";
+        EXPECT_NE(page.find("Challenging the argument for \\\"Speed limits save lives\\\", offered: Crash deaths fell 23 percent"),
+                  std::string::npos) << "the one line names the argument";
+        EXPECT_NE(page.find("Say why the evidence offered"), std::string::npos);
+        EXPECT_EQ(page.find("challengeTargetBox"), std::string::npos);
+    }
+
+    // Submit it. The undercut is aimed at the argument, which has no claim of
+    // its own in the tree -- it must still SHOW UP, placed beside the claim
+    // the argument was for. The first live attempt at this vanished entirely.
+    ChallengeHandler::SubmitChallengeClaim({"The boroughs were already getting safer"},
+                                           {"so the drop proves nothing"}, "", bob_, *debate_);
+    {
+        const std::string page = render(bob_, "bob");
+        EXPECT_EQ(page.find("challengeSentenceInput"), std::string::npos) << "the modal closed";
+        EXPECT_NE(page.find("The boroughs were already getting safer"), std::string::npos)
+            << "the challenge claim is on the page";
+        // The graph edge for it names the attacked relation, so the renderer
+        // ends the line at that relation's pill rather than at the claim.
+        EXPECT_NE(page.find("target_relation_id: " + std::to_string(links[0])), std::string::npos)
+            << "the undercut edge points at the argument's pill";
+        // And the root is NOT false for bob: an undercut removes a reason.
+        const debate::Collection c =
+            BuildCollection::BuildForDebateAndUsers(1, debate_->findUsersInDebate(1), *debate_);
+        const auto& root = c.claims_by_id().at(1).user_statuses();
+        auto b = root.find("bob");
+        EXPECT_TRUE(b == root.end() || b->second != debate::ClaimStatus::FALSE_CLAIM);
+    }
+}

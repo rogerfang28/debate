@@ -30,13 +30,37 @@ message TestAction {
   string claim_text = 6;        // for ADD_CHILD_CLAIM, SUBMIT_CHALLENGE_CLAIM
   string claim_description = 7; // for ADD_CHILD_CLAIM
   string challenge_description = 8; // for SUBMIT_CHALLENGE_CLAIM
+
+  // Additional supporting claims for ADD_CHILD_CLAIM. claim_text plus these
+  // become ONE relation with several from-claims -- "these together support
+  // the parent" -- rather than several independent supports.
+  repeated string extra_claim_texts = 9;
+
+  string basis = 10;            // for ADD_CHILD_CLAIM; empty means unspecified
+
+  // For ADD_LINK_TO_BE_CHALLENGED: the ARGUMENT to challenge, named by its two
+  // ends -- the claim it is for, and the claim offered for it. Link ids are
+  // not stable across databases, so whoever runs the scenario resolves the
+  // pair to the stored link. A challenge then submitted is an undercut: it
+  // says the argument does not follow, not that either claim is false.
+  int32 link_to_claim_id = 11;
+  int32 link_from_claim_id = 12;
+
+  // WHOSE claim it is, when not the acting user's: "Paul", "the reporter".
+  // For CREATE_DEBATE, ADD_CHILD_CLAIM and SUBMIT_CHALLENGE_CLAIM. The
+  // acting user types it in; the voice holds it. See debate.Claim.voice_id.
+  string voice = 13;
+  // Where the claim was taken from, if anywhere. See debate.Source.
+  string source_url = 14;
+  string source_excerpt = 15;
 }
 
 // A single expectation to verify after the action in this step runs
 message TestExpectation {
   string check_type = 1;     // CLAIM_EXISTS | CLAIM_SENTENCE | USER_VIEW |
                              // LINK_COUNT | LINK_EXISTS | ENGAGEMENT_STATE |
-                             // COLLECTION_SIZE
+                             // COLLECTION_SIZE | RELATION_COUNT |
+                             // RELATION_FROM_COUNT | RELATION_FROM_EXISTS
 
   // Target identifiers
   string username = 2;       // whose response collection to check
