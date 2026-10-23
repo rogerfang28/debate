@@ -284,6 +284,33 @@ struct SelectClaimDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SelectClaimDefaultTypeInternal _SelectClaim_default_instance_;
 
+inline constexpr RenameAccount::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        new_username_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RenameAccount::RenameAccount(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(RenameAccount_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RenameAccountDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RenameAccountDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RenameAccountDefaultTypeInternal() {}
+  union {
+    RenameAccount _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RenameAccountDefaultTypeInternal _RenameAccount_default_instance_;
+
 inline constexpr RemoveLinkToBeChallenged::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -333,6 +360,31 @@ struct RemoveClaimToBeChallengedDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RemoveClaimToBeChallengedDefaultTypeInternal _RemoveClaimToBeChallenged_default_instance_;
+
+inline constexpr OpenProfile::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        user_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR OpenProfile::OpenProfile(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(OpenProfile_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct OpenProfileDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OpenProfileDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OpenProfileDefaultTypeInternal() {}
+  union {
+    OpenProfile _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OpenProfileDefaultTypeInternal _OpenProfile_default_instance_;
 
 inline constexpr OpenDebateClaim::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1322,6 +1374,16 @@ const ::uint32_t
         0,
         1,
         0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::debate_event::OpenProfile, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::debate_event::OpenProfile, _impl_.user_id_),
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::debate_event::RenameAccount, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::debate_event::RenameAccount, _impl_.new_username_),
+        0,
+        0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_event::UserAuthInfo, _impl_._has_bits_),
         6, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate_event::UserAuthInfo, _impl_.username_),
@@ -1333,7 +1395,7 @@ const ::uint32_t
         0x085, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_._oneof_case_[0]),
-        43, // hasbit index offset
+        45, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.user_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.occurred_at_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.type_),
@@ -1373,9 +1435,13 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
+        PROTOBUF_FIELD_OFFSET(::debate_event::DebateEvent, _impl_.payload_),
         0,
         1,
         2,
+        ~0u,
+        ~0u,
         ~0u,
         ~0u,
         ~0u,
@@ -1451,8 +1517,10 @@ static const ::_pbi::MigrationSchema
         {223, sizeof(::debate_event::ExploreSearch)},
         {228, sizeof(::debate_event::ExploreOption)},
         {233, sizeof(::debate_event::OpenDebateClaim)},
-        {240, sizeof(::debate_event::UserAuthInfo)},
-        {249, sizeof(::debate_event::DebateEvent)},
+        {240, sizeof(::debate_event::OpenProfile)},
+        {245, sizeof(::debate_event::RenameAccount)},
+        {250, sizeof(::debate_event::UserAuthInfo)},
+        {259, sizeof(::debate_event::DebateEvent)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate_event::_CreateDebate_default_instance_._instance,
@@ -1491,6 +1559,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate_event::_ExploreSearch_default_instance_._instance,
     &::debate_event::_ExploreOption_default_instance_._instance,
     &::debate_event::_OpenDebateClaim_default_instance_._instance,
+    &::debate_event::_OpenProfile_default_instance_._instance,
+    &::debate_event::_RenameAccount_default_instance_._instance,
     &::debate_event::_UserAuthInfo_default_instance_._instance,
     &::debate_event::_DebateEvent_default_instance_._instance,
 };
@@ -1565,126 +1635,133 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "R\005query\"%\n\rExploreOption\022\024\n\005value\030\001 \001(\tR"
     "\005value\"I\n\017OpenDebateClaim\022\033\n\tdebate_id\030\001"
     " \001(\005R\010debateId\022\031\n\010claim_id\030\002 \001(\005R\007claimI"
-    "d\"e\n\014UserAuthInfo\022\032\n\010username\030\001 \001(\tR\010use"
-    "rname\022\027\n\007user_id\030\002 \001(\005R\006userId\022 \n\014is_log"
-    "ged_in\030\003 \001(\010R\nisLoggedIn\"\363\025\n\013DebateEvent"
-    "\022.\n\004user\030\001 \001(\0132\032.debate_event.UserAuthIn"
-    "foR\004user\022;\n\013occurred_at\030\003 \001(\0132\032.google.p"
-    "rotobuf.TimestampR\noccurredAt\022+\n\004type\030\004 "
-    "\001(\0162\027.debate_event.EventTypeR\004type\022A\n\rcr"
-    "eate_debate\030\n \001(\0132\032.debate_event.CreateD"
-    "ebateH\000R\014createDebate\022A\n\rdelete_debate\030\014"
-    " \001(\0132\032.debate_event.DeleteDebateH\000R\014dele"
-    "teDebate\022>\n\014enter_debate\030\r \001(\0132\031.debate_"
-    "event.EnterDebateH\000R\013enterDebate\022E\n\017add_"
-    "child_claim\030\020 \001(\0132\033.debate_event.AddChil"
-    "dClaimH\000R\raddChildClaim\0229\n\013go_to_claim\030\024"
-    " \001(\0132\027.debate_event.GoToClaimH\000R\tgoToCla"
-    "im\022N\n\022delete_child_claim\030\027 \001(\0132\036.debate_"
-    "event.DeleteChildClaimH\000R\020deleteChildCla"
-    "im\022m\n\035submit_edit_claim_description\030\031 \001("
-    "\0132(.debate_event.SubmitEditClaimDescript"
-    "ionH\000R\032submitEditClaimDescription\022K\n\021sub"
-    "mit_edit_claim\030\034 \001(\0132\035.debate_event.Subm"
-    "itEditClaimH\000R\017submitEditClaim\022N\n\022connec"
-    "t_from_claim\030\036 \001(\0132\036.debate_event.Connec"
-    "tFromClaimH\000R\020connectFromClaim\022H\n\020connec"
-    "t_to_claim\030\037 \001(\0132\034.debate_event.ConnectT"
-    "oClaimH\000R\016connectToClaim\022W\n\025submit_conne"
-    "ct_claims\030  \001(\0132!.debate_event.SubmitCon"
-    "nectClaimsH\000R\023submitConnectClaims\022;\n\013del"
-    "ete_link\030\" \001(\0132\030.debate_event.DeleteLink"
-    "H\000R\ndeleteLink\022;\n\013join_debate\030# \001(\0132\030.de"
-    "bate_event.JoinDebateH\000R\njoinDebate\022+\n\005l"
-    "ogin\030$ \001(\0132\023.debate_event.LoginH\000R\005login"
-    "\022b\n\032add_claim_to_be_challenged\030& \001(\0132$.d"
-    "ebate_event.AddClaimToBeChallengedH\000R\026ad"
-    "dClaimToBeChallenged\022_\n\031add_link_to_be_c"
-    "hallenged\030\' \001(\0132#.debate_event.AddLinkTo"
-    "BeChallengedH\000R\025addLinkToBeChallenged\022Z\n"
-    "\026submit_challenge_claim\030( \001(\0132\".debate_e"
-    "vent.SubmitChallengeClaimH\000R\024submitChall"
-    "engeClaim\022E\n\017go_to_challenge\030) \001(\0132\033.deb"
-    "ate_event.GoToChallengeH\000R\rgoToChallenge"
-    "\022M\n\021concede_challenge\030* \001(\0132\036.debate_eve"
-    "nt.ConcedeChallengeH\000R\020concedeChallenge\022"
-    "k\n\035remove_claim_to_be_challenged\030. \001(\0132\'"
-    ".debate_event.RemoveClaimToBeChallengedH"
-    "\000R\031removeClaimToBeChallenged\022h\n\034remove_l"
-    "ink_to_be_challenged\030/ \001(\0132&.debate_even"
-    "t.RemoveLinkToBeChallengedH\000R\030removeLink"
-    "ToBeChallenged\022J\n\020delete_challenge\0300 \001(\013"
-    "2\035.debate_event.DeleteChallengeH\000R\017delet"
-    "eChallenge\022>\n\014leave_debate\0301 \001(\0132\031.debat"
-    "e_event.LeaveDebateH\000R\013leaveDebate\022X\n\026mo"
-    "ve_user_to_timestamp\0302 \001(\0132!.debate_even"
-    "t.MoveUserToTimestampH\000R\023moveUserToTimes"
-    "tamp\022>\n\014select_claim\0303 \001(\0132\031.debate_even"
-    "t.SelectClaimH\000R\013selectClaim\0222\n\010ask_chat"
-    "\030: \001(\0132\025.debate_event.AskChatH\000R\007askChat"
-    "\022G\n\017generate_debate\0305 \001(\0132\034.debate_event"
-    ".GenerateDebateH\000R\016generateDebate\022D\n\016sta"
-    "rt_tutorial\0306 \001(\0132\033.debate_event.StartTu"
-    "torialH\000R\rstartTutorial\022;\n\013select_link\0307"
-    " \001(\0132\030.debate_event.SelectLinkH\000R\nselect"
-    "Link\022A\n\rendorse_claim\0308 \001(\0132\032.debate_eve"
-    "nt.EndorseClaimH\000R\014endorseClaim\022G\n\017unend"
-    "orse_claim\0309 \001(\0132\034.debate_event.Unendors"
-    "eClaimH\000R\016unendorseClaim\0222\n\010home_tab\030; \001"
-    "(\0132\025.debate_event.HomeTabH\000R\007homeTab\022D\n\016"
-    "explore_search\030< \001(\0132\033.debate_event.Expl"
-    "oreSearchH\000R\rexploreSearch\022D\n\016explore_op"
-    "tion\030= \001(\0132\033.debate_event.ExploreOptionH"
-    "\000R\rexploreOption\022K\n\021open_debate_claim\030> "
-    "\001(\0132\035.debate_event.OpenDebateClaimH\000R\017op"
-    "enDebateClaimB\t\n\007payloadJ\004\0104\0205*\273\016\n\tEvent"
-    "Type\022\032\n\026EVENT_KIND_UNSPECIFIED\020\000\022\010\n\004NONE"
-    "\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003"
-    "\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n"
-    "\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n\024OPEN_ADD"
-    "_CHILD_CLAIM\020\010\022\023\n\017ADD_CHILD_CLAIM\020\t\022\034\n\030D"
-    "ELETE_CURRENT_STATEMENT\020\n\022\020\n\014REPORT_CLAI"
-    "M\020\013\022\017\n\013GO_TO_CLAIM\020\014\022\031\n\025CLOSE_ADD_CHILD_"
-    "CLAIM\020\r\022\026\n\022CLOSE_REPORT_CLAIM\020\016\022\032\n\026SUBMI"
-    "T_ADD_CHILD_CLAIM\020\017\022\026\n\022DELETE_CHILD_CLAI"
-    "M\020\020\022 \n\034START_EDIT_CLAIM_DESCRIPTION\020\021\022!\n"
-    "\035SUBMIT_EDIT_CLAIM_DESCRIPTION\020\022\022!\n\035CANC"
-    "EL_EDIT_CLAIM_DESCRIPTION\020\023\022\024\n\020START_EDI"
-    "T_CLAIM\020\024\022\025\n\021SUBMIT_EDIT_CLAIM\020\025\022\025\n\021CANC"
-    "EL_EDIT_CLAIM\020\026\022\026\n\022CONNECT_FROM_CLAIM\020\027\022"
-    "\024\n\020CONNECT_TO_CLAIM\020\030\022\031\n\025SUBMIT_CONNECT_"
-    "CLAIMS\020\031\022\031\n\025CANCEL_CONNECT_CLAIMS\020\032\022\017\n\013D"
-    "ELETE_LINK\020\033\022\017\n\013JOIN_DEBATE\020\034\022\t\n\005LOGIN\020\035"
-    "\022\n\n\006LOGOUT\020\036\022\031\n\025START_CHALLENGE_CLAIM\020\037\022"
-    "\036\n\032ADD_CLAIM_TO_BE_CHALLENGED\020 \022\035\n\031ADD_L"
-    "INK_TO_BE_CHALLENGED\020!\022\032\n\026SUBMIT_CHALLEN"
-    "GE_CLAIM\020\"\022\023\n\017GO_TO_CHALLENGE\020#\022\025\n\021CONCE"
-    "DE_CHALLENGE\020$\022\032\n\026CANCEL_CHALLENGE_CLAIM"
-    "\020%\022\026\n\022OPEN_ADD_CHALLENGE\020&\022\027\n\023CLOSE_ADD_"
-    "CHALLENGE\020\'\022!\n\035REMOVE_CLAIM_TO_BE_CHALLE"
-    "NGED\020(\022 \n\034REMOVE_LINK_TO_BE_CHALLENGED\020)"
-    "\022\024\n\020DELETE_CHALLENGE\020*\022!\n\035GO_TO_CHALLENG"
-    "ED_PARENT_CLAIM\020+\022\020\n\014LEAVE_DEBATE\020,\022\"\n\036G"
-    "O_TO_HISTORY_OF_CURRENT_CLAIM\020-\022\032\n\026MOVE_"
-    "USER_TO_TIMESTAMP\020.\022\030\n\024MOVE_USER_TO_PRES"
-    "ENT\020/\022\037\n\033START_MODIFICATION_OF_CLAIM\0200\022 "
-    "\n\034SUBMIT_MODIFICATION_OF_CLAIM\0201\022 \n\034CANC"
-    "EL_MODIFICATION_OF_CLAIM\0202\022\022\n\016GO_TO_OVER"
-    "VIEW\0203\022\032\n\026GO_TO_FULL_DEBATE_VIEW\0204\022\020\n\014SE"
-    "LECT_CLAIM\0205\022\023\n\017GENERATE_DEBATE\020:\022\025\n\021DIS"
-    "MISS_AI_NOTICE\020<\022\022\n\016CANCEL_AI_WORK\020=\022\022\n\016"
-    "START_TUTORIAL\020>\022\021\n\rTUTORIAL_NEXT\020\?\022\021\n\rT"
-    "UTORIAL_EXIT\020@\022\017\n\013SELECT_LINK\020A\022\021\n\rENDOR"
-    "SE_CLAIM\020B\022\023\n\017UNENDORSE_CLAIM\020C\022\014\n\010ASK_C"
-    "HAT\020D\022\016\n\nCLEAR_CHAT\020E\022\017\n\013GO_TO_BRIEF\020F\022\022"
-    "\n\016GENERATE_BRIEF\020G\022\030\n\024OPEN_CLAIM_IN_DEBA"
-    "TE\020H\022\020\n\014OPEN_SIGN_IN\020I\022\021\n\rCLOSE_SIGN_IN\020"
-    "J\022\025\n\021OPEN_DEBATE_BRIEF\020K\022\022\n\016GO_TO_HOME_T"
-    "AB\020L\022\022\n\016EXPLORE_SEARCH\020M\022\022\n\016EXPLORE_FILT"
-    "ER\020N\022\020\n\014EXPLORE_SORT\020O\022\025\n\021OPEN_DEBATE_CL"
-    "AIM\020P\022\026\n\022OPEN_CREATE_DEBATE\020Q\022\027\n\023CLOSE_C"
-    "REATE_DEBATE\020R\"\004\0106\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004"
-    "\010;\020;b\006proto3"
+    "d\"&\n\013OpenProfile\022\027\n\007user_id\030\001 \001(\005R\006userI"
+    "d\"2\n\rRenameAccount\022!\n\014new_username\030\001 \001(\t"
+    "R\013newUsername\"e\n\014UserAuthInfo\022\032\n\010usernam"
+    "e\030\001 \001(\tR\010username\022\027\n\007user_id\030\002 \001(\005R\006user"
+    "Id\022 \n\014is_logged_in\030\003 \001(\010R\nisLoggedIn\"\371\026\n"
+    "\013DebateEvent\022.\n\004user\030\001 \001(\0132\032.debate_even"
+    "t.UserAuthInfoR\004user\022;\n\013occurred_at\030\003 \001("
+    "\0132\032.google.protobuf.TimestampR\noccurredA"
+    "t\022+\n\004type\030\004 \001(\0162\027.debate_event.EventType"
+    "R\004type\022A\n\rcreate_debate\030\n \001(\0132\032.debate_e"
+    "vent.CreateDebateH\000R\014createDebate\022A\n\rdel"
+    "ete_debate\030\014 \001(\0132\032.debate_event.DeleteDe"
+    "bateH\000R\014deleteDebate\022>\n\014enter_debate\030\r \001"
+    "(\0132\031.debate_event.EnterDebateH\000R\013enterDe"
+    "bate\022E\n\017add_child_claim\030\020 \001(\0132\033.debate_e"
+    "vent.AddChildClaimH\000R\raddChildClaim\0229\n\013g"
+    "o_to_claim\030\024 \001(\0132\027.debate_event.GoToClai"
+    "mH\000R\tgoToClaim\022N\n\022delete_child_claim\030\027 \001"
+    "(\0132\036.debate_event.DeleteChildClaimH\000R\020de"
+    "leteChildClaim\022m\n\035submit_edit_claim_desc"
+    "ription\030\031 \001(\0132(.debate_event.SubmitEditC"
+    "laimDescriptionH\000R\032submitEditClaimDescri"
+    "ption\022K\n\021submit_edit_claim\030\034 \001(\0132\035.debat"
+    "e_event.SubmitEditClaimH\000R\017submitEditCla"
+    "im\022N\n\022connect_from_claim\030\036 \001(\0132\036.debate_"
+    "event.ConnectFromClaimH\000R\020connectFromCla"
+    "im\022H\n\020connect_to_claim\030\037 \001(\0132\034.debate_ev"
+    "ent.ConnectToClaimH\000R\016connectToClaim\022W\n\025"
+    "submit_connect_claims\030  \001(\0132!.debate_eve"
+    "nt.SubmitConnectClaimsH\000R\023submitConnectC"
+    "laims\022;\n\013delete_link\030\" \001(\0132\030.debate_even"
+    "t.DeleteLinkH\000R\ndeleteLink\022;\n\013join_debat"
+    "e\030# \001(\0132\030.debate_event.JoinDebateH\000R\njoi"
+    "nDebate\022+\n\005login\030$ \001(\0132\023.debate_event.Lo"
+    "ginH\000R\005login\022b\n\032add_claim_to_be_challeng"
+    "ed\030& \001(\0132$.debate_event.AddClaimToBeChal"
+    "lengedH\000R\026addClaimToBeChallenged\022_\n\031add_"
+    "link_to_be_challenged\030\' \001(\0132#.debate_eve"
+    "nt.AddLinkToBeChallengedH\000R\025addLinkToBeC"
+    "hallenged\022Z\n\026submit_challenge_claim\030( \001("
+    "\0132\".debate_event.SubmitChallengeClaimH\000R"
+    "\024submitChallengeClaim\022E\n\017go_to_challenge"
+    "\030) \001(\0132\033.debate_event.GoToChallengeH\000R\rg"
+    "oToChallenge\022M\n\021concede_challenge\030* \001(\0132"
+    "\036.debate_event.ConcedeChallengeH\000R\020conce"
+    "deChallenge\022k\n\035remove_claim_to_be_challe"
+    "nged\030. \001(\0132\'.debate_event.RemoveClaimToB"
+    "eChallengedH\000R\031removeClaimToBeChallenged"
+    "\022h\n\034remove_link_to_be_challenged\030/ \001(\0132&"
+    ".debate_event.RemoveLinkToBeChallengedH\000"
+    "R\030removeLinkToBeChallenged\022J\n\020delete_cha"
+    "llenge\0300 \001(\0132\035.debate_event.DeleteChalle"
+    "ngeH\000R\017deleteChallenge\022>\n\014leave_debate\0301"
+    " \001(\0132\031.debate_event.LeaveDebateH\000R\013leave"
+    "Debate\022X\n\026move_user_to_timestamp\0302 \001(\0132!"
+    ".debate_event.MoveUserToTimestampH\000R\023mov"
+    "eUserToTimestamp\022>\n\014select_claim\0303 \001(\0132\031"
+    ".debate_event.SelectClaimH\000R\013selectClaim"
+    "\0222\n\010ask_chat\030: \001(\0132\025.debate_event.AskCha"
+    "tH\000R\007askChat\022G\n\017generate_debate\0305 \001(\0132\034."
+    "debate_event.GenerateDebateH\000R\016generateD"
+    "ebate\022D\n\016start_tutorial\0306 \001(\0132\033.debate_e"
+    "vent.StartTutorialH\000R\rstartTutorial\022;\n\013s"
+    "elect_link\0307 \001(\0132\030.debate_event.SelectLi"
+    "nkH\000R\nselectLink\022A\n\rendorse_claim\0308 \001(\0132"
+    "\032.debate_event.EndorseClaimH\000R\014endorseCl"
+    "aim\022G\n\017unendorse_claim\0309 \001(\0132\034.debate_ev"
+    "ent.UnendorseClaimH\000R\016unendorseClaim\0222\n\010"
+    "home_tab\030; \001(\0132\025.debate_event.HomeTabH\000R"
+    "\007homeTab\022D\n\016explore_search\030< \001(\0132\033.debat"
+    "e_event.ExploreSearchH\000R\rexploreSearch\022D"
+    "\n\016explore_option\030= \001(\0132\033.debate_event.Ex"
+    "ploreOptionH\000R\rexploreOption\022K\n\021open_deb"
+    "ate_claim\030> \001(\0132\035.debate_event.OpenDebat"
+    "eClaimH\000R\017openDebateClaim\022>\n\014open_profil"
+    "e\030\? \001(\0132\031.debate_event.OpenProfileH\000R\013op"
+    "enProfile\022D\n\016rename_account\030@ \001(\0132\033.deba"
+    "te_event.RenameAccountH\000R\rrenameAccountB"
+    "\t\n\007payloadJ\004\0104\0205*\210\017\n\tEventType\022\032\n\026EVENT_"
+    "KIND_UNSPECIFIED\020\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_D"
+    "EBATE\020\002\022\021\n\rCLEAR_DEBATES\020\003\022\021\n\rDELETE_DEB"
+    "ATE\020\004\022\020\n\014ENTER_DEBATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014"
+    "GO_TO_PARENT\020\007\022\030\n\024OPEN_ADD_CHILD_CLAIM\020\010"
+    "\022\023\n\017ADD_CHILD_CLAIM\020\t\022\034\n\030DELETE_CURRENT_"
+    "STATEMENT\020\n\022\020\n\014REPORT_CLAIM\020\013\022\017\n\013GO_TO_C"
+    "LAIM\020\014\022\031\n\025CLOSE_ADD_CHILD_CLAIM\020\r\022\026\n\022CLO"
+    "SE_REPORT_CLAIM\020\016\022\032\n\026SUBMIT_ADD_CHILD_CL"
+    "AIM\020\017\022\026\n\022DELETE_CHILD_CLAIM\020\020\022 \n\034START_E"
+    "DIT_CLAIM_DESCRIPTION\020\021\022!\n\035SUBMIT_EDIT_C"
+    "LAIM_DESCRIPTION\020\022\022!\n\035CANCEL_EDIT_CLAIM_"
+    "DESCRIPTION\020\023\022\024\n\020START_EDIT_CLAIM\020\024\022\025\n\021S"
+    "UBMIT_EDIT_CLAIM\020\025\022\025\n\021CANCEL_EDIT_CLAIM\020"
+    "\026\022\026\n\022CONNECT_FROM_CLAIM\020\027\022\024\n\020CONNECT_TO_"
+    "CLAIM\020\030\022\031\n\025SUBMIT_CONNECT_CLAIMS\020\031\022\031\n\025CA"
+    "NCEL_CONNECT_CLAIMS\020\032\022\017\n\013DELETE_LINK\020\033\022\017"
+    "\n\013JOIN_DEBATE\020\034\022\t\n\005LOGIN\020\035\022\n\n\006LOGOUT\020\036\022\031"
+    "\n\025START_CHALLENGE_CLAIM\020\037\022\036\n\032ADD_CLAIM_T"
+    "O_BE_CHALLENGED\020 \022\035\n\031ADD_LINK_TO_BE_CHAL"
+    "LENGED\020!\022\032\n\026SUBMIT_CHALLENGE_CLAIM\020\"\022\023\n\017"
+    "GO_TO_CHALLENGE\020#\022\025\n\021CONCEDE_CHALLENGE\020$"
+    "\022\032\n\026CANCEL_CHALLENGE_CLAIM\020%\022\026\n\022OPEN_ADD"
+    "_CHALLENGE\020&\022\027\n\023CLOSE_ADD_CHALLENGE\020\'\022!\n"
+    "\035REMOVE_CLAIM_TO_BE_CHALLENGED\020(\022 \n\034REMO"
+    "VE_LINK_TO_BE_CHALLENGED\020)\022\024\n\020DELETE_CHA"
+    "LLENGE\020*\022!\n\035GO_TO_CHALLENGED_PARENT_CLAI"
+    "M\020+\022\020\n\014LEAVE_DEBATE\020,\022\"\n\036GO_TO_HISTORY_O"
+    "F_CURRENT_CLAIM\020-\022\032\n\026MOVE_USER_TO_TIMEST"
+    "AMP\020.\022\030\n\024MOVE_USER_TO_PRESENT\020/\022\037\n\033START"
+    "_MODIFICATION_OF_CLAIM\0200\022 \n\034SUBMIT_MODIF"
+    "ICATION_OF_CLAIM\0201\022 \n\034CANCEL_MODIFICATIO"
+    "N_OF_CLAIM\0202\022\022\n\016GO_TO_OVERVIEW\0203\022\032\n\026GO_T"
+    "O_FULL_DEBATE_VIEW\0204\022\020\n\014SELECT_CLAIM\0205\022\023"
+    "\n\017GENERATE_DEBATE\020:\022\025\n\021DISMISS_AI_NOTICE"
+    "\020<\022\022\n\016CANCEL_AI_WORK\020=\022\022\n\016START_TUTORIAL"
+    "\020>\022\021\n\rTUTORIAL_NEXT\020\?\022\021\n\rTUTORIAL_EXIT\020@"
+    "\022\017\n\013SELECT_LINK\020A\022\021\n\rENDORSE_CLAIM\020B\022\023\n\017"
+    "UNENDORSE_CLAIM\020C\022\014\n\010ASK_CHAT\020D\022\016\n\nCLEAR"
+    "_CHAT\020E\022\017\n\013GO_TO_BRIEF\020F\022\022\n\016GENERATE_BRI"
+    "EF\020G\022\030\n\024OPEN_CLAIM_IN_DEBATE\020H\022\020\n\014OPEN_S"
+    "IGN_IN\020I\022\021\n\rCLOSE_SIGN_IN\020J\022\025\n\021OPEN_DEBA"
+    "TE_BRIEF\020K\022\022\n\016GO_TO_HOME_TAB\020L\022\022\n\016EXPLOR"
+    "E_SEARCH\020M\022\022\n\016EXPLORE_FILTER\020N\022\020\n\014EXPLOR"
+    "E_SORT\020O\022\025\n\021OPEN_DEBATE_CLAIM\020P\022\026\n\022OPEN_"
+    "CREATE_DEBATE\020Q\022\027\n\023CLOSE_CREATE_DEBATE\020R"
+    "\022\020\n\014OPEN_PROFILE\020S\022\021\n\rPROFILE_PANEL\020T\022\022\n"
+    "\016RENAME_ACCOUNT\020U\022\022\n\016DELETE_ACCOUNT\020V\"\004\010"
+    "6\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004\010;\020;b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1694,13 +1771,13 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    7532,
+    7835,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
     descriptor_table_debate_5fevent_2eproto_deps,
     1,
-    38,
+    40,
     schemas,
     file_default_instances,
     TableStruct_debate_5fevent_2eproto::offsets,
@@ -1713,7 +1790,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3538944u, 32u, 536870864u, };
+    3538944u, 64u, 4294967248u, 1u, };
 // ===================================================================
 
 class CreateDebate::_Internal {
@@ -12306,6 +12383,529 @@ void OpenDebateClaim::InternalSwap(OpenDebateClaim* PROTOBUF_RESTRICT PROTOBUF_N
 }
 // ===================================================================
 
+class OpenProfile::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<OpenProfile>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(OpenProfile, _impl_._has_bits_);
+};
+
+OpenProfile::OpenProfile(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OpenProfile_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate_event.OpenProfile)
+}
+OpenProfile::OpenProfile(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const OpenProfile& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, OpenProfile_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE OpenProfile::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void OpenProfile::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.user_id_ = {};
+}
+OpenProfile::~OpenProfile() {
+  // @@protoc_insertion_point(destructor:debate_event.OpenProfile)
+  SharedDtor(*this);
+}
+inline void OpenProfile::SharedDtor(MessageLite& self) {
+  OpenProfile& this_ = static_cast<OpenProfile&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL OpenProfile::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) OpenProfile(arena);
+}
+constexpr auto OpenProfile::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(OpenProfile),
+                                            alignof(OpenProfile));
+}
+constexpr auto OpenProfile::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_OpenProfile_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &OpenProfile::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<OpenProfile>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &OpenProfile::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<OpenProfile>(), &OpenProfile::ByteSizeLong,
+              &OpenProfile::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(OpenProfile, _impl_._cached_size_),
+          false,
+      },
+      &OpenProfile::kDescriptorMethods,
+      &descriptor_table_debate_5fevent_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull OpenProfile_class_data_ =
+        OpenProfile::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+OpenProfile::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&OpenProfile_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(OpenProfile_class_data_.tc_table);
+  return OpenProfile_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
+OpenProfile::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(OpenProfile, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    OpenProfile_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::OpenProfile>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 user_id = 1 [json_name = "userId"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(OpenProfile, _impl_.user_id_), 0>(),
+     {8, 0, 0,
+      PROTOBUF_FIELD_OFFSET(OpenProfile, _impl_.user_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 user_id = 1 [json_name = "userId"];
+    {PROTOBUF_FIELD_OFFSET(OpenProfile, _impl_.user_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void OpenProfile::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate_event.OpenProfile)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.user_id_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL OpenProfile::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const OpenProfile& this_ = static_cast<const OpenProfile&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL OpenProfile::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const OpenProfile& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:debate_event.OpenProfile)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 user_id = 1 [json_name = "userId"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (this_._internal_user_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_user_id(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:debate_event.OpenProfile)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t OpenProfile::ByteSizeLong(const MessageLite& base) {
+  const OpenProfile& this_ = static_cast<const OpenProfile&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t OpenProfile::ByteSizeLong() const {
+  const OpenProfile& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:debate_event.OpenProfile)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // int32 user_id = 1 [json_name = "userId"];
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (this_._internal_user_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_user_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void OpenProfile::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<OpenProfile*>(&to_msg);
+  auto& from = static_cast<const OpenProfile&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.OpenProfile)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (from._internal_user_id() != 0) {
+      _this->_impl_.user_id_ = from._impl_.user_id_;
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void OpenProfile::CopyFrom(const OpenProfile& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:debate_event.OpenProfile)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void OpenProfile::InternalSwap(OpenProfile* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.user_id_, other->_impl_.user_id_);
+}
+
+::google::protobuf::Metadata OpenProfile::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RenameAccount::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<RenameAccount>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RenameAccount, _impl_._has_bits_);
+};
+
+RenameAccount::RenameAccount(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, RenameAccount_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:debate_event.RenameAccount)
+}
+PROTOBUF_NDEBUG_INLINE RenameAccount::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::debate_event::RenameAccount& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        new_username_(arena, from.new_username_) {}
+
+RenameAccount::RenameAccount(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const RenameAccount& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, RenameAccount_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RenameAccount* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+
+  // @@protoc_insertion_point(copy_constructor:debate_event.RenameAccount)
+}
+PROTOBUF_NDEBUG_INLINE RenameAccount::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        new_username_(arena) {}
+
+inline void RenameAccount::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+RenameAccount::~RenameAccount() {
+  // @@protoc_insertion_point(destructor:debate_event.RenameAccount)
+  SharedDtor(*this);
+}
+inline void RenameAccount::SharedDtor(MessageLite& self) {
+  RenameAccount& this_ = static_cast<RenameAccount&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.new_username_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL RenameAccount::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) RenameAccount(arena);
+}
+constexpr auto RenameAccount::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(RenameAccount),
+                                            alignof(RenameAccount));
+}
+constexpr auto RenameAccount::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_RenameAccount_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &RenameAccount::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<RenameAccount>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &RenameAccount::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<RenameAccount>(), &RenameAccount::ByteSizeLong,
+              &RenameAccount::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(RenameAccount, _impl_._cached_size_),
+          false,
+      },
+      &RenameAccount::kDescriptorMethods,
+      &descriptor_table_debate_5fevent_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull RenameAccount_class_data_ =
+        RenameAccount::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+RenameAccount::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&RenameAccount_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(RenameAccount_class_data_.tc_table);
+  return RenameAccount_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 47, 2>
+RenameAccount::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RenameAccount, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    RenameAccount_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::debate_event::RenameAccount>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string new_username = 1 [json_name = "newUsername"];
+    {::_pbi::TcParser::FastUS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(RenameAccount, _impl_.new_username_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string new_username = 1 [json_name = "newUsername"];
+    {PROTOBUF_FIELD_OFFSET(RenameAccount, _impl_.new_username_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\32\14\0\0\0\0\0\0"
+    "debate_event.RenameAccount"
+    "new_username"
+  }},
+};
+PROTOBUF_NOINLINE void RenameAccount::Clear() {
+// @@protoc_insertion_point(message_clear_start:debate_event.RenameAccount)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.new_username_.ClearNonDefaultToEmpty();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL RenameAccount::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const RenameAccount& this_ = static_cast<const RenameAccount&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL RenameAccount::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const RenameAccount& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:debate_event.RenameAccount)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // string new_username = 1 [json_name = "newUsername"];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_new_username().empty()) {
+      const ::std::string& _s = this_._internal_new_username();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate_event.RenameAccount.new_username");
+      target = stream->WriteStringMaybeAliased(1, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:debate_event.RenameAccount)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t RenameAccount::ByteSizeLong(const MessageLite& base) {
+  const RenameAccount& this_ = static_cast<const RenameAccount&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t RenameAccount::ByteSizeLong() const {
+  const RenameAccount& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:debate_event.RenameAccount)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // string new_username = 1 [json_name = "newUsername"];
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_new_username().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_new_username());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void RenameAccount::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<RenameAccount*>(&to_msg);
+  auto& from = static_cast<const RenameAccount&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:debate_event.RenameAccount)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!from._internal_new_username().empty()) {
+      _this->_internal_set_new_username(from._internal_new_username());
+    } else {
+      if (_this->_impl_.new_username_.IsDefault()) {
+        _this->_internal_set_new_username("");
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void RenameAccount::CopyFrom(const RenameAccount& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:debate_event.RenameAccount)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RenameAccount::InternalSwap(RenameAccount* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.new_username_, &other->_impl_.new_username_, arena);
+}
+
+::google::protobuf::Metadata RenameAccount::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class UserAuthInfo::_Internal {
  public:
   using HasBits =
@@ -13133,6 +13733,32 @@ void DebateEvent::set_allocated_open_debate_claim(::debate_event::OpenDebateClai
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.open_debate_claim)
 }
+void DebateEvent::set_allocated_open_profile(::debate_event::OpenProfile* PROTOBUF_NULLABLE open_profile) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (open_profile) {
+    ::google::protobuf::Arena* submessage_arena = open_profile->GetArena();
+    if (message_arena != submessage_arena) {
+      open_profile = ::google::protobuf::internal::GetOwnedMessage(message_arena, open_profile, submessage_arena);
+    }
+    set_has_open_profile();
+    _impl_.payload_.open_profile_ = open_profile;
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.open_profile)
+}
+void DebateEvent::set_allocated_rename_account(::debate_event::RenameAccount* PROTOBUF_NULLABLE rename_account) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_payload();
+  if (rename_account) {
+    ::google::protobuf::Arena* submessage_arena = rename_account->GetArena();
+    if (message_arena != submessage_arena) {
+      rename_account = ::google::protobuf::internal::GetOwnedMessage(message_arena, rename_account, submessage_arena);
+    }
+    set_has_rename_account();
+    _impl_.payload_.rename_account_ = rename_account;
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.DebateEvent.rename_account)
+}
 DebateEvent::DebateEvent(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, DebateEvent_class_data_.base()) {
@@ -13279,6 +13905,12 @@ DebateEvent::DebateEvent(
         break;
       case kOpenDebateClaim:
         _impl_.payload_.open_debate_claim_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.open_debate_claim_);
+        break;
+      case kOpenProfile:
+        _impl_.payload_.open_profile_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.open_profile_);
+        break;
+      case kRenameAccount:
+        _impl_.payload_.rename_account_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.rename_account_);
         break;
   }
 
@@ -13603,6 +14235,22 @@ void DebateEvent::clear_payload() {
       }
       break;
     }
+    case kOpenProfile: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.open_profile_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.open_profile_);
+      }
+      break;
+    }
+    case kRenameAccount: {
+      if (GetArena() == nullptr) {
+        delete _impl_.payload_.rename_account_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.rename_account_);
+      }
+      break;
+    }
     case PAYLOAD_NOT_SET: {
       break;
     }
@@ -13654,17 +14302,17 @@ DebateEvent::GetClassData() const {
   return DebateEvent_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 38, 37, 0, 9>
+const ::_pbi::TcParseTable<2, 40, 39, 0, 9>
 DebateEvent::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_._has_bits_),
     0, // no _extensions_
-    62, 24,  // max_field_number, fast_idx_mask
+    64, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
     381117938,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    38,  // num_field_entries
-    37,  // num_aux_entries
+    40,  // num_field_entries
+    39,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     DebateEvent_class_data_.base(),
     nullptr,  // post_loop_handler
@@ -13689,7 +14337,7 @@ DebateEvent::_table_ = {
   }}, {{
     34, 0, 2,
     3592, 14,
-    57348, 26,
+    32772, 26,
     65535, 65535
   }}, {{
     // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
@@ -13768,6 +14416,10 @@ DebateEvent::_table_ = {
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.explore_option_), _Internal::kOneofCaseOffset + 0, 35, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
     // .debate_event.OpenDebateClaim open_debate_claim = 62 [json_name = "openDebateClaim"];
     {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.open_debate_claim_), _Internal::kOneofCaseOffset + 0, 36, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate_event.OpenProfile open_profile = 63 [json_name = "openProfile"];
+    {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.open_profile_), _Internal::kOneofCaseOffset + 0, 37, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .debate_event.RenameAccount rename_account = 64 [json_name = "renameAccount"];
+    {PROTOBUF_FIELD_OFFSET(DebateEvent, _impl_.payload_.rename_account_), _Internal::kOneofCaseOffset + 0, 38, (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::debate_event::UserAuthInfo>()},
@@ -13807,6 +14459,8 @@ DebateEvent::_table_ = {
       {::_pbi::TcParser::GetTable<::debate_event::ExploreSearch>()},
       {::_pbi::TcParser::GetTable<::debate_event::ExploreOption>()},
       {::_pbi::TcParser::GetTable<::debate_event::OpenDebateClaim>()},
+      {::_pbi::TcParser::GetTable<::debate_event::OpenProfile>()},
+      {::_pbi::TcParser::GetTable<::debate_event::RenameAccount>()},
   }},
   {{
   }},
@@ -14088,6 +14742,18 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
           stream);
       break;
     }
+    case kOpenProfile: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          63, *this_._impl_.payload_.open_profile_, this_._impl_.payload_.open_profile_->GetCachedSize(), target,
+          stream);
+      break;
+    }
+    case kRenameAccount: {
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          64, *this_._impl_.payload_.rename_account_, this_._impl_.payload_.rename_account_->GetCachedSize(), target,
+          stream);
+      break;
+    }
     default:
       break;
   }
@@ -14344,6 +15010,18 @@ PROTOBUF_NOINLINE void DebateEvent::Clear() {
     case kOpenDebateClaim: {
       total_size += 2 +
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.open_debate_claim_);
+      break;
+    }
+    // .debate_event.OpenProfile open_profile = 63 [json_name = "openProfile"];
+    case kOpenProfile: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.open_profile_);
+      break;
+    }
+    // .debate_event.RenameAccount rename_account = 64 [json_name = "renameAccount"];
+    case kRenameAccount: {
+      total_size += 2 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.payload_.rename_account_);
       break;
     }
     case PAYLOAD_NOT_SET: {
@@ -14682,6 +15360,22 @@ void DebateEvent::MergeImpl(::google::protobuf::MessageLite& to_msg,
           _this->_impl_.payload_.open_debate_claim_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.open_debate_claim_);
         } else {
           _this->_impl_.payload_.open_debate_claim_->MergeFrom(*from._impl_.payload_.open_debate_claim_);
+        }
+        break;
+      }
+      case kOpenProfile: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.open_profile_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.open_profile_);
+        } else {
+          _this->_impl_.payload_.open_profile_->MergeFrom(*from._impl_.payload_.open_profile_);
+        }
+        break;
+      }
+      case kRenameAccount: {
+        if (oneof_needs_init) {
+          _this->_impl_.payload_.rename_account_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.payload_.rename_account_);
+        } else {
+          _this->_impl_.payload_.rename_account_->MergeFrom(*from._impl_.payload_.rename_account_);
         }
         break;
       }

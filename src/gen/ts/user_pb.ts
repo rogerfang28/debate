@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file user.proto.
  */
 export const file_user: GenFile = /*@__PURE__*/
-  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIqYCCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJEhUKDXBhc3N3b3JkX2hhc2gYCCABKAkSFAoMc2lnbl9pbl9vcGVuGAkgASgIEhYKDnBlbmRpbmdfYWN0aW9uGAogASgMYgZwcm90bzM", [file_user_engagement, file_scope, file_collection]);
+  fileDesc("Cgp1c2VyLnByb3RvEgR1c2VyIrkCCgRVc2VyEg8KB3VzZXJfaWQYASABKAUSEAoIdXNlcm5hbWUYAiABKAkSMwoKZW5nYWdlbWVudBgDIAEoCzIfLnVzZXJfZW5nYWdlbWVudC5Vc2VyRW5nYWdlbWVudBIkCg1jdXJyZW50X3Njb3BlGAQgASgLMg0uZGViYXRlLlNjb3BlEjgKD2NvbGxlY3Rpb25fc3BlYxgFIAEoCzIfLmRlYmF0ZS5Db2xsZWN0aW9uU3BlY2lmaWNhdGlvbhISCgpnb29nbGVfc3ViGAYgASgJEg0KBWVtYWlsGAcgASgJEhUKDXBhc3N3b3JkX2hhc2gYCCABKAkSFAoMc2lnbl9pbl9vcGVuGAkgASgIEhYKDnBlbmRpbmdfYWN0aW9uGAogASgMEhEKCWpvaW5lZF9hdBgLIAEoA2IGcHJvdG8z", [file_user_engagement, file_scope, file_collection]);
 
 /**
  * @generated from message user.User
@@ -84,6 +84,16 @@ export type User = Message<"user.User"> & {
    * @generated from field: bytes pending_action = 10;
    */
   pendingAction: Uint8Array;
+
+  /**
+   * When the account was made, as Unix seconds: a password registration, a
+   * Google sign-in, a visitor, or a voice. 0 for accounts from before this
+   * was recorded -- their profile says "Early member". Visitors older than
+   * three days are swept by it (AccountService::SweepVisitors).
+   *
+   * @generated from field: int64 joined_at = 11;
+   */
+  joinedAt: bigint;
 };
 
 /**

@@ -225,6 +225,7 @@ class User final : public ::google::protobuf::Message
     kCollectionSpecFieldNumber = 5,
     kUserIdFieldNumber = 1,
     kSignInOpenFieldNumber = 9,
+    kJoinedAtFieldNumber = 11,
   };
   // string username = 2 [json_name = "username"];
   void clear_username() ;
@@ -366,11 +367,21 @@ class User final : public ::google::protobuf::Message
   void _internal_set_sign_in_open(bool value);
 
   public:
+  // int64 joined_at = 11 [json_name = "joinedAt"];
+  void clear_joined_at() ;
+  ::int64_t joined_at() const;
+  void set_joined_at(::int64_t value);
+
+  private:
+  ::int64_t _internal_joined_at() const;
+  void _internal_set_joined_at(::int64_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user.User)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 10,
+  static const ::google::protobuf::internal::TcParseTable<4, 11,
                                    3, 62,
                                    2>
       _table_;
@@ -402,6 +413,7 @@ class User final : public ::google::protobuf::Message
     ::debate::CollectionSpecification* PROTOBUF_NULLABLE collection_spec_;
     ::int32_t user_id_;
     bool sign_in_open_;
+    ::int64_t joined_at_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1078,6 +1090,31 @@ inline void User::set_allocated_pending_action(::std::string* PROTOBUF_NULLABLE 
     _impl_.pending_action_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:user.User.pending_action)
+}
+
+// int64 joined_at = 11 [json_name = "joinedAt"];
+inline void User::clear_joined_at() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.joined_at_ = ::int64_t{0};
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000400U);
+}
+inline ::int64_t User::joined_at() const {
+  // @@protoc_insertion_point(field_get:user.User.joined_at)
+  return _internal_joined_at();
+}
+inline void User::set_joined_at(::int64_t value) {
+  _internal_set_joined_at(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  // @@protoc_insertion_point(field_set:user.User.joined_at)
+}
+inline ::int64_t User::_internal_joined_at() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.joined_at_;
+}
+inline void User::_internal_set_joined_at(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.joined_at_ = value;
 }
 
 #ifdef __GNUC__

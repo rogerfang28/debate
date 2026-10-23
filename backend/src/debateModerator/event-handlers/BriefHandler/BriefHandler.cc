@@ -5,6 +5,7 @@
 #include "../../../utils/AiJobs.h"
 #include "../../../utils/DebateBrief.h"
 #include "../../../utils/Log.h"
+#include "../../../utils/UsernamePolicy.h"
 
 #include <map>
 #include <string>
@@ -87,7 +88,8 @@ void BriefHandler::Generate(const int& user_id, DebateWrapper& debateWrapper) {
     }
 
     const DebateBrief::Facts facts = DebateBrief::Compute(collection, nameOf);
-    const std::string prompt = DebateBrief::Prompt(facts, topic);
+    // A closed account is "Deleted account" to the model, so its words never name one.
+    const std::string prompt = username_policy::ScrubDeletedNames(DebateBrief::Prompt(facts, topic));
 
     if (!AiJobs::Start(user_id, AiJobs::Kind::Brief, prompt, 0, 0)) {
         return;

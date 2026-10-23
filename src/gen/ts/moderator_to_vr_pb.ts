@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciKKAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdCKpBAoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJEhEKCXJvb3RfdGV4dBgGIAEoCRITCgtyb290X2hvbGRlchgHIAEoCRISCgp1bnJlc29sdmVkGAggASgIEhIKCmhpbmdlX3RleHQYCSABKAkSEwoLY2xhaW1fY291bnQYCiABKAUSFAoMc3RhbmNlX2NvdW50GAsgASgFEhwKFG9wZW5fY2hhbGxlbmdlX2NvdW50GAwgASgFEhAKCGludm9sdmVkGA0gAygJEhUKDWxhc3RfbW92ZWRfYXQYDiABKAMSFAoMcGVvcGxlX2NvdW50GA8gASgFEioKBW93aW5nGBAgAygLMhsubW9kZXJhdG9yX3RvX3ZyLk93aW5nUGFydHkSKAoEb3dlZBgRIAMoCzIaLm1vZGVyYXRvcl90b192ci5Pd2VkUmVwbHkSEgoKbWVtYmVyX2lkcxgSIAMoBRIxCgxyZWNlbnRfbW92ZXMYEyADKAsyGy5tb2RlcmF0b3JfdG9fdnIuUmVjZW50TW92ZRITCgtjbGFpbV90ZXh0cxgUIAMoCRIUCgxzZWFyY2hfbWF0Y2gYFSABKAgSFgoObWF0Y2hlZF9jbGFpbXMYFiADKAkiKAoKT3dpbmdQYXJ0eRILCgN3aG8YASABKAkSDQoFY291bnQYAiABKAUiOAoJT3dlZFJlcGx5EgsKA3dobxgBIAEoCRIQCghjbGFpbV9pZBgCIAEoBRIMCgR0ZXh0GAMgASgJIkAKClJlY2VudE1vdmUSCwoDd2hvGAEgASgJEgwKBHZlcmIYAiABKAkSCgoCYXQYAyABKAMSCwoDc2VxGAQgASgFIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciK1AQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdBIpCgdwcm9maWxlGAQgASgLMhgubW9kZXJhdG9yX3RvX3ZyLlByb2ZpbGUi5QEKB1Byb2ZpbGUSDwoHdXNlcl9pZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRIMCgRraW5kGAMgASgJEhEKCWpvaW5lZF9hdBgEIAEoAxIPCgdkZWJhdGVzGAUgASgFEg4KBmNsYWltcxgGIAEoBRISCgpjaGFsbGVuZ2VzGAcgASgFEhIKCmFncmVlbWVudHMYCCABKAUSEwoLY29uY2Vzc2lvbnMYCSABKAUSFwoPb3Blbl9jaGFsbGVuZ2VzGAogASgFEhIKCmRlYmF0ZV9pZHMYCyADKAUSCwoDb3duGAwgASgIInsKC1BlcnNvblRhbGx5Eg8KB3VzZXJfaWQYASABKAUSDgoGY2xhaW1zGAIgASgFEhIKCmNoYWxsZW5nZXMYAyABKAUSEgoKYWdyZWVtZW50cxgEIAEoBRITCgtjb25jZXNzaW9ucxgFIAEoBRIOCgZ2b2ljZWQYBiABKAUi2AQKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCRIRCglyb290X3RleHQYBiABKAkSEwoLcm9vdF9ob2xkZXIYByABKAkSEgoKdW5yZXNvbHZlZBgIIAEoCBISCgpoaW5nZV90ZXh0GAkgASgJEhMKC2NsYWltX2NvdW50GAogASgFEhQKDHN0YW5jZV9jb3VudBgLIAEoBRIcChRvcGVuX2NoYWxsZW5nZV9jb3VudBgMIAEoBRIQCghpbnZvbHZlZBgNIAMoCRIVCg1sYXN0X21vdmVkX2F0GA4gASgDEhQKDHBlb3BsZV9jb3VudBgPIAEoBRIqCgVvd2luZxgQIAMoCzIbLm1vZGVyYXRvcl90b192ci5Pd2luZ1BhcnR5EigKBG93ZWQYESADKAsyGi5tb2RlcmF0b3JfdG9fdnIuT3dlZFJlcGx5EhIKCm1lbWJlcl9pZHMYEiADKAUSMQoMcmVjZW50X21vdmVzGBMgAygLMhsubW9kZXJhdG9yX3RvX3ZyLlJlY2VudE1vdmUSEwoLY2xhaW1fdGV4dHMYFCADKAkSFAoMc2VhcmNoX21hdGNoGBUgASgIEhYKDm1hdGNoZWRfY2xhaW1zGBYgAygJEi0KB3RhbGxpZXMYFyADKAsyHC5tb2RlcmF0b3JfdG9fdnIuUGVyc29uVGFsbHkiKAoKT3dpbmdQYXJ0eRILCgN3aG8YASABKAkSDQoFY291bnQYAiABKAUiOAoJT3dlZFJlcGx5EgsKA3dobxgBIAEoCRIQCghjbGFpbV9pZBgCIAEoBRIMCgR0ZXh0GAMgASgJIkAKClJlY2VudE1vdmUSCwoDd2hvGAEgASgJEgwKBHZlcmIYAiABKAkSCgoCYXQYAyABKAMSCwoDc2VxGAQgASgFIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -38,6 +38,13 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
    * @generated from field: moderator_to_vr.DebateList debate_list = 3;
    */
   debateList?: DebateList;
+
+  /**
+   * The profile open on the home page (engagement.home_view.profile_user_id).
+   *
+   * @generated from field: moderator_to_vr.Profile profile = 4;
+   */
+  profile?: Profile;
 };
 
 /**
@@ -46,6 +53,143 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
  */
 export const ModeratorToVRMessageSchema: GenMessage<ModeratorToVRMessage> = /*@__PURE__*/
   messageDesc(file_moderator_to_vr, 0);
+
+/**
+ * A person's public profile: who they are and what they have done, summed
+ * over every debate's card (DebateTopic.tallies, owed).
+ *
+ * @generated from message moderator_to_vr.Profile
+ */
+export type Profile = Message<"moderator_to_vr.Profile"> & {
+  /**
+   * @generated from field: int32 user_id = 1;
+   */
+  userId: number;
+
+  /**
+   * @generated from field: string username = 2;
+   */
+  username: string;
+
+  /**
+   * "member" | "voice" (passwordless, quoted from sources) | "visitor" |
+   * "deleted" | "missing". Only members and voices have a profile page.
+   *
+   * @generated from field: string kind = 3;
+   */
+  kind: string;
+
+  /**
+   * 0 = before join dates were kept
+   *
+   * @generated from field: int64 joined_at = 4;
+   */
+  joinedAt: bigint;
+
+  /**
+   * @generated from field: int32 debates = 5;
+   */
+  debates: number;
+
+  /**
+   * @generated from field: int32 claims = 6;
+   */
+  claims: number;
+
+  /**
+   * @generated from field: int32 challenges = 7;
+   */
+  challenges: number;
+
+  /**
+   * @generated from field: int32 agreements = 8;
+   */
+  agreements: number;
+
+  /**
+   * @generated from field: int32 concessions = 9;
+   */
+  concessions: number;
+
+  /**
+   * Open challenges waiting on this person right now (DebateBrief openByHolder).
+   *
+   * @generated from field: int32 open_challenges = 10;
+   */
+  openChallenges: number;
+
+  /**
+   * The debates they take part in, by id (DebateTopic.id).
+   *
+   * @generated from field: repeated int32 debate_ids = 11;
+   */
+  debateIds: number[];
+
+  /**
+   * The viewer is looking at their own profile.
+   *
+   * @generated from field: bool own = 12;
+   */
+  own: boolean;
+};
+
+/**
+ * Describes the message moderator_to_vr.Profile.
+ * Use `create(ProfileSchema)` to create a new message.
+ */
+export const ProfileSchema: GenMessage<Profile> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 1);
+
+/**
+ * One person's part in one debate, for their profile. Claims and challenges
+ * are counted by whose claim it is (the voice, else the entrant), so a voice
+ * is credited with what was entered in their name; agreements and
+ * concessions are the person's own moves.
+ *
+ * @generated from message moderator_to_vr.PersonTally
+ */
+export type PersonTally = Message<"moderator_to_vr.PersonTally"> & {
+  /**
+   * @generated from field: int32 user_id = 1;
+   */
+  userId: number;
+
+  /**
+   * @generated from field: int32 claims = 2;
+   */
+  claims: number;
+
+  /**
+   * @generated from field: int32 challenges = 3;
+   */
+  challenges: number;
+
+  /**
+   * standing ACCEPTs (one taken back does not count)
+   *
+   * @generated from field: int32 agreements = 4;
+   */
+  agreements: number;
+
+  /**
+   * @generated from field: int32 concessions = 5;
+   */
+  concessions: number;
+
+  /**
+   * Claims in their voice entered by someone else: they are a voice.
+   *
+   * @generated from field: int32 voiced = 6;
+   */
+  voiced: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.PersonTally.
+ * Use `create(PersonTallySchema)` to create a new message.
+ */
+export const PersonTallySchema: GenMessage<PersonTally> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 2);
 
 /**
  * @generated from message moderator_to_vr.DebateTopic
@@ -192,6 +336,14 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
    * @generated from field: repeated string matched_claims = 22;
    */
   matchedClaims: string[];
+
+  /**
+   * Cache only: each person's part in this debate, for profiles. Cleared
+   * on the copy that goes into a response.
+   *
+   * @generated from field: repeated moderator_to_vr.PersonTally tallies = 23;
+   */
+  tallies: PersonTally[];
 };
 
 /**
@@ -199,7 +351,7 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
  * Use `create(DebateTopicSchema)` to create a new message.
  */
 export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 1);
+  messageDesc(file_moderator_to_vr, 3);
 
 /**
  * @generated from message moderator_to_vr.OwingParty
@@ -221,7 +373,7 @@ export type OwingParty = Message<"moderator_to_vr.OwingParty"> & {
  * Use `create(OwingPartySchema)` to create a new message.
  */
 export const OwingPartySchema: GenMessage<OwingParty> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 2);
+  messageDesc(file_moderator_to_vr, 4);
 
 /**
  * @generated from message moderator_to_vr.OwedReply
@@ -248,7 +400,7 @@ export type OwedReply = Message<"moderator_to_vr.OwedReply"> & {
  * Use `create(OwedReplySchema)` to create a new message.
  */
 export const OwedReplySchema: GenMessage<OwedReply> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 3);
+  messageDesc(file_moderator_to_vr, 5);
 
 /**
  * @generated from message moderator_to_vr.RecentMove
@@ -286,7 +438,7 @@ export type RecentMove = Message<"moderator_to_vr.RecentMove"> & {
  * Use `create(RecentMoveSchema)` to create a new message.
  */
 export const RecentMoveSchema: GenMessage<RecentMove> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 4);
+  messageDesc(file_moderator_to_vr, 6);
 
 /**
  * @generated from message moderator_to_vr.DebateList
@@ -303,5 +455,5 @@ export type DebateList = Message<"moderator_to_vr.DebateList"> & {
  * Use `create(DebateListSchema)` to create a new message.
  */
 export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 5);
+  messageDesc(file_moderator_to_vr, 7);
 

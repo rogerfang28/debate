@@ -891,7 +891,11 @@ class HomeView final : public ::google::protobuf::Message
     kExploreQueryFieldNumber = 2,
     kExploreFilterFieldNumber = 3,
     kExploreSortFieldNumber = 4,
+    kProfilePanelFieldNumber = 7,
+    kProfileErrorFieldNumber = 8,
+    kProfileDraftFieldNumber = 9,
     kCreateOpenFieldNumber = 5,
+    kProfileUserIdFieldNumber = 6,
   };
   // string home_tab = 1 [json_name = "homeTab"];
   void clear_home_tab() ;
@@ -953,6 +957,51 @@ class HomeView final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_explore_sort();
 
   public:
+  // string profile_panel = 7 [json_name = "profilePanel"];
+  void clear_profile_panel() ;
+  const ::std::string& profile_panel() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_profile_panel(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_profile_panel();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_profile_panel();
+  void set_allocated_profile_panel(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_profile_panel() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_profile_panel(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_profile_panel();
+
+  public:
+  // string profile_error = 8 [json_name = "profileError"];
+  void clear_profile_error() ;
+  const ::std::string& profile_error() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_profile_error(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_profile_error();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_profile_error();
+  void set_allocated_profile_error(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_profile_error() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_profile_error(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_profile_error();
+
+  public:
+  // string profile_draft = 9 [json_name = "profileDraft"];
+  void clear_profile_draft() ;
+  const ::std::string& profile_draft() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_profile_draft(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_profile_draft();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_profile_draft();
+  void set_allocated_profile_draft(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_profile_draft() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_profile_draft(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_profile_draft();
+
+  public:
   // bool create_open = 5 [json_name = "createOpen"];
   void clear_create_open() ;
   bool create_open() const;
@@ -963,12 +1012,22 @@ class HomeView final : public ::google::protobuf::Message
   void _internal_set_create_open(bool value);
 
   public:
+  // int32 profile_user_id = 6 [json_name = "profileUserId"];
+  void clear_profile_user_id() ;
+  ::int32_t profile_user_id() const;
+  void set_profile_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_profile_user_id() const;
+  void _internal_set_profile_user_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.HomeView)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5,
-                                   0, 80,
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
+                                   0, 127,
                                    2>
       _table_;
 
@@ -993,7 +1052,11 @@ class HomeView final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr explore_query_;
     ::google::protobuf::internal::ArenaStringPtr explore_filter_;
     ::google::protobuf::internal::ArenaStringPtr explore_sort_;
+    ::google::protobuf::internal::ArenaStringPtr profile_panel_;
+    ::google::protobuf::internal::ArenaStringPtr profile_error_;
+    ::google::protobuf::internal::ArenaStringPtr profile_draft_;
     bool create_open_;
+    ::int32_t profile_user_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6071,7 +6134,7 @@ inline void HomeView::clear_create_open() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.create_open_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000080U);
 }
 inline bool HomeView::create_open() const {
   // @@protoc_insertion_point(field_get:user_engagement.HomeView.create_open)
@@ -6079,7 +6142,7 @@ inline bool HomeView::create_open() const {
 }
 inline void HomeView::set_create_open(bool value) {
   _internal_set_create_open(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:user_engagement.HomeView.create_open)
 }
 inline bool HomeView::_internal_create_open() const {
@@ -6089,6 +6152,226 @@ inline bool HomeView::_internal_create_open() const {
 inline void HomeView::_internal_set_create_open(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.create_open_ = value;
+}
+
+// int32 profile_user_id = 6 [json_name = "profileUserId"];
+inline void HomeView::clear_profile_user_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_user_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline ::int32_t HomeView::profile_user_id() const {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.profile_user_id)
+  return _internal_profile_user_id();
+}
+inline void HomeView::set_profile_user_id(::int32_t value) {
+  _internal_set_profile_user_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.profile_user_id)
+}
+inline ::int32_t HomeView::_internal_profile_user_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.profile_user_id_;
+}
+inline void HomeView::_internal_set_profile_user_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_user_id_ = value;
+}
+
+// string profile_panel = 7 [json_name = "profilePanel"];
+inline void HomeView::clear_profile_panel() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_panel_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& HomeView::profile_panel() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.profile_panel)
+  return _internal_profile_panel();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_profile_panel(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.profile_panel_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.profile_panel)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_profile_panel()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_profile_panel();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.profile_panel)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_profile_panel() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.profile_panel_.Get();
+}
+inline void HomeView::_internal_set_profile_panel(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_panel_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_profile_panel() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.profile_panel_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_profile_panel() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.profile_panel)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.profile_panel_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.profile_panel_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_profile_panel(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.profile_panel_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.profile_panel_.IsDefault()) {
+    _impl_.profile_panel_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.profile_panel)
+}
+
+// string profile_error = 8 [json_name = "profileError"];
+inline void HomeView::clear_profile_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_error_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& HomeView::profile_error() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.profile_error)
+  return _internal_profile_error();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_profile_error(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.profile_error_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.profile_error)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_profile_error()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_profile_error();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.profile_error)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_profile_error() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.profile_error_.Get();
+}
+inline void HomeView::_internal_set_profile_error(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_error_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_profile_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.profile_error_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_profile_error() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.profile_error)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.profile_error_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.profile_error_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_profile_error(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.profile_error_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.profile_error_.IsDefault()) {
+    _impl_.profile_error_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.profile_error)
+}
+
+// string profile_draft = 9 [json_name = "profileDraft"];
+inline void HomeView::clear_profile_draft() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_draft_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000040U);
+}
+inline const ::std::string& HomeView::profile_draft() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.profile_draft)
+  return _internal_profile_draft();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_profile_draft(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  _impl_.profile_draft_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.profile_draft)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_profile_draft()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ::std::string* _s = _internal_mutable_profile_draft();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.profile_draft)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_profile_draft() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.profile_draft_.Get();
+}
+inline void HomeView::_internal_set_profile_draft(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.profile_draft_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_profile_draft() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.profile_draft_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_profile_draft() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.profile_draft)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000040U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  auto* released = _impl_.profile_draft_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.profile_draft_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_profile_draft(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  }
+  _impl_.profile_draft_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.profile_draft_.IsDefault()) {
+    _impl_.profile_draft_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.profile_draft)
 }
 
 // -------------------------------------------------------------------

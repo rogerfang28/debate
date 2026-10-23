@@ -65,6 +65,17 @@ std::vector<ChatDatabase::Message> ChatDatabase::list(int userId, int debateId) 
     return out;
 }
 
+bool ChatDatabase::clearAllForUser(int userId) {
+    sqlite3_stmt* stmt = db_.prepare("DELETE FROM CHATS WHERE USER_ID = ?;");
+    if (stmt == nullptr) {
+        return false;
+    }
+    sqlite3_bind_int(stmt, 1, userId);
+    const bool ok = sqlite3_step(stmt) == SQLITE_DONE;
+    sqlite3_finalize(stmt);
+    return ok;
+}
+
 bool ChatDatabase::clear(int userId, int debateId) {
     sqlite3_stmt* stmt = db_.prepare("DELETE FROM CHATS WHERE USER_ID = ? AND DEBATE_ID = ?;");
     if (stmt == nullptr) {

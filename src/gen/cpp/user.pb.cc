@@ -48,7 +48,8 @@ inline constexpr User::Impl_::Impl_(
         current_scope_{nullptr},
         collection_spec_{nullptr},
         user_id_{0},
-        sign_in_open_{false} {}
+        sign_in_open_{false},
+        joined_at_{::int64_t{0}} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR User::User(::_pbi::ConstantInitialized)
@@ -79,7 +80,7 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_._has_bits_),
-        13, // hasbit index offset
+        14, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.user_id_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.username_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.engagement_),
@@ -90,6 +91,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.password_hash_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.sign_in_open_),
         PROTOBUF_FIELD_OFFSET(::user::User, _impl_.pending_action_),
+        PROTOBUF_FIELD_OFFSET(::user::User, _impl_.joined_at_),
         8,
         0,
         5,
@@ -100,6 +102,7 @@ const ::uint32_t
         3,
         9,
         4,
+        10,
 };
 
 static const ::_pbi::MigrationSchema
@@ -112,7 +115,7 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\nuser.proto\022\004user\032\025user_engagement.prot"
-    "o\032\013scope.proto\032\020collection.proto\"\235\003\n\004Use"
+    "o\032\013scope.proto\032\020collection.proto\"\272\003\n\004Use"
     "r\022\027\n\007user_id\030\001 \001(\005R\006userId\022\032\n\010username\030\002"
     " \001(\tR\010username\022\?\n\nengagement\030\003 \001(\0132\037.use"
     "r_engagement.UserEngagementR\nengagement\022"
@@ -123,7 +126,8 @@ const char descriptor_table_protodef_user_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIA
     "email\030\007 \001(\tR\005email\022#\n\rpassword_hash\030\010 \001("
     "\tR\014passwordHash\022 \n\014sign_in_open\030\t \001(\010R\ns"
     "ignInOpen\022%\n\016pending_action\030\n \001(\014R\rpendi"
-    "ngActionb\006proto3"
+    "ngAction\022\033\n\tjoined_at\030\013 \001(\003R\010joinedAtb\006p"
+    "roto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_user_2eproto_deps[3] = {
@@ -135,7 +139,7 @@ static ::absl::once_flag descriptor_table_user_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_user_2eproto = {
     false,
     false,
-    496,
+    525,
     descriptor_table_protodef_user_2eproto,
     "user.proto",
     &descriptor_table_user_2eproto_once,
@@ -225,9 +229,9 @@ User::User(
                offsetof(Impl_, user_id_),
            reinterpret_cast<const char*>(&from._impl_) +
                offsetof(Impl_, user_id_),
-           offsetof(Impl_, sign_in_open_) -
+           offsetof(Impl_, joined_at_) -
                offsetof(Impl_, user_id_) +
-               sizeof(Impl_::sign_in_open_));
+               sizeof(Impl_::joined_at_));
 
   // @@protoc_insertion_point(copy_constructor:user.User)
 }
@@ -246,9 +250,9 @@ inline void User::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   ::memset(reinterpret_cast<char*>(&_impl_) +
                offsetof(Impl_, engagement_),
            0,
-           offsetof(Impl_, sign_in_open_) -
+           offsetof(Impl_, joined_at_) -
                offsetof(Impl_, engagement_) +
-               sizeof(Impl_::sign_in_open_));
+               sizeof(Impl_::joined_at_));
 }
 User::~User() {
   // @@protoc_insertion_point(destructor:user.User)
@@ -315,16 +319,16 @@ User::GetClassData() const {
   return User_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 10, 3, 62, 2>
+const ::_pbi::TcParseTable<4, 11, 3, 62, 2>
 User::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(User, _impl_._has_bits_),
     0, // no _extensions_
-    10, 120,  // max_field_number, fast_idx_mask
+    11, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966272,  // skipmap
+    4294965248,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    10,  // num_field_entries
+    11,  // num_field_entries
     3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     User_class_data_.base(),
@@ -375,7 +379,10 @@ User::_table_ = {
     {::_pbi::TcParser::FastBS1,
      {82, 4, 0,
       PROTOBUF_FIELD_OFFSET(User, _impl_.pending_action_)}},
-    {::_pbi::TcParser::MiniParse, {}},
+    // int64 joined_at = 11 [json_name = "joinedAt"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(User, _impl_.joined_at_), 10>(),
+     {88, 10, 0,
+      PROTOBUF_FIELD_OFFSET(User, _impl_.joined_at_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -403,6 +410,8 @@ User::_table_ = {
     {PROTOBUF_FIELD_OFFSET(User, _impl_.sign_in_open_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // bytes pending_action = 10 [json_name = "pendingAction"];
     {PROTOBUF_FIELD_OFFSET(User, _impl_.pending_action_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kBytes | ::_fl::kRepAString)},
+    // int64 joined_at = 11 [json_name = "joinedAt"];
+    {PROTOBUF_FIELD_OFFSET(User, _impl_.joined_at_), _Internal::kHasBitsOffset + 10, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
   }},
   {{
       {::_pbi::TcParser::GetTable<::user_engagement::UserEngagement>()},
@@ -455,10 +464,10 @@ PROTOBUF_NOINLINE void User::Clear() {
       _impl_.collection_spec_->Clear();
     }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000700U)) {
     ::memset(&_impl_.user_id_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.sign_in_open_) -
-        reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.sign_in_open_));
+        reinterpret_cast<char*>(&_impl_.joined_at_) -
+        reinterpret_cast<char*>(&_impl_.user_id_)) + sizeof(_impl_.joined_at_));
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -570,6 +579,15 @@ PROTOBUF_NOINLINE void User::Clear() {
     }
   }
 
+  // int64 joined_at = 11 [json_name = "joinedAt"];
+  if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+    if (this_._internal_joined_at() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<11>(
+              stream, this_._internal_joined_at(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -647,7 +665,7 @@ PROTOBUF_NOINLINE void User::Clear() {
                     ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.collection_spec_);
     }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000700U)) {
     // int32 user_id = 1 [json_name = "userId"];
     if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (this_._internal_user_id() != 0) {
@@ -659,6 +677,13 @@ PROTOBUF_NOINLINE void User::Clear() {
     if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (this_._internal_sign_in_open() != 0) {
         total_size += 2;
+      }
+    }
+    // int64 joined_at = 11 [json_name = "joinedAt"];
+    if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+      if (this_._internal_joined_at() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_joined_at());
       }
     }
   }
@@ -752,7 +777,7 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000700U)) {
     if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (from._internal_user_id() != 0) {
         _this->_impl_.user_id_ = from._impl_.user_id_;
@@ -761,6 +786,11 @@ void User::MergeImpl(::google::protobuf::MessageLite& to_msg,
     if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (from._internal_sign_in_open() != 0) {
         _this->_impl_.sign_in_open_ = from._impl_.sign_in_open_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000400U)) {
+      if (from._internal_joined_at() != 0) {
+        _this->_impl_.joined_at_ = from._impl_.joined_at_;
       }
     }
   }
@@ -789,8 +819,8 @@ void User::InternalSwap(User* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.password_hash_, &other->_impl_.password_hash_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.pending_action_, &other->_impl_.pending_action_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(User, _impl_.sign_in_open_)
-      + sizeof(User::_impl_.sign_in_open_)
+      PROTOBUF_FIELD_OFFSET(User, _impl_.joined_at_)
+      + sizeof(User::_impl_.joined_at_)
       - PROTOBUF_FIELD_OFFSET(User, _impl_.engagement_)>(
           reinterpret_cast<char*>(&_impl_.engagement_),
           reinterpret_cast<char*>(&other->_impl_.engagement_));

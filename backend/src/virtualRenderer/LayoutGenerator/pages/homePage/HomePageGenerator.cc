@@ -3,6 +3,7 @@
 #include "../../../../utils/DemoMode.h"
 #include "../../../../utils/AnonymousUser.h"
 #include "../../../../utils/TutorialLibrary.h"
+#include "../../../../utils/UsernamePolicy.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -498,6 +499,182 @@ void addMineTab(ui::Component* page, const std::vector<const Topic*>& topics, lo
     ComponentGenerator::addChild(page, member);
 }
 
+// "Joined October 2026", from Unix seconds (UTC).
+std::string joinedLine(long long joinedAt) {
+    static const char* kMonths[] = {"January", "February", "March", "April", "May", "June", "July",
+                                    "August", "September", "October", "November", "December"};
+    const std::time_t t = static_cast<std::time_t>(joinedAt);
+    std::tm parts{};
+#ifdef _WIN32
+    gmtime_s(&parts, &t);
+#else
+    gmtime_r(&t, &parts);
+#endif
+    return std::string("Joined ") + kMonths[parts.tm_mon] + " " + std::to_string(parts.tm_year + 1900);
+}
+
+// One number and what it counts, in a small panel.
+ui::Component statTile(const std::string& id, int value, const std::string& label) {
+    ui::Component tile = ComponentGenerator::createContainer(id, "", "", "", "", "", "", "");
+    css(&tile, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.15rem"},
+                {"background", "var(--panel)"}, {"border", "1px solid var(--line)"},
+                {"border-radius", "var(--radius)"}, {"padding", "12px 14px"}, {"min-width", "0"}});
+    ComponentGenerator::addChild(&tile, text(id + "Value", std::to_string(value),
+        {{"color", "var(--text)"}, {"font-size", "22px"}, {"font-weight", "650"}, {"margin", "0"},
+         {"line-height", "1.2"}}));
+    ComponentGenerator::addChild(&tile, text(id + "Label", label,
+        {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"font-weight", "400"}, {"margin", "0"}}));
+    return tile;
+}
+
+// A quiet outlined button, the size of the page's small controls.
+ui::Component quietButton(const std::string& id, const std::string& label) {
+    ui::Component b = ComponentGenerator::createButton(id, label, "", "", "", "", "", "", "text-sm");
+    css(&b, {{"background", "transparent"}, {"border", "1px solid var(--line)"}, {"color", "var(--text-2)"},
+             {"cursor", "pointer"}, {"align-self", "flex-start"}});
+    return b;
+}
+
+// Your own profile's account controls: Change username (an inline form
+// that says in place why a name was refused) and Delete account (a second,
+// in-page step: the viewer cannot show a confirm() dialog).
+ui::Component accountSection(const rendering_info::HomePageRenderingInfo& info) {
+    const user_engagement::HomeView& view = info.home_view();
+    const moderator_to_vr::Profile& p = info.profile();
+    ui::Component s = section("profileAccount", "Your account");
+
+    if (view.profile_panel() == "rename") {
+        ui::Component form = box("profileRenameForm", {
+            {"display", "flex"}, {"flex-direction", "row"}, {"flex-wrap", "wrap"}, {"gap", "0.5rem"},
+            {"align-items", "center"},
+        });
+        const std::string value = view.profile_draft().empty() ? p.username() : view.profile_draft();
+        ui::Component input = ComponentGenerator::createInput(
+            "profileRenameInput", "New username", "username", "bg-gray-800", "text-white",
+            "border-gray-600", "p-2", "rounded", "flex-1", value);
+        css(&input, {{"width", "100%"}});
+        ui::Component inputWrap = ComponentGenerator::createContainer("profileRenameInputWrap", "", "", "", "", "", "", "");
+        css(&inputWrap, {{"flex", "1 1 14rem"}, {"min-width", "0"}, {"display", "block"}});
+        ComponentGenerator::addChild(&inputWrap, input);
+        ComponentGenerator::addChild(&form, inputWrap);
+        ComponentGenerator::addChild(&form, ComponentGenerator::createButton(
+            "profileRenameSave", "Save", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
+            "px-4 py-2", "rounded", ""));
+        ComponentGenerator::addChild(&form, quietButton("profileRenameCancel", "Cancel"));
+        ComponentGenerator::addChild(&s, form);
+        if (!view.profile_error().empty()) {
+            ComponentGenerator::addChild(&s, text("profileRenameError", view.profile_error(),
+                {{"color", "var(--open)"}, {"font-size", "13px"}, {"font-weight", "500"}, {"margin", "0"}}));
+        }
+        ComponentGenerator::addChild(&s, text("profileRenameHint",
+            "3 to 24 characters: letters, digits, and _ - . Your claims keep their place under the new name.",
+            kMuted));
+    } else if (view.profile_panel() == "delete") {
+        ui::Component confirm = box("profileDeleteConfirmBox", {
+            {"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.6rem"},
+            {"background", "var(--panel)"}, {"border", "1px solid var(--open)"},
+            {"border-radius", "var(--radius)"}, {"padding", "16px 18px"},
+        });
+        ComponentGenerator::addChild(&confirm, text("profileDeleteTitle", "Delete your account?",
+            {{"color", "var(--text)"}, {"font-size", "15px"}, {"font-weight", "600"}, {"margin", "0"}}));
+        ComponentGenerator::addChild(&confirm, text("profileDeleteExplain",
+            "Your email, password, Google link, saved place and AI chat history are erased, and you are "
+            "signed out. You can't sign in to this account again. Your claims stay in their debates, "
+            "because other people's arguments answer them, and show as \"Deleted account\".",
+            {{"color", "var(--text-2)"}, {"font-size", "13.5px"}, {"font-weight", "400"}, {"line-height", "1.55"},
+             {"margin", "0"}}));
+        ui::Component row = box("profileDeleteButtons", {
+            {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.5rem"}, {"flex-wrap", "wrap"},
+        });
+        ui::Component yes = ComponentGenerator::createButton(
+            "profileDeleteConfirm", "Delete my account", "", "", "", "text-white", "px-4 py-2", "rounded", "");
+        css(&yes, {{"background", "var(--open)"}, {"color", "#fff"}, {"border", "none"}, {"cursor", "pointer"},
+                   {"font-weight", "600"}});
+        ComponentGenerator::addChild(&row, yes);
+        ComponentGenerator::addChild(&row, quietButton("profileDeleteCancel", "Keep my account"));
+        ComponentGenerator::addChild(&confirm, row);
+        ComponentGenerator::addChild(&s, confirm);
+    } else {
+        ui::Component row = box("profileAccountButtons", {
+            {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.5rem"}, {"flex-wrap", "wrap"},
+        });
+        ComponentGenerator::addChild(&row, quietButton("profileRenameButton", "Change username"));
+        ui::Component del = quietButton("profileDeleteButton", "Delete account");
+        css(&del, {{"color", "var(--open)"}});
+        ComponentGenerator::addChild(&row, del);
+        ComponentGenerator::addChild(&s, row);
+    }
+    return s;
+}
+
+// A person's profile, in place of the tab: who they are, what they have
+// done across every debate, and the debates themselves.
+void addProfile(ui::Component* page, const std::vector<const Topic*>& topics,
+                const rendering_info::HomePageRenderingInfo& info, long long now) {
+    const moderator_to_vr::Profile& p = info.profile();
+    if (p.kind() != "member" && p.kind() != "voice") {
+        ComponentGenerator::addChild(page, text("profileUnavailable",
+            p.kind() == "deleted" ? "This account was deleted." : "There is no profile here.", kMuted));
+        ComponentGenerator::addChild(page, linkButton("homeTab_home_profile", "Back to the home page"));
+        return;
+    }
+    const bool voice = p.kind() == "voice";
+
+    ui::Component head = box("profileHead", {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "6px"}});
+    ComponentGenerator::addChild(&head, text("profileCaption", voice ? "Quoted voice" : "Profile", kCaption));
+    ComponentGenerator::addChild(&head, text("profileName", p.username(),
+        {{"color", "var(--text)"}, {"font-size", "26px"}, {"font-weight", "650"}, {"line-height", "1.25"},
+         {"letter-spacing", "-0.01em"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
+    const std::string since = voice ? "Quoted from sources"
+                            : p.joined_at() > 0 ? joinedLine(p.joined_at())
+                            : "Early member";
+    ComponentGenerator::addChild(&head, text("profileSince", since, kMuted));
+    ComponentGenerator::addChild(page, head);
+
+    // An even grid: as many columns as fit, every tile the same width.
+    ui::Component stats = box("profileStats", {
+        {"display", "grid"}, {"grid-template-columns", "repeat(auto-fill, minmax(6.5rem, 1fr))"}, {"gap", "0.6rem"},
+    });
+    ComponentGenerator::addChild(&stats, statTile("profileStatDebates", p.debates(),
+        p.debates() == 1 ? "debate" : "debates"));
+    ComponentGenerator::addChild(&stats, statTile("profileStatClaims", p.claims(),
+        voice ? (p.claims() == 1 ? "claim in their voice" : "claims in their voice")
+              : (p.claims() == 1 ? "claim made" : "claims made")));
+    ComponentGenerator::addChild(&stats, statTile("profileStatChallenges", p.challenges(),
+        p.challenges() == 1 ? "challenge raised" : "challenges raised"));
+    ComponentGenerator::addChild(&stats, statTile("profileStatAgreements", p.agreements(),
+        p.agreements() == 1 ? "agreement" : "agreements"));
+    ComponentGenerator::addChild(&stats, statTile("profileStatConcessions", p.concessions(),
+        p.concessions() == 1 ? "concession" : "concessions"));
+    ComponentGenerator::addChild(&stats, statTile("profileStatOpen", p.open_challenges(),
+        std::string(p.open_challenges() == 1 ? "open challenge" : "open challenges") +
+            (p.own() ? " waiting on you" : " waiting on them")));
+    ComponentGenerator::addChild(page, stats);
+
+    std::vector<const Topic*> theirs;
+    for (const Topic* t : topics) {
+        for (const int id : p.debate_ids()) {
+            if (t->debate_root_claim_id() == id) {
+                theirs.push_back(t);
+                break;
+            }
+        }
+    }
+    sortByMoved(theirs);
+    ui::Component list = section("profileDebates", voice ? "Debates they are quoted in" : "Debates they take part in");
+    for (const Topic* t : theirs) {
+        ComponentGenerator::addChild(&list, caseRow("profile", *t, now, true, false));
+    }
+    if (theirs.empty()) {
+        ComponentGenerator::addChild(&list, text("profileDebatesEmpty", "No debates yet.", kMuted));
+    }
+    ComponentGenerator::addChild(page, list);
+
+    if (p.own()) {
+        ComponentGenerator::addChild(page, accountSection(info));
+    }
+}
+
 // "Start a debate", at the bottom of every tab: one link. For a visitor
 // the press becomes the sign-in modal and is replayed after sign-in; for
 // a signed-in user it opens the create dialog below.
@@ -648,7 +825,9 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
                topic.creator_id() == info.viewer_user_id();
     };
 
-    if (tab == "explore") {
+    if (info.home_view().profile_user_id() > 0) {
+        addProfile(&column, topics, info, now);
+    } else if (tab == "explore") {
         addExploreTab(&column, topics, info, now, canDelete);
     } else if (tab == "mine") {
         addMineTab(&column, topics, now, canDelete);

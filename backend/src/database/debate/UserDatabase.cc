@@ -200,6 +200,36 @@ std::string UserDatabase::getUsername(int id) {
     return username;
 }
 
+std::vector<std::pair<int, std::string>> UserDatabase::listUsers() {
+    std::vector<std::pair<int, std::string>> out;
+    sqlite3_stmt* stmt = db_.prepare("SELECT ID, USERNAME FROM USERS ORDER BY ID;");
+    if (!stmt) {
+        return out;
+    }
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const unsigned char* text = sqlite3_column_text(stmt, 1);
+        out.emplace_back(sqlite3_column_int(stmt, 0), text ? reinterpret_cast<const char*>(text) : "");
+    }
+    sqlite3_finalize(stmt);
+    return out;
+}
+
+int UserDatabase::findIdIgnoringCase(const std::string& username, int exceptUserId) {
+    int userId = -1;
+    sqlite3_stmt* stmt = db_.prepare(
+        "SELECT ID FROM USERS WHERE USERNAME = ? COLLATE NOCASE AND ID != ? ORDER BY ID LIMIT 1;");
+    if (!stmt) {
+        return userId;
+    }
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, exceptUserId);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        userId = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    return userId;
+}
+
 int UserDatabase::getUserId(const std::string& username) {
     int userId = -1;
     const char* sql = "SELECT ID FROM USERS WHERE USERNAME = ?;";

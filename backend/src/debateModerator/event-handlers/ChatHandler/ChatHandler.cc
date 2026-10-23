@@ -6,6 +6,7 @@
 #include "../../../utils/DebateTextFormatter.h"
 #include "../../../utils/LlmClient.h"
 #include "../../../utils/Log.h"
+#include "../../../utils/UsernamePolicy.h"
 
 #include <map>
 #include <string>
@@ -115,7 +116,9 @@ void ChatHandler::Ask(const std::string& question, const std::string& quickPromp
     DebateTextFormatter::Options options;
     options.topic = topic;
     options.viewerUsername = userProto.username();
-    const std::string debateText = DebateTextFormatter::Format(collection, usernames, options);
+    // A closed account is "Deleted account" to the model too.
+    const std::string debateText =
+        username_policy::ScrubDeletedNames(DebateTextFormatter::Format(collection, usernames, options));
 
     std::vector<LlmMessage> messages;
     messages.push_back({"system", DebateChat::SystemPrompt(debateText, userProto.username())});

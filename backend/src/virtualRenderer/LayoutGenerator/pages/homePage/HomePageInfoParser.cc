@@ -61,6 +61,9 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
         *outTopic->mutable_matched_claims() = topic.matched_claims();
     }
     *info.mutable_home_view() = userProto.engagement().home_view();
+    if (responseMessage.has_profile()) {
+        *info.mutable_profile() = responseMessage.profile();
+    }
 
     return info;
 }

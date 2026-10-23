@@ -22,6 +22,8 @@
 #include "./utils/parseCookie.h"
 #include "../utils/GoogleJWTVerifier.h"
 #include "../utils/PasswordHasher.h"
+#include "../utils/UsernamePolicy.h"
+#include <ctime>
 
 namespace {
 std::string buildAutoGuestUsername() {
@@ -78,10 +80,42 @@ VirtualRenderer::VirtualRenderer()
 
 // Destructor
 VirtualRenderer::~VirtualRenderer() {
+    {
+        std::lock_guard<std::mutex> lock(stopMutex);
+        stopping = true;
+    }
+    stopSignal.notify_all();
+    if (maintenanceThread.joinable()) {
+        maintenanceThread.join();
+    }
     Log::info("VirtualRenderer destroyed."); // probably never called
 }
 
+void VirtualRenderer::startMaintenance() {
+    {
+        std::unique_lock<std::shared_mutex> exclusive(maintenanceMutex);
+        moderator.accounts().MigrateEmailUsernames();
+        moderator.accounts().SweepVisitors(static_cast<int64_t>(std::time(nullptr)));
+    }
+    if (maintenanceThread.joinable()) {
+        return;
+    }
+    maintenanceThread = std::thread([this]() {
+        std::unique_lock<std::mutex> wait(stopMutex);
+        while (!stopSignal.wait_for(wait, kSweepInterval, [this]() { return stopping; })) {
+            wait.unlock();
+            {
+                std::unique_lock<std::shared_mutex> exclusive(maintenanceMutex);
+                moderator.accounts().SweepVisitors(static_cast<int64_t>(std::time(nullptr)));
+            }
+            wait.lock();
+        }
+    });
+}
+
 ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessage& client_message,const httplib::Request& req, httplib::Response& res) {
+    // Many requests at once, but never during a sweep (startMaintenance).
+    std::shared_lock<std::shared_mutex> shared(maintenanceMutex);
     
     // translate client_message into debate event
     int user_id = parseCookie::extractUserIdFromCookies(req);
@@ -125,6 +159,35 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
 
     // change cookies accordingly
     std::string loginError = handleAuthEvents(evt, req, res);
+
+    // Renaming and closing an account change who the session is, so they
+    // are carried out here, where the cookie is. A visitor has no account to
+    // change; their press reaches the moderator, which does nothing with it.
+    if (evt.user().is_logged_in() && !anonymous_user::IsAnonymousUsername(evt.user().username())) {
+        const int uid = evt.user().user_id();
+        if (evt.type() == debate_event::RENAME_ACCOUNT) {
+            const std::string error = moderator.renameAccount(uid, evt.rename_account().new_username());
+            const std::string current = userDb.getUsername(uid);
+            if (error.empty() && !current.empty() && current != evt.user().username()) {
+                // The session names the user; re-issued, or it would no longer
+                // match and they would be signed out.
+                parseCookie::setSessionCookie(req, res, uid, current);
+                evt.mutable_user()->set_username(current);
+            }
+            evt.set_type(debate_event::NONE);
+        } else if (evt.type() == debate_event::DELETE_ACCOUNT) {
+            if (moderator.deleteAccount(uid)) {
+                // Signed out: below, the request goes on as a visitor, home.
+                parseCookie::clearAuthCookies(req, res);
+                evt.mutable_user()->set_user_id(0);
+                evt.mutable_user()->set_username("");
+                evt.mutable_user()->set_is_logged_in(false);
+                evt.set_type(debate_event::LOGOUT);
+            } else {
+                evt.set_type(debate_event::NONE);
+            }
+        }
+    }
 
     // Auto-login sets response cookies, but request cookies are still empty on first load.
     if (autoLoginResolvedUserId > 0 && !autoLoginResolvedUsername.empty() && !evt.user().is_logged_in()) {
@@ -230,44 +293,51 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             Log::info("[VirtualRenderer] Google ID token received, verifying...");
             try {
                 auto userInfo = GoogleJWTVerifier::verify(evt.login().google_id_token());
-
-                // Use Google's name as fallback username, prefer email
-                std::string username = userInfo.email.empty() ? userInfo.name : userInfo.email;
-                if (username.empty()) {
-                    username = "google_user_" + userInfo.sub.substr(0, 8);
+                if (userInfo.sub.empty()) {
+                    throw std::runtime_error("the token names no Google account");
                 }
+                AccountService& accounts = moderator.accounts();
 
-                // An existing account by this name is this Google user's only
-                // if it is already linked to this Google account, or is an
-                // unclaimed one with no password. An account someone made
-                // with a password under this person's email, or one linked to
-                // a different Google account, belongs to someone else.
-                if (userDb.getUserId(username) != -1) {
-                    user::User existing;
-                    const auto blob = userDb.getUserProtobufByUsername(username);
-                    if (!blob.empty() && existing.ParseFromArray(blob.data(), static_cast<int>(blob.size()))) {
-                        const bool otherGoogle = !existing.google_sub().empty() && existing.google_sub() != userInfo.sub;
-                        const bool passwordOnly = existing.google_sub().empty() && !existing.password_hash().empty();
-                        if (otherGoogle || passwordOnly) {
-                            throw std::runtime_error("the account '" + username + "' belongs to someone else");
+                // A Google account is found by Google's id for it, never by
+                // name: the username is the person's to change, and the email
+                // is private (kept in the record's `email`, never shown).
+                userId = accounts.FindByGoogleSub(userInfo.sub);
+                if (userId == -1) {
+                    // Made by the old sign-in, before accounts were linked:
+                    // no link, no password, this email. Linked now, and given
+                    // a name of its own if it is still named by the email.
+                    userId = accounts.FindUnclaimedByEmail(userInfo.email);
+                    if (userId != -1) {
+                        updateGoogleSub(userId, userInfo.sub, userInfo.email);
+                        if (userDb.getUsername(userId).find('@') != std::string::npos) {
+                            const std::string error =
+                                accounts.Rename(userId, accounts.UniqueNameFromEmail(userInfo.email));
+                            if (!error.empty()) {
+                                Log::warn("[VirtualRenderer] Could not rename linked account user_id=" +
+                                          std::to_string(userId) + ": " + error);
+                            }
                         }
+                        Log::info("[VirtualRenderer] Linked Google account to existing user_id=" +
+                                  std::to_string(userId));
+                    }
+                }
+                if (userId == -1) {
+                    // New: a username from the email's local part, made
+                    // unique (bob, bob2, ...).
+                    const std::string username = accounts.UniqueNameFromEmail(
+                        !userInfo.email.empty() ? userInfo.email : !userInfo.name.empty() ? userInfo.name : "user");
+                    Log::info("[VirtualRenderer] New Google account '" + username + "'");
+                    createUserWithGoogleInfo(username, userInfo.sub, userInfo.email);
+                    userId = userDb.getUserId(username);
+                    if (userId == -1) {
+                        throw std::runtime_error("the new account could not be created");
                     }
                 }
 
-                // Look up or create user with google_sub
-                moderatorUserId = moderator.createUserIfNotExist(username);
-                userId = userDb.getUserId(username);
-                if (userId == -1) {
-                    Log::info("[VirtualRenderer] User not found, creating with google_sub=" + userInfo.sub);
-                    userId = createUserWithGoogleInfo(username, userInfo.sub, userInfo.email);
-                    userId = userDb.getUserId(username);
-                } else {
-                    // Update google_sub if not set
-                    updateGoogleSub(userId, userInfo.sub, userInfo.email);
-                }
-
-                finalUsername = username;
-                Log::info("[VirtualRenderer] Google auth success: " + username + " google_sub=" + userInfo.sub);
+                moderatorUserId = userId;
+                finalUsername = userDb.getUsername(userId);
+                Log::info("[VirtualRenderer] Google auth success: user_id=" + std::to_string(userId) + " '" +
+                          finalUsername + "'");
             } catch (const std::exception& e) {
                 Log::error("[VirtualRenderer] Google auth failed: " + std::string(e.what()));
                 // No username field is set on a Google login event, so there is no
@@ -305,12 +375,19 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                 Log::warn("[VirtualRenderer] Password sign-in refused for a visitor name.");
                 authSucceeded = false;
                 loginError = "Names starting with \"visitor-\" are reserved. Please choose another.";
-            } else if (userDb.getUserId(finalUsername) == -1 && finalUsername.find('@') != std::string::npos) {
-                // An email address as a new username would sit waiting for
-                // that person's Google sign-in. Emails are Google's.
-                Log::warn("[VirtualRenderer] Password registration refused for an email-shaped name.");
+            } else if (username_policy::IsDeletedName(finalUsername)) {
+                Log::warn("[VirtualRenderer] Password sign-in refused for a closed account's name.");
                 authSucceeded = false;
-                loginError = "Usernames can't contain @. To use your email, sign in with Google.";
+                loginError = "Names starting with \"deleted-\" are reserved. Please choose another.";
+            } else if (const std::string nameError = userDb.getUserId(finalUsername) == -1
+                                                         ? moderator.accounts().CheckNewName(finalUsername)
+                                                         : std::string();
+                       !nameError.empty()) {
+                // A new name must follow the rules (utils/UsernamePolicy.h);
+                // an existing one signs in as it is.
+                Log::warn("[VirtualRenderer] Registration refused for '" + finalUsername + "': " + nameError);
+                authSucceeded = false;
+                loginError = nameError;
             } else {
                 const int existingUserId = userDb.getUserId(finalUsername);
                 const bool isNewUser = (existingUserId == -1);
@@ -378,6 +455,7 @@ int VirtualRenderer::createUserIfNotExist(const std::string& username) {
         user::User newUser;
         newUser.set_username(username);
         newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        newUser.set_joined_at(static_cast<int64_t>(std::time(nullptr)));
 
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
@@ -401,6 +479,7 @@ int VirtualRenderer::createUserWithGoogleInfo(const std::string& username, const
         newUser.set_google_sub(google_sub);
         newUser.set_email(email);
         newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        newUser.set_joined_at(static_cast<int64_t>(std::time(nullptr)));
 
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
@@ -411,7 +490,7 @@ int VirtualRenderer::createUserWithGoogleInfo(const std::string& username, const
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         userDb.updateUserProtobuf(user_id, serializedNewUser);
 
-        Log::info("[VirtualRenderer] Created new user with Google: " + username + " user_id=" + std::to_string(user_id) + " google_sub=" + google_sub);
+        Log::info("[VirtualRenderer] Created new user with Google: " + username + " user_id=" + std::to_string(user_id));
     }
     return user_id;
 }

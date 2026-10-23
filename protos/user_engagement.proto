@@ -81,6 +81,16 @@ message HomeView {
   // The create-a-debate dialog is open. Set by OPEN_CREATE_DEBATE, cleared
   // by CLOSE_CREATE_DEBATE and by creating or generating a debate.
   bool create_open = 5;
+  // A person's profile, drawn on the home page in place of the tab. Set by
+  // OPEN_PROFILE (a name pressed anywhere); cleared by choosing a tab, by
+  // Explore's controls and by going home. 0 = no profile open.
+  int32 profile_user_id = 6;
+  // On your own profile, which inline step is open: "" | "rename" | "delete".
+  string profile_panel = 7;
+  // Why the last rename was refused, and the name that was tried, so the
+  // form can say so in place with the name still in the box.
+  string profile_error = 8;
+  string profile_draft = 9;
 }
 
 message HomeInfo {

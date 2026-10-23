@@ -28,4 +28,10 @@ message User {
   // the visitor (before anything runs, so it can only run once) and replayed
   // as the signed-in user. Empty when the modal was opened from the header.
   bytes pending_action = 10;
+
+  // When the account was made, as Unix seconds: a password registration, a
+  // Google sign-in, a visitor, or a voice. 0 for accounts from before this
+  // was recorded -- their profile says "Early member". Visitors older than
+  // three days are swept by it (AccountService::SweepVisitors).
+  int64 joined_at = 11;
 }

@@ -17,6 +17,7 @@
 #include "../../utils/Log.h"
 #include "../../utils/DemoMode.h"
 #include "../../utils/AnonymousUser.h"
+#include "../../utils/UsernamePolicy.h"
 
 #include <cstdlib>
 #include <string>
@@ -60,7 +61,9 @@ ui::Component BuildSiteHeader(const user::User& user) {
     ComponentGenerator::addChild(&left, home);
 
     const bool visitor = anonymous_user::IsAnonymousUsername(user.username());
-    const bool onHome = user.engagement().current_action() == user_engagement::ACTION_HOME;
+    // A profile is drawn on the home page but is none of its tabs.
+    const bool onHome = user.engagement().current_action() == user_engagement::ACTION_HOME &&
+                        user.engagement().home_view().profile_user_id() == 0;
     const std::string active =
         onHome ? HomePageGenerator::ActiveTab(user.engagement().home_view(), visitor) : std::string();
     auto tab = [&](const std::string& id, const std::string& label, bool lit) {
@@ -83,8 +86,17 @@ ui::Component BuildSiteHeader(const user::User& user) {
         ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
             "openSignInButton", "Sign in", "", "bg-gray-700", "", "", "", "", "text-sm"));
     } else {
-        ComponentGenerator::addChild(&account, ComponentGenerator::createText(
-            "headerUsername", user.username(), "text-sm", "text-gray-400", "", ""));
+        // Your own name: the way to your profile.
+        ui::Component name = ComponentGenerator::createButton(
+            "openProfile_header_" + std::to_string(user.user_id()), user.username(), "", "bg-transparent",
+            "", "", "", "", "text-sm");
+        (*name.mutable_css())["background"] = "transparent";
+        (*name.mutable_css())["border"] = "none";
+        (*name.mutable_css())["padding"] = "0";
+        (*name.mutable_css())["color"] = "var(--text-2)";
+        (*name.mutable_css())["cursor"] = "pointer";
+        ComponentGenerator::addAttribute(&name, "title", "Your profile");
+        ComponentGenerator::addChild(&account, name);
         // An auto-login build has no session to leave.
         if (!demo_mode::autoLogin) {
             ComponentGenerator::addChild(&account, ComponentGenerator::createButton(
@@ -170,6 +182,29 @@ void AddHeaderAndSignIn(ui::Page& page, const user::User& user, const std::strin
 
 ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb);
 
+// A closed account is "deleted-<id>" inside; on a page it is "Deleted
+// account", wherever its name was going to appear -- a claim's author, a
+// list of who agreed, a card's "whose move", a graph node. Done here, once,
+// over everything a page shows (never its ids, which the client sends back),
+// rather than at each of the many places a name is looked up.
+void ScrubDeletedNames(ui::Component* c) {
+    if (c->text().find(username_policy::kDeletedPrefix) != std::string::npos) {
+        c->set_text(username_policy::ScrubDeletedNames(c->text()));
+    }
+    for (auto& attribute : *c->mutable_attributes()) {
+        if (attribute.second.find(username_policy::kDeletedPrefix) != std::string::npos) {
+            attribute.second = username_policy::ScrubDeletedNames(attribute.second);
+        }
+    }
+    for (auto& node : *c->mutable_nodes()) {
+        node.set_text(username_policy::ScrubDeletedNames(node.text()));
+        node.set_creator_username(username_policy::ScrubDeletedNames(node.creator_username()));
+    }
+    for (auto& child : *c->mutable_children()) {
+        ScrubDeletedNames(&child);
+    }
+}
+
 }  // namespace
 
 ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMessage& info, VRUserDatabase& userDb,
@@ -184,6 +219,9 @@ ui::Page LayoutGenerator::generateLayout(const moderator_to_vr::ModeratorToVRMes
     }
     if (page.page_id() == "home" || page.page_id() == "debate") {
         AddHeaderAndSignIn(page, info.user(), signInError, signInUsername);
+    }
+    for (auto& component : *page.mutable_components()) {
+        ScrubDeletedNames(&component);
     }
     return page;
 }

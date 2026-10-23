@@ -32,6 +32,9 @@ int main() {
 
   httplib::Server svr;
   MiddleendRequestHandler handler;
+  // Google accounts named by their email get a username of their own, and
+  // old visitors are swept -- now, and every few hours after.
+  handler.startBackgroundWork();
 
   // Pre-warm Google's JWKS cache at startup so the first login doesn't pay
   // the fetch latency, and the timestamp check in verify() has a real

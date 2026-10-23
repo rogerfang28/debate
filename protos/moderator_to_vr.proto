@@ -11,6 +11,44 @@ message ModeratorToVRMessage {
     user.User user = 1;
     debate.Collection collection = 2;
     DebateList debate_list = 3; // specifically for home page
+    // The profile open on the home page (engagement.home_view.profile_user_id).
+    Profile profile = 4;
+}
+
+// A person's public profile: who they are and what they have done, summed
+// over every debate's card (DebateTopic.tallies, owed).
+message Profile {
+    int32 user_id = 1;
+    string username = 2;
+    // "member" | "voice" (passwordless, quoted from sources) | "visitor" |
+    // "deleted" | "missing". Only members and voices have a profile page.
+    string kind = 3;
+    int64 joined_at = 4;   // 0 = before join dates were kept
+    int32 debates = 5;
+    int32 claims = 6;
+    int32 challenges = 7;
+    int32 agreements = 8;
+    int32 concessions = 9;
+    // Open challenges waiting on this person right now (DebateBrief openByHolder).
+    int32 open_challenges = 10;
+    // The debates they take part in, by id (DebateTopic.id).
+    repeated int32 debate_ids = 11;
+    // The viewer is looking at their own profile.
+    bool own = 12;
+}
+
+// One person's part in one debate, for their profile. Claims and challenges
+// are counted by whose claim it is (the voice, else the entrant), so a voice
+// is credited with what was entered in their name; agreements and
+// concessions are the person's own moves.
+message PersonTally {
+    int32 user_id = 1;
+    int32 claims = 2;
+    int32 challenges = 3;
+    int32 agreements = 4;   // standing ACCEPTs (one taken back does not count)
+    int32 concessions = 5;
+    // Claims in their voice entered by someone else: they are a voice.
+    int32 voiced = 6;
 }
 
 message DebateTopic {
@@ -48,6 +86,9 @@ message DebateTopic {
     // matches it (title or any claim), and up to 2 matching claims.
     bool search_match = 21;
     repeated string matched_claims = 22;
+    // Cache only: each person's part in this debate, for profiles. Cleared
+    // on the copy that goes into a response.
+    repeated PersonTally tallies = 23;
 }
 
 message OwingParty {

@@ -34,6 +34,9 @@ public:
     // Returns the raw sqlite3* handle for low-level access.
     sqlite3* handle() const;
 
+    // The file this connection was opened on, as given.
+    const std::string& path() const { return path_; }
+
 private:
     sqlite3* db_ = nullptr;
     std::mutex mutex_;

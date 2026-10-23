@@ -43,6 +43,7 @@
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
 #include "../utils/AnonymousUser.h"
+#include <ctime>
 
 namespace {
 bool isViewerBlockedEvent(debate_event::EventType type) {
@@ -169,10 +170,21 @@ bool leavesDebatesUnchanged(debate_event::EventType type) {
         case debate_event::OPEN_SIGN_IN:
         case debate_event::CLOSE_SIGN_IN:
         case debate_event::DISMISS_AI_NOTICE:
+        case debate_event::OPEN_PROFILE:
+        case debate_event::PROFILE_PANEL:
             return true;
         default:
             return false;
     }
+}
+
+// Leaves whatever profile was open: the reader has chosen a tab, searched,
+// or gone home.
+void closeProfile(user_engagement::HomeView* view) {
+    view->clear_profile_user_id();
+    view->clear_profile_panel();
+    view->clear_profile_error();
+    view->clear_profile_draft();
 }
 
 // The home page's tabs and Explore's controls: go home, and remember the
@@ -200,7 +212,8 @@ bool isClaimMetaSectionBlockedEvent(debate_event::EventType type) {
 DebateModerator::DebateModerator(Database& usersDb)
     : globalDb(utils::getDatabasePath()),
       dbWrapper(globalDb, usersDb),
-      debateWrapper(dbWrapper)
+      debateWrapper(dbWrapper),
+      accountService(dbWrapper, usersDb, globalDb)
 {
     dbWrapper.ensureAllTables();
     // Debates from before the move log get one written from their stored
@@ -349,13 +362,43 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             break;
         case debate_event::GO_HOME:
             Log::info("[DebateModerator] Event Type: GO_HOME");
-            MoveUserHandler::GoHome(user_id, debateWrapper);
+            updateHomeView(user_id, debateWrapper, closeProfile);
             break;
         case debate_event::GO_TO_HOME_TAB:
             Log::info("[DebateModerator] Event Type: GO_TO_HOME_TAB (" + event.home_tab().tab() + ")");
             updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
                 view->set_home_tab(event.home_tab().tab());
             });
+            break;
+        case debate_event::OPEN_PROFILE:
+            Log::info("[DebateModerator] Event Type: OPEN_PROFILE (user_id=" +
+                      std::to_string(event.open_profile().user_id()) + ")");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
+                view->set_profile_user_id(event.open_profile().user_id());
+            });
+            break;
+        case debate_event::PROFILE_PANEL: {
+            // Change username / Delete account, on your own profile only.
+            const std::string panel = event.explore_option().value();
+            Log::info("[DebateModerator] Event Type: PROFILE_PANEL (" + panel + ")");
+            if (anonymous_user::IsAnonymousUsername(dbWrapper.users.getUsername(user_id))) break;
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                if (view->profile_user_id() != user_id) return;
+                view->set_profile_panel(panel == "rename" || panel == "delete" ? panel : "");
+                view->clear_profile_error();
+                view->clear_profile_draft();
+            });
+            break;
+        }
+        case debate_event::RENAME_ACCOUNT:
+        case debate_event::DELETE_ACCOUNT:
+            // Carried out by the virtual renderer before it gets here (it
+            // owns the session cookie); reaching this means it was refused.
+            Log::info(std::string("[DebateModerator] Event Type: ") +
+                      (event.type() == debate_event::RENAME_ACCOUNT ? "RENAME_ACCOUNT" : "DELETE_ACCOUNT") +
+                      " not carried out for user " + std::to_string(user_id));
             break;
         case debate_event::OPEN_CREATE_DEBATE:
         case debate_event::CLOSE_CREATE_DEBATE: {
@@ -369,6 +412,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::EXPLORE_SEARCH:
             Log::info("[DebateModerator] Event Type: EXPLORE_SEARCH");
             updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
                 view->set_home_tab("explore");
                 view->set_explore_query(event.explore_search().query());
             });
@@ -376,6 +420,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::EXPLORE_FILTER:
             Log::info("[DebateModerator] Event Type: EXPLORE_FILTER (" + event.explore_option().value() + ")");
             updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
                 view->set_home_tab("explore");
                 view->set_explore_filter(event.explore_option().value());
             });
@@ -383,6 +428,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
         case debate_event::EXPLORE_SORT:
             Log::info("[DebateModerator] Event Type: EXPLORE_SORT (" + event.explore_option().value() + ")");
             updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
                 view->set_home_tab("explore");
                 view->set_explore_sort(event.explore_option().value());
             });
@@ -846,6 +892,8 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         user::User newUser;
         newUser.set_username(username);
         newUser.mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
+        // Visitors, voices and new sign-ins all start here.
+        newUser.set_joined_at(static_cast<int64_t>(std::time(nullptr)));
         // serialize
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
@@ -858,6 +906,34 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
     }
     return user_id;
 }
+std::string DebateModerator::renameAccount(int userId, const std::string& newName) {
+    const size_t first = newName.find_first_not_of(" \t\r\n");
+    const size_t last = newName.find_last_not_of(" \t\r\n");
+    const std::string wanted = first == std::string::npos ? std::string() : newName.substr(first, last - first + 1);
+    const std::string error = accountService.Rename(userId, wanted);
+    if (error.empty()) {
+        // Every card names people; a cached one would keep the old name.
+        homeCardCache.clear();
+    }
+    MoveUserHandler::GoHome(userId, debateWrapper);
+    user::User userProto = debateWrapper.getUserProtobuf(userId);
+    user_engagement::HomeView* view = userProto.mutable_engagement()->mutable_home_view();
+    view->set_profile_user_id(userId);
+    view->set_profile_panel(error.empty() ? "" : "rename");
+    view->set_profile_error(error);
+    view->set_profile_draft(error.empty() ? std::string() : wanted);
+    debateWrapper.updateUserProtobuf(userId, userProto);
+    return error;
+}
+
+bool DebateModerator::deleteAccount(int userId) {
+    const bool closed = accountService.Delete(userId);
+    if (closed) {
+        homeCardCache.clear();
+    }
+    return closed;
+}
+
 // A visitor has just signed in -- as a real account, or as "guest" -- and the
 // session now belongs to `userId`. Carries the visitor's place over (which
 // page, debate, claim, tab) so the user lands where they were, and takes the

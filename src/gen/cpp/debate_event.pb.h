@@ -165,6 +165,10 @@ class OpenDebateClaim;
 struct OpenDebateClaimDefaultTypeInternal;
 extern OpenDebateClaimDefaultTypeInternal _OpenDebateClaim_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull OpenDebateClaim_class_data_;
+class OpenProfile;
+struct OpenProfileDefaultTypeInternal;
+extern OpenProfileDefaultTypeInternal _OpenProfile_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull OpenProfile_class_data_;
 class RemoveClaimToBeChallenged;
 struct RemoveClaimToBeChallengedDefaultTypeInternal;
 extern RemoveClaimToBeChallengedDefaultTypeInternal _RemoveClaimToBeChallenged_default_instance_;
@@ -173,6 +177,10 @@ class RemoveLinkToBeChallenged;
 struct RemoveLinkToBeChallengedDefaultTypeInternal;
 extern RemoveLinkToBeChallengedDefaultTypeInternal _RemoveLinkToBeChallenged_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull RemoveLinkToBeChallenged_class_data_;
+class RenameAccount;
+struct RenameAccountDefaultTypeInternal;
+extern RenameAccountDefaultTypeInternal _RenameAccount_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull RenameAccount_class_data_;
 class SelectClaim;
 struct SelectClaimDefaultTypeInternal;
 extern SelectClaimDefaultTypeInternal _SelectClaim_default_instance_;
@@ -298,6 +306,10 @@ enum EventType : int {
   OPEN_DEBATE_CLAIM = 80,
   OPEN_CREATE_DEBATE = 81,
   CLOSE_CREATE_DEBATE = 82,
+  OPEN_PROFILE = 83,
+  PROFILE_PANEL = 84,
+  RENAME_ACCOUNT = 85,
+  DELETE_ACCOUNT = 86,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -308,11 +320,11 @@ extern const uint32_t EventType_internal_data_[];
 inline constexpr EventType EventType_MIN =
     static_cast<EventType>(0);
 inline constexpr EventType EventType_MAX =
-    static_cast<EventType>(82);
+    static_cast<EventType>(86);
 inline bool EventType_IsValid(int value) {
   return ::google::protobuf::internal::ValidateEnum(value, EventType_internal_data_);
 }
-inline constexpr int EventType_ARRAYSIZE = 82 + 1;
+inline constexpr int EventType_ARRAYSIZE = 86 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor();
 template <typename T>
 const ::std::string& EventType_Name(T value) {
@@ -323,7 +335,7 @@ const ::std::string& EventType_Name(T value) {
 }
 template <>
 inline const ::std::string& EventType_Name(EventType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 82>(
+  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 86>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(
@@ -392,7 +404,7 @@ class UserAuthInfo final : public ::google::protobuf::Message
     return *reinterpret_cast<const UserAuthInfo*>(
         &_UserAuthInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 36;
+  static constexpr int kIndexInFileMessages = 38;
   friend void swap(UserAuthInfo& a, UserAuthInfo& b) { a.Swap(&b); }
   inline void Swap(UserAuthInfo* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -2258,6 +2270,201 @@ class SelectClaim final : public ::google::protobuf::Message
 extern const ::google::protobuf::internal::ClassDataFull SelectClaim_class_data_;
 // -------------------------------------------------------------------
 
+class RenameAccount final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.RenameAccount) */ {
+ public:
+  inline RenameAccount() : RenameAccount(nullptr) {}
+  ~RenameAccount() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RenameAccount* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RenameAccount));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RenameAccount(::google::protobuf::internal::ConstantInitialized);
+
+  inline RenameAccount(const RenameAccount& from) : RenameAccount(nullptr, from) {}
+  inline RenameAccount(RenameAccount&& from) noexcept
+      : RenameAccount(nullptr, ::std::move(from)) {}
+  inline RenameAccount& operator=(const RenameAccount& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RenameAccount& operator=(RenameAccount&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RenameAccount& default_instance() {
+    return *reinterpret_cast<const RenameAccount*>(
+        &_RenameAccount_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 37;
+  friend void swap(RenameAccount& a, RenameAccount& b) { a.Swap(&b); }
+  inline void Swap(RenameAccount* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RenameAccount* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RenameAccount* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RenameAccount>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RenameAccount& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RenameAccount& from) { RenameAccount::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RenameAccount* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.RenameAccount"; }
+
+  explicit RenameAccount(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  RenameAccount(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const RenameAccount& from);
+  RenameAccount(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, RenameAccount&& from) noexcept
+      : RenameAccount(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kNewUsernameFieldNumber = 1,
+  };
+  // string new_username = 1 [json_name = "newUsername"];
+  void clear_new_username() ;
+  const ::std::string& new_username() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_new_username(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_new_username();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_new_username();
+  void set_allocated_new_username(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_new_username() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_new_username(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_new_username();
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.RenameAccount)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 47,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const RenameAccount& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr new_username_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull RenameAccount_class_data_;
+// -------------------------------------------------------------------
+
 class RemoveLinkToBeChallenged final : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:debate_event.RemoveLinkToBeChallenged) */ {
  public:
@@ -2636,6 +2843,196 @@ class RemoveClaimToBeChallenged final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull RemoveClaimToBeChallenged_class_data_;
+// -------------------------------------------------------------------
+
+class OpenProfile final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:debate_event.OpenProfile) */ {
+ public:
+  inline OpenProfile() : OpenProfile(nullptr) {}
+  ~OpenProfile() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(OpenProfile* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(OpenProfile));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR OpenProfile(::google::protobuf::internal::ConstantInitialized);
+
+  inline OpenProfile(const OpenProfile& from) : OpenProfile(nullptr, from) {}
+  inline OpenProfile(OpenProfile&& from) noexcept
+      : OpenProfile(nullptr, ::std::move(from)) {}
+  inline OpenProfile& operator=(const OpenProfile& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline OpenProfile& operator=(OpenProfile&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const OpenProfile& default_instance() {
+    return *reinterpret_cast<const OpenProfile*>(
+        &_OpenProfile_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 36;
+  friend void swap(OpenProfile& a, OpenProfile& b) { a.Swap(&b); }
+  inline void Swap(OpenProfile* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(OpenProfile* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  OpenProfile* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<OpenProfile>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const OpenProfile& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const OpenProfile& from) { OpenProfile::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(OpenProfile* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "debate_event.OpenProfile"; }
+
+  explicit OpenProfile(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  OpenProfile(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const OpenProfile& from);
+  OpenProfile(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, OpenProfile&& from) noexcept
+      : OpenProfile(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kUserIdFieldNumber = 1,
+  };
+  // int32 user_id = 1 [json_name = "userId"];
+  void clear_user_id() ;
+  ::int32_t user_id() const;
+  void set_user_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_user_id() const;
+  void _internal_set_user_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:debate_event.OpenProfile)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const OpenProfile& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int32_t user_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_debate_5fevent_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull OpenProfile_class_data_;
 // -------------------------------------------------------------------
 
 class OpenDebateClaim final : public ::google::protobuf::Message
@@ -8058,9 +8455,11 @@ class DebateEvent final : public ::google::protobuf::Message
     kExploreSearch = 60,
     kExploreOption = 61,
     kOpenDebateClaim = 62,
+    kOpenProfile = 63,
+    kRenameAccount = 64,
     PAYLOAD_NOT_SET = 0,
   };
-  static constexpr int kIndexInFileMessages = 37;
+  static constexpr int kIndexInFileMessages = 39;
   friend void swap(DebateEvent& a, DebateEvent& b) { a.Swap(&b); }
   inline void Swap(DebateEvent* PROTOBUF_NONNULL other) {
     if (other == this) return;
@@ -8185,6 +8584,8 @@ class DebateEvent final : public ::google::protobuf::Message
     kExploreSearchFieldNumber = 60,
     kExploreOptionFieldNumber = 61,
     kOpenDebateClaimFieldNumber = 62,
+    kOpenProfileFieldNumber = 63,
+    kRenameAccountFieldNumber = 64,
   };
   // .debate_event.UserAuthInfo user = 1 [json_name = "user"];
   bool has_user() const;
@@ -8891,6 +9292,44 @@ class DebateEvent final : public ::google::protobuf::Message
   ::debate_event::OpenDebateClaim* PROTOBUF_NONNULL _internal_mutable_open_debate_claim();
 
   public:
+  // .debate_event.OpenProfile open_profile = 63 [json_name = "openProfile"];
+  bool has_open_profile() const;
+  private:
+  bool _internal_has_open_profile() const;
+
+  public:
+  void clear_open_profile() ;
+  const ::debate_event::OpenProfile& open_profile() const;
+  [[nodiscard]] ::debate_event::OpenProfile* PROTOBUF_NULLABLE release_open_profile();
+  ::debate_event::OpenProfile* PROTOBUF_NONNULL mutable_open_profile();
+  void set_allocated_open_profile(::debate_event::OpenProfile* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_open_profile(::debate_event::OpenProfile* PROTOBUF_NULLABLE value);
+  ::debate_event::OpenProfile* PROTOBUF_NULLABLE unsafe_arena_release_open_profile();
+
+  private:
+  const ::debate_event::OpenProfile& _internal_open_profile() const;
+  ::debate_event::OpenProfile* PROTOBUF_NONNULL _internal_mutable_open_profile();
+
+  public:
+  // .debate_event.RenameAccount rename_account = 64 [json_name = "renameAccount"];
+  bool has_rename_account() const;
+  private:
+  bool _internal_has_rename_account() const;
+
+  public:
+  void clear_rename_account() ;
+  const ::debate_event::RenameAccount& rename_account() const;
+  [[nodiscard]] ::debate_event::RenameAccount* PROTOBUF_NULLABLE release_rename_account();
+  ::debate_event::RenameAccount* PROTOBUF_NONNULL mutable_rename_account();
+  void set_allocated_rename_account(::debate_event::RenameAccount* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_rename_account(::debate_event::RenameAccount* PROTOBUF_NULLABLE value);
+  ::debate_event::RenameAccount* PROTOBUF_NULLABLE unsafe_arena_release_rename_account();
+
+  private:
+  const ::debate_event::RenameAccount& _internal_rename_account() const;
+  ::debate_event::RenameAccount* PROTOBUF_NONNULL _internal_mutable_rename_account();
+
+  public:
   void clear_payload();
   PayloadCase payload_case() const;
   // @@protoc_insertion_point(class_scope:debate_event.DebateEvent)
@@ -8931,11 +9370,13 @@ class DebateEvent final : public ::google::protobuf::Message
   void set_has_explore_search();
   void set_has_explore_option();
   void set_has_open_debate_claim();
+  void set_has_open_profile();
+  void set_has_rename_account();
   inline bool has_payload() const;
   inline void clear_has_payload();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 38,
-                                   37, 0,
+  static const ::google::protobuf::internal::TcParseTable<2, 40,
+                                   39, 0,
                                    9>
       _table_;
 
@@ -8997,6 +9438,8 @@ class DebateEvent final : public ::google::protobuf::Message
       ::google::protobuf::Message* PROTOBUF_NULLABLE explore_search_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE explore_option_;
       ::google::protobuf::Message* PROTOBUF_NULLABLE open_debate_claim_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE open_profile_;
+      ::google::protobuf::Message* PROTOBUF_NULLABLE rename_account_;
     } payload_;
     ::uint32_t _oneof_case_[1];
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -12309,6 +12752,104 @@ inline void OpenDebateClaim::_internal_set_claim_id(::int32_t value) {
 
 // -------------------------------------------------------------------
 
+// OpenProfile
+
+// int32 user_id = 1 [json_name = "userId"];
+inline void OpenProfile::clear_user_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_id_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::int32_t OpenProfile::user_id() const {
+  // @@protoc_insertion_point(field_get:debate_event.OpenProfile.user_id)
+  return _internal_user_id();
+}
+inline void OpenProfile::set_user_id(::int32_t value) {
+  _internal_set_user_id(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:debate_event.OpenProfile.user_id)
+}
+inline ::int32_t OpenProfile::_internal_user_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.user_id_;
+}
+inline void OpenProfile::_internal_set_user_id(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.user_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RenameAccount
+
+// string new_username = 1 [json_name = "newUsername"];
+inline void RenameAccount::clear_new_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_username_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline const ::std::string& RenameAccount::new_username() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.RenameAccount.new_username)
+  return _internal_new_username();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void RenameAccount::set_new_username(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  _impl_.new_username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.RenameAccount.new_username)
+}
+inline ::std::string* PROTOBUF_NONNULL RenameAccount::mutable_new_username()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  ::std::string* _s = _internal_mutable_new_username();
+  // @@protoc_insertion_point(field_mutable:debate_event.RenameAccount.new_username)
+  return _s;
+}
+inline const ::std::string& RenameAccount::_internal_new_username() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_username_.Get();
+}
+inline void RenameAccount::_internal_set_new_username(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_username_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL RenameAccount::_internal_mutable_new_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.new_username_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE RenameAccount::release_new_username() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.RenameAccount.new_username)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000001U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  auto* released = _impl_.new_username_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.new_username_.Set("", GetArena());
+  }
+  return released;
+}
+inline void RenameAccount::set_allocated_new_username(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000001U);
+  }
+  _impl_.new_username_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.new_username_.IsDefault()) {
+    _impl_.new_username_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.RenameAccount.new_username)
+}
+
+// -------------------------------------------------------------------
+
 // UserAuthInfo
 
 // string username = 1 [json_name = "username"];
@@ -15514,6 +16055,170 @@ inline ::debate_event::OpenDebateClaim* PROTOBUF_NONNULL DebateEvent::mutable_op
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::debate_event::OpenDebateClaim* _msg = _internal_mutable_open_debate_claim();
   // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.open_debate_claim)
+  return _msg;
+}
+
+// .debate_event.OpenProfile open_profile = 63 [json_name = "openProfile"];
+inline bool DebateEvent::has_open_profile() const {
+  return payload_case() == kOpenProfile;
+}
+inline bool DebateEvent::_internal_has_open_profile() const {
+  return payload_case() == kOpenProfile;
+}
+inline void DebateEvent::set_has_open_profile() {
+  _impl_._oneof_case_[0] = kOpenProfile;
+}
+inline void DebateEvent::clear_open_profile() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kOpenProfile) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.open_profile_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.open_profile_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::OpenProfile* PROTOBUF_NULLABLE DebateEvent::release_open_profile() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.open_profile)
+  if (payload_case() == kOpenProfile) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::OpenProfile*>(_impl_.payload_.open_profile_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.open_profile_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::OpenProfile& DebateEvent::_internal_open_profile() const {
+  return payload_case() == kOpenProfile ? static_cast<const ::debate_event::OpenProfile&>(*reinterpret_cast<::debate_event::OpenProfile*>(_impl_.payload_.open_profile_))
+                     : reinterpret_cast<const ::debate_event::OpenProfile&>(::debate_event::_OpenProfile_default_instance_);
+}
+inline const ::debate_event::OpenProfile& DebateEvent::open_profile() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.open_profile)
+  return _internal_open_profile();
+}
+inline ::debate_event::OpenProfile* PROTOBUF_NULLABLE DebateEvent::unsafe_arena_release_open_profile() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.open_profile)
+  if (payload_case() == kOpenProfile) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::OpenProfile*>(_impl_.payload_.open_profile_);
+    _impl_.payload_.open_profile_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_open_profile(
+    ::debate_event::OpenProfile* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_open_profile();
+    _impl_.payload_.open_profile_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.open_profile)
+}
+inline ::debate_event::OpenProfile* PROTOBUF_NONNULL DebateEvent::_internal_mutable_open_profile() {
+  if (payload_case() != kOpenProfile) {
+    clear_payload();
+    set_has_open_profile();
+    _impl_.payload_.open_profile_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::OpenProfile>(GetArena()));
+  }
+  return reinterpret_cast<::debate_event::OpenProfile*>(_impl_.payload_.open_profile_);
+}
+inline ::debate_event::OpenProfile* PROTOBUF_NONNULL DebateEvent::mutable_open_profile()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::OpenProfile* _msg = _internal_mutable_open_profile();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.open_profile)
+  return _msg;
+}
+
+// .debate_event.RenameAccount rename_account = 64 [json_name = "renameAccount"];
+inline bool DebateEvent::has_rename_account() const {
+  return payload_case() == kRenameAccount;
+}
+inline bool DebateEvent::_internal_has_rename_account() const {
+  return payload_case() == kRenameAccount;
+}
+inline void DebateEvent::set_has_rename_account() {
+  _impl_._oneof_case_[0] = kRenameAccount;
+}
+inline void DebateEvent::clear_rename_account() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (payload_case() == kRenameAccount) {
+    if (GetArena() == nullptr) {
+      delete _impl_.payload_.rename_account_;
+    } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+      ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.payload_.rename_account_);
+    }
+    clear_has_payload();
+  }
+}
+inline ::debate_event::RenameAccount* PROTOBUF_NULLABLE DebateEvent::release_rename_account() {
+  // @@protoc_insertion_point(field_release:debate_event.DebateEvent.rename_account)
+  if (payload_case() == kRenameAccount) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::RenameAccount*>(_impl_.payload_.rename_account_);
+    if (GetArena() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.payload_.rename_account_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::debate_event::RenameAccount& DebateEvent::_internal_rename_account() const {
+  return payload_case() == kRenameAccount ? static_cast<const ::debate_event::RenameAccount&>(*reinterpret_cast<::debate_event::RenameAccount*>(_impl_.payload_.rename_account_))
+                     : reinterpret_cast<const ::debate_event::RenameAccount&>(::debate_event::_RenameAccount_default_instance_);
+}
+inline const ::debate_event::RenameAccount& DebateEvent::rename_account() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.DebateEvent.rename_account)
+  return _internal_rename_account();
+}
+inline ::debate_event::RenameAccount* PROTOBUF_NULLABLE DebateEvent::unsafe_arena_release_rename_account() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:debate_event.DebateEvent.rename_account)
+  if (payload_case() == kRenameAccount) {
+    clear_has_payload();
+    auto* temp = reinterpret_cast<::debate_event::RenameAccount*>(_impl_.payload_.rename_account_);
+    _impl_.payload_.rename_account_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void DebateEvent::unsafe_arena_set_allocated_rename_account(
+    ::debate_event::RenameAccount* PROTOBUF_NULLABLE value) {
+  // We rely on the oneof clear method to free the earlier contents
+  // of this oneof. We can directly use the pointer we're given to
+  // set the new value.
+  clear_payload();
+  if (value) {
+    set_has_rename_account();
+    _impl_.payload_.rename_account_ = reinterpret_cast<::google::protobuf::Message*>(value);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:debate_event.DebateEvent.rename_account)
+}
+inline ::debate_event::RenameAccount* PROTOBUF_NONNULL DebateEvent::_internal_mutable_rename_account() {
+  if (payload_case() != kRenameAccount) {
+    clear_payload();
+    set_has_rename_account();
+    _impl_.payload_.rename_account_ = reinterpret_cast<::google::protobuf::Message*>(
+        ::google::protobuf::Message::DefaultConstruct<::debate_event::RenameAccount>(GetArena()));
+  }
+  return reinterpret_cast<::debate_event::RenameAccount*>(_impl_.payload_.rename_account_);
+}
+inline ::debate_event::RenameAccount* PROTOBUF_NONNULL DebateEvent::mutable_rename_account()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::debate_event::RenameAccount* _msg = _internal_mutable_rename_account();
+  // @@protoc_insertion_point(field_mutable:debate_event.DebateEvent.rename_account)
   return _msg;
 }
 
