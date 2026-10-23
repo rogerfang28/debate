@@ -460,6 +460,10 @@ int VirtualRenderer::createUserIfNotExist(const std::string& username) {
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         user_id = userDb.createUser(username, serializedNewUser);
+        if (user_id == -1) {
+            // Made by a request running alongside this one; use that account.
+            return userDb.getUserId(username);
+        }
 
         newUser.set_user_id(user_id);
         serializedNewUser.resize(newUser.ByteSizeLong());
@@ -484,6 +488,10 @@ int VirtualRenderer::createUserWithGoogleInfo(const std::string& username, const
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         user_id = userDb.createUser(username, serializedNewUser);
+        if (user_id == -1) {
+            // Made by a request running alongside this one; use that account.
+            return userDb.getUserId(username);
+        }
 
         newUser.set_user_id(user_id);
         serializedNewUser.resize(newUser.ByteSizeLong());

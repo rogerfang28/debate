@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "debate.pb.h"
@@ -565,4 +566,18 @@ TEST_F(ProfileTest, ProfilePanelIsYourOwnProfileOnly) {
     profileOf(alice_, alice_);
     send(panel);
     EXPECT_EQ(moderator_->getDebateWrapper().getUserProtobuf(alice_).engagement().home_view().profile_panel(), "delete");
+}
+
+TEST_F(ProfileTest, SameAccountMadeByConcurrentRequestsIsOneAccount) {
+    // A visitor's open tabs all arrive at once after the sweep removed the
+    // name their browser still sends: every request must get the one account.
+    std::vector<int> ids(8, 0);
+    std::vector<std::thread> threads;
+    for (size_t i = 0; i < ids.size(); ++i) {
+        threads.emplace_back([&, i]() { ids[i] = moderator_->createUserIfNotExist("visitor-0badcafe"); });
+    }
+    for (auto& t : threads) t.join();
+    const int expected = moderator_->getUserId("visitor-0badcafe");
+    ASSERT_GT(expected, 0);
+    for (const int id : ids) EXPECT_EQ(id, expected);
 }

@@ -898,6 +898,15 @@ int DebateModerator::createUserIfNotExist(const std::string& username) {
         std::vector<uint8_t> serializedNewUser(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
         user_id = dbWrapper.users.createUser(username, serializedNewUser);
+        if (user_id == -1) {
+            // Two requests made the same account at once (a visitor's open
+            // tabs, after the sweep removed the name their browser still
+            // sends): the other one's insert won. Use that account.
+            user_id = dbWrapper.users.getUserId(username);
+            Log::warn("[DebateModerator] Creating '" + username + "' raced another request; using user_id " +
+                      std::to_string(user_id));
+            return user_id;
+        }
         newUser.set_user_id(user_id);
         serializedNewUser.resize(newUser.ByteSizeLong());
         newUser.SerializeToArray(serializedNewUser.data(), serializedNewUser.size());
