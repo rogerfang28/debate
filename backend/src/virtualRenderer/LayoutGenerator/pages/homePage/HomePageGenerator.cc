@@ -839,13 +839,18 @@ ui::Page HomePageGenerator::GenerateHomePage(const rendering_info::HomePageRende
         ComponentGenerator::addChild(&column, startDebate());
     }
 
-    // The foot of the page: what the site keeps about you, and the build.
+    // The foot of the page: what the site keeps about you, who to write to,
+    // and the build.
     ui::Component footer = ComponentGenerator::createContainer("homeFooter", "w-full", "", "", "", "", "", "");
     css(&footer, {{"display", "flex"}, {"justify-content", "center"}, {"gap", "1rem"}, {"margin-top", "1rem"}});
     ui::Component privacy = text("homePrivacyLink", "Privacy",
         {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "0"}});
     ComponentGenerator::addAttribute(&privacy, "data-href", "/privacy.html");
     ComponentGenerator::addChild(&footer, privacy);
+    ui::Component contact = text("homeContactLink", "rogerfang28@gmail.com",
+        {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "0"}});
+    ComponentGenerator::addAttribute(&contact, "data-href", "mailto:rogerfang28@gmail.com");
+    ComponentGenerator::addChild(&footer, contact);
     ComponentGenerator::addChild(&footer, text("homeBuild", "commit " GIT_COMMIT_HASH,
         {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "400"}, {"margin", "0"}}));
     ComponentGenerator::addChild(&column, footer);
