@@ -8,6 +8,10 @@
 #include "../../../utils/Log.h"
 #include "../../../utils/DebateBrief.h"
 #include "../../../utils/Ordered.h"
+#include "../../../utils/ClaimVoice.h"
+#include "../../../utils/AnonymousUser.h"
+#include "../../../utils/UsernamePolicy.h"
+#include "user.pb.h"
 #include "../debatePageResponse/BuildCollection.h"
 #include <algorithm>
 #include <cctype>
@@ -99,6 +103,137 @@ void fillFromMoveLog(moderator_to_vr::DebateTopic* topic, const std::vector<deba
     }
 }
 
+// Each person's part in this debate, for their profile. Claims and
+// challenges go to whose claim it is (the voice, else the entrant), so a
+// voice is credited with what was entered in their name; agreements (those
+// still standing) and concessions are moves the person made. Anyone who made
+// any move gets an entry, so the debate is listed on their profile.
+void fillTallies(moderator_to_vr::DebateTopic* topic, const debate::Collection& collection,
+                 const DebateBrief::Facts& facts, const std::vector<debate::Move>& moves) {
+    std::map<int, moderator_to_vr::PersonTally> by;
+    auto of = [&](int id) -> moderator_to_vr::PersonTally& {
+        moderator_to_vr::PersonTally& t = by[id];
+        t.set_user_id(id);
+        return t;
+    };
+    std::set<int> challengeClaims;
+    for (const DebateBrief::Move& m : facts.timeline) {
+        if (m.challenge) challengeClaims.insert(m.claimId);
+    }
+    for (const auto& entry : collection.claims_by_id()) {
+        const debate::Claim& claim = entry.second;
+        const int holder = ClaimVoiceId(claim);
+        if (holder <= 0) continue;
+        moderator_to_vr::PersonTally& t = of(holder);
+        if (challengeClaims.count(claim.id())) {
+            t.set_challenges(t.challenges() + 1);
+        } else {
+            t.set_claims(t.claims() + 1);
+        }
+        if (claim.voice_id() > 0 && claim.voice_id() != claim.creator_id()) {
+            t.set_voiced(t.voiced() + 1);
+        }
+    }
+    std::set<std::pair<int, int>> agreed;  // (actor, claim) still standing
+    for (const debate::Move& m : moves) {
+        if (m.actor_id() <= 0) continue;
+        moderator_to_vr::PersonTally& t = of(m.actor_id());
+        switch (m.type()) {
+            case debate::ACCEPT:
+                agreed.insert({m.actor_id(), m.target_id()});
+                break;
+            case debate::UNACCEPT:
+                agreed.erase({m.actor_id(), m.target_id()});
+                break;
+            case debate::CONCEDE:
+                t.set_concessions(t.concessions() + 1);
+                break;
+            default:
+                break;
+        }
+    }
+    for (const auto& pair : agreed) {
+        moderator_to_vr::PersonTally& t = of(pair.first);
+        t.set_agreements(t.agreements() + 1);
+    }
+    for (const auto& entry : by) {
+        *topic->add_tallies() = entry.second;
+    }
+}
+
+// The profile open on the viewer's home page, summed over every card.
+class ProfileBuilder {
+public:
+    ProfileBuilder(int viewerId, int targetId, DebateWrapper& debateWrapper) : target_(targetId) {
+        if (target_ <= 0) return;
+        account_ = debateWrapper.getUserProtobuf(target_);
+        profile_.set_user_id(target_);
+        profile_.set_username(account_.username());
+        profile_.set_joined_at(account_.joined_at());
+        profile_.set_own(viewerId == target_);
+    }
+
+    // One debate's card, before its tallies are cleared.
+    void add(const moderator_to_vr::DebateTopic& topic) {
+        if (target_ <= 0) return;
+        bool part = false;
+        for (const auto& t : topic.tallies()) {
+            if (t.user_id() != target_) continue;
+            part = true;
+            profile_.set_claims(profile_.claims() + t.claims());
+            profile_.set_challenges(profile_.challenges() + t.challenges());
+            profile_.set_agreements(profile_.agreements() + t.agreements());
+            profile_.set_concessions(profile_.concessions() + t.concessions());
+            voiced_ += t.voiced();
+        }
+        for (const int member : topic.member_ids()) {
+            if (member == target_) part = true;
+        }
+        const std::string& name = account_.username();
+        for (const auto& owed : topic.owed()) {
+            if (!name.empty() && owed.who() == name) {
+                part = true;
+                profile_.set_open_challenges(profile_.open_challenges() + 1);
+            }
+        }
+        if (part) {
+            profile_.add_debate_ids(topic.id());
+            profile_.set_debates(profile_.debates() + 1);
+        }
+    }
+
+    void finish(moderator_to_vr::ModeratorToVRMessage& res) {
+        if (target_ <= 0) return;
+        const std::string& name = account_.username();
+        std::string kind = "member";
+        if (name.empty()) {
+            kind = "missing";
+        } else if (anonymous_user::IsAnonymousUsername(name)) {
+            kind = "visitor";
+        } else if (username_policy::IsDeletedName(name)) {
+            kind = "deleted";
+        } else if (account_.password_hash().empty() && account_.google_sub().empty() && voiced_ > 0) {
+            // Never signs in; claims are entered in their name from sources.
+            kind = "voice";
+        }
+        profile_.set_kind(kind);
+        if (kind != "member" && kind != "voice") {
+            // Nothing about a visitor or a closed account is shown.
+            moderator_to_vr::Profile bare;
+            bare.set_user_id(target_);
+            bare.set_kind(kind);
+            profile_ = bare;
+        }
+        *res.mutable_profile() = profile_;
+    }
+
+private:
+    int target_ = 0;
+    int voiced_ = 0;
+    user::User account_;
+    moderator_to_vr::Profile profile_;
+};
+
 }  // namespace
 
 void HomePageResponseGenerator::BuildHomePageResponse(
@@ -136,6 +271,8 @@ void HomePageResponseGenerator::BuildHomePageResponse(
 
     moderator_to_vr::DebateList debateListProto;
     int built = 0;
+    ProfileBuilder profile(user_id, responseMessage.user().engagement().home_view().profile_user_id(),
+                           debateWrapper);
 
     // Names are looked up once per page, not once per claim per debate.
     std::map<int, std::string> usernames;
@@ -156,6 +293,8 @@ void HomePageResponseGenerator::BuildHomePageResponse(
                 *topic = cached->second;
                 search(topic);
                 topic->clear_claim_texts();
+                profile.add(*topic);
+                topic->clear_tallies();
                 continue;
             }
         }
@@ -234,16 +373,21 @@ void HomePageResponseGenerator::BuildHomePageResponse(
         for (const int claimId : ordered::SortedClaimIds(collection)) {
             topicProto->add_claim_texts(collection.claims_by_id().at(claimId).sentence());
         }
-        fillFromMoveLog(topicProto, debateWrapper.getMovesForDebate(debateId), facts, nameOf);
+        const std::vector<debate::Move> moves = debateWrapper.getMovesForDebate(debateId);
+        fillFromMoveLog(topicProto, moves, facts, nameOf);
+        fillTallies(topicProto, collection, facts, moves);
 
         if (cardCache != nullptr) {
             (*cardCache)[debateId] = *topicProto;
         }
         search(topicProto);
         topicProto->clear_claim_texts();
+        profile.add(*topicProto);
+        topicProto->clear_tallies();
     }
 
     *responseMessage.mutable_debate_list() = debateListProto;
+    profile.finish(responseMessage);
 
     const long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::steady_clock::now() - started).count();

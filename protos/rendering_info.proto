@@ -157,6 +157,9 @@ message HomePageRenderingInfo {
 
 	// The tab, search, filter and sort the reader chose (engagement.home_view).
 	user_engagement.HomeView home_view = 6;
+
+	// The profile to draw instead of a tab, when home_view.profile_user_id is set.
+	moderator_to_vr.Profile profile = 7;
 }
 
 message HomeDebateTopicRenderInfo {

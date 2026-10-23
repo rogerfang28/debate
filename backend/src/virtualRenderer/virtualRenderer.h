@@ -1,5 +1,10 @@
 #pragma once
+#include <chrono>
+#include <condition_variable>
+#include <mutex>
+#include <shared_mutex>
 #include <string>
+#include <thread>
 #include "../database/sqlite/Database.h"
 #include "../database/virtualrenderer/VRUserDatabase.h"
 #include "layout.pb.h"
@@ -38,6 +43,13 @@ public:
     // and mutates evt.user() accordingly. Returns a user-facing error message
     // if a login attempt failed (e.g. wrong password); empty string otherwise.
     std::string handleAuthEvents(debate_event::DebateEvent& evt, const httplib::Request& req, httplib::Response& res);
+
+    // The account jobs the server runs on its own: the email-name migration
+    // and a visitor sweep now, then a sweep every kSweepInterval on a
+    // background thread. Requests wait while a job runs (and a job waits
+    // for the requests in flight), so nobody is deleted mid-request.
+    void startMaintenance();
+    static constexpr std::chrono::hours kSweepInterval{6};
 private:
     // Helper to extract user from cookies (returns "guest" if not found)
      int createUserIfNotExist(const std::string& username);
@@ -52,4 +64,11 @@ private:
     Database usersDb;
     VRUserDatabase userDb;
     DebateModerator moderator;
+
+    // Shared by every request, exclusive for a maintenance job.
+    std::shared_mutex maintenanceMutex;
+    std::thread maintenanceThread;
+    std::mutex stopMutex;
+    std::condition_variable stopSignal;
+    bool stopping = false;
 };

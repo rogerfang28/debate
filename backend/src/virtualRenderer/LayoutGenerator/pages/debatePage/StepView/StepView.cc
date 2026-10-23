@@ -9,6 +9,7 @@
 #include "../FullDebateView/FullDebatePageInfoParser.h"
 #include "../../../../utils/UserNameResolver.h"
 #include "../../../../../utils/TutorialLibrary.h"
+#include "../../../../../utils/UsernamePolicy.h"
 #include <map>
 #include <set>
 #include <sstream>
@@ -51,6 +52,63 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
         return debate::ClaimStatus::TRUE_CLAIM;
     }
     return debate::ClaimStatus::UNDETERMINED;
+}
+
+// One inspector row whose value is people: each name a link to their
+// profile (openProfile_<where>_<user id>), comma-separated. A visitor or a
+// closed account has no profile, so theirs is plain text.
+static ui::Component BuildPeopleField(const std::string& idPrefix, const std::string& idSuffix,
+                                      const std::string& label,
+                                      const std::vector<std::pair<std::string, int>>& people) {
+    ui::Component row = ComponentGenerator::createContainer(
+        idPrefix + idSuffix + "Row", "", "", "", "", "", "", "");
+    (*row.mutable_css())["display"] = "flex";
+    (*row.mutable_css())["flex-direction"] = "column";
+    (*row.mutable_css())["gap"] = "0.15rem";
+    ComponentGenerator::addChild(&row, ComponentGenerator::createText(
+        idPrefix + idSuffix + "Label", label, "text-xs", "text-gray-500", "font-semibold uppercase tracking-wide", ""));
+
+    ui::Component names = ComponentGenerator::createContainer(
+        idPrefix + idSuffix + "Value", "", "", "", "", "", "", "");
+    (*names.mutable_css())["display"] = "flex";
+    (*names.mutable_css())["flex-direction"] = "row";
+    (*names.mutable_css())["flex-wrap"] = "wrap";
+    (*names.mutable_css())["align-items"] = "baseline";
+    (*names.mutable_css())["gap"] = "0";
+    for (size_t i = 0; i < people.size(); ++i) {
+        const std::string& name = people[i].first;
+        const int userId = people[i].second;
+        const std::string key = idPrefix + idSuffix + std::to_string(i);
+        const bool linked = userId > 0 && !username_policy::IsDeletedName(name) &&
+                            !anonymous_user::IsAnonymousUsername(name);
+        if (linked) {
+            ui::Component link = ComponentGenerator::createButton(
+                "openProfile_" + key + "_" + std::to_string(userId), name, "", "", "", "", "", "", "text-sm");
+            (*link.mutable_css())["background"] = "transparent";
+            (*link.mutable_css())["border"] = "none";
+            (*link.mutable_css())["padding"] = "0";
+            (*link.mutable_css())["color"] = "var(--accent)";
+            (*link.mutable_css())["cursor"] = "pointer";
+            (*link.mutable_css())["font-size"] = "14px";
+            (*link.mutable_css())["font-weight"] = "400";
+            (*link.mutable_css())["text-align"] = "left";
+            (*link.mutable_css())["overflow-wrap"] = "anywhere";
+            ComponentGenerator::addAttribute(&link, "title", "View profile");
+            ComponentGenerator::addChild(&names, link);
+        } else {
+            ui::Component plain = ComponentGenerator::createText(
+                key + "Name", username_policy::DisplayName(name), "text-sm", "text-white", "", "");
+            (*plain.mutable_css())["margin"] = "0";
+            ComponentGenerator::addChild(&names, plain);
+        }
+        if (i + 1 < people.size()) {
+            ui::Component comma = ComponentGenerator::createText(key + "Sep", ",\u00a0", "text-sm", "text-gray-400", "", "");
+            (*comma.mutable_css())["margin"] = "0";
+            ComponentGenerator::addChild(&names, comma);
+        }
+    }
+    ComponentGenerator::addChild(&row, names);
+    return row;
 }
 
 // Builds the "Selected Claim" info panel: sentence, status, creator,
@@ -139,32 +197,33 @@ static ui::Component BuildSelectedClaimPanel(
     // is theirs, and listing them would say nothing.
     {
         const std::string holder = userDb.getUsername(ClaimVoiceId(claim));
-        std::string agreed;
+        std::vector<std::pair<std::string, int>> agreed;
         // By name: user_statuses is a protobuf map, unspecified in order.
         for (const auto* entry : ordered::Entries(claim.user_statuses())) {
             if (entry->second != debate::ClaimStatus::TRUE_CLAIM || entry->first == holder) continue;
-            if (!agreed.empty()) agreed += ", ";
-            agreed += entry->first;
+            agreed.emplace_back(entry->first, userDb.getUserId(entry->first));
         }
         if (!agreed.empty()) {
-            addField("AgreedBy", "Agreed by:", agreed, false);
+            ComponentGenerator::addChild(&panel, BuildPeopleField("selectedClaim", "AgreedBy", "Agreed by:", agreed));
         }
     }
-    std::string creatorUsername = userDb.getUsername(claim.creator_id());
-    if (creatorUsername.empty()) {
-        creatorUsername = "User " + std::to_string(claim.creator_id());
-    }
+    // A name, or "User <id>" for an account that is gone; linked when it is
+    // someone's.
+    auto person = [&](int userId) -> std::pair<std::string, int> {
+        const std::string name = userDb.getUsername(userId);
+        if (name.empty()) return {"User " + std::to_string(userId), 0};
+        return {name, userId};
+    };
     // A claim entered on someone else's behalf shows both: whose claim it is,
     // and who typed it in. One entered by its own author shows one line.
     if (claim.voice_id() > 0 && claim.voice_id() != claim.creator_id()) {
-        std::string voiceUsername = userDb.getUsername(claim.voice_id());
-        if (voiceUsername.empty()) {
-            voiceUsername = "User " + std::to_string(claim.voice_id());
-        }
-        addField("Voice", "Said by:", voiceUsername, false);
-        addField("Creator", "Entered by:", creatorUsername, false);
+        ComponentGenerator::addChild(&panel, BuildPeopleField("selectedClaim", "Voice", "Said by:",
+                                                              {person(claim.voice_id())}));
+        ComponentGenerator::addChild(&panel, BuildPeopleField("selectedClaim", "Creator", "Entered by:",
+                                                              {person(claim.creator_id())}));
     } else {
-        addField("Creator", "Created by:", creatorUsername, false);
+        ComponentGenerator::addChild(&panel, BuildPeopleField("selectedClaim", "Creator", "Created by:",
+                                                              {person(claim.creator_id())}));
     }
     addField(
         "Description",
@@ -440,11 +499,12 @@ static ui::Component BuildSelectedRelationPanel(
              : attacks > 0 ? "Challenged (" + std::to_string(attacks) + "), still counts for you"
              : "Standing", false);
 
-    std::string creatorUsername = userDb.getUsername(rel.creator_id());
-    if (creatorUsername.empty()) {
-        creatorUsername = "User " + std::to_string(rel.creator_id());
+    {
+        const std::string creatorUsername = userDb.getUsername(rel.creator_id());
+        ComponentGenerator::addChild(&panel, BuildPeopleField("selectedClaim", "Creator", "Created by:",
+            {creatorUsername.empty() ? std::make_pair("User " + std::to_string(rel.creator_id()), 0)
+                                     : std::make_pair(creatorUsername, rel.creator_id())}));
     }
-    addField("Creator", "Created by:", creatorUsername, false);
 
     std::string basis = rel.basis();
     const bool noBasis = basis.empty() || basis == "parent to child connection" || basis == "challenge link";

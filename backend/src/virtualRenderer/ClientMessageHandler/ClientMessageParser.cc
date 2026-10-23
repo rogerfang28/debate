@@ -48,6 +48,11 @@ debate_event::DebateEvent ClientMessageParser::parseMessage(const client_message
     else if (componentId.rfind("homeTab_", 0) == 0) {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
     }
+    // A person's name is a link to their profile wherever it is shown: the
+    // claim inspector on a debate page, the header on every page.
+    else if (componentId.rfind("openProfile_", 0) == 0) {
+        event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);
+    }
     // Route based on page_id and delegate to specific parsers
     else if (pageId == "home") {
         event = HomePageEventParser::ParseHomePageEvent(componentId, eventType, message);

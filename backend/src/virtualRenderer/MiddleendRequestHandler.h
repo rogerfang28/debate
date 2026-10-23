@@ -14,6 +14,9 @@ public:
 
     // Handle POST request
     void handleRequest(const httplib::Request& req, httplib::Response& res);
+    // The account jobs (VirtualRenderer::startMaintenance). Called once, by
+    // main, before the server listens.
+    void startBackgroundWork() { renderer.startMaintenance(); }
 private:
     // Helper methods can be added here
     int extractUserIdFromCookies(const httplib::Request& req);

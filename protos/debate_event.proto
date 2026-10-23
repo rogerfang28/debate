@@ -341,6 +341,16 @@ enum EventType {
     // starts something.
     OPEN_CREATE_DEBATE = 81;
     CLOSE_CREATE_DEBATE = 82;
+    // Profiles. OPEN_PROFILE (a person's name, anywhere) shows their profile
+    // on the home page; carries open_profile. PROFILE_PANEL opens or closes
+    // an inline step on your own profile ("rename" | "delete" | ""); carries
+    // explore_option. RENAME_ACCOUNT changes your username (carries
+    // rename_account) and DELETE_ACCOUNT closes your account; both are
+    // carried out by the virtual renderer, which owns the session cookie.
+    OPEN_PROFILE = 83;
+    PROFILE_PANEL = 84;
+    RENAME_ACCOUNT = 85;
+    DELETE_ACCOUNT = 86;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 
@@ -370,6 +380,14 @@ message ExploreOption {
 message OpenDebateClaim {
     int32 debate_id = 1;
     int32 claim_id = 2;
+}
+
+message OpenProfile {
+    int32 user_id = 1;
+}
+
+message RenameAccount {
+    string new_username = 1;
 }
 
 message UserAuthInfo {
@@ -426,5 +444,7 @@ message DebateEvent {
     ExploreSearch explore_search = 60;
     ExploreOption explore_option = 61;
     OpenDebateClaim open_debate_claim = 62;
+    OpenProfile open_profile = 63;
+    RenameAccount rename_account = 64;
   }
 }

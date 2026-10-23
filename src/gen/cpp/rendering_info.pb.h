@@ -3596,6 +3596,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     kViewerUsernameFieldNumber = 2,
     kAiJobFieldNumber = 5,
     kHomeViewFieldNumber = 6,
+    kProfileFieldNumber = 7,
     kViewerUserIdFieldNumber = 1,
     kCanCreateOrJoinDebatesFieldNumber = 4,
   };
@@ -3661,6 +3662,21 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
   ::user_engagement::HomeView* PROTOBUF_NONNULL _internal_mutable_home_view();
 
   public:
+  // .moderator_to_vr.Profile profile = 7 [json_name = "profile"];
+  bool has_profile() const;
+  void clear_profile() ;
+  const ::moderator_to_vr::Profile& profile() const;
+  [[nodiscard]] ::moderator_to_vr::Profile* PROTOBUF_NULLABLE release_profile();
+  ::moderator_to_vr::Profile* PROTOBUF_NONNULL mutable_profile();
+  void set_allocated_profile(::moderator_to_vr::Profile* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_profile(::moderator_to_vr::Profile* PROTOBUF_NULLABLE value);
+  ::moderator_to_vr::Profile* PROTOBUF_NULLABLE unsafe_arena_release_profile();
+
+  private:
+  const ::moderator_to_vr::Profile& _internal_profile() const;
+  ::moderator_to_vr::Profile* PROTOBUF_NONNULL _internal_mutable_profile();
+
+  public:
   // int32 viewer_user_id = 1 [json_name = "viewerUserId"];
   void clear_viewer_user_id() ;
   ::int32_t viewer_user_id() const;
@@ -3685,8 +3701,8 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
-                                   3, 60,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
+                                   4, 60,
                                    2>
       _table_;
 
@@ -3711,6 +3727,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr viewer_username_;
     ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE ai_job_;
     ::user_engagement::HomeView* PROTOBUF_NULLABLE home_view_;
+    ::moderator_to_vr::Profile* PROTOBUF_NULLABLE profile_;
     ::int32_t viewer_user_id_;
     bool can_create_or_join_debates_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6813,7 +6830,7 @@ inline void HomePageRenderingInfo::clear_viewer_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000020U);
 }
 inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.viewer_user_id)
@@ -6821,7 +6838,7 @@ inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
 }
 inline void HomePageRenderingInfo::set_viewer_user_id(::int32_t value) {
   _internal_set_viewer_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.viewer_user_id)
 }
 inline ::int32_t HomePageRenderingInfo::_internal_viewer_user_id() const {
@@ -6959,7 +6976,7 @@ inline void HomePageRenderingInfo::clear_can_create_or_join_debates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.can_create_or_join_debates_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
@@ -6967,7 +6984,7 @@ inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
 }
 inline void HomePageRenderingInfo::set_can_create_or_join_debates(bool value) {
   _internal_set_can_create_or_join_debates(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
 }
 inline bool HomePageRenderingInfo::_internal_can_create_or_join_debates() const {
@@ -7163,6 +7180,99 @@ inline void HomePageRenderingInfo::set_allocated_home_view(::user_engagement::Ho
 
   _impl_.home_view_ = reinterpret_cast<::user_engagement::HomeView*>(value);
   // @@protoc_insertion_point(field_set_allocated:rendering_info.HomePageRenderingInfo.home_view)
+}
+
+// .moderator_to_vr.Profile profile = 7 [json_name = "profile"];
+inline bool HomePageRenderingInfo::has_profile() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  PROTOBUF_ASSUME(!value || _impl_.profile_ != nullptr);
+  return value;
+}
+inline const ::moderator_to_vr::Profile& HomePageRenderingInfo::_internal_profile() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moderator_to_vr::Profile* p = _impl_.profile_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moderator_to_vr::Profile&>(::moderator_to_vr::_Profile_default_instance_);
+}
+inline const ::moderator_to_vr::Profile& HomePageRenderingInfo::profile() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.profile)
+  return _internal_profile();
+}
+inline void HomePageRenderingInfo::unsafe_arena_set_allocated_profile(
+    ::moderator_to_vr::Profile* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.profile_);
+  }
+  _impl_.profile_ = reinterpret_cast<::moderator_to_vr::Profile*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rendering_info.HomePageRenderingInfo.profile)
+}
+inline ::moderator_to_vr::Profile* PROTOBUF_NULLABLE HomePageRenderingInfo::release_profile() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::moderator_to_vr::Profile* released = _impl_.profile_;
+  _impl_.profile_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moderator_to_vr::Profile* PROTOBUF_NULLABLE HomePageRenderingInfo::unsafe_arena_release_profile() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:rendering_info.HomePageRenderingInfo.profile)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::moderator_to_vr::Profile* temp = _impl_.profile_;
+  _impl_.profile_ = nullptr;
+  return temp;
+}
+inline ::moderator_to_vr::Profile* PROTOBUF_NONNULL HomePageRenderingInfo::_internal_mutable_profile() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.profile_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moderator_to_vr::Profile>(GetArena());
+    _impl_.profile_ = reinterpret_cast<::moderator_to_vr::Profile*>(p);
+  }
+  return _impl_.profile_;
+}
+inline ::moderator_to_vr::Profile* PROTOBUF_NONNULL HomePageRenderingInfo::mutable_profile()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::moderator_to_vr::Profile* _msg = _internal_mutable_profile();
+  // @@protoc_insertion_point(field_mutable:rendering_info.HomePageRenderingInfo.profile)
+  return _msg;
+}
+inline void HomePageRenderingInfo::set_allocated_profile(::moderator_to_vr::Profile* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.profile_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+
+  _impl_.profile_ = reinterpret_cast<::moderator_to_vr::Profile*>(value);
+  // @@protoc_insertion_point(field_set_allocated:rendering_info.HomePageRenderingInfo.profile)
 }
 
 // -------------------------------------------------------------------

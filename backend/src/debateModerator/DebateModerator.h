@@ -10,6 +10,7 @@
 #include "../database/debate/DatabaseWrapper.h"
 
 #include "../utils/DebateWrapper.h"
+#include "accounts/AccountService.h"
 class DebateModerator {
 public:
     // usersDb is the shared users.sqlite3 connection (owned by VirtualRenderer)
@@ -34,6 +35,16 @@ public:
      bool takePendingSignIn(const int& visitorId, const int& userId,
                             debate_event::DebateEvent* pending);
 
+     // Accounts: names, Google linking, the startup migration, the sweep.
+     AccountService& accounts() { return accountService; }
+     // RENAME_ACCOUNT, carried out for the virtual renderer (which then
+     // re-issues the session under the new name): renames `userId` if the
+     // rules allow, and leaves their own profile open with the rename form
+     // closed -- or still open with the reason in it. "" on success.
+     std::string renameAccount(int userId, const std::string& newName);
+     // DELETE_ACCOUNT, likewise: closes the account (AccountService::Delete).
+     bool deleteAccount(int userId);
+
 private:
     void handleDebateEvent(const int& user_id, debate_event::DebateEvent& event);
     moderator_to_vr::ModeratorToVRMessage buildResponseMessage(const int& user_id);
@@ -45,4 +56,5 @@ private:
     Database globalDb;
     DatabaseWrapper dbWrapper;
     DebateWrapper debateWrapper;
+    AccountService accountService;
 };

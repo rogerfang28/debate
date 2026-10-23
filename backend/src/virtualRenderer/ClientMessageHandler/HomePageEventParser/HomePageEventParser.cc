@@ -124,6 +124,39 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         Log::debug("  OPEN_DEBATE_CLAIM: " + ids);
     }
 
+    // * A person's name: openProfile_<where>_<user id>.
+    else if (componentId.rfind("openProfile_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::OPEN_PROFILE);
+        const std::string userId = componentId.substr(componentId.rfind('_') + 1);
+        event.mutable_open_profile()->set_user_id(std::atoi(userId.c_str()));
+        Log::debug("  OPEN_PROFILE: user_id = " + userId);
+    }
+
+    // * Your own profile: Change username and Delete account open an inline
+    // step; Cancel / Keep closes it.
+    else if ((componentId == "profileRenameButton" || componentId == "profileDeleteButton" ||
+              componentId == "profileRenameCancel" || componentId == "profileDeleteCancel") &&
+             eventType == "onClick") {
+        event.set_type(debate_event::PROFILE_PANEL);
+        event.mutable_explore_option()->set_value(
+            componentId == "profileRenameButton" ? "rename" : componentId == "profileDeleteButton" ? "delete" : "");
+    }
+    else if ((componentId == "profileRenameSave" && eventType == "onClick") ||
+             (componentId == "profileRenameInput" && eventType == "onSubmit")) {
+        event.set_type(debate_event::RENAME_ACCOUNT);
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "profileRenameInput") {
+                event.mutable_rename_account()->set_new_username(comp.value());
+                break;
+            }
+        }
+        event.mutable_rename_account();
+        Log::debug("  RENAME_ACCOUNT: '" + event.rename_account().new_username() + "'");
+    }
+    else if (componentId == "profileDeleteConfirm" && eventType == "onClick") {
+        event.set_type(debate_event::DELETE_ACCOUNT);
+    }
+
     // * "Start a debate" opens the create dialog. A visitor's press is
     // remembered by the moderator and replayed after sign-in, so they land
     // in the open dialog as themselves.

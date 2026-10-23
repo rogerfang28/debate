@@ -74,6 +74,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/BuildCollection.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/accounts/AccountService.cc
+    ${CMAKE_SOURCE_DIR}/src/utils/UsernamePolicy.cc
 
     # database communicators and utils
     ${CMAKE_SOURCE_DIR}/src/database/sqlite/databaseCommunicator.cc

@@ -34,6 +34,9 @@ public:
     // Forgets one user's conversation about one debate.
     bool clear(int userId, int debateId);
 
+    // Forgets every conversation one user has had (account deletion).
+    bool clearAllForUser(int userId);
+
 private:
     Database& db_;
 };

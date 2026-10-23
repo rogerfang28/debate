@@ -30,6 +30,14 @@ public:
     std::string getUsername(int id);
     int getUserId(const std::string& username);
 
+    // Every account, as (id, username), by id.
+    std::vector<std::pair<int, std::string>> listUsers();
+
+    // The id of an account named `username` ignoring ASCII case, other than
+    // `exceptUserId`; -1 when there is none. Usernames are unique ignoring
+    // case for every name made from now on (utils/UsernamePolicy.h).
+    int findIdIgnoringCase(const std::string& username, int exceptUserId = 0);
+
 private:
     Database& db_;
 };

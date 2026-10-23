@@ -117,6 +117,10 @@ set(MODERATOR_SOURCES
     ${REPO_ROOT}/backend/src/debateModerator/DebateModerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
     ${REPO_ROOT}/backend/src/debateModerator/buildResponse/debatePageResponse/DebatePageResponseGenerator.cc
+    # Accounts (names, renames, closing, the migration and the visitor sweep)
+    # hang off the moderator; the username rules are used by it and the pages.
+    ${REPO_ROOT}/backend/src/debateModerator/accounts/AccountService.cc
+    ${REPO_ROOT}/backend/src/utils/UsernamePolicy.cc
 )
 
 # --- Virtual renderer source files (step view / pbtxt generation) ---
@@ -329,6 +333,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_extracted_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_connections_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_session_token.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_accounts.cc
 )
 
 add_executable(debate_tests
