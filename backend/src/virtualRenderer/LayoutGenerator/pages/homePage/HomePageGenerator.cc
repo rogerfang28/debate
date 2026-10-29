@@ -600,6 +600,9 @@ ui::Component accountSection(const rendering_info::HomePageRenderingInfo& info) 
             {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.5rem"}, {"flex-wrap", "wrap"},
         });
         ComponentGenerator::addChild(&row, quietButton("profileRenameButton", "Change username"));
+        if (info.viewer_is_admin()) {
+            ComponentGenerator::addChild(&row, quietButton("profileImportButton", "Import debate"));
+        }
         ui::Component del = quietButton("profileDeleteButton", "Delete account");
         css(&del, {{"color", "var(--open)"}});
         ComponentGenerator::addChild(&row, del);
@@ -608,11 +611,145 @@ ui::Component accountSection(const rendering_info::HomePageRenderingInfo& info) 
     return s;
 }
 
+// One list of short lines under a caption: the preview's errors, warnings.
+ui::Component lineList(const std::string& id, const std::string& caption,
+                       const google::protobuf::RepeatedPtrField<std::string>& lines, const char* color) {
+    ui::Component list = box(id, {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.25rem"}});
+    ComponentGenerator::addChild(&list, text(id + "Caption", caption,
+        {{"color", color}, {"font-size", "13px"}, {"font-weight", "600"}, {"margin", "0"}}));
+    int n = 0;
+    for (const std::string& line : lines) {
+        ComponentGenerator::addChild(&list, text(id + "_" + std::to_string(n++), line,
+            {{"color", "var(--text-2)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"},
+             {"line-height", "1.45"}, {"overflow-wrap", "anywhere"}}));
+    }
+    return list;
+}
+
+// An admin's "Import debate", in place of their profile: a box to paste a
+// scenario file or an outline into (or fill from a file), Preview, and --
+// once a preview has found no errors -- Publish.
+void addImportView(ui::Component* page, const rendering_info::HomePageRenderingInfo& info) {
+    const user_engagement::HomeView& view = info.home_view();
+    const user_engagement::ImportPreview& preview = view.import_preview();
+
+    ui::Component head = box("importHead", {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "6px"}});
+    ComponentGenerator::addChild(&head, text("importCaption", "Admin", kCaption));
+    ComponentGenerator::addChild(&head, text("importTitle", "Import a debate",
+        {{"color", "var(--text)"}, {"font-size", "26px"}, {"font-weight", "650"}, {"line-height", "1.25"},
+         {"margin", "0"}}));
+    ComponentGenerator::addChild(&head, text("importExplain",
+        "Paste a scenario file (.pbtxt), or an outline with one claim per line: the first line is the root, "
+        "then \"+ claim\" supports and \"- claim\" challenges the nearest line above it with less indentation. "
+        "Fields are separated by |: claim | voice | source | \"quote\" | basis | note. "
+        "Preview writes nothing. See docs/IMPORT_FORMAT.md.",
+        kMuted));
+    ComponentGenerator::addChild(page, head);
+
+    ui::Component area = ComponentGenerator::createTextarea(
+        "importText", "Root claim | Voice | https://source | \"quote\"\n  + A supporting claim | Voice\n"
+        "    - A challenge to it | Voice | https://source | \"quote\" | EVIDENTIAL",
+        "importText", 16);
+    if (!view.import_text().empty()) {
+        ComponentGenerator::addAttribute(&area, "defaultValue", view.import_text());
+    }
+    // The TextArea renders a "Choose file" control that loads a local file
+    // into the box, as if it had been pasted.
+    ComponentGenerator::addAttribute(&area, "data-file-picker", ".pbtxt,.txt,text/plain");
+    ComponentGenerator::addAttribute(&area, "spellcheck", "false");
+    css(&area, {{"font-family", "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"},
+                {"font-size", "13px"}, {"line-height", "1.5"}, {"white-space", "pre"}, {"min-height", "18rem"}});
+    ComponentGenerator::addChild(page, area);
+
+    ui::Component row = box("importButtons", {
+        {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.5rem"}, {"flex-wrap", "wrap"},
+    });
+    ComponentGenerator::addChild(&row, ComponentGenerator::createButton(
+        "importPreviewButton", "Preview", "", "bg-blue-600", "hover:bg-blue-700", "text-white",
+        "px-4 py-2", "rounded", ""));
+    const bool publishable = preview.done() && preview.errors_size() == 0 && preview.claims() > 0 &&
+                             !view.import_text().empty();
+    if (publishable) {
+        ui::Component publish = ComponentGenerator::createButton(
+            "importPublishButton", "Publish", "", "", "", "text-white", "px-4 py-2", "rounded", "");
+        css(&publish, {{"background", "var(--settled)"}, {"color", "#fff"}, {"border", "none"},
+                       {"cursor", "pointer"}, {"font-weight", "600"}});
+        ComponentGenerator::addChild(&row, publish);
+    }
+    ComponentGenerator::addChild(&row, quietButton("importCloseButton", "Close"));
+    ComponentGenerator::addChild(page, row);
+
+    if (!preview.publish_error().empty()) {
+        ComponentGenerator::addChild(page, text("importPublishError", preview.publish_error(),
+            {{"color", "var(--open)"}, {"font-size", "13.5px"}, {"font-weight", "500"}, {"margin", "0"},
+             {"line-height", "1.5"}, {"overflow-wrap", "anywhere"}}));
+    }
+    if (!preview.done()) return;
+
+    ui::Component result = section("importPreview", "Preview");
+    css(&result, {{"background", "var(--panel)"}, {"border", "1px solid var(--line)"},
+                  {"border-radius", "var(--radius)"}, {"padding", "14px 16px"}, {"gap", "0.6rem"}});
+    const Rules line = {{"color", "var(--text-2)"}, {"font-size", "13.5px"}, {"font-weight", "400"},
+                        {"margin", "0"}, {"line-height", "1.5"}, {"overflow-wrap", "anywhere"}};
+    if (!preview.format().empty()) {
+        ComponentGenerator::addChild(&result, text("importFormat",
+            std::string("Format: ") + (preview.format() == "scenario" ? "scenario file" : "outline"), line));
+    }
+    if (!preview.root().empty()) {
+        ComponentGenerator::addChild(&result, text("importRoot", "Root claim: \"" + truncate(preview.root(), 300) + "\"",
+            {{"color", "var(--text)"}, {"font-size", "14px"}, {"font-weight", "500"}, {"margin", "0"},
+             {"line-height", "1.5"}, {"overflow-wrap", "anywhere"}}));
+    }
+    if (preview.claims() > 0) {
+        ComponentGenerator::addChild(&result, text("importCounts",
+            count(preview.claims(), "claim", "claims") + " (the root, " +
+                count(preview.supports(), "support", "supports") + ", " +
+                count(preview.challenges(), "challenge", "challenges") + ")", line));
+    }
+    if (preview.voices_size() > 0) {
+        std::string voices;
+        for (const std::string& v : preview.voices()) {
+            const bool isNew = std::find(preview.new_voices().begin(), preview.new_voices().end(), v) !=
+                               preview.new_voices().end();
+            voices += (voices.empty() ? "" : ", ") + v + (isNew ? " (new)" : "");
+        }
+        ComponentGenerator::addChild(&result, text("importVoices", "Voices: " + voices, line));
+        ComponentGenerator::addChild(&result, text("importNewVoices",
+            preview.new_voices_size() == 0
+                ? "Every voice already exists; no accounts will be created."
+                : preview.new_voices_size() == 1
+                      ? std::string("1 new voice will be created, as an account that never signs in.")
+                      : count(preview.new_voices_size(), "new voice", "new voices") +
+                            " will be created, as accounts that never sign in.",
+            kMuted));
+    } else if (preview.claims() > 0) {
+        ComponentGenerator::addChild(&result, text("importVoices", "Voices: none named; every claim is yours.", line));
+    }
+    if (preview.errors_size() > 0) {
+        ComponentGenerator::addChild(&result, lineList("importErrors",
+            count(preview.errors_size(), "error", "errors") + ": fix these and preview again. Nothing was written.",
+            preview.errors(), "var(--open)"));
+    }
+    if (preview.warnings_size() > 0) {
+        ComponentGenerator::addChild(&result, lineList("importWarnings",
+            count(preview.warnings_size(), "warning", "warnings"), preview.warnings(), "var(--text-2)"));
+    }
+    if (publishable) {
+        ComponentGenerator::addChild(&result, text("importReady",
+            "No errors. Publish builds this debate as you and opens it.", kMuted));
+    }
+    ComponentGenerator::addChild(page, result);
+}
+
 // A person's profile, in place of the tab: who they are, what they have
 // done across every debate, and the debates themselves.
 void addProfile(ui::Component* page, const std::vector<const Topic*>& topics,
                 const rendering_info::HomePageRenderingInfo& info, long long now) {
     const moderator_to_vr::Profile& p = info.profile();
+    if (p.own() && info.viewer_is_admin() && info.home_view().import_open()) {
+        addImportView(page, info);
+        return;
+    }
     if (p.kind() != "member" && p.kind() != "voice") {
         ComponentGenerator::addChild(page, text("profileUnavailable",
             p.kind() == "deleted" ? "This account was deleted." : "There is no profile here.", kMuted));

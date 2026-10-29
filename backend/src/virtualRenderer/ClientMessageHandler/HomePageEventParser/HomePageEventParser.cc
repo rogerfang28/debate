@@ -157,6 +157,29 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
         event.set_type(debate_event::DELETE_ACCOUNT);
     }
 
+    // * An admin's "Import debate" on their own profile. Preview and Publish
+    // carry the import box's text; the moderator ignores all four from
+    // anyone not in DEBATE_ADMINS.
+    else if (componentId == "profileImportButton" && eventType == "onClick") {
+        event.set_type(debate_event::IMPORT_OPEN);
+    }
+    else if (componentId == "importCloseButton" && eventType == "onClick") {
+        event.set_type(debate_event::IMPORT_CLOSE);
+    }
+    else if ((componentId == "importPreviewButton" || componentId == "importPublishButton") &&
+             eventType == "onClick") {
+        event.set_type(componentId == "importPreviewButton" ? debate_event::IMPORT_PREVIEW
+                                                            : debate_event::IMPORT_PUBLISH);
+        event.mutable_import_debate();
+        for (const auto& comp : message.page_data().components()) {
+            if (comp.id() == "importText") {
+                event.mutable_import_debate()->set_text(comp.value());
+                break;
+            }
+        }
+        Log::debug("  " + componentId + ": " + std::to_string(event.import_debate().text().size()) + " bytes");
+    }
+
     // * "Start a debate" opens the create dialog. A visitor's press is
     // remembered by the moderator and replayed after sign-in, so they land
     // in the open dialog as themselves.

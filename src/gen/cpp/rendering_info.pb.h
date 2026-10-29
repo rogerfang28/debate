@@ -3599,6 +3599,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     kProfileFieldNumber = 7,
     kViewerUserIdFieldNumber = 1,
     kCanCreateOrJoinDebatesFieldNumber = 4,
+    kViewerIsAdminFieldNumber = 8,
   };
   // repeated .rendering_info.HomeDebateTopicRenderInfo available_debates = 3 [json_name = "availableDebates"];
   int available_debates_size() const;
@@ -3697,12 +3698,22 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
   void _internal_set_can_create_or_join_debates(bool value);
 
   public:
+  // bool viewer_is_admin = 8 [json_name = "viewerIsAdmin"];
+  void clear_viewer_is_admin() ;
+  bool viewer_is_admin() const;
+  void set_viewer_is_admin(bool value);
+
+  private:
+  bool _internal_viewer_is_admin() const;
+  void _internal_set_viewer_is_admin(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:rendering_info.HomePageRenderingInfo)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7,
-                                   4, 60,
+  static const ::google::protobuf::internal::TcParseTable<3, 8,
+                                   4, 68,
                                    2>
       _table_;
 
@@ -3730,6 +3741,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     ::moderator_to_vr::Profile* PROTOBUF_NULLABLE profile_;
     ::int32_t viewer_user_id_;
     bool can_create_or_join_debates_;
+    bool viewer_is_admin_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -7273,6 +7285,31 @@ inline void HomePageRenderingInfo::set_allocated_profile(::moderator_to_vr::Prof
 
   _impl_.profile_ = reinterpret_cast<::moderator_to_vr::Profile*>(value);
   // @@protoc_insertion_point(field_set_allocated:rendering_info.HomePageRenderingInfo.profile)
+}
+
+// bool viewer_is_admin = 8 [json_name = "viewerIsAdmin"];
+inline void HomePageRenderingInfo::clear_viewer_is_admin() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_is_admin_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000080U);
+}
+inline bool HomePageRenderingInfo::viewer_is_admin() const {
+  // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.viewer_is_admin)
+  return _internal_viewer_is_admin();
+}
+inline void HomePageRenderingInfo::set_viewer_is_admin(bool value) {
+  _internal_set_viewer_is_admin(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.viewer_is_admin)
+}
+inline bool HomePageRenderingInfo::_internal_viewer_is_admin() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.viewer_is_admin_;
+}
+inline void HomePageRenderingInfo::_internal_set_viewer_is_admin(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_is_admin_ = value;
 }
 
 // -------------------------------------------------------------------

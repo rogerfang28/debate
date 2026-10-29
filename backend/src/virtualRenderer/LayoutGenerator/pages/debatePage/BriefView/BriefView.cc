@@ -418,8 +418,11 @@ ui::Page BriefView::GenerateBriefPage(
         ui::Component sources = card("briefSources", "Sources");
         int n = 0;
         for (const std::string& url : facts.sources) {
-            ComponentGenerator::addChild(&sources, text("briefSource_" + std::to_string(n++), url,
-                {{"color", "var(--accent)"}, {"font-size", "13px"}, {"margin", "0"}, {"overflow-wrap", "anywhere"}}));
+            ui::Component link = text("briefSource_" + std::to_string(n++), url,
+                {{"color", "var(--accent)"}, {"font-size", "13px"}, {"margin", "0"}, {"overflow-wrap", "anywhere"},
+                 {"text-decoration", "underline"}});
+            ComponentGenerator::addAttribute(&link, "data-href", url);
+            ComponentGenerator::addChild(&sources, link);
         }
         ComponentGenerator::addChild(&column, sources);
     }

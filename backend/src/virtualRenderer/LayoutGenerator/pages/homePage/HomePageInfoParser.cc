@@ -1,5 +1,6 @@
 #include "HomePageInfoParser.h"
 #include "../../../../utils/AnonymousUser.h"
+#include "../../../../utils/Admins.h"
 #include "../../../../utils/Log.h"
 
 rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(const moderator_to_vr::ModeratorToVRMessage& responseMessage) {
@@ -61,6 +62,7 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
         *outTopic->mutable_matched_claims() = topic.matched_claims();
     }
     *info.mutable_home_view() = userProto.engagement().home_view();
+    info.set_viewer_is_admin(admins::IsAdmin(userProto.username()));
     if (responseMessage.has_profile()) {
         *info.mutable_profile() = responseMessage.profile();
     }

@@ -91,6 +91,36 @@ message HomeView {
   // form can say so in place with the name still in the box.
   string profile_error = 8;
   string profile_draft = 9;
+  // An admin's import view, drawn on their own profile in place of it.
+  // Set by IMPORT_OPEN; cleared, with the text and the preview, by
+  // IMPORT_CLOSE, by a publish that worked, and by leaving the profile.
+  bool import_open = 10;
+  // The text that was last previewed. Kept so the box still holds it after
+  // the preview, and so Publish builds exactly what was previewed.
+  string import_text = 11;
+  ImportPreview import_preview = 12;
+}
+
+// What Preview found in the import text. Nothing is written to make it.
+message ImportPreview {
+  // A preview has been run on import_text.
+  bool done = 1;
+  string format = 2;           // "scenario" | "outline"
+  string root = 3;             // the root claim's text
+  int32 claims = 4;            // every claim, the root included
+  int32 supports = 5;
+  int32 challenges = 6;
+  // Every voice the debate uses, in first-use order; "" is never listed
+  // (a claim with no voice is the importer's own).
+  repeated string voices = 7;
+  // The voices that are nobody yet: publishing creates an account for each.
+  repeated string new_voices = 8;
+  // Each problem, with its line (outline) or the parser's words (scenario).
+  // Publish is offered only when there are none.
+  repeated string errors = 9;
+  repeated string warnings = 10;
+  // Why the last Publish did not finish, said plainly.
+  string publish_error = 11;
 }
 
 message HomeInfo {

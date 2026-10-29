@@ -351,6 +351,15 @@ enum EventType {
     PROFILE_PANEL = 84;
     RENAME_ACCOUNT = 85;
     DELETE_ACCOUNT = 86;
+    // Importing a whole sourced debate, for admins only (DEBATE_ADMINS):
+    // from your own profile, OPEN shows the import view, PREVIEW checks the
+    // pasted text without writing anything, PUBLISH builds the debate and
+    // takes you into it, CLOSE leaves. PREVIEW and PUBLISH carry
+    // import_debate. Anyone else's import events are ignored.
+    IMPORT_OPEN = 87;
+    IMPORT_PREVIEW = 88;
+    IMPORT_PUBLISH = 89;
+    IMPORT_CLOSE = 90;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 
@@ -388,6 +397,12 @@ message OpenProfile {
 
 message RenameAccount {
     string new_username = 1;
+}
+
+// The text in the import box: a scenario file or an outline (see
+// docs/IMPORT_FORMAT.md).
+message ImportDebate {
+    string text = 1;
 }
 
 message UserAuthInfo {
@@ -446,5 +461,6 @@ message DebateEvent {
     OpenDebateClaim open_debate_claim = 62;
     OpenProfile open_profile = 63;
     RenameAccount rename_account = 64;
+    ImportDebate import_debate = 65;
   }
 }
