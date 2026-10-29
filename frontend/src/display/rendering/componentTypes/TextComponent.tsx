@@ -52,14 +52,19 @@ const TextComponent: React.FC<BaseComponentProps> = ({ component, className, sty
     color = strong ? "var(--text)" : "var(--text-2)";
   }
 
-  // A text the server marks with data-href is a plain link: a page of the
-  // site (the privacy page) rather than an event.
+  // A text the server marks with data-href is a plain link rather than an
+  // event: a page of the site (the privacy page), an email address, or a
+  // claim's source. A link to another website opens in a new tab, so the
+  // reader keeps their place in the debate.
   const href: string | undefined = ((component as any).attributes || {})["data-href"];
   if (href) {
+    const external = /^https?:\/\//i.test(href);
     return (
       <a
         id={component.id}
         href={href}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        onClick={(e) => e.stopPropagation()}
         className={cls ? `${scale} ${cls}` : scale}
         style={{ ...style, ...(color !== undefined ? { color } : {}) }}
       >

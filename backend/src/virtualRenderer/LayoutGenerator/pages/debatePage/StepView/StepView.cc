@@ -152,7 +152,9 @@ static ui::Component BuildSelectedClaimPanel(
     }
     const debate::Claim& claim = claimIt->second;
 
-    auto addField = [&](const std::string& idSuffix, const std::string& label, const std::string& value, bool italic) {
+    // `href`: the value is a link (a source's page), opened in a new tab.
+    auto addField = [&](const std::string& idSuffix, const std::string& label, const std::string& value, bool italic,
+                        const std::string& href = std::string()) {
         ui::Component row = ComponentGenerator::createContainer(
             "selectedClaim" + idSuffix + "Row",
             "",
@@ -186,6 +188,12 @@ static ui::Component BuildSelectedClaimPanel(
             italic ? "italic" : ""
         );
         (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        if (!href.empty()) {
+            ComponentGenerator::addAttribute(&valueText, "data-href", href);
+            (*valueText.mutable_css())["color"] = "var(--accent)";
+            (*valueText.mutable_css())["text-decoration"] = "underline";
+            (*valueText.mutable_css())["overflow-wrap"] = "anywhere";
+        }
         ComponentGenerator::addChild(&row, valueText);
 
         ComponentGenerator::addChild(&panel, row);
@@ -239,7 +247,7 @@ static ui::Component BuildSelectedClaimPanel(
         const debate::Source& source = claim.sources(i);
         const std::string suffix = i == 0 ? std::string() : std::to_string(i + 1);
         if (!source.url().empty()) {
-            addField("Source" + suffix, "Source:", source.url(), false);
+            addField("Source" + suffix, "Source:", source.url(), false, source.url());
         }
         if (!source.excerpt().empty()) {
             addField("SourceExcerpt" + suffix, "It says:", "\u201c" + source.excerpt() + "\u201d", true);
