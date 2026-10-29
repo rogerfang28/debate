@@ -160,6 +160,9 @@ message HomePageRenderingInfo {
 
 	// The profile to draw instead of a tab, when home_view.profile_user_id is set.
 	moderator_to_vr.Profile profile = 7;
+
+	// The viewer is named in DEBATE_ADMINS: their own profile offers Import.
+	bool viewer_is_admin = 8;
 }
 
 message HomeDebateTopicRenderInfo {

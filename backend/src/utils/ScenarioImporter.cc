@@ -230,7 +230,9 @@ private:
             return false;
         }
 
-        moderator_.handleRequest(event);
+        // The page for each step would be thrown away; whoever drives the
+        // importer answers with one page at the end.
+        moderator_.apply(event);
 
         // A scenario writes `debate_id: 1` because a test database is empty and
         // the first debate really is 1. A LIVE database already has debates, so

@@ -19,6 +19,12 @@ public:
     ~DebateModerator();
 
     moderator_to_vr::ModeratorToVRMessage handleRequest(debate_event::DebateEvent& event);
+    // handleRequest without building the page to answer with: the event is
+    // checked, carried out and logged exactly the same way. For replaying
+    // many events inside one request (scenario::Importer), where only the
+    // last page is ever shown and building one per step made a 60-claim
+    // import take half a minute.
+    void apply(debate_event::DebateEvent& event);
     int getUserId(const std::string& username) {
          return dbWrapper.users.getUserId(username);
      }

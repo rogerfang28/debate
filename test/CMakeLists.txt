@@ -121,6 +121,9 @@ set(MODERATOR_SOURCES
     # hang off the moderator; the username rules are used by it and the pages.
     ${REPO_ROOT}/backend/src/debateModerator/accounts/AccountService.cc
     ${REPO_ROOT}/backend/src/utils/UsernamePolicy.cc
+    # An admin's "Import debate": the handler and the text reader it uses.
+    ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ImportHandler/ImportHandler.cc
+    ${REPO_ROOT}/backend/src/utils/DebateImport.cc
 )
 
 # --- Virtual renderer source files (step view / pbtxt generation) ---
@@ -334,6 +337,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_connections_debate_builder.cc
     ${CMAKE_SOURCE_DIR}/tests/test_session_token.cc
     ${CMAKE_SOURCE_DIR}/tests/test_accounts.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_import.cc
 )
 
 add_executable(debate_tests

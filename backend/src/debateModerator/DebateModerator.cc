@@ -37,6 +37,7 @@
 #include "event-handlers/BriefHandler/BriefHandler.h"
 #include "event-handlers/AiAuthorHandler/AiAuthorHandler.h"
 #include "event-handlers/TutorialHandler/TutorialHandler.h"
+#include "event-handlers/ImportHandler/ImportHandler.h"
 
 #include "buildResponse/homePageResponse/HomePageResponseGenerator.h"
 #include "buildResponse/debatePageResponse/DebatePageResponseGenerator.h"
@@ -44,6 +45,7 @@
 #include "../utils/DemoMode.h"
 #include "../utils/AnonymousUser.h"
 #include "../utils/AiAvailability.h"
+#include "../utils/Admins.h"
 #include <ctime>
 
 namespace {
@@ -85,6 +87,20 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
         case debate_event::START_MODIFICATION_OF_CLAIM:
         case debate_event::SUBMIT_MODIFICATION_OF_CLAIM:
         case debate_event::CANCEL_MODIFICATION_OF_CLAIM:
+        case debate_event::IMPORT_PUBLISH:
+            return true;
+        default:
+            return false;
+    }
+}
+
+// The admin-only presses (utils/Admins.h): importing a whole debate.
+bool isAdminEvent(debate_event::EventType type) {
+    switch (type) {
+        case debate_event::IMPORT_OPEN:
+        case debate_event::IMPORT_PREVIEW:
+        case debate_event::IMPORT_PUBLISH:
+        case debate_event::IMPORT_CLOSE:
             return true;
         default:
             return false;
@@ -173,6 +189,9 @@ bool leavesDebatesUnchanged(debate_event::EventType type) {
         case debate_event::DISMISS_AI_NOTICE:
         case debate_event::OPEN_PROFILE:
         case debate_event::PROFILE_PANEL:
+        case debate_event::IMPORT_OPEN:
+        case debate_event::IMPORT_PREVIEW:
+        case debate_event::IMPORT_CLOSE:
             return true;
         default:
             return false;
@@ -186,6 +205,9 @@ void closeProfile(user_engagement::HomeView* view) {
     view->clear_profile_panel();
     view->clear_profile_error();
     view->clear_profile_draft();
+    view->clear_import_open();
+    view->clear_import_text();
+    view->clear_import_preview();
 }
 
 // The home page's tabs and Explore's controls: go home, and remember the
@@ -230,8 +252,6 @@ DebateModerator::~DebateModerator() {
 
 // * main function to handle debate event requests
 moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_event::DebateEvent& event){
-    // Process the debate event and update the database accordingly
-    int user_id = event.user().user_id();
     if (!event.user().is_logged_in()) {
         // The virtual renderer signs every sessionless request in as a
         // visitor before it gets here, so this is not reached from a browser.
@@ -241,6 +261,16 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
         res.mutable_user()->mutable_engagement()->set_current_action(user_engagement::ACTION_HOME);
         HomePageResponseGenerator::BuildHomePageResponse(res, 0, debateWrapper);
         return res;
+    }
+    apply(event);
+    return buildResponseMessage(event.user().user_id());
+}
+
+void DebateModerator::apply(debate_event::DebateEvent& event) {
+    // Process the debate event and update the database accordingly
+    const int user_id = event.user().user_id();
+    if (!event.user().is_logged_in()) {
+        return;
     }
     Log::info("[DebateModerator] Handling request for user: " + std::to_string(user_id));
 
@@ -260,7 +290,15 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     }
 
     // Read from the user record, not the event: user_id is what acts.
-    const bool anonymous = anonymous_user::IsAnonymousUsername(dbWrapper.users.getUsername(user_id));
+    const std::string actingName = dbWrapper.users.getUsername(user_id);
+    const bool anonymous = anonymous_user::IsAnonymousUsername(actingName);
+    // Importing is for the names in DEBATE_ADMINS; anyone else's press (a
+    // stale page, a hand-made request) does nothing.
+    if (isAdminEvent(event.type()) && (anonymous || !admins::IsAdmin(actingName))) {
+        Log::warn("[DebateModerator] Admin-only event type " + std::to_string(event.type()) +
+                  " ignored from user " + std::to_string(user_id));
+        event.set_type(debate_event::NONE);
+    }
     if (isAnonymousBlockedEvent(event.type()) && anonymous) {
         Log::info("[DebateModerator] Anonymous visitor blocked event type: " + std::to_string(event.type()));
         // Still never acted on as the visitor. A press that starts something
@@ -322,9 +360,6 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
     }
 
     MoveLogger::logForEvent(event, user_id, movePre, debateWrapper, dbWrapper);
-
-    moderator_to_vr::ModeratorToVRMessage res = buildResponseMessage(user_id);
-    return res;
 }
 
 void DebateModerator::handleDebateEvent(const int& user_id, debate_event::DebateEvent& event) {
@@ -410,6 +445,22 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info(std::string("[DebateModerator] Event Type: ") +
                       (event.type() == debate_event::RENAME_ACCOUNT ? "RENAME_ACCOUNT" : "DELETE_ACCOUNT") +
                       " not carried out for user " + std::to_string(user_id));
+            break;
+        case debate_event::IMPORT_OPEN:
+            Log::info("[DebateModerator] Event Type: IMPORT_OPEN");
+            ImportHandler::Open(user_id, *this);
+            break;
+        case debate_event::IMPORT_CLOSE:
+            Log::info("[DebateModerator] Event Type: IMPORT_CLOSE");
+            ImportHandler::Close(user_id, *this);
+            break;
+        case debate_event::IMPORT_PREVIEW:
+            Log::info("[DebateModerator] Event Type: IMPORT_PREVIEW");
+            ImportHandler::Preview(event.import_debate().text(), user_id, *this);
+            break;
+        case debate_event::IMPORT_PUBLISH:
+            Log::info("[DebateModerator] Event Type: IMPORT_PUBLISH");
+            ImportHandler::Publish(event.import_debate().text(), user_id, *this);
             break;
         case debate_event::OPEN_CREATE_DEBATE:
         case debate_event::CLOSE_CREATE_DEBATE: {

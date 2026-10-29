@@ -74,6 +74,8 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/BriefHandler/BriefHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/AiAuthorHandler/AiAuthorHandler.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/TutorialHandler/TutorialHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/event-handlers/ImportHandler/ImportHandler.cc
+    ${CMAKE_SOURCE_DIR}/src/utils/DebateImport.cc
     ${CMAKE_SOURCE_DIR}/src/utils/TutorialLibrary.cc
     ${CMAKE_SOURCE_DIR}/src/utils/BasisRegistry.cc
     ${CMAKE_SOURCE_DIR}/src/utils/ExtractedDebateBuilder.cc
