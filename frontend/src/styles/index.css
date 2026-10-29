@@ -286,6 +286,12 @@ a:hover {
   grid-template-columns: minmax(0, 1fr) 340px;
 }
 
+/* No chat on a debate page (a server with DEBATE_AI=off): the map takes
+   the chat's column too. */
+[data-layout="shell"] > .shell-regions:not(:has(> .region.chat)) {
+  grid-template-columns: 320px minmax(0, 1fr);
+}
+
 /* No chat (Home, Explore): the reading column alone, centred. */
 [data-layout="document"] > .shell-regions:not(:has(> .region.chat)) {
   grid-template-columns: minmax(0, 1fr);

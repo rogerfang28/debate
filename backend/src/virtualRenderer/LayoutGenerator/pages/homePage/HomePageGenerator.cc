@@ -2,6 +2,7 @@
 #include "../../../LayoutGenerator/ComponentGenerator.h"
 #include "../../../../utils/DemoMode.h"
 #include "../../../../utils/AnonymousUser.h"
+#include "../../../../utils/AiAvailability.h"
 #include "../../../../utils/TutorialLibrary.h"
 #include "../../../../utils/UsernamePolicy.h"
 
@@ -772,7 +773,10 @@ ui::Component createDebateModal(const rendering_info::HomePageRenderingInfo& inf
             "dismissAiNoticeButton", "Dismiss", "", "bg-gray-700", "hover:bg-gray-600",
             "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
     }
-    ComponentGenerator::addChild(&fold, generateContainer);
+    // Building from a passage needs the model; without one, only the topic box.
+    if (ai_availability::Enabled()) {
+        ComponentGenerator::addChild(&fold, generateContainer);
+    }
     ComponentGenerator::addChild(&fold, ComponentGenerator::createButton(
         "closeCreateDebateButton", "Not now", "", "bg-transparent", "", "", "", "", "text-xs self-end"));
     ComponentGenerator::addChild(&overlay, fold);

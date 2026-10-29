@@ -1,5 +1,6 @@
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../utils/AnonymousUser.h"
+#include "../../../../../utils/AiAvailability.h"
 #include "../../../../../utils/ClaimVoice.h"
 #include "../../../../../utils/DebateChat.h"
 #include "../../../../../utils/Ordered.h"
@@ -1510,7 +1511,10 @@ ui::Page StepView::GenerateStepViewPage(
 
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
-	ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
+	// The chat only where a model can be reached (DEBATE_AI, AiAvailability.h).
+	if (ai_availability::Enabled()) {
+		ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
+	}
 	ComponentGenerator::addChild(&container, contentRow);
 
 	// Claim Parser placeholder — underneath the step view content.

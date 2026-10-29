@@ -43,6 +43,7 @@
 #include "../utils/Log.h"
 #include "../utils/DemoMode.h"
 #include "../utils/AnonymousUser.h"
+#include "../utils/AiAvailability.h"
 #include <ctime>
 
 namespace {
@@ -245,6 +246,16 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
 
     if (demo_mode::kReadOnlyMode && isViewerBlockedEvent(event.type())) {
         Log::info("[DebateModerator] Viewer mode blocked event type: " + std::to_string(event.type()));
+        event.set_type(debate_event::NONE);
+    }
+
+    // Without a reachable model (DEBATE_AI=off) the AI events are ignored:
+    // the pages don't offer them, and a stale page that still sends one
+    // should get no ten-second wait for an error.
+    if (!ai_availability::Enabled() &&
+        (event.type() == debate_event::ASK_CHAT || event.type() == debate_event::GENERATE_BRIEF ||
+         event.type() == debate_event::GENERATE_DEBATE)) {
+        Log::info("[DebateModerator] AI is off on this server; ignoring event type: " + std::to_string(event.type()));
         event.set_type(debate_event::NONE);
     }
 
