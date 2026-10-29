@@ -222,7 +222,7 @@ function cardElement(host: HTMLElement, key: string, onPick: (id: string) => voi
   el.className = "graph-card";
   el.innerHTML =
     '<span class="graph-card-dot"></span>' +
-    '<span class="graph-card-top"><span class="graph-card-who"></span><span class="graph-card-kind"></span></span>' +
+    '<span class="graph-card-top"><span class="graph-card-badge">Parent</span><span class="graph-card-who"></span><span class="graph-card-kind"></span></span>' +
     '<span class="graph-card-arrow"></span>' +
     '<span class="graph-card-text"></span>';
   el.addEventListener("click", (e) => {
@@ -234,8 +234,15 @@ function cardElement(host: HTMLElement, key: string, onPick: (id: string) => voi
   return el;
 }
 
-function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: string, text: string, target: string) {
+// The claim the selection hangs from (it supports it, challenges it, or
+// challenges an argument for it) is the one way back up the map, so its card
+// is marked: a "Parent" badge and an accent ring.
+const PARENT_KINDS = new Set<LinkKind>(["parent", "challenged", "undercutOf"]);
+
+function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: string, text: string, target: string,
+              parent = false) {
   if (el.style.getPropertyValue("--card-color") !== color) el.style.setProperty("--card-color", color);
+  el.classList.toggle("graph-card-parent", parent);
   el.dataset.target = target;
   const set = (sel: string, value: string) => {
     const part = el.querySelector<HTMLElement>(sel)!;
@@ -290,13 +297,17 @@ export function placeConnectionCards(
 
     // 2. A crowded run shows its nearest few and one "+N more" card.
     for (const [run, list] of bySide) {
-      list.sort((a, b) => a.dist - b.dist);
+      // The parent first, so a crowded edge never folds it into "+N more";
+      // then nearest first.
+      const up = (c: { t: CardTarget }) => (PARENT_KINDS.has(c.t.kind) ? 1 : 0);
+      list.sort((a, b) => up(b) - up(a) || a.dist - b.dist);
       const cap = capacity(run);
       const shown = list.length > cap ? list.slice(0, cap - 1) : list;
       for (const c of shown) {
         const key = `c${c.t.id}`;
         const el = cardElement(host, key, onPick);
-        fill(el, c.t.color, c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id);
+        fill(el, c.t.color, c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id,
+             PARENT_KINDS.has(c.t.kind));
         keep.add(key);
         placed.push({ key, run, el, x: c.x, y: c.y, w: 0, h: 0 });
       }
