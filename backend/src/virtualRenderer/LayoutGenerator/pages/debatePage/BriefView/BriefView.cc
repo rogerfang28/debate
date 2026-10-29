@@ -5,6 +5,7 @@
 #include "../../../../../database/virtualrenderer/VRUserDatabase.h"
 #include "../../../../../utils/DebateBrief.h"
 #include "../../../../../utils/Ordered.h"
+#include "../../../../../utils/AiAvailability.h"
 
 #include <set>
 #include <sstream>
@@ -430,7 +431,9 @@ ui::Page BriefView::GenerateBriefPage(
     if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
         currentClaimId = facts.rootClaimId;
     }
-    ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId));
+    if (ai_availability::Enabled()) {
+        ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId));
+    }
     ComponentGenerator::addChild(&container, contentRow);
 
     ui::Component* root = page.add_components();

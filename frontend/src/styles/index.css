@@ -286,6 +286,12 @@ a:hover {
   grid-template-columns: minmax(0, 1fr) 340px;
 }
 
+/* No chat on a debate page (a server with DEBATE_AI=off): the map takes
+   the chat's column too. */
+[data-layout="shell"] > .shell-regions:not(:has(> .region.chat)) {
+  grid-template-columns: 320px minmax(0, 1fr);
+}
+
 /* No chat (Home, Explore): the reading column alone, centred. */
 [data-layout="document"] > .shell-regions:not(:has(> .region.chat)) {
   grid-template-columns: minmax(0, 1fr);
@@ -345,12 +351,36 @@ a:hover {
   border: 0;
   border-radius: 0;
   padding: 14px 16px;
+  /* The panel's own overflow:hidden (set inline by the server) would make it
+     the scroll container its sticky button row sticks to, and it never
+     scrolls; the pin does. !important because the server's style is inline. */
+  overflow: visible !important;
 }
 
 .region.inspector .region-scroll {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+}
+
+/* The selected claim's (or argument's) buttons stay in view: the row sticks
+   to the bottom of the pinned panel while the claim's details scroll behind
+   it, so Challenge / Agree / Support never need a scroll to reach. A visitor
+   gets no buttons, so the empty row takes no space. */
+.region.inspector .region-pin #selectedClaimButtonRow,
+.region.inspector .region-pin #selectedRelationButtonRow {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  flex-wrap: wrap;
+  margin: 0.5rem -16px -14px !important;
+  padding: 10px 16px 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+}
+.region.inspector .region-pin #selectedClaimButtonRow:empty,
+.region.inspector .region-pin #selectedRelationButtonRow:empty {
+  display: none;
 }
 
 /* ---- a folding section (data-section) ---- */
@@ -969,6 +999,26 @@ tr:hover td {
 .graph-card-who {
   color: var(--text);
   font-weight: 600;
+}
+/* The parent claim's card: a badge and an accent ring around the status
+   border, so the way back up the map is obvious at a glance. */
+.graph-card-badge {
+  display: none;
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.graph-card-parent .graph-card-badge {
+  display: inline-block;
+}
+.graph-card.graph-card-parent {
+  box-shadow: 0 0 0 2px var(--accent), 0 4px 18px rgba(0, 0, 0, 0.55);
 }
 .graph-card-kind {
   color: var(--text-3);
