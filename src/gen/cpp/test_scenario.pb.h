@@ -563,6 +563,7 @@ class TestAction final : public ::google::protobuf::Message
     kVoiceFieldNumber = 13,
     kSourceUrlFieldNumber = 14,
     kSourceExcerptFieldNumber = 15,
+    kSourceImageUrlFieldNumber = 16,
     kDebateIdFieldNumber = 4,
     kClaimIdFieldNumber = 5,
     kLinkToClaimIdFieldNumber = 11,
@@ -740,6 +741,21 @@ class TestAction final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
 
   public:
+  // string source_image_url = 16 [json_name = "sourceImageUrl"];
+  void clear_source_image_url() ;
+  const ::std::string& source_image_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_image_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_image_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_image_url();
+  void set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_image_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_image_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_image_url();
+
+  public:
   // int32 debate_id = 4 [json_name = "debateId"];
   void clear_debate_id() ;
   ::int32_t debate_id() const;
@@ -784,8 +800,8 @@ class TestAction final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 15,
-                                   0, 168,
+  static const ::google::protobuf::internal::TcParseTable<4, 16,
+                                   0, 192,
                                    2>
       _table_;
 
@@ -817,6 +833,7 @@ class TestAction final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr voice_;
     ::google::protobuf::internal::ArenaStringPtr source_url_;
     ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
+    ::google::protobuf::internal::ArenaStringPtr source_image_url_;
     ::int32_t debate_id_;
     ::int32_t claim_id_;
     ::int32_t link_to_claim_id_;
@@ -1757,7 +1774,7 @@ inline void TestAction::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000800U);
+                  0x00001000U);
 }
 inline ::int32_t TestAction::debate_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.debate_id)
@@ -1765,7 +1782,7 @@ inline ::int32_t TestAction::debate_id() const {
 }
 inline void TestAction::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.debate_id)
 }
 inline ::int32_t TestAction::_internal_debate_id() const {
@@ -1782,7 +1799,7 @@ inline void TestAction::clear_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00001000U);
+                  0x00002000U);
 }
 inline ::int32_t TestAction::claim_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.claim_id)
@@ -1790,7 +1807,7 @@ inline ::int32_t TestAction::claim_id() const {
 }
 inline void TestAction::set_claim_id(::int32_t value) {
   _internal_set_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.claim_id)
 }
 inline ::int32_t TestAction::_internal_claim_id() const {
@@ -2139,7 +2156,7 @@ inline void TestAction::clear_link_to_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_to_claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00002000U);
+                  0x00004000U);
 }
 inline ::int32_t TestAction::link_to_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.link_to_claim_id)
@@ -2147,7 +2164,7 @@ inline ::int32_t TestAction::link_to_claim_id() const {
 }
 inline void TestAction::set_link_to_claim_id(::int32_t value) {
   _internal_set_link_to_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.link_to_claim_id)
 }
 inline ::int32_t TestAction::_internal_link_to_claim_id() const {
@@ -2164,7 +2181,7 @@ inline void TestAction::clear_link_from_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.link_from_claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00004000U);
+                  0x00008000U);
 }
 inline ::int32_t TestAction::link_from_claim_id() const {
   // @@protoc_insertion_point(field_get:debate_test.TestAction.link_from_claim_id)
@@ -2172,7 +2189,7 @@ inline ::int32_t TestAction::link_from_claim_id() const {
 }
 inline void TestAction::set_link_from_claim_id(::int32_t value) {
   _internal_set_link_from_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
   // @@protoc_insertion_point(field_set:debate_test.TestAction.link_from_claim_id)
 }
 inline ::int32_t TestAction::_internal_link_from_claim_id() const {
@@ -2377,6 +2394,71 @@ inline void TestAction::set_allocated_source_excerpt(::std::string* PROTOBUF_NUL
     _impl_.source_excerpt_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.source_excerpt)
+}
+
+// string source_image_url = 16 [json_name = "sourceImageUrl"];
+inline void TestAction::clear_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000800U);
+}
+inline const ::std::string& TestAction::source_image_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_test.TestAction.source_image_url)
+  return _internal_source_image_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TestAction::set_source_image_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  _impl_.source_image_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_test.TestAction.source_image_url)
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::mutable_source_image_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  ::std::string* _s = _internal_mutable_source_image_url();
+  // @@protoc_insertion_point(field_mutable:debate_test.TestAction.source_image_url)
+  return _s;
+}
+inline const ::std::string& TestAction::_internal_source_image_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_image_url_.Get();
+}
+inline void TestAction::_internal_set_source_image_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TestAction::_internal_mutable_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_image_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TestAction::release_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_test.TestAction.source_image_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000800U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  auto* released = _impl_.source_image_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TestAction::set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000800U);
+  }
+  _impl_.source_image_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_image_url_.IsDefault()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_test.TestAction.source_image_url)
 }
 
 // -------------------------------------------------------------------

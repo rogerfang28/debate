@@ -1518,6 +1518,7 @@ steps {
     basis: "EVIDENTIAL"
     source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgvktp5/"
     source_excerpt: "You don't have to take my word for it though, here's me asking Chat GPT the simplest way to fade chat in a Minecraft mod"
+    source_image_url: "https://i.imgur.com/WriBq4M.png"
   }
 }
 steps {
@@ -2449,6 +2450,7 @@ steps {
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=Sd5SQ40sCoI"
     source_excerpt: "I did use aimbot after my surgery because I was worried about being able to make videos at all during the time and I was in a clunky cast for months on my mouse hand."
+    source_image_url: "https://i.redd.it/l3mgfgefxgyh1.jpeg"
   }
 }
 steps {

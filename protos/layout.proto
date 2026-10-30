@@ -57,6 +57,11 @@ enum ComponentType {
   // A multi-line text box. ComponentRenderer has always mapped this type; the
   // enum value simply never existed, so the mapping was unreachable.
   TEXTAREA = 17;
+
+  // A picture: attribute `src` is its web address, `text` its alt text. Like TEXT,
+  // an attribute data-href makes it a link (to the full-size picture).
+  // ComponentRenderer has long mapped IMAGE; the enum value was missing.
+  IMAGE = 18;
 }
 
 message Style {

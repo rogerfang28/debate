@@ -1871,6 +1871,18 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full mb-2"
             );
             ComponentGenerator::addChild(&modalContent, sourceUrlInput);
+            ui::Component sourceImageInput = ComponentGenerator::createInput(
+                "claimSourceImageInput",
+                "Image link: a screenshot or chart of it (optional)",
+                "claimSourceImage",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&modalContent, sourceImageInput);
             ui::Component sourceExcerptInput = ComponentGenerator::createInput(
                 "claimSourceExcerptInput",
                 "The words on the page, as written",
@@ -2120,6 +2132,18 @@ ui::Component FullDebatePageGenerator::AddAppropriateOverlays(const rendering_in
                 "w-full mb-2"
             );
             ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceUrlInput);
+            ui::Component challengeSourceImageInput = ComponentGenerator::createInput(
+                "challengeSourceImageInput",
+                "Image link: a screenshot or chart of it (optional)",
+                "challengeSourceImage",
+                "bg-gray-700",
+                "text-white",
+                "border-gray-600",
+                "p-3",
+                "rounded",
+                "w-full mb-2"
+            );
+            ComponentGenerator::addChild(&addChallengeModalContent, challengeSourceImageInput);
             ui::Component challengeSourceExcerptInput = ComponentGenerator::createInput(
                 "challengeSourceExcerptInput",
                 "The words on the page, as written",

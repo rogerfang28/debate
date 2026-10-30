@@ -11,6 +11,8 @@ message CreateDebate {
     string voice = 3;
     string source_url = 4;
     string source_excerpt = 5;
+    // A picture of the source; see debate.Source.image_url.
+    string source_image_url = 6;
 }
 
 message DeleteDebate {
@@ -54,6 +56,8 @@ message AddChildClaim {
     // event. See debate.Source for what a source is and is not.
     string source_url = 7;
     string source_excerpt = 8;
+    // A picture of the source; see debate.Source.image_url.
+    string source_image_url = 9;
     // What KIND of support this is -- EVIDENTIAL | AUTHORITY | DEFINITIONAL |
     // NORMATIVE. Lands on the relation, not the claim: it describes how the
     // child bears on its parent, which is a property of the connection.
@@ -187,9 +191,10 @@ message SubmitChallengeClaim {
     string voice = 6;
 
     // Where the challenge was taken from, if anywhere. Same rules as
-    // AddChildClaim.source_url / source_excerpt.
+    // AddChildClaim.source_url / source_excerpt / source_image_url.
     string source_url = 7;
     string source_excerpt = 8;
+    string source_image_url = 9;
 }
 
 // Builds a whole debate from a passage, using the topic to steer what the

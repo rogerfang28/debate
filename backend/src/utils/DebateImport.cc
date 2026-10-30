@@ -206,11 +206,15 @@ Plan ReadOutline(const std::string& text) {
         const std::string quote = fields.size() > 3 ? stripQuotes(fields[3]) : "";
         const std::string basis = fields.size() > 4 ? upper(fields[4]) : "";
         const std::string note = fields.size() > 5 ? fields[5] : "";
+        const std::string image = fields.size() > 6 ? fields[6] : "";
 
-        if (fields.size() > 6) {
+        if (fields.size() > 7) {
             plan.errors.push_back(at + "has " + std::to_string(fields.size()) +
-                                  " fields separated by |; the most is 6 (claim | voice | source | quote | "
-                                  "basis | note). A claim's text cannot contain |.");
+                                  " fields separated by |; the most is 7 (claim | voice | source | quote | "
+                                  "basis | note | image). A claim's text cannot contain |.");
+        }
+        if (!image.empty() && !isWebAddress(image)) {
+            plan.errors.push_back(at + "the image \"" + image + "\" is not a web address (http:// or https://).");
         }
         if (claim.empty()) plan.errors.push_back(at + "the claim's text is empty.");
         if (!url.empty() && !isWebAddress(url)) {
@@ -239,6 +243,7 @@ Plan ReadOutline(const std::string& text) {
             if (!voice.empty()) a->set_voice(voice);
             if (!url.empty()) a->set_source_url(url);
             if (!quote.empty()) a->set_source_excerpt(quote);
+            if (!image.empty()) a->set_source_image_url(image);
             addStep(plan, lineNo, "JOIN_DEBATE")->set_debate_id(1);
             addStep(plan, lineNo, "ENTER_DEBATE")->set_debate_id(1);
             stack.push_back({indent, nextId++});
@@ -285,6 +290,7 @@ Plan ReadOutline(const std::string& text) {
         if (!basis.empty()) a->set_basis(basis);
         if (!url.empty()) a->set_source_url(url);
         if (!quote.empty()) a->set_source_excerpt(quote);
+        if (!image.empty()) a->set_source_image_url(image);
 
         stack.push_back({indent, nextId++});
         ++plan.claims;

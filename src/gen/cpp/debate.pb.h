@@ -582,6 +582,7 @@ class Source final : public ::google::protobuf::Message
     kUrlFieldNumber = 1,
     kExcerptFieldNumber = 2,
     kPublishedFieldNumber = 3,
+    kImageUrlFieldNumber = 5,
     kFirstHandFieldNumber = 4,
   };
   // string url = 1 [json_name = "url"];
@@ -629,6 +630,21 @@ class Source final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_published();
 
   public:
+  // string image_url = 5 [json_name = "imageUrl"];
+  void clear_image_url() ;
+  const ::std::string& image_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_image_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_image_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_image_url();
+  void set_allocated_image_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_image_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_image_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_image_url();
+
+  public:
   // bool first_hand = 4 [json_name = "firstHand"];
   void clear_first_hand() ;
   bool first_hand() const;
@@ -643,8 +659,8 @@ class Source final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   0, 41,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 50,
                                    2>
       _table_;
 
@@ -668,6 +684,7 @@ class Source final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr url_;
     ::google::protobuf::internal::ArenaStringPtr excerpt_;
     ::google::protobuf::internal::ArenaStringPtr published_;
+    ::google::protobuf::internal::ArenaStringPtr image_url_;
     bool first_hand_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3731,7 +3748,7 @@ inline void Source::clear_first_hand() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.first_hand_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline bool Source::first_hand() const {
   // @@protoc_insertion_point(field_get:debate.Source.first_hand)
@@ -3739,7 +3756,7 @@ inline bool Source::first_hand() const {
 }
 inline void Source::set_first_hand(bool value) {
   _internal_set_first_hand(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   // @@protoc_insertion_point(field_set:debate.Source.first_hand)
 }
 inline bool Source::_internal_first_hand() const {
@@ -3749,6 +3766,71 @@ inline bool Source::_internal_first_hand() const {
 inline void Source::_internal_set_first_hand(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.first_hand_ = value;
+}
+
+// string image_url = 5 [json_name = "imageUrl"];
+inline void Source::clear_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline const ::std::string& Source::image_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate.Source.image_url)
+  return _internal_image_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void Source::set_image_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  _impl_.image_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate.Source.image_url)
+}
+inline ::std::string* PROTOBUF_NONNULL Source::mutable_image_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ::std::string* _s = _internal_mutable_image_url();
+  // @@protoc_insertion_point(field_mutable:debate.Source.image_url)
+  return _s;
+}
+inline const ::std::string& Source::_internal_image_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.image_url_.Get();
+}
+inline void Source::_internal_set_image_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL Source::_internal_mutable_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.image_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE Source::release_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate.Source.image_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  auto* released = _impl_.image_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.image_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void Source::set_allocated_image_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  }
+  _impl_.image_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.image_url_.IsDefault()) {
+    _impl_.image_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate.Source.image_url)
 }
 
 // -------------------------------------------------------------------

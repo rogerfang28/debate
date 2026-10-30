@@ -185,8 +185,22 @@ TEST(DebateImportTest, OutlineRootHasNoMarkerAndTextNeedsAClaim) {
     EXPECT_TRUE(anyContains(debate_import::Read("+ Root with a marker\n").errors, "Line 1: the first claim"));
     EXPECT_TRUE(anyContains(debate_import::Read("# only a comment\n\n").errors, "There is no claim"));
     EXPECT_TRUE(anyContains(debate_import::Read("  \n").errors, "Paste a scenario file or an outline"));
-    EXPECT_TRUE(anyContains(debate_import::Read("Root\n  + a | b | c | d | e | f | g\n").errors,
-                            "Line 2: has 7 fields"));
+    EXPECT_TRUE(anyContains(debate_import::Read("Root\n  + a | b | c | d | e | f | g | h\n").errors,
+                            "Line 2: has 8 fields"));
+}
+
+// The seventh field is a picture of the source, by web address.
+TEST(DebateImportTest, OutlineImageIsAWebAddress) {
+    const debate_import::Plan ok = debate_import::Read(
+        "Root\n  + A claim | Voice | https://a.example/post | \"words\" | EVIDENTIAL | note | https://a.example/shot.png\n");
+    ASSERT_TRUE(ok.ok());
+    bool found = false;
+    for (const auto& step : ok.scenario.steps()) {
+        if (step.action().source_image_url() == "https://a.example/shot.png") found = true;
+    }
+    EXPECT_TRUE(found);
+    EXPECT_TRUE(anyContains(debate_import::Read("Root\n  + A claim | | | | | | shot.png\n").errors,
+                            "Line 2: the image \"shot.png\" is not a web address"));
 }
 
 TEST(DebateImportTest, Limits) {

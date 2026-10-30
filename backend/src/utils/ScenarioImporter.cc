@@ -305,6 +305,9 @@ private:
                 if (!action.source_excerpt().empty()) {
                     event.mutable_create_debate()->set_source_excerpt(action.source_excerpt());
                 }
+                if (!action.source_image_url().empty()) {
+                    event.mutable_create_debate()->set_source_image_url(action.source_image_url());
+                }
                 break;
             case debate_event::ENTER_DEBATE:
                 event.mutable_enter_debate()->set_debate_id(RealDebateId(action.debate_id()));
@@ -365,6 +368,9 @@ private:
                 if (!action.source_excerpt().empty()) {
                     event.mutable_add_child_claim()->set_source_excerpt(action.source_excerpt());
                 }
+                if (!action.source_image_url().empty()) {
+                    event.mutable_add_child_claim()->set_source_image_url(action.source_image_url());
+                }
                 if (!action.basis().empty()) {
                     event.mutable_add_child_claim()->set_basis(action.basis());
                 }
@@ -386,6 +392,9 @@ private:
                 }
                 if (!action.source_excerpt().empty()) {
                     event.mutable_submit_challenge_claim()->set_source_excerpt(action.source_excerpt());
+                }
+                if (!action.source_image_url().empty()) {
+                    event.mutable_submit_challenge_claim()->set_source_image_url(action.source_image_url());
                 }
                 if (!action.basis().empty()) {
                     event.mutable_submit_challenge_claim()->set_basis(action.basis());

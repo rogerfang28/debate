@@ -521,6 +521,13 @@ C("aimbot_dream_r", "aimbot_dream", "Dream",
   "the alternative was no videos or streams for months, and I just play with my friends pretty much who don't care and/or know.",
   "The 3 March 2026 message, as shown by Karl Jobst.")
 
+# Pictures of sources, shown under the quote in the claim panel: the
+# screenshots themselves, where the words are in an image.
+IMAGES = {
+    "b1_mod2": "https://i.imgur.com/WriBq4M.png",          # Dream's ChatGPT screenshot
+    "aimbot_msg": "https://i.redd.it/l3mgfgefxgyh1.jpeg",  # the 3 March 2026 message
+}
+
 # ---- Emit ----------------------------------------------------------------------
 def esc(s):
     return s.replace("\\", "\\\\").replace('"', '\\"')
@@ -538,6 +545,7 @@ def step(*fields):
 
 keys = [n[0] for n in N]
 assert len(keys) == len(set(keys)), "duplicate keys"
+assert set(IMAGES) <= set(keys), set(IMAGES) - set(keys)
 valid_bases = {"", "EVIDENTIAL", "AUTHORITY", "DEFINITIONAL", "NORMATIVE", "INFERENTIAL"}
 for n in N:
     assert n[5] in valid_bases, (n[0], n[5])
@@ -556,7 +564,7 @@ step(("event_type", "CREATE_USER"))
 for key, kind, anchor, voice, text, basis, url, excerpt, desc in N:
     if kind == "root":
         step(("event_type", "CREATE_DEBATE"), ("debate_topic", text), ("voice", voice),
-             ("source_url", url), ("source_excerpt", excerpt))
+             ("source_url", url), ("source_excerpt", excerpt), ("source_image_url", IMAGES.get(key, "")))
         step(("event_type", "JOIN_DEBATE"), ("debate_id", 1))
         step(("event_type", "ENTER_DEBATE"), ("debate_id", 1))
         ids[key] = next_id
@@ -566,13 +574,15 @@ for key, kind, anchor, voice, text, basis, url, excerpt, desc in N:
     step(("event_type", "GO_TO_CLAIM"), ("claim_id", target))
     if kind == "support":
         step(("event_type", "ADD_CHILD_CLAIM"), ("claim_text", text), ("claim_description", desc),
-             ("voice", voice), ("basis", basis), ("source_url", url), ("source_excerpt", excerpt))
+             ("voice", voice), ("basis", basis), ("source_url", url), ("source_excerpt", excerpt),
+             ("source_image_url", IMAGES.get(key, "")))
     else:
         step(("event_type", "START_CHALLENGE_CLAIM"))
         step(("event_type", "ADD_CLAIM_TO_BE_CHALLENGED"), ("claim_id", target))
         step(("event_type", "OPEN_ADD_CHALLENGE"))
         step(("event_type", "SUBMIT_CHALLENGE_CLAIM"), ("claim_text", text), ("challenge_description", desc),
-             ("voice", voice), ("basis", basis), ("source_url", url), ("source_excerpt", excerpt))
+             ("voice", voice), ("basis", basis), ("source_url", url), ("source_excerpt", excerpt),
+             ("source_image_url", IMAGES.get(key, "")))
     ids[key] = next_id
     next_id += 1
 
