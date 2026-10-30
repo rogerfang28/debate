@@ -112,42 +112,51 @@ Every page below was opened and quoted on 2026-10-29 by four research passes, on
    > The glint animation derives its time value from Java's system.nanoTime. While the value returned by this function will depend on your machine, there is absolutely no means or reason for this value to ever be influenced by a mod.
    > if you leave the game and are just on the menu, your tick counter continues going up. So when you rejoin, it'll always be higher than when you left off. But that's clearly not what's going on here.
 
-24. https://www.youtube.com/watch?v=qvcnEsA2mL8  
+24. https://www.youtube.com/watch?v=YWG8YRjPJsk  
+   voice: Dream, Tayler, repeater64  
+   > You don't have to take my word for it, though. Here's me asking chat GPT the simplest way to fade chat in a Minecraft mod.
+   > To prove he didn't just quote this recently as an excuse, Dream linked sideby-side screenshots from his six hunters rematch video from over 6 months ago.
+   > In those newer videos from 6 months ago, when Dream takes a screenshot, the chat and item names only disappear inside the screenshot file. They stay completely visible in the actual YouTube video.
+   > used Dream's exact prompt every single time the AI gave completely different answers that don't touch the tick counter at all, like simply turning down the chat opacity.
+   > When Repeater 64 actually looked at the mod Dream sent him, he revealed that Dream's mod was specifically programmed to counter that realworld clock value. So, it jumps right alongside the timer.
+   > a loop that only adds to a number can never make the timer go backwards. Yet, right before the major stunts, like the boat clutch, the timer completely resets and drops down.
+
+25. https://www.youtube.com/watch?v=qvcnEsA2mL8  
    voice: Dream  
    > There are points in this video where I check my phone, or I check my discord or something. Sometimes if I'm standing still or something that might be why. There's also a short pause while there was a bug.
 
-25. https://www.youtube.com/watch?v=fJFL-ZoxsOE  
+26. https://www.youtube.com/watch?v=fJFL-ZoxsOE  
    voice: Erdgeist After Dark  
    > I took 40 random readings from Dart's published data and my tool returned the same tick count for all 40. So this does two things. It validates that my tool works and it also validates the result of Dart Spark.
 
-26. https://www.youtube.com/watch?v=F_-N5AVFzBY  
+27. https://www.youtube.com/watch?v=F_-N5AVFzBY  
    voice: Skeppy  
    > Speaking from my experience when I was there, yeah, it was authentic.
 
-27. https://www.youtube.com/watch?v=NZ7aiOgGFhw  
+28. https://www.youtube.com/watch?v=NZ7aiOgGFhw  
    voice: RoyaltyIsHere  
    > Dream was one of the most hated individuals on the planet at one point and that potentially led to false allegations being levied against him, harassment, doxing.
 
-28. https://www.youtube.com/watch?v=rWiZqBjyMEA  
+29. https://www.youtube.com/watch?v=rWiZqBjyMEA  
    voice: Patches  
    > I tracked down all 35 accusations about his gameplay and checked each one against its source. 10 he admitted. 4 were measured. 10 are still disputed. 7 are only alleged. And 4 turned out to be wrong.
 
-29. https://www.youtube.com/watch?v=2lkxXfMFu2Y  
+30. https://www.youtube.com/watch?v=2lkxXfMFu2Y  
    voice: MrMangoHands  
    > I was a leaderboard moderator from February 2021 (after the mods talked with dream that month) and before that a technical advisor to the team from December 2020
 
-30. https://youtube.fandom.com/wiki/Dream  
+31. https://youtube.fandom.com/wiki/Dream  
    voice: Wikitubia  
    > On October 22, 2026, shortly after Dart Spark's Manhunt cheating allegations, he set his 1.15 WR video on YouTube to private for unknown reasons.
 
-31. https://www.youtube.com/watch?v=BpRGypK6dBE  
+32. https://www.youtube.com/watch?v=BpRGypK6dBE  
    voice: Christopher Norton  
    > Maybe he has a reason, but if those runs are real, they're the best evidence he has. Hiding them is the last thing you'd do.
 
-32. https://www.youtube.com/watch?v=dtZviABbSIA  
+33. https://www.youtube.com/watch?v=dtZviABbSIA  
    voice: Dream  
    > For anyone watching any of my old "professional speedruns", this run was officially valid and was world record for a short period of time! These runs were done on vanilla Minecraft/OptiFine and did not have any mods.
 
-33. https://www.youtube.com/watch?v=VVFywSmvUL4  
+34. https://www.youtube.com/watch?v=VVFywSmvUL4  
    voice: Eliotex  
    > When Dream cheated his 1.16 on accident, the investigation group was a bit sceptical about his other speedruns.
