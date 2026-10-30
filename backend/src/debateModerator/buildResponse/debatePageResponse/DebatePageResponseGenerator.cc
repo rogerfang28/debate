@@ -3,6 +3,8 @@
 #include "debate.pb.h"
 #include "../../../utils/Log.h"
 #include <iostream>
+#include <algorithm>
+#include <set>
 #include <vector>
 #include "./BuildCollection.h"
 
@@ -51,4 +53,40 @@ void DebatePageResponseGenerator::BuildDebatePageResponse(
     // user_ids for now is still all users
 
     *responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info() = debatingInfo;
+
+    // What the viewer holds by their own act, replayed from the move log in
+    // order: an ASSERT (a claim or challenge they made) or an ACCEPT adds it,
+    // an UNACCEPT, CONCEDE or RETRACT takes it away. Only for the claim
+    // panel's explanation; statuses themselves come from the status engine.
+    std::vector<debate::Move> moves = debateWrapper.getMovesForDebate(collectionSpec.debate_id());
+    std::sort(moves.begin(), moves.end(),
+              [](const debate::Move& a, const debate::Move& b) { return a.seq() < b.seq(); });
+    std::set<int> held;
+    const int viewer = userProto.user_id();
+    for (const debate::Move& m : moves) {
+        if (m.actor_id() != viewer) continue;
+        const bool onClaim = m.target_type() == debate::TARGET_CLAIM;
+        switch (m.type()) {
+            case debate::ASSERT:
+                if (onClaim) held.insert(m.target_id());
+                for (int id : m.created_claim_ids()) held.insert(id);
+                break;
+            case debate::OPPOSE:
+                for (int id : m.created_claim_ids()) held.insert(id);
+                break;
+            case debate::ACCEPT:
+                if (onClaim) held.insert(m.target_id());
+                break;
+            case debate::UNACCEPT:
+            case debate::CONCEDE:
+            case debate::RETRACT:
+                if (onClaim) held.erase(m.target_id());
+                break;
+            default:
+                break;
+        }
+    }
+    auto* out = responseMessage.mutable_user()->mutable_engagement()->mutable_debating_info();
+    out->clear_viewer_held_claim_ids();
+    for (int id : held) out->add_viewer_held_claim_ids(id);
 }

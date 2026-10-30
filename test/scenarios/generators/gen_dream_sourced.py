@@ -219,11 +219,36 @@ S("b1_splice", "b1", "Dart Spark",
   "EVIDENTIAL", DART,
   "he has an absolutely unbelievable uptime of 3 and 1/2 hours. No, this is not a bug in the scan. This is real.",
   "At that clock time, Dream was elsewhere in the same video." + AC)
+# The boat clutch, as its own exchange: the hidden cut, Dream's 2021 defence,
+# and the hotbar evidence that answers it. All of repeater64's words are from
+# his section of Dart Spark's video (auto-captions).
 S("b1_clutch", "b1", "repeater64",
-  "The famous boat clutch was not one take: a hidden cut sits seconds before it, and its two hotbar displays fall out of sync, which the game can't do.",
+  "A hidden cut sits about 15 seconds before the famous boat clutch, and Dream relaunched his game during it, so the clutch wasn't one attempt.",
   "EVIDENTIAL", DART,
-  "I dived through the game code for this version of Minecraft and found that the two representations of the hotbar render based on the exact same object, making it completely impossible for them to be out of sync",
-  "repeater64, a plugin developer, speaking in Dart Spark's video. Dream defended the clutch as real on a 2021 livestream." + AC)
+  "there is a cut hidden even closer to the boat clutch, just around 15 seconds before it. Since an unknown amount of time [music] passed during this cut and Dream relaunched his game,",
+  "repeater64, a plugin developer and co-inventor of the hunger-bar method, speaking in Dart Spark's video. He withdrew one of his own 2022 claims about the clutch (a jump that turned out to be a bug)." + AC)
+C("b1_clutch_dream", "b1_clutch", "Sportskeeda",
+  "Dream explained live, in detail, how he improvised the boat clutch.",
+  "EVIDENTIAL", "https://www.sportskeeda.com/minecraft/dream-debunks-accusations-faking-manhunt-boat-clutch-minecraft",
+  "In light of swirling rumors of his boat clutch allegedly being \"fake,\" Dream recently hosted a livestream in which he explained in detail how the legendary Minecraft moment actually came to fruition.",
+  "April 2021, Dream's answer to the first boat-clutch doubts, as reported by Sportskeeda.")
+C("b1_clutch_hotbar", "b1_clutch_dream", "repeater64",
+  "Frame by frame, the boat appears in his bottom hotbar before he clicks it in the inventory, which the game can't show in one take: two clips were overlaid.",
+  "EVIDENTIAL", DART,
+  "if you step through Dream's boat clutch footage frame by frame, you'll notice something incredibly weird. The boat appears in his hot bar at the bottom of the screen several frames before he actually clicks it into his inventory",
+  "Both hotbars 'render based on the exact same object, making it completely impossible for them to be out of sync, even for a single frame.' YouTube compression can make them differ, but it delays the bottom one, the opposite of what's seen. His conclusion: the crafting footage was recorded separately and laid over the background, and a recreation by other YouTubers shows the same flaw." + AC)
+
+S("b1_furnace", "b1_clutch", "Dart Spark",
+  "On the boat-clutch tower a furnace smelts 2.44 ingots in 15.1 seconds when the game allows 1.51, so 9.3 seconds of footage are missing.",
+  "EVIDENTIAL", DART,
+  "There's a whole 9.3 seconds of footage missing from the video after he loaded his save state.",
+  "The check was done by Leila on the investigation team. One ingot takes exactly 10 seconds; every other smelt in the video was never off by more than a frame or two, so it isn't lag. The game clock also drops from 7 to 6 minutes there, meaning Dream relaunched the game, mid-smelt, on the clutch tower." + AC)
+S("b1_ingots", "b1", "Tayler",
+  "The old footage shows Dream taking the same six iron ingots out of a furnace twice.",
+  "EVIDENTIAL", "https://www.youtube.com/watch?v=YWG8YRjPJsk",
+  "It doesn't explain how Dream pulled the exact same six iron ingots out of a furnace twice.",
+  "17 October 2026, listed among the editing mistakes that a screenshot mod can't explain." + AC)
+
 S("b1_retry", "b1", "Dart Spark",
   "The original series was faked by retrying and secretly cutting out failures; the newer series scans clean.",
   "INFERENTIAL", DART,

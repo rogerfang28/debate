@@ -222,6 +222,11 @@ message DebatingInfo {
     string prose_fingerprint = 7;
   }
   BriefState brief = 25;
+  // The claims the viewer holds by their own act -- asserted, or agreed and
+  // not withdrawn -- from the move log. Filled per response (not stored), so
+  // the claim panel can say WHY a claim is true or false for them, and warn
+  // when two things they hold contradict each other.
+  repeated int32 viewer_held_claim_ids = 26;
 
   // The ARGUMENT the viewer has selected in the graph -- a relation id -- or 0.
   // Selecting a relation also moves current_claim to the claim that argument

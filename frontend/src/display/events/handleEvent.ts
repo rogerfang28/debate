@@ -49,6 +49,15 @@ interface CustomEvent {
 
 type EventName = 'onClick' | 'onChange' | 'onSubmit';
 
+// A button press is in flight. Agree, Withdraw, Challenge and the rest each
+// change the debate, and the page answers only when the server has: a second
+// press before then used to be sent too (five Withdraws in a second, each
+// toggling the last). Presses of a <button> are dropped until the answer
+// lands; the root carries data-busy meanwhile so the cursor says so. Clicks
+// on the map (selecting a claim) are not buttons and always go through, so
+// the selection keeps up with the camera.
+let buttonInFlight = false;
+
 export default async function handleEvent(
   e: CustomEvent | null,
   component: ComponentProps,
@@ -78,6 +87,18 @@ export default async function handleEvent(
       e.preventDefault();
     }
 
+    const fromButton = String(eventName) === "onClick" &&
+      ((e as any)?.currentTarget?.tagName === "BUTTON" || (e as any)?.target?.closest?.("button") != null);
+    if (fromButton && buttonInFlight) {
+      console.log("handleEvent: a button press is already in flight; ignoring", component.id);
+      return;
+    }
+    if (fromButton) {
+      buttonInFlight = true;
+      document.documentElement.dataset.busy = "1";
+    }
+    try {
+
     // Collect only form input values from the page (not div textContent)
     const pageData = getEntirePage(component.id);
     // The value is collected; if this event is what sends a kept draft (the
@@ -99,6 +120,12 @@ export default async function handleEvent(
       window.applyPageData(page);
     } else {
       window.reloadPage?.();
+    }
+    } finally {
+      if (fromButton) {
+        buttonInFlight = false;
+        delete document.documentElement.dataset.busy;
+      }
     }
 
   } catch (error: unknown) {

@@ -59,6 +59,8 @@ message FullDebateViewInfo {
 	// used to highlight the active node in the map/graph and paragraph tree.
 	// 0 if unset.
 	int32 viewer_current_claim_id = 6;
+	// See user_engagement.DebatingInfo.viewer_held_claim_ids.
+	repeated int32 viewer_held_claim_ids = 7;
 }
 
 // A per-user matrix of claim statuses — used for visualization only.
