@@ -46,9 +46,30 @@
 #include "../utils/AnonymousUser.h"
 #include "../utils/AiAvailability.h"
 #include "../utils/Admins.h"
+#include <cctype>
+#include <cstring>
 #include <ctime>
 
 namespace {
+// A source's picture is kept only as a web address: the page shows it in an
+// <img>, so anything else (a data: or javascript: link, a local path) is
+// dropped rather than stored. Trimmed, and capped like any sane URL.
+std::string SourceImageLink(std::string url) {
+    const auto notSpace = [](unsigned char c) { return !std::isspace(c); };
+    url.erase(url.begin(), std::find_if(url.begin(), url.end(), notSpace));
+    url.erase(std::find_if(url.rbegin(), url.rend(), notSpace).base(), url.end());
+    auto startsWith = [&](const char* prefix) {
+        const size_t n = std::strlen(prefix);
+        if (url.size() < n) return false;
+        for (size_t i = 0; i < n; ++i) {
+            if (std::tolower(static_cast<unsigned char>(url[i])) != prefix[i]) return false;
+        }
+        return true;
+    };
+    if (url.size() > 2048 || !(startsWith("https://") || startsWith("http://"))) return std::string();
+    return url;
+}
+
 bool isViewerBlockedEvent(debate_event::EventType type) {
     switch (type) {
         case debate_event::CREATE_DEBATE:
@@ -392,6 +413,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             debate::Source rootSource;
             rootSource.set_url(event.create_debate().source_url());
             rootSource.set_excerpt(event.create_debate().source_excerpt());
+            rootSource.set_image_url(SourceImageLink(event.create_debate().source_image_url()));
             DebateHandler::AddDebate(event.create_debate().debate_topic(), user_id, debateWrapper,
                                      resolveVoice(event.create_debate().voice()), &rootSource);
             break;
@@ -635,6 +657,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             debate::Source source;
             source.set_url(event.add_child_claim().source_url());
             source.set_excerpt(event.add_child_claim().source_excerpt());
+            source.set_image_url(SourceImageLink(event.add_child_claim().source_image_url()));
             AddClaimHandler::AddClaimUnderClaim(
                 claimTexts,
                 claimDescriptions,
@@ -769,6 +792,7 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             debate::Source source;
             source.set_url(event.submit_challenge_claim().source_url());
             source.set_excerpt(event.submit_challenge_claim().source_excerpt());
+            source.set_image_url(SourceImageLink(event.submit_challenge_claim().source_image_url()));
             ChallengeHandler::SubmitChallengeClaim(
                 challengeTexts,
                 challengeDescriptions,

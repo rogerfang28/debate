@@ -62,6 +62,7 @@ Root claim | Voice | https://source | "verbatim quote" | BASIS | note
   | quote | the words on that page; surrounding `"` are removed |
   | basis | what kind of reason it is: `EVIDENTIAL`, `AUTHORITY`, `DEFINITIONAL`, `NORMATIVE` or `INFERENTIAL` (any case); blank = unspecified |
   | note | the claim's description |
+  | image | a picture of the source, by its web address (`http://` or `https://`): a screenshot of a post, a chart. Shown under the quote in the claim panel |
 
   Leave a field empty to skip it: `Claim text | | | | NORMATIVE`.
   The root's basis and note are not used (the root has no parent, and a

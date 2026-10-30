@@ -34,6 +34,11 @@ message Source {
   string excerpt   = 2;  // the words on the page, verbatim
   string published = 3;  // free text: whatever date the source gives
   bool first_hand  = 4;  // the voice saw it themselves, vs. reports it
+  // A picture of the source -- a screenshot of a post, a chart -- by its
+  // web address, shown with the claim so a reader sees it without leaving.
+  // The site stores the link, not the picture; the reader's browser loads it
+  // from wherever it is hosted.
+  string image_url = 5;
 }
 
 message Claim {

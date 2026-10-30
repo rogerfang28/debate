@@ -81,7 +81,7 @@ void DebateWrapper::initNewDebate(const std::string& topic, const int& creator_i
     rootClaim.set_sentence(topic);
     rootClaim.set_creator_id(creator_id);
     rootClaim.set_voice_id(voice_id);
-    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty() || !source->image_url().empty())) {
         *rootClaim.add_sources() = *source;
     }
 
@@ -147,7 +147,7 @@ int DebateWrapper::createClaim(
     claim.set_creator_id(user_id);
     claim.set_debate_id(debate_id);
     claim.set_voice_id(voice_id);
-    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty() || !source->image_url().empty())) {
         *claim.add_sources() = *source;
     }
 
@@ -177,7 +177,7 @@ int DebateWrapper::addClaimUnderParent(
     childClaim.set_creator_id(user_id);
     childClaim.set_debate_id(debate_id);
     childClaim.set_voice_id(voice_id);
-    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty())) {
+    if (source != nullptr && (!source->url().empty() || !source->excerpt().empty() || !source->image_url().empty())) {
         *childClaim.add_sources() = *source;
     }
 

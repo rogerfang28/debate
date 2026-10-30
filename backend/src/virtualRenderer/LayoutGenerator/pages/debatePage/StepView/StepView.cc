@@ -385,6 +385,25 @@ static ui::Component BuildSelectedClaimPanel(
         if (!source.excerpt().empty()) {
             addField("SourceExcerpt" + suffix, "It says:", "\u201c" + source.excerpt() + "\u201d", true);
         }
+        // A picture of the source, under its words, so it can be read at a
+        // glance; clicking opens it full size in a new tab.
+        if (!source.image_url().empty()) {
+            ui::Component image;
+            image.set_id("selectedClaimSourceImage" + suffix);
+            image.set_type(ui::ComponentType::IMAGE);
+            ComponentGenerator::addAttribute(&image, "src", source.image_url());
+            image.set_text("A picture of the source");
+            ComponentGenerator::addAttribute(&image, "data-href", source.image_url());
+            (*image.mutable_css())["display"] = "block";
+            (*image.mutable_css())["max-width"] = "100%";
+            (*image.mutable_css())["max-height"] = "260px";
+            (*image.mutable_css())["object-fit"] = "contain";
+            (*image.mutable_css())["border"] = "1px solid var(--line)";
+            (*image.mutable_css())["border-radius"] = "6px";
+            (*image.mutable_css())["margin"] = "0.25rem 0 0.5rem";
+            (*image.mutable_css())["cursor"] = "zoom-in";
+            ComponentGenerator::addChild(&panel, image);
+        }
     }
 
     ui::Component buttonRow = ComponentGenerator::createContainer(

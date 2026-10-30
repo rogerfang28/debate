@@ -38,6 +38,9 @@ inline constexpr Source::Impl_::Impl_(
         published_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        image_url_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         first_hand_{false} {}
 
 template <typename>
@@ -415,14 +418,16 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_._has_bits_),
-        7, // hasbit index offset
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_.url_),
         PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_.excerpt_),
         PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_.published_),
         PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_.first_hand_),
+        PROTOBUF_FIELD_OFFSET(::debate::Source, _impl_.image_url_),
         0,
         1,
         2,
+        4,
         3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::debate::Claim_UserStatusesEntry_DoNotUse, _impl_._has_bits_),
@@ -604,17 +609,17 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::debate::Source)},
-        {11, sizeof(::debate::Claim_UserStatusesEntry_DoNotUse)},
-        {18, sizeof(::debate::Claim)},
-        {45, sizeof(::debate::ClaimState)},
-        {52, sizeof(::debate::Relationship_Link)},
-        {69, sizeof(::debate::Relationship)},
-        {94, sizeof(::debate::Move)},
-        {119, sizeof(::debate::ComputedClaimState)},
-        {132, sizeof(::debate::ComputedRelationState)},
-        {139, sizeof(::debate::Debate)},
-        {160, sizeof(::debate::GetStateRequest)},
-        {169, sizeof(::debate::DebateState)},
+        {13, sizeof(::debate::Claim_UserStatusesEntry_DoNotUse)},
+        {20, sizeof(::debate::Claim)},
+        {47, sizeof(::debate::ClaimState)},
+        {54, sizeof(::debate::Relationship_Link)},
+        {71, sizeof(::debate::Relationship)},
+        {96, sizeof(::debate::Move)},
+        {121, sizeof(::debate::ComputedClaimState)},
+        {134, sizeof(::debate::ComputedRelationState)},
+        {141, sizeof(::debate::Debate)},
+        {162, sizeof(::debate::GetStateRequest)},
+        {171, sizeof(::debate::DebateState)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::debate::_Source_default_instance_._instance,
@@ -633,99 +638,100 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 const char descriptor_table_protodef_debate_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\014debate.proto\022\006debate\032\037google/protobuf/"
-    "timestamp.proto\032\025debate_settings.proto\"q"
-    "\n\006Source\022\020\n\003url\030\001 \001(\tR\003url\022\030\n\007excerpt\030\002 "
-    "\001(\tR\007excerpt\022\034\n\tpublished\030\003 \001(\tR\tpublish"
-    "ed\022\035\n\nfirst_hand\030\004 \001(\010R\tfirstHand\"\263\004\n\005Cl"
-    "aim\022\016\n\002id\030\001 \001(\005R\002id\022\032\n\010sentence\030\002 \001(\tR\010s"
-    "entence\022 \n\013description\030\003 \001(\tR\013descriptio"
-    "n\022\035\n\ncreator_id\030\010 \001(\005R\tcreatorId\022\033\n\tdeba"
-    "te_id\030\t \001(\005R\010debateId\0229\n\ncreated_at\030\016 \001("
-    "\0132\032.google.protobuf.TimestampR\tcreatedAt"
-    "\022\031\n\010voice_id\030\017 \001(\005R\007voiceId\022(\n\007sources\030\020"
-    " \003(\0132\016.debate.SourceR\007sources\0220\n\007history"
-    "\030\n \003(\0132\022.debate.ClaimStateB\002\030\001R\007history\022"
-    "/\n\006status\030\013 \001(\0162\023.debate.ClaimStatusB\002\030\001"
-    "R\006status\022\035\n\010link_ids\030\014 \003(\005B\002\030\001R\007linkIds\022"
-    "H\n\ruser_statuses\030\r \003(\0132\037.debate.Claim.Us"
-    "erStatusesEntryB\002\030\001R\014userStatuses\032T\n\021Use"
-    "rStatusesEntry\022\020\n\003key\030\001 \001(\tR\003key\022)\n\005valu"
-    "e\030\002 \001(\0162\023.debate.ClaimStatusR\005value:\0028\001\""
-    "k\n\nClaimState\0228\n\ttimestamp\030\002 \001(\0132\032.googl"
-    "e.protobuf.TimestampR\ttimestamp\022#\n\005claim"
-    "\030\001 \001(\0132\r.debate.ClaimR\005claim\"\340\004\n\014Relatio"
-    "nship\022-\n\004link\030\001 \001(\0132\031.debate.Relationshi"
-    "p.LinkR\004link\022\016\n\002id\030\002 \001(\005R\002id\022\033\n\tdebate_i"
-    "d\030\003 \001(\005R\010debateId\022$\n\016from_claim_ids\030\004 \003("
-    "\005R\014fromClaimIds\022 \n\013to_claim_id\030\005 \001(\005H\000R\t"
-    "toClaimId\022&\n\016to_relation_id\030\006 \001(\005H\000R\014toR"
-    "elationId\022(\n\004role\030\007 \001(\0162\024.debate.Relatio"
-    "nRoleR\004role\022\024\n\005basis\030\010 \001(\tR\005basis\022\035\n\ncre"
-    "ator_id\030\t \001(\005R\tcreatorId\0229\n\ncreated_at\030\n"
-    " \001(\0132\032.google.protobuf.TimestampR\tcreate"
-    "dAt\032\343\001\n\004Link\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014connect_"
-    "from\030\002 \001(\005R\013connectFrom\022\035\n\nconnect_to\030\003 "
-    "\001(\005R\tconnectTo\022\036\n\nconnection\030\004 \001(\tR\nconn"
-    "ection\022\035\n\ncreator_id\030\005 \001(\005R\tcreatorId\022-\n"
-    "\tlink_type\030\006 \001(\0162\020.debate.LinkTypeR\010link"
-    "Type\022\033\n\tdebate_id\030\007 \001(\005R\010debateIdB\004\n\002to\""
-    "\213\003\n\004Move\022\016\n\002id\030\001 \001(\005R\002id\022\033\n\tdebate_id\030\002 "
-    "\001(\005R\010debateId\022\020\n\003seq\030\003 \001(\005R\003seq\022\031\n\010actor"
-    "_id\030\004 \001(\005R\007actorId\022$\n\004type\030\005 \001(\0162\020.debat"
-    "e.MoveTypeR\004type\0223\n\013target_type\030\006 \001(\0162\022."
-    "debate.TargetTypeR\ntargetType\022\033\n\ttarget_"
-    "id\030\007 \001(\005R\010targetId\022*\n\021created_claim_ids\030"
-    "\010 \003(\005R\017createdClaimIds\0220\n\024created_relati"
-    "on_ids\030\t \003(\005R\022createdRelationIds\022\030\n\007payl"
-    "oad\030\n \001(\tR\007payload\0229\n\ncreated_at\030\013 \001(\0132\032"
-    ".google.protobuf.TimestampR\tcreatedAt\"\277\001"
-    "\n\022ComputedClaimState\022\031\n\010claim_id\030\001 \001(\005R\007"
-    "claimId\022&\n\006status\030\002 \001(\0162\016.debate.StatusR"
-    "\006status\022)\n\020supporting_count\030\003 \001(\005R\017suppo"
-    "rtingCount\022%\n\016opposing_count\030\004 \001(\005R\roppo"
-    "singCount\022\024\n\005label\030\005 \001(\tR\005label\"e\n\025Compu"
-    "tedRelationState\022\037\n\013relation_id\030\001 \001(\005R\nr"
-    "elationId\022+\n\005state\030\002 \001(\0162\025.debate.Relati"
-    "onStateR\005state\"\334\002\n\006Debate\022\016\n\002id\030\001 \001(\005R\002i"
-    "d\022\"\n\rroot_claim_id\030\002 \001(\005R\013rootClaimId\022\024\n"
-    "\005topic\030\003 \001(\tR\005topic\022\037\n\013debater_ids\030\004 \003(\005"
-    "R\ndebaterIds\022\035\n\ncreator_id\030\005 \001(\005R\tcreato"
-    "rId\0222\n\010settings\030\006 \001(\0132\026.debate.DebateSet"
-    "tingsR\010settings\0229\n\ncreated_at\030\t \001(\0132\032.go"
-    "ogle.protobuf.TimestampR\tcreatedAt\022%\n\014is"
-    "_challenge\030\007 \001(\010B\002\030\001R\013isChallenge\0222\n\023par"
-    "ent_challenge_id\030\010 \001(\005B\002\030\001R\021parentChalle"
-    "ngeId\"w\n\017GetStateRequest\022\033\n\tdebate_id\030\001 "
-    "\001(\005R\010debateId\022\025\n\006at_seq\030\002 \001(\005R\005atSeq\0220\n\024"
-    "lens_excluded_claims\030\003 \003(\005R\022lensExcluded"
-    "Claims\"\311\002\n\013DebateState\022&\n\006debate\030\001 \001(\0132\016"
-    ".debate.DebateR\006debate\022%\n\006claims\030\002 \003(\0132\r"
-    ".debate.ClaimR\006claims\0222\n\trelations\030\003 \003(\013"
-    "2\024.debate.RelationshipR\trelations\022=\n\014cla"
-    "im_states\030\004 \003(\0132\032.debate.ComputedClaimSt"
-    "ateR\013claimStates\022F\n\017relation_states\030\005 \003("
-    "\0132\035.debate.ComputedRelationStateR\016relati"
-    "onStates\022\025\n\006at_seq\030\006 \001(\005R\005atSeq\022\031\n\010head_"
-    "seq\030\007 \001(\005R\007headSeq*@\n\013ClaimStatus\022\020\n\014UND"
-    "ETERMINED\020\000\022\016\n\nTRUE_CLAIM\020\001\022\017\n\013FALSE_CLA"
-    "IM\020\002*7\n\010LinkType\022\n\n\006NORMAL\020\000\022\020\n\014PARENT_C"
-    "HILD\020\001\022\r\n\tCHALLENGE\020\002*\?\n\014RelationRole\022\024\n"
-    "\020ROLE_UNSPECIFIED\020\000\022\014\n\010SUPPORTS\020\001\022\013\n\007OPP"
-    "OSES\020\002*\333\001\n\010MoveType\022\031\n\025MOVE_TYPE_UNSPECI"
-    "FIED\020\000\022\n\n\006ASSERT\020\001\022\n\n\006OPPOSE\020\002\022\013\n\007CONCED"
-    "E\020\003\022\n\n\006ACCEPT\020\004\022\010\n\004REST\020\005\022\020\n\014FLAG_UNKNOW"
-    "N\020\006\022\013\n\007REPLACE\020\007\022\n\n\006DISOWN\020\010\022\n\n\006REOPEN\020\t"
-    "\022\013\n\007TIMEOUT\020\n\022\013\n\007RETRACT\020\013\022\n\n\006REDACT\020\014\022\016"
-    "\n\nCONTRADICT\020\r\022\014\n\010UNACCEPT\020\016*P\n\nTargetTy"
-    "pe\022\033\n\027TARGET_TYPE_UNSPECIFIED\020\000\022\020\n\014TARGE"
-    "T_CLAIM\020\001\022\023\n\017TARGET_RELATION\020\002*\303\001\n\006Statu"
-    "s\022\026\n\022STATUS_UNSPECIFIED\020\000\022\014\n\010STANDING\020\001\022"
-    "\014\n\010ACCEPTED\020\002\022\010\n\004OPEN\020\003\022\017\n\013UNSUPPORTED\020\004"
-    "\022\r\n\tCOLLAPSED\020\005\022\r\n\tCONTESTED\020\006\022\016\n\nUNRESO"
-    "LVED\020\007\022\r\n\tABANDONED\020\010\022\016\n\nSUPERSEDED\020\t\022\014\n"
-    "\010CIRCULAR\020\n\022\017\n\013MISDIRECTED\020\013*N\n\rRelation"
-    "State\022\036\n\032RELATION_STATE_UNSPECIFIED\020\000\022\010\n"
-    "\004LIVE\020\001\022\t\n\005INERT\020\002\022\010\n\004DEAD\020\003b\006proto3"
+    "timestamp.proto\032\025debate_settings.proto\"\216"
+    "\001\n\006Source\022\020\n\003url\030\001 \001(\tR\003url\022\030\n\007excerpt\030\002"
+    " \001(\tR\007excerpt\022\034\n\tpublished\030\003 \001(\tR\tpublis"
+    "hed\022\035\n\nfirst_hand\030\004 \001(\010R\tfirstHand\022\033\n\tim"
+    "age_url\030\005 \001(\tR\010imageUrl\"\263\004\n\005Claim\022\016\n\002id\030"
+    "\001 \001(\005R\002id\022\032\n\010sentence\030\002 \001(\tR\010sentence\022 \n"
+    "\013description\030\003 \001(\tR\013description\022\035\n\ncreat"
+    "or_id\030\010 \001(\005R\tcreatorId\022\033\n\tdebate_id\030\t \001("
+    "\005R\010debateId\0229\n\ncreated_at\030\016 \001(\0132\032.google"
+    ".protobuf.TimestampR\tcreatedAt\022\031\n\010voice_"
+    "id\030\017 \001(\005R\007voiceId\022(\n\007sources\030\020 \003(\0132\016.deb"
+    "ate.SourceR\007sources\0220\n\007history\030\n \003(\0132\022.d"
+    "ebate.ClaimStateB\002\030\001R\007history\022/\n\006status\030"
+    "\013 \001(\0162\023.debate.ClaimStatusB\002\030\001R\006status\022\035"
+    "\n\010link_ids\030\014 \003(\005B\002\030\001R\007linkIds\022H\n\ruser_st"
+    "atuses\030\r \003(\0132\037.debate.Claim.UserStatuses"
+    "EntryB\002\030\001R\014userStatuses\032T\n\021UserStatusesE"
+    "ntry\022\020\n\003key\030\001 \001(\tR\003key\022)\n\005value\030\002 \001(\0162\023."
+    "debate.ClaimStatusR\005value:\0028\001\"k\n\nClaimSt"
+    "ate\0228\n\ttimestamp\030\002 \001(\0132\032.google.protobuf"
+    ".TimestampR\ttimestamp\022#\n\005claim\030\001 \001(\0132\r.d"
+    "ebate.ClaimR\005claim\"\340\004\n\014Relationship\022-\n\004l"
+    "ink\030\001 \001(\0132\031.debate.Relationship.LinkR\004li"
+    "nk\022\016\n\002id\030\002 \001(\005R\002id\022\033\n\tdebate_id\030\003 \001(\005R\010d"
+    "ebateId\022$\n\016from_claim_ids\030\004 \003(\005R\014fromCla"
+    "imIds\022 \n\013to_claim_id\030\005 \001(\005H\000R\ttoClaimId\022"
+    "&\n\016to_relation_id\030\006 \001(\005H\000R\014toRelationId\022"
+    "(\n\004role\030\007 \001(\0162\024.debate.RelationRoleR\004rol"
+    "e\022\024\n\005basis\030\010 \001(\tR\005basis\022\035\n\ncreator_id\030\t "
+    "\001(\005R\tcreatorId\0229\n\ncreated_at\030\n \001(\0132\032.goo"
+    "gle.protobuf.TimestampR\tcreatedAt\032\343\001\n\004Li"
+    "nk\022\016\n\002id\030\001 \001(\005R\002id\022!\n\014connect_from\030\002 \001(\005"
+    "R\013connectFrom\022\035\n\nconnect_to\030\003 \001(\005R\tconne"
+    "ctTo\022\036\n\nconnection\030\004 \001(\tR\nconnection\022\035\n\n"
+    "creator_id\030\005 \001(\005R\tcreatorId\022-\n\tlink_type"
+    "\030\006 \001(\0162\020.debate.LinkTypeR\010linkType\022\033\n\tde"
+    "bate_id\030\007 \001(\005R\010debateIdB\004\n\002to\"\213\003\n\004Move\022\016"
+    "\n\002id\030\001 \001(\005R\002id\022\033\n\tdebate_id\030\002 \001(\005R\010debat"
+    "eId\022\020\n\003seq\030\003 \001(\005R\003seq\022\031\n\010actor_id\030\004 \001(\005R"
+    "\007actorId\022$\n\004type\030\005 \001(\0162\020.debate.MoveType"
+    "R\004type\0223\n\013target_type\030\006 \001(\0162\022.debate.Tar"
+    "getTypeR\ntargetType\022\033\n\ttarget_id\030\007 \001(\005R\010"
+    "targetId\022*\n\021created_claim_ids\030\010 \003(\005R\017cre"
+    "atedClaimIds\0220\n\024created_relation_ids\030\t \003"
+    "(\005R\022createdRelationIds\022\030\n\007payload\030\n \001(\tR"
+    "\007payload\0229\n\ncreated_at\030\013 \001(\0132\032.google.pr"
+    "otobuf.TimestampR\tcreatedAt\"\277\001\n\022Computed"
+    "ClaimState\022\031\n\010claim_id\030\001 \001(\005R\007claimId\022&\n"
+    "\006status\030\002 \001(\0162\016.debate.StatusR\006status\022)\n"
+    "\020supporting_count\030\003 \001(\005R\017supportingCount"
+    "\022%\n\016opposing_count\030\004 \001(\005R\ropposingCount\022"
+    "\024\n\005label\030\005 \001(\tR\005label\"e\n\025ComputedRelatio"
+    "nState\022\037\n\013relation_id\030\001 \001(\005R\nrelationId\022"
+    "+\n\005state\030\002 \001(\0162\025.debate.RelationStateR\005s"
+    "tate\"\334\002\n\006Debate\022\016\n\002id\030\001 \001(\005R\002id\022\"\n\rroot_"
+    "claim_id\030\002 \001(\005R\013rootClaimId\022\024\n\005topic\030\003 \001"
+    "(\tR\005topic\022\037\n\013debater_ids\030\004 \003(\005R\ndebaterI"
+    "ds\022\035\n\ncreator_id\030\005 \001(\005R\tcreatorId\0222\n\010set"
+    "tings\030\006 \001(\0132\026.debate.DebateSettingsR\010set"
+    "tings\0229\n\ncreated_at\030\t \001(\0132\032.google.proto"
+    "buf.TimestampR\tcreatedAt\022%\n\014is_challenge"
+    "\030\007 \001(\010B\002\030\001R\013isChallenge\0222\n\023parent_challe"
+    "nge_id\030\010 \001(\005B\002\030\001R\021parentChallengeId\"w\n\017G"
+    "etStateRequest\022\033\n\tdebate_id\030\001 \001(\005R\010debat"
+    "eId\022\025\n\006at_seq\030\002 \001(\005R\005atSeq\0220\n\024lens_exclu"
+    "ded_claims\030\003 \003(\005R\022lensExcludedClaims\"\311\002\n"
+    "\013DebateState\022&\n\006debate\030\001 \001(\0132\016.debate.De"
+    "bateR\006debate\022%\n\006claims\030\002 \003(\0132\r.debate.Cl"
+    "aimR\006claims\0222\n\trelations\030\003 \003(\0132\024.debate."
+    "RelationshipR\trelations\022=\n\014claim_states\030"
+    "\004 \003(\0132\032.debate.ComputedClaimStateR\013claim"
+    "States\022F\n\017relation_states\030\005 \003(\0132\035.debate"
+    ".ComputedRelationStateR\016relationStates\022\025"
+    "\n\006at_seq\030\006 \001(\005R\005atSeq\022\031\n\010head_seq\030\007 \001(\005R"
+    "\007headSeq*@\n\013ClaimStatus\022\020\n\014UNDETERMINED\020"
+    "\000\022\016\n\nTRUE_CLAIM\020\001\022\017\n\013FALSE_CLAIM\020\002*7\n\010Li"
+    "nkType\022\n\n\006NORMAL\020\000\022\020\n\014PARENT_CHILD\020\001\022\r\n\t"
+    "CHALLENGE\020\002*\?\n\014RelationRole\022\024\n\020ROLE_UNSP"
+    "ECIFIED\020\000\022\014\n\010SUPPORTS\020\001\022\013\n\007OPPOSES\020\002*\333\001\n"
+    "\010MoveType\022\031\n\025MOVE_TYPE_UNSPECIFIED\020\000\022\n\n\006"
+    "ASSERT\020\001\022\n\n\006OPPOSE\020\002\022\013\n\007CONCEDE\020\003\022\n\n\006ACC"
+    "EPT\020\004\022\010\n\004REST\020\005\022\020\n\014FLAG_UNKNOWN\020\006\022\013\n\007REP"
+    "LACE\020\007\022\n\n\006DISOWN\020\010\022\n\n\006REOPEN\020\t\022\013\n\007TIMEOU"
+    "T\020\n\022\013\n\007RETRACT\020\013\022\n\n\006REDACT\020\014\022\016\n\nCONTRADI"
+    "CT\020\r\022\014\n\010UNACCEPT\020\016*P\n\nTargetType\022\033\n\027TARG"
+    "ET_TYPE_UNSPECIFIED\020\000\022\020\n\014TARGET_CLAIM\020\001\022"
+    "\023\n\017TARGET_RELATION\020\002*\303\001\n\006Status\022\026\n\022STATU"
+    "S_UNSPECIFIED\020\000\022\014\n\010STANDING\020\001\022\014\n\010ACCEPTE"
+    "D\020\002\022\010\n\004OPEN\020\003\022\017\n\013UNSUPPORTED\020\004\022\r\n\tCOLLAP"
+    "SED\020\005\022\r\n\tCONTESTED\020\006\022\016\n\nUNRESOLVED\020\007\022\r\n\t"
+    "ABANDONED\020\010\022\016\n\nSUPERSEDED\020\t\022\014\n\010CIRCULAR\020"
+    "\n\022\017\n\013MISDIRECTED\020\013*N\n\rRelationState\022\036\n\032R"
+    "ELATION_STATE_UNSPECIFIED\020\000\022\010\n\004LIVE\020\001\022\t\n"
+    "\005INERT\020\002\022\010\n\004DEAD\020\003b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_2eproto_deps[2] = {
@@ -736,7 +742,7 @@ static ::absl::once_flag descriptor_table_debate_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_2eproto = {
     false,
     false,
-    3756,
+    3786,
     descriptor_table_protodef_debate_2eproto,
     "debate.proto",
     &descriptor_table_debate_2eproto_once,
@@ -819,7 +825,8 @@ PROTOBUF_NDEBUG_INLINE Source::Impl_::Impl_(
         _cached_size_{0},
         url_(arena, from.url_),
         excerpt_(arena, from.excerpt_),
-        published_(arena, from.published_) {}
+        published_(arena, from.published_),
+        image_url_(arena, from.image_url_) {}
 
 Source::Source(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -844,7 +851,8 @@ PROTOBUF_NDEBUG_INLINE Source::Impl_::Impl_(
       : _cached_size_{0},
         url_(arena),
         excerpt_(arena),
-        published_(arena) {}
+        published_(arena),
+        image_url_(arena) {}
 
 inline void Source::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -864,6 +872,7 @@ inline void Source::SharedDtor(MessageLite& self) {
   this_._impl_.url_.Destroy();
   this_._impl_.excerpt_.Destroy();
   this_._impl_.published_.Destroy();
+  this_._impl_.image_url_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -910,16 +919,16 @@ Source::GetClassData() const {
   return Source_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 41, 2>
+const ::_pbi::TcParseTable<3, 5, 0, 50, 2>
 Source::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Source, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     Source_class_data_.base(),
@@ -929,10 +938,7 @@ Source::_table_ = {
     ::_pbi::TcParser::GetTable<::debate::Source>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // bool first_hand = 4 [json_name = "firstHand"];
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Source, _impl_.first_hand_), 3>(),
-     {32, 3, 0,
-      PROTOBUF_FIELD_OFFSET(Source, _impl_.first_hand_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string url = 1 [json_name = "url"];
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
@@ -945,6 +951,16 @@ Source::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {26, 2, 0,
       PROTOBUF_FIELD_OFFSET(Source, _impl_.published_)}},
+    // bool first_hand = 4 [json_name = "firstHand"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Source, _impl_.first_hand_), 4>(),
+     {32, 4, 0,
+      PROTOBUF_FIELD_OFFSET(Source, _impl_.first_hand_)}},
+    // string image_url = 5 [json_name = "imageUrl"];
+    {::_pbi::TcParser::FastUS1,
+     {42, 3, 0,
+      PROTOBUF_FIELD_OFFSET(Source, _impl_.image_url_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -955,15 +971,18 @@ Source::_table_ = {
     // string published = 3 [json_name = "published"];
     {PROTOBUF_FIELD_OFFSET(Source, _impl_.published_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // bool first_hand = 4 [json_name = "firstHand"];
-    {PROTOBUF_FIELD_OFFSET(Source, _impl_.first_hand_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(Source, _impl_.first_hand_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string image_url = 5 [json_name = "imageUrl"];
+    {PROTOBUF_FIELD_OFFSET(Source, _impl_.image_url_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\15\3\7\11\0\0\0\0"
+    "\15\3\7\11\0\11\0\0"
     "debate.Source"
     "url"
     "excerpt"
     "published"
+    "image_url"
   }},
 };
 PROTOBUF_NOINLINE void Source::Clear() {
@@ -974,7 +993,7 @@ PROTOBUF_NOINLINE void Source::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       _impl_.url_.ClearNonDefaultToEmpty();
     }
@@ -983,6 +1002,9 @@ PROTOBUF_NOINLINE void Source::Clear() {
     }
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       _impl_.published_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      _impl_.image_url_.ClearNonDefaultToEmpty();
     }
   }
   _impl_.first_hand_ = false;
@@ -1040,11 +1062,21 @@ PROTOBUF_NOINLINE void Source::Clear() {
   }
 
   // bool first_hand = 4 [json_name = "firstHand"];
-  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (this_._internal_first_hand() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
           4, this_._internal_first_hand(), target);
+    }
+  }
+
+  // string image_url = 5 [json_name = "imageUrl"];
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (!this_._internal_image_url().empty()) {
+      const ::std::string& _s = this_._internal_image_url();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "debate.Source.image_url");
+      target = stream->WriteStringMaybeAliased(5, _s, target);
     }
   }
 
@@ -1073,7 +1105,7 @@ PROTOBUF_NOINLINE void Source::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     // string url = 1 [json_name = "url"];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_url().empty()) {
@@ -1095,8 +1127,15 @@ PROTOBUF_NOINLINE void Source::Clear() {
                                         this_._internal_published());
       }
     }
-    // bool first_hand = 4 [json_name = "firstHand"];
+    // string image_url = 5 [json_name = "imageUrl"];
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!this_._internal_image_url().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_image_url());
+      }
+    }
+    // bool first_hand = 4 [json_name = "firstHand"];
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (this_._internal_first_hand() != 0) {
         total_size += 2;
       }
@@ -1120,7 +1159,7 @@ void Source::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!from._internal_url().empty()) {
         _this->_internal_set_url(from._internal_url());
@@ -1149,6 +1188,15 @@ void Source::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (!from._internal_image_url().empty()) {
+        _this->_internal_set_image_url(from._internal_image_url());
+      } else {
+        if (_this->_impl_.image_url_.IsDefault()) {
+          _this->_internal_set_image_url("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (from._internal_first_hand() != 0) {
         _this->_impl_.first_hand_ = from._impl_.first_hand_;
       }
@@ -1176,6 +1224,7 @@ void Source::InternalSwap(Source* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.url_, &other->_impl_.url_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.excerpt_, &other->_impl_.excerpt_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.published_, &other->_impl_.published_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.image_url_, &other->_impl_.image_url_, arena);
   swap(_impl_.first_hand_, other->_impl_.first_hand_);
 }
 

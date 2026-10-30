@@ -365,6 +365,44 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
+    claim_id: 12
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 12
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The developer's story doesn't hold: the loading-speed mod his mod was said to copy didn't exist until December 2020, after the runs."
+    challenge_description: "23 October 2026. A former leaderboard moderator. The mod is LazyDFU. He also says the explanation shifted from a 'chat mod' (October 2020) to an in-house recording mod (May 2021), and that right after the 19-minute run Dream switched game versions and swapped out his mods. (Quote from YouTube's auto-captions.)"
+    voice: "MrMangoHands"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=2lkxXfMFu2Y"
+    source_excerpt: "I'm the one who legalized it for use in speedruns in 2021, not 2020. In fact, this mod didn't even exist until December of 2020 after Dreams runs."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
     claim_id: 1
   }
 }
@@ -403,7 +441,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 14
+    claim_id: 15
   }
 }
 steps {
@@ -422,7 +460,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 14
+    claim_id: 16
   }
 }
 steps {
@@ -435,7 +473,45 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 14
+    claim_id: 16
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The developer behind that account was Callahan, Dream's own seed-finder, and Karl now believes he was in on it."
+    challenge_description: "29 October 2026, the first time the developer was named publicly. His reasons: Dream's friends play along with staged Manhunts, and George and Sapnap watched the 1.15 record run live. Dream named Callahan as a seed-finder on Reddit in November 2025. (Quote from YouTube's auto-captions.)"
+    voice: "Karl Jobst"
+    basis: "INFERENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Sd5SQ40sCoI"
+    source_excerpt: "So, it finally dawned upon me, long overdue I must admit, that of course Callahan would be in on it, too."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 15
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 15
   }
 }
 steps {
@@ -449,11 +525,30 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "It was on purpose: in Dream's 2023 parkour streams, whenever he snags on a pole he never jumps, and in 8 hours he never once jumps too late, the signs of an auto-jump macro."
-    challenge_description: "March 2026, from Dream's November 2023 streams. Also: 'I could not find a single instance where Dream accidentally jumped too late and ran off an edge. Yes, 8 hours in a row.' He calls this 'the clearest evidence' of a macro, and says a cheater caught twice makes 'accidental' hard to believe. The description reads 'Dream cheated on purpose.' Dream has not answered it. (Quote from YouTube's auto-captions.)"
+    challenge_description: "March 2026, from Dream's November 2023 streams. Also: 'I could not find a single instance where Dream accidentally jumped too late and ran off an edge. Yes, 8 hours in a row.' He calls this 'the clearest evidence' of a macro, and says a cheater caught twice makes 'accidental' hard to believe. The description reads 'Dream cheated on purpose.' Dream answered the Championship accusations at length on Reddit, but not these points about the 2023 streams. (Quote from YouTube's auto-captions.)"
     voice: "Karl Jobst"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=6RGqs-Nyhq8"
     source_excerpt: "in every single case that he gets stuck on a pole in this way, he doesn't jump."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 18
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Dream's hand-cam video said he hadn't played the course in four years, yet his personal best on it was set in November 2023."
+    claim_description: "March 2026. The hand-cam video (February 2026) does say 'I haven't played this course in like 4 years'. (Quote from YouTube's auto-captions.)"
+    voice: "Karl Jobst"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=6RGqs-Nyhq8"
+    source_excerpt: "In his hand cam video Dream uploaded in the description, he said that he hadn't played the course in 4 years, but his personal best was achieved just over 2 years ago in November 2023."
   }
 }
 steps {
@@ -479,7 +574,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 17
+    claim_id: 20
   }
 }
 steps {
@@ -492,7 +587,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 17
+    claim_id: 20
   }
 }
 steps {
@@ -517,7 +612,26 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 17
+    claim_id: 21
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Live on a hand-cam stream he hit 273 one-tick jumps in his first two runs, falling once."
+    claim_description: "24 February 2026, on Reddit. He says that beats the Championship numbers called impossible, and that the missing spacebar sounds are his noise gate, set to filter out keyboard sounds; Karl Jobst later agreed with the noise-gate point."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1rd8s5x/comment/o74jku3/"
+    source_excerpt: "In the first TWO runs, I hit 273 1 tick jumps, while falling forward one time."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 20
   }
 }
 steps {
@@ -530,7 +644,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 17
+    claim_id: 20
   }
 }
 steps {
@@ -549,6 +663,44 @@ steps {
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=6RGqs-Nyhq8"
     source_excerpt: "The best performer was Lily, who achieved a success rate of 92.7%. With this kind of success rate, the odds of getting 69 non-visual one-tick jumps in a row is 1 in 186. Those odds aren't outrageous."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 21
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 21
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Landing jumps that have visual cues says nothing about the cue-less jumps under suspicion."
+    challenge_description: "22 March 2026, 'Debunking Dream's Responses With Parkour Tick Mechanics'. (Quote from YouTube's auto-captions.)"
+    voice: "Dart Spark"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=S5d5FMmMo-U"
+    source_excerpt: "being able to do 100% of visual jumps does not translate to being able to do 100% of non-visual jumps."
   }
 }
 steps {
@@ -574,7 +726,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 20
+    claim_id: 25
   }
 }
 steps {
@@ -593,7 +745,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 20
+    claim_id: 25
   }
 }
 steps {
@@ -612,7 +764,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 22
+    claim_id: 27
   }
 }
 steps {
@@ -625,7 +777,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 22
+    claim_id: 27
   }
 }
 steps {
@@ -650,7 +802,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 22
+    claim_id: 27
   }
 }
 steps {
@@ -663,7 +815,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 22
+    claim_id: 27
   }
 }
 steps {
@@ -688,7 +840,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 24
+    claim_id: 29
   }
 }
 steps {
@@ -701,7 +853,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 24
+    claim_id: 29
   }
 }
 steps {
@@ -726,7 +878,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 20
+    claim_id: 30
   }
 }
 steps {
@@ -739,7 +891,45 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 20
+    claim_id: 30
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The Astolfo client only ran on version 1.8.9, which has no shields, and its decompiled code has no such feature."
+    challenge_description: "25 October 2026, a Reddit post citing a decompiled release of the client. The duel was fought with shields, which arrived in version 1.9."
+    voice: "endlesslyeight"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1xffg6l/"
+    source_excerpt: "Astolfo client was only released for version 1.8.9"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 25
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 25
   }
 }
 steps {
@@ -764,7 +954,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 20
+    claim_id: 25
   }
 }
 steps {
@@ -777,7 +967,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 20
+    claim_id: 25
   }
 }
 steps {
@@ -810,7 +1000,7 @@ steps {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Dream's three original \"uncut\" Manhunts hide 46 cuts, found by reading the game's clock from the hunger bar."
-    claim_description: "9 October 2026, with help from Angle, repeater64, Fanda857 and masterwyatt. Manhunt is Dream's series where he speedruns while friends hunt him. (Quote from YouTube's auto-captions.)"
+    claim_description: "9 October 2026, with help from Angle, repeater64, Fanda857 and masterwyatt. Manhunt is Dream's series where he speedruns while friends hunt him. The speedrun investigators had already found splices in the Manhunts by May 2023 (Eliotex, 23 October 2026). (Quote from YouTube's auto-captions.)"
     voice: "Dart Spark"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
@@ -821,7 +1011,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -840,7 +1030,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -859,7 +1049,45 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 36
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 36
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The method can mislead: with a screenshot-marker mod he built, one unbroken take showed jolt \"cuts\"."
+    challenge_description: "27 October 2026, a computer-science student; the mod's source is public. He also argues two of the 46 cuts are misreadings. He doesn't address the backward jumps, the 3.5-hour splice, the furnace or the hotbar. (Quote from YouTube's auto-captions.)"
+    voice: "Endrf"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=3dBafTfH-Rc"
+    source_excerpt: "This video so far has been one whole take, not a single cut."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
   }
 }
 steps {
@@ -878,7 +1106,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -897,7 +1125,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -905,7 +1133,7 @@ steps {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "A hidden cut sits about 15 seconds before the famous boat clutch, and Dream relaunched his game during it, so the clutch wasn't one attempt."
-    claim_description: "repeater64, a plugin developer and co-inventor of the hunger-bar method, speaking in Dart Spark's video. He withdrew one of his own 2022 claims about the clutch (a jump that turned out to be a bug). (Quote from YouTube's auto-captions.)"
+    claim_description: "repeater64, a plugin developer on the investigation team, speaking in Dart Spark's video (the hunger-bar method itself was found by Crafterdark in early 2023). He withdrew one of his own 2022 claims about the clutch (a jump that turned out to be a bug). (Quote from YouTube's auto-captions.)"
     voice: "repeater64"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
@@ -916,7 +1144,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 33
+    claim_id: 40
   }
 }
 steps {
@@ -929,7 +1157,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 33
+    claim_id: 40
   }
 }
 steps {
@@ -942,19 +1170,19 @@ steps {
   action {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "Dream explained live, in detail, how he improvised the boat clutch."
-    challenge_description: "April 2021, Dream's answer to the first boat-clutch doubts, as reported by Sportskeeda."
-    voice: "Sportskeeda"
+    claim_text: "He improvised the clutch in one take; the main video only cut out his thinking."
+    challenge_description: "23 April 2021, on Reddit, answering the first boat-clutch doubts; he also explained it on a livestream. He added that the server's crafting reach was longer than in normal survival."
+    voice: "Dream"
     basis: "EVIDENTIAL"
-    source_url: "https://www.sportskeeda.com/minecraft/dream-debunks-accusations-faking-manhunt-boat-clutch-minecraft"
-    source_excerpt: "In light of swirling rumors of his boat clutch allegedly being \"fake,\" Dream recently hosted a livestream in which he explained in detail how the legendary Minecraft moment actually came to fruition."
+    source_url: "https://www.reddit.com/r/DreamWasTaken/comments/mx3nv9/comment/gvm4hmv/"
+    source_excerpt: "I was originally planning to jump down to the crafting bench below so I knew it was there (you'll see in the uncut). just cut out all of the thinking basically."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 34
+    claim_id: 41
   }
 }
 steps {
@@ -967,7 +1195,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 34
+    claim_id: 41
   }
 }
 steps {
@@ -981,7 +1209,7 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Frame by frame, the boat appears in his bottom hotbar before he clicks it in the inventory, which the game can't show in one take: two clips were overlaid."
-    challenge_description: "Both hotbars 'render based on the exact same object, making it completely impossible for them to be out of sync, even for a single frame.' YouTube compression can make them differ, but it delays the bottom one, the opposite of what's seen. His conclusion: the crafting footage was recorded separately and laid over the background, and a recreation by other YouTubers shows the same flaw. (Quote from YouTube's auto-captions.)"
+    challenge_description: "Both hotbars 'render based on the exact same object, making it completely impossible for them to be out of sync, even for a single frame.' YouTube compression can make them differ, but it delays the bottom one, the opposite of what's seen. His conclusion: the crafting footage was recorded separately and laid over the background, and a recreation by other YouTubers shows the same flaw. The mismatch itself was first spotted in April 2021; what's new is the case that it can't be a glitch. (Quote from YouTube's auto-captions.)"
     voice: "repeater64"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
@@ -992,7 +1220,83 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 33
+    claim_id: 42
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 42
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The early boat in the bottom hotbar is just a visual glitch, maybe from a mod."
+    challenge_description: "25 April 2021, when the mismatch was first raised. repeater64's 2026 point is the answer to this: both hotbars draw the same item, so they can't disagree."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/mxw8tw/comment/gvrwbo4/"
+    source_excerpt: "I assume it’s just minecraft being confused like it always is, could be a mod thing though."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 40
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 40
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The save-state story fails: there's no cut for almost an hour after the boat clutch."
+    challenge_description: "10 October 2026, on Reddit, the day after Dart Spark's video."
+    voice: "Dream"
+    basis: "INFERENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
+    source_excerpt: "He says that the short \"cuts\" where nothing is happening makes sense because they are to save progress, but then there is no \"cut\" for almost an hour after the boat clutch lmao"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 40
   }
 }
 steps {
@@ -1011,7 +1315,26 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 45
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "His recording tool backs up the world, and can pause the server, whenever he triggers it."
+    claim_description: "15 October 2026, Dream describing his own tool, as an innocent explanation. A world backup at the press of a key is close to the 'save state' the investigators describe."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgvktp5/"
+    source_excerpt: "it puts timestamps and other info into a file I use for editing, the world is backed up, it even can trigger a pause server-side if someone has asked for one."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
   }
 }
 steps {
@@ -1030,7 +1353,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1049,7 +1372,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 48
   }
 }
 steps {
@@ -1062,7 +1385,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 38
+    claim_id: 48
   }
 }
 steps {
@@ -1087,7 +1410,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1100,7 +1423,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1114,18 +1437,18 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The glitches come from a mod that takes screenshots to mark moments for editing, not from cuts."
-    challenge_description: "About 10 October 2026, on Reddit. The original comment couldn't be opened; these are his words as read aloud in a video, via auto-captions."
+    challenge_description: "10 October 2026, on Reddit (r/DreamWasTaken2, as u/dreamistaken). He says the screenshot clears chat, fog and tooltips, so it looks like a cut, and that saving it on the main thread caused the lag spikes."
     voice: "Dream"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=LE94mDE4Cxw"
-    source_excerpt: "I have a mod that takes screenshots when I have my trigger in order to make the editing process easier by marking key moments or things that might need to get editing attention."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
+    source_excerpt: "I have a mod that takes screenshots whenever I trigger it, in order to make the editing process easier by marking key moments or things that might need to get editing attention."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 40
+    claim_id: 50
   }
 }
 steps {
@@ -1138,7 +1461,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 40
+    claim_id: 50
   }
 }
 steps {
@@ -1163,7 +1486,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 41
+    claim_id: 51
   }
 }
 steps {
@@ -1176,7 +1499,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 41
+    claim_id: 51
   }
 }
 steps {
@@ -1190,37 +1513,38 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The counter isn't the game's clock but an interface timer for things like chat fading; bumping it is the simplest way to clear chat for a screenshot, as ChatGPT confirms."
-    challenge_description: "Dream's second Reddit reply, about mid-October 2026, quoted in Tayler's video of 17 October. The screenshot showed ChatGPT suggesting adding 200 to that counter. He said a lag spike while saving the screenshot made the code add to it hundreds or thousands of times, that the item shimmer shares the same value, and that 'surprisingly simple answers' for the backward jumps would come later. (Quote from YouTube's auto-captions.)"
+    challenge_description: "15 October 2026, a Reddit comment (score -49). His screenshot shows ChatGPT answering 'Advance the HUD tick counter by 200'. He said lag while saving the screenshot made the code add to it hundreds or thousands of times, and that the item shimmer shares the same value."
     voice: "Dream"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
-    source_excerpt: "You don't have to take my word for it, though. Here's me asking chat GPT the simplest way to fade chat in a Minecraft mod."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgvktp5/"
+    source_excerpt: "You don't have to take my word for it though, here's me asking Chat GPT the simplest way to fade chat in a Minecraft mod"
+    source_image_url: "https://i.imgur.com/WriBq4M.png"
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "His recording marker existed months before the allegations: a 6 Hunters Rematch video shows the bug where it clears underwater fog."
-    claim_description: "Tayler's account of the same reply. The investigators agree the tool is real; the question is whether it explains the old videos. (Quote from YouTube's auto-captions.)"
+    claim_text: "His recording marker existed months before the allegations: a 6 Hunters Rematch video shows its bug of clearing underwater fog."
+    claim_description: "The same comment, with side-by-side screenshots. repeater64 agrees the tool is real ('Dream has proven pretty solidly that he does indeed have a custom screenshot system'); the question is whether it explains the old videos."
     voice: "Dream"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
-    source_excerpt: "To prove he didn't just quote this recently as an excuse, Dream linked sideby-side screenshots from his six hunters rematch video from over 6 months ago."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgvktp5/"
+    source_excerpt: "Which can't have been added recently as an \"excuse\", as this is from 6+ months ago."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 43
+    claim_id: 53
   }
 }
 steps {
@@ -1233,7 +1557,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 43
+    claim_id: 53
   }
 }
 steps {
@@ -1247,18 +1571,18 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "In the newer videos chat disappears only inside the screenshot file; in the old \"uncut\" ones it vanishes from the video itself."
-    challenge_description: "17 October 2026. She also notes the same mod is used in the revival series, which scanned with no jumps, against 46 in the old videos. (Quote from YouTube's auto-captions.)"
-    voice: "Tayler"
+    challenge_description: "15 October 2026, on Reddit. Tayler repeated the point on 17 October, adding that the same mod is used in the revival series, which scanned with no jumps, against 46 in the old videos."
+    voice: "repeater64"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
-    source_excerpt: "In those newer videos from 6 months ago, when Dream takes a screenshot, the chat and item names only disappear inside the screenshot file. They stay completely visible in the actual YouTube video."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgw78sa/"
+    source_excerpt: "stuff like chat and action bar (held item name) text does NOT vanish in the video. Even though it's gone in the screenshots."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1271,7 +1595,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1284,19 +1608,19 @@ steps {
   action {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "Asked Dream's exact question, ChatGPT gives other answers, like lowering chat opacity; it only gives his if steered."
-    challenge_description: "repeater64 and several others, as reported by Tayler ('Peter 64' in the auto-captions). Others showed custom instructions can steer ChatGPT to Dream's answer, and Dream declined to share a public link to his conversation. (Quote from YouTube's auto-captions.)"
+    claim_text: "Asked Dream's exact question in a new chat, ChatGPT gives a different method that doesn't touch the counter."
+    challenge_description: "15 October 2026, on Reddit. Dream's own screenshot shows a steering prompt: on Minecraft 1.18, 'the ABSOLUTE SIMPLEST way... the LEAST CODE'. Others showed custom instructions can steer ChatGPT to his answer, and Dream declined to share a link to the conversation (Tayler, 17 October)."
     voice: "repeater64"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
-    source_excerpt: "used Dream's exact prompt every single time the AI gave completely different answers that don't touch the tick counter at all, like simply turning down the chat opacity."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgw7id0/"
+    source_excerpt: "if you try asking chatGPT the exact same prompt in a new chat, it tells you a completely different simple method to hide chat that doesn't involve touching a tick counter."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1309,7 +1633,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1323,18 +1647,18 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "Dream's own mod is written to push the shimmer's real-world clock along with the timer, exactly the code you'd need to hide cuts."
-    challenge_description: "repeater64 inspected the mod Dream had sent the investigators, as reported by Tayler. In vanilla Minecraft the shimmer runs on the computer's clock. (Quote from YouTube's auto-captions.)"
+    challenge_description: "15 October 2026, on Reddit, about the mod Dream sent the investigators. In vanilla Minecraft that method returns the computer's clock, which the shimmer runs on."
     voice: "repeater64"
     basis: "EVIDENTIAL"
-    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
-    source_excerpt: "When Repeater 64 actually looked at the mod Dream sent him, he revealed that Dream's mod was specifically programmed to counter that realworld clock value. So, it jumps right alongside the timer."
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgw78sa/"
+    source_excerpt: "In the mod he sent us, this utility method is modified to, rather than returning system time, return a value that would jump by the same amount that the GUI tickCount jumps by."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1347,7 +1671,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 42
+    claim_id: 52
   }
 }
 steps {
@@ -1372,7 +1696,26 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 57
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "He hasn't explained why the counter sometimes went backwards, though he says there are simple answers."
+    claim_description: "15 October 2026, the same comment; it goes on 'There are surprisingly simple answers in most cases.' None had been given by 29 October."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgvktp5/"
+    source_excerpt: "There's obviously more to it that I'm sure will be explored in the future (by me, or by them), like why did it decrease a couple times, why such large differences, and other stuff."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
   }
 }
 steps {
@@ -1385,7 +1728,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1399,18 +1742,37 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The real cuts are bathroom breaks and crashes; the videos promised the full run, not a raw file."
-    challenge_description: "Same Reddit reply, read aloud. (Quote from YouTube's auto-captions.)"
+    challenge_description: "The same Reddit comment, 10 October 2026."
     voice: "Dream"
     basis: "DEFINITIONAL"
-    source_url: "https://www.youtube.com/watch?v=LE94mDE4Cxw"
-    source_excerpt: "Also, there are some genuine cuts from someone having to go to the bathroom or a server crash or whatever else. The point of those videos is for the full runs, not literally a raw file"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
+    source_excerpt: "Also there are some genuine cuts, from someone having to go to the bathroom or a server crash or whatever else. The point of those videos is for the FULL RUNS, not literally a raw file."
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 48
+    claim_id: 59
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Those break cuts were hidden when that was easy, the same way he disguises cuts in the main videos."
+    claim_description: "The same comment: his own account of how the 'uncut' videos were edited."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
+    source_excerpt: "which just get cut out if there is an easy way to do it without it ruining the flow of the full video or being \"suspicious\". The same way I disguise cuts in the main video."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 59
   }
 }
 steps {
@@ -1429,7 +1791,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 48
+    claim_id: 59
   }
 }
 steps {
@@ -1442,7 +1804,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 48
+    claim_id: 59
   }
 }
 steps {
@@ -1467,7 +1829,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1480,7 +1842,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 28
+    claim_id: 34
   }
 }
 steps {
@@ -1494,10 +1856,10 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "The trick doesn't apply cleanly to his custom server and mods."
-    challenge_description: "Same Reddit reply, read aloud. (Quote from YouTube's auto-captions.)"
+    challenge_description: "The same Reddit comment, 10 October 2026."
     voice: "Dream"
     basis: "INFERENTIAL"
-    source_url: "https://www.youtube.com/watch?v=LE94mDE4Cxw"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
     source_excerpt: "It's definitely a useful trick to find cuts in speedruns and stuff, but obviously doesn't apply cleanly to custom server jars, custom mods, etc."
   }
 }
@@ -1505,7 +1867,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 51
+    claim_id: 63
   }
 }
 steps {
@@ -1518,7 +1880,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 51
+    claim_id: 63
   }
 }
 steps {
@@ -1543,7 +1905,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 28
+    claim_id: 64
   }
 }
 steps {
@@ -1556,7 +1918,45 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 28
+    claim_id: 64
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "A clean scan proves little: a simple mod can pause the jolts, and Dart's tool then finds no cuts."
+    challenge_description: "22 October 2026, with a demonstration video. It shows a clean result can be engineered; it doesn't explain the cuts that were found."
+    voice: "TheGwimWeeper"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1xc9gy6/"
+    source_excerpt: "Made a simple mod to pause and resume the jolts with keybinds and checked it for cuts, the program used by Dart Spark reported no cuts with only lag/pause being present"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 34
   }
 }
 steps {
@@ -1575,6 +1975,215 @@ steps {
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=F_-N5AVFzBY"
     source_excerpt: "Speaking from my experience when I was there, yeah, it was authentic."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The video left out answers he gave the investigators months earlier, which he says disprove 95% of it."
+    challenge_description: "10 October 2026, on Reddit."
+    voice: "Dream"
+    basis: "INFERENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf0ho3x/"
+    source_excerpt: "Seems odd to completely leave out direct counters that I gave months ago, but imo they objectively prove wrong and ruin 95% of what's said in the video, so it makes sense to me nothing was included lmao"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 67
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 67
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "They knew those answers and held them for a second video, because their investigation found he was still lying."
+    challenge_description: "15 October 2026, on Reddit. masterwyatt's part 2 and the investigators' full document are to give the details; neither was out by 29 October."
+    voice: "repeater64"
+    basis: "INFERENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x6ahzn/comment/pgw78sa/"
+    source_excerpt: "Our thorough investigation came to the conclusion that Dream was still lying despite these explanations."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 1
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "Dream's early Manhunts were staged: the worlds don't match their seeds, and a death was cut out."
+    claim_description: "6 October 2026, three days before Dart Spark's video, checked with a seed-finder. Other mismatches: a ruined-portal chest without the Frost Walker boots Dream used, a desert temple's loot, and slimes outside slime chunks. (Quote from YouTube's auto-captions.)"
+    voice: "masterwyatt"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Q934KcLk9gM"
+    source_excerpt: "if you observe that there's a brick pattern that matches a seed uh in your video, screenshot, whatever, and the eyes don't match, that means it was modified without any doubt."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 69
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In the 3 Hunters Rematch, the last ender pearl Dream needed came from a chest that, on the real seed, doesn't hold one."
+    claim_description: "Karl Jobst replays this in his 29 October video. (Quote from YouTube's auto-captions.)"
+    voice: "masterwyatt"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Q934KcLk9gM"
+    source_excerpt: "the fact that in this one chest there's a singular pearl missing with every other piece of loot generating the same. Especially since this was also the last pearl Dream needed."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 70
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 70
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "He wouldn't spawn a pearl into a chest when he could just kill one more Enderman."
+    challenge_description: "A clip from an earlier Dream stream, played in masterwyatt's video (about 19:06). (Quote from YouTube's auto-captions.)"
+    voice: "Dream"
+    basis: "INFERENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Q934KcLk9gM"
+    source_excerpt: "I was killing Enderman for so so long. Why would I just spawn in a pearl in a chest instead of just kill one extra Enderman?"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 69
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The ravine water pool he once clutched in was probably placed there by his seed-finders."
+    claim_description: "16 November 2025, on Reddit, before the investigation. He named the seed-finders as Callahan and Ken, and said the early Manhunts had looser rules."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.reddit.com/r/DreamWasTaken/comments/1oqfc0q/comment/np835rd/"
+    source_excerpt: "We play on custom server jar's, mods, and many things that could potentially slightly tweak small things like world gen, however I think in this case it was probably actually added!"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 69
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "On the real seed, a soul sand block in the lava would have blocked the boat clutch; in the video it's missing."
+    claim_description: "He rules out look-alike seeds; a custom server jar is the only innocent explanation he leaves open. At the time he judged the clutch itself not provably staged; the hidden cut and the furnace came three days later. (Quote from YouTube's auto-captions.)"
+    voice: "masterwyatt"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Q934KcLk9gM"
+    source_excerpt: "A singular soul sand block that didn't exist in his video that would have blocked the clutch."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 69
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In the second-ever Manhunt Dream died, and both his and George's videos cut the death out."
+    claim_description: "He allows the death may have been unfair, as Dream had connection problems at the time. (Quote from YouTube's auto-captions.)"
+    voice: "masterwyatt"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Q934KcLk9gM"
+    source_excerpt: "you always drop exactly 100 experience points, which happens to match perfectly with Dream's experience level after the cut. This guarantees Dream died in this manhunt and both him and George cut it out of the video."
   }
 }
 steps {
@@ -1619,7 +2228,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 54
+    claim_id: 75
   }
 }
 steps {
@@ -1645,19 +2254,19 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Dream's 2020 world records were spliced from separate attempts: strongholds load about twice as fast as in 47 runs he streamed weeks later."
-    claim_description: "23 October 2026, 'Dream Cheated Every World Record'. The quote is his stated standing; the video has no transcript, so its evidence (such as loading times faster than in Dream's later streams) is known second-hand."
+    claim_text: "Dream's 2020 world records were spliced: in his first 1.14 record the stronghold loaded in half a second, against over 1.2 seconds in all 47 runs he streamed weeks later."
+    claim_description: "23 October 2026, 'Dream Cheated Every World Record'. He was a leaderboard moderator from February 2021. The timing covers the two 1.14 records of March 2020; he challenges anyone to find a streamed run under one second. (Quote from YouTube's auto-captions.)"
     voice: "MrMangoHands"
-    basis: "AUTHORITY"
+    basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=2lkxXfMFu2Y"
-    source_excerpt: "I was a leaderboard moderator from February 2021 (after the mods talked with dream that month) and before that a technical advisor to the team from December 2020"
+    source_excerpt: "the shortest time to finish stronghold generation from any of these 47 streamed runs is over 1.2 seconds compared to half a second for his first world record and like 2/3 of a second for his next"
   }
 }
 steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 56
+    claim_id: 77
   }
 }
 steps {
@@ -1676,7 +2285,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 57
+    claim_id: 78
   }
 }
 steps {
@@ -1695,7 +2304,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 56
+    claim_id: 77
   }
 }
 steps {
@@ -1708,7 +2317,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 56
+    claim_id: 77
   }
 }
 steps {
@@ -1722,7 +2331,7 @@ steps {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
     claim_text: "His record runs were valid, played on unmodified Minecraft with no mods."
-    challenge_description: "The record video's original description, written after the 2020 ruling and kept by an archive channel."
+    challenge_description: "The record video's original description, written after the 2020 ruling and kept by an archive channel. The moderators later pulled the 1.15 record, in May 2021."
     voice: "Dream"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=dtZviABbSIA"
@@ -1733,7 +2342,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 59
+    claim_id: 80
   }
 }
 steps {
@@ -1746,7 +2355,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 59
+    claim_id: 80
   }
 }
 steps {
@@ -1759,12 +2368,50 @@ steps {
   action {
     username: "guest"
     event_type: "SUBMIT_CHALLENGE_CLAIM"
-    claim_text: "\"No mods\" misses the point: the 1.15 record opens on a different world, so it was spliced."
-    challenge_description: "23 October 2026. The quote is from the description; the detail is known from a commentator's account. Dream has not responded."
+    claim_text: "\"No mods\" misses the point: the 1.15 record's opening shows a different world from the one it claims, suggesting a splice."
+    challenge_description: "23 October 2026, from the speedrun investigation team. His firmest point: a sprinting field of view in the first frame while standing at spawn with three hunger shanks. He grants contrived non-splice ways to get the preview ('this may not be a direct proof of him splicing'). Dream has not responded. (Quote from YouTube's auto-captions.)"
     voice: "Eliotex"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=VVFywSmvUL4"
-    source_excerpt: "When Dream cheated his 1.16 on accident, the investigation group was a bit sceptical about his other speedruns."
+    source_excerpt: "The preview shows a forest, but when you load up the seed from Dream's previous world, you spawn on a little island without any trees nearby."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 80
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 80
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The 1.15 record was taken off the leaderboard and is listed as rejected."
+    challenge_description: "The leaderboard's rejection note on the run. MrMangoHands says the team pulled it in May 2021."
+    voice: "speedrun.com"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.speedrun.com/mc/runs/mk3v37lz"
+    source_excerpt: "This run has no purpose being here anymore"
   }
 }
 steps {
@@ -1779,7 +2426,7 @@ steps {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
     claim_text: "Dream privately admitted to him using an aimbot in PvP after his wrist injury."
-    claim_description: "29 October 2026. A private conversation that can't be checked. It concerns Dream's PvP after he broke his wrist sparring in April 2025, not the 2020 duel. In March Karl had pointed to a visible aim 'wiggle' in Dream's 2026 fights. (Quote from YouTube's auto-captions.)"
+    claim_description: "29 October 2026; he shows Dream's message on screen. It concerns Dream's PvP after he broke his wrist sparring in April 2025 and had surgery, not the 2020 duel. In March Karl had pointed to a visible aim 'wiggle' in Dream's 2026 fights. (Quote from YouTube's auto-captions.)"
     voice: "Karl Jobst"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=Sd5SQ40sCoI"
@@ -1787,6 +2434,102 @@ steps {
   }
 }
 steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 61 }
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 83
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "In a private message he wrote that he used aimbot after his surgery so he could keep making videos while in a cast."
+    claim_description: "A Discord message dated 3 March 2026, shown in Karl Jobst's video at about 37:50."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Sd5SQ40sCoI"
+    source_excerpt: "I did use aimbot after my surgery because I was worried about being able to make videos at all during the time and I was in a clunky cast for months on my mouse hand."
+    source_image_url: "https://i.redd.it/l3mgfgefxgyh1.jpeg"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 83
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 83
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Whether he used an aimbot in practice with a broken wrist, never in events or competition, is irrelevant, and linking it to Technoblade is dumb."
+    challenge_description: "10 October 2026, on Reddit, before Karl's video: neither a denial nor an admission."
+    voice: "Dream"
+    basis: "NORMATIVE"
+    source_url: "https://www.reddit.com/r/DreamWasTaken2/comments/1x261yj/comment/pf2r52w/"
+    source_excerpt: "Whether or not I used aimbot during practice while my wrist was broken, not in any events or competition, is pretty much irrelevant and pointless to acknowledge from my POV. Any extrapolation from that possibility to techno is dumb."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 85
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 85
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "His own message says it wasn't only practice: he used it to keep making videos and to play with friends who \"don't care and/or know\"."
+    challenge_description: "The 3 March 2026 message, as shown by Karl Jobst."
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=Sd5SQ40sCoI"
+    source_excerpt: "the alternative was no videos or streams for months, and I just play with my friends pretty much who don't care and/or know."
+  }
+}
+steps {
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 86 }
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "Karl Jobst" expected_status: "TRUE_CLAIM" }
 }

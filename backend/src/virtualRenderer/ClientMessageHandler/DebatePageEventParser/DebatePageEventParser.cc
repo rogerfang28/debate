@@ -151,6 +151,8 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
                 submitEvent->set_source_url(comp.value());
             } else if (comp.id() == "claimSourceExcerptInput") {
                 submitEvent->set_source_excerpt(comp.value());
+            } else if (comp.id() == "claimSourceImageInput") {
+                submitEvent->set_source_image_url(comp.value());
             }
         }
 
@@ -286,6 +288,8 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
                 submitEvent->set_source_url(comp.value());
             } else if (comp.id() == "challengeSourceExcerptInput") {
                 submitEvent->set_source_excerpt(comp.value());
+            } else if (comp.id() == "challengeSourceImageInput") {
+                submitEvent->set_source_image_url(comp.value());
             }
         }
 

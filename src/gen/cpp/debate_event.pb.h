@@ -1528,6 +1528,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     kVoiceFieldNumber = 6,
     kSourceUrlFieldNumber = 7,
     kSourceExcerptFieldNumber = 8,
+    kSourceImageUrlFieldNumber = 9,
   };
   // repeated string extra_sentences = 3 [json_name = "extraSentences"];
   int extra_sentences_size() const;
@@ -1663,12 +1664,27 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
 
   public:
+  // string source_image_url = 9 [json_name = "sourceImageUrl"];
+  void clear_source_image_url() ;
+  const ::std::string& source_image_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_image_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_image_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_image_url();
+  void set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_image_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_image_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_image_url();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.SubmitChallengeClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
-                                   0, 156,
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
+                                   0, 172,
                                    2>
       _table_;
 
@@ -1697,6 +1713,7 @@ class SubmitChallengeClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr voice_;
     ::google::protobuf::internal::ArenaStringPtr source_url_;
     ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
+    ::google::protobuf::internal::ArenaStringPtr source_image_url_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6530,6 +6547,7 @@ class CreateDebate final : public ::google::protobuf::Message
     kVoiceFieldNumber = 3,
     kSourceUrlFieldNumber = 4,
     kSourceExcerptFieldNumber = 5,
+    kSourceImageUrlFieldNumber = 6,
   };
   // string debate_topic = 2 [json_name = "debateTopic"];
   void clear_debate_topic() ;
@@ -6591,12 +6609,27 @@ class CreateDebate final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
 
   public:
+  // string source_image_url = 6 [json_name = "sourceImageUrl"];
+  void clear_source_image_url() ;
+  const ::std::string& source_image_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_image_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_image_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_image_url();
+  void set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_image_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_image_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_image_url();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.CreateDebate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4,
-                                   0, 75,
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 91,
                                    2>
       _table_;
 
@@ -6621,6 +6654,7 @@ class CreateDebate final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr voice_;
     ::google::protobuf::internal::ArenaStringPtr source_url_;
     ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
+    ::google::protobuf::internal::ArenaStringPtr source_image_url_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -8185,6 +8219,7 @@ class AddChildClaim final : public ::google::protobuf::Message
     kVoiceFieldNumber = 6,
     kSourceUrlFieldNumber = 7,
     kSourceExcerptFieldNumber = 8,
+    kSourceImageUrlFieldNumber = 9,
   };
   // repeated string extra_claims = 4 [json_name = "extraClaims"];
   int extra_claims_size() const;
@@ -8320,12 +8355,27 @@ class AddChildClaim final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_source_excerpt();
 
   public:
+  // string source_image_url = 9 [json_name = "sourceImageUrl"];
+  void clear_source_image_url() ;
+  const ::std::string& source_image_url() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_image_url(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_image_url();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_image_url();
+  void set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_image_url() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_image_url(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_image_url();
+
+  public:
   // @@protoc_insertion_point(class_scope:debate_event.AddChildClaim)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
-                                   0, 123,
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
+                                   0, 139,
                                    2>
       _table_;
 
@@ -8354,6 +8404,7 @@ class AddChildClaim final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr voice_;
     ::google::protobuf::internal::ArenaStringPtr source_url_;
     ::google::protobuf::internal::ArenaStringPtr source_excerpt_;
+    ::google::protobuf::internal::ArenaStringPtr source_image_url_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -9955,6 +10006,71 @@ inline void CreateDebate::set_allocated_source_excerpt(::std::string* PROTOBUF_N
   // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.source_excerpt)
 }
 
+// string source_image_url = 6 [json_name = "sourceImageUrl"];
+inline void CreateDebate::clear_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline const ::std::string& CreateDebate::source_image_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.CreateDebate.source_image_url)
+  return _internal_source_image_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CreateDebate::set_source_image_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  _impl_.source_image_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.CreateDebate.source_image_url)
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::mutable_source_image_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ::std::string* _s = _internal_mutable_source_image_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.CreateDebate.source_image_url)
+  return _s;
+}
+inline const ::std::string& CreateDebate::_internal_source_image_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_image_url_.Get();
+}
+inline void CreateDebate::_internal_set_source_image_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CreateDebate::_internal_mutable_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_image_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CreateDebate::release_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.CreateDebate.source_image_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  auto* released = _impl_.source_image_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CreateDebate::set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  }
+  _impl_.source_image_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_image_url_.IsDefault()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.CreateDebate.source_image_url)
+}
+
 // -------------------------------------------------------------------
 
 // DeleteDebate
@@ -10484,6 +10600,71 @@ inline void AddChildClaim::set_allocated_source_excerpt(::std::string* PROTOBUF_
     _impl_.source_excerpt_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.source_excerpt)
+}
+
+// string source_image_url = 9 [json_name = "sourceImageUrl"];
+inline void AddChildClaim::clear_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline const ::std::string& AddChildClaim::source_image_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.AddChildClaim.source_image_url)
+  return _internal_source_image_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void AddChildClaim::set_source_image_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  _impl_.source_image_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.AddChildClaim.source_image_url)
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::mutable_source_image_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::std::string* _s = _internal_mutable_source_image_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.AddChildClaim.source_image_url)
+  return _s;
+}
+inline const ::std::string& AddChildClaim::_internal_source_image_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_image_url_.Get();
+}
+inline void AddChildClaim::_internal_set_source_image_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL AddChildClaim::_internal_mutable_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_image_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE AddChildClaim::release_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.AddChildClaim.source_image_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000100U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  auto* released = _impl_.source_image_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void AddChildClaim::set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  }
+  _impl_.source_image_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_image_url_.IsDefault()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.AddChildClaim.source_image_url)
 }
 
 // string basis = 3 [json_name = "basis"];
@@ -12116,6 +12297,71 @@ inline void SubmitChallengeClaim::set_allocated_source_excerpt(::std::string* PR
     _impl_.source_excerpt_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.source_excerpt)
+}
+
+// string source_image_url = 9 [json_name = "sourceImageUrl"];
+inline void SubmitChallengeClaim::clear_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline const ::std::string& SubmitChallengeClaim::source_image_url() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:debate_event.SubmitChallengeClaim.source_image_url)
+  return _internal_source_image_url();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void SubmitChallengeClaim::set_source_image_url(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  _impl_.source_image_url_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:debate_event.SubmitChallengeClaim.source_image_url)
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::mutable_source_image_url()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::std::string* _s = _internal_mutable_source_image_url();
+  // @@protoc_insertion_point(field_mutable:debate_event.SubmitChallengeClaim.source_image_url)
+  return _s;
+}
+inline const ::std::string& SubmitChallengeClaim::_internal_source_image_url() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_image_url_.Get();
+}
+inline void SubmitChallengeClaim::_internal_set_source_image_url(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_image_url_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL SubmitChallengeClaim::_internal_mutable_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.source_image_url_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE SubmitChallengeClaim::release_source_image_url() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:debate_event.SubmitChallengeClaim.source_image_url)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000100U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  auto* released = _impl_.source_image_url_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  return released;
+}
+inline void SubmitChallengeClaim::set_allocated_source_image_url(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  }
+  _impl_.source_image_url_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_image_url_.IsDefault()) {
+    _impl_.source_image_url_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:debate_event.SubmitChallengeClaim.source_image_url)
 }
 
 // -------------------------------------------------------------------

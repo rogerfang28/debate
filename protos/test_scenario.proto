@@ -53,6 +53,7 @@ message TestAction {
   // Where the claim was taken from, if anywhere. See debate.Source.
   string source_url = 14;
   string source_excerpt = 15;
+  string source_image_url = 16;
 }
 
 // A single expectation to verify after the action in this step runs
