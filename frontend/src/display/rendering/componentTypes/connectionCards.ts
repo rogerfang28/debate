@@ -239,10 +239,17 @@ function cardElement(host: HTMLElement, key: string, onPick: (id: string) => voi
 // is marked: a "Parent" badge and an accent ring.
 const PARENT_KINDS = new Set<LinkKind>(["parent", "challenged", "undercutOf"]);
 
+// The two things a card says, on two channels so they never compete: the
+// claim's STATUS is the dot (green true, red false, grey undetermined), and
+// the RELATION to the selection is the border and the label (orange dashed
+// for a challenge, as challenge lines are on the map; plain for a support).
+const CHALLENGE_KINDS = new Set<LinkKind>(["challenged", "undercutOf", "challenge", "undercut", "undercutter"]);
+
 function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: string, text: string, target: string,
-              parent = false) {
+              parent = false, challenge = false) {
   if (el.style.getPropertyValue("--card-color") !== color) el.style.setProperty("--card-color", color);
   el.classList.toggle("graph-card-parent", parent);
+  el.classList.toggle("graph-card-challenge", challenge);
   el.dataset.target = target;
   const set = (sel: string, value: string) => {
     const part = el.querySelector<HTMLElement>(sel)!;
@@ -307,7 +314,7 @@ export function placeConnectionCards(
         const key = `c${c.t.id}`;
         const el = cardElement(host, key, onPick);
         fill(el, c.t.color, c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id,
-             PARENT_KINDS.has(c.t.kind));
+             PARENT_KINDS.has(c.t.kind), CHALLENGE_KINDS.has(c.t.kind));
         keep.add(key);
         placed.push({ key, run, el, x: c.x, y: c.y, w: 0, h: 0 });
       }

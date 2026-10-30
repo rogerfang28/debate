@@ -971,10 +971,12 @@ tr:hover td {
   align-items: center;
   width: min(300px, calc(100% - 16px));
   padding: 9px 12px;
-  /* --card-color is the pointed-at claim's status colour, set per card. */
+  /* --card-color is the pointed-at claim's STATUS colour, set per card; it
+     colours the dot only. The border shows the RELATION: plain for a
+     support, orange dashed for a challenge (.graph-card-challenge). */
   --card-color: var(--text-3);
   background: var(--panel-2);
-  border: 1.5px solid var(--card-color);
+  border: 1.5px solid var(--line-strong);
   border-radius: 12px;
   font-size: 13px;
   line-height: 1.35;
@@ -989,8 +991,8 @@ tr:hover td {
 }
 .graph-card-dot {
   grid-row: 1 / span 2;
-  width: 9px;
-  height: 9px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--card-color);
 }
@@ -1027,6 +1029,15 @@ tr:hover td {
 }
 .graph-card-kind {
   color: var(--text-3);
+}
+/* A challenge: the orange dashed border of challenge lines on the map, and
+   its label in orange, so "this argues against" reads at a glance. */
+.graph-card.graph-card-challenge {
+  border: 1.5px dashed var(--challenge);
+}
+.graph-card-challenge .graph-card-kind {
+  color: var(--challenge);
+  font-weight: 600;
 }
 .graph-card-arrow {
   grid-row: 1 / span 2;
