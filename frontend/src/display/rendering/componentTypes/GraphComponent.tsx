@@ -124,6 +124,17 @@ const FLY_MS = 450;
 // and draws the edge cards; off, a click only selects, as the graph always
 // did. The choice is the viewer's, kept in their browser.
 const FLY_STORAGE_KEY = "debate.graphFly";
+// The key (what the colours and the dashed line mean, and whose colour is
+// whose) is folded behind a button so it never covers the graph; the reader
+// opens it when they need it, and their browser remembers which way it was.
+const KEY_STORAGE_KEY = "debate.graphKey";
+const readKeyOpen = (): boolean => {
+  try {
+    return localStorage.getItem(KEY_STORAGE_KEY) === "open";
+  } catch {
+    return false;
+  }
+};
 const readFlyMode = (): boolean => {
   try {
     return localStorage.getItem(FLY_STORAGE_KEY) !== "off";
@@ -243,6 +254,17 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // ═══════════ EXPERIMENT: SEMANTIC ZOOM (state) ═══════════
   const [semanticZoom, setSemanticZoom] = useState(SEMANTIC_ZOOM_DEFAULT);
   const [flyMode, setFlyMode] = useState(readFlyMode);
+  const [keyOpen, setKeyOpen] = useState(readKeyOpen);
+  const toggleKey = useCallback(() => {
+    setKeyOpen((v) => {
+      try {
+        localStorage.setItem(KEY_STORAGE_KEY, v ? "closed" : "open");
+      } catch {
+        // storage blocked: the choice lasts for this page
+      }
+      return !v;
+    });
+  }, []);
   const flyModeRef = useRef(flyMode);
   flyModeRef.current = flyMode;
   const toggleFlyMode = useCallback(() => {
@@ -1416,12 +1438,37 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         </button>
       </div>
 
-      {/* Legend */}
-      <div
+      {/* Key: a button, and the legend under it while open */}
+      <button
+        type="button"
+        onClick={toggleKey}
+        className="graph-zoom-btn"
+        aria-expanded={keyOpen}
+        title={keyOpen ? "Hide the key" : "Show what the colours and lines mean"}
         style={{
           position: "absolute",
           top: "0.75rem",
           left: "0.75rem",
+          height: "28px",
+          padding: "0 0.6rem",
+          gap: "0.35rem",
+          background: keyOpen ? "var(--accent-soft)" : "var(--surface-elevated)",
+          border: `1px solid ${keyOpen ? "var(--accent)" : "var(--border-default)"}`,
+          borderRadius: "var(--radius-sm)",
+          color: keyOpen ? "var(--accent-hover)" : "var(--text-secondary)",
+          fontSize: "0.75rem",
+        }}
+      >
+        <span aria-hidden="true">{keyOpen ? "▾" : "▸"}</span>
+        Key
+      </button>
+      {keyOpen && (
+      <div
+        style={{
+          position: "absolute",
+          top: "calc(0.75rem + 32px)",
+          left: "0.75rem",
+          maxWidth: "min(28rem, calc(100% - 1.5rem))",
           display: "flex",
           flexWrap: "wrap",
           gap: "0.5rem",
@@ -1474,6 +1521,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           </span>
         ))}
       </div>
+      )}
     </div>
   );
 };
