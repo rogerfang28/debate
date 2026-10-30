@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cctype>
 #include <set>
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../utils/AnonymousUser.h"
@@ -972,11 +973,30 @@ static ui::Component BuildTreeNode(
     return node;
 }
 
+// The claims a line of the AI's text names as [#12] that are claims of this
+// debate, comma-separated in order of first mention. The model is told to
+// cite claims that way (DebateChat.cc); a number it made up names nothing
+// here and stays plain text.
+static std::string ClaimLinksIn(const std::string& line, const debate::Collection& collectionProto) {
+    std::string out;
+    std::set<int> seen;
+    for (size_t at = line.find("[#"); at != std::string::npos; at = line.find("[#", at + 2)) {
+        size_t end = at + 2;
+        while (end < line.size() && end - at < 12 && std::isdigit(static_cast<unsigned char>(line[end]))) ++end;
+        if (end == at + 2 || end >= line.size() || line[end] != ']') continue;
+        const int claimId = std::stoi(line.substr(at + 2, end - at - 2));
+        if (collectionProto.claims_by_id().count(claimId) == 0 || !seen.insert(claimId).second) continue;
+        out += (out.empty() ? "" : ",") + std::to_string(claimId);
+    }
+    return out;
+}
+
 // One block of prose as components: one TEXT per line, because the renderer
 // collapses whitespace like HTML and a single node would run the model's
-// paragraphs together.
+// paragraphs together. Given a collection, a line naming its claims as [#12]
+// carries data-claim-links, and the client makes those references links.
 static void AddTextLines(ui::Component* parent, const std::string& idPrefix, const std::string& text,
-                         const std::string& colorClass) {
+                         const std::string& colorClass, const debate::Collection* linkable = nullptr) {
     std::istringstream lines(text);
     std::string line;
     int lineIndex = 0;
@@ -991,6 +1011,10 @@ static void AddTextLines(ui::Component* parent, const std::string& idPrefix, con
         }
         ui::Component textLine = ComponentGenerator::createText(id, line, "text-sm", colorClass, "", "");
         (*textLine.mutable_css())["overflow-wrap"] = "anywhere";
+        if (linkable != nullptr) {
+            const std::string links = ClaimLinksIn(line, *linkable);
+            if (!links.empty()) ComponentGenerator::addAttribute(&textLine, "data-claim-links", links);
+        }
         ComponentGenerator::addChild(parent, textLine);
     }
 }
@@ -1002,7 +1026,8 @@ static void AddTextLines(ui::Component* parent, const std::string& idPrefix, con
 // It stands beside the argument rather than in it: past a dozen claims the
 // graph stops answering "so where does this stand" at a glance, and asking
 // should be one click away from wherever the reader is.
-ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selectedClaimId) {
+ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selectedClaimId,
+                                       const debate::Collection& collectionProto) {
     const user_engagement::DebatingInfo::ChatState& chat = viewerUser.engagement().debating_info().chat();
 
     // Folded away with one click, so it is always to hand and never in the
@@ -1041,7 +1066,7 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
             );
             ComponentGenerator::addChild(&turn, who);
             AddTextLines(&turn, "chatLine_" + std::to_string(i), m.text(),
-                         mine ? "text-gray-300" : "text-gray-100");
+                         mine ? "text-gray-300" : "text-gray-100", mine ? nullptr : &collectionProto);
             ComponentGenerator::addChild(&transcript, turn);
         }
         ComponentGenerator::addChild(&panel, transcript);
@@ -1122,10 +1147,11 @@ ui::Component StepView::BuildChatPanel(const user::User& viewerUser, int selecte
 // The chat as a page's chat region: the window's height beside the debate
 // or the brief, its ask box at the bottom (the client lays it out; below
 // 1100px it falls back to the corner box).
-ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId) {
+ui::Component StepView::BuildChatColumn(const user::User& viewerUser, int selectedClaimId,
+                                        const debate::Collection& collectionProto) {
     ui::Component column = ComponentGenerator::createContainer("chatColumn", "", "", "", "", "", "", "");
     ComponentGenerator::addAttribute(&column, "data-region", "chat");
-    ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId));
+    ComponentGenerator::addChild(&column, BuildChatPanel(viewerUser, selectedClaimId, collectionProto));
     return column;
 }
 
@@ -1688,7 +1714,7 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&contentRow, rightColumn);
 	// The chat only where a model can be reached (DEBATE_AI, AiAvailability.h).
 	if (ai_availability::EnabledFor(viewerUser.username())) {
-		ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
+		ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId, collectionProto));
 	}
 	ComponentGenerator::addChild(&container, contentRow);
 

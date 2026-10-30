@@ -435,7 +435,7 @@ ui::Page BriefView::GenerateBriefPage(
         currentClaimId = facts.rootClaimId;
     }
     if (ai_availability::EnabledFor(viewerUser.username())) {
-        ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId));
+        ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId, collectionProto));
     }
     ComponentGenerator::addChild(&container, contentRow);
 
