@@ -318,6 +318,9 @@ enum EventType : int {
   IMPORT_PREVIEW = 88,
   IMPORT_PUBLISH = 89,
   IMPORT_CLOSE = 90,
+  ACTIVITY_OPEN = 91,
+  ACTIVITY_CLOSE = 92,
+  ACTIVITY_FILTER = 93,
   EventType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       ::std::numeric_limits<::int32_t>::min(),
   EventType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -328,11 +331,11 @@ extern const uint32_t EventType_internal_data_[];
 inline constexpr EventType EventType_MIN =
     static_cast<EventType>(0);
 inline constexpr EventType EventType_MAX =
-    static_cast<EventType>(90);
+    static_cast<EventType>(93);
 inline bool EventType_IsValid(int value) {
   return ::google::protobuf::internal::ValidateEnum(value, EventType_internal_data_);
 }
-inline constexpr int EventType_ARRAYSIZE = 90 + 1;
+inline constexpr int EventType_ARRAYSIZE = 93 + 1;
 const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor();
 template <typename T>
 const ::std::string& EventType_Name(T value) {
@@ -343,7 +346,7 @@ const ::std::string& EventType_Name(T value) {
 }
 template <>
 inline const ::std::string& EventType_Name(EventType value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 90>(
+  return ::google::protobuf::internal::NameOfDenseEnum<EventType_descriptor, 0, 93>(
       static_cast<int>(value));
 }
 inline bool EventType_Parse(

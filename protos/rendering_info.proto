@@ -165,6 +165,9 @@ message HomePageRenderingInfo {
 
 	// The viewer is named in DEBATE_ADMINS: their own profile offers Import.
 	bool viewer_is_admin = 8;
+
+	// The admin's activity log, when it is open on their own profile.
+	moderator_to_vr.ActivityReport activity = 9;
 }
 
 message HomeDebateTopicRenderInfo {

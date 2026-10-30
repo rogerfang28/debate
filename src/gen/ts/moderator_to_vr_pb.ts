@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file moderator_to_vr.proto.
  */
 export const file_moderator_to_vr: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciK1AQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdBIpCgdwcm9maWxlGAQgASgLMhgubW9kZXJhdG9yX3RvX3ZyLlByb2ZpbGUi5QEKB1Byb2ZpbGUSDwoHdXNlcl9pZBgBIAEoBRIQCgh1c2VybmFtZRgCIAEoCRIMCgRraW5kGAMgASgJEhEKCWpvaW5lZF9hdBgEIAEoAxIPCgdkZWJhdGVzGAUgASgFEg4KBmNsYWltcxgGIAEoBRISCgpjaGFsbGVuZ2VzGAcgASgFEhIKCmFncmVlbWVudHMYCCABKAUSEwoLY29uY2Vzc2lvbnMYCSABKAUSFwoPb3Blbl9jaGFsbGVuZ2VzGAogASgFEhIKCmRlYmF0ZV9pZHMYCyADKAUSCwoDb3duGAwgASgIInsKC1BlcnNvblRhbGx5Eg8KB3VzZXJfaWQYASABKAUSDgoGY2xhaW1zGAIgASgFEhIKCmNoYWxsZW5nZXMYAyABKAUSEgoKYWdyZWVtZW50cxgEIAEoBRITCgtjb25jZXNzaW9ucxgFIAEoBRIOCgZ2b2ljZWQYBiABKAUi2AQKC0RlYmF0ZVRvcGljEgoKAmlkGAEgASgFEg0KBXRvcGljGAIgASgJEhIKCmNyZWF0b3JfaWQYAyABKAUSFAoMaXNfY2hhbGxlbmdlGAQgASgIEh0KFWNsYWltX2l0c19jaGFsbGVuZ2luZxgFIAEoCRIRCglyb290X3RleHQYBiABKAkSEwoLcm9vdF9ob2xkZXIYByABKAkSEgoKdW5yZXNvbHZlZBgIIAEoCBISCgpoaW5nZV90ZXh0GAkgASgJEhMKC2NsYWltX2NvdW50GAogASgFEhQKDHN0YW5jZV9jb3VudBgLIAEoBRIcChRvcGVuX2NoYWxsZW5nZV9jb3VudBgMIAEoBRIQCghpbnZvbHZlZBgNIAMoCRIVCg1sYXN0X21vdmVkX2F0GA4gASgDEhQKDHBlb3BsZV9jb3VudBgPIAEoBRIqCgVvd2luZxgQIAMoCzIbLm1vZGVyYXRvcl90b192ci5Pd2luZ1BhcnR5EigKBG93ZWQYESADKAsyGi5tb2RlcmF0b3JfdG9fdnIuT3dlZFJlcGx5EhIKCm1lbWJlcl9pZHMYEiADKAUSMQoMcmVjZW50X21vdmVzGBMgAygLMhsubW9kZXJhdG9yX3RvX3ZyLlJlY2VudE1vdmUSEwoLY2xhaW1fdGV4dHMYFCADKAkSFAoMc2VhcmNoX21hdGNoGBUgASgIEhYKDm1hdGNoZWRfY2xhaW1zGBYgAygJEi0KB3RhbGxpZXMYFyADKAsyHC5tb2RlcmF0b3JfdG9fdnIuUGVyc29uVGFsbHkiKAoKT3dpbmdQYXJ0eRILCgN3aG8YASABKAkSDQoFY291bnQYAiABKAUiOAoJT3dlZFJlcGx5EgsKA3dobxgBIAEoCRIQCghjbGFpbV9pZBgCIAEoBRIMCgR0ZXh0GAMgASgJIkAKClJlY2VudE1vdmUSCwoDd2hvGAEgASgJEgwKBHZlcmIYAiABKAkSCgoCYXQYAyABKAMSCwoDc2VxGAQgASgFIjoKCkRlYmF0ZUxpc3QSLAoGdG9waWNzGAEgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkRlYmF0ZVRvcGljYgZwcm90bzM", [file_user, file_collection]);
+  fileDesc("ChVtb2RlcmF0b3JfdG9fdnIucHJvdG8SD21vZGVyYXRvcl90b192ciLoAQoUTW9kZXJhdG9yVG9WUk1lc3NhZ2USGAoEdXNlchgBIAEoCzIKLnVzZXIuVXNlchImCgpjb2xsZWN0aW9uGAIgASgLMhIuZGViYXRlLkNvbGxlY3Rpb24SMAoLZGViYXRlX2xpc3QYAyABKAsyGy5tb2RlcmF0b3JfdG9fdnIuRGViYXRlTGlzdBIpCgdwcm9maWxlGAQgASgLMhgubW9kZXJhdG9yX3RvX3ZyLlByb2ZpbGUSMQoIYWN0aXZpdHkYBSABKAsyHy5tb2RlcmF0b3JfdG9fdnIuQWN0aXZpdHlSZXBvcnQitwIKDkFjdGl2aXR5UmVwb3J0EhcKD2dlbmVyYXRlZF9hdF9tcxgBIAEoAxIyCghsYXN0X2RheRgCIAEoCzIgLm1vZGVyYXRvcl90b192ci5BY3Rpdml0eVN1bW1hcnkSMwoJbGFzdF93ZWVrGAMgASgLMiAubW9kZXJhdG9yX3RvX3ZyLkFjdGl2aXR5U3VtbWFyeRIqCgRkYXlzGAQgAygLMhwubW9kZXJhdG9yX3RvX3ZyLkFjdGl2aXR5RGF5EjcKC3RvcF9kZWJhdGVzGAUgAygLMiIubW9kZXJhdG9yX3RvX3ZyLkFjdGl2aXR5VG9wRGViYXRlEi4KBnJlY2VudBgGIAMoCzIeLm1vZGVyYXRvcl90b192ci5BY3Rpdml0eUVudHJ5Eg4KBmZpbHRlchgHIAEoCSK5AQoPQWN0aXZpdHlTdW1tYXJ5EhAKCHZpc2l0b3JzGAEgASgFEg8KB21lbWJlcnMYAiABKAUSEAoIc2lnbl9pbnMYAyABKAUSFAoMbmV3X2FjY291bnRzGAQgASgFEg8KB2FjdGlvbnMYBSABKAUSDgoGYWdyZWVzGAYgASgFEhIKCmNoYWxsZW5nZXMYByABKAUSDgoGY2xhaW1zGAggASgFEhYKDmRlYmF0ZXNfb3BlbmVkGAkgASgFIncKC0FjdGl2aXR5RGF5EgwKBGRhdGUYASABKAkSEAoIdmlzaXRvcnMYAiABKAUSDwoHbWVtYmVycxgDIAEoBRIQCghzaWduX2lucxgEIAEoBRIUCgxuZXdfYWNjb3VudHMYBSABKAUSDwoHYWN0aW9ucxgGIAEoBSJUChFBY3Rpdml0eVRvcERlYmF0ZRIRCglkZWJhdGVfaWQYASABKAUSDQoFdGl0bGUYAiABKAkSDQoFb3BlbnMYAyABKAUSDgoGcGVvcGxlGAQgASgFIr4BCg1BY3Rpdml0eUVudHJ5Eg0KBWF0X21zGAEgASgDEg8KB3VzZXJfaWQYAiABKAUSEAoIdXNlcm5hbWUYAyABKAkSDgoGbWVtYmVyGAQgASgIEgwKBGtpbmQYBSABKAkSEQoJZGViYXRlX2lkGAYgASgFEhQKDGRlYmF0ZV90aXRsZRgHIAEoCRIQCghjbGFpbV9pZBgIIAEoBRISCgpjbGFpbV90ZXh0GAkgASgJEg4KBmRldGFpbBgKIAEoCSLlAQoHUHJvZmlsZRIPCgd1c2VyX2lkGAEgASgFEhAKCHVzZXJuYW1lGAIgASgJEgwKBGtpbmQYAyABKAkSEQoJam9pbmVkX2F0GAQgASgDEg8KB2RlYmF0ZXMYBSABKAUSDgoGY2xhaW1zGAYgASgFEhIKCmNoYWxsZW5nZXMYByABKAUSEgoKYWdyZWVtZW50cxgIIAEoBRITCgtjb25jZXNzaW9ucxgJIAEoBRIXCg9vcGVuX2NoYWxsZW5nZXMYCiABKAUSEgoKZGViYXRlX2lkcxgLIAMoBRILCgNvd24YDCABKAgiewoLUGVyc29uVGFsbHkSDwoHdXNlcl9pZBgBIAEoBRIOCgZjbGFpbXMYAiABKAUSEgoKY2hhbGxlbmdlcxgDIAEoBRISCgphZ3JlZW1lbnRzGAQgASgFEhMKC2NvbmNlc3Npb25zGAUgASgFEg4KBnZvaWNlZBgGIAEoBSLYBAoLRGViYXRlVG9waWMSCgoCaWQYASABKAUSDQoFdG9waWMYAiABKAkSEgoKY3JlYXRvcl9pZBgDIAEoBRIUCgxpc19jaGFsbGVuZ2UYBCABKAgSHQoVY2xhaW1faXRzX2NoYWxsZW5naW5nGAUgASgJEhEKCXJvb3RfdGV4dBgGIAEoCRITCgtyb290X2hvbGRlchgHIAEoCRISCgp1bnJlc29sdmVkGAggASgIEhIKCmhpbmdlX3RleHQYCSABKAkSEwoLY2xhaW1fY291bnQYCiABKAUSFAoMc3RhbmNlX2NvdW50GAsgASgFEhwKFG9wZW5fY2hhbGxlbmdlX2NvdW50GAwgASgFEhAKCGludm9sdmVkGA0gAygJEhUKDWxhc3RfbW92ZWRfYXQYDiABKAMSFAoMcGVvcGxlX2NvdW50GA8gASgFEioKBW93aW5nGBAgAygLMhsubW9kZXJhdG9yX3RvX3ZyLk93aW5nUGFydHkSKAoEb3dlZBgRIAMoCzIaLm1vZGVyYXRvcl90b192ci5Pd2VkUmVwbHkSEgoKbWVtYmVyX2lkcxgSIAMoBRIxCgxyZWNlbnRfbW92ZXMYEyADKAsyGy5tb2RlcmF0b3JfdG9fdnIuUmVjZW50TW92ZRITCgtjbGFpbV90ZXh0cxgUIAMoCRIUCgxzZWFyY2hfbWF0Y2gYFSABKAgSFgoObWF0Y2hlZF9jbGFpbXMYFiADKAkSLQoHdGFsbGllcxgXIAMoCzIcLm1vZGVyYXRvcl90b192ci5QZXJzb25UYWxseSIoCgpPd2luZ1BhcnR5EgsKA3dobxgBIAEoCRINCgVjb3VudBgCIAEoBSI4CglPd2VkUmVwbHkSCwoDd2hvGAEgASgJEhAKCGNsYWltX2lkGAIgASgFEgwKBHRleHQYAyABKAkiQAoKUmVjZW50TW92ZRILCgN3aG8YASABKAkSDAoEdmVyYhgCIAEoCRIKCgJhdBgDIAEoAxILCgNzZXEYBCABKAUiOgoKRGViYXRlTGlzdBIsCgZ0b3BpY3MYASADKAsyHC5tb2RlcmF0b3JfdG9fdnIuRGViYXRlVG9waWNiBnByb3RvMw", [file_user, file_collection]);
 
 /**
  * @generated from message moderator_to_vr.ModeratorToVRMessage
@@ -45,6 +45,14 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
    * @generated from field: moderator_to_vr.Profile profile = 4;
    */
   profile?: Profile;
+
+  /**
+   * The admin's activity log, only when an admin has it open on their own
+   * profile (engagement.home_view.activity_open).
+   *
+   * @generated from field: moderator_to_vr.ActivityReport activity = 5;
+   */
+  activity?: ActivityReport;
 };
 
 /**
@@ -53,6 +61,284 @@ export type ModeratorToVRMessage = Message<"moderator_to_vr.ModeratorToVRMessage
  */
 export const ModeratorToVRMessageSchema: GenMessage<ModeratorToVRMessage> = /*@__PURE__*/
   messageDesc(file_moderator_to_vr, 0);
+
+/**
+ * What the activity log shows an admin: who visited, signed in and acted,
+ * summed and listed. Built from the ACTIVITY table (visits, sign-ins, opens,
+ * account changes) and the MOVES table (actions in debates). Times are UTC.
+ *
+ * @generated from message moderator_to_vr.ActivityReport
+ */
+export type ActivityReport = Message<"moderator_to_vr.ActivityReport"> & {
+  /**
+   * @generated from field: int64 generated_at_ms = 1;
+   */
+  generatedAtMs: bigint;
+
+  /**
+   * the last 24 hours
+   *
+   * @generated from field: moderator_to_vr.ActivitySummary last_day = 2;
+   */
+  lastDay?: ActivitySummary;
+
+  /**
+   * the last 7 days
+   *
+   * @generated from field: moderator_to_vr.ActivitySummary last_week = 3;
+   */
+  lastWeek?: ActivitySummary;
+
+  /**
+   * the last 14 UTC days, newest first
+   *
+   * @generated from field: repeated moderator_to_vr.ActivityDay days = 4;
+   */
+  days: ActivityDay[];
+
+  /**
+   * most opened, last 7 days
+   *
+   * @generated from field: repeated moderator_to_vr.ActivityTopDebate top_debates = 5;
+   */
+  topDebates: ActivityTopDebate[];
+
+  /**
+   * newest first
+   *
+   * @generated from field: repeated moderator_to_vr.ActivityEntry recent = 6;
+   */
+  recent: ActivityEntry[];
+
+  /**
+   * "all" | "members" | "visitors"
+   *
+   * @generated from field: string filter = 7;
+   */
+  filter: string;
+};
+
+/**
+ * Describes the message moderator_to_vr.ActivityReport.
+ * Use `create(ActivityReportSchema)` to create a new message.
+ */
+export const ActivityReportSchema: GenMessage<ActivityReport> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 1);
+
+/**
+ * @generated from message moderator_to_vr.ActivitySummary
+ */
+export type ActivitySummary = Message<"moderator_to_vr.ActivitySummary"> & {
+  /**
+   * distinct visitors seen
+   *
+   * @generated from field: int32 visitors = 1;
+   */
+  visitors: number;
+
+  /**
+   * distinct members seen
+   *
+   * @generated from field: int32 members = 2;
+   */
+  members: number;
+
+  /**
+   * sign-ins to existing accounts
+   *
+   * @generated from field: int32 sign_ins = 3;
+   */
+  signIns: number;
+
+  /**
+   * @generated from field: int32 new_accounts = 4;
+   */
+  newAccounts: number;
+
+  /**
+   * every action in a debate
+   *
+   * @generated from field: int32 actions = 5;
+   */
+  actions: number;
+
+  /**
+   * @generated from field: int32 agrees = 6;
+   */
+  agrees: number;
+
+  /**
+   * @generated from field: int32 challenges = 7;
+   */
+  challenges: number;
+
+  /**
+   * supports and new debates
+   *
+   * @generated from field: int32 claims = 8;
+   */
+  claims: number;
+
+  /**
+   * @generated from field: int32 debates_opened = 9;
+   */
+  debatesOpened: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.ActivitySummary.
+ * Use `create(ActivitySummarySchema)` to create a new message.
+ */
+export const ActivitySummarySchema: GenMessage<ActivitySummary> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 2);
+
+/**
+ * @generated from message moderator_to_vr.ActivityDay
+ */
+export type ActivityDay = Message<"moderator_to_vr.ActivityDay"> & {
+  /**
+   * "2026-10-29" (UTC)
+   *
+   * @generated from field: string date = 1;
+   */
+  date: string;
+
+  /**
+   * @generated from field: int32 visitors = 2;
+   */
+  visitors: number;
+
+  /**
+   * @generated from field: int32 members = 3;
+   */
+  members: number;
+
+  /**
+   * @generated from field: int32 sign_ins = 4;
+   */
+  signIns: number;
+
+  /**
+   * @generated from field: int32 new_accounts = 5;
+   */
+  newAccounts: number;
+
+  /**
+   * @generated from field: int32 actions = 6;
+   */
+  actions: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.ActivityDay.
+ * Use `create(ActivityDaySchema)` to create a new message.
+ */
+export const ActivityDaySchema: GenMessage<ActivityDay> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 3);
+
+/**
+ * @generated from message moderator_to_vr.ActivityTopDebate
+ */
+export type ActivityTopDebate = Message<"moderator_to_vr.ActivityTopDebate"> & {
+  /**
+   * @generated from field: int32 debate_id = 1;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * @generated from field: int32 opens = 3;
+   */
+  opens: number;
+
+  /**
+   * distinct people who opened it
+   *
+   * @generated from field: int32 people = 4;
+   */
+  people: number;
+};
+
+/**
+ * Describes the message moderator_to_vr.ActivityTopDebate.
+ * Use `create(ActivityTopDebateSchema)` to create a new message.
+ */
+export const ActivityTopDebateSchema: GenMessage<ActivityTopDebate> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 4);
+
+/**
+ * @generated from message moderator_to_vr.ActivityEntry
+ */
+export type ActivityEntry = Message<"moderator_to_vr.ActivityEntry"> & {
+  /**
+   * @generated from field: int64 at_ms = 1;
+   */
+  atMs: bigint;
+
+  /**
+   * @generated from field: int32 user_id = 2;
+   */
+  userId: number;
+
+  /**
+   * as it was then (a debate action: as it is now)
+   *
+   * @generated from field: string username = 3;
+   */
+  username: string;
+
+  /**
+   * false: a visitor
+   *
+   * @generated from field: bool member = 4;
+   */
+  member: boolean;
+
+  /**
+   * visit, sign_in, sign_up, sign_out, open_debate, brief, chat, import,
+   * rename, delete_account; and from the move log: new_debate, support,
+   * challenge, agree, withdraw, concede, delete.
+   *
+   * @generated from field: string kind = 5;
+   */
+  kind: string;
+
+  /**
+   * @generated from field: int32 debate_id = 6;
+   */
+  debateId: number;
+
+  /**
+   * @generated from field: string debate_title = 7;
+   */
+  debateTitle: string;
+
+  /**
+   * @generated from field: int32 claim_id = 8;
+   */
+  claimId: number;
+
+  /**
+   * @generated from field: string claim_text = 9;
+   */
+  claimText: string;
+
+  /**
+   * @generated from field: string detail = 10;
+   */
+  detail: string;
+};
+
+/**
+ * Describes the message moderator_to_vr.ActivityEntry.
+ * Use `create(ActivityEntrySchema)` to create a new message.
+ */
+export const ActivityEntrySchema: GenMessage<ActivityEntry> = /*@__PURE__*/
+  messageDesc(file_moderator_to_vr, 5);
 
 /**
  * A person's public profile: who they are and what they have done, summed
@@ -138,7 +424,7 @@ export type Profile = Message<"moderator_to_vr.Profile"> & {
  * Use `create(ProfileSchema)` to create a new message.
  */
 export const ProfileSchema: GenMessage<Profile> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 1);
+  messageDesc(file_moderator_to_vr, 6);
 
 /**
  * One person's part in one debate, for their profile. Claims and challenges
@@ -189,7 +475,7 @@ export type PersonTally = Message<"moderator_to_vr.PersonTally"> & {
  * Use `create(PersonTallySchema)` to create a new message.
  */
 export const PersonTallySchema: GenMessage<PersonTally> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 2);
+  messageDesc(file_moderator_to_vr, 7);
 
 /**
  * @generated from message moderator_to_vr.DebateTopic
@@ -351,7 +637,7 @@ export type DebateTopic = Message<"moderator_to_vr.DebateTopic"> & {
  * Use `create(DebateTopicSchema)` to create a new message.
  */
 export const DebateTopicSchema: GenMessage<DebateTopic> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 3);
+  messageDesc(file_moderator_to_vr, 8);
 
 /**
  * @generated from message moderator_to_vr.OwingParty
@@ -373,7 +659,7 @@ export type OwingParty = Message<"moderator_to_vr.OwingParty"> & {
  * Use `create(OwingPartySchema)` to create a new message.
  */
 export const OwingPartySchema: GenMessage<OwingParty> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 4);
+  messageDesc(file_moderator_to_vr, 9);
 
 /**
  * @generated from message moderator_to_vr.OwedReply
@@ -400,7 +686,7 @@ export type OwedReply = Message<"moderator_to_vr.OwedReply"> & {
  * Use `create(OwedReplySchema)` to create a new message.
  */
 export const OwedReplySchema: GenMessage<OwedReply> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 5);
+  messageDesc(file_moderator_to_vr, 10);
 
 /**
  * @generated from message moderator_to_vr.RecentMove
@@ -438,7 +724,7 @@ export type RecentMove = Message<"moderator_to_vr.RecentMove"> & {
  * Use `create(RecentMoveSchema)` to create a new message.
  */
 export const RecentMoveSchema: GenMessage<RecentMove> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 6);
+  messageDesc(file_moderator_to_vr, 11);
 
 /**
  * @generated from message moderator_to_vr.DebateList
@@ -455,5 +741,5 @@ export type DebateList = Message<"moderator_to_vr.DebateList"> & {
  * Use `create(DebateListSchema)` to create a new message.
  */
 export const DebateListSchema: GenMessage<DebateList> = /*@__PURE__*/
-  messageDesc(file_moderator_to_vr, 7);
+  messageDesc(file_moderator_to_vr, 12);
 

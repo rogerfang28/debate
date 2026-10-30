@@ -9,6 +9,7 @@
 #include "MoveDatabase.h"
 #include "ChatDatabase.h"
 #include "BriefDatabase.h"
+#include "ActivityDatabase.h"
 
 // ---------------------------------------
 // Class: DatabaseWrapper
@@ -29,7 +30,8 @@ public:
           links(debatesDb),
           moves(debatesDb),
           chats(debatesDb),
-          briefs(debatesDb) {}
+          briefs(debatesDb),
+          activity(debatesDb) {}
 
     // Initialize all tables
     bool ensureAllTables() {
@@ -40,7 +42,8 @@ public:
                links.ensureTable() &&
                moves.ensureTable() &&
                chats.ensureTable() &&
-               briefs.ensureTable();
+               briefs.ensureTable() &&
+               activity.ensureTable();
     }
 
     // Public database handlers - can call any of their functions
@@ -55,4 +58,7 @@ public:
     ChatDatabase chats;
     // The Brief tab's words, one row per debate, shared by every reader.
     BriefDatabase briefs;
+    // The admins' activity log: visits, sign-ins, opens (the actions in
+    // debates are read from moves). Kept 90 days.
+    ActivityDatabase activity;
 };

@@ -70,6 +70,7 @@ set(DB_SOURCES
     ${REPO_ROOT}/backend/src/database/debate/MoveDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/ChatDatabase.cc
     ${REPO_ROOT}/backend/src/database/debate/BriefDatabase.cc
+    ${REPO_ROOT}/backend/src/database/debate/ActivityDatabase.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveLogger.cc
     ${REPO_ROOT}/backend/src/moveLog/MoveBackfill.cc
     ${REPO_ROOT}/backend/src/utils/RelationBuilder.cc
@@ -120,6 +121,8 @@ set(MODERATOR_SOURCES
     # Accounts (names, renames, closing, the migration and the visitor sweep)
     # hang off the moderator; the username rules are used by it and the pages.
     ${REPO_ROOT}/backend/src/debateModerator/accounts/AccountService.cc
+    # The admins' activity log: what is recorded, and the Activity view's numbers.
+    ${REPO_ROOT}/backend/src/debateModerator/activity/ActivityLog.cc
     ${REPO_ROOT}/backend/src/utils/UsernamePolicy.cc
     # An admin's "Import debate": the handler and the text reader it uses.
     ${REPO_ROOT}/backend/src/debateModerator/event-handlers/ImportHandler/ImportHandler.cc
@@ -338,6 +341,7 @@ set(UNIT_TEST_SOURCES
     ${CMAKE_SOURCE_DIR}/tests/test_session_token.cc
     ${CMAKE_SOURCE_DIR}/tests/test_accounts.cc
     ${CMAKE_SOURCE_DIR}/tests/test_import.cc
+    ${CMAKE_SOURCE_DIR}/tests/test_activity.cc
 )
 
 add_executable(debate_tests

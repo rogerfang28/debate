@@ -360,6 +360,13 @@ enum EventType {
     IMPORT_PREVIEW = 88;
     IMPORT_PUBLISH = 89;
     IMPORT_CLOSE = 90;
+    // The admin's activity log (DEBATE_ADMINS only), on their own profile:
+    // OPEN shows it, CLOSE goes back to the profile, FILTER picks whose
+    // activity the recent list shows (explore_option.value: "all",
+    // "members", "visitors"). Anyone else's are ignored.
+    ACTIVITY_OPEN = 91;
+    ACTIVITY_CLOSE = 92;
+    ACTIVITY_FILTER = 93;
     // Summaries and the AI challenger, replaced by the chat.
     reserved 54, 55, 56, 57, 59;
 
