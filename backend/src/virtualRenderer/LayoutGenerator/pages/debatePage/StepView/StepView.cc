@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <set>
 #include "../../../../../utils/DemoMode.h"
 #include "../../../../../utils/AnonymousUser.h"
 #include "../../../../../utils/AiAvailability.h"
@@ -53,6 +55,127 @@ static debate::ClaimStatus StepViewMapClaimStatusForUser(
         return debate::ClaimStatus::TRUE_CLAIM;
     }
     return debate::ClaimStatus::UNDETERMINED;
+}
+
+// Why a claim has the status it has for the viewer, in one sentence, from
+// what they hold and the claims around it; and, if two things they hold
+// contradict each other here, a warning saying which. Mirrors the status
+// engine's rules (StatusEngine.cc A-D) in words: a challenge you agree with
+// defeats the claim, even one you also agreed with; a reason that is false
+// for you sinks it; rejecting a challenge, or accepting every reason, makes
+// it true.
+struct StatusExplanation {
+    std::string why;
+    std::string conflict;
+};
+
+static std::string Quoted(const std::string& text) {
+    std::string t = text;
+    while (!t.empty() && (t.back() == '.' || t.back() == ' ')) t.pop_back();
+    if (t.size() > 110) {
+        size_t cut = t.rfind(' ', 105);
+        t = t.substr(0, cut == std::string::npos ? 105 : cut) + "\u2026";
+    }
+    return "\u201c" + t + "\u201d";
+}
+
+static StatusExplanation ExplainStatusForViewer(
+    int claimId,
+    const rendering_info::FullDebateViewInfo& fullDebateInfo,
+    const debate::Collection& collectionProto,
+    VRUserDatabase& userDb,
+    int viewerUserId,
+    const std::string& viewerUsername
+) {
+    StatusExplanation out;
+    const auto& claims = collectionProto.claims_by_id();
+    auto self = claims.find(claimId);
+    if (self == claims.end()) return out;
+
+    std::set<int> held(fullDebateInfo.viewer_held_claim_ids().begin(),
+                       fullDebateInfo.viewer_held_claim_ids().end());
+    auto holds = [&](int id) {
+        if (held.count(id)) return true;
+        auto it = claims.find(id);
+        return it != claims.end() && ClaimVoiceId(it->second) == viewerUserId;
+    };
+    auto statusOf = [&](int id) {
+        auto it = claims.find(id);
+        return it == claims.end() ? debate::ClaimStatus::UNDETERMINED
+                                  : StepViewMapClaimStatusForUser(it->second, viewerUserId, viewerUsername);
+    };
+    auto textOf = [&](int id) {
+        auto it = claims.find(id);
+        return it == claims.end() ? std::string() : it->second.sentence();
+    };
+    auto whoOf = [&](int id) {
+        auto it = claims.find(id);
+        if (it == claims.end()) return std::string("someone");
+        const std::string name = username_policy::DisplayName(userDb.getUsername(ClaimVoiceId(it->second)));
+        return name.empty() ? std::string("someone") : name;
+    };
+
+    std::vector<int> challengers, reasons, targets;
+    for (const auto& link : fullDebateInfo.full_debate_tree().links()) {
+        if (link.is_challenge()) {
+            if (link.to_claim_id() == claimId && link.to_relation_id() == 0) challengers.push_back(link.from_claim_id());
+            if (link.from_claim_id() == claimId && link.to_relation_id() == 0) targets.push_back(link.to_claim_id());
+        } else if (link.to_claim_id() == claimId) {
+            reasons.push_back(link.from_claim_id());
+        }
+    }
+
+    const debate::ClaimStatus status = statusOf(claimId);
+    const bool youHold = holds(claimId);
+    if (status == debate::ClaimStatus::FALSE_CLAIM) {
+        for (int c : challengers) {
+            if (statusOf(c) == debate::ClaimStatus::TRUE_CLAIM) {
+                out.why = "You agree with " + whoOf(c) + "'s challenge to it: " + Quoted(textOf(c)) + ".";
+                if (youHold) {
+                    out.conflict = "You also agreed with this claim, but agreeing with a challenge to it outweighs that. "
+                                   "Withdraw one of the two to settle it.";
+                }
+                break;
+            }
+        }
+        if (out.why.empty()) {
+            for (int r : reasons) {
+                if (statusOf(r) == debate::ClaimStatus::FALSE_CLAIM) {
+                    out.why = "A reason it rests on is false for you: " + Quoted(textOf(r)) + ".";
+                    break;
+                }
+            }
+        }
+        if (out.why.empty()) out.why = "Something you hold makes it false for you.";
+    } else if (status == debate::ClaimStatus::TRUE_CLAIM) {
+        if (youHold) {
+            out.why = ClaimVoiceId(self->second) == viewerUserId ? "It's your claim." : "You agreed with it.";
+        } else {
+            for (int c : challengers) {
+                if (statusOf(c) == debate::ClaimStatus::FALSE_CLAIM) {
+                    out.why = "You reject " + whoOf(c) + "'s challenge to it: " + Quoted(textOf(c)) + ".";
+                    break;
+                }
+            }
+            if (out.why.empty() && !reasons.empty()) {
+                bool allTrue = true;
+                for (int r : reasons) allTrue = allTrue && statusOf(r) == debate::ClaimStatus::TRUE_CLAIM;
+                if (allTrue) out.why = "You accept every reason given for it.";
+            }
+            if (out.why.empty()) out.why = "Something you hold makes it true for you.";
+        }
+        // What holding this does to the claims it challenges.
+        for (int t : targets) {
+            if (holds(t) && statusOf(t) == debate::ClaimStatus::FALSE_CLAIM) {
+                out.conflict = "Because you agree with this, " + Quoted(textOf(t)) +
+                               ", which you also agreed with, is false for you. Withdraw one of the two to settle it.";
+                break;
+            }
+        }
+    } else {
+        out.why = "You haven't taken a side on it, and nothing you hold decides it.";
+    }
+    return out;
 }
 
 // One inspector row whose value is people: each name a link to their
@@ -154,7 +277,7 @@ static ui::Component BuildSelectedClaimPanel(
 
     // `href`: the value is a link (a source's page), opened in a new tab.
     auto addField = [&](const std::string& idSuffix, const std::string& label, const std::string& value, bool italic,
-                        const std::string& href = std::string()) {
+                        const std::string& href = std::string(), const std::string& color = std::string()) {
         ui::Component row = ComponentGenerator::createContainer(
             "selectedClaim" + idSuffix + "Row",
             "",
@@ -188,6 +311,9 @@ static ui::Component BuildSelectedClaimPanel(
             italic ? "italic" : ""
         );
         (*valueText.mutable_css())["overflow-wrap"] = "break-word";
+        if (!color.empty()) {
+            (*valueText.mutable_css())["color"] = color;
+        }
         if (!href.empty()) {
             ComponentGenerator::addAttribute(&valueText, "data-href", href);
             (*valueText.mutable_css())["color"] = "var(--accent)";
@@ -202,6 +328,13 @@ static ui::Component BuildSelectedClaimPanel(
     addField("Sentence", "Selected Claim:", claim.sentence(), false);
     debate::ClaimStatus viewerStatus = StepViewMapClaimStatusForUser(claim, viewerUserId, viewerUsername);
     addField("Status", "Status:", StepViewClaimStatusToLabel(viewerStatus), false);
+    // Why, for someone who can hold claims; a visitor holds nothing.
+    if (viewerUserId > 0 && !anonymous_user::IsAnonymousUsername(viewerUsername)) {
+        const StatusExplanation why =
+            ExplainStatusForViewer(claimId, fullDebateInfo, collectionProto, userDb, viewerUserId, viewerUsername);
+        if (!why.why.empty()) addField("Why", "Why:", why.why, false, std::string(), "var(--text-2)");
+        if (!why.conflict.empty()) addField("Conflict", "Conflict:", why.conflict, false, std::string(), "var(--warn)");
+    }
     // Who else holds this claim true. Whoever it belongs to is left out: it
     // is theirs, and listing them would say nothing.
     {
@@ -286,6 +419,11 @@ static ui::Component BuildSelectedClaimPanel(
     const bool viewerHolds = viewerStatus == debate::ClaimStatus::TRUE_CLAIM;
     const bool viewerEntered = viewerUserId > 0 && claim.creator_id() == viewerUserId;
     const bool viewerIsVoice = viewerUserId > 0 && ClaimVoiceId(claim) == viewerUserId;
+    // Agreed with it by their own act (the move log), whatever its status is
+    // for them now.
+    const bool viewerAgreed = !viewerIsVoice &&
+        std::find(fullDebateInfo.viewer_held_claim_ids().begin(), fullDebateInfo.viewer_held_claim_ids().end(),
+                  claimId) != fullDebateInfo.viewer_held_claim_ids().end();
 
     // Concede: the selected claim is a challenge, and the viewer holds the
     // claim it challenges.
@@ -351,18 +489,28 @@ static ui::Component BuildSelectedClaimPanel(
         );
         ComponentGenerator::addChild(&buttonRow, challengeButton);
 
-        ui::Component agreeButton = ComponentGenerator::createButton(
-            "endorseClaimButton_" + std::to_string(claimId),
-            "Agree",
-            "",
-            "bg-green-600",
-            "hover:bg-green-700",
-            "text-white",
-            "px-3 py-1.5",
-            "rounded",
-            "text-sm"
-        );
-        ComponentGenerator::addChild(&buttonRow, agreeButton);
+        if (viewerAgreed) {
+            // They agreed, but something else they hold makes it false for
+            // them (see the Conflict line): Agree would do nothing, Withdraw
+            // is the way out.
+            ComponentGenerator::addChild(&buttonRow, ComponentGenerator::createButton(
+                "unendorseClaimButton_" + std::to_string(claimId),
+                "Withdraw agreement", "", "bg-gray-600", "hover:bg-gray-700",
+                "text-white", "px-3 py-1.5", "rounded", "text-sm"));
+        } else {
+            ui::Component agreeButton = ComponentGenerator::createButton(
+                "endorseClaimButton_" + std::to_string(claimId),
+                "Agree",
+                "",
+                "bg-green-600",
+                "hover:bg-green-700",
+                "text-white",
+                "px-3 py-1.5",
+                "rounded",
+                "text-sm"
+            );
+            ComponentGenerator::addChild(&buttonRow, agreeButton);
+        }
     }
 
     if (viewerEntered) {

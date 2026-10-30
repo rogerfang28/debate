@@ -4677,6 +4677,7 @@ class DebatingInfo final : public ::google::protobuf::Message
     kChildrenClaimsFieldNumber = 6,
     kLinksFieldNumber = 7,
     kCurrentChallengesFieldNumber = 8,
+    kViewerHeldClaimIdsFieldNumber = 26,
     kCurrentClaimDescriptionFieldNumber = 3,
     kCurrentClaimFieldNumber = 2,
     kParentClaimFieldNumber = 4,
@@ -4744,6 +4745,24 @@ class DebatingInfo final : public ::google::protobuf::Message
   const ::user_engagement::ChallengeInfo& current_challenges(int index) const;
   ::user_engagement::ChallengeInfo* PROTOBUF_NONNULL add_current_challenges();
   const ::google::protobuf::RepeatedPtrField<::user_engagement::ChallengeInfo>& current_challenges() const;
+  // repeated int32 viewer_held_claim_ids = 26 [json_name = "viewerHeldClaimIds"];
+  int viewer_held_claim_ids_size() const;
+  private:
+  int _internal_viewer_held_claim_ids_size() const;
+
+  public:
+  void clear_viewer_held_claim_ids() ;
+  ::int32_t viewer_held_claim_ids(int index) const;
+  void set_viewer_held_claim_ids(int index, ::int32_t value);
+  void add_viewer_held_claim_ids(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& viewer_held_claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL mutable_viewer_held_claim_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_viewer_held_claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_viewer_held_claim_ids();
+
+  public:
   // string current_claim_description = 3 [json_name = "currentClaimDescription"];
   void clear_current_claim_description() ;
   const ::std::string& current_claim_description() const;
@@ -4957,7 +4976,7 @@ class DebatingInfo final : public ::google::protobuf::Message
   inline bool has_additional_info() const;
   inline void clear_has_additional_info();
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<5, 18,
+  static const ::google::protobuf::internal::TcParseTable<5, 19,
                                    11, 78,
                                    2>
       _table_;
@@ -4982,6 +5001,8 @@ class DebatingInfo final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedPtrField< ::user_engagement::ClaimInfo > children_claims_;
     ::google::protobuf::RepeatedPtrField< ::user_engagement::LinkInfo > links_;
     ::google::protobuf::RepeatedPtrField< ::user_engagement::ChallengeInfo > current_challenges_;
+    ::google::protobuf::RepeatedField<::int32_t> viewer_held_claim_ids_;
+    ::google::protobuf::internal::CachedSize _viewer_held_claim_ids_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr current_claim_description_;
     ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE current_claim_;
     ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE parent_claim_;
@@ -9170,7 +9191,7 @@ inline void DebatingInfo::clear_debate_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.debate_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000400U);
+                  0x00000800U);
 }
 inline ::int32_t DebatingInfo::debate_id() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.debate_id)
@@ -9178,7 +9199,7 @@ inline ::int32_t DebatingInfo::debate_id() const {
 }
 inline void DebatingInfo::set_debate_id(::int32_t value) {
   _internal_set_debate_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.debate_id)
 }
 inline ::int32_t DebatingInfo::_internal_debate_id() const {
@@ -9195,7 +9216,7 @@ inline void DebatingInfo::clear_is_challenge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.is_challenge_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00001000U);
+                  0x00002000U);
 }
 inline bool DebatingInfo::is_challenge() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.is_challenge)
@@ -9203,7 +9224,7 @@ inline bool DebatingInfo::is_challenge() const {
 }
 inline void DebatingInfo::set_is_challenge(bool value) {
   _internal_set_is_challenge(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.is_challenge)
 }
 inline bool DebatingInfo::_internal_is_challenge() const {
@@ -9220,7 +9241,7 @@ inline void DebatingInfo::clear_modifying_current_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.modifying_current_claim_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000800U);
+                  0x00001000U);
 }
 inline bool DebatingInfo::modifying_current_claim() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.modifying_current_claim)
@@ -9228,7 +9249,7 @@ inline bool DebatingInfo::modifying_current_claim() const {
 }
 inline void DebatingInfo::set_modifying_current_claim(bool value) {
   _internal_set_modifying_current_claim(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.modifying_current_claim)
 }
 inline bool DebatingInfo::_internal_modifying_current_claim() const {
@@ -9245,7 +9266,7 @@ inline void DebatingInfo::clear_challenged_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenged_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00002000U);
+                  0x00004000U);
 }
 inline ::int32_t DebatingInfo::challenged_user_id() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.challenged_user_id)
@@ -9253,7 +9274,7 @@ inline ::int32_t DebatingInfo::challenged_user_id() const {
 }
 inline void DebatingInfo::set_challenged_user_id(::int32_t value) {
   _internal_set_challenged_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.challenged_user_id)
 }
 inline ::int32_t DebatingInfo::_internal_challenged_user_id() const {
@@ -9270,7 +9291,7 @@ inline void DebatingInfo::clear_challenger_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.challenger_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00004000U);
+                  0x00008000U);
 }
 inline ::int32_t DebatingInfo::challenger_user_id() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.challenger_user_id)
@@ -9278,7 +9299,7 @@ inline ::int32_t DebatingInfo::challenger_user_id() const {
 }
 inline void DebatingInfo::set_challenger_user_id(::int32_t value) {
   _internal_set_challenger_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00004000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.challenger_user_id)
 }
 inline ::int32_t DebatingInfo::_internal_challenger_user_id() const {
@@ -9292,7 +9313,7 @@ inline void DebatingInfo::_internal_set_challenger_user_id(::int32_t value) {
 
 // .user_engagement.ClaimInfo current_claim = 2 [json_name = "currentClaim"];
 inline bool DebatingInfo::has_current_claim() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
   PROTOBUF_ASSUME(!value || _impl_.current_claim_ != nullptr);
   return value;
 }
@@ -9300,7 +9321,7 @@ inline void DebatingInfo::clear_current_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.current_claim_ != nullptr) _impl_.current_claim_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000020U);
 }
 inline const ::user_engagement::ClaimInfo& DebatingInfo::_internal_current_claim() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -9319,16 +9340,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_current_claim(
   }
   _impl_.current_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.current_claim)
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::release_current_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::ClaimInfo* released = _impl_.current_claim_;
   _impl_.current_claim_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -9348,7 +9369,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::unsafe_aren
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.current_claim)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::ClaimInfo* temp = _impl_.current_claim_;
   _impl_.current_claim_ = nullptr;
   return temp;
@@ -9363,7 +9384,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::_internal_mu
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::mutable_current_claim()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   ::user_engagement::ClaimInfo* _msg = _internal_mutable_current_claim();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.current_claim)
   return _msg;
@@ -9380,9 +9401,9 @@ inline void DebatingInfo::set_allocated_current_claim(::user_engagement::ClaimIn
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
   }
 
   _impl_.current_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
@@ -9394,7 +9415,7 @@ inline void DebatingInfo::clear_current_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.current_claim_description_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline const ::std::string& DebatingInfo::current_claim_description() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -9404,13 +9425,13 @@ inline const ::std::string& DebatingInfo::current_claim_description() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void DebatingInfo::set_current_claim_description(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   _impl_.current_claim_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.current_claim_description)
 }
 inline ::std::string* PROTOBUF_NONNULL DebatingInfo::mutable_current_claim_description()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::std::string* _s = _internal_mutable_current_claim_description();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.current_claim_description)
   return _s;
@@ -9430,10 +9451,10 @@ inline ::std::string* PROTOBUF_NONNULL DebatingInfo::_internal_mutable_current_c
 inline ::std::string* PROTOBUF_NULLABLE DebatingInfo::release_current_claim_description() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.current_claim_description)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000008U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000010U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   auto* released = _impl_.current_claim_description_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.current_claim_description_.Set("", GetArena());
@@ -9443,9 +9464,9 @@ inline ::std::string* PROTOBUF_NULLABLE DebatingInfo::release_current_claim_desc
 inline void DebatingInfo::set_allocated_current_claim_description(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   _impl_.current_claim_description_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.current_claim_description_.IsDefault()) {
@@ -9456,7 +9477,7 @@ inline void DebatingInfo::set_allocated_current_claim_description(::std::string*
 
 // .user_engagement.ClaimInfo parent_claim = 4 [json_name = "parentClaim"];
 inline bool DebatingInfo::has_parent_claim() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
   PROTOBUF_ASSUME(!value || _impl_.parent_claim_ != nullptr);
   return value;
 }
@@ -9464,7 +9485,7 @@ inline void DebatingInfo::clear_parent_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.parent_claim_ != nullptr) _impl_.parent_claim_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline const ::user_engagement::ClaimInfo& DebatingInfo::_internal_parent_claim() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -9483,16 +9504,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_parent_claim(
   }
   _impl_.parent_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.parent_claim)
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::release_parent_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::user_engagement::ClaimInfo* released = _impl_.parent_claim_;
   _impl_.parent_claim_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -9512,7 +9533,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::unsafe_aren
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.parent_claim)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::user_engagement::ClaimInfo* temp = _impl_.parent_claim_;
   _impl_.parent_claim_ = nullptr;
   return temp;
@@ -9527,7 +9548,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::_internal_mu
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::mutable_parent_claim()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   ::user_engagement::ClaimInfo* _msg = _internal_mutable_parent_claim();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.parent_claim)
   return _msg;
@@ -9544,9 +9565,9 @@ inline void DebatingInfo::set_allocated_parent_claim(::user_engagement::ClaimInf
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
   }
 
   _impl_.parent_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
@@ -9555,7 +9576,7 @@ inline void DebatingInfo::set_allocated_parent_claim(::user_engagement::ClaimInf
 
 // .user_engagement.ClaimInfo root_claim = 5 [json_name = "rootClaim"];
 inline bool DebatingInfo::has_root_claim() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000040U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
   PROTOBUF_ASSUME(!value || _impl_.root_claim_ != nullptr);
   return value;
 }
@@ -9563,7 +9584,7 @@ inline void DebatingInfo::clear_root_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.root_claim_ != nullptr) _impl_.root_claim_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000080U);
 }
 inline const ::user_engagement::ClaimInfo& DebatingInfo::_internal_root_claim() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -9582,16 +9603,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_root_claim(
   }
   _impl_.root_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.root_claim)
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::release_root_claim() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::user_engagement::ClaimInfo* released = _impl_.root_claim_;
   _impl_.root_claim_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -9611,7 +9632,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NULLABLE DebatingInfo::unsafe_aren
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.root_claim)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::user_engagement::ClaimInfo* temp = _impl_.root_claim_;
   _impl_.root_claim_ = nullptr;
   return temp;
@@ -9626,7 +9647,7 @@ inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::_internal_mu
 }
 inline ::user_engagement::ClaimInfo* PROTOBUF_NONNULL DebatingInfo::mutable_root_claim()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   ::user_engagement::ClaimInfo* _msg = _internal_mutable_root_claim();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.root_claim)
   return _msg;
@@ -9643,9 +9664,9 @@ inline void DebatingInfo::set_allocated_root_claim(::user_engagement::ClaimInfo*
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000040U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
   }
 
   _impl_.root_claim_ = reinterpret_cast<::user_engagement::ClaimInfo*>(value);
@@ -9822,7 +9843,7 @@ DebatingInfo::_internal_mutable_current_challenges() {
 
 // .user_engagement.DebatingInfo.CurrentDebateAction current_debate_action = 11 [json_name = "currentDebateAction"];
 inline bool DebatingInfo::has_current_debate_action() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000080U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
   PROTOBUF_ASSUME(!value || _impl_.current_debate_action_ != nullptr);
   return value;
 }
@@ -9830,7 +9851,7 @@ inline void DebatingInfo::clear_current_debate_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.current_debate_action_ != nullptr) _impl_.current_debate_action_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline const ::user_engagement::DebatingInfo_CurrentDebateAction& DebatingInfo::_internal_current_debate_action() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -9849,16 +9870,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_current_debate_action(
   }
   _impl_.current_debate_action_ = reinterpret_cast<::user_engagement::DebatingInfo_CurrentDebateAction*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.current_debate_action)
 }
 inline ::user_engagement::DebatingInfo_CurrentDebateAction* PROTOBUF_NULLABLE DebatingInfo::release_current_debate_action() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::user_engagement::DebatingInfo_CurrentDebateAction* released = _impl_.current_debate_action_;
   _impl_.current_debate_action_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -9878,7 +9899,7 @@ inline ::user_engagement::DebatingInfo_CurrentDebateAction* PROTOBUF_NULLABLE De
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.current_debate_action)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::user_engagement::DebatingInfo_CurrentDebateAction* temp = _impl_.current_debate_action_;
   _impl_.current_debate_action_ = nullptr;
   return temp;
@@ -9893,7 +9914,7 @@ inline ::user_engagement::DebatingInfo_CurrentDebateAction* PROTOBUF_NONNULL Deb
 }
 inline ::user_engagement::DebatingInfo_CurrentDebateAction* PROTOBUF_NONNULL DebatingInfo::mutable_current_debate_action()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   ::user_engagement::DebatingInfo_CurrentDebateAction* _msg = _internal_mutable_current_debate_action();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.current_debate_action)
   return _msg;
@@ -9910,9 +9931,9 @@ inline void DebatingInfo::set_allocated_current_debate_action(::user_engagement:
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000080U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
   }
 
   _impl_.current_debate_action_ = reinterpret_cast<::user_engagement::DebatingInfo_CurrentDebateAction*>(value);
@@ -9921,7 +9942,7 @@ inline void DebatingInfo::set_allocated_current_debate_action(::user_engagement:
 
 // .user_engagement.DebatingInfo.ChatState chat = 24 [json_name = "chat"];
 inline bool DebatingInfo::has_chat() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
   PROTOBUF_ASSUME(!value || _impl_.chat_ != nullptr);
   return value;
 }
@@ -9929,7 +9950,7 @@ inline void DebatingInfo::clear_chat() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.chat_ != nullptr) _impl_.chat_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000200U);
 }
 inline const ::user_engagement::DebatingInfo_ChatState& DebatingInfo::_internal_chat() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -9948,16 +9969,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_chat(
   }
   _impl_.chat_ = reinterpret_cast<::user_engagement::DebatingInfo_ChatState*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.chat)
 }
 inline ::user_engagement::DebatingInfo_ChatState* PROTOBUF_NULLABLE DebatingInfo::release_chat() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::DebatingInfo_ChatState* released = _impl_.chat_;
   _impl_.chat_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -9977,7 +9998,7 @@ inline ::user_engagement::DebatingInfo_ChatState* PROTOBUF_NULLABLE DebatingInfo
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.chat)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::DebatingInfo_ChatState* temp = _impl_.chat_;
   _impl_.chat_ = nullptr;
   return temp;
@@ -9992,7 +10013,7 @@ inline ::user_engagement::DebatingInfo_ChatState* PROTOBUF_NONNULL DebatingInfo:
 }
 inline ::user_engagement::DebatingInfo_ChatState* PROTOBUF_NONNULL DebatingInfo::mutable_chat()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::DebatingInfo_ChatState* _msg = _internal_mutable_chat();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.chat)
   return _msg;
@@ -10009,9 +10030,9 @@ inline void DebatingInfo::set_allocated_chat(::user_engagement::DebatingInfo_Cha
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   }
 
   _impl_.chat_ = reinterpret_cast<::user_engagement::DebatingInfo_ChatState*>(value);
@@ -10020,7 +10041,7 @@ inline void DebatingInfo::set_allocated_chat(::user_engagement::DebatingInfo_Cha
 
 // .user_engagement.DebatingInfo.BriefState brief = 25 [json_name = "brief"];
 inline bool DebatingInfo::has_brief() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000400U);
   PROTOBUF_ASSUME(!value || _impl_.brief_ != nullptr);
   return value;
 }
@@ -10028,7 +10049,7 @@ inline void DebatingInfo::clear_brief() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.brief_ != nullptr) _impl_.brief_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000200U);
+                  0x00000400U);
 }
 inline const ::user_engagement::DebatingInfo_BriefState& DebatingInfo::_internal_brief() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -10047,16 +10068,16 @@ inline void DebatingInfo::unsafe_arena_set_allocated_brief(
   }
   _impl_.brief_ = reinterpret_cast<::user_engagement::DebatingInfo_BriefState*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000400U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.DebatingInfo.brief)
 }
 inline ::user_engagement::DebatingInfo_BriefState* PROTOBUF_NULLABLE DebatingInfo::release_brief() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
   ::user_engagement::DebatingInfo_BriefState* released = _impl_.brief_;
   _impl_.brief_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -10076,7 +10097,7 @@ inline ::user_engagement::DebatingInfo_BriefState* PROTOBUF_NULLABLE DebatingInf
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.DebatingInfo.brief)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
   ::user_engagement::DebatingInfo_BriefState* temp = _impl_.brief_;
   _impl_.brief_ = nullptr;
   return temp;
@@ -10091,7 +10112,7 @@ inline ::user_engagement::DebatingInfo_BriefState* PROTOBUF_NONNULL DebatingInfo
 }
 inline ::user_engagement::DebatingInfo_BriefState* PROTOBUF_NONNULL DebatingInfo::mutable_brief()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
   ::user_engagement::DebatingInfo_BriefState* _msg = _internal_mutable_brief();
   // @@protoc_insertion_point(field_mutable:user_engagement.DebatingInfo.brief)
   return _msg;
@@ -10108,13 +10129,63 @@ inline void DebatingInfo::set_allocated_brief(::user_engagement::DebatingInfo_Br
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000400U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000400U);
   }
 
   _impl_.brief_ = reinterpret_cast<::user_engagement::DebatingInfo_BriefState*>(value);
   // @@protoc_insertion_point(field_set_allocated:user_engagement.DebatingInfo.brief)
+}
+
+// repeated int32 viewer_held_claim_ids = 26 [json_name = "viewerHeldClaimIds"];
+inline int DebatingInfo::_internal_viewer_held_claim_ids_size() const {
+  return _internal_viewer_held_claim_ids().size();
+}
+inline int DebatingInfo::viewer_held_claim_ids_size() const {
+  return _internal_viewer_held_claim_ids_size();
+}
+inline void DebatingInfo::clear_viewer_held_claim_ids() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_held_claim_ids_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline ::int32_t DebatingInfo::viewer_held_claim_ids(int index) const {
+  // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.viewer_held_claim_ids)
+  return _internal_viewer_held_claim_ids().Get(index);
+}
+inline void DebatingInfo::set_viewer_held_claim_ids(int index, ::int32_t value) {
+  _internal_mutable_viewer_held_claim_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.viewer_held_claim_ids)
+}
+inline void DebatingInfo::add_viewer_held_claim_ids(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_viewer_held_claim_ids()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_add:user_engagement.DebatingInfo.viewer_held_claim_ids)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& DebatingInfo::viewer_held_claim_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:user_engagement.DebatingInfo.viewer_held_claim_ids)
+  return _internal_viewer_held_claim_ids();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL DebatingInfo::mutable_viewer_held_claim_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_mutable_list:user_engagement.DebatingInfo.viewer_held_claim_ids)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_viewer_held_claim_ids();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+DebatingInfo::_internal_viewer_held_claim_ids() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.viewer_held_claim_ids_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
+DebatingInfo::_internal_mutable_viewer_held_claim_ids() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.viewer_held_claim_ids_;
 }
 
 // int32 selected_link_id = 23 [json_name = "selectedLinkId"];
@@ -10122,7 +10193,7 @@ inline void DebatingInfo::clear_selected_link_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.selected_link_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00008000U);
+                  0x00010000U);
 }
 inline ::int32_t DebatingInfo::selected_link_id() const {
   // @@protoc_insertion_point(field_get:user_engagement.DebatingInfo.selected_link_id)
@@ -10130,7 +10201,7 @@ inline ::int32_t DebatingInfo::selected_link_id() const {
 }
 inline void DebatingInfo::set_selected_link_id(::int32_t value) {
   _internal_set_selected_link_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00008000U);
+  SetHasBit(_impl_._has_bits_[0], 0x00010000U);
   // @@protoc_insertion_point(field_set:user_engagement.DebatingInfo.selected_link_id)
 }
 inline ::int32_t DebatingInfo::_internal_selected_link_id() const {

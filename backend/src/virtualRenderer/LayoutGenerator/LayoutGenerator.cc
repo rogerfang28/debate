@@ -250,6 +250,9 @@ ui::Page GeneratePage(const moderator_to_vr::ModeratorToVRMessage& info, VRUserD
         } else if (scopeType == debate::FULL_DEBATE) {
             Log::info("[LayoutGenerator] Generating Full Debate Page");
             rendering_info::FullDebateViewInfo fullDebateInfo = FullDebatePageInfoParser::ParseFullDebateViewInfo(info.collection(), info.user().user_id(), info.user().username(), info.user().engagement().debating_info().current_claim().id());
+            for (int id : info.user().engagement().debating_info().viewer_held_claim_ids()) {
+                fullDebateInfo.add_viewer_held_claim_ids(id);
+            }
             if (info.user().current_scope().has_full_debate() &&
                 info.user().current_scope().full_debate().top_view()) {
                 if (info.user().current_scope().full_debate().brief_view()) {

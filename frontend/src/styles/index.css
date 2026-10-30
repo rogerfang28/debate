@@ -312,6 +312,11 @@ a:hover {
   }
 }
 
+/* A button press is being answered (handleEvent): further presses wait. */
+:root[data-busy] button {
+  cursor: progress;
+}
+
 .region {
   min-height: 0;
   min-width: 0;

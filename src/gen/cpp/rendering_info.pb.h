@@ -4514,6 +4514,7 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kStepsFieldNumber = 3,
+    kViewerHeldClaimIdsFieldNumber = 7,
     kViewerUsernameFieldNumber = 2,
     kFullDebateTreeFieldNumber = 4,
     kPerUserStatusesFieldNumber = 5,
@@ -4537,6 +4538,24 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
   const ::rendering_info::Steps& steps(int index) const;
   ::rendering_info::Steps* PROTOBUF_NONNULL add_steps();
   const ::google::protobuf::RepeatedPtrField<::rendering_info::Steps>& steps() const;
+  // repeated int32 viewer_held_claim_ids = 7 [json_name = "viewerHeldClaimIds"];
+  int viewer_held_claim_ids_size() const;
+  private:
+  int _internal_viewer_held_claim_ids_size() const;
+
+  public:
+  void clear_viewer_held_claim_ids() ;
+  ::int32_t viewer_held_claim_ids(int index) const;
+  void set_viewer_held_claim_ids(int index, ::int32_t value);
+  void add_viewer_held_claim_ids(::int32_t value);
+  const ::google::protobuf::RepeatedField<::int32_t>& viewer_held_claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL mutable_viewer_held_claim_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::int32_t>& _internal_viewer_held_claim_ids() const;
+  ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL _internal_mutable_viewer_held_claim_ids();
+
+  public:
   // string viewer_username = 2 [json_name = "viewerUsername"];
   void clear_viewer_username() ;
   const ::std::string& viewer_username() const;
@@ -4606,7 +4625,7 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 6,
+  static const ::google::protobuf::internal::TcParseTable<3, 7,
                                    3, 57,
                                    2>
       _table_;
@@ -4629,6 +4648,8 @@ class FullDebateViewInfo final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::rendering_info::Steps > steps_;
+    ::google::protobuf::RepeatedField<::int32_t> viewer_held_claim_ids_;
+    ::google::protobuf::internal::CachedSize _viewer_held_claim_ids_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr viewer_username_;
     ::rendering_info::FullDebateTree* PROTOBUF_NULLABLE full_debate_tree_;
     ::rendering_info::PerUserClaimStatuses* PROTOBUF_NULLABLE per_user_statuses_;
@@ -5412,7 +5433,7 @@ inline void FullDebateViewInfo::clear_viewer_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000010U);
+                  0x00000020U);
 }
 inline ::int32_t FullDebateViewInfo::viewer_user_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.FullDebateViewInfo.viewer_user_id)
@@ -5420,7 +5441,7 @@ inline ::int32_t FullDebateViewInfo::viewer_user_id() const {
 }
 inline void FullDebateViewInfo::set_viewer_user_id(::int32_t value) {
   _internal_set_viewer_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
   // @@protoc_insertion_point(field_set:rendering_info.FullDebateViewInfo.viewer_user_id)
 }
 inline ::int32_t FullDebateViewInfo::_internal_viewer_user_id() const {
@@ -5437,7 +5458,7 @@ inline void FullDebateViewInfo::clear_viewer_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_username_.ClearToEmpty();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+                  0x00000004U);
 }
 inline const ::std::string& FullDebateViewInfo::viewer_username() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
@@ -5447,13 +5468,13 @@ inline const ::std::string& FullDebateViewInfo::viewer_username() const
 template <typename Arg_, typename... Args_>
 PROTOBUF_ALWAYS_INLINE void FullDebateViewInfo::set_viewer_username(Arg_&& arg, Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   _impl_.viewer_username_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
   // @@protoc_insertion_point(field_set:rendering_info.FullDebateViewInfo.viewer_username)
 }
 inline ::std::string* PROTOBUF_NONNULL FullDebateViewInfo::mutable_viewer_username()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   ::std::string* _s = _internal_mutable_viewer_username();
   // @@protoc_insertion_point(field_mutable:rendering_info.FullDebateViewInfo.viewer_username)
   return _s;
@@ -5473,10 +5494,10 @@ inline ::std::string* PROTOBUF_NONNULL FullDebateViewInfo::_internal_mutable_vie
 inline ::std::string* PROTOBUF_NULLABLE FullDebateViewInfo::release_viewer_username() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:rendering_info.FullDebateViewInfo.viewer_username)
-  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000002U)) {
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
     return nullptr;
   }
-  ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   auto* released = _impl_.viewer_username_.Release();
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
     _impl_.viewer_username_.Set("", GetArena());
@@ -5486,9 +5507,9 @@ inline ::std::string* PROTOBUF_NULLABLE FullDebateViewInfo::release_viewer_usern
 inline void FullDebateViewInfo::set_allocated_viewer_username(::std::string* PROTOBUF_NULLABLE value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000002U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
   }
   _impl_.viewer_username_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.viewer_username_.IsDefault()) {
@@ -5555,7 +5576,7 @@ FullDebateViewInfo::_internal_mutable_steps() {
 
 // .rendering_info.FullDebateTree full_debate_tree = 4 [json_name = "fullDebateTree"];
 inline bool FullDebateViewInfo::has_full_debate_tree() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000004U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000008U);
   PROTOBUF_ASSUME(!value || _impl_.full_debate_tree_ != nullptr);
   return value;
 }
@@ -5563,7 +5584,7 @@ inline void FullDebateViewInfo::clear_full_debate_tree() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.full_debate_tree_ != nullptr) _impl_.full_debate_tree_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline const ::rendering_info::FullDebateTree& FullDebateViewInfo::_internal_full_debate_tree() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -5582,16 +5603,16 @@ inline void FullDebateViewInfo::unsafe_arena_set_allocated_full_debate_tree(
   }
   _impl_.full_debate_tree_ = reinterpret_cast<::rendering_info::FullDebateTree*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rendering_info.FullDebateViewInfo.full_debate_tree)
 }
 inline ::rendering_info::FullDebateTree* PROTOBUF_NULLABLE FullDebateViewInfo::release_full_debate_tree() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::rendering_info::FullDebateTree* released = _impl_.full_debate_tree_;
   _impl_.full_debate_tree_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -5611,7 +5632,7 @@ inline ::rendering_info::FullDebateTree* PROTOBUF_NULLABLE FullDebateViewInfo::u
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:rendering_info.FullDebateViewInfo.full_debate_tree)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::rendering_info::FullDebateTree* temp = _impl_.full_debate_tree_;
   _impl_.full_debate_tree_ = nullptr;
   return temp;
@@ -5626,7 +5647,7 @@ inline ::rendering_info::FullDebateTree* PROTOBUF_NONNULL FullDebateViewInfo::_i
 }
 inline ::rendering_info::FullDebateTree* PROTOBUF_NONNULL FullDebateViewInfo::mutable_full_debate_tree()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   ::rendering_info::FullDebateTree* _msg = _internal_mutable_full_debate_tree();
   // @@protoc_insertion_point(field_mutable:rendering_info.FullDebateViewInfo.full_debate_tree)
   return _msg;
@@ -5643,9 +5664,9 @@ inline void FullDebateViewInfo::set_allocated_full_debate_tree(::rendering_info:
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
   }
 
   _impl_.full_debate_tree_ = reinterpret_cast<::rendering_info::FullDebateTree*>(value);
@@ -5654,7 +5675,7 @@ inline void FullDebateViewInfo::set_allocated_full_debate_tree(::rendering_info:
 
 // .rendering_info.PerUserClaimStatuses per_user_statuses = 5 [json_name = "perUserStatuses"];
 inline bool FullDebateViewInfo::has_per_user_statuses() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000008U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000010U);
   PROTOBUF_ASSUME(!value || _impl_.per_user_statuses_ != nullptr);
   return value;
 }
@@ -5662,7 +5683,7 @@ inline void FullDebateViewInfo::clear_per_user_statuses() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.per_user_statuses_ != nullptr) _impl_.per_user_statuses_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000008U);
+                  0x00000010U);
 }
 inline const ::rendering_info::PerUserClaimStatuses& FullDebateViewInfo::_internal_per_user_statuses() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -5681,16 +5702,16 @@ inline void FullDebateViewInfo::unsafe_arena_set_allocated_per_user_statuses(
   }
   _impl_.per_user_statuses_ = reinterpret_cast<::rendering_info::PerUserClaimStatuses*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rendering_info.FullDebateViewInfo.per_user_statuses)
 }
 inline ::rendering_info::PerUserClaimStatuses* PROTOBUF_NULLABLE FullDebateViewInfo::release_per_user_statuses() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::rendering_info::PerUserClaimStatuses* released = _impl_.per_user_statuses_;
   _impl_.per_user_statuses_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -5710,7 +5731,7 @@ inline ::rendering_info::PerUserClaimStatuses* PROTOBUF_NULLABLE FullDebateViewI
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:rendering_info.FullDebateViewInfo.per_user_statuses)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::rendering_info::PerUserClaimStatuses* temp = _impl_.per_user_statuses_;
   _impl_.per_user_statuses_ = nullptr;
   return temp;
@@ -5725,7 +5746,7 @@ inline ::rendering_info::PerUserClaimStatuses* PROTOBUF_NONNULL FullDebateViewIn
 }
 inline ::rendering_info::PerUserClaimStatuses* PROTOBUF_NONNULL FullDebateViewInfo::mutable_per_user_statuses()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   ::rendering_info::PerUserClaimStatuses* _msg = _internal_mutable_per_user_statuses();
   // @@protoc_insertion_point(field_mutable:rendering_info.FullDebateViewInfo.per_user_statuses)
   return _msg;
@@ -5742,9 +5763,9 @@ inline void FullDebateViewInfo::set_allocated_per_user_statuses(::rendering_info
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000010U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000008U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000010U);
   }
 
   _impl_.per_user_statuses_ = reinterpret_cast<::rendering_info::PerUserClaimStatuses*>(value);
@@ -5756,7 +5777,7 @@ inline void FullDebateViewInfo::clear_viewer_current_claim_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_current_claim_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline ::int32_t FullDebateViewInfo::viewer_current_claim_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.FullDebateViewInfo.viewer_current_claim_id)
@@ -5764,7 +5785,7 @@ inline ::int32_t FullDebateViewInfo::viewer_current_claim_id() const {
 }
 inline void FullDebateViewInfo::set_viewer_current_claim_id(::int32_t value) {
   _internal_set_viewer_current_claim_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:rendering_info.FullDebateViewInfo.viewer_current_claim_id)
 }
 inline ::int32_t FullDebateViewInfo::_internal_viewer_current_claim_id() const {
@@ -5774,6 +5795,56 @@ inline ::int32_t FullDebateViewInfo::_internal_viewer_current_claim_id() const {
 inline void FullDebateViewInfo::_internal_set_viewer_current_claim_id(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_current_claim_id_ = value;
+}
+
+// repeated int32 viewer_held_claim_ids = 7 [json_name = "viewerHeldClaimIds"];
+inline int FullDebateViewInfo::_internal_viewer_held_claim_ids_size() const {
+  return _internal_viewer_held_claim_ids().size();
+}
+inline int FullDebateViewInfo::viewer_held_claim_ids_size() const {
+  return _internal_viewer_held_claim_ids_size();
+}
+inline void FullDebateViewInfo::clear_viewer_held_claim_ids() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.viewer_held_claim_ids_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int32_t FullDebateViewInfo::viewer_held_claim_ids(int index) const {
+  // @@protoc_insertion_point(field_get:rendering_info.FullDebateViewInfo.viewer_held_claim_ids)
+  return _internal_viewer_held_claim_ids().Get(index);
+}
+inline void FullDebateViewInfo::set_viewer_held_claim_ids(int index, ::int32_t value) {
+  _internal_mutable_viewer_held_claim_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:rendering_info.FullDebateViewInfo.viewer_held_claim_ids)
+}
+inline void FullDebateViewInfo::add_viewer_held_claim_ids(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_viewer_held_claim_ids()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:rendering_info.FullDebateViewInfo.viewer_held_claim_ids)
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>& FullDebateViewInfo::viewer_held_claim_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:rendering_info.FullDebateViewInfo.viewer_held_claim_ids)
+  return _internal_viewer_held_claim_ids();
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL FullDebateViewInfo::mutable_viewer_held_claim_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:rendering_info.FullDebateViewInfo.viewer_held_claim_ids)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_viewer_held_claim_ids();
+}
+inline const ::google::protobuf::RepeatedField<::int32_t>&
+FullDebateViewInfo::_internal_viewer_held_claim_ids() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.viewer_held_claim_ids_;
+}
+inline ::google::protobuf::RepeatedField<::int32_t>* PROTOBUF_NONNULL
+FullDebateViewInfo::_internal_mutable_viewer_held_claim_ids() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.viewer_held_claim_ids_;
 }
 
 // -------------------------------------------------------------------
