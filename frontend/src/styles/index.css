@@ -1008,6 +1008,15 @@ tr:hover td {
   color: var(--text);
   border-color: var(--text-2);
 }
+/* Its claim or its line is hovered on the map (GraphComponent): outlined the
+   way the claim is, so the card, the line and the claim read as one. An
+   outline, not a border or shadow, so it never fights the parent ring or the
+   challenge dash. */
+.graph-card.graph-card-hot,
+.graph-card:hover {
+  outline: 2.5px solid var(--accent-hover);
+  outline-offset: 2px;
+}
 .graph-card-dot {
   grid-row: 1 / span 2;
   width: 11px;
