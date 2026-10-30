@@ -44,6 +44,10 @@ export interface Focus {
   connectedIds: Set<string>;
   litGroups: Set<string>;   // pills on a lit path
   litLines: Set<string>;    // `${groupKey}|${sourceId}` and `${groupKey}|out`
+  // Which lit lines lead to which connection, both ways: hovering a card, a
+  // line or a connected claim outlines the other two (GraphComponent).
+  linesTo: Map<string, Set<string>>;  // connected claim -> the lines of its path
+  claimsOn: Map<string, string[]>;    // lit line -> the connected claims it leads to
 }
 
 export const lineKey = (groupKey: string, end: string) => `${groupKey}|${end}`;
@@ -54,8 +58,21 @@ export function focusOf(selectedId: string | null, groups: RelationGroup[]): Foc
   const connectedIds = new Set<string>();
   const litGroups = new Set<string>();
   const litLines = new Set<string>();
-  const add = (id: string, kind: LinkKind) => {
-    if (id === selectedId || connectedIds.has(id)) return;
+  const linesTo = new Map<string, Set<string>>();
+  const claimsOn = new Map<string, string[]>();
+  // A connection and the lines from the focus to it, through pill `group`.
+  const add = (id: string, kind: LinkKind, group: string, ends: string[]) => {
+    if (id === selectedId) return;
+    litGroups.add(group);
+    for (const end of ends) {
+      const key = lineKey(group, end);
+      litLines.add(key);
+      if (!linesTo.has(id)) linesTo.set(id, new Set());
+      linesTo.get(id)!.add(key);
+      if (!claimsOn.has(key)) claimsOn.set(key, []);
+      if (!claimsOn.get(key)!.includes(id)) claimsOn.get(key)!.push(id);
+    }
+    if (connectedIds.has(id)) return;
     connectedIds.add(id);
     connections.push({ id, kind });
   };
@@ -65,45 +82,31 @@ export function focusOf(selectedId: string | null, groups: RelationGroup[]): Foc
   const pill = groups.find((g) => g.key === selectedId);
   if (pill) {
     const challenge = isChallengeEdge(pill.type);
-    add(pill.targetId, challenge ? (pill.targetRelationKey ? "undercutOf" : "challenged") : "parent");
-    litGroups.add(pill.key);
-    litLines.add(lineKey(pill.key, "out"));
+    add(pill.targetId, challenge ? (pill.targetRelationKey ? "undercutOf" : "challenged") : "parent", pill.key, ["out"]);
     for (const src of pill.sources) {
-      add(src.id, challenge ? "challenge" : "support");
-      litLines.add(lineKey(pill.key, src.id));
+      add(src.id, challenge ? "challenge" : "support", pill.key, [src.id]);
     }
     for (const g of groups) {
       if (g.targetRelationKey !== pill.key) continue;
-      for (const src of g.sources) {
-        add(src.id, "undercutter");
-        litLines.add(lineKey(g.key, src.id));
-      }
-      litGroups.add(g.key);
-      litLines.add(lineKey(g.key, "out"));
+      for (const src of g.sources) add(src.id, "undercutter", g.key, [src.id, "out"]);
     }
-    return { connections, connectedIds, litGroups, litLines };
+    return { connections, connectedIds, litGroups, litLines, linesTo, claimsOn };
   }
 
   // Upward first, so a claim's parent is its first connection.
   for (const g of groups) {
     if (!g.sources.some((s) => s.id === selectedId) || g.targetId === selectedId) continue;
     const challenge = isChallengeEdge(g.type);
-    add(g.targetId, challenge ? (g.targetRelationKey ? "undercutOf" : "challenged") : "parent");
-    litGroups.add(g.key);
-    litLines.add(lineKey(g.key, selectedId));
-    litLines.add(lineKey(g.key, "out"));
+    add(g.targetId, challenge ? (g.targetRelationKey ? "undercutOf" : "challenged") : "parent", g.key, [selectedId, "out"]);
   }
   for (const g of groups) {
     if (g.targetId !== selectedId) continue;
     const challenge = isChallengeEdge(g.type);
     for (const src of g.sources) {
-      add(src.id, challenge ? (g.targetRelationKey ? "undercut" : "challenge") : "support");
-      litLines.add(lineKey(g.key, src.id));
+      add(src.id, challenge ? (g.targetRelationKey ? "undercut" : "challenge") : "support", g.key, [src.id, "out"]);
     }
-    litGroups.add(g.key);
-    litLines.add(lineKey(g.key, "out"));
   }
-  return { connections, connectedIds, litGroups, litLines };
+  return { connections, connectedIds, litGroups, litLines, linesTo, claimsOn };
 }
 
 // ── Walking the map ───────────────────────────────────────────────────
@@ -213,7 +216,10 @@ const arrowFor = (dx: number, dy: number) =>
 
 // Elements are reused by key so a card under the pointer survives a camera
 // move: rebuilding it every frame would drop a click that spans a flight.
-function cardElement(host: HTMLElement, key: string, onPick: (id: string) => void): HTMLElement {
+// Hovering a card tells the graph which claim it points at (onHover), so the
+// graph can outline that claim and the line to it; null when the pointer leaves.
+function cardElement(host: HTMLElement, key: string, onPick: (id: string) => void,
+                     onHover: (id: string | null) => void): HTMLElement {
   let el = host.querySelector<HTMLElement>(`:scope > [data-card="${CSS.escape(key)}"]`);
   if (el) return el;
   el = document.createElement("div");
@@ -230,6 +236,8 @@ function cardElement(host: HTMLElement, key: string, onPick: (id: string) => voi
     const id = el!.dataset.target;
     if (id) onPick(id);
   });
+  el.addEventListener("pointerenter", () => onHover(el!.dataset.target || null));
+  el.addEventListener("pointerleave", () => onHover(null));
   host.appendChild(el);
   return el;
 }
@@ -246,10 +254,11 @@ const PARENT_KINDS = new Set<LinkKind>(["parent", "challenged", "undercutOf"]);
 const CHALLENGE_KINDS = new Set<LinkKind>(["challenged", "undercutOf", "challenge", "undercut", "undercutter"]);
 
 function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: string, text: string, target: string,
-              parent = false, challenge = false) {
+              parent = false, challenge = false, hot = false) {
   if (el.style.getPropertyValue("--card-color") !== color) el.style.setProperty("--card-color", color);
   el.classList.toggle("graph-card-parent", parent);
   el.classList.toggle("graph-card-challenge", challenge);
+  el.classList.toggle("graph-card-hot", hot);
   el.dataset.target = target;
   const set = (sel: string, value: string) => {
     const part = el.querySelector<HTMLElement>(sel)!;
@@ -265,13 +274,16 @@ function fill(el: HTMLElement, color: string, who: string, kind: string, arrow: 
 // Draw one card per connection, at the point where the straight line from
 // the focus through its claim leaves the pane (so a claim that is in view
 // gets a card at the edge beyond it, pointing back at it); then keep every
-// card fully inside the pane and push overlapping ones apart.
+// card fully inside the pane and push overlapping ones apart. A card whose
+// claim is in `hot` (hovered on the map, or its line hovered) is outlined.
 export function placeConnectionCards(
   host: HTMLElement,
   focus: { x: number; y: number } | null,
   targets: CardTarget[],
   pane: { width: number; height: number },
-  onPick: (id: string) => void
+  onPick: (id: string) => void,
+  onHover: (id: string | null) => void = () => {},
+  hot: Set<string> = new Set()
 ): void {
   const keep = new Set<string>();
   const placed: Placed[] = [];
@@ -312,16 +324,16 @@ export function placeConnectionCards(
       const shown = list.length > cap ? list.slice(0, cap - 1) : list;
       for (const c of shown) {
         const key = `c${c.t.id}`;
-        const el = cardElement(host, key, onPick);
+        const el = cardElement(host, key, onPick, onHover);
         fill(el, c.t.color, c.t.who, KIND_LABEL[c.t.kind], arrowFor(c.dx, c.dy), c.t.text, c.t.id,
-             PARENT_KINDS.has(c.t.kind), CHALLENGE_KINDS.has(c.t.kind));
+             PARENT_KINDS.has(c.t.kind), CHALLENGE_KINDS.has(c.t.kind), hot.has(c.t.id));
         keep.add(key);
         placed.push({ key, run, el, x: c.x, y: c.y, w: 0, h: 0 });
       }
       if (shown.length < list.length) {
         const rest = list.slice(shown.length);
         const key = `more-${run}`;
-        const el = cardElement(host, key, onPick);
+        const el = cardElement(host, key, onPick, onHover);
         const n = rest.length;
         fill(
           el, NEUTRAL_COLOR, `+${n} more`, "connections this way", arrowFor(rest[0].dx, rest[0].dy),

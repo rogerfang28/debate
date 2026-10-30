@@ -1,5 +1,6 @@
 import React from "react";
 import { ComponentType } from "../../../../../src/gen/ts/layout_pb.ts";
+import handleEvent from "../../events/handleEvent";
 
 export interface ComponentProps {
   type: ComponentType;
@@ -80,9 +81,42 @@ const TextComponent: React.FC<BaseComponentProps> = ({ component, className, sty
       className={cls ? `${scale} ${cls}` : scale}
       style={{ ...style, ...(color !== undefined ? { color } : {}) }}
     >
-      {text}
+      {withClaimLinks(text, ((component as any).attributes || {})["data-claim-links"])}
     </Tag>
   );
 };
+
+// The AI chat cites claims as [#12]. The server lists, in data-claim-links,
+// the numbers that are claims of this debate; each of those becomes a link
+// that opens the claim in the debate view. Any other bracket stays text.
+function withClaimLinks(text: string, links: string | undefined): React.ReactNode {
+  if (!links) return text;
+  const known = new Set(links.split(","));
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(/\[#(\d+)\]/g)) {
+    const claimId = match[1];
+    if (!known.has(claimId)) continue;
+    const at = match.index ?? 0;
+    if (at > last) parts.push(text.slice(last, at));
+    parts.push(
+      <button
+        key={`${claimId}-${at}`}
+        type="button"
+        className="claim-ref"
+        title="Open this claim in the debate"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleEvent(e as any, { id: `chatClaimLink_${claimId}` }, "onClick", `chatClaimLink_${claimId}`);
+        }}
+      >
+        #{claimId}
+      </button>
+    );
+    last = at + match[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
 
 export default TextComponent;

@@ -124,6 +124,17 @@ const FLY_MS = 450;
 // and draws the edge cards; off, a click only selects, as the graph always
 // did. The choice is the viewer's, kept in their browser.
 const FLY_STORAGE_KEY = "debate.graphFly";
+// The key (what the colours and the dashed line mean, and whose colour is
+// whose) is folded behind a button so it never covers the graph; the reader
+// opens it when they need it, and their browser remembers which way it was.
+const KEY_STORAGE_KEY = "debate.graphKey";
+const readKeyOpen = (): boolean => {
+  try {
+    return localStorage.getItem(KEY_STORAGE_KEY) === "open";
+  } catch {
+    return false;
+  }
+};
 const readFlyMode = (): boolean => {
   try {
     return localStorage.getItem(FLY_STORAGE_KEY) !== "off";
@@ -243,6 +254,17 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
   // ═══════════ EXPERIMENT: SEMANTIC ZOOM (state) ═══════════
   const [semanticZoom, setSemanticZoom] = useState(SEMANTIC_ZOOM_DEFAULT);
   const [flyMode, setFlyMode] = useState(readFlyMode);
+  const [keyOpen, setKeyOpen] = useState(readKeyOpen);
+  const toggleKey = useCallback(() => {
+    setKeyOpen((v) => {
+      try {
+        localStorage.setItem(KEY_STORAGE_KEY, v ? "closed" : "open");
+      } catch {
+        // storage blocked: the choice lasts for this page
+      }
+      return !v;
+    });
+  }, []);
   const flyModeRef = useRef(flyMode);
   flyModeRef.current = flyMode;
   const toggleFlyMode = useCallback(() => {
@@ -748,6 +770,24 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
     [flyMode, focusId, relationGroups]
   );
 
+  // ── Hovering a connection ─────────────────────────────────────────
+  // A connection shows in three places: the claim on the map, the line to
+  // it, and its card at the pane edge. Hovering any one outlines all three,
+  // so you can see where a card or a line goes before you press it -- and a
+  // press on a line goes where its card goes.
+  const [hoverIds, setHoverIds] = useState<string[]>([]);
+  const hoverKey = hoverIds.join(",");
+  useEffect(() => setHoverIds([]), [focusId]);
+  const hot = useMemo(() => new Set(focus ? hoverIds.filter((id) => focus.connectedIds.has(id)) : []), [focus, hoverKey]);
+  const hotLines = useMemo(() => {
+    const out = new Set<string>();
+    for (const id of hot) for (const k of focus?.linesTo.get(id) ?? []) out.add(k);
+    return out;
+  }, [focus, hot]);
+  const hoverCard = useCallback((id: string | null) => setHoverIds(id ? [id] : []), []);
+  const hoverCardRef = useRef(hoverCard);
+  hoverCardRef.current = hoverCard;
+
   // Off-screen cards, drawn against the LIVE camera. Everything the zoom
   // handler needs is read through this ref, since that handler is attached once.
   const cardsHostRef = useRef<HTMLDivElement>(null);
@@ -776,7 +816,8 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
       const p = toPane(n);
       targets.push({ id: c.id, kind: c.kind, color: statusColorOf(n), who: n.creatorUsername || `#${n.id}`, text: n.text, ...p });
     }
-    placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id));
+    placeConnectionCards(host, toPane(sel), targets, { width, height }, (id) => selectAndFlyRef.current(id),
+      (id) => hoverCardRef.current(id), hot);
   };
   useLayoutEffect(() => {
     drawCardsRef.current();
@@ -950,8 +991,48 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
             // brighter red for a challenge. Restyling only; nothing moves.
             const litColor = isChallenge ? EDGE_COLORS.challenges : "var(--accent)";
             const lit = (end: string) => !!focus?.litLines.has(lineKey(group.key, end));
+            // A hovered connection's lines get a halo under them.
+            const halo = (end: string, x1: number, y1: number, x2: number, y2: number) =>
+              hotLines.has(lineKey(group.key, end)) && (
+                <line
+                  key={`halo-${end}`}
+                  x1={x1} y1={y1} x2={x2} y2={y2}
+                  stroke="var(--accent-hover)"
+                  strokeWidth={9}
+                  strokeOpacity={0.35}
+                  strokeLinecap="round"
+                  style={{ pointerEvents: "none" }}
+                />
+              );
+            // A lit line is a way to its connection, like the card: a wide,
+            // invisible hit line over it outlines the connection on hover and
+            // flies there on a press. The pill's segment is shared by all its
+            // sources; with more than one, a press selects the argument (pill).
+            const hit = (end: string, x1: number, y1: number, x2: number, y2: number) => {
+              const ids = focus?.claimsOn.get(lineKey(group.key, end));
+              if (!ids || ids.length === 0) return null;
+              const goTo = ids.length === 1 ? ids[0] : group.selectable ? group.key : null;
+              return (
+                <line
+                  key={`hit-${end}`}
+                  x1={x1} y1={y1} x2={x2} y2={y2}
+                  stroke="transparent"
+                  strokeWidth={14}
+                  style={{ cursor: goTo ? "pointer" : "default", pointerEvents: "stroke" }}
+                  onPointerEnter={() => setHoverIds(ids)}
+                  onPointerLeave={() => setHoverIds([])}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (goTo) selectAndFly(goTo);
+                  }}
+                />
+              );
+            };
             return (
               <g key={`lines-${group.key}`}>
+                {group.sources.map((source) =>
+                  halo(source.id, source.x ?? 100, source.y ?? 100, group.x, group.y))}
+                {halo("out", group.x, group.y, group.tx, group.ty)}
                 {/* Every source feeds INTO the pill: a plain segment, the same
                     for evidence into a support and a challenger into a challenge. */}
                 {group.sources.map((source) => (
@@ -978,6 +1059,9 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                   strokeOpacity={lit("out") ? 1 : 0.7}
                   strokeDasharray={isChallenge ? "6,3" : "none"}
                 />
+                {group.sources.map((source) =>
+                  hit(source.id, source.x ?? 100, source.y ?? 100, group.x, group.y))}
+                {hit("out", group.x, group.y, group.tx, group.ty)}
               </g>
             );
           })}
@@ -1165,9 +1249,28 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
                     x: e.clientX - (rect?.left ?? 0),
                     y: e.clientY - (rect?.top ?? 0),
                   });
+                  if (focus?.connectedIds.has(node.id)) setHoverIds([node.id]);
                 }}
-                onPointerLeave={() => setTooltip(null)}
+                onPointerLeave={() => {
+                  setTooltip(null);
+                  if (hot.has(node.id)) setHoverIds([]);
+                }}
               >
+                {/* Hovered connection: outlined, as its card and line are */}
+                {hot.has(node.id) && (
+                  <rect
+                    x={-w / 2 - 6}
+                    y={-h / 2 - 6}
+                    width={w + 12}
+                    height={h + 12}
+                    rx={13}
+                    ry={13}
+                    fill="none"
+                    stroke="var(--accent-hover)"
+                    strokeWidth={2.5}
+                    style={{ pointerEvents: "none" }}
+                  />
+                )}
                 {/* Glow ring */}
                 {(isSelected || isCurrent) && (
                   <rect
@@ -1416,12 +1519,37 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
         </button>
       </div>
 
-      {/* Legend */}
-      <div
+      {/* Key: a button, and the legend under it while open */}
+      <button
+        type="button"
+        onClick={toggleKey}
+        className="graph-zoom-btn"
+        aria-expanded={keyOpen}
+        title={keyOpen ? "Hide the key" : "Show what the colours and lines mean"}
         style={{
           position: "absolute",
           top: "0.75rem",
           left: "0.75rem",
+          height: "28px",
+          padding: "0 0.6rem",
+          gap: "0.35rem",
+          background: keyOpen ? "var(--accent-soft)" : "var(--surface-elevated)",
+          border: `1px solid ${keyOpen ? "var(--accent)" : "var(--border-default)"}`,
+          borderRadius: "var(--radius-sm)",
+          color: keyOpen ? "var(--accent-hover)" : "var(--text-secondary)",
+          fontSize: "0.75rem",
+        }}
+      >
+        <span aria-hidden="true">{keyOpen ? "▾" : "▸"}</span>
+        Key
+      </button>
+      {keyOpen && (
+      <div
+        style={{
+          position: "absolute",
+          top: "calc(0.75rem + 32px)",
+          left: "0.75rem",
+          maxWidth: "min(28rem, calc(100% - 1.5rem))",
           display: "flex",
           flexWrap: "wrap",
           gap: "0.5rem",
@@ -1474,6 +1602,7 @@ const DebateGraph: React.FC<DebateGraphProps> = ({ component, className, style, 
           </span>
         ))}
       </div>
+      )}
     </div>
   );
 };

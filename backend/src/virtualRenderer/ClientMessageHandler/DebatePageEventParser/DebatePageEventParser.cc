@@ -49,6 +49,14 @@ debate_event::DebateEvent DebatePageEventParser::ParseDebatePageEvent(
         Log::debug("  OPEN_CLAIM_IN_DEBATE for user: " + std::to_string(user_id) + " claim ID: " + claimId);
         event.set_type(debate_event::OPEN_CLAIM_IN_DEBATE);
         event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
+    // A [#12] reference in the AI chat (data-claim-links): the same as the
+    // brief's links -- the debate view, with that claim selected -- from
+    // either tab.
+    } else if (componentId.rfind("chatClaimLink_", 0) == 0 && eventType == "onClick") {
+        const std::string claimId = componentId.substr(strlen("chatClaimLink_"));
+        Log::debug("  OPEN_CLAIM_IN_DEBATE (chat) for user: " + std::to_string(user_id) + " claim ID: " + claimId);
+        event.set_type(debate_event::OPEN_CLAIM_IN_DEBATE);
+        event.mutable_select_claim()->set_claim_id(std::stoi(claimId));
     } else if (componentId == "tutorialNextButton" && eventType == "onClick") {
         event.set_type(debate_event::TUTORIAL_NEXT);
         Log::debug("  TUTORIAL_NEXT for user: " + std::to_string(user_id));

@@ -732,6 +732,25 @@ button:disabled {
 .btn.quiet:hover { color: var(--text); }
 .btn.danger { border-color: transparent; color: var(--open); }
 .btn.danger:hover { background-color: var(--open-soft); }
+
+/* A claim the AI chat cites as [#12]: a link in the running text, not a
+   button-shaped button (TextComponent.tsx). */
+button.claim-ref {
+  display: inline;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  user-select: text;
+}
+button.claim-ref:hover {
+  background-color: transparent;
+  color: var(--accent-hover);
+}
 .btn.sm { padding: 4px 10px; font-size: 13px; }
 
 .pill {
@@ -988,6 +1007,15 @@ tr:hover td {
 .graph-card:hover {
   color: var(--text);
   border-color: var(--text-2);
+}
+/* Its claim or its line is hovered on the map (GraphComponent): outlined the
+   way the claim is, so the card, the line and the claim read as one. An
+   outline, not a border or shadow, so it never fights the parent ring or the
+   challenge dash. */
+.graph-card.graph-card-hot,
+.graph-card:hover {
+  outline: 2.5px solid var(--accent-hover);
+  outline-offset: 2px;
 }
 .graph-card-dot {
   grid-row: 1 / span 2;

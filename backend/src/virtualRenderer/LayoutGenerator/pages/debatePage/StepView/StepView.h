@@ -17,11 +17,15 @@ public:
 	);
 
 	// The docked AI chat. Shared with the Brief tab, which is the same
-	// debate seen another way and should answer the same questions.
-	static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId);
+	// debate seen another way and should answer the same questions. The
+	// collection says which of the AI's [#12] references are real claims of
+	// this debate, so only those become links.
+	static ui::Component BuildChatPanel(const user::User& viewerUser, int selectedClaimId,
+		const debate::Collection& collectionProto);
 
 	// The chat panel as a page's chat region (data-region="chat").
-	static ui::Component BuildChatColumn(const user::User& viewerUser, int selectedClaimId);
+	static ui::Component BuildChatColumn(const user::User& viewerUser, int selectedClaimId,
+		const debate::Collection& collectionProto);
 
 	// The Debate | Brief tabs at the top of both pages. One is lit.
 	static ui::Component BuildDebateTabs(bool briefActive);
