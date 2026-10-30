@@ -244,6 +244,41 @@ C("b1_mod_r", "b1_mod", "scriptline",
   "EVIDENTIAL", SCRIPTLINE,
   "The glint animation derives its time value from Java's system.nanoTime. While the value returned by this function will depend on your machine, there is absolutely no means or reason for this value to ever be influenced by a mod.",
   "11 October 2026. He built his own screenshot mod to test it; the shimmer didn't jump." + AC)
+# Round two of the screenshot-mod exchange (mid-October 2026), as covered in
+# Tayler's video of 17 October, which reads Dream's second Reddit reply and the
+# investigators' answers. The Reddit thread itself could not be opened.
+TAYLER_AI = "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+C("b1_mod2", "b1_mod_r", "Dream",
+  "The counter isn't the game's clock but an interface timer for things like chat fading; bumping it is the simplest way to clear chat for a screenshot, as ChatGPT confirms.",
+  "EVIDENTIAL", TAYLER_AI,
+  "You don't have to take my word for it, though. Here's me asking chat GPT the simplest way to fade chat in a Minecraft mod.",
+  "Dream's second Reddit reply, about mid-October 2026, quoted in Tayler's video of 17 October. The screenshot showed ChatGPT suggesting adding 200 to that counter. He said a lag spike while saving the screenshot made the code add to it hundreds or thousands of times, that the item shimmer shares the same value, and that 'surprisingly simple answers' for the backward jumps would come later." + AC)
+S("b1_mod2_old", "b1_mod2", "Dream",
+  "His recording marker existed months before the allegations: a 6 Hunters Rematch video shows the bug where it clears underwater fog.",
+  "EVIDENTIAL", TAYLER_AI,
+  "To prove he didn't just quote this recently as an excuse, Dream linked sideby-side screenshots from his six hunters rematch video from over 6 months ago.",
+  "Tayler's account of the same reply. The investigators agree the tool is real; the question is whether it explains the old videos." + AC)
+C("b1_mod2_old_r", "b1_mod2_old", "Tayler",
+  "In the newer videos chat disappears only inside the screenshot file; in the old \"uncut\" ones it vanishes from the video itself.",
+  "EVIDENTIAL", TAYLER_AI,
+  "In those newer videos from 6 months ago, when Dream takes a screenshot, the chat and item names only disappear inside the screenshot file. They stay completely visible in the actual YouTube video.",
+  "17 October 2026. She also notes the same mod is used in the revival series, which scanned with no jumps, against 46 in the old videos." + AC)
+C("b1_mod2_ai", "b1_mod2", "repeater64",
+  "Asked Dream's exact question, ChatGPT gives other answers, like lowering chat opacity; it only gives his if steered.",
+  "EVIDENTIAL", TAYLER_AI,
+  "used Dream's exact prompt every single time the AI gave completely different answers that don't touch the tick counter at all, like simply turning down the chat opacity.",
+  "repeater64 and several others, as reported by Tayler ('Peter 64' in the auto-captions). Others showed custom instructions can steer ChatGPT to Dream's answer, and Dream declined to share a public link to his conversation." + AC)
+C("b1_mod2_code", "b1_mod2", "repeater64",
+  "Dream's own mod is written to push the shimmer's real-world clock along with the timer, exactly the code you'd need to hide cuts.",
+  "EVIDENTIAL", TAYLER_AI,
+  "When Repeater 64 actually looked at the mod Dream sent him, he revealed that Dream's mod was specifically programmed to counter that realworld clock value. So, it jumps right alongside the timer.",
+  "repeater64 inspected the mod Dream had sent the investigators, as reported by Tayler. In vanilla Minecraft the shimmer runs on the computer's clock." + AC)
+C("b1_mod2_back", "b1_mod2", "Tayler",
+  "A loop that only adds can't make the clock go backwards, yet it drops right before the big stunts like the boat clutch.",
+  "INFERENTIAL", TAYLER_AI,
+  "a loop that only adds to a number can never make the timer go backwards. Yet, right before the major stunts, like the boat clutch, the timer completely resets and drops down.",
+  "17 October 2026. She also asks why a mod would push a timer to clear chat when Minecraft has a setting that hides chat instantly." + AC)
+
 C("b1_breaks", "b1", "Dream",
   "The real cuts are bathroom breaks and crashes; the videos promised the full run, not a raw file.",
   "DEFINITIONAL", DREAM_REDDIT_READ,

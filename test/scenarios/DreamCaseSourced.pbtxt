@@ -1049,6 +1049,215 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
+    claim_id: 37
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 37
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "The counter isn't the game's clock but an interface timer for things like chat fading; bumping it is the simplest way to clear chat for a screenshot, as ChatGPT confirms."
+    challenge_description: "Dream's second Reddit reply, about mid-October 2026, quoted in Tayler's video of 17 October. The screenshot showed ChatGPT suggesting adding 200 to that counter. He said a lag spike while saving the screenshot made the code add to it hundreds or thousands of times, that the item shimmer shares the same value, and that 'surprisingly simple answers' for the backward jumps would come later. (Quote from YouTube's auto-captions.)"
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "You don't have to take my word for it, though. Here's me asking chat GPT the simplest way to fade chat in a Minecraft mod."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "His recording marker existed months before the allegations: a 6 Hunters Rematch video shows the bug where it clears underwater fog."
+    claim_description: "Tayler's account of the same reply. The investigators agree the tool is real; the question is whether it explains the old videos. (Quote from YouTube's auto-captions.)"
+    voice: "Dream"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "To prove he didn't just quote this recently as an excuse, Dream linked sideby-side screenshots from his six hunters rematch video from over 6 months ago."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 39
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 39
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "In the newer videos chat disappears only inside the screenshot file; in the old \"uncut\" ones it vanishes from the video itself."
+    challenge_description: "17 October 2026. She also notes the same mod is used in the revival series, which scanned with no jumps, against 46 in the old videos. (Quote from YouTube's auto-captions.)"
+    voice: "Tayler"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "In those newer videos from 6 months ago, when Dream takes a screenshot, the chat and item names only disappear inside the screenshot file. They stay completely visible in the actual YouTube video."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Asked Dream's exact question, ChatGPT gives other answers, like lowering chat opacity; it only gives his if steered."
+    challenge_description: "repeater64 and several others, as reported by Tayler ('Peter 64' in the auto-captions). Others showed custom instructions can steer ChatGPT to Dream's answer, and Dream declined to share a public link to his conversation. (Quote from YouTube's auto-captions.)"
+    voice: "repeater64"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "used Dream's exact prompt every single time the AI gave completely different answers that don't touch the tick counter at all, like simply turning down the chat opacity."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Dream's own mod is written to push the shimmer's real-world clock along with the timer, exactly the code you'd need to hide cuts."
+    challenge_description: "repeater64 inspected the mod Dream had sent the investigators, as reported by Tayler. In vanilla Minecraft the shimmer runs on the computer's clock. (Quote from YouTube's auto-captions.)"
+    voice: "repeater64"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "When Repeater 64 actually looked at the mod Dream sent him, he revealed that Dream's mod was specifically programmed to counter that realworld clock value. So, it jumps right alongside the timer."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 38
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "A loop that only adds can't make the clock go backwards, yet it drops right before the big stunts like the boat clutch."
+    challenge_description: "17 October 2026. She also asks why a mod would push a timer to clear chat when Minecraft has a setting that hides chat instantly. (Quote from YouTube's auto-captions.)"
+    voice: "Tayler"
+    basis: "INFERENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "a loop that only adds to a number can never make the timer go backwards. Yet, right before the major stunts, like the boat clutch, the timer completely resets and drops down."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
     claim_id: 28
   }
 }
@@ -1087,7 +1296,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 44
   }
 }
 steps {
@@ -1106,7 +1315,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 44
   }
 }
 steps {
@@ -1119,7 +1328,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 38
+    claim_id: 44
   }
 }
 steps {
@@ -1182,7 +1391,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 41
+    claim_id: 47
   }
 }
 steps {
@@ -1195,7 +1404,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 41
+    claim_id: 47
   }
 }
 steps {
@@ -1296,7 +1505,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 44
+    claim_id: 50
   }
 }
 steps {
@@ -1334,7 +1543,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 46
+    claim_id: 52
   }
 }
 steps {
@@ -1353,7 +1562,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 47
+    claim_id: 53
   }
 }
 steps {
@@ -1372,7 +1581,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 46
+    claim_id: 52
   }
 }
 steps {
@@ -1385,7 +1594,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 46
+    claim_id: 52
   }
 }
 steps {
@@ -1410,7 +1619,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 49
+    claim_id: 55
   }
 }
 steps {
@@ -1423,7 +1632,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 49
+    claim_id: 55
   }
 }
 steps {
@@ -1464,6 +1673,6 @@ steps {
   }
 }
 steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 51 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 57 }
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "Karl Jobst" expected_status: "TRUE_CLAIM" }
 }
