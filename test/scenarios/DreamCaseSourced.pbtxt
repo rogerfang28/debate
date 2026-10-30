@@ -904,12 +904,126 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CHILD_CLAIM"
-    claim_text: "The famous boat clutch was not one take: a hidden cut sits seconds before it, and its two hotbar displays fall out of sync, which the game can't do."
-    claim_description: "repeater64, a plugin developer, speaking in Dart Spark's video. Dream defended the clutch as real on a 2021 livestream. (Quote from YouTube's auto-captions.)"
+    claim_text: "A hidden cut sits about 15 seconds before the famous boat clutch, and Dream relaunched his game during it, so the clutch wasn't one attempt."
+    claim_description: "repeater64, a plugin developer and co-inventor of the hunger-bar method, speaking in Dart Spark's video. He withdrew one of his own 2022 claims about the clutch (a jump that turned out to be a bug). (Quote from YouTube's auto-captions.)"
     voice: "repeater64"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
-    source_excerpt: "I dived through the game code for this version of Minecraft and found that the two representations of the hotbar render based on the exact same object, making it completely impossible for them to be out of sync"
+    source_excerpt: "there is a cut hidden even closer to the boat clutch, just around 15 seconds before it. Since an unknown amount of time [music] passed during this cut and Dream relaunched his game,"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 33
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 33
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Dream explained live, in detail, how he improvised the boat clutch."
+    challenge_description: "April 2021, Dream's answer to the first boat-clutch doubts, as reported by Sportskeeda."
+    voice: "Sportskeeda"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.sportskeeda.com/minecraft/dream-debunks-accusations-faking-manhunt-boat-clutch-minecraft"
+    source_excerpt: "In light of swirling rumors of his boat clutch allegedly being \"fake,\" Dream recently hosted a livestream in which he explained in detail how the legendary Minecraft moment actually came to fruition."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Frame by frame, the boat appears in his bottom hotbar before he clicks it in the inventory, which the game can't show in one take: two clips were overlaid."
+    challenge_description: "Both hotbars 'render based on the exact same object, making it completely impossible for them to be out of sync, even for a single frame.' YouTube compression can make them differ, but it delays the bottom one, the opposite of what's seen. His conclusion: the crafting footage was recorded separately and laid over the background, and a recreation by other YouTubers shows the same flaw. (Quote from YouTube's auto-captions.)"
+    voice: "repeater64"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
+    source_excerpt: "if you step through Dream's boat clutch footage frame by frame, you'll notice something incredibly weird. The boat appears in his hot bar at the bottom of the screen several frames before he actually clicks it into his inventory"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 33
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "On the boat-clutch tower a furnace smelts 2.44 ingots in 15.1 seconds when the game allows 1.51, so 9.3 seconds of footage are missing."
+    claim_description: "The check was done by Leila on the investigation team. One ingot takes exactly 10 seconds; every other smelt in the video was never off by more than a frame or two, so it isn't lag. The game clock also drops from 7 to 6 minutes there, meaning Dream relaunched the game, mid-smelt, on the clutch tower. (Quote from YouTube's auto-captions.)"
+    voice: "Dart Spark"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=WsWNWzSwVUA"
+    source_excerpt: "There's a whole 9.3 seconds of footage missing from the video after he loaded his save state."
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "GO_TO_CLAIM"
+    claim_id: 28
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CHILD_CLAIM"
+    claim_text: "The old footage shows Dream taking the same six iron ingots out of a furnace twice."
+    claim_description: "17 October 2026, listed among the editing mistakes that a screenshot mod can't explain. (Quote from YouTube's auto-captions.)"
+    voice: "Tayler"
+    basis: "EVIDENTIAL"
+    source_url: "https://www.youtube.com/watch?v=YWG8YRjPJsk"
+    source_excerpt: "It doesn't explain how Dream pulled the exact same six iron ingots out of a furnace twice."
   }
 }
 steps {
@@ -935,7 +1049,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 34
+    claim_id: 38
   }
 }
 steps {
@@ -948,7 +1062,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 34
+    claim_id: 38
   }
 }
 steps {
@@ -1011,7 +1125,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 36
+    claim_id: 40
   }
 }
 steps {
@@ -1024,7 +1138,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 36
+    claim_id: 40
   }
 }
 steps {
@@ -1049,7 +1163,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 37
+    claim_id: 41
   }
 }
 steps {
@@ -1062,7 +1176,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 37
+    claim_id: 41
   }
 }
 steps {
@@ -1087,7 +1201,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1106,7 +1220,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 39
+    claim_id: 43
   }
 }
 steps {
@@ -1119,7 +1233,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 39
+    claim_id: 43
   }
 }
 steps {
@@ -1144,7 +1258,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1157,7 +1271,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1182,7 +1296,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1195,7 +1309,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1220,7 +1334,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1233,7 +1347,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 38
+    claim_id: 42
   }
 }
 steps {
@@ -1296,7 +1410,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 44
+    claim_id: 48
   }
 }
 steps {
@@ -1315,7 +1429,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 44
+    claim_id: 48
   }
 }
 steps {
@@ -1328,7 +1442,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 44
+    claim_id: 48
   }
 }
 steps {
@@ -1391,7 +1505,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 47
+    claim_id: 51
   }
 }
 steps {
@@ -1404,7 +1518,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 47
+    claim_id: 51
   }
 }
 steps {
@@ -1505,7 +1619,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 50
+    claim_id: 54
   }
 }
 steps {
@@ -1543,7 +1657,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 52
+    claim_id: 56
   }
 }
 steps {
@@ -1562,7 +1676,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 53
+    claim_id: 57
   }
 }
 steps {
@@ -1581,7 +1695,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 52
+    claim_id: 56
   }
 }
 steps {
@@ -1594,7 +1708,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 52
+    claim_id: 56
   }
 }
 steps {
@@ -1619,7 +1733,7 @@ steps {
   action {
     username: "guest"
     event_type: "GO_TO_CLAIM"
-    claim_id: 55
+    claim_id: 59
   }
 }
 steps {
@@ -1632,7 +1746,7 @@ steps {
   action {
     username: "guest"
     event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
-    claim_id: 55
+    claim_id: 59
   }
 }
 steps {
@@ -1673,6 +1787,6 @@ steps {
   }
 }
 steps {
-  expectations { check_type: "COLLECTION_SIZE" expected_count: 57 }
+  expectations { check_type: "COLLECTION_SIZE" expected_count: 61 }
   expectations { check_type: "USER_VIEW" claim_id: 1 username: "Karl Jobst" expected_status: "TRUE_CLAIM" }
 }

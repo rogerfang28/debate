@@ -411,7 +411,14 @@ TEST_F(ImportFlowTest, ScenarioFileImportsAsTheAdmin) {
     send(as(admin_, debate_event::IMPORT_PUBLISH, dream));
     const std::vector<int> ids = moderator_->getDebateWrapper().getUserDebateIds(admin_);
     ASSERT_EQ(ids.size(), 1u);
-    EXPECT_EQ(moderator_->getDebateWrapper().getStatementsForDebate(ids[0]).size(), 62u);
+    // One claim per root, support and challenge step in the file, counted
+    // rather than hard-coded so editing the case doesn't break the test.
+    size_t expected = 0;
+    for (const char* step : {"CREATE_DEBATE\"", "ADD_CHILD_CLAIM\"", "SUBMIT_CHALLENGE_CLAIM\""}) {
+        for (size_t at = dream.find(step); at != std::string::npos; at = dream.find(step, at + 1)) ++expected;
+    }
+    ASSERT_GT(expected, 0u);
+    EXPECT_EQ(moderator_->getDebateWrapper().getStatementsForDebate(ids[0]).size(), expected);
     EXPECT_EQ(moderator_->getUserId("guest"), -1) << "guest was aliased to the admin";
 }
 

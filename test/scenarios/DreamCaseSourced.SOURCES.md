@@ -94,26 +94,18 @@ Every page below was opened and quoted on 2026-10-29 by four research passes, on
    > What we're looking at here is a manhunt by Feinberg which was live streamed and obviously isn't going to have any hidden cuts in it. And we see exactly what we'd expect, a single straight unbroken line.
    > That brings our total up to 14 cuts. The video that was delivered to our screens was 2 hours and 13 minutes long. And yet the true time spent was upwards of 4 hours and 45 minutes.
    > he has an absolutely unbelievable uptime of 3 and 1/2 hours. No, this is not a bug in the scan. This is real.
-   > I dived through the game code for this version of Minecraft and found that the two representations of the hotbar render based on the exact same object, making it completely impossible for them to be out of sync
+   > there is a cut hidden even closer to the boat clutch, just around 15 seconds before it. Since an unknown amount of time [music] passed during this cut and Dream relaunched his game,
+   > if you step through Dream's boat clutch footage frame by frame, you'll notice something incredibly weird. The boat appears in his hot bar at the bottom of the screen several frames before he actually clicks it into his inventory
+   > There's a whole 9.3 seconds of footage missing from the video after he loaded his save state.
    > I believe the original Manhunt series was faked by doing multiple attempts and secretly cutting out the failed ones, while the new series is most likely real.
 
-21. https://www.youtube.com/watch?v=km1IlBAZJH0  
-   voice: Dream  
-   > So these deaths at the beginning don't actually count as a run. The seed is lost and we move down the list of seeds to the next seed.
+21. https://www.sportskeeda.com/minecraft/dream-debunks-accusations-faking-manhunt-boat-clutch-minecraft  
+   voice: Sportskeeda  
+   > In light of swirling rumors of his boat clutch allegedly being "fake," Dream recently hosted a livestream in which he explained in detail how the legendary Minecraft moment actually came to fruition.
 
-22. https://www.youtube.com/watch?v=LE94mDE4Cxw  
-   voice: Dream  
-   > I have a mod that takes screenshots when I have my trigger in order to make the editing process easier by marking key moments or things that might need to get editing attention.
-   > Also, there are some genuine cuts from someone having to go to the bathroom or a server crash or whatever else. The point of those videos is for the full runs, not literally a raw file
-   > It's definitely a useful trick to find cuts in speedruns and stuff, but obviously doesn't apply cleanly to custom server jars, custom mods, etc.
-
-23. https://www.youtube.com/watch?v=lBauWJX3aAo  
-   voice: scriptline  
-   > The glint animation derives its time value from Java's system.nanoTime. While the value returned by this function will depend on your machine, there is absolutely no means or reason for this value to ever be influenced by a mod.
-   > if you leave the game and are just on the menu, your tick counter continues going up. So when you rejoin, it'll always be higher than when you left off. But that's clearly not what's going on here.
-
-24. https://www.youtube.com/watch?v=YWG8YRjPJsk  
+22. https://www.youtube.com/watch?v=YWG8YRjPJsk  
    voice: Dream, Tayler, repeater64  
+   > It doesn't explain how Dream pulled the exact same six iron ingots out of a furnace twice.
    > You don't have to take my word for it, though. Here's me asking chat GPT the simplest way to fade chat in a Minecraft mod.
    > To prove he didn't just quote this recently as an excuse, Dream linked sideby-side screenshots from his six hunters rematch video from over 6 months ago.
    > In those newer videos from 6 months ago, when Dream takes a screenshot, the chat and item names only disappear inside the screenshot file. They stay completely visible in the actual YouTube video.
@@ -121,42 +113,57 @@ Every page below was opened and quoted on 2026-10-29 by four research passes, on
    > When Repeater 64 actually looked at the mod Dream sent him, he revealed that Dream's mod was specifically programmed to counter that realworld clock value. So, it jumps right alongside the timer.
    > a loop that only adds to a number can never make the timer go backwards. Yet, right before the major stunts, like the boat clutch, the timer completely resets and drops down.
 
-25. https://www.youtube.com/watch?v=qvcnEsA2mL8  
+23. https://www.youtube.com/watch?v=km1IlBAZJH0  
+   voice: Dream  
+   > So these deaths at the beginning don't actually count as a run. The seed is lost and we move down the list of seeds to the next seed.
+
+24. https://www.youtube.com/watch?v=LE94mDE4Cxw  
+   voice: Dream  
+   > I have a mod that takes screenshots when I have my trigger in order to make the editing process easier by marking key moments or things that might need to get editing attention.
+   > Also, there are some genuine cuts from someone having to go to the bathroom or a server crash or whatever else. The point of those videos is for the full runs, not literally a raw file
+   > It's definitely a useful trick to find cuts in speedruns and stuff, but obviously doesn't apply cleanly to custom server jars, custom mods, etc.
+
+25. https://www.youtube.com/watch?v=lBauWJX3aAo  
+   voice: scriptline  
+   > The glint animation derives its time value from Java's system.nanoTime. While the value returned by this function will depend on your machine, there is absolutely no means or reason for this value to ever be influenced by a mod.
+   > if you leave the game and are just on the menu, your tick counter continues going up. So when you rejoin, it'll always be higher than when you left off. But that's clearly not what's going on here.
+
+26. https://www.youtube.com/watch?v=qvcnEsA2mL8  
    voice: Dream  
    > There are points in this video where I check my phone, or I check my discord or something. Sometimes if I'm standing still or something that might be why. There's also a short pause while there was a bug.
 
-26. https://www.youtube.com/watch?v=fJFL-ZoxsOE  
+27. https://www.youtube.com/watch?v=fJFL-ZoxsOE  
    voice: Erdgeist After Dark  
    > I took 40 random readings from Dart's published data and my tool returned the same tick count for all 40. So this does two things. It validates that my tool works and it also validates the result of Dart Spark.
 
-27. https://www.youtube.com/watch?v=F_-N5AVFzBY  
+28. https://www.youtube.com/watch?v=F_-N5AVFzBY  
    voice: Skeppy  
    > Speaking from my experience when I was there, yeah, it was authentic.
 
-28. https://www.youtube.com/watch?v=NZ7aiOgGFhw  
+29. https://www.youtube.com/watch?v=NZ7aiOgGFhw  
    voice: RoyaltyIsHere  
    > Dream was one of the most hated individuals on the planet at one point and that potentially led to false allegations being levied against him, harassment, doxing.
 
-29. https://www.youtube.com/watch?v=rWiZqBjyMEA  
+30. https://www.youtube.com/watch?v=rWiZqBjyMEA  
    voice: Patches  
    > I tracked down all 35 accusations about his gameplay and checked each one against its source. 10 he admitted. 4 were measured. 10 are still disputed. 7 are only alleged. And 4 turned out to be wrong.
 
-30. https://www.youtube.com/watch?v=2lkxXfMFu2Y  
+31. https://www.youtube.com/watch?v=2lkxXfMFu2Y  
    voice: MrMangoHands  
    > I was a leaderboard moderator from February 2021 (after the mods talked with dream that month) and before that a technical advisor to the team from December 2020
 
-31. https://youtube.fandom.com/wiki/Dream  
+32. https://youtube.fandom.com/wiki/Dream  
    voice: Wikitubia  
    > On October 22, 2026, shortly after Dart Spark's Manhunt cheating allegations, he set his 1.15 WR video on YouTube to private for unknown reasons.
 
-32. https://www.youtube.com/watch?v=BpRGypK6dBE  
+33. https://www.youtube.com/watch?v=BpRGypK6dBE  
    voice: Christopher Norton  
    > Maybe he has a reason, but if those runs are real, they're the best evidence he has. Hiding them is the last thing you'd do.
 
-33. https://www.youtube.com/watch?v=dtZviABbSIA  
+34. https://www.youtube.com/watch?v=dtZviABbSIA  
    voice: Dream  
    > For anyone watching any of my old "professional speedruns", this run was officially valid and was world record for a short period of time! These runs were done on vanilla Minecraft/OptiFine and did not have any mods.
 
-34. https://www.youtube.com/watch?v=VVFywSmvUL4  
+35. https://www.youtube.com/watch?v=VVFywSmvUL4  
    voice: Eliotex  
    > When Dream cheated his 1.16 on accident, the investigation group was a bit sceptical about his other speedruns.
