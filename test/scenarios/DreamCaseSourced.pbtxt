@@ -941,9 +941,28 @@ steps {
 steps {
   action {
     username: "guest"
-    event_type: "ADD_CHILD_CLAIM"
-    claim_text: "Early deaths don't count: the seed is dropped and they move on, so viewers never see those failures."
-    claim_description: "Dream's own production video, January 2026. It covers deaths at the start, not retries in the middle of a run."
+    event_type: "START_CHALLENGE_CLAIM"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "ADD_CLAIM_TO_BE_CHALLENGED"
+    claim_id: 34
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "OPEN_ADD_CHALLENGE"
+  }
+}
+steps {
+  action {
+    username: "guest"
+    event_type: "SUBMIT_CHALLENGE_CLAIM"
+    claim_text: "Restarting is a disclosed rule, not a secret: an early death doesn't count, and the run starts over on a new seed."
+    challenge_description: "Dream's own production video, January 2026, made before the investigation. It covers deaths right after the start; it doesn't address the hidden cuts found in the middle of runs, and its description says it leaves out the editing."
     voice: "Dream"
     basis: "EVIDENTIAL"
     source_url: "https://www.youtube.com/watch?v=km1IlBAZJH0"
