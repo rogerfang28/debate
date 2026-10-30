@@ -57,7 +57,7 @@ N.append(("root", "root", None, "Karl Jobst",
 
 # ---- 1. The 2020 speedrun (Dec 2020 - Jun 2021) ---------------------------------
 S("a1", "root", "Speedrun mods",
-  "Dream's 2020 speedruns ran on a modified game, because his item luck was beyond chance.",
+  "Dream's 2020 speedruns ran on a modified game: ender pearls dropped about three times as often as the game allows.",
   "EVIDENTIAL", MOD_REPORT,
   "The only sensible conclusion that can be drawn after this analysis is that Dream's game was modified in order to manipulate the pearl barter and rod drop rates.",
   "December 2020. The volunteer moderators of Minecraft speedrunning on speedrun.com, in a published report. They removed his Minecraft 1.16 run.")
@@ -129,22 +129,27 @@ S("intent_karl21", "intent", "Karl Jobst",
   "in my opinion it is definitely more likely that he really didn't know his drop rates and barter rates were modified",
   "June 2021. Karl reversed this view in 2026." + AC)
 C("intent_r", "intent", "Karl Jobst",
-  "It was on purpose: Dream's later parkour streams show an auto-jump, and his explanations don't match his footage.",
-  "AUTHORITY", KARL_2026,
-  "Dream cheated on purpose.",
-  "March 2026, the video's description. He says he spoke with Dream before publishing. Dream has not answered it.")
+  "It was on purpose: in Dream's 2023 parkour streams, whenever he snags on a pole he never jumps, and in 8 hours he never once jumps too late, the signs of an auto-jump macro.",
+  "EVIDENTIAL", KARL_2026,
+  "in every single case that he gets stuck on a pole in this way, he doesn't jump.",
+  "March 2026, from Dream's November 2023 streams. Also: 'I could not find a single instance where Dream accidentally jumped too late and ran off an edge. Yes, 8 hours in a row.' He calls this 'the clearest evidence' of a macro, and says a cheater caught twice makes 'accidental' hard to believe. The description reads 'Dream cheated on purpose.' Dream has not answered it." + AC)
 
 # ---- 3. Championship parkour (Feb - Mar 2026) -------------------------------------
-S("mcc", "root", "Sportskeeda",
-  "Old clips of Dream's 2020 Minecraft Championship parkour drew accusations of an auto-jump macro, because every jump was perfectly timed.",
-  "EVIDENTIAL", "https://www.sportskeeda.com/minecraft/popular-streamer-dream-faces-backlash-old-video-alleged-cheating-minecraft-championship",
-  "Creators and gamers are criticising the perfect one-pixel jumps and consistent timing across different rounds, hinting at alleged automation or the use of macros.",
-  "February 2026. Dream made no statement but posted a parkour clip of himself.")
-C("mcc_r", "mcc", "Karl Jobst",
-  "The loudest parkour accusers are biased, and he sees no convincing proof for the Championship events themselves.",
-  "INFERENTIAL", KARL_2026,
-  "I'm just pointing out the fact that the people who were so vocal about Dream cheating are clearly biased and some of their arguments are inconsistent or self-serving.",
-  "March 2026, in the same video where he concludes Dream cheated on purpose." + AC)
+S("mcc", "root", "Luna",
+  "In his 2020 Championship parkour, Dream jumped at the last possible moment 225 times out of 226, too consistent for a human.",
+  "EVIDENTIAL", KARL_2026,
+  "tweet by Luna who claimed that Dream jumped from the last possible tick 225 out of 226 times. She also uploaded a video showing 225 tick perfect jumps in a row. The claim is that this is impossible.",
+  "February 2026. Luna's post couldn't be opened; this is Karl Jobst's account of it. A 'last possible tick' jump leaves one game tick (50 milliseconds) to press jump. Sportskeeda covered the wave of accusations of 'perfect one-pixel jumps'." + AC)
+C("mcc_dream", "mcc", "Dream",
+  "Long runs of tick-perfect jumps are easy: he filmed himself landing 50 in a row with his feet on the desk.",
+  "EVIDENTIAL", KARL_2026,
+  "there's footage playing of me in the background with a hand cam hitting [music] 50 in a row with my feet both on the desk just to be silly.",
+  "February 2026, a Short Dream posted in reply, as played in Karl Jobst's video." + AC)
+C("mcc_karl", "mcc", "Karl Jobst",
+  "The statistic fails: most counted jumps had visual cues, and at a top player's 92.7% success rate, 69 cue-less jumps in a row is only 1 in 186.",
+  "EVIDENTIAL", KARL_2026,
+  "The best performer was Lily, who achieved a success rate of 92.7%. With this kind of success rate, the odds of getting 69 non-visual one-tick jumps in a row is 1 in 186. Those odds aren't outrageous.",
+  "March 2026. He also noted that Dream accidentally ran off an edge in that event, which an auto-jump should prevent. So the Championship case doesn't hold up for him; his own evidence of a macro is from Dream's 2023 streams (see 'Accident or on purpose')." + AC)
 
 # ---- 4. The Technoblade duel (Feb - Oct 2026) -------------------------------------
 S("c1", "root", "GlesticOfficial",
@@ -284,7 +289,7 @@ S("pile_count", "pile", "Patches",
 
 # ---- 7. The world records (Oct 2026) ---------------------------------------------
 S("d1", "root", "MrMangoHands",
-  "All of Dream's 2020 world records were spliced together from separate attempts.",
+  "Dream's 2020 world records were spliced from separate attempts: strongholds load about twice as fast as in 47 runs he streamed weeks later.",
   "AUTHORITY", "https://www.youtube.com/watch?v=2lkxXfMFu2Y",
   "I was a leaderboard moderator from February 2021 (after the mods talked with dream that month) and before that a technical advisor to the team from December 2020",
   "23 October 2026, 'Dream Cheated Every World Record'. The quote is his stated standing; the video has no transcript, so its evidence (such as loading times faster than in Dream's later streams) is known second-hand.")
@@ -314,7 +319,7 @@ S("aimbot", "root", "Karl Jobst",
   "Dream privately admitted to him using an aimbot in PvP after his wrist injury.",
   "EVIDENTIAL", KARL_OCT,
   "Now, this I have a problem with because Dream admitted to me that he did use Aimbot.",
-  "29 October 2026. A private conversation that can't be checked. It concerns Dream's 2026 streams after his late-2025 wrist surgery, not the 2020 duel." + AC)
+  "29 October 2026. A private conversation that can't be checked. It concerns Dream's PvP after he broke his wrist sparring in April 2025, not the 2020 duel. In March Karl had pointed to a visible aim 'wiggle' in Dream's 2026 fights." + AC)
 
 # ---- Emit ----------------------------------------------------------------------
 def esc(s):
