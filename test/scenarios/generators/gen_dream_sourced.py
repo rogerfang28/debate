@@ -229,11 +229,11 @@ S("b1_retry", "b1", "Dart Spark",
   "INFERENTIAL", DART,
   "I believe the original Manhunt series was faked by doing multiple attempts and secretly cutting out the failed ones, while the new series is most likely real.",
   "His conclusion." + AC)
-S("b1_prod", "b1_retry", "Dream",
-  "Early deaths don't count: the seed is dropped and they move on, so viewers never see those failures.",
+C("b1_prod", "b1_retry", "Dream",
+  "Restarting is a disclosed rule, not a secret: an early death doesn't count, and the run starts over on a new seed.",
   "EVIDENTIAL", "https://www.youtube.com/watch?v=km1IlBAZJH0",
   "So these deaths at the beginning don't actually count as a run. The seed is lost and we move down the list of seeds to the next seed.",
-  "Dream's own production video, January 2026. It covers deaths at the start, not retries in the middle of a run.")
+  "Dream's own production video, January 2026, made before the investigation. It covers deaths right after the start; it doesn't address the hidden cuts found in the middle of runs, and its description says it leaves out the editing.")
 C("b1_mod", "b1", "Dream",
   "The glitches come from a mod that takes screenshots to mark moments for editing, not from cuts.",
   "EVIDENTIAL", DREAM_REDDIT_READ,
