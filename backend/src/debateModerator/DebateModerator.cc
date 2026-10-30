@@ -313,19 +313,19 @@ void DebateModerator::apply(debate_event::DebateEvent& event) {
         event.set_type(debate_event::NONE);
     }
 
-    // Without a reachable model (DEBATE_AI=off) the AI events are ignored:
-    // the pages don't offer them, and a stale page that still sends one
-    // should get no ten-second wait for an error.
-    if (!ai_availability::Enabled() &&
-        (event.type() == debate_event::ASK_CHAT || event.type() == debate_event::GENERATE_BRIEF ||
-         event.type() == debate_event::GENERATE_DEBATE)) {
-        Log::info("[DebateModerator] AI is off on this server; ignoring event type: " + std::to_string(event.type()));
-        event.set_type(debate_event::NONE);
-    }
-
     // Read from the user record, not the event: user_id is what acts.
     const std::string actingName = dbWrapper.users.getUsername(user_id);
     const bool anonymous = anonymous_user::IsAnonymousUsername(actingName);
+
+    // For whoever the AI is off (DEBATE_AI=off, or =admins and not an admin)
+    // the AI events are ignored: the pages don't offer them, and a stale or
+    // hand-made request should get no ten-second wait for an error.
+    if (!ai_availability::EnabledFor(actingName) &&
+        (event.type() == debate_event::ASK_CHAT || event.type() == debate_event::GENERATE_BRIEF ||
+         event.type() == debate_event::GENERATE_DEBATE)) {
+        Log::info("[DebateModerator] AI is off for this user; ignoring event type: " + std::to_string(event.type()));
+        event.set_type(debate_event::NONE);
+    }
     // Importing is for the names in DEBATE_ADMINS; anyone else's press (a
     // stale page, a hand-made request) does nothing.
     if (isAdminEvent(event.type()) && (anonymous || !admins::IsAdmin(actingName))) {

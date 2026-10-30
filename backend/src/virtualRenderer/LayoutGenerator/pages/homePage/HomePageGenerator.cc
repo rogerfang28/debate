@@ -1166,7 +1166,7 @@ ui::Component createDebateModal(const rendering_info::HomePageRenderingInfo& inf
             "text-gray-200", "px-3 py-1.5", "rounded", "text-sm"));
     }
     // Building from a passage needs the model; without one, only the topic box.
-    if (ai_availability::Enabled()) {
+    if (ai_availability::EnabledFor(info.viewer_is_admin())) {
         ComponentGenerator::addChild(&fold, generateContainer);
     }
     ComponentGenerator::addChild(&fold, ComponentGenerator::createButton(

@@ -23,6 +23,7 @@
 #include "database/sqlite/Database.h"
 #include "debateModerator/DebateModerator.h"
 #include "utils/Admins.h"
+#include "utils/AiAvailability.h"
 #include "utils/DebateImport.h"
 #include "utils/DebateWrapper.h"
 
@@ -107,6 +108,22 @@ TEST(AdminsTest, ReadsDebateAdmins) {
     EXPECT_FALSE(admins::IsAdmin("bob"));
     setEnv("DEBATE_ADMINS", "");
     EXPECT_FALSE(admins::IsAdmin("alice"));
+}
+
+// DEBATE_AI=admins: the AI only for the names DEBATE_ADMINS lists.
+TEST(AdminsTest, AiForAdminsOnly) {
+    setEnv("DEBATE_ADMINS", "Alice");
+    setEnv("DEBATE_AI", "admins");
+    EXPECT_TRUE(ai_availability::EnabledFor(std::string("alice")));
+    EXPECT_FALSE(ai_availability::EnabledFor(std::string("bob")));
+    EXPECT_FALSE(ai_availability::EnabledFor(std::string("visitor-0000000a")));
+    EXPECT_TRUE(ai_availability::EnabledFor(true));
+    EXPECT_FALSE(ai_availability::EnabledFor(false));
+    setEnv("DEBATE_AI", "off");
+    EXPECT_FALSE(ai_availability::EnabledFor(std::string("alice")));
+    setEnv("DEBATE_AI", "");
+    EXPECT_TRUE(ai_availability::EnabledFor(std::string("bob")));
+    setEnv("DEBATE_ADMINS", "");
 }
 
 // ===========================================================================
