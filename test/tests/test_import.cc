@@ -244,9 +244,9 @@ TEST(DebateImportTest, ScenarioFilesAreDetectedAndChecked) {
     EXPECT_EQ(plan.format, "scenario");
     EXPECT_TRUE(plan.ok()) << (plan.errors.empty() ? "" : plan.errors[0]);
     EXPECT_EQ(plan.actor, "guest");
-    EXPECT_EQ(plan.claims, 1 + 44 + 23);
-    EXPECT_EQ(plan.supports, 44);
-    EXPECT_EQ(plan.challenges, 23);
+    EXPECT_EQ(plan.claims, 1 + 34 + 25);
+    EXPECT_EQ(plan.supports, 34);
+    EXPECT_EQ(plan.challenges, 25);
     EXPECT_FALSE(plan.voices.empty());
 
     // A broken file reports the parser's words, not outline errors.
