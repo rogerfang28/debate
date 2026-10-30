@@ -434,7 +434,7 @@ ui::Page BriefView::GenerateBriefPage(
     if (currentClaimId <= 0 || collectionProto.claims_by_id().find(currentClaimId) == collectionProto.claims_by_id().end()) {
         currentClaimId = facts.rootClaimId;
     }
-    if (ai_availability::Enabled()) {
+    if (ai_availability::EnabledFor(viewerUser.username())) {
         ComponentGenerator::addChild(&contentRow, StepView::BuildChatColumn(viewerUser, currentClaimId));
     }
     ComponentGenerator::addChild(&container, contentRow);

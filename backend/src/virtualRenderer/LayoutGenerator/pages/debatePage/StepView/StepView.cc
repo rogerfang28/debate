@@ -1687,7 +1687,7 @@ ui::Page StepView::GenerateStepViewPage(
 	ComponentGenerator::addChild(&contentRow, leftColumn);
 	ComponentGenerator::addChild(&contentRow, rightColumn);
 	// The chat only where a model can be reached (DEBATE_AI, AiAvailability.h).
-	if (ai_availability::Enabled()) {
+	if (ai_availability::EnabledFor(viewerUser.username())) {
 		ComponentGenerator::addChild(&contentRow, BuildChatColumn(viewerUser, currentClaimId));
 	}
 	ComponentGenerator::addChild(&container, contentRow);
