@@ -1752,7 +1752,7 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "vent.RenameAccountH\000R\rrenameAccount\022A\n\ri"
     "mport_debate\030A \001(\0132\032.debate_event.Import"
     "DebateH\000R\014importDebateB\t\n\007payloadJ\004\0104\0205*"
-    "\323\017\n\tEventType\022\032\n\026EVENT_KIND_UNSPECIFIED\020"
+    "\217\020\n\tEventType\022\032\n\026EVENT_KIND_UNSPECIFIED\020"
     "\000\022\010\n\004NONE\020\001\022\021\n\rCREATE_DEBATE\020\002\022\021\n\rCLEAR_"
     "DEBATES\020\003\022\021\n\rDELETE_DEBATE\020\004\022\020\n\014ENTER_DE"
     "BATE\020\005\022\013\n\007GO_HOME\020\006\022\020\n\014GO_TO_PARENT\020\007\022\030\n"
@@ -1801,8 +1801,9 @@ const char descriptor_table_protodef_debate_5fevent_2eproto[] ABSL_ATTRIBUTE_SEC
     "S\022\021\n\rPROFILE_PANEL\020T\022\022\n\016RENAME_ACCOUNT\020U"
     "\022\022\n\016DELETE_ACCOUNT\020V\022\017\n\013IMPORT_OPEN\020W\022\022\n"
     "\016IMPORT_PREVIEW\020X\022\022\n\016IMPORT_PUBLISH\020Y\022\020\n"
-    "\014IMPORT_CLOSE\020Z\"\004\0106\0206\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\""
-    "\004\010;\020;b\006proto3"
+    "\014IMPORT_CLOSE\020Z\022\021\n\rACTIVITY_OPEN\020[\022\022\n\016AC"
+    "TIVITY_CLOSE\020\\\022\023\n\017ACTIVITY_FILTER\020]\"\004\0106\020"
+    "6\"\004\0107\0207\"\004\0108\0208\"\004\0109\0209\"\004\010;\020;b\006proto3"
 };
 static const ::_pbi::DescriptorTable* PROTOBUF_NONNULL const
     descriptor_table_debate_5fevent_2eproto_deps[1] = {
@@ -1812,7 +1813,7 @@ static ::absl::once_flag descriptor_table_debate_5fevent_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_debate_5fevent_2eproto = {
     false,
     false,
-    8013,
+    8073,
     descriptor_table_protodef_debate_5fevent_2eproto,
     "debate_event.proto",
     &descriptor_table_debate_5fevent_2eproto_once,
@@ -1831,7 +1832,7 @@ const ::google::protobuf::EnumDescriptor* PROTOBUF_NONNULL EventType_descriptor(
   return file_level_enum_descriptors_debate_5fevent_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventType_internal_data_[] = {
-    3538944u, 64u, 4294967248u, 31u, };
+    3538944u, 64u, 4294967248u, 255u, };
 // ===================================================================
 
 class CreateDebate::_Internal {

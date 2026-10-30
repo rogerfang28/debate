@@ -13,6 +13,66 @@ message ModeratorToVRMessage {
     DebateList debate_list = 3; // specifically for home page
     // The profile open on the home page (engagement.home_view.profile_user_id).
     Profile profile = 4;
+    // The admin's activity log, only when an admin has it open on their own
+    // profile (engagement.home_view.activity_open).
+    ActivityReport activity = 5;
+}
+
+// What the activity log shows an admin: who visited, signed in and acted,
+// summed and listed. Built from the ACTIVITY table (visits, sign-ins, opens,
+// account changes) and the MOVES table (actions in debates). Times are UTC.
+message ActivityReport {
+    int64 generated_at_ms = 1;
+    ActivitySummary last_day = 2;     // the last 24 hours
+    ActivitySummary last_week = 3;    // the last 7 days
+    repeated ActivityDay days = 4;    // the last 14 UTC days, newest first
+    repeated ActivityTopDebate top_debates = 5;  // most opened, last 7 days
+    repeated ActivityEntry recent = 6;           // newest first
+    string filter = 7;                // "all" | "members" | "visitors"
+}
+
+message ActivitySummary {
+    int32 visitors = 1;        // distinct visitors seen
+    int32 members = 2;         // distinct members seen
+    int32 sign_ins = 3;        // sign-ins to existing accounts
+    int32 new_accounts = 4;
+    int32 actions = 5;         // every action in a debate
+    int32 agrees = 6;
+    int32 challenges = 7;
+    int32 claims = 8;          // supports and new debates
+    int32 debates_opened = 9;
+}
+
+message ActivityDay {
+    string date = 1;           // "2026-10-29" (UTC)
+    int32 visitors = 2;
+    int32 members = 3;
+    int32 sign_ins = 4;
+    int32 new_accounts = 5;
+    int32 actions = 6;
+}
+
+message ActivityTopDebate {
+    int32 debate_id = 1;
+    string title = 2;
+    int32 opens = 3;
+    int32 people = 4;          // distinct people who opened it
+}
+
+message ActivityEntry {
+    int64 at_ms = 1;
+    int32 user_id = 2;
+    string username = 3;       // as it was then (a debate action: as it is now)
+    bool member = 4;           // false: a visitor
+    // visit, sign_in, sign_up, sign_out, open_debate, brief, chat, import,
+    // rename, delete_account; and from the move log: new_debate, support,
+    // challenge, agree, withdraw, concede, delete.
+    string kind = 5;
+    int32 debate_id = 6;
+    string debate_title = 7;
+    int32 claim_id = 8;
+    string claim_text = 9;
+    string detail = 10;
 }
 
 // A person's public profile: who they are and what they have done, summed

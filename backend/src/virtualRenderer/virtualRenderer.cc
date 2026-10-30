@@ -96,6 +96,7 @@ void VirtualRenderer::startMaintenance() {
         std::unique_lock<std::shared_mutex> exclusive(maintenanceMutex);
         moderator.accounts().MigrateEmailUsernames();
         moderator.accounts().SweepVisitors(static_cast<int64_t>(std::time(nullptr)));
+        moderator.activity().prune(ActivityLog::NowMs());
     }
     if (maintenanceThread.joinable()) {
         return;
@@ -107,6 +108,7 @@ void VirtualRenderer::startMaintenance() {
             {
                 std::unique_lock<std::shared_mutex> exclusive(maintenanceMutex);
                 moderator.accounts().SweepVisitors(static_cast<int64_t>(std::time(nullptr)));
+                moderator.activity().prune(ActivityLog::NowMs());
             }
             wait.lock();
         }
@@ -211,6 +213,11 @@ ui::Page VirtualRenderer::handleClientMessage(const client_message::ClientMessag
         }
     }
 
+    // The day's first request from this account is a visit (ActivityLog).
+    if (evt.user().is_logged_in()) {
+        moderator.activity().noteSeen(evt.user().user_id(), evt.user().username());
+    }
+
     // A failed sign-in while a session is still alive -- a visitor's, from the
     // sign-in modal: stay on the same page with the modal open and the error
     // in it, rather than dropping them on the standalone login page.
@@ -275,6 +282,9 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
 
     if (evt.type() == debate_event::LOGOUT) {
         Log::info("[VirtualRenderer] Logout event detected, clearing req cookies.");
+        if (resolvedUserId > 0 && !anonymous_user::IsAnonymousUsername(resolvedUsername)) {
+            moderator.activity().record("sign_out", resolvedUserId, resolvedUsername);
+        }
         parseCookie::clearAuthCookies(req, res);
         resolvedUserId = 0;
         resolvedUsername = "";
@@ -286,11 +296,15 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
         int moderatorUserId;
         int userId;
         bool authSucceeded = true;
+        // For the activity log: a new account, and how they signed in.
+        bool createdAccount = false;
+        std::string method = "password";
 
         // Check if Google sign-in token is present
         if (evt.login().has_google_id_token() && !evt.login().google_id_token().empty()) {
             // Google OIDC flow
             Log::info("[VirtualRenderer] Google ID token received, verifying...");
+            method = "Google";
             try {
                 auto userInfo = GoogleJWTVerifier::verify(evt.login().google_id_token());
                 if (userInfo.sub.empty()) {
@@ -328,6 +342,7 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
                         !userInfo.email.empty() ? userInfo.email : !userInfo.name.empty() ? userInfo.name : "user");
                     Log::info("[VirtualRenderer] New Google account '" + username + "'");
                     createUserWithGoogleInfo(username, userInfo.sub, userInfo.email);
+                    createdAccount = true;
                     userId = userDb.getUserId(username);
                     if (userId == -1) {
                         throw std::runtime_error("the new account could not be created");
@@ -357,6 +372,8 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             const bool passwordless = demo_mode::kDemoEnabled;
 
             if (passwordless) {
+                method = "demo";
+                createdAccount = userDb.getUserId(finalUsername) == -1;
                 moderatorUserId = moderator.createUserIfNotExist(finalUsername);
                 userId = userDb.getUserId(finalUsername);
                 if (userId == -1) {
@@ -391,6 +408,7 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             } else {
                 const int existingUserId = userDb.getUserId(finalUsername);
                 const bool isNewUser = (existingUserId == -1);
+                createdAccount = isNewUser;
                 moderatorUserId = moderator.createUserIfNotExist(finalUsername);
 
                 if (isNewUser) {
@@ -438,6 +456,8 @@ std::string VirtualRenderer::handleAuthEvents(debate_event::DebateEvent& evt, co
             // Apply authenticated identity for this same request
             resolvedUserId = moderatorUserId;
             resolvedUsername = finalUsername;
+            moderator.activity().record(createdAccount ? "sign_up" : "sign_in", moderatorUserId, finalUsername, 0, 0,
+                                        method);
         }
     }
 
@@ -542,9 +562,14 @@ void VirtualRenderer::signInAsVisitor(debate_event::DebateEvent& evt,
         name = makeVisitorName();
     }
 
+    const bool newVisitor = moderator.getUserId(name) == -1;
     const int userId = moderator.createUserIfNotExist(name);
     if (userDb.getUserId(name) == -1) {
         createUserIfNotExist(name);
+    }
+    if (newVisitor) {
+        // A new visitor arriving: logged once, when their account is made.
+        moderator.activity().noteSeen(userId, name, /*newVisitor=*/true);
     }
     // Replace any cookie this response already carries (a sign-out's
     // expiring ones): the order of repeated headers is not kept, so an

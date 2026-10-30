@@ -86,6 +86,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/debatePageResponse/BuildCollection.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/buildResponse/homePageResponse/HomePageResponseGenerator.cc
     ${CMAKE_SOURCE_DIR}/src/debateModerator/accounts/AccountService.cc
+    ${CMAKE_SOURCE_DIR}/src/debateModerator/activity/ActivityLog.cc
     ${CMAKE_SOURCE_DIR}/src/utils/UsernamePolicy.cc
 
     # database communicators and utils
@@ -116,6 +117,7 @@ set(SRC_FILES
     ${CMAKE_SOURCE_DIR}/src/database/debate/MoveDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/ChatDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/database/debate/BriefDatabase.cc
+    ${CMAKE_SOURCE_DIR}/src/database/debate/ActivityDatabase.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveLogger.cc
     ${CMAKE_SOURCE_DIR}/src/moveLog/MoveBackfill.cc
     ${CMAKE_SOURCE_DIR}/src/utils/RelationBuilder.cc

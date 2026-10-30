@@ -166,6 +166,22 @@ debate_event::DebateEvent HomePageEventParser::ParseHomePageEvent(
     else if (componentId == "importCloseButton" && eventType == "onClick") {
         event.set_type(debate_event::IMPORT_CLOSE);
     }
+
+    // * An admin's "Activity" on their own profile: open, close, and the
+    // recent list's filter, activityFilter_<all|members|visitors>, optionally
+    // _<anything> after it (Refresh is the current filter again). The
+    // moderator ignores all three from anyone not in DEBATE_ADMINS.
+    else if (componentId == "profileActivityButton" && eventType == "onClick") {
+        event.set_type(debate_event::ACTIVITY_OPEN);
+    }
+    else if (componentId == "activityCloseButton" && eventType == "onClick") {
+        event.set_type(debate_event::ACTIVITY_CLOSE);
+    }
+    else if (componentId.rfind("activityFilter_", 0) == 0 && eventType == "onClick") {
+        event.set_type(debate_event::ACTIVITY_FILTER);
+        std::string value = componentId.substr(std::string("activityFilter_").size());
+        event.mutable_explore_option()->set_value(value.substr(0, value.find('_')));
+    }
     else if ((componentId == "importPreviewButton" || componentId == "importPublishButton") &&
              eventType == "onClick") {
         event.set_type(componentId == "importPreviewButton" ? debate_event::IMPORT_PREVIEW

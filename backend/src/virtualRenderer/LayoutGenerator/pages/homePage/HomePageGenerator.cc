@@ -7,6 +7,7 @@
 #include "../../../../utils/UsernamePolicy.h"
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <functional>
@@ -602,6 +603,7 @@ ui::Component accountSection(const rendering_info::HomePageRenderingInfo& info) 
         ComponentGenerator::addChild(&row, quietButton("profileRenameButton", "Change username"));
         if (info.viewer_is_admin()) {
             ComponentGenerator::addChild(&row, quietButton("profileImportButton", "Import debate"));
+            ComponentGenerator::addChild(&row, quietButton("profileActivityButton", "Activity"));
         }
         ui::Component del = quietButton("profileDeleteButton", "Delete account");
         css(&del, {{"color", "var(--open)"}});
@@ -741,6 +743,255 @@ void addImportView(ui::Component* page, const rendering_info::HomePageRenderingI
     ComponentGenerator::addChild(page, result);
 }
 
+// ---- The admin's activity log ----------------------------------------------
+
+// "Oct 29" and, with the time, "Oct 29, 14:03 UTC", from Unix ms.
+std::string utcDate(long long ms, bool withTime) {
+    static const char* kMonths[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    const std::time_t t = static_cast<std::time_t>(ms / 1000);
+    std::tm parts{};
+#ifdef _WIN32
+    gmtime_s(&parts, &t);
+#else
+    gmtime_r(&t, &parts);
+#endif
+    std::string out = std::string(kMonths[parts.tm_mon]) + " " + std::to_string(parts.tm_mday);
+    if (withTime) {
+        char hm[8];
+        std::snprintf(hm, sizeof(hm), "%02d:%02d", parts.tm_hour, parts.tm_min);
+        out += std::string(", ") + hm + " UTC";
+    }
+    return out;
+}
+
+// What one entry says the person did, in words.
+std::string activityVerb(const moderator_to_vr::ActivityEntry& e) {
+    const std::string& k = e.kind();
+    const std::string& d = e.detail();
+    if (k == "visit") return d == "first visit" ? "arrived for the first time" : "visited";
+    if (k == "sign_in") return "signed in" + (d.empty() ? std::string() : " with " + d);
+    if (k == "sign_up") return "created an account" + (d.empty() ? std::string() : " with " + d);
+    if (k == "sign_out") return "signed out";
+    if (k == "open_debate") {
+        return d == "brief" ? "opened a debate on its Brief" : d == "answer" ? "opened a challenge to answer"
+                                                                             : "opened a debate";
+    }
+    if (k == "brief") return "opened the Brief";
+    if (k == "chat") return d.empty() ? "asked the AI chat" : "asked the AI chat (" + d + ")";
+    if (k == "import") return "imported a debate" + (d.empty() ? std::string() : " (" + d + ")");
+    if (k == "rename") return d.empty() ? "changed their username" : "changed their username from " + d;
+    if (k == "delete_account") return "deleted their account";
+    if (k == "new_debate") return "started a debate";
+    if (k == "support") return "supported";
+    if (k == "challenge") return "challenged";
+    if (k == "agree") return "agreed with";
+    if (k == "withdraw") return "withdrew agreement with";
+    if (k == "concede") return "conceded";
+    if (k == "delete") return "deleted a claim";
+    return k;
+}
+
+// One period's numbers: who came, and what they did.
+ui::Component activitySummary(const std::string& id, const std::string& caption,
+                              const moderator_to_vr::ActivitySummary& s) {
+    ui::Component sec = section(id, caption);
+    ui::Component grid = box(id + "Grid", {
+        {"display", "grid"}, {"grid-template-columns", "repeat(auto-fill, minmax(7.5rem, 1fr))"}, {"gap", "0.6rem"},
+    });
+    ComponentGenerator::addChild(&grid, statTile(id + "Visitors", s.visitors(), s.visitors() == 1 ? "visitor" : "visitors"));
+    ComponentGenerator::addChild(&grid, statTile(id + "Members", s.members(),
+        s.members() == 1 ? "member active" : "members active"));
+    ComponentGenerator::addChild(&grid, statTile(id + "SignIns", s.sign_ins(), s.sign_ins() == 1 ? "sign-in" : "sign-ins"));
+    ComponentGenerator::addChild(&grid, statTile(id + "NewAccounts", s.new_accounts(),
+        s.new_accounts() == 1 ? "new account" : "new accounts"));
+    ComponentGenerator::addChild(&grid, statTile(id + "Actions", s.actions(),
+        s.actions() == 1 ? "debate action" : "debate actions"));
+    ComponentGenerator::addChild(&grid, statTile(id + "Opened", s.debates_opened(),
+        s.debates_opened() == 1 ? "debate opened" : "debates opened"));
+    ComponentGenerator::addChild(&sec, grid);
+    ComponentGenerator::addChild(&sec, text(id + "Breakdown",
+        "Actions include " + count(s.agrees(), "agree", "agrees") + ", " +
+            count(s.challenges(), "challenge", "challenges") + " and " + count(s.claims(), "new claim", "new claims") +
+            " (supports and new debates).",
+        kMuted));
+    return sec;
+}
+
+// The last 14 days, one row each, as a small grid table.
+ui::Component activityDays(const moderator_to_vr::ActivityReport& r) {
+    ui::Component sec = section("activityDays", "Last 14 days (UTC)");
+    ui::Component table = box("activityDaysTable", {
+        {"display", "grid"}, {"grid-template-columns", "minmax(3.4rem, 1.2fr) repeat(5, minmax(0, 1fr))"},
+        {"column-gap", "0"}, {"row-gap", "0"}, {"background", "var(--panel)"},
+        {"border", "1px solid var(--line)"}, {"border-radius", "var(--radius)"}, {"padding", "8px 10px"},
+        {"font-variant-numeric", "tabular-nums"},
+    });
+    const Rules head = {{"color", "var(--text-3)"}, {"font-size", "11px"}, {"font-weight", "600"}, {"margin", "0"},
+                        {"padding", "4px 0 6px"}, {"border-bottom", "1px solid var(--line)"}, {"line-height", "1.3"}};
+    const Rules cell = {{"color", "var(--text-2)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"},
+                        {"padding", "5px 0"}, {"border-bottom", "1px solid var(--line)"}};
+    // No column gap, so each row's rule runs unbroken; the numbers keep
+    // their distance with padding instead.
+    auto right = [](Rules rules) {
+        rules.push_back({"text-align", "right"});
+        for (auto& rule : rules) {
+            if (rule.first == "padding") rule.second = rule.second == "5px 0" ? "5px 0 5px 0.3rem" : "4px 0 6px 0.3rem";
+        }
+        return rules;
+    };
+    const char* heads[] = {"Day", "Visitors", "Members", "Sign-ins", "New accts", "Actions"};
+    for (int i = 0; i < 6; ++i) {
+        ComponentGenerator::addChild(&table, text("activityDaysHead" + std::to_string(i), heads[i],
+                                                  i == 0 ? head : right(head)));
+    }
+    const long long nowMs = r.generated_at_ms();
+    int n = 0;
+    for (const auto& d : r.days()) {
+        const std::string id = "activityDay" + std::to_string(n);
+        // Newest first: "Today", then "Oct 28" and back.
+        const std::string label = n == 0 ? std::string("Today")
+                                         : utcDate(nowMs - static_cast<long long>(n) * 86400000LL, false);
+        Rules first = cell;
+        Rules nums = right(cell);
+        if (n == r.days_size() - 1) {
+            first.push_back({"border-bottom", "none"});
+            nums.push_back({"border-bottom", "none"});
+        }
+        const bool quiet = d.visitors() + d.members() + d.sign_ins() + d.new_accounts() + d.actions() == 0;
+        if (quiet) nums.push_back({"color", "var(--text-3)"});
+        ComponentGenerator::addChild(&table, text(id + "Date", label, first));
+        ComponentGenerator::addChild(&table, text(id + "Visitors", std::to_string(d.visitors()), nums));
+        ComponentGenerator::addChild(&table, text(id + "Members", std::to_string(d.members()), nums));
+        ComponentGenerator::addChild(&table, text(id + "SignIns", std::to_string(d.sign_ins()), nums));
+        ComponentGenerator::addChild(&table, text(id + "NewAccounts", std::to_string(d.new_accounts()), nums));
+        ComponentGenerator::addChild(&table, text(id + "Actions", std::to_string(d.actions()), nums));
+        ++n;
+    }
+    ComponentGenerator::addChild(&sec, table);
+    return sec;
+}
+
+// The admin's Activity view, in place of their profile: the last day and
+// week in numbers, the last 14 days, the most opened debates, and what
+// happened most recently, with a filter for members or visitors.
+void addActivityView(ui::Component* page, const moderator_to_vr::ActivityReport& r) {
+    const long long nowMs = r.generated_at_ms();
+    const long long now = nowMs / 1000;
+
+    ui::Component head = box("activityHead", {{"display", "flex"}, {"flex-direction", "column"}, {"gap", "6px"}});
+    ComponentGenerator::addChild(&head, text("activityCaption", "Admin", kCaption));
+    ComponentGenerator::addChild(&head, text("activityTitle", "Activity",
+        {{"color", "var(--text)"}, {"font-size", "26px"}, {"font-weight", "650"}, {"line-height", "1.25"},
+         {"margin", "0"}}));
+    ComponentGenerator::addChild(&head, text("activityExplain",
+        "Visits, sign-ins and actions in debates, by username or visitor name and time. Kept 90 days, "
+        "seen only by admins. No IP addresses are stored. As of " + utcDate(nowMs, true) + ".",
+        kMuted));
+    ui::Component buttons = box("activityButtons", {
+        {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.5rem"}, {"flex-wrap", "wrap"},
+    });
+    ComponentGenerator::addChild(&buttons, quietButton("activityFilter_" + r.filter() + "_refresh", "Refresh"));
+    ComponentGenerator::addChild(&buttons, quietButton("activityCloseButton", "Back to profile"));
+    ComponentGenerator::addChild(&head, buttons);
+    ComponentGenerator::addChild(page, head);
+
+    ComponentGenerator::addChild(page, activitySummary("activityDay", "Last 24 hours", r.last_day()));
+    ComponentGenerator::addChild(page, activitySummary("activityWeek", "Last 7 days", r.last_week()));
+    ComponentGenerator::addChild(page, activityDays(r));
+
+    ui::Component top = section("activityTop", "Most opened, last 7 days");
+    int n = 0;
+    for (const auto& t : r.top_debates()) {
+        const std::string id = std::to_string(n++);
+        ui::Component row = box("activityTopRow" + id, {
+            {"display", "flex"}, {"flex-direction", "row"}, {"align-items", "baseline"}, {"gap", "0.75rem"},
+            {"padding", "7px 2px"}, {"border-bottom", "1px solid var(--line)"},
+        });
+        ui::Component link = linkButton("openBrief_activityTop" + id + "_" + std::to_string(t.debate_id()),
+                                        t.title().empty() ? "(deleted debate)" : truncate(t.title(), 140));
+        css(&link, {{"flex", "1 1 auto"}, {"min-width", "0"}, {"text-align", "left"}, {"justify-content", "flex-start"},
+                    {"font-size", "14px"}, {"white-space", "normal"},
+                    {"color", "var(--text)"}, {"line-height", "1.4"}});
+        ComponentGenerator::addChild(&row, link);
+        ComponentGenerator::addChild(&row, text("activityTopCount" + id,
+            count(t.opens(), "open", "opens") + kMiddot + count(t.people(), "person", "people"),
+            {{"color", "var(--text-3)"}, {"font-size", "12.5px"}, {"font-weight", "400"}, {"margin", "0"},
+             {"white-space", "nowrap"}, {"flex", "0 0 auto"}}));
+        ComponentGenerator::addChild(&top, row);
+    }
+    if (n == 0) ComponentGenerator::addChild(&top, text("activityTopEmpty", "No debates opened yet.", kMuted));
+    ComponentGenerator::addChild(page, top);
+
+    ui::Component recent = section("activityRecent", "Recent activity");
+    ui::Component filters = box("activityFilters", {
+        {"display", "flex"}, {"flex-direction", "row"}, {"gap", "0.4rem"}, {"flex-wrap", "wrap"},
+        {"margin", "0.15rem 0 0.35rem"},
+    });
+    for (const auto& [value, label] : std::vector<std::pair<std::string, std::string>>{
+             {"all", "Everyone"}, {"members", "Members"}, {"visitors", "Visitors"}}) {
+        ComponentGenerator::addChild(&filters, pill("activityFilter_" + value, label, r.filter() == value));
+    }
+    ComponentGenerator::addChild(&recent, filters);
+
+    n = 0;
+    for (const auto& e : r.recent()) {
+        const std::string id = std::to_string(n++);
+        ui::Component row = box("activityRow" + id, {
+            {"display", "flex"}, {"flex-direction", "column"}, {"gap", "0.15rem"},
+            {"padding", "8px 2px"}, {"border-bottom", "1px solid var(--line)"},
+        });
+        ui::Component line = box("activityRowLine" + id, {
+            {"display", "flex"}, {"flex-direction", "row"}, {"flex-wrap", "wrap"}, {"align-items", "baseline"},
+            {"column-gap", "0.4rem"}, {"row-gap", "0.1rem"},
+        });
+        const Rules whoRules = {{"font-size", "13.5px"}, {"font-weight", "600"}, {"margin", "0"},
+                                {"overflow-wrap", "anywhere"}};
+        if (e.member() && e.user_id() > 0 && !username_policy::IsDeletedName(e.username())) {
+            ui::Component who = linkButton("openProfile_activity" + id + "_" + std::to_string(e.user_id()),
+                                           e.username());
+            css(&who, whoRules);
+            ComponentGenerator::addChild(&line, who);
+        } else {
+            Rules visitor = whoRules;
+            visitor.push_back({"color", "var(--text-3)"});
+            ComponentGenerator::addChild(&line, text("activityWho" + id,
+                e.username().empty() ? "(unknown)" : e.username(), visitor));
+        }
+        ComponentGenerator::addChild(&line, text("activityWhat" + id, activityVerb(e),
+            {{"color", "var(--text-2)"}, {"font-size", "13.5px"}, {"font-weight", "400"}, {"margin", "0"}}));
+        ComponentGenerator::addChild(&line, text("activityWhen" + id,
+            ago(e.at_ms() / 1000, now) + kMiddot + utcDate(e.at_ms(), true),
+            {{"color", "var(--text-3)"}, {"font-size", "12px"}, {"font-weight", "400"}, {"margin", "0"},
+             {"margin-left", "auto"}, {"white-space", "nowrap"}}));
+        ComponentGenerator::addChild(&row, line);
+
+        if (!e.claim_text().empty()) {
+            ComponentGenerator::addChild(&row, text("activityClaim" + id, "\"" + truncate(e.claim_text(), 160) + "\"",
+                {{"color", "var(--text-2)"}, {"font-size", "13px"}, {"font-weight", "400"}, {"margin", "0"},
+                 {"font-style", "italic"}, {"line-height", "1.45"}, {"overflow-wrap", "anywhere"}}));
+        }
+        if (e.debate_id() > 0) {
+            ui::Component where = linkButton("openBrief_activity" + id + "_" + std::to_string(e.debate_id()),
+                "in " + (e.debate_title().empty() ? std::string("a deleted debate") : truncate(e.debate_title(), 110)));
+            css(&where, {{"font-size", "12.5px"}, {"text-align", "left"}, {"line-height", "1.4"},
+                         {"color", "var(--text-3)"}, {"white-space", "normal"}, {"justify-content", "flex-start"},
+                         {"max-width", "100%"}});
+            ComponentGenerator::addChild(&row, where);
+        }
+        ComponentGenerator::addChild(&recent, row);
+    }
+    if (n == 0) {
+        ComponentGenerator::addChild(&recent, text("activityRecentEmpty",
+            r.filter() == "visitors" ? "No visitor activity yet." : r.filter() == "members" ? "No member activity yet."
+                                                                                            : "Nothing yet.",
+            kMuted));
+    } else if (n >= 100) {
+        ComponentGenerator::addChild(&recent, text("activityRecentMore", "The newest 100 are shown.", kMuted));
+    }
+    ComponentGenerator::addChild(page, recent);
+}
+
 // A person's profile, in place of the tab: who they are, what they have
 // done across every debate, and the debates themselves.
 void addProfile(ui::Component* page, const std::vector<const Topic*>& topics,
@@ -748,6 +999,10 @@ void addProfile(ui::Component* page, const std::vector<const Topic*>& topics,
     const moderator_to_vr::Profile& p = info.profile();
     if (p.own() && info.viewer_is_admin() && info.home_view().import_open()) {
         addImportView(page, info);
+        return;
+    }
+    if (p.own() && info.viewer_is_admin() && info.home_view().activity_open() && info.has_activity()) {
+        addActivityView(page, info.activity());
         return;
     }
     if (p.kind() != "member" && p.kind() != "voice") {

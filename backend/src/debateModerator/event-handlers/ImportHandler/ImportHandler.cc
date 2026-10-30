@@ -181,6 +181,8 @@ void Publish(const std::string& text, int user_id, DebateModerator& moderator) {
         Log::info("[Import] " + admin + " imported debate " + std::to_string(debateId) + ": " +
                   std::to_string(made) + " claims (" + std::to_string(plan.supports) + " supports, " +
                   std::to_string(plan.challenges) + " challenges), " + plan.format + ", \"" + plan.root + "\"");
+        moderator.activity().record("import", user_id, admin, debateId, 0,
+                                    std::to_string(made) + (made == 1 ? " claim" : " claims"));
         MoveUserHandler::EnterDebate(debateId, user_id, dw);
         user::User after = dw.getUserProtobuf(user_id);
         HomeView* view = after.mutable_engagement()->mutable_home_view();

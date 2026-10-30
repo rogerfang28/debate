@@ -66,6 +66,9 @@ rendering_info::HomePageRenderingInfo HomePageInfoParser::ParseFromResponse(cons
     if (responseMessage.has_profile()) {
         *info.mutable_profile() = responseMessage.profile();
     }
+    if (responseMessage.has_activity()) {
+        *info.mutable_activity() = responseMessage.activity();
+    }
 
     return info;
 }

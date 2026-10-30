@@ -3597,6 +3597,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     kAiJobFieldNumber = 5,
     kHomeViewFieldNumber = 6,
     kProfileFieldNumber = 7,
+    kActivityFieldNumber = 9,
     kViewerUserIdFieldNumber = 1,
     kCanCreateOrJoinDebatesFieldNumber = 4,
     kViewerIsAdminFieldNumber = 8,
@@ -3678,6 +3679,21 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
   ::moderator_to_vr::Profile* PROTOBUF_NONNULL _internal_mutable_profile();
 
   public:
+  // .moderator_to_vr.ActivityReport activity = 9 [json_name = "activity"];
+  bool has_activity() const;
+  void clear_activity() ;
+  const ::moderator_to_vr::ActivityReport& activity() const;
+  [[nodiscard]] ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE release_activity();
+  ::moderator_to_vr::ActivityReport* PROTOBUF_NONNULL mutable_activity();
+  void set_allocated_activity(::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE value);
+  void unsafe_arena_set_allocated_activity(::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE value);
+  ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE unsafe_arena_release_activity();
+
+  private:
+  const ::moderator_to_vr::ActivityReport& _internal_activity() const;
+  ::moderator_to_vr::ActivityReport* PROTOBUF_NONNULL _internal_mutable_activity();
+
+  public:
   // int32 viewer_user_id = 1 [json_name = "viewerUserId"];
   void clear_viewer_user_id() ;
   ::int32_t viewer_user_id() const;
@@ -3712,8 +3728,8 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 8,
-                                   4, 68,
+  static const ::google::protobuf::internal::TcParseTable<4, 9,
+                                   5, 68,
                                    2>
       _table_;
 
@@ -3739,6 +3755,7 @@ class HomePageRenderingInfo final : public ::google::protobuf::Message
     ::user_engagement::AiJobStatus* PROTOBUF_NULLABLE ai_job_;
     ::user_engagement::HomeView* PROTOBUF_NULLABLE home_view_;
     ::moderator_to_vr::Profile* PROTOBUF_NULLABLE profile_;
+    ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE activity_;
     ::int32_t viewer_user_id_;
     bool can_create_or_join_debates_;
     bool viewer_is_admin_;
@@ -6913,7 +6930,7 @@ inline void HomePageRenderingInfo::clear_viewer_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.viewer_user_id)
@@ -6921,7 +6938,7 @@ inline ::int32_t HomePageRenderingInfo::viewer_user_id() const {
 }
 inline void HomePageRenderingInfo::set_viewer_user_id(::int32_t value) {
   _internal_set_viewer_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.viewer_user_id)
 }
 inline ::int32_t HomePageRenderingInfo::_internal_viewer_user_id() const {
@@ -7059,7 +7076,7 @@ inline void HomePageRenderingInfo::clear_can_create_or_join_debates() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.can_create_or_join_debates_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000080U);
 }
 inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
@@ -7067,7 +7084,7 @@ inline bool HomePageRenderingInfo::can_create_or_join_debates() const {
 }
 inline void HomePageRenderingInfo::set_can_create_or_join_debates(bool value) {
   _internal_set_can_create_or_join_debates(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.can_create_or_join_debates)
 }
 inline bool HomePageRenderingInfo::_internal_can_create_or_join_debates() const {
@@ -7363,7 +7380,7 @@ inline void HomePageRenderingInfo::clear_viewer_is_admin() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_is_admin_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline bool HomePageRenderingInfo::viewer_is_admin() const {
   // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.viewer_is_admin)
@@ -7371,7 +7388,7 @@ inline bool HomePageRenderingInfo::viewer_is_admin() const {
 }
 inline void HomePageRenderingInfo::set_viewer_is_admin(bool value) {
   _internal_set_viewer_is_admin(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:rendering_info.HomePageRenderingInfo.viewer_is_admin)
 }
 inline bool HomePageRenderingInfo::_internal_viewer_is_admin() const {
@@ -7381,6 +7398,99 @@ inline bool HomePageRenderingInfo::_internal_viewer_is_admin() const {
 inline void HomePageRenderingInfo::_internal_set_viewer_is_admin(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.viewer_is_admin_ = value;
+}
+
+// .moderator_to_vr.ActivityReport activity = 9 [json_name = "activity"];
+inline bool HomePageRenderingInfo::has_activity() const {
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000020U);
+  PROTOBUF_ASSUME(!value || _impl_.activity_ != nullptr);
+  return value;
+}
+inline const ::moderator_to_vr::ActivityReport& HomePageRenderingInfo::_internal_activity() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::moderator_to_vr::ActivityReport* p = _impl_.activity_;
+  return p != nullptr ? *p : reinterpret_cast<const ::moderator_to_vr::ActivityReport&>(::moderator_to_vr::_ActivityReport_default_instance_);
+}
+inline const ::moderator_to_vr::ActivityReport& HomePageRenderingInfo::activity() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:rendering_info.HomePageRenderingInfo.activity)
+  return _internal_activity();
+}
+inline void HomePageRenderingInfo::unsafe_arena_set_allocated_activity(
+    ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.activity_);
+  }
+  _impl_.activity_ = reinterpret_cast<::moderator_to_vr::ActivityReport*>(value);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:rendering_info.HomePageRenderingInfo.activity)
+}
+inline ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE HomePageRenderingInfo::release_activity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::moderator_to_vr::ActivityReport* released = _impl_.activity_;
+  _impl_.activity_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE HomePageRenderingInfo::unsafe_arena_release_activity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:rendering_info.HomePageRenderingInfo.activity)
+
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::moderator_to_vr::ActivityReport* temp = _impl_.activity_;
+  _impl_.activity_ = nullptr;
+  return temp;
+}
+inline ::moderator_to_vr::ActivityReport* PROTOBUF_NONNULL HomePageRenderingInfo::_internal_mutable_activity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.activity_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::moderator_to_vr::ActivityReport>(GetArena());
+    _impl_.activity_ = reinterpret_cast<::moderator_to_vr::ActivityReport*>(p);
+  }
+  return _impl_.activity_;
+}
+inline ::moderator_to_vr::ActivityReport* PROTOBUF_NONNULL HomePageRenderingInfo::mutable_activity()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::moderator_to_vr::ActivityReport* _msg = _internal_mutable_activity();
+  // @@protoc_insertion_point(field_mutable:rendering_info.HomePageRenderingInfo.activity)
+  return _msg;
+}
+inline void HomePageRenderingInfo::set_allocated_activity(::moderator_to_vr::ActivityReport* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.activity_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::google::protobuf::Message*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+
+  _impl_.activity_ = reinterpret_cast<::moderator_to_vr::ActivityReport*>(value);
+  // @@protoc_insertion_point(field_set_allocated:rendering_info.HomePageRenderingInfo.activity)
 }
 
 // -------------------------------------------------------------------

@@ -3420,10 +3420,12 @@ class HomeView final : public ::google::protobuf::Message
     kProfileErrorFieldNumber = 8,
     kProfileDraftFieldNumber = 9,
     kImportTextFieldNumber = 11,
+    kActivityFilterFieldNumber = 14,
     kImportPreviewFieldNumber = 12,
     kProfileUserIdFieldNumber = 6,
     kCreateOpenFieldNumber = 5,
     kImportOpenFieldNumber = 10,
+    kActivityOpenFieldNumber = 13,
   };
   // string home_tab = 1 [json_name = "homeTab"];
   void clear_home_tab() ;
@@ -3545,6 +3547,21 @@ class HomeView final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_import_text();
 
   public:
+  // string activity_filter = 14 [json_name = "activityFilter"];
+  void clear_activity_filter() ;
+  const ::std::string& activity_filter() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_activity_filter(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_activity_filter();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_activity_filter();
+  void set_allocated_activity_filter(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_activity_filter() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_activity_filter(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_activity_filter();
+
+  public:
   // .user_engagement.ImportPreview import_preview = 12 [json_name = "importPreview"];
   bool has_import_preview() const;
   void clear_import_preview() ;
@@ -3590,12 +3607,22 @@ class HomeView final : public ::google::protobuf::Message
   void _internal_set_import_open(bool value);
 
   public:
+  // bool activity_open = 13 [json_name = "activityOpen"];
+  void clear_activity_open() ;
+  bool activity_open() const;
+  void set_activity_open(bool value);
+
+  private:
+  bool _internal_activity_open() const;
+  void _internal_set_activity_open(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:user_engagement.HomeView)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 12,
-                                   1, 138,
+  static const ::google::protobuf::internal::TcParseTable<4, 14,
+                                   1, 153,
                                    2>
       _table_;
 
@@ -3624,10 +3651,12 @@ class HomeView final : public ::google::protobuf::Message
     ::google::protobuf::internal::ArenaStringPtr profile_error_;
     ::google::protobuf::internal::ArenaStringPtr profile_draft_;
     ::google::protobuf::internal::ArenaStringPtr import_text_;
+    ::google::protobuf::internal::ArenaStringPtr activity_filter_;
     ::user_engagement::ImportPreview* PROTOBUF_NULLABLE import_preview_;
     ::int32_t profile_user_id_;
     bool create_open_;
     bool import_open_;
+    bool activity_open_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6578,7 +6607,7 @@ inline void HomeView::clear_create_open() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.create_open_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000400U);
+                  0x00000800U);
 }
 inline bool HomeView::create_open() const {
   // @@protoc_insertion_point(field_get:user_engagement.HomeView.create_open)
@@ -6586,7 +6615,7 @@ inline bool HomeView::create_open() const {
 }
 inline void HomeView::set_create_open(bool value) {
   _internal_set_create_open(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
   // @@protoc_insertion_point(field_set:user_engagement.HomeView.create_open)
 }
 inline bool HomeView::_internal_create_open() const {
@@ -6603,7 +6632,7 @@ inline void HomeView::clear_profile_user_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.profile_user_id_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000200U);
+                  0x00000400U);
 }
 inline ::int32_t HomeView::profile_user_id() const {
   // @@protoc_insertion_point(field_get:user_engagement.HomeView.profile_user_id)
@@ -6611,7 +6640,7 @@ inline ::int32_t HomeView::profile_user_id() const {
 }
 inline void HomeView::set_profile_user_id(::int32_t value) {
   _internal_set_profile_user_id(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000400U);
   // @@protoc_insertion_point(field_set:user_engagement.HomeView.profile_user_id)
 }
 inline ::int32_t HomeView::_internal_profile_user_id() const {
@@ -6823,7 +6852,7 @@ inline void HomeView::clear_import_open() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.import_open_ = false;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000800U);
+                  0x00001000U);
 }
 inline bool HomeView::import_open() const {
   // @@protoc_insertion_point(field_get:user_engagement.HomeView.import_open)
@@ -6831,7 +6860,7 @@ inline bool HomeView::import_open() const {
 }
 inline void HomeView::set_import_open(bool value) {
   _internal_set_import_open(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000800U);
+  SetHasBit(_impl_._has_bits_[0], 0x00001000U);
   // @@protoc_insertion_point(field_set:user_engagement.HomeView.import_open)
 }
 inline bool HomeView::_internal_import_open() const {
@@ -6910,7 +6939,7 @@ inline void HomeView::set_allocated_import_text(::std::string* PROTOBUF_NULLABLE
 
 // .user_engagement.ImportPreview import_preview = 12 [json_name = "importPreview"];
 inline bool HomeView::has_import_preview() const {
-  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000100U);
+  bool value = CheckHasBit(_impl_._has_bits_[0], 0x00000200U);
   PROTOBUF_ASSUME(!value || _impl_.import_preview_ != nullptr);
   return value;
 }
@@ -6918,7 +6947,7 @@ inline void HomeView::clear_import_preview() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.import_preview_ != nullptr) _impl_.import_preview_->Clear();
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000200U);
 }
 inline const ::user_engagement::ImportPreview& HomeView::_internal_import_preview() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
@@ -6937,16 +6966,16 @@ inline void HomeView::unsafe_arena_set_allocated_import_preview(
   }
   _impl_.import_preview_ = reinterpret_cast<::user_engagement::ImportPreview*>(value);
   if (value != nullptr) {
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:user_engagement.HomeView.import_preview)
 }
 inline ::user_engagement::ImportPreview* PROTOBUF_NULLABLE HomeView::release_import_preview() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::ImportPreview* released = _impl_.import_preview_;
   _impl_.import_preview_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
@@ -6966,7 +6995,7 @@ inline ::user_engagement::ImportPreview* PROTOBUF_NULLABLE HomeView::unsafe_aren
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:user_engagement.HomeView.import_preview)
 
-  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::ImportPreview* temp = _impl_.import_preview_;
   _impl_.import_preview_ = nullptr;
   return temp;
@@ -6981,7 +7010,7 @@ inline ::user_engagement::ImportPreview* PROTOBUF_NONNULL HomeView::_internal_mu
 }
 inline ::user_engagement::ImportPreview* PROTOBUF_NONNULL HomeView::mutable_import_preview()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   ::user_engagement::ImportPreview* _msg = _internal_mutable_import_preview();
   // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.import_preview)
   return _msg;
@@ -6998,13 +7027,103 @@ inline void HomeView::set_allocated_import_preview(::user_engagement::ImportPrev
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
-    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+    SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   } else {
-    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+    ClearHasBit(_impl_._has_bits_[0], 0x00000200U);
   }
 
   _impl_.import_preview_ = reinterpret_cast<::user_engagement::ImportPreview*>(value);
   // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.import_preview)
+}
+
+// bool activity_open = 13 [json_name = "activityOpen"];
+inline void HomeView::clear_activity_open() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.activity_open_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00002000U);
+}
+inline bool HomeView::activity_open() const {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.activity_open)
+  return _internal_activity_open();
+}
+inline void HomeView::set_activity_open(bool value) {
+  _internal_set_activity_open(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00002000U);
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.activity_open)
+}
+inline bool HomeView::_internal_activity_open() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.activity_open_;
+}
+inline void HomeView::_internal_set_activity_open(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.activity_open_ = value;
+}
+
+// string activity_filter = 14 [json_name = "activityFilter"];
+inline void HomeView::clear_activity_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.activity_filter_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000100U);
+}
+inline const ::std::string& HomeView::activity_filter() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:user_engagement.HomeView.activity_filter)
+  return _internal_activity_filter();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void HomeView::set_activity_filter(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  _impl_.activity_filter_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:user_engagement.HomeView.activity_filter)
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::mutable_activity_filter()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  ::std::string* _s = _internal_mutable_activity_filter();
+  // @@protoc_insertion_point(field_mutable:user_engagement.HomeView.activity_filter)
+  return _s;
+}
+inline const ::std::string& HomeView::_internal_activity_filter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.activity_filter_.Get();
+}
+inline void HomeView::_internal_set_activity_filter(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.activity_filter_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL HomeView::_internal_mutable_activity_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.activity_filter_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE HomeView::release_activity_filter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:user_engagement.HomeView.activity_filter)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000100U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  auto* released = _impl_.activity_filter_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.activity_filter_.Set("", GetArena());
+  }
+  return released;
+}
+inline void HomeView::set_allocated_activity_filter(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000100U);
+  }
+  _impl_.activity_filter_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.activity_filter_.IsDefault()) {
+    _impl_.activity_filter_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:user_engagement.HomeView.activity_filter)
 }
 
 // -------------------------------------------------------------------

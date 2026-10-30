@@ -99,6 +99,12 @@ message HomeView {
   // the preview, and so Publish builds exactly what was previewed.
   string import_text = 11;
   ImportPreview import_preview = 12;
+  // An admin's activity log, drawn on their own profile in place of it.
+  // Set by ACTIVITY_OPEN; cleared by ACTIVITY_CLOSE and by leaving the
+  // profile. The filter is the recent list's: "" or "all", "members",
+  // "visitors".
+  bool activity_open = 13;
+  string activity_filter = 14;
 }
 
 // What Preview found in the import text. Nothing is written to make it.

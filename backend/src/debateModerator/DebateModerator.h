@@ -11,6 +11,7 @@
 
 #include "../utils/DebateWrapper.h"
 #include "accounts/AccountService.h"
+#include "activity/ActivityLog.h"
 class DebateModerator {
 public:
     // usersDb is the shared users.sqlite3 connection (owned by VirtualRenderer)
@@ -43,6 +44,8 @@ public:
 
      // Accounts: names, Google linking, the startup migration, the sweep.
      AccountService& accounts() { return accountService; }
+     // The admins' activity log (visits, sign-ins, opens; see ActivityLog.h).
+     ActivityLog& activity() { return activityLog; }
      // RENAME_ACCOUNT, carried out for the virtual renderer (which then
      // re-issues the session under the new name): renames `userId` if the
      // rules allow, and leaves their own profile open with the rename form
@@ -63,4 +66,5 @@ private:
     DatabaseWrapper dbWrapper;
     DebateWrapper debateWrapper;
     AccountService accountService;
+    ActivityLog activityLog;
 };

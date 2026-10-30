@@ -94,13 +94,17 @@ bool isViewerBlockedEvent(debate_event::EventType type) {
     }
 }
 
-// The admin-only presses (utils/Admins.h): importing a whole debate.
+// The admin-only presses (utils/Admins.h): importing a whole debate, and
+// the activity log.
 bool isAdminEvent(debate_event::EventType type) {
     switch (type) {
         case debate_event::IMPORT_OPEN:
         case debate_event::IMPORT_PREVIEW:
         case debate_event::IMPORT_PUBLISH:
         case debate_event::IMPORT_CLOSE:
+        case debate_event::ACTIVITY_OPEN:
+        case debate_event::ACTIVITY_CLOSE:
+        case debate_event::ACTIVITY_FILTER:
             return true;
         default:
             return false;
@@ -192,6 +196,9 @@ bool leavesDebatesUnchanged(debate_event::EventType type) {
         case debate_event::IMPORT_OPEN:
         case debate_event::IMPORT_PREVIEW:
         case debate_event::IMPORT_CLOSE:
+        case debate_event::ACTIVITY_OPEN:
+        case debate_event::ACTIVITY_CLOSE:
+        case debate_event::ACTIVITY_FILTER:
             return true;
         default:
             return false;
@@ -208,6 +215,8 @@ void closeProfile(user_engagement::HomeView* view) {
     view->clear_import_open();
     view->clear_import_text();
     view->clear_import_preview();
+    view->clear_activity_open();
+    view->clear_activity_filter();
 }
 
 // The home page's tabs and Explore's controls: go home, and remember the
@@ -236,7 +245,8 @@ DebateModerator::DebateModerator(Database& usersDb)
     : globalDb(utils::getDatabasePath()),
       dbWrapper(globalDb, usersDb),
       debateWrapper(dbWrapper),
-      accountService(dbWrapper, usersDb, globalDb)
+      accountService(dbWrapper, usersDb, globalDb),
+      activityLog(dbWrapper, debateWrapper)
 {
     dbWrapper.ensureAllTables();
     // Debates from before the move log get one written from their stored
@@ -263,6 +273,9 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::handleRequest(debate_even
         return res;
     }
     apply(event);
+    // Only a request of its own is activity: the steps an import or a
+    // walkthrough replays through apply() are not.
+    activityLog.recordEvent(event, event.user().user_id());
     return buildResponseMessage(event.user().user_id());
 }
 
@@ -462,6 +475,23 @@ void DebateModerator::handleDebateEvent(const int& user_id, debate_event::Debate
             Log::info("[DebateModerator] Event Type: IMPORT_PUBLISH");
             ImportHandler::Publish(event.import_debate().text(), user_id, *this);
             break;
+        case debate_event::ACTIVITY_OPEN:
+        case debate_event::ACTIVITY_CLOSE:
+        case debate_event::ACTIVITY_FILTER: {
+            // The admin's activity log, on their own profile in place of it.
+            const std::string filter = event.explore_option().value();
+            Log::info("[DebateModerator] Event Type: ACTIVITY (" + std::to_string(event.type()) + ")");
+            updateHomeView(user_id, debateWrapper, [&](user_engagement::HomeView* view) {
+                closeProfile(view);
+                view->set_profile_user_id(user_id);
+                if (event.type() == debate_event::ACTIVITY_CLOSE) return;
+                view->set_activity_open(true);
+                view->set_activity_filter(
+                    event.type() == debate_event::ACTIVITY_FILTER && (filter == "members" || filter == "visitors")
+                        ? filter : "");
+            });
+            break;
+        }
         case debate_event::OPEN_CREATE_DEBATE:
         case debate_event::CLOSE_CREATE_DEBATE: {
             const bool open = event.type() == debate_event::OPEN_CREATE_DEBATE;
@@ -890,6 +920,15 @@ moderator_to_vr::ModeratorToVRMessage DebateModerator::buildResponseMessage(cons
             Log::info("[DebateModerator] Building HOME page response for user: " + std::to_string(user_id));
             HomePageResponseGenerator::BuildHomePageResponse(responseMessage, user_id, debateWrapper,
                                                              &homeCardCache);
+            // The activity log, for an admin on their own profile only.
+            {
+                const user_engagement::HomeView& view = userProto.engagement().home_view();
+                if (view.activity_open() && view.profile_user_id() == user_id &&
+                    admins::IsAdmin(dbWrapper.users.getUsername(user_id))) {
+                    *responseMessage.mutable_activity() =
+                        activityLog.report(ActivityLog::NowMs(), view.activity_filter());
+                }
+            }
             break;
             
         case user_engagement::ACTION_DEBATING:
@@ -981,10 +1020,12 @@ std::string DebateModerator::renameAccount(int userId, const std::string& newNam
     const size_t first = newName.find_first_not_of(" \t\r\n");
     const size_t last = newName.find_last_not_of(" \t\r\n");
     const std::string wanted = first == std::string::npos ? std::string() : newName.substr(first, last - first + 1);
+    const std::string oldName = dbWrapper.users.getUsername(userId);
     const std::string error = accountService.Rename(userId, wanted);
     if (error.empty()) {
         // Every card names people; a cached one would keep the old name.
         homeCardCache.clear();
+        if (wanted != oldName) activityLog.record("rename", userId, wanted, 0, 0, oldName);
     }
     MoveUserHandler::GoHome(userId, debateWrapper);
     user::User userProto = debateWrapper.getUserProtobuf(userId);
@@ -1001,6 +1042,10 @@ bool DebateModerator::deleteAccount(int userId) {
     const bool closed = accountService.Delete(userId);
     if (closed) {
         homeCardCache.clear();
+        // The log keeps no old name of a closed account either.
+        const std::string closedName = dbWrapper.users.getUsername(userId);
+        activityLog.forgetName(userId, closedName);
+        activityLog.record("delete_account", userId, closedName);
     }
     return closed;
 }
