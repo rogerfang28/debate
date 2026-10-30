@@ -63,7 +63,6 @@ function restingStroke(node: GraphNode): string {
 }
 
 const EDGE_COLORS: Record<string, string> = {
-  supports:   "var(--settled)",
   challenges: "var(--challenge)",
   counters:   "var(--challenge)",
   NORMAL:     "var(--text-3)",
